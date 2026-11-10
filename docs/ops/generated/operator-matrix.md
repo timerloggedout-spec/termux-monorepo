@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-10T14:46:46Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-10T16:52:16Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `607b52ccb5` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `5d1d18efce` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 555 issues, 334 PRs. PR classes: EXTRACT 11 / CANDIDATE 149 / NEED_EVIDENCE 174 / SUPERSEDE 0.
+**Open inventory:** 558 issues, 335 PRs. PR classes: EXTRACT 11 / CANDIDATE 149 / NEED_EVIDENCE 175 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -199,7 +199,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1617 | NEED_EVIDENCE | unlabelled | `35c1f2bd5b` | not_reported | not_reported | unknown | docs: improve Mintlify agent discoverability and record integration recon |
 | #1626 | NEED_EVIDENCE | unlabelled | `7288447213` | not_reported | not_reported | unknown | docs(rfp): add first source-backed mesh provider evidence |
 | #1645 | NEED_EVIDENCE | unlabelled | `2dab66b406` | not_reported | not_reported | unknown | fix: harden Help-Wanted telemetry and evidence audits |
-| #1760 | NEED_EVIDENCE | unlabelled | `9c567e3992` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
+| #1760 | NEED_EVIDENCE | unlabelled | `74ba0eae5d` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -208,10 +208,10 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2186 | NEED_EVIDENCE | unlabelled | `52de1f57a1` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2187 | NEED_EVIDENCE | unlabelled | `e97d22fe58` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2235 | NEED_EVIDENCE | unlabelled | `8c7f3fed55` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
+| #2235 | NEED_EVIDENCE | unlabelled | `a1c2522a2f` | not_reported | not_reported | unstable | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `a738ebbf9c` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
-| #2310 | NEED_EVIDENCE | unlabelled | `921270ca56` | queued | queued | unknown | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `4fef648d17` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `38a0473a66` | failure | success | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -257,8 +257,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3890 | NEED_EVIDENCE | unlabelled | `db159c1858` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `79d66784a4` | queued | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #3890 | NEED_EVIDENCE | unlabelled | `53085ccf91` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3916 | NEED_EVIDENCE | unlabelled | `262b0ef2aa` | queued | queued | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -297,7 +297,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4635 | NEED_EVIDENCE | unlabelled | `2f3e775337` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4637 | NEED_EVIDENCE | unlabelled | `945a6b13de` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4644 | NEED_EVIDENCE | unlabelled | `6f0388f6a2` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4646 | NEED_EVIDENCE | unlabelled | `96e110ad62` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
+| #4646 | NEED_EVIDENCE | unlabelled | `f7c205fca9` | not_reported | not_reported | unknown | chore(countdowns): refresh challenge-countdowns-feed.json |
 | #4663 | NEED_EVIDENCE | unlabelled | `ed7de200b9` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4664 | NEED_EVIDENCE | unlabelled | `d7c97fb814` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4670 | NEED_EVIDENCE | unlabelled | `fed92480f8` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -312,13 +312,13 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4821 | NEED_EVIDENCE | unlabelled | `187e7302a2` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4827 | NEED_EVIDENCE | unlabelled | `e3a2b171a0` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4852 | NEED_EVIDENCE | unlabelled | `5431d67fff` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4901 | NEED_EVIDENCE | unlabelled | `e1b93f5f77` | failure | success | unknown | docs(ops): continuous-operations dependency register — runway view (dependencies |
+| #4901 | NEED_EVIDENCE | unlabelled | `ac67b32783` | failure | success | unknown | docs(ops): continuous-operations dependency register — runway view (dependencies |
 | #4931 | NEED_EVIDENCE | unlabelled | `8d0236b472` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4936 | NEED_EVIDENCE | unlabelled | `154aa5a024` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4954 | NEED_EVIDENCE | unlabelled | `5738fefc29` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
 | #4964 | NEED_EVIDENCE | unlabelled | `442d5864f4` | not_reported | not_reported | unknown | QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as mac |
 | #4969 | NEED_EVIDENCE | unlabelled | `74eeb710af` | failure | success | unknown | QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-1 |
-| #4990 | NEED_EVIDENCE | unlabelled | `19b625d09a` | not_reported | not_reported | unknown | chore(linguist): refresh linguist-panel-feed.json |
+| #4990 | NEED_EVIDENCE | unlabelled | `c406d35e81` | not_reported | not_reported | unknown | chore(linguist): refresh linguist-panel-feed.json |
 | #5010 | NEED_EVIDENCE | unlabelled | `0eabbd6cf2` | not_reported | not_reported | unknown | feat: add AgentRouter catalog and unified observability index |
 | #5014 | NEED_EVIDENCE | unlabelled | `516de243e0` | not_reported | not_reported | unknown | perf(observer): bound scheduled and shared poller scans |
 | #5016 | NEED_EVIDENCE | unlabelled | `cc7a4e3078` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |
@@ -326,7 +326,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5018 | NEED_EVIDENCE | unlabelled | `17493652ab` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |
 | #5019 | NEED_EVIDENCE | unlabelled | `9774346d69` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |
 | #5021 | NEED_EVIDENCE | unlabelled | `0085be0406` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
-| #5034 | NEED_EVIDENCE | unlabelled | `9e99a55a01` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | NEED_EVIDENCE | unlabelled | `861f880ec0` | not_reported | not_reported | unknown | chore(dashboards): refresh dispatch-tree feed |
 | #5036 | NEED_EVIDENCE | unlabelled | `6b243b40c0` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5037 | NEED_EVIDENCE | unlabelled | `9d5fb441f7` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5038 | NEED_EVIDENCE | unlabelled | `362bc4a000` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -347,6 +347,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5092 | NEED_EVIDENCE | unlabelled | `1c3b6e7f54` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #5094 | NEED_EVIDENCE | unlabelled | `02a830cc50` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5128 | NEED_EVIDENCE | unlabelled | `c2257d1d26` | failure | success | unknown | feat(vercel): read-only admin-desk host identification probe |
+| #5134 | NEED_EVIDENCE | unlabelled | `bde78ed7e3` | failure | success | unknown | feat(provider-index): reconcile provider participation and dispatch pool |
 
 ## Families (open)
 
@@ -355,12 +356,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 99 | 0 |
 | mesh | 7 | 0 |
-| other | 308 | 1 |
+| other | 311 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 55 | 332 |
+| unlabelled | 55 | 333 |
 
 **Unlabelled open issues (55):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3752, #4008, #4052, #4212, #4214, #4215, #4216, #4217, #4218, #4219, #4220, #4221, #4222, #4223, #4224, #4225, #4226, #4227, #4228, #4229, #4230, #4231, #4232, #4233, #4234, #4235, #4236, #4237, #4524, #4547, #4718, #4721, #4873, #4963, #4977, #4979, #4994, #5032, #5050, #5071, #5114 — worked oldest-first by the issue-lifecycle lane pass.

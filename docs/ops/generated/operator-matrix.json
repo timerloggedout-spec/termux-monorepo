@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 555,
-    "open_prs": 334,
+    "open_issues": 558,
+    "open_prs": 335,
     "pr_classes": {
       "CANDIDATE": 149,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 174,
+      "NEED_EVIDENCE": 175,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 308,
+      "issues": 311,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -50,7 +50,7 @@
     },
     "unlabelled": {
       "issues": 55,
-      "prs": 332,
+      "prs": 333,
       "unlabelled_numbers": [
         308,
         388,
@@ -110,7 +110,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-10T14:46:46Z",
+  "generated_at": "2026-11-10T16:52:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -174,7 +174,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "607b52ccb5"
+    "sha": "5d1d18efce"
   },
   "prs": [
     {
@@ -2793,12 +2793,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9c567e3992",
+      "head_sha": "74ba0eae5d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
-      "updated_at": "2026-11-09T17:42:41Z"
+      "updated_at": "2026-11-10T16:09:39Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2919,12 +2919,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8c7f3fed55",
+      "head_sha": "a1c2522a2f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-10T13:11:19Z"
+      "updated_at": "2026-11-10T16:51:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2947,26 +2947,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "a738ebbf9c",
+      "head_sha": "4fef648d17",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-10T14:29:32Z"
+      "updated_at": "2026-11-10T16:25:51Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "failure",
+        "smoke": "success"
       },
-      "head_sha": "921270ca56",
+      "head_sha": "38a0473a66",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-10T14:44:46Z"
+      "updated_at": "2026-11-10T16:41:16Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3605,12 +3605,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "db159c1858",
+      "head_sha": "53085ccf91",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-10T13:12:42Z"
+      "updated_at": "2026-11-10T16:51:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3619,12 +3619,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "79d66784a4",
+      "head_sha": "262b0ef2aa",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-10T14:45:38Z"
+      "updated_at": "2026-11-10T16:27:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4165,12 +4165,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "96e110ad62",
+      "head_sha": "f7c205fca9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-10T13:10:58Z"
+      "updated_at": "2026-11-10T16:51:09Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4375,12 +4375,12 @@
         "hygiene": "failure",
         "smoke": "success"
       },
-      "head_sha": "e1b93f5f77",
+      "head_sha": "ac67b32783",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-10T13:24:14Z"
+      "updated_at": "2026-11-10T16:48:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4459,12 +4459,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "19b625d09a",
+      "head_sha": "c406d35e81",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-10T12:38:39Z"
+      "updated_at": "2026-11-10T15:39:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4571,12 +4571,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9e99a55a01",
+      "head_sha": "861f880ec0",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5034,
       "title": "chore(dashboards): refresh dispatch-tree feed",
-      "updated_at": "2026-11-09T17:23:46Z"
+      "updated_at": "2026-11-10T15:55:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4857,6 +4857,20 @@
       "number": 5128,
       "title": "feat(vercel): read-only admin-desk host identification probe",
       "updated_at": "2026-11-10T14:05:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "bde78ed7e3",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5134,
+      "title": "feat(provider-index): reconcile provider participation and dispatch pool",
+      "updated_at": "2026-11-10T15:56:44Z"
     }
   ],
   "schema": "operator-matrix/v1",

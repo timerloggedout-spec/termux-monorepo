@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-10T15:55:37Z",
+ "generated_at": "2026-11-10T17:01:48Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,77 +10,79 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 10,
+    "queued": 7,
     "in_progress": 0,
-    "oldest_queued_at": "2026-11-10T15:38:13Z",
+    "oldest_queued_at": "2026-11-10T16:35:44Z",
     "by_workflow_queued": {
-     "PR scope guard": 5,
-     "repo gate": 3,
-     "Orchestration Regression Guard": 1,
-     "swarm-admission": 1
+     "repo gate": 2,
+     "PR scope guard": 2,
+     "Orchestration Regression Guard": 3
     }
    },
    "2": {
     "tier": 2,
-    "queued": 0,
-    "in_progress": 1,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "queued": 2,
+    "in_progress": 2,
+    "oldest_queued_at": "2026-11-10T15:55:56Z",
+    "by_workflow_queued": {
+     "tribute-dashboard-deploy": 2
+    }
    },
    "3": {
     "tier": 3,
-    "queued": 0,
+    "queued": 1,
     "in_progress": 2,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-10T16:44:01Z",
+    "by_workflow_queued": {
+     "\ud83d\udd00 Build Dispatch (Gemini build arm)": 1
+    }
    },
    "4": {
     "tier": 4,
-    "queued": 286,
-    "in_progress": 14,
-    "oldest_queued_at": "2026-11-10T15:38:13Z",
+    "queued": 990,
+    "in_progress": 2,
+    "oldest_queued_at": "2026-11-10T13:49:27Z",
     "by_workflow_queued": {
-     "Quota Dispatch Tree": 124,
-     "lane events recorder": 34,
-     "Agent Throughput Evidence": 59,
-     "Issue Comment Router \u2014 modular fan-out reduction": 4,
-     "Sweep Accountability": 5,
-     "Agent PR Jules Handoff": 2,
-     "Lane matrix event-driven inventory": 4,
-     "Repository development evaluation": 2,
-     "termux smoke": 3,
-     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 5,
-     "Peer review orchestrator": 3,
-     "Action Effectiveness Ledger": 4,
-     "PR Change Effectiveness Ledger": 3,
-     "RECON INTEL discovery": 2,
-     "PR production ledger": 3,
-     "PR evidence evaluation": 1,
-     "CellCog review": 2,
-     "Context Relationship + Lead/Lag Audit": 6,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 4,
-     "DeepSeek CI \u2013 Agentic Automation": 1,
-     "archwiz dangle check": 1,
-     "n8n SHE bridge": 1,
-     "continuous-improve": 1,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-     "Foresight Evidence Spine": 1,
-     "hitl-control-plane-verify": 1,
-     "Issue Observatory \u2014 similarity, refinement, lifecycle evidence": 1,
-     "Jules on Issues (label / @jules)": 1,
-     "project-task-dispatch": 1,
+     "Quota Dispatch Tree": 746,
+     "Agent Throughput Evidence": 96,
+     "lane events recorder": 75,
      "repo-tracking-collect": 1,
-     "challenge-countdowns-feed-collect": 1,
-     "tribute-participation": 1,
-     "Agent review \u2192 auto Jules": 1,
-     "podium-crawl": 1,
-     "Issue Lifecycle Triage (deterministic label pass)": 1
+     "PR Change Effectiveness Ledger": 1,
+     "PR production ledger": 4,
+     "Peer review orchestrator": 3,
+     "termux smoke": 2,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
+     "DeepSeek CI \u2013 Agentic Automation": 1,
+     "Sweep Accountability": 3,
+     "Lane matrix event-driven inventory": 2,
+     "Agent PR Jules Handoff": 1,
+     "Repository development evaluation": 1,
+     "CellCog review": 1,
+     "Action Effectiveness Ledger": 2,
+     "n8n SHE bridge": 4,
+     "Reviewer metrics collect": 1,
+     "delphi-ledger-feed-collect": 1,
+     "Issue Comment Router \u2014 modular fan-out reduction": 7,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 5,
+     "Context Relationship + Lead/Lag Audit": 9,
+     "Foresight Evidence Spine": 3,
+     "hitl-control-plane-verify": 3,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 3,
+     "graph-matrix-probe": 1,
+     "delphi-rfp-feed-collect": 1,
+     "game-development-dispatch": 1,
+     "referral-pool-watch": 1,
+     "Workflow Surface Policy": 1,
+     "PR evidence evaluation": 3,
+     "RECON INTEL discovery": 3,
+     "Agent feedback \u2192 Linear subtasks": 1,
+     "Agent review \u2192 auto Jules": 1
     }
    }
   },
   "totals": {
-   "queued": 296,
-   "in_progress": 17
+   "queued": 1000,
+   "in_progress": 6
   },
   "wedged_ancient": []
  },

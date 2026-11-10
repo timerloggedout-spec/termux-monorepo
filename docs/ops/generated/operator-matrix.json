@@ -3,9 +3,9 @@
     "open_issues": 551,
     "open_prs": 333,
     "pr_classes": {
-      "CANDIDATE": 152,
+      "CANDIDATE": 151,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 170,
+      "NEED_EVIDENCE": 171,
       "SUPERSEDE": 0
     }
   },
@@ -110,7 +110,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-10T13:05:30Z",
+  "generated_at": "2026-11-10T13:18:22Z",
   "issues_unlabelled": [
     308,
     388,
@@ -171,10 +171,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "26598c9972"
+    "sha": "64657d45c8"
   },
   "prs": [
     {
@@ -1105,20 +1105,6 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bd75cc4a05",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-07T21:16:07Z"
     },
     {
       "class": "CANDIDATE",
@@ -2501,7 +2487,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2515,7 +2501,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2557,7 +2543,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2961,12 +2947,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8223fe97b5",
+      "head_sha": "8c7f3fed55",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-04T22:59:47Z"
+      "updated_at": "2026-11-10T13:11:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2981,6 +2967,20 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "2ce23dbd67",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-10T13:17:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3619,12 +3619,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d4324bc18d",
+      "head_sha": "db159c1858",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-09T17:22:05Z"
+      "updated_at": "2026-11-10T13:12:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3750,7 +3750,7 @@
       "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-10T13:05:11Z"
+      "updated_at": "2026-11-10T13:05:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4165,12 +4165,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "b9ec529fbe",
+      "head_sha": "96e110ad62",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-04T10:51:06Z"
+      "updated_at": "2026-11-10T13:10:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4372,15 +4372,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "failure",
+        "smoke": "success"
       },
       "head_sha": "e1b93f5f77",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-10T13:04:10Z"
+      "updated_at": "2026-11-10T13:15:09Z"
     },
     {
       "class": "NEED_EVIDENCE",

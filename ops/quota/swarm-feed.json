@@ -6,7 +6,8 @@
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
   "grouping": "family (registry id prefix) > registry records; g4f upstreams nest under the single g4f family",
   "envelope": "aligned with Tracking nested-family/v1 {schema, generated_at, generated_by, spec, sources, summary, providers, gaps}",
-  "swarm_definition": "owner 2026-11-01: ALL providers' inference model endpoints participating in 3L0 DoE"
+  "swarm_definition": "owner 2026-11-01: ALL providers' inference model endpoints participating in 3L0 DoE",
+  "verification_semantics": "census_api_verified reflects allocation-census API evidence only; it does not establish inference invocation, free eligibility, or routing admission."
  },
  "sources": [
   {
@@ -41,7 +42,6 @@
   "families": 35,
   "families_direct": 34,
   "g4f_children": 61,
-  "live_verified_families": 12,
   "rate_limit_events": 8,
   "families_populated": 29,
   "families_gap": 6,
@@ -54,14 +54,14 @@
    "families_total": 35,
    "families_populated": 29,
    "families_gap": 6
-  }
+  },
+  "census_api_verified_families": 12
  },
  "providers": [
   {
    "provider": "aion",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -110,13 +110,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "baseten",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -143,13 +143,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "cerebras",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -198,13 +198,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "claude",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -231,13 +231,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "cloudflare",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -286,13 +286,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "cohere",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -339,13 +339,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "deepinfra",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -372,13 +372,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "deepseek",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -405,13 +405,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "felo",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -461,13 +461,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "friendli",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -494,13 +494,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "g4f",
    "record_count": 61,
    "providers_distinct": 61,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -530,7 +530,7 @@
     {
      "id": "g4f.agenttools",
      "provider": "g4f/AgentTools",
-     "metric": "g4f provider AgentTools \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider AgentTools — free/no-auth quota (resolution 2026-10-28)",
      "limit": 250,
      "unit": "units",
      "window": "per day",
@@ -550,7 +550,7 @@
     {
      "id": "g4f.airforce",
      "provider": "g4f/Airforce",
-     "metric": "g4f provider Airforce \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Airforce — free/no-auth quota (resolution 2026-10-28)",
      "limit": 1000,
      "unit": "requests",
      "window": "per day",
@@ -570,7 +570,7 @@
     {
      "id": "g4f.antigravity",
      "provider": "g4f/Antigravity",
-     "metric": "g4f provider Antigravity \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Antigravity — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -590,7 +590,7 @@
     {
      "id": "g4f.arena",
      "provider": "g4f/Arena",
-     "metric": "g4f provider Arena \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Arena — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -610,7 +610,7 @@
     {
      "id": "g4f.bingcreateimages",
      "provider": "g4f/BingCreateImages",
-     "metric": "g4f provider BingCreateImages \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider BingCreateImages — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -630,7 +630,7 @@
     {
      "id": "g4f.blackboxpro",
      "provider": "g4f/BlackboxPro",
-     "metric": "g4f provider BlackboxPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider BlackboxPro — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -650,7 +650,7 @@
     {
      "id": "g4f.blackforestlabs_flux1dev",
      "provider": "g4f/BlackForestLabs_Flux1Dev",
-     "metric": "g4f provider BlackForestLabs_Flux1Dev \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider BlackForestLabs_Flux1Dev — free/no-auth quota (resolution 2026-10-28)",
      "limit": 2,
      "unit": "minutes of GPU time",
      "window": "per day, resets exactly 24 hours after first GPU usage",
@@ -670,7 +670,7 @@
     {
      "id": "g4f.blackforestlabs_flux1kontextdev",
      "provider": "g4f/BlackForestLabs_Flux1KontextDev",
-     "metric": "g4f provider BlackForestLabs_Flux1KontextDev \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider BlackForestLabs_Flux1KontextDev — free/no-auth quota (resolution 2026-10-28)",
      "limit": 2,
      "unit": "minutes of GPU time",
      "window": "per day, resets exactly 24 hours after first GPU usage",
@@ -690,7 +690,7 @@
     {
      "id": "g4f.bravesearch",
      "provider": "g4f/BraveSearch",
-     "metric": "g4f provider BraveSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider BraveSearch — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -710,7 +710,7 @@
     {
      "id": "g4f.cachedsearch",
      "provider": "g4f/CachedSearch",
-     "metric": "g4f provider CachedSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider CachedSearch — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -730,7 +730,7 @@
     {
      "id": "g4f.cerebras",
      "provider": "g4f/Cerebras",
-     "metric": "g4f provider Cerebras \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Cerebras — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -750,7 +750,7 @@
     {
      "id": "g4f.chatgpt",
      "provider": "g4f/ChatGPT",
-     "metric": "g4f provider ChatGPT \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider ChatGPT — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -770,7 +770,7 @@
     {
      "id": "g4f.claude",
      "provider": "g4f/Claude",
-     "metric": "g4f provider Claude \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Claude — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -790,7 +790,7 @@
     {
      "id": "g4f.cloudflare",
      "provider": "g4f/Cloudflare",
-     "metric": "g4f provider Cloudflare \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Cloudflare — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -810,7 +810,7 @@
     {
      "id": "g4f.cohereforai_c4ai_command",
      "provider": "g4f/CohereForAI_C4AI_Command",
-     "metric": "g4f provider CohereForAI_C4AI_Command \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider CohereForAI_C4AI_Command — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -830,7 +830,7 @@
     {
      "id": "g4f.copilot",
      "provider": "g4f/Copilot",
-     "metric": "g4f provider Copilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Copilot — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -850,7 +850,7 @@
     {
      "id": "g4f.copilotapp",
      "provider": "g4f/CopilotApp",
-     "metric": "g4f provider CopilotApp \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider CopilotApp — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -870,7 +870,7 @@
     {
      "id": "g4f.deepinfra",
      "provider": "g4f/DeepInfra",
-     "metric": "g4f provider DeepInfra \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider DeepInfra — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -890,7 +890,7 @@
     {
      "id": "g4f.deepseek",
      "provider": "g4f/DeepSeek",
-     "metric": "g4f provider DeepSeek \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider DeepSeek — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -910,7 +910,7 @@
     {
      "id": "g4f.elevenlabs",
      "provider": "g4f/ElevenLabs",
-     "metric": "g4f provider ElevenLabs \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider ElevenLabs — free/no-auth quota (resolution 2026-10-28)",
      "limit": 10000,
      "unit": "credits",
      "window": "per month",
@@ -930,7 +930,7 @@
     {
      "id": "g4f.g4fspace",
      "provider": "g4f/G4FSpace",
-     "metric": "g4f provider G4FSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider G4FSpace — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -950,7 +950,7 @@
     {
      "id": "g4f.gemini",
      "provider": "g4f/Gemini",
-     "metric": "g4f provider Gemini \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Gemini — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -970,7 +970,7 @@
     {
      "id": "g4f.geminicli",
      "provider": "g4f/GeminiCLI",
-     "metric": "g4f provider GeminiCLI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GeminiCLI — free/no-auth quota (resolution 2026-10-28)",
      "limit": 1000,
      "unit": "requests",
      "window": "per user per day",
@@ -990,7 +990,7 @@
     {
      "id": "g4f.geminipro",
      "provider": "g4f/GeminiPro",
-     "metric": "g4f provider GeminiPro \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GeminiPro — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1010,7 +1010,7 @@
     {
      "id": "g4f.githubcopilot",
      "provider": "g4f/GithubCopilot",
-     "metric": "g4f provider GithubCopilot \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GithubCopilot — free/no-auth quota (resolution 2026-10-28)",
      "limit": 50,
      "unit": "premium requests (all chat interactions count as premium requests)",
      "window": "per month",
@@ -1030,7 +1030,7 @@
     {
      "id": "g4f.glm",
      "provider": "g4f/GLM",
-     "metric": "g4f provider GLM \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GLM — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1050,7 +1050,7 @@
     {
      "id": "g4f.googleaimode",
      "provider": "g4f/GoogleAiMode",
-     "metric": "g4f provider GoogleAiMode \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GoogleAiMode — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1070,7 +1070,7 @@
     {
      "id": "g4f.googlesearch",
      "provider": "g4f/GoogleSearch",
-     "metric": "g4f provider GoogleSearch \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider GoogleSearch — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1090,7 +1090,7 @@
     {
      "id": "g4f.grok",
      "provider": "g4f/Grok",
-     "metric": "g4f provider Grok \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Grok — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1110,7 +1110,7 @@
     {
      "id": "g4f.groq",
      "provider": "g4f/Groq",
-     "metric": "g4f provider Groq \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Groq — free/no-auth quota (resolution 2026-10-28)",
      "limit": 1000,
      "unit": "requests per day (RPD) for openai/gpt-oss-120b",
      "window": "per day",
@@ -1130,7 +1130,7 @@
     {
      "id": "g4f.hailuoai",
      "provider": "g4f/HailuoAI",
-     "metric": "g4f provider HailuoAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider HailuoAI — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1150,7 +1150,7 @@
     {
      "id": "g4f.huggingchat",
      "provider": "g4f/HuggingChat",
-     "metric": "g4f provider HuggingChat \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider HuggingChat — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1170,7 +1170,7 @@
     {
      "id": "g4f.huggingface",
      "provider": "g4f/HuggingFace",
-     "metric": "g4f provider HuggingFace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider HuggingFace — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1190,7 +1190,7 @@
     {
      "id": "g4f.huggingfacemedia",
      "provider": "g4f/HuggingFaceMedia",
-     "metric": "g4f provider HuggingFaceMedia \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider HuggingFaceMedia — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1210,7 +1210,7 @@
     {
      "id": "g4f.huggingspace",
      "provider": "g4f/HuggingSpace",
-     "metric": "g4f provider HuggingSpace \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider HuggingSpace — free/no-auth quota (resolution 2026-10-28)",
      "limit": 2,
      "unit": "GPU-minutes (ZeroGPU)",
      "window": "per day",
@@ -1230,7 +1230,7 @@
     {
      "id": "g4f.kilocode",
      "provider": "g4f/KiloCode",
-     "metric": "g4f provider KiloCode \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider KiloCode — free/no-auth quota (resolution 2026-10-28)",
      "limit": 200,
      "unit": "requests",
      "window": "per hour per IP",
@@ -1250,7 +1250,7 @@
     {
      "id": "g4f.llm7",
      "provider": "g4f/LLM7",
-     "metric": "g4f provider LLM7 \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider LLM7 — free/no-auth quota (resolution 2026-10-28)",
      "limit": 100000,
      "unit": "tokens (input + output)",
      "window": "per day",
@@ -1270,7 +1270,7 @@
     {
      "id": "g4f.markitdown",
      "provider": "g4f/MarkItDown",
-     "metric": "g4f provider MarkItDown \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider MarkItDown — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1290,7 +1290,7 @@
     {
      "id": "g4f.metaai",
      "provider": "g4f/MetaAI",
-     "metric": "g4f provider MetaAI \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider MetaAI — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1310,7 +1310,7 @@
     {
      "id": "g4f.metaaiaccount",
      "provider": "g4f/MetaAIAccount",
-     "metric": "g4f provider MetaAIAccount \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider MetaAIAccount — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1330,7 +1330,7 @@
     {
      "id": "g4f.microsoftdesigner",
      "provider": "g4f/MicrosoftDesigner",
-     "metric": "g4f provider MicrosoftDesigner \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider MicrosoftDesigner — free/no-auth quota (resolution 2026-10-28)",
      "limit": 15,
      "unit": "boosts (fast AI creations/edits)",
      "window": "per day",
@@ -1350,7 +1350,7 @@
     {
      "id": "g4f.nvidia",
      "provider": "g4f/Nvidia",
-     "metric": "g4f provider Nvidia \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Nvidia — free/no-auth quota (resolution 2026-10-28)",
      "limit": 1000,
      "unit": "API credits",
      "window": "on sign-up (one-time trial grant)",
@@ -1370,7 +1370,7 @@
     {
      "id": "g4f.ollama",
      "provider": "g4f/Ollama",
-     "metric": "g4f provider Ollama \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Ollama — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1390,7 +1390,7 @@
     {
      "id": "g4f.omniroute",
      "provider": "g4f/OmniRoute",
-     "metric": "g4f provider OmniRoute \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider OmniRoute — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1410,7 +1410,7 @@
     {
      "id": "g4f.openaifm",
      "provider": "g4f/OpenAIFM",
-     "metric": "g4f provider OpenAIFM \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider OpenAIFM — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1430,7 +1430,7 @@
     {
      "id": "g4f.openrouterfree",
      "provider": "g4f/OpenRouterFree",
-     "metric": "g4f provider OpenRouterFree \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider OpenRouterFree — free/no-auth quota (resolution 2026-10-28)",
      "limit": 50,
      "unit": "requests",
      "window": "per day",
@@ -1450,7 +1450,7 @@
     {
      "id": "g4f.operaaria",
      "provider": "g4f/OperaAria",
-     "metric": "g4f provider OperaAria \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider OperaAria — free/no-auth quota (resolution 2026-10-28)",
      "limit": 5,
      "unit": "images",
      "window": "per day",
@@ -1470,7 +1470,7 @@
     {
      "id": "g4f.perplexity",
      "provider": "g4f/Perplexity",
-     "metric": "g4f provider Perplexity \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Perplexity — free/no-auth quota (resolution 2026-10-28)",
      "limit": 3,
      "unit": "Pro Searches",
      "window": "per day",
@@ -1490,7 +1490,7 @@
     {
      "id": "g4f.pi",
      "provider": "g4f/Pi",
-     "metric": "g4f provider Pi \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Pi — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1510,7 +1510,7 @@
     {
      "id": "g4f.pollinations",
      "provider": "g4f/Pollinations",
-     "metric": "g4f provider Pollinations \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Pollinations — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1530,7 +1530,7 @@
     {
      "id": "g4f.pollinationsaudio",
      "provider": "g4f/PollinationsAudio",
-     "metric": "g4f provider PollinationsAudio \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider PollinationsAudio — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1550,7 +1550,7 @@
     {
      "id": "g4f.pollinationsimage",
      "provider": "g4f/PollinationsImage",
-     "metric": "g4f provider PollinationsImage \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider PollinationsImage — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1570,7 +1570,7 @@
     {
      "id": "g4f.puter",
      "provider": "g4f/Puter",
-     "metric": "g4f provider Puter \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Puter — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1590,7 +1590,7 @@
     {
      "id": "g4f.qwen",
      "provider": "g4f/Qwen",
-     "metric": "g4f provider Qwen \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Qwen — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1610,7 +1610,7 @@
     {
      "id": "g4f.relayrouter",
      "provider": "g4f/RelayRouter",
-     "metric": "g4f provider RelayRouter \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider RelayRouter — free/no-auth quota (resolution 2026-10-28)",
      "limit": 2000000,
      "unit": "tokens",
      "window": "per account total, with daily sub-caps resetting 00:00 UTC",
@@ -1630,7 +1630,7 @@
     {
      "id": "g4f.stabilityai_sd35large",
      "provider": "g4f/StabilityAI_SD35Large",
-     "metric": "g4f provider StabilityAI_SD35Large \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider StabilityAI_SD35Large — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1650,7 +1650,7 @@
     {
      "id": "g4f.teachanything",
      "provider": "g4f/TeachAnything",
-     "metric": "g4f provider TeachAnything \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider TeachAnything — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1690,7 +1690,7 @@
     {
      "id": "g4f.whiterabbitneo",
      "provider": "g4f/WhiteRabbitNeo",
-     "metric": "g4f provider WhiteRabbitNeo \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider WhiteRabbitNeo — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1710,7 +1710,7 @@
     {
      "id": "g4f.you",
      "provider": "g4f/You",
-     "metric": "g4f provider You \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider You — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1730,7 +1730,7 @@
     {
      "id": "g4f.yqcloud",
      "provider": "g4f/Yqcloud",
-     "metric": "g4f provider Yqcloud \u2014 free/no-auth quota (resolution 2026-10-28)",
+     "metric": "g4f provider Yqcloud — free/no-auth quota (resolution 2026-10-28)",
      "limit": null,
      "unit": "unmetered / unknown (NOT ESTABLISHED)",
      "window": "unknown",
@@ -1747,13 +1747,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "gemini",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -1800,13 +1800,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "github",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -1917,13 +1917,13 @@
      },
      "populated": true
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "groq",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -1972,13 +1972,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "huggingface",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2013,7 +2013,7 @@
      "unit": "monthly credits",
      "window": "monthly",
      "reset": "monthly",
-     "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented \u2014 Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
+     "live": "Hub RateLimit response header (remaining r, seconds-to-reset t; 5-minute fixed windows; passive adapter implemented — Hub API/Resolver/Pages categories, NOT hosted-inference quota); organization usage API GET /api/organizations/{org}/billing/usage/inference (Enterprise); router free/zero models via /v1/models catalog poll",
      "readings": {
       "status": "unknown",
       "used": null,
@@ -2025,13 +2025,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "kilo",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2080,13 +2080,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "llm7",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2133,13 +2133,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "meta",
    "record_count": 3,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2189,12 +2189,12 @@
     {
      "id": "meta.model_api",
      "provider": "meta",
-     "metric": "Meta Model API usage \u2014 Muse Spark / Muse Wonder / Muse Voice via https://api.meta.ai/v1 (Responses + Chat Completions + Messages + Files; OpenAI/Anthropic SDK compatible)",
+     "metric": "Meta Model API usage — Muse Spark / Muse Wonder / Muse Voice via https://api.meta.ai/v1 (Responses + Chat Completions + Messages + Files; OpenAI/Anthropic SDK compatible)",
      "limit": null,
      "unit": "tokens (metered, public preview)",
      "window": "n/a",
-     "reset": "unverified \u2014 no published rate-limit counter established 2026-10-30",
-     "live": "none (no usage API established; credential MODEL_API_KEY not provisioned \u2014 owner provisioning item, names-only)",
+     "reset": "unverified — no published rate-limit counter established 2026-10-30",
+     "live": "none (no usage API established; credential MODEL_API_KEY not provisioned — owner provisioning item, names-only)",
      "readings": {
       "status": "unknown",
       "used": null,
@@ -2214,7 +2214,7 @@
      "unit": "tasks (subscription or Meta Model API PAYG)",
      "window": "monthly (subscription) / metered (PAYG)",
      "reset": "unverified",
-     "live": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned \u2014 owner item, names-only)",
+     "live": "none (auth = browser sign-in or META_API_KEY / muse auth set; credential not provisioned — owner item, names-only)",
      "readings": {
       "status": "unknown",
       "used": null,
@@ -2226,13 +2226,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "mistral",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2281,13 +2281,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "modelscope",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2336,13 +2336,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "novita",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -2369,13 +2369,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "nvidia",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2422,13 +2422,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "omni",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2477,13 +2477,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "openrouter",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2501,7 +2501,7 @@
     "credits": {
      "available": "paid credits purchasable only",
      "claimed": "n/a",
-     "balance": 0.0,
+     "balance": 0,
      "source": "GET /api/v1/credits: total_credits 0, total_usage 0.206466965 (account level)"
     },
     "replenishment": {
@@ -2534,13 +2534,13 @@
      "usage_series": null,
      "populated": "2026-11-04T01:59:43.471356+00:00"
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "ovhcloud",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2589,13 +2589,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "requesty",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2644,13 +2644,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "routeway",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2697,13 +2697,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "sambanova",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2750,13 +2750,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "sealion",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2805,13 +2805,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "siliconflow",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2858,13 +2858,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "typhoon",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2913,13 +2913,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "unorouter",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2966,13 +2966,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   },
   {
    "provider": "xfyun",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -3021,13 +3021,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "xkiro",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -3076,13 +3076,13 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": false
   },
   {
    "provider": "zai",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -3129,7 +3129,8 @@
      "usage_series": null,
      "populated": null
     }
-   ]
+   ],
+   "census_api_verified": true
   }
  ],
  "events": {

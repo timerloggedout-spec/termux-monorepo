@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-09T12:55:35.540742Z`
+Observed: `2026-11-10T12:47:19.557176Z`
 
 ## Navigation
 
@@ -16,8 +16,8 @@ Observed: `2026-11-09T12:55:35.540742Z`
 
 ## Changes since previous snapshot
 
-- **Added (1):** `yqman34/pl-flow`
-- **Removed (2):** `Cracked5pider/Ekko`, `yqman34/reverse-api-engineer`
+- **Added (3):** `BuilderIO/agent-native`, `Cracked5pider/Ekko`, `timerloggedout-spec/agent-native_fork`
+- **Removed (1):** `signalbetorg/coinbase-trading-agent`
 - **Provenance changed (0):** —
 
 ## Owned
@@ -25,6 +25,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | Repository | Provenance | Domains | Research | Integration |
 |---|---|---|---|---|
 | [timerloggedout-spec/ADK-Agents_fork](https://github.com/timerloggedout-spec/ADK-Agents_fork) | owned, starred | agent | medium | upstream-comparison |
+| [timerloggedout-spec/agent-native_fork](https://github.com/timerloggedout-spec/agent-native_fork) | owned, starred | agent | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/agent-web-extension_fork](https://github.com/timerloggedout-spec/agent-web-extension_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/agentflow-webmcp_fork](https://github.com/timerloggedout-spec/agentflow-webmcp_fork) | owned | agent | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/agentfs_fork](https://github.com/timerloggedout-spec/agentfs_fork) | owned, starred | agent | medium | upstream-comparison |
@@ -841,6 +842,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [seamus-brady/Live-SWE-Agent](https://github.com/seamus-brady/Live-SWE-Agent) | starred | agent | medium | — |
 | [slopus/happy-agent](https://github.com/slopus/happy-agent) | starred | agent | medium | — |
 | [timerloggedout-spec/ADK-Agents_fork](https://github.com/timerloggedout-spec/ADK-Agents_fork) | owned, starred | agent | medium | upstream-comparison |
+| [timerloggedout-spec/agent-native_fork](https://github.com/timerloggedout-spec/agent-native_fork) | owned, starred | agent | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/agentfs_fork](https://github.com/timerloggedout-spec/agentfs_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/agentic-patterns_fork](https://github.com/timerloggedout-spec/agentic-patterns_fork) | owned, starred | agent | medium | upstream-comparison |
 | [timerloggedout-spec/agentix_fork](https://github.com/timerloggedout-spec/agentix_fork) | owned, starred | agent | medium | — |
@@ -914,6 +916,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [BoundaryML/baml](https://github.com/BoundaryML/baml) | starred, watching | agent, ai | medium | — |
 | [bravenewxyz/agent-c](https://github.com/bravenewxyz/agent-c) | starred, watching | agent, ai | medium | — |
 | [BraxisAI/braxis-blueprint](https://github.com/BraxisAI/braxis-blueprint) | starred | agent, ai | medium | — |
+| [BuilderIO/agent-native](https://github.com/BuilderIO/agent-native) | starred | agent, ai | medium | dependency-candidate |
 | [camel-ai/camel](https://github.com/camel-ai/camel) | starred | agent, ai | medium | dependency-candidate |
 | [camel-ai/crab](https://github.com/camel-ai/crab) | starred | agent, ai | medium | — |
 | [camel-ai/oasis](https://github.com/camel-ai/oasis) | starred | agent, ai | medium | dependency-candidate |
@@ -1013,7 +1016,6 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [sbhavani/jules-app](https://github.com/sbhavani/jules-app) | starred | agent, ai | medium | — |
 | [Scarmonit/antigravity-jules-orchestration](https://github.com/Scarmonit/antigravity-jules-orchestration) | starred | agent, ai | medium | workflow-candidate |
 | [sendaifun/solana-agent-kit](https://github.com/sendaifun/solana-agent-kit) | starred | agent, ai | medium | — |
-| [signalbetorg/coinbase-trading-agent](https://github.com/signalbetorg/coinbase-trading-agent) | starred | agent, ai | medium | — |
 | [Simpleyyt/ai-manus](https://github.com/Simpleyyt/ai-manus) | starred | agent, ai | medium | — |
 | [SKYLENAGE-AI/SWE-CI](https://github.com/SKYLENAGE-AI/SWE-CI) | starred | agent, ai | medium | — |
 | [spiculedata/saiku](https://github.com/spiculedata/saiku) | starred | agent, ai | medium | — |
@@ -2794,6 +2796,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [Correia-jpv/fucking-awesome-python](https://github.com/Correia-jpv/fucking-awesome-python) | starred | unclassified | medium | dependency-candidate |
 | [Correia-jpv/fucking-awesome-rust](https://github.com/Correia-jpv/fucking-awesome-rust) | starred | unclassified | medium | dependency-candidate |
 | [corylanou/oss-helpwanted](https://github.com/corylanou/oss-helpwanted) | starred | unclassified | medium | — |
+| [Cracked5pider/Ekko](https://github.com/Cracked5pider/Ekko) | starred | unclassified | medium | — |
 | [cruxopen-labs/openISP](https://github.com/cruxopen-labs/openISP) | starred | unclassified | medium | — |
 | [cruzlxyz/hermes-spotify-desktop](https://github.com/cruzlxyz/hermes-spotify-desktop) | starred | unclassified | medium | — |
 | [CSejersen/Tournament_bracket_generator](https://github.com/CSejersen/Tournament_bracket_generator) | starred | unclassified | medium | — |
@@ -4141,6 +4144,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | Repository | Provenance | Domains | Research | Integration |
 |---|---|---|---|---|
 | [timerloggedout-spec/ADK-Agents_fork](https://github.com/timerloggedout-spec/ADK-Agents_fork) | owned, starred | agent | medium | upstream-comparison |
+| [timerloggedout-spec/agent-native_fork](https://github.com/timerloggedout-spec/agent-native_fork) | owned, starred | agent | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/agent-web-extension_fork](https://github.com/timerloggedout-spec/agent-web-extension_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/agentflow-webmcp_fork](https://github.com/timerloggedout-spec/agentflow-webmcp_fork) | owned | agent | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/agentfs_fork](https://github.com/timerloggedout-spec/agentfs_fork) | owned, starred | agent | medium | upstream-comparison |
@@ -5487,6 +5491,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [realsigridjin/oh-my-codex-1](https://github.com/realsigridjin/oh-my-codex-1) | starred | agent | medium | upstream-comparison |
 | [RinDig/Moral-Foundations-Agent-Based-Model-MoralABM-](https://github.com/RinDig/Moral-Foundations-Agent-Based-Model-MoralABM-) | starred | agent | medium | dependency-candidate |
 | [timerloggedout-spec/ADK-Agents_fork](https://github.com/timerloggedout-spec/ADK-Agents_fork) | owned, starred | agent | medium | upstream-comparison |
+| [timerloggedout-spec/agent-native_fork](https://github.com/timerloggedout-spec/agent-native_fork) | owned, starred | agent | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/agent-web-extension_fork](https://github.com/timerloggedout-spec/agent-web-extension_fork) | owned | agent | medium | upstream-comparison |
 | [timerloggedout-spec/agentflow-webmcp_fork](https://github.com/timerloggedout-spec/agentflow-webmcp_fork) | owned | agent | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/agentfs_fork](https://github.com/timerloggedout-spec/agentfs_fork) | owned, starred | agent | medium | upstream-comparison |
@@ -5564,6 +5569,7 @@ Observed: `2026-11-09T12:55:35.540742Z`
 | [AnotiaWang/awesome-decision-models](https://github.com/AnotiaWang/awesome-decision-models) | starred | agent, ai | medium | dependency-candidate |
 | [ax-llm/ax](https://github.com/ax-llm/ax) | starred | agent, ai | medium | dependency-candidate |
 | [Boom5426/Nature-Paper-Skills](https://github.com/Boom5426/Nature-Paper-Skills) | starred | agent, ai | medium | workflow-candidate |
+| [BuilderIO/agent-native](https://github.com/BuilderIO/agent-native) | starred | agent, ai | medium | dependency-candidate |
 | [camel-ai/camel](https://github.com/camel-ai/camel) | starred | agent, ai | medium | dependency-candidate |
 | [camel-ai/oasis](https://github.com/camel-ai/oasis) | starred | agent, ai | medium | dependency-candidate |
 | [cayoesn/llm-antigravity-orchestrator](https://github.com/cayoesn/llm-antigravity-orchestrator) | starred | agent, ai | medium | dependency-candidate |

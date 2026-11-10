@@ -27,7 +27,7 @@ Provider names are preserved; case-folding is used only for joins. Unknown model
 
 ## Free eligibility and quota safety
 
-`free_eligibility` is schema `null` unless an exact account + model admission receipt exists. Catalog pricing, public free-plan language, configured credentials, API/catalog reachability, and provider-family status do not establish free eligibility or remaining quota. Quota `null` is not zero.
+`free_eligibility` is schema `null` unless an exact account + model admission receipt exists. The index separately marks registry rows whose metric/planned-use text mentions a free-tier claim (`free_tier_claim_text_present`). That is a discovery hint only: catalog pricing, public free-plan language, configured credentials, API/catalog reachability, and provider-family status do not establish account/model eligibility or remaining quota. `free_eligibility` remains schema `null` without an exact admission receipt. Quota `null` is not zero.
 
 The generator makes no provider calls and changes no routing weights, allowlists, admission, credentials, or spend ceilings.
 

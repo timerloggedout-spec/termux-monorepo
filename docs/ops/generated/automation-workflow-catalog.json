@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "9c1c4ab987e9c9e45dc0f70a4fb4f55e494dee0399b413631bffd08bded29265",
-  "workflow_count": 296,
+  "source_fingerprint": "084b61a94695e5f7896d6173c5da30c917e7f960e8bd5c69a2e3bc458d0d2e56",
+  "workflow_count": 298,
   "workflows": [
     {
       "action_pins": [],
@@ -692,6 +692,26 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: build-dispatch-${{ github.event.issue.number || inputs.issue_number }} cancel-in-progress: false",
+      "domain": "peer-provider-review",
+      "jobs": [
+        "build"
+      ],
+      "name": "🔀 Build Dispatch (Gemini build arm)",
+      "path": ".github/workflows/build-dispatch.yml",
+      "schedules": [],
+      "triggers": [
+        "issue_comment",
         "workflow_dispatch"
       ]
     },
@@ -3335,6 +3355,27 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: opportunity-cycle cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "cycle"
+      ],
+      "name": "opportunity-cycle",
+      "path": ".github/workflows/opportunity-cycle.yml",
+      "schedules": [
+        "17 13 * * *"
+      ],
+      "triggers": [
+        "push",
+        "schedule",
         "workflow_dispatch"
       ]
     },

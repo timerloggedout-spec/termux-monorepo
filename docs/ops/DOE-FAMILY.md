@@ -467,6 +467,15 @@ Repo-Story's dispatch surface — selection on repo-story issue
 the first live instance of the selection loop under the feed,
 designated as such, not a second build.
 
+**Validation-critical admission (owner ruling, 2026-11-10).**
+A participant entering the pool in a validation-critical
+role (reviewer/oversight class) is admitted under the
+elenchus-gate (Method versions: elenchus-gate v0): the
+gate stands prior to token burn — the participant's
+stamps enter the corpus as weight-bearing evidence only
+under it. Selection and standing for all other classes
+are unaffected.
+
 ## Definitions of record
 
 - **Swarm** (owner definition, 2026-11-01): ALL providers' inference
@@ -1176,6 +1185,37 @@ version and compared continuously until culling retires a version.
   scoring corrected against reality)} — each loop pass
   lands as register entries; nothing self-amends
   silently.
+- **elenchus-gate v0** (owner ruling via main, 2026-11-10;
+  doe-expert ruling of record) — the Socratic form of
+  the validation-critical role in the participants
+  pool: ELENCHUS — refutation-first cross-examination
+  of every participant claim/stamp before acceptance.
+  Canonical interrogatives: (1) what evidence would
+  REFUTE this — and was the falsifier actively sought,
+  not merely unopposed? (2) served-state read done?
+  (repo state is not served state) (3) production or
+  invoke? (output artifact/receipt of record, not
+  dispatch/run color) (4) stamp names its code home /
+  evidence ref? (resolvable id — PR, run, receipt; a
+  mechanism claim with no code home is a phantom,
+  inadmissible) (5) relayed or firsthand? (the
+  elenchus runs on one's own stamps before issue, not
+  only on others' at consumption). Maieutics is the
+  secondary form and belongs to intake/design (drawing
+  latent assumptions out of a proposal); it never
+  substitutes at acceptance. ESTABLISHMENT POINT: the
+  gate is a role-ADMISSION condition — it stands PRIOR
+  to token burn: a participant admitted to a
+  validation-critical role (reviewer/oversight class)
+  has no stamp enter consumption as weight-bearing
+  evidence until the gate stands. Cost-of-absence of
+  record: the D-series false-green (a dead arm stamped
+  SUCCESS, consumed downstream) and the freeze stamps
+  that closed items ahead of served state.
+  Retro-establishment audits damage; only the pre-burn
+  gate prevents it. The gate operationalizes rule 9 at
+  the acceptance seam; it adds no new evidence class.
+  Status: active. Comparison line: open.
 - **DoE version|settings register** (owner, 2026-11-03):
   DoE's own version lines + settings tracked here as
   records of record; a change lands as a register entry,

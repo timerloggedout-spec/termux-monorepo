@@ -1,0 +1,37 @@
+{
+  "schema": "siglary-census/v1",
+  "timestamp": "2026-11-10T14:50:14.050815+00:00",
+  "run_id": "siglary-run-20261110145014",
+  "counts": {
+    "surfaces_scanned": 68,
+    "compliant": 67,
+    "soft_violations": 0,
+    "hard_violations": 1
+  },
+  "violations": [
+    {
+      "path": "CLAUDE.md",
+      "rule": "claude_reference_missing",
+      "severity": "HARD"
+    }
+  ],
+  "performance_baseline": {
+    "skills": {
+      "files": 3,
+      "chars": 6806
+    },
+    "icm": {
+      "files": 63,
+      "chars": 129378
+    },
+    "claude_md": {
+      "files": 1,
+      "chars": 8633
+    },
+    "other": {
+      "files": 1,
+      "chars": 3562
+    }
+  },
+  "validator_runtime_seconds": 0.1
+}

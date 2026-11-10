@@ -6,7 +6,13 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 - State: TAKEN at QUE → #4977 Fix 5 (comment 6649638623): watchdog scans dispatch-claimed filings for route evidence (run/branch/PR) ≤15 min → aging; 30 min → escalate producer + Desk.
 - Evidence of the defect: #4965/#4966 claimed 2026-11-05T03:52Z, ∅ branch ∧ ∅ PR @04:20Z; live queue read (feeds @04:21:03Z) = 12 active, tier 3 0/0 — stall = producer-hand, ¬ queue starvation.
 - Vehicle (Oversight route map, 2026-11-04 20:40 PT): port repo-story's `build-dispatch.yml` (Gemini build arm — produced repo-story PR #6, 2026-11-02; lever = workflow_dispatch; GEMINI_API_KEY already fleet-sealed) into the monorepo as the standing build-dispatch trigger — claim → pullable trigger, the concrete build under Fix 5's watch. Tonight = fix queue, ¬ critical path (latency at/past drop-dead).
-- Closure: OPEN (build routed Desk QUE → Swarm under #4977).
+- Sibling instance CLOSED: #5096's stall root-caused firsthand (Desk, 2026-11-10) = **intake-key miss** — the project-task-dispatch gate skipped unlabeled "QUE:" filings (runs listed #5096 c.6767386507) → repaired; receipts 6767383229 + ADMITTED 6767385665. The dispatch-hand gap has two faces: claim-side trigger (this line) and intake-key skip (below).
+- Closure: OPEN (build routed Desk QUE → Swarm under #4977). Fix priority of record (Desk, 2026-11-10): **D-h trigger FIRST** → loop machinery → intake-key hardening.
+
+## D-l — intake-key hardening (small item, from #5096)
+- Defect: dispatch gates keyed on the "QUE:" label/title convention silently skipped unlabeled filings — a filing could be well-formed and still never enter the route.
+- Fix: gates resolve intake by the SWARM-DISPATCH block (schema issue-dispatch/v1) itself, not by label/title prefix; an unlabeled filing carrying a valid block routes identically. Label remains a display convenience, never a key.
+- Closure: OPEN (small item; rides behind D-h trigger in the fix queue).
 
 ## D-c — admission collection (live pagination under shared token)
 - State: root read of record (cadence, swarm-admission.yml @master firsthand) → #4979: evaluator reads the collector picture (freshness-gated) instead of re-collecting; fallback names failed page + error class; non-flow tiers never defer on picture failure. Token leg (github.token 1,000/h exhaustion → Swarm App mint, own 5,000/h) folded into #4977 (comment 6649237311).

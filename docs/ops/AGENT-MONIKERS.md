@@ -1697,10 +1697,10 @@ Matrice itself; name ∧ referent coincide.
 Dispositions: SIGLA (Linguist lead) **dead-on-mark**
 (sigla.io + sigla.cloud — AI Agent Space, exact live
 occupants in the closest field) · Brachy (Marketing lead)
-**cleared-held, FIRST ALTERNATE** — owner-preference
-only (radiotherapy-software capture: Oncentra Brachy ·
-BrachyVision · BrachyCare; category-root caveat of
-record) · Condensa cleared-held · NOTA · MICROGLYPH
+**cleared-held, FIRST ALTERNATE of record** —
+fleet-resolved per screens (radiotherapy-software
+capture: Oncentra Brachy · BrachyVision · BrachyCare;
+category-root caveat of record) · Condensa cleared-held · NOTA · MICROGLYPH
 (registered TM) · TALLYSCRIPT dead per screen · Marketing
 kill table ×8 dead per its screen (Lacon · Kern · Densign
 · Denscript · Chorda · Synglyph · Monoglyph · Notarikon).

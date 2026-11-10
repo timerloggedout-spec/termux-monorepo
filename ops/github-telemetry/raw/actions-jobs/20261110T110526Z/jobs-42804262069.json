@@ -1,0 +1,129 @@
+{
+  "collected_at": "2026-11-10T11:05:36.471469+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42804262069,
+    "endpoint": ".../runs/42804262069/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 129789293726,
+        "run_id": 42804262069,
+        "workflow_name": "repo-tracking-collect",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42804262069",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeOAt0ng",
+        "head_sha": "4cce34f9e5df6533eb2764a860934ac4ed0ae8c6",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129789293726",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42804262069/job/129789293726",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-11-10T11:03:18Z",
+        "started_at": "2026-11-10T11:03:21Z",
+        "completed_at": "2026-11-10T11:03:26Z",
+        "name": "collect",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T11:03:22Z",
+            "completed_at": "2026-11-10T11:03:23Z"
+          },
+          {
+            "name": "Mint Swarm app token (F1, issue",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 2,
+            "started_at": "2026-11-10T11:03:23Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Self-check (generator unit tests)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Refresh observation snapshots (PR feed + Neon lane-events)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Generate the tracking surface",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Commit generated artifacts to master (single-writer)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Upload artifacts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Post Mint Swarm app token (F1, issue",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19,
+            "started_at": "2026-11-10T11:03:24Z",
+            "completed_at": "2026-11-10T11:03:24Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129789293726",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897194,
+        "runner_name": "GitHub Actions 1000897194",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

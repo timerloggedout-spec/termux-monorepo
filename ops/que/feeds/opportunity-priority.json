@@ -1,0 +1,494 @@
+{
+  "schema": "que.opportunity-priority/v1",
+  "generated_at": "2026-11-10T13:33:21Z",
+  "run_id": "42822968639",
+  "opportunities": [
+    {
+      "id": "D1",
+      "slug": "d1-studysprint",
+      "rank": 1,
+      "tier": 2,
+      "score": 105.0,
+      "basis": [
+        "next_gate 2026-11-05T07:59:00Z via dates.deadline -> gate_term 1.0",
+        "prep complete -> prep_term 0.05",
+        "tier 2 (dispatch-tiers chain entry)"
+      ],
+      "next_gate": "2026-11-05T07:59:00Z",
+      "days_to_gate": -5.23,
+      "priority_timebox": {
+        "wall": "2026-11-05T07:59:00Z",
+        "landing": "2026-11-04T07:59:00Z",
+        "cushion": "2026-11-03T17:00:00Z",
+        "escalation": "2026-11-05T03:59:00Z",
+        "final": "2026-11-05T07:29:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
+          "wall": "2026-11-04T23:59:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "from": "window open",
+              "effect": "in-window development line active (continuous-development mandate); routine admission"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-03T09:00:00-08:00",
+              "reminder": "deadline-d1-cushion-2026-11-03",
+              "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-04T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-04T19:59:00-08:00",
+              "reminder": "deadline-d1-escalation-2026-11-04",
+              "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-04T23:29:00-08:00",
+              "reminder": "deadline-d1-final-2026-11-04",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
+        }
+      },
+      "prep_state": "PASS",
+      "verdict": "COMPLETE"
+    },
+    {
+      "id": "D2",
+      "slug": "d2",
+      "rank": 2,
+      "tier": 3,
+      "score": 120.0,
+      "basis": [
+        "next_gate 2026-11-08T23:00:00Z via dates.deadline -> gate_term 1.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-08T23:00:00Z",
+      "days_to_gate": -1.61,
+      "priority_timebox": {
+        "wall": "2026-11-08T23:00:00Z",
+        "landing": "2026-11-07T23:00:00Z",
+        "cushion": "2026-11-07T17:00:00Z",
+        "escalation": "2026-11-08T19:00:00Z",
+        "final": "2026-11-08T22:30:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-11-08T15:00:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "2026-11-03T15:00:00Z",
+              "reminder": "kickoff (window opens)",
+              "effect": "in-window development line active from kickoff; production-target pick still owner-held at timebox authoring",
+              "from": "kickoff"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-07T09:00:00-08:00",
+              "reminder": "deadline-d2-cushion-amd-c1-final-2026-11-07",
+              "effect": "HIGH \u2014 D2 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-08T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D2 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-08T11:00:00-08:00",
+              "reminder": "deadline-d2-escalation-2026-11-08",
+              "effect": "MAX \u2014 submission mechanics only; all other D2 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-08T14:30:00-08:00",
+              "reminder": "deadline-d2-final-2026-11-08",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+        }
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D3",
+      "slug": "d3",
+      "rank": 3,
+      "tier": 3,
+      "score": 110.0,
+      "basis": [
+        "next_gate 2026-11-13T00:00:00Z via dates.winners_at -> gate_term 0.9",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-13T00:00:00Z",
+      "days_to_gate": 2.44,
+      "priority_timebox": {
+        "wall": "2026-11-10T07:59:00Z",
+        "landing": "2026-11-09T07:59:00Z",
+        "cushion": "2026-11-08T17:00:00Z",
+        "escalation": "2026-11-10T03:59:00Z",
+        "final": "2026-11-10T07:29:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-11-09T23:59:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "window open",
+              "reminder": null,
+              "effect": "in-window development line active (build landed = checkpoint; public Clips demo + submission remain)",
+              "from": "window open"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-08T09:00:00-08:00",
+              "reminder": "deadline-d3-cushion-2026-11-08",
+              "effect": "HIGH \u2014 D3 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-09T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D3 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-09T19:59:00-08:00",
+              "reminder": "deadline-d3-escalation-2026-11-09",
+              "effect": "MAX \u2014 submission mechanics only; all other D3 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-09T23:29:00-08:00",
+              "reminder": "deadline-d3-final-2026-11-09",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+        }
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D5",
+      "slug": "d5",
+      "rank": 4,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-20T19:30:00Z via dates.winners_at -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-20T19:30:00Z",
+      "days_to_gate": 10.25,
+      "priority_timebox": {
+        "wall": "2026-11-20T19:30:00Z",
+        "landing": "2026-11-19T19:30:00Z",
+        "cushion": "2026-11-17T19:30:00Z",
+        "escalation": "2026-11-20T07:30:00Z",
+        "final": "2026-11-20T19:00:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C14",
+      "slug": "c14",
+      "rank": 5,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-21T07:59:00Z via dates.initial_proposal_due -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T07:59:00Z",
+      "days_to_gate": 10.77,
+      "priority_timebox": {
+        "wall": "2026-11-21T07:59:00Z",
+        "landing": "2026-11-20T07:59:00Z",
+        "cushion": "2026-11-18T07:59:00Z",
+        "escalation": "2026-11-20T19:59:00Z",
+        "final": "2026-11-21T07:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C13",
+      "slug": "c13",
+      "rank": 6,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T11:59:00Z",
+      "days_to_gate": 10.93,
+      "priority_timebox": {
+        "wall": "2026-11-21T11:59:00Z",
+        "landing": "2026-11-20T11:59:00Z",
+        "cushion": "2026-11-18T11:59:00Z",
+        "escalation": "2026-11-20T23:59:00Z",
+        "final": "2026-11-21T11:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C12",
+      "slug": "c12-receipts-vault",
+      "rank": 7,
+      "tier": 3,
+      "score": 65.0,
+      "basis": [
+        "next_gate 2026-12-01T07:45:00Z via dates.final_due -> gate_term 0.45",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-12-01T07:45:00Z",
+      "days_to_gate": 20.76,
+      "priority_timebox": {
+        "wall": "2026-11-16T07:45:00Z",
+        "landing": "2026-11-14T00:00:00Z",
+        "cushion": "2026-11-14T17:00:00Z",
+        "escalation": "2026-11-16T03:45:00Z",
+        "final": "2026-11-16T07:15:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "wall": "2026-11-15T23:45:00-08:00",
+          "landing": "2026-11-14",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "from": "now"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "from": "2026-11-14T09:00:00-08:00"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "from": "2026-11-15T00:00:00-08:00"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "from": "2026-11-15T19:45:00-08:00"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "from": "2026-11-15T23:15:00-08:00"
+            }
+          ],
+          "step_down": "wall+24h \u21d2 tier 1 \u00b7 wall+48h \u21d2 tier 0"
+        }
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C11",
+      "slug": "c11",
+      "rank": 8,
+      "tier": 3,
+      "score": 65.0,
+      "basis": [
+        "next_gate 2026-12-01T19:00:00Z via deadline -> gate_term 0.45",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-12-01T19:00:00Z",
+      "days_to_gate": 21.23,
+      "priority_timebox": {
+        "wall": "2026-12-01T19:00:00Z",
+        "landing": "2026-11-30T19:00:00Z",
+        "cushion": "2026-11-28T19:00:00Z",
+        "escalation": "2026-12-01T07:00:00Z",
+        "final": "2026-12-01T18:30:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D4",
+      "slug": "d4",
+      "rank": 9,
+      "tier": 3,
+      "score": 35.0,
+      "basis": [
+        "next_gate 2027-01-29T21:00:00Z via dates.judging_end -> gate_term 0.15",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2027-01-29T21:00:00Z",
+      "days_to_gate": 80.31,
+      "priority_timebox": {
+        "wall": "2026-12-04T22:00:00Z",
+        "landing": "2026-12-03T22:00:00Z",
+        "cushion": "2026-12-02T17:00:00Z",
+        "escalation": "2026-12-04T18:00:00Z",
+        "final": "2026-12-04T21:30:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-12-04T14:00:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "pre-window",
+              "reminder": null,
+              "effect": "pre-window line live (spec pack); build window opens after Nov 8",
+              "from": "pre-window"
+            },
+            {
+              "tier": 1,
+              "name": "GATE \u2014 Kiro credit form",
+              "at": "2026-12-01T12:00:00-08:00",
+              "reminder": "deadline-d4-credit-form-cushion-2026-11-30 + deadline-d4-credit-form-final-2026-12-01",
+              "effect": "inner deadline: credit form landing Nov 30, wall Dec 1 12:00 PT \u2014 the form gates the build's credits",
+              "inner_wall": "2026-12-01T12:00:00-08:00"
+            },
+            {
+              "tier": 2,
+              "name": "CUSHION",
+              "at": "2026-12-02T09:00:00-08:00",
+              "reminder": "deadline-d4-cushion-2026-12-02",
+              "effect": "HIGH \u2014 D4 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 3,
+              "name": "WALL-DAY",
+              "at": "2026-12-04T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D4 preempts non-critical dispatches"
+            },
+            {
+              "tier": 4,
+              "name": "ESCALATION",
+              "at": "2026-12-04T10:00:00-08:00",
+              "reminder": "deadline-d4-escalation-2026-12-04",
+              "effect": "MAX \u2014 submission mechanics only; all other D4 streams frozen"
+            },
+            {
+              "tier": 5,
+              "name": "FINAL",
+              "at": "2026-12-04T13:30:00-08:00",
+              "reminder": "deadline-d4-final-2026-12-04",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Two-deadline entry: the credit-form gate rides as its own tier inside the submission timebox. Priority decays through the cushion tiers after the wall."
+        }
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "DOMINO",
+      "slug": "domino",
+      "rank": 10,
+      "tier": 3,
+      "score": 20.0,
+      "basis": [
+        "next_gate NOT_ESTABLISHED via none -> gate_term 0.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "NOT_ESTABLISHED",
+      "days_to_gate": null,
+      "priority_timebox": "NOT_ESTABLISHED",
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE"
+    }
+  ]
+}

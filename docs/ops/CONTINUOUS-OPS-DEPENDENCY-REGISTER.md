@@ -15,7 +15,7 @@ the band (standing posture).
 | Dependency | State / runway | Inflow cover | Gap |
 |---|---|---|---|
 | Muse token pool (additional) | **0 left · 100% used — EXHAUSTED** (sensor 2026-11-10 04:02 PT; trail … → 8.5M @2026-11-04 21:39 → 0 @2026-11-10; pool never expires and has no reset — cover = ∅ until new redemptions land) | Referral redemption of record: **1B Muse tokens — APPLIED-TO-POOL** (Marketing stamp 2026-11-04: invite tokens credit the additional-tokens pool, never expire; the pool remainder (0 @2026-11-10) already includes it) · further redemptions pending: ∅ | The applied 1B is fully spent down — no reserve exists behind the remainder. Operative pool is now the free-plan weekly (row below); additional-pool cover returns only via new redemptions (code headroom, event-driven) |
-| Muse free-plan weekly | **5% used** (sensor 2026-11-10 04:29 PT; 0% @04:02 ⇒ Δ+5pts/27min) · resets **Nov 17** | Time (reset) | The operative pool for the Nov 10–17 cycle; the additional pool is exhausted, so burn discipline prices against this weekly limit + free provider tiers |
+| Muse free-plan weekly | **10% used** (sensor 2026-11-10 04:58 PT; 0% @04:02 → 5% @04:29 → 10% @04:58 = ≈10.7 pts/h recent) · resets **Nov 17** | Time (reset) | The operative pool for the Nov 10–17 cycle; the additional pool is exhausted, so burn discipline prices against this weekly limit + free provider tiers |
 | GitHub PAT core bucket | 5000/h, hourly replenishment · session cap 400/h · reserve = limit/10 derived | Self-replenishing (time) + AppID fleet buckets (5000/h each, specialist identities) as isolated supply | Burst contention only — governor projection + priority windows manage; no structural gap |
 | Runner supply (Actions) | Public repo ⇒ hosted runners not minute-capped; supply = concurrency | QUE admission/ordering/hygiene (Swarm) | Queue health: wedged/superseded classes — QUE reaping w/ receipts; no minute gap |
 | Key connections / accounts | PAT (vault) ✓ · Gemini API (vault) ✓ · fleet AppIDs ✓ · **VULTR_API_KEY: NOT provisioned** (owner) | Provisioning lane (a78e43e6) harvests free-tier keys into Actions secrets | VULTR_API_KEY gates Row ① discretionary release (Nov 6 EOD checkpoint ∧ key) — single named gap, owner hand |
@@ -48,3 +48,8 @@ Runway = dependency state ÷ current burn, recomputed at each refresh;
 cover counts only when ESTABLISHED (accrued/applied), never when
 projected. The register refreshes on: band-state change · any expiry
 crossing T-7d · supplier stamp landing.
+
+## Offload programme + burn watch (owner order via main, 2026-11-10 04:58 PT)
+- **Offload:** main/fleet execution usage moves OFF the Muse pool → **GitHub Inference free + Actions planes**. Side-chat traffic = state-change only, batched receipts, ∅ relay chatter.
+- **Burn watch (cadence):** sensors fold into this register on receipt; trajectory recomputed per sensor.
+- **Trajectory @04:58 PT:** recent burn ≈10.7 pts/h ⇒ 90 pts remaining exhaust in ≈8.4h (≈13:30 PT Nov 10) — **projects exhaustion ~6.5 days BEFORE the Nov 17 reset**. Ceiling to reach reset ≈ **0.54 pts/h** (≈20× reduction) — the offload programme must achieve that order of cut; watch re-projects per sensor and pages main while the projection lands pre-reset.

@@ -1,25 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-10T21:03:39Z",
+ "generated_at": "2026-11-10T21:37:36Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 10,
+   "queued": 8,
    "in_progress": 0,
-   "oldest_queued_at": "2026-11-10T20:50:14Z",
+   "oldest_queued_at": "2026-11-10T21:30:47Z",
    "by_workflow_queued": {
-    "repo gate": 4,
-    "PR scope guard": 4,
-    "Orchestration Regression Guard": 2
+    "repo gate": 3,
+    "Orchestration Regression Guard": 1,
+    "PR scope guard": 4
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-10T20:43:55Z",
+   "oldest_queued_at": "2026-11-10T21:25:50Z",
    "by_workflow_queued": {
+    "tribute-dashboard-deploy": 1,
     "pages build and deployment": 1
    }
   },
@@ -33,48 +34,42 @@
   "4": {
    "tier": 4,
    "queued": 188,
-   "in_progress": 3,
-   "oldest_queued_at": "2026-11-10T19:55:04Z",
+   "in_progress": 4,
+   "oldest_queued_at": "2026-11-10T20:54:37Z",
    "by_workflow_queued": {
-    "tribute-status-refresh": 1,
-    "Quota Dispatch Tree": 93,
-    "tribute-audit-staleness": 1,
-    "Agent Throughput Evidence": 27,
-    "Issue Comment Router \u2014 modular fan-out reduction": 1,
-    "Reviewer metrics collect": 1,
-    "delphi-ledger-feed-collect": 1,
-    "delphi-rfp-feed-collect": 1,
-    "Context Relationship + Lead/Lag Audit": 4,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
-    "lane events recorder": 7,
+    "Quota Dispatch Tree": 107,
+    "Agent Throughput Evidence": 12,
+    "Foresight Evidence Spine": 1,
     "termux smoke": 3,
-    "repo-tracking-collect": 1,
-    "PR production ledger": 4,
-    "Peer review orchestrator": 4,
-    "Lane matrix event-driven inventory": 2,
-    "CellCog review": 2,
-    "Repository development evaluation": 1,
-    "archwiz dangle check": 1,
     "Sweep Accountability": 5,
-    "Agent PR Jules Handoff": 2,
-    "RECON INTEL discovery": 3,
-    "Action Effectiveness Ledger": 4,
-    "PR Change Effectiveness Ledger": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 2,
-    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
-    "n8n SHE bridge": 2,
-    "hitl-control-plane-verify": 2,
-    "Foresight Evidence Spine": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "hitl-control-plane-verify": 1,
     "graph-matrix-probe": 1,
-    "GitHub App fleet telemetry": 1,
-    "PR evidence evaluation": 2
+    "Context Relationship + Lead/Lag Audit": 4,
+    "lane events recorder": 13,
+    "PR Change Effectiveness Ledger": 2,
+    "DeepSeek CI \u2013 Agentic Automation": 2,
+    "archwiz dangle check": 2,
+    "CellCog review": 2,
+    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
+    "Repository development evaluation": 2,
+    "PR production ledger": 4,
+    "Lane matrix event-driven inventory": 2,
+    "Peer review orchestrator": 4,
+    "Agent PR Jules Handoff": 2,
+    "RECON INTEL discovery": 2,
+    "Action Effectiveness Ledger": 4,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+    "n8n SHE bridge": 2,
+    "continuous-improve": 1,
+    "PR evidence evaluation": 3,
+    "Workflow Surface Policy": 1
    }
   }
  },
  "totals": {
-  "queued": 199,
-  "in_progress": 4
+  "queued": 198,
+  "in_progress": 5
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true

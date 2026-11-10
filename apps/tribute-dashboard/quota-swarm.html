@@ -56,7 +56,7 @@ function recordRow(r){
 }
 function familyCard(p){
   const recs=p.records||[];
-  const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.live_verified?'<span class="chip">live-verified</span>':'')+(p.population&&p.population.state==='gap'?'<span class="chip">GAP</span>':'')+'</div>'
+  const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.census_api_verified?'<span class="chip">census API verified</span>':'')+(p.population&&p.population.state==='gap'?'<span class="chip">GAP</span>':'')+'</div>'
     +'<p class="muted">'+(p.providers_distinct||recs.length)+' provider entr'+((p.providers_distinct||recs.length)===1?'y':'ies')+' · census: '+esc(p.census?(p.census.verdict||'—'):'not-established')+(p.population?(' · population: '+esc(p.population.state)+((p.population.bases&&p.population.bases.length)?(' ('+p.population.bases.map(esc).join(', ')+')'):' (no readings, usage or census basis)')):'')+'</p>';
   if(recs.length>12)return '<details class="card"><summary>'+head+'</summary>'+recs.map(recordRow).join('')+'</details>';
   return '<div class="card">'+head+recs.map(recordRow).join('')+'</div>';
@@ -73,8 +73,8 @@ async function load(){
   $('chart-layers').innerHTML=CK.bars([
     {label:'Registry provider entries',value:s.distinct_providers||0},
     {label:'Distinct surfaces (families)',value:s.families||0},
-    {label:'Live-verified families',value:s.live_verified_families||0}]);
-  $('layers-note').textContent='Registry lists '+(s.registry_model_records||0)+' model records across '+(s.distinct_providers||0)+' provider entries. '+(s.g4f_children||0)+' of them are g4f/* backends behind ONE aggregator, so the population surfaces as '+(s.families||0)+' families ('+(s.families_direct||0)+' direct + g4f). Live-verified invoked: '+(s.live_verified_families||0)+' families.';
+    {label:'Census API-verified families',value:s.census_api_verified_families||0}]);
+  $('layers-note').textContent='Registry lists '+(s.registry_model_records||0)+' model records across '+(s.distinct_providers||0)+' provider entries. '+(s.g4f_children||0)+' of them are g4f/* backends behind ONE aggregator, so the population surfaces as '+(s.families||0)+' families ('+(s.families_direct||0)+' direct + g4f). Census API evidence (not invocation proof): '+(s.census_api_verified_families||0)+' families.';
   const fams=(feed.providers||[]).slice().sort((a,b)=>(b.record_count||0)-(a.record_count||0));
   $('prov-note').textContent=fams.length+' families';
   $('chart-families').innerHTML=CK.bars(fams.map(p=>({label:p.provider,value:p.record_count||0})));

@@ -101,7 +101,7 @@ taxonomy:
 |---|---|---|
 | **GLYPHS** | pictographs — meaning read from the picture | 👁 🧐 🧾 📸 ❄ ⚖ ⚖✓ ⛔ 👆 ⤴ · state dots 🟢🔴🟡 |
 | **CHORDS** | letter codes, resolved in-domain | `ent` `qta` `mrg` `sgl` … (Shorthand Domains) |
-| **OPERATORS** | formal symbols — meaning fixed by a formal system, ¬ pictures | logic {∧ ¬ ∨ ⇒} · quantifiers {∀ ∃} · set {∅ ∈} · ∆ change · ≅ conforming |
+| **OPERATORS** | formal symbols — meaning fixed by a formal system, ¬ pictures | logic {∧ ¬ ∨ ⇒} · quantifiers {∀ ∃} · set {∅ ∈} · ∆ change · `++` increment/step-up · ≅ conforming |
 
 ∧ ∀ ∆ ∅ and kin are **operators, never glyphs**. ≅ moves from
 the glyph table to OPERATORS (its meaning is the formal

@@ -38,6 +38,31 @@ main's guide states it; this file records the v2 layer only.
    When a reading could mislead, the notation expands — length
    is never a defense of a wrong reading.
 
+## v-next glyph fold (owner order 2026-11-10 04:19 PT)
+
+The owner's fold list re-issues the glyph categories of record:
+state dots {🟢 live · 🔴 down · 🟡 degraded} · 🧾 receipt · 📸
+snapshot · ❄ freeze · ⚖ ruling / ⚖✓ discharged · ≅ conforming
+· N∅ NOT_ESTABLISHED (chat-only, barred from data — see Usage
+boundaries) · ⛔ blocked · 👆 owner action owed · ⤴ dispatch ·
+👁 verified-firsthand · 🧐 suspicion-watch. Two entries reverse
+this lane's 2026-11-04 glyph-cap demotions — 📸 (was chord `snp`)
+and ⚖✓ (was ⚖ + `dch`) — because the owner's list names them
+expressly: principle ④ (owner swaps override) governs, and the
+cap yields to the owner's enumeration. Chords `snp`/`dch`
+remain as alternates.
+
+## Naming — own name required (owner order 2026-11-10)
+
+"Caveman" and "CEDRLang" are **other repos' names — prior art,
+cited ¬ adopted**. This file's title is a working title only.
+The system (skill + Matrice + glyph/chord standard) takes its
+own name via the naming flow: Linguist + Marketing, screened
+under the naming-collision 💥 mapping protocol (Naming seat),
+issued via the Registry. Until issuance lands, references to
+the system read "the compressed-notation system (name
+pending)".
+
 ## Usage boundaries
 
 - **`NOT_ESTABLISHED` / `N∅`** (owner caution, 2026-11-04

@@ -1,0 +1,115 @@
+name: '🔀 Build Dispatch (Gemini build arm)'
+
+# Ported from timerloggedout-spec/repo-story .github/workflows/build-dispatch.yml
+# (issue #5108, parent #5096; owner order 2026-11-10 04:27 PT — Priority 1:
+# the D-h pullable trigger). This is the structural fix for "claims engage
+# no execution": a claimed task issue becomes executable by firing THIS
+# route, and the route stamps its own receipt before the builder runs.
+#
+# Provider of record: Gemini (Provider Index build arm gemini.build_dispatch;
+# Jules excluded for entry builds by owner ruling 2026-11-01; DeepSeek arm =
+# session/cookies route, not cloud-fit). This arm is NOT the gemini-dispatch
+# invoke router (text-only): it is the run-gemini-cli full-checkout builder
+# that produced repo-story PR #6 (proving run 41426129878).
+# Requires: secrets.GEMINI_API_KEY on this repo (already provisioned).
+# PRs are authored by the Termux Fleet Swarm App token (SEC-03
+# mint-before-checkout) so downstream workflows cascade.
+# Registered in ops/dispatch/claimable-routes.json (docs/ops/CLAIMABLE-ROUTES.md).
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Build issue number'
+        required: true
+      branch:
+        description: 'Target branch for the build (default: build/issue-<issue_number>)'
+        required: false
+        default: ''
+
+permissions: {}
+
+concurrency:
+  group: build-dispatch-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (startsWith(github.event.comment.body, '@gemini-cli /build') &&
+       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Mint Swarm App token (SEC-03)
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - name: Checkout (app token; mint-before-checkout)
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+      - name: Resolve build branch
+        id: branch
+        run: |
+          b="${{ inputs.branch }}"
+          if [ -z "$b" ]; then
+            b="build/issue-${{ github.event.issue.number || inputs.issue_number }}"
+          fi
+          echo "name=$b" >> "$GITHUB_OUTPUT"
+          echo "Build branch: $b"
+      - name: Post dispatch receipt (D-h/D-i)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          START="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          HEARTBEAT="$(date -u -d '+75 minutes' +%Y-%m-%dT%H:%M:%SZ)"
+          gh issue comment "$BUILD_ISSUE" --body "<!-- build-dispatch-receipt:v1 -->
+          BUILD DISPATCH RECEIPT — route fired, builder starting.
+          - route: build-dispatch
+          - run_id: ${{ github.run_id }}
+          - run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - branch: $BUILD_BRANCH
+          - fired_by: ${{ github.actor }}
+          - started_at: $START
+          - heartbeat_deadline: $HEARTBEAT
+
+          A claim on this issue is watchdog-ageable against heartbeat_deadline: if no PR or already-exists comment lands by then, treat the run as stalled, not silent."
+      - name: Run Gemini CLI builder
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GEMINI_CLI_TRUST_WORKSPACE: 'true'
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_model: 'gemini-3.5-flash-lite'
+          prompt: |
+            You are the builder for timerloggedout-spec/termux-monorepo. Read
+            CLAUDE.md and the build issue #${{ github.event.issue.number || inputs.issue_number }}
+            in full, then implement exactly what THAT ISSUE specifies (its scope,
+            deliverables and acceptance criteria govern). Work on the branch
+            named here: ${{ steps.branch.outputs.name }} (for issue-comment dispatch, the
+            branch named in the issue body governs if it names one; fallback is
+            the branch named here) and open a pull request against master with
+            `gh pr create`, describing what was built and how each acceptance
+            item is evidenced. Do not merge. If the work already exists on
+            master, say so in a comment on the issue instead of exiting silently.
+      - name: Surface builder failure on the build issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          gh issue comment "${{ github.event.issue.number || inputs.issue_number }}" --body "Build dispatch run ${{ github.run_id }} FAILED at the Gemini CLI builder step (see Actions run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Recorded by build-dispatch error surfacing (optimizations-assurance fix, 2026-11-01; monorepo port #5108)."

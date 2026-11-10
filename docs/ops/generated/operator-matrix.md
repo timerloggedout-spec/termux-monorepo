@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-10T12:56:04Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-10T13:05:30Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `63223d3bae` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `26598c9972` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 549 issues, 333 PRs. PR classes: EXTRACT 11 / CANDIDATE 152 / NEED_EVIDENCE 170 / SUPERSEDE 0.
+**Open inventory:** 551 issues, 333 PRs. PR classes: EXTRACT 11 / CANDIDATE 152 / NEED_EVIDENCE 170 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -178,11 +178,11 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5093 | CANDIDATE | unlabelled | `a570e84ab0` | success | success | unknown | feat(ci): implement merged branch review audit and deployment quota engine |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
-| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
-| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | unknown | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
+| #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | dirty | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
+| #92 | NEED_EVIDENCE | unlabelled | `f6935fbc15` | not_reported | not_reported | dirty | sec(workflows): harden permissions, pin SHAs, and fix prompt injection |
 | #103 | NEED_EVIDENCE | unlabelled | `da109a5469` | not_reported | not_reported | unknown | feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_C |
 | #125 | NEED_EVIDENCE | unlabelled | `b7e4709b50` | not_reported | not_reported | unknown | analyze agentic workflows and peer coordination rules |
-| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | unknown | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
+| #143 | NEED_EVIDENCE | unlabelled | `c154540e4b` | not_reported | not_reported | dirty | Integrate MCP Agent Mail Coordination Layer in GitHub Actions |
 | #390 | NEED_EVIDENCE | unlabelled | `6b3dcec308` | not_reported | not_reported | unknown | docs: formalize category-theoretic notation sets and cross-domain mappings |
 | #684 | NEED_EVIDENCE | unlabelled | `4e7550f334` | not_reported | not_reported | unknown | ops: unify GitHub Actions operations cadence |
 | #740 | NEED_EVIDENCE | unlabelled | `1116653009` | not_reported | not_reported | unknown | feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter |
@@ -267,7 +267,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4069 | NEED_EVIDENCE | unlabelled | `d8ab9cb537` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #4086 | NEED_EVIDENCE | unlabelled | `cc9bf99810` | not_reported | not_reported | unstable | feat(integrations): add read-only provider evidence adapters |
 | #4390 | NEED_EVIDENCE | unlabelled | `740942b930` | not_reported | not_reported | unknown | docs(ops): swarm research template — issue → SOFA → FIX (+ #4283 worked example) |
-| #4424 | NEED_EVIDENCE | unlabelled | `b5eff79b60` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
+| #4424 | NEED_EVIDENCE | unlabelled | `30560539dc` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #4493 | NEED_EVIDENCE | unlabelled | `427d9493ec` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4502 | NEED_EVIDENCE | unlabelled | `07c146e12a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4506 | NEED_EVIDENCE | unlabelled | `58c6681baf` | not_reported | not_reported | unstable | feat(pkg-e): 60-second three doors (live) · video restructure note · resilience  |
@@ -312,7 +312,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4821 | NEED_EVIDENCE | unlabelled | `187e7302a2` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4827 | NEED_EVIDENCE | unlabelled | `e3a2b171a0` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4852 | NEED_EVIDENCE | unlabelled | `5431d67fff` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4901 | NEED_EVIDENCE | unlabelled | `60b9994260` | failure | success | unknown | docs(ops): continuous-operations dependency register — runway view (dependencies |
+| #4901 | NEED_EVIDENCE | unlabelled | `e1b93f5f77` | queued | queued | unstable | docs(ops): continuous-operations dependency register — runway view (dependencies |
 | #4931 | NEED_EVIDENCE | unlabelled | `8d0236b472` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4936 | NEED_EVIDENCE | unlabelled | `154aa5a024` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4954 | NEED_EVIDENCE | unlabelled | `5738fefc29` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
@@ -354,7 +354,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 98 | 0 |
 | mesh | 7 | 0 |
-| other | 303 | 1 |
+| other | 305 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | research | 13 | 0 |

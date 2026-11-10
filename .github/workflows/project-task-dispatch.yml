@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   intake:
-    if: contains(github.event.issue.labels.*.name, 'project-task') || startsWith(github.event.issue.title, '[task]')
+    if: contains(github.event.issue.labels.*.name, 'project-task') || startsWith(github.event.issue.title, '[task]') || contains(github.event.issue.body, '### Task / spec')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

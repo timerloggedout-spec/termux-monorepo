@@ -2,17 +2,17 @@
 
 > Canonical data: `workspace/llm_map/graph/edges.jsonl` + `graph-index.json`, derived by `scripts/graph/cross_plane_link.py` from the plane indexes. This is a view over existing planes, never a source of truth; signals are research signals, never adoption orders.
 
-Observed (repository index): `2026-11-04T12:11:12.428249Z` · Edges: **24320**
+Observed (repository index): `2026-11-10T12:47:19.557176Z` · Edges: **24919**
 
 ## Edges by type
 
-- **about_topic:** 11646
-- **in_domain:** 5033
-- **authored_by:** 3611
-- **starred:** 3139
-- **owned:** 716
+- **about_topic:** 11857
+- **in_domain:** 5188
+- **authored_by:** 3720
+- **starred:** 3225
+- **owned:** 751
 - **watching:** 128
-- **mentions_repo:** 17
+- **mentions_repo:** 20
 - **submitted_to:** 14
 - **organizes:** 10
 - **upstream:** 2
@@ -70,12 +70,14 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | `challenge:project:STRANDS-DECIDER/delphi-oracle-strands-decider-proposal-package` | submitted_to | `challenge:event:STRANDS-DECIDER` | project_of_event |
 | `github:repository:timerloggedout-spec/gravitee-api-management_fork` | fork_of | `github:repository:gravitee-io/gravitee-api-management` | seed_local_fork+fork_parent |
 | `github:research-seed:frappe/gantt` | in_domain | `domain:developer-experience` | classification_domains |
+| `github:research-seed:frappe/gantt` | mentions_repo | `github:repository:frappe/gantt` | issue_intake_upstream |
 | `github:research-seed:frappe/gantt` | upstream | `github:repository:frappe/gantt` | seed_canonical_upstream |
 | `github:research-seed:gravitee-io/gravitee-api-management` | in_domain | `domain:api-management` | classification_domains |
 | `github:research-seed:gravitee-io/gravitee-api-management` | in_domain | `domain:developer-portal` | classification_domains |
 | `github:research-seed:gravitee-io/gravitee-api-management` | in_domain | `domain:gateway` | classification_domains |
 | `github:research-seed:gravitee-io/gravitee-api-management` | in_domain | `domain:kubernetes` | classification_domains |
 | `github:research-seed:gravitee-io/gravitee-api-management` | in_domain | `domain:platform` | classification_domains |
+| `github:research-seed:gravitee-io/gravitee-api-management` | mentions_repo | `github:repository:gravitee-io/gravitee-api-management` | issue_intake_upstream |
 | `github:research-seed:gravitee-io/gravitee-api-management` | upstream | `github:repository:gravitee-io/gravitee-api-management` | seed_canonical_upstream |
 | `github:research-seed:temporalio/temporal-set` | in_domain | `domain:agent-infrastructure` | classification_domains |
 | `github:research-seed:temporalio/temporal-set` | in_domain | `domain:durable-execution` | classification_domains |
@@ -97,5 +99,6 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | `github:research-seed:temporalio/temporal-set` | mentions_repo | `github:repository:temporalio/temporal-auto-scaled-workers` | seed_repos_list |
 | `github:research-seed:temporalio/temporal-set` | mentions_repo | `github:repository:temporalio/temporal-worker-controller` | seed_repos_list |
 | `github:research-seed:temporalio/temporal-set` | mentions_repo | `github:repository:temporalio/ui` | seed_repos_list |
+| `github:research-seed:timerloggedout-spec/termux-monorepo` | mentions_repo | `github:repository:timerloggedout-spec/termux-monorepo` | issue_intake_upstream |
 | `research-seed:getdx` | in_domain | `domain:developer-experience` | classification_domains |
 | `research-seed:getdx` | in_domain | `domain:measurement` | classification_domains |

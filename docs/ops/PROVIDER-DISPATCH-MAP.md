@@ -20,6 +20,7 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
   dispatches instead of permanent exile; a first success promotes it at the next feed refresh.
 - **triggerable** — a live trigger exists (workflow_dispatch / schedule / event) but the surface
   is support-class or has never fired.
+- **catalog-only** — a catalog endpoint is visible, but no inference route is admitted; never dispatchable for inference.
 - **inference-only** — registry model records with no build-dispatch wiring of their own.
   Reachable for inference/eval tasks via a named arm (`provider-batch`, `provider-availability`,
   `openrouter-free-counter-batch-probe`); promotion path = `cadence-provider-onboarding` + one

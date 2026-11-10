@@ -1,9 +1,9 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-10T12:25:40Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-10T12:30:01Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `442b7db5ac` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `04eb75258e` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
 **Open inventory:** 545 issues, 333 PRs. PR classes: EXTRACT 11 / CANDIDATE 153 / NEED_EVIDENCE 169 / SUPERSEDE 0.
 
@@ -268,7 +268,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4069 | NEED_EVIDENCE | unlabelled | `d8ab9cb537` | not_reported | not_reported | unknown | chore(dashboards): refresh surface feeds |
 | #4086 | NEED_EVIDENCE | unlabelled | `cc9bf99810` | not_reported | not_reported | unstable | feat(integrations): add read-only provider evidence adapters |
 | #4390 | NEED_EVIDENCE | unlabelled | `740942b930` | not_reported | not_reported | unknown | docs(ops): swarm research template — issue → SOFA → FIX (+ #4283 worked example) |
-| #4424 | NEED_EVIDENCE | unlabelled | `5a9d92d178` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
+| #4424 | NEED_EVIDENCE | unlabelled | `2aea4abf94` | not_reported | not_reported | unknown | chore(proposals): refresh proposals-feed.json |
 | #4493 | NEED_EVIDENCE | unlabelled | `427d9493ec` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4502 | NEED_EVIDENCE | unlabelled | `07c146e12a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4506 | NEED_EVIDENCE | unlabelled | `58c6681baf` | not_reported | not_reported | unstable | feat(pkg-e): 60-second three doors (live) · video restructure note · resilience  |
@@ -313,12 +313,12 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4821 | NEED_EVIDENCE | unlabelled | `187e7302a2` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4827 | NEED_EVIDENCE | unlabelled | `e3a2b171a0` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4852 | NEED_EVIDENCE | unlabelled | `5431d67fff` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #4901 | NEED_EVIDENCE | unlabelled | `39cb98e9f9` | failure | success | unstable | docs(ops): continuous-operations dependency register — runway view (dependencies |
+| #4901 | NEED_EVIDENCE | unlabelled | `39cb98e9f9` | failure | success | unknown | docs(ops): continuous-operations dependency register — runway view (dependencies |
 | #4931 | NEED_EVIDENCE | unlabelled | `8d0236b472` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4936 | NEED_EVIDENCE | unlabelled | `154aa5a024` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4954 | NEED_EVIDENCE | unlabelled | `5738fefc29` | not_reported | not_reported | unknown | feat(ci): add merged branch review audit and quota engine |
 | #4964 | NEED_EVIDENCE | unlabelled | `442d5864f4` | not_reported | not_reported | unknown | QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as mac |
-| #4990 | NEED_EVIDENCE | unlabelled | `eca35467bf` | not_reported | not_reported | unstable | chore(linguist): refresh linguist-panel-feed.json |
+| #4990 | NEED_EVIDENCE | unlabelled | `eca35467bf` | not_reported | not_reported | unknown | chore(linguist): refresh linguist-panel-feed.json |
 | #5010 | NEED_EVIDENCE | unlabelled | `0eabbd6cf2` | not_reported | not_reported | unknown | feat: add AgentRouter catalog and unified observability index |
 | #5014 | NEED_EVIDENCE | unlabelled | `516de243e0` | not_reported | not_reported | unknown | perf(observer): bound scheduled and shared poller scans |
 | #5016 | NEED_EVIDENCE | unlabelled | `cc7a4e3078` | not_reported | not_reported | unknown | feat: AgentRouter catalog and unified provider observability index |

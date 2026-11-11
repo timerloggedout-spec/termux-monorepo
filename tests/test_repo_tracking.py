@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracking"))
 from repo_tracking import (build_doe_join, classify, derive_next, derive_state,  # noqa: E402
-                           _find_instances, NOT_ESTABLISHED)
+                           _find_instances, NOT_ESTABLISHED, _desk_evidence_pr_number)
 
 PROJECTS = [
     {"id": "d1", "lane": "challenge-entries-d1", "project": "D1", "domain": "challenges",
@@ -54,6 +54,22 @@ def test_next_priority():
     fails = [{"workflow": "w", "occurred_at": "2026-10-31T00:00:00Z"}]
     assert "investigate" in derive_next(None, None, [], fails)[0]
     assert derive_next(None, None, [], [])[0] == NOT_ESTABLISHED
+
+
+
+def test_desk_evidence_pr_number_is_shape_and_value_safe():
+    assert _desk_evidence_pr_number({"pr": 2606}) == 2606
+    assert _desk_evidence_pr_number({"pr": "2606"}) == 2606
+    assert _desk_evidence_pr_number({"pr": 2_147_483_647}) == 2_147_483_647
+    assert _desk_evidence_pr_number({"pr": 2_147_483_648}) is None
+    assert _desk_evidence_pr_number({"pr": "9" * 4301}) is None
+    assert _desk_evidence_pr_number({"pr": 0}) is None
+    assert _desk_evidence_pr_number({"pr": -1}) is None
+    assert _desk_evidence_pr_number({"pr": True}) is None
+    assert _desk_evidence_pr_number({"pr": "not-a-number"}) is None
+    assert _desk_evidence_pr_number("legacy evidence string") is None
+    assert _desk_evidence_pr_number(["legacy", "evidence"]) is None
+    assert _desk_evidence_pr_number(None) is None
 
 
 def test_find_instances_nested_and_plan_shapes():

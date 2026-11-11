@@ -5,7 +5,9 @@ timerloggedout-spec/repo-story) and the claimable-route registry
 `ops/dispatch/claimable-routes.json`. These pin the load-bearing shape:
 SEC-03 mint-before-checkout with the Swarm App identity, both pullable
 triggers, the pre-builder D-h/D-i receipt, failure surfacing, and the
-model pin of record.
+model pin of record, the post-builder verify step (#5142: silent-empty
+converts to FAILURE in-run, fail-open on unreadable evidence), and the
+builder observability fix (debug logging + artifact upload).
 """
 
 import json
@@ -96,3 +98,41 @@ def test_registry_build_dispatch_row_matches_workflow():
     comment = next(t for t in row["trigger"] if t["kind"] == "issue_comment")
     assert comment["prefix"] == "@gemini-cli /build"
     assert row["inputs"]["issue_number"]["required"] is True
+
+def test_verify_step_exists_runs_after_builder_and_before_failure_step():
+    text = workflow_text()
+    assert "Verify build completion evidence" in text
+    builder = text.index("uses: google-github-actions/run-gemini-cli")
+    verify = text.index("Verify build completion evidence")
+    failure = text.index("if: failure()")
+    assert builder < verify < failure, "the verify step must run after the builder and before failure surfacing"
+
+
+def test_verify_step_contains_evidence_reads_and_exit_1():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("if: failure()")
+    verify = text[start:end]
+    for needle in ("git/ref/heads/", "compare/master...", "pulls?head=",
+                   "commits?sha=", "ahead_by", "build-dispatch-empty:v1",
+                   "exit 1"):
+        assert needle in verify, f"verify step missing: {needle}"
+
+
+def test_verify_step_fail_open_guard_present():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("if: failure()")
+    verify = text[start:end]
+    assert "fail-open" in verify.lower()
+    assert "__UNREADABLE__" in verify
+    assert "fail_open" in verify
+
+
+def test_observability_fix_on_builder_step():
+    text = workflow_text()
+    start = text.index("uses: google-github-actions/run-gemini-cli")
+    end = text.index("Verify build completion evidence")
+    builder = text[start:end]
+    assert "gemini_debug: 'true'" in builder
+    assert "upload_artifacts: true" in builder

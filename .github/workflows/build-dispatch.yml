@@ -96,6 +96,8 @@ jobs:
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           gemini_model: 'gemini-3.5-flash-lite'
+          gemini_debug: 'true'
+          upload_artifacts: true
           prompt: |
             You are the builder for timerloggedout-spec/termux-monorepo. Read
             CLAUDE.md and the build issue #${{ github.event.issue.number || inputs.issue_number }}
@@ -107,6 +109,98 @@ jobs:
             `gh pr create`, describing what was built and how each acceptance
             item is evidenced. Do not merge. If the work already exists on
             master, say so in a comment on the issue instead of exiting silently.
+      - name: Verify build completion evidence
+        # #5142: convert silent-empty SUCCESS into honest FAILURE in-run.
+        # Default condition (no `if`): runs only when the builder step
+        # succeeded. A builder that exits 0 having produced nothing must
+        # fail the run here. Evidence (any one): branch ref exists AND
+        # compare(master...branch).ahead_by >= 1, OR an open or merged PR
+        # with head = branch, OR commits visible on the branch via the
+        # commits API. Reads use the Swarm App token and are retried twice.
+        # Positively-empty => failure comment (marker
+        # build-dispatch-empty:v1) + step summary + exit 1. UNREADABLE
+        # evidence (reads still failing after retries) => fail-OPEN:
+        # succeed silently, never convert an unreadable surface into a
+        # failure.
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          set -uo pipefail
+          REPO="${GITHUB_REPOSITORY}"
+          OWNER="${GITHUB_REPOSITORY_OWNER}"
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          # gh_get <api-path>: prints the response body on success,
+          # "__NOT_FOUND__" on HTTP 404, "__UNREADABLE__" if the read
+          # still fails after two retries.
+          gh_get() {
+            local path="$1" body
+            for attempt in 1 2 3; do
+              body="$(gh api "$path" 2>/tmp/gh_get.err)" && { printf '%s' "$body"; return 0; }
+              if grep -qiE '404|not found' /tmp/gh_get.err; then
+                printf '__NOT_FOUND__'
+                return 0
+              fi
+              sleep 5
+            done
+            printf '__UNREADABLE__'
+            return 0
+          }
+
+          fail_open() {
+            echo "VERIFY: evidence unreadable after retries ($1) — failing OPEN (run stays green)."
+            {
+              echo "### Build-dispatch verify: fail-open"
+              echo "Completion evidence for branch \`$BUILD_BRANCH\` could not be read ($1)."
+              echo "Per #5142 the run is NOT converted to failure on an unreadable surface."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          }
+
+          EVIDENCE=""
+          REF="$(gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH")"
+          if [ "$REF" = "__UNREADABLE__" ]; then fail_open "branch ref read failed"; fi
+          if [ "$REF" != "__NOT_FOUND__" ]; then
+            CMP="$(gh_get "repos/$REPO/compare/master...$BUILD_BRANCH")"
+            if [ "$CMP" = "__UNREADABLE__" ]; then fail_open "compare read failed"; fi
+            AHEAD="$(printf '%s' "$CMP" | grep -o '"ahead_by": *[0-9]*' | grep -o '[0-9]*' | head -n 1)"
+            if [ -n "$AHEAD" ] && [ "$AHEAD" -ge 1 ]; then EVIDENCE="branch ahead by $AHEAD"; fi
+            if [ -z "$EVIDENCE" ]; then
+              PRS="$(gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")"
+              if [ "$PRS" = "__UNREADABLE__" ]; then fail_open "pulls read failed"; fi
+              if printf '%s' "$PRS" | grep -q '"state": "open"'; then EVIDENCE="open PR with head $BUILD_BRANCH"; fi
+              if [ -z "$EVIDENCE" ] && printf '%s' "$PRS" | grep -q '"merged_at": "[0-9]'; then EVIDENCE="merged PR with head $BUILD_BRANCH"; fi
+            fi
+            if [ -z "$EVIDENCE" ]; then
+              COMMITS="$(gh_get "repos/$REPO/commits?sha=$BUILD_BRANCH&per_page=1")"
+              if [ "$COMMITS" = "__UNREADABLE__" ]; then fail_open "commits read failed"; fi
+              if [ "$COMMITS" != "__NOT_FOUND__" ] && printf '%s' "$COMMITS" | grep -q '"sha":'; then EVIDENCE="commits visible on $BUILD_BRANCH"; fi
+            fi
+          fi
+
+          if [ -n "$EVIDENCE" ]; then
+            echo "VERIFY: completion evidence present — $EVIDENCE."
+            echo "Completion evidence present: $EVIDENCE." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "VERIFY: builder completed SUCCESS with no completion evidence — converted to FAILURE in-run."
+          {
+            echo "### Build-dispatch verify: silent-empty converted to FAILURE"
+            echo "Builder step exited 0 but produced no completion evidence on branch \`$BUILD_BRANCH\`:"
+            echo "- branch ref exists with compare ahead >= 1: no"
+            echo "- open or merged PR with head = branch: no"
+            echo "- commits visible via the commits API on the branch: no"
+            echo "Run: $RUN_URL"
+          } >> "$GITHUB_STEP_SUMMARY"
+          gh issue comment "$BUILD_ISSUE" --body "<!-- build-dispatch-empty:v1 -->
+          builder completed SUCCESS with no completion evidence — converted to FAILURE in-run
+          - run id: ${{ github.run_id }}
+          - run url: $RUN_URL
+          - branch: $BUILD_BRANCH"
+          exit 1
       - name: Surface builder failure on the build issue
         if: failure()
         env:

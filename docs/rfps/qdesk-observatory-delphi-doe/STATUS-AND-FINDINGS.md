@@ -11,10 +11,10 @@ The QDesk proposal and quota renderer repair have commits and open pull requests
 
 | Workstream | PR / issue | Last observed head | Last observed result | Current action |
 |---|---|---|---|---|
-| QDesk Observatory / Delphi / DoE RFP | [PR #5145](https://github.com/timerloggedout-spec/termux-monorepo/pull/5145) | `4c1c1c3975b3cdde7406623b2525464e6bf2ce0f` | Open; mergeable metadata, but repo gate failed; Vercel tribute-dash and tribute-oversight status failures; eight unresolved CodeRabbit threads | Added acceptance gates QD-033–040, corrected parked lifecycle and Delphi/quota contracts, repaired a workflow YAML structural fault; re-run required |
-| Quota Usage renderer | [PR #5149](https://github.com/timerloggedout-spec/termux-monorepo/pull/5149) | `74de57e3e892c3079c2465f0e46f7e1c34c7ac66` | Open; renderer regression work present; quota-analysis failed 2 assertions; repo gate and dangling-reference check failed | Corrected two stale test expectations and linked the page-specific test to the quota workflow; re-run required |
+| QDesk Observatory / Delphi / DoE RFP | [PR #5145](https://github.com/timerloggedout-spec/termux-monorepo/pull/5145) | `e3806dabc28657d357ba97b08bf7c504090037dd` | Open; current-head checks queued; 6/8 CodeRabbit threads resolved; QD-038 pagination and QD-039 full-content binding remain tracked | Added QD-033–040, corrected lifecycle and quota contracts, repaired workflow YAML; current-head checks required |
+| Quota Usage renderer | [PR #5149](https://github.com/timerloggedout-spec/termux-monorepo/pull/5149) | `33bb944626eefcaf2f4fe68e73733c1847b3a896` | Open; new quota-analysis, repo-gate and dangling-reference runs queued | Renderer fix, regression test, test workflow inclusion, October corpus and canonical sitemap assertions corrected; current-head checks required |
 | Quota Usage defect | [Issue #5148](https://github.com/timerloggedout-spec/termux-monorepo/issues/5148) | N/A | Renderer dereferenced optional `states` map | Patch is in PR #5149; not merged |
-| Dispatch liveness recovery | [Issue #5132](https://github.com/timerloggedout-spec/termux-monorepo/issues/5132) / [#5142](https://github.com/timerloggedout-spec/termux-monorepo/issues/5142) | N/A | Prior attempts include empty successful outputs and real builder failures; do not treat success status as proof of effect | Separate recovery lane; retain no-unchanged-retry instruction |
+| Delphi issue pagination | [PR #5155](https://github.com/timerloggedout-spec/termux-monorepo/pull/5155) | `2c5cc328ba3fa51a68c658070a8c0de4c912c3df` | Open; focused Delphi Gate Contract Tests and repository checks queued | Implemented paginated census, PR filtering, boundary de-duplication and fail-closed cap; awaiting CI |\n| Full proposal hash binding | [Issue #5156](https://github.com/timerloggedout-spec/termux-monorepo/issues/5156) | N/A | NOT_STARTED | Versioned immutable package manifest, per-file and aggregate SHA-256, signed-ledger and consumer verification specified |\n| Dispatch liveness recovery | [Issue #5132](https://github.com/timerloggedout-spec/termux-monorepo/issues/5132) / [#5142](https://github.com/timerloggedout-spec/termux-monorepo/issues/5142) | N/A | Prior attempts include empty successful outputs and real builder failures; do not treat success status as proof of effect | Separate recovery lane; retain no-unchanged-retry instruction |
 
 ## 2. Current-head changes made in this pass
 
@@ -46,7 +46,7 @@ Changes committed:
 - Corrected the corpus test to compare the October-only pack dates with the October reconstructed corpus. The pack intentionally retains historical August/September and November 1 observations; the corpus fixture contains 30 October daily files, hence 29 consecutive deltas. Comparing 29 deltas with all 37 pack dates was a stale test assumption.
 - Corrected the sitemap assertion to the current canonical URL `https://timerloggedout-spec.github.io/tribute/quota-usage.html`; the test had asserted a stale `/help-wanted/` path.
 
-## 3. CI evidence and failure diagnosis
+## 3. CI evidence and failure diagnosis\n\n**Latest observation:** PR #5145 head `e3806dabc28657d357ba97b08bf7c504090037dd`, PR #5149 head `33bb944626eefcaf2f4fe68e73733c1847b3a896`, and PR #5155 head `2c5cc328ba3fa51a68c658070a8c0de4c912c3df` had fresh workflow cohorts queued/in progress at the latest poll. No new pass is claimed from a queued state.
 
 ### 3.1 QDesk PR #5145 — prior observed head
 

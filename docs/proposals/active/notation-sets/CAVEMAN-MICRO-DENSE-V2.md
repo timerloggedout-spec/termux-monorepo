@@ -103,6 +103,19 @@ taxonomy:
 | **CHORDS** | letter codes, resolved in-domain | `ent` `qta` `mrg` `sgl` … (Shorthand Domains) |
 | **OPERATORS** | formal symbols — meaning fixed by a formal system, ¬ pictures | logic {∧ ¬ ∨ ⇒} · quantifiers {∀ ∃} · set {∅ ∈} · ∆ change · `++` increment/step-up · ≅ conforming |
 
+**Operators of record** (class table — each operator's
+meaning is fixed here, ¬ by usage drift):
+
+| Operator | Meaning |
+|---|---|
+| ∧ ¬ ∨ ⇒ | logic: and · not · or · implies |
+| ∀ ∃ | quantifiers: for-all · there-exists |
+| ∅ ∈ | set: empty · member-of |
+| ∆ | change (with magnitude/direction as written) |
+| `++` | **postfix increment — the subject is augmented by exactly one step in its own scale** (`x++` = x stepped up once; owner order 2026-11-10, class admission restamped 2026-11-11). ¬ arbitrary addition (that is ∆ with magnitude) ∧ ¬ a second item |
+| ≅ | conforming (Siglary register) / isomorphism (math register, proof-gated) |
+
+
 ∧ ∀ ∆ ∅ and kin are **operators, never glyphs**. ≅ moves from
 the glyph table to OPERATORS (its meaning is the formal
 conformance/isomorphism relation, ¬ an icon). Compositions may

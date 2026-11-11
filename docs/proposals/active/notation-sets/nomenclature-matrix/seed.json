@@ -1375,6 +1375,18 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "caveman_micro_dense.op_increment",
+      "domain_id": "caveman_micro_dense",
+      "preferred_label": "increment operator",
+      "definition": "OPERATOR ++ (owner order 2026-11-10 04:28 PT; admitted to the OPERATORS class of record, restamped 2026-11-11): postfix increment — the subject is augmented by exactly one step in its own scale (x++ = x stepped up once). Not arbitrary addition (that is change-with-magnitude, written with the change operator) and not a second item.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -3600,6 +3612,20 @@
       "language": "en",
       "audience": "expert",
       "register": "semiformal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-cmd-op-increment",
+      "concept_id": "caveman_micro_dense.op_increment",
+      "text": "++",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
       "status": "candidate",
       "source_ids": [
         "owner-order-caveman-v2-2026-11-04",

@@ -23,7 +23,7 @@ The README is a **projection**, not the canonical home of subsystem detail. Cano
 | GitHub language classification | .gitattributes + GitHub Linguist | Separate repository language/statistics mechanism |
 | Visual mapping surface | apps/tribute-dashboard/linguist.html | Existing mapping-family visual explorer |
 
-**Do not conflate** internal Linguist/CedrLang compression with GitHub Linguist language classification. Do not create a new mapping authority, private-pointer dependency, or a parallel dashboard feed.
+**Do not conflate** internal Linguist/CedrLang compression with GitHub Linguist language classification. Treat .gitattributes as a separate classification surface; add or change a mapping only when observed GitHub Linguist classification evidence justifies it. Do not create a new mapping authority, private-pointer dependency, or a parallel dashboard feed.
 
 ## Rate policy: micro default, macro ceiling
 
@@ -109,7 +109,7 @@ A branch name alone is not a version identity; branches move. A commit SHA and b
 
 Eligible related surfaces:
 
-- README.md, CLAUDE.hum.md;
+- README.md, .gitattributes, CLAUDE.hum.md;
 - docs/linguist/, docs/ops/LINGUIST-PANEL-FEED.md;
 - docs/proposals/active/notation-sets/;
 - scripts/linguist/;

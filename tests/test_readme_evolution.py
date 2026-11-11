@@ -33,6 +33,14 @@ class ReadmeEvolutionTests(unittest.TestCase):
             self.assertLessEqual(row["selected_rate"], 0.00077)
             self.assertLessEqual(row["budget_tokens"], row["eligible_tokens"])
 
+    def test_file_order_does_not_change_seeded_plan(self):
+        left = {"z/README.md": 8000, "a/README.md": 9000}
+        right = {"a/README.md": 9000, "z/README.md": 8000}
+        self.assertEqual(
+            plan_file_budgets(left, seed="stable-order"),
+            plan_file_budgets(right, seed="stable-order"),
+        )
+
     def test_invalid_rate_is_rejected(self):
         with self.assertRaises(ValueError):
             plan_file_budgets({"README.md": 10}, seed="x", rate=0.08)

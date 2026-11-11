@@ -17,6 +17,7 @@ from typing import Iterable, Mapping
 
 DEFAULT_SCOPES = (
     "README.md",
+    ".gitattributes",
     "CLAUDE.hum.md",
     "docs/linguist",
     "docs/ops/LINGUIST-PANEL-FEED.md",
@@ -122,12 +123,15 @@ def collect_tracked_token_counts(root: Path, scopes: Iterable[str]) -> dict[str,
         path = Path(relative)
         if not _in_scope(relative, scopes):
             continue
-        if path.suffix.lower() not in TEXT_SUFFIXES:
+        if path.suffix.lower() not in TEXT_SUFFIXES and path.name != ".gitattributes":
             continue
         if any(part in EXCLUDED_SEGMENTS for part in path.parts):
             continue
+        candidate = root / path
+        if candidate.is_symlink() or not candidate.is_file():
+            continue
         try:
-            content = (root / path).read_text(encoding="utf-8")
+            content = candidate.read_text(encoding="utf-8")
         except (OSError, UnicodeError):
             continue
         counts[relative] = len(WORD_RE.findall(content))

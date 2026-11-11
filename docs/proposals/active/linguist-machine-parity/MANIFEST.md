@@ -24,7 +24,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-This is a deliberately separate documentation and development lane for a **Linguist machine-parity enhancement** to the root README. It may investigate byte-efficient, machine-readable documentation representations and any associated badge design only after a scoped proposal, compatibility boundary, and validation plan are accepted. It does not modify the DeepWiki badge, repository-surface reconciler, provider credentials, or the current README repair under `AR-12`.
+This is a separately scoped documentation and development lane for **Linguist-guided README evolution**. LMP-01 now implements comparative branch/version measurements, a deterministic report-only change-budget planner, explicit links to canonical mapping authorities, and reviewable README visuals. It does not modify the DeepWiki badge, repository-surface reconciler, provider credentials, or the separate README repair under AR-12.
 
 ## Reviewers
 

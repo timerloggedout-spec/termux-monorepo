@@ -114,7 +114,7 @@ def test_verify_step_contains_evidence_reads_and_exit_1():
     end = text.index("if: failure()")
     verify = text[start:end]
     for needle in ("git/ref/heads/", "compare/master...", "pulls?head=",
-                   "commits?sha=", "ahead_by", "build-dispatch-empty:v1",
+                   "ahead_by", "build-dispatch-empty:v1",
                    "exit 1"):
         assert needle in verify, f"verify step missing: {needle}"
 

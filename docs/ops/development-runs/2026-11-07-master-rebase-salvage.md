@@ -66,4 +66,3 @@ Carried the exact indentation repair from the focused P0 branch into this succes
 - The heredoc body and terminator now share the YAML block-scalar indentation; YAML strips that indentation before the shell executes the script.
 - No baseline changes or gate bypass.
 - Validation on this successor head is pending. The focused P0 branch's repo gate and Termux smoke passed after the same repair, but that result is not substituted for this branch's own CI.
-

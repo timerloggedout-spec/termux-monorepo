@@ -27,6 +27,13 @@
 | QD-023 | Feed parity | Feed vs canonical ledger census | Exact or explicit delta |
 | QD-024 | Cost safety | No quota / exhausted / card-gated fixtures | No paid fallback or hidden spend |
 | QD-025 | End-to-end | Intake → award → design → build → verify → receipt | Full correlated trace, all gates passed |
+| QD-026 | Feed freshness | Fresh envelope with stale nested event batch | Per-block stale state is visible; no freshness laundering |
+| QD-027 | Priority dimension separation | Fixture with QUE tier, opportunity timebox, quota focus and Gantt dependency | Each dimension remains distinct; no scalar silently overrides hard gates |
+| QD-028 | Gantt instant honesty | Missing start, explicit close, null/unknown dates | Milestone only; no fabricated start or duration |
+| QD-029 | Canonical/mirror parity | Compare QUE and dashboard mirror feeds | Byte-identical where the feed contract requires it |
+| QD-030 | Quota snapshot shape | Missing/partial `series2_snapshots[].states` | Quota Usage renders explicit absence; no runtime exception or zero-fill |
+| QD-031 | Queue census honesty | Queued, in-progress and >7-day wedged fixtures | Wedged runs excluded only with explicit separate listing |
+| QD-032 | Refill attribution | Referral click, pending reward, verified credit and commission fixtures | Click/eligibility/credit/commission remain distinct states and resource classes |
 
 ## Minimum pilot
 
@@ -55,3 +62,4 @@ The pilot is descriptive until the registered design's minimum evidence and unce
 - [ ] Failure injection and rollback rehearsal complete.
 - [ ] Independent review recorded.
 - [ ] Owner authorization recorded for any protected action.
+- [ ] Feed/Gantt census reviewed; freshness, authority and mirror-parity gates pass.

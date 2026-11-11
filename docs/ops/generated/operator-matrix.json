@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 565,
-    "open_prs": 341,
+    "open_issues": 569,
+    "open_prs": 342,
     "pr_classes": {
-      "CANDIDATE": 151,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 179,
+      "CANDIDATE": 133,
+      "EXTRACT": 28,
+      "NEED_EVIDENCE": 181,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 315,
+      "issues": 318,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -53,8 +53,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 56,
-      "prs": 339,
+      "issues": 57,
+      "prs": 340,
       "unlabelled_numbers": [
         308,
         388,
@@ -111,11 +111,12 @@
         5050,
         5071,
         5114,
-        5152
+        5152,
+        5157
       ]
     }
   },
-  "generated_at": "2026-11-11T03:34:37Z",
+  "generated_at": "2026-11-11T04:16:09Z",
   "issues_unlabelled": [
     308,
     388,
@@ -172,7 +173,8 @@
     5050,
     5071,
     5114,
-    5152
+    5152,
+    5157
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -180,9 +182,23 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "86b52e0f44"
+    "sha": "3c472791f9"
   },
   "prs": [
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c7f74de860",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1469,
+      "title": "test(observatory): restore upstream provenance PR validation",
+      "updated_at": "2026-10-23T13:34:01Z"
+    },
     {
       "class": "EXTRACT",
       "family": "unlabelled",
@@ -204,12 +220,85 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "0c3049a96f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1499,
+      "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
+      "updated_at": "2026-10-22T07:33:38Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "559607ff39",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1510,
+      "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
+      "updated_at": "2026-10-22T13:58:29Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "13f795adad",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 1514,
       "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
       "updated_at": "2026-11-06T23:17:51Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "47d12cb4e3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1516,
+      "title": "feat(orchestration): add deterministic DAG reference primitive",
+      "updated_at": "2026-10-22T08:24:30Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "proposal",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "7f18ff5b20",
+      "labels": [
+        "documentation",
+        "proposal"
+      ],
+      "mergeable_state": "unstable",
+      "number": 1531,
+      "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
+      "updated_at": "2026-10-22T12:32:13Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "41f5d318cd",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1537,
+      "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
+      "updated_at": "2026-10-22T09:02:48Z"
     },
     {
       "class": "EXTRACT",
@@ -246,12 +335,166 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "519c656f29",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1553,
+      "title": "Consolidate upgrades for provider quota & PR merge readiness",
+      "updated_at": "2026-10-22T22:19:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "ea16165266",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c851d9a575",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1570,
+      "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
+      "updated_at": "2026-10-23T08:07:29Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f4ddde780d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1616,
+      "title": "docs(flywheel): add capability overlap audit",
+      "updated_at": "2026-10-24T03:11:37Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "276350ba12",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1671,
+      "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
+      "updated_at": "2026-10-26T08:06:51Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "682988db40",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1705,
+      "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
+      "updated_at": "2026-10-27T07:42:12Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fccaa4b49a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1735,
+      "title": "docs(ops): refresh maintenance status and evidence gates",
+      "updated_at": "2026-10-27T11:22:58Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "87f3e8bad6",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1857,
+      "title": "feat(ci): add merged branch review audit and timing quota engine",
+      "updated_at": "2026-10-27T22:21:15Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c3898767c0",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 1985,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
+      "updated_at": "2026-10-28T07:47:28Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b67fbebacf",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2261,
+      "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
+      "updated_at": "2026-10-28T22:38:27Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fd02b2c8e0",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2330,
+      "title": "\ud83d\udee1\ufe0f Sentinel: Fix umask permission exposure in token provider vault",
+      "updated_at": "2026-10-29T07:26:09Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "001ef79704",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2343,
+      "title": "Add Merged Branch Audit and Timing Quotas Evaluator",
+      "updated_at": "2026-10-29T22:37:14Z"
     },
     {
       "class": "EXTRACT",
@@ -418,7 +661,7 @@
       },
       "head_sha": "b8b624d149",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 605,
       "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
       "updated_at": "2026-10-23T07:40:01Z"
@@ -502,7 +745,7 @@
       },
       "head_sha": "db77673cf7",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1436,
       "title": "feat(dashboard): salvage operational Hindsight dashboard onto current master",
       "updated_at": "2026-10-21T10:53:39Z"
@@ -528,23 +771,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c7f74de860",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1469,
-      "title": "test(observatory): restore upstream provenance PR validation",
-      "updated_at": "2026-10-23T13:34:01Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "d2778bcc25",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1470,
       "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
       "updated_at": "2026-10-23T13:34:11Z"
@@ -570,37 +799,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0c3049a96f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1499,
-      "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
-      "updated_at": "2026-10-22T07:33:38Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "559607ff39",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1510,
-      "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
-      "updated_at": "2026-10-22T13:58:29Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "04c92a1763",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1513,
       "title": "test(observatory): verify Gravitee fork upstream identity",
       "updated_at": "2026-10-22T22:26:02Z"
@@ -612,54 +813,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "47d12cb4e3",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1516,
-      "title": "feat(orchestration): add deterministic DAG reference primitive",
-      "updated_at": "2026-10-22T08:24:30Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "proposal",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "7f18ff5b20",
-      "labels": [
-        "documentation",
-        "proposal"
-      ],
-      "mergeable_state": "unknown",
-      "number": 1531,
-      "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
-      "updated_at": "2026-10-22T12:32:13Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "41f5d318cd",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1537,
-      "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
-      "updated_at": "2026-10-22T09:02:48Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "7099c7a9ff",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1538,
       "title": "feat(tribute): GitLab-native discovery and bounded integration options",
       "updated_at": "2026-10-22T09:07:25Z"
@@ -673,24 +829,10 @@
       },
       "head_sha": "d55580f915",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1543,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-10-22T22:08:16Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "519c656f29",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1553,
-      "title": "Consolidate upgrades for provider quota & PR merge readiness",
-      "updated_at": "2026-10-22T22:19:32Z"
     },
     {
       "class": "CANDIDATE",
@@ -715,7 +857,7 @@
       },
       "head_sha": "bd3a7aa6c5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1568,
       "title": "\ud83d\udee1\ufe0f Sentinel: Harden DeepCLI export target symlink validation",
       "updated_at": "2026-10-23T07:33:19Z"
@@ -727,23 +869,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c851d9a575",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1570,
-      "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
-      "updated_at": "2026-10-23T08:07:29Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "ef3093ca18",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1599,
       "title": "feat(ci): enforce review justification on dismissed PR reviews",
       "updated_at": "2026-10-23T22:37:54Z"
@@ -757,7 +885,7 @@
       },
       "head_sha": "56a89e1206",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1612,
       "title": "docs(research): map new free LLM catalogs to telemetry gates",
       "updated_at": "2026-10-25T02:39:40Z"
@@ -771,7 +899,7 @@
       },
       "head_sha": "3c1673ad39",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1614,
       "title": "ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction",
       "updated_at": "2026-10-24T03:24:07Z"
@@ -783,23 +911,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "f4ddde780d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1616,
-      "title": "docs(flywheel): add capability overlap audit",
-      "updated_at": "2026-10-24T03:11:37Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "571fb4ac96",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "blocked",
       "number": 1630,
       "title": "fix(delphi): gate and deduplicate conversational intake",
       "updated_at": "2026-10-24T06:55:51Z"
@@ -813,7 +927,7 @@
       },
       "head_sha": "9c4fb929ce",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1631,
       "title": "\ud83d\udee1\ufe0f Sentinel: [security improvement] Harden DeepCLI export file permissions and symlink checks",
       "updated_at": "2026-10-24T07:22:16Z"
@@ -827,7 +941,7 @@
       },
       "head_sha": "11ad920652",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1632,
       "title": "\u26a1 Bolt: optimize hex moneyball export stream serialization",
       "updated_at": "2026-10-24T08:12:48Z"
@@ -841,7 +955,7 @@
       },
       "head_sha": "8d4903f354",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1640,
       "title": "ci: enforce explicit justification for dismissed reviews in merge readiness engine",
       "updated_at": "2026-10-24T22:23:11Z"
@@ -869,7 +983,7 @@
       },
       "head_sha": "fe37ab59ae",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1650,
       "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
       "updated_at": "2026-10-25T02:14:09Z"
@@ -883,7 +997,7 @@
       },
       "head_sha": "d2f37b0324",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1659,
       "title": "\ud83d\udee1\ufe0f Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI export",
       "updated_at": "2026-10-25T08:24:38Z"
@@ -895,23 +1009,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "276350ba12",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1671,
-      "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
-      "updated_at": "2026-10-26T08:06:51Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "dcd3bba490",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1677,
       "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
       "updated_at": "2026-10-27T11:27:12Z"
@@ -925,7 +1025,7 @@
       },
       "head_sha": "dc52bd9e83",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1679,
       "title": "\ud83d\udcd6 Linguist: [performance improvement] conversational steganography 4th lane & BPE token density optimization",
       "updated_at": "2026-10-26T23:44:27Z"
@@ -939,7 +1039,7 @@
       },
       "head_sha": "3cd1f1aaa4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1694,
       "title": "fix(help-wanted): preserve historical audit coverage on partial refreshes",
       "updated_at": "2026-10-27T11:24:02Z"
@@ -953,7 +1053,7 @@
       },
       "head_sha": "40763bf29b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "blocked",
       "number": 1704,
       "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Harden NexusCLI session export file creation and imports",
       "updated_at": "2026-10-27T07:51:53Z"
@@ -965,23 +1065,9 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "682988db40",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1705,
-      "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
-      "updated_at": "2026-10-27T07:42:12Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "5c8ef1974f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1706,
       "title": "\u26a1 Bolt: fix actions incident deduplication test assertion",
       "updated_at": "2026-10-27T08:11:49Z"
@@ -1007,34 +1093,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "fccaa4b49a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1735,
-      "title": "docs(ops): refresh maintenance status and evidence gates",
-      "updated_at": "2026-10-27T11:22:58Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "87f3e8bad6",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1857,
-      "title": "feat(ci): add merged branch review audit and timing quota engine",
-      "updated_at": "2026-10-27T22:21:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "a4b28f7ef8",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1049,40 +1107,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c3898767c0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 1985,
-      "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
-      "updated_at": "2026-10-28T07:47:28Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "96fb09e450",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1988,
       "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
       "updated_at": "2026-10-28T08:10:08Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "b67fbebacf",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2261,
-      "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
-      "updated_at": "2026-10-28T22:38:27Z"
     },
     {
       "class": "CANDIDATE",
@@ -1097,34 +1127,6 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "fd02b2c8e0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2330,
-      "title": "\ud83d\udee1\ufe0f Sentinel: Fix umask permission exposure in token provider vault",
-      "updated_at": "2026-10-29T07:26:09Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "001ef79704",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2343,
-      "title": "Add Merged Branch Audit and Timing Quotas Evaluator",
-      "updated_at": "2026-10-29T22:37:14Z"
     },
     {
       "class": "CANDIDATE",
@@ -2443,20 +2445,6 @@
       "updated_at": "2026-11-10T23:54:24Z"
     },
     {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6ae4be8d67",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5150,
-      "title": "fix(ci): quote existing PR summary command in YAML",
-      "updated_at": "2026-11-11T03:20:40Z"
-    },
-    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2465,7 +2453,7 @@
       },
       "head_sha": "11b61f8139",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 47,
       "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
       "updated_at": "2026-10-23T13:34:06Z"
@@ -2493,7 +2481,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2507,7 +2495,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2535,7 +2523,7 @@
       },
       "head_sha": "b7e4709b50",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 125,
       "title": "analyze agentic workflows and peer coordination rules",
       "updated_at": "2026-10-24T23:34:10Z"
@@ -2549,7 +2537,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2577,7 +2565,7 @@
       },
       "head_sha": "4e7550f334",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 684,
       "title": "ops: unify GitHub Actions operations cadence",
       "updated_at": "2026-10-23T13:34:16Z"
@@ -2591,7 +2579,7 @@
       },
       "head_sha": "1116653009",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 740,
       "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
       "updated_at": "2026-10-25T00:44:19Z"
@@ -2633,7 +2621,7 @@
       },
       "head_sha": "0c6249c974",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 769,
       "title": "feat(tagging): cron multi-category GitHub tagging refresh",
       "updated_at": "2026-10-22T22:26:28Z"
@@ -2661,7 +2649,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-10-21T04:40:59Z"
@@ -2675,7 +2663,7 @@
       },
       "head_sha": "9d2bb548dd",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 990,
       "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
       "updated_at": "2026-10-23T07:40:13Z"
@@ -2689,7 +2677,7 @@
       },
       "head_sha": "a0248773ca",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1020,
       "title": "feat: close provider continuity and executable routing gaps",
       "updated_at": "2026-10-23T07:40:17Z"
@@ -2703,7 +2691,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -2717,7 +2705,7 @@
       },
       "head_sha": "8c8c2f3078",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1495,
       "title": "feat(quota): full mappings, GitHub safeguards and publication visibility",
       "updated_at": "2026-10-26T23:10:29Z"
@@ -2731,7 +2719,7 @@
       },
       "head_sha": "62492b4397",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "clean",
       "number": 1515,
       "title": "feat(ates): correlate Phase C run and event evidence",
       "updated_at": "2026-10-22T08:23:49Z"
@@ -2745,7 +2733,7 @@
       },
       "head_sha": "cafb47148f",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1557,
       "title": "ops(actions): hybrid lag-as-notice Tailscale + consolidated matrix upgrade",
       "updated_at": "2026-10-23T18:28:41Z"
@@ -2759,7 +2747,7 @@
       },
       "head_sha": "6eeb0cb739",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1582,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-10-23T17:14:48Z"
@@ -2787,7 +2775,7 @@
       },
       "head_sha": "35c1f2bd5b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1617,
       "title": "docs: improve Mintlify agent discoverability and record integration recon",
       "updated_at": "2026-10-25T02:25:16Z"
@@ -2801,7 +2789,7 @@
       },
       "head_sha": "7288447213",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 1626,
       "title": "docs(rfp): add first source-backed mesh provider evidence",
       "updated_at": "2026-10-24T06:36:09Z"
@@ -2815,7 +2803,7 @@
       },
       "head_sha": "2dab66b406",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1645,
       "title": "fix: harden Help-Wanted telemetry and evidence audits",
       "updated_at": "2026-10-25T00:30:39Z"
@@ -2843,7 +2831,7 @@
       },
       "head_sha": "358f8f7ea6",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 1852,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-10-27T18:05:20Z"
@@ -2857,7 +2845,7 @@
       },
       "head_sha": "b5951e754e",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1966,
       "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
       "updated_at": "2026-10-29T06:02:41Z"
@@ -2871,7 +2859,7 @@
       },
       "head_sha": "71856c6976",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2175,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:50:08Z"
@@ -2885,7 +2873,7 @@
       },
       "head_sha": "fc92217e1b",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2181,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:54:15Z"
@@ -2899,7 +2887,7 @@
       },
       "head_sha": "e9efa35753",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2183,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:55:07Z"
@@ -2913,7 +2901,7 @@
       },
       "head_sha": "52de1f57a1",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2186,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:56:43Z"
@@ -2927,7 +2915,7 @@
       },
       "head_sha": "e97d22fe58",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2187,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:57:26Z"
@@ -2941,7 +2929,7 @@
       },
       "head_sha": "be30d8c241",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2190,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T19:59:25Z"
@@ -2969,7 +2957,7 @@
       },
       "head_sha": "77f6526342",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
@@ -2978,15 +2966,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "9b766a7a3f",
+      "head_sha": "f68105562c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-11T03:30:19Z"
+      "updated_at": "2026-11-11T04:11:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3653,12 +3641,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "de3a4a43e1",
+      "head_sha": "badc059889",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-11T03:33:09Z"
+      "updated_at": "2026-11-11T04:01:54Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3779,12 +3767,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "30560539dc",
+      "head_sha": "e9145b42fc",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-10T13:05:22Z"
+      "updated_at": "2026-11-11T03:34:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4770,15 +4758,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "cancelled"
       },
-      "head_sha": "0a2fd5327d",
+      "head_sha": "01f129bdc7",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5074,
       "title": "fix(tracking): harden desk evidence parsing on master",
-      "updated_at": "2026-11-11T03:24:25Z"
+      "updated_at": "2026-11-11T04:13:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4924,15 +4912,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "4c1c1c3975",
+      "head_sha": "accb23365c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5145,
       "title": "docs(qdesk): propose Observatory + Delphi DoE self-implementation pipeline",
-      "updated_at": "2026-11-11T02:31:22Z"
+      "updated_at": "2026-11-11T04:13:12Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4952,15 +4940,43 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "74de57e3e8",
+      "head_sha": "e8c48037d4",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5149,
-      "title": "fix(quota): render snapshots without service-state maps",
-      "updated_at": "2026-11-11T02:32:15Z"
+      "mergeable_state": "unstable",
+      "number": 5150,
+      "title": "test(ci): cover shell-quoted colon in YAML plain scalar",
+      "updated_at": "2026-11-11T04:03:49Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "74bb61fe36",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5155,
+      "title": "fix(delphi): paginate complete RFP issue census",
+      "updated_at": "2026-11-11T04:15:48Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "0d807ed018",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5159,
+      "title": "test(quota): cover partial service-state snapshots",
+      "updated_at": "2026-11-11T04:14:28Z"
     }
   ],
   "schema": "operator-matrix/v1",

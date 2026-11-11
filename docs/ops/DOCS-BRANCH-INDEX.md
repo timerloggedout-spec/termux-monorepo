@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-11T10:14:46Z` UTC  
+**Generated:** `2026-11-11T14:25:55Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 269 docs-lane branch(es)
+**Count:** 270 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -53,6 +53,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/bifrost-gateway-recon-reconcile`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/bifrost-gateway-recon-reconcile) | `54e9cd4575e4` | — | `timerloggedout-spec` | registered; no open PR |
 | [`docs/biudl-audit-dossier-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/biudl-audit-dossier-20261021) | `9728dc72e4ce` | — | — | orphan lane |
 | [`docs/biudl-audit-refresh-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/biudl-audit-refresh-20261021) | `44d50fde0056` | — | `Hark` | registered; no open PR |
+| [`docs/biudl-non-device-workstreams-2026-11`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/biudl-non-device-workstreams-2026-11) | `5ec5902b37e0` | [#5170](https://github.com/timerloggedout-spec/termux-monorepo/pull/5170)→`master` (draft) | — | PR without registry link |
 | [`docs/briefing-2026-10-04-collaborator-radar`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/briefing-2026-10-04-collaborator-radar) | `d36c4f85f727` | — | — | orphan lane |
 | [`docs/briefing-2026-10-04-collaborator-radar-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/briefing-2026-10-04-collaborator-radar-v2) | `07f1033563d4` | — | — | orphan lane |
 | [`docs/campaign-watching-fixed`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/campaign-watching-fixed) | `7cf55d05bacb` | — | — | orphan lane |

@@ -42,6 +42,10 @@
 | QD-038 | Delphi pagination | Create more than 100 open delphi:rfp issues distributed across pages | Every page is reconciled; no issue beyond page one is starved |
 | QD-039 | Proposal-content approval binding | Change architecture, acceptance criteria or an artifact after a signed review | Canonical full-package hash mismatch invalidates approval; award consumer refuses stale disposition |
 | QD-040 | Parked lifecycle re-entry | Park an RFP, then advance its recheck condition | Remains parked until gate recheck; re-enters DELPHI_PENDING; no design/pool/work packet while parked |
+| QD-041 | DO statement classification | Replay the existing chat-intent v2 fixtures for `Resilient Efficient Effective`, `Proper Prior Planning`, `alternatives are priority`, plus actionable and hedged controls | Standing maxims classify as `do` with R6 evidence; actionable maxims remain requests; hedged maxims remain speculation; classifier accuracy is not overstated |
+| QD-042 | DO memory provenance and authority | Ingest DO records with missing author/scope, conflicting priorities, supersession and a protected-action request | Exact source text/ref and classifier evidence retained; unknown fields stay UNKNOWN; conflicts surfaced; DO never grants execution permission |
+| QD-043 | Memory Palace locus integrity | Resolve loci to ICM/HindSight record IDs and replay scope/permission filters | Every locus resolves to canonical record IDs/source refs; no duplicate memory store, unauthorized retrieval or source-less memory |
+| QD-044 | Performance Psychology execution loop | Inject success, failure, retryable provider outage, slow-correct and fast-incorrect outcomes | Each action records change/evidence/unknown/next action; failure changes next treatment; no unchanged retry or reward hacking; correctness outranks latency; ATES/WTCV never replace quality gates |
 
 ## Minimum pilot
 

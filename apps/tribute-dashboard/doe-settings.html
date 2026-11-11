@@ -6,6 +6,7 @@
 <meta name="description" content="DoE version and settings register, configured-instance identity rules and provenance.">
 <title>DoE Settings · Ops · Tribute</title>
 <link rel="stylesheet" href="./dashboard.css">
+<script src="./chartkit.js" defer></script>
 <script src="./site-nav.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0b0d10">
@@ -42,6 +43,11 @@
 <section class="panel">
 <h2>Cycle parameters and evidence thresholds</h2>
 <div class="grid" id="cycles"></div>
+</section>
+<section class="panel">
+<h2>Accumulation thresholds</h2>
+<p class="muted" id="chart-stamp">—</p>
+<div id="chart-thresholds"></div>
 </section>
 <section class="panel">
 <h2>Method versions of record</h2>
@@ -94,6 +100,12 @@
       cycles.append(card("Established gate","n ≥ "+g.minimum_n+" · minority ≥ "+g.minimum_minority_n+" · p < "+g.p_value_less_than));
       const a=data.cycle_parameters.accumulation_bars_per_arm;
       cycles.append(card("Accumulation bars","mean "+a.mean_n+" · variance "+a.variance_n+" · claim-grade proportion ~"+a.claim_grade_proportion_n,a.claim_grade_proportion_note));
+      $("chart-stamp").textContent="Settings recorded "+data.recorded_at+" · "+data.schema;
+      $("chart-thresholds").innerHTML=CK.bars([
+        {label:"Mean · n per arm",value:a.mean_n},
+        {label:"Variance · n per arm",value:a.variance_n},
+        {label:"Claim-grade proportion · n per arm",value:a.claim_grade_proportion_n}
+      ]);
       const methods=$("methods");methods.replaceChildren();
       data.method_versions.forEach(v=>methods.append(el("span","tag",v)));
       const epochs=$("epochs");epochs.replaceChildren();

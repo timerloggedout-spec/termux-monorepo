@@ -3,7 +3,7 @@ id: provider-family-doe-observatory
 title: "Provider Family × Configured Instance × DoE settings observatory"
 author: ChatGPT
 posted_at: 2026-11-11
-source: "Owner directive in ChatGPT conversation; existing DOE-FAMILY and NESTED-FAMILY contracts"
+source: source.md
 status: executing
 priority: P1
 reviewers:

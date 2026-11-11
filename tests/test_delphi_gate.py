@@ -358,7 +358,8 @@ def test_gate_keeps_active_sweep_and_hourly_post_burst_backstop():
     # heartbeat guarantees a later full census if an intermediate pending
     # event/tick is replaced or cancelled during a filing burst.
     workflow_path = os.path.join(ROOT, ".github", "workflows", "delphi-gate.yml")
-    with open(workflow_path, encoding="utf-8") as handle:\n        workflow = handle.read()
+    with open(workflow_path, encoding="utf-8") as handle:
+        workflow = handle.read()
     assert "cancel-in-progress: false" in workflow
     assert 'cron: "23 * * * *"' in workflow
     assert "post-burst sweep guarantee" in workflow

@@ -2,4 +2,4 @@
 
 | ID | Work | Priority | Owner | Status | Evidence / Boundary |
 |---|---|---|---|---|---|
-| LMP-01 | Define and, only after separate acceptance, implement a readable machine-parity representation for the root README and any related Linguist-specific badge or compression mechanism. | P2 | Unassigned | posted | Placeholder only. It is separate from `AR-12`; it must preserve explicit public documentation, avoid dependence on private CID/pointer registries, and receive its own compatibility, security, and validation review before implementation. |
+| LMP-01 | Implement a readable, Linguist-guided and comparatively versioned root README evolution lane with a deterministic report-only change-budget planner, canonical mapping references, and validated visuals. | P1 | ChatGPT | executing | Operator-authorized 2026-11-11; branch `docs/linguist-readme-evolution-20261111`; preserves public readability and existing mapping authorities; no random semantic rewrites. |

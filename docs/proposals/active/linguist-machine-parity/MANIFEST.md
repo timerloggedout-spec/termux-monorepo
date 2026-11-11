@@ -4,8 +4,8 @@ title: "Linguist README machine-parity enhancement"
 author: Manus AI
 posted_at: 2026-08-20
 source: source.md
-status: posted
-priority: P2
+status: executing
+priority: P1
 reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
@@ -14,7 +14,8 @@ reviewers:
     role: registrar
     status: posted
 related_prs: []
-related_branches: []
+related_branches:
+  - docs/linguist-readme-evolution-20261111
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -52,3 +53,12 @@ This is a deliberately separate documentation and development lane for a **Lingu
 - ITEMS: [ITEMS.md](ITEMS.md)
 - Source: [source.md](source.md)
 - Excluded current lane: [`AR-12`](../actions-refinements/ITEMS.md)
+
+
+## Review log
+
+### 2026-11-11 — Operator implementation direction
+
+- Disposition: LMP-01 implementation authorized as a separately scoped README evolution lane.
+- Scope: comparative README versioning, canonical Linguist mapping references, deterministic report-only change budgets, and README visual/navigation improvements.
+- Boundary: no private pointer dependency, no random semantic rewrites, no unrelated web application rename, and no claim of deployment.

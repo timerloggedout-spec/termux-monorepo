@@ -166,7 +166,38 @@ Repository-surface discovery is automated through the existing job-scoped operat
 
 A companion **Devin Wiki access reconciler** runs daily after repository-surface discovery. Where the existing Devin GitHub App uses selected-repository access and the established operator PAT meets GitHub’s documented requirements, it assigns newly discovered repositories to that existing App installation. This makes provider-managed Devin/DeepWiki indexing eligible, but it does not call an undocumented public DeepWiki indexing or refresh endpoint, and it does not claim an index is current until its visible source reference is verified.[8]
 
-The validation sequence is therefore deliberate: use DeepWiki or Devin to discover context; bind material claims to primary repository evidence; bring approved documentation into `wiki/` through a pull request; and let the managed publisher project only that reviewed Markdown to GitHub Wiki. The full trust boundary, stale/drift handling, and operator runbook are maintained in [`wiki/DeepWiki-Mirror.md`](wiki/DeepWiki-Mirror.md), [`docs/agentic/repository-surface-reconciliation.md`](docs/agentic/repository-surface-reconciliation.md), and [`docs/agentic/devin-wiki-access-reconciliation.md`](docs/agentic/devin-wiki-access-reconciliation.md). The **Linguist machine-parity README enhancement is a separate proposal** and is not part of this documentation or badge change.
+The validation sequence is therefore deliberate: use DeepWiki or Devin to discover context; bind material claims to primary repository evidence; bring approved documentation into `wiki/` through a pull request; and let the managed publisher project only that reviewed Markdown to GitHub Wiki. The full trust boundary, stale/drift handling, and operator runbook are maintained in [`wiki/DeepWiki-Mirror.md`](wiki/DeepWiki-Mirror.md), [`docs/agentic/repository-surface-reconciliation.md`](docs/agentic/repository-surface-reconciliation.md), and [`docs/agentic/devin-wiki-access-reconciliation.md`](docs/agentic/devin-wiki-access-reconciliation.md). The **Linguist README machine-parity work is now being implemented under LMP-01** as a separately scoped evolution lane. The root README remains explicitly human-readable; compressed tokens and private CID pointers never replace canonical public documentation. See [docs/linguist/README-EVOLUTION.md](docs/linguist/README-EVOLUTION.md) for the policy, branch comparison, reproducible change budgets, and validation contract.
+
+## 1.1 README evolution — Linguist-guided and comparative
+
+README changes are now treated as **versioned, measurable projections** of canonical repository knowledge. The goal is progressive mapping coverage and clearer navigation—not opaque compression or random prose mutation.
+
+~~~mermaid
+flowchart LR
+  A["Canonical sources"] --> B["Linguist mapping registry"]
+  B --> C["Seeded change-budget plan"]
+  C --> D["Branch/version comparison"]
+  D --> E["Readability + semantic checks"]
+  E --> F["Reviewable commit"]
+  F --> G["Re-fetch and measure"]
+  G --> B
+~~~
+
+**Change policy:** routine micro-evolution starts at **0.07%** of eligible tokens, with deterministic ±10% relative jitter. **7% is the exploratory ceiling**, not the default. A larger change is permitted when a semantic, correctness, navigation, or accessibility improvement requires it; the reason is recorded rather than hidden. The planner is report-only and never rewrites text.
+
+| README candidate branch | Line-level delta vs current master |
+|---|---:|
+| docs/readme-agents-link-fix | 2.06% |
+| docs/readme-agents-reference | 75.46% |
+| docs/readme-ates-image-polish | 24.08% |
+| docs/readme-upgrade-claude-entry-ates-deploy | 21.19% |
+| manus/readme-deepwiki-validation-integration | 27.47% |
+| studysprint-readme-currency | 0.51% |
+
+These are reproducible **LCS line-difference ratios**, not quality scores. Historical branches remain comparison inputs; none is overwritten or promoted automatically. The full baseline, formula, seed contract, and comparison command live in [docs/linguist/README-EVOLUTION.md](docs/linguist/README-EVOLUTION.md). The existing [Linguist Panel](apps/tribute-dashboard/linguist.html) remains the visual mapping surface and its feed builder remains the mapping-data consumer.
+
+---
+
 
 ---
 

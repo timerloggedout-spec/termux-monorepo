@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-11T23:41:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -439,8 +439,8 @@ proposals:
   - id: linguist-machine-parity
     title: Linguist README machine-parity enhancement
     author: Manus AI
-    status: posted
-    priority: P2
+    status: executing
+    priority: P1
     path: active/linguist-machine-parity/
     reviewers:
       - id: timerloggedout-spec
@@ -450,7 +450,8 @@ proposals:
         role: registrar
         status: posted
     related_prs: []
-    related_branches: []
+    related_branches:
+      - docs/linguist-readme-evolution-20261111
     gates_required:
       - repo-gate
       - termux-smoke

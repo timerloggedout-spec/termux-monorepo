@@ -1,0 +1,56 @@
+{
+  "schema_version": "linguist.readme-evolution-policy/v1",
+  "policy_id": "LMP-01",
+  "baseline_ref": "master",
+  "default_rate": 0.0007,
+  "default_rate_percent": 0.07,
+  "relative_jitter": 0.1,
+  "exploratory_ceiling": 0.07,
+  "exploratory_ceiling_percent": 7,
+  "seed_source": "base_commit_sha",
+  "selection": "deterministic_per_file_and_directory",
+  "planner_mode": "report_only",
+  "automatic_rewrites": false,
+  "semantic_mutation": false,
+  "canonical_mapping_sources": [
+    "docs/ops/LINGUIST-PANEL-FEED.md",
+    "scripts/linguist/linguist_panel_feed.py",
+    "workspace/compression_sandbox/cedrlang/cedrlang.py",
+    "workspace/compression_sandbox/cedrlang/phase_codec.py",
+    "harmony_hub/config/grimoire/1337_D1CT10N4RY.md"
+  ],
+  "related_surfaces": [
+    "README.md",
+    "CLAUDE.hum.md",
+    "docs/linguist/",
+    "docs/ops/LINGUIST-PANEL-FEED.md",
+    "docs/proposals/active/notation-sets/",
+    "scripts/linguist/",
+    "workspace/compression_sandbox/cedrlang/",
+    "harmony_hub/config/grimoire/",
+    "apps/tribute-dashboard/linguist.html"
+  ],
+  "excluded_path_segments": [
+    ".git",
+    ".deepcli",
+    "tmp",
+    "node_modules",
+    "__pycache__",
+    "artifacts",
+    "generated"
+  ],
+  "measurement": {
+    "branch_comparison": "exact longest-common-subsequence over lines",
+    "changed_line_ratio": "100 * (base_non_equal_lines + candidate_non_equal_lines) / (base_lines + candidate_lines)",
+    "quality_score": null,
+    "interpretation": "change size only; never a quality or semantic-preservation score"
+  },
+  "safety": {
+    "preserve_urls_paths_numbers_code_fences_inline_code_and_identifiers": true,
+    "canonical_sources_remain_human_readable": true,
+    "randomness_only_selects_review_budgets": true,
+    "no_unreviewed_mapping_changes": true,
+    "over_budget_changes_require_reason": true,
+    "historical_refs_are_read_only": true
+  }
+}

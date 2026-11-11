@@ -1,28 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-10T21:37:36Z",
+ "generated_at": "2026-11-11T01:27:04Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 8,
+   "queued": 0,
    "in_progress": 0,
-   "oldest_queued_at": "2026-11-10T21:30:47Z",
-   "by_workflow_queued": {
-    "repo gate": 3,
-    "Orchestration Regression Guard": 1,
-    "PR scope guard": 4
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-10T21:25:50Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1,
-    "pages build and deployment": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -33,44 +26,44 @@
   },
   "4": {
    "tier": 4,
-   "queued": 188,
-   "in_progress": 4,
-   "oldest_queued_at": "2026-11-10T20:54:37Z",
+   "queued": 3,
+   "in_progress": 15,
+   "oldest_queued_at": "2026-11-11T01:25:35Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 107,
-    "Agent Throughput Evidence": 12,
-    "Foresight Evidence Spine": 1,
-    "termux smoke": 3,
-    "Sweep Accountability": 5,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "hitl-control-plane-verify": 1,
-    "graph-matrix-probe": 1,
-    "Context Relationship + Lead/Lag Audit": 4,
-    "lane events recorder": 13,
-    "PR Change Effectiveness Ledger": 2,
-    "DeepSeek CI \u2013 Agentic Automation": 2,
-    "archwiz dangle check": 2,
-    "CellCog review": 2,
-    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
-    "Repository development evaluation": 2,
-    "PR production ledger": 4,
-    "Lane matrix event-driven inventory": 2,
-    "Peer review orchestrator": 4,
-    "Agent PR Jules Handoff": 2,
-    "RECON INTEL discovery": 2,
-    "Action Effectiveness Ledger": 4,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
-    "n8n SHE bridge": 2,
-    "continuous-improve": 1,
-    "PR evidence evaluation": 3,
-    "Workflow Surface Policy": 1
+    "n8n SHE bridge": 1,
+    "Quota Dispatch Tree": 2
    }
   }
  },
  "totals": {
-  "queued": 198,
-  "in_progress": 5
+  "queued": 3,
+  "in_progress": 16
  },
- "wedged_ancient": [],
+ "wedged_ancient": [
+  {
+   "id": 41422211036,
+   "workflow": "PR scope guard",
+   "created_at": "2026-11-02T09:37:37Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41422211036"
+  },
+  {
+   "id": 37655538554,
+   "workflow": "Merge Promotion Queue",
+   "created_at": "2026-10-07T16:57:32Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
+  },
+  {
+   "id": 36803855107,
+   "workflow": "PR production ledger",
+   "created_at": "2026-10-01T02:01:22Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+  },
+  {
+   "id": 36803852632,
+   "workflow": "Peer review orchestrator",
+   "created_at": "2026-10-01T02:01:19Z",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+  }
+ ],
  "wedged_excluded_from_counts": true
 }

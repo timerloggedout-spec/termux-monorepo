@@ -8,8 +8,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "tracking"))
+import repo_tracking as tracking_module  # noqa: E402
 from repo_tracking import (build_doe_join, classify, derive_next, derive_state,  # noqa: E402
-                           _find_instances, NOT_ESTABLISHED)
+                           _find_instances, NOT_ESTABLISHED, _desk_evidence_pr_number)
 
 PROJECTS = [
     {"id": "d1", "lane": "challenge-entries-d1", "project": "D1", "domain": "challenges",
@@ -54,6 +55,49 @@ def test_next_priority():
     fails = [{"workflow": "w", "occurred_at": "2026-10-31T00:00:00Z"}]
     assert "investigate" in derive_next(None, None, [], fails)[0]
     assert derive_next(None, None, [], [])[0] == NOT_ESTABLISHED
+
+
+def test_build_handles_mixed_desk_evidence_shapes():
+    """Exercise legacy and malformed evidence through the public build path."""
+    import json
+    import tempfile
+    from unittest.mock import patch
+
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        (root / "ops" / "tracking").mkdir(parents=True)
+        (root / "ops" / "challenge").mkdir(parents=True)
+        (root / "ops" / "tracking" / "projects.json").write_text(json.dumps({
+            "projects": [{
+                "id": "d1", "lane": "challenge-entries-d1", "project": "D1",
+                "domain": "challenges", "match": ["studysprint"],
+            }]
+        }))
+        evidence_values = [
+            {"pr": 2606}, {"pr": "2607"}, {"pr": 2_147_483_647},
+            {"pr": True}, {"pr": 2_147_483_648}, {"pr": "9" * 4301},
+            {"pr": 0}, {"pr": -1}, {"pr": "not-a-number"},
+            "legacy evidence string", ["legacy", "evidence"], None,
+        ]
+        (root / "ops" / "challenge" / "desk-feed.json").write_text(json.dumps({
+            "generated_at": "2026-10-31T00:00:00Z",
+            "traversals": [
+                {"entry": f"studysprint-{i}", "project": "D1",
+                 "status": "active", "evidence": evidence}
+                for i, evidence in enumerate(evidence_values)
+            ],
+        }))
+        with patch.object(tracking_module, "ROOT", root):
+            feed = tracking_module.build(now=NOW)
+
+    row = next(row for row in feed["rows"] if row["project_id"] == "d1")
+    numbers = [
+        item.rsplit("pr=#", 1)[1]
+        for item in row["evidence"]
+        if "pr=#" in item
+    ]
+    assert numbers == ["2606", "2607", "2147483647"]
+
 
 
 def test_find_instances_nested_and_plan_shapes():

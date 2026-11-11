@@ -180,10 +180,12 @@ def test_missing_snapshot_states_render_as_no_reading(tmp_path):
     harness = tmp_path / "render-states.cjs"
     harness.write_text("""
 const PACK = {series2_snapshots: {
-  services: ["github.api.github_token"],
+  services: ["github.api.github_token", "github.api.github_app"],
   snapshots: [
     {at: "2026-11-04T01:59:43Z", rows: 171, landed: true, provenance: "fixture"},
-    {at: "2026-11-05T01:59:43Z", rows: 171, landed: true, provenance: "fixture", states: null}
+    {at: "2026-11-05T01:59:43Z", rows: 171, landed: true, provenance: "fixture", states: null},
+    {at: "2026-11-06T01:59:43Z", rows: 171, landed: true, provenance: "fixture",
+     states: {"github.api.github_token": "healthy"}}
   ]
 }};
 const node = {innerHTML: ""};
@@ -197,7 +199,7 @@ console.log(node.innerHTML);
 """)
     result = subprocess.run(["node", str(harness)], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
-    assert result.stdout.count("no reading") == 2
+    # Two services across two absent maps plus one missing key in the partial map.\n    assert result.stdout.count("no reading") == 5\n    assert "healthy" in result.stdout
 
 
 def test_g4f_has_no_stamp():

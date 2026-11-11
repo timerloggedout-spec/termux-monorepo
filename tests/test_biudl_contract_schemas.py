@@ -53,7 +53,7 @@ class BIUDLContractSchemaTests(unittest.TestCase):
                 required = set(schema.get("required", []))
                 self.assertTrue(expected.issubset(required))
                 self.assertTrue(required.issubset(properties))
-                self.assertEqual(schema.get("schema_version", {}).get("const"), "1.0")
+                self.assertEqual(properties.get("schema_version", {}).get("const"), "1.0")
 
     def test_contract_schema_ids_are_unique(self):
         ids = []

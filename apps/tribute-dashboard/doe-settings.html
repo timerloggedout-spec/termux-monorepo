@@ -86,7 +86,8 @@
       if(!response.ok)throw new Error("HTTP "+response.status);
       const data=await response.json();
       if(data.schema!=="doe.settings-register/v1")throw new Error("Unexpected schema");
-      $("freshness").textContent="Register loaded";
+      const stampState=CK.stampState(data.recorded_at,Date.now(),86400000);
+      $("freshness").textContent=stampState==="STALE"?"Register loaded · STALE":(stampState==="unknown"?"Register loaded · stamp unknown":"Register loaded");
       $("generated").textContent=data.schema+" · recorded "+data.recorded_at+" · source "+data.source.document;
       $("doe-version").textContent=data.doe_version.value||data.doe_version.status;
       $("doe-version-note").textContent=data.doe_version.note;
@@ -100,7 +101,7 @@
       cycles.append(card("Established gate","n ≥ "+g.minimum_n+" · minority ≥ "+g.minimum_minority_n+" · p < "+g.p_value_less_than));
       const a=data.cycle_parameters.accumulation_bars_per_arm;
       cycles.append(card("Accumulation bars","mean "+a.mean_n+" · variance "+a.variance_n+" · claim-grade proportion ~"+a.claim_grade_proportion_n,a.claim_grade_proportion_note));
-      $("chart-stamp").textContent="Settings recorded "+data.recorded_at+" · "+data.schema;
+      $("chart-stamp").textContent="Settings recorded "+data.recorded_at+" · "+data.schema+(stampState==="STALE"?" · STALE":(stampState==="unknown"?" · stamp unknown":""));
       $("chart-thresholds").innerHTML=CK.bars([
         {label:"Mean · n per arm",value:a.mean_n},
         {label:"Variance · n per arm",value:a.variance_n},

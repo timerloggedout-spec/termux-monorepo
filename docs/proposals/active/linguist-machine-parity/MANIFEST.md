@@ -13,7 +13,8 @@ reviewers:
   - id: Manus AI
     role: registrar
     status: posted
-related_prs: []
+related_prs:
+  - 5188
 related_branches:
   - docs/linguist-readme-evolution-20261111
 gates_required: [repo-gate, termux-smoke]
@@ -30,7 +31,7 @@ This is a deliberately separate documentation and development lane for a **Lingu
 | ID | Role | Status | At | Notes |
 |---|---|---|---|---|
 | `timerloggedout-spec` | operator-authorizer | accepted | 2026-08-20 | Explicitly directed that this work remain a separate scope and development lane. |
-| `Manus AI` | registrar | posted | 2026-08-20 | Registered only; no implementation is authorized by this placeholder. |
+| `Manus AI` | registrar | posted | 2026-08-20 | Registered only; historical registration note; superseded by the separately authorized LMP-01 execution recorded on 2026-11-11. |
 
 ## Review log
 
@@ -41,10 +42,10 @@ This is a deliberately separate documentation and development lane for a **Lingu
 
 ## Checklist (process)
 
-- [ ] Proposal-specific requirements and compatibility boundaries are recorded.
-- [ ] `LMP-01` is accepted before implementation begins.
-- [ ] Any README representation is readable without a private pointer registry.
-- [ ] PRs cite `Implements: LMP-01`.
+- [x] Proposal-specific requirements and compatibility boundaries are recorded.
+- [x] `LMP-01` separately accepted by operator direction on 2026-11-11.
+- [x] README representation remains readable without a private pointer registry.
+- [x] PR #5188 cites `Implements: LMP-01`.
 - [ ] Repository gate and Termux smoke checks are green on merge.
 - [ ] Proposal is closed or advanced only after a separate review.
 

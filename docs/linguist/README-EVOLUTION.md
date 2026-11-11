@@ -1,8 +1,9 @@
 # README Evolution — Linguist-guided, comparative
 
 **Status:** implementing under LMP-01  
-**Baseline:** master at f3e540d92c0bc82c66ebb47437e4909bd41691b9  
+**README comparison baseline:** master snapshot at f3e540d92c0bc82c66ebb47437e4909bd41691b9 (README unchanged across the four subsequent master commits present when PR #5188 opened)  
 **Operator direction:** 2026-11-11  
+**Implementation PR:** #5188  
 **Scope:** root README and directly related Linguist/CedrLang/Grimoire projections
 
 ## Purpose

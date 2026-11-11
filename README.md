@@ -198,9 +198,6 @@ These are reproducible **LCS line-difference ratios**, not quality scores. Histo
 
 ---
 
-
----
-
 ## 2. Repository-native ICM — the operating context
 
 The [Interpretable Context Methodology](docs/icm/CONTEXT.md) is applied to **this repository itself**. It makes folders and Markdown contracts into an agent-readable control plane: each component has a purpose, source boundary, relationships, and first-order change impact. The operating workspace is `docs/icm/`; external forks are inputs, not a replacement for the repository’s own architecture.[2]

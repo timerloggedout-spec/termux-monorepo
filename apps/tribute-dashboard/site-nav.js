@@ -25,6 +25,7 @@
     ["Pools", tribute + "pools.html", "pools"],
     ["MVT", tribute + "mvt.html", "mvt"],
     ["DoE", tribute + "doe.html", "doe"],
+    ["DoE settings", tribute + "doe-settings.html", "doe-settings"],
     ["ATES", tribute + "ates.html", "ates"],
     ["Results Index", tribute + "results-index.html", "results-index"],
     ["Free-tier value", tribute + "free-tier-value.html", "free-tier-value"],

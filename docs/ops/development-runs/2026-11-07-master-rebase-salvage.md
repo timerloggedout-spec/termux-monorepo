@@ -66,3 +66,11 @@ Carried the exact indentation repair from the focused P0 branch into this succes
 - The heredoc body and terminator now share the YAML block-scalar indentation; YAML strips that indentation before the shell executes the script.
 - No baseline changes or gate bypass.
 - Validation on this successor head is pending. The focused P0 branch's repo gate and Termux smoke passed after the same repair, but that result is not substituted for this branch's own CI.
+
+## Follow-up — issue #5087 and run-record hygiene repair
+
+- Repaired `.github/workflows/ios-termux-contribute.yml` by converting the existing-PR summary command from a plain YAML scalar to a literal block scalar; shell command behavior is unchanged.
+- Normalized this record to exactly one trailing newline.
+- Workflow repair commit: `9f624f19f7ab5c3232c80fc416d18cdd7aafad80`.
+- EOF hygiene commit: `b7d197413c95978f3f0fd59b9bee76e58c9ab7b0`.
+- Validation disposition: edits are pushed to the PR branch. Current-head GitHub Actions evidence is pending; no local Termux validation is claimed. Do not close issue #5087 or promote/merge this draft until the repository's current-head checks establish the required baseline and smoke results.

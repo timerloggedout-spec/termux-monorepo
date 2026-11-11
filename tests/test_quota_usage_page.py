@@ -194,7 +194,7 @@ function esc(value) { return String(value); }
 function stateClass(value) { return String(value).replace(/[^a-z_]/g, ""); }
 """ + render + """
 renderStates();
-if (!node.innerHTML.includes("no reading")) process.exit(1);
+if (!node.innerHTML.includes("no reading") || !node.innerHTML.includes("healthy")) process.exit(1);
 console.log(node.innerHTML);
 """)
     result = subprocess.run(["node", str(harness)], capture_output=True, text=True)

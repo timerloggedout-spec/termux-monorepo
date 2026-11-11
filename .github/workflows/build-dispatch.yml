@@ -167,17 +167,14 @@ jobs:
             if [ "$CMP" = "__UNREADABLE__" ]; then fail_open "compare read failed"; fi
             AHEAD="$(printf '%s' "$CMP" | grep -o '"ahead_by": *[0-9]*' | grep -o '[0-9]*' | head -n 1)"
             if [ -n "$AHEAD" ] && [ "$AHEAD" -ge 1 ]; then EVIDENCE="branch ahead by $AHEAD"; fi
-            if [ -z "$EVIDENCE" ]; then
-              PRS="$(gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")"
-              if [ "$PRS" = "__UNREADABLE__" ]; then fail_open "pulls read failed"; fi
-              if printf '%s' "$PRS" | grep -q '"state": "open"'; then EVIDENCE="open PR with head $BUILD_BRANCH"; fi
-              if [ -z "$EVIDENCE" ] && printf '%s' "$PRS" | grep -q '"merged_at": "[0-9]'; then EVIDENCE="merged PR with head $BUILD_BRANCH"; fi
-            fi
-            if [ -z "$EVIDENCE" ]; then
-              COMMITS="$(gh_get "repos/$REPO/commits?sha=$BUILD_BRANCH&per_page=1")"
-              if [ "$COMMITS" = "__UNREADABLE__" ]; then fail_open "commits read failed"; fi
-              if [ "$COMMITS" != "__NOT_FOUND__" ] && printf '%s' "$COMMITS" | grep -q '"sha":'; then EVIDENCE="commits visible on $BUILD_BRANCH"; fi
-            fi
+          fi
+          # Check PRs even if the branch ref was deleted after merge.
+          # A PR is independent completion evidence under the #5142 contract.
+          if [ -z "$EVIDENCE" ]; then
+            PRS="$(gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")"
+            if [ "$PRS" = "__UNREADABLE__" ]; then fail_open "pulls read failed"; fi
+            if printf '%s' "$PRS" | grep -q '"state": "open"'; then EVIDENCE="open PR with head $BUILD_BRANCH"; fi
+            if [ -z "$EVIDENCE" ] && printf '%s' "$PRS" | grep -q '"merged_at": "[0-9]'; then EVIDENCE="merged PR with head $BUILD_BRANCH"; fi
           fi
 
           if [ -n "$EVIDENCE" ]; then

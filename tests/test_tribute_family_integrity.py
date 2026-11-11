@@ -33,7 +33,8 @@ class TributeFamilyIntegrityTests(unittest.TestCase):
         collector = (ROOT / "scripts/tracking/nested_family.py").read_text()
         self.assertIn("nested-family/v1", spec)
         self.assertIn("instance_key", spec)
-        self.assertIn('"instance_key" not in _FILL_FIELDS', collector)
+        fill_fields = collector.split('_FILL_FIELDS = (', 1)[1].split(')', 1)[0]
+        self.assertNotIn('"instance_key"', fill_fields)
 
     def test_dashboard_does_not_rewrite_the_generated_feed_contract(self):
         feed = json.loads((DASH / "data/nested-family-feed.json").read_text())

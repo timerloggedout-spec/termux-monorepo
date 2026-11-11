@@ -136,3 +136,25 @@ def test_observability_fix_on_builder_step():
     builder = text[start:end]
     assert "gemini_debug: 'true'" in builder
     assert "upload_artifacts: true" in builder
+
+def test_verify_never_accepts_inherited_branch_commits_as_completion():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("if: failure()", start)
+    verify = text[start:end]
+    assert 'AHEAD" -ge 1' in verify, "branch evidence must require a commit ahead of master"
+    assert 'commits?sha=' not in verify, (
+        "the branch commits endpoint includes inherited commits and cannot prove new output"
+    )
+
+
+def test_verify_checks_pr_even_when_branch_ref_is_missing():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("if: failure()", start)
+    verify = text[start:end]
+    ref_guard = verify.index('if [ "$REF" != "__NOT_FOUND__" ]')
+    pr_check = verify.index('pulls?head=')
+    assert pr_check > ref_guard
+    assert "Check PRs even if the branch ref was deleted after merge" in verify
+

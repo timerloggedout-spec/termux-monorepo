@@ -20,6 +20,7 @@ The funnel is retired: every dispatch-capable surface is a named lane below, hon
   dispatches instead of permanent exile; a first success promotes it at the next feed refresh.
 - **triggerable** — a live trigger exists (workflow_dispatch / schedule / event) but the surface
   is support-class or has never fired.
+- **catalog-only** — a catalog endpoint is visible, but no inference route is admitted; never dispatchable for inference.
 - **inference-only** — registry model records with no build-dispatch wiring of their own.
   Reachable for inference/eval tasks via a named arm (`provider-batch`, `provider-availability`,
   `openrouter-free-counter-batch-probe`); promotion path = `cadence-provider-onboarding` + one
@@ -243,3 +244,16 @@ Cross-ref: Swarm widened rotation of record = SWARM doc §15 (PR #3056). Batch i
 
 Desk single-writer refresh pattern (feed PR). Re-census registry + workflow runs at each
 refresh; a lane's class changes only on cited run/PR evidence, never on wiring alone.
+
+
+## Current provider-index reconciliation (2026-11-10)
+
+The generated [provider participation index](../../ops/quota/provider-participation-index.json) joins every model-lane registry record to the per-record dispatch catalog and nested-family participation evidence. Current source population: **98 model records / 96 distinct provider names / 36 ID-prefix families**. Current class distribution: `catalog-only` 1 · `inference-only` 65 · `proven` 7 · `triggerable` 2 · `wired-unproven` 23.
+
+Three records were reconciled into the dispatch catalog:
+
+- `claude.seat_runtime` — `proven` seat-runtime dispatch surface (Muse Spark 1.3); metered. Quota consumption remains unknown; this is not free-tier evidence.
+- `deepseek.api` — `proven` direct DeepSeek API route, distinct from `g4f.deepseek` and the DeepSeek CI build arm; nested-family inference-invoke receipts supply model-level participation evidence.
+- `agentrouter.models` — `catalog-only`; authenticated model-catalog visibility is not inference admission and this arm remains non-dispatchable pending its recorded gates.
+
+**Evidence dimensions stay separate:** registration ≠ catalog reachability ≠ invocation route ≠ passed invocation ≠ free eligibility. The index preserves observed roles and exact model identities only where nested-family records supply them. Free eligibility remains schema `null` absent exact account+model admission evidence. The existing `util-1-provider-rotation` campaign remains the tournament; no duplicate tournament engine or campaign is created.

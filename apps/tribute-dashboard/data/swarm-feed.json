@@ -6,7 +6,8 @@
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
   "grouping": "family (registry id prefix) > registry records; g4f upstreams nest under the single g4f family",
   "envelope": "aligned with Tracking nested-family/v1 {schema, generated_at, generated_by, spec, sources, summary, providers, gaps}",
-  "swarm_definition": "owner 2026-11-01: ALL providers' inference model endpoints participating in 3L0 DoE"
+  "swarm_definition": "owner 2026-11-01: ALL providers' inference model endpoints participating in 3L0 DoE",
+  "verification_semantics": "census_api_verified reflects allocation-census API evidence only; it does not establish inference invocation, free eligibility, or routing admission."
  },
  "sources": [
   {
@@ -41,7 +42,7 @@
   "families": 35,
   "families_direct": 34,
   "g4f_children": 61,
-  "live_verified_families": 12,
+  "census_api_verified_families": 12,
   "rate_limit_events": 8,
   "families_populated": 29,
   "families_gap": 6,
@@ -61,7 +62,7 @@
    "provider": "aion",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -116,7 +117,7 @@
    "provider": "baseten",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -149,7 +150,7 @@
    "provider": "cerebras",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -204,7 +205,7 @@
    "provider": "claude",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -237,7 +238,7 @@
    "provider": "cloudflare",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -292,7 +293,7 @@
    "provider": "cohere",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -345,7 +346,7 @@
    "provider": "deepinfra",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -378,7 +379,7 @@
    "provider": "deepseek",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -411,7 +412,7 @@
    "provider": "felo",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -467,7 +468,7 @@
    "provider": "friendli",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -500,7 +501,7 @@
    "provider": "g4f",
    "record_count": 61,
    "providers_distinct": 61,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -1753,7 +1754,7 @@
    "provider": "gemini",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -1806,7 +1807,7 @@
    "provider": "github",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -1923,7 +1924,7 @@
    "provider": "groq",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -1978,7 +1979,7 @@
    "provider": "huggingface",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2031,7 +2032,7 @@
    "provider": "kilo",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2086,7 +2087,7 @@
    "provider": "llm7",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2139,7 +2140,7 @@
    "provider": "meta",
    "record_count": 3,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2232,7 +2233,7 @@
    "provider": "mistral",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2287,7 +2288,7 @@
    "provider": "modelscope",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2342,7 +2343,7 @@
    "provider": "novita",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "gap",
     "bases": []
@@ -2375,7 +2376,7 @@
    "provider": "nvidia",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2428,7 +2429,7 @@
    "provider": "omni",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2483,7 +2484,7 @@
    "provider": "openrouter",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2540,7 +2541,7 @@
    "provider": "ovhcloud",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2595,7 +2596,7 @@
    "provider": "requesty",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2650,7 +2651,7 @@
    "provider": "routeway",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2703,7 +2704,7 @@
    "provider": "sambanova",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2756,7 +2757,7 @@
    "provider": "sealion",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2811,7 +2812,7 @@
    "provider": "siliconflow",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2864,7 +2865,7 @@
    "provider": "typhoon",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -2919,7 +2920,7 @@
    "provider": "unorouter",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [
@@ -2972,7 +2973,7 @@
    "provider": "xfyun",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -3027,7 +3028,7 @@
    "provider": "xkiro",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": false,
+   "census_api_verified": false,
    "population": {
     "state": "populated",
     "bases": [
@@ -3082,7 +3083,7 @@
    "provider": "zai",
    "record_count": 1,
    "providers_distinct": 1,
-   "live_verified": true,
+   "census_api_verified": true,
    "population": {
     "state": "populated",
     "bases": [

@@ -742,7 +742,7 @@
       },
       "cross_ref": "Swarm widened rotation of record: SWARM doc \u00a715 (PR #3056 merged 8a8dd117fdb8) \u2014 arm inventory evidence-graded; this catalog is the desk-feed mirror.",
       "inference_availability": {
-        "note": "THE CRUX (owner emphasis 2026-11-01 via D1): catalog resolution stands on invocability \u2014 which registry records are actually invocable, via which route. Per-record mapping for all 91 model-lane records. Sources firsthand @master: registry ops/quota/registry.json blob 0f892261; availability surface scripts/provider_model_catalog.py blob 5d8f4b25 (ENDPOINTS 16 + SECRETS 17) driven by scripts/provider_availability_probe.py blob 323fc443 via provider-availability.yml; batch surface llm_api_hub/server/research_providers.py blob 062ec524 (ENDPOINTS 14 provider keys).",
+        "note": "THE CRUX (owner emphasis 2026-11-01 via D1): catalog resolution stands on invocability \u2014 which registry records are actually invocable, via which route. Per-record mapping for all 98 model-lane records. Sources firsthand @master: registry ops/quota/registry.json blob 0f892261; availability surface scripts/provider_model_catalog.py blob 5d8f4b25 (ENDPOINTS 16 + SECRETS 17) driven by scripts/provider_availability_probe.py blob 323fc443 via provider-availability.yml; batch surface llm_api_hub/server/research_providers.py blob 062ec524 (ENDPOINTS 14 provider keys).",
         "surface_semantics": "provider-availability proves credential_present + catalog_ok ONLY (its own schema: inference_ok = false for scheduled probes). Bounded inference legs exist for exactly 2 providers in the probe: openrouter (openrouter_inference on credential+catalog ok) and gemini (models list + generateContent-capability check). Availability coverage != inference proof for the other 14.",
         "rosters": {
           "availability_endpoints": [
@@ -787,12 +787,13 @@
           }
         },
         "summary": {
-          "records": 95,
+          "records": 98,
           "by_class": {
             "wired-unproven": 23,
             "triggerable": 2,
             "inference-only": 65,
-            "proven": 5
+            "proven": 7,
+            "catalog-only": 1
           },
           "availability_covered": 16,
           "availability_secret_only": 1,
@@ -1910,6 +1911,40 @@
             ],
             "registry_live_field": "none published",
             "invoke_verdict": "INVOKE OK http 200 on openai/gpt-oss-120b @1.8s (verdict #3141 c.6560581857); catalog http 200 / 20 models (c.6560578679). First net-new to clear the completion tier at wiring time - joins the INVOKE-OK set {cohere, sealion, baseten} among shard-verified providers. Credit finite ($1 Model APIs): dispatchable now, burn-aware"
+          },
+          {
+            "id": "claude.seat_runtime",
+            "provider": "Claude",
+            "class": "proven",
+            "availability_probe": "seat-runtime",
+            "batch": "not-applicable (seat-runtime; not provider-batch)",
+            "inference_route": [
+              "Muse seat runtime (Muse Spark 1.3)"
+            ],
+            "registry_live_field": "routed-dispatch stamps + nested-family carriers; usage-series model axis carries activity-proxy counts; no passive quota reader",
+            "invoke_verdict": "Dispatch-proven 2026-11-01/02 via routed-dispatch stamps; metered seat-runtime pool. Quota and consumption remain unknown; not free-tier evidence."
+          },
+          {
+            "id": "deepseek.api",
+            "provider": "DeepSeek",
+            "class": "proven",
+            "availability_probe": "not-covered",
+            "batch": "not-in-provider-batch (direct provider-invoke route)",
+            "inference_route": [
+              "provider-invoke (direct DeepSeek API; distinct from g4f.deepseek and deepseek.build_dispatch)"
+            ],
+            "registry_live_field": "nested-family carriers + routed-dispatch records; no passive quota reader",
+            "invoke_verdict": "Dispatch-proven; nested-family records include passed inference-invoke receipts for exact DeepSeek models. Account quota remains unknown."
+          },
+          {
+            "id": "agentrouter.models",
+            "provider": "agentrouter",
+            "class": "catalog-only",
+            "availability_probe": "authenticated-catalog",
+            "batch": "not-admitted",
+            "inference_route": [],
+            "registry_live_field": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/reset endpoint verified)",
+            "invoke_verdict": "Catalog-only; conditional DoE arm, not inference-admitted or dispatchable. Activation gates remain those in util-1-provider-rotation/DESIGN.json."
           }
         ],
         "gate_note": "#2672 CLOSED 2026-11-01: gate_state lifted to gate-green on the 7 key-live providers (cohere, llm7, routeway, sambanova, siliconflow, unorouter, zai) - contracts GREEN run 41308987754 (head 87453e9c = PR #3138 merge, in master history), operational_providers job executed = evidence leg run; per-provider invoke promotion proceeds at Swarm as results land.",

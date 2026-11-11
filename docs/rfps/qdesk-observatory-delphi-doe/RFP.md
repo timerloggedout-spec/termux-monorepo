@@ -75,13 +75,13 @@ Support explicit manual dispatch and approved repository events. Normalize each 
 - idempotency key and correlation IDs;
 - lifecycle state and state-transition receipt.
 
-Trigger behavior must be idempotent. Duplicate events must reconcile to one request. Burst handling must coalesce work and preserve a guaranteed post-burst sweep, consistent with the Delphi gate's existing protocol.
+Trigger behavior must be idempotent. Duplicate events must reconcile to one request, one RFP, one campaign identity and one work-packet identity per logical unit. Burst handling must coalesce concurrent work and preserve a guaranteed final post-burst sweep. A filing that arrives after an active sweep captures its input set must be picked up by the next sweep; cancellation of an intermediate/final tick must not silently drop the pending sweep.
 
 ### 4.2 RFP and Delphi review
 
 Generate an RFP package containing MANIFEST, ITEMS, RFP and PROVENANCE using the existing Oracle Method generator. Every factual claim must resolve to an evidence item; unresolved claims are explicitly marked UNVERIFIED / OPEN.
 
-File or update one `delphi:rfp` issue per review unit. Preserve the existing blind panel and signed ledger. Never manufacture ballots, provider inference, external endorsement or consensus.
+File or update one `delphi:rfp` issue per review unit. Preserve the existing blind panel and signed ledger. The gate must paginate through every page of open `delphi:rfp` issues (not only the first 100) on each reconciliation sweep. The approved disposition must be bound to a canonical SHA-256 of the complete proposal package, including architecture, acceptance criteria and referenced immutable artifacts; any content change invalidates the prior approval and requires re-review. The consumer must verify the exact proposal hash against the signed review record before it consumes an award. Never manufacture ballots, provider inference, external endorsement or consensus.
 
 A Delphi award controls review disposition only. It does not authorize credentials, paid calls, merges, deploys, external account creation, data deletion or production traffic.
 
@@ -102,7 +102,7 @@ Candidate record fields should include:
 - validation plan, independent oracle and exit criteria;
 - decision state, reason, reviewer and receipt refs.
 
-Pool generation must be deterministic for a pinned input census, config, seed and generator version. It must support:
+Pool generation must be deterministic for a pinned input census, config, seed and generator version. Every generation retains the incumbent and all candidates, including when a new candidate improves the observed score; promotion creates a new generation and never overwrites or deletes the incumbent. It must support:
 
 - full-factorial and Taguchi L9 where appropriate and supported;
 - blocked/randomized assignment where the design calls for it;
@@ -164,7 +164,9 @@ The UI must render unknown, stale, unobserved, blocked and NOT_ESTABLISHED as di
 
 ## 5. Lifecycle and state contract
 
-`RECEIVED → NORMALIZED → EVIDENCE_CHECKED → RFP_GENERATED → DELPHI_PENDING → DELPHI_AWARDED | DELPHI_PARKED → DESIGN_REGISTERED → POOL_GENERATED → IMPLEMENTATION_READY → IMPLEMENTING → VALIDATING → REVIEW_PENDING → ACCEPTED | REJECTED | HELD → FEEDBACK_RECORDED → NEXT_GENERATION`
+`RECEIVED → NORMALIZED → EVIDENCE_CHECKED → RFP_GENERATED → DELPHI_PENDING → DELPHI_AWARDED → DESIGN_REGISTERED → POOL_GENERATED → IMPLEMENTATION_READY → IMPLEMENTING → VALIDATING → REVIEW_PENDING → ACCEPTED | REJECTED | HELD → FEEDBACK_RECORDED → NEXT_GENERATION`.
+
+`DELPHI_PARKED` is a holding state, not a path to design registration. A parked request remains parked until its gate-defined recheck condition is met; it then returns to `DELPHI_PENDING` for a fresh decision. It cannot create a design, campaign, work packet or provider call while parked.
 
 Side states: `BLOCKED`, `STALE`, `CANCELLED`, `FAILED`, `RETRYABLE`, `SUPERSEDED`. Transitions must be append-recorded with actor, timestamp, reason, input/output hashes and evidence refs. Invalid transitions fail closed.
 
@@ -172,7 +174,7 @@ Side states: `BLOCKED`, `STALE`, `CANCELLED`, `FAILED`, `RETRYABLE`, `SUPERSEDED
 
 - No secret values in issues, RFPs, telemetry, artifacts or provenance; secret names only.
 - No paid fallback, card-gated service, account hopping or credential provisioning from an RFP award.
-- Provider/model inference is disabled unless the existing exact entitlement, fresh quota and independent validation requirements are satisfied.
+- Provider/model inference is disabled unless the existing exact entitlement, fresh quota and independent validation requirements are satisfied. Unknown, stale, incomplete or exhausted quota is an admission denial: no provider call (including a nominally free call) may occur until the authoritative quota evidence is fresh and admission succeeds.
 - Provider quotas are capacity constraints, not quality scores.
 - Do not let an agent approve its own high-impact changes.
 - Keep builder, reviewer and independent verifier roles distinct.
@@ -220,7 +222,7 @@ Side states: `BLOCKED`, `STALE`, `CANCELLED`, `FAILED`, `RETRYABLE`, `SUPERSEDED
 - No replay-only or title-level data is promoted as a verified outcome.
 - Builder and verifier are independently attributable.
 - Paid/credentialed/destructive/prod actions remain gated.
-- Dashboard projections match canonical feed/ledger records.
+- Dashboard projections match canonical feed/ledger records. A documented propagation grace period is bounded per feed contract; during the interval any delta must be explicitly `STALE`/`INCOMPLETE` with observed and expected counts, and after recovery exact parity is required. No feed may remain indefinitely incomplete merely because it publishes a delta.
 - All required tests and failure-injection cases pass; residual gaps are named.
 
 ## 10. Review questions for Delphi panel

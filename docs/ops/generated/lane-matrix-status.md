@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-11T02:28:42Z)
+# Lane matrix status (2026-11-11T02:31:03Z)
 
-- Master: `e00036078cdce1624a942d29e9d2bfc3e2a5f097`
+- Master: `5d3f7a213057fb3bdd76be0467c4c0cfa46d52aa`
 - Open PRs: **340**
 - Oldest: #47 (97.45d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -24,7 +24,7 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 20.83 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 10.43 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 7.92 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4069 | 7.93 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 7.24 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 6.58 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 4.48 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
@@ -45,8 +45,8 @@
 | #1495 | 20.0 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 19.76 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 19.76 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 19.75 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 19.74 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 19.76 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 19.75 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 19.73 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 19.06 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 17.98 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |

@@ -11,7 +11,7 @@ The QDesk proposal and several implementation slices have commits and open pull 
 
 | Workstream | PR / issue | Last observed head | Last observed result | Current action |
 |---|---|---|---|---|
-| QDesk Observatory / Delphi / DoE RFP | [PR #5145](https://github.com/timerloggedout-spec/termux-monorepo/pull/5145) | `5dd7f0b9ab6c13a7e8fd8cd143262daa00b18f5d` | Open; current-head checks queued; 6/8 CodeRabbit threads resolved; QD-038 pagination and QD-039 full-content binding remain tracked | Added QD-033–044, corrected lifecycle and quota contracts, repaired workflow YAML; current-head checks required |
+| QDesk Observatory / Delphi / DoE RFP | [PR #5145](https://github.com/timerloggedout-spec/termux-monorepo/pull/5145) | `b7876061cfefc3876e37a9b0cbecec3442958c75` | Open; current-head checks queued; 6/8 CodeRabbit threads resolved; QD-038 pagination and QD-039 full-content binding remain tracked | Added QD-033–044, DO/Memory Palace/Performance Psychology integration, terminology clarification and workflow YAML repair; current-head checks required |
 | Quota Usage renderer | [PR #5149](https://github.com/timerloggedout-spec/termux-monorepo/pull/5149) | `8595a141f5afdd8744dc91a40caa128b695a361f` | MERGED; quota-analysis 144 passed + 15 subtests; repo gate passed | Post-merge master re-fetch confirmed renderer guard, test and workflow inclusion; partial-map fixture follow-up is [PR #5159](https://github.com/timerloggedout-spec/termux-monorepo/pull/5159) |
 | Quota Usage defect | [Issue #5148](https://github.com/timerloggedout-spec/termux-monorepo/issues/5148) | N/A | Main renderer repair merged in #5149 | Keep issue open only until partial-map regression PR #5159 passes and merges |
 | Delphi issue pagination | [PR #5155](https://github.com/timerloggedout-spec/termux-monorepo/pull/5155) | `24b6b10c4803fd5981c5c1befc1dbd5afa2ccf57` | Open; focused Delphi Gate Contract Tests and repository checks queued | Implemented paginated census, PR filtering, boundary de-duplication and fail-closed cap; awaiting CI |
@@ -35,7 +35,7 @@ Changes committed:
 - Made unknown/stale/incomplete/exhausted quota a provider-admission denial, including for nominally free providers.
 - Corrected lifecycle: `DELPHI_PARKED` returns only to gate re-evaluation and cannot create designs, campaigns, work packets or provider calls.
 - Added bounded feed-divergence semantics: visible STALE/INCOMPLETE during a declared propagation window, alert outside it, exact parity after recovery.
-- Added acceptance tests QD-033 through QD-040.
+- Added acceptance tests QD-033 through QD-044, including DO intent, memory provenance/loci and Performance Psychology controls.
 - Repaired `.github/workflows/ios-termux-contribute.yml`: a colon-bearing shell command was authored as a plain YAML scalar (`run: echo "Existing PR: ..."`), which is invalid YAML because the colon-space occurs in a plain scalar. It is now a block scalar. This was the cause of the repo-gate ratchet finding `invalid_control_plane_yaml: 0 → 1` on the previously observed PR merge tree.
 
 ### 2.2 Quota Usage branch
@@ -64,7 +64,7 @@ RFP and DESIGN now specify DO statements as provenance-bearing standing principl
 
 ## 3. CI evidence and failure diagnosis
 
-**Latest observation:** PR #5145 head `e3806dabc28657d357ba97b08bf7c504090037dd`, PR #5149 head `33bb944626eefcaf2f4fe68e73733c1847b3a896`, and PR #5155 head `2c5cc328ba3fa51a68c658070a8c0de4c912c3df` had fresh workflow cohorts queued/in progress at the latest poll. No new pass is claimed from a queued state.
+**Latest observation before this status refresh:** PR #5145 head `b7876061cfefc3876e37a9b0cbecec3442958c75` and PR #5155 head `24b6b10c4803fd5981c5c1befc1dbd5afa2ccf57` had fresh workflow cohorts queued; PR #5159 head `0d807ed018bde47e8ed31b275a6a888cd952cbb3` had its cohort queued. PR #5149 has since merged as `8595a141f5afdd8744dc91a40caa128b695a361f` after quota-analysis (144 tests + 15 subtests) and repo gate passed. The redacted evidence collector failed from GitHub App API exhaustion; dangling-reference check reported 79 repo-wide findings, tracked in #5158. No queued state is counted as success.
 
 ### 3.1 QDesk PR #5145 — prior observed head
 

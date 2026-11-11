@@ -1,17 +1,17 @@
 {
   "schema": "lane-matrix-sweep/v2",
-  "observed_at": "2026-11-11T02:27:20Z",
+  "observed_at": "2026-11-11T02:28:42Z",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "master_sha": "3ab34db7b63a5686c26cdcd16a6b3c17cc9c9f96",
+  "master_sha": "e00036078cdce1624a942d29e9d2bfc3e2a5f097",
   "freshness": {
     "trigger": "pull_request_target",
     "semantics": "event-driven snapshot; age buckets are informational at observed_at",
     "polling": false
   },
   "counts": {
-    "open_prs": 339,
+    "open_prs": 340,
     "by_lane": {
-      "CANDIDATE": 99,
+      "CANDIDATE": 100,
       "NEED_EVIDENCE": 68,
       "SUPERSEDE": 166,
       "EXTRACT": 6
@@ -20,7 +20,7 @@
       "ancient": 25,
       "stale": 10,
       "mid": 229,
-      "fresh": 75
+      "fresh": 76
     }
   },
   "oldest": {
@@ -352,7 +352,7 @@
       "changed_files": -1,
       "created_at": "2026-09-20T18:25:04Z",
       "updated_at": "2026-10-23T13:34:16Z",
-      "days_open": 51.33,
+      "days_open": 51.34,
       "age_bucket": "ancient",
       "lane": "CANDIDATE",
       "reasons": [
@@ -638,7 +638,7 @@
       "changed_files": -1,
       "created_at": "2026-10-19T09:18:06Z",
       "updated_at": "2026-10-23T07:40:35Z",
-      "days_open": 22.71,
+      "days_open": 22.72,
       "age_bucket": "stale",
       "lane": "CANDIDATE",
       "reasons": [
@@ -925,7 +925,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T08:20:11Z",
       "updated_at": "2026-10-22T08:23:49Z",
-      "days_open": 19.75,
+      "days_open": 19.76,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1013,7 +1013,7 @@
       "changed_files": -1,
       "created_at": "2026-10-22T09:04:40Z",
       "updated_at": "2026-10-22T09:07:25Z",
-      "days_open": 19.72,
+      "days_open": 19.73,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -1211,7 +1211,7 @@
       "changed_files": -1,
       "created_at": "2026-10-23T08:06:51Z",
       "updated_at": "2026-10-23T08:07:29Z",
-      "days_open": 18.76,
+      "days_open": 18.77,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1365,7 +1365,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T03:18:20Z",
       "updated_at": "2026-10-25T02:25:16Z",
-      "days_open": 17.96,
+      "days_open": 17.97,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1387,7 +1387,7 @@
       "changed_files": -1,
       "created_at": "2026-10-24T06:10:56Z",
       "updated_at": "2026-10-24T06:36:09Z",
-      "days_open": 17.84,
+      "days_open": 17.85,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -1585,7 +1585,7 @@
       "changed_files": -1,
       "created_at": "2026-10-26T08:06:29Z",
       "updated_at": "2026-10-26T08:06:51Z",
-      "days_open": 15.76,
+      "days_open": 15.77,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1695,7 +1695,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T07:37:04Z",
       "updated_at": "2026-10-27T07:42:12Z",
-      "days_open": 14.78,
+      "days_open": 14.79,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -1827,7 +1827,7 @@
       "changed_files": -1,
       "created_at": "2026-10-27T22:15:41Z",
       "updated_at": "2026-10-27T22:21:15Z",
-      "days_open": 14.17,
+      "days_open": 14.18,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2178,7 +2178,7 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-10-29T05:02:25Z",
-      "updated_at": "2026-11-11T02:26:42Z",
+      "updated_at": "2026-11-11T02:28:21Z",
       "days_open": 12.89,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
@@ -2377,7 +2377,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T07:37:44Z",
       "updated_at": "2026-11-01T01:43:08Z",
-      "days_open": 11.78,
+      "days_open": 11.79,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2399,7 +2399,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T08:06:15Z",
       "updated_at": "2026-10-30T08:11:42Z",
-      "days_open": 11.76,
+      "days_open": 11.77,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2487,7 +2487,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T10:02:06Z",
       "updated_at": "2026-10-30T10:02:21Z",
-      "days_open": 11.68,
+      "days_open": 11.69,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2553,7 +2553,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T11:13:08Z",
       "updated_at": "2026-10-30T11:13:25Z",
-      "days_open": 11.63,
+      "days_open": 11.64,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2641,7 +2641,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:12Z",
       "updated_at": "2026-10-30T23:42:56Z",
-      "days_open": 11.11,
+      "days_open": 11.12,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -2663,7 +2663,7 @@
       "changed_files": -1,
       "created_at": "2026-10-30T23:42:53Z",
       "updated_at": "2026-10-30T23:43:50Z",
-      "days_open": 11.11,
+      "days_open": 11.12,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -3147,7 +3147,7 @@
       "changed_files": -1,
       "created_at": "2026-10-31T16:16:02Z",
       "updated_at": "2026-10-31T16:17:00Z",
-      "days_open": 10.42,
+      "days_open": 10.43,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -3192,7 +3192,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:20Z",
       "updated_at": "2026-11-02T09:46:47Z",
-      "days_open": 10.02,
+      "days_open": 10.03,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3214,7 +3214,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T01:52:29Z",
       "updated_at": "2026-11-01T01:53:48Z",
-      "days_open": 10.02,
+      "days_open": 10.03,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -3610,7 +3610,7 @@
       "changed_files": -1,
       "created_at": "2026-11-01T23:43:06Z",
       "updated_at": "2026-11-01T23:44:38Z",
-      "days_open": 9.11,
+      "days_open": 9.12,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -4006,7 +4006,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T00:54:04Z",
       "updated_at": "2026-11-03T02:26:04Z",
-      "days_open": 8.06,
+      "days_open": 8.07,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4204,7 +4204,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T03:33:13Z",
       "updated_at": "2026-11-03T03:38:45Z",
-      "days_open": 7.95,
+      "days_open": 7.96,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4271,7 +4271,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T05:57:12Z",
       "updated_at": "2026-11-03T05:58:36Z",
-      "days_open": 7.85,
+      "days_open": 7.86,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4425,7 +4425,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T14:21:01Z",
       "updated_at": "2026-11-03T14:21:59Z",
-      "days_open": 7.5,
+      "days_open": 7.51,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -4733,7 +4733,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T17:27:45Z",
       "updated_at": "2026-11-03T17:47:58Z",
-      "days_open": 7.37,
+      "days_open": 7.38,
       "age_bucket": "mid",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -4975,7 +4975,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T18:25:57Z",
       "updated_at": "2026-11-03T18:49:31Z",
-      "days_open": 7.33,
+      "days_open": 7.34,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5129,7 +5129,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:09:20Z",
       "updated_at": "2026-11-03T19:46:50Z",
-      "days_open": 7.3,
+      "days_open": 7.31,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5173,7 +5173,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T19:23:26Z",
       "updated_at": "2026-11-03T21:16:22Z",
-      "days_open": 7.29,
+      "days_open": 7.3,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5349,7 +5349,7 @@
       "changed_files": -1,
       "created_at": "2026-11-03T20:49:51Z",
       "updated_at": "2026-11-03T21:36:33Z",
-      "days_open": 7.23,
+      "days_open": 7.24,
       "age_bucket": "mid",
       "lane": "EXTRACT",
       "reasons": [
@@ -5768,7 +5768,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T00:25:01Z",
       "updated_at": "2026-11-04T00:36:03Z",
-      "days_open": 7.08,
+      "days_open": 7.09,
       "age_bucket": "mid",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -5812,7 +5812,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T00:39:59Z",
       "updated_at": "2026-11-04T00:52:14Z",
-      "days_open": 7.07,
+      "days_open": 7.08,
       "age_bucket": "mid",
       "lane": "CANDIDATE",
       "reasons": [
@@ -5900,7 +5900,7 @@
       "changed_files": -1,
       "created_at": "2026-11-04T07:22:41Z",
       "updated_at": "2026-11-04T07:25:49Z",
-      "days_open": 6.79,
+      "days_open": 6.8,
       "age_bucket": "fresh",
       "lane": "SUPERSEDE",
       "reasons": [
@@ -6517,7 +6517,7 @@
       "changed_files": -1,
       "created_at": "2026-11-05T18:25:14Z",
       "updated_at": "2026-11-05T18:37:42Z",
-      "days_open": 5.33,
+      "days_open": 5.34,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -6627,7 +6627,7 @@
       "changed_files": -1,
       "created_at": "2026-11-06T02:06:14Z",
       "updated_at": "2026-11-06T03:24:25Z",
-      "days_open": 5.01,
+      "days_open": 5.02,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7134,7 +7134,7 @@
       "changed_files": -1,
       "created_at": "2026-11-07T19:52:02Z",
       "updated_at": "2026-11-07T19:59:11Z",
-      "days_open": 3.27,
+      "days_open": 3.28,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
       "reasons": [
@@ -7222,7 +7222,7 @@
       "changed_files": -1,
       "created_at": "2026-11-09T13:51:32Z",
       "updated_at": "2026-11-09T14:10:54Z",
-      "days_open": 1.52,
+      "days_open": 1.53,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7288,7 +7288,7 @@
       "changed_files": -1,
       "created_at": "2026-11-09T22:01:56Z",
       "updated_at": "2026-11-09T22:04:53Z",
-      "days_open": 1.18,
+      "days_open": 1.19,
       "age_bucket": "fresh",
       "lane": "NEED_EVIDENCE",
       "reasons": [
@@ -7463,7 +7463,7 @@
       "mergeable_state": "unknown",
       "changed_files": -1,
       "created_at": "2026-11-11T01:42:10Z",
-      "updated_at": "2026-11-11T02:27:20Z",
+      "updated_at": "2026-11-11T02:28:20Z",
       "days_open": 0.03,
       "age_bucket": "fresh",
       "lane": "CANDIDATE",
@@ -7493,6 +7493,28 @@
         "state:unknown"
       ],
       "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5147"
+    },
+    {
+      "number": 5149,
+      "title": "fix(quota): render snapshots without service-state maps",
+      "user": "timerloggedout-spec",
+      "bot": false,
+      "draft": false,
+      "base_ref": "master",
+      "base_sha": "e00036078cdc",
+      "head_ref": "fix/quota-usage-missing-states-20261110",
+      "head_sha": "74de57e3e892",
+      "mergeable_state": "unknown",
+      "changed_files": -1,
+      "created_at": "2026-11-11T02:27:50Z",
+      "updated_at": "2026-11-11T02:28:39Z",
+      "days_open": 0.0,
+      "age_bucket": "fresh",
+      "lane": "CANDIDATE",
+      "reasons": [
+        "state:unknown"
+      ],
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5149"
     }
   ],
   "rules": {

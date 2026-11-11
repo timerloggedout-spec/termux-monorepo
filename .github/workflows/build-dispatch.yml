@@ -115,8 +115,10 @@ jobs:
         # succeeded. A builder that exits 0 having produced nothing must
         # fail the run here. Evidence (any one): branch ref exists AND
         # compare(master...branch).ahead_by >= 1, OR an open or merged PR
-        # with head = branch, OR commits visible on the branch via the
-        # commits API. Reads use the Swarm App token and are retried twice.
+        # with head = branch. The compare API's ahead_by count is the
+        # branch-specific commit proof; never treat inherited commits from
+        # the branch commits listing as new output. Reads use the Swarm App
+        # token and are retried twice.
         # Positively-empty => failure comment (marker
         # build-dispatch-empty:v1) + step summary + exit 1. UNREADABLE
         # evidence (reads still failing after retries) => fail-OPEN:
@@ -189,7 +191,6 @@ jobs:
             echo "Builder step exited 0 but produced no completion evidence on branch \`$BUILD_BRANCH\`:"
             echo "- branch ref exists with compare ahead >= 1: no"
             echo "- open or merged PR with head = branch: no"
-            echo "- commits visible via the commits API on the branch: no"
             echo "Run: $RUN_URL"
           } >> "$GITHUB_STEP_SUMMARY"
           gh issue comment "$BUILD_ISSUE" --body "<!-- build-dispatch-empty:v1 -->

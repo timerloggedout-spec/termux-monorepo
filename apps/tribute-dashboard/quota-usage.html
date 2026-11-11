@@ -206,7 +206,10 @@ function renderStates(){
   for(const svc of s.services){
     out+='<tr><td><code>'+esc(svc)+'</code></td>';
     for(const sn of s.snapshots){
-      const st=sn.states[svc];
+      // Newer status-only snapshots may omit the per-service states map.
+      // Missing evidence is rendered as "no reading", never as zero.
+      const states = sn.states && typeof sn.states === "object" ? sn.states : {};
+      const st=states[svc];
       out+='<td>'+(st==null?'<span class="chip none">no reading</span>':'<span class="chip '+esc(stateClass(st))+'">'+esc(st)+'</span>')+'</td>';
     }
     out+='</tr>';

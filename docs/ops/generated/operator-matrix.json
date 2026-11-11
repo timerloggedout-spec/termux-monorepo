@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 558,
-    "open_prs": 335,
+    "open_issues": 565,
+    "open_prs": 341,
     "pr_classes": {
-      "CANDIDATE": 149,
+      "CANDIDATE": 151,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 175,
+      "NEED_EVIDENCE": 179,
       "SUPERSEDE": 0
     }
   },
@@ -15,7 +15,7 @@
       "unlabelled_numbers": []
     },
     "delphi": {
-      "issues": 99,
+      "issues": 100,
       "unlabelled_numbers": []
     },
     "mesh": {
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 311,
+      "issues": 315,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -34,6 +34,10 @@
     },
     "providers": {
       "issues": 13,
+      "unlabelled_numbers": []
+    },
+    "quota": {
+      "issues": 1,
       "unlabelled_numbers": []
     },
     "research": {
@@ -49,8 +53,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 55,
-      "prs": 333,
+      "issues": 56,
+      "prs": 339,
       "unlabelled_numbers": [
         308,
         388,
@@ -106,11 +110,12 @@
         5032,
         5050,
         5071,
-        5114
+        5114,
+        5152
       ]
     }
   },
-  "generated_at": "2026-11-10T16:52:16Z",
+  "generated_at": "2026-11-11T03:34:37Z",
   "issues_unlabelled": [
     308,
     388,
@@ -166,7 +171,8 @@
     5032,
     5050,
     5071,
-    5114
+    5114,
+    5152
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -174,7 +180,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "5d1d18efce"
+    "sha": "86b52e0f44"
   },
   "prs": [
     {
@@ -2423,6 +2429,34 @@
       "updated_at": "2026-11-09T23:45:44Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a65ada737a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5144,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "updated_at": "2026-11-10T23:54:24Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "6ae4be8d67",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5150,
+      "title": "fix(ci): quote existing PR summary command in YAML",
+      "updated_at": "2026-11-11T03:20:40Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -2921,7 +2955,7 @@
       },
       "head_sha": "a1c2522a2f",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
       "updated_at": "2026-11-10T16:51:30Z"
@@ -2947,12 +2981,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "4fef648d17",
+      "head_sha": "9b766a7a3f",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-10T16:25:51Z"
+      "updated_at": "2026-11-11T03:30:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2961,12 +2995,12 @@
         "hygiene": "failure",
         "smoke": "success"
       },
-      "head_sha": "38a0473a66",
+      "head_sha": "e65ba0d8bf",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-10T16:41:16Z"
+      "updated_at": "2026-11-11T03:16:23Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3605,12 +3639,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "53085ccf91",
+      "head_sha": "4af3dc52ac",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-10T16:51:26Z"
+      "updated_at": "2026-11-11T01:29:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3619,12 +3653,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "262b0ef2aa",
+      "head_sha": "de3a4a43e1",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-10T16:27:14Z"
+      "updated_at": "2026-11-11T03:33:09Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4375,12 +4409,12 @@
         "hygiene": "failure",
         "smoke": "success"
       },
-      "head_sha": "ac67b32783",
+      "head_sha": "a214e2d70c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-10T16:48:56Z"
+      "updated_at": "2026-11-11T03:30:34Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4739,12 +4773,12 @@
         "hygiene": "failure",
         "smoke": "success"
       },
-      "head_sha": "9db39d1046",
+      "head_sha": "0a2fd5327d",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5074,
       "title": "fix(tracking): harden desk evidence parsing on master",
-      "updated_at": "2026-11-09T14:38:49Z"
+      "updated_at": "2026-11-11T03:24:25Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4871,6 +4905,62 @@
       "number": 5134,
       "title": "feat(provider-index): reconcile provider participation and dispatch pool",
       "updated_at": "2026-11-10T15:56:44Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "1148a37aac",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5143,
+      "title": "chore(recon): refresh pinned free-provider research",
+      "updated_at": "2026-11-10T20:57:48Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "4c1c1c3975",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5145,
+      "title": "docs(qdesk): propose Observatory + Delphi DoE self-implementation pipeline",
+      "updated_at": "2026-11-11T02:31:22Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "150bf2d8b4",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5147,
+      "title": "docs(quota): define API admission + resilient compute mesh contract",
+      "updated_at": "2026-11-11T01:57:30Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "74de57e3e8",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5149,
+      "title": "fix(quota): render snapshots without service-state maps",
+      "updated_at": "2026-11-11T02:32:15Z"
     }
   ],
   "schema": "operator-matrix/v1",

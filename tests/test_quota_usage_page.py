@@ -237,7 +237,19 @@ def test_series3_deltas_match_corpus():
             assert pack_days[date]["jobs_delta"] == cur["total_jobs"] - prev["total_jobs"]
             checked += 1
         prev = cur
-    assert checked == len(pack_days) == 28
+    # The pack retains historical observations from August/September and
+    # the November 1 boundary. This reconstructed corpus fixture is specifically
+    # the October daily series: compare its full date set, then its N-1 deltas.
+    corpus_dates = {
+        f.name[-15:-5]
+        for f in files
+    }
+    october_pack_dates = {
+        date for date in pack_days
+        if date.startswith("2026-10-")
+    }
+    assert corpus_dates == october_pack_dates
+    assert checked == len(corpus_dates) - 1 == 29
     spike = _pack()["series3_actions"]["spike"]
     assert spike["runs"] == 143 and spike["workflow"] == "delphi-gate"
 
@@ -305,7 +317,7 @@ def test_quota_page_links_usage_graphs_and_sitemap():
     quota = (APP / "quota.html").read_text()
     assert 'href="./quota-usage.html"' in quota
     sitemap = (APP / "sitemap.xml").read_text()
-    assert "https://timerloggedout-spec.github.io/help-wanted/quota-usage.html" in sitemap
+    assert "https://timerloggedout-spec.github.io/tribute/quota-usage.html" in sitemap
 
 
 def test_gearbox_consumer_controls_present_and_admin_only():

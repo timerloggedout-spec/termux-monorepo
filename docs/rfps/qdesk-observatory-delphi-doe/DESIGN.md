@@ -19,7 +19,10 @@ The QDesk pipeline is a coordinator and adapter layer. Existing systems remain a
 | QUE / Desk queue admission | `ops/que/feeds/*`, `ops/que/events/*`, `ops/quota/dispatch-tiers.json`, and `ops/challenge/dispatch-state-feed.json` |
 | Dependency/Gantt planning | `docs/agentic/dependency-phases.json`, `scripts/agentic/dependency_phase_engine.py`, `scripts/agentic/gantt_projection.py`, Kahn DAG, challenge countdowns and quota allocation Gantt rows |
 | Referral/marketing maintenance | `config/referral_programs.json`, referral feed/census and `marketing-gantt/1` |
-| Telemetry and quality | OpenTelemetry adapters, ATES, 3L0, Witness / provenance receipts |\n| Standing DO intent | `chat-intent v2` / R6-do-statement classifier, DO phrasing framework and source-message provenance |\n| Durable context and loci | Existing ICM / HindSight graph; Memory Palace loci are indexes to canonical record IDs, not a second database |\n| Execution behavior | `gemini-performance-psychology` skill and Agent Team Development Lanes |
+| Telemetry and quality | OpenTelemetry adapters, ATES, 3L0, Witness / provenance receipts |
+| Standing DO intent | `chat-intent v2` / R6-do-statement classifier, DO phrasing framework and source-message provenance |
+| Durable context and loci | Existing ICM / HindSight graph; Memory Palace loci are indexes to canonical record IDs, not a second database |
+| Execution behavior | `gemini-performance-psychology` skill and Agent Team Development Lanes |
 | Operator presentation | Existing Observatory / Tribute surfaces |
 
 ## Existing feed and Gantt RECON

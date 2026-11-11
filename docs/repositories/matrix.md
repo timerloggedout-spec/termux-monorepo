@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-10T12:47:19.557176Z`
+Observed: `2026-11-11T11:58:07.999432Z`
 
 ## Navigation
 
@@ -16,8 +16,8 @@ Observed: `2026-11-10T12:47:19.557176Z`
 
 ## Changes since previous snapshot
 
-- **Added (3):** `BuilderIO/agent-native`, `Cracked5pider/Ekko`, `timerloggedout-spec/agent-native_fork`
-- **Removed (1):** `signalbetorg/coinbase-trading-agent`
+- **Added (1):** `josejairobaltazargallegos29-a11y/Bicitv`
+- **Removed (1):** `IBM/speculator`
 - **Provenance changed (0):** —
 
 ## Owned
@@ -3064,7 +3064,6 @@ Observed: `2026-11-10T12:47:19.557176Z`
 | [hypothesis/developers.hypothes.is](https://github.com/hypothesis/developers.hypothes.is) | starred | unclassified | medium | — |
 | [hypothesis/pdf.js-hypothes.is](https://github.com/hypothesis/pdf.js-hypothes.is) | starred | unclassified | medium | — |
 | [ibm-research/speculator](https://github.com/ibm-research/speculator) | starred | unclassified | medium | — |
-| [IBM/speculator](https://github.com/IBM/speculator) | starred | unclassified | medium | — |
 | [ibmtjbot/tjbot](https://github.com/ibmtjbot/tjbot) | starred | unclassified | medium | — |
 | [iboss21/iBoss21](https://github.com/iboss21/iBoss21) | starred | unclassified | medium | — |
 | [ICLRandD/Blackstone](https://github.com/ICLRandD/Blackstone) | starred | unclassified | medium | — |
@@ -3127,6 +3126,7 @@ Observed: `2026-11-10T12:47:19.557176Z`
 | [jonathan-gill-uk/markitdown-endpoint-webwrapper](https://github.com/jonathan-gill-uk/markitdown-endpoint-webwrapper) | starred | unclassified | medium | — |
 | [jonhoo/rust-zipf](https://github.com/jonhoo/rust-zipf) | starred | unclassified | medium | — |
 | [jonjonrankin/pi-caveman](https://github.com/jonjonrankin/pi-caveman) | starred | unclassified | medium | — |
+| [josejairobaltazargallegos29-a11y/Bicitv](https://github.com/josejairobaltazargallegos29-a11y/Bicitv) | starred | unclassified | medium | — |
 | [JoshData/dc-code-prototype](https://github.com/JoshData/dc-code-prototype) | starred | unclassified | medium | — |
 | [JoziGila/speculate](https://github.com/JoziGila/speculate) | starred | unclassified | medium | — |
 | [jqlang/jq](https://github.com/jqlang/jq) | starred | unclassified | medium | — |

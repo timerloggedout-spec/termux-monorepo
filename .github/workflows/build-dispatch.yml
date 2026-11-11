@@ -138,12 +138,18 @@ jobs:
           # "__NOT_FOUND__" on HTTP 404, "__UNREADABLE__" if the read
           # still fails after two retries.
           gh_get() {
-            local path="$1" body
+            local path="$1" not_found_is_empty="${2:-false}" body
             for attempt in 1 2 3; do
               body="$(gh api "$path" 2>/tmp/gh_get.err)" && { printf '%s' "$body"; return 0; }
               if grep -qiE '404|not found' /tmp/gh_get.err; then
-                printf '__NOT_FOUND__'
-                return 0
+                if [ "$not_found_is_empty" = "true" ]; then
+                  printf '__NOT_FOUND__'
+                  return 0
+                fi
+                # A 404 from compare/PR endpoints is not proof of emptiness.
+                # Retry, then classify the evidence surface as unreadable.
+                sleep 5
+                continue
               fi
               sleep 5
             done
@@ -162,7 +168,7 @@ jobs:
           }
 
           EVIDENCE=""
-          REF="$(gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH")"
+          REF="$(gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH" true)"
           if [ "$REF" = "__UNREADABLE__" ]; then fail_open "branch ref read failed"; fi
           if [ "$REF" != "__NOT_FOUND__" ]; then
             CMP="$(gh_get "repos/$REPO/compare/master...$BUILD_BRANCH")"

@@ -7,7 +7,10 @@ SEC-03 mint-before-checkout with the Swarm App identity, both pullable
 triggers, the pre-builder D-h/D-i receipt, failure surfacing, and the
 model pin of record, the post-builder verify step (#5142: silent-empty
 converts to FAILURE in-run, fail-open on unreadable evidence), and the
-builder observability fix (debug logging + artifact upload).
+builder observability fix (debug logging + artifact upload), and the
+failure-path observability legs (#5172: artifact upload on builder
+failure, step-summary size guard, gemini_errors memory guard,
+work-preservation checkpoint).
 """
 
 import json
@@ -169,3 +172,56 @@ def test_verify_only_treats_missing_branch_ref_as_positive_empty():
     assert 'gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")' in verify
     assert 'if [ "$not_found_is_empty" = "true" ]' in verify
     assert "A 404 from compare/PR endpoints is not proof of emptiness" in verify
+
+def test_builder_step_has_id_for_failure_path_outcome():
+    text = workflow_text()
+    assert "      - name: Run Gemini CLI builder\n        id: builder\n" in text
+
+
+def test_failure_artifact_upload_step():
+    text = workflow_text()
+    assert "Upload Gemini CLI outputs on builder failure" in text
+    start = text.index("Upload Gemini CLI outputs on builder failure")
+    end = text.index("Checkpoint builder work to branch on failure")
+    step = text[start:end]
+    assert "always()" in step
+    assert "steps.builder.outcome == 'failure'" in step
+    assert "actions/upload-artifact@" in step
+    assert "gemini-artifacts/" in step
+    assert "if-no-files-found: warn" in step
+
+
+def test_step_summary_size_guard():
+    text = workflow_text()
+    assert "Guard step-summary size (1024k cap)" in text
+    start = text.index("Guard step-summary size (1024k cap)")
+    end = text.index("Upload Gemini CLI outputs on builder failure")
+    step = text[start:end]
+    assert "if: always()" in step
+    assert "GITHUB_STEP_SUMMARY" in step
+    assert "1048576" in step  # the 1024k cap, in bytes
+    assert "tail -c" in step
+
+
+def test_checkpoint_step_fail_closed():
+    text = workflow_text()
+    assert "Checkpoint builder work to branch on failure" in text
+    start = text.index("Checkpoint builder work to branch on failure")
+    end = text.index("Verify build completion evidence")
+    step = text[start:end]
+    assert "always()" in step
+    assert "steps.builder.outcome == 'failure'" in step
+    assert "git commit" in step
+    assert "git push" in step
+    assert "--force" not in step
+    assert "gh pr create" not in step
+    assert "WIP checkpoint" in step
+
+
+def test_no_builder_output_references_memory_guard():
+    # #5172(c): the action maps its `error` output to
+    # steps.gemini_run.outputs.gemini_errors, whose evaluation OOM'd at
+    # multi-MB stderr. The workflow must never reference the builder
+    # step's outputs in any expression.
+    text = workflow_text()
+    assert "steps.builder.outputs" not in text

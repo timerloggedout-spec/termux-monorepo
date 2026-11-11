@@ -88,6 +88,7 @@ jobs:
 
           A claim on this issue is watchdog-ageable against heartbeat_deadline: if no PR or already-exists comment lands by then, treat the run as stalled, not silent."
       - name: Run Gemini CLI builder
+        id: builder
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -109,6 +110,88 @@ jobs:
             `gh pr create`, describing what was built and how each acceptance
             item is evidenced. Do not merge. If the work already exists on
             master, say so in a comment on the issue instead of exiting silently.
+      - name: Guard step-summary size (1024k cap)
+        # #5172(b): run 43030936215's step summary aborted at 7343k > the
+        # 1024k cap, so the failure narrative never rendered. The action
+        # appends the model transcript to $GITHUB_STEP_SUMMARY; this step
+        # truncates that file to a safe size (keeping the tail) so later
+        # steps' summaries upload instead of aborting. It cannot recover
+        # the builder step's own aborted summary upload — that needs an
+        # action-side change; the transcript survives as an artifact (a).
+        if: always()
+        run: |
+          set -uo pipefail
+          MAX_BYTES=950000
+          SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-}"
+          if [ -n "$SUMMARY_FILE" ] && [ -f "$SUMMARY_FILE" ]; then
+            SIZE="$(stat -c%s "$SUMMARY_FILE" 2>/dev/null || echo 0)"
+            if [ "$SIZE" -gt 1048576 ]; then
+              tail -c "$MAX_BYTES" "$SUMMARY_FILE" > /tmp/build-dispatch-summary-tail
+              {
+                echo "<!-- build-dispatch: step summary truncated to the 1024k cap (was ${SIZE} bytes; tail kept) -->"
+                cat /tmp/build-dispatch-summary-tail
+              } > "$SUMMARY_FILE"
+              echo "SUMMARY GUARD: truncated step summary ${SIZE} -> <= ${MAX_BYTES} bytes."
+            fi
+          fi
+      - name: Upload Gemini CLI outputs on builder failure
+        # #5172(a): the action's own "Upload Gemini CLI outputs" step is
+        # skipped on builder failure, so run 43030936215 left 0 artifacts.
+        # This step uploads the action's gemini-artifacts/ directory
+        # (stdout.log / stderr.log / telemetry.log) when the builder
+        # failed, so transcripts survive quota/honest fails. Streaming
+        # upload only — the files are never loaded into memory or echoed
+        # into the summary (see (c): the gemini_errors memory guard).
+        if: ${{ always() && steps.builder.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: gemini-cli-outputs-${{ github.run_id }}-failure
+          path: gemini-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Checkpoint builder work to branch on failure
+        # #5172(d): run 43030936215 did ~48min of real work, staged it, and
+        # was quota-killed before any commit — the work died with the
+        # ephemeral runner. This step checkpoints in-progress changes to
+        # the build branch (commit, NO PR) when the builder failed.
+        # FAIL-CLOSED: no force-push ever (a non-fast-forward push is left
+        # unpushed and recorded); the artifact from step (a) holds the work
+        # in that case. Only runs when the working tree actually changed.
+        # The commit is marked WIP so it is never mistaken for a delivery.
+        # #5172(c) memory guard: this workflow never references the
+        # builder step's outputs in any expression — the action maps its
+        # `error` output to the inner gemini_run step's gemini_errors
+        # output, whose evaluation OOM'd at multi-MB stderr on run
+        # 43030936215. No failure-path step loads
+        # transcripts into memory (upload streams; summaries are small
+        # markers only). The action-internal mapping itself cannot be
+        # capped from the workflow — recorded limit, not a fix.
+        if: ${{ always() && steps.builder.outcome == 'failure' }}
+        env:
+          BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          set -uo pipefail
+          if [ -z "$(git status --porcelain -- ':!gemini-artifacts')" ]; then
+            echo "CHECKPOINT: no builder changes to preserve."
+            echo "No builder changes to checkpoint." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git add -A -- ':!gemini-artifacts'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "WIP checkpoint: builder killed on run ${{ github.run_id }} (failure path, #5172) — not a delivery, no PR" || {
+            echo "CHECKPOINT: commit failed — work preserved in the failure artifact instead."
+            echo "Checkpoint commit failed; work preserved in the failure artifact." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          }
+          if git push origin "HEAD:refs/heads/$BUILD_BRANCH" 2>/tmp/checkpoint-push.err; then
+            echo "CHECKPOINT: pushed WIP commit to $BUILD_BRANCH."
+            echo "Builder work checkpointed to \`$BUILD_BRANCH\` (WIP commit, no PR)." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "CHECKPOINT: push failed (non-fast-forward or auth) — NOT force-pushed; work preserved in the failure artifact."
+            echo "Checkpoint push failed — NOT force-pushed; work preserved in the failure artifact." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit 0
       - name: Verify build completion evidence
         # #5142: convert silent-empty SUCCESS into honest FAILURE in-run.
         # Default condition (no `if`): runs only when the builder step

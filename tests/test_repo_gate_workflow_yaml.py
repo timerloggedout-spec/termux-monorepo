@@ -143,6 +143,17 @@ PLAIN_SCALAR_COLON = """\
       rollback: set capability-spine-observe: 'false' on each model-router action call
     """
 
+# Shell quotes do not quote the containing YAML plain scalar. This malformed
+# command must remain detectable because the embedded ': ' is a YAML delimiter.
+PLAIN_SCALAR_SHELL_QUOTED_COLON = """\
+    name: existing-pr
+    jobs:
+      report:
+        steps:
+          - name: report existing pull request
+            run: echo "Existing PR: https://github.com/$OWNER/$REPO/pull/$NUMBER" >> "$GITHUB_STEP_SUMMARY"
+    """
+
 # docs/research/RESEARCH-LANES.yaml: a JSON body pasted into YAML. The `\n` the
 # author meant as a newline stayed two characters, so the line grew a second key
 # and the document died with:
@@ -171,6 +182,7 @@ POSITIVE_FIXTURES = {
     "unquoted !( ) expression": (UNQUOTED_TAG_IF, "scans as a tag"),
     "under-indented block scalar": (UNDER_INDENTED_BLOCK_SCALAR, "block scalar body"),
     "plain scalar containing ': '": (PLAIN_SCALAR_COLON, "nested mapping"),
+    "shell-quoted colon inside YAML plain scalar": (PLAIN_SCALAR_SHELL_QUOTED_COLON, "nested mapping"),
 }
 
 # --------------------------------------------------------------------------- #

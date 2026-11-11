@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-11T08:20:33Z",
+ "generated_at": "2026-11-11T16:31:46Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,12 +10,13 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 9,
+    "queued": 7,
     "in_progress": 0,
-    "oldest_queued_at": "2026-11-11T08:18:15Z",
+    "oldest_queued_at": "2026-11-11T16:29:29Z",
     "by_workflow_queued": {
-     "PR scope guard": 6,
-     "repo gate": 3
+     "PR scope guard": 4,
+     "repo gate": 2,
+     "swarm-admission": 1
     }
    },
    "2": {
@@ -27,94 +28,65 @@
    },
    "3": {
     "tier": 3,
-    "queued": 0,
+    "queued": 1,
     "in_progress": 0,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-11T16:31:39Z",
+    "by_workflow_queued": {
+     "\ud83d\udd00 Build Dispatch (Gemini build arm)": 1
+    }
    },
    "4": {
     "tier": 4,
-    "queued": 431,
-    "in_progress": 4,
-    "oldest_queued_at": "2026-11-11T03:24:46Z",
+    "queued": 91,
+    "in_progress": 15,
+    "oldest_queued_at": "2026-11-11T16:29:29Z",
     "by_workflow_queued": {
-     "Agent Throughput Evidence": 39,
-     "Agent review \u2192 auto Jules": 2,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 5,
-     "termux smoke": 3,
-     "Sweep Accountability": 6,
-     "Provider batch production contracts": 1,
-     "proposal-lifecycle": 1,
-     "ArchWiz Markov Trellis Lab": 1,
-     "Repository development evaluation": 3,
-     "Action Effectiveness Ledger": 6,
-     "Lane matrix event-driven inventory": 5,
-     "PR evidence evaluation": 3,
-     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 3,
-     "archwiz dangle check": 3,
-     "Advisory CodeQL analysis": 1,
-     "PR production ledger": 6,
-     "Peer review orchestrator": 7,
-     "Quota Dispatch Tree": 277,
-     "Context Relationship + Lead/Lag Audit": 6,
-     "tribute-status-refresh": 1,
-     "lane events recorder": 29,
-     "n8n SHE bridge": 2,
-     "delphi-participant-cycle": 1,
-     "Agent PR Jules Handoff": 2,
-     "CellCog review": 2,
-     "DeepSeek CI \u2013 Agentic Automation": 2,
-     "RECON INTEL discovery": 4,
-     "PR Change Effectiveness Ledger": 2,
-     "delphi-ledger-feed-collect": 1,
-     "delphi-rfp-feed-collect": 1,
+     "Agent Throughput Evidence": 31,
      "Issue Comment Router \u2014 modular fan-out reduction": 1,
+     "Quota Dispatch Tree": 7,
+     "tribute-status-refresh": 1,
+     "n8n SHE bridge": 1,
+     "PR production ledger": 5,
+     "Team MVT \u2014 simultaneous provider lanes": 1,
+     "Lane matrix event-driven inventory": 2,
+     "termux smoke": 2,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 4,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+     "CellCog review": 2,
+     "archwiz dangle check": 1,
+     "Sweep Accountability": 4,
+     "Repository development evaluation": 2,
+     "Agent PR Jules Handoff": 2,
+     "Context Relationship + Lead/Lag Audit": 3,
+     "PR Change Effectiveness Ledger": 2,
+     "Peer review orchestrator": 4,
+     "DeepSeek CI \u2013 Agentic Automation": 2,
+     "Action Effectiveness Ledger": 4,
+     "Nomenclature Equivalency Matrix": 1,
+     "delphi-ledger-feed-collect": 1,
+     "RECON INTEL discovery": 1,
+     "PR evidence evaluation": 1,
+     "Jules on Issues (label / @jules)": 1,
      "Issue Observatory \u2014 similarity, refinement, lifecycle evidence": 1,
-     "repo-tracking-collect": 1,
-     "Workflow Surface Policy": 2,
-     "Workflow Surface Evidence": 1
+     "project-task-dispatch": 1,
+     "Issue Lifecycle Triage (deterministic label pass)": 1
     }
    }
   },
   "totals": {
-   "queued": 440,
-   "in_progress": 5
+   "queued": 99,
+   "in_progress": 16
   },
-  "wedged_ancient": [
-   {
-    "id": 41422211036,
-    "workflow": "PR scope guard",
-    "created_at": "2026-11-02T09:37:37Z",
-    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41422211036"
-   },
-   {
-    "id": 37655538554,
-    "workflow": "Merge Promotion Queue",
-    "created_at": "2026-10-07T16:57:32Z",
-    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
-   },
-   {
-    "id": 36803855107,
-    "workflow": "PR production ledger",
-    "created_at": "2026-10-01T02:01:22Z",
-    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
-   },
-   {
-    "id": 36803852632,
-    "workflow": "Peer review orchestrator",
-    "created_at": "2026-10-01T02:01:19Z",
-    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
-   }
-  ]
+  "wedged_ancient": []
  },
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
   "source_schema": "dispatch-state-feed/v1",
-  "source_generated_at": "2026-11-11T02:15:21Z",
+  "source_generated_at": "2026-11-11T09:37:21Z",
   "counts": {
    "claimed": 16,
    "escalated": 7,
-   "queued": 0
+   "queued": 2
   },
   "active_claims": [
    {

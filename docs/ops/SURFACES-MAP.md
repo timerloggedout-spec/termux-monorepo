@@ -20,7 +20,9 @@ flowchart TB
   subgraph PL_identity["Identity & Registry"]
     identity_0["linguist.html"]
     identity_1["family.html"]
-    identity_2["owner-records.html"]
+    identity_2["Bolt ⚡ — Jules web UI (Google Labs)"]
+    identity_3["Sentinel — Jules persona + sentinel modules"]
+    identity_4["owner-records.html"]
   end
   subgraph PL_quota["Providers & Quota"]
     quota_0["quota.html"]
@@ -108,9 +110,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: all 36 tribute .html at master + MoneyBall section 12 set + propose.html = 42 surfaces + 2 classified classes (44 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
-
-Levels per #4884 section C, sparse by the keying rule (a surface renders L iff its primary content IS an occupant of L or a direct projection). The topical axis is surface GROUPS - "plane" is a record word whose only referent is Pool.
+Basis: all 36 tribute .html at master + MoneyBall section 12 set + propose.html + 2 external webui persona surfaces (Jules) = 44 surfaces + 2 classified classes (46 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 | surface | home | group | levels rendered | draws from substrate | repo | code layers | release layer |
 |---|---|---|---|---|---|---|---|
@@ -152,6 +152,8 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | Wagertome — Settlement | moneyball repo | Wagertome — Web3 | ∅ | Book ledger · Wallet ledger | moneyball | site pages · settlement views · replay.py · book+wallet ledgers | moneyball Pages deploy · replay reports @main · settlement stamps in-book · ∅ tagged releases (NOT_ESTABLISHED) |
 | Tribute queues (classified Web3) | tribute | Wagertome — Web3 | ∅ | Surface feeds | termux-monorepo | queue surfaces · tribute gate config · status ledger · gate tests | gate config of record · status-ledger backfill stamps · lane PAUSED (∅ deploys by ruling) |
 | Validation surfaces (classified Web3) | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | gate/status surfaces · validation tests | gate test suite of record · ∅ release line |
+| Bolt ⚡ — Jules web UI (Google Labs) | external — webui app surface | Identity & Registry | ∅ | provenance: .jules/bolt.md + people index (no SSOT draw) | none (operates on termux-monorepo via PRs) | webui app surface (Jules / Google Labs) · persona of record .jules/bolt.md · disposition: external collaborator, not a fleet seat · level note: external persona - role not claimed; provenance = persona file + people index, no substrate draw | vendor surface — no fleet release line (NOT_ESTABLISHED) |
+| Sentinel — Jules persona + sentinel modules | external — Jules webui + termux-monorepo code | Identity & Registry | ∅ | provenance: persona + modules (SSOT mention = candidate row, not a draw) | termux-monorepo | persona .jules/sentinel.md · archwiz/sentinel.py · scripts/termux-resource-sentinel.sh · tests/test_sentinel_privileges.py · level note: unruled candidate - role not claimed · draws: none - persona + modules are provenance (SSOT mention = candidate row, not a draw) · draw annotation: the monikers draw is the section G.1 SSOT candidate row (accepted at verify, f8c11c0a) | persona + modules versioned in-repo · webui runtime = vendor |
 | propose.html | moneyball repo | Wagertome — Web3 | role | Surface feeds · Book ledger | moneyball | site page · proposals feed + receipt chain · S13 machinery (S13.3A) | moneyball Pages deploy · proposal-chain stamps (LISTED transitions in-book) |
 | lanes-and-scopes.html | tribute | Coordination & QUE | role | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · lanes feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | matrix.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
@@ -167,7 +169,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 
 | element | what it is | consumers (count) |
 |---|---|---|
-| AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 10 |
+| AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 12 |
 | Surface feeds | per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts | 38 |
 | QUE feeds | measurement · governor · queue-by-tier · priority windows | 4 |
 | Wallet ledger | ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds | 6 |

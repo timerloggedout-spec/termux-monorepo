@@ -168,4 +168,4 @@ jobs:
           OWNER: ${{ steps.cfg.outputs.owner }}
           REPO: ${{ steps.cfg.outputs.repo }}
           NUMBER: ${{ steps.existing.outputs.number }}
-        run: echo "Existing PR: https://github.com/$OWNER/$REPO/pull/$NUMBER" >> "$GITHUB_STEP_SUMMARY"
+        run: 'echo "Existing PR: https://github.com/$OWNER/$REPO/pull/$NUMBER" >> "$GITHUB_STEP_SUMMARY"'

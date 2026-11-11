@@ -4098,6 +4098,23 @@
           },
           "model": "gemini-3.5-flash-lite",
           "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "mistral",
+          "via": "provider-invoke.yml",
+          "session_id": null,
+          "state": "landed",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch provider-invoke-42952215553: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "not_established"
+          },
+          "model": "NOT_ESTABLISHED",
+          "phrases": "NOT_ESTABLISHED"
         }
       ],
       "stages": {

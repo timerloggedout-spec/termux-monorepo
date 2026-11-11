@@ -1,0 +1,29 @@
+{
+  "context": "provider-invoke mode=invoke",
+  "dispatch_id": "provider-invoke-42952215553",
+  "entry": "3141",
+  "model": null,
+  "moniker": "optimizations-assurance",
+  "outcome": {
+    "artifact": "actions run 42952215553",
+    "confirmed": null,
+    "gate_call": null,
+    "status": "completed",
+    "summary": "provider-invoke.yml run 42952215553 result=success"
+  },
+  "provider": "mistral",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "mistral",
+    "slice": null
+  },
+  "role": "builder",
+  "run": {
+    "run_id": "42952215553",
+    "session_id": null,
+    "workflow": "provider-invoke.yml"
+  },
+  "task_class": "inference-invoke",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-11T03:32:54Z"
+}

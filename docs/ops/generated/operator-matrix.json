@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 570,
-    "open_prs": 343,
+    "open_prs": 342,
     "pr_classes": {
       "CANDIDATE": 158,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 174,
+      "NEED_EVIDENCE": 173,
       "SUPERSEDE": 0
     }
   },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 57,
-      "prs": 341,
+      "prs": 340,
       "unlabelled_numbers": [
         308,
         388,
@@ -116,7 +116,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-11T10:15:46Z",
+  "generated_at": "2026-11-11T13:38:08Z",
   "issues_unlabelled": [
     308,
     388,
@@ -182,7 +182,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "6b6f19db67"
+    "sha": "256bb8c18b"
   },
   "prs": [
     {
@@ -1093,12 +1093,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0963b32745",
+      "head_sha": "a6ae810083",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-11T09:55:42Z"
+      "updated_at": "2026-11-11T10:35:55Z"
     },
     {
       "class": "CANDIDATE",
@@ -1121,12 +1121,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "78852e8e60",
+      "head_sha": "ce0c1e72f4",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-11T09:43:40Z"
+      "updated_at": "2026-11-11T10:42:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1533,6 +1533,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4292383ab0",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-11T13:31:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -2541,20 +2555,6 @@
       "number": 5159,
       "title": "test(quota): cover partial service-state snapshots",
       "updated_at": "2026-11-11T04:35:11Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "bb103517a5",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5164,
-      "title": "fix(build-dispatch): verify step converts silent-empty SUCCESS to FAILURE + observability fix (#5142)",
-      "updated_at": "2026-11-11T10:13:32Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3711,26 +3711,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0ed8f53c0f",
+      "head_sha": "ebd993800e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-11T08:28:54Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "5d80d19de5",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-11T10:08:47Z"
+      "updated_at": "2026-11-11T10:16:09Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3853,7 +3839,7 @@
       },
       "head_sha": "4784c9573d",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
       "updated_at": "2026-11-11T10:15:18Z"

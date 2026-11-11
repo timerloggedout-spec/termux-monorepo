@@ -7,15 +7,18 @@
 
 ## 1. Executive status
 
-The QDesk proposal and quota renderer repair have commits and open pull requests, but the previously observed CI cohorts were not green. This document records the exact evidence baseline and the repairs made in this pass. The new commits require fresh current-head checks before either PR can be merged.
+The QDesk proposal and several implementation slices have commits and open pull requests. The quota renderer repair has merged; its remaining partial-state fixture is a follow-up. This document records exact evidence, current blockers and the promotion boundary.
 
 | Workstream | PR / issue | Last observed head | Last observed result | Current action |
 |---|---|---|---|---|
 | QDesk Observatory / Delphi / DoE RFP | [PR #5145](https://github.com/timerloggedout-spec/termux-monorepo/pull/5145) | `5dd7f0b9ab6c13a7e8fd8cd143262daa00b18f5d` | Open; current-head checks queued; 6/8 CodeRabbit threads resolved; QD-038 pagination and QD-039 full-content binding remain tracked | Added QD-033–044, corrected lifecycle and quota contracts, repaired workflow YAML; current-head checks required |
 | Quota Usage renderer | [PR #5149](https://github.com/timerloggedout-spec/termux-monorepo/pull/5149) | `8595a141f5afdd8744dc91a40caa128b695a361f` | MERGED; quota-analysis 144 passed + 15 subtests; repo gate passed | Post-merge master re-fetch confirmed renderer guard, test and workflow inclusion; partial-map fixture follow-up is [PR #5159](https://github.com/timerloggedout-spec/termux-monorepo/pull/5159) |
-| Quota Usage defect | [Issue #5148](https://github.com/timerloggedout-spec/termux-monorepo/issues/5148) | N/A | Renderer dereferenced optional `states` map | Patch is in PR #5149; not merged |
+| Quota Usage defect | [Issue #5148](https://github.com/timerloggedout-spec/termux-monorepo/issues/5148) | N/A | Main renderer repair merged in #5149 | Keep issue open only until partial-map regression PR #5159 passes and merges |
 | Delphi issue pagination | [PR #5155](https://github.com/timerloggedout-spec/termux-monorepo/pull/5155) | `24b6b10c4803fd5981c5c1befc1dbd5afa2ccf57` | Open; focused Delphi Gate Contract Tests and repository checks queued | Implemented paginated census, PR filtering, boundary de-duplication and fail-closed cap; awaiting CI |
-| Full proposal hash binding | [Issue #5156](https://github.com/timerloggedout-spec/termux-monorepo/issues/5156) | N/A | NOT_STARTED | Versioned immutable package manifest, per-file and aggregate SHA-256, signed-ledger and consumer verification specified |\n| Repository dangling-reference census | [Issue #5158](https://github.com/timerloggedout-spec/termux-monorepo/issues/5158) | N/A | 79 findings on #5149 (65 new, 14 known) | Dynamic URL classification, glob-negation handling and real missing paths/scripts require evidence-led reconciliation |\n| Quota partial-state regression | [PR #5159](https://github.com/timerloggedout-spec/termux-monorepo/pull/5159) | `0d807ed018bde47e8ed31b275a6a888cd952cbb3` | Open; checks queued | Adds explicit partial `states` map fixture; no product-code change |\n| Dispatch liveness recovery | [Issue #5132](https://github.com/timerloggedout-spec/termux-monorepo/issues/5132) / [#5142](https://github.com/timerloggedout-spec/termux-monorepo/issues/5142) | N/A | Prior attempts include empty successful outputs and real builder failures; do not treat success status as proof of effect | Separate recovery lane; retain no-unchanged-retry instruction |
+| Full proposal hash binding | [Issue #5156](https://github.com/timerloggedout-spec/termux-monorepo/issues/5156) | N/A | NOT_STARTED | Versioned immutable package manifest, per-file and aggregate SHA-256, signed-ledger and consumer verification specified |
+| Repository dangling-reference census | [Issue #5158](https://github.com/timerloggedout-spec/termux-monorepo/issues/5158) | N/A | 79 findings on #5149 (65 new, 14 known) | Dynamic URL classification, glob-negation handling and real missing paths/scripts require evidence-led reconciliation |
+| Quota partial-state regression | [PR #5159](https://github.com/timerloggedout-spec/termux-monorepo/pull/5159) | `0d807ed018bde47e8ed31b275a6a888cd952cbb3` | Open; checks queued | Adds explicit partial `states` map fixture; no product-code change |
+| Dispatch liveness recovery | [Issue #5132](https://github.com/timerloggedout-spec/termux-monorepo/issues/5132) / [#5142](https://github.com/timerloggedout-spec/termux-monorepo/issues/5142) | N/A | Prior attempts include empty successful outputs and real builder failures; do not treat success status as proof of effect | Separate recovery lane; retain no-unchanged-retry instruction |
 
 ## 2. Current-head changes made in this pass
 
@@ -59,7 +62,9 @@ Repository recon confirmed the exact existing mechanisms:
 
 RFP and DESIGN now specify DO statements as provenance-bearing standing principles, Memory Palace loci as navigation over canonical ICM/HindSight records, and Performance Psychology as an execution-control skill. Acceptance rows QD-041–044 cover classification, provenance/authority, locus integrity and quality-first feedback loops. The classifier's accuracy remains NOT_ESTABLISHED until its own labeled-outcome gate is met; classification is not automatic policy authority.
 
-## 3. CI evidence and failure diagnosis\n\n**Latest observation:** PR #5145 head `e3806dabc28657d357ba97b08bf7c504090037dd`, PR #5149 head `33bb944626eefcaf2f4fe68e73733c1847b3a896`, and PR #5155 head `2c5cc328ba3fa51a68c658070a8c0de4c912c3df` had fresh workflow cohorts queued/in progress at the latest poll. No new pass is claimed from a queued state.
+## 3. CI evidence and failure diagnosis
+
+**Latest observation:** PR #5145 head `e3806dabc28657d357ba97b08bf7c504090037dd`, PR #5149 head `33bb944626eefcaf2f4fe68e73733c1847b3a896`, and PR #5155 head `2c5cc328ba3fa51a68c658070a8c0de4c912c3df` had fresh workflow cohorts queued/in progress at the latest poll. No new pass is claimed from a queued state.
 
 ### 3.1 QDesk PR #5145 — prior observed head
 

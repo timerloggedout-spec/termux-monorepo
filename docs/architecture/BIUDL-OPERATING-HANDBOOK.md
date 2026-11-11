@@ -38,6 +38,19 @@ The loop is iterative: observations and outcomes improve prioritization, context
 | PR disposition board | `docs/ops/generated/lane-matrix-status.json` |
 | Project state | `ops/tracking/tracking.json` |
 
+## Machine-readable contracts
+
+These schemas define payload shape; they do not create a new database or imply that a producer/consumer is implemented:
+
+| Contract | Schema |
+|---|---|
+| Capability registration | [capability-registration.schema.json](../schemas/capability-registration.schema.json) |
+| Collaborator lifecycle projection | [collaborator-lifecycle.schema.json](../schemas/collaborator-lifecycle.schema.json) |
+| FireSight finding | [firesight-finding.schema.json](../schemas/firesight-finding.schema.json) |
+| Component release manifest | [component-release-manifest.schema.json](../schemas/component-release-manifest.schema.json) |
+
+Producers must validate before emitting. Consumers must reject unknown required versions and preserve unknown optional data only where their contract permits. Schema validation is necessary but does not establish authorization, source authenticity, execution, or correctness.
+
 ## Operating principles
 
 - Discover and inspect before changing; use the live repository SHA.

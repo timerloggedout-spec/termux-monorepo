@@ -158,3 +158,14 @@ def test_verify_checks_pr_even_when_branch_ref_is_missing():
     assert pr_check > ref_guard
     assert "Check PRs even if the branch ref was deleted after merge" in verify
 
+def test_verify_only_treats_missing_branch_ref_as_positive_empty():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("if: failure()", start)
+    verify = text[start:end]
+    assert 'not_found_is_empty="${2:-false}"' in verify
+    assert 'gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH" true' in verify
+    assert 'gh_get "repos/$REPO/compare/master...$BUILD_BRANCH")' in verify
+    assert 'gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")' in verify
+    assert 'if [ "$not_found_is_empty" = "true" ]' in verify
+    assert "A 404 from compare/PR endpoints is not proof of emptiness" in verify

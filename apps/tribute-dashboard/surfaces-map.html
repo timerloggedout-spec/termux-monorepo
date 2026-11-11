@@ -85,6 +85,7 @@ Corrections land as data edits, never prose-only.</p>
 const SUBSTRATE = [
  {id:"monikers", label:"AGENT-MONIKERS SSOT", note:"canonical names · collapse registry · moniker graduations"},
  {id:"feeds", label:"Surface feeds", note:"per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts"},
+ {id:"doeSettings", label:"DoE settings register", note:"ops/doe/settings-register.json — versioned method/settings projection with source provenance"},
  {id:"quefeeds", label:"QUE feeds", note:"measurement · governor · queue-by-tier · priority windows"},
  {id:"walletledger", label:"Wallet ledger", note:"ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds"},
  {id:"bookledger", label:"Book ledger", note:"ops/agentic-gambling/book/ ledger.jsonl + challenges-book — subjects · positions · settlements"},
@@ -117,6 +118,7 @@ const SURFACES = [
  ["pools.html","tribute","moneyball","plane · role",["walletledger"],"termux-monorepo ← moneyball","page · feed+mirror · upstream pools-feed (moneyball repo) · wallet-ledger source · tests","upstream feed stamps (ledger head seq) · mirror parity per refresh PR · site deploy · ∅ release line"],
  ["mvt.html","tribute","scoring","∅",["feeds"],"termux-monorepo","page · MVT feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["doe.html","tribute","scoring","office",["feeds","monikers"],"termux-monorepo","page · DoE feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
+ ["doe-settings.html","tribute","scoring","∅",["doeSettings"],"termux-monorepo","page · settings register JSON + dashboard mirror · chartkit · contract tests","source register provenance · mirror byte-parity · stamped chart · site deploy"],
  ["ates.html","tribute","scoring","∅",["feeds"],"termux-monorepo","page · ATES feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],
  ["results-index.html","tribute","scoring","program",["feeds"],"termux-monorepo","page · results-index feed + canonical twin · builder · tests","feed generated_at + per-section STALE · site deploy"],
  ["free-tier-value.html","tribute","quota","∅",["feeds"],"termux-monorepo","page · free-tier feed · tests","feed generated_at stamp + STALE chip · site deploy · ∅ release line"],

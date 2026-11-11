@@ -53,6 +53,7 @@ keep them; the standard governs data + stamps, not the drawing code.
 | ates.html | ✓ observed runs per workflow (chartkit) | ates-feed.json |
 | results-index.html | ✓ ALL-4 results index, render-verbatim (feed-carried values) | results-index-feed.json |
 | doe.html | ✓ campaigns by state + runs per campaign (chartkit) | doe-feed.json |
+| doe-settings.html | ✓ accumulation thresholds from versioned settings register (chartkit, stamped) | data/doe-settings-register.json |
 | mvt.html | ✓ experiment record population (chartkit) | mvt-feed.json |
 | moneyball.html | ✓ scoring weights + penalty magnitudes (chartkit) | moneyball-feed.json |
 | wagering-book.html | ✓ wagering-book Gantt (own feed) | wagering-book.json |

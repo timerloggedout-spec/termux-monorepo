@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="DoE version and settings register, configured-instance identity rules and provenance.">
+<title>DoE Settings · Ops · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./chartkit.js"></script>
+<script src="./site-nav.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0b0d10">
+<style>
+  .panel{background:#111923;border:1px solid #26384a;border-radius:14px;padding:1rem;margin:1rem 0}
+  .muted{color:#9eafbf}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem}
+  .value{font-size:1.2rem;font-weight:750;overflow-wrap:anywhere}.tag{display:inline-block;border:1px solid #49647d;border-radius:999px;padding:.15rem .55rem;margin:.15rem;font-size:.82rem}
+  ul{padding-left:1.25rem}a{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<header><div class="hero"><div>
+<div class="eyebrow">Ops · DoE family</div>
+<h1>DoE <span>Settings</span></h1>
+<p class="lede">Versioned settings of record and configured-instance identity. This is a structured projection of the DoE register, not a new campaign ledger or execution engine.</p>
+<div class="links" style="margin-top:1rem">
+<a class="button" href="./family.html">Nested Family</a>
+<a class="button" href="./quota-swarm.html">Swarm Quota</a>
+<a class="button" href="./doe.html">DoE campaigns</a>
+<a class="button" href="./dispatch-tree.html">Dispatch Tree</a>
+<a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOE-FAMILY.md">Source register</a>
+<a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/doe/settings-register.json">JSON record</a>
+</div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching settings register.</small></div></div></header>
+<main class="wrap">
+<section class="panel">
+<h2>Global DoE version</h2>
+<div class="value" id="doe-version">NOT_ESTABLISHED</div>
+<p class="muted" id="doe-version-note">A singular global DoE version is not established by the source register.</p>
+</section>
+<section class="panel">
+<h2>Proofs and oracle pins</h2>
+<div class="grid" id="proofs"></div>
+</section>
+<section class="panel">
+<h2>Cycle parameters and evidence thresholds</h2>
+<div class="grid" id="cycles"></div>
+</section>
+<section class="panel">
+<h2>Accumulation thresholds</h2>
+<p class="muted" id="chart-stamp">—</p>
+<div id="chart-thresholds"></div>
+</section>
+<section class="panel">
+<h2>Method versions of record</h2>
+<div id="methods"></div>
+</section>
+<section class="panel">
+<h2>Epoch artifacts</h2>
+<ul id="epochs"></ul>
+</section>
+<section class="panel">
+<h2>Configured-instance identity</h2>
+<p>Provider + verbatim model@version + system-prompt reference/hash + tools reference/hash + role + moniker + context.</p>
+<p class="value">instance_key = SHA-256(canonical configuration tuple)</p>
+<p class="muted">Compare and aggregate by instance_key, never model alone. Distinct configurations remain distinct experimental units. A missing key stays NOT_ESTABLISHED; the Nested Family collector does not synthesize or enrich it.</p>
+<a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/doe/instance_key.py">Identity implementation</a> ·
+<a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/NESTED-FAMILY.md">Nested Family contract</a>
+</section>
+<section class="panel">
+<h2>Connected operational work</h2>
+<ul>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/5136">#5136 Participant Identity Plane</a> — identity issuance and governed dispatch work; separate completion evidence applies.</li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/5145">#5145 QDesk Observatory / Delphi DoE proposal</a> — proposal and review lifecycle, not proof of completed runtime.</li>
+</ul>
+</section>
+<footer class="muted">Projection schema doe.settings-register/v1 · source of record: docs/ops/DOE-FAMILY.md · unlisted settings are not settings of record.</footer>
+</main>
+<script>
+(function(){
+  "use strict";
+  const $=id=>document.getElementById(id);
+  const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
+  const card=(label,value,note)=>{const d=el("div","panel");d.append(el("div","muted",label),el("div","value",value));if(note)d.append(el("p","muted",note));return d;};
+  async function load(){
+    try{
+      const response=await fetch("./data/doe-settings-register.json",{cache:"no-store"});
+      if(!response.ok)throw new Error("HTTP "+response.status);
+      const data=await response.json();
+      if(data.schema!=="doe.settings-register/v1")throw new Error("Unexpected schema");
+      const stampState=CK.stampState(data.recorded_at,Date.now(),86400000);
+      $("freshness").textContent=stampState==="STALE"?"Register loaded · STALE":(stampState==="unknown"?"Register loaded · stamp unknown":"Register loaded");
+      $("generated").textContent=data.schema+" · recorded "+data.recorded_at+" · source "+data.source.document;
+      $("doe-version").textContent=data.doe_version.value||data.doe_version.status;
+      $("doe-version-note").textContent=data.doe_version.note;
+      const proofs=$("proofs");proofs.replaceChildren();
+      proofs.append(card("Manifest schema",data.proofs.manifest_schema),card("Packet",data.proofs.packet));
+      data.proofs.oracle_pins.forEach(p=>proofs.append(card(p.name,p.revision+" · "+p.toolchain,p.fork||"Oracle pin")));
+      const cycles=$("cycles");cycles.replaceChildren();
+      cycles.append(card("Sets per cycle",data.cycle_parameters.sets_per_cycle,"Sets-of-3"));
+      cycles.append(card("Rule 7 floor / cap",data.cycle_parameters.rule_7.floor_n+" / "+data.cycle_parameters.rule_7.cap_n_per_trigger,"Minimum n / maximum n per trigger"));
+      const g=data.cycle_parameters.established_gate;
+      cycles.append(card("Established gate","n ≥ "+g.minimum_n+" · minority ≥ "+g.minimum_minority_n+" · p < "+g.p_value_less_than));
+      const a=data.cycle_parameters.accumulation_bars_per_arm;
+      cycles.append(card("Accumulation bars","mean "+a.mean_n+" · variance "+a.variance_n+" · claim-grade proportion ~"+a.claim_grade_proportion_n,a.claim_grade_proportion_note));
+      $("chart-stamp").textContent="Settings recorded "+data.recorded_at+" · "+data.schema+(stampState==="STALE"?" · STALE":(stampState==="unknown"?" · stamp unknown":""));
+      $("chart-thresholds").innerHTML=CK.bars([
+        {label:"Mean · n per arm",value:a.mean_n},
+        {label:"Variance · n per arm",value:a.variance_n},
+        {label:"Claim-grade proportion · n per arm",value:a.claim_grade_proportion_n}
+      ]);
+      const methods=$("methods");methods.replaceChildren();
+      data.method_versions.forEach(v=>methods.append(el("span","tag",v)));
+      const epochs=$("epochs");epochs.replaceChildren();
+      data.epoch_artifacts.forEach(v=>epochs.append(el("li","",v)));
+    }catch(error){
+      $("freshness").textContent="Register unavailable";
+      $("generated").textContent=String(error.message||error);
+    }
+  }
+  load();
+})();
+</script>
+</body>
+</html>

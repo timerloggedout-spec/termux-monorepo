@@ -52,6 +52,11 @@ jobs:
       - name: ATES outcome receipt contracts
         run: python3 -m unittest discover -s tests -p 'test_ates_*receipt*.py' -v
 
+      - name: Tribute observatory contracts
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_doe_settings_register.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_tribute_family_integrity.py' -v
+
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"
 

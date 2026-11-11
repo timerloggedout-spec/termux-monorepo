@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-02T00:00:00Z'
+updated_at: '2026-11-11T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1263,6 +1263,27 @@ proposals:
     related_prs: []
     related_branches:
       - docs/integration-portfolio-expansion-20261105
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
+
+  - id: provider-family-doe-observatory
+    title: "Provider Family × Configured Instance × DoE settings observatory"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/provider-family-doe-observatory/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 5136
+    related_prs:
+      - 5145
+    related_branches:
+      - feat/provider-family-doe-observatory-20261111
     gates_required:
       - proposal-lifecycle
       - repo-gate

@@ -172,3 +172,30 @@ still publish (fail-soft).
 - **Single-writer:** only `repo-tracking-collect.yml` writes the
   record + twin. Coverage grows as stamps flow; lanes never hand-edit
   the outputs.
+
+
+## DoE settings and configured-instance view
+
+The `nested-family/v1` contract remains unchanged. The Family page is an
+execution-history projection; it displays the winning source record's
+`instance_key` verbatim when present and displays `NOT ESTABLISHED` when
+the key is absent. The collector's non-enrichment rule for `instance_key`
+remains binding.
+
+The DoE version/settings register is a separate projection:
+`ops/doe/settings-register.json` (`doe.settings-register/v1`), mirrored
+at `apps/tribute-dashboard/data/doe-settings-register.json` and rendered
+by `apps/tribute-dashboard/doe-settings.html`. It is sourced from the
+register in `docs/ops/DOE-FAMILY.md`; it is not embedded in each family
+task and does not replace campaign EXPERIMENT records.
+
+Navigation joins the surfaces:
+
+- Swarm Quota — provider population and capacity evidence
+- Nested Family — execution history and dispatch lineage
+- DoE Settings — method versions, proof pins, cycle settings and configured-instance identity rules
+- DoE / Dispatch Tree — campaign and dispatch-specific operational views
+
+A global DoE version is shown as `NOT_ESTABLISHED` unless the source
+register explicitly establishes one. The settings page is not evidence
+that a campaign or dispatch executed.

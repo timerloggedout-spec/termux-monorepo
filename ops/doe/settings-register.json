@@ -1,0 +1,72 @@
+{
+  "schema": "doe.settings-register/v1",
+  "register_id": "doe-version-settings",
+  "status": "current-of-record",
+  "recorded_at": "2026-11-03",
+  "source": {
+    "document": "docs/ops/DOE-FAMILY.md",
+    "section": "DoE version|settings register",
+    "authority": "human-readable DoE family register",
+    "projection_policy": "This JSON is a structured projection of the cited register. Changes must be reconciled with the source document in the same reviewed change."
+  },
+  "doe_version": {
+    "value": null,
+    "status": "NOT_ESTABLISHED",
+    "note": "The source register records method versions and settings; it does not establish one singular global DoE version."
+  },
+  "proofs": {
+    "manifest_schema": "doe-proofs-manifest/v1",
+    "packet": "E001 (batteries leg)",
+    "oracle_pins": [
+      {
+        "name": "Batteries",
+        "revision": "36cc05ca2d0e",
+        "fork": "batteries_fork",
+        "toolchain": "v4.34.0-rc1"
+      },
+      {
+        "name": "Mathlib",
+        "revision": "cc8b65263ab8",
+        "toolchain": "v4.36.0-rc2"
+      }
+    ]
+  },
+  "cycle_parameters": {
+    "sets_per_cycle": 3,
+    "rule_7": {
+      "floor_n": 3,
+      "cap_n_per_trigger": 12
+    },
+    "established_gate": {
+      "minimum_n": 30,
+      "minimum_minority_n": 10,
+      "p_value_less_than": 0.05
+    },
+    "accumulation_bars_per_arm": {
+      "mean_n": 30,
+      "variance_n": 100,
+      "claim_grade_proportion_n": 384,
+      "claim_grade_proportion_note": "Source expresses this as approximately 384."
+    }
+  },
+  "method_versions": [
+    "pool-scope-methods/v1",
+    "doe-questions-matrix v1",
+    "panel-judge-mirror v0",
+    "egm-evaluation v0",
+    "lens-frame v0",
+    "equivalence-proof/v0"
+  ],
+  "epoch_artifacts": [
+    "DOE-METHODS-EPOCH-2026-11-03",
+    "DOE-ROLES-EPOCH-2026-11-03",
+    "experiments/doe/proofs/INDEX.md",
+    "experiments/doe/proofs/"
+  ],
+  "rules": {
+    "unlisted_settings_are_of_record": false,
+    "instance_aggregation_key": "instance_key",
+    "model_alone_is_sufficient_instance_identity": false,
+    "missing_identity_representation": "NOT_ESTABLISHED"
+  }
+}

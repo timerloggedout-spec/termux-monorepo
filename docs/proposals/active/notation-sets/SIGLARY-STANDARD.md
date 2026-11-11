@@ -73,7 +73,13 @@ surface above governs them).
 - **Verdict contract**: per-surface compliance rate +
   violation counts by class, stamped {surface · as-of ·
   rates}; hard violation on a merged surface = FAIL
-  (fail-closed), soft violations = report + drift queue.
+  (fail-closed). **Decree posture (owner 2026-11-10
+  19:24 PT — Siglary = Strictly Enforced)**: decidable
+  violations are HARD forall surface classes (see S6, as
+  amended); only the judgment stratum (principle-5
+  ambiguity, sampled/EST) reports without gating, and it
+  gates on a Linguist ruling. A conformance report alone
+  is not enforcement.
   A green run with ∅ census = INCONCLUSIVE, ¬ PASS.
 - **Feed**: results land in the linguist panel feed family
   (siglary_compliance entry class) — schema nulls where a
@@ -108,9 +114,21 @@ by authors now; measurement starts when machinery runs).
 ## 6. Enforcement profile (Leg A — QUE #5116)
 
 Per-surface-class conformance. Severity: **HARD** =
-fail-closed at gates · **SOFT** = receipted finding,
-drift queue · **EST** = sampled estimate only (judgment
-stratum, §3).
+fail-closed at gates · **SOFT** = receipted finding
+(reserved for non-decidable presentation items only) ·
+**EST** = sampled estimate only (judgment stratum, S3).
+
+**DECREE AMENDMENT (owner 2026-11-10 19:24 PT —
+Siglary = Strictly Enforced, all surfaces; QDesk Leg B
+posture of record)**: the report-only-first rollout is
+SUPERSEDED. The validator is load-bearing, not advisory:
+gates bind on validator landing per surface class and
+HARD violations fail closed. Accordingly every decidable
+rule in the tables below is HARD; SOFT survives only
+where a check is genuinely non-decidable; EST (principle-5
+judgment) gates on Linguist ruling as before. Build
+sequence for binding remains 6.3 -> 6.1 -> 6.2 -> 6.4 as
+an order of work, not a sequence of advisory phases.
 
 ### 6.1 Skills files (`SKILL.md` · `*.SKILLS` · `SKILLS.md`)
 
@@ -120,7 +138,7 @@ stratum, §3).
 | Chords resolve in a named Shorthand Domain (or the file defines its domain inline) | HARD |
 | Glyph set ⊆ issued set (cap ⓪) | HARD |
 | N∅/NOT_ESTABLISHED stored as a value in any data block | HARD |
-| Receipt-adjacency for verdicts/state claims the skill prescribes | SOFT |
+| Receipt-adjacency for verdicts/state claims the skill prescribes (decidable per the nc-1 adjacency semantics) | HARD |
 | ⑤ misleading form | EST → HARD on Linguist ruling |
 
 ### 6.2 ICM surfaces
@@ -128,7 +146,7 @@ stratum, §3).
 | Rule | Severity |
 |---|---|
 | Dispatch/context stamps in Siglary form (class-correct) | HARD |
-| Participant-facing instructions name their notation classes (¬ bare "glyphs" for operators) | SOFT |
+| Participant-facing instructions name their notation classes (not bare "glyphs" for operators) | HARD |
 | N∅ boundary (chat-only marker; records carry schema nulls) | HARD |
 | ⑤ misleading form | EST → HARD on ruling |
 
@@ -138,14 +156,14 @@ stratum, §3).
 |---|---|
 | Carries the standard by reference (this file + Matrice) | HARD (presence check) |
 | Its own notation usage class-correct (operators ¬ called glyphs) | HARD |
-| New notation introduced without Matrice registration | SOFT |
+| New notation introduced without Matrice registration | HARD |
 
 ### 6.4 DoE-dispatched participants' usage
 
 | Rule | Severity |
 |---|---|
-| Dispatch stamps + outcome records in Siglary form (classes distinct; chords in-domain) | SOFT (report-only until gate step) |
-| Verdicts carry adjacent receipt refs (nc-1 R3 class) | SOFT |
+| Dispatch stamps + outcome records in Siglary form (classes distinct; chords in-domain) | HARD |
+| Verdicts carry adjacent receipt refs (nc-1 R3 class; adjacency decidable) | HARD |
 | N∅ in any participant-emitted data record | HARD |
 | ⑤ misleading form in a stamp/record | EST → HARD on ruling |
 
@@ -176,6 +194,7 @@ a flagged form is **suspended** (expanded plain form is
 always compliant) pending a Linguist ruling; a ruling of
 "misleading" makes the form a HARD violation class-wide
 and the Matrice entry is re-issued or killed. Compression
-is never a defense. Rollout: report-only first, then
-gates bind per surface class in the order 6.3 → 6.1 →
-6.2 → 6.4, each step receipted on QUE #5116.
+is never a defense. Rollout (as amended by the 19:24 PT
+decree): gates bind on validator landing per surface
+class — order of work 6.3 -> 6.1 -> 6.2 -> 6.4, not
+advisory phases — each binding step receipted on QUE #5116.

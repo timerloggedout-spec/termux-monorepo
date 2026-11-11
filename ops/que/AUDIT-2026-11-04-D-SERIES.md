@@ -46,6 +46,7 @@ Packet of record: D1 diagnostics escalation @ manager seat. Closure receipts col
 - State: TRACKED (owner direct, 2026-11-04 21:14 PT), beside D-i/D-j. Instance of record: **SnapDeploy Delete** — an owner-gate (human-in-the-loop) escalation was claimed where the capacity to act already existed.
 - Class rule: **capacity claims are state stamps** — whether a seat/system can or cannot act is a verifiable state, and it is firsthand-verified BEFORE any escalation to the owner. An escalation asserting a missing capacity that a firsthand read disproves is a false-HITL defect.
 - Closure: OPEN (class rule stands in this audit; escalations fleet-wide carry the verify-first duty).
+- **Instance 2026-11-10 — AMD Academy C2 (QUE #5162):** instructed ChatGPT-sync route (AMD ∧ Nvidia skills sync, owner statement 23:42 PT) never fired for the C2 sitting; blocker stayed stamped owner-hand/phone-in-hand all day over an available instructed route; gate AMD-ACADEMY-5 open · 0/5 · C2 wall passed unlanded 23:59 PT Nov 10 (C1 likewise unlanded Nov 7). Census leg: #5136 Phase 0 carries the academy-sitting action class with the ChatGPT-sync route named.
 
 ## Desk legs (owned at the Desk seat, tracked here for the set)
 - D-a filing-form discipline — Desk.

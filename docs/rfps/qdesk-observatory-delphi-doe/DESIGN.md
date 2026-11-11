@@ -16,8 +16,15 @@ The QDesk pipeline is a coordinator and adapter layer. Existing systems remain a
 | Agent/context relationships | Existing ICM / context relationship graph |
 | Workflow execution | GitHub Actions / Temporal engagement receipts |
 | Provider eligibility and capacity | Provider catalogue, quota registry, quota readings, routing policy |
+| QUE / Desk queue admission | `ops/que/feeds/*`, `ops/que/events/*`, `ops/quota/dispatch-tiers.json`, and `ops/challenge/dispatch-state-feed.json` |
+| Dependency/Gantt planning | `docs/agentic/dependency-phases.json`, `scripts/agentic/dependency_phase_engine.py`, `scripts/agentic/gantt_projection.py`, Kahn DAG, challenge countdowns and quota allocation Gantt rows |
+| Referral/marketing maintenance | `config/referral_programs.json`, referral feed/census and `marketing-gantt/1` |
 | Telemetry and quality | OpenTelemetry adapters, ATES, 3L0, Witness / provenance receipts |
 | Operator presentation | Existing Observatory / Tribute surfaces |
+
+## Existing feed and Gantt RECON
+
+Before implementation, read [FEED-AND-PLANNING-RECON.md](FEED-AND-PLANNING-RECON.md). It records the existing dependency-phase/Gantt lineage, QUE producer feeds, quota/usage projections, marketing/referral maintenance feed, current freshness gaps and the authority boundaries that QDesk must preserve. This census is an integration map, not a new source of truth.
 
 ## System topology
 

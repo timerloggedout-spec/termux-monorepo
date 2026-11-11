@@ -152,11 +152,14 @@ def test_gearbox_concept_block():
 def test_series2_snapshots_provenance_and_landing_flags():
     s2 = _pack()["series2_snapshots"]
     snaps = s2["snapshots"]
-    assert [sn["landed"] for sn in snaps] == [True, True, True]
-    assert [sn["rows"] for sn in snaps] == [3, 8, 155]
+    assert len(snaps) >= 3
+    assert [sn["landed"] for sn in snaps[:3]] == [True, True, True]
+    assert [sn["rows"] for sn in snaps[:3]] == [3, 8, 155]
     for sn in snaps:
         assert sn["provenance"]
-        for svc, state in sn["states"].items():
+        states = sn.get("states") or {}
+        assert isinstance(states, dict)
+        for svc, state in states.items():
             assert svc in s2["services"] and state in STATES
     # snapshot 3 is the recovery: github token exhausted -> watch
     assert snaps[1]["states"]["github.api.github_token"] == "exhausted"
@@ -164,6 +167,37 @@ def test_series2_snapshots_provenance_and_landing_flags():
     # landed 155-row truth (PR #2362, pair blob 5d5238c9): minutes unknown
     assert snaps[2]["states"]["github.actions.minutes"] == "unknown"
     assert "2362" in snaps[2]["provenance"]
+
+
+
+def test_missing_snapshot_states_render_as_no_reading(tmp_path):
+    # Recent status-only snapshots can omit the optional states map.
+    # The renderer must preserve absence rather than throwing or zero-filling.
+    html = _html()
+    start = html.index("function renderStates(){")
+    end = html.index("function renderActions(){", start)
+    render = html[start:end]
+    harness = tmp_path / "render-states.cjs"
+    harness.write_text("""
+const PACK = {series2_snapshots: {
+  services: ["github.api.github_token"],
+  snapshots: [
+    {at: "2026-11-04T01:59:43Z", rows: 171, landed: true, provenance: "fixture"},
+    {at: "2026-11-05T01:59:43Z", rows: 171, landed: true, provenance: "fixture", states: null}
+  ]
+}};
+const node = {innerHTML: ""};
+function $(id) { return node; }
+function esc(value) { return String(value); }
+function stateClass(value) { return String(value).replace(/[^a-z_]/g, ""); }
+""" + render + """
+renderStates();
+if (!node.innerHTML.includes("no reading")) process.exit(1);
+console.log(node.innerHTML);
+""")
+    result = subprocess.run(["node", str(harness)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.count("no reading") == 2
 
 
 def test_g4f_has_no_stamp():

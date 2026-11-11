@@ -11,6 +11,7 @@ flowchart TB
   subgraph SUB["Shared substrate"]
     monikers["AGENT-MONIKERS SSOT"]
     feeds["Surface feeds"]
+    doeSettings["DoE settings register"]
     quefeeds["QUE feeds"]
     walletledger["Wallet ledger"]
     bookledger["Book ledger"]
@@ -35,6 +36,7 @@ flowchart TB
     scoring_1["3l0.html"]
     scoring_2["mvt.html"]
     scoring_3["doe.html"]
+    scoring_11["doe-settings.html"]
     scoring_4["ates.html"]
     scoring_5["results-index.html"]
     scoring_6["delphi-rfp.html"]
@@ -84,6 +86,7 @@ flowchart TB
   feeds --> PL_moneyball
   feeds --> PL_observatory
   feeds --> PL_quota
+  doeSettings --> PL_scoring
   feeds --> PL_scoring
   feeds --> PL_web
   governor --> PL_entries
@@ -108,7 +111,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: all 36 tribute .html at master + MoneyBall section 12 set + propose.html = 42 surfaces + 2 classified classes (44 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 37 tribute .html at master + MoneyBall section 12 set + propose.html = 43 surfaces + 2 classified classes (45 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 Levels per #4884 section C, sparse by the keying rule (a surface renders L iff its primary content IS an occupant of L or a direct projection). The topical axis is surface GROUPS - "plane" is a record word whose only referent is Pool.
 
@@ -128,6 +131,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | pools.html | tribute | Wagertome — Web3 | plane · role | Wallet ledger | termux-monorepo ← moneyball | page · feed+mirror · upstream pools-feed (moneyball repo) · wallet-ledger source · tests | upstream feed stamps (ledger head seq) · mirror parity per refresh PR · site deploy · ∅ release line |
 | mvt.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · MVT feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | doe.html | tribute | Scoring & Method | office | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · DoE feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
+| doe-settings.html | tribute | Scoring & Method | ∅ | DoE settings register | termux-monorepo | page · settings register JSON + dashboard mirror · chartkit · contract tests | source register provenance · mirror byte-parity · stamped chart · site deploy |
 | ates.html | tribute | Scoring & Method | ∅ | Surface feeds | termux-monorepo | page · ATES feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | results-index.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo | page · results-index feed + canonical twin · builder · tests | feed generated_at + per-section STALE · site deploy |
 | free-tier-value.html | tribute | Providers & Quota | ∅ | Surface feeds | termux-monorepo | page · free-tier feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
@@ -169,6 +173,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 |---|---|---|
 | AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 10 |
 | Surface feeds | per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts | 38 |
+| DoE settings register | ops/doe/settings-register.json — versioned method/settings projection with source provenance | 1 |
 | QUE feeds | measurement · governor · queue-by-tier · priority windows | 4 |
 | Wallet ledger | ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds | 6 |
 | Book ledger | ops/agentic-gambling/book/ ledger.jsonl + challenges-book — subjects · positions · settlements | 5 |

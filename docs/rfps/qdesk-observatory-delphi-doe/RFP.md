@@ -170,6 +170,42 @@ The UI must render unknown, stale, unobserved, blocked and NOT_ESTABLISHED as di
 
 Side states: `BLOCKED`, `STALE`, `CANCELLED`, `FAILED`, `RETRYABLE`, `SUPERSEDED`. Transitions must be append-recorded with actor, timestamp, reason, input/output hashes and evidence refs. Invalid transitions fail closed.
 
+## 5.1 Standing DO statements and Memory Palace governance
+
+The pipeline MUST consume the repository's existing **DO Statements** intent class rather than inventing a parallel directive taxonomy.
+
+Canonical implementation:
+- `scripts/classifiers/chat_intent.py` — `chat-intent v2`, with `R6-do-statement`.
+- `scripts/classifiers/test_chat_intent.py` — regression fixtures for the DO class and precedence rules.
+- `docs/ops/DOE-FAMILY.md` — records the owner ruling and DoE versioning/backfill doctrine.
+- `docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md` — action-first request framing and evidence/stop boundaries.
+
+A DO statement is a standing principle/criteria declaration (a durable directive-of-record), not a one-off task, artifact request, question, speculation or aside. Preserve the original statement and its source provenance. The current classifier uses a bounded maxim shape (bare declarative, at least two principle/criteria lexicon hits, at most ten words, no hedge/artifact/action) and returns rule/evidence fields. Its accuracy is NOT_ESTABLISHED until the documented labeled-outcome gate is met (at least 30 labeled outcomes per class, minority at least 10, p<0.05). Therefore classification is a candidate signal, not automatic authority.
+
+A durable DO memory record must include: stable statement ID; exact original text; normalized text (never replacing the original); author/source message ref; observed/captured time; classifier version/rule/evidence; confidence or UNKNOWN; scope and affected lanes; priority; status (ACTIVE, SUPERSEDED, DISPUTED, EXPIRED); effective/review dates where supplied; supersession/conflict links; and provenance refs. No inferred author, scope, priority, expiry or authority. Sensitive content is excluded under existing privacy rules.
+
+The Memory Palace / Method of Loci is a retrieval/indexing metaphor and navigation layer over the existing ICM/HindSight graph, not a second store of truth. Loci must resolve to canonical record IDs and source refs. Retrieval is scope-aware, permission-aware and provenance-preserving. Conflicting DO statements are surfaced with their chronology and authority; they are not silently blended or ranked by recency alone. A DO statement constrains execution but does not itself authorize a protected action, merge, spend, credential change or deployment.
+
+## 5.2 Performance Psychology execution contract
+
+Use the existing `.agents/skills/gemini-performance-psychology/SKILL.md` as an execution-control skill, not as a correctness oracle or a claim about human psychology. The QDesk worker adopts its evidence-bearing loop:
+
+`smallest useful change → validation → feedback → next useful change`
+
+Required behaviors:
+- Momentum is a sequencing signal, never a quality signal.
+- After every meaningful action, record what changed, evidence gained, what remains unproven and the next useful action.
+- Increase workload progressively; HTTP 200 or provider availability is not task success.
+- Preserve attempt lineage and change the smallest relevant variable after failure; no unchanged retries.
+- Correctness outranks latency unless latency is the registered experiment factor.
+- Do not reward green checks, activity, token count, comment count, low latency or provider availability over verified task outcome.
+- Use bilateral critique for consequential architecture/security/provider/regression decisions.
+- Preserve actor, role, provider/model, prompt version, run/attempt, commit, reviewer and artifact provenance.
+- Follow BIUDL: broad objective → useful lane → thin slice → validate → integrate learning → broaden.
+- Use explicit outcomes: PASS, FAIL, UNKNOWN, PARTIAL, COOLDOWN, UNAVAILABLE, BLOCKED, REGRESSION.
+
+ATES/WTCV and related throughput measures are observational and diagnostic. They MUST NOT become a scalar merge threshold or substitute for correctness, independent review, acceptance evidence or authorization. Quality remains a separate hard gate.
+
 ## 6. Security, cost and governance constraints
 
 - No secret values in issues, RFPs, telemetry, artifacts or provenance; secret names only.

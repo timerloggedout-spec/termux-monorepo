@@ -5,6 +5,7 @@ This packet proposes a repository-native, evidence-led pipeline joining QDesk in
 - [RFP](RFP.md) — executive request, scope, phases and review questions.
 - [Design](DESIGN.md) — integration architecture, event contract, roles and failure handling.
 - [Acceptance](ACCEPTANCE.md) — measurable tests and release gates.
+- [Feed and Planning RECON](FEED-AND-PLANNING-RECON.md) — existing Gantt lineage, QUE/Desk feeds, quota/usage feeds, marketing/referral feeds, freshness gaps and integration boundaries.
 - [Architecture image](images/system-map.svg)
 - [Pipeline image](images/trigger-pipeline.svg)
 

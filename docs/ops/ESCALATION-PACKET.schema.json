@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ESCALATION-PACKET.schema.json",
+  "title": "Autonomous Escalation Packet",
+  "description": "Versioned, bounded, privacy-safe handoff contract. Carries evidence references and an inherited authorization envelope; never credentials or raw conversation/checkpoint payloads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "orchestration_id",
+    "cycle_id",
+    "attempt_id",
+    "action_id",
+    "task",
+    "routing",
+    "execution",
+    "authorization",
+    "budget",
+    "created_at"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "orchestration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "acceptance_criteria",
+        "task_class",
+        "risk"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "task_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "risk": {
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        },
+        "repository": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "full_name",
+            "ref",
+            "sha"
+          ],
+          "properties": {
+            "full_name": {
+              "type": "string",
+              "pattern": "^[^/]+/[^/]+$"
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          }
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_tier",
+        "target_tier",
+        "reason",
+        "required_capabilities"
+      ],
+      "properties": {
+        "source_tier": {
+          "enum": [
+            "E0",
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5"
+          ]
+        },
+        "target_tier": {
+          "enum": [
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "CAPABILITY_MISMATCH",
+            "TOOL_FAILURE",
+            "STAGNATION",
+            "CONTRADICTION",
+            "VERIFIER_REJECTION",
+            "CONTEXT_SATURATION",
+            "PROVIDER_DEGRADATION",
+            "SECURITY_ANOMALY",
+            "RESOURCE_PRESSURE",
+            "ESCALATION_CYCLE",
+            "MANAGER_REPLAN",
+            "HIGH_IMPACT_RESULT"
+          ]
+        },
+        "required_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requested_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "route_snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "progress_summary",
+        "strategies_tried",
+        "failure_classes",
+        "evidence_refs"
+      ],
+      "properties": {
+        "progress_summary": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "strategies_tried": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 30
+        },
+        "failure_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 30
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 100
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 30
+        },
+        "unresolved_questions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maxItems": 30
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "scope_ref",
+        "inherited",
+        "may_expand"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reference to authoritative policy/scope record; never embed credentials."
+        },
+        "inherited": {
+          "const": true
+        },
+        "may_expand": {
+          "const": false
+        },
+        "allowed_tool_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "denied_action_classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "local_repair_remaining",
+        "specialist_handoff_remaining",
+        "alternate_family_remaining",
+        "manager_replan_remaining",
+        "verification_remaining",
+        "side_effect_budget",
+        "retry_remaining",
+        "same_strategy_replay_count"
+      ],
+      "properties": {
+        "local_repair_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "specialist_handoff_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alternate_family_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "manager_replan_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verification_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "side_effect_budget": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deadline_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "retry_remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "same_strategy_replay_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

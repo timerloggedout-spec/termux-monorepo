@@ -1,6 +1,7 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Historical master snapshot:** 2026-09-30 22:00 UTC · **Master tip at snapshot:** `fc22deb8`
+**Branch context:** this PR adds `langgraph-orchestration`; that skill is not yet part of the master inventory.
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -23,6 +24,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
+| **Graph orchestration** | `langgraph-orchestration` | `ORCHESTRATION-CONTRACTS.md` · official LangGraph fundamentals; load HITL/persistence skills when applicable |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
 | **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
@@ -39,6 +41,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | context-relationship-graph | `.agents/skills/context-relationship-graph/SKILL.md` |
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
+| langgraph-orchestration | `.agents/skills/langgraph-orchestration/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | github-pages-operator | `.agents/skills/github-pages-operator/SKILL.md` |
 | tribute-lane | `.agents/skills/tribute-lane/SKILL.md` |

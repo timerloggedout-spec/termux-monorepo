@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 573,
+    "open_issues": 574,
     "open_prs": 350,
     "pr_classes": {
-      "CANDIDATE": 164,
+      "CANDIDATE": 163,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 175,
+      "NEED_EVIDENCE": 176,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 322,
+      "issues": 323,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -116,7 +116,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-11T16:21:11Z",
+  "generated_at": "2026-11-11T17:40:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -179,10 +179,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "0fce15e1a8"
+    "sha": "c7bff89e86"
   },
   "prs": [
     {
@@ -1099,20 +1099,6 @@
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a0d4c35b0d",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-11T15:32:26Z"
     },
     {
       "class": "CANDIDATE",
@@ -2101,12 +2087,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "52756223b8",
+      "head_sha": "6ace97a63e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-11T14:57:55Z"
+      "updated_at": "2026-11-11T17:19:18Z"
     },
     {
       "class": "CANDIDATE",
@@ -2677,7 +2663,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2691,7 +2677,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2733,7 +2719,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2887,7 +2873,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -3137,12 +3123,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "a1c2522a2f",
+      "head_sha": "abe22a5bd8",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2235,
       "title": "chore(osint): refresh coverage + page snapshots",
-      "updated_at": "2026-11-10T16:51:30Z"
+      "updated_at": "2026-11-11T16:27:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3165,12 +3151,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "4f73169443",
+      "head_sha": "862ef5af2e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-11T16:15:45Z"
+      "updated_at": "2026-11-11T17:36:56Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "6ba8f9691b",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-11T17:31:43Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3809,12 +3809,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "facdd463b9",
+      "head_sha": "ff09b8a9c3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-11T15:39:24Z"
+      "updated_at": "2026-11-11T16:49:37Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3823,12 +3823,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "6270d9e26f",
+      "head_sha": "a32a7b620a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-11T16:13:37Z"
+      "updated_at": "2026-11-11T17:24:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3951,10 +3951,10 @@
       },
       "head_sha": "e2fb47f88f",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-11T16:20:48Z"
+      "updated_at": "2026-11-11T16:20:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4632,15 +4632,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "failure",
-        "smoke": "success"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "74eeb710af",
+      "head_sha": "edc93642fd",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4969,
       "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
-      "updated_at": "2026-11-10T12:37:37Z"
+      "updated_at": "2026-11-11T17:33:39Z"
     },
     {
       "class": "NEED_EVIDENCE",

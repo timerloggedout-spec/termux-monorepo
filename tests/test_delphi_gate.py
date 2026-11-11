@@ -306,3 +306,48 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+
+def test_open_rfp_issue_census_paginates_and_deduplicates():
+    class PagedGH:
+        def __init__(self):
+            self.paths = []
+
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            self.paths.append(path)
+            page = int(path.rsplit("page=", 1)[1])
+            if page == 1:
+                return [
+                    {"number": n, "title": f"RFP {n}"}
+                    for n in range(1, 101)
+                ]
+            if page == 2:
+                return (
+                    [{"number": 100, "title": "duplicate from page boundary"}]
+                    + [{"number": n, "title": f"RFP {n}"} for n in range(101, 107)]
+                    + [{"number": 107, "title": "PR-shaped result", "pull_request": {"url": "x"}}]
+                )
+            return []
+
+    gh = PagedGH()
+    issues = gate.open_rfp_issues(gh)
+    assert len(issues) == 106
+    assert [issue["number"] for issue in issues] == list(range(1, 107))
+    assert all("pull_request" not in issue for issue in issues)
+    assert len(gh.paths) == 2
+    assert "page=1" in gh.paths[0] and "page=2" in gh.paths[1]
+
+
+def test_open_rfp_issue_census_fails_closed_when_page_cap_reached():
+    class FullPagesGH:
+        def req(self, method, path, body=None):
+            page = int(path.rsplit("page=", 1)[1])
+            return [{"number": (page - 1) * 100 + n} for n in range(1, 101)]
+
+    try:
+        gate.open_rfp_issues(FullPagesGH(), max_pages=2)
+    except RuntimeError as exc:
+        assert "pagination cap" in str(exc)
+    else:
+        raise AssertionError("a full final page must not be treated as a complete census")

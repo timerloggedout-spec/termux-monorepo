@@ -351,3 +351,14 @@ def test_open_rfp_issue_census_fails_closed_when_page_cap_reached():
         assert "pagination cap" in str(exc)
     else:
         raise AssertionError("a full final page must not be treated as a complete census")
+
+
+def test_gate_keeps_active_sweep_and_hourly_post_burst_backstop():
+    # GitHub concurrency permits the active sweep to finish; the hourly
+    # heartbeat guarantees a later full census if an intermediate pending
+    # event/tick is replaced or cancelled during a filing burst.
+    workflow_path = os.path.join(ROOT, ".github", "workflows", "delphi-gate.yml")
+    workflow = open(workflow_path, encoding="utf-8").read()
+    assert "cancel-in-progress: false" in workflow
+    assert 'cron: "23 * * * *"' in workflow
+    assert "post-burst sweep guarantee" in workflow

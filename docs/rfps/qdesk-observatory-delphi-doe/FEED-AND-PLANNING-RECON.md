@@ -11,7 +11,7 @@
 3. The repository already has a functioning QUE producer plane for the Desk: `scripts/que/que_feed_collect.py`, `que-feed-collect.yml`, canonical `ops/que/feeds/*`, event records and byte-identical dashboard mirrors. It is distinct from the older dependency-phase lifecycle and from the Quota Dispatch Tree.
 4. Quota planning is already a layered system: owner-set Pool × Focus × % allocations, a provider entitlement/readings registry, a deterministic allocation planner, quota usage packs, usage-series attribution and public dashboard projections.
 5. Marketing Gantt is a real feed-backed maintenance plane, not a mock calendar. Its feed is derived from the referral registry/census and shows account maintenance cadences over a rolling 12-week horizon.
-6. Tribute exposes many projections. The current `apps/tribute-dashboard/data/` directory contains 48 JSON/JSONL artifacts, but these are not 48 independent sources of truth: some are mirrors, some are derived views, some are snapshots, and some are append-only series.
+6. Tribute exposes many projections. The current `apps/tribute-dashboard/data/` directory contains 49 JSON/JSONL artifacts, but these are not 48 independent sources of truth: some are mirrors, some are derived views, some are snapshots, and some are append-only series.
 7. Freshness is uneven. The QUE queue is refreshed on a 10-minute cadence and dispatch state is refreshed separately, while several quota, telemetry, challenge and opportunity surfaces were last generated between 2026-11-02 and 2026-11-04. A fresh page shell does not prove every embedded evidence block is fresh.
 8. A concrete Quota Usage renderer defect was found: seven of ten quota service-state snapshots omit `states`, while the page dereferences `sn.states[svc]` unguarded. This produces a page-level `PACK ERROR`. Tracked as #5148.
 
@@ -89,6 +89,26 @@
 | Results index | `results-index-feed/v1` from `ops/telemetry/results-index.json` | 2026-11-02T13:26:57Z | Derived presentation of results evidence |
 
 The published Tribute navigation includes Quota, Quota Usage, Quota Graphs, Swarm Quota, Admin, Admin Graph, Oracle, 3L0, MoneyBall, Wagering Book, Pools, MVT, DoE, ATES, Results Index, Free-Tier Value, Dispatch Tree, Countdowns, D2 Proposals, Linguist, Delphi RFP, Delphi Ledger, Classifiers, PR Lanes, Proposals, Referrals, Marketing Gantt, Telemetry, Desk, Tracking, Family and Version Comparison, plus the surfaces map. Not every page is an independent feed or a canonical authority.
+
+## 3.1 Complete Tribute data-directory inventory
+
+The 49 files observed in `apps/tribute-dashboard/data/` group as follows. This is a file census, not a claim that every file is a distinct feed or is fresh:
+
+- **Quota and resource evidence:** `allocation-verification.json`, `provider-quota-coverage.json`, `quota.json`, `quota-allocations-feed.json`, `quota-usage.json`, `usage-series.json`, `rate-limit-event-audits.json`, `swarm-feed.json`.
+- **QUE, dispatch and project coordination:** `desk-feed.json`, `dispatch-state-feed.json`, `dispatch-tree-feed.json`, `governor.json`, `que-governor.json`, `que-queue-feed.json`, `queue-by-tier.json`, `priority-windows.json`, `que-priority-windows.json`, `tracking-feed.json`, `nested-family-feed.json`.
+- **Challenge, backup and operational telemetry:** `challenge-countdowns-feed.json`, `challenge-admin-metrics.json`, `backup-state-feed.json`, `backup-events-feed.jsonl`, `telemetry-feed.json`, `telemetry-feed-series.jsonl`, `status.json`.
+- **Marketing and partner acquisition:** `referral-feed.json`, `referral-census.json`, `marketing-gantt.json`, `fb-traffic.json`, `free-tier-value.json`.
+- **Research, experimentation and value models:** `3l0-feed.json`, `moneyball-feed.json`, `mvt-feed.json`, `doe-feed.json`, `doe-oversight-feed.json`, `ates-feed.json`, `pools-feed.json`, `wagering-book.json`.
+- **Delphi, proposals and evidence:** `oracle-panel-feed.json`, `delphi-rfp-feed.json`, `delphi-ledger-feed.json`, `delphi-ledger-feed-db.json`, `proposals-feed.json`, `results-index-feed.json`, `results-index.json`.
+- **Classification and language/tooling:** `pr-lane-feed.json`, `pr-lane-series.jsonl`, `linguist-panel-feed.json`.
+ 
+Important additional observations from this census:
+- `swarm-feed.json` (2026-11-04) describes 97 registry model records across 95 providers; 2 providers are populated and 93 have explicit population gaps. Listed provider count is not evidence of available capacity.
+- `doe-oversight-feed.json` contains 175 provisioned rows; it is an oversight projection, not a substitute for each experiment's own DESIGN/record/receipt.
+- `delphi-rfp-feed.json` (2026-10-29) shows 28 open RFPs: 26 parked and 2 shadow. Treat this as an old snapshot until refreshed.
+- `pr-lane-feed.json` was generated 2026-11-10T13:59:30Z; its companion `pr-lane-series.jsonl` is the counts-only trend substrate.
+- `linguist-panel-feed.json` (2026-11-05) carries explicit missing-implementation and placeholder gaps; do not promote named contracts to implemented capability.
+- The QUE dashboard copies include naming mirrors/aliases (for example `governor.json` and `que-governor.json`, `priority-windows.json` and `que-priority-windows.json`). The producer README and byte-parity contract determine which copy is canonical; do not count aliases as independent state.
 
 ## 4. Live-state observations and operational gaps
 

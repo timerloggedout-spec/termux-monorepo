@@ -1,6 +1,7 @@
 # Skill Discovery Matrix — adaptive wait + evidence-led repo ops
 
-**Discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus the session-scoped `.skill` attachments and supplied skill/loop references.
+**Historical discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus session-scoped `.skill` attachments and supplied skill/loop references.
+**Branch update:** this PR adds `langgraph-orchestration`; the historical path count below is not a current branch count or a claim that the skill has landed on master.
 
 ## Repository-native related skills
 
@@ -21,10 +22,11 @@
 | Evaluation | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` | current-SHA evidence quality |
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
 | Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
+| Graph orchestration | langgraph-orchestration | `.agents/skills/langgraph-orchestration/SKILL.md` | LangGraph state graphs, routing, fan-out, persistence, HITL, and BIUDL/ATES integration |
 
 ## Other repository-native skill files
 
-The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
+The historical recursive tree contained 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. This PR adds one more `SKILL.md` path on its branch. Recount the current tree before publishing a new total. The historical repository tree contained **no tracked `.skill` archive**.
 
 Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
 
@@ -74,3 +76,19 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
 External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+
+
+## LangGraph ecosystem discovery (2026-11-06)
+
+**Source index:** [vonzosten/awesome-LangGraph](https://github.com/vonzosten/awesome-LangGraph) — curated discovery input, not an endorsement or adoption order.
+
+**Best official SKILL.md sources:** `ecosystem-primer` first; then [langgraph-fundamentals](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-fundamentals), [langgraph-human-in-the-loop](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-human-in-the-loop), and [langgraph-persistence](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-persistence). Add [langgraph-cli](https://github.com/langchain-ai/langchain-skills/tree/main/config/skills/langgraph-cli) for scaffold/build/deploy, and language quickstarts only for explicit new-project tasks. `deep-agents-core` + `deep-agents-orchestration` are the adjacent higher-level alternative. Their source blob SHAs and load conditions are pinned in `.agents/skills/langgraph-orchestration/SKILL.md`. The upstream skills README warns the catalog is early development and may change.
+
+**Best ecosystem candidates to evaluate:** official supervisor/swarm packages, `langchain-mcp-adapters`, `deepagents`, `open_deep_research`, and `open-swe`. Guardrail/provenance projects such as `aport-agent-guardrails` and `sidclawhq/platform` remain research-only until their enforcement model, maintenance, license, and threat model are independently reviewed.
+
+**Source-level corrections:** `langgraph-supervisor-py` was archived 2026-09-20 and its README recommends tool-based supervisor patterns for most new work; `langchain-mcp-adapters` was archived 2026-09-17 and points to `langchain[mcp]` / `langchain.mcp`; `open-swe` warns that stability/correctness are not guaranteed; `swarm-at-ledger` says its sample data is synthetic rather than real agent telemetry. These are recorded as legacy, migration, research, or pattern-only dispositions rather than default adoption candidates.
+
+**Adoption decision:** reuse native orchestration treatments, receipts, OTEL/ATES, Temporal, and the maintained MCP boundary. The LangGraph integration is an optional orchestration treatment, not a replacement control plane. No dependency, fork, submodule, or deployment is implied by discovery.
+
+
+**Runtime package observation:** PyPI latest stable at recon was `langgraph==1.2.20` (2026-11-05), MIT, Python `>=3.10`; published wheel SHA-256 `2b9fd01c3d5e0652e6c9b436dc0341413788010eb279ac8c46a733cf485d848b`. PyPI did not report release provenance. No dependency was installed or added; re-verify before any runtime adoption.

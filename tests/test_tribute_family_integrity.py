@@ -15,6 +15,8 @@ class TributeFamilyIntegrityTests(unittest.TestCase):
         self.assertNotIn("apps/help-wanted-dashboard/data/nested-family-feed.json", page)
         self.assertIn("nested-family/v1", page)
         self.assertIn("doe-settings.html", page)
+        self.assertIn("instance_key", page)
+        self.assertIn("instance_key NOT ESTABLISHED", page)
 
     def test_swarm_page_uses_canonical_nested_family_twin(self):
         page = (DASH / "quota-swarm.html").read_text()
@@ -35,6 +37,14 @@ class TributeFamilyIntegrityTests(unittest.TestCase):
         self.assertIn("instance_key", spec)
         fill_fields = collector.split('_FILL_FIELDS = (', 1)[1].split(')', 1)[0]
         self.assertNotIn('"instance_key"', fill_fields)
+
+    def test_settings_dashboard_reads_the_static_mirror(self):
+        page = (DASH / "doe-settings.html").read_text()
+        self.assertIn("./data/doe-settings-register.json", page)
+        self.assertIn("doe.settings-register/v1", page)
+        source = (ROOT / "ops/doe/settings-register.json").read_bytes()
+        mirror = (DASH / "data/doe-settings-register.json").read_bytes()
+        self.assertEqual(source, mirror)
 
     def test_dashboard_does_not_rewrite_the_generated_feed_contract(self):
         feed = json.loads((DASH / "data/nested-family-feed.json").read_text())

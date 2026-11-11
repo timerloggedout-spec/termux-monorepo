@@ -1236,7 +1236,14 @@ version and compared continuously until culling retires a version.
   generation/epoch, as appended) - DOE-ROLES-EPOCH-
   2026-11-03 - proofs INDEX/MANIFEST @experiments/doe/
   proofs/}. Settings not listed here are not DoE
-  settings of record.
+  settings of record. Structured projection: `ops/doe/settings-register.json`
+  (`doe.settings-register/v1`), mirrored byte-for-byte at
+  `apps/tribute-dashboard/data/doe-settings-register.json` and rendered
+  by `apps/tribute-dashboard/doe-settings.html`. This projection carries
+  the source section and keeps a singular global DoE version
+  `NOT_ESTABLISHED` because this register records method versions/settings,
+  not one global version. Reconcile the JSON and mirror with this section
+  in the same reviewed change.
 
 ## Campaign layout
 

@@ -44,6 +44,8 @@ class TributeFamilyIntegrityTests(unittest.TestCase):
         self.assertIn("doe.settings-register/v1", page)
         self.assertIn("chartkit.js", page)
         self.assertIn("CK.bars", page)
+        self.assertIn("CK.stampState", page)
+        self.assertIn("STALE", page)
         self.assertIn("chart-stamp", page)
         surface_map = (DASH / "surfaces-map.html").read_text()
         self.assertIn('["doe-settings.html","tribute","scoring"', surface_map)

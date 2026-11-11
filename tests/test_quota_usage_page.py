@@ -199,7 +199,9 @@ console.log(node.innerHTML);
 """)
     result = subprocess.run(["node", str(harness)], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
-    # Two services across two absent maps plus one missing key in the partial map.\n    assert result.stdout.count("no reading") == 5\n    assert "healthy" in result.stdout
+    # Two services across two absent maps plus one missing key in the partial map.
+    assert result.stdout.count("no reading") == 5
+    assert "healthy" in result.stdout
 
 
 def test_g4f_has_no_stamp():

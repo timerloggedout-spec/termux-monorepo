@@ -144,6 +144,11 @@ def build(root):
             "swarm_definition": "owner 2026-11-01: ALL providers' "
                                 "inference model endpoints participating "
                                 "in 3L0 DoE",
+            "verification_semantics": (
+                "census_api_verified reflects allocation-census API evidence only; "
+                "it does not establish inference invocation, free eligibility, "
+                "or routing admission."
+            ),
         },
         "sources": [
             {"id": "registry", "path": "ops/quota/registry.json",

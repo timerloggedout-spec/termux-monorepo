@@ -157,11 +157,16 @@ def build(root: Path, generated_at: str | None = None) -> dict:
         provider["record_ids"].append(record["id"])
         provider["observed_roles"].update(record["observed_roles"])
         provider["observed_models"].update(record["observed_models"])
-        provider["task_count"] += record["participation"]["task_count"]
-        provider["inference_invocations_passed"] += record["participation"]["inference_invocations_passed"]
-        evidence = participation.get(key, {})
-        provider["participation_evidence"].extend(evidence.get("tasks", []))
-        provider["invocation_proofs"].extend(evidence.get("proofs", []))
+        # Participation evidence is provider-scoped, while records are
+        # provider/model-lane scoped. Count and attach it exactly once.
+        if provider["record_count"] == 1:
+            provider["task_count"] = record["participation"]["task_count"]
+            provider["inference_invocations_passed"] = (
+                record["participation"]["inference_invocations_passed"]
+            )
+            evidence = participation.get(key, {})
+            provider["participation_evidence"] = list(evidence.get("tasks", []))
+            provider["invocation_proofs"] = list(evidence.get("proofs", []))
 
     providers = [{
         **{key: value for key, value in provider.items()

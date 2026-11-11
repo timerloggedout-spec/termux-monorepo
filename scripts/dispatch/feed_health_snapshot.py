@@ -37,10 +37,18 @@ def arm_state(provider_rec: dict) -> dict:
     census = provider_rec.get("census") or {}
     credits = census.get("credits") or {}
     population = provider_rec.get("population") or {}
+    # Compatibility: the former live_verified field represented allocation-census
+    # API evidence, not a successful inference invocation.
+    census_api_verified = (
+        provider_rec.get("census_api_verified")
+        if "census_api_verified" in provider_rec
+        else provider_rec.get("live_verified")
+    )
     return {
         "provider": provider_rec.get("provider"),
         "population_state": population.get("state"),
-        "live_verified": provider_rec.get("live_verified"),
+        "census_api_verified": census_api_verified,
+        "live_verified": census_api_verified,  # deprecated compatibility alias
         "census_verdict": census.get("verdict"),
         "flags": census.get("flags") or [],
         "balance": credits.get("available"),

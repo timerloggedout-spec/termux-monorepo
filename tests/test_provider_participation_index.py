@@ -11,12 +11,14 @@ def write(root: Path, rel: str, data: dict):
 def fixture(root: Path):
     write(root, "ops/quota/registry.json", {"services": [
         {"id":"deepseek.api","provider":"DeepSeek","lane":"model","live":"provider-invoke","limit":None},
+        {"id":"deepseek.chat","provider":"DeepSeek","lane":"model","live":"provider-invoke","limit":None},
         {"id":"agentrouter.models","provider":"agentrouter","lane":"model","live":"GET /v1/models"},
         {"id":"unmapped.models","provider":"unmapped","lane":"model"}
     ]})
     write(root, "ops/challenge/desk-feed.json", {"dispatch":{"provider_catalog":{
         "rotation_rule":{"rule":"task fit"},"inference_availability":{"records":[
             {"id":"deepseek.api","provider":"DeepSeek","class":"proven","availability_probe":"not-covered","inference_route":["provider-invoke"]},
+            {"id":"deepseek.chat","provider":"DeepSeek","class":"proven","availability_probe":"not-covered","inference_route":["provider-invoke"]},
             {"id":"agentrouter.models","provider":"agentrouter","class":"catalog-only","availability_probe":"authenticated-catalog","inference_route":[]}
         ]}}}})
     write(root, "ops/tracking/nested-family.json", {"providers":[{"provider":"deepseek","models":[
@@ -32,13 +34,18 @@ def fixture(root: Path):
 def test_exhaustive_and_separates_evidence(tmp_path):
     fixture(tmp_path)
     doc = build(tmp_path, "2026-11-10T00:00:00Z")
-    assert doc["summary"]["registry_model_records"] == 3
-    assert doc["summary"]["dispatch_mapped_records"] == 2
+    assert doc["summary"]["registry_model_records"] == 4
+    assert doc["summary"]["dispatch_mapped_records"] == 3
     assert doc["summary"]["dispatch_unmapped_records"] == 1
     records = {row["id"]: row for row in doc["records"]}
     providers = {row["provider"].casefold(): row for row in doc["providers"]}
     assert records["deepseek.api"]["inference_dispatchable"] is True
     assert records["deepseek.api"]["participation"]["inference_invocations_passed"] == 1
+    assert providers["deepseek"]["record_count"] == 2
+    assert providers["deepseek"]["task_count"] == 1
+    assert providers["deepseek"]["inference_invocations_passed"] == 1
+    assert len(providers["deepseek"]["participation_evidence"]) == 1
+    assert len(providers["deepseek"]["invocation_proofs"]) == 1
     assert providers["deepseek"]["invocation_proofs"][0]["run_id"] == 42
     assert records["deepseek.api"]["observed_roles"] == ["builder", "reviewer"]
     assert records["agentrouter.models"]["dispatch_class"] == "catalog-only"
@@ -57,10 +64,10 @@ def test_unknown_model_label_is_not_identity(tmp_path):
 def test_duplicate_dispatch_ids_fail_closed(tmp_path):
     fixture(tmp_path)
     path = tmp_path / "ops/challenge/desk-feed.json"
-    desk = json.loads(path.read_text())
+    desk = json.loads(path.read_text(encoding="utf-8"))
     rows = desk["dispatch"]["provider_catalog"]["inference_availability"]["records"]
     rows.append(dict(rows[0]))
-    path.write_text(json.dumps(desk))
+    path.write_text(json.dumps(desk), encoding="utf-8")
     with pytest.raises(ValueError, match="duplicate dispatch record"):
         build(tmp_path)
 
@@ -68,9 +75,9 @@ def test_duplicate_dispatch_ids_fail_closed(tmp_path):
 def test_free_tier_claim_text_never_establishes_eligibility(tmp_path):
     fixture(tmp_path)
     path = tmp_path / "ops/quota/registry.json"
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     data["services"][0]["planned_use"] = {"note": "Public free-tier model listing"}
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     doc = build(tmp_path)
     row = next(r for r in doc["records"] if r["id"] == "deepseek.api")
     assert row["free_tier_claim_text_present"] is True

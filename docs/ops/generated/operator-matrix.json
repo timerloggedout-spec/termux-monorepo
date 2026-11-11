@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 570,
-    "open_prs": 342,
+    "open_issues": 571,
+    "open_prs": 349,
     "pr_classes": {
       "CANDIDATE": 158,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 173,
+      "EXTRACT": 17,
+      "NEED_EVIDENCE": 174,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 319,
+      "issues": 320,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 57,
-      "prs": 340,
+      "prs": 347,
       "unlabelled_numbers": [
         308,
         388,
@@ -116,7 +116,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-11T13:38:08Z",
+  "generated_at": "2026-11-11T14:50:39Z",
   "issues_unlabelled": [
     308,
     388,
@@ -179,10 +179,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "256bb8c18b"
+    "sha": "f9929c4a56"
   },
   "prs": [
     {
@@ -262,6 +262,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "9ccb22b732",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-11T14:43:41Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d8ea720788",
       "labels": [],
       "mergeable_state": "unstable",
@@ -332,12 +346,82 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "162acd9a7d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4930,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "updated_at": "2026-11-11T14:38:39Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "c7bd349123",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9424810725",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5155,
+      "title": "fix(delphi): paginate complete RFP issue census",
+      "updated_at": "2026-11-11T13:56:01Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ccac63c43c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5159,
+      "title": "test(quota): cover partial service-state snapshots",
+      "updated_at": "2026-11-11T13:54:30Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "aecfb5e78b",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5167,
+      "title": "fix(review): avoid exhausting GITHUB_TOKEN during peer evidence collection",
+      "updated_at": "2026-11-11T13:55:53Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "98f184043d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5171,
+      "title": "fix(secrets): phantom-secret remediation (dead-branch)",
+      "updated_at": "2026-11-11T14:39:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -1093,12 +1177,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a6ae810083",
+      "head_sha": "8dbc4c9144",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-11T10:35:55Z"
+      "updated_at": "2026-11-11T14:32:48Z"
     },
     {
       "class": "CANDIDATE",
@@ -1121,12 +1205,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "ce0c1e72f4",
+      "head_sha": "2d625a0ea5",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-11T10:42:48Z"
+      "updated_at": "2026-11-11T14:29:26Z"
     },
     {
       "class": "CANDIDATE",
@@ -1533,20 +1617,6 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "4292383ab0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-11T13:31:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -2157,20 +2227,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "5db2ef8f6c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4930,
-      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
-      "updated_at": "2026-11-04T14:44:10Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "c9e24b3756",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2549,12 +2605,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "0d807ed018",
+      "head_sha": "ace8c23334",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5159,
-      "title": "test(quota): cover partial service-state snapshots",
-      "updated_at": "2026-11-11T04:35:11Z"
+      "mergeable_state": "unstable",
+      "number": 5168,
+      "title": "docs: establish integrated BIUDL steering and evidence implementation plan",
+      "updated_at": "2026-11-11T14:06:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "04e2e79241",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5169,
+      "title": "fix(chronomancer): scope fork selection to validated session lineage",
+      "updated_at": "2026-11-11T14:07:11Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "5ec5902b37",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5170,
+      "title": "docs: complete non-device BIUDL lane contracts and operating handbook",
+      "updated_at": "2026-11-11T14:27:32Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3641,12 +3725,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "5790f0042c",
+      "head_sha": "138c209478",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
-      "updated_at": "2026-11-06T01:55:51Z"
+      "updated_at": "2026-11-11T14:36:58Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3795,12 +3879,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "d8ab9cb537",
+      "head_sha": "8f9b63ddf5",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-06T01:55:17Z"
+      "updated_at": "2026-11-11T14:50:04Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4931,7 +5015,7 @@
       },
       "head_sha": "c2257d1d26",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5128,
       "title": "feat(vercel): read-only admin-desk host identification probe",
       "updated_at": "2026-11-10T14:05:17Z"
@@ -4971,12 +5055,26 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "74bb61fe36",
+      "head_sha": "c28841fa92",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5155,
-      "title": "fix(delphi): paginate complete RFP issue census",
-      "updated_at": "2026-11-11T04:36:06Z"
+      "mergeable_state": "unstable",
+      "number": 5173,
+      "title": "chore(ops): refresh computed countdown lines",
+      "updated_at": "2026-11-11T14:43:32Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "3dbd6482b4",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5174,
+      "title": "fix(build-dispatch): failure-path observability \u2014 artifact upload, summary guard, memory guard, work checkpoint (#5172)",
+      "updated_at": "2026-11-11T14:46:42Z"
     }
   ],
   "schema": "operator-matrix/v1",

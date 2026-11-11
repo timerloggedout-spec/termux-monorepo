@@ -19,12 +19,30 @@ The QDesk pipeline is a coordinator and adapter layer. Existing systems remain a
 | QUE / Desk queue admission | `ops/que/feeds/*`, `ops/que/events/*`, `ops/quota/dispatch-tiers.json`, and `ops/challenge/dispatch-state-feed.json` |
 | Dependency/Gantt planning | `docs/agentic/dependency-phases.json`, `scripts/agentic/dependency_phase_engine.py`, `scripts/agentic/gantt_projection.py`, Kahn DAG, challenge countdowns and quota allocation Gantt rows |
 | Referral/marketing maintenance | `config/referral_programs.json`, referral feed/census and `marketing-gantt/1` |
-| Telemetry and quality | OpenTelemetry adapters, ATES, 3L0, Witness / provenance receipts |
+| Telemetry and quality | OpenTelemetry adapters, ATES, 3L0, Witness / provenance receipts |\n| Standing DO intent | `chat-intent v2` / R6-do-statement classifier, DO phrasing framework and source-message provenance |\n| Durable context and loci | Existing ICM / HindSight graph; Memory Palace loci are indexes to canonical record IDs, not a second database |\n| Execution behavior | `gemini-performance-psychology` skill and Agent Team Development Lanes |
 | Operator presentation | Existing Observatory / Tribute surfaces |
 
 ## Existing feed and Gantt RECON
 
 Before implementation, read [FEED-AND-PLANNING-RECON.md](FEED-AND-PLANNING-RECON.md). It records the existing dependency-phase/Gantt lineage, QUE producer feeds, quota/usage projections, marketing/referral maintenance feed, current freshness gaps and the authority boundaries that QDesk must preserve. This census is an integration map, not a new source of truth.
+
+## DO statements, context memory and execution psychology
+
+The DO statement path is deliberately separate from ordinary task intake:
+
+`source message → chat-intent v2 classification → candidate DO record → provenance/scope/authority review → ICM/HindSight canonical record → Memory Palace locus index → scope-aware retrieval`
+
+- `do` is the standing-principle class from `scripts/classifiers/chat_intent.py` rule `R6-do-statement`; preserve the rule evidence and classifier version.
+- The classifier is heuristic and its accuracy is not established until the labeled-outcome sample gate in its module docstring is met. Do not auto-promote a classification into a binding policy.
+- Preserve exact original wording, source ref, author, capture time, scope, priority, status, supersession/conflict links and confidence/UNKNOWN. Normalization is additive; it never rewrites the source.
+- The Memory Palace / Method of Loci is a navigational retrieval layer over canonical graph records. Every locus resolves to a canonical record ID and source reference. It cannot duplicate or override ICM/HindSight.
+- A DO statement can constrain a worker's behavior but is not a permission grant or authorization for protected actions. Conflicts are surfaced with provenance and authority; no silent last-write-wins.
+
+The worker's execution controller adopts `.agents/skills/gemini-performance-psychology/SKILL.md` and `docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md`:
+
+`reconstruct → hypothesis/outcome → smallest useful change → validate → inspect evidence → classify → record next action → repeat`
+
+Momentum is not quality. A failure changes the next treatment; no unchanged retries. Correctness outranks latency. ATES/WTCV are observational, not merge gates. Use builder/review/recon/experiment/telemetry/synthesis lanes with explicit ownership and bilateral critique for consequential decisions. Preserve failed/cancelled/unknown states.
 
 ## System topology
 

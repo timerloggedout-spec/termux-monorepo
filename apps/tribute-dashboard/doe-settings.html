@@ -75,7 +75,7 @@
   const card=(label,value,note)=>{const d=el("div","panel");d.append(el("div","muted",label),el("div","value",value));if(note)d.append(el("p","muted",note));return d;};
   async function load(){
     try{
-      const response=await fetch("./data/../ops-doe-settings.json",{cache:"no-store"});
+      const response=await fetch("./data/doe-settings-register.json",{cache:"no-store"});
       if(!response.ok)throw new Error("HTTP "+response.status);
       const data=await response.json();
       if(data.schema!=="doe.settings-register/v1")throw new Error("Unexpected schema");

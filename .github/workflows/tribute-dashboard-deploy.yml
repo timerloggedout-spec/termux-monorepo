@@ -190,7 +190,7 @@ jobs:
           commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
       - name: Prune orphaned files from owned subtrees
         env:
-          PAT_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # keep_files:true on the publish step overlays the artifact but

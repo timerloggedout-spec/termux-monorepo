@@ -34,6 +34,14 @@
 | QD-030 | Quota snapshot shape | Missing/partial `series2_snapshots[].states` | Quota Usage renders explicit absence; no runtime exception or zero-fill |
 | QD-031 | Queue census honesty | Queued, in-progress and >7-day wedged fixtures | Wedged runs excluded only with explicit separate listing |
 | QD-032 | Refill attribution | Referral click, pending reward, verified credit and commission fixtures | Click/eligibility/credit/commission remain distinct states and resource classes |
+| QD-033 | Full lifecycle idempotency | Replay the same intake event through request, RFP, campaign and work-packet stages | Exactly one stable identity per logical unit; no duplicate campaign or work packet |
+| QD-034 | Active plus post-burst sweep | File a second RFP after an active sweep snapshots inputs; cancel an intermediate tick | The guaranteed final sweep still processes the late filing exactly once |
+| QD-035 | Incumbent retention on improvement | Candidate improves the measured outcome and is promoted to a new generation | Prior incumbent remains queryable and unchanged; new candidate links parent and evidence |
+| QD-036 | Bounded feed divergence | Inject a late event inside/outside the feed's declared propagation window, then recover | During grace period show STALE/INCOMPLETE plus counts and deadline; outside it alert; after recovery exact parity is required |
+| QD-037 | Provider admission | Exercise fresh, stale, unknown, incomplete and exhausted quota with a provider-call spy | No provider call unless authoritative fresh quota and all admission gates pass; free tier is not an exception |
+| QD-038 | Delphi pagination | Create more than 100 open delphi:rfp issues distributed across pages | Every page is reconciled; no issue beyond page one is starved |
+| QD-039 | Proposal-content approval binding | Change architecture, acceptance criteria or an artifact after a signed review | Canonical full-package hash mismatch invalidates approval; award consumer refuses stale disposition |
+| QD-040 | Parked lifecycle re-entry | Park an RFP, then advance its recheck condition | Remains parked until gate recheck; re-enters DELPHI_PENDING; no design/pool/work packet while parked |
 
 ## Minimum pilot
 

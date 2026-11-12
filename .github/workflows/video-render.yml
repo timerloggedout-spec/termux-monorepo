@@ -1,0 +1,114 @@
+name: video-render
+
+# ListingLens demo render machinery (#5137; QUE-GOV-MEDIA-001):
+# produces the D3 demo MP4 from a REAL run of the ListingLens demo —
+# no staged frames, no hardcoded wins. The workflow runs the demo,
+# derives the five script-beat frames from its actual output,
+# assembles them with ffmpeg, and publishes the MP4 + receipt as run
+# artifacts plus a receipt comment on the target issue. No Clips
+# upload here (separate leg); no media generation services.
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue to post the render receipt on"
+        required: false
+        default: "5124"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: video-render-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Mint Termux Fleet Swarm token (receipt comment)
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: read
+          permission-issues: write
+
+      - name: Run the REAL ListingLens demo (capture of record)
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/render"
+          node apps/listinglens/demo/run-demo.mjs | tee "$RUNNER_TEMP/render/demo-output.txt"
+          grep -q "DEMO OK" "$RUNNER_TEMP/render/demo-output.txt"
+
+      - name: Derive the beats manifest from the run output
+        run: |
+          python3 scripts/listinglens/derive_manifest.py \
+            --demo-output "$RUNNER_TEMP/render/demo-output.txt" \
+            --actions-src apps/listinglens/src/actions.mjs \
+            --repo-url "${{ github.server_url }}/${{ github.repository }}" \
+            --out "$RUNNER_TEMP/render/beats.json"
+
+      - name: Render frames + assemble MP4
+        run: |
+          python3 scripts/listinglens/render_frames.py \
+            --beats "$RUNNER_TEMP/render/beats.json" \
+            --workdir "$RUNNER_TEMP/render/frames" \
+            --out "$RUNNER_TEMP/render/listinglens-demo.mp4"
+
+      - name: Probe + build the receipt
+        run: |
+          ffprobe -v error -show_format -of json \
+            "$RUNNER_TEMP/render/listinglens-demo.mp4" > "$RUNNER_TEMP/render/probe.json"
+          python3 scripts/listinglens/build_receipt.py \
+            --mp4 "$RUNNER_TEMP/render/listinglens-demo.mp4" \
+            --probe "$RUNNER_TEMP/render/probe.json" \
+            --beats "$RUNNER_TEMP/render/beats.json" \
+            --capture-run-id "${{ github.run_id }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --out "$RUNNER_TEMP/render/receipt.json"
+
+      - name: Publish MP4 + receipt artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: listinglens-demo-render
+          path: |
+            ${{ runner.temp }}/render/listinglens-demo.mp4
+            ${{ runner.temp }}/render/receipt.json
+            ${{ runner.temp }}/render/beats.json
+            ${{ runner.temp }}/render/demo-output.txt
+          retention-days: 30
+
+      - name: Post the receipt on the target issue
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os
+          r = json.load(open(os.environ["RUNNER_TEMP"] + "/render/receipt.json"))
+          body = (
+              "**ListingLens demo render — receipt (#5137 machinery, real demo run)**\n\n"
+              f"- mp4: `{r['mp4']}` · sha256 `{r['sha256']}`\n"
+              f"- duration: {r['duration_s']}s · beats: {r['beats']}\n"
+              f"- capture run: {r['run_url']} (run id {r['capture_run_id']})\n"
+              f"- values from the run: rev1 {r['values']['title_rev1']} @ {r['values']['price_rev1']}"
+              f" -> rev2 {r['values']['title_rev2']} @ {r['values']['price_rev2']}\n"
+              "- MP4 + receipt + beats + demo capture are the run artifacts "
+              "(`listinglens-demo-render`). No staged frames; every value quoted "
+              "from the demo run's own output."
+          )
+          open(os.environ["RUNNER_TEMP"] + "/render/receipt-comment.md", "w").write(body)
+          PYEOF
+          gh issue comment "${{ inputs.issue_number }}" \
+            --body-file "$RUNNER_TEMP/render/receipt-comment.md"

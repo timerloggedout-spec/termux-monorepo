@@ -1,0 +1,68 @@
+# Tribute outcome SLO (docs/ops/TRIBUTE-STATUS.md#outcome-slo). Additive file.
+# - test: offline unit tests for scripts/ci/tribute_outcomes.py (no network).
+# - gate: after every tribute-status-refresh, read the committed
+#   docs/ops/generated/tribute-outcomes.json and FAIL (red run + ::error
+#   annotations) when the lane is not producing real foreign merges:
+#   zero real merges in the window, real merge rate below threshold, or a
+#   real-merge drought. Stake-only merges count at weight 0; closed-unmerged
+#   PRs count as failures. Read-only: never posts anywhere.
+name: tribute-outcome-slo
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/tribute-outcome-slo.yml"
+      - ".github/workflows/tribute-status-refresh.yml"
+      - "scripts/ci/tribute_outcomes.py"
+      - "tests/test_tribute_outcomes.py"
+      - "tests/fixtures/tribute_outcomes/**"
+      - "apps/tribute-dashboard/index.html"
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/tribute-outcome-slo.yml"
+      - "scripts/ci/tribute_outcomes.py"
+      - "tests/test_tribute_outcomes.py"
+      - "tests/fixtures/tribute_outcomes/**"
+  workflow_run:
+    workflows: ["tribute-status-refresh"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tribute-outcome-slo-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m py_compile scripts/ci/tribute_outcomes.py
+      - run: python -m unittest -v tests.test_tribute_outcomes
+
+  gate:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: master }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Outcome SLO gate (red when zero real merges / low real merge rate / drought)
+        run: |
+          set -euo pipefail
+          f=docs/ops/generated/tribute-outcomes.json
+          if [ ! -f "$f" ]; then
+            echo "::error title=Tribute outcome SLO::no outcome report on master yet ($f); status refresh has not produced honest outcomes"
+            exit 1
+          fi
+          python3 scripts/ci/tribute_outcomes.py --check-file "$f" --summary "$GITHUB_STEP_SUMMARY"

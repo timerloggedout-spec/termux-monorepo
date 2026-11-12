@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "01403fe9c39ce5b724a46c6546e47cc2787d2be6bbe2edca8ac93471cb0b1c2f",
-  "workflow_count": 298,
+  "source_fingerprint": "92f3c8eb92425ca7aca7dd7f655cfdb156c75856ad1089ba2e3f642ab69e00ec",
+  "workflow_count": 300,
   "workflows": [
     {
       "action_pins": [],
@@ -4963,6 +4963,27 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-auction-${{ github.event_name }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "delphi-emit",
+        "shadow",
+        "signals",
+        "test"
+      ],
+      "name": "tribute-auction",
+      "path": ".github/workflows/tribute-auction.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch",
+        "workflow_run"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "group: tribute-audit-staleness cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -5032,7 +5053,7 @@
     },
     {
       "action_pins": [],
-      "authority": "read-only-or-advisory",
+      "authority": "writer",
       "concurrency": "group: tribute-execute cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -5080,6 +5101,25 @@
       "triggers": [
         "repository_dispatch",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: tribute-outcome-slo-${{ github.event_name }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "gate",
+        "test"
+      ],
+      "name": "tribute-outcome-slo",
+      "path": ".github/workflows/tribute-outcome-slo.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch",
+        "workflow_run"
       ]
     },
     {

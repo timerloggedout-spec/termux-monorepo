@@ -39,12 +39,17 @@ jobs:
     name: adaptive budget + inline scout
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    permissions:
+      contents: write   # only to append auction receipts on branch tribute-auction/receipts
     outputs:
       allow: ${{ steps.gate.outputs.allow }}
       remaining: ${{ steps.gate.outputs.remaining }}
       issue: ${{ steps.gate.outputs.issue }}
       issue_label: ${{ steps.gate.outputs.issue_label }}
       mode: ${{ steps.gate.outputs.mode }}
+      auction_result: ${{ steps.auction.outputs.auction_result }}
+      auction_winner: ${{ steps.auction.outputs.auction_winner }}
+      patch_ready: ${{ steps.auction.outputs.patch_ready }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -137,6 +142,55 @@ jobs:
           path.write_text(json.dumps(data, indent=2))
           PY
 
+      - name: Claim auction (free endpoints ante + bid; System 1 preflight; real patch required)
+        # docs/ops/TRIBUTE-AUCTION.md. Deterministic, read-only: the pool is
+        # data/g4f-working/working-endpoints.json, credits/track record are
+        # replayed from branch tribute-auction/receipts, repo priors come from
+        # the honest outcome census. No winner above reserve -> no claim.
+        # A winner without a real patch (HELP_WANTED_PATCH) -> no claim either:
+        # nothing is posted on a foreign repo without a patch that passes preflight_pr.
+        id: auction
+        if: steps.gate.outputs.allow == 'true' && steps.gate.outputs.mode == 'claim-and-pr'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ steps.gate.outputs.issue }}
+          HELP_WANTED_PATCH: ${{ github.event.client_payload.patch || '' }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/auction
+          if git ls-remote --exit-code origin refs/heads/tribute-auction/receipts >/dev/null 2>&1; then
+            git fetch --depth 1 origin tribute-auction/receipts
+            git show FETCH_HEAD:receipts.jsonl > /tmp/auction/prev.jsonl 2>/dev/null || : > /tmp/auction/prev.jsonl
+          else
+            : > /tmp/auction/prev.jsonl
+          fi
+          cat_path=docs/ops/generated/tribute-catalog.json
+          [ -f "$cat_path" ] || echo '{"items":[]}' > "$cat_path"
+          python3 scripts/ci/tribute_auction.py auction --catalog "$cat_path" --issue "$ISSUE" --live-preflight --enrich \
+            --ledger /tmp/auction/prev.jsonl --census docs/ops/generated/tribute-outcomes.json \
+            --out /tmp/auction/new.jsonl
+          if [ -n "${HELP_WANTED_PATCH}" ]; then echo "patch_ready=true" >> "$GITHUB_OUTPUT"; else echo "patch_ready=false" >> "$GITHUB_OUTPUT"; fi
+          {
+            echo "## Claim auction"
+            jq -r '"\(.issue): **\(.result)** winner=\(.winner // "-") ev=\(.ev // "-") p=\(.p_real_merge // "-") bids=\(.bids|length)"' /tmp/auction/new.jsonl
+            [ -n "${HELP_WANTED_PATCH}" ] || echo "No real patch supplied: no claim is posted (stake-only claims are retired)."
+          } >> "$GITHUB_STEP_SUMMARY"
+          # append-only receipts branch, in a separate worktree (the workspace keeps the catalog)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            rm -rf /tmp/rcpt; git worktree prune
+            if git ls-remote --exit-code origin refs/heads/tribute-auction/receipts >/dev/null 2>&1; then
+              git fetch -q --depth 1 origin tribute-auction/receipts && git worktree add -q --detach /tmp/rcpt FETCH_HEAD
+            else
+              git worktree add -q --detach /tmp/rcpt HEAD && git -C /tmp/rcpt checkout -q --orphan tribute-auction/receipts && git -C /tmp/rcpt rm -rqf .
+            fi
+            touch /tmp/rcpt/receipts.jsonl && cat /tmp/auction/new.jsonl >> /tmp/rcpt/receipts.jsonl
+            git -C /tmp/rcpt add receipts.jsonl && git -C /tmp/rcpt commit -qm "tribute-auction: receipt $(date -u +%FT%H:%MZ) [skip render]"
+            git -C /tmp/rcpt push -q origin HEAD:refs/heads/tribute-auction/receipts && break
+            sleep $((attempt * 3))
+          done
+
       - name: Upload catalog if produced
         if: always()
         uses: actions/upload-artifact@v4
@@ -161,9 +215,15 @@ jobs:
   claim:
     name: claim comment (stake)
     needs: budget
-    if: needs.budget.outputs.allow == 'true' && needs.budget.outputs.issue != ''
+    # Auction gate: a winning endpoint AND a real patch, or no public claim.
+    if: >-
+      needs.budget.outputs.allow == 'true' && needs.budget.outputs.issue != '' &&
+      (needs.budget.outputs.mode != 'claim-and-pr' ||
+       (needs.budget.outputs.auction_winner != '' && needs.budget.outputs.patch_ready == 'true'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write   # only to append the claim receipt on branch tribute-auction/receipts
     steps:
       - uses: actions/checkout@v4
         with:
@@ -189,6 +249,25 @@ jobs:
           set -euo pipefail
           python3 scripts/ci/tribute_evidence.py \
             --kind claim --issue "${{ needs.budget.outputs.issue }}" --ok true --run-url "$GITHUB_RUN_URL"
+
+      - name: Auction claim receipt (settlement input)
+        if: success() && needs.budget.outputs.auction_winner != ''
+        env:
+          ISSUE: ${{ needs.budget.outputs.issue }}
+          WINNER: ${{ needs.budget.outputs.auction_winner }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rec="$(jq -nc --arg i "$ISSUE" --arg w "$WINNER" --arg t "$(date -u +%FT%TZ)" '{kind:"claim",issue:$i,winner:$w,at:$t}')"
+          for attempt in 1 2 3; do
+            rm -rf /tmp/rcpt; git worktree prune
+            git fetch -q --depth 1 origin tribute-auction/receipts && git worktree add -q --detach /tmp/rcpt FETCH_HEAD || exit 0
+            echo "$rec" >> /tmp/rcpt/receipts.jsonl
+            git -C /tmp/rcpt add receipts.jsonl && git -C /tmp/rcpt commit -qm "tribute-auction: claim $(date -u +%FT%H:%MZ) [skip render]"
+            git -C /tmp/rcpt push -q origin HEAD:refs/heads/tribute-auction/receipts && exit 0
+            sleep $((attempt * 3))
+          done
 
       - name: Evidence receipt (fail)
         if: failure()
@@ -224,6 +303,7 @@ jobs:
           GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
           GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          HELP_WANTED_PATCH: ${{ github.event.client_payload.patch || '' }}
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN:-}" ]; then

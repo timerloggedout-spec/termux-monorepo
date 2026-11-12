@@ -176,3 +176,13 @@ def test_build_feed_stamps_resolved_states(tmp_path):
                          fetch=lambda n, tok: calls.append(n) or
                          {"number": n, "state": "open", "merged_at": None})
     assert sorted(calls) == [7, 42]
+
+
+def test_proposal_type_vocabulary_and_unknown_type_gap(tmp_path):
+    registry = pf.parse_registry_subset(FIXTURE)
+    assert "research" in pf.PROPOSAL_TYPES
+    assert "scientific_experiment_system" in pf.PROPOSAL_TYPES
+    registry["proposals"][0]["proposal_type"] = "unregistered_type"
+    feed = pf.build_feed(registry, tmp_path, "2026-11-11T00:00:00Z")
+    assert feed["proposals"][0]["proposal_type"] == "unregistered_type"
+    assert any("unknown proposal_type" in gap for gap in feed["gaps"])

@@ -19,11 +19,12 @@ class DoEInferenceContractTests(unittest.TestCase):
         cls.provider_map = (ROOT / "docs/ops/PROVIDER-DISPATCH-MAP.md").read_text()
         cls.swarm = (ROOT / "docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md").read_text()
         cls.telemetry = json.loads((ROOT / "ops/telemetry/integration-observability-index.json").read_text())
+        cls.gambling_lane = json.loads((ROOT / "ops/agentic-gambling/lane.json").read_text())
 
     def validate(self, feed=None):
         return validate_contract(feed or self.feed, self.design, self.schema,
                                  self.roster, self.missions, self.gambling,
-                                 self.provider_map, self.swarm, self.telemetry)
+                                 self.provider_map, self.swarm, self.telemetry, self.gambling_lane)
 
     def test_current_contract_is_consistent(self):
         self.assertEqual([], self.validate())
@@ -48,6 +49,13 @@ class DoEInferenceContractTests(unittest.TestCase):
         participant_props = self.schema["properties"]["participants"]["items"]["properties"]
         self.assertIn("wallet_id", participant_props)
         self.assertIn("participant_class", participant_props)
+
+    def test_public_ledger_is_not_mislabeled_as_private_strategy_store(self):
+        book = next(x for x in self.gambling_lane["components"] if x["id"] == "wagering-book-challenges")
+        note = book["ledger_of_record"]
+        self.assertIn("public accounting", note)
+        self.assertIn("access-controlled private store", note)
+        self.assertNotIn("private ledger of record", note.lower())
 
     def test_desk_cannot_claim_allocation_authority(self):
         feed = copy.deepcopy(self.feed)

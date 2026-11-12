@@ -16,7 +16,8 @@ def validate_fee_distribution(distribution: dict) -> bool:
 
 def validate_contract(feed: dict, design: dict, schema: dict,
                       roster: str, missions: str, gambling: str,
-                      provider_map: str, swarm: str, telemetry: dict) -> list[str]:
+                      provider_map: str, swarm: str, telemetry: dict,
+                      gambling_lane: dict) -> list[str]:
     errors = []
     rotation = feed.get("dispatch", {}).get("provider_catalog", {}).get("rotation_rule", {})
     rule = str(rotation.get("rule", ""))
@@ -59,6 +60,10 @@ def validate_contract(feed: dict, design: dict, schema: dict,
         errors.append("Swarm assurance must consume DoE assignment/repeat policy")
     if "no provider takes 2 consecutive" in provider_map.lower():
         errors.append("provider dispatch map must not reinstate global consecutive-provider rule")
+    book = next((item for item in gambling_lane.get("components", []) if item.get("id") == "wagering-book-challenges"), {})
+    ledger_note = str(book.get("ledger_of_record", ""))
+    if "public accounting" not in ledger_note or "access-controlled private store" not in ledger_note or "private ledger of record" in ledger_note.lower():
+        errors.append("agentic gambling lane must separate public accounting from private strategy storage")
     assignment_owner = telemetry.get("doe", {}).get("assignment_owner", "")
     if "DoE family" not in assignment_owner or "Scout" not in assignment_owner:
         errors.append("telemetry index must identify DoE allocation and Scout selection owners")
@@ -99,6 +104,7 @@ def main() -> int:
         read("docs/ops/PROVIDER-DISPATCH-MAP.md"),
         read("docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md"),
         json.loads(read("ops/telemetry/integration-observability-index.json")),
+        json.loads(read("ops/agentic-gambling/lane.json")),
     )
     if errors:
         for error in errors:

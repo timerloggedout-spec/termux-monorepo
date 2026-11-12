@@ -1,0 +1,39 @@
+name: DoE inference allocation contract
+on:
+  pull_request:
+    paths:
+      - "ops/challenge/desk-feed.json"
+      - "experiments/doe/util-1-provider-rotation/**"
+      - "docs/ops/SCOUT-ROSTER.md"
+      - "docs/ops/SCOUT-MISSIONS.md"
+      - "docs/ops/AGENTIC-GAMBLING-LANE.md"
+      - "docs/schemas/inference-selection-receipt.schema.json"
+      - "docs/architecture/DOE-GOVERNED-INFERENCE-ALLOCATION.md"
+      - "scripts/ci/check_doe_inference_contract.py"
+      - "tests/test_doe_inference_contract.py"
+  push:
+    branches: [master]
+    paths:
+      - "ops/challenge/desk-feed.json"
+      - "experiments/doe/util-1-provider-rotation/**"
+      - "docs/ops/SCOUT-ROSTER.md"
+      - "docs/ops/SCOUT-MISSIONS.md"
+      - "docs/ops/AGENTIC-GAMBLING-LANE.md"
+      - "docs/schemas/inference-selection-receipt.schema.json"
+      - "docs/architecture/DOE-GOVERNED-INFERENCE-ALLOCATION.md"
+      - "scripts/ci/check_doe_inference_contract.py"
+      - "tests/test_doe_inference_contract.py"
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check authority and schema drift
+        run: python scripts/ci/check_doe_inference_contract.py
+      - name: Exercise drift guards
+        run: python -m unittest discover -s tests -p "test_doe_inference_contract.py" -v

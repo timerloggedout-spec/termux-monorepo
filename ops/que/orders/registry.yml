@@ -1,6 +1,6 @@
 schema: qdesk.order-registry/v1
 registry_id: qdesk-implementation-orders
-updated_on: "2026-11-11"
+updated_on: "2026-11-12"
 owner: "optimizations-assurance"
 authority:
   source_of_truth: "This registry and the order documents it references"
@@ -16,8 +16,12 @@ orders:
     title: "Free Inference Endpoint Tournament — self-implementation order"
     path: "ops/que/orders/free-inference-tournament.yml"
     documentation: "docs/ops/FREE-INFERENCE-ENDPOINT-TOURNAMENT.md"
-    status: prepared
-    execution_state: not_dispatched
+    status: dispatch_pending
+    execution_state: awaiting_que_admission
+    initial_issue: 5193
+    implementation_pr: 5192
+    admission_workflow_run_id: 43148635718
+    task_intake_workflow_run_id: 43148635573
     priority: P1
     stage_count: 9
     dispatch:

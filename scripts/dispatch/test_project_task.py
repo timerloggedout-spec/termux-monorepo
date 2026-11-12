@@ -63,6 +63,10 @@ def test_valid_body_parses_and_profiles_all_requested_lanes():
     assert all(x["state"] == "candidate_not_preregistered"
                for x in profile["experiment_lanes"])
     assert profile["provider_selection"] == "existing_dispatch_policy"
+    assert profile["specialist_roles_are_assignments"] is False
+    assert "experiment-designer" in profile["candidate_specialist_roles"]
+    assert "performance-psychologist" in profile["candidate_specialist_roles"]
+    assert profile["specialist_registry_ref"] == "ops/roles/scientific-specialists.json"
 
 
 def test_default_target_repo_applies():
@@ -200,3 +204,18 @@ def test_project_task_workflow_preserves_issue_event_dependencies():
     assert "types: [opened, reopened]" in workflow
     assert "workflow_run:" not in workflow
     assert "admission_receipt.py" in workflow
+
+
+def test_specialist_registry_is_machine_readable_and_non_provider_identity():
+    import json
+    registry = json.loads((ROOT / "ops" / "roles" / "scientific-specialists.json").read_text())
+    assert registry["schema"] == "scientific-specialist-registry/v1"
+    assert registry["canonical_doe_seats"] == list((
+        "builder", "operator", "steward", "observer",
+        "reviewer", "scout", "gambler", "participant",
+    ))
+    ids = {role["id"] for role in registry["roles"]}
+    profile = profile_lanes(parse_issue_body(VALID_BODY))
+    assert set(profile["candidate_specialist_roles"]).issubset(ids)
+    assert all(role["provider_identity"] is False for role in registry["roles"])
+    assert all(role["canonical_seat_ids_created"] is False for role in registry["roles"])

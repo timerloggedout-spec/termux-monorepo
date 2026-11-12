@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QDesk Gantt · deadlines and requirement closure</title>
+<!-- Generated data: ops/challenge/qdesk-plan.json (scripts/que/qdesk_deadlines.py, workflow qdesk-deadline-desk.yml).
+     Read raw from master first (no redeploy per refresh), baked ./data copy as fallback. -->
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./site-nav.js" defer></script>
+<style>
+ .row{display:flex;gap:.6rem;align-items:center;margin:.3rem 0}
+ .lab{flex:0 0 22rem;font-size:.85rem}
+ .trk{position:relative;flex:1;height:1.2rem;background:rgba(127,127,127,.12);border-radius:3px}
+ .bar{position:absolute;top:.2rem;height:.8rem;border-radius:3px;background:#2e7d32}
+ .bar.hitl{background:#b26a00}.bar.ms{width:4px!important;background:#c62828}
+ .now{position:absolute;top:0;bottom:0;width:2px;background:#4fd1c5}
+ .alarm{background:#7a1f1f;color:#fff;border-radius:6px;padding:.45rem .7rem;margin:.35rem 0}
+ table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{border-bottom:1px solid #22272e;padding:.3rem;text-align:left}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>QDesk Gantt</h1>
+<p class="dim" id="stamp">Loading…</p>
+<section><h2>Alarms (T-7d · T-48h · T-12h · MISSED)</h2><div id="alarms"></div></section>
+<section><h2>Deadlines</h2><table id="deadlines"></table></section>
+<section><h2>Requirement-closure tasks</h2><p class="dim">Green = agent-executable · amber = owner approval (money, legal, binding) · red tick = deadline.</p><div id="gantt"></div></section>
+</main>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const RAW="https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/challenge/qdesk-plan.json";
+  async function load(){
+    for(const u of [RAW+"?t="+Date.now(),"./data/qdesk-plan.json"]){
+      try{const r=await fetch(u,{cache:"no-store"}); if(r.ok) return await r.json();}catch(e){}
+    }
+    return null;
+  }
+  load().then(d=>{
+    if(!d){$("stamp").textContent="Plan unavailable.";return;}
+    const age=(Date.now()-new Date(d.generated_at).getTime())/3600000;
+    $("stamp").textContent="Generated "+d.generated_at+(age>6?" · STALE ("+age.toFixed(0)+"h)":"")+" · "+d.hitl.tasks+" tasks, "+d.hitl.owner_steps+" owner steps (HITL rate "+d.hitl.rate+")";
+    const open=(d.entries||[]).filter(e=>e.kind!=="done"&&e.left_hours!=null&&e.left_hours>-48&&e.left_hours<24*7);
+    $("alarms").innerHTML=open.length?open.map(e=>'<div class="alarm"><strong>'+esc(e.id)+'</strong> '+esc(e.kind)+' · '+(e.left_hours<0?"MISSED "+(-e.left_hours).toFixed(0)+"h ago":e.left_hours.toFixed(0)+"h left")+' · '+esc(e.status)+'</div>').join(""):'<p class="dim">Nothing inside 7 days.</p>';
+    $("deadlines").innerHTML="<tr><th>Entry</th><th>Kind</th><th>Deadline</th><th>Left</th><th>Status</th></tr>"+(d.entries||[]).filter(e=>e.deadline).sort((a,b)=>a.left_hours-b.left_hours).map(e=>"<tr><td>"+esc(e.id)+"</td><td>"+esc(e.kind)+"</td><td>"+esc(e.deadline)+"</td><td>"+(e.left_hours<0?"past":(e.left_hours/24).toFixed(1)+"d")+"</td><td>"+esc(e.status)+"</td></tr>").join("");
+    const rows=d.gantt||[], DAY=864e5;
+    const ts=rows.flatMap(g=>[Date.parse(g.start),Date.parse(g.end)]).filter(isFinite);
+    const t0=Math.min(Date.now()-3*DAY,...ts), t1=Math.max(Date.now()+14*DAY,...ts)+DAY;
+    const pct=t=>((t-t0)/(t1-t0)*100);
+    const nowX=pct(Date.now()).toFixed(1);
+    $("gantt").innerHTML=rows.map(g=>{const s=Date.parse(g.start),e=Date.parse(g.end)+DAY;
+      return '<div class="row"><div class="lab"><strong>'+esc(g.id)+'</strong><br><span class="dim">'+esc(g.label)+' · '+esc(g.start)+' → '+esc(g.end)+'</span></div><div class="trk"><div class="now" style="left:'+nowX+'%"></div><div class="bar'+(g.hitl?" hitl":"")+(g.milestone?" ms":"")+'" style="left:'+pct(s).toFixed(1)+'%;width:'+Math.max(.6,pct(e)-pct(s)).toFixed(1)+'%"></div></div></div>';}).join("")||'<p class="dim">No tasks.</p>';
+  });
+})();
+</script>
+</body>
+</html>

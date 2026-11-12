@@ -1,0 +1,818 @@
+{
+ "schema": "qdesk.plan.v1",
+ "generated_at": "2026-11-11T23:40:00-08:00",
+ "source": "ops/challenge/coordinator.json",
+ "doc": "docs/ops/QDESK-DEADLINE-ALARMS.md",
+ "entries": [
+  {
+   "id": "STRANDS-DECIDER",
+   "group": "events",
+   "kind": "done",
+   "deadline_key": "deadline",
+   "deadline": "2026-10-23T23:59:00-07:00",
+   "left_hours": -456.7,
+   "status": "closed"
+  },
+  {
+   "id": "D0",
+   "group": "events",
+   "kind": "done",
+   "deadline_key": "deadline",
+   "deadline": "2026-10-26T13:00:00-07:00",
+   "left_hours": -395.7,
+   "status": "closed"
+  },
+  {
+   "id": "D1",
+   "group": "events",
+   "kind": "done",
+   "deadline_key": "deadline",
+   "deadline": "2026-11-04T23:59:00-08:00",
+   "left_hours": -167.7,
+   "status": "submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze"
+  },
+  {
+   "id": "D2",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": "deadline",
+   "deadline": "2026-11-08T15:00:00-08:00",
+   "left_hours": -80.7,
+   "status": "registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT"
+  },
+  {
+   "id": "D3",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": "deadline",
+   "deadline": "2026-11-09T23:59:00-08:00",
+   "left_hours": -47.7,
+   "status": "active"
+  },
+  {
+   "id": "D4",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": "reg_close",
+   "deadline": "2026-12-04T14:00:00-08:00",
+   "left_hours": 542.3,
+   "status": "registering"
+  },
+  {
+   "id": "D5",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": "deadline",
+   "deadline": "2026-11-19T12:00:00-08:00",
+   "left_hours": 180.3,
+   "status": "registering"
+  },
+  {
+   "id": "C11",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": null,
+   "deadline": null,
+   "left_hours": null,
+   "status": "active"
+  },
+  {
+   "id": "C12",
+   "group": "events",
+   "kind": "open",
+   "deadline_key": "preliminary_due",
+   "deadline": "2026-11-15T23:45:00-08:00",
+   "left_hours": 96.1,
+   "status": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep"
+  },
+  {
+   "id": "DOMINO",
+   "group": "candidate_events",
+   "kind": "open",
+   "deadline_key": null,
+   "deadline": null,
+   "left_hours": null,
+   "status": "watch"
+  },
+  {
+   "id": "C13",
+   "group": "candidate_events",
+   "kind": "open",
+   "deadline_key": "proposal_due",
+   "deadline": "2026-11-20T23:59:00-12:00",
+   "left_hours": 220.3,
+   "status": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call"
+  },
+  {
+   "id": "C14",
+   "group": "candidate_events",
+   "kind": "gap",
+   "deadline_key": "initial_proposal_due",
+   "deadline": "2026-11-20T23:59:00-08:00",
+   "left_hours": 216.3,
+   "status": "HOLD / parked (watch) per opportunity evaluation via Manager 2026-11-03 \u2014 no action; revisit only on an evaluation change"
+  },
+  {
+   "id": "C15",
+   "group": "candidate_events",
+   "kind": "gap",
+   "deadline_key": "submission_period",
+   "deadline": "2026-11-11T23:59:00-08:00",
+   "left_hours": 0.3,
+   "status": "SCREENED OUT this cycle - FAIL eligibility in practice (ARA Rules \u00a7I): Amazon confirmed Model A CAN satisfy \u00a7I in principle (see institution_gap.rescreen_2026_1"
+  },
+  {
+   "id": "C16",
+   "group": "candidate_events",
+   "kind": "gap",
+   "deadline_key": "submission_deadline",
+   "deadline": "2026-11-04T23:59:00-08:00",
+   "left_hours": -167.7,
+   "status": "SCREENED OUT this cycle \u2014 FAIL eligibility (ARA Rules \u00a7I, read firsthand 2026-11-03) + window closes 2026-11-04; institution-gap entry, re-screen on trigger"
+  }
+ ],
+ "tasks": [
+  {
+   "id": "D4:gate-d4-accounts",
+   "entry": "D4",
+   "title": "Close gate D4-ACCOUNTS: Devpost account + Kiro user ID created (fleet Google identity route)",
+   "start": "2026-11-11",
+   "due": "2026-11-23",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "D5:gate-d5-spot",
+   "entry": "D5",
+   "title": "Close gate D5-SPOT: Spot confirmation email from Aha!'s registration review",
+   "start": "2026-11-11",
+   "due": "2026-11-15",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C11:gate-amd-academy-5",
+   "entry": "C11",
+   "title": "Close gate AMD-ACADEMY-5: Complete >=5 AMD Academy courses (league podium gate)",
+   "start": "2026-11-11",
+   "due": "2026-12-04",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C11:gate-amd-gpu100",
+   "entry": "C11",
+   "title": "Close gate AMD-GPU100: Claim $100 AMD GPU credits (Match 1 onboarding task, timed claim)",
+   "start": "2026-11-11",
+   "due": "2026-12-04",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C11:gate-amd-m1-onboarding",
+   "entry": "C11",
+   "title": "Close gate AMD-M1-ONBOARDING: Match 1 remainder: complete AMD profile (+50), join AMD Discord (+50), join lablab Discord (REQUIRED for Match participation)",
+   "start": "2026-11-11",
+   "due": "2026-12-04",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C12:gate-c12-registration",
+   "entry": "C12",
+   "title": "Close gate C12-REGISTRATION: Join the hackathon on Devpost (account exists, in-boundary); not yet executed as of graduation.",
+   "start": "2026-11-11",
+   "due": "2026-11-13",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C12:gate-c12-r2-conditional",
+   "entry": "C12",
+   "title": "Close gate C12-R2-CONDITIONAL: Round 2 exists only if invited as a finalist (Nov 21): one assigned remote-NAS testing day Nov 22-28 + final package/video by Nov 30 23:45 PT.",
+   "start": "2026-11-11",
+   "due": "2026-11-13",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C13:decision",
+   "entry": "C13",
+   "title": "Get the pending go/no-go decision recorded (candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate cal)",
+   "start": "2026-11-11",
+   "due": "2026-11-13",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C14:sponsor-shortlist",
+   "entry": "C14",
+   "title": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or Model C, fees, intake time, AI/OSS fit, grant-receipt terms (sources cited)",
+   "start": "2026-11-11",
+   "due": "2026-11-13",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C14:pi-route",
+   "entry": "C14",
+   "title": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the clause; draft the eligibility memo citing the funder's written answer",
+   "start": "2026-11-13",
+   "due": "2026-11-15",
+   "hitl": false,
+   "depends_on": [
+    "C14:sponsor-shortlist"
+   ],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C14:sponsor-application",
+   "entry": "C14",
+   "title": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-11-14",
+   "due": "2026-11-16",
+   "hitl": false,
+   "depends_on": [
+    "C14:pi-route"
+   ],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C14:owner-sign-sponsor",
+   "entry": "C14",
+   "title": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (binding legal agreement; fees may apply)",
+   "start": "2026-11-16",
+   "due": "2026-11-17",
+   "hitl": true,
+   "depends_on": [
+    "C14:sponsor-application"
+   ],
+   "state": "todo",
+   "cycle": "current",
+   "owner_packet": "sponsor shortlist + fee table + draft agreement terms + recommendation; approve = sign via sponsor portal"
+  },
+  {
+   "id": "C14:rescreen",
+   "entry": "C14",
+   "title": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-11-17",
+   "due": "2026-11-18",
+   "hitl": false,
+   "depends_on": [
+    "C14:owner-sign-sponsor"
+   ],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C14:draft-submit",
+   "entry": "C14",
+   "title": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2026-11-18",
+   "due": "2026-11-20",
+   "hitl": false,
+   "depends_on": [
+    "C14:rescreen"
+   ],
+   "state": "todo",
+   "cycle": "current"
+  },
+  {
+   "id": "C15:sponsor-shortlist",
+   "entry": "C15",
+   "title": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or Model C, fees, intake time, AI/OSS fit, grant-receipt terms (sources cited)",
+   "start": "2026-11-11",
+   "due": "2026-11-26",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C15:pi-route",
+   "entry": "C15",
+   "title": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the clause; draft the eligibility memo citing the funder's written answer",
+   "start": "2026-11-23",
+   "due": "2026-12-08",
+   "hitl": false,
+   "depends_on": [
+    "C15:sponsor-shortlist"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C15:sponsor-application",
+   "entry": "C15",
+   "title": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-12-04",
+   "due": "2026-12-19",
+   "hitl": false,
+   "depends_on": [
+    "C15:pi-route"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C15:owner-sign-sponsor",
+   "entry": "C15",
+   "title": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (binding legal agreement; fees may apply)",
+   "start": "2026-12-19",
+   "due": "2026-12-26",
+   "hitl": true,
+   "depends_on": [
+    "C15:sponsor-application"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle",
+   "owner_packet": "sponsor shortlist + fee table + draft agreement terms + recommendation; approve = sign via sponsor portal"
+  },
+  {
+   "id": "C15:rescreen",
+   "entry": "C15",
+   "title": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-12-26",
+   "due": "2027-01-03",
+   "hitl": false,
+   "depends_on": [
+    "C15:owner-sign-sponsor"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C15:draft-submit",
+   "entry": "C15",
+   "title": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2027-01-03",
+   "due": "2027-01-24",
+   "hitl": false,
+   "depends_on": [
+    "C15:rescreen"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C16:sponsor-shortlist",
+   "entry": "C16",
+   "title": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or Model C, fees, intake time, AI/OSS fit, grant-receipt terms (sources cited)",
+   "start": "2026-11-11",
+   "due": "2026-11-26",
+   "hitl": false,
+   "depends_on": [],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C16:pi-route",
+   "entry": "C16",
+   "title": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the clause; draft the eligibility memo citing the funder's written answer",
+   "start": "2026-11-23",
+   "due": "2026-12-08",
+   "hitl": false,
+   "depends_on": [
+    "C16:sponsor-shortlist"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C16:sponsor-application",
+   "entry": "C16",
+   "title": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-12-04",
+   "due": "2026-12-19",
+   "hitl": false,
+   "depends_on": [
+    "C16:pi-route"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C16:owner-sign-sponsor",
+   "entry": "C16",
+   "title": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (binding legal agreement; fees may apply)",
+   "start": "2026-12-19",
+   "due": "2026-12-26",
+   "hitl": true,
+   "depends_on": [
+    "C16:sponsor-application"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle",
+   "owner_packet": "sponsor shortlist + fee table + draft agreement terms + recommendation; approve = sign via sponsor portal"
+  },
+  {
+   "id": "C16:rescreen",
+   "entry": "C16",
+   "title": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-12-26",
+   "due": "2027-01-03",
+   "hitl": false,
+   "depends_on": [
+    "C16:owner-sign-sponsor"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  },
+  {
+   "id": "C16:draft-submit",
+   "entry": "C16",
+   "title": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2027-01-03",
+   "due": "2027-01-24",
+   "hitl": false,
+   "depends_on": [
+    "C16:rescreen"
+   ],
+   "state": "todo",
+   "cycle": "next-cycle"
+  }
+ ],
+ "gantt": [
+  {
+   "id": "D4:gate-d4-accounts",
+   "label": "Close gate D4-ACCOUNTS: Devpost account + Kiro user ID created (fleet Google ide",
+   "start": "2026-11-11",
+   "end": "2026-11-23",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D4"
+  },
+  {
+   "id": "D5:gate-d5-spot",
+   "label": "Close gate D5-SPOT: Spot confirmation email from Aha!'s registration review",
+   "start": "2026-11-11",
+   "end": "2026-11-15",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D5"
+  },
+  {
+   "id": "C11:gate-amd-academy-5",
+   "label": "Close gate AMD-ACADEMY-5: Complete >=5 AMD Academy courses (league podium gate)",
+   "start": "2026-11-11",
+   "end": "2026-12-04",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C11"
+  },
+  {
+   "id": "C11:gate-amd-gpu100",
+   "label": "Close gate AMD-GPU100: Claim $100 AMD GPU credits (Match 1 onboarding task, time",
+   "start": "2026-11-11",
+   "end": "2026-12-04",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C11"
+  },
+  {
+   "id": "C11:gate-amd-m1-onboarding",
+   "label": "Close gate AMD-M1-ONBOARDING: Match 1 remainder: complete AMD profile (+50), joi",
+   "start": "2026-11-11",
+   "end": "2026-12-04",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C11"
+  },
+  {
+   "id": "C12:gate-c12-registration",
+   "label": "Close gate C12-REGISTRATION: Join the hackathon on Devpost (account exists, in-b",
+   "start": "2026-11-11",
+   "end": "2026-11-13",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C12"
+  },
+  {
+   "id": "C12:gate-c12-r2-conditional",
+   "label": "Close gate C12-R2-CONDITIONAL: Round 2 exists only if invited as a finalist (Nov",
+   "start": "2026-11-11",
+   "end": "2026-11-13",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C12"
+  },
+  {
+   "id": "C13:decision",
+   "label": "Get the pending go/no-go decision recorded (candidate \u2014 VIABLE, eligibility CONF",
+   "start": "2026-11-11",
+   "end": "2026-11-13",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C13"
+  },
+  {
+   "id": "C14:sponsor-shortlist",
+   "label": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or ",
+   "start": "2026-11-11",
+   "end": "2026-11-13",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C14"
+  },
+  {
+   "id": "C14:pi-route",
+   "label": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the",
+   "start": "2026-11-13",
+   "end": "2026-11-15",
+   "depends_on": [
+    "C14:sponsor-shortlist"
+   ],
+   "hitl": false,
+   "entry": "C14"
+  },
+  {
+   "id": "C14:sponsor-application",
+   "label": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-11-14",
+   "end": "2026-11-16",
+   "depends_on": [
+    "C14:pi-route"
+   ],
+   "hitl": false,
+   "entry": "C14"
+  },
+  {
+   "id": "C14:owner-sign-sponsor",
+   "label": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (b",
+   "start": "2026-11-16",
+   "end": "2026-11-17",
+   "depends_on": [
+    "C14:sponsor-application"
+   ],
+   "hitl": true,
+   "entry": "C14"
+  },
+  {
+   "id": "C14:rescreen",
+   "label": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-11-17",
+   "end": "2026-11-18",
+   "depends_on": [
+    "C14:owner-sign-sponsor"
+   ],
+   "hitl": false,
+   "entry": "C14"
+  },
+  {
+   "id": "C14:draft-submit",
+   "label": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2026-11-18",
+   "end": "2026-11-20",
+   "depends_on": [
+    "C14:rescreen"
+   ],
+   "hitl": false,
+   "entry": "C14"
+  },
+  {
+   "id": "C15:sponsor-shortlist",
+   "label": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or ",
+   "start": "2026-11-11",
+   "end": "2026-11-26",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C15"
+  },
+  {
+   "id": "C15:pi-route",
+   "label": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the",
+   "start": "2026-11-23",
+   "end": "2026-12-08",
+   "depends_on": [
+    "C15:sponsor-shortlist"
+   ],
+   "hitl": false,
+   "entry": "C15"
+  },
+  {
+   "id": "C15:sponsor-application",
+   "label": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-12-04",
+   "end": "2026-12-19",
+   "depends_on": [
+    "C15:pi-route"
+   ],
+   "hitl": false,
+   "entry": "C15"
+  },
+  {
+   "id": "C15:owner-sign-sponsor",
+   "label": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (b",
+   "start": "2026-12-19",
+   "end": "2026-12-26",
+   "depends_on": [
+    "C15:sponsor-application"
+   ],
+   "hitl": true,
+   "entry": "C15"
+  },
+  {
+   "id": "C15:rescreen",
+   "label": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-12-26",
+   "end": "2027-01-03",
+   "depends_on": [
+    "C15:owner-sign-sponsor"
+   ],
+   "hitl": false,
+   "entry": "C15"
+  },
+  {
+   "id": "C15:draft-submit",
+   "label": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2027-01-03",
+   "end": "2027-01-24",
+   "depends_on": [
+    "C15:rescreen"
+   ],
+   "hitl": false,
+   "entry": "C15"
+  },
+  {
+   "id": "C16:sponsor-shortlist",
+   "label": "Fiscal-sponsor shortlist: 5+ 501(c)(3) sponsors offering Model A (employ PI) or ",
+   "start": "2026-11-11",
+   "end": "2026-11-26",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C16"
+  },
+  {
+   "id": "C16:pi-route",
+   "label": "PI route: which sponsor can employ/appoint a permanent researcher PI meeting the",
+   "start": "2026-11-23",
+   "end": "2026-12-08",
+   "depends_on": [
+    "C16:sponsor-shortlist"
+   ],
+   "hitl": false,
+   "entry": "C16"
+  },
+  {
+   "id": "C16:sponsor-application",
+   "label": "Prepare sponsor intake application + project description (draft, not submitted)",
+   "start": "2026-12-04",
+   "end": "2026-12-19",
+   "depends_on": [
+    "C16:pi-route"
+   ],
+   "hitl": false,
+   "entry": "C16"
+  },
+  {
+   "id": "C16:owner-sign-sponsor",
+   "label": "OWNER APPROVAL: choose sponsor and sign the fiscal-sponsorship / PI agreement (b",
+   "start": "2026-12-19",
+   "end": "2026-12-26",
+   "depends_on": [
+    "C16:sponsor-application"
+   ],
+   "hitl": true,
+   "entry": "C16"
+  },
+  {
+   "id": "C16:rescreen",
+   "label": "Re-screen eligibility with the sponsor in place and register for the cycle",
+   "start": "2026-12-26",
+   "end": "2027-01-03",
+   "depends_on": [
+    "C16:owner-sign-sponsor"
+   ],
+   "hitl": false,
+   "entry": "C16"
+  },
+  {
+   "id": "C16:draft-submit",
+   "label": "Draft, internal Delphi review, and submit the proposal",
+   "start": "2027-01-03",
+   "end": "2027-01-24",
+   "depends_on": [
+    "C16:rescreen"
+   ],
+   "hitl": false,
+   "entry": "C16"
+  },
+  {
+   "id": "D2:deadline",
+   "label": "D2 deadline (deadline)",
+   "start": "2026-11-08",
+   "end": "2026-11-08",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D2",
+   "milestone": true
+  },
+  {
+   "id": "D3:deadline",
+   "label": "D3 deadline (deadline)",
+   "start": "2026-11-09",
+   "end": "2026-11-09",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D3",
+   "milestone": true
+  },
+  {
+   "id": "D4:deadline",
+   "label": "D4 deadline (reg_close)",
+   "start": "2026-12-04",
+   "end": "2026-12-04",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D4",
+   "milestone": true
+  },
+  {
+   "id": "D5:deadline",
+   "label": "D5 deadline (deadline)",
+   "start": "2026-11-19",
+   "end": "2026-11-19",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "D5",
+   "milestone": true
+  },
+  {
+   "id": "C12:deadline",
+   "label": "C12 deadline (preliminary_due)",
+   "start": "2026-11-15",
+   "end": "2026-11-15",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C12",
+   "milestone": true
+  },
+  {
+   "id": "C13:deadline",
+   "label": "C13 deadline (proposal_due)",
+   "start": "2026-11-20",
+   "end": "2026-11-20",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C13",
+   "milestone": true
+  },
+  {
+   "id": "C14:deadline",
+   "label": "C14 deadline (initial_proposal_due)",
+   "start": "2026-11-20",
+   "end": "2026-11-20",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C14",
+   "milestone": true
+  },
+  {
+   "id": "C15:deadline",
+   "label": "C15 deadline (submission_period)",
+   "start": "2026-11-11",
+   "end": "2026-11-11",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C15",
+   "milestone": true
+  },
+  {
+   "id": "C16:deadline",
+   "label": "C16 deadline (submission_deadline)",
+   "start": "2026-11-04",
+   "end": "2026-11-04",
+   "depends_on": [],
+   "hitl": false,
+   "entry": "C16",
+   "milestone": true
+  }
+ ],
+ "alarms": [],
+ "alarms_sent": {},
+ "hitl": {
+  "tasks": 26,
+  "owner_steps": 3,
+  "rate": 0.115
+ }
+}

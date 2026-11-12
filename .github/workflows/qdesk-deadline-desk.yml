@@ -107,7 +107,7 @@ jobs:
           done
           echo "::warning::plan commit failed after 3 tries; alarms may re-append next run"
 
-  deadline-alarms:
+  hark-queue-mirror:
     needs: plan
     if: needs.plan.outputs.n != '0' && needs.plan.outputs.n != ''
     strategy:
@@ -129,6 +129,55 @@ jobs:
         Either the entry is submitted (coordinator status), or every open requirement-closure task
         for it in ops/challenge/qdesk-plan.json is done or explicitly re-planned with a new date,
         and any owner_packets were raised to the Owner as a ready-to-approve packet.
+
+  # Primary escalation is INTERNAL to GitHub Actions (Owner, 2026-11-12: "Escalations are
+  # required to be in GitHub Actions workflows ... all internal mechanisms"). The hark:queue
+  # mirror above is secondary; nothing here depends on an outside poller.
+  #   T-7d   -> qdesk:alarm issue (keyed per entry+deadline) + ::warning on this run
+  #   T-48h  -> + label qdesk:P0, assigned to the repo owner (GitHub notification)
+  #   T-12h / MISSED -> + ::error and a red run, so the failure is visible on the Actions page
+  # Every tier also emits repository_dispatch `qdesk-alarm` so any internal lane workflow
+  # can subscribe (repository_dispatch from GITHUB_TOKEN does start workflows).
+  escalate:
+    needs: plan
+    if: needs.plan.outputs.n != '0' && needs.plan.outputs.n != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      OWNER: ${{ github.repository_owner }}
+      ALARMS: ${{ needs.plan.outputs.alarms }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Escalate inside GitHub (issue, assignment, dispatch, red run)
+        run: |
+          set -euo pipefail
+          gh label create "qdesk:alarm" -R "$REPO" --color b60205 --description "QDesk deadline escalation (qdesk-deadline-desk.yml)" --force >/dev/null
+          gh label create "qdesk:P0" -R "$REPO" --color 5c0000 --description "QDesk deadline inside 48h or missed" --force >/dev/null
+          red=0
+          printf '%s' "$ALARMS" | jq -c '.[]' > /tmp/alarms.jsonl
+          while IFS= read -r a; do
+            key=$(jq -r .key <<<"$a"); title=$(jq -r .title <<<"$a"); prio=$(jq -r .priority <<<"$a")
+            tier=$(jq -r .inputs <<<"$a" | sed -n 's/^tier: //p'); entry=$(jq -r .inputs <<<"$a" | sed -n 's/^entry: //p')
+            marker="<!-- qdesk-alarm: ${key} -->"
+            { echo "$marker"; echo "**${tier}** escalation from [qdesk-deadline-desk]($RUN_URL)"; echo; echo '```yaml'; jq -r .inputs <<<"$a"; echo '```';
+              echo; echo "Closure tasks and owner packets: \`ops/challenge/qdesk-plan.json\` · Gantt: \`ops/challenge/qdesk-requirements.gantt.txt\` · page \`/tribute/qdesk-gantt.html\`"; } > body.md
+            num=$(gh issue list -R "$REPO" --label "qdesk:alarm" --state open --limit 200 --json number,body                   | jq -r --arg m "$marker" '[.[] | select(.body | contains($m))][0].number // empty')
+            if [ -n "$num" ]; then gh issue comment "$num" -R "$REPO" --body-file body.md >/dev/null
+            else num=$(gh issue create -R "$REPO" --title "$title" --label "qdesk:alarm" --body-file body.md); num=${num##*/}; fi
+            if [ "$prio" = P0 ]; then
+              gh issue edit "$num" -R "$REPO" --add-label "qdesk:P0" --add-assignee "$OWNER" >/dev/null || gh issue edit "$num" -R "$REPO" --add-label "qdesk:P0" >/dev/null
+            fi
+            gh api -X POST "repos/$REPO/dispatches" -f event_type=qdesk-alarm \
+              -F "client_payload[entry]=$entry" -F "client_payload[tier]=$tier" -F "client_payload[issue]=$num" -F "client_payload[key]=$key" >/dev/null \
+              || echo "::warning::repository_dispatch qdesk-alarm failed for $key"
+            case "$tier" in T-12h|MISSED) echo "::error title=qdesk ${tier}::${title} (#${num})"; red=1;; *) echo "::warning title=qdesk ${tier}::${title} (#${num})";; esac
+          done < /tmp/alarms.jsonl
+          exit $red
 
   pages:
     runs-on: ubuntu-latest

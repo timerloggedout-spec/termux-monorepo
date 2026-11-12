@@ -1,0 +1,40 @@
+name: Queue pit crew
+
+# Self-resolving Actions queue: diagnose ∧ supersede ∧ suggest (scripts/ci/queue_pitcrew.py).
+# Own cron so it can't be starved by the Quota Dispatch Tree it drains
+# (2026-11-12: 604 queued tree runs blocked the tree-owned reaper cadence).
+# Kill switch: repo variable QUEUE_PITCREW_ENABLED=false. Never touches in_progress runs.
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: cancel superseded runs (false = diagnose only)
+        type: boolean
+        default: true
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: queue-pitcrew
+  cancel-in-progress: true
+
+jobs:
+  pass:
+    if: vars.QUEUE_PITCREW_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Pit crew pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPLY: ${{ github.event_name == 'schedule' || inputs.apply }}
+        run: |
+          flag=""; [ "$APPLY" = "true" ] && flag="--apply"
+          python3 scripts/ci/queue_pitcrew.py --repo "${{ github.repository }}" $flag

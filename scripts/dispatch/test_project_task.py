@@ -5,7 +5,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
-from admission_receipt import classify_receipt
+from admission_receipt import classify_receipt, has_intake_receipt
 from project_task import (
     incomplete_comment, parse_issue_body, profile_lanes,
     receipt_comment, validate, validate_siglary_data_record,
@@ -219,3 +219,11 @@ def test_specialist_registry_is_machine_readable_and_non_provider_identity():
     assert set(profile["candidate_specialist_roles"]).issubset(ids)
     assert all(role["provider_identity"] is False for role in registry["roles"])
     assert all(role["canonical_seat_ids_created"] is False for role in registry["roles"])
+
+
+def test_intake_receipt_idempotency_is_scoped_to_exact_issue_event():
+    comments = [{
+        "body": "ROUTING RECEIPT\\n\\n<!-- que-intake-event:2026-11-11T10:00:00Z -->",
+    }]
+    assert has_intake_receipt(comments, "2026-11-11T10:00:00Z")
+    assert not has_intake_receipt(comments, "2026-11-11T10:05:00Z")

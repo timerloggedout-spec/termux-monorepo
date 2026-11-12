@@ -78,7 +78,7 @@ def posterior_predictive_probability(
 ) -> float:
     """P(K=successes | alpha,beta) under the Beta-Binomial posterior predictive."""
     _validate_beta(alpha, beta)
-    if not isinstance(trials, int) or trials < 0:
+    if type(trials) is not int or trials < 0:
         raise ValueError("trials must be a non-negative integer")
     if not isinstance(successes, int) or successes < 0 or successes > trials:
         raise ValueError("successes must be an integer in [0,trials]")
@@ -94,8 +94,8 @@ def posterior_predictive_probability(
 
 def posterior_predictive_mean(alpha: float, beta: float, trials: int = 1) -> float:
     _validate_beta(alpha, beta)
-    if trials < 0:
-        raise ValueError("trials must be non-negative")
+    if type(trials) is not int or trials < 0:
+        raise ValueError("trials must be a non-negative integer")
     return trials * alpha / (alpha + beta)
 
 

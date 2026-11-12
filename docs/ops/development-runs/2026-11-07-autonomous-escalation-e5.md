@@ -54,3 +54,21 @@ Issue #5053: https://github.com/timerloggedout-spec/termux-monorepo/issues/5053
 4. Execute controller tests and SHE integration tests.
 5. Implement the minimal framework-neutral LangGraph adapter only after tests and checkpointer ownership are resolved.
 6. Reconcile PR #5045 against current `master`, rerun current-SHA gates, and obtain fresh independent review.
+
+
+## Follow-up — LGB-004 optional StateGraph proof (2026-11-12 UTC)
+
+**Implementation commits (feature branch):**
+- `a9014199d905b88488178084d4c4310d12349327` — deterministic optional StateGraph treatment.
+- `c4ac4b246662be63757c58c9dcf0bd0a5c3600f9` — capture and verify immutable authorization-scope snapshot.
+- `9d8527bdacecf2e18cccd1318721ffb6eac920b1` — explicit typed escalation-decision state.
+- `8e95670e31abf51d09ea8cb324d79ed5409c2062` — deterministic graph route tests.
+- `22cf65201b106e0f9e22cd8cb9a722f0eef8d05f` — isolated optional LangGraph test dependency.
+- `0eeb23ecca6e99413047071c86505c0ebe4a07aa` — dedicated GitHub-hosted graph test workflow.
+- `bbc39f9b94e75ba1af5729dacd39ac332b24b40a` — authorization-scope mutation regression test.
+- `62e489e9512225e95420984148e0d190726edc37` — proposal item status update.
+- `98ac3383b94bf2f9d04c1c82a650a8e4453dbd9f` — integration documentation.
+
+**Scope:** The graph composes the existing deterministic escalation controller with stub decision, handoff, local-repair, and verification nodes. It does not invoke providers/tools, persist checkpoints, add telemetry, or widen authorization. LangGraph is pinned only in `requirements-langgraph-test.txt`; `requirements-base.txt` remains unchanged.
+
+**Validation:** No local or Termux commands were run because the device is offline and local-only validation is not being treated as release evidence. The dedicated workflow definition is present on this PR branch, but no matching current-head GitHub Actions run/check has been returned. The implementation is therefore **unvalidated / promotion-blocked** pending hosted execution and review. Do not mark LGB-004 complete until its graph and policy tests pass on the exact PR head.

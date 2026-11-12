@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 586,
-    "open_prs": 364,
+    "open_issues": 590,
+    "open_prs": 362,
     "pr_classes": {
-      "CANDIDATE": 173,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 180,
+      "CANDIDATE": 171,
+      "EXTRACT": 13,
+      "NEED_EVIDENCE": 178,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 332,
+      "issues": 336,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 60,
-      "prs": 362,
+      "prs": 360,
       "unlabelled_numbers": [
         308,
         388,
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T12:24:23Z",
+  "generated_at": "2026-11-12T13:37:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -185,10 +185,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "6f30bb6db5"
+    "sha": "a669476616"
   },
   "prs": [
     {
@@ -344,6 +344,34 @@
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ab4a6d8c6f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5178,
+      "title": "Multi-arm build routing: endpoint-agnostic build-dispatch (#5151) \u2014 DO NOT MERGE",
+      "updated_at": "2026-11-12T13:19:48Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "939cd07e1d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5224,
+      "title": "fix(doe): make inference allocation DoE-governed",
+      "updated_at": "2026-11-12T12:43:49Z"
     },
     {
       "class": "CANDIDATE",
@@ -1099,12 +1127,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b590f3e4c9",
+      "head_sha": "4aaa112557",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2304,
-      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
-      "updated_at": "2026-11-06T14:25:52Z"
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-12T12:42:37Z"
     },
     {
       "class": "CANDIDATE",
@@ -1113,12 +1141,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c709ef60bb",
+      "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T11:51:15Z"
+      "number": 2304,
+      "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
+      "updated_at": "2026-11-06T14:25:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -2107,12 +2135,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b0dc0be4e2",
+      "head_sha": "6686a0ea25",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-11T21:48:20Z"
+      "updated_at": "2026-11-12T13:30:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -2723,54 +2751,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e5510451fe",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5208,
-      "title": "feat(que): QDesk self-repair loop \u2014 intake, promote gate, learn ledger [skip render]",
-      "updated_at": "2026-11-12T09:58:55Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e393962179",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5209,
-      "title": "fix(gates): SIE target 1 \u2014 branch gates degrade platform walls instead of failing [skip render]",
-      "updated_at": "2026-11-12T09:58:56Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6410f0972c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5221,
-      "title": "docs(architecture): reconcile swarm routing contracts and lineage",
-      "updated_at": "2026-11-12T12:16:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "621378344a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5222,
       "title": "docs(architecture): reconcile swarm routing control planes",
       "updated_at": "2026-11-12T12:01:20Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e24b5ff5b6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5227,
+      "title": "chore(workflows): retire Gemini Dispatch and preserve audit history",
+      "updated_at": "2026-11-12T12:40:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3297,12 +3297,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "77ec78c530",
+      "head_sha": "3e2a7cda9b",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T12:19:41Z"
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-12T13:26:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3941,12 +3941,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8d79113364",
+      "head_sha": "4b4691ae55",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-12T12:14:05Z"
+      "updated_at": "2026-11-12T13:30:07Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3955,12 +3955,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "d4cc46b8a7",
+      "head_sha": "bab1e491be",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T12:08:06Z"
+      "updated_at": "2026-11-12T13:24:27Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5215,20 +5215,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "4d3c4e3041",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5178,
-      "title": "Multi-arm build routing: endpoint-agnostic build-dispatch (#5151) \u2014 DO NOT MERGE",
-      "updated_at": "2026-11-12T05:38:31Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "ab9edf94f0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -5254,43 +5240,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "failure",
+        "smoke": "success"
       },
       "head_sha": "6a63fb7c48",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5216,
       "title": "feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
-      "updated_at": "2026-11-12T12:23:23Z"
+      "updated_at": "2026-11-12T12:58:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "329028d106",
+      "head_sha": "1d50068749",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 5224,
-      "title": "fix(doe): make inference allocation DoE-governed",
-      "updated_at": "2026-11-12T12:24:18Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "e24b5ff5b6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5227,
-      "title": "chore(workflows): retire Gemini Dispatch and preserve audit history",
-      "updated_at": "2026-11-12T12:20:08Z"
+      "number": 5234,
+      "title": "ops(queue): pit crew \u2014 coalesce tree wakes \u2227 self-resolving queue [skip render]",
+      "updated_at": "2026-11-12T13:36:45Z"
     }
   ],
   "schema": "operator-matrix/v1",

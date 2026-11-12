@@ -298,3 +298,8 @@ tactic` · `macro "absurd " h:term : tactic` · `syntax
 Seed registry: one nomenclature domain per shorthand domain
 (59 chord terms, all candidate), each concept carrying its chord
 as its symbolic label.
+
+## Register split — token-cost note (2026-11-12)
+
+Token census 🧾 [`SIGLARY-TOKEN-COST.md`](SIGLARY-TOKEN-COST.md): CHORDS (30 sampled) cost 49 tokens vs 31 for their words ∧ GLYPHS (11) cost 27 vs 12, on o200k_base. OPERATORS (11) cost 21 vs 17 on o200k_base ∧ are at parity on cl100k_base (17 vs 17).
+Proposed: the **A2A register** uses OPERATORS ∧ plain words. CHORDS ∧ GLYPHS stay in the **display register**. This map is unchanged until the Linguist rules on it.

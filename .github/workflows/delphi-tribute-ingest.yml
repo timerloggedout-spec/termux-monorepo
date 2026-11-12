@@ -19,11 +19,15 @@ permissions:
 
 jobs:
   collect:
-    # Only scans publish decisions: tribute-system1's pull_request/push runs are eval-only (no
-    # tribute-s1-decisions artifact), which failed this job on every run from 2026-11-02 on.
+    # The scan path moved into tribute-system1.yml (delphi-emit job: changed
+    # outcomes only, deduped per thread). Here the workflow_run path stays
+    # declared but only fires for a scheduled/dispatched scan that produced a
+    # decisions artifact; PR/push eval runs (no artifact) no longer fail here.
+    # Manual dispatch still ingests the whole backfill branch.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
+       vars.TRIBUTE_INGEST_ON_RUN == 'true' &&
        (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -45,9 +49,7 @@ jobs:
         if: github.event_name == 'workflow_run'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          gh run download "${{ github.event.workflow_run.id }}" -n tribute-s1-decisions -D decisions-in \
-            || { echo "::notice::no tribute-s1-decisions artifact on run ${{ github.event.workflow_run.id }}; nothing to ingest"; mkdir -p decisions-in; }
+        run: gh run download "${{ github.event.workflow_run.id }}" -n tribute-s1-decisions -D decisions-in
 
       - name: Extract delphi signals
         id: ingest
@@ -56,9 +58,8 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             files=$(ls backfill-data/backfill/*.jsonl)
           else
-            files=$(ls decisions-in/*.jsonl 2>/dev/null || true)
+            files=$(ls decisions-in/*.jsonl)
           fi
-          if [ -z "$files" ]; then echo "count=0" >> "$GITHUB_OUTPUT"; exit 0; fi
           echo "ingesting: $files"
           python3 scripts/delphi/tribute_ingest.py --summary $files > signal.json
           echo "count=$(jq 'length' signal.json)" >> "$GITHUB_OUTPUT"

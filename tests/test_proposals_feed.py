@@ -26,6 +26,7 @@ proposals:
     status: posted
     priority: P1
     path: active/alpha-pack/
+    proposal_type: research
     reviewers:
       - id: timerloggedout-spec
         role: operator-authorizer
@@ -51,7 +52,7 @@ def test_subset_parser_matches_pyyaml_on_fixture():
     assert b["updated_at"] == a["updated_at"] and b["updated_by"] == a["updated_by"]
     assert len(b["proposals"]) == len(a["proposals"]) == 2
     for pa, pb in zip(a["proposals"], b["proposals"]):
-        for key in ("id", "title", "author", "status", "priority", "path"):
+        for key in ("id", "title", "author", "status", "priority", "path", "proposal_type"):
             assert pb[key] == pa[key]
         assert pb.get("related_issues", []) == (pa.get("related_issues") or [])
         assert pb.get("related_prs", []) == (pa.get("related_prs") or [])
@@ -82,6 +83,9 @@ def test_build_feed_shape(tmp_path):
     assert feed["counts"]["by_status"] == {"posted": 1, "executing": 1}
     first = feed["proposals"][0]
     assert first["issues"] == [175, 772] and first["prs"] == []
+    assert first["proposal_type"] == "research"
+    assert feed["proposals"][1]["proposal_type"] is None
+    assert feed["counts"]["by_type"] == {"research": 1}
     # no states resolved -> the ref is stamped unknown, never guessed
     assert feed["proposals"][1]["prs"] == [
         {"number": 42, "state": "unknown", "merged_at": None}]

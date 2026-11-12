@@ -78,3 +78,8 @@ Wolfram is for symbolic derivation, simplification, identity checks and adversar
 ## Non-goals
 
 No replacement QUE scheduler, no parallel governor, no direct action execution, no automatic approval, no hidden telemetry, no external calculator dependency, no false live-state dashboard.
+
+
+## DoE / MoneyBall model-task pool integration
+
+See `docs/ops/DELPHIC-DOE-MONEYBALL-INTEGRATION.md` for the normative contract. Delphic feeds task-fit evidence and deterministic analysis into the existing DoE/MoneyBall pool. Assignment is per exact configured instance (provider × model@version × endpoint × protocol × account scope × prompt/tool hashes × role/context × instance_key), never model name alone. Reuse DoE Experiment records, MoneyBall participant wallets/cull waterfall, QUE admission and executor, quota ledger, and independent verification. No new scheduler, model catalog, wallet ledger, or quota system. Role-clone work remains gated by #5183 census and #5136 identity issuance; pool dispatch remains gated by #5176/#4979/#5151 sequencing. No live provider probes, paid fallback, wallet movement, or participant provisioning in this integration tranche.

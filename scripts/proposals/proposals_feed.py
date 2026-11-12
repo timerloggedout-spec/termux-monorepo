@@ -44,7 +44,7 @@ SCHEMA = "proposals-feed/v2"
 TREE = "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/"
 REPO = "timerloggedout-spec/termux-monorepo"
 API = "https://api.github.com"
-ITEM_KEYS = ("id", "title", "author", "status", "priority", "path")
+ITEM_KEYS = ("id", "title", "author", "status", "priority", "path", "proposal_type")
 INT_LIST_KEYS = ("related_issues", "related_prs")
 PR_STATES = ("open", "merged", "closed-unmerged", "unknown")
 
@@ -227,6 +227,7 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
             "author": entry.get("author"),
             "status": entry.get("status"),
             "priority": entry.get("priority"),
+            "proposal_type": entry.get("proposal_type"),
             "path": path,
             "url": TREE + path.lstrip("/"),
             "issues": [int(x) for x in entry.get("related_issues") or []],
@@ -273,7 +274,10 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
     def tally(key: str) -> dict:
         counts: dict[str, int] = {}
         for p in proposals:
-            counts[p[key]] = counts.get(p[key], 0) + 1
+            value = p.get(key)
+            if value is None:
+                continue
+            counts[value] = counts.get(value, 0) + 1
         return counts
 
     return {
@@ -287,6 +291,7 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
             "by_status": tally("status"),
             "by_priority": tally("priority"),
             "by_author": tally("author"),
+            "by_type": tally("proposal_type"),
             "passes": len(passes),
         },
         "proposals": proposals,

@@ -201,7 +201,7 @@ Actions 83 / intersection 83; production admission unchanged.
 
 ## DoE allocation and Scout selection
 
-**DoE owns inference allocation and rotation.** The Provider Index/catalog defines the eligible population and its evidence class; it does not assign traffic or impose a global alternation rule. The active DoE design owns the campaign, task strata, endpoint allocation/proportions, assignment probabilities, repeat policy, endpoint-level significance gates, stopping, culling and promotion.
+**DoE owns Swarm allocation and rotation, including provider/endpoint assignment.** The Provider Index/catalog defines the eligible population and its evidence class; it does not assign traffic or impose a global alternation rule. The active DoE design owns the campaign, task strata, endpoint allocation/proportions, assignment probabilities, repeat policy, endpoint-level significance gates, stopping, culling and promotion.
 
 **Scout selects** an eligible provider/model endpoint from the existing DoE-governed pool to realize the assigned treatment. Selection uses task fit plus live capability, credential, catalog, quota, data-policy and health evidence. A repeat is valid whenever the active DoE design assigns it. There is no global no-repeat or fixed alternation rule.
 

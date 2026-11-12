@@ -50,7 +50,7 @@ def validate_contract(feed: dict, design: dict, schema: dict,
     distribution = fee.get("properties", {}).get("distribution", {}).get("properties", {})
     if not all(key in distribution for key in ("doe_pct", "mvt_pct", "ates_pct", "moneyball_pct", "3l0_pct")):
         errors.append("fee distribution must cover DoE, MVT, ATES, MoneyBall and 3L0")
-    if "DoE owns inference allocation and rotation" not in provider_map:
+    if "DoE owns Swarm allocation and rotation" not in provider_map:
         errors.append("provider dispatch map must defer allocation/rotation authority to DoE")
     if "DoE owns the assignment and repeat policy" not in swarm:
         errors.append("Swarm assurance must consume DoE assignment/repeat policy")

@@ -79,6 +79,23 @@ jobs:
           gh issue edit "${{ github.event.issue.number }}" \
             --add-label dispatch-queued
 
+      - name: Apply QUE capability lane labels
+        if: steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CAPABILITY_LANES: ${{ steps.parse.outputs.capability_lanes }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          IFS=',' read -ra LANES <<< "$CAPABILITY_LANES"
+          for lane in "${LANES[@]}"; do
+            [ -n "$lane" ] || continue
+            label="que-lane-$lane"
+            gh label create "$label" --force --color 1D76DB \\
+              --description "QUE capability/experiment lane: $lane" || true
+            gh issue edit "$ISSUE_NUMBER" --add-label "$label"
+          done
+
       - name: Publish QUE lane profile
         if: steps.parse.outputs.ok == 'true'
         uses: actions/upload-artifact@v4

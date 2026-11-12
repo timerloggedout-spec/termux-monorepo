@@ -49,6 +49,7 @@ class DoEInferenceContractTests(unittest.TestCase):
         participant_props = self.schema["properties"]["participants"]["items"]["properties"]
         self.assertIn("wallet_id", participant_props)
         self.assertIn("participant_class", participant_props)
+        self.assertIn("history_ref", participant_props["strategy"]["properties"])
 
     def test_public_ledger_is_not_mislabeled_as_private_strategy_store(self):
         book = next(x for x in self.gambling_lane["components"] if x["id"] == "wagering-book-challenges")

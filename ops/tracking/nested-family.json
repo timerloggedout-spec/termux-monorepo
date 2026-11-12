@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-03T09:33:50Z",
+ "generated_at": "2026-11-12T10:47:06Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,40 +11,41 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 27,
-   "records_used": 27
+   "records_read": 28,
+   "records_used": 28
   },
   {
    "id": "campaign-records",
    "path": "experiments/doe/*/records/*.json",
-   "records_read": 61,
+   "records_read": 64,
    "records_used": 4
   },
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 26,
+   "records_read": 27,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 27,
+   "records_read": 28,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 47,
-   "records_used": 12
+   "records_read": 53,
+   "records_used": 17
   }
  ],
  "coverage": {
   "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
-  "registry_records": 97,
-  "registry_providers": 95,
+  "registry_records": 98,
+  "registry_providers": 96,
   "with_dispatches": 6,
   "zero_dispatch": [
+   "agentrouter",
    "aion",
    "cerebras",
    "Claude",
@@ -149,21 +150,21 @@
  },
  "summary": {
   "providers": 16,
-  "models": 20,
-  "roles": 4,
-  "tasks": 43,
-  "dispatches": 31,
-  "registry_providers": 95,
-  "zero_dispatch_providers": 89,
+  "models": 21,
+  "roles": 6,
+  "tasks": 49,
+  "dispatches": 32,
+  "registry_providers": 96,
+  "zero_dispatch_providers": 90,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
-   "passed": 23,
+   "passed": 24,
    "failed": 3,
    "observed": 1
   },
   "by_source": {
-   "desk-usage": 12,
-   "records": 27,
+   "desk-usage": 17,
+   "records": 28,
    "campaign-records": 4
   }
  },
@@ -676,17 +677,25 @@
     {
      "model": "system-selection",
      "roles": [
-      "challenge-entries-manager"
+      "challenge-entries-manager",
+      "package build (Swarm Optimizations & Implementation Assurance)",
+      "seat-build (Swarm Optimizations & Implementation Assurance)"
      ],
      "monikers": [
-      "challenge-entries-manager"
+      "challenge-entries-manager",
+      "optimizations-assurance"
      ],
      "contexts": [
+      "C12 R1 package \u2014 Receipts Vault proposal PDF + SKILL.md ZIP (Uliya standard), genuinely in-window build, \u2205 reuse.",
       "D1 next-version build (owner 'Get it built' via main, D1 seat production order 2026-11-02 21:09 PT)",
       "D1 owner OVERRULE press-on (2026-11-03): build everything in-window; v0.4.0 batch; filed via project-task form",
-      "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)"
+      "D1 pacing-matched surfaces (owner model adopted 2026-11-03, via D1 seat); filed via project-task form (dogfood)",
+      "D1 v0.5.0 batch A \u2014 calendar core (RFP-D1-6 \u2460\u2461\u2462, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt",
+      "D1 v0.5.0 batch B \u2014 maps + temple routes (RFP-D1-6 \u2463\u2464, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt",
+      "D1 v0.5.0 batch C \u2014 state recall + adaptive hardening (RFP-D1-6 \u2465, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt 6601124863 (reopen re-trigger)",
+      "RFP-D1-6 build D \u2014 ingestion on every surface (CLI ingest command \u00b7 TUI picker \u00b7 webApp File Picker + camera capture \u00b7 APK WebView wiring), one core path study_pipeline; syllabus-photo \u2192 study_calendar placement, source: ocr provenance, confirm-gated. Extends #4157; rides the v0.5.0 batch (part 4)."
      ],
-     "task_count": 8,
+     "task_count": 13,
      "tasks": [
       {
        "task_class": "desk-traversal",
@@ -871,12 +880,127 @@
        "field_sources": {},
        "source": "desk-usage",
        "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 v0.5.0 batch A \u2014 calendar core (RFP-D1-6 \u2460\u2461\u2462, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4157",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 v0.5.0 batch B \u2014 maps + temple routes (RFP-D1-6 \u2463\u2464, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4158",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "challenge-entries-manager",
+       "moniker": "challenge-entries-manager",
+       "context": "D1 v0.5.0 batch C \u2014 state recall + adaptive hardening (RFP-D1-6 \u2465, issue #4156); filed via project-task form on D1 seat GO; dispatch-queued + receipt 6601124863 (reopen re-trigger)",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4159",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "seat-build (Swarm Optimizations & Implementation Assurance)",
+       "moniker": "optimizations-assurance",
+       "context": "RFP-D1-6 build D \u2014 ingestion on every surface (CLI ingest command \u00b7 TUI picker \u00b7 webApp File Picker + camera capture \u00b7 APK WebView wiring), one core path study_pipeline; syllabus-photo \u2192 study_calendar placement, source: ocr provenance, confirm-gated. Extends #4157; rides the v0.5.0 batch (part 4).",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4242",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[D1].provider_usage"
+      },
+      {
+       "task_class": "desk-traversal",
+       "role": "package build (Swarm Optimizations & Implementation Assurance)",
+       "moniker": "optimizations-assurance",
+       "context": "C12 R1 package \u2014 Receipts Vault proposal PDF + SKILL.md ZIP (Uliya standard), genuinely in-window build, \u2205 reuse.",
+       "dispatch_id": null,
+       "run_id": null,
+       "workflow": null,
+       "session_id": "issue-4261",
+       "ts": null,
+       "outcome": {
+        "status": null,
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": null,
+       "pr": null,
+       "field_sources": {},
+       "source": "desk-usage",
+       "source_ref": "ops/challenge/desk-feed.json#traversals[C12].provider_usage"
       }
      ]
     }
    ],
    "model_count": 1,
-   "task_count": 8,
+   "task_count": 13,
    "zero_dispatch": false
   },
   {
@@ -1428,6 +1552,49 @@
    "provider": "mistral",
    "models": [
     {
+     "model": "NOT_ESTABLISHED",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "provider-invoke mode=invoke"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-42952215553",
+       "run_id": 42952215553,
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-11T03:32:54Z",
+       "outcome": {
+        "status": "passed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-42952215553.json"
+      }
+     ]
+    },
+    {
      "model": "mistral-small-latest",
      "roles": [
       "builder"
@@ -1514,8 +1681,8 @@
      ]
     }
    ],
-   "model_count": 2,
-   "task_count": 2,
+   "model_count": 3,
+   "task_count": 3,
    "zero_dispatch": false
   },
   {
@@ -1695,6 +1862,13 @@
    "model_count": 1,
    "task_count": 1,
    "zero_dispatch": false
+  },
+  {
+   "provider": "agentrouter",
+   "models": [],
+   "model_count": 0,
+   "task_count": 0,
+   "zero_dispatch": true
   },
   {
    "provider": "aion",
@@ -2322,6 +2496,6 @@
  ],
  "gaps": [
   "dispatch providers with no registry model-lane match (casefold-exact join, no aliases): Jules, Muse, Muse Spark (seat-build) \u2014 via Swarm/Scout capability dispatch, claude-muse, command-dispatch, gemini, gemini-cli, github-actions, jules",
-  "desk-usage rows carry no run_id/dispatch_id (12 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
+  "desk-usage rows carry no run_id/dispatch_id (17 tasks): dispatch connection for those is session_id + source_ref only (carrier shape)"
  ]
 }

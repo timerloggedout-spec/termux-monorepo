@@ -58,6 +58,13 @@ def classify_receipt(
     return select_receipt(comments, template.split(","), event_at)[0]
 
 
+
+def has_intake_receipt(comments: list[dict[str, Any]], event_key: str) -> bool:
+    """Whether this exact issue event already has a project-task receipt."""
+    marker = f"<!-- que-intake-event:{event_key} -->"
+    return any(marker in (comment.get("body") or "") for comment in comments)
+
+
 def fetch_comments(repository: str, issue: int) -> list[dict[str, Any]]:
     result = subprocess.run(
         [
@@ -88,18 +95,22 @@ def main(argv: list[str] | None = None) -> int:
     deadline = time.monotonic() + args.timeout
     while True:
         try:
+            comments = fetch_comments(repository, args.issue)
             decision, matched_template = select_receipt(
-                fetch_comments(repository, args.issue), args.template.split(","), args.event_at
+                comments, args.template.split(","), args.event_at
             )
+            already_processed = has_intake_receipt(comments, args.event_at)
         except (subprocess.CalledProcessError, json.JSONDecodeError) as exc:
             print(f"Admission receipt fetch failed; retrying: {exc}", file=sys.stderr)
             decision = None
+            already_processed = False
         if decision:
             with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
                 output.write(f"decision={decision}\n")
                 output.write(f"template={matched_template}\n")
+                output.write(f"already_processed={'true' if already_processed else 'false'}\n")
             print(f"QUE admission receipt: {decision}")
-            return 0 if decision == "admitted" else 0
+            return 0
         if time.monotonic() >= deadline:
             print(
                 f"Timed out waiting for the QUE admission receipt for issue #{args.issue}",

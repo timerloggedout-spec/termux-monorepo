@@ -259,6 +259,27 @@ def build_doe_join(base=None) -> dict:
     }
 
 
+def evidence_pr(evd) -> str | None:
+    """PR number from a desk-feed traversal `evidence` field.
+
+    The desk feed has emitted dict ({"pr": N}), plain string ("PR #N ..."),
+    and list shapes; a string crashed the generator (AttributeError,
+    run 43196125925, 2026-11-12). Unknown shapes yield None.
+    """
+    if isinstance(evd, dict):
+        v = evd.get("pr")
+        return str(v).lstrip("#") if v not in (None, "", 0) else None
+    if isinstance(evd, str):
+        m = re.search(r"(?:pr\s*=\s*#?|pull/|PR\s*#|#)(\d+)", evd, re.I)
+        return m.group(1) if m else None
+    if isinstance(evd, list):
+        for item in evd:
+            got = evidence_pr(item)
+            if got:
+                return got
+    return None
+
+
 def build(now=None) -> dict:
     now = now or _now()
     gaps: list[str] = []
@@ -322,9 +343,9 @@ def build(now=None) -> dict:
             r.setdefault("state", tr.get("status"))
             if tr.get("next"):
                 r["next"] = tr["next"]
-            evd = tr.get("evidence") or {}
-            if evd.get("pr"):
-                r["evidence"].append(f"desk-feed traversal {tr.get('entry')} pr=#{evd['pr']}")
+            pr = evidence_pr(tr.get("evidence"))
+            if pr:
+                r["evidence"].append(f"desk-feed traversal {tr.get('entry')} pr=#{pr}")
 
     registry = _read_json("ops/quota/registry.json")
     if registry is not None:

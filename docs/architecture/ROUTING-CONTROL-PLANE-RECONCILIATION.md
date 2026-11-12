@@ -38,6 +38,7 @@ There are several routing-adjacent implementations, but they operate at differen
 | D1 next-dispatch exclusion after DeepSeek and Gemini have fired | Scoped rule | `reselection_d1` is an explicit D1/task-class constraint; it does not restore the old global no-consecutive rule |
 | Cert-unit provider rotation: no arm takes two consecutive batches | Scoped rule | Swarm Assurance §21 records this as a cert-unit batch policy; keep it separate from bench-wide selection |
 | `util-1-provider-rotation` preregistered hypothesis: no provider takes two consecutive dispatches for the same entry | Stale hypothesis / needs amendment | Do not silently rewrite a preregistration. Reconcile the campaign design and auditor interpretation against the current machine rule with a versioned amendment |
+| `util-1-provider-rotation` campaign status | `admitted_implementing` in its design record | Campaign status alone does not validate its now-stale no-consecutive hypothesis; preserve the registration and require a versioned amendment before interpreting new observations under the current policy |
 | Four-arm / provider-only census treated as complete wiring truth | Superseded classification | Current participation work distinguishes provider/model records, dispatch classes, inference wiring, catalog-only and invocation evidence |
 | Hard-select a preferred provider as ordinary dispatch | Prohibited | DoE governs the pool/policy; Scout selects; Swarm executes. Constraint-driven single-arm dispatch must carry the constraint reason |
 | DoE evolutionary best-arm culling interpreted as a dispatch-time hard selection | Retracted interpretation | Experimental population governance and live task-fit selection are separate decisions |
@@ -52,8 +53,10 @@ There are several routing-adjacent implementations, but they operate at differen
 | `ops/challenge/dispatch-state-feed.json` (`dispatch-state-feed/v1`) | `2026-11-12T04:17:52Z` | Watchdog operational state |
 | `ops/que/feeds/que-queue-feed.json` (`que-queue-feed/v1`) | `2026-11-12T10:06:11Z` | QUE producer-of-record feed; dispatch claims are folded from watchdog state at publish |
 | `ops/que/feeds/queue-by-tier.json` (`que.queue-by-tier/v1`) | `2026-11-12T10:06:11Z` | Queue census by tier; observed totals 399 queued / 6 in progress at that generation |
-| `ops/que/feeds/priority-windows.json` (`que.priority-windows/v1`) | `2026-11-12T10:06:11Z` | Priority-window projection |
+| `ops/que/feeds/priority-windows.json` (`que.priority-windows/v1`) | `2026-11-12T10:06:11Z` | Current projection marks the D1 priority window `closed`; source window ends `2026-11-04T07:59:59Z` and says closure follows verified freeze, not time alone |
 | `ops/que/feeds/governor.json` (`que.governor/v1`) | `2026-11-12T10:06:11Z` | Admission / flow-governor projection |
+
+The D1 window is explicitly `closed` in the 2026-11-12 priority feed. Its source rule says closure follows freeze verification, and the current feed reports `closed`; do not carry the D1 absolute-priority instruction forward as active scheduling policy.
 
 These are independently generated views, not one atomic snapshot. The Tribute Desk page reads the desk feed and watchdog dispatch-state feed; the QUE collector also folds watchdog claims into its own feed family. Consumers must display source timestamps and must not infer synchronized state from a page render.
 

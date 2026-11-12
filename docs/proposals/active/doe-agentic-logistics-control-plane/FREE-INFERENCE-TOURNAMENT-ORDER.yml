@@ -1,0 +1,389 @@
+schema: qdesk.doe-implementation-order/v1
+order_id: DPLC-FIT-001
+title: "Free inference endpoint tournament — governed implementation order"
+proposal_id: doe-agentic-logistics-control-plane
+proposal_status: in_review
+created_on: "2026-11-11"
+owner_lane: "DoE / Optimizations Assurance"
+priority: P1
+execution_state: design_and_offline_preflight_only
+purpose:
+  objective: >-
+    Establish a reproducible, fail-closed comparison of eligible no-cost
+    provider/model/endpoint configured instances in the existing production
+    dispatch flow, with separate evaluation of orchestration policies only
+    after endpoint evidence is sufficient.
+  primary_measure: "correctness and accepted task outcome per eligible live dispatch"
+  secondary_measures:
+    - latency and time to first token where measured
+    - input/output/total tokens where provider-reported
+    - measured cost and quota consumption; unknown remains null
+    - retries, 429s, timeouts, route failures and quota deferrals
+    - rework, feedback cycles, conflicts and human intervention
+    - attribution confidence and configured-instance identity
+  exclusions:
+    - "generic catalog leaderboard"
+    - "provider-count competition"
+    - "promotional-credit, prepaid, trial or card-gated inference represented as free"
+    - "g4f, cookie/HAR, browser-session or unapproved proxy access"
+    - "catalog presence or credential presence treated as invocation entitlement"
+    - "synthetic simulator runs counted as live DoE observations"
+    - "production routing-weight or account-policy mutation"
+system_of_record:
+  proposal_registry: "docs/proposals/registry.yaml"
+  proposal_items: "docs/proposals/active/doe-agentic-logistics-control-plane/ITEMS.md"
+  this_order: "docs/proposals/active/doe-agentic-logistics-control-plane/FREE-INFERENCE-TOURNAMENT-ORDER.yml"
+  provider_population:
+    - "ops/quota/registry.json"
+    - "PR #5134 — provider participation index; not merged at order preparation"
+    - "issue #5160 — provider/model inference-arm pool and autoQuotaCadence repair"
+  quota_and_availability:
+    - "ops/quota/provider-managers.json"
+    - "ops/cadence/provider-onboarding.json"
+    - "scripts/cadence_provider_onboarding.py"
+    - ".github/workflows/provider-availability.yml"
+    - ".github/workflows/quota-dispatch-tree.yml"
+  dispatch_and_evidence:
+    - "docs/ops/PROVIDER-DISPATCH-MAP.md"
+    - "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md"
+    - "docs/ops/PROVIDER-BATCH-IMPLEMENTATION.md"
+    - "docs/ops/PROVIDER-FREE-INFERENCE.md"
+    - "docs/ops/DOE-FAMILY.md"
+    - "docs/ops/DOE-SCORING-INTAKE.md"
+    - "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
+    - "docs/ops/MANAGER-TOURNAMENT.schema.json"
+    - "docs/research/MANAGER-TOURNAMENT-CONTRACT.md"
+  canonical_campaigns:
+    live_provider_rotation: "experiments/doe/util-1-provider-rotation/"
+    routed_dispatch_observations: "experiments/doe/routed-dispatch/"
+    provider_family_observatory: "provider-family-doe-observatory / PR #5163"
+  qdesk_and_delphi:
+    proposal_pipeline: "PR #5145"
+    review_issue: "#5146"
+  related_owner_tasks:
+    provider_pool_and_cadence: "#5134 -> #5160"
+    quota_ledger: "#5152"
+    build_dispatch_harness_arms: "#5151"
+    admitted_build_dispatch_executor: "#5176"
+    admission_feed_reliability: "#4979"
+    participant_identity: "#5136"
+    role_clone_pool: "#5183"
+    specialist_roles: "#5189"
+  explicit_non_equivalence:
+    - "Inference endpoint arms are provider × exact model × endpoint/protocol × account-scoped entitlement."
+    - "Build-dispatch arms are harness × endpoint (#5151); they are not the canonical inference endpoint population."
+    - "Dreambeans DoE candidate-method pool is distinct from provider/model inference-arm pool."
+    - "routed-dispatch is an observational intake; it does not retroactively create designed comparisons."
+  no_duplicate_systems:
+    - "Do not create another provider catalog or endpoint registry."
+    - "Do not create another quota ledger, poller, cadence scheduler or queue."
+    - "Do not create another DoE campaign while util-1-provider-rotation can validly host a versioned, distinct cohort."
+    - "Do not create another QDesk registry, Desk feed, evidence ledger or dashboard truth."
+dispatch:
+  intake_template: ".github/ISSUE_TEMPLATE/project-task.yml"
+  dispatch_schema: "issue-dispatch/v1"
+  lane: "swarm-dispatch"
+  que_tier: 3
+  payload_class: "project-task"
+  route: ".github/workflows/project-task-dispatch.yml"
+  admission_gate: ".github/workflows/swarm-admission.yml"
+  current_coordination_task: "#5195"
+  rule: >-
+    Project Task filing is dispatch intent, not proof of execution. QUE admission
+    remains mandatory. The project-task route validates and receipts intake;
+    provider/manager selection and execution remain in the existing dispatch
+    machinery. Do not hard-select a provider in the issue body.
+  executor_boundary: >-
+    #5176 is the admitted-to-build-dispatch executor for build-dispatch arms.
+    It is not assumed to be the direct inference endpoint executor. Reuse the
+    actual existing provider-batch/native inference route for inference work.
+  live_inference_authorized: false
+  schedule_authorized: false
+  paid_fallback_authorized: false
+  production_routing_mutation_authorized: false
+population_model:
+  unit_identity:
+    tuple:
+      - provider_family
+      - exact_model_id
+      - endpoint_or_route_id
+      - protocol
+      - account_scope_ref
+      - configured_instance_key
+    account_scope_ref: "opaque, non-secret identifier; never a credential value or token-derived fingerprint"
+    require_exact_model_id: true
+    require_transport_evidence: true
+    require_source_sha_and_observed_at: true
+  eligibility_states:
+    - discovered
+    - catalog_observed
+    - transport_wired
+    - availability_verified
+    - no_cost_entitlement_verified
+    - quota_headroom_verified
+    - policy_and_data_class_verified
+    - eligible
+    - deferred
+    - excluded
+  eligible_only_when_all_true:
+    - "Exact model and endpoint are currently present in a trusted source."
+    - "Exact route is wired and verified from the execution environment that will run it."
+    - "The account/model is entitled to genuinely no-cost inference; promotional credits, prepaid balance, trials and card-gated offers do not qualify."
+    - "Current usable quota/headroom is evidenced with source, scope, observation time, reset semantics and timezone when available."
+    - "The endpoint's terms and approved data classification permit the benchmark task."
+    - "The invocation is explicitly bounded and cannot fall through to a paid provider or alternate model."
+    - "Configured-instance identity and source provenance are complete."
+  fail_closed:
+    unknown_or_stale: "deferred; no invocation"
+    catalog_only: "not eligible"
+    credential_present_only: "not eligible"
+    sandbox_or_proxy_success_only: "not eligible"
+    429_without_authoritative_reset: "retain terminal observation; no retry"
+    funding_or_credit_required: "excluded from free cohort"
+    retired_or_ambiguous_model: "excluded"
+    missing_quota_counter: "deferred unless the provider contract explicitly establishes a safe no-cost allowance and the owner-approved design permits it"
+  population_reconciliation:
+    provider_records_and_endpoint_counts_are_separate: true
+    preserve_unmatched_records: true
+    preserve_unknowns_as_null: true
+    preserve_exclusion_reason_codes: true
+    registry_projection_is_not_admission: true
+experiment_design:
+  canonical_live_campaign: "util-1-provider-rotation"
+  design_change: "versioned amendment with a distinct free-inference endpoint cohort; preserve existing live build-dispatch cohort unchanged"
+  cohort_id: "free-inference-endpoint-tournament-2026-11"
+  do_not_pool_with:
+    - "existing util-1 build-task observations"
+    - "routed-dispatch observational-only records"
+    - "simulator-only observations"
+    - "different configured instances sharing a model name"
+  unit: "a real, QUE-admitted, production-flow inference dispatch on an approved public-data task"
+  assignment:
+    - "No hard-selected provider."
+    - "Resolve arms from the current eligible pool at dispatch time."
+    - "Use the pre-registered randomized/blocked assignment and provider rotation rule."
+    - "Preserve task strata and configured-instance identity."
+    - "If only one arm is eligible, record constrained/observational status; do not claim a comparative result."
+  replication:
+    governing_rule: "DOE-FAMILY rule 7"
+    floor_per_trigger: 3
+    set_size: 3
+    fresh_instance_selection_each_set: true
+    required_stamp_fields:
+      - instance_key
+      - set_index
+      - cumulative_n
+      - selection_reason
+      - trigger
+      - task_or_entry_ref
+      - provider
+      - exact_model_id
+      - endpoint_or_route_id
+      - workflow_run_id
+      - run_attempt
+      - observed_at
+    maximum_per_trigger: 12
+    stopping: "stop when the pre-registered decision rule is met; otherwise one further set after a 2-1 split or spread-in-noise; cap/window/budget reached without conclusion = INCONCLUSIVE"
+    significance: "weight-bearing claims require relevant stratum and the repository's class-specific significance standard; otherwise HELD / NOT_ESTABLISHED"
+  outcomes:
+    primary:
+      - correctness
+      - deterministic acceptance
+      - safe task completion
+    secondary:
+      - latency_ms
+      - time_to_first_token_ms
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      - quota_tokens
+      - usage_cost
+      - retries_and_failure_classes
+      - time_to_integrated_result
+      - rework_cycles
+      - human_interventions
+      - attribution_confidence
+    missingness: "null/NOT_ESTABLISHED; never impute zero"
+  automation:
+    requirement: "DoE-FAMILY rule 5 — admitted design includes automation that emits EXPERIMENT records and SUMMARY"
+    reuse:
+      - "existing util-1 auditor and workflow"
+      - "existing routed-dispatch stamp fan-out"
+      - "existing provider-batch/native inference route"
+      - "existing provider participation and quota sources"
+    new_workflow: "not permitted unless a verified gap is documented and accepted in a separate scoped review"
+    manual_runs: "observational only; never promoted into designed evidence"
+manager_policy_comparison:
+  contract: "docs/ops/MANAGER-TOURNAMENT.schema.json"
+  methodology: "docs/research/MANAGER-TOURNAMENT-CONTRACT.md"
+  separate_from_endpoint_effect: true
+  rule: >-
+    The endpoint cohort holds manager policy fixed while estimating endpoint
+    differences. A later manager tournament may compare policies over the same
+    frozen task cohort and eligible endpoint pool. Do not confound endpoint and
+    manager factors in one unidentifiable comparison.
+  candidate_policies_for_later_stage:
+    - baseline_single_eligible_endpoint
+    - sequential_peer_verify_when_gap
+    - bounded_parallel_triage_then_integrate
+    - quota_aware_router
+  promotion: "no winner from simulation, one run, HTTP success, or manager activity volume"
+stages:
+  - id: DPLC-FIT-00
+    name: "Reconcile current sources and prior work"
+    priority: P0
+    state: planned
+    work: "Re-fetch exact master/PR heads, issue states, campaign design, queue/dispatch evidence and source SHAs; mark each dependency accepted, open, blocked or NOT_ESTABLISHED."
+    dependencies: []
+    live_inference: false
+    acceptance:
+      - "No duplicated registry, campaign, queue, quota ledger, scheduler or evidence store."
+      - "Inference endpoint and build-dispatch arm populations are explicitly separated."
+      - "PR #5134, issue #5160, #5151, #5152, #5176, #4979, #5145/#5146 and #5163 have current dispositions recorded."
+  - id: DPLC-FIT-01
+    name: "Deterministic endpoint population and eligibility projection"
+    priority: P0
+    state: planned
+    dependencies: [DPLC-FIT-00]
+    live_inference: false
+    work: "Reconcile the canonical model-lane registry, provider participation index, provider onboarding and passive quota-manager contracts into a derived exact endpoint eligibility view."
+    acceptance:
+      - "Provider count and endpoint count are separate."
+      - "Every row has a stable exact identity, source SHA, observed_at, and a reason-coded state."
+      - "Unknown, stale, funding-blocked, catalog-only and uninvocable endpoints are retained but non-dispatchable."
+      - "No secret values, prompts, completions or raw account metadata are persisted."
+  - id: DPLC-FIT-02
+    name: "Offline deterministic control-system simulator"
+    priority: P1
+    state: planned
+    dependencies: [DPLC-FIT-01]
+    live_inference: false
+    work: "Use fixtures to simulate queue depth/age, concurrency, latency, 429, route failure, quota freshness, shared quota contention and reset boundaries; compare fixed, hysteresis/backpressure, bounded PI/PID and constrained allocation policies."
+    acceptance:
+      - "Simulation is deterministic, seeded and replayable."
+      - "Unknown/stale/exhausted quota fails closed."
+      - "No provider network calls, credentials, inference or live quota reservations occur."
+      - "Simulator results are labelled simulation and are never inserted as live DoE observations."
+  - id: DPLC-FIT-03
+    name: "Versioned DoE design amendment and preregistration"
+    priority: P1
+    state: planned
+    dependencies: [DPLC-FIT-00, DPLC-FIT-01, DPLC-FIT-02]
+    live_inference: false
+    work: "Amend util-1-provider-rotation with a distinct inference endpoint cohort and versioned scoring/outcome contract; keep existing live build-task cohort intact and preserve rule-8 backfill/version lineage."
+    acceptance:
+      - "DoE specialist confirms the existing campaign can host this distinct cohort without violating its live-production basis."
+      - "Hypothesis, estimand, task strata, factors/levels, assignment, replication, stopping and cull rules are committed before execution."
+      - "One dispatched/executed live request equals one experiment observation."
+      - "Routed-dispatch observations remain observational unless assigned under the pre-registered design."
+      - "The committed design names the automation that emits EXPERIMENT records and SUMMARY."
+  - id: DPLC-FIT-04
+    name: "Guarded endpoint adapters and automation contract reconciliation"
+    priority: P1
+    state: planned
+    dependencies: [DPLC-FIT-01, DPLC-FIT-03]
+    live_inference: false
+    work: "Verify that the existing provider-batch/native inference route can emit the full DoE stamp and sanitized outcome evidence; add only the smallest reviewed adapter/automation delta where a proven gap exists."
+    acceptance:
+      - "No new scheduler, queue, provider catalog, quota poller or generic executor."
+      - "Smoke/diagnostic requests are separate from scored experiment observations."
+      - "No automatic retries, alternate models, provider fallback or paid fallback."
+      - "Tests use mocks/fixtures and do not make live provider calls."
+  - id: DPLC-FIT-05
+    name: "Provider-specific live eligibility gate"
+    priority: P0
+    state: blocked_until_evidence
+    dependencies: [DPLC-FIT-01, DPLC-FIT-04, provider_pool_and_cadence]
+    live_inference: false
+    work: "Require exact account/model/route entitlement, current execution-environment availability, authoritative usable quota/headroom, terms, data classification, stop switch and full provenance immediately before any request."
+    acceptance:
+      - "Every selected arm passes all gates at dispatch time."
+      - "A failed or unknown gate causes defer/exclude, not fallback."
+      - "No free eligibility is inferred from catalog, secret name, credit balance, model suffix, proxy test or HTTP 429."
+  - id: DPLC-FIT-06
+    name: "First bounded live endpoint cohort"
+    priority: P1
+    state: not_authorized
+    dependencies: [DPLC-FIT-03, DPLC-FIT-04, DPLC-FIT-05, QDesk_and_QUE_acceptance]
+    live_inference: false
+    work: "After separate explicit authorization, run the pre-registered public-data cohort inside the existing production dispatch flow; preserve all terminal outcomes and stop at the pre-registered cap."
+    acceptance:
+      - "Explicit owner authorization for the exact cohort, endpoint allowlist, request budget and time window."
+      - "Fresh QUE admission and per-arm eligibility evidence at dispatch."
+      - "DoE rule-7 set/instance stamps complete on every observation."
+      - "No scheduled inference or automatic retry."
+      - "Failed, blocked, deferred, skipped and censored observations are retained."
+  - id: DPLC-FIT-07
+    name: "Endpoint scoring and independent adjudication"
+    priority: P1
+    state: planned
+    dependencies: [DPLC-FIT-06]
+    live_inference: false
+    work: "Score deterministic checks first; use environment-grounded evaluation, then LLM judge only where necessary, and human adjudication for unresolved material disagreements."
+    acceptance:
+      - "Results are reported by exact configured instance and task stratum."
+      - "No pooled provider/model claim hides instance or missingness differences."
+      - "Uncertainty and significance basis are explicit; insufficient evidence yields NOT_ESTABLISHED or INCONCLUSIVE."
+  - id: DPLC-FIT-08
+    name: "Separate manager-policy tournament"
+    priority: P2
+    state: not_started
+    dependencies: [DPLC-FIT-07]
+    live_inference: false
+    work: "Only after endpoint evidence exists, compare manager policies using the existing manager.tournament.v1 cohort contract and the same frozen task/environment/budget/evaluator."
+    acceptance:
+      - "Endpoint effect and manager-policy effect are not confounded."
+      - "Policy hashes, cohort hash, environment fingerprint and repetitions are recorded."
+      - "No activity-volume reward or one-run winner declaration."
+  - id: DPLC-FIT-09
+    name: "QDesk / Desk evidence projection and decision"
+    priority: P2
+    state: planned
+    dependencies: [DPLC-FIT-03, DPLC-FIT-07, DPLC-FIT-08]
+    live_inference: false
+    work: "Expose order and cohort state through existing proposal/QUE/DoE/ATES/3L0 projections; link source evidence and freshness without creating a new dashboard truth."
+    acceptance:
+      - "Existing producer-owned feeds and single-writer rules are preserved."
+      - "Desk is a projection; it does not execute or authorize inference."
+      - "Order state distinguishes proposal, admission, claim, execution, verification, integration and adoption."
+  - id: DPLC-FIT-10
+    name: "Promotion recommendation and archival"
+    priority: P2
+    state: planned
+    dependencies: [DPLC-FIT-07, DPLC-FIT-09]
+    live_inference: false
+    work: "Produce an evidence-backed adoption/cull/no-selection recommendation; any production routing change requires a separate owner decision."
+    acceptance:
+      - "Repo gates and Termux smoke pass on the same head SHA."
+      - "Independent review and provenance validation complete."
+      - "No automatic merge, deploy, account mutation or routing-weight change."
+      - "Negative, blocked and inconclusive results remain queryable."
+safety:
+  no_live_inference_during_design_or_simulation: true
+  no_credentials_or_account_mutations: true
+  no_paid_fallback_or_promotional_credit_substitution: true
+  no_cookie_or_har_access: true
+  no_private_repository_or_user_data_in_public_endpoint_tasks: true
+  no_raw_prompts_completions_or_error_bodies_in_artifacts: true
+  no_automatic_retry: true
+  no_automatic_schedule: true
+  no_production_routing_mutation: true
+  unknown_values_remain_null: true
+terminal_states:
+  - completed
+  - blocked
+  - deferred
+  - excluded
+  - inconclusive
+  - no_selection
+  - cancelled
+promotion:
+  automatic: false
+  requires:
+    - "pre-registered cohort and automation"
+    - "current exact endpoint eligibility"
+    - "DoE rule-7 replication and class-specific significance standard"
+    - "deterministic/independent verification"
+    - "same-head repository gates and Termux smoke"
+    - "independent review"
+    - "explicit owner decision"

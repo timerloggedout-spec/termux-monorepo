@@ -90,6 +90,8 @@ def evaluate(cases: list[dict]) -> dict:
         "programmatic_rate": round(programmatic / n, 3),
         "false_reengage": false_reengage,
         "seed_failures": seed_fail,
+        "seed_cases": sum(1 for c in cases if not c.get("synthetic")),
+        "seed_accuracy": round(1 - len(seed_fail) / max(1, sum(1 for c in cases if not c.get("synthetic"))), 3),
         "rows": rows,
     }
 
@@ -98,7 +100,7 @@ def markdown(r: dict) -> str:
     out = ["## Tribute System 1 eval", "",
            f"cases **{r['cases']}** · action accuracy **{r['action_accuracy']}** · HITL rate **{r['hitl_rate']}** · "
            f"LLM-call rate **{r['llm_call_rate']}** · re-plan rate **{r['replan_rate']}** · programmatic **{r['programmatic_rate']}** · "
-           f"false re-engage **{len(r['false_reengage'])}** · macro P/R **{r['macro_precision']}/{r['macro_recall']}**", "",
+           f"false re-engage **{len(r['false_reengage'])}** · seeds **{r['seed_cases'] - len(r['seed_failures'])}/{r['seed_cases']}** · macro P/R **{r['macro_precision']}/{r['macro_recall']}**", "",
            "| class | precision | recall | support |", "|---|---|---|---|"]
     out += [f"| {k} | {v['precision']} | {v['recall']} | {v['support']} |" for k, v in r["per_class"].items()]
     out += ["", "| case | primary | expected | action | rung | ok |", "|---|---|---|---|---|---|"]

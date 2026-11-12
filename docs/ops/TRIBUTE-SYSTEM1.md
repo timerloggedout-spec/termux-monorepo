@@ -99,3 +99,40 @@ backfill output on branch `tribute-s1/backfill` is the source for new labels.
 | `.github/workflows/tribute-llm-assist.yml` | `route(hydrate(...))["rung"] == "system2_llm"` | Only rung-1 threads get an LLM pass; explicit inputs are gated too. |
 
 Regression: `tests/test_tribute_system1_gates.py` proves the three seed fixtures never trigger a follow-up post, claim, or PR.
+
+## v2 (schema `tribute-system1/v2`)
+
+Learned from the 208-thread backfill (since 2026-09-01) and 20 real threads now in
+`tests/fixtures/tribute_system1/real_backfill_cases.json`:
+
+| Change | Why |
+|---|---|
+| Language rule needs a named language (`fluent Turkish speaker`) or `speakers` | v1 flagged "native build" / "fluent API" as `language:unspecified` (codex-termux#14, hermes-agent#8993). |
+| Spam regex: `reported` alone is no longer spam; ban/repoban requests are confident (0.80) | v1 sent two maintainer threads to HITL on the word "reported" (Haven#273, pyrite#192). |
+| New label `closed_resolved` -> `retire_lane` (weight -0.2) + prefilter `require_open_issue` | Issues closed by the maintainer (fixed, shipped) were claimed anyway, including after close. |
+| Drips/Stellar Wave: `has applied to work on this issue`, `application was accepted`, `completed by @x` | Program-assigned issues are claimed by the program; `skip_bounty_program_issue`, and `preflight_candidate` refuses them. |
+| Semantic layer (bag-of-stems cosine vs class prototypes; no model, no LLM) | Corroborates token hits and blocks re-engagement when the last external comment semantically declines. |
+| Placeholder merge: `merged` + `low_effort_placeholder` -> `record_placeholder_merge`, Delphi weight **0** | All 14 stake-file merges are not contributions; they never count as a win. |
+| Follow-up cap `TRIBUTE_S1_FOLLOWUP_CAP` (default 2) unanswered own comments | sendam#492 carried 6 unanswered stale nudges. |
+| Issue threads never get a follow-up; only our own open PRs can | A re-engagement on someone else's issue is never ours to send. |
+
+`reengage_block` names why a follow-up was refused (`class`, `followup_cap`,
+`semantic_decline`, `closed`, `not_addressed_to_us`, `issue_thread`, `rung`).
+Tests: `tests/test_tribute_system1_v2.py`.
+
+## Delphi emission (tribute-outcome)
+
+`tribute-system1.yml` route job -> `scripts/ci/tribute_s1_delphi_delta.py` ->
+`delphi-emit` job (`uses: ./.github/workflows/delphi-signal.yml`, `event: tribute-outcome`).
+Only **changed** outcomes go out, one per thread (`key` = thread URL); the last
+emitted value per thread is kept in `state/delphi-emitted.json` on branch
+`tribute-s1/backfill`, written only after the emit succeeds. At most 200 per run;
+the rest emit next run. `delphi-tribute-ingest.yml` keeps its manual backfill
+path; its `workflow_run` path is off unless `vars.TRIBUTE_INGEST_ON_RUN == 'true'`
+(it failed on every PR eval run, which has no decisions artifact).
+
+## LLM assist never posts
+
+`tribute-llm-assist.yml` writes its plan to the `tribute-llm-assist-plan`
+artifact, the step summary, and an evidence row `kind=llm_assist_plan, posted=false`.
+It no longer comments on the foreign PR: a public comment on a foreign repo needs owner approval.

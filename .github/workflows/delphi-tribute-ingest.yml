@@ -19,7 +19,16 @@ permissions:
 
 jobs:
   collect:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # The scan path moved into tribute-system1.yml (delphi-emit job: changed
+    # outcomes only, deduped per thread). Here the workflow_run path stays
+    # declared but only fires for a scheduled/dispatched scan that produced a
+    # decisions artifact; PR/push eval runs (no artifact) no longer fail here.
+    # Manual dispatch still ingests the whole backfill branch.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       vars.TRIBUTE_INGEST_ON_RUN == 'true' &&
+       (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:

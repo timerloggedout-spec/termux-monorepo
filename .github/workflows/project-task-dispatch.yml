@@ -1,26 +1,26 @@
 name: project-task-dispatch
 
-# Project-task execution is admission-gated. The only issue-event path
-# is swarm-admission; this route consumes that run's one-use handoff.
-# Provider/model selection remains in the existing dispatch machinery.
+# Preserve the repository's issue-event contract. QUE admission runs on the
+# same issues.opened/reopened lifecycle; this route waits for its first-fleet
+# receipt before intake. The issue event remains the trigger, admission the gate.
+# Provider/model selection and execution remain in existing dispatch machinery.
 
 on:
-  workflow_run:
-    workflows: ["swarm-admission"]
-    types: [completed]
+  issues:
+    types: [opened, reopened]
   pull_request:
     paths:
       - '.github/workflows/project-task-dispatch.yml'
       - 'scripts/dispatch/project_task.py'
+      - 'scripts/dispatch/admission_receipt.py'
       - 'scripts/dispatch/test_project_task.py'
 
 permissions:
-  actions: read
   contents: read
   issues: write
 
 concurrency:
-  group: project-task-dispatch-${{ github.event.workflow_run.id || github.event.pull_request.number }}
+  group: project-task-dispatch-${{ github.event.issue.number || github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Exercise QUE intake, lane profiling and Siglary data guard
+      - name: Exercise QUE intake, lane profiling, Siglary guard and admission gate
         run: |
           python3 - <<'PY'
           import importlib.util
@@ -47,108 +47,79 @@ jobs:
           PY
 
   intake:
-    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'issues' && contains(fromJSON('[ "opened", "reopened" ]'), github.event.action)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download the admission handoff
-        uses: actions/download-artifact@v4
-        with:
-          name: issue-admission
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          path: ${{ runner.temp }}/admission
-
-      - name: Select admitted project-task filings only
-        id: handoff
-        run: |
-          python3 - <<'PYEOF'
-          import json, os
-          path = os.path.join(os.environ["RUNNER_TEMP"], "admission", "admission.json")
-          with open(path, encoding="utf-8") as fh:
-              record = json.load(fh)
-          dispatch = (
-              record.get("matched") is True
-              and record.get("template") == "project-task.yml"
-              and record.get("decision") == "admitted"
-              and isinstance(record.get("issue_number"), int)
-              and record.get("issue_number") > 0
-          )
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-              fh.write(f"dispatch={'true' if dispatch else 'false'}\\n")
-              fh.write(f"issue_number={record.get('issue_number', '')}\\n")
-          print("Project-task dispatch admitted." if dispatch else
-                "No admitted project-task filing in this admission run.")
-          PYEOF
-
-      - name: Fetch the admitted issue body
-        if: steps.handoff.outputs.dispatch == 'true'
+      - name: Wait for this issue event's QUE admission receipt
+        id: admission
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          EVENT_AT: ${{ github.event.issue.updated_at || github.event.issue.created_at }}
+        run: |
+          python3 scripts/dispatch/admission_receipt.py --issue "$ISSUE_NUMBER" --template project-task.yml --event-at "$EVENT_AT" --timeout 600 --poll-interval 5
+
+      - name: Fetch the admitted issue body
+        if: steps.admission.outputs.decision == 'admitted'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq .body > "$RUNNER_TEMP/issue-body.md"
 
-      - name: Parse + validate the admitted intake
-        if: steps.handoff.outputs.dispatch == 'true'
+      - name: Parse and validate the admitted intake
+        if: steps.admission.outputs.decision == 'admitted'
         id: parse
         env:
-          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          python3 scripts/dispatch/project_task.py \\
-            --body-file "$RUNNER_TEMP/issue-body.md" \\
-            --issue "$ISSUE_NUMBER" \\
-            --comment-out "$RUNNER_TEMP/comment.md" \\
-            --metadata-out "$RUNNER_TEMP/dispatch-profile.json" \\
-            --github-output "$GITHUB_OUTPUT"
+          python3 scripts/dispatch/project_task.py --body-file "$RUNNER_TEMP/issue-body.md" --issue "$ISSUE_NUMBER" --comment-out "$RUNNER_TEMP/comment.md" --metadata-out "$RUNNER_TEMP/dispatch-profile.json" --github-output "$GITHUB_OUTPUT"
 
-      - name: Post routing receipt + queue (valid admitted intake)
-        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'true'
+      - name: Post routing receipt and queue valid intake
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          gh label create dispatch-queued --force --color 0E8A16 \\
-            --description "Project task accepted into the system; selection pending/executing" || true
+          gh label create dispatch-queued --force --color 0E8A16 --description "Project task accepted into the system; selection pending/executing" || true
           gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
           gh issue edit "$ISSUE_NUMBER" --add-label dispatch-queued
 
       - name: Apply QUE capability lane labels
-        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'true'
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           CAPABILITY_LANES: ${{ steps.parse.outputs.capability_lanes }}
-          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           set -euo pipefail
           IFS=',' read -ra LANES <<< "$CAPABILITY_LANES"
           for lane in "${LANES[@]}"; do
             [ -n "$lane" ] || continue
             label="que-lane-$lane"
-            gh label create "$label" --force --color 1D76DB \\
-              --description "QUE capability/experiment lane: $lane" || true
+            gh label create "$label" --force --color 1D76DB --description "QUE capability/experiment lane: $lane" || true
             gh issue edit "$ISSUE_NUMBER" --add-label "$label"
           done
 
       - name: Publish QUE lane profile
-        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'true'
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: que-dispatch-profile-${{ steps.handoff.outputs.issue_number }}-${{ github.event.workflow_run.id }}
+          name: que-dispatch-profile-${{ github.event.issue.number }}-${{ github.run_id }}
           path: ${{ runner.temp }}/dispatch-profile.json
           if-no-files-found: error
           retention-days: 30
 
       - name: Diagnose incomplete admitted intake
-        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'false'
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          gh label create intake-incomplete --force --color D93F0B \\
-            --description "Project-task intake missing required field(s); see the diagnosis comment" || true
+          gh label create intake-incomplete --force --color D93F0B --description "Project-task intake missing required field(s); see the diagnosis comment" || true
           gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
           gh issue edit "$ISSUE_NUMBER" --add-label intake-incomplete

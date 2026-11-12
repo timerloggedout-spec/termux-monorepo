@@ -1,0 +1,357 @@
+schema: qdesk.implementation-order/v1
+order_id: QDESK-FIT-001
+title: "Free Inference Endpoint Tournament — self-implementation order"
+created_on: "2026-11-11"
+owner: "optimizations-assurance"
+sponsor: "timerloggedout-spec"
+priority: P1
+status: prepared
+execution_state: not_dispatched
+authority:
+  execution_boundary: "QUE admission only"
+  promotion_boundary: "repository dual gates + explicit operator promotion"
+  statement: >-
+    This order is a declarative plan. It does not itself enqueue work,
+    invoke providers, reserve quota, alter production routing, or authorize
+    account/credential changes.
+purpose:
+  primary: >-
+    Build and execute a reproducible, evidence-first tournament of currently
+    invocable no-cost inference endpoints, then compare endpoint performance
+    and manager/orchestration policies on identical task cohorts.
+  optimize: "integrated accepted outcome per measured operational cost"
+  explicitly_not: 
+    - "a generic model leaderboard"
+    - "a provider marketing-claim comparison"
+    - "a mass probe of every catalogued endpoint"
+    - "a free-tier entitlement assumption based on a :free model suffix"
+    - "production routing or weight promotion"
+    - "an authorization to spend, top up, create, rotate, or export credentials"
+canonical_contracts:
+  dispatch_template: ".github/ISSUE_TEMPLATE/project-task.yml"
+  admission_workflow: ".github/workflows/swarm-admission.yml"
+  admission_evaluator: "scripts/ops/swarm_admission.py"
+  dispatch_tiers: "ops/quota/dispatch-tiers.json"
+  task_intake_workflow: ".github/workflows/project-task-dispatch.yml"
+  task_parser: "scripts/dispatch/project_task.py"
+  provider_dispatch_map: "docs/ops/PROVIDER-DISPATCH-MAP.md"
+  provider_catalog: "ops/quota/registry.json"
+  manager_tournament_contract: "docs/research/MANAGER-TOURNAMENT-CONTRACT.md"
+  manager_tournament_schema: "docs/ops/MANAGER-TOURNAMENT.schema.json"
+  evidence_substrate: "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
+  free_inference_safety_contract: "docs/ops/PROVIDER-FREE-INFERENCE.md"
+  openrouter_free_catalog: "docs/ops/OPENROUTER-FREE-CATALOG.md"
+  openrouter_smoke: "scripts/ops/provider_free_smoke.py"
+  openrouter_diagnostics: "scripts/ops/provider_free_diagnostics.py"
+  que_feed: "ops/que/feeds/que-queue-feed.json"
+  que_feed_contract: "ops/que/README.md"
+dispatch:
+  mode: "existing-project-task-template"
+  filing_is_dispatch_intent: true
+  que_admission_required: true
+  tier: 3
+  payload_class: "project-task"
+  route: "project-task-dispatch.yml"
+  admission_route: "swarm-admission.yml"
+  chain: null
+  chain_stage: null
+  ordering_authority: "this order's dependency graph; admission remains the per-filing gate"
+  issue_body_contract:
+    required_headings:
+      - "### Entry"
+      - "### Task / spec"
+      - "### Scope"
+      - "### Done-evidence"
+    entry: "Other"
+    target_repo: "timerloggedout-spec/termux-monorepo"
+  rule: >-
+    Do not create a new dispatch template or scheduler for this campaign.
+    File each work package through the existing Project Task form. The form's
+    declared issue-dispatch/v1 block is evaluated by swarm-admission; the
+    project-task route validates and queues the task. No direct raw swarm
+    fan-out is permitted.
+queue_policy:
+  tier: 3
+  defer_on_admission_failure: true
+  defer_on_unknown_queue_picture: true
+  no_spawn_before_admitted_stamp: true
+  no_manual_tier_override: true
+  use_live_que_feed_for_capacity_context: true
+  note: >-
+    The QUE feed is an observability/queue-state projection, not an execution
+    command. A queue-feed snapshot cannot substitute for the admission stamp.
+experiment_policy:
+  inference_mode: "explicit_manual_bounded_only"
+  scheduled_inference: false
+  automatic_retry: false
+  alternate_model_retry: false
+  paid_fallback: false
+  provider_fallback: false
+  production_routing_mutation: false
+  maximum_price:
+    prompt: 0
+    completion: 0
+    request: 0
+    image: 0
+  candidate_identity:
+    key: "provider_id + endpoint_id + exact_model_id + transport_id"
+    require_exact_model_id: true
+    require_invocation_surface: true
+    reject_ambiguous_aliases: true
+    record_catalog_source_and_observed_at: true
+  eligibility:
+    required_evidence:
+      - "live endpoint/catalog record"
+      - "exact model identity"
+      - "explicit zero prompt and completion price, or provider-native no-cost proof"
+      - "credential presence recorded as a boolean/name reference only"
+      - "provider-specific free-account entitlement when the provider requires it"
+      - "bounded invocation path with no paid/provider fallback"
+    free_suffix_alone_is_sufficient: false
+    unknown_entitlement_means: "catalog-only; no inference"
+    funding_or_credit_requirement_means: "exclude from no-cost tournament"
+    missing_secret_means: "catalog-only or excluded; never create a secret"
+  request_limits:
+    discovery_calls_per_provider: 1
+    smoke_completion_requests_per_candidate: 1
+    max_output_tokens_per_smoke: 16
+    max_parallel_smokes: 1
+    max_concurrent_candidates: 1
+    retries_after_429: 0
+    retries_after_timeout: 0
+    retries_after_ambiguous_outcome: 0
+  privacy:
+    persist_secret_values: false
+    persist_prompts_or_completions: false
+    persist_raw_account_metadata: false
+    persist_raw_provider_error_bodies: false
+    persist_raw_context: false
+    allowed_receipt_fields:
+      - "credential_present"
+      - "entitlement_verified"
+      - "catalog_verified"
+      - "zero_price_verified"
+      - "request_attempted"
+      - "request_count"
+      - "inference_ok"
+      - "observed_cost_zero"
+      - "fixed_reason_code"
+      - "provider_id"
+      - "endpoint_id"
+      - "exact_model_id"
+      - "transport_id"
+      - "observed_at"
+      - "run_id"
+      - "attempt"
+      - "source_sha"
+      - "artifact_digest"
+manager_tournament:
+  objective: "compare orchestration policies, not isolated model leaderboard scores"
+  same_for_all_managers:
+    - "task cohort and task-contract hashes"
+    - "acceptance rubric and deterministic verifier versions"
+    - "environment and dependency fingerprint"
+    - "tool inventory and permissions"
+    - "request/token/time budget"
+    - "evidence schema and artifact retention"
+  repetitions_per_manager: 3
+  assignment:
+    method: "blocked randomized order"
+    block_keys:
+      - "task_id"
+      - "task_complexity_band"
+      - "environment_fingerprint"
+    rotate_first_provider: true
+    prevent_same_provider_consecutive_dispatches: true
+  managers:
+    - manager_id: "baseline_single_endpoint"
+      policy_version: "v1"
+      description: "One eligible endpoint; no peer fan-out; deterministic verification."
+    - manager_id: "sequential_peer_verify"
+      policy_version: "v1"
+      description: "Primary eligible endpoint followed by one independent eligible peer only when a defined verification gap exists."
+    - manager_id: "parallel_triage_then_integrate"
+      policy_version: "v1"
+      description: "Bounded parallel independent proposals, then one integration/reconciliation pass; duplicate work is penalized."
+    - manager_id: "quota_aware_router"
+      policy_version: "v1"
+      description: "Selects among currently eligible endpoints by task-fit and measured remaining no-cost capacity; no inference if quota state is unknown."
+  outcome_dimensions:
+    - "task completion"
+    - "correctness and deterministic verification"
+    - "final acceptance"
+    - "time to integrated result"
+    - "useful versus duplicate tokens/actions when measured"
+    - "feedback cycles"
+    - "retries and diagnosed retry causes"
+    - "conflicts"
+    - "human interventions"
+    - "provider failures"
+    - "model failures"
+    - "manager/routing failures"
+    - "environment/network failures"
+    - "attribution confidence"
+    - "task complexity and missingness"
+    - "variance across repetitions"
+  anti_gaming:
+    - "do not reward activity volume or unnecessary agent count"
+    - "do not split tasks to inflate throughput"
+    - "do not retry without a classified cause and fresh authorization"
+    - "do not treat missing complexity or telemetry as zero"
+    - "do not equate workflow success with successful inference"
+    - "do not equate HTTP success with accepted task completion"
+    - "retain failed, cancelled, deferred, and skipped observations"
+  judge_order:
+    - "deterministic verification"
+    - "environment-grounded evaluation"
+    - "LLM-as-judge only where deterministic checks are insufficient"
+    - "human adjudication for unresolved material disputes"
+stages:
+  - id: FIT-00
+    name: "Reconnaissance and contract freeze"
+    priority: P0
+    status: planned
+    depends_on: []
+    work: "Re-fetch current master sources, verify schema compatibility, inventory existing endpoints and workflows, and freeze the benchmark contract."
+    dispatch: "project-task"
+    acceptance:
+      - "No duplicate scheduler, queue, telemetry store, provider registry, or manager schema is introduced."
+      - "Every source claim is tied to a current path, SHA, run, or explicitly marked NOT_ESTABLISHED."
+      - "Existing dispatch and free-inference safety constraints are represented in tests."
+  - id: FIT-01
+    name: "Endpoint universe and eligibility reconciler"
+    priority: P0
+    status: planned
+    depends_on: [FIT-00]
+    work: "Derive provider×endpoint×model candidates from the canonical registry and live catalogs; reconcile invocation route, price, entitlement, credential presence, quota, and provenance."
+    dispatch: "project-task"
+    acceptance:
+      - "Provider counts and endpoint counts are distinct."
+      - "Every candidate has a stable composite identity and source timestamp/hash."
+      - "Unknown, stale, ambiguous, paid, funding-blocked, or uninvocable records are excluded from inference and retained with a reason."
+      - "The candidate universe is a derived view; canonical registries remain authoritative."
+  - id: FIT-02
+    name: "Provider-specific guarded smoke adapters"
+    priority: P0
+    status: planned
+    depends_on: [FIT-01]
+    work: "Reuse the existing OpenRouter smoke/diagnostic implementation; add provider adapters only where the exact transport and no-cost entitlement contracts are evidenced."
+    dispatch: "project-task"
+    acceptance:
+      - "OpenRouter preserves exact-model, free-account, live-zero-price, one-request, max-price-zero, no-fallback semantics."
+      - "Felo, Gemini, OmniRoute, and other providers remain catalog-only until account entitlement and exact no-cost invocation are independently proven."
+      - "429, timeout, 402, 403, 404, transport, and malformed-response outcomes are distinct fixed reason classes."
+      - "No automatic retry, alternate model, or paid fallback exists."
+  - id: FIT-03
+    name: "Canonical task cohort and evaluation fixtures"
+    priority: P1
+    status: planned
+    depends_on: [FIT-00]
+    work: "Define a small, versioned, public/synthetic task cohort spanning code reasoning, repo navigation, structured extraction, debugging, and implementation planning."
+    dispatch: "project-task"
+    acceptance:
+      - "Tasks are deterministic, bounded, reproducible, and safe to send to eligible endpoints."
+      - "Each task has a contract hash, expected outputs, deterministic checks, complexity band, and allowed tool scope."
+      - "No private repository context or secrets enter public endpoint tasks."
+  - id: FIT-04
+    name: "Evidence/event and artifact pipeline"
+    priority: P1
+    status: planned
+    depends_on: [FIT-01, FIT-02, FIT-03]
+    work: "Emit canonical JSONL observations and immutable receipts linked to commit, run, attempt, candidate, cohort, manager policy, and artifact digest."
+    dispatch: "project-task"
+    acceptance:
+      - "Missing values remain null; raw prompts/completions, credentials, account metadata, and raw errors are not persisted."
+      - "Every request attempt has a unique idempotency/evidence key and a terminal classification."
+      - "A failed or cancelled run is retained, never rewritten as success."
+  - id: FIT-05
+    name: "Manager-policy tournament runner"
+    priority: P1
+    status: planned
+    depends_on: [FIT-03, FIT-04]
+    work: "Execute the same frozen cohort under each manager policy with blocked randomized ordering, bounded parallelism, and three repetitions."
+    dispatch: "project-task"
+    acceptance:
+      - "Manager records conform to manager.tournament.v1 or a separately reviewed additive schema extension."
+      - "Environment, tools, budget, task cohort, and evaluator are identical across manager arms."
+      - "Provider rotation and no-consecutive-provider rules are enforced and recorded."
+      - "No inference runs until FIT-02's endpoint eligibility gate is green."
+  - id: FIT-06
+    name: "Scoring, uncertainty, and culling"
+    priority: P1
+    status: planned
+    depends_on: [FIT-04, FIT-05]
+    work: "Compare integrated accepted outcomes with uncertainty and cost; identify manager-policy winners and retain losing arms as historical observations."
+    dispatch: "project-task"
+    acceptance:
+      - "No single-run winner declaration."
+      - "Correctness and acceptance are primary; latency and token efficiency are secondary."
+      - "Confidence intervals or an explicitly justified small-sample uncertainty treatment are reported."
+      - "A winning policy is adopted only when the pre-registered decision rule is met; otherwise outcome is no_selection."
+  - id: FIT-07
+    name: "QDesk / QUE projection and operating runbook"
+    priority: P2
+    status: planned
+    depends_on: [FIT-01, FIT-04, FIT-05, FIT-06]
+    work: "Expose order, stage state, admission receipts, provider eligibility, and tournament evidence through existing Desk/QUE read models."
+    dispatch: "project-task"
+    acceptance:
+      - "Desk views remain projections; they do not dispatch or authorize inference."
+      - "QUE queue feed and dispatch-state feed remain their existing producer-owned contracts."
+      - "No second queue, scheduler, or mutable shadow ledger is created."
+  - id: FIT-08
+    name: "Controlled first cohort and post-run reconciliation"
+    priority: P2
+    status: planned
+    depends_on: [FIT-00, FIT-01, FIT-02, FIT-03, FIT-04, FIT-05]
+    work: "Run a single manually authorized cohort only after all prerequisites are validated; inspect jobs, artifacts, hashes, and failure classifications; publish a bounded evidence report."
+    dispatch: "project-task"
+    acceptance:
+      - "Every candidate was eligible immediately before invocation."
+      - "The first run is manual, bounded, and has no recurring trigger."
+      - "Every run and artifact is re-fetched and reconciled against its source SHA."
+      - "No production routing change occurs as a consequence of the tournament."
+implementation_controls:
+  order_is_executable_by: "QDesk/QUE orchestration through existing project-task filings"
+  order_file_is_not_a_runtime_executor: true
+  stage_transition_requires:
+    - "preceding dependencies accepted"
+    - "required artifacts present and hash-verified"
+    - "current master/ref re-fetched"
+    - "QUE-admitted task filing"
+    - "focused tests and repository gates as applicable"
+  terminal_states:
+    - "completed"
+    - "blocked"
+    - "deferred"
+    - "cancelled"
+    - "no_selection"
+  evidence_retention:
+    canonical_format: "JSONL + immutable run receipts"
+    link_keys:
+      - "repository"
+      - "source_sha"
+      - "workflow_run_id"
+      - "run_attempt"
+      - "issue_number"
+      - "stage_id"
+      - "provider_id"
+      - "endpoint_id"
+      - "exact_model_id"
+      - "manager_id"
+      - "cohort_id"
+      - "artifact_digest"
+  promotion:
+    automatic: false
+    requires:
+      - "repo-gate green on same head SHA"
+      - "termux-smoke green on same head SHA"
+      - "independent review disposition"
+      - "evidence completeness and provenance validation"
+      - "explicit operator promotion"
+    routing_weight_changes: "separate proposal and approval; never implicit"
+  follow_up:
+    proposal_id: "free-inference-endpoint-tournament"
+    documentation: "docs/ops/FREE-INFERENCE-ENDPOINT-TOURNAMENT.md"
+    issue_template: ".github/ISSUE_TEMPLATE/project-task.yml"
+    initial_issue: null

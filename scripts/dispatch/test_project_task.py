@@ -225,6 +225,7 @@ def test_specialist_registry_is_machine_readable_and_non_provider_identity():
     profile = profile_lanes(parse_issue_body(VALID_BODY))
     assert set(profile["candidate_specialist_roles"]).issubset(ids)
     assert all(role["provider_identity"] is False for role in registry["roles"])
+    assert all(role["independent_reviewer_role"] in ids or "distinct instance_key" in role["independent_reviewer_role"] for role in registry["roles"])
     assert all(role["canonical_seat_ids_created"] is False for role in registry["roles"])
 
 

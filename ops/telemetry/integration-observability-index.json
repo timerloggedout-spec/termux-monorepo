@@ -169,7 +169,7 @@
     "campaign_id": "util-1-provider-rotation",
     "design_record": "experiments/doe/util-1-provider-rotation/DESIGN.json",
     "status": "admitted_implementing",
-    "assignment_owner": "desk rotation rule",
+    "assignment_owner": "DoE family (allocation/rotation); Scout (eligible endpoint selection within assignment)",
     "provider_stamp_required": [
       "provider",
       "selection_reason",
@@ -177,7 +177,30 @@
     ],
     "usage_cost_rule": "record quota/usage cost only when returned by provider",
     "agentrouter_participation": "pre_registered_conditional_not_dispatchable; activate only after credential validation, account model discovery, separate inference admission, approved spend ceiling, data-classification review, and stop-switch approval; first real desk-stamped dispatch is a post-activation observation requirement before scoring",
-    "promotion_rule": "committed design amendment plus actual experiment records; no synthetic observations"
+    "promotion_rule": "committed design amendment plus actual experiment records; no synthetic observations",
+    "selection_receipt_schema": "docs/schemas/inference-selection-receipt.schema.json",
+    "selection_receipt_required": [
+      "doe.campaign_id",
+      "doe.design_ref",
+      "doe.design_version",
+      "doe.allocation_id",
+      "doe.stratum_id",
+      "selector.scout_id",
+      "request.manager_id",
+      "request.request_id",
+      "endpoint.provider",
+      "endpoint.surface",
+      "endpoint.model",
+      "endpoint.protocol",
+      "pool_snapshot.sha256",
+      "assignment.arm_id",
+      "assignment.probability",
+      "correlation.workflow",
+      "correlation.run_id",
+      "correlation.request_id"
+    ],
+    "endpoint_significance_unit": "provider+surface+model@version+protocol; each endpoint independently gated",
+    "manager_customization": "approved priced contract; distinct treatment/stratum; fee basis and DoE/MVT/ATES/MoneyBall/3L0 percentage distribution required"
   },
   "invariants": [
     "ops/telemetry/results-index.json remains the canonical ATES/3L0/Temporal/HindSight results projection",

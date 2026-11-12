@@ -5,7 +5,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
-from project_task import (
+from admission_receipt import classify_receipt\nfrom project_task import (
     incomplete_comment, parse_issue_body, profile_lanes,
     receipt_comment, validate, validate_siglary_data_record,
 )
@@ -109,3 +109,57 @@ def test_form_has_no_provider_field():
     for field_id in ("entry", "task", "scope", "done-evidence",
                      "target-repo", "instance-stamps"):
         assert f"id: {field_id}" in form
+
+
+ADMISSION_STAMP = "[MUSEai]@{role:{swarm-admission}} DISPATCH **ADMITTED**\\n\\ntemplate `project-task.yml` · lane swarm-dispatch"
+
+
+def test_admission_receipt_accepts_matching_post_event_stamp():
+    comments = [{
+        "created_at": "2026-11-11T10:01:00Z",
+        "body": ADMISSION_STAMP,
+    }]
+    assert classify_receipt(
+        comments, "project-task.yml", "2026-11-11T10:00:00Z"
+    ) == "admitted"
+
+
+def test_admission_receipt_ignores_stale_prior_filing_stamp():
+    comments = [{
+        "created_at": "2026-11-11T09:59:59Z",
+        "body": ADMISSION_STAMP,
+    }]
+    assert classify_receipt(
+        comments, "project-task.yml", "2026-11-11T10:00:00Z"
+    ) is None
+
+
+def test_admission_receipt_defers_without_dispatch():
+    comments = [{
+        "created_at": "2026-11-11T10:01:00Z",
+        "body": ADMISSION_STAMP.replace("ADMITTED", "DEFERRED"),
+    }]
+    assert classify_receipt(
+        comments, "project-task.yml", "2026-11-11T10:00:00Z"
+    ) == "deferred"
+
+
+def test_admission_receipt_rejects_wrong_template():
+    comments = [{
+        "created_at": "2026-11-11T10:01:00Z",
+        "body": ADMISSION_STAMP.replace("project-task.yml", "game-development-task.yml"),
+    }]
+    assert classify_receipt(
+        comments, "project-task.yml", "2026-11-11T10:00:00Z"
+    ) == "unmatched"
+
+
+def test_admission_receipt_uses_latest_post_event_decision():
+    comments = [
+        {"created_at": "2026-11-11T10:01:00Z", "body": ADMISSION_STAMP},
+        {"created_at": "2026-11-11T10:02:00Z",
+         "body": ADMISSION_STAMP.replace("ADMITTED", "DEFERRED")},
+    ]
+    assert classify_receipt(
+        comments, "project-task.yml", "2026-11-11T10:00:00Z"
+    ) == "deferred"

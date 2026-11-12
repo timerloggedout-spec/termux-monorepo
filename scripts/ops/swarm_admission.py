@@ -26,6 +26,13 @@ This script is the admission evaluator. It:
      comment) for the workflow to post, and the label to apply
      (swarm-admitted | deferred-by-tier).
 
+The queue picture comes from the collector feeds in the checkout
+(#4979: ops/que/feeds/, freshness-gated at 2 collector cycles); the
+live paginated census is only the stale-feed fallback, its failures
+are stamped with the failed status+page and API error class, and a
+picture failure never defers a non-flow tier (dispatch-tiers v2
+admits tiers 1-3 at any depth).
+
 Fail-soft is the design: any evaluation error defers with the reason
 stamped, never admits blind and never drops the filing.
 
@@ -44,6 +51,19 @@ ANCIENT_DAYS = 7
 # Flow thresholds (v1, of record in the spec): queued depth at/above
 # which a tier self-defers. Tiers 1-2 never flow-defer.
 FLOW_THRESHOLDS = {3: 800, 4: 400}
+
+# Queue picture of record (#4979): the collector feeds in the checkout
+# (ops/que/feeds/, published by que-feed-collect.yml on a */10 cron),
+# freshness-gated at 2 collector cycles. The live paginated census is
+# only the stale-feed fallback.
+COLLECTOR_CYCLE_SECONDS = 600
+FEED_FRESH_SECONDS = 2 * COLLECTOR_CYCLE_SECONDS
+
+# dispatch-tiers v2 flood rules (ops/quota/dispatch-tiers.json): tiers
+# 1-3 are "admitted at any depth"; only tier 4 self-defers on queued
+# depth. A non-flow tier's verdict therefore does not consume the queue
+# picture, and a picture failure must not defer it (#4979 point 3).
+NON_FLOW_TIERS = {1, 2, 3}
 
 
 def parse_block(text):
@@ -157,6 +177,92 @@ def evaluate(block, tiers_doc, runs, now=None):
     return decision, reasons, facts
 
 
+def _parse_ts(text):
+    try:
+        return datetime.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (ValueError, TypeError):
+        return None
+
+
+def picture_from_feeds(feeds_dir, now, max_age_seconds=FEED_FRESH_SECONDS):
+    """The collector-feed picture, or None when missing/stale.
+
+    Reads queue-by-tier.json (as-of = generated_at) + state.json
+    (active runs) from the checkout. Fresh = generated_at within
+    max_age_seconds of now (the #4979 gate: <= 2 collector cycles).
+    """
+    import pathlib
+
+    try:
+        by_tier = json.loads((pathlib.Path(feeds_dir) / "queue-by-tier.json").read_text())
+        state = json.loads((pathlib.Path(feeds_dir) / "state.json").read_text())
+    except Exception:
+        return None
+    generated = _parse_ts(by_tier.get("generated_at"))
+    if generated is None or (now - generated).total_seconds() > max_age_seconds:
+        return None
+    runs = [
+        {"name": v.get("workflow"), "status": v.get("status"), "created_at": v.get("created_at", "")}
+        for v in (state.get("active") or {}).values()
+    ]
+    return runs, {"source": "collector-feeds", "as_of": by_tier["generated_at"]}
+
+
+def _feeds_stale_detail(feeds_dir, now, max_age_seconds):
+    import pathlib
+
+    try:
+        by_tier = json.loads((pathlib.Path(feeds_dir) / "queue-by-tier.json").read_text())
+        generated = by_tier.get("generated_at")
+        gen_dt = _parse_ts(generated)
+        if gen_dt is not None:
+            age = int((now - gen_dt).total_seconds())
+            return f"collector feeds stale (as-of {generated}, age {age}s > gate {max_age_seconds}s)"
+        return "collector feeds unreadable (no generated_at)"
+    except Exception:
+        return "collector feeds missing/unreadable in checkout"
+
+
+def resolve_picture(feeds_dir, runs_path, now, max_age_seconds=FEED_FRESH_SECONDS):
+    """Resolve the queue picture: fresh collector feeds first, the
+    live fallback picture second (#4979 points 1-2).
+
+    Returns {status: "ok", runs, source, as_of} or
+    {status: "unavailable", detail} where detail NAMES the failure:
+    the failed status+page and API error class of the live fallback,
+    plus the feed staleness that forced the fallback.
+    """
+    import pathlib
+
+    feed = picture_from_feeds(feeds_dir, now, max_age_seconds)
+    if feed is not None:
+        runs, meta = feed
+        return {"status": "ok", "runs": runs, **meta}
+    stale = _feeds_stale_detail(feeds_dir, now, max_age_seconds)
+    try:
+        raw = json.loads(pathlib.Path(runs_path).read_text())
+    except Exception:
+        return {"status": "unavailable",
+                "detail": f"{stale}; no live fallback picture was collected"}
+    if isinstance(raw, list):
+        return {"status": "ok", "runs": raw, "source": "live-fallback", "as_of": None}
+    if isinstance(raw, dict) and isinstance(raw.get("runs"), list):
+        return {"status": "ok", "runs": raw["runs"],
+                "source": raw.get("picture_source", "live-fallback"),
+                "as_of": raw.get("collected_at")}
+    if isinstance(raw, dict) and raw.get("collection_error"):
+        err = raw["collection_error"]
+        if isinstance(err, dict):
+            cause = (f"live fallback failed at status={err.get('failed_status')} "
+                     f"page={err.get('failed_page')} "
+                     f"(error class: {err.get('error_class')})")
+        else:
+            cause = "live fallback collection error (legacy sentinel, no detail recorded)"
+        return {"status": "unavailable", "detail": f"{stale}; {cause}"}
+    return {"status": "unavailable",
+            "detail": f"{stale}; live fallback picture had an unrecognized shape"}
+
+
 def stamp(fname, block, decision, reasons, facts, run_url):
     head = f"[MUSEai]@{{role:{{swarm-admission}}}} DISPATCH **{decision}**"
     parts = [
@@ -170,6 +276,17 @@ def stamp(fname, block, decision, reasons, facts, run_url):
         parts.append("after: " + " · ".join(f"{k} ✓ {v} incomplete" for k, v in facts["after"].items()))
     if facts.get("chain"):
         parts.append(f"chain: {facts['chain']}")
+    pic = facts.get("picture")
+    if pic:
+        if pic.get("source") == "unavailable":
+            parts.append(
+                f"picture: unavailable — {pic.get('detail', 'cause not recorded')}"
+                + (" · tolerated for this tier under #4979 (dispatch-tiers v2: tiers 1-3 "
+                   "admit at any depth; the verdict does not consume the queue picture; "
+                   "after/chain legs saw an empty picture)"
+                   if pic.get("tolerated") else ""))
+        else:
+            parts.append(f"picture: {pic.get('source')} · as-of {pic.get('as_of') or 'not recorded'}")
     if reasons:
         parts.append("**deferred because:** " + "; ".join(reasons))
         parts.append("Fail-soft of record: the filing stays queued as `deferred-by-tier`; the QUE admission drain re-evaluates it — nothing was spawned.")
@@ -179,13 +296,44 @@ def stamp(fname, block, decision, reasons, facts, run_url):
     return "\n\n".join(parts)
 
 
+def picture_gate(argv):
+    """Workflow gate: are the checkout's collector feeds fresh?
+
+    Prints fresh|stale and (with --github-output) writes feeds_fresh +
+    feeds_as_of. The workflow spends live API calls on the fallback
+    census only when this gate says stale (#4979 point 1).
+    """
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--feeds-dir", default="ops/que/feeds")
+    ap.add_argument("--max-feed-age-seconds", type=int, default=FEED_FRESH_SECONDS)
+    ap.add_argument("--now", default="")
+    ap.add_argument("--github-output", default="")
+    a = ap.parse_args(argv)
+    now = _parse_ts(a.now) if a.now else datetime.now(timezone.utc)
+    feed = picture_from_feeds(a.feeds_dir, now, a.max_feed_age_seconds) if now else None
+    fresh = feed is not None
+    print("fresh" if fresh else "stale")
+    if a.github_output:
+        with open(a.github_output, "a") as fh:
+            fh.write(f"feeds_fresh={'true' if fresh else 'false'}\n")
+            fh.write(f"feeds_as_of={feed[1]['as_of'] if fresh else ''}\n")
+    return 0
+
+
 def main(argv):
+    if argv and argv[0] == "picture-gate":
+        return picture_gate(argv[1:])
     import argparse
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--templates-dir", required=True)
     ap.add_argument("--tiers", required=True)
-    ap.add_argument("--runs-file", required=True, help="JSON list of recent runs (queued + in_progress)")
+    ap.add_argument("--runs-file", required=True, help="live fallback picture (JSON), read only when the collector feeds are stale")
+    ap.add_argument("--feeds-dir", default="ops/que/feeds")
+    ap.add_argument("--max-feed-age-seconds", type=int, default=FEED_FRESH_SECONDS)
+    ap.add_argument("--now", default="", help="ISO timestamp override (tests)")
     ap.add_argument("--issue-labels", default="")
     ap.add_argument("--issue-title", default="")
     ap.add_argument("--run-url", default="")
@@ -219,16 +367,34 @@ def main(argv):
         # reason, never crash silent).
         try:
             tiers_doc = json.loads(pathlib.Path(a.tiers).read_text())
-            runs = json.loads(pathlib.Path(a.runs_file).read_text())
-            if isinstance(runs, dict) and runs.get("collection_error"):
-                # The queue picture could not be collected (proof
-                # run 41737482551: an API error body mid-pagination
-                # killed the collector step, and with it the
-                # stamp). Unknown queue => DEFER with the reason,
-                # never admit blind, never die silent.
-                raise RuntimeError(
-                    "queue picture unavailable: collection error")
-            decision, reasons, facts = evaluate(block, tiers_doc, runs)
+            now = _parse_ts(a.now) if a.now else datetime.now(timezone.utc)
+            picture = resolve_picture(a.feeds_dir, a.runs_file, now,
+                                      a.max_feed_age_seconds)
+            if picture["status"] == "ok":
+                decision, reasons, facts = evaluate(
+                    block, tiers_doc, picture["runs"], now=now)
+                facts["picture"] = {"source": picture["source"],
+                                    "as_of": picture.get("as_of")}
+            elif block["que_tier"] in NON_FLOW_TIERS:
+                # #4979 point 3: a non-flow tier's verdict does not
+                # consume the queue picture (dispatch-tiers v2 admits
+                # tiers 1-3 at any depth), so a picture failure must
+                # not defer it. Evaluate against an empty picture and
+                # stamp the tolerance with the named cause.
+                decision, reasons, facts = evaluate(block, tiers_doc, [], now=now)
+                facts["picture"] = {"source": "unavailable",
+                                    "detail": picture["detail"],
+                                    "tolerated": True}
+            else:
+                # Flow tier + no picture: DEFER, naming the cause
+                # (failed status+page + API error class, #4979 point 2)
+                # instead of the old generic sentinel text.
+                decision = "DEFERRED"
+                reasons = [f"queue picture unavailable: {picture['detail']}"]
+                facts = {"tier": block["que_tier"], "queued_depth": -1,
+                         "after": {}, "chain": {},
+                         "picture": {"source": "unavailable",
+                                     "detail": picture["detail"]}}
         except Exception as e:  # fail-soft: defer, never admit blind
             decision, reasons, facts = "DEFERRED", [f"admission evaluation error: {type(e).__name__}: {e}"], {"tier": block["que_tier"], "queued_depth": -1, "after": {}, "chain": {}}
         pathlib.Path(a.comment_out).write_text(stamp(fname, block, decision, reasons, facts, a.run_url))

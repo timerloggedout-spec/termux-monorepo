@@ -41,6 +41,7 @@
     ["Referrals", tribute + "referrals.html", "referrals"],
     ["Marketing Gantt", tribute + "marketing-gantt.html", "marketing-gantt"],
     ["QDesk Gantt", tribute + "qdesk-gantt.html", "qdesk-gantt"],
+    ["Referrals", tribute + "referrals.html", "referrals"],
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],

@@ -82,8 +82,9 @@ def longest_path(graph: dict[str, Iterable[str]]) -> tuple[list[str], int]:
 
 
 def _ancestors(graph: dict[str, Iterable[str]], target: str) -> set[str]:
-    reverse: dict[str, set[str]] = {node: set() for node in _adjacency(graph)}
-    for parent, children in _adjacency(graph).items():
+    adj = _adjacency(graph)
+    reverse: dict[str, set[str]] = {node: set() for node in adj}
+    for parent, children in adj.items():
         for child in children:
             reverse[child].add(parent)
     if target not in reverse:
@@ -107,8 +108,8 @@ def maximal_common_ancestors(
     Unlike tree LCA, a DAG may legitimately return multiple incomparable
     maximal common ancestors.
     """
-    common = _ancestors(graph, left) & _ancestors(graph, right)
     adj = _adjacency(graph)
+    common = _ancestors(adj, left) & _ancestors(adj, right)
     maximal = [
         node for node in sorted(common)
         if not any(child in common for child in adj[node])
@@ -206,18 +207,18 @@ def execute(
         "reconciliation": reconciliation,
     }
     if algorithm_id == "dag.topological_sort.kahn":
-        output = {"ordered_nodes": topological_sort(graph)}
+        output = {"ordered_nodes": topological_sort(normalized_graph)}
     elif algorithm_id == "dag.longest_path":
-        path, distance = longest_path(graph)
+        path, distance = longest_path(normalized_graph)
         output = {"path": path, "distance": distance}
     elif algorithm_id == "dag.maximal_common_ancestors":
         if not targets:
             raise ValueError("targets are required")
-        output = {"maximal_common_ancestors": maximal_common_ancestors(graph, *targets)}
+        output = {"maximal_common_ancestors": maximal_common_ancestors(normalized_graph, *targets)}
     elif algorithm_id == "dag.forward_probability":
         if transitions is None or start is None:
             raise ValueError("transitions and start are required")
-        state_mass = forward_probability(graph, transitions, start)
+        state_mass = forward_probability(normalized_graph, transitions, start)
         terminal_nodes = [node for node, children in normalized_graph.items() if not children]
         output = {
             "state_mass": state_mass,

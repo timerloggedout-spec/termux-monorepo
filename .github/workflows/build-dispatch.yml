@@ -1,4 +1,4 @@
-name: '🔀 Build Dispatch (Gemini build arm)'
+name: '🔀 Build Dispatch (multi-arm)'
 
 # Ported from timerloggedout-spec/repo-story .github/workflows/build-dispatch.yml
 # (issue #5108, parent #5096; owner order 2026-11-10 04:27 PT — Priority 1:
@@ -6,12 +6,17 @@ name: '🔀 Build Dispatch (Gemini build arm)'
 # no execution": a claimed task issue becomes executable by firing THIS
 # route, and the route stamps its own receipt before the builder runs.
 #
-# Provider of record: Gemini (Provider Index build arm gemini.build_dispatch;
-# Jules excluded for entry builds by owner ruling 2026-11-01; DeepSeek arm =
-# session/cookies route, not cloud-fit). This arm is NOT the gemini-dispatch
-# invoke router (text-only): it is the run-gemini-cli full-checkout builder
-# that produced repo-story PR #6 (proving run 41426129878).
-# Requires: secrets.GEMINI_API_KEY on this repo (already provisioned).
+# Multi-arm routing (#5151, QDesk ruling 2026-11-10): the builder arm is
+# selected AT RUNTIME from the arm registry (ops/dispatch/build-arms.json)
+# by live census/budget state — no provider is named in the method
+# contract. Gemini CLI is one registry row (its 20 requests/day is a
+# metered per-arm budget read from the Cadence AUTO QUOTA LEDGER mirror,
+# #5152 — 4 reserved escalation + 16 spendable primary), not the route.
+# Generic arms run scripts/ops/build_arm_harness.py, a tool-calling
+# agent loop in the full checkout; a 429/quota error is terminal for
+# that arm-day and selection rotates (never backoff-burn). The #5142
+# verify step composes for every arm, and every run fans a DoE-set
+# dispatch stamp out to the scoring planes (dispatch-stamp-fanout).
 # PRs are authored by the Termux Fleet Swarm App token (SEC-03
 # mint-before-checkout) so downstream workflows cascade.
 # Registered in ops/dispatch/claimable-routes.json (docs/ops/CLAIMABLE-ROUTES.md).
@@ -28,6 +33,26 @@ on:
         description: 'Target branch for the build (default: build/issue-<issue_number>)'
         required: false
         default: ''
+      arm:
+        description: 'Build arm: auto = runtime selection from the arm registry (#5151)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - mistral-codestral
+          - sealion-llama
+          - cohere-command-a
+          - baseten-gpt-oss
+          - gemini-cli
+      quota_class:
+        description: 'Quota slice the draw stamps against (Gemini reserve is escalation-only)'
+        required: false
+        default: 'primary'
+        type: choice
+        options:
+          - primary
+          - escalation
 
 permissions: {}
 
@@ -47,30 +72,81 @@ jobs:
       contents: read
       issues: write
     steps:
-      - name: Mint Swarm App token (SEC-03)
-        id: app-token
-        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
-        with:
-          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
-          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
-          repositories: ${{ github.event.repository.name }}
-      - name: Checkout (app token; mint-before-checkout)
+      - name: Checkout (read-only workflow token; no persisted credentials)
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
           fetch-depth: 0
-      - name: Resolve build branch
+      - name: Resolve build branch and capture run baseline
         id: branch
+        env:
+          BRANCH_INPUT: ${{ inputs.branch }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          b="${{ inputs.branch }}"
-          if [ -z "$b" ]; then
-            b="build/issue-${{ github.event.issue.number || inputs.issue_number }}"
+          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          b="$BRANCH_INPUT"
+          if [ -z "$b" ]; then b="build/issue-$ISSUE_NUMBER"; fi
+          if [[ ! "$b" =~ ^build/[A-Za-z0-9._/-]+$ ]] || [[ "$b" == *".."* ]]; then
+            echo "invalid build branch name"; exit 2
+          fi
+          if git -c http.extraheader="$AUTH_HEADER" ls-remote --exit-code --heads origin "$b" >/dev/null 2>&1; then
+            git -c http.extraheader="$AUTH_HEADER" fetch origin "$b"
+            git checkout -b "$b" FETCH_HEAD
+          else
+            git checkout -b "$b"
           fi
           echo "name=$b" >> "$GITHUB_OUTPUT"
-          echo "Build branch: $b"
+          echo "baseline_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+          echo "Build branch: $b (baseline $(git rev-parse HEAD))"
+      - name: Select build arm
+        id: arm
+        env:
+          ARM_REQUEST: ${{ inputs.arm || 'auto' }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/5151/comments?per_page=100" > /tmp/arm-quota-comments.json
+          python3 - <<'PYEOF'
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          feed=json.load(open('ops/que/feeds/arm-census.json'))
+          comments=json.load(open('/tmp/arm-quota-comments.json'))
+          today=datetime.now(ZoneInfo('America/Los_Angeles')).date().isoformat()
+          rows={row.get('arm_id'):row for row in feed.get('arms',[])}
+          marker='<!-- build-arm-quota-terminal:v1 -->'
+          for comment in comments:
+              if comment.get('user',{}).get('login') != 'github-actions[bot]':
+                  continue
+              body=comment.get('body') or ''
+              if marker not in body:
+                  continue
+              try:
+                  record=json.loads(body.splitlines()[1])
+              except (IndexError, json.JSONDecodeError):
+                  continue
+              arm_id=record.get('arm_id')
+              if record.get('date') == today and arm_id in rows:
+                  rows[arm_id]['quota_terminal']={'terminal':True,'date':today,'run_id':record.get('run_id')}
+          json.dump(feed,open('/tmp/arm-census-effective.json','w'),indent=1)
+          PYEOF
+          exec python3 scripts/ops/build_arm_harness.py --select \
+            --registry ops/dispatch/build-arms.json \
+            --census /tmp/arm-census-effective.json \
+            --arm "$ARM_REQUEST" | tee /tmp/arm-selection.log
+          python3 - <<'PYEOF'
+          import json
+          line = [l for l in open('/tmp/arm-selection.log') if l.startswith('ARM_SELECTION ')]
+          sel = json.loads(line[-1][len('ARM_SELECTION '):])
+          with open(__import__('os').environ['GITHUB_OUTPUT'], 'a') as fh:
+              for key in ('arm_id', 'harness', 'provider', 'model', 'selection_reason'):
+                  fh.write(f"{key}={sel.get(key) or ''}\n")
+          print('selected arm:', sel)
+          PYEOF
       - name: Post dispatch receipt (D-h/D-i)
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
           BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
           BUILD_BRANCH: ${{ steps.branch.outputs.name }}
         run: |
@@ -82,6 +158,10 @@ jobs:
           - run_id: ${{ github.run_id }}
           - run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           - branch: $BUILD_BRANCH
+          - arm: ${{ steps.arm.outputs.arm_id }} (harness: ${{ steps.arm.outputs.harness }})
+          - provider/model: ${{ steps.arm.outputs.provider }} / ${{ steps.arm.outputs.model }}
+          - selection_reason: ${{ steps.arm.outputs.selection_reason }}
+          - quota_class: ${{ inputs.quota_class || 'primary' }}
           - fired_by: ${{ github.actor }}
           - started_at: $START
           - heartbeat_deadline: $HEARTBEAT
@@ -89,9 +169,9 @@ jobs:
           A claim on this issue is watchdog-ageable against heartbeat_deadline: if no PR or already-exists comment lands by then, treat the run as stalled, not silent."
       - name: Run Gemini CLI builder
         id: builder
+        if: steps.arm.outputs.harness == 'run-gemini-cli'
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           GEMINI_CLI_TRUST_WORKSPACE: 'true'
           BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
         with:
@@ -104,12 +184,144 @@ jobs:
             CLAUDE.md and the build issue #${{ github.event.issue.number || inputs.issue_number }}
             in full, then implement exactly what THAT ISSUE specifies (its scope,
             deliverables and acceptance criteria govern). Work on the branch
-            named here: ${{ steps.branch.outputs.name }} (for issue-comment dispatch, the
-            branch named in the issue body governs if it names one; fallback is
-            the branch named here) and open a pull request against master with
-            `gh pr create`, describing what was built and how each acceptance
-            item is evidenced. Do not merge. If the work already exists on
-            master, say so in a comment on the issue instead of exiting silently.
+            named here: ${{ steps.branch.outputs.name }}. Implement the task and
+            leave the changes in the checkout; do not commit, push, create a PR,
+            or merge. A separate post-builder step with narrowly-scoped credentials
+            will create the review PR. If the work already exists on master, say so
+            in the final response rather than exiting silently.
+      - name: Fetch the build task (generic arm)
+        if: steps.arm.outputs.harness == 'generic-agent-loop'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$BUILD_ISSUE" > /tmp/build-issue.json
+          python3 - <<'PYEOF'
+          import json
+          issue = json.load(open('/tmp/build-issue.json'))
+          with open('/tmp/build-task.md', 'w') as fh:
+              fh.write('Build task — timerloggedout-spec/termux-monorepo issue #%s\n\n' % issue['number'])
+              fh.write('Title: %s\n\n' % issue['title'])
+              fh.write(issue.get('body') or '')
+              fh.write('\n\nWork in this checkout. CLAUDE.md governs. Implement exactly what this issue specifies; do not merge anything.\n')
+          print('task bytes:', len(open('/tmp/build-task.md').read()))
+          PYEOF
+      - name: Run the generic agent-loop builder
+        id: builder-generic
+        if: steps.arm.outputs.harness == 'generic-agent-loop'
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+          ARM_ID: ${{ steps.arm.outputs.arm_id }}
+          ARM_REQUEST: ${{ inputs.arm || 'auto' }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          QUOTA_CLASS: ${{ inputs.quota_class || 'primary' }}
+          SELECTION_REASON: ${{ steps.arm.outputs.selection_reason }}
+        run: |
+          exec python3 scripts/ops/build_arm_harness.py \
+            --registry ops/dispatch/build-arms.json \
+            --census /tmp/arm-census-effective.json \
+            --arm "$ARM_REQUEST" --selection-reason "$SELECTION_REASON" --task-file /tmp/build-task.md \
+            --issue "$BUILD_ISSUE" --trigger "${{ github.event_name }}" \
+            --quota-class "$QUOTA_CLASS" \
+            --stamp-out /tmp/build-dispatch-stamp.json \
+            --result-out /tmp/build-arm-result.json
+      - name: Persist PT arm-day quota-terminal markers
+        if: always() && steps.builder-generic.outcome != 'skipped'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f /tmp/build-arm-result.json ]; then exit 0; fi
+          python3 - <<'PYEOF' > /tmp/arm-quota-terminal.tsv
+          import json
+          result=json.load(open('/tmp/build-arm-result.json'))
+          for attempt in result.get('attempts',[]):
+              if attempt.get('status') == 'quota_terminal':
+                  print(attempt['arm_id'])
+          PYEOF
+          quota_day="$(TZ=America/Los_Angeles date +%Y-%m-%d)"
+          while IFS= read -r arm_id; do
+            [ -n "$arm_id" ] || continue
+            gh issue comment 5151 --body "<!-- build-arm-quota-terminal:v1 -->
+            {"arm_id":"$arm_id","date":"$quota_day","run_id":"${{ github.run_id }}"}"
+          done < /tmp/arm-quota-terminal.tsv
+      - name: Mint narrowly-scoped Swarm App token after all model execution (SEC-03)
+        if: always()
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+          permission-actions: write
+      - name: Commit and open PR for the generic builder
+        if: steps.arm.outputs.harness == 'generic-agent-loop'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+          ARM_ID: ${{ steps.builder-generic.outputs.arm_id || steps.arm.outputs.arm_id }}
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "generic builder left no changes — verify step will judge"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          test "$(git branch --show-current)" = "$BUILD_BRANCH" || { echo "build branch mismatch"; exit 1; }
+          git add -A
+          if git diff --cached --name-only | grep -iE '(^|/)(\.env($|\.)|.*(secret|credential|token).*$)|\.(pem|key)$'; then
+            echo "refusing to commit credential-like paths"; git reset --; exit 1
+          fi
+          if git diff --cached | grep -E 'gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'; then
+            echo "refusing to commit credential-shaped content"; git reset --; exit 1
+          fi
+          git commit -m "Build #$BUILD_ISSUE via $ARM_ID arm (#5151 multi-arm build-dispatch)"
+          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git config http.extraheader "$AUTH_HEADER"
+          git push origin "HEAD:refs/heads/$BUILD_BRANCH"
+          if ! gh pr list --head "$BUILD_BRANCH" --state open --json number | grep -q number; then
+            gh pr create --head "$BUILD_BRANCH" --base master \
+              --title "Build #$BUILD_ISSUE via $ARM_ID arm" \
+              --body "Authored by the $ARM_ID arm of multi-arm build-dispatch (#5151) for issue #$BUILD_ISSUE. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Do not merge without oracle review."
+          fi
+      - name: Commit and open PR for Gemini builder
+        if: steps.builder.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "$BUILD_BRANCH" || { echo "build branch mismatch"; exit 1; }
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Gemini builder left no changes; verification will judge this run."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --name-only | grep -iE '(^|/)(\.env($|\.)|.*(secret|credential|token).*$)|\.(pem|key)$'; then
+            echo "refusing to commit credential-like paths"; git reset --; exit 1
+          fi
+          if git diff --cached | grep -E 'gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'; then
+            echo "refusing to commit credential-shaped content"; git reset --; exit 1
+          fi
+          git commit -m "Build #$BUILD_ISSUE via Gemini CLI arm"
+          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git config http.extraheader "$AUTH_HEADER"
+          git push origin "HEAD:refs/heads/$BUILD_BRANCH"
+          if ! gh pr list --head "$BUILD_BRANCH" --state open --json number | grep -q number; then
+            gh pr create --head "$BUILD_BRANCH" --base master \
+              --title "Build #$BUILD_ISSUE via Gemini CLI arm" \
+              --body "Authored by the Gemini CLI arm for issue #$BUILD_ISSUE. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Do not merge without oracle review."
+          fi
       - name: Guard step-summary size (1024k cap)
         # #5172(b): run 43030936215's step summary aborted at 7343k > the
         # 1024k cap, so the failure narrative never rendered. The action
@@ -193,15 +405,15 @@ jobs:
           fi
           exit 0
       - name: Verify build completion evidence
+        id: verify
         # #5142: convert silent-empty SUCCESS into honest FAILURE in-run.
         # Default condition (no `if`): runs only when the builder step
         # succeeded. A builder that exits 0 having produced nothing must
-        # fail the run here. Evidence (any one): branch ref exists AND
-        # compare(master...branch).ahead_by >= 1, OR an open or merged PR
-        # with head = branch. The compare API's ahead_by count is the
-        # branch-specific commit proof; never treat inherited commits from
-        # the branch commits listing as new output. Reads use the Swarm App
-        # token and are retried twice.
+        # fail the run here. Evidence (any one): branch ref SHA differs from
+        # the run-start baseline SHA, OR an open/merged PR with this branch
+        # created during this run. Existing branch commits and old PRs never
+        # count as fresh output. Reads use the post-builder Swarm App token
+        # and are retried twice.
         # Positively-empty => failure comment (marker
         # build-dispatch-empty:v1) + step summary + exit 1. UNREADABLE
         # evidence (reads still failing after retries) => fail-OPEN:
@@ -211,6 +423,8 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
           BUILD_BRANCH: ${{ steps.branch.outputs.name }}
+          BASE_BRANCH_SHA: ${{ steps.branch.outputs.baseline_sha }}
+          BUILD_STARTED_AT: ${{ steps.branch.outputs.started_at }}
         run: |
           set -uo pipefail
           REPO="${GITHUB_REPOSITORY}"
@@ -247,6 +461,7 @@ jobs:
               echo "Completion evidence for branch \`$BUILD_BRANCH\` could not be read ($1)."
               echo "Per #5142 the run is NOT converted to failure on an unreadable surface."
             } >> "$GITHUB_STEP_SUMMARY"
+            echo "outcome=not_established" >> "$GITHUB_OUTPUT"
             exit 0
           }
 
@@ -254,23 +469,32 @@ jobs:
           REF="$(gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH" true)"
           if [ "$REF" = "__UNREADABLE__" ]; then fail_open "branch ref read failed"; fi
           if [ "$REF" != "__NOT_FOUND__" ]; then
-            CMP="$(gh_get "repos/$REPO/compare/master...$BUILD_BRANCH")"
-            if [ "$CMP" = "__UNREADABLE__" ]; then fail_open "compare read failed"; fi
-            AHEAD="$(printf '%s' "$CMP" | grep -o '"ahead_by": *[0-9]*' | grep -o '[0-9]*' | head -n 1)"
-            if [ -n "$AHEAD" ] && [ "$AHEAD" -ge 1 ]; then EVIDENCE="branch ahead by $AHEAD"; fi
+            REF_SHA="$(printf '%s' "$REF" | grep -o '"sha": *"[a-f0-9]*"' | head -n 1 | cut -d '"' -f4)"
+            if [ -z "$REF_SHA" ]; then fail_open "branch ref SHA unreadable"; fi
+            if [ "$REF_SHA" != "$BASE_BRANCH_SHA" ]; then EVIDENCE="branch ref changed during this run"; fi
           fi
           # Check PRs even if the branch ref was deleted after merge.
           # A PR is independent completion evidence under the #5142 contract.
           if [ -z "$EVIDENCE" ]; then
             PRS="$(gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")"
             if [ "$PRS" = "__UNREADABLE__" ]; then fail_open "pulls read failed"; fi
-            if printf '%s' "$PRS" | grep -q '"state": "open"'; then EVIDENCE="open PR with head $BUILD_BRANCH"; fi
-            if [ -z "$EVIDENCE" ] && printf '%s' "$PRS" | grep -q '"merged_at": "[0-9]'; then EVIDENCE="merged PR with head $BUILD_BRANCH"; fi
+            EVIDENCE="$(PRS_JSON="$PRS" BUILD_STARTED_AT="$BUILD_STARTED_AT" python3 - <<'PYEOF'
+          import json, os
+          try:
+              rows = json.loads(os.environ['PRS_JSON'])
+              started = os.environ['BUILD_STARTED_AT']
+              found = next((p for p in rows if (p.get('state') == 'open' or p.get('merged_at')) and (p.get('created_at') or '') >= started), None)
+              print(('PR created during this run: #' + str(found['number'])) if found else '')
+          except Exception:
+              print('')
+          PYEOF
+          )
           fi
 
           if [ -n "$EVIDENCE" ]; then
             echo "VERIFY: completion evidence present — $EVIDENCE."
             echo "Completion evidence present: $EVIDENCE." >> "$GITHUB_STEP_SUMMARY"
+            echo "outcome=completed" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -278,19 +502,76 @@ jobs:
           {
             echo "### Build-dispatch verify: silent-empty converted to FAILURE"
             echo "Builder step exited 0 but produced no completion evidence on branch \`$BUILD_BRANCH\`:"
-            echo "- branch ref exists with compare ahead >= 1: no"
-            echo "- open or merged PR with head = branch: no"
+            echo "- branch ref changed from run-start baseline: no"
+            echo "- PR created during this run: no"
             echo "Run: $RUN_URL"
           } >> "$GITHUB_STEP_SUMMARY"
+          echo "outcome=failed" >> "$GITHUB_OUTPUT"
           gh issue comment "$BUILD_ISSUE" --body "<!-- build-dispatch-empty:v1 -->
           builder completed SUCCESS with no completion evidence — converted to FAILURE in-run
           - run id: ${{ github.run_id }}
           - run url: $RUN_URL
           - branch: $BUILD_BRANCH"
           exit 1
+      - name: Emit rotation stamp to the scoring planes
+        if: always() && steps.arm.outputs.arm_id != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          ARM_ID: ${{ steps.builder-generic.outputs.arm_id || steps.arm.outputs.arm_id }}
+          BUILD_ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+          GEMINI_OUTCOME: ${{ steps.builder.outcome }}
+          GENERIC_OUTCOME: ${{ steps.builder-generic.outcome }}
+          VERIFY_OUTCOME: ${{ steps.verify.outputs.outcome || (steps.builder-generic.outcome == 'failure' || steps.builder.outcome == 'failure') && 'failed' || 'not_established' }}
+          TRIGGER_NAME: ${{ github.event_name }}
+          SELECTION_REASON: ${{ steps.builder-generic.outputs.selection_reason || steps.arm.outputs.selection_reason }}
+          QUOTA_CLASS: ${{ inputs.quota_class || 'primary' }}
+        run: |
+          # Rotation stamp fan-out (#5151 + DoE stamp set c.6786076278):
+          # the stamp lands where DoE pool accounting reads it — the
+          # HindSight/Provenance path via dispatch-stamp-fanout.yml
+          # (3L0 intake + desk-feed provider_usage + EXPERIMENT records
+          # + MoneyBall routed-dispatch), never desk-feed only. The
+          # generic harness already wrote its stamp; the Gemini arm's
+          # stamp is built here from the selection + step outcome.
+          if [ ! -f /tmp/build-dispatch-stamp.json ]; then
+            python3 - <<'PYEOF'
+          import importlib.util, json, os, time
+          spec = importlib.util.spec_from_file_location('h', 'scripts/ops/build_arm_harness.py')
+          h = importlib.util.module_from_spec(spec); spec.loader.exec_module(h)
+          reg = h.load_registry('ops/dispatch/build-arms.json')
+          arm = next(a for a in reg['arms'] if a['arm_id'] == os.environ['ARM_ID'])
+          outcome = os.environ.get('GEMINI_OUTCOME') or 'failed'
+          stamp = h.build_stamp(
+              arm=arm, run_id=os.environ.get('GITHUB_RUN_ID'),
+              ts=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+              issue=os.environ.get('BUILD_ISSUE'), trigger=os.environ.get('TRIGGER_NAME') or 'unknown',
+              selection_reason=os.environ.get('SELECTION_REASON') or 'NOT_ESTABLISHED',
+              outcome_status=os.environ.get('VERIFY_OUTCOME') or 'not_established',
+              evidence_ref='actions run ' + str(os.environ.get('GITHUB_RUN_ID')),
+              usage={}, quota_class=os.environ.get('QUOTA_CLASS') or 'primary')
+          open('/tmp/build-dispatch-stamp.json', 'w').write(json.dumps(stamp, indent=2) + '\n')
+          print('gemini-arm stamp built')
+          PYEOF
+          fi
+          python3 - <<'PYEOF'
+          import json, os
+          path='/tmp/build-dispatch-stamp.json'
+          stamp=json.load(open(path))
+          status=os.environ.get('VERIFY_OUTCOME') or 'not_established'
+          stamp.setdefault('outcome', {})['status']=status
+          stamp['outcome']['summary']='completion verification: '+status
+          if status != 'completed': stamp['arm_state']='unknown'
+          json.dump(stamp, open(path,'w'), indent=2)
+          PYEOF
+          STAMP="$(cat /tmp/build-dispatch-stamp.json)"
+          PAYLOAD="$(STAMP="$STAMP" python3 -c 'import json, os; print(json.dumps({"ref": "master", "inputs": {"stamp": os.environ["STAMP"], "phase": "dispatch"}}))')"
+          curl --fail-with-body -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/dispatch-stamp-fanout.yml/dispatches" \
+            -d "$PAYLOAD" || echo "stamp fan-out dispatch failed (continue-on-error: verify verdict stands)"
       - name: Surface builder failure on the build issue
         if: failure()
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          gh issue comment "${{ github.event.issue.number || inputs.issue_number }}" --body "Build dispatch run ${{ github.run_id }} FAILED at the Gemini CLI builder step (see Actions run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Recorded by build-dispatch error surfacing (optimizations-assurance fix, 2026-11-01; monorepo port #5108)."
+          gh issue comment "${{ github.event.issue.number || inputs.issue_number }}" --body "Build dispatch run ${{ github.run_id }} FAILED at the builder step (arm: ${{ steps.arm.outputs.arm_id }}) (see Actions run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}). Recorded by build-dispatch error surfacing (optimizations-assurance fix, 2026-11-01; monorepo port #5108)."

@@ -25,12 +25,44 @@ def workflow_text() -> str:
     return WORKFLOW.read_text(encoding="utf-8")
 
 
-def test_mint_step_precedes_checkout():
+def test_mint_step_after_builders_before_consumers():
+    # SEC-03 redesign (accepted at the #5151 rebase adjudication, Desk
+    # 2026-11-12): the builder steps never hold the App token. Checkout
+    # runs on the read-only workflow token with persist-credentials off;
+    # the narrowly-scoped Swarm App token is minted after all model
+    # execution and before every step that consumes it (commit/PR,
+    # verify).
     text = workflow_text()
     assert "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e" in text
-    mint = text.index("create-github-app-token")
+    assert "Mint narrowly-scoped Swarm App token after all model execution (SEC-03)" in text
+    mint = text.index("Mint narrowly-scoped Swarm App token")
+    gemini_builder = text.index("Run Gemini CLI builder")
+    generic_builder = text.index("Run the generic agent-loop builder")
+    assert mint > gemini_builder and mint > generic_builder, \
+        "the App token mint must follow all model execution"
+    for consumer in ("Commit and open PR for the generic builder",
+                     "Commit and open PR for Gemini builder",
+                     "Verify build completion evidence"):
+        assert mint < text.index(consumer), f"the App token mint must precede {consumer}"
     checkout = text.index("actions/checkout")
-    assert mint < checkout, "SEC-03: the App token mint must precede checkout"
+    assert "persist-credentials: false" in text[checkout:checkout + 400], \
+        "checkout must not persist credentials"
+
+
+def test_baseline_capture_step_and_output():
+    # The verify step's evidence model rests on a run-start baseline:
+    # the branch-resolution step captures baseline_sha (and started_at)
+    # before any builder runs, and verify consumes the baseline output.
+    text = workflow_text()
+    assert "Resolve build branch and capture run baseline" in text
+    start = text.index("Resolve build branch and capture run baseline")
+    end = text.index("Select build arm")
+    step = text[start:end]
+    assert "id: branch" in step
+    assert 'echo "baseline_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"' in step
+    assert 'echo "started_at=$(date -u' in step
+    assert "BASE_BRANCH_SHA: ${{ steps.branch.outputs.baseline_sha }}" in text
+    assert "BUILD_STARTED_AT: ${{ steps.branch.outputs.started_at }}" in text
 
 
 def test_swarm_app_identity_not_client_id():
@@ -116,9 +148,10 @@ def test_verify_step_contains_evidence_reads_and_exit_1():
     start = text.index("Verify build completion evidence")
     end = text.index("if: failure()")
     verify = text[start:end]
-    for needle in ("git/ref/heads/", "compare/master...", "pulls?head=",
-                   "ahead_by", "build-dispatch-empty:v1",
-                   "exit 1"):
+    for needle in ("git/ref/heads/", "pulls?head=",
+                   "build-dispatch-empty:v1", "exit 1",
+                   "__UNREADABLE__", "fail_open",
+                   "outcome=completed", "outcome=failed"):
         assert needle in verify, f"verify step missing: {needle}"
 
 
@@ -145,7 +178,13 @@ def test_verify_never_accepts_inherited_branch_commits_as_completion():
     start = text.index("Verify build completion evidence")
     end = text.index("if: failure()", start)
     verify = text[start:end]
-    assert 'AHEAD" -ge 1' in verify, "branch evidence must require a commit ahead of master"
+    assert 'if [ "$REF_SHA" != "$BASE_BRANCH_SHA" ]' in verify, (
+        "branch evidence must require the ref to move vs the run-start baseline SHA"
+    )
+    assert "Existing branch commits and old PRs never" in verify
+    assert "(p.get('created_at') or '') >= started" in verify, (
+        "PR evidence must require a PR created during this run"
+    )
     assert 'commits?sha=' not in verify, (
         "the branch commits endpoint includes inherited commits and cannot prove new output"
     )
@@ -168,7 +207,8 @@ def test_verify_only_treats_missing_branch_ref_as_positive_empty():
     verify = text[start:end]
     assert 'not_found_is_empty="${2:-false}"' in verify
     assert 'gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH" true' in verify
-    assert 'gh_get "repos/$REPO/compare/master...$BUILD_BRANCH")' in verify
+    assert 'BASE_BRANCH_SHA: ${{ steps.branch.outputs.baseline_sha }}' in verify
+    assert 'if [ "$REF" != "__NOT_FOUND__" ]' in verify
     assert 'gh_get "repos/$REPO/pulls?head=$OWNER:$BUILD_BRANCH&state=all")' in verify
     assert 'if [ "$not_found_is_empty" = "true" ]' in verify
     assert "A 404 from compare/PR endpoints is not proof of emptiness" in verify

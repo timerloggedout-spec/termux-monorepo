@@ -13,8 +13,11 @@ name: repo-tracking-collect
 on:
   # PR-feed state is refreshed by the event that changes it, not by waiting
   # for the daily anti-entropy pass.
+  # #5219 RE-FIX: `edited`/`converted_to_draft`/`ready_for_review`
+  # created runs that re-ran the same projection refresh with no
+  # PR-feed state change.
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+    types: [opened, synchronize, reopened, closed]
   # Refresh the cross-domain projection after the append-only lane-events
   # recorder has finished writing its Neon batch.
   workflow_run:

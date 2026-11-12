@@ -8,12 +8,20 @@
 name: lane events recorder
 
 on:
+  # #5219 RE-FIX: `tribute-status-refresh` removed from the fan-in.
+  # It is itself triggered by tribute execute/followup/scout
+  # completions, so one tribute event created a recorder run directly
+  # AND another via the status-refresh completion (2x fan-out from one
+  # event; the status-refresh output is already covered by the direct
+  # tribute legs). No concurrency change: the recorder writes
+  # append-only Neon batches with no re-scan guarantee, so cancelling
+  # a run mid-write could drop a batch -- creation is cut here, not
+  # execution.
   workflow_run:
     workflows:
       - tribute scout
       - tribute execute
       - tribute-followup
-      - tribute-status-refresh
       - Agent Throughput Evidence
       - n8n SHE bridge
     types: [completed]

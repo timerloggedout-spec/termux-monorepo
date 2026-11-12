@@ -13,25 +13,29 @@ on:
   # State-changing events wake the same admission tree immediately.
   schedule:
     - cron: '*/30 * * * *'
+  # #5219 RE-FIX: trigger trims. `edited`/`converted_to_draft`/
+  # `ready_for_review` created runs the decide job cannot use
+  # differently (no queue-state change); `push` is covered by the
+  # workflow_run cascade + the */30 schedule backstop. issue_comment
+  # stays: the decide job acts only on `/quota force all`, but that
+  # operator command has no other intake (measured 17% of recent
+  # runs; accepted, not hidden).
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited, closed]
+    types: [opened, synchronize, reopened, closed]
   workflow_run:
     workflows: ["lane events recorder"]
     types: [completed]
   issue_comment:
     types: [created]
-  push:
-    branches: [master]
-    paths:
-      - 'ops/tracking/**'
-      - 'docs/agentic/dependency-phases.json'
-      - 'docs/agentic/phase-approvals.json'
 permissions: {}
 
+  # #5219 RE-FIX: the old group was per-event (comment id / PR / run
+  # id) -- effectively no coalescing at all. One group + cancel: the
+  # tree is an idempotent re-evaluation, so a stale evaluation is
+  # cancelled, not run to completion (the */30 schedule re-evaluates).
 concurrency:
-  group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }}
-  # Keep active fan-out intact; newer pending PR/push wakes coalesce by group.
-  cancel-in-progress: false
+  group: quota-dispatch-tree
+  cancel-in-progress: true
 
 jobs:
   decide:

@@ -10,6 +10,11 @@ name: project-task-dispatch
 on:
   issues:
     types: [opened, reopened]
+  pull_request:
+    paths:
+      - '.github/workflows/project-task-dispatch.yml'
+      - 'scripts/dispatch/project_task.py'
+      - 'scripts/dispatch/test_project_task.py'
 
 permissions:
   issues: write
@@ -20,8 +25,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  contract-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise QUE intake, lane profiling and Siglary data guard
+        run: |
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          path = Path('scripts/dispatch/test_project_task.py')
+          spec = importlib.util.spec_from_file_location('test_project_task', path)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          tests = [value for name, value in vars(module).items()
+                   if name.startswith('test_') and callable(value)]
+          for test in tests:
+              test()
+              print('PASS', test.__name__)
+          print(f'{len(tests)} QUE dispatch contract tests passed')
+          PY
+
   intake:
-    if: contains(github.event.issue.labels.*.name, 'project-task') || startsWith(github.event.issue.title, '[task]') || contains(github.event.issue.body, '### Task / spec')
+    if: github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'project-task') || startsWith(github.event.issue.title, '[task]') || contains(github.event.issue.body, '### Task / spec'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

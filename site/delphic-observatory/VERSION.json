@@ -1,0 +1,16 @@
+{
+  "schema": "versioned-static-artifact/v1",
+  "name": "delphic-observatory",
+  "version": "0.1.0",
+  "channel": "research-preview",
+  "released_at": "2026-11-12",
+  "source_repository": "timerloggedout-spec/termux-monorepo",
+  "source_pr": 5216,\n  "integration_contract": "docs/ops/DELPHIC-QUE-INTEGRATION.md",\n  "pages_workflow": ".github/workflows/delphic-observatory-pages.yml",
+  "source_issue": 968,
+  "entrypoint": "index.html",
+  "runtime_dependencies": [],
+  "authority": "read-only-research-projection",
+  "formula_engine": "local-python-stdlib",
+  "wolfram_role": "symbolic-derivation-and-review-only",
+  "termux_origin": "offline-at-publication; local-target-validation-pending"
+}

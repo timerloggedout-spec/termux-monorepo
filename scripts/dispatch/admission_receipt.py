@@ -97,6 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         if decision:
             with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
                 output.write(f"decision={decision}\n")
+                output.write(f"template={matched_template}\\n")
             print(f"QUE admission receipt: {decision}")
             return 0 if decision == "admitted" else 0
         if time.monotonic() >= deadline:

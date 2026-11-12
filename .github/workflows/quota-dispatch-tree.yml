@@ -29,8 +29,10 @@ on:
 permissions: {}
 
 concurrency:
-  group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }}
+  group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && 'lane-events') || (github.event_name == 'push' && github.ref) || github.event_name }}
   # Keep active fan-out intact; newer pending PR/push wakes coalesce by group.
+  # workflow_run wakes share ONE group: the tree recomputes all state, so only the
+  # newest pending wake matters (2026-11-12: per-run groups queued 604 tree runs).
   cancel-in-progress: false
 
 jobs:

@@ -50,6 +50,54 @@ jobs:
           export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
           python3 scripts/ci/tribute_audit.py
 
+      - name: Honest outcome census + SLO (merged real / stake / closed-unmerged / open / yielded / retired)
+        # Receipts (actioned/skipped/failed) are not outcomes. This step counts
+        # foreign PR outcomes from the search API and merges them into
+        # status.json as tribute_outcomes / outcome_slo. Never gates here;
+        # tribute-outcome-slo.yml turns a FAIL into a red run.
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          ARCHWIZ_GITHUB_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-${OPERATOR_TOKEN:-${ARCHWIZ_GITHUB_TOKEN:-$GITHUB_TOKEN}}}"
+          mkdir -p /tmp/s1dec
+          if git ls-remote --exit-code origin refs/heads/tribute-s1/backfill >/dev/null 2>&1; then
+            git fetch --depth 1 origin tribute-s1/backfill
+            latest="$(git ls-tree --name-only FETCH_HEAD backfill/ 2>/dev/null | sort | tail -1 || true)"
+            [ -n "$latest" ] && git show "FETCH_HEAD:$latest" > /tmp/s1dec/latest.jsonl || true
+          fi
+          python3 scripts/ci/tribute_outcomes.py --decisions /tmp/s1dec \
+            --merge-into docs/ops/generated/tribute-status.json \
+            --merge-into apps/tribute-dashboard/data/status.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+          { echo; cat docs/ops/generated/tribute-outcomes.md; } >> docs/ops/generated/tribute-status.md
+
+      - name: Settle claim auctions (replay receipts vs outcome census)
+        # docs/ops/TRIBUTE-AUCTION.md: real merge -> ante + reward; stake-only /
+        # closed-unmerged / no patch after claim -> ante forfeited. Writes the
+        # ledger, a tribute_auction summary in status.json, and the Delphi
+        # signals that are new since the last committed ledger.
+        continue-on-error: true
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/auction
+          : > /tmp/auction/receipts.jsonl
+          if git ls-remote --exit-code origin refs/heads/tribute-auction/receipts >/dev/null 2>&1; then
+            git fetch -q --depth 1 origin tribute-auction/receipts
+            git show FETCH_HEAD:receipts.jsonl > /tmp/auction/receipts.jsonl 2>/dev/null || true
+          fi
+          python3 scripts/ci/tribute_auction.py settle --receipts /tmp/auction/receipts.jsonl \
+            --census docs/ops/generated/tribute-outcomes.json \
+            --new-signals docs/ops/generated/tribute-auction-new-signals.json \
+            --merge-into docs/ops/generated/tribute-status.json \
+            --merge-into apps/tribute-dashboard/data/status.json
+
       - name: Commit if changed
         env:
           TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
@@ -60,7 +108,13 @@ jobs:
           git add docs/ops/generated/tribute-status.json \
                   docs/ops/generated/tribute-status.md \
                   apps/tribute-dashboard/data/status.json \
-                  docs/ops/generated/tribute-audit.json || true
+                  docs/ops/generated/tribute-audit.json \
+                  docs/ops/generated/tribute-outcomes.json \
+                  docs/ops/generated/tribute-outcomes.md \
+                  apps/tribute-dashboard/data/tribute-outcomes.json \
+                  docs/ops/generated/tribute-auction-ledger.json \
+                  docs/ops/generated/tribute-auction-new-signals.json \
+                  apps/tribute-dashboard/data/tribute-auction-ledger.json || true
           if git diff --staged --quiet; then
             echo "no status delta"
             exit 0

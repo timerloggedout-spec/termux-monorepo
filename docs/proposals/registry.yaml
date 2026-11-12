@@ -1288,3 +1288,36 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: doe-agentic-logistics-control-plane
+    title: "DoE agentic ecosystem, PDDL logistics planning and free-inference control plane"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/doe-agentic-logistics-control-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 5045
+      - 5136
+      - 5146
+      - 5160
+      - 5176
+      - 5183
+      - 5189
+      - 4979
+      - 5151
+      - 5178
+    related_prs:
+      - 5045
+      - 5145
+    related_branches:
+      - proposal/doe-agentic-logistics-control-plane-20261111
+    related_proposals:
+      - provider-family-doe-observatory
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

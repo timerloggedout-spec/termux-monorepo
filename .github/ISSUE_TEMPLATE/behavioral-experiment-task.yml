@@ -1,0 +1,57 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: do-statements-performance-psychology
+# que_tier: 3
+# payload_class: behavioral-experiment
+# route: project-task-dispatch.yml
+# after:
+# chain:
+# SWARM-DISPATCH-END
+name: DO Statements & Performance Psychology Experiment
+description: File a governed behavioral experiment. DO Statements and Performance Psychology remain distinct measurable lanes, joined only when the hypothesis requires it.
+title: "[experiment] "
+labels: ["behavioral-experiment"]
+body:
+  - type: dropdown
+    id: entry
+    attributes:
+      label: Entry
+      description: The entry/program this experiment belongs to.
+      options: [D0, D1, D2, D3, D4, D5, AMD, Repo-Story, Certifications, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task / spec
+      description: Include the DO statement or intervention, behavioral hypothesis, target outcome, cohort/population, baseline/control, measures, stopping rule, safety constraints and whether exploratory or confirmatory. Never infer causal effects from observational correlations.
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Scope
+      description: Paths/repos and experiment surfaces this task may touch.
+    validations:
+      required: true
+  - type: textarea
+    id: done-evidence
+    attributes:
+      label: Done-evidence
+      description: Specify preregistration, instrumentation, analysis plan, reproducibility artifacts, independent review and acceptance criteria.
+    validations:
+      required: true
+  - type: input
+    id: target-repo
+    attributes:
+      label: Target repo
+      value: timerloggedout-spec/termux-monorepo
+    validations:
+      required: false
+  - type: textarea
+    id: instance-stamps
+    attributes:
+      label: Instance stamps (post-hoc)
+      description: Leave empty; provider/model/session attribution is post-hoc evidence.
+    validations:
+      required: false

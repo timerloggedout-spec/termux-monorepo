@@ -7,7 +7,7 @@
 
 ## 1. Authority model
 
-DoE is the sole owner of inference allocation and rotation: design, eligible population, treatment assignment, allocation proportions, endpoint-level statistical tests, stopping, culling and promotion. Rotation is not a global alternation or no-repeat constraint. The active design may repeat an endpoint or distribute traffic unevenly when that is what the registered experiment requires.
+DoE is the sole owner of allocation and rotation across the eligible Swarm population. This contract specifies the inference endpoint layer: design, eligible population, treatment assignment, allocation proportions, endpoint-level statistical tests, stopping, culling and promotion. Rotation is not a global alternation or no-repeat constraint. The active design may repeat an endpoint or distribute traffic unevenly when that is what the registered experiment requires.
 
 Scout is the execution selector. It chooses from the existing eligible provider/model endpoint pool to realize the DoE-assigned treatment. Its decision is constrained by task fit and live capability, credential, catalog, quota, safety and health evidence. Scout does not create the allocation policy or independently promote/cull endpoints.
 

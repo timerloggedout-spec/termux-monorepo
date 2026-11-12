@@ -110,3 +110,19 @@ it get no stamp and no route (unchanged behavior).
 tests 6/6 (local, disclosed interim), admission workflow live on
 master; the proof filing and its admission run are stamped on the
 filing itself and reported to the owner through main.
+
+## Scientific and behavioral experiment routes
+
+The scientific specialist forms are first-class triggerable filings, not manual labels:
+
+| Template | Dispatch lane | Payload | Route |
+|---|---|---|---|
+| `.github/ISSUE_TEMPLATE/scientific-research-task.yml` | `scientific-quantitative` | `scientific-task` | `project-task-dispatch.yml` |
+| `.github/ISSUE_TEMPLATE/behavioral-experiment-task.yml` | `do-statements-performance-psychology` | `behavioral-experiment` | `project-task-dispatch.yml` |
+
+Both forms use the shared `Entry`, `Task / spec`, `Scope`, and `Done-evidence` intake headings. The existing project-task route retains its `issues.opened` and `issues.reopened` triggers. Because `swarm-admission` evaluates the same issue event in parallel, the route waits for a fresh, post-event `[MUSEai]@{role:{swarm-admission}}` receipt matching one of its registered templates before it parses or queues the filing. Stale receipts, other-template receipts, and deferred decisions do not dispatch.
+
+The specialist capability registry is `ops/roles/scientific-specialists.json`. It defines capability contracts and candidate role metadata; it does not create provider identities or new canonical DoE seats. Intake emits candidate role hints only. Assignment, execution, and promotion remain downstream responsibilities.
+
+DO Statements and Performance Psychology are distinct experiment lanes. The combined lane is emitted only when both are present in the intake. A keyword match is `candidate_not_preregistered`, never proof of a designed or executed experiment.
+

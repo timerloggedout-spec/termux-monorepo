@@ -8,14 +8,16 @@ on:
     branches: [master]
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review, closed]
+  # #5219 RE-FIX: `edited`/`deleted` types re-ran the whole audit on
+  # metadata-only changes (no new audit evidence). Created-only.
   pull_request_review:
-    types: [submitted, edited, dismissed]
+    types: [submitted, dismissed]
   pull_request_review_comment:
-    types: [created, edited, deleted]
+    types: [created]
   issues:
-    types: [opened, edited, closed, reopened]
+    types: [opened, closed, reopened]
   issue_comment:
-    types: [created, edited, deleted]
+    types: [created]
   workflow_run:
     workflows: ["Audit Cycle — Single PR Feed-Forward", "Repository development evaluation", "Continuous Evaluation — MoneyBall MVT"]
     types: [completed]

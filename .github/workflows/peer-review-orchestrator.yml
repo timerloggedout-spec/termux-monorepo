@@ -33,8 +33,10 @@ name: Peer review orchestrator
 # metrics collector to measure.
 
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+  # #5219 RE-FIX: the `pull_request` trigger duplicated `pull_request_target`
+  # (identical types) -- every PR event created TWO runs. The collect job
+  # gates only on issue_comment vs everything else, so the duplicate is
+  # pure creation. pull_request_target alone carries the run.
   pull_request_target:
     types: [opened, synchronize, ready_for_review, reopened]
   issue_comment:

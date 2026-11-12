@@ -16,6 +16,9 @@ class DoEInferenceContractTests(unittest.TestCase):
         cls.roster = (ROOT / "docs/ops/SCOUT-ROSTER.md").read_text()
         cls.missions = (ROOT / "docs/ops/SCOUT-MISSIONS.md").read_text()
         cls.gambling = (ROOT / "docs/ops/AGENTIC-GAMBLING-LANE.md").read_text()
+        cls.provider_map = (ROOT / "docs/ops/PROVIDER-DISPATCH-MAP.md").read_text()
+        cls.swarm = (ROOT / "docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md").read_text()
+        cls.telemetry = json.loads((ROOT / "ops/telemetry/integration-observability-index.json").read_text())
 
     def validate(self, feed=None):
         return validate_contract(feed or self.feed, self.design, self.schema,

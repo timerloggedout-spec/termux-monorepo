@@ -50,3 +50,14 @@ def test_expected_path_cost_conserves_probability_and_accumulates_edge_cost():
     # 0.25*(2+10) + 0.75*(4+6) = 10.5. The previous 9.0 fixture did not match these edges.
     assert abs(cost_mass["D"] - 10.5) < 1e-12
     assert abs(terminal_cost - 10.5) < 1e-12
+
+
+def test_predictive_moments_reject_fractional_and_boolean_trial_counts():
+    for trials in (1.5, True, -1):
+        for function in (m.posterior_predictive_mean, m.posterior_predictive_variance):
+            try:
+                function(2.0, 2.0, trials)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("expected strict non-negative integer validation")

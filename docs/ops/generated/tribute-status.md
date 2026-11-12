@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-12T07:41:34Z UTC · receipts=3962 · foreign_open=8 · tributes=134_
+_Generated 2026-11-12T10:10:59Z UTC · receipts=3962 · foreign_open=8 · tributes=134_
 
 ## Tributes (contributor ledger)
 
@@ -59,3 +59,21 @@ _Generated 2026-11-12T07:41:34Z UTC · receipts=3962 · foreign_open=8 · tribut
 ## Operational outcomes · actioned=221 skipped=3741 failed=0 kinds=`{'upstream_pr': 12, 'claim_skipped_closed': 1, 'followup_skip_idempotent': 35, 'followup_skip_cooldown': 3675, 'followup_reengage': 51, 'followup_stale_nudge': 138, 'followup_changes': 2, 'followup_lesson': 18, 'followup_skip_system1': 30}`
 
 See docs/ops/TRIBUTE-TRIBUTE.md
+
+## Tribute outcome SLO: **FAIL** (30d window)
+
+real merges **2** · stake-only merges **5** (weight 0) · closed-unmerged **51** · real merge rate **0.0345** · open now **8** · days since real merge **23.7**
+
+- FAIL `real_merge_rate_below`: real merge rate 3.5% < 10% over 58 decided PRs (30d)
+- FAIL `real_merge_drought`: last real merge 23.7d ago (> 21d)
+- WARN `stake_only_merges_weight_0`: 5 stake-only merges in 30d counted at weight 0
+- WARN `closed_unmerged`: 51 PRs closed without merge in 30d (counted as failures)
+
+System 1 threads 208: yielded 62 · retired 61 · dropped 3 · placeholder merges 0
+
+| window | real | stake (w0) | self (excl) | closed-unmerged | rate |
+|---|---|---|---|---|---|
+| 7d | 0 | 0 | 0 | 2 | 0.0 |
+| 14d | 0 | 0 | 0 | 2 | 0.0 |
+| 30d | 2 | 5 | 0 | 51 | 0.0345 |
+| 90d | 2 | 14 | 4 | 99 | 0.0174 |

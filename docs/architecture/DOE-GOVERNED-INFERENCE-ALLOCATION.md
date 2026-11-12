@@ -87,3 +87,20 @@ The current repository has these distinct components:
 - No manager hard-pick without a contract.
 - No plaintext private strategy, API credential or wallet secret in Git.
 - No rewrite of historical dispatches as if they had been assigned by the new contract.
+
+
+## 9. Tribute Desk freshness audit (verified 2026-11-12)
+
+The page fetches feeds independently and each carries its own `generated_at`. The shared `CK.stampState` threshold is 24 hours. The audit found uneven presentation, corrected in this PR:
+
+| Feed | Observed generated_at (UTC) | Before | After |
+|---|---:|---|---|
+| Main desk feed (`data/desk-feed.json`) | 2026-11-04T10:26:53Z | Raw timestamp only; no stale state | Explicit fresh/STALE/unknown |
+| Dispatch state (`data/dispatch-state-feed.json`) | 2026-11-12T04:17:52Z | Per-feed `CK.stampState` | Retained |
+| QUE queue-by-tier (`data/queue-by-tier.json`) | 2026-11-12T10:06:11Z | Per-feed stamp helper | Retained |
+| QUE governor (`data/que-governor.json`) | 2026-11-12T10:06:11Z | Timestamp only | Explicit fresh/STALE/unknown |
+| QUE priority windows (`data/que-priority-windows.json`) | 2026-11-12T10:06:11Z | No timestamp rendered | Explicit fresh/STALE/unknown |
+
+The ops source and Tribute Desk mirror for the main desk feed are both updated to the corrected DoE policy in this PR. Their existing `generated_at` remains the source snapshot time; it is intentionally **not** falsified to make an old snapshot appear fresh. The page therefore marks the main desk feed STALE until its normal producer republishes it. Missing feed mirrors continue to render unavailable/not-yet-published, never zero or a timestamp borrowed from another feed.
+
+Acceptance: every independently fetched feed displays its own generated timestamp and freshness state; a missing/invalid timestamp reads unknown; no feed borrows another feed's freshness.

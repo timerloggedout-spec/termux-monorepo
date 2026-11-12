@@ -66,6 +66,9 @@ def test_subset_parser_matches_pyyaml_on_live_registry():
     assert len(b["proposals"]) == len(a["proposals"])
     for pa, pb in zip(a["proposals"], b["proposals"]):
         assert pb["id"] == pa["id"] and pb["title"] == pa["title"]
+        assert pb.get("proposal_type") == pa.get("proposal_type")
+    registered = next(p for p in b["proposals"] if p["id"] == "scientific-specialist-lanes")
+    assert registered["proposal_type"] in pf.PROPOSAL_TYPES
 
 
 def test_build_feed_shape(tmp_path):

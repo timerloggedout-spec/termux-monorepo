@@ -1,7 +1,7 @@
 import unittest
 
 from she.recovery.escalation import EscalationBudget, ExecutorCandidate
-from she.recovery.langgraph_treatment import build_escalation_graph
+from she.recovery.langgraph_treatment import _verify, build_escalation_graph
 
 
 def candidate(ref, capabilities=("python",), family="family-a", score=1.0):
@@ -75,6 +75,19 @@ class LangGraphTreatmentTests(unittest.TestCase):
         self.assertEqual(result["decision"].decision, "INDEPENDENT_VERIFY")
         self.assertEqual(result["executor_ref"], "verifier-b")
         self.assertTrue(result["verification_passed"])
+
+    def test_verifier_detects_authorization_scope_mutation(self):
+        from she.recovery.escalation import decide_escalation
+
+        decision = decide_escalation(
+            "POLICY_DENIAL", budget=EscalationBudget(),
+        )
+        result = _verify({
+            "decision": decision,
+            "authorization_scope": ("read:repo", "write:default-branch"),
+            "authorization_scope_snapshot": ("read:repo", "write:feature-branch"),
+        })
+        self.assertFalse(result["verification_passed"])
 
     def test_missing_specialist_is_blocked_not_falsely_completed(self):
         result = self.invoke(candidates=())

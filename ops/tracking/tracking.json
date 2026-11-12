@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-12T13:49:28Z",
+ "generated_at": "2026-11-12T18:16:52Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-12T13:49:27Z",
+   "read_at": "2026-11-12T18:16:51Z",
    "merged": 150,
    "open": 200
   },
   "lane_events": {
-   "read_at": "2026-11-12T13:49:27Z",
+   "read_at": "2026-11-12T18:16:51Z",
    "status": "ok",
-   "count": 33224,
+   "count": 33374,
    "events_in_snapshot": 200
   },
   "records": [
@@ -48,8 +48,8 @@
    "closed": 1,
    "in-flight": 9,
    "landed": 1,
-   "unknown": 7,
-   "active": 4
+   "unknown": 8,
+   "active": 3
   }
  },
  "rows": [
@@ -68,7 +68,7 @@
     "desk-feed traversal D0 pr=#1702",
     "open PRs: #4549"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-d1",
@@ -90,7 +90,7 @@
     "desk-feed traversal D1 pr=#2626",
     "open PRs: #4442"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -106,7 +106,7 @@
     "coordinator event D2 status=registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
     "open PRs: #5035"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -115,17 +115,18 @@
    "project_id": "d3-listinglens",
    "state": "landed",
    "last_merge": {
-    "pr": 5123,
-    "sha": "94781f3951a2",
-    "at": "2026-11-10T13:00:43Z",
-    "title": "D3 Clips gate: firsthand corroboration appended"
+    "pr": 5251,
+    "sha": "860582e0d0b5",
+    "at": "2026-11-12T15:23:47Z",
+    "title": "D3 project harmonized: assets.clips_url + terminal status"
    },
    "next": "Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 \u00b7 ROUTE \u0394 (D3 seat, 2026-11-01): batch B1\u2013B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) \u2227 Gemini-CLI build leg OUT); producer-naming req unchanged \u00b7 LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall \u2260 landing \u2014 desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, \u2205 build dispatch into it.",
    "next_basis": "record",
    "evidence": [
-    "desk-feed traversal D3 pr=#2616"
+    "desk-feed traversal D3 pr=#2616",
+    "open PRs: #5252"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -140,7 +141,7 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-d5",
@@ -152,7 +153,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -172,7 +173,7 @@
     "coordinator submission=none",
     "coordinator event C11 status=active"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "challenge-entries",
@@ -191,7 +192,7 @@
    "evidence": [
     "open PRs: #2235, #5051, #4526, #4573, #4023"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "quota",
@@ -200,18 +201,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 5229,
-    "sha": "b0d647c231ee",
-    "at": "2026-11-12T13:09:35Z",
-    "title": "feat(dispatch): #5219 rate-limit governance \u2014 Swarm token migration (13 workflows) + repo-tracking coalescing"
+    "pr": 5248,
+    "sha": "f81db0c2cdf5",
+    "at": "2026-11-12T15:07:44Z",
+    "title": "fix(rate-limit): #5219 re-fix \u2014 creation-layer trigger trims + coalescing + sliced re-verify"
    },
-   "next": "land/close PR #5224 \u2014 fix(doe): make inference allocation DoE-governed",
+   "next": "land/close PR #5258 \u2014 feat(ops): #5160 autoQuotaCadence \u2014 deterministic pool generation + cadence derivation",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=172",
-    "open PRs: #5224, #5187, #5159, #5147, #5144"
+    "open PRs: #5258, #5253, #5224, #5187, #5159"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "doe",
@@ -225,13 +226,13 @@
     "at": "2026-11-12T04:42:17Z",
     "title": "feat(ceel): continuous capability discovery and DoE evolution"
    },
-   "next": "land/close PR #5216 \u2014 feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
+   "next": "land/close PR #5198 \u2014 docs(doe): establish governed free-inference endpoint tournament order",
    "next_basis": "open-pr",
    "evidence": [
     "doe DESIGN.json campaigns=18",
-    "open PRs: #5216, #969, #5198, #5190, #5145"
+    "open PRs: #5198, #5244, #969, #5190, #5145"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "doe-nc1",
@@ -243,7 +244,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "tier-1",
@@ -255,7 +256,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "contribution-desk",
@@ -274,7 +275,7 @@
    "evidence": [
     "desk-feed traversals=12 generated_at=2026-11-04T10:26:53Z"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "web-design-viz",
@@ -291,9 +292,9 @@
    "next": "land/close PR #4069 \u2014 chore(dashboards): refresh surface feeds",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #4069, #4904, #4898, #4621, #4018"
+    "open PRs: #4069, #4904, #4898, #4621"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "marketing",
@@ -310,7 +311,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "marketing-social",
@@ -322,7 +323,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "swarm",
@@ -330,13 +331,18 @@
    "domain": "swarm",
    "project_id": "swarm-f1",
    "state": "in-flight",
-   "last_merge": null,
+   "last_merge": {
+    "pr": 5238,
+    "sha": "1b573fde5351",
+    "at": "2026-11-12T14:41:48Z",
+    "title": "fix(admission): #4979 feed-first queue picture + named fallback failure + non-flow tolerance + Swarm token leg"
+   },
    "next": "land/close PR #5222 \u2014 docs(architecture): reconcile swarm routing control planes",
    "next_basis": "open-pr",
    "evidence": [
     "open PRs: #5222, #4758, #4523, #4445, #4390"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "providers",
@@ -350,13 +356,13 @@
     "at": "2026-11-06T01:54:38Z",
     "title": "feat: AgentRouter catalog and unified provider observability index"
    },
-   "next": "land/close PR #3209 \u2014 chore(cadence): auto-register providers from surface drift",
+   "next": "land/close PR #3916 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=172",
-    "open PRs: #3209, #3916, #5186, #5134, #5143"
+    "open PRs: #3916, #3209, #5186, #5134, #5143"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "providers-phrases",
@@ -368,24 +374,19 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "repo-replay",
    "project": "Repo Replay",
    "domain": "replay",
    "project_id": "repo-replay",
-   "state": "active",
-   "last_merge": {
-    "pr": 4937,
-    "sha": "71e2ee6700b3",
-    "at": "2026-11-04T16:45:51Z",
-    "title": "fix(deploy): prune step replays onto the fresh tip (reset --soft)"
-   },
+   "state": "unknown",
+   "last_merge": null,
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "ops",
@@ -397,7 +398,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   },
   {
    "lane": "telemetry",
@@ -416,7 +417,7 @@
    "evidence": [
     "open PRs: #3890, #4022"
    ],
-   "updated_at": "2026-11-12T13:49:28Z"
+   "updated_at": "2026-11-12T18:16:52Z"
   }
  ],
  "doe_join": {
@@ -817,6 +818,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 123/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 120/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

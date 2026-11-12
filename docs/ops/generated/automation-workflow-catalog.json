@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "ae05f49e193fe7474ef5acef6c18de83c806de40ec5366ba4962c512d0abfbb5",
-  "workflow_count": 305,
+  "source_fingerprint": "ebbdd9978049a37a27cff26699b972b08197a875cf28efa8217500049fbde928",
+  "workflow_count": 306,
   "workflows": [
     {
       "action_pins": [],
@@ -3947,6 +3947,26 @@
       "path": ".github/workflows/que-feed-collect.yml",
       "schedules": [
         "*/10 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: queue-pitcrew cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "pass"
+      ],
+      "name": "Queue pit crew",
+      "path": ".github/workflows/queue-pitcrew.yml",
+      "schedules": [
+        "7,22,37,52 * * * *"
       ],
       "triggers": [
         "schedule",

@@ -55,6 +55,12 @@ def validate_contract(feed: dict, design: dict, schema: dict,
         errors.append("Scout missions missing bounded DoE-authorized selection role")
     if "private while the participant remains active" not in gambling:
         errors.append("participant strategy privacy rule missing")
+    if "Git history are NOT a private strategy store" not in gambling:
+        errors.append("public Git history must not be described as private strategy storage")
+    if schema.get("properties", {}).get("request", {}).get("required", []).count("exempt") != 1:
+        errors.append("selection receipt must record explicit exemption state")
+    if schema.get("properties", {}).get("custom_contract", {}).get("properties", {}).get("status", {}).get("const") != "active":
+        errors.append("customized dispatches must reference an active contract")
     return errors
 
 def main() -> int:

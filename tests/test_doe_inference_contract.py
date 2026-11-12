@@ -35,6 +35,11 @@ class DoEInferenceContractTests(unittest.TestCase):
         invalid = {**valid, "3l0_pct": 19}
         self.assertFalse(validate_fee_distribution(invalid))
 
+    def test_custom_contract_must_be_active_and_exemption_explicit(self):
+        custom = self.schema["properties"]["custom_contract"]["properties"]
+        self.assertEqual("active", custom["properties"]["status"]["const"])
+        self.assertIn("exempt", self.schema["properties"]["request"]["required"])
+
     def test_desk_cannot_claim_allocation_authority(self):
         feed = copy.deepcopy(self.feed)
         feed["dispatch"]["provider_catalog"]["rotation_rule"]["rule"] = "Desk owns allocation."

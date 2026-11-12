@@ -120,7 +120,8 @@
       "required": [
         "manager_id",
         "request_id",
-        "requester_role"
+        "requester_role",
+        "exempt"
       ],
       "properties": {
         "manager_id": {
@@ -253,13 +254,7 @@
           "type": "string"
         },
         "status": {
-          "enum": [
-            "proposed",
-            "approved",
-            "active",
-            "expired",
-            "rejected"
-          ]
+          "const": "active"
         },
         "delta_dimensions": {
           "type": "array",
@@ -446,5 +441,35 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "request": {
+            "properties": {
+              "exempt": {
+                "const": true
+              }
+            },
+            "required": [
+              "exempt"
+            ]
+          }
+        },
+        "required": [
+          "request"
+        ]
+      },
+      "then": {
+        "properties": {
+          "request": {
+            "required": [
+              "exemption_reason"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

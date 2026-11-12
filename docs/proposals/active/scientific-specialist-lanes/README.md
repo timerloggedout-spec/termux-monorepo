@@ -44,6 +44,8 @@ Capability labels describe qualified work; they do not mint new canonical DoE se
 
 Use the repository's [Siglary standard](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/active/notation-sets/SIGLARY-STANDARD.md) for notation, epistemic state, provenance, and record validity. Unknown is represented as JSON null in data records, not serialized sentinel strings. Candidate lane detection is not preregistration and not evidence that an experiment ran.
 
+Proposal type taxonomy: [QDesk proposal type registry](../../PROPOSAL-TYPES.md).
+
 ## QDesk integration boundaries
 
 - `docs/proposals/registry.yaml` is the proposal source of record.

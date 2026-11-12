@@ -16,6 +16,9 @@ on:
       - "scripts/ci/tribute_system1_eval.py"
       - "tests/test_tribute_system1.py"
       - "tests/test_tribute_system1_gates.py"
+      - "tests/test_tribute_system1_v2.py"
+      - "tests/test_tribute_s1_delphi_delta.py"
+      - "scripts/ci/tribute_s1_delphi_delta.py"
       - "scripts/ci/tribute_followup.py"
       - "scripts/ci/tribute_scout.py"
       - "scripts/ci/tribute_claim.py"
@@ -30,6 +33,9 @@ on:
       - "scripts/ci/tribute_system1_eval.py"
       - "tests/test_tribute_system1.py"
       - "tests/test_tribute_system1_gates.py"
+      - "tests/test_tribute_system1_v2.py"
+      - "tests/test_tribute_s1_delphi_delta.py"
+      - "scripts/ci/tribute_s1_delphi_delta.py"
       - "scripts/ci/tribute_followup.py"
       - "scripts/ci/tribute_scout.py"
       - "scripts/ci/tribute_claim.py"
@@ -59,11 +65,11 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Compile
-        run: python -m py_compile scripts/ci/tribute_system1.py scripts/ci/tribute_system1_eval.py
+        run: python -m py_compile scripts/ci/tribute_system1.py scripts/ci/tribute_system1_eval.py scripts/ci/tribute_s1_delphi_delta.py
       - name: Unit tests
-        run: python -m unittest -v tests.test_tribute_system1 tests.test_tribute_system1_gates
-      - name: Eval gate (P/R, escalation rate, false re-engage)
-        run: python scripts/ci/tribute_system1_eval.py --summary "$GITHUB_STEP_SUMMARY" --json tribute-s1-eval.json
+        run: python -m unittest -v tests.test_tribute_system1 tests.test_tribute_system1_gates tests.test_tribute_system1_v2 tests.test_tribute_s1_delphi_delta
+      - name: Eval gate (HITL 0, false re-engage 0, seeds 100%, P/R)
+        run: python scripts/ci/tribute_system1_eval.py --max-hitl-rate 0 --summary "$GITHUB_STEP_SUMMARY" --json tribute-s1-eval.json
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: tribute-s1-eval, path: tribute-s1-eval.json, retention-days: 30, if-no-files-found: ignore }
@@ -76,6 +82,9 @@ jobs:
       contents: write   # only for the tribute-s1/backfill branch, never master
     env:
       GITHUB_TOKEN: ${{ github.token }}
+    outputs:
+      signal: ${{ steps.delphi.outputs.signal }}
+      count: ${{ steps.delphi.outputs.count }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -100,6 +109,24 @@ jobs:
           LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: python scripts/ops/lane_event.py record --events-file lane-events.jsonl || true
+      - name: Delphi delta (changed outcomes only, one per thread)
+        id: delphi
+        run: |
+          set -euo pipefail
+          mkdir -p delphi-state
+          if git ls-remote --exit-code origin refs/heads/tribute-s1/backfill >/dev/null 2>&1; then
+            git fetch --depth 1 origin tribute-s1/backfill
+            git show FETCH_HEAD:state/delphi-emitted.json > delphi-state/prev.json 2>/dev/null || echo '{}' > delphi-state/prev.json
+          else
+            echo '{}' > delphi-state/prev.json
+          fi
+          python3 scripts/ci/tribute_s1_delphi_delta.py decisions.jsonl \
+            --state delphi-state/prev.json --new-state delphi-state/delphi-emitted.json > delphi-state/signal.json
+          echo "count=$(jq 'length' delphi-state/signal.json)" >> "$GITHUB_OUTPUT"
+          echo "signal=$(jq -c . delphi-state/signal.json)" >> "$GITHUB_OUTPUT"
+          echo "::notice::tribute-s1 delphi delta count=$(jq 'length' delphi-state/signal.json)"
+      - uses: actions/upload-artifact@v4
+        with: { name: tribute-s1-delphi-state, path: delphi-state/delphi-emitted.json, retention-days: 30 }
       - uses: actions/upload-artifact@v4
         with: { name: tribute-s1-decisions, path: "*.jsonl", retention-days: 30 }
       - name: Publish backfill to branch tribute-s1/backfill
@@ -117,3 +144,48 @@ jobs:
           fi
           mkdir -p backfill && cp /tmp/decisions.jsonl "backfill/$day.jsonl"
           git add backfill && git commit -m "tribute-s1: backfill decisions $day [skip render]" && git push origin HEAD:tribute-s1/backfill
+
+  # Delphi tribute-outcome reweighting: only changed outcomes, deduped per thread
+  # (the gate also dedupes on key+outcome, so a re-delivery is harmless).
+  delphi-emit:
+    needs: route
+    if: needs.route.outputs.count != '' && needs.route.outputs.count != '0'
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions:
+      actions: write
+    with:
+      event: tribute-outcome
+      signal: ${{ needs.route.outputs.signal }}
+
+  # Record the emitted state only after the emit succeeded, so a failed
+  # emit re-sends the same deltas next run instead of dropping them.
+  delphi-state:
+    needs: [route, delphi-emit]
+    if: needs.delphi-emit.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write   # tribute-s1/backfill branch only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: tribute-s1-delphi-state, path: /tmp/delphi-state }
+      - name: Publish state/delphi-emitted.json to tribute-s1/backfill
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            if git ls-remote --exit-code origin refs/heads/tribute-s1/backfill >/dev/null; then
+              git fetch --depth 1 origin tribute-s1/backfill && git checkout -B tribute-s1/backfill FETCH_HEAD
+            else
+              git checkout --orphan tribute-s1/backfill && git rm -rqf . && git clean -fdq
+            fi
+            mkdir -p state && cp /tmp/delphi-state/delphi-emitted.json state/delphi-emitted.json
+            git add state
+            git diff --staged --quiet && { echo "state unchanged"; exit 0; }
+            git commit -m "tribute-s1: delphi emitted state $(date -u +%FT%H:%MZ) [skip render]"
+            git push origin HEAD:tribute-s1/backfill && exit 0
+            sleep $((attempt * 3))
+          done
+          echo "::warning::could not publish delphi state after 3 attempts; next run re-emits the same deltas"

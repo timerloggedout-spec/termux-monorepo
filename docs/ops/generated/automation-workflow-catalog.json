@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "04dab63aa90b56dac285d43b44141e33a8a1b40fc86b6b54847cad70960fc09e",
+  "source_fingerprint": "01403fe9c39ce5b724a46c6546e47cc2787d2be6bbe2edca8ac93471cb0b1c2f",
   "workflow_count": 298,
   "workflows": [
     {
@@ -5155,6 +5155,8 @@
       "concurrency": "group: tribute-system1-${{ github.event_name }}-${{ github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
+        "delphi-emit",
+        "delphi-state",
         "eval",
         "route"
       ],

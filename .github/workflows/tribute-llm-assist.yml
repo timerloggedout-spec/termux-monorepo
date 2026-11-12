@@ -183,7 +183,10 @@ jobs:
           print(f"catalog_models={len(rows)} errors={len(doc.get('errors') or [])}")
           PY
 
-      - name: Invoke selected model + comment
+      - name: Invoke selected model + record plan (never posts)
+        # Rung 1/2 never posts: a public comment on a foreign repo needs owner
+        # approval. The plan is written to the run's artifacts and the
+        # evidence ledger (kind=llm_assist_plan, posted=false) instead.
         if: steps.target.outputs.skip != 'true' && steps.pick.outputs.skip != 'true'
         env:
           PROVIDER: ${{ steps.pick.outputs.provider }}
@@ -192,7 +195,6 @@ jobs:
           FELO_AI_API: ${{ secrets.FELO_AI_API }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
           OMNIROUTE_API_KEY: ${{ secrets.OMNIROUTE_API_KEY }}
-          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
           REPO: ${{ steps.target.outputs.full }}
           TARGET: ${{ steps.target.outputs.number }}
         run: |
@@ -204,7 +206,6 @@ jobs:
             *) echo "unknown provider"; exit 0 ;;
           esac
           if [ -z "${KEY}" ]; then echo "::warning::missing key for ${PROVIDER}"; exit 0; fi
-          echo "::add-mask::${KEY}"
           PROMPT=$(cat /tmp/hw-llm-prompt.txt)
           PAYLOAD=$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:2048,stream:false}')
           RESP=$(curl -sS --connect-timeout 25 -X POST "${BASE}/chat/completions" \
@@ -215,26 +216,36 @@ jobs:
             -d "$PAYLOAD" || true)
           TEXT=$(echo "$RESP" | jq -r '.choices[0].message.content // empty' 2>/dev/null || true)
           if [ -z "$TEXT" ]; then
-            echo "::warning::empty response: $(echo "$RESP" | tr '\n' ' ' | head -c 500)"
+            echo "::warning::empty response from ${PROVIDER}/${MODEL}"
             exit 0
           fi
-          BODY=$(printf '%s\n\n%s\n\n%s\n' \
-            "### Help-wanted LLM assist (live catalog: \`${PROVIDER}\` / \`${MODEL}\`)" \
+          mkdir -p docs/ops/generated/tribute-evidence llm-assist-plan
+          SAFE=$(printf '%s-%s' "${REPO}" "${TARGET}" | tr '/' '_')
+          printf '%s\n\n%s\n\n%s\n' \
+            "### Tribute LLM assist plan for ${REPO}#${TARGET} (\`${PROVIDER}\` / \`${MODEL}\`)" \
             "$TEXT" \
-            "_Selection = live free/zero/trial catalog (openrouter|felo|omni). **Not** MoneyBall admission. Not legacy model-router residual chain._")
-          curl -sS -X POST \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${REPO}/issues/${TARGET}/comments" \
-            -d "$(jq -n --arg b "$BODY" '{body:$b}')" >/dev/null
-          echo "commented ${REPO}#${TARGET} via ${PROVIDER}/${MODEL}"
-          mkdir -p docs/ops/generated/tribute-evidence
+            "_Not posted. Rung system2_llm writes plans to artifacts/ledger only; a public comment on a foreign repo needs owner approval._" \
+            > "llm-assist-plan/${SAFE}.md"
+          echo "plan recorded for ${REPO}#${TARGET} via ${PROVIDER}/${MODEL} (not posted)"
           DAY=$(date -u +%Y-%m-%d)
           jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg issue "https://github.com/${REPO}/pull/${TARGET}" \
             --arg provider "$PROVIDER" --arg model "$MODEL" \
-            '{ts:$ts,kind:"llm_assist",issue:$issue,ok:true,provider:$provider,model:$model,lane:"help-wanted",selection:"live_catalog"}' \
+            --arg plan "llm-assist-plan/${SAFE}.md" \
+            '{ts:$ts,kind:"llm_assist_plan",issue:$issue,ok:true,posted:false,provider:$provider,model:$model,plan_artifact:$plan,lane:"help-wanted",selection:"live_catalog"}' \
             >> "docs/ops/generated/tribute-evidence/${DAY}.jsonl"
+          {
+            echo "## Tribute LLM assist (plan only, not posted)"
+            echo
+            cat "llm-assist-plan/${SAFE}.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tribute-llm-assist-plan
+          path: llm-assist-plan/
+          if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         if: always()

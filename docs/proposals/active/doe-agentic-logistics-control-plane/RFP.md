@@ -95,6 +95,24 @@ The DoE expert must choose a tractable design, factors/levels, blocking and run 
 **Secondary outcomes:** successful completion rate, invalid/unsafe action count (hard zero), deadline miss, queue wait, p50/p95 latency, throughput, retries, provider errors, cost class, quota deferrals, recovery behavior, integration effort and human intervention.  
 **Quality rule:** throughput or ATES never overrides correctness, safety, privacy, quota eligibility or independent evidence. No statistical-significance or causal claim without a stated estimand, suitable replication/power rationale, uncertainty and diagnostics.
 
+### Free-inference endpoint tournament — governing design
+
+The machine-readable execution order is [`FREE-INFERENCE-TOURNAMENT-ORDER.yml`](FREE-INFERENCE-TOURNAMENT-ORDER.yml). It is the implementation sequence for DPLC-004 and DPLC-005, not a new provider or queue registry.
+
+**Population and arm identity.** The tournament unit is an exact provider family × exact model ID × endpoint/route × protocol × account-scope reference × configured-instance identity. Provider records, endpoint records, configured instances and dispatch harnesses are different denominators. The provider participation index (#5134) and the provider/model inference-pool repair (#5160) own the endpoint population. The build-dispatch harness arm registry (#5151) and admitted build executor (#5176) are not substituted for that inference population.
+
+**Existing DoE campaign.** Extend the existing `util-1-provider-rotation` campaign with a versioned, separately identified inference cohort. Do not create a duplicate campaign and do not pool the new cohort with the existing live build-task observations. The generic `routed-dispatch` campaign remains observational intake unless a dispatch is assigned under the amended pre-registered design. The DoE specialist must confirm the cohort is valid under the campaign's live-production basis before it is admitted.
+
+**Live-first evidence.** Offline simulation is required to test controller safety and logistics behavior, but simulation results are not live experiment observations. Designed endpoint comparisons must be integrated into the existing production dispatch flow, use public/sanitized task data, and emit one EXPERIMENT record per real dispatched/executed request. A catalog row, smoke check, model listing, proxy test or successful workflow is not a scored tournament observation.
+
+**Replication and stopping.** Apply DoE-FAMILY rules 5–9. The automation must be part of the admitted design. Each trigger accrues auditable sets of three with fresh auto-selected configured instances, `instance_key`, `set_index` and `cumulative_n`; cap at 12 per trigger or the tighter cohort/window/budget bound. A 2–1 split or spread-in-noise buys one additional set; a cap reached without a conclusion is INCONCLUSIVE. Weight-bearing claims require the relevant stratum and the repository's class-specific significance standard.
+
+**Separate endpoint and manager effects.** The first cohort holds manager policy fixed and estimates endpoint differences. A later manager-policy comparison may use the existing `manager.tournament.v1` schema and contract over a frozen task cohort/environment/budget. Do not confound endpoint and manager treatments in one unidentifiable comparison. Manager activity volume is not a quality outcome.
+
+**Eligibility is a dispatch-time gate.** An endpoint is eligible only with current exact-route availability from the actual execution environment, authoritative account/model no-cost entitlement and terms, usable quota/headroom with source and observation time, approved data classification, explicit stop switch and complete provenance. Unknown/stale means defer. Promotional credits, prepaid balances, trials, catalog-only evidence, credential presence and `:free` suffixes do not establish no-cost eligibility. No paid fallback, automatic retry, alternate model, cookie/HAR route or account mutation is permitted.
+
+**Current blockers are retained, not papered over.** PR #5134 reports 98 model-lane records with all 98 free-eligibility values unknown; it is not merged at this order's preparation. Issue #5160 records the pool/cadence repair as blocked on prerequisite integration and external execution access. Therefore the first permitted work is offline reconciliation, simulation, design amendment and deterministic tests. No live endpoint tournament is currently authorized.
+
 ## 6. Phased implementation pipeline
 
 | Phase | Work | Gate / artifact |

@@ -13,12 +13,31 @@ on:
     types: [opened, synchronize, ready_for_review]
   issues:
     types: [opened, reopened]
-  issue_comment:
-    types: [created]
   pull_request_review_comment:
     types: [created]
   pull_request_review:
     types: [submitted]
+
+  workflow_call:
+    inputs:
+      issue_number:
+        type: string
+        required: true
+      pr_number:
+        type: string
+        required: false
+      comment_id:
+        type: string
+        required: true
+      comment_updated_at:
+        type: string
+        required: true
+      source_event:
+        type: string
+        required: true
+    secrets:
+      GEMINI_API_KEY:
+        required: false
 
 defaults:
   run:
@@ -27,9 +46,51 @@ defaults:
 permissions: {}
 
 jobs:
+  validate-source-comment:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      pull-requests: read
+    outputs:
+      valid: ${{ steps.validate.outputs.valid }}
+    steps:
+      - name: Validate caller comment identity and revision
+        id: validate
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          SOURCE_EVENT: ${{ inputs.source_event }}
+          SOURCE_COMMENT_ID: ${{ inputs.comment_id }}
+          SOURCE_COMMENT_UPDATED_AT: ${{ inputs.comment_updated_at }}
+        with:
+          script: |
+            if (process.env.SOURCE_EVENT !== 'issue_comment') {
+              core.setOutput('valid', 'true');
+              return;
+            }
+            const id = Number(process.env.SOURCE_COMMENT_ID);
+            const expectedUpdatedAt = process.env.SOURCE_COMMENT_UPDATED_AT || '';
+            const issueNumber = context.payload.issue?.number;
+            const eventComment = context.payload.comment || {};
+            if (!Number.isSafeInteger(id) || id <= 0 || !expectedUpdatedAt || !issueNumber || String(eventComment.id) !== String(id)) {
+              core.setOutput('valid', 'false');
+              core.warning('Missing or mismatched source comment metadata.');
+              return;
+            }
+            const { data: comment } = await github.rest.issues.getComment({
+              owner: context.repo.owner, repo: context.repo.repo, comment_id: id,
+            });
+            const expectedIssueSuffix = `/issues/${issueNumber}`;
+            const valid = comment.updated_at === expectedUpdatedAt &&
+              comment.issue_url.endsWith(expectedIssueSuffix) &&
+              String(comment.user?.login || '').toLowerCase() === String(eventComment.user?.login || '').toLowerCase();
+            core.setOutput('valid', String(valid));
+            if (!valid) core.warning('Source comment changed or no longer matches the caller event.');
   dispatch:
+    needs: validate-source-comment
     if: |
-      (
+      always() &&
+      needs.validate-source-comment.outputs.valid == 'true' &&
+      ((
         github.event_name == 'pull_request' &&
         github.event.pull_request.head.repo.fork == false &&
         github.event.pull_request.draft == false
@@ -37,7 +98,7 @@ jobs:
         github.event_name == 'issues' &&
         contains(fromJSON('["opened", "reopened"]'), github.event.action)
       ) || (
-        contains(fromJSON('["issue_comment", "pull_request_review_comment", "pull_request_review"]'), github.event_name) &&
+        (inputs.source_event == 'issue_comment' || contains(fromJSON('["pull_request_review_comment", "pull_request_review"]'), github.event_name)) &&
         github.event.sender.type == 'User' &&
         (
           startsWith(github.event.comment.body || github.event.review.body || '', '@gemini-cli') ||
@@ -45,7 +106,7 @@ jobs:
           startsWith(github.event.comment.body || github.event.review.body || '', '@sparkflux')
         ) &&
         contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association || github.event.review.author_association || github.event.issue.author_association)
-      )
+      ))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -56,14 +117,14 @@ jobs:
       command: ${{ steps.extract.outputs.command }}
       additional_context: ${{ steps.extract.outputs.additional_context }}
       prior_prs: ${{ steps.extract.outputs.prior_prs }}
-      issue_number: ${{ github.event.pull_request.number || github.event.issue.number }}
+      issue_number: ${{ inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}
       pr_number: ${{ steps.extract.outputs.pr_number }}
     steps:
       - name: Extract command + prior PR inventory
         id: extract
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
-          EVENT_TYPE: ${{ github.event_name }}.${{ github.event.action }}
+          EVENT_TYPE: ${{ inputs.source_event == 'issue_comment' && 'issue_comment' || github.event_name }}.${{ github.event.action }}
           REQUEST: ${{ github.event.comment.body || github.event.review.body || github.event.issue.body || '' }}
         with:
           script: |
@@ -126,9 +187,11 @@ jobs:
           steps.extract.outputs.command != 'none' &&
           steps.extract.outputs.command != 'defer-peers'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          COMMAND: ${{ steps.extract.outputs.command }}
         with:
           script: |
-            const cmd = '${{ steps.extract.outputs.command }}';
+            const cmd = process.env.COMMAND || 'none';
             const number = context.payload.pull_request?.number || context.payload.issue?.number;
             if (context.payload.comment?.id) {
               try {

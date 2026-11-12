@@ -1,0 +1,932 @@
+{
+ "tokenizer_source": "https://github.com/openai/tiktoken",
+ "tiktoken_version": "0.14.0",
+ "context": "leading space (mid-sentence)",
+ "encodings": {
+  "o200k_base": {
+   "by_class": {
+    "OPERATOR": {
+     "n": 11,
+     "form": 21,
+     "plain": 17,
+     "cheaper": 1,
+     "tie": 4,
+     "costlier": 6
+    },
+    "GLYPH": {
+     "n": 11,
+     "form": 27,
+     "plain": 12,
+     "cheaper": 0,
+     "tie": 1,
+     "costlier": 10
+    },
+    "CHORD": {
+     "n": 30,
+     "form": 49,
+     "plain": 31,
+     "cheaper": 1,
+     "tie": 11,
+     "costlier": 18
+    }
+   },
+   "stamps": {
+    "chords_glyphs": {
+     "chars": 74,
+     "tokens": 44
+    },
+    "operators_words": {
+     "chars": 106,
+     "tokens": 32
+    },
+    "plain": {
+     "chars": 123,
+     "tokens": 31
+    }
+   },
+   "rows": [
+    {
+     "form": "∧",
+     "plain": "and",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "¬",
+     "plain": "not",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "∨",
+     "plain": "or",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "⇒",
+     "plain": "implies",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "∀",
+     "plain": "for all",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "∃",
+     "plain": "there exists",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "∅",
+     "plain": "empty",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "∈",
+     "plain": "in",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "∆",
+     "plain": "change",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "x++",
+     "plain": "x stepped up once",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 4,
+     "delta": -2
+    },
+    {
+     "form": "≅",
+     "plain": "conforms to",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "👁",
+     "plain": "verified",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "🧐",
+     "plain": "investigating",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "🧾",
+     "plain": "receipt",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "❄",
+     "plain": "frozen",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "⚖",
+     "plain": "ruling",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "⛔",
+     "plain": "blocked",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "👆",
+     "plain": "owner action",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "⤴",
+     "plain": "dispatch",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "🟢",
+     "plain": "live",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "🔴",
+     "plain": "down",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "🟡",
+     "plain": "degraded",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "ent",
+     "plain": "entry",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "sub",
+     "plain": "submission",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "jdg",
+     "plain": "judging",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "ven",
+     "plain": "venue",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "qta",
+     "plain": "quota",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "tkn",
+     "plain": "token",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "wnd",
+     "plain": "window",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "brn",
+     "plain": "burn",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "bkt",
+     "plain": "bucket",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "attr",
+     "plain": "attribution",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "mrg",
+     "plain": "merge",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "brnch",
+     "plain": "branch",
+     "class": "CHORD",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "cmt",
+     "plain": "commit",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "gte",
+     "plain": "gate",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "chk",
+     "plain": "check run",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 2,
+     "delta": -1
+    },
+    {
+     "form": "wfl",
+     "plain": "workflow",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "rev",
+     "plain": "review",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "pl",
+     "plain": "pool",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "ldg",
+     "plain": "ledger",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "stl",
+     "plain": "settlement",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "prf",
+     "plain": "proof",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "stmt",
+     "plain": "statement",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "cyc",
+     "plain": "cycle",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "itr",
+     "plain": "iteration",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "pvd",
+     "plain": "provider",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "mdl",
+     "plain": "model",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "endp",
+     "plain": "endpoint",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "dpl",
+     "plain": "deploy",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "hst",
+     "plain": "hosting",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "snp",
+     "plain": "snapshot",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    }
+   ]
+  },
+  "cl100k_base": {
+   "by_class": {
+    "OPERATOR": {
+     "n": 11,
+     "form": 17,
+     "plain": 17,
+     "cheaper": 2,
+     "tie": 6,
+     "costlier": 3
+    },
+    "GLYPH": {
+     "n": 11,
+     "form": 29,
+     "plain": 12,
+     "cheaper": 0,
+     "tie": 1,
+     "costlier": 10
+    },
+    "CHORD": {
+     "n": 30,
+     "form": 49,
+     "plain": 31,
+     "cheaper": 1,
+     "tie": 11,
+     "costlier": 18
+    }
+   },
+   "stamps": {
+    "chords_glyphs": {
+     "chars": 74,
+     "tokens": 42
+    },
+    "operators_words": {
+     "chars": 106,
+     "tokens": 30
+    },
+    "plain": {
+     "chars": 123,
+     "tokens": 31
+    }
+   },
+   "rows": [
+    {
+     "form": "∧",
+     "plain": "and",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "¬",
+     "plain": "not",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "∨",
+     "plain": "or",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "⇒",
+     "plain": "implies",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "∀",
+     "plain": "for all",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 2,
+     "delta": -1
+    },
+    {
+     "form": "∃",
+     "plain": "there exists",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "∅",
+     "plain": "empty",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "∈",
+     "plain": "in",
+     "class": "OPERATOR",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "∆",
+     "plain": "change",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "x++",
+     "plain": "x stepped up once",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 4,
+     "delta": -2
+    },
+    {
+     "form": "≅",
+     "plain": "conforms to",
+     "class": "OPERATOR",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "👁",
+     "plain": "verified",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "🧐",
+     "plain": "investigating",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "🧾",
+     "plain": "receipt",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "❄",
+     "plain": "frozen",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "⚖",
+     "plain": "ruling",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "⛔",
+     "plain": "blocked",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "👆",
+     "plain": "owner action",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 2,
+     "delta": 0
+    },
+    {
+     "form": "⤴",
+     "plain": "dispatch",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "🟢",
+     "plain": "live",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "🔴",
+     "plain": "down",
+     "class": "GLYPH",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "🟡",
+     "plain": "degraded",
+     "class": "GLYPH",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "ent",
+     "plain": "entry",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "sub",
+     "plain": "submission",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "jdg",
+     "plain": "judging",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "ven",
+     "plain": "venue",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "qta",
+     "plain": "quota",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "tkn",
+     "plain": "token",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "wnd",
+     "plain": "window",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "brn",
+     "plain": "burn",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "bkt",
+     "plain": "bucket",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "attr",
+     "plain": "attribution",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "mrg",
+     "plain": "merge",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "brnch",
+     "plain": "branch",
+     "class": "CHORD",
+     "form_tokens": 3,
+     "plain_tokens": 1,
+     "delta": 2
+    },
+    {
+     "form": "cmt",
+     "plain": "commit",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "gte",
+     "plain": "gate",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "chk",
+     "plain": "check run",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 2,
+     "delta": -1
+    },
+    {
+     "form": "wfl",
+     "plain": "workflow",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "rev",
+     "plain": "review",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "pl",
+     "plain": "pool",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "ldg",
+     "plain": "ledger",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "stl",
+     "plain": "settlement",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "prf",
+     "plain": "proof",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "stmt",
+     "plain": "statement",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "cyc",
+     "plain": "cycle",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "itr",
+     "plain": "iteration",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "pvd",
+     "plain": "provider",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "mdl",
+     "plain": "model",
+     "class": "CHORD",
+     "form_tokens": 1,
+     "plain_tokens": 1,
+     "delta": 0
+    },
+    {
+     "form": "endp",
+     "plain": "endpoint",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "dpl",
+     "plain": "deploy",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "hst",
+     "plain": "hosting",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    },
+    {
+     "form": "snp",
+     "plain": "snapshot",
+     "class": "CHORD",
+     "form_tokens": 2,
+     "plain_tokens": 1,
+     "delta": 1
+    }
+   ]
+  }
+ },
+ "stamp_text": {
+  "chords_glyphs": "⤴ main→delphi · mrg wfl gte · 🧾 #1537 ∧ run 42262638671 · ∆ ask: ⛔ qta ¬ 🟢",
+  "operators_words": "dispatch main→delphi · merge workflow gate · receipt #1537 ∧ run 42262638671 · ∆ ask: blocked quota ¬ live",
+  "plain": "dispatch from main to delphi: merge workflow gate, receipt #1537 and run 42262638671, change asked: blocked, quota not live"
+ }
+}

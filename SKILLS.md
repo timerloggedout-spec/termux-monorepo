@@ -23,6 +23,7 @@
 | External contribute (help-wanted) | `.agents/skills/tribute-lane/SKILL.md` |
 | Web operation -> API/CLI adapter (foundry) | `.agents/skills/web-adapter-foundry/SKILL.md` |
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
+| Siglary A2A notation (room↔room comms) | `.agents/skills/siglary-a2a/SKILL.md` |
 
 Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUDE.md` first.
 

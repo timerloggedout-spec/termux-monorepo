@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-12T21:41:08Z",
+ "read_at": "2026-11-12T21:41:34Z",
  "status": "ok",
- "count": 34780,
+ "count": 34781,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "76945359017d777e46b860d6e3bd286a96c6e23e",
+   "occurred_at": "2026-11-12 21:41:01+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -244,7 +253,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "2dae5fe8160d9ef9352ca905a804a4e50ffe05ff",
+   "head_sha": "ab59634d4c2bcc7593028e712fd8d6ebcd2be651",
    "occurred_at": "2026-11-12 21:38:35+00"
   },
   {
@@ -253,7 +262,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "ab59634d4c2bcc7593028e712fd8d6ebcd2be651",
+   "head_sha": "2dae5fe8160d9ef9352ca905a804a4e50ffe05ff",
    "occurred_at": "2026-11-12 21:38:35+00"
   },
   {
@@ -460,7 +469,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "ab59634d4c2bcc7593028e712fd8d6ebcd2be651",
+   "head_sha": "2dae5fe8160d9ef9352ca905a804a4e50ffe05ff",
    "occurred_at": "2026-11-12 21:35:01+00"
   },
   {
@@ -469,7 +478,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "2dae5fe8160d9ef9352ca905a804a4e50ffe05ff",
+   "head_sha": "ab59634d4c2bcc7593028e712fd8d6ebcd2be651",
    "occurred_at": "2026-11-12 21:35:01+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "bbff3ab1ae2f46567486b80487017572d3516606",
    "occurred_at": "2026-11-12 21:04:46+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "bbff3ab1ae2f46567486b80487017572d3516606",
-   "occurred_at": "2026-11-12 21:04:42+00"
   }
  ]
 }

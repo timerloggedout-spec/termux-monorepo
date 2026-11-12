@@ -19,7 +19,8 @@ class DoEInferenceContractTests(unittest.TestCase):
 
     def validate(self, feed=None):
         return validate_contract(feed or self.feed, self.design, self.schema,
-                                 self.roster, self.missions, self.gambling)
+                                 self.roster, self.missions, self.gambling,
+                                 self.provider_map, self.swarm, self.telemetry)
 
     def test_current_contract_is_consistent(self):
         self.assertEqual([], self.validate())

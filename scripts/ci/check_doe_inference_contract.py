@@ -15,7 +15,8 @@ def validate_fee_distribution(distribution: dict) -> bool:
     return abs(sum(values) - 100.0) < 1e-6 and distribution.get("total_pct") == 100
 
 def validate_contract(feed: dict, design: dict, schema: dict,
-                      roster: str, missions: str, gambling: str) -> list[str]:
+                      roster: str, missions: str, gambling: str,
+                      provider_map: str, swarm: str, telemetry: dict) -> list[str]:
     errors = []
     rotation = feed.get("dispatch", {}).get("provider_catalog", {}).get("rotation_rule", {})
     rule = str(rotation.get("rule", ""))
@@ -35,8 +36,8 @@ def validate_contract(feed: dict, design: dict, schema: dict,
     if "DoE owns allocation and rotation" not in assignment or "Scout selects" not in assignment:
         errors.append("util-1 assignment must describe DoE allocation followed by Scout selection")
     window = design.get("design", {}).get("window_rule", "").lower()
-    if "descriptive only" not in window:
-        errors.append("n>=4 must remain descriptive, not a significance gate")
+    if "descriptive reporting only" not in window or "no endpoint significance" not in window:
+        errors.append("n>=4 must remain descriptive and cannot establish endpoint significance")
     if "each inference endpoint" not in amendment.get("endpoint_unit", ""):
         errors.append("endpoint-level independent evaluation must be declared")
     if schema.get("properties", {}).get("authority", {}).get("const") != "doe":
@@ -49,6 +50,15 @@ def validate_contract(feed: dict, design: dict, schema: dict,
     distribution = fee.get("properties", {}).get("distribution", {}).get("properties", {})
     if not all(key in distribution for key in ("doe_pct", "mvt_pct", "ates_pct", "moneyball_pct", "3l0_pct")):
         errors.append("fee distribution must cover DoE, MVT, ATES, MoneyBall and 3L0")
+    if "DoE owns inference allocation and rotation" not in provider_map:
+        errors.append("provider dispatch map must defer allocation/rotation authority to DoE")
+    if "DoE owns the assignment and repeat policy" not in swarm:
+        errors.append("Swarm assurance must consume DoE assignment/repeat policy")
+    if "no provider takes 2 consecutive" in provider_map.lower():
+        errors.append("provider dispatch map must not reinstate global consecutive-provider rule")
+    assignment_owner = telemetry.get("doe", {}).get("assignment_owner", "")
+    if "DoE family" not in assignment_owner or "Scout" not in assignment_owner:
+        errors.append("telemetry index must identify DoE allocation and Scout selection owners")
     if "DoE-governed inference selection" not in roster:
         errors.append("Scout roster documentation missing DoE selection contract")
     if "DoE-authorized Scout" not in missions:
@@ -78,6 +88,9 @@ def main() -> int:
         read("docs/ops/SCOUT-ROSTER.md"),
         read("docs/ops/SCOUT-MISSIONS.md"),
         read("docs/ops/AGENTIC-GAMBLING-LANE.md"),
+        read("docs/ops/PROVIDER-DISPATCH-MAP.md"),
+        read("docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md"),
+        json.loads(read("ops/telemetry/integration-observability-index.json")),
     )
     if errors:
         for error in errors:

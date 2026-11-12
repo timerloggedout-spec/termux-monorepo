@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "266aa5cef288d1d4d006b0f91e803b8124f348bf247f079855756d13d54fd4b9",
-  "workflow_count": 304,
+  "source_fingerprint": "dda743d7f8c570bdd571f0785c50d02e0baa1f3cbae60a317090598cfbaae7e9",
+  "workflow_count": 305,
   "workflows": [
     {
       "action_pins": [],
@@ -1865,6 +1865,28 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: dispatch-executor cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "execute"
+      ],
+      "name": "⚙️ Dispatch Executor (admitted -> claim + fire)",
+      "path": ".github/workflows/dispatch-executor.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "read-only-or-advisory",
@@ -3529,7 +3551,6 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
-        "pull_request",
         "pull_request_review",
         "pull_request_target"
       ]
@@ -3973,7 +3994,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }} # Keep active fan-out intact; newer pending PR/push wakes coalesce by group. cancel-in-progress: false",
+      "concurrency": "group: quota-dispatch-tree cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "complete-force-request",
@@ -3988,7 +4009,6 @@
       "triggers": [
         "issue_comment",
         "pull_request_target",
-        "push",
         "schedule",
         "workflow_run"
       ]

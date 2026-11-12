@@ -21,3 +21,8 @@ def test_freshness_is_per_feed_with_a_24_hour_threshold():
     assert "function stampState(generatedAt, nowMs, thresholdMs = 86400000)" in chartkit
     assert "return 'STALE'" in chartkit
     assert "return 'unknown'" in chartkit
+
+
+def test_unknown_state_is_rendered_explicitly():
+    html = PAGE.read_text(encoding="utf-8")
+    assert '+" · "+st+" · schema "+' in html

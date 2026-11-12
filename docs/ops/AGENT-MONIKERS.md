@@ -9,7 +9,7 @@ Use backticks or plain text for display. Live triggers remain the original handl
 | Role | Display moniker | Live trigger (callable) | Notes |
 |------|-----------------|-------------------------|-------|
 | Jules (implementation) | `h3yVern` | `@jules` | App only reacts to `@jules` · v2 graduated 2026-11-01 (v1 `heyVern`; see Graduations of record) |
-| Gemini CLI (on-demand) | `sparkFlux` | `@gemini-cli` | Dispatch also accepts case-insensitive `@sparkFlux` as alias |
+| Gemini CLI (RETIRED 2026-11-12) | `sparkFlux` (historical only) | NONE — dispatch retired | `@gemini-cli` / `@sparkFlux` are no longer callable routes; use QUE governor + registered peer orchestration. Reviewer unavailable is not a pass. |
 | DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Workflow also accepts case-insensitive `@deepCore`; labels `deepseek-ci`, `deepseek`, `deepCore` |
 | CodeRabbit (review) | `c0deHound` | `@coderabbitai` | Reviewer identity unchanged · v2 graduated 2026-11-01 (v1 `codeHound`; see Graduations of record) |
 | Devin (review/fix) | `d3vinForge` | Devin app | v2 graduated 2026-11-01 (v1 `devinForge`; see Graduations of record) |
@@ -1725,3 +1725,8 @@ Marks / leet forms: none issued. NOT an App moniker —
 ## High-performance intent
 
 Monikers reduce ambiguous role ownership under load without notifying strangers.
+
+
+## Retired routes
+
+- **Gemini Dispatch / sparkFlux — RETIRED 2026-11-12.** The central workflow is inert (manual workflow_dispatch only, no provider invocation). Historical review comments, run records, moniker attribution and child workflow files are retained for audit. Do not invoke Gemini as a required reviewer, builder, triage seat or fallback. Successor routing is through QUE governor and registered repository-native peer/review orchestration. An unavailable reviewer is never a successful review.

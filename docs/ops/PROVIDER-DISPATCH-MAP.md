@@ -188,8 +188,7 @@ workflow lane is not a wired provider. Structural form: every lane now carries
 Every time a new endpoint is wired, it is eligible to join the process of continuing the
 wiring. The worker pool = the wired-invoke set (corrected census: 26 named providers +
 the g4f family route; see the corrected wiring census) and grows with every landing. Packages shard across the pool
-by task-fit — no single provider or vendor (including Google: Jules + Gemini) is the
-default, sole, or consecutive builder. Each wiring PR names the providers it unlocks.
+by DoE-governed assignment with Scout task-fit selection — no provider or vendor (including Google: Jules + Gemini) is a hard-coded default or sole builder. Consecutive assignments are allowed when the active DoE design calls for them. Each wiring PR names the providers it unlocks.
 Applied now: PKG-A's 9 join the pool as they land; PKG-B's DeepSeek holds the core-module
 shard only — g4f registration shards are claimable across the pool.
 Applied (2026-11-01): **g4f verified pool folded** — 160 inference_ok (provider, model) pairs

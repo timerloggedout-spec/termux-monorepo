@@ -163,3 +163,39 @@ def test_admission_receipt_uses_latest_post_event_decision():
     assert classify_receipt(
         comments, "project-task.yml", "2026-11-11T10:00:00Z"
     ) == "deferred"
+
+
+def test_admission_receipt_supports_all_registered_project_task_routes():
+    comments = [{
+        "created_at": "2026-11-11T10:01:00Z",
+        "body": ADMISSION_STAMP.replace("project-task.yml", "scientific-research-task.yml"),
+    }]
+    assert classify_receipt(
+        comments,
+        "project-task.yml,scientific-research-task.yml,behavioral-experiment-task.yml",
+        "2026-11-11T10:00:00Z",
+    ) == "admitted"
+
+
+def test_specialist_forms_are_admission_triggerable_and_share_intake_contract():
+    for filename, label, lane in (
+        ("scientific-research-task.yml", "scientific-task", "scientific-quantitative"),
+        ("behavioral-experiment-task.yml", "behavioral-experiment",
+         "do-statements-performance-psychology"),
+    ):
+        form = (ROOT / ".github" / "ISSUE_TEMPLATE" / filename).read_text()
+        assert "SWARM-DISPATCH-BEGIN" in form
+        assert "schema: issue-dispatch/v1" in form
+        assert f"labels: [\"{label}\"]" in form
+        assert f"lane: {lane}" in form
+        for heading in ("label: Entry", "label: Task / spec",
+                        "label: Scope", "label: Done-evidence"):
+            assert heading in form
+
+
+def test_project_task_workflow_preserves_issue_event_dependencies():
+    workflow = (ROOT / ".github" / "workflows" / "project-task-dispatch.yml").read_text()
+    assert "issues:" in workflow
+    assert "types: [opened, reopened]" in workflow
+    assert "workflow_run:" not in workflow
+    assert "admission_receipt.py" in workflow

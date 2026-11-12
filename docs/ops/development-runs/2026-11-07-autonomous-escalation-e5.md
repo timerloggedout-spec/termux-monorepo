@@ -71,4 +71,7 @@ Issue #5053: https://github.com/timerloggedout-spec/termux-monorepo/issues/5053
 
 **Scope:** The graph composes the existing deterministic escalation controller with stub decision, handoff, local-repair, and verification nodes. It does not invoke providers/tools, persist checkpoints, add telemetry, or widen authorization. LangGraph is pinned only in `requirements-langgraph-test.txt`; `requirements-base.txt` remains unchanged.
 
+
+- `fec473e3d0bfbc1ff89c84fa9c9f282f788ffdcb` — implementation plan recorded under `docs/superpowers/plans/2026-11-11-langgraph-stategraph-proof.md`.
+
 **Validation:** No local or Termux commands were run because the device is offline and local-only validation is not being treated as release evidence. The dedicated workflow definition is present on this PR branch, but no matching current-head GitHub Actions run/check has been returned. The implementation is therefore **unvalidated / promotion-blocked** pending hosted execution and review. Do not mark LGB-004 complete until its graph and policy tests pass on the exact PR head.

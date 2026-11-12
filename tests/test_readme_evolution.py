@@ -17,7 +17,7 @@ class ReadmeEvolutionTests(unittest.TestCase):
         self.assertIsNone(result["quality_score"])
 
     def test_compare_text_preserves_crlf_byte_counts(self):
-        result = compare_text("a\\r\\n", "a\\n")
+        result = compare_text("a\r\n", "a\n")
         self.assertEqual(result["base_utf8_bytes"], 3)
         self.assertEqual(result["candidate_utf8_bytes"], 2)
         self.assertEqual(result["unchanged_lines"], 1)
@@ -30,10 +30,10 @@ class ReadmeEvolutionTests(unittest.TestCase):
             subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=root, check=True)
             subprocess.run(["git", "config", "user.name", "Readme Evolution Test"], cwd=root, check=True)
             subprocess.run(["git", "config", "core.autocrlf", "false"], cwd=root, check=True)
-            (root / "README.md").write_bytes(b"a\\r\\n")
+            (root / "README.md").write_bytes(b"a\r\n")
             subprocess.run(["git", "add", "README.md"], cwd=root, check=True)
             subprocess.run(["git", "commit", "-m", "fixture"], cwd=root, check=True, capture_output=True)
-            self.assertEqual(_git_show(root, "HEAD", "README.md"), "a\\r\\n")
+            self.assertEqual(_git_show(root, "HEAD", "README.md"), "a\r\n")
 
     def test_git_show_rejects_unsafe_refs_and_paths(self):
         with self.assertRaises(ValueError):

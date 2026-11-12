@@ -187,12 +187,12 @@ flowchart LR
 
 | README candidate branch | Line-level delta vs current master |
 |---|---:|
-| docs/readme-agents-link-fix | 2.06% |
-| docs/readme-agents-reference | 75.46% |
-| docs/readme-ates-image-polish | 24.08% |
-| docs/readme-upgrade-claude-entry-ates-deploy | 21.19% |
-| manus/readme-deepwiki-validation-integration | 27.47% |
-| studysprint-readme-currency | 0.51% |
+| docs/readme-agents-link-fix | 2.07% |
+| docs/readme-agents-reference | 75.66% |
+| docs/readme-ates-image-polish | 24.18% |
+| docs/readme-upgrade-claude-entry-ates-deploy | 21.27% |
+| manus/readme-deepwiki-validation-integration | 27.59% |
+| studysprint-readme-currency | 0.52% |
 
 These are reproducible **LCS line-difference ratios**, not quality scores. Historical branches remain comparison inputs; none is overwritten or promoted automatically. The full baseline, formula, seed contract, and comparison command live in [docs/linguist/README-EVOLUTION.md](docs/linguist/README-EVOLUTION.md). The existing [Linguist Panel](apps/tribute-dashboard/linguist.html) remains the visual mapping surface and its feed builder remains the mapping-data consumer. GitHub Linguist language classification remains separate; .gitattributes mappings are changed only when classification evidence justifies them.
 

@@ -68,12 +68,12 @@ The following candidates were fetched from GitHub and compared with the current 
 
 | Candidate branch | README lines | UTF-8 characters | LCS line delta |
 |---|---:|---:|---:|
-| docs/readme-agents-link-fix | 290 | 26,647 | 2.06% |
-| docs/readme-agents-reference | 466 | 24,702 | 75.46% |
-| docs/readme-ates-image-polish | 198 | 20,022 | 24.08% |
-| docs/readme-upgrade-claude-entry-ates-deploy | 213 | 21,855 | 21.19% |
-| manus/readme-deepwiki-validation-integration | 174 | 16,841 | 27.47% |
-| studysprint-readme-currency | 291 | 26,549 | 0.51% |
+| docs/readme-agents-link-fix | 289 | 26,647 | 2.07% |
+| docs/readme-agents-reference | 465 | 24,702 | 75.66% |
+| docs/readme-ates-image-polish | 197 | 20,022 | 24.18% |
+| docs/readme-upgrade-claude-entry-ates-deploy | 212 | 21,855 | 21.27% |
+| manus/readme-deepwiki-validation-integration | 173 | 16,841 | 27.59% |
+| studysprint-readme-currency | 290 | 26,549 | 0.52% |
 
 These values measure textual distance only. They are **not** rankings, quality scores, or proof that a branch is more current. Branches remain read-only historical inputs. The next version is based on the fetched master baseline, not a blind cherry-pick of an older README.
 

@@ -1,0 +1,10 @@
+{
+  "schema": "que-self-repair-feeds/v1",
+  "note": "Stale-feed intake for the QDesk self-repair loop. owner != que means another room owns repair; the loop skips it.",
+  "feeds": [
+    {"path": "ops/que/feeds/que-queue-feed.json", "max_age_h": 2, "owner": "que"},
+    {"path": "ops/que/feeds/governor.json", "max_age_h": 2, "owner": "que"},
+    {"path": "ops/tracking/tracking.json", "max_age_h": 24, "owner": "que"},
+    {"path": "docs/ops/generated/reviewer-metrics.json", "max_age_h": 72, "owner": "que"}
+  ]
+}

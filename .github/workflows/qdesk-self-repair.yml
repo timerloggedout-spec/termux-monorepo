@@ -1,0 +1,61 @@
+name: qdesk self-repair
+# QDesk self-repair loop (SIE ⇒ Desk QUE). Proposal:
+# docs/proposals/active/qdesk-self-repair/PROPOSAL.md
+# One batched pass every 3h (usage budget is tight; no polling):
+#   observe  failing master workflows ∨ stale feeds ⇒ que:self-repair items (dedupe workflow ∧ signature)
+#   promote  que:self-repair PRs: green ∧ additive ∧ ≥2 candidates ∧ outside DoE pass ⇒ self-merge;
+#            destructive ∨ secrets ∨ money ⇒ Owner packet on hark:queue
+#   learn    closed items labeled sr:verified ∨ sr:regression ∧ role:* ⇒ weights.json step
+# Delphi feeds ∧ the C15 chain belong to the Delphi room and are skipped.
+on:
+  schedule:
+    - cron: "41 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run: { description: "Observe only; write nothing", required: false, default: false, type: boolean }
+      window_hours: { description: "Failure window (hours)", required: false, default: "6", type: string }
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+  checks: read
+concurrency:
+  group: qdesk-self-repair
+  cancel-in-progress: false
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Mint Swarm App token (falls back to GITHUB_TOKEN)
+        id: app
+        continue-on-error: true
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app.outputs.token || github.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Observe ∧ promote ∧ learn
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token || github.token }}
+          QUE_SR_WINDOW_HOURS: ${{ github.event.inputs.window_hours || '6' }}
+        run: |
+          echo "token_source=${{ steps.app.outcome == 'success' && 'swarm-app' || 'github-token' }}"
+          ARGS=()
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS+=(--dry-run); fi
+          python3 scripts/que/self_repair.py "${ARGS[@]}"
+      - name: Commit learned weights (only on change)
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/que/self-repair/weights.json
+          if git diff --cached --quiet; then echo "no weight change"; exit 0; fi
+          git commit -m "que(self-repair): learn role weights [skip render]"
+          for attempt in 1 2 3; do git push && break; git pull --rebase origin master; done

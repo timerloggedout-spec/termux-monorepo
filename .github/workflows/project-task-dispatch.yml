@@ -89,14 +89,28 @@ jobs:
         run: |
           python3 scripts/dispatch/project_task.py --body-file "$RUNNER_TEMP/issue-body.md" --issue "$ISSUE_NUMBER" --comment-out "$RUNNER_TEMP/comment.md" --metadata-out "$RUNNER_TEMP/dispatch-profile.json" --github-output "$GITHUB_OUTPUT"
 
-      - name: Post routing receipt and queue valid intake
+      - name: Add event-scoped idempotency marker
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true'
+        env:
+          EVENT_AT: ${{ github.event.issue.updated_at || github.event.issue.created_at }}
+        run: |
+          printf '\n\n<!-- que-intake-event:%s -->\n' "$EVENT_AT" >> "$RUNNER_TEMP/comment.md"
+
+      - name: Post routing receipt once per issue event
+        if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true' && steps.admission.outputs.already_processed != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+
+      - name: Ensure admitted task is queued
         if: steps.admission.outputs.decision == 'admitted' && steps.parse.outputs.ok == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           gh label create dispatch-queued --force --color 0E8A16 --description "Project task accepted into the system; selection pending/executing" || true
-          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
           gh issue edit "$ISSUE_NUMBER" --add-label dispatch-queued
 
       - name: Apply QUE capability lane labels

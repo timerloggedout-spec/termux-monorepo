@@ -64,6 +64,17 @@ def test_artifacts_and_receipt_comment():
     assert comment["env"]["GH_TOKEN"] == "${{ steps.swarm.outputs.token }}"
 
 
+def test_ffmpeg_installed_before_render():
+    # Run 43236477759: the ubuntu-26.04 runner image ships no ffmpeg;
+    # the workflow must install it (plus DejaVu for drawtext) before
+    # the render step runs.
+    names = [s.get("name") or "" for s in _steps()]
+    install = next(i for i, n in enumerate(names) if "Install ffmpeg" in n)
+    render = next(i for i, n in enumerate(names) if "Render frames" in n)
+    assert install < render
+    assert "ffmpeg" in _steps()[install]["run"]
+
+
 def test_no_gemini_no_generation_services():
     text = WF.read_text()
     assert "gemini" not in text.lower()

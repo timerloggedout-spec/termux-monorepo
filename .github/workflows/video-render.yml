@@ -45,6 +45,14 @@ jobs:
           permission-contents: read
           permission-issues: write
 
+      - name: Install ffmpeg + fonts (not in the ubuntu-26.04 image)
+        # First live run 43236477759 failed at the render step:
+        # FileNotFoundError 'ffmpeg' — the current runner image no
+        # longer preinstalls it. ffprobe ships with the same package.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+
       - name: Run the REAL ListingLens demo (capture of record)
         run: |
           set -euo pipefail

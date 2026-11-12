@@ -156,3 +156,15 @@ def test_three_way_reconciliation_exposes_conflicts_via_execute():
         ),
     )
     assert result["output"]["conflicts"] == ["x"]
+
+
+def test_execute_normalizes_generator_graph_once_for_algorithm_and_digest():
+    graph = {"A": (node for node in ["B", "C"]), "B": [], "C": []}
+    result = m.execute("dag.topological_sort.kahn", graph)
+    assert result["output"]["ordered_nodes"] == ["A", "B", "C"]
+    assert len(result["input_digest"]) == 64
+
+
+def test_maximal_common_ancestors_preserves_generator_edges():
+    graph = {"A": (node for node in ["B", "C"]), "B": ["D"], "C": ["D"], "D": []}
+    assert m.maximal_common_ancestors(graph, "D", "D") == ["D"]

@@ -44,7 +44,7 @@ DO_STATEMENT_TERMS = re.compile(
 FORBIDDEN_DATA_SENTINELS = ("N∅", "NOT_ESTABLISHED")
 SPECIALIST_ROLE_MAP = {
     "scientific-quantitative": (
-        "research-scientist", "mathematician", "statistical-methodologist",
+        "doe-expert", "research-scientist", "mathematician", "statistical-methodologist",
         "experiment-designer", "measurement-scientist", "ml-research-scientist",
         "ml-evaluation-specialist", "validation-engineer",
         "reproducibility-auditor",

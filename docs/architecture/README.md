@@ -91,3 +91,6 @@ Rechecked 2026-10-28: the status-backfill and reconciliation-pair items were res
 ## Inference allocation
 
 - [DoE-GOVERNED-INFERENCE-ALLOCATION.md](DOE-GOVERNED-INFERENCE-ALLOCATION.md) — governing contract for DoE-owned inference allocation/rotation, Scout endpoint selection, per-endpoint significance, manager customization contracts, selection receipts and participant-strategy privacy.
+
+- [CONTRACT-TO-RUNTIME-TRACEABILITY.md](CONTRACT-TO-RUNTIME-TRACEABILITY.md) — source-to-runtime map, supersession register and open integration seams.
+- [ROUTING-CONTROL-PLANE-GRAPH.mmd](ROUTING-CONTROL-PLANE-GRAPH.mmd) — DoE → eligible pool → Scout → receipt → invocation control-plane graph.

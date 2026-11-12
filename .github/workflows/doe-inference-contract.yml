@@ -11,6 +11,9 @@ on:
       - "docs/architecture/DOE-GOVERNED-INFERENCE-ALLOCATION.md"
       - "scripts/ci/check_doe_inference_contract.py"
       - "tests/test_doe_inference_contract.py"
+      - "apps/tribute-dashboard/desk.html"
+      - "apps/tribute-dashboard/data/desk-feed.json"
+      - "tests/test_tribute_desk_freshness.py"
   push:
     branches: [master]
     paths:

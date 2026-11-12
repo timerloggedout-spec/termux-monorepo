@@ -42,8 +42,11 @@ def validate_contract(feed: dict, design: dict, schema: dict,
         errors.append("endpoint-level independent evaluation must be declared")
     if schema.get("properties", {}).get("authority", {}).get("const") != "doe":
         errors.append("selection receipt schema must make DoE the authority")
-    if schema.get("properties", {}).get("selector", {}).get("properties", {}).get("kind", {}).get("const") != "scout":
+    selector_schema = schema.get("properties", {}).get("selector", {})
+    if selector_schema.get("properties", {}).get("kind", {}).get("const") != "scout":
         errors.append("selection receipt schema must identify Scout as selector")
+    if "constraint_reason" not in selector_schema.get("required", []):
+        errors.append("selection receipt must explicitly carry constraint_reason")
     fee = schema.get("properties", {}).get("custom_contract", {}).get("properties", {}).get("fee", {})
     if "distribution" not in fee.get("required", []):
         errors.append("custom contract fee must include lane distribution")

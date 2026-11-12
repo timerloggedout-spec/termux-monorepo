@@ -90,7 +90,8 @@
       "required": [
         "kind",
         "scout_id",
-        "selection_basis"
+        "selection_basis",
+        "constraint_reason"
       ],
       "properties": {
         "kind": {
@@ -111,6 +112,13 @@
             "string",
             "null"
           ]
+        },
+        "constraint_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Why the selected endpoint is constrained relative to the standard DoE pool; null when no constraint applies."
         }
       }
     },

@@ -58,7 +58,7 @@ jobs:
           PY
 
   intake:
-    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened') && (contains(github.event.issue.labels.*.name, 'project-task') || contains(github.event.issue.labels.*.name, 'scientific-task') || contains(github.event.issue.labels.*.name, 'behavioral-experiment'))
+    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened') && (contains(github.event.issue.labels.*.name, 'project-task') || contains(github.event.issue.labels.*.name, 'scientific-task') || contains(github.event.issue.labels.*.name, 'behavioral-experiment') || startsWith(github.event.issue.title, '[task] ') || startsWith(github.event.issue.title, '[science] ') || startsWith(github.event.issue.title, '[experiment] '))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

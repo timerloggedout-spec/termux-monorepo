@@ -323,7 +323,10 @@ def build(now=None) -> dict:
             if tr.get("next"):
                 r["next"] = tr["next"]
             evd = tr.get("evidence") or {}
-            if evd.get("pr"):
+            if isinstance(evd, str):  # desk-feed traversals carry prose evidence too (crashed 2026-11-12 runs)
+                r["evidence"].append(f"desk-feed traversal {tr.get('entry')}: {evd[:160]}")
+                continue
+            if isinstance(evd, dict) and evd.get("pr"):
                 r["evidence"].append(f"desk-feed traversal {tr.get('entry')} pr=#{evd['pr']}")
 
     registry = _read_json("ops/quota/registry.json")

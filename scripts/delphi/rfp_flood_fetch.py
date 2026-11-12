@@ -74,6 +74,7 @@ def get(token: str, url: str):
             transient = exc.code in (403, 429) or exc.code >= 500
             if not transient or attempt == 3:
                 body = exc.read().decode("utf-8", "replace") if exc.fp else ""
+                exc.rate_limited = exc.code == 429 or (exc.code == 403 and "rate limit" in body.lower())
                 try:
                     message = json.loads(body).get("message", body[:200])
                 except ValueError:
@@ -123,8 +124,36 @@ def main() -> int:
     cache = Path(args.cache)
     cache.mkdir(parents=True, exist_ok=True)
     base = f"{API}/repos/{args.repo}"
-    issues = [i for i in paged(token, f"{base}/issues?state=open&labels=delphi:rfp")
-              if "pull_request" not in i]
+    try:
+        issues = [i for i in paged(token, f"{base}/issues?state=open&labels=delphi:rfp")
+                  if "pull_request" not in i]
+    except urllib.error.HTTPError as exc:
+        if getattr(exc, "rate_limited", False):
+            return _defer(exc)
+        raise
+    try:
+        return _fetch_rest(token, base, cache, issues)
+    except urllib.error.HTTPError as exc:
+        if getattr(exc, "rate_limited", False):
+            return _defer(exc)
+        raise
+
+
+def _defer(exc) -> int:
+    """A shared rate bucket that is empty is a wait, not a failure (2026-11-11 digest:
+    this collector failed red on master every time delphi-gate bursts drained the
+    installation bucket). Defer cleanly; the next trigger or the weekly cron collects."""
+    reset = (getattr(exc, "headers", None) or {}).get("X-RateLimit-Reset", "?")
+    print(f"::warning title=rfp feed deferred::GitHub API rate limit (HTTP {exc.code}); reset={reset}; "
+          "feed left unchanged, next trigger collects", flush=True)
+    out = os.environ.get("GITHUB_OUTPUT")
+    if out:
+        with open(out, "a") as fh:
+            fh.write("deferred=true\n")
+    return 0
+
+
+def _fetch_rest(token, base, cache, issues) -> int:
     (cache / "issues.json").write_text(json.dumps(issues))
     comments = {}
     for issue in issues:

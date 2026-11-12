@@ -1,0 +1,84 @@
+{
+ "schema": "qdesk.pages.v1",
+ "doc": "docs/ops/QDESK-DEADLINE-ALARMS.md#page-freshness",
+ "rules": "sha pages: stale when the served commit is behind master AND older than max_lag_hours. stamp pages: stale when generated_at is older than max_age_hours. Any unexpected HTTP status is broken. Each stale/broken page opens one hark:queue job per page per day.",
+ "pages": [
+  {
+   "name": "project-hub (gh-pages)",
+   "url": "https://timerloggedout-spec.github.io/termux-monorepo/",
+   "kind": "ghpages_branch",
+   "branch": "gh-pages",
+   "max_lag_hours": 36
+  },
+  {
+   "name": "help-wanted (user site)",
+   "url": "https://timerloggedout-spec.github.io/help-wanted/data/status.json",
+   "kind": "sha",
+   "field": "control_surface.source_sha",
+   "max_lag_hours": 36
+  },
+  {
+   "name": "tribute (user site)",
+   "url": "https://timerloggedout-spec.github.io/tribute/data/status.json",
+   "kind": "sha",
+   "field": "control_surface.source_sha",
+   "max_lag_hours": 36
+  },
+  {
+   "name": "tribute-oversight (Vercel prod)",
+   "url": "https://tribute-oversight.vercel.app/data/build.json",
+   "kind": "sha",
+   "field": "source_sha",
+   "max_lag_hours": 48,
+   "fix": "tribute-vercel-prod.yml (blocked by Vercel Hobby api-deployments-free-per-day)"
+  },
+  {
+   "name": "tribute-dash (Vercel prod)",
+   "url": "https://tribute-dash.vercel.app/data/build.json",
+   "kind": "sha",
+   "field": "source_sha",
+   "max_lag_hours": 48,
+   "fix": "tribute-vercel-prod.yml"
+  },
+  {
+   "name": "help-wanted-oversight (legacy Vercel alias)",
+   "url": "https://help-wanted-oversight.vercel.app/",
+   "kind": "http",
+   "expect": [
+    200,
+    404
+   ],
+   "note": "project renamed to tribute-oversight; alias now DEPLOYMENT_NOT_FOUND. Update links to tribute-oversight.vercel.app"
+  },
+  {
+   "name": "marketing-gantt feed",
+   "url": "https://timerloggedout-spec.github.io/tribute/data/marketing-gantt.json",
+   "kind": "stamp",
+   "field": "generated_at",
+   "max_age_hours": 192
+  },
+  {
+   "name": "qdesk plan (raw master)",
+   "url": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/challenge/qdesk-plan.json",
+   "kind": "stamp",
+   "field": "generated_at",
+   "max_age_hours": 6
+  },
+  {
+   "name": "wagering book (challenge Gantt)",
+   "url": "https://timerloggedout-spec.github.io/tribute/data/wagering-book.json",
+   "kind": "stamp",
+   "field": "generated_at",
+   "max_age_hours": 72,
+   "fix": "scripts/moneyball/wagering_book_feed.py (no workflow; hand-run) - add C13-C16 families"
+  },
+  {
+   "name": "tracking board",
+   "url": "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/tracking/tracking.json",
+   "kind": "stamp",
+   "field": "generated_at",
+   "max_age_hours": 36,
+   "fix": "repo-tracking-collect.yml"
+  }
+ ]
+}

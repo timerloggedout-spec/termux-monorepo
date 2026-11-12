@@ -1,0 +1,18 @@
+{
+  "schema": "marketing.referrals.v1",
+  "owner": "LoggedOut Timer",
+  "updated": "2026-11-12T00:22:00-08:00",
+  "receipt": "owner-order 2026-11-12 00:22 PST (Hark project handoff 78fde057)",
+  "disclosure": "Referral links. The Owner may earn credit or rewards when you sign up through them.",
+  "policy": {
+    "placement": ["owner pages (apps/tribute-dashboard/**)", "owner READMEs"],
+    "forbidden": ["comments/issues/PRs on third-party repos", "unsolicited posts", "bulk or repeated placement"],
+    "per_page_max": 1,
+    "append": "add an object to operators[]; page reads this file, no code change"
+  },
+  "operators": [
+    {"id": "hark", "name": "Hark", "url": "https://hark.com/r/RVGPDY", "kind": "AI agent", "st": "LIVE", "added": "2026-11-12"},
+    {"id": "vultr", "name": "Vultr", "url": "https://www.vultr.com/?ref=9934088-9J", "kind": "cloud compute", "st": "LIVE", "added": "2026-11-12"},
+    {"id": "agentrouter", "name": "AgentRouter", "url": "https://agentrouter.org/register?aff=LXR0", "kind": "LLM API router", "st": "LIVE", "added": "2026-11-12"}
+  ]
+}

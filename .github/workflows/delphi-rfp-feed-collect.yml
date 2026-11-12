@@ -85,18 +85,19 @@ jobs:
               fh.write(f"skip={'true' if skip else 'false'}\n")
           PY
       - name: Fetch the RFP census cache
+        id: fetch
         if: steps.gate.outputs.skip != 'true'
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_fetch.py --cache .rfp-cache
       - name: Collect the feed
-        if: steps.gate.outputs.skip != 'true'
+        if: steps.gate.outputs.skip != 'true' && steps.fetch.outputs.deferred != 'true'
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_feed.py \
             --cache .rfp-cache --out apps/tribute-dashboard/data/delphi-rfp-feed.json
       - name: Propose the refresh as a PR
-        if: steps.gate.outputs.skip != 'true'
+        if: steps.gate.outputs.skip != 'true' && steps.fetch.outputs.deferred != 'true'
         env:
           GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |

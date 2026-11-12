@@ -13,3 +13,6 @@ The site is a read-only research projection. It must not be used as a source of 
 
 
 The public showcase is versioned through `VERSION.json` and `CHANGELOG.md`. Deployment workflow: `.github/workflows/delphic-observatory-pages.yml`. GitHub Pages must be enabled for the repository before first publication.
+
+
+Latest release: **0.2.0** adds the DoE × MoneyBall configured-instance task-pool integration.

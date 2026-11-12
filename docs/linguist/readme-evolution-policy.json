@@ -44,7 +44,9 @@
     "branch_comparison": "exact longest-common-subsequence over lines",
     "changed_line_ratio": "100 * (base_non_equal_lines + candidate_non_equal_lines) / (base_lines + candidate_lines)",
     "quality_score": null,
-    "interpretation": "change size only; never a quality or semantic-preservation score"
+    "interpretation": "change size only; never a quality or semantic-preservation score",
+    "raw_git_blob_bytes": true,
+    "candidate_commit_and_blob_sha_recorded": true
   },
   "safety": {
     "preserve_urls_paths_numbers_code_fences_inline_code_and_identifiers": true,
@@ -53,5 +55,12 @@
     "no_unreviewed_mapping_changes": true,
     "over_budget_changes_require_reason": true,
     "historical_refs_are_read_only": true
+  },
+  "baseline_snapshot": {
+    "ref": "master",
+    "commit_sha": "fdba31514d03101250dd276db45ff3c3414ee7c1",
+    "readme_blob_sha": "107c59e30b5ae4810574ecc987ca4e37766c62d0",
+    "line_count": 291,
+    "utf8_bytes": 26610
   }
 }

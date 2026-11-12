@@ -12,7 +12,7 @@ import random
 import re
 import subprocess
 from collections import defaultdict
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Iterable, Mapping
 
 DEFAULT_SCOPES = (
@@ -139,15 +139,35 @@ def collect_tracked_token_counts(root: Path, scopes: Iterable[str]) -> dict[str,
 
 
 def _git_show(root: Path, ref: str, path: str) -> str:
-    result = subprocess.run(
-        ["git", "show", f"{ref}:{path}"],
+    """Read a UTF-8 Git blob without text-mode newline conversion."""
+    if not ref or ref.startswith("-") or not re.fullmatch(r"[A-Za-z0-9._/-]+", ref):
+        raise ValueError("ref must be a simple Git ref name")
+    path_parts = PurePosixPath(path).parts
+    if (
+        not path
+        or path.startswith(("/", ":"))
+        or "\\" in path
+        or "\x00" in path
+        or ".." in path_parts
+    ):
+        raise ValueError("path must be a safe repository-relative path")
+
+    resolved = subprocess.run(
+        ["git", "rev-parse", "--verify", "--end-of-options", f"{ref}^{{commit}}"],
         cwd=root,
         check=True,
         capture_output=True,
-        text=True,
-        encoding="utf-8",
+    ).stdout.decode("ascii").strip()
+    if not re.fullmatch(r"[0-9a-fA-F]{40,64}", resolved):
+        raise ValueError("Git did not resolve ref to a commit SHA")
+
+    result = subprocess.run(
+        ["git", "show", f"{resolved}:{path}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
     )
-    return result.stdout
+    return result.stdout.decode("utf-8")
 
 
 def main() -> int:

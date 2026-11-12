@@ -1,7 +1,7 @@
 # README Evolution — Linguist-guided, comparative
 
 **Status:** implementing under LMP-01  
-**README comparison baseline:** master snapshot at f3e540d92c0bc82c66ebb47437e4909bd41691b9 (README unchanged across the four subsequent master commits present when PR #5188 opened)  
+**README comparison baseline:** master snapshot at fdba31514d03101250dd276db45ff3c3414ee7c1 (README blob 107c59e30b5ae4810574ecc987ca4e37766c62d0)  
 **Operator direction:** 2026-11-11  
 **Implementation PR:** #5188  
 **Scope:** root README and directly related Linguist/CedrLang/Grimoire projections
@@ -58,7 +58,7 @@ python3 scripts/linguist/readme_evolution.py compare --base-ref master --candida
 python3 scripts/linguist/readme_evolution.py plan --seed "$(git rev-parse HEAD)"
 ~~~
 
-The policy is machine-readable in readme-evolution-policy.json.
+The policy is machine-readable in readme-evolution-policy.json. The immutable comparison inputs and their metrics are recorded in readme-branch-census.json.
 
 ## Comparative baseline — README branch census
 
@@ -66,14 +66,16 @@ The following candidates were fetched from GitHub and compared with the current 
 
 100 × (base-only changed lines + candidate-only changed lines) / (base lines + candidate lines)
 
-| Candidate branch | README lines | UTF-8 characters | LCS line delta |
-|---|---:|---:|---:|
-| docs/readme-agents-link-fix | 289 | 26,647 | 2.07% |
-| docs/readme-agents-reference | 465 | 24,702 | 75.66% |
-| docs/readme-ates-image-polish | 197 | 20,022 | 24.18% |
-| docs/readme-upgrade-claude-entry-ates-deploy | 212 | 21,855 | 21.27% |
-| manus/readme-deepwiki-validation-integration | 173 | 16,841 | 27.59% |
-| studysprint-readme-currency | 290 | 26,549 | 0.52% |
+| Candidate branch | Commit SHA (12) | README blob SHA (12) | README lines | UTF-8 bytes | LCS line delta |
+|---|---|---|---:|---:|---:|
+| docs/readme-agents-link-fix | c64fd4affc66 | 3ba0805a884a | 289 | 26,647 | 2.07% |
+| docs/readme-agents-reference | 05ac94d4211f | ca746df7b383 | 465 | 24,702 | 75.66% |
+| docs/readme-ates-image-polish | ee0ffc2540b8 | 2e3c004f096f | 197 | 20,022 | 24.18% |
+| docs/readme-upgrade-claude-entry-ates-deploy | e1d997a85cac | 1bfb11f504d8 | 212 | 21,855 | 21.27% |
+| manus/readme-deepwiki-validation-integration | 79234418029b | b8429e610bee | 173 | 16,841 | 27.59% |
+| studysprint-readme-currency | 1bb35e6bf75d | 3ca45334d2ea | 290 | 26,549 | 0.52% |
+
+Full 40-character commit and blob identifiers, including the baseline, are preserved in readme-branch-census.json.
 
 These values measure textual distance only. They are **not** rankings, quality scores, or proof that a branch is more current. Branches remain read-only historical inputs. The next version is based on the fetched master baseline, not a blind cherry-pick of an older README.
 
@@ -103,7 +105,7 @@ A branch name alone is not a version identity; branches move. A commit SHA and b
 - Mermaid diagrams describe actual source/flow boundaries and are not presented as runtime telemetry.
 - Existing screenshots and visual assets are retained unless a replacement is verified.
 - Branch comparisons are read-only; no force-push or branch overwrite.
-- git diff --check, focused tests, scripts/ci/repo_gate.py, and scripts/ci/termux_smoke.py remain separate validation outcomes.
+- git diff --check, focused tests, scripts/ci/repo_gate.py, and scripts/ci/termux_smoke.py remain separate validation outcomes. Byte counts are measured from the exact UTF-8 Git blob bytes; text-mode newline normalization is not permitted.
 
 ## Scope and exclusions
 

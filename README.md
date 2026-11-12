@@ -194,7 +194,7 @@ flowchart LR
 | manus/readme-deepwiki-validation-integration | 27.59% |
 | studysprint-readme-currency | 0.52% |
 
-These are reproducible **LCS line-difference ratios**, not quality scores. Historical branches remain comparison inputs; none is overwritten or promoted automatically. The full baseline, formula, seed contract, and comparison command live in [docs/linguist/README-EVOLUTION.md](docs/linguist/README-EVOLUTION.md). The existing [Linguist Panel](apps/tribute-dashboard/linguist.html) remains the visual mapping surface and its feed builder remains the mapping-data consumer. GitHub Linguist language classification remains separate; .gitattributes mappings are changed only when classification evidence justifies them.
+These are reproducible **LCS line-difference ratios**, not quality scores. Full immutable candidate commit and README blob identities are recorded in [docs/linguist/readme-branch-census.json](docs/linguist/readme-branch-census.json). Historical branches remain comparison inputs; none is overwritten or promoted automatically. The full baseline, formula, seed contract, and comparison command live in [docs/linguist/README-EVOLUTION.md](docs/linguist/README-EVOLUTION.md). The existing [Linguist Panel](apps/tribute-dashboard/linguist.html) remains the visual mapping surface and its feed builder remains the mapping-data consumer. GitHub Linguist language classification remains separate; .gitattributes mappings are changed only when classification evidence justifies them.
 
 ---
 

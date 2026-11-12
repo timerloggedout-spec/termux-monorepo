@@ -116,6 +116,30 @@ dispatch:
   provider_bearing_issue_open_calls_blocked_until_que_admission: true
   paid_fallback_authorized: false
   production_routing_mutation_authorized: false
+current_evidence_snapshot:
+  provider_participation_pr_5134:
+    state: open_unmerged
+    source_records: 98
+    distinct_provider_names: 96
+    id_prefix_families: 36
+    dispatch_classes:
+      proven: 7
+      wired_unproven: 23
+      triggerable: 2
+      inference_only: 65
+      catalog_only: 1
+    free_eligibility_unknown_records: 98
+    interpretation: "Provider catalog/dispatch census only; no exact account+model no-cost admission receipts."
+  util_1_provider_rotation:
+    audited_at: "2026-11-09T16:39:22.153417Z"
+    bench_size: 118
+    scored: 5
+    flagged: 47
+    source: "experiments/doe/util-1-provider-rotation/records/SUMMARY.json"
+    interpretation: >-
+      Sparse and stamp-incomplete live build-task baseline; not an endpoint-level
+      free-inference tournament and not evidence for an endpoint winner. The new
+      inference cohort must be separately identified and must not pool these rows.
 population_model:
   unit_identity:
     tuple:
@@ -311,7 +335,7 @@ stages:
     name: "Provider-specific live eligibility gate"
     priority: P0
     state: blocked_until_evidence
-    dependencies: [DPLC-FIT-01, DPLC-FIT-04, provider_pool_and_cadence]
+    dependencies: [DPLC-FIT-01, DPLC-FIT-04, DPLC-FIT-03, provider_pool_and_cadence, quota_ledger, issue_open_listener_gate, que_deferred_re_evaluation]
     live_inference: false
     work: "Require exact account/model/route entitlement, current execution-environment availability, authoritative usable quota/headroom, terms, data classification, stop switch and full provenance immediately before any request."
     acceptance:
@@ -322,7 +346,7 @@ stages:
     name: "First bounded live endpoint cohort"
     priority: P1
     state: not_authorized
-    dependencies: [DPLC-FIT-03, DPLC-FIT-04, DPLC-FIT-05, QDesk_and_QUE_acceptance]
+    dependencies: [DPLC-FIT-03, DPLC-FIT-04, DPLC-FIT-05, QDesk_and_QUE_acceptance, issue_open_listener_gate, que_deferred_re_evaluation]
     live_inference: false
     work: "After separate explicit authorization, run the pre-registered public-data cohort inside the existing production dispatch flow; preserve all terminal outcomes and stop at the pre-registered cap."
     acceptance:

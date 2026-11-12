@@ -86,3 +86,8 @@ Rechecked 2026-10-28: the status-backfill and reconciliation-pair items were res
 - **Evidence architecture is stated in at least four places** (evidence substrate, evidence projection surface, foresight evidence spine, BIUDL provenance). The pointer table above is the interim map; a single consolidated evidence-architecture statement is a candidate future spec.
 - **`docs/schemas/` mixes true schemas with registries** (e.g. `agent-roster.yaml`, `model-rotation.yaml` are registries, not schemas). Naming note for a future pass; no moves yet.
 - **Architecture strays at the docs root** (`GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md`, `ICM-ARCHITECT-INTEGRATION.md`, `CONSENSUS.md`, `DEPLOYMENT-LANES.md`) are candidates for pointer entries or relocation in a later pass — no file moves without a repo-wide link-breakage check first.
+
+
+## Inference allocation
+
+- [DoE-GOVERNED-INFERENCE-ALLOCATION.md](DOE-GOVERNED-INFERENCE-ALLOCATION.md) — governing contract for DoE-owned inference allocation/rotation, Scout endpoint selection, per-endpoint significance, manager customization contracts, selection receipts and participant-strategy privacy.

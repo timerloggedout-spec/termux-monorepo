@@ -200,18 +200,17 @@ artifact 13154370032; zero-in-Actions: PollinationsImage, G4FSpace, Flux1Dev, Po
 Perplexity bulk rate-limited on the Actions egress IP). Split of record: sandbox 160 /
 Actions 83 / intersection 83; production admission unchanged.
 
-## Rotation rule (bench-wide)
+## DoE allocation and Scout selection
 
-No provider takes 2 consecutive dispatches for the same entry, across **all** catalog lanes
-(supersedes the 2026-10-31 rule, which capped repeats inside the 4-lane funnel only).
-Selection = task-fit across the full catalog: proven lanes carry production work;
-wired-unproven / triggerable surfaces get bounded proof dispatches; inference-only providers
-are selectable via their named arm. Every dispatch stamps provider + surface + selection
-reason + session/run id — no stamp ⇒ no dispatch (telemetry gate, 2026-10-30).
+**DoE owns inference allocation and rotation.** The Provider Index/catalog defines the eligible population and its evidence class; it does not assign traffic or impose a global alternation rule. The active DoE design owns the campaign, task strata, endpoint allocation/proportions, assignment probabilities, repeat policy, endpoint-level significance gates, stopping, culling and promotion.
 
-**D1 re-selection (2026-11-01):** DeepSeek fix-pass (run 41301295882 ✓) ∧ Gemini SR
-(issue #3050, run 41301369671 ✓) stand — distinct providers, rotation-valid, already fired.
-Next D1 dispatch ⇒ a proven lane outside {DeepSeek, Gemini} for its task class, reason stamped.
+**Scout selects** an eligible provider/model endpoint from the existing DoE-governed pool to realize the assigned treatment. Selection uses task fit plus live capability, credential, catalog, quota, data-policy and health evidence. A repeat is valid whenever the active DoE design assigns it. There is no global no-repeat or fixed alternation rule.
+
+A no-repeat rule may exist only as an explicitly scoped, pre-registered campaign treatment (for example, a cert-unit per-batch constraint); it never becomes a bench-wide policy by implication. Manager/requester-specific provider or model settings require an approved priced contract and a separately recorded treatment/stratum. Owner and other authorized exemptions are explicit.
+
+Every selected inference endpoint emits the canonical `inference-selection-receipt/v1` with DoE design/allocation, Scout, manager/request, exact provider + surface + model@version + protocol, pool snapshot, assignment probability, selection basis, contract/exemption and invocation correlation IDs. Missing selection evidence remains observational/NOT_ESTABLISHED, not retroactively assigned.
+
+**Historical D1 re-selection (2026-11-01):** DeepSeek fix-pass (run 41301295882) and Gemini SR (issue #3050, run 41301369671) are retained as historical dispatch facts. The former instruction to send the next D1 dispatch outside {DeepSeek, Gemini} is not a standing allocation rule; future assignments are governed by the active DoE design.
 
 ## Inference availability mapping — the crux (owner emphasis 2026-11-01)
 

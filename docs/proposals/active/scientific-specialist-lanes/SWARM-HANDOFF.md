@@ -18,7 +18,7 @@ Validate the event-driven dependency contract:
 - Deferred, stale, unmatched, and unrelated-template receipts never queue.
 - Reopened issues re-evaluate and do not reuse stale admission decisions.
 - Verify GitHub Actions expression semantics, API pagination, runner timeout, and retry behavior.
-- Identify idempotency gaps and propose/implement a compatible event-keyed receipt without changing the trigger contract.
+- Verify the event-keyed intake receipt marker prevents duplicate comments on retries while allowing a later reopen event to receive a new receipt.
 
 **Acceptance:** automated contract tests plus a documented event trace for opened, reopened, deferred, malformed, and retry cases. No trigger replacement.
 

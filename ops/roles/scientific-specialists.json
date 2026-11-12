@@ -44,7 +44,84 @@
       "primary_outputs": "research charter; evidence synthesis; risk and uncertainty register",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "research portfolio, epistemic standards, cross-discipline review",
+      "scope": [
+        "scientific-governance"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "research portfolio, epistemic standards, cross-discipline review"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "research charter; evidence synthesis; risk and uncertainty register",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "research-scientist",
@@ -53,7 +130,84 @@
       "primary_outputs": "research brief; hypothesis and evidence map",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "hypothesis formation, literature synthesis, scientific method",
+      "scope": [
+        "scientific-research"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "hypothesis formation, literature synthesis, scientific method"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "research brief; hypothesis and evidence map",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "domain-scientist",
@@ -62,7 +216,84 @@
       "primary_outputs": "domain analysis; assumptions and boundary conditions",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "discipline-specific scientific interpretation",
+      "scope": [
+        "domain-expertise"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "discipline-specific scientific interpretation"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "domain analysis; assumptions and boundary conditions",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "scientific-reviewer",
@@ -71,7 +302,84 @@
       "primary_outputs": "review report; disposition and unresolved objections",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "independent scientific challenge and replication review",
+      "scope": [
+        "independent-review"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Independent challenge and review; cannot approve its own authored work.",
+      "required_competencies": [
+        "independent scientific challenge and replication review"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "review report; disposition and unresolved objections",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "independent-scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "mathematician",
@@ -80,7 +388,84 @@
       "primary_outputs": "derivation; proof obligations; model assumptions",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "proofs, derivations, mathematical modeling",
+      "scope": [
+        "mathematical-methods"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "proofs, derivations, mathematical modeling"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "derivation; proof obligations; model assumptions",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "statistical-methodologist",
@@ -89,7 +474,84 @@
       "primary_outputs": "statistical analysis plan; estimand and uncertainty record",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "estimands, inference, power, uncertainty, analysis plans",
+      "scope": [
+        "statistical-methods"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "estimands, inference, power, uncertainty, analysis plans"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "statistical analysis plan; estimand and uncertainty record",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "formal-methods-verifier",
@@ -98,7 +560,84 @@
       "primary_outputs": "formal specification; proof/check report",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "invariants, specifications, proof and model checking",
+      "scope": [
+        "formal-verification"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "invariants, specifications, proof and model checking"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "formal specification; proof/check report",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "numerical-methods-engineer",
@@ -107,7 +646,84 @@
       "primary_outputs": "numerical validation report; tolerance budget",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "stability, conditioning, convergence, numerical error",
+      "scope": [
+        "numerical-methods"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "stability, conditioning, convergence, numerical error"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "numerical validation report; tolerance budget",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "experiment-designer",
@@ -116,7 +732,84 @@
       "primary_outputs": "preregistered design; randomization and stopping plan",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "factorial designs, controls, randomization, blocking, power",
+      "scope": [
+        "experimental-design"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "factorial designs, controls, randomization, blocking, power"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "preregistered design; randomization and stopping plan",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "doe-expert",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "experiment-operator",
@@ -125,7 +818,84 @@
       "primary_outputs": "run manifest; deviations; raw evidence references",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "protocol execution, instrumentation and run integrity",
+      "scope": [
+        "experiment-operations"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Executes admitted designs only; cannot amend hypotheses, outcomes, or stopping rules without re-admission.",
+      "required_competencies": [
+        "protocol execution, instrumentation and run integrity"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "run manifest; deviations; raw evidence references",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "reproducibility-auditor",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "measurement-scientist",
@@ -134,7 +904,84 @@
       "primary_outputs": "measurement model; calibration and validity report",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "construct validity, calibration, reliability, instrumentation",
+      "scope": [
+        "measurement-science"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "construct validity, calibration, reliability, instrumentation"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "measurement model; calibration and validity report",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "reproducibility-auditor",
@@ -143,7 +990,84 @@
       "primary_outputs": "reproduction record; environment and artifact hashes",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "independent reproduction, environment and artifact audit",
+      "scope": [
+        "reproducibility"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "independent reproduction, environment and artifact audit"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "reproduction record; environment and artifact hashes",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "statistician",
@@ -152,7 +1076,84 @@
       "primary_outputs": "analysis output; diagnostics; uncertainty",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "descriptive/inferential analysis and diagnostics",
+      "scope": [
+        "statistical-analysis"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "descriptive/inferential analysis and diagnostics"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "analysis output; diagnostics; uncertainty",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "causal-inference-specialist",
@@ -161,7 +1162,84 @@
       "primary_outputs": "identification argument; DAG; sensitivity analysis",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "causal graphs, identification, confounding and sensitivity",
+      "scope": [
+        "causal-inference"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "causal graphs, identification, confounding and sensitivity"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "identification argument; DAG; sensitivity analysis",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "bayesian-methodologist",
@@ -170,7 +1248,84 @@
       "primary_outputs": "prior rationale; posterior diagnostics; decision record",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "priors, likelihoods, posterior checks, decision analysis",
+      "scope": [
+        "bayesian-inference"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "priors, likelihoods, posterior checks, decision analysis"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "prior rationale; posterior diagnostics; decision record",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "sequential-experimentation-specialist",
@@ -179,7 +1334,84 @@
       "primary_outputs": "sequential plan; alpha/spending or posterior stopping rules",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "sequential tests, adaptive designs and stopping boundaries",
+      "scope": [
+        "sequential-design"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "sequential tests, adaptive designs and stopping boundaries"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "sequential plan; alpha/spending or posterior stopping rules",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "ml-research-scientist",
@@ -188,7 +1420,84 @@
       "primary_outputs": "model card; experimental report; baseline comparison",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "model design, learning methods, scientific ML claims",
+      "scope": [
+        "machine-learning-research"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "model design, learning methods, scientific ML claims"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "model card; experimental report; baseline comparison",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "ml-evaluation-specialist",
@@ -197,7 +1506,84 @@
       "primary_outputs": "evaluation protocol; dataset lineage; error analysis",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "benchmark validity, eval design, leakage and robustness",
+      "scope": [
+        "ml-evaluation"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "benchmark validity, eval design, leakage and robustness"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "evaluation protocol; dataset lineage; error analysis",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "mlops-engineer",
@@ -206,7 +1592,84 @@
       "primary_outputs": "pipeline manifest; reproducible build and monitoring evidence",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "reproducible training/inference pipelines and deployment observability",
+      "scope": [
+        "ml-operations"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "reproducible training/inference pipelines and deployment observability"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "pipeline manifest; reproducible build and monitoring evidence",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "validation-engineer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "data-scientist",
@@ -215,7 +1678,84 @@
       "primary_outputs": "data analysis; assumptions; uncertainty and limitations",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "data analysis, feature construction and decision support",
+      "scope": [
+        "data-science"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "data analysis, feature construction and decision support"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "data analysis; assumptions; uncertainty and limitations",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "data-steward",
@@ -224,7 +1764,84 @@
       "primary_outputs": "data contract; lineage and quality report",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "dataset lineage, quality, access, retention and semantic integrity",
+      "scope": [
+        "data-governance"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "dataset lineage, quality, access, retention and semantic integrity"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "data contract; lineage and quality report",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "quality-assurance-auditor",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "validation-engineer",
@@ -233,7 +1850,84 @@
       "primary_outputs": "validation matrix; test evidence; disposition",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "requirements traceability, verification and acceptance testing",
+      "scope": [
+        "validation-assurance"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "requirements traceability, verification and acceptance testing"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "validation matrix; test evidence; disposition",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "scientific-red-teamer",
@@ -242,7 +1936,84 @@
       "primary_outputs": "red-team findings; counterexamples; residual risk",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "falsification, alternative explanations, robustness challenge",
+      "scope": [
+        "adversarial-science"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "falsification, alternative explanations, robustness challenge"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "red-team findings; counterexamples; residual risk",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "quality-assurance-auditor",
@@ -251,7 +2022,84 @@
       "primary_outputs": "QA audit; nonconformance register",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "process compliance, artifact completeness and release evidence",
+      "scope": [
+        "quality-assurance"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "process compliance, artifact completeness and release evidence"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "QA audit; nonconformance register",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "safety-and-risk-reviewer",
@@ -260,7 +2108,84 @@
       "primary_outputs": "risk assessment; mitigations; escalation decision",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "hazard analysis, risk controls and safe operating boundaries",
+      "scope": [
+        "safety-assurance"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "hazard analysis, risk controls and safe operating boundaries"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "risk assessment; mitigations; escalation decision",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "independent-safety-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "optimization-researcher",
@@ -269,7 +2194,84 @@
       "primary_outputs": "optimization model; sensitivity and feasibility analysis",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "objective formulation, constraints, optimization algorithms",
+      "scope": [
+        "optimization"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "objective formulation, constraints, optimization algorithms"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "optimization model; sensitivity and feasibility analysis",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "control-systems-specialist",
@@ -278,7 +2280,84 @@
       "primary_outputs": "system model; stability and control analysis",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "dynamic systems, feedback, stability and control",
+      "scope": [
+        "control-systems"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "dynamic systems, feedback, stability and control"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "system model; stability and control analysis",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "complex-systems-researcher",
@@ -287,7 +2366,84 @@
       "primary_outputs": "system map; scenario and sensitivity analysis",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "emergence, feedback, nonlinear dynamics and system effects",
+      "scope": [
+        "complex-systems"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "emergence, feedback, nonlinear dynamics and system effects"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "system map; scenario and sensitivity analysis",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "graph-science-specialist",
@@ -296,7 +2452,84 @@
       "primary_outputs": "graph model; metric definitions; structural findings",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "network structure, graph algorithms and relationship analysis",
+      "scope": [
+        "graph-science"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "network structure, graph algorithms and relationship analysis"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "graph model; metric definitions; structural findings",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "behavioral-scientist",
@@ -305,7 +2538,84 @@
       "primary_outputs": "construct map; intervention protocol; outcome measures",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "behavioral constructs, intervention design and outcome measurement",
+      "scope": [
+        "behavioral-science"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "behavioral constructs, intervention design and outcome measurement"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "construct map; intervention protocol; outcome measures",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "performance-psychologist",
@@ -314,7 +2624,84 @@
       "primary_outputs": "behavioral hypothesis; intervention and measurement plan",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "motivation, feedback, goal setting, performance and resilience",
+      "scope": [
+        "performance-psychology"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "motivation, feedback, goal setting, performance and resilience"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "behavioral hypothesis; intervention and measurement plan",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "do-statement-methodologist",
@@ -323,7 +2710,84 @@
       "primary_outputs": "DO statement operationalization; adherence and outcome measures",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "operationalizing DO statements as observable, testable behaviors",
+      "scope": [
+        "do-statements"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Advisory capability scope; promotion authority remains with existing governance and merge gates.",
+      "required_competencies": [
+        "operationalizing DO statements as observable, testable behaviors"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "DO statement operationalization; adherence and outcome measures",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     },
     {
       "id": "doe-expert",
@@ -332,7 +2796,85 @@
       "primary_outputs": "DoE design review; admission disposition; design amendment record",
       "contract_ref": "common_contract",
       "canonical_seat_ids_created": false,
-      "provider_identity": false
+      "provider_identity": false,
+      "mission": "owns experimental-design admission and design amendments under the repository DOE-FAMILY contract",
+      "scope": [
+        "design-of-experiments"
+      ],
+      "exclusions": [
+        "does not select provider/model",
+        "does not claim evidence not present",
+        "does not self-approve high-impact or confirmatory findings"
+      ],
+      "authority": "Owns DoE design admission and design amendments under DOE-FAMILY; does not approve execution outcomes.",
+      "required_competencies": [
+        "owns experimental-design admission and design amendments under the repository DOE-FAMILY contract"
+      ],
+      "competence_evidence": [
+        "reviewed work samples with provenance",
+        "gold-task benchmark results",
+        "calibration and reviewer-agreement record"
+      ],
+      "accepted_inputs": [
+        "task question and scope",
+        "source/provenance manifest",
+        "constraints and safety boundary",
+        "acceptance criteria"
+      ],
+      "tools_and_data_classes": [
+        "allowlisted tools only",
+        "data classes and access constraints declared per task"
+      ],
+      "provenance_requirements": [
+        "source URI or repository ref",
+        "content/version hash where available",
+        "collection time and transformation history",
+        "configured instance resolved through existing instance_key"
+      ],
+      "required_outputs": [
+        "DoE design review; admission disposition; design amendment record",
+        "structured findings",
+        "methods and assumptions",
+        "evidence/provenance references",
+        "uncertainty and limitations",
+        "reproducibility instructions"
+      ],
+      "methods_assumptions_uncertainty": "State methods, assumptions, uncertainty, limitations, diagnostics, and alternative explanations; distinguish observation from inference.",
+      "acceptance_criteria": [
+        "outputs satisfy the task contract",
+        "claims trace to cited evidence",
+        "limitations and uncertainty are explicit",
+        "reproduction or verification path is supplied"
+      ],
+      "independent_reviewer_role": "scientific-reviewer",
+      "abstention_escalation": [
+        "insufficient evidence or competence",
+        "unverifiable source provenance",
+        "unsafe or out-of-scope request",
+        "conflicting results without a reconciliation method",
+        "missing preregistration for confirmatory claims"
+      ],
+      "prohibited_actions": [
+        "inventing or silently repairing evidence",
+        "self-approval of high-impact/confirmatory work",
+        "provider/model selection outside existing dispatch policy",
+        "promotion or merge outside existing governance"
+      ],
+      "metrics": [
+        "correctness",
+        "calibration",
+        "reproducibility",
+        "integration acceptance",
+        "time and resource cost"
+      ],
+      "skill_refs": [],
+      "tool_manifest_refs": [],
+      "configured_instance_identity": "resolved at execution using existing instance_key; never encoded as role identity",
+      "qualification_status": "unqualified_until_benchmarked",
+      "version": 1,
+      "change_history": [],
+      "evaluation_fixtures": []
     }
-  ]
+  ],
+  "contract_status": "contract_seed; role-specific skill/tool mappings and qualification fixtures remain to be populated before qualification"
 }

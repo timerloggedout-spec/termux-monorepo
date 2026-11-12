@@ -88,7 +88,7 @@ consumers must not mix shapes across the bump).
 Controlled vocabulary: `docs/proposals/PROPOSAL-TYPES.md`.
 
 - Registry entries may declare an optional `proposal_type` scalar.
-- The collector carries it verbatim as `proposal_type` on each proposal and counts established values in `counts.by_type`. A non-empty value outside the controlled vocabulary is preserved verbatim and named in `gaps`.
+- The collector carries it verbatim as `proposal_type` on each proposal and counts every non-null source value in `counts.by_type`, including unknown values preserved verbatim. A non-empty value outside the controlled vocabulary is preserved verbatim and named in `gaps`.
 - Missing or null values remain null and are excluded from `by_type`; consumers render them as unclassified rather than inferring a type.
 - The proposals index exposes a type filter sourced from the feed's observed values. The filter does not maintain a second taxonomy list.
 - The Contribution Desk (`desk.html`) remains the operational queue/traversal projection. It links to the Proposals index; it is not a second proposal registry or proposal-type store.

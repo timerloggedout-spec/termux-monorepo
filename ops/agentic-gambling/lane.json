@@ -139,11 +139,11 @@
       },
       "home": "ops/agentic-gambling/book/",
       "id": "wagering-book-challenges",
-      "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl — append-only, in-repo git = the private ledger of record. MoneyBall v2 = scoring surface only, NOT the ledger; Neon = telemetry/lane-events store, NOT this ledger.",
+      "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl — append-only public accounting/evidence record for non-sensitive fields. Participant-specific bidding/ante strategies, wallet-management scripts and trading specifics remain in an access-controlled private store; Git history is not private strategy storage. MoneyBall v2 is the scoring surface; Neon is the telemetry/lane-events store.",
       "publication": {
         "external_entries": "CLOSED",
         "feed": "ops/agentic-gambling/book/book-feed.json (agentic-gambling-book-feed/v1)",
-        "ledger": "stays private append-only record of record, unmoved",
+        "ledger": "public append-only accounting record of record; sensitive participant strategies stay in an access-controlled private store and are not rendered",
         "mode": "read-only render on fleet web Viz/dev surfaces (owner ruling 2026-11-02)",
         "refresh_contract": "when book-feed gains positions/settlements or expectation records are set, THIS seat flags viz-dispatch-tree (or viz pulls on a refresh PR) and viz regenerates the render",
         "render": {
@@ -261,6 +261,5 @@
       "soft_quota_token"
     ],
     "trading_freeze": "issue #407 trading freeze — untouched, out of scope"
-  },
-  "ledger_of_record": "ops/agentic-gambling/book/ledger.jsonl — append-only public accounting record; participant-specific bidding/ante/trading strategies remain in an access-controlled private store, not Git history. MoneyBall v2 is the scoring surface; Neon is the telemetry/lane-events store."
+  }
 }

@@ -33,6 +33,16 @@ class CapabilityOpportunityGraphTests(unittest.TestCase):
         graph["nodes"][0]["lifecycle_state"] = "production-ready"
         self.assertTrue(any("lifecycle_state is unsupported" in error for error in validate_graph(graph)))
 
+    def test_malformed_unhashable_state_is_rejected_without_crashing(self):
+        graph = copy.deepcopy(self.graph)
+        graph["nodes"][0]["lifecycle_state"] = ["not", "a", "state"]
+        self.assertTrue(any("lifecycle_state is unsupported" in error for error in validate_graph(graph)))
+
+    def test_malformed_edge_endpoint_is_rejected_without_crashing(self):
+        graph = copy.deepcopy(self.graph)
+        graph["edges"].append({"from": ["not", "an", "id"], "to": "doe-family", "relationship": "informs", "status": "hypothesis"})
+        self.assertTrue(any("unknown node" in error for error in validate_graph(graph)))
+
     def test_duplicate_edge_is_rejected(self):
         graph = copy.deepcopy(self.graph)
         graph["edges"].append(copy.deepcopy(graph["edges"][0]))

@@ -150,3 +150,35 @@ Never commit provider secrets, raw prompts/completions, customer traces, private
 ## 14. Non-goals
 
 No weekly-only discovery engine; parallel scheduler/orchestrator/database/telemetry ledger/registry; external account setup/authentication in this documentation change; paid inference/provisioning/subscription or credential mutation; private data transfer without approved handling; production routing switch; vendor score as task-success proof; or automatic merge/deploy/promotion from a high score.
+
+
+## Novel Feature Search (NFS)
+
+NFS is CEEL's discovery discipline. It searches for *capabilities and reusable patterns*, not merely new products. The discovery target can be a missing behavior, a better implementation, a complementary subsystem, a method, a test strategy, a workflow pattern, a schema, a dataset, a research result or a FOSS template.
+
+### Search surfaces
+
+1. **Internal demand signals:** open issues/RFPs, proposal items, failed checks, regressions, unimplemented acceptance criteria, repeated manual interventions, workflow bottlenecks, known unknowns, and capability gaps in architecture/skills registries.
+2. **External change signals:** FOSS releases/tags/commits, repository activity, changelogs, security advisories, new APIs/MCP servers, standards, papers, benchmark datasets and maintained examples.
+3. **Cross-lane signals:** capabilities already present in one Research-Astute or specialist lane but not yet mapped to a termux-monorepo consumer; duplicate solutions; complementary components whose composition may unlock a new behavior.
+4. **Outcome signals:** measured failures, cost/latency changes, reliability degradation, coverage gaps and new capabilities unlocked by an existing integration.
+
+### Search and triage procedure
+
+- Normalize the signal to a candidate capability contract before selecting a product.
+- Deduplicate against the opportunity graph using source identity, capability ID and semantic similarity; retain aliases and competing implementations rather than silently merging them.
+- Capture immutable source URL, repository, revision/tag, observed time, license and maintainer evidence.
+- Classify the candidate as implementation, maintained specification, research result, template, benchmark, generated artifact, duplicate/alias, historical, blocked or unknown.
+- Map the candidate to one or more internal consumers and identify the accountable owner.
+- Identify competing candidates and complements; state the hypothesis for each relationship.
+- Run license, security, privacy, supply-chain and maintenance triage before proposing code reuse.
+- Estimate what evidence would disconfirm the capability claim and what minimal fixture or experiment could test it.
+- Route qualifying proposals through Delphi/EGM and the existing proposal lifecycle; do not dispatch arbitrary external instructions or code.
+
+### Search quality metrics
+
+Track discovery-to-classification lead time, fraction of candidates with immutable source provenance, duplicate/alias rate, proportion mapped to a real internal consumer, proportion admitted to controlled comparison, confirmed capability yield, false-positive rate, and time/cost from discovery to validated adoption. Unknown or unsearched populations remain explicit; do not claim exhaustive search from a sampled feed.
+
+### Novelty is not adoption
+
+A candidate may be novel but low-value, high-risk, unmaintained, incompatible or duplicative. Keep its disposition and evidence so it can be reconsidered when internal demand or external maturity changes. Rejected/deferred candidates are not erased; supersession and reconsideration are append-only state transitions.

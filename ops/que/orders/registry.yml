@@ -1,0 +1,35 @@
+schema: qdesk.order-registry/v1
+registry_id: qdesk-implementation-orders
+updated_on: "2026-11-11"
+owner: "optimizations-assurance"
+authority:
+  source_of_truth: "This registry and the order documents it references"
+  execution_gate: "QUE admission through the existing project-task issue template"
+  execution_engine: "Existing repository dispatch machinery; no executor is defined here"
+  desk_role: "Read-only projection of order and evidence state"
+  warning: >-
+    This registry is declarative and is not yet consumed by the QUE feed
+    collector or Desk UI. Presence here does not mean a task is queued,
+    admitted, running, or complete.
+orders:
+  - order_id: QDESK-FIT-001
+    title: "Free Inference Endpoint Tournament — self-implementation order"
+    path: "ops/que/orders/free-inference-tournament.yml"
+    documentation: "docs/ops/FREE-INFERENCE-ENDPOINT-TOURNAMENT.md"
+    status: prepared
+    execution_state: not_dispatched
+    priority: P1
+    stage_count: 9
+    dispatch:
+      template: ".github/ISSUE_TEMPLATE/project-task.yml"
+      schema: "issue-dispatch/v1"
+      lane: "swarm-dispatch"
+      que_tier: 3
+      payload_class: "project-task"
+      admission_workflow: ".github/workflows/swarm-admission.yml"
+      route_workflow: ".github/workflows/project-task-dispatch.yml"
+    safety:
+      inference_authorized: false
+      scheduled_inference: false
+      paid_fallback: false
+      production_routing_mutation: false

@@ -1,0 +1,329 @@
+{
+  "schema": "scientific-specialist-registry/v1",
+  "version": 1,
+  "authority": "capability contracts only; not provider identities or canonical DoE seat IDs",
+  "canonical_doe_seats": [
+    "builder",
+    "operator",
+    "steward",
+    "observer",
+    "reviewer",
+    "scout",
+    "gambler",
+    "participant"
+  ],
+  "common_contract": {
+    "required_inputs": [
+      "task question and scope",
+      "source/provenance manifest",
+      "constraints and safety boundary",
+      "acceptance criteria"
+    ],
+    "required_outputs": [
+      "structured findings",
+      "methods and assumptions",
+      "evidence/provenance references",
+      "uncertainty and limitations",
+      "reproducibility instructions"
+    ],
+    "abstain_or_escalate": [
+      "insufficient evidence or competence",
+      "unverifiable source provenance",
+      "unsafe or out-of-scope request",
+      "conflicting results without a reconciliation method",
+      "missing preregistration for confirmatory claims"
+    ],
+    "high_impact_review": "independent reviewer required; author/operator/analyst/reviewer must not self-approve",
+    "experiment_state": "keyword classification is candidate only; preregistration and execution require separate evidence"
+  },
+  "roles": [
+    {
+      "id": "chief-scientist",
+      "domain": "scientific-governance",
+      "competence": "research portfolio, epistemic standards, cross-discipline review",
+      "primary_outputs": "research charter; evidence synthesis; risk and uncertainty register",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "research-scientist",
+      "domain": "scientific-research",
+      "competence": "hypothesis formation, literature synthesis, scientific method",
+      "primary_outputs": "research brief; hypothesis and evidence map",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "domain-scientist",
+      "domain": "domain-expertise",
+      "competence": "discipline-specific scientific interpretation",
+      "primary_outputs": "domain analysis; assumptions and boundary conditions",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "scientific-reviewer",
+      "domain": "independent-review",
+      "competence": "independent scientific challenge and replication review",
+      "primary_outputs": "review report; disposition and unresolved objections",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "mathematician",
+      "domain": "mathematical-methods",
+      "competence": "proofs, derivations, mathematical modeling",
+      "primary_outputs": "derivation; proof obligations; model assumptions",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "statistical-methodologist",
+      "domain": "statistical-methods",
+      "competence": "estimands, inference, power, uncertainty, analysis plans",
+      "primary_outputs": "statistical analysis plan; estimand and uncertainty record",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "formal-methods-verifier",
+      "domain": "formal-verification",
+      "competence": "invariants, specifications, proof and model checking",
+      "primary_outputs": "formal specification; proof/check report",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "numerical-methods-engineer",
+      "domain": "numerical-methods",
+      "competence": "stability, conditioning, convergence, numerical error",
+      "primary_outputs": "numerical validation report; tolerance budget",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "experiment-designer",
+      "domain": "experimental-design",
+      "competence": "factorial designs, controls, randomization, blocking, power",
+      "primary_outputs": "preregistered design; randomization and stopping plan",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "experiment-operator",
+      "domain": "experiment-operations",
+      "competence": "protocol execution, instrumentation and run integrity",
+      "primary_outputs": "run manifest; deviations; raw evidence references",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "measurement-scientist",
+      "domain": "measurement-science",
+      "competence": "construct validity, calibration, reliability, instrumentation",
+      "primary_outputs": "measurement model; calibration and validity report",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "reproducibility-auditor",
+      "domain": "reproducibility",
+      "competence": "independent reproduction, environment and artifact audit",
+      "primary_outputs": "reproduction record; environment and artifact hashes",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "statistician",
+      "domain": "statistical-analysis",
+      "competence": "descriptive/inferential analysis and diagnostics",
+      "primary_outputs": "analysis output; diagnostics; uncertainty",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "causal-inference-specialist",
+      "domain": "causal-inference",
+      "competence": "causal graphs, identification, confounding and sensitivity",
+      "primary_outputs": "identification argument; DAG; sensitivity analysis",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "bayesian-methodologist",
+      "domain": "bayesian-inference",
+      "competence": "priors, likelihoods, posterior checks, decision analysis",
+      "primary_outputs": "prior rationale; posterior diagnostics; decision record",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "sequential-experimentation-specialist",
+      "domain": "sequential-design",
+      "competence": "sequential tests, adaptive designs and stopping boundaries",
+      "primary_outputs": "sequential plan; alpha/spending or posterior stopping rules",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "ml-research-scientist",
+      "domain": "machine-learning-research",
+      "competence": "model design, learning methods, scientific ML claims",
+      "primary_outputs": "model card; experimental report; baseline comparison",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "ml-evaluation-specialist",
+      "domain": "ml-evaluation",
+      "competence": "benchmark validity, eval design, leakage and robustness",
+      "primary_outputs": "evaluation protocol; dataset lineage; error analysis",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "mlops-engineer",
+      "domain": "ml-operations",
+      "competence": "reproducible training/inference pipelines and deployment observability",
+      "primary_outputs": "pipeline manifest; reproducible build and monitoring evidence",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "data-scientist",
+      "domain": "data-science",
+      "competence": "data analysis, feature construction and decision support",
+      "primary_outputs": "data analysis; assumptions; uncertainty and limitations",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "data-steward",
+      "domain": "data-governance",
+      "competence": "dataset lineage, quality, access, retention and semantic integrity",
+      "primary_outputs": "data contract; lineage and quality report",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "validation-engineer",
+      "domain": "validation-assurance",
+      "competence": "requirements traceability, verification and acceptance testing",
+      "primary_outputs": "validation matrix; test evidence; disposition",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "scientific-red-teamer",
+      "domain": "adversarial-science",
+      "competence": "falsification, alternative explanations, robustness challenge",
+      "primary_outputs": "red-team findings; counterexamples; residual risk",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "quality-assurance-auditor",
+      "domain": "quality-assurance",
+      "competence": "process compliance, artifact completeness and release evidence",
+      "primary_outputs": "QA audit; nonconformance register",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "safety-and-risk-reviewer",
+      "domain": "safety-assurance",
+      "competence": "hazard analysis, risk controls and safe operating boundaries",
+      "primary_outputs": "risk assessment; mitigations; escalation decision",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "optimization-researcher",
+      "domain": "optimization",
+      "competence": "objective formulation, constraints, optimization algorithms",
+      "primary_outputs": "optimization model; sensitivity and feasibility analysis",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "control-systems-specialist",
+      "domain": "control-systems",
+      "competence": "dynamic systems, feedback, stability and control",
+      "primary_outputs": "system model; stability and control analysis",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "complex-systems-researcher",
+      "domain": "complex-systems",
+      "competence": "emergence, feedback, nonlinear dynamics and system effects",
+      "primary_outputs": "system map; scenario and sensitivity analysis",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "graph-science-specialist",
+      "domain": "graph-science",
+      "competence": "network structure, graph algorithms and relationship analysis",
+      "primary_outputs": "graph model; metric definitions; structural findings",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "behavioral-scientist",
+      "domain": "behavioral-science",
+      "competence": "behavioral constructs, intervention design and outcome measurement",
+      "primary_outputs": "construct map; intervention protocol; outcome measures",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "performance-psychologist",
+      "domain": "performance-psychology",
+      "competence": "motivation, feedback, goal setting, performance and resilience",
+      "primary_outputs": "behavioral hypothesis; intervention and measurement plan",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    },
+    {
+      "id": "do-statement-methodologist",
+      "domain": "do-statements",
+      "competence": "operationalizing DO statements as observable, testable behaviors",
+      "primary_outputs": "DO statement operationalization; adherence and outcome measures",
+      "contract_ref": "common_contract",
+      "canonical_seat_ids_created": false,
+      "provider_identity": false
+    }
+  ]
+}

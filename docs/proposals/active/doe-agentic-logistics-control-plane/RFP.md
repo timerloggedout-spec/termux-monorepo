@@ -115,6 +115,8 @@ The machine-readable execution order is [`FREE-INFERENCE-TOURNAMENT-ORDER.yml`](
 
 **Current blockers are retained, not papered over.** PR #5134 reports 98 model-lane records with all 98 free-eligibility values unknown; it is not merged at this order's preparation. Issue #5160 records the pool/cadence repair as blocked on prerequisite integration and external execution access. Therefore the first permitted work is offline reconciliation, simulation, design amendment and deterministic tests. No live endpoint tournament is currently authorized.
 
+**QUE deferred re-evaluation is not established.** The written Project Task contract says a QUE admission drain re-evaluates `deferred-by-tier` filings. The current workflow inventory found `swarm-admission.yml` only on `issues.opened/reopened`, while `dispatch-watchdog.yml` and `scripts/dispatch/dispatch_watchdog.py` age/escalate `dispatch-queued` unclaimed tasks and do not re-run admission for `deferred-by-tier`. No dedicated admission-drain workflow was found. Issue #5195 remains `deferred-by-tier`. Do not remove the label, manually add `swarm-admitted`, reopen the issue or claim execution to bypass the gate. The actual re-evaluation mechanism must be located and proven, or a separately reviewed owner-governed fix must land before this order can be dispatched.
+
 ## 6. Phased implementation pipeline
 
 | Phase | Work | Gate / artifact |

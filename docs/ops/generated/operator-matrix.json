@@ -3,9 +3,9 @@
     "open_issues": 577,
     "open_prs": 358,
     "pr_classes": {
-      "CANDIDATE": 168,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 179,
+      "CANDIDATE": 170,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 176,
       "SUPERSEDE": 0
     }
   },
@@ -118,7 +118,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T08:48:32Z",
+  "generated_at": "2026-11-12T09:01:44Z",
   "issues_unlabelled": [
     308,
     388,
@@ -183,10 +183,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "02c9c06e23"
+    "sha": "9a06366834"
   },
   "prs": [
     {
@@ -342,6 +342,20 @@
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a570e84ab0",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5093,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "updated_at": "2026-11-09T23:45:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -1097,12 +1111,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "0b3461970f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-12T08:46:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a550d9a93c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-12T08:35:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -2443,24 +2485,10 @@
       },
       "head_sha": "e4e53d1a3a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5091,
       "title": "Fix invalid YAML in ios-termux-contribute.yml",
       "updated_at": "2026-11-09T22:04:53Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a570e84ab0",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5093,
-      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
-      "updated_at": "2026-11-09T23:45:44Z"
     },
     {
       "class": "CANDIDATE",
@@ -2695,10 +2723,24 @@
       },
       "head_sha": "9df9e5a78d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5199,
       "title": "feat(qdesk): deadline desk \u2014 requirement-closure Gantt, T-7d/T-48h/T-12h alarms via hark:queue, page freshness audit; fix ingest + rfp-feed collectors [skip render]",
       "updated_at": "2026-11-12T08:36:30Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "414b0e6365",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5201,
+      "title": "Tribute honest outcome SLO (zero real merges = FAILURE) + claim auction (free endpoints ante + bid) [skip render]",
+      "updated_at": "2026-11-12T08:52:22Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -2737,7 +2779,7 @@
       },
       "head_sha": "f1d2eef16b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 81,
       "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
       "updated_at": "2026-10-22T22:25:52Z"
@@ -2751,7 +2793,7 @@
       },
       "head_sha": "f6935fbc15",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 92,
       "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
       "updated_at": "2026-10-21T04:40:31Z"
@@ -2793,7 +2835,7 @@
       },
       "head_sha": "c154540e4b",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 143,
       "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
       "updated_at": "2026-10-26T07:41:31Z"
@@ -2947,7 +2989,7 @@
       },
       "head_sha": "61b2d94eb2",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 1274,
       "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
       "updated_at": "2026-10-23T07:40:35Z"
@@ -3217,34 +3259,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "0b3461970f",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T08:46:58Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "in_progress"
-      },
-      "head_sha": "a550d9a93c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T08:35:44Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3897,12 +3911,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "386675acd6",
+      "head_sha": "7a4897f545",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T08:46:45Z"
+      "updated_at": "2026-11-12T09:00:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4025,10 +4039,10 @@
       },
       "head_sha": "eae83e0a92",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-12T08:48:00Z"
+      "updated_at": "2026-11-12T08:48:49Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4963,7 +4977,7 @@
       },
       "head_sha": "8b17fcb576",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 5062,
       "title": "feat(orchestration): autonomous escalation on current master",
       "updated_at": "2026-11-09T14:14:07Z"
@@ -5033,7 +5047,7 @@
       },
       "head_sha": "6174603e19",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5084,
       "title": "fix(context): separate history pages from GitHub detail endpoint bounds",
       "updated_at": "2026-11-09T14:10:54Z"
@@ -5061,7 +5075,7 @@
       },
       "head_sha": "75bc10376d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5086,
       "title": "feat(telemetry): join credential provenance to DoE instance identity",
       "updated_at": "2026-11-09T14:40:45Z"
@@ -5075,7 +5089,7 @@
       },
       "head_sha": "1c3b6e7f54",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5092,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-09T22:28:12Z"
@@ -5089,7 +5103,7 @@
       },
       "head_sha": "02a830cc50",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5094,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-10T00:06:06Z"
@@ -5191,20 +5205,6 @@
       "number": 5198,
       "title": "docs(doe): establish governed free-inference endpoint tournament order",
       "updated_at": "2026-11-12T06:17:31Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "414b0e6365",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5201,
-      "title": "Tribute honest outcome SLO (zero real merges = FAILURE) + claim auction (free endpoints ante + bid) [skip render]",
-      "updated_at": "2026-11-12T08:44:26Z"
     }
   ],
   "schema": "operator-matrix/v1",

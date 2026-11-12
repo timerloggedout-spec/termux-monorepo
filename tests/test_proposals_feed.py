@@ -186,3 +186,4 @@ def test_proposal_type_vocabulary_and_unknown_type_gap(tmp_path):
     feed = pf.build_feed(registry, tmp_path, "2026-11-11T00:00:00Z")
     assert feed["proposals"][0]["proposal_type"] == "unregistered_type"
     assert any("unknown proposal_type" in gap for gap in feed["gaps"])
+    assert feed["counts"]["by_type"] == {"unregistered_type": 1}

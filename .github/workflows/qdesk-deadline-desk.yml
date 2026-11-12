@@ -1,0 +1,204 @@
+# QDesk deadline desk (docs/ops/QDESK-DEADLINE-ALARMS.md). Additive file.
+# Why: the 2026-11-11 Amazon Research Awards cycle (C15) closed with an unmet
+# PI / fiscal-sponsor requirement that nothing chased and nobody was told.
+#  - plan:   every entry in ops/challenge/coordinator.json (events AND
+#            candidate_events) -> requirement-closure tasks with dates on the
+#            QDesk Gantt + deadline alarms at T-7d, T-48h, T-12h and MISSED.
+#  - pages:  served-SHA / stamp freshness of the tracking pages.
+#  - vercel: names-only census of today's Vercel deployments (who burns the
+#            100/day Hobby quota that blocks tribute-vercel-prod).
+#  - alarms go to the Hark queue (hark-enqueue.yml) so a miss is never silent.
+# Every 2h (a T-12h tier always lands with >=10h to act), plus on any change
+# to the coordinator. No model calls; no secret values printed.
+name: qdesk-deadline-desk
+
+on:
+  schedule:
+    - cron: "7 */2 * * *"
+  push:
+    branches: [master]
+    paths:
+      - ops/challenge/coordinator.json
+      - ops/challenge/qdesk-pages.json
+      - scripts/que/qdesk_deadlines.py
+      - scripts/que/pages_freshness.py
+      - .github/workflows/qdesk-deadline-desk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qdesk-deadline-desk
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      alarms: ${{ steps.plan.outputs.alarms }}
+      n: ${{ steps.plan.outputs.n }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/que
+            ops/challenge
+      - id: plan
+        run: |
+          set -euo pipefail
+          python3 scripts/que/qdesk_deadlines.py --prev ops/challenge/qdesk-plan.json \
+            --plan /tmp/plan.json --gantt /tmp/gantt.txt --alarms /tmp/alarms.json
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          a = json.load(open("/tmp/alarms.json"))[:10]
+          rows = [{"key": x["key"], "priority": x["priority"],
+                   "title": f"QDesk {x['tier']}: {x['entry']} {x['name']}"[:120],
+                   "inputs": "\n".join([f"entry: {x['entry']}", f"tier: {x['tier']}", f"deadline: '{x['deadline']}'",
+                                        f"left_hours: {x['left_hours']}", f"kind: {x['kind']}",
+                                        "why: " + json.dumps(x['why'][:400]), "url: " + json.dumps(x['url']),
+                                        "owner_packets: " + json.dumps(x['owner_packets'])])} for x in a]
+          print("alarms=" + json.dumps(rows, separators=(",", ":")))
+          print(f"n={len(rows)}")
+          PY
+          {
+            echo "## QDesk deadline desk"
+            python3 - <<'PY'
+          import json
+          p = json.load(open("/tmp/plan.json"))
+          print(f"HITL rate {p['hitl']['rate']} ({p['hitl']['owner_steps']} owner steps / {p['hitl']['tasks']} tasks)\n")
+          print("| entry | kind | deadline | hours left |\n|---|---|---|---|")
+          for e in sorted([e for e in p["entries"] if e["deadline"]], key=lambda e: e["left_hours"]):
+              print(f"| {e['id']} | {e['kind']} | {e['deadline']} | {e['left_hours']} |")
+          PY
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit plan when it changed (state for alarm dedupe) [skip render]
+        run: |
+          set -euo pipefail
+          changed=$(python3 - <<'PY'
+          import json, datetime
+          new = json.load(open("/tmp/plan.json"))
+          try:
+              old = json.load(open("ops/challenge/qdesk-plan.json"))
+          except Exception:
+              old = {}
+          sig = lambda p: json.dumps([p.get("tasks"), p.get("alarms_sent"), [(e["id"], e["kind"], e["deadline"]) for e in p.get("entries", [])]], sort_keys=True)
+          age = 1e9
+          try:
+              age = (datetime.datetime.fromisoformat(new["generated_at"]) - datetime.datetime.fromisoformat(old["generated_at"])).total_seconds()
+          except Exception:
+              pass
+          print("yes" if sig(new) != sig(old) or age > 5 * 3600 else "no")
+          PY
+          )
+          [ "$changed" = yes ] || { echo "plan unchanged"; exit 0; }
+          cp /tmp/plan.json ops/challenge/qdesk-plan.json
+          cp /tmp/gantt.txt ops/challenge/qdesk-requirements.gantt.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ops/challenge/qdesk-plan.json ops/challenge/qdesk-requirements.gantt.txt
+          git commit -m "chore(qdesk): refresh deadline plan + alarm state [skip render]"
+          for i in 1 2 3; do
+            git pull --rebase -q origin master && git push -q origin HEAD:master && exit 0
+            sleep $((i * 5))
+          done
+          echo "::warning::plan commit failed after 3 tries; alarms may re-append next run"
+
+  deadline-alarms:
+    needs: plan
+    if: needs.plan.outputs.n != '0' && needs.plan.outputs.n != ''
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        alarm: ${{ fromJSON(needs.plan.outputs.alarms) }}
+    permissions:
+      issues: write
+      contents: read
+    uses: ./.github/workflows/hark-enqueue.yml
+    with:
+      title: ${{ matrix.alarm.title }}
+      key: ${{ matrix.alarm.key }}
+      project: main
+      priority: ${{ matrix.alarm.priority }}
+      inputs: ${{ matrix.alarm.inputs }}
+      done_when: |
+        Either the entry is submitted (coordinator status), or every open requirement-closure task
+        for it in ops/challenge/qdesk-plan.json is done or explicitly re-planned with a new date,
+        and any owner_packets were raised to the Owner as a ready-to-approve packet.
+
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      alarms: ${{ steps.audit.outputs.alarms }}
+      n: ${{ steps.audit.outputs.n }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/que
+            ops/challenge/qdesk-pages.json
+      - id: audit
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/que/pages_freshness.py --out /tmp/pages.json --alarms /tmp/palarms.json
+          python3 -c "import json;a=json.load(open('/tmp/palarms.json'))[:6];print('alarms='+json.dumps(a,separators=(',',':')));print(f'n={len(a)}')" >> "$GITHUB_OUTPUT"
+          python3 -c "
+          import json;p=json.load(open('/tmp/pages.json'))['pages']
+          print('## Tracking pages\n\n| page | state | HTTP | detail |\n|---|---|---|---|')
+          [print(f\"| {r['name']} | {r['state']} | {r['http']} | {r['detail']} |\") for r in p]" >> "$GITHUB_STEP_SUMMARY"
+
+  page-alarms:
+    needs: pages
+    if: needs.pages.outputs.n != '0' && needs.pages.outputs.n != ''
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        alarm: ${{ fromJSON(needs.pages.outputs.alarms) }}
+    permissions:
+      issues: write
+      contents: read
+    uses: ./.github/workflows/hark-enqueue.yml
+    with:
+      title: ${{ matrix.alarm.title }}
+      key: ${{ matrix.alarm.key }}
+      project: deploy-quota
+      priority: ${{ matrix.alarm.priority }}
+      inputs: |
+        why: ${{ toJSON(matrix.alarm.why) }}
+      done_when: The page serves a commit within its lag budget (ops/challenge/qdesk-pages.json), with the served SHA as evidence.
+
+  vercel-census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - name: Names-only count of Vercel deployments in the last 24h (Hobby cap 100/day)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SCOPE: ${{ vars.VERCEL_SCOPE || 'timerloggedout-5184s-projects' }}
+        run: |
+          set -euo pipefail
+          [ -n "${VERCEL_TOKEN:-}" ] || { echo "::notice::VERCEL_TOKEN not set; census skipped"; exit 0; }
+          since=$(( ($(date +%s) - 86400) * 1000 ))
+          curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?limit=100&since=$since&slug=$SCOPE" -o /tmp/d.json \
+            || { echo "::warning::Vercel deployments API unreadable"; exit 0; }
+          python3 - <<'PY'
+          import json, collections
+          d = json.load(open("/tmp/d.json")).get("deployments", [])
+          c = collections.Counter((x.get("name"), x.get("target") or "preview", (x.get("meta") or {}).get("githubCommitRef") and "git" or "cli") for x in d)
+          print(f"::notice title=vercel census::{len(d)} deployments in 24h (cap 100)")
+          for (name, target, via), n in c.most_common(8):
+              print(f"::notice title=vercel census::{name} {target} via {via}: {n}")
+          PY

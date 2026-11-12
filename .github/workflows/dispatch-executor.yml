@@ -1,0 +1,148 @@
+name: '⚙️ Dispatch Executor (admitted -> claim + fire)'
+
+# #5176: converts filings in state {swarm-admitted AND dispatch-queued
+# AND unclaimed} into {producer claim + build-dispatch fire}. Consumes
+# admitted state ONLY -- never re-evaluates deferred-by-tier filings
+# (admission drain = #4977 Fix 3b).
+#
+# Gates are fail-closed (scripts/ops/dispatch_executor.py): eligibility,
+# arm selection per the #5151 registry + census, quota gates off the
+# Cadence LEDGER (#5152) mirror, and the standing pre-flight law.
+# A HOLD names its cause; nothing fires on an unknown.
+# One conversion per run by default (max_conversions=1) -- minimal
+# blast radius, one auditable stamp set per run. QDesk may raise it
+# via workflow_dispatch input.
+#
+# Fail-visible: a script/workflow error fails the run loudly, uploads
+# the receipt artifact, and stamps an executor_error comment on #5176
+# (the filing of record). HOLDs are recorded in the receipt artifact
+# and step summary ONLY -- no comment per hold per run (the
+# state-comment flurry lesson, #5176 c.6823792254); a filing gets a
+# comment only when it transitions (claim/fire).
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      max_conversions:
+        description: 'Max filings to convert this run (default 1; raise only on a QDesk decision)'
+        required: false
+        default: '1'
+      dry_run:
+        description: 'Decide only; claim nothing and fire nothing'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: dispatch-executor
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Mint Termux Fleet Swarm token (claim + fire)
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: read
+          permission-issues: write
+          permission-actions: write
+
+      - name: Collect admitted filings
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+        run: |
+          set -euo pipefail
+          gh api 'repos/${{ github.repository }}/issues?labels=swarm-admitted,dispatch-queued&state=open&per_page=100' \
+            --jq '[.[] | {number, title, labels: [.labels[].name]}]' > filings.json
+          echo "admitted+queued: $(jq length filings.json)"
+
+      - name: Decide (executor)
+        id: decide
+        run: |
+          set -euo pipefail
+          WORKFLOW_SHA="$(git rev-parse HEAD:.github/workflows/dispatch-executor.yml)"
+          SCRIPT_SHA="$(git rev-parse HEAD:scripts/ops/dispatch_executor.py)"
+          python3 scripts/ops/dispatch_executor.py decide \
+            --filings filings.json \
+            --arms ops/dispatch/build-arms.json \
+            --census ops/que/feeds/arm-census.json \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --run-id "${{ github.run_id }}" \
+            --max-conversions "${{ inputs.max_conversions || 1 }}" \
+            --workflow-ref ".github/workflows/dispatch-executor.yml" \
+            --workflow-sha "$WORKFLOW_SHA" \
+            --script-sha "$SCRIPT_SHA" \
+            --out decisions.json
+          echo "fires: $(jq '[.decisions[] | select(.action=="fire")] | length' decisions.json)"
+          echo "holds: $(jq '[.decisions[] | select(.action=="hold")] | length' decisions.json)"
+
+      - name: Claim + fire (one conversion per decision)
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+        run: |
+          set -euo pipefail
+          jq -c '.decisions[] | select(.action=="fire")' decisions.json | while read -r d; do
+            n="$(echo "$d" | jq -r .issue)"
+            arm="$(echo "$d" | jq -r .arm)"
+            qc="$(echo "$d" | jq -r .quota_class)"
+            # Claim first (comment + label in one motion -- the claim is
+            # the exactly-once mutex), then fire build-dispatch.
+            echo "$d" | jq -r .claim_body > claim.md
+            gh issue comment "$n" --body-file claim.md
+            gh issue edit "$n" --add-label dispatch-claimed
+            gh workflow run build-dispatch.yml --ref master \
+              -f issue_number="$n" -f arm="$arm" -f quota_class="$qc"
+            echo "fired #$n on $arm ($qc)"
+          done
+
+      - name: Publish receipt artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dispatch-executor-receipt
+          path: |
+            decisions.json
+            filings.json
+          retention-days: 30
+
+      - name: "Stamp executor error on #5176"
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+        run: |
+          gh issue comment 5176 --body "**DISPATCH-EXECUTOR ERROR** — run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} failed. Receipt artifact: dispatch-executor-receipt. No filing was claimed or fired by this run; the failure is fail-visible here, not silent."
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Dispatch executor — run ${{ github.run_id }}"
+            echo ""
+            echo "- fires: $(jq '[.decisions[] | select(.action=="fire")] | length' decisions.json 2>/dev/null || echo '?')"
+            echo "- holds: $(jq '[.decisions[] | select(.action=="hold")] | length' decisions.json 2>/dev/null || echo '?')"
+            echo ""
+            echo "Holds (named causes):"
+            echo ""
+            jq -r '.decisions[] | select(.action=="hold") | "- #\(.issue): \(.hold_reason)"' decisions.json 2>/dev/null || echo "(decisions.json unavailable)"
+          } >> "$GITHUB_STEP_SUMMARY"

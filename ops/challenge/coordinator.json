@@ -1184,7 +1184,7 @@
    ],
    "platform": "builder-io",
    "official_url": "https://builder.io/hackathon",
-   "status": "active",
+   "status": "closed - wall 2026-11-09 passed unsubmitted; Clips demo published post-wall 2026-11-12; late-submit rejected by the closed form (terminal record 2026-11-12)",
    "entrant_moniker": "entrant{entrantBuilderIo}[platform:builder-io]",
    "dates": {
     "announced": "NOT_ESTABLISHED",
@@ -1284,7 +1284,7 @@
     ]
    },
    "submission": {
-    "state": "none",
+    "state": "none - NO submission made. Late-submit attempted 2026-11-12T07:20:00-08:00 under the Desk conditional election; the form was closed (\"deadline has passed\" - wall was 2026-11-09 23:59 PT). Attempt of record: issue #5137 comment 6827691564.",
     "at": null,
     "confirmation_ref": null,
     "landing_target": "2026-11-08",
@@ -1305,14 +1305,14 @@
      "one_liner": "D3 pick from the Delphi lane's brief-first generation on the official brief evidence pack; details in that generation record.",
      "origin": "brief-first-gen",
      "brief_anchor": "docs/ops/CHALLENGE-BRIEF-EVIDENCE-2026-10-28.md (D3 section)",
-     "status": "frozen",
+     "status": "closed - not submitted (wall 2026-11-09; demo published post-wall 2026-11-12; late-submit rejected, form closed)",
      "reason": "Manager-enacted freeze 2026-10-30 under owner mandate (\"manage progress. LFGOOO\"); reversible by owner.",
      "superseded_by": null,
      "assets": {
       "repo_dir": null,
       "proposal_dir": null,
-      "demo_url": null,
-      "clips_url": null,
+      "demo_url": "https://clips.agent-native.com/r/1Um5i6GLer0j",
+      "clips_url": "https://clips.agent-native.com/r/1Um5i6GLer0j",
       "repo_url": "https://github.com/timerloggedout-spec/listinglens",
       "repo_note": "Dedicated public repo created 2026-10-30 (owner order: new repo per entry; created by the Manager seat via PAT API, verified). Scaffold + build brief live in the repo; the monorepo apps/ scaffold from PR #2533 was superseded the same day and removed."
      },
@@ -1333,14 +1333,14 @@
      "one_liner": "Human-in-the-loop decision-review cockpit: a Delphi-style agent panel drafts decision proposals with evidence receipts; every consequential move is a shared defineAction().",
      "origin": "oracle_proposal#42",
      "brief_anchor": null,
-     "status": "questioned",
+     "status": "closed - not submitted (wall 2026-11-09; demo published post-wall 2026-11-12; late-submit rejected, form closed)",
      "reason": "Owner correction 2026-10-28: proposal #42 is QUESTIONED / under review as a D3 build - the inward-generation defect is challenged (duplicates the fleet's own Delphi system, inward-looking, no lineage from the official Builder.io brief). NOT terminated as a proposal record; NOT the active build - do not build pending the review outcome.",
      "superseded_by": null,
      "assets": {
       "repo_dir": null,
       "proposal_dir": "docs/proposals/active/delphi-desk-builder-io",
-      "demo_url": null,
-      "clips_url": null
+      "demo_url": "https://clips.agent-native.com/r/1Um5i6GLer0j",
+      "clips_url": "https://clips.agent-native.com/r/1Um5i6GLer0j"
      },
      "decisions": [
       {
@@ -1447,8 +1447,10 @@
    "clips": {
     "storage": "CONNECTED - Builder.io (fleet session, 2026-11-10)",
     "gate": "D3-CLIPS-STORAGE SATISFIED",
-    "upload": "PENDING - fleet-rendered ListingLens demo MP4 (file location to entries lane from D3/Desk); then public URL + no-login check; submit-once fires per Desk election on PASS."
-   }
+    "upload": "DONE 2026-11-12 - https://clips.agent-native.com/r/1Um5i6GLer0j (Public, 0:15, \"ListingLens - D3 demo\"). No-login verified by Desk + D3 seat 2026-11-12; corroborated by entries lane unauthenticated read 2026-11-12 (page title + Public stamp)."
+   },
+   "clips_url": "https://clips.agent-native.com/r/1Um5i6GLer0j",
+   "demo_url": "https://clips.agent-native.com/r/1Um5i6GLer0j"
   },
   {
    "id": "D4",

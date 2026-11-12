@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c9e84feeaa9ba50f878ff091adf6e08d042f9a17334dba5bf39bcc320efe5746",
-  "workflow_count": 301,
+  "source_fingerprint": "dda743d7f8c570bdd571f0785c50d02e0baa1f3cbae60a317090598cfbaae7e9",
+  "workflow_count": 305,
   "workflows": [
     {
       "action_pins": [],
@@ -51,7 +51,8 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "bounded-state-write",
       "concurrency": "# Comment storms must not cancel an in-flight ledger. Cancelled zero-job # runs on issue_comment (PR #1156, 2026-10-06) are a failure mode, not a skip. # Include event_name so a /ledger comment does not cancel pull_request_target. group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
@@ -330,6 +331,7 @@
     {
       "action_pins": [
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
@@ -699,15 +701,36 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: build-arm-census-${{ github.event.pull_request.number || github.run_id }} # Superseding PR revisions cancel stale in-flight census runs to limit repeat provider spend. cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "census",
+        "live-build"
+      ],
+      "name": "🧭 Build Arm Census (",
+      "path": ".github/workflows/build-arm-census.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
-      "authority": "bounded-state-write",
+      "authority": "writer",
       "concurrency": "group: build-dispatch-${{ github.event.issue.number || inputs.issue_number }} cancel-in-progress: false",
-      "domain": "peer-provider-review",
+      "domain": "agentic-development",
       "jobs": [
         "build"
       ],
-      "name": "🔀 Build Dispatch (Gemini build arm)",
+      "name": "🔀 Build Dispatch (multi-arm)",
       "path": ".github/workflows/build-dispatch.yml",
       "schedules": [],
       "triggers": [
@@ -894,7 +917,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: challenge-countdowns-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1840,6 +1865,28 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: dispatch-executor cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "execute"
+      ],
+      "name": "⚙️ Dispatch Executor (admitted -> claim + fire)",
+      "path": ".github/workflows/dispatch-executor.yml",
+      "schedules": [
+        "*/15 * * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "read-only-or-advisory",
@@ -1856,7 +1903,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: dispatch-tree-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -2392,27 +2441,18 @@
       ]
     },
     {
-      "action_pins": [
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
-      ],
-      "authority": "writer",
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "peer-provider-review",
       "jobs": [
-        "dispatch",
-        "invoke",
-        "review",
-        "triage"
+        "retired"
       ],
-      "name": "🔀 Gemini Dispatch (free-tier agentic)",
+      "name": "DEPRECATED — Gemini Dispatch retired",
       "path": ".github/workflows/gemini-dispatch.yml",
       "schedules": [],
       "triggers": [
-        "issue_comment",
-        "issues",
-        "pull_request",
-        "pull_request_review",
-        "pull_request_review_comment"
+        "workflow_dispatch"
       ]
     },
     {
@@ -2945,7 +2985,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: lane-events-recorder-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
       "domain": "agentic-development",
@@ -2975,7 +3017,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: linguist-panel-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -3419,7 +3463,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: oracle-panel-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -3491,6 +3537,7 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
@@ -3504,7 +3551,6 @@
       "schedules": [],
       "triggers": [
         "issue_comment",
-        "pull_request",
         "pull_request_review",
         "pull_request_target"
       ]
@@ -3602,7 +3648,8 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "writer",
       "concurrency": "group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
@@ -3620,8 +3667,10 @@
       ]
     },
     {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "bounded-state-write",
       "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -3641,6 +3690,7 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "read-only-or-advisory",
@@ -3868,6 +3918,26 @@
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "writer",
+      "concurrency": "group: qdesk-self-repair cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "loop"
+      ],
+      "name": "qdesk self-repair",
+      "path": ".github/workflows/qdesk-self-repair.yml",
+      "schedules": [
+        "41 */3 * * *"
+      ],
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
       "concurrency": "group: que-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -3924,7 +3994,7 @@
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
-      "concurrency": "group: quota-dispatch-tree-${{ github.event.comment.id || (github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number)) || (github.event.workflow_run.id && format('run-{0}', github.event.workflow_run.id)) || (github.event_name == 'push' && github.ref) || github.event_name }} # Keep active fan-out intact; newer pending PR/push wakes coalesce by group. cancel-in-progress: false",
+      "concurrency": "group: quota-dispatch-tree cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "complete-force-request",
@@ -3939,7 +4009,6 @@
       "triggers": [
         "issue_comment",
         "pull_request_target",
-        "push",
         "schedule",
         "workflow_run"
       ]
@@ -4347,7 +4416,7 @@
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "writer",
-      "concurrency": "group: repo-tracking-collect cancel-in-progress: false",
+      "concurrency": "group: repo-tracking-collect # #5219 leg (b): every run re-derives the full projection from source # state, so a stale in-flight refresh is worthless once a newer event # lands — cancel it instead of letting refresh runs queue up behind # the comment/event flurry. Pushes are atomic; the surviving run # re-derives and publishes the freshest projection. cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "collect"
@@ -4678,7 +4747,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: surface-feeds-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -4697,7 +4768,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "bounded-state-write",
       "concurrency": "group: swarm-admission-${{ github.event.issue.number }} cancel-in-progress: false",
       "domain": "agentic-development",
@@ -5373,6 +5446,23 @@
       ],
       "name": "vercel-quota-probe",
       "path": ".github/workflows/vercel-quota-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: video-render-${{ inputs.issue_number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "render"
+      ],
+      "name": "video-render",
+      "path": ".github/workflows/video-render.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

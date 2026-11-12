@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 586,
-    "open_prs": 364,
+    "open_issues": 594,
+    "open_prs": 362,
     "pr_classes": {
-      "CANDIDATE": 173,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 180,
+      "CANDIDATE": 172,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 178,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 332,
+      "issues": 340,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 60,
-      "prs": 362,
+      "prs": 360,
       "unlabelled_numbers": [
         308,
         388,
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T12:24:23Z",
+  "generated_at": "2026-11-12T15:41:08Z",
   "issues_unlabelled": [
     308,
     388,
@@ -188,7 +188,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "6f30bb6db5"
+    "sha": "012c90ad82"
   },
   "prs": [
     {
@@ -344,6 +344,20 @@
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a65ada737a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5144,
+      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+      "updated_at": "2026-11-10T23:54:24Z"
     },
     {
       "class": "CANDIDATE",
@@ -1113,20 +1127,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "c709ef60bb",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T11:51:15Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "fd02b2c8e0",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1525,6 +1525,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4176089cfc",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-12T15:14:37Z"
     },
     {
       "class": "CANDIDATE",
@@ -2107,12 +2121,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "b0dc0be4e2",
+      "head_sha": "73148a7e4a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-11T21:48:20Z"
+      "updated_at": "2026-11-12T14:29:22Z"
     },
     {
       "class": "CANDIDATE",
@@ -2499,20 +2513,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "a65ada737a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5144,
-      "title": "feat(ci): implement merged branch review audit and deployment quota engine",
-      "updated_at": "2026-11-10T23:54:24Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "accb23365c",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2723,54 +2723,54 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e5510451fe",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5208,
-      "title": "feat(que): QDesk self-repair loop \u2014 intake, promote gate, learn ledger [skip render]",
-      "updated_at": "2026-11-12T09:58:55Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e393962179",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5209,
-      "title": "fix(gates): SIE target 1 \u2014 branch gates degrade platform walls instead of failing [skip render]",
-      "updated_at": "2026-11-12T09:58:56Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "6410f0972c",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5221,
-      "title": "docs(architecture): reconcile swarm routing contracts and lineage",
-      "updated_at": "2026-11-12T12:16:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "621378344a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5222,
       "title": "docs(architecture): reconcile swarm routing control planes",
-      "updated_at": "2026-11-12T12:01:20Z"
+      "updated_at": "2026-11-12T14:27:24Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "939cd07e1d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5224,
+      "title": "fix(doe): make inference allocation DoE-governed",
+      "updated_at": "2026-11-12T14:27:36Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "1d50068749",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5234,
+      "title": "ops(queue): pit crew \u2014 coalesce tree wakes \u2227 self-resolving queue [skip render]",
+      "updated_at": "2026-11-12T13:50:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "204184aaa5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5244,
+      "title": "feat(delphic): integrate Observatory with DoE MoneyBall pool (rebased)",
+      "updated_at": "2026-11-12T14:45:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3294,15 +3294,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "in_progress",
+        "smoke": "success"
       },
-      "head_sha": "77ec78c530",
+      "head_sha": "1d9e4f8d2a",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T12:19:41Z"
+      "updated_at": "2026-11-12T15:19:03Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "8b16d00014",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-12T15:33:41Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3871,12 +3885,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "138c209478",
+      "head_sha": "2ec24bbbac",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3209,
       "title": "chore(cadence): auto-register providers from surface drift",
-      "updated_at": "2026-11-11T14:36:58Z"
+      "updated_at": "2026-11-12T15:31:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3941,26 +3955,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "8d79113364",
+      "head_sha": "625cff8586",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-12T12:14:05Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "d4cc46b8a7",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T12:08:06Z"
+      "updated_at": "2026-11-12T14:10:03Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4503,7 +4503,7 @@
       },
       "head_sha": "f7c205fca9",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 4646,
       "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
       "updated_at": "2026-11-10T16:51:09Z"
@@ -4881,7 +4881,7 @@
       },
       "head_sha": "861f880ec0",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5034,
       "title": "chore(dashboards): refresh dispatch-tree feed",
       "updated_at": "2026-11-10T15:55:41Z"
@@ -5103,12 +5103,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "716a0e1e17",
+      "head_sha": "6539540035",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5085,
       "title": "feat(orchestration): autonomous escalation and recovery",
-      "updated_at": "2026-11-12T04:53:50Z"
+      "updated_at": "2026-11-12T14:36:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5175,7 +5175,7 @@
       },
       "head_sha": "1148a37aac",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5143,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-10T20:57:48Z"
@@ -5189,7 +5189,7 @@
       },
       "head_sha": "150bf2d8b4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5147,
       "title": "docs(quota): define API admission + resilient compute mesh contract",
       "updated_at": "2026-11-11T01:57:30Z"
@@ -5207,20 +5207,6 @@
       "number": 5173,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-11T14:43:32Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "4d3c4e3041",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5178,
-      "title": "Multi-arm build routing: endpoint-agnostic build-dispatch (#5151) \u2014 DO NOT MERGE",
-      "updated_at": "2026-11-12T05:38:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5248,7 +5234,7 @@
       "mergeable_state": "unknown",
       "number": 5198,
       "title": "docs(doe): establish governed free-inference endpoint tournament order",
-      "updated_at": "2026-11-12T06:17:31Z"
+      "updated_at": "2026-11-12T14:22:26Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5257,40 +5243,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "6a63fb7c48",
+      "head_sha": "77f3474784",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5216,
-      "title": "feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
-      "updated_at": "2026-11-12T12:23:23Z"
+      "mergeable_state": "unknown",
+      "number": 5252,
+      "title": "ledger: OC-007 \u2014 D3 close (LOST $5,000, not submitted)",
+      "updated_at": "2026-11-12T15:26:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "329028d106",
+      "head_sha": "470791e6c6",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5224,
-      "title": "fix(doe): make inference allocation DoE-governed",
-      "updated_at": "2026-11-12T12:24:18Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "e24b5ff5b6",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5227,
-      "title": "chore(workflows): retire Gemini Dispatch and preserve audit history",
-      "updated_at": "2026-11-12T12:20:08Z"
+      "mergeable_state": "unknown",
+      "number": 5253,
+      "title": "fix(rate-limit): #5219 verify script \u2014 page list endpoints explicitly",
+      "updated_at": "2026-11-12T15:26:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

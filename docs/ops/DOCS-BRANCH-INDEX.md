@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-12T04:47:11Z` UTC  
+**Generated:** `2026-11-12T15:36:20Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 272 docs-lane branch(es)
+**Count:** 276 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -236,10 +236,12 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/rl-05-status-2026-08-09`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-05-status-2026-08-09) | `736a459ba488` | — | — | orphan lane |
 | [`docs/rl-board-2026-08-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rl-board-2026-08-10) | `439bc48d63a2` | — | — | orphan lane |
 | [`docs/role-category-reconciliation-2026-11-04`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/role-category-reconciliation-2026-11-04) | `53fa2968a966` | — | — | orphan lane |
+| [`docs/routing-control-plane-reconciliation-2026-11-12`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/routing-control-plane-reconciliation-2026-11-12) | `621378344a74` | [#5222](https://github.com/timerloggedout-spec/termux-monorepo/pull/5222)→`master` (draft) | — | PR without registry link |
 | [`docs/sep-doe-definition`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sep-doe-definition) | `a9db914af1c4` | — | — | orphan lane |
 | [`docs/she-p010-roadmap-catchup`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-p010-roadmap-catchup) | `231a3193d34f` | — | — | orphan lane |
 | [`docs/she-roadmap-p04-p05-status`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-roadmap-p04-p05-status) | `9c318f5c2307` | — | — | orphan lane |
 | [`docs/she-ui-ux-control-plane-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/she-ui-ux-control-plane-rebased) | `0f6db19e71b8` | — | — | orphan lane |
+| [`docs/siglary-a2a-token-findings`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/siglary-a2a-token-findings) | `1f8b3c751f6a` | — | — | orphan lane |
 | [`docs/siglary-brachy-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/siglary-brachy-correction-2026-11-10) | `c725da35f7af` | — | — | orphan lane |
 | [`docs/siglary-issuance-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/siglary-issuance-2026-11-10) | `47c7cbefd67f` | — | — | orphan lane |
 | [`docs/skill-ref-convention-class`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/skill-ref-convention-class) | `f9d31a29f957` | — | — | orphan lane |
@@ -250,6 +252,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/supplement-f1-lane-scout-amendment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/supplement-f1-lane-scout-amendment) | `3a8f30561046` | — | — | orphan lane |
 | [`docs/swarm-research-example-4276`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-research-example-4276) | `ad6d7be39f20` | [#4445](https://github.com/timerloggedout-spec/termux-monorepo/pull/4445)→`master` | — | PR without registry link |
 | [`docs/swarm-research-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-research-template) | `740942b930cc` | [#4390](https://github.com/timerloggedout-spec/termux-monorepo/pull/4390)→`master` | — | PR without registry link |
+| [`docs/swarm-routing-contract-reconciliation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-routing-contract-reconciliation) | `5fe81bd698d8` | — | — | orphan lane |
+| [`docs/swarm-routing-contract-reconciliation-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-routing-contract-reconciliation-v2) | `6410f0972c86` | — | — | orphan lane |
 | [`docs/swarm-s23-deepagent-routing`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/swarm-s23-deepagent-routing) | `cc24f9493715` | — | — | orphan lane |
 | [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
 | [`docs/taktikal-awareness-ooda-architecture`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/taktikal-awareness-ooda-architecture) | `24012fb99b3f` | [#5030](https://github.com/timerloggedout-spec/termux-monorepo/pull/5030)→`master` (draft) | — | PR without registry link |

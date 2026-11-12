@@ -198,3 +198,9 @@ is never a defense. Rollout (as amended by the 19:24 PT
 decree): gates bind on validator landing per surface
 class — order of work 6.3 -> 6.1 -> 6.2 -> 6.4, not
 advisory phases — each binding step receipted on QUE #5116.
+
+### 4.1 Token axis (amendment, 2026-11-12 — evidence filing)
+
+§4 Cost gains a **token** axis. Compression is reported in tokens per target tokenizer, as well as characters ∧ messages. Census of record: 🧾 [`SIGLARY-TOKEN-COST.md`](SIGLARY-TOKEN-COST.md) · 🧾 [`data/siglary-token-cost.json`](data/siglary-token-cost.json).
+
+Finding: CHORDS ∧ GLYPHS cost more tokens than their plain expansions (A2A stamp +38% on o200k_base). OPERATORS are near parity ∧ carry scope. Proposed for Linguist ruling: the A2A machine register = OPERATORS ∧ plain words, ∧ CHORDS ∧ GLYPHS are kept to the display register. Skill: `.agents/skills/siglary-a2a/SKILL.md`.

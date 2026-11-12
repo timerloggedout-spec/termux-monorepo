@@ -121,6 +121,7 @@ The DoE expert must choose a tractable design, factors/levels, blocking and run 
 | Parallel new scheduler, router, quota ledger or dashboard | Reuse QUE, Cadence, provider index, DoE and existing feeds; reject duplicates. |
 | Simulated run reported as live execution | Distinct simulation/live strata and explicit execution-state provenance. |
 | Proposal author generates its own approval | Independent review and item-scoped consensus; no self-certification. |
+| Generic issue-open listener triggers live provider inference outside the QUE/#5160 admission sequence | The current Gemini dispatch workflow maps every `issues.opened` event to `triage`; gate generic intakes before provider invocation and reconcile with the canonical provider admission contract. See DISPATCH-OBSERVATION.md. |
 
 ## 8. Acceptance questions for reviewers
 

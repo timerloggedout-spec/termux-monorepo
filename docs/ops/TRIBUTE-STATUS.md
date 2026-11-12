@@ -61,3 +61,13 @@ read them) and writes `docs/ops/generated/tribute-outcomes.{json,md}`.
 `tribute-outcome-slo.yml` runs after every refresh and turns a FAIL into a red
 run with `::error` annotations. Tests: `tests/test_tribute_outcomes.py`
 (fixture = live census snapshot 2026-11-12).
+
+## Audit revisions (primary view, 2026-11-12)
+
+The primary audit view is the **whole corpus since genesis**, versioned — not a 7/14/30-day window.
+
+- **Genesis:** 2026-09-18T20:30Z, the first lane claim (vedantnimbarte/zero#72; PR #81 one minute later). Self-org PRs (Research-Astute, search-astute-ly, 2026-08-20/21) are classed `self_merge` and excluded from outcome ratios. Earlier personal issue comments are not lane activity.
+- **Rev N** (`scripts/ci/tribute_audit_rev.py`): every foreign PR from the outcome census + every watched issue thread from the System 1 decisions, a stable `sha256` content hash over (url, kind, repo, class, state, at, attribution_class), counts per class, and a diff vs rev N-1 (new, changed state/class, removed, count delta per class). Written append-only to `data/tribute-audit/revs/rev-NNNN.json` + `index.json`; an unchanged corpus writes no new rev. `status.json.audit_rev` and the dashboard show the latest rev and its delta.
+- **Primary SLO** (`slo_primary`): whole-corpus real-merge ratio (FAIL below 10% over ≥10 decided), zero real merges (FAIL), and activity-aware recency: drought = lane attempts since the last real merge, with paused intervals (2026-10-22 → 2026-10-31) excluded. A starved lane (no attempts in 7 non-paused days) is `WARN lane_starved`: neither failure-free time nor failure. The windowed SLO stays as `slo` / `status_windowed` (secondary).
+- **Census completeness:** `search_all` pages until `total_count` and bisects `created:` ranges past the 1000-hit search cap; `census_check` asserts total = merged + closed-unmerged + open and turns the SLO gate red on a mismatch.
+- **Merge attribution:** each merged PR carries `merged_by`, `merger_association`, `author_association`, `lane_produced`, `collaborator_integration`, `attribution_class` (`maintainer_accept_lane` | `maintainer_accept_manual` | `collaborator_integration` | `self`).

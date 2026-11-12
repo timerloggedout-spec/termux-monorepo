@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "92f3c8eb92425ca7aca7dd7f655cfdb156c75856ad1089ba2e3f642ab69e00ec",
-  "workflow_count": 300,
+  "source_fingerprint": "c9e84feeaa9ba50f878ff091adf6e08d042f9a17334dba5bf39bcc320efe5746",
+  "workflow_count": 301,
   "workflows": [
     {
       "action_pins": [],
@@ -5309,6 +5309,21 @@
       ],
       "name": "vercel-batch-deploy",
       "path": ".github/workflows/vercel-batch-deploy.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vercel-git-unlink cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "unlink"
+      ],
+      "name": "vercel-git-unlink",
+      "path": ".github/workflows/vercel-git-unlink.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

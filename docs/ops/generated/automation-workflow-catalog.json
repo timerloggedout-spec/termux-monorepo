@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c9e84feeaa9ba50f878ff091adf6e08d042f9a17334dba5bf39bcc320efe5746",
-  "workflow_count": 301,
+  "source_fingerprint": "175ffaaee1adc4a943e7fb91a64f169228599c1cc62c2f27121aa6b37993fcfc",
+  "workflow_count": 302,
   "workflows": [
     {
       "action_pins": [],
@@ -51,7 +51,8 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "bounded-state-write",
       "concurrency": "# Comment storms must not cancel an in-flight ledger. Cancelled zero-job # runs on issue_comment (PR #1156, 2026-10-06) are a failure mode, not a skip. # Include event_name so a /ledger comment does not cancel pull_request_target. group: action-effectiveness-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }}-${{ github.event_name }} cancel-in-progress: false",
@@ -330,6 +331,7 @@
     {
       "action_pins": [
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
@@ -894,7 +896,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: challenge-countdowns-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -1856,7 +1860,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: dispatch-tree-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -2945,7 +2951,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "read-only-or-advisory",
       "concurrency": "group: lane-events-recorder-${{ github.event.workflow_run.id || github.run_id }}-${{ github.event.workflow_run.run_attempt || github.run_attempt }} cancel-in-progress: false",
       "domain": "agentic-development",
@@ -2975,7 +2983,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: linguist-panel-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -3419,7 +3429,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: oracle-panel-feed-collect cancel-in-progress: false",
       "domain": "agentic-development",
@@ -3491,6 +3503,7 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "bounded-state-write",
@@ -3602,7 +3615,8 @@
     },
     {
       "action_pins": [
-        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "writer",
       "concurrency": "group: pr-change-effectiveness-${{ github.event.pull_request.number || inputs.pr_number || github.run_id }} cancel-in-progress: true",
@@ -3620,8 +3634,10 @@
       ]
     },
     {
-      "action_pins": [],
-      "authority": "read-only-or-advisory",
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "bounded-state-write",
       "concurrency": "group: pr-evidence-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number || github.run_id }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
@@ -3641,6 +3657,7 @@
     },
     {
       "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
       ],
       "authority": "read-only-or-advisory",
@@ -3860,6 +3877,26 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: qdesk-self-repair cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "loop"
+      ],
+      "name": "qdesk self-repair",
+      "path": ".github/workflows/qdesk-self-repair.yml",
+      "schedules": [
+        "41 */3 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },
@@ -4347,7 +4384,7 @@
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
       ],
       "authority": "writer",
-      "concurrency": "group: repo-tracking-collect cancel-in-progress: false",
+      "concurrency": "group: repo-tracking-collect # #5219 leg (b): every run re-derives the full projection from source # state, so a stale in-flight refresh is worthless once a newer event # lands — cancel it instead of letting refresh runs queue up behind # the comment/event flurry. Pushes are atomic; the surviving run # re-derives and publishes the freshest projection. cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "collect"
@@ -4678,7 +4715,9 @@
       ]
     },
     {
-      "action_pins": [],
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
       "authority": "writer",
       "concurrency": "group: surface-feeds-collect cancel-in-progress: false",
       "domain": "agentic-development",

@@ -10,6 +10,7 @@ from typing import TypedDict
 
 from she.recovery.escalation import (
     EscalationBudget,
+    EscalationDecision,
     ExecutorCandidate,
     decide_escalation,
 )
@@ -31,7 +32,7 @@ class EscalationGraphState(TypedDict, total=False):
     current_family: str | None
     authorization_scope: tuple[str, ...]
     authorization_scope_snapshot: tuple[str, ...]
-    decision: object
+    decision: EscalationDecision
     executor_ref: str | None
     repair_applied: bool
     verification_passed: bool

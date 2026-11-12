@@ -97,3 +97,11 @@ def test_workflow_preserves_two_sides_and_math_contract():
     assert "markov" in result["right_interthreading"]
     assert result["authority"]["observatory_read_only"] is True
     assert result["authority"]["promotion_authority"] is False
+
+
+def test_expected_value_of_information_rejects_non_finite_scalar_inputs():
+    import math
+    import pytest
+    for current, cost in ((math.nan, 0.0), (0.0, math.inf)):
+        with pytest.raises(ValueError):
+            expected_value_of_information(current, {"yes": 1.0}, {"yes": 2.0}, cost)

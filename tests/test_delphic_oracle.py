@@ -104,4 +104,4 @@ def test_expected_value_of_information_rejects_non_finite_scalar_inputs():
     import pytest
     for current, cost in ((math.nan, 0.0), (0.0, math.inf)):
         with pytest.raises(ValueError):
-            expected_value_of_information(current, {"yes": 1.0}, {"yes": 2.0}, cost)
+            m.expected_value_of_information(current, {"yes": 1.0}, {"yes": 2.0}, cost)

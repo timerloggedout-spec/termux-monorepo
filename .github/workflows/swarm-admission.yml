@@ -7,7 +7,10 @@ name: swarm-admission
 # (schema issue-dispatch/v1, docs/ops/ISSUE-TEMPLATE-DISPATCH.md).
 # It evaluates tier -> after -> chain -> flow (dispatch-tiers v2),
 # stamps the filing with the decision as its first fleet comment, and
-# labels it swarm-admitted | deferred-by-tier. It spawns NOTHING
+# labels it swarm-admitted | deferred-by-tier. The queue picture is
+# the collector feed in the checkout (#4979: ops/que/feeds/,
+# freshness-gated at 2 collector cycles); the live paginated census
+# is only the stale-feed fallback. It spawns NOTHING
 # itself: the route named in the template's block executes under its
 # own intake, and deferred filings are never actionable until the
 # QUE admission drain re-evaluates them. Fail-soft throughout.
@@ -31,9 +34,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Collect the live queue picture
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #4977 token leg (folded into #4979): collection and stamping
+        # ride the Swarm App installation token, never the shared
+        # per-repo GITHUB_TOKEN bucket exhausted on 2026-11-12.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-actions: read
+          permission-issues: write
+          permission-contents: read
+
+      - name: Picture gate (collector feeds fresh?)
+        id: picture-gate
+        run: |
+          python3 scripts/ops/swarm_admission.py picture-gate \
+            --feeds-dir ops/que/feeds \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Collect the live queue picture (stale-feed fallback only)
+        if: steps.picture-gate.outputs.feeds_fresh != 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
         run: |
           python3 - <<'PYEOF'
           import json, os, subprocess, time
@@ -57,23 +82,53 @@ jobs:
                       if attempt == 4:
                           return None
                       time.sleep(wait)
-          runs, failed = [], False
+          # On failure the sentinel NAMES the failed status+page and
+          # the API error class (#4979 point 2) -- the old bare
+          # {"collection_error": true} hid the cause behind generic
+          # stamp text and deferred every tier alike.
+          import re
+          from datetime import datetime, timezone
+          def fetch2(status, page):
+              last_err = ""
+              for attempt, wait in ((1, 5), (2, 10), (3, 20), (4, 0)):
+                  proc = subprocess.run(
+                      ["gh", "api", f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs?status={status}&per_page=50&page={page}"],
+                      capture_output=True, text=True)
+                  try:
+                      return json.loads(proc.stdout)["workflow_runs"], None
+                  except Exception:
+                      last_err = (proc.stderr or "") + (proc.stdout or "")
+                      if attempt == 4:
+                          low = last_err.lower()
+                          if "rate limit" in low:
+                              cls = "rate_limited"
+                          else:
+                              m = re.search(r"\b(4\d\d|5\d\d)\b", last_err)
+                              cls = f"http_{m.group(1)}" if m else ("empty_response" if not last_err.strip() else "malformed_body")
+                          return None, cls
+                      time.sleep(wait)
+          runs, failure = [], None
           for status in ("queued", "in_progress"):
               page = 1
               while True:
-                  batch = fetch(status, page)
+                  batch, cls = fetch2(status, page)
                   if batch is None:
-                      failed = True
+                      failure = {"failed_status": status, "failed_page": page, "error_class": cls}
                       break
                   runs += [{"name": r["name"], "status": r["status"], "created_at": r["created_at"]} for r in batch]
                   if len(batch) < 50:
                       break
                   page += 1
-              if failed:
+              if failure:
                   break
           with open(os.environ["RUNNER_TEMP"] + "/runs.json", "w") as fh:
-              json.dump({"collection_error": True} if failed else runs, fh)
-          print(f"queue picture: {'COLLECTION ERROR' if failed else str(len(runs)) + ' runs'}")
+              if failure:
+                  json.dump({"collection_error": failure}, fh)
+              else:
+                  json.dump({"picture_source": "live-fallback",
+                             "collected_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                             "runs": runs}, fh)
+          print("queue picture:", ("COLLECTION ERROR " + str(failure)) if failure else (str(len(runs)) + " runs (live fallback)"))
           PYEOF
 
       - name: Evaluate admission
@@ -86,6 +141,7 @@ jobs:
             --templates-dir .github/ISSUE_TEMPLATE \
             --tiers ops/quota/dispatch-tiers.json \
             --runs-file "$RUNNER_TEMP/runs.json" \
+            --feeds-dir ops/que/feeds \
             --issue-labels "$LABELS" \
             --issue-title "$TITLE" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
@@ -95,7 +151,7 @@ jobs:
       - name: Stamp the filing (admitted or deferred)
         if: steps.eval.outputs.matched == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
         run: |
           gh label create swarm-admitted --force --color 0E8A16 \
             --description "Filing admitted through QUE admission (dispatch-tiers v2)" || true

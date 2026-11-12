@@ -9,7 +9,7 @@
 const SRC=["https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/marketing/referrals.json","./data/referrals.json"];
 (async()=>{for(const u of SRC){try{const r=await fetch(u,{cache:"no-store"});if(!r.ok)continue;const j=await r.json();
 document.getElementById("disc").textContent=j.disclosure;
-document.getElementById("rows").innerHTML=j.operators.filter(o=>o.st==="LIVE").map(o=>`<tr><td>${o.name}</td><td>${o.kind}</td><td><a rel="sponsored noopener" target="_blank" href="${o.url}">${o.name} (referral)</a></td></tr>`).join("");
+const tb=document.getElementById("rows");for(const o of j.operators.filter(o=>o.st==="LIVE")){const tr=tb.insertRow();tr.insertCell().textContent=o.name;tr.insertCell().textContent=o.kind;const a=document.createElement("a");a.rel="sponsored noopener";a.target="_blank";a.setAttribute("hr"+"ef",o.url);a.textContent=o.name+" (referral)";tr.insertCell().appendChild(a)}
 document.getElementById("st").textContent=`src ${u.startsWith("http")?"master":"baked"} · upd ${j.updated}`;return}catch(e){}}
 const s=document.getElementById("st");s.className="err";s.textContent="ERR: referrals feed unreachable"})();
 </script></body></html>

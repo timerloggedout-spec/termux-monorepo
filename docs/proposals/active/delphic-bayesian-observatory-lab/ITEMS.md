@@ -7,8 +7,8 @@
 | DBO-003 | executing | Implement NOW left-side tensor/graph/matrix/constellation projection |
 | DBO-004 | executing | Implement right-side DAG/trellis/Markov interthreading projection |
 | DBO-005 | executing | Implement telemetry/benchmark-driven adversarial-review admission |
-| DBO-006 | executing | Build Gemini-style standalone design sandbox |
-| DBO-007 | cooldown | Request Gemini adversarial/design review and disposition returned evidence |
+| DBO-006 | executing | Build standalone design sandbox |
+| DBO-007 | superseded | Gemini Dispatch review path retired; use active SHA-bound peer-review and repository CI evidence |
 | DBO-008 | executing | Evaluate graduation candidates without coupling production dashboards |
 | DBO-009 | executing | Register graph algorithm semantics, complexity, provenance, and graph-kind boundaries |
 | DBO-010 | executing | Add standalone executable Graph Lab with deterministic algorithm reference implementations |
@@ -33,3 +33,11 @@ This is a research/design lane. It does not become the telemetry SSOT, routing a
 - Use Wolfram for symbolic derivation/reduction and mathematical design review; encode the resulting formulas locally.
 - Add stable Beta-Binomial prediction, Beta entropy/KL, expected information gain, decision-optimized binary EVSI, and expected DAG path-cost propagation.
 - Wolfram must not become a runtime dependency or outsourced calculator.
+
+
+## DBO-014 — QUE and autonomous-context integration
+- Status: executing
+- Publish a read-only Delphic evaluation adapter contract for QUE task admission and autonomous work-package contexts.
+- Keep queue ownership, provider selection, execution dispatch, credentials, merge authority, and canonical evidence with their existing control planes.
+- Consume only attributable, SHA-bound evidence; preserve unknown/missing states and expose uncertainty, EVSI, expected path cost, and review-admission rationale as advisory projections.
+- Require explicit adapter opt-in, schema validation, deterministic fixtures, and feature-flag rollback before any operational use.

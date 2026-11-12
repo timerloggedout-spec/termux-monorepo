@@ -5,8 +5,8 @@ created_on: "2026-11-11"
 owner: "optimizations-assurance"
 sponsor: "timerloggedout-spec"
 priority: P1
-status: prepared
-execution_state: not_dispatched
+status: dispatch_pending
+execution_state: awaiting_que_admission
 authority:
   execution_boundary: "QUE admission only"
   promotion_boundary: "repository dual gates + explicit operator promotion"
@@ -55,6 +55,10 @@ dispatch:
   admission_route: "swarm-admission.yml"
   chain: null
   chain_stage: null
+  issue_number: 5193
+  admission_workflow_run_id: 43148635718
+  task_intake_workflow_run_id: 43148635573
+  admission_decision: pending
   ordering_authority: "this order's dependency graph; admission remains the per-filing gate"
   issue_body_contract:
     required_headings:
@@ -354,4 +358,4 @@ implementation_controls:
     proposal_id: "free-inference-endpoint-tournament"
     documentation: "docs/ops/FREE-INFERENCE-ENDPOINT-TOURNAMENT.md"
     issue_template: ".github/ISSUE_TEMPLATE/project-task.yml"
-    initial_issue: null
+    initial_issue: 5193

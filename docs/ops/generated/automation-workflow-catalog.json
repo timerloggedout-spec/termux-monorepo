@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "175ffaaee1adc4a943e7fb91a64f169228599c1cc62c2f27121aa6b37993fcfc",
-  "workflow_count": 302,
+  "source_fingerprint": "f9e6d391febaada8e55204cc20cb82793272871ab6a1d2f8fa04227c5b402a25",
+  "workflow_count": 303,
   "workflows": [
     {
       "action_pins": [],
@@ -701,15 +701,36 @@
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: build-arm-census-${{ github.event.pull_request.number || github.run_id }} # Superseding PR revisions cancel stale in-flight census runs to limit repeat provider spend. cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "census",
+        "live-build"
+      ],
+      "name": "🧭 Build Arm Census (",
+      "path": ".github/workflows/build-arm-census.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489"
       ],
-      "authority": "bounded-state-write",
+      "authority": "writer",
       "concurrency": "group: build-dispatch-${{ github.event.issue.number || inputs.issue_number }} cancel-in-progress: false",
-      "domain": "peer-provider-review",
+      "domain": "agentic-development",
       "jobs": [
         "build"
       ],
-      "name": "🔀 Build Dispatch (Gemini build arm)",
+      "name": "🔀 Build Dispatch (multi-arm)",
       "path": ".github/workflows/build-dispatch.yml",
       "schedules": [],
       "triggers": [

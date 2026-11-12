@@ -3,9 +3,9 @@
     "open_issues": 608,
     "open_prs": 364,
     "pr_classes": {
-      "CANDIDATE": 174,
-      "EXTRACT": 11,
-      "NEED_EVIDENCE": 179,
+      "CANDIDATE": 176,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 176,
       "SUPERSEDE": 0
     }
   },
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T17:43:39Z",
+  "generated_at": "2026-11-12T18:50:13Z",
   "issues_unlabelled": [
     308,
     388,
@@ -186,9 +186,9 @@
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
       "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "smoke": "queued"
     },
-    "sha": "526f9fa8f0"
+    "sha": "6703599199"
   },
   "prs": [
     {
@@ -260,6 +260,20 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "caa59a24ca",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-12T18:46:11Z"
     },
     {
       "class": "EXTRACT",
@@ -1511,6 +1525,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e9646c7648",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-12T18:47:41Z"
     },
     {
       "class": "CANDIDATE",
@@ -2787,6 +2815,20 @@
       "updated_at": "2026-11-12T16:12:01Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "0bb251deb8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5272,
+      "title": "fix(ci): per-step GH_TOKEN in oracle-panel/surface-feeds collect (follow-up #5266)",
+      "updated_at": "2026-11-12T18:49:37Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -3308,29 +3350,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
+        "hygiene": "success",
         "smoke": "queued"
       },
-      "head_sha": "c6f4abcb17",
+      "head_sha": "f68beab2c7",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T17:40:07Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "af3a550a6c",
-      "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T17:37:04Z"
+      "updated_at": "2026-11-12T18:46:35Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3969,26 +3997,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "85e3f4e06f",
+      "head_sha": "0ea4124aa1",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-12T16:09:20Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b6c17206cd",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T17:37:49Z"
+      "updated_at": "2026-11-12T18:47:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4067,12 +4081,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "077a1720ff",
+      "head_sha": "990d5cca9b",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4069,
       "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-12T11:24:04Z"
+      "updated_at": "2026-11-12T18:48:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5254,20 +5268,6 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "60f5abf145",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5234,
-      "title": "ops(queue): pit crew \u2014 coalesce tree wakes \u2227 self-resolving queue [skip render]",
-      "updated_at": "2026-11-12T17:33:23Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
@@ -5283,14 +5283,14 @@
       "family": "unlabelled",
       "gates": {
         "hygiene": "queued",
-        "smoke": "queued"
+        "smoke": "success"
       },
-      "head_sha": "5df30182e8",
+      "head_sha": "3aa776ed18",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5272,
-      "title": "fix(ci): per-step GH_TOKEN in oracle-panel/surface-feeds collect (follow-up #5266)",
-      "updated_at": "2026-11-12T17:36:08Z"
+      "mergeable_state": "unstable",
+      "number": 5274,
+      "title": "chore(delphi): refresh oracle-panel-feed.json",
+      "updated_at": "2026-11-12T18:49:59Z"
     }
   ],
   "schema": "operator-matrix/v1",

@@ -1,0 +1,186 @@
+{
+ "schema": "arm-census/v1",
+ "generated_at": "2026-11-11T15:19:11Z",
+ "generated_by": "scripts/ops/build_arm_census.py (Actions)",
+ "run_id": "43045718809",
+ "spec": "issue #5151 census gate {free - invocable from Actions - agent loop tool round-trip}",
+ "arms": [
+  {
+   "arm_id": "mistral-codestral",
+   "provider": "mistral",
+   "model": "codestral-2508",
+   "budget_class": "free-tier",
+   "status_before": "candidate",
+   "checks": {
+    "free": true,
+    "budget_class": "free-tier",
+    "invocable_from_actions": {
+     "ok": true,
+     "http": 200,
+     "latency_ms": 407
+    },
+    "agent_loop": {
+     "tool_call_seen": false,
+     "roundtrip_ok": false,
+     "error_class": "quota_terminal_429"
+    }
+   },
+   "verdict": "failed",
+   "reason": "quota_terminal_during_agent_loop",
+   "quota_terminal": {
+    "terminal": true,
+    "date": "2026-11-11"
+   }
+  },
+  {
+   "arm_id": "sealion-llama",
+   "provider": "sealion",
+   "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+   "budget_class": "free-tier",
+   "status_before": "candidate",
+   "checks": {
+    "free": true,
+    "budget_class": "free-tier",
+    "invocable_from_actions": {
+     "ok": true,
+     "http": 200,
+     "latency_ms": 550
+    },
+    "agent_loop": {
+     "tool_call_seen": true,
+     "roundtrip_ok": false,
+     "error_class": "marker_not_reported"
+    }
+   },
+   "verdict": "failed",
+   "reason": "agent_loop_marker_not_reported",
+   "quota_terminal": {
+    "terminal": false
+   }
+  },
+  {
+   "arm_id": "cohere-command-a",
+   "provider": "cohere",
+   "model": "command-a-03-2025",
+   "budget_class": "free-tier",
+   "status_before": "candidate",
+   "checks": {
+    "free": true,
+    "budget_class": "free-tier",
+    "invocable_from_actions": {
+     "ok": true,
+     "http": 200,
+     "latency_ms": 332
+    },
+    "agent_loop": {
+     "tool_call_seen": true,
+     "roundtrip_ok": false,
+     "error_class": "marker_not_reported"
+    }
+   },
+   "verdict": "failed",
+   "reason": "agent_loop_marker_not_reported",
+   "quota_terminal": {
+    "terminal": false
+   }
+  },
+  {
+   "arm_id": "baseten-gpt-oss",
+   "provider": "baseten",
+   "model": "openai/gpt-oss-120b",
+   "budget_class": "credit-funded",
+   "status_before": "candidate",
+   "checks": {
+    "free": false,
+    "budget_class": "credit-funded",
+    "invocable_from_actions": {
+     "ok": true,
+     "http": 200,
+     "latency_ms": 745
+    },
+    "agent_loop": {
+     "tool_call_seen": true,
+     "roundtrip_ok": false,
+     "error_class": "marker_not_reported"
+    }
+   },
+   "verdict": "failed",
+   "reason": "agent_loop_marker_not_reported",
+   "quota_terminal": {
+    "terminal": false
+   }
+  },
+  {
+   "arm_id": "gemini-cli",
+   "provider": "google",
+   "model": "gemini-3.5-flash-lite",
+   "budget_class": "free-tier",
+   "status_before": "eligible",
+   "checks": {
+    "free": true,
+    "invocable_from_actions": {
+     "ok": true,
+     "method": "existing-harness-evidence"
+    },
+    "agent_loop": {
+     "tool_call_seen": true,
+     "roundtrip_ok": true,
+     "method": "existing-harness-evidence"
+    }
+   },
+   "verdict": "eligible",
+   "reason": "repo-story PR #6 (proving run 41426129878) + #5142 verify-step line on master; the Gemini-only period stands recorded as CONSTRAINED ARM {sole full-checkout agent harness}, not preference (#5151 spec)",
+   "quota_terminal": {
+    "terminal": false
+   }
+  },
+  {
+   "arm_id": "jules",
+   "provider": "google",
+   "model": null,
+   "budget_class": "free-tier",
+   "status_before": "not-admitted",
+   "checks": {
+    "free": null,
+    "invocable_from_actions": {
+     "ok": false,
+     "error_class": "not_censusable"
+    },
+    "agent_loop": {
+     "tool_call_seen": false,
+     "roundtrip_ok": false,
+     "error_class": "not_censusable"
+    }
+   },
+   "verdict": "failed",
+   "reason": "DoE escalation ruling 2026-11-11 (#5151 c.6799106430 term 2): Jules NOT ADMITTED — no dispatch until a probe session completes; escalation-level loop only, never a primary build arm.",
+   "quota_terminal": {
+    "terminal": false
+   }
+  },
+  {
+   "arm_id": "webwrapper-class",
+   "provider": null,
+   "model": null,
+   "budget_class": "free-tier",
+   "status_before": "class-only",
+   "checks": {
+    "free": null,
+    "invocable_from_actions": {
+     "ok": false,
+     "error_class": "not_censusable"
+    },
+    "agent_loop": {
+     "tool_call_seen": false,
+     "roundtrip_ok": false,
+     "error_class": "not_censusable"
+    }
+   },
+   "verdict": "failed",
+   "reason": "Registered by SHAPE only (#5151): census/eval only until a participant-identity session exists (Identity Plane); never an owner session. This build does NOT build a webWrapper arm.",
+   "quota_terminal": {
+    "terminal": false
+   }
+  }
+ ]
+}

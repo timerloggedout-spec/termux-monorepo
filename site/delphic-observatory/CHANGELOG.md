@@ -8,3 +8,10 @@
 - Interactive local Beta posterior lens; no network/runtime dependency.
 - Explicit research-only authority boundary and offline Termux validation status.
 - QUE / AutonomousOpsStuff integration intent documented; no direct production authority granted.
+
+
+## 0.2.0 — 2026-11-12
+
+- Added DoE × MoneyBall model-task pool integration.
+- Exact configured-instance allocation, quota/capacity gates and independent verification.
+- Explicit DoE, MoneyBall, QUE and Delphic authority boundaries.

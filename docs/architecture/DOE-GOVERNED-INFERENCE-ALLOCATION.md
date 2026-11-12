@@ -11,7 +11,7 @@ DoE is the sole owner of inference allocation and rotation: design, eligible pop
 
 Scout is the execution selector. It chooses from the existing eligible provider/model endpoint pool to realize the DoE-assigned treatment. Its decision is constrained by task fit and live capability, credential, catalog, quota, safety and health evidence. Scout does not create the allocation policy or independently promote/cull endpoints.
 
-Managers/requesters specify task requirements. A manager-specific endpoint/model/settings request is a customization request, not an implicit override. It becomes active only under an approved contract and is recorded as a distinct treatment/stratum. Owner and other explicitly authorized exempt roles are represented as exemptions, not silently mixed into ordinary participant constraints.
+Managers/requesters specify task requirements. **Manager is a management/seat function, not a new canonical participant role**; requester_role must resolve to the existing role registry (or an explicitly registered external actor class). A manager-specific endpoint/model/settings request is a customization request, not an implicit override. It becomes active only under an approved contract and is recorded as a distinct treatment/stratum. Owner and other explicitly authorized exempt roles are represented as exemptions, not silently mixed into ordinary participant constraints.
 
 ## 2. Endpoint identity and statistical claims
 
@@ -29,7 +29,7 @@ The contract's percentage schedule is explicit and versioned. A baseline represe
 
 `effective_customization_pct(n) = base_customization_pct × (1 + participant_compound_rate_pct / 100)^(n - 1)`
 
-The contract must define the denominator to which that percentage applies, the base rate, the participant compounding rate, the count, the resulting percentage, and the settlement/distribution destination. No numeric rate is inferred here. Owner/authorized exemptions are explicit and non-billable only when the contract or owner policy says so. Contracted participants form their own DoE stratum unless the design pre-registers another valid treatment model.
+The contract must define the denominator to which that percentage applies, the base rate, the participant compounding rate, the count, the resulting percentage, and a normalized 100% distribution schedule across DoE, MVT, ATES, MoneyBall and 3L0. MVT and ATES remain nested DoE members: the DoE roll-up counts DoE core + MVT + ATES once, never as three peer-plane totals. Each lane references the same immutable contract/fee snapshot; no numeric rate or split is inferred here. Owner/authorized exemptions are explicit and non-billable only when the contract or owner policy says so. Contracted participants form their own DoE stratum unless the design pre-registers another valid treatment model.
 
 ## 4. Canonical selection receipt
 
@@ -43,13 +43,13 @@ The contract must define the denominator to which that percentage applies, the b
 - assignment method, arm, probability and endpoint test identity;
 - optional approved custom contract and fee terms;
 - workflow/run/attempt/request/trace/session correlation IDs;
-- private-strategy visibility and commitment metadata (never plaintext strategy).
+- private-strategy visibility, access-controlled history reference (collaborator session/commit), and commitment metadata (never plaintext strategy).
 
 A selection receipt is not a substitute for the existing EXPERIMENT record or the downstream dispatch stamp. It is the canonical selection decision referenced by both. The invocation must verify that the chosen endpoint is the endpoint in the receipt; mismatches are a recorded deviation, not a silent rewrite.
 
 ## 5. Participant strategy privacy and lifecycle
 
-Wallets, roles, bidding/ante methods, scripts, AST tactics and trading specifics are participant-owned strategy records. Active strategies remain private. Public evidence carries only a reference, cryptographic commitment, visibility state and release trigger. Plaintext private strategy and credentials must never be placed in this public repository or public feeds.
+Wallets, roles, bidding/ante methods, scripts, AST tactics and trading specifics are participant-owned strategy records. Active strategies remain private. Public evidence carries only an access-controlled reference, cryptographic commitment, visibility state and release trigger. The reference may point to a collaborator-session or commit history record, but never embeds the strategy itself. Plaintext private strategy and credentials must never be placed in this public repository or public feeds.
 
 On cull, the strategy may move from `private_active` to `sealed_culled`; release occurs only when the recorded disclosure policy and authorization permit it. Cull records retain participant identity, wallet balance at cull, pool destination, strategy disposition and evidence lineage. A cull never erases history.
 

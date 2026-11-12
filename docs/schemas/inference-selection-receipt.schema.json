@@ -276,7 +276,8 @@
             "participant_count",
             "participant_compound_rate_pct",
             "effective_pct",
-            "currency_or_unit"
+            "currency_or_unit",
+            "distribution"
           ],
           "properties": {
             "basis": {
@@ -301,6 +302,49 @@
             },
             "currency_or_unit": {
               "type": "string"
+            },
+            "distribution": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "doe_pct",
+                "mvt_pct",
+                "ates_pct",
+                "moneyball_pct",
+                "3l0_pct",
+                "total_pct"
+              ],
+              "properties": {
+                "doe_pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "mvt_pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "ates_pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "moneyball_pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "3l0_pct": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "total_pct": {
+                  "const": 100
+                }
+              },
+              "description": "Lane allocations sum to 100%. MVT and ATES are nested DoE members for roll-up and must not be double-counted."
             }
           }
         }
@@ -392,6 +436,13 @@
             "never",
             "not_applicable"
           ]
+        },
+        "history_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Access-controlled collaborator-session or commit history reference; never plaintext strategy."
         }
       }
     }

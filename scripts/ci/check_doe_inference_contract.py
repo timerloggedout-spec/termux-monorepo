@@ -5,6 +5,15 @@ import json
 import sys
 from pathlib import Path
 
+def validate_fee_distribution(distribution: dict) -> bool:
+    keys = {"doe_pct", "mvt_pct", "ates_pct", "moneyball_pct", "3l0_pct"}
+    if not isinstance(distribution, dict) or not keys.issubset(distribution):
+        return False
+    values = [distribution.get(key) for key in keys]
+    if any(isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0 for value in values):
+        return False
+    return abs(sum(values) - 100.0) < 1e-6 and distribution.get("total_pct") == 100
+
 def validate_contract(feed: dict, design: dict, schema: dict,
                       roster: str, missions: str, gambling: str) -> list[str]:
     errors = []
@@ -34,6 +43,12 @@ def validate_contract(feed: dict, design: dict, schema: dict,
         errors.append("selection receipt schema must make DoE the authority")
     if schema.get("properties", {}).get("selector", {}).get("properties", {}).get("kind", {}).get("const") != "scout":
         errors.append("selection receipt schema must identify Scout as selector")
+    fee = schema.get("properties", {}).get("custom_contract", {}).get("properties", {}).get("fee", {})
+    if "distribution" not in fee.get("required", []):
+        errors.append("custom contract fee must include lane distribution")
+    distribution = fee.get("properties", {}).get("distribution", {}).get("properties", {})
+    if not all(key in distribution for key in ("doe_pct", "mvt_pct", "ates_pct", "moneyball_pct", "3l0_pct")):
+        errors.append("fee distribution must cover DoE, MVT, ATES, MoneyBall and 3L0")
     if "DoE-governed inference selection" not in roster:
         errors.append("Scout roster documentation missing DoE selection contract")
     if "DoE-authorized Scout" not in missions:

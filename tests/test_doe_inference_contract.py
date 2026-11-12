@@ -3,7 +3,7 @@ import json
 import unittest
 from pathlib import Path
 
-from scripts.ci.check_doe_inference_contract import validate_contract
+from scripts.ci.check_doe_inference_contract import validate_contract, validate_fee_distribution
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,6 +28,12 @@ class DoEInferenceContractTests(unittest.TestCase):
         feed = copy.deepcopy(self.feed)
         feed["dispatch"]["provider_catalog"]["rotation_rule"]["rule"] += " No provider takes 2 consecutive dispatches."
         self.assertTrue(any("superseded consecutive-provider rule" in e for e in self.validate(feed)))
+
+    def test_fee_distribution_must_sum_to_one_hundred(self):
+        valid = {"doe_pct": 30, "mvt_pct": 15, "ates_pct": 15, "moneyball_pct": 20, "3l0_pct": 20, "total_pct": 100}
+        self.assertTrue(validate_fee_distribution(valid))
+        invalid = {**valid, "3l0_pct": 19}
+        self.assertFalse(validate_fee_distribution(invalid))
 
     def test_desk_cannot_claim_allocation_authority(self):
         feed = copy.deepcopy(self.feed)

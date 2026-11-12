@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-12T11:22:48Z",
+ "read_at": "2026-11-12T11:38:37Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 5215,
+   "title": "fix(tracking): repo-tracking-collect crash on string desk-feed evidence [skip render]",
+   "merged_at": "2026-11-12T10:36:15Z",
+   "updated_at": "2026-11-12T11:27:12Z",
+   "created_at": "2026-11-12T10:16:55Z",
+   "merge_commit_sha": "25215ce21f8cdb82bfcb904811bf8dbeec878b25",
+   "head_ref": "hark/repo-tracking-evidence-shape",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5215",
+   "merged": true
+  },
   {
    "number": 5217,
    "title": "chore(ops): regenerate operator matrix",
@@ -14,19 +27,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5217",
-   "merged": true
-  },
-  {
-   "number": 5215,
-   "title": "fix(tracking): repo-tracking-collect crash on string desk-feed evidence [skip render]",
-   "merged_at": "2026-11-12T10:36:15Z",
-   "updated_at": "2026-11-12T10:52:24Z",
-   "created_at": "2026-11-12T10:16:55Z",
-   "merge_commit_sha": "25215ce21f8cdb82bfcb904811bf8dbeec878b25",
-   "head_ref": "hark/repo-tracking-evidence-shape",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5215",
    "merged": true
   },
   {
@@ -1956,23 +1956,36 @@
  ],
  "open": [
   {
-   "number": 5216,
-   "title": "feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-12T11:20:08Z",
-   "created_at": "2026-11-12T10:52:02Z",
-   "merge_commit_sha": "e0d7647c40fef5f28562911d2b522e55a08c095c",
-   "head_ref": "experiment/delphic-observatory-scoped-merge",
-   "author": "timerloggedout-spec",
+   "updated_at": "2026-11-12T11:34:53Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "e8cae6ebcfbfed1f2d2b4d713df85f9e6aba1307",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5216",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-12T11:30:55Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "4c42b41c4c86220d322b7d274c741cb96da6d074",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
    "number": 5218,
    "title": "feat(vercel): git-unlink tool \u2014 stop per-PR preview deployments (QUE leg d)",
    "merged_at": null,
-   "updated_at": "2026-11-12T11:14:11Z",
+   "updated_at": "2026-11-12T11:30:43Z",
    "created_at": "2026-11-12T11:13:06Z",
    "merge_commit_sha": "676c5668fa786ef80e3de6067204ebc7db09dbb0",
    "head_ref": "ops/vercel-git-unlink-2026-11-12",
@@ -1982,29 +1995,55 @@
    "merged": false
   },
   {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-12T11:11:29Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "82da2c67fd80bb5df7e01fbb822062eb615d4cb3",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
+   "updated_at": "2026-11-12T11:30:06Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "63d3d211671630a8ea538baabbec36bc860fcf2e",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 5216,
+   "title": "feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
+   "merged_at": null,
+   "updated_at": "2026-11-12T11:29:57Z",
+   "created_at": "2026-11-12T10:52:02Z",
+   "merge_commit_sha": "e0d7647c40fef5f28562911d2b522e55a08c095c",
+   "head_ref": "experiment/delphic-observatory-scoped-merge",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5216",
    "merged": false
   },
   {
    "number": 3890,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-12T11:04:11Z",
+   "updated_at": "2026-11-12T11:24:17Z",
    "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "95011658c967ac753c05775d933e0cce678f84a6",
+   "merge_commit_sha": "5d4160d8c68e98ef66d0cdf7eb3b0b643733fe66",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 4069,
+   "title": "chore(dashboards): refresh surface feeds",
+   "merged_at": null,
+   "updated_at": "2026-11-12T11:24:04Z",
+   "created_at": "2026-11-03T04:16:54Z",
+   "merge_commit_sha": "8e090afe9a756e9e28edd3cb41cf81182aea8c70",
+   "head_ref": "surface-feeds/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069",
    "merged": false
   },
   {
@@ -2018,32 +2057,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/969",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-12T10:54:10Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "d191c7d7d8d23b8f36080d2958bc8ae14cac5bfb",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-12T10:52:06Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "c2900d434f70552f3692ea8f3f9bcc7bb8a55edf",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -2278,19 +2291,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1760",
-   "merged": false
-  },
-  {
-   "number": 4069,
-   "title": "chore(dashboards): refresh surface feeds",
-   "merged_at": null,
-   "updated_at": "2026-11-11T14:50:04Z",
-   "created_at": "2026-11-03T04:16:54Z",
-   "merge_commit_sha": "c15f5990821a37bf2114fd874e3468a693cb25d2",
-   "head_ref": "surface-feeds/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069",
    "merged": false
   },
   {

@@ -1,0 +1,35 @@
+# Routing control-plane graph
+
+Companion to [CONTRACT-TO-RUNTIME-TRACEABILITY.md](CONTRACT-TO-RUNTIME-TRACEABILITY.md).
+
+```mermaid
+flowchart TD
+  TASK[Issue / task declaration] --> CONTRACT[issue-dispatch/v1]
+  CONTRACT --> ADMIT[QUE admission]
+  TIERS[queue.dispatch-tiers/v2] --> ADMIT
+  ADMIT --> EXEC[Swarm dispatch workflow]
+  CATALOG[desk-feed/v1.3 provider catalog] --> POOL[DoE-governed pool]
+  POOL --> SCOUT[Scout task-fit selection]
+  SCOUT --> EXEC
+  EXEC --> STAMP[Canonical routed-dispatch stamp]
+  STAMP --> FAN[stamp_fanout.py]
+  FAN --> DOE[3L0 / DoE / MVT / ATES]
+  FAN --> MONEY[MoneyBall]
+  FAN --> TRAVERSAL[Desk traversal evidence]
+  MODEL[model_router.py / llm_api_hub] -. hand-off contract unresolved .-> EXEC
+  QUE[QUE collector / governor] --> QFEED[QUE feeds]
+  WATCH[Dispatch watchdog] --> WFEED[dispatch-state-feed/v1]
+  DESK[Tribute Desk read-only projection] --> QFEED
+  DESK --> WFEED
+  DESK --> TRAVERSAL
+```
+
+## Edge semantics
+
+- `declares`: issue metadata describes task intent and constraints.
+- `admits`: QUE evaluates eligibility, tier and dependency rules.
+- `selects`: Scout chooses a task-fit arm from the DoE-governed pool.
+- `dispatches`: Swarm sends work to the selected execution surface.
+- `stamps` / `fans out`: evidence is recorded once and distributed to evaluation planes.
+- `projects`: the Desk renders independently generated feeds without executing work.
+- `composition-unresolved`: model invocation routing and task dispatch coexist; their exact interface is not yet specified by the reviewed contracts.

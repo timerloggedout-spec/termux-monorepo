@@ -35,7 +35,8 @@
 
 | Domain | Canonical source |
 |---|---|
-| Routing & orchestration | [docs/ops/ROUTING-ORCHESTRATION-MAP.md](../ops/ROUTING-ORCHESTRATION-MAP.md) |
+| Routing & orchestration (invocation plane) | [docs/ops/ROUTING-ORCHESTRATION-MAP.md](../ops/ROUTING-ORCHESTRATION-MAP.md) · [logic chain](../ops/ROUTING-LOGIC-CHAIN.md) |
+| Dispatch / provider-routing reconciliation | [CONTRACT-TO-RUNTIME-TRACEABILITY.md](CONTRACT-TO-RUNTIME-TRACEABILITY.md) · [ROUTING-CONTROL-PLANE-GRAPH.mmd](ROUTING-CONTROL-PLANE-GRAPH.mmd) — layered contracts, supersession history and unresolved dispatch-to-inference hand-off |
 | Evidence projection (read model) | [docs/ops/EVIDENCE-PROJECTION-SURFACE.md](../ops/EVIDENCE-PROJECTION-SURFACE.md) |
 | Execution & provenance contract (BIUDL) | [docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md](../ops/BIUDL-EXECUTION-AND-PROVENANCE.md) |
 | Evidence substrate | [docs/ops/AGENT-EVIDENCE-SUBSTRATE.md](../ops/AGENT-EVIDENCE-SUBSTRATE.md) |

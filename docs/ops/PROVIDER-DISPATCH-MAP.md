@@ -202,8 +202,14 @@ Actions 83 / intersection 83; production admission unchanged.
 
 ## Rotation rule (bench-wide)
 
-No provider takes 2 consecutive dispatches for the same entry, across **all** catalog lanes
-(supersedes the 2026-10-31 rule, which capped repeats inside the 4-lane funnel only).
+**Superseded global rule (owner FIX via main, 2026-11-01):** the earlier categorical
+“no provider takes 2 consecutive dispatches for the same entry” rule is not current.
+The machine-readable rule in `ops/challenge/desk-feed.json` →
+`dispatch.provider_catalog.rotation_rule` governs: bench-wide TASK-FIT selection, no fixed
+funnel, and no automatic repeat of the previous pick. This global rule does not erase
+explicitly scoped experiment rules (for example, cert-unit per-batch rotation in Swarm
+Assurance §21); scoped rules must remain bounded to their named task class / batch.
+
 Selection = task-fit across the full catalog: proven lanes carry production work;
 wired-unproven / triggerable surfaces get bounded proof dispatches; inference-only providers
 are selectable via their named arm. Every dispatch stamps provider + surface + selection

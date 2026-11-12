@@ -37,7 +37,7 @@ Repo-wide: `status=action_required` — **RULING 2026-10-31 (§9): "2500" WITHDR
 
 ## 3. Swarm rules (optimization core)
 
-1. **Rotation:** ∅ provider takes 2 consecutive dispatches for same entry (desk rule). Dispatch comment MUST name {provider, session/run id, entry, prior provider} ⇒ rotation auditable from GitHub alone.
+1. **Selection / rotation (global rule corrected 2026-11-01):** select bench-wide by task-fit from the full wired catalog; there is no fixed funnel and no automatic repeat of the previous pick. The machine-readable authority is `ops/challenge/desk-feed.json` → `dispatch.provider_catalog.rotation_rule`; it explicitly supersedes the earlier global no-two-consecutive rule. Dispatch evidence names {provider, surface, selection reason, session/run id}; prior provider may be recorded for audit but is not a global hard exclusion. Explicitly scoped experiment rules, such as cert-unit per-batch rotation in §21, remain scoped and do not override the global selector.
 2. **Parallel fan-out:** independent entries ⇒ simultaneous distinct providers: Jules(issue-label) ∥ Gemini(issues/issue_comment) ∥ DeepSeek(workflow_dispatch) ∥ provider-batch(inference families) ∥ command-dispatch(fix lanes, partitioned by PR head). Serial single-provider queues = anti-pattern.
 3. **Gate-lawful routes only:** workflow_dispatch ∨ owner-actor issue/comment triggers. ∅ reliance on fork/bot PR-event reactions until B1 owner decision lands.
 4. **Quota parallelism:** per-provider quota reconciles before its own dispatch; one provider exhausted ⇒ rotate, ¬ stall swarm (provider-neutral early layer precedent, #1441 correction).

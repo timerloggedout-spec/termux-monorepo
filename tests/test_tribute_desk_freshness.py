@@ -28,12 +28,12 @@ class TributeDeskFreshnessTests(unittest.TestCase):
         html = PAGE.read_text(encoding="utf-8")
         self.assertIn('+" · "+st+" · schema "+', html)
 
-if __name__ == "__main__":
-    unittest.main()
-
     def test_dashboard_mirrors_match_the_authoritative_desk_feed(self):
         source = ROOT / "ops/challenge/desk-feed.json"
         tribute = ROOT / "apps/tribute-dashboard/data/desk-feed.json"
         help_wanted = ROOT / "apps/help-wanted-dashboard/data/desk-feed.json"
         self.assertEqual(source.read_bytes(), tribute.read_bytes())
         self.assertEqual(source.read_bytes(), help_wanted.read_bytes())
+
+if __name__ == "__main__":
+    unittest.main()

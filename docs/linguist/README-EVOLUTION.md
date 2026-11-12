@@ -62,18 +62,18 @@ The policy is machine-readable in readme-evolution-policy.json. The immutable co
 
 ## Comparative baseline — README branch census
 
-The following candidates were fetched from GitHub and compared with the current master README (291 lines / 26,610 UTF-8 characters at the baseline above). The delta is the symmetric LCS line-difference ratio:
+The following candidates were fetched from GitHub and compared with the current master README (291 lines / 26,984 UTF-8 bytes (raw Git blob) at the baseline above). The delta is the symmetric LCS line-difference ratio:
 
 100 × (base-only changed lines + candidate-only changed lines) / (base lines + candidate lines)
 
 | Candidate branch | Commit SHA (12) | README blob SHA (12) | README lines | UTF-8 bytes | LCS line delta |
 |---|---|---|---:|---:|---:|
-| docs/readme-agents-link-fix | c64fd4affc66 | 3ba0805a884a | 289 | 26,647 | 2.07% |
-| docs/readme-agents-reference | 05ac94d4211f | ca746df7b383 | 465 | 24,702 | 75.66% |
-| docs/readme-ates-image-polish | ee0ffc2540b8 | 2e3c004f096f | 197 | 20,022 | 24.18% |
-| docs/readme-upgrade-claude-entry-ates-deploy | e1d997a85cac | 1bfb11f504d8 | 212 | 21,855 | 21.27% |
-| manus/readme-deepwiki-validation-integration | 79234418029b | b8429e610bee | 173 | 16,841 | 27.59% |
-| studysprint-readme-currency | 1bb35e6bf75d | 3ca45334d2ea | 290 | 26,549 | 0.52% |
+| docs/readme-agents-link-fix | c64fd4affc66 | 3ba0805a884a | 289 | 27,020 | 2.07% |
+| docs/readme-agents-reference | 05ac94d4211f | ca746df7b383 | 465 | 24,789 | 75.66% |
+| docs/readme-ates-image-polish | ee0ffc2540b8 | 2e3c004f096f | 197 | 20,072 | 24.18% |
+| docs/readme-upgrade-claude-entry-ates-deploy | e1d997a85cac | 1bfb11f504d8 | 212 | 21,924 | 21.27% |
+| manus/readme-deepwiki-validation-integration | 79234418029b | b8429e610bee | 173 | 16,884 | 27.59% |
+| studysprint-readme-currency | 1bb35e6bf75d | 3ca45334d2ea | 290 | 26,923 | 0.52% |
 
 Full 40-character commit and blob identifiers, including the baseline, are preserved in readme-branch-census.json.
 

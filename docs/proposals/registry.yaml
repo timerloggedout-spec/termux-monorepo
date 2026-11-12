@@ -1288,3 +1288,25 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: scientific-specialist-lanes
+    title: "Scientific specialist capability system and governed behavioral experiment lanes"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    proposal_type: scientific_experiment_system
+    path: active/scientific-specialist-lanes/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 5189
+    related_prs:
+      - 5190
+    related_branches:
+      - feat/que-scientific-psychology-lanes
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

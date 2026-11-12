@@ -140,3 +140,12 @@ The first wagering book is **our challenges**, stood up in the **private ledger 
 - **Render + refresh contract (2026-11-02):** the public book view is built by the Viz seat (viz-dispatch-tree, their PR #3866) consuming book-feed.json verbatim (parity test-pinned; all 4 publishability flags honored; ledger referenced by path + count, bookkeeping notes never render). Generator: scripts/moneyball/wagering_book_feed.py -> ops/moneyball/wagering-book.json. REFRESH CONTRACT: when the feed gains positions/settlements or expectation records are set, this seat flags the Viz seat (or Viz pulls on a refresh PR) and the render regenerates.
 
 - **Priority-timebox linkage (2026-11-03):** the desk-feed priority_timebox tiers (BASE → CUSHION → WALL-DAY → ESCALATION → FINAL; PR #4126/#4130) are this book expectation checkpoints — tier boundaries map to the subjects calendar anchors (CUSHION = cushion anchors · WALL-DAY = wall · ESCALATION = register stage D · FINAL = final anchor; step-down after each wall). At each boundary: revise the subjects ONE expectation record (evidence in, posterior per B1); first entries open at a checkpoint only with B2 basis + subject record cited; tiers never settle (B3 unchanged). Registered in the book as priority_timebox_linkage.
+
+
+## Confidential participant strategies (owner clarification, 2026-11-12)
+
+Participant wallets and participant strategies are distinct records. Bidding, ante, wallet-management scripts, AST-derived tactics, trading specifics and other individual management methods are **private while the participant remains active**, subject to the participant's role contract and the authorized oversight boundary.
+
+Public DoE/MoneyBall/3L0 receipts may expose the participant identity or pseudonymous key required for attribution, the strategy artifact reference, a cryptographic commitment/hash, visibility state, and the applicable release trigger. They must not expose plaintext strategy, private wallet credentials, API keys, or private trading instructions. The strategy artifact itself must live in an access-controlled private store; a public Git commit is not a private store.
+
+On cull, the record may transition to the release state only according to the recorded disclosure policy and applicable authorization. The cull record still carries the participant, wallet balance at cull, pool destination and strategy-release disposition; culling does not erase historical identity, selection outcomes or contribution lineage. No secret or plaintext strategy is to be committed to this public repository.

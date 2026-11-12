@@ -7,22 +7,27 @@
  "moniker": "doe-expert",
  "manager_chat": "28ac9715-69b2-42a8-8bac-bebbe4f51a47",
  "owner_basis": "Owner 2026-11-01: 'USE THEM ALL' (provider utilization fix) + DOE-FAMILY rule 6 (design around continuous live production; routes re-verified, never pinned).",
- "hypothesis": "Under the desk rotation rule (no provider takes 2 consecutive dispatches for the same entry), the build bench's arms differ measurably in first-pass success and rework; the pooled rotation beats the historical Jules-only funnel on rework-adjusted throughput.",
+ "hypothesis": "Under DoE-governed allocation across the eligible inference endpoint pool, Scout task-fit selection realizes the assigned treatment; endpoint-level correctness, reliability, latency, cost and rework differ measurably by endpoint and configured instance.",
  "design": {
   "units": "Live desk dispatches (challenge-entry builds + fleet build tasks) in the window — the continuous production flow itself; no synthetic units.",
-  "factor": "provider arm as assigned by the desk rotation rule over the bench read from ops/quota/registry.json at run time (rule 6: bench never hard-pinned in this design; expected {jules, gemini, deepseek, command-dispatch} + any bench additions the registry gains).",
-  "assignment": "Desk's rotation rule assigns; this campaign observes and audits. Dispenses lacking a {provider, selection_reason, ts} stamp are OBSERVATIONAL only (rule 5).",
+  "factor": "Inference endpoint (provider + execution surface + model@version + protocol), with configured-instance identity retained separately; endpoint-specific task class and manager customization are declared factors where the campaign design admits them.",
+  "assignment": "DoE owns allocation and rotation. The active design assigns the treatment/endpoint distribution; Scout selects an eligible endpoint from the existing pool to realize that assignment using live task-fit, capability, credential, catalog, quota and health evidence. Manager/requester-specific provider constraints are allowed only through a recorded custom contract and separate treatment/stratum. No global no-repeat rule.",
   "responses": [
    "first_pass_success (PR merged with no rework dispatch)",
    "rework_cycles per unit",
    "dispatch_to_pr_wall_time",
    "action_required stalls (wiring health, per rule 6 re-verification)"
   ],
-  "window_rule": "first 24 stamped dispatches OR 2026-12-01, whichever first; per-arm reporting only at n>=4/arm",
-  "cull_rule": "arm with first-pass success < pooled - 0.25 at n>=8 is flagged; doe-expert proposes a desk-rule amendment (the desk owns its rule; this campaign issues the verdict, not the change)",
+  "window_rule": "first 24 fully stamped dispatches OR 2026-12-01, whichever first; n>=4/endpoint is descriptive reporting only. No endpoint significance, ranking, cull or promotion claim until its pre-registered endpoint-level statistical gate is satisfied.",
+  "cull_rule": "No endpoint is culled or promoted from a pooled mean or point estimate alone. DoE applies the pre-registered per-endpoint significance/effect-size/sample/stopping gates; otherwise status remains NOT_ESTABLISHED. Any later design amendment is versioned and prospective.",
   "guardrails": [
-   "no interference with desk assignment",
-   "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)"
+   "DoE assignment is authoritative; Scout selection must preserve the assigned treatment and emit a selection receipt",
+   "no manager/provider hard-pick outside an approved, priced custom contract",
+   "custom-contract participants are separately stratified and are not pooled into the standard randomized cohort unless pre-registered",
+   "no global no-repeat or fixed alternation rule; repeat assignment is controlled by the active DoE design",
+   "quota cost per dispatch recorded via usage slots when the provider returns them (schema rev 1.1)",
+   "endpoint-level significance is required; pooled/provider-family results cannot substitute for endpoint-specific evidence",
+   "private participant strategies are not emitted in public experiment records"
   ]
  },
  "automation": {
@@ -34,7 +39,7 @@
    "ops/quota/registry.json (bench, at run time)"
   ],
   "emits": "records/*.json EXPERIMENT records + records/SUMMARY.json",
-  "identity": "records carry instance_key where the dispatch stamp provides the configured-instance tuple; provider-only stamps group by provider and are marked as such"
+  "identity": "records carry the canonical inference-selection receipt reference and instance_key where available; endpoint-level identity is provider + surface + model@version + protocol, not provider alone"
  },
  "registration": {
   "preregistered_in_repo": true,
@@ -87,5 +92,16 @@
     "provider_metrics (sanitized scalar values with per-metric source timestamps and provenance)"
    ]
   }
- ]
+ ],
+ "owner_amendment": {
+  "date": "2026-11-12",
+  "authority": "DoE owns inference endpoint allocation, rotation, experimental assignment, significance gates, culling and promotion.",
+  "scout_role": "Scout selects an eligible provider/model endpoint from the existing pool to realize the DoE-assigned treatment, using live task-fit and eligibility evidence. Scout does not define allocation weights or independently promote/cull endpoints.",
+  "manager_role": "Manager/requester may use the standard DoE allocation or request custom inference settings through a priced contract. A contracted constraint is recorded as a distinct treatment/stratum and is not silently mixed into the standard randomized population.",
+  "endpoint_unit": "Provider + surface + model@version + protocol/endpoint identity. Each inference endpoint is evaluated independently; pooled results do not establish endpoint-level significance.",
+  "significance": "Per-endpoint claims require a pre-registered test, alpha, effect threshold, sample plan, stopping rule, confidence interval and multiplicity treatment. Until all declared gates pass, endpoint standing is NOT_ESTABLISHED. Existing n>=4 reporting is descriptive only.",
+  "rotation": "No global no-repeat or fixed alternation rule. Repeats and allocation proportions are determined by the active DoE design.",
+  "exemptions": "Owner and any other explicitly authorized exempt roles are declared in the design/receipt and excluded from ordinary participant constraints; exemption does not silently alter experiment records.",
+  "privacy": "Active participant bidding, ante, wallet-management and trading strategies remain private. Public records carry only non-sensitive commitments, references and state. Release on cull is governed by the recorded disclosure policy; never commit secrets or plaintext private strategies to a public repository."
+ }
 }

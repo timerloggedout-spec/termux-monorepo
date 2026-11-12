@@ -73,3 +73,15 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - [ ] repo-gate + hosted-delphic-ci (Termux Origin offline; device smoke deferred)
 - [ ] QUE/autonomous adapter contract and integration tests
 - [ ] graduation evaluation
+
+
+## Public showcase and integration
+
+- `site/delphic-observatory/index.html` — versioned, dependency-free research showcase.
+- `site/delphic-observatory/VERSION.json` — machine-readable artifact/version contract.
+- `site/delphic-observatory/CHANGELOG.md` — release history.
+- `site/delphic-observatory/README.md` — hosting and versioning policy.
+- `.github/workflows/delphic-observatory-pages.yml` — validates version metadata and publishes to GitHub Pages on master updates (Pages must be enabled for the repository).
+- `docs/ops/DELPHIC-QUE-INTEGRATION.md` — staged QUE/AutonomousOpsStuff integration and cross-context authority contract.
+
+Version: 0.1.0. Public site is a research projection, not a live operations dashboard. Termux Origin is offline as of operator report 2026-11-12; native Termux validation remains pending.

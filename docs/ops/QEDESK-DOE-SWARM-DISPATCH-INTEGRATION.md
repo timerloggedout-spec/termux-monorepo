@@ -1,153 +1,109 @@
-# QUEdesk × DoE × Swarm Dispatch Integration
+# QUEdesk × DoE × Swarm — integration boundary and workstream crosswalk
 
-**Status:** architecture contract / implementation gap analysis  
-**Target:** `timerloggedout-spec/termux-monorepo`  
-**Related:** PR #5085; issues #5136 and #5146; `docs/ops/ISSUE-TEMPLATE-DISPATCH.md`; `docs/ops/DELPHI-ORACLE-RFP-GATE.md`; `docs/ops/DOE-FAMILY.md`; `docs/ops/DOE-DREAMBEANS-POOL.md`; `docs/ops/UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md`.
+**Status:** cross-workstream reconciliation; supplemental to the canonical architecture contracts  
+**Reconciled:** 2026-11-12  
+**Related PR:** #5085 (autonomous escalation / optional LangGraph treatment)
 
-## Executive contract
+## Purpose and authority
 
-QUEdesk filing/dispatch is the event that starts the governed execution path. An admitted dispatch must cause the appropriate GitHub Actions workflow(s) to run; it must not stop at an intake comment, a queue label, or a dashboard projection.
+This document connects the autonomous escalation work in PR #5085 to the repository's newer QUEdesk, DoE, Scout, Swarm and multi-arm build work. It is **not** a replacement router, scheduler, queue, provider registry, quota ledger, experiment ledger or execution authority.
 
-The execution path must use the DoE pool generator to construct reproducible candidate assignments and the swarm tournament system to compare eligible agent/provider/model treatments. Inference is permitted only through currently verified, no-cost provider/model routes whose credentials, quota, reset window, capability, data class, and terms have passed admission. If the free entitlement or reset evidence is unknown, stale, exhausted, or card-gated, the inference leg is disabled and the dispatch is explicitly deferred or run in deterministic-only mode where the task permits it.
+Canonical architecture sources:
+- `docs/architecture/CONTRACT-TO-RUNTIME-TRACEABILITY.md` and `docs/architecture/DOE-GOVERNED-INFERENCE-ALLOCATION.md` (PR #5224).
+- `docs/architecture/ROUTING-CONTROL-PLANE-RECONCILIATION.md` and its graph (PR #5222, coordinated with #5224 because both branches edit the graph path).
+- `ops/quota/dispatch-tiers.json` — QUE tier/dependency policy SSOT.
+- `ops/challenge/desk-feed.json` — provider catalog and machine-readable selection policy.
+- `docs/ops/DOE-FAMILY.md` and the registered campaign designs.
 
-The system may build and improve its own code and workflow machinery, but it cannot grant itself new authority: builder output is a candidate artifact; independent tests/review/verifier and existing promotion gates remain mandatory. A tournament win is evidence for a treatment, not merge, deployment, spend, account provisioning, or permission to change policy.
+## Determination
 
-## Verified current architecture
+The architecture is layered. The repository contains distinct task-admission, build-dispatch, inference-allocation, invocation-routing, evidence and read-model planes. Similar words such as *provider*, *arm*, *router* and *dispatch* do not make these interchangeable.
 
-| Surface | Verified behavior | Consequence |
+### Do not conflate these two arm populations
+
+| Population | Unit | Authority / implementation |
 |---|---|---|
-| `.github/ISSUE_TEMPLATE/project-task.yml` | Declares `issue-dispatch/v1`, lane `swarm-dispatch`, tier 3, payload `project-task`, route `project-task-dispatch.yml`. Form says filing is the trigger and provider selection is system-owned. | Correct intake contract; it does not name a provider. |
-| `swarm-admission.yml` + `scripts/ops/swarm_admission.py` | Matches template block, evaluates tier → after → chain → flow, stamps ADMITTED/DEFERRED, applies admission label, publishes a one-run `issue-admission` artifact. Fail-soft: unknown/error defers. | Admission is a gate and receipt, not an executor. |
-| `project-task-dispatch.yml` + `scripts/dispatch/project_task.py` | Validates issue body and posts `dispatch-queued` intake receipt. The parser explicitly says selection/execution happens elsewhere. | This workflow is not itself the missing downstream execution trigger. |
-| `ISSUE-TEMPLATE-DISPATCH.md` | States the route named by a template executes under its own intake. It documents a workflow-run/artifact handoff for Game Development, but does not define an equivalent generic project-task worker handoff. | Generic project-task dispatch-to-execution is not established by the inspected contract. |
-| `que-feed-collect.yml` + `scripts/que/que_feed_collect.py` | Scheduled/dispatchable queue census and feeds; commits queue state and transition events. | QUE feed is measurement/observability, not task execution. |
-| `dispatch-watchdog.yml` | Flags unclaimed work at 30 minutes and escalates at 60 minutes. | Watchdog handles stalled claims; it is not the normal worker trigger. |
-| `DOE-DREAMBEANS-POOL.md` | Versioned method/concept candidate population; title-level triage and flag-only duplicate groups. | This is a method-version pool, not a live provider/model endpoint catalog. |
-| `DOE-FAMILY.md` | DoE is the experiment-design family: randomized mixes, evolutionary culling, cherry-picked propagation, with design events recorded. | Tournament assignment and selection belong to DoE; do not create a competing experiment ledger. |
-| `DELPHI-ORACLE-RFP-GATE.md` | Delphi admits free-tier surfaces to shadow trials; it explicitly does not choose models for live routing. Model ballots remain disabled until no-cost entitlement and fresh quota admission are independently validated. | Delphi RFP award is not a live model-routing decision. Use the model router and DoE assignment for those separate responsibilities. |
-| `UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md` | Discovery, eligibility, quota, health, invocation, and admission are separate states; unknown/stale evidence and missing credentials default deny. | Reuse the existing provider and telemetry contracts; do not invent a new quota authority. |
+| **Build-dispatch arms** | Harness × endpoint for a full-checkout builder | #5151 / merged PR #5178; `ops/dispatch/build-arms.json`; `scripts/ops/build_arm_harness.py`; `.github/workflows/build-dispatch.yml` |
+| **Inference endpoint arms** | Provider × surface × exact model@version × protocol/endpoint | DoE allocation + Scout selection; #5160, #5224, #5223; `inference-selection-receipt/v1` |
 
-## Required end-to-end path
+#5176 converts admitted task filings into build-dispatch executions. It does not implement inference endpoint allocation or the Scout-to-`llm_api_hub` invocation adapter.
 
-```text
-Issue template / QUEdesk dispatch
-        |
-        v
-swarm-admission (tier -> after -> chain -> flow)
-        |  ADMITTED receipt + issue-admission artifact
-        v
-route-specific QUE dispatcher  <--- missing generic project-task handoff to prove/build
-        |
-        +--> validate issue + exact target/scope/authority + idempotency key
-        |
-        v
-DoE design/pool generator
-        |  deterministic seed, design version, method candidates,
-        |  provider/model eligibility snapshot, treatment assignment
-        v
-Swarm tournament scheduler
-        |  bounded parallel workers / isolated workspaces
-        |  no provider selection from issue text
-        v
-Free-provider inference adapter (only after fresh quota + credential + policy admission)
-        |
-        v
-Builder outputs (branch/patch/artifact; no auto-merge)
-        |
-        v
-Independent verifier + tests + provenance + cost/quota receipt
-        |
-        +--> DoE outcomes / cull / retain / propagate winning method
-        |
-        v
-Existing merge/promotion/deployment gates (separate authorization)
-        |
-        v
-QUE receipt + telemetry / ATES / 3L0 / HindSight / provenance projections
-```
+## Current workstream ownership and sequence
 
-## Three pools — never conflate them
-
-1. **Method pool (Dreambeans):** versioned orchestration, planning, testing, selection, and recovery methods. Candidate cards are triaged and registered as method versions; duplicates are flagged, not deleted.
-2. **Provider/model pool:** provider endpoints and model IDs discovered from the reviewed provider catalog / authenticated model catalogs. Each candidate has a source, protocol, capability, credential alias/presence, terms/data class, region, observed quota and reset evidence, and freshness timestamp.
-3. **Tournament treatment pool:** a DoE design that assigns eligible method × provider/model × agent-role × task/workload treatments to independent experimental units. It records the exact treatment instance and seed. It does not convert title-level fit or a catalog listing into a successful inference route.
-
-The DoE generator should be deterministic and offline-capable. It can construct the candidate design without inference. The inference execution stage is separately admitted and uses only free, verified routes. A provider being labelled free or exposing a `:free` model name is not proof of remaining quota or no-cost entitlement.
-
-## Dispatch contract and receipts
-
-Every dispatch execution must carry:
-
-- `dispatch_id`: stable idempotency key derived from repository, issue number, template identity, and admission event identity; never from mutable issue-body text alone.
-- `issue_number`, `template`, `lane`, `que_tier`, `route`, `admission_run_id`, and admission decision.
-- `target_repo`, exact allowed path scope, authority reference, and done-evidence contract.
-- `design_id`, design version/hash, deterministic seed, method candidate IDs/versions, and tournament cell/assignment.
-- Provider/model exact IDs, protocol, endpoint source reference, credential **name/alias only**, quota source/scope/observed-at/reset, eligibility verdict, and fallback/defer reason.
-- Builder identity/role distinct from verifier identity/role; worker run IDs; artifact/branch/commit references.
-- Test and independent-verification results, provenance digest, resource usage, inference usage, and final disposition.
-
-The first admission stamp remains the QUE admission receipt. The execution worker appends a separate start/finish receipt keyed by the same `dispatch_id`; retries must be idempotent and preserve prior receipts. The issue body and comments are untrusted task data, never executable shell, workflow, or provider configuration.
-
-## Trigger/handoff implementation requirements
-
-1. Keep `swarm-admission.yml` as the single admission authority. Do not let issue events fan out directly to builders.
-2. Add a route-specific `workflow_run: completed` consumer for the generic `project-task` route, modeled on the existing Game Development artifact handoff. It must download the artifact from the exact admission run, verify repository/workflow/run identity, and require `matched=true`, the expected template, and `decision=ADMITTED`.
-3. Make the generic consumer invoke a QUE dispatcher entrypoint; do not duplicate tier/after/chain/flow logic in the consumer.
-4. Re-read the issue by number at execution time. Revalidate open state, required fields, target repository, scope and authority. Reject stale or edited intake unless its current content hash matches the admitted snapshot or a new admission is issued.
-5. The dispatcher asks the DoE generator for a deterministic plan, then asks the provider eligibility gate for eligible inference candidates. If none are eligible, record `DEFERRED_NO_FREE_ROUTE` (or deterministic-only when explicitly allowed by the task); never fall back to paid inference.
-6. Run tournament workers in isolated branches/workspaces with bounded concurrency, time, tokens, and retries. A builder cannot verify or promote its own output.
-7. Feed immutable treatment and outcome receipts to the existing DoE/ATES/3L0/provenance surfaces. The canonical result store remains the existing one; dashboards are projections.
-8. A workflow-run trigger is only a handoff. It must not use an untrusted issue field as a workflow filename, shell fragment, provider key, endpoint URL, secret name, or permission grant.
-
-## Self-build / self-improvement boundary
-
-Allowed without expanding authority:
-- Generate candidate patches, tests, docs, and workflow changes on isolated branches.
-- Run deterministic repository checks and bounded free inference experiments after admission.
-- Compare variants using predeclared DoE factors, independent experimental units, and fixed acceptance metrics.
-- Cull failed method versions and propagate a selected implementation only through a recorded design event and normal PR review/promotion.
-
-Never self-authorize:
-- Merge, release, deploy, modify branch protection, create credentials/accounts, change permission scopes, bypass review, approve provider billing, or promote a model based only on its own score.
-- Treat builder assertions, generated ballots, rubric output, or a single successful request as independent verification or a statistical win.
-- Persist provider secret values, user data, full prompt payloads, or private issue bodies in experiment records.
-
-## Implementation tranches
-
-| Tranche | Deliverable | Acceptance evidence |
+| Workstream | Current record | Responsibility / disposition |
 |---|---|---|
-| QD-0 — reconcile | Map QUE, templates, route registry, DoE, provider catalog, quotas, and tournament records to canonical owners. | Verified relationship map; no duplicate system of record. |
-| QD-1 — handoff | Generic project-task workflow-run consumer gated by the admission artifact. | Tests for admitted, deferred, unmatched, wrong-template, wrong-run, missing-artifact, stale-body, and duplicate delivery. |
-| QD-2 — deterministic generator | Stable DoE plan from registered method and eligible provider/model candidates; deterministic replay. | Same inputs/seed produce byte-stable plan; invalid/stale candidates excluded with reason. |
-| QD-3 — free inference admission | Provider adapter resolves exact endpoint/model and proves current no-cost eligibility before invoke. | No credential/quota/terms/region evidence => zero inference calls; no paid fallback. |
-| QD-4 — tournament workers | Bounded isolated swarm execution and distinct independent verifier. | Replayable treatment assignments, per-worker receipts, verifier separation, failure containment. |
-| QD-5 — self-build loop | Results feed method culling/propagation and candidate PR generation. | Pre-registered metrics, independent verification, PR-only promotion, provenance and rollback evidence. |
-| QD-6 — observatory | QUE/DoE/ATES/3L0 projections show queued → admitted → dispatched → running → verified → promoted/deferred. | Reconciled counts against canonical receipts; missing/unknown stays unknown. |
+| QUE admission reliability | #4979 / PR #5238 (open, validation pending) | Feed-first queue picture, bounded stale-feed fallback, named failure reason, Swarm token leg. Upstream dependency for the executor. |
+| Admission threshold conformance | #5239 (open) | Remove copied `FLOW_THRESHOLDS`; read tier/depth semantics from `dispatch-tiers.json` v2 at evaluation time. |
+| Admitted → execution | #5176 (open; QDesk slot after #4979) | Convert `swarm-admitted ∧ dispatch-queued ∧ unclaimed` into claim + build-dispatch fire. Claim is the exactly-once mutex; watchdog owns aging/stale-claim behavior. |
+| Build-arm routing | #5151 / PR #5178 (merged) | Build-arm registry, generic harness, census and dispatch-stamp fan-out. The merge opened #5176's build slot. |
+| Per-arm quota evidence | #5152 (open) | Cadence-owned usage ledger and quota-terminal events; quota-aware-before-failure is standing law. |
+| Inference endpoint population/cadence | #5160 (open; sequenced after #5176) | Deterministic pool generation, evidence-gated free endpoint eligibility and adaptive quota cadence. This is not the Dreambeans method pool. |
+| DoE inference allocation | PR #5224 (open) | DoE owns allocation/rotation/statistical gates; defines `inference-selection-receipt/v1`; Scout selects within the assigned eligible pool. |
+| Runtime selector enforcement | #5223 (open) | Trace and enforce Scout → workflow/provider invocation; scoped rotation; exact receipt-to-invocation identity; model-router composition and feed freshness. |
+| Free-inference tournament | PR #5198 (open) | Declarative staged order; initial scope is offline reconciliation, deterministic simulation and preregistration. No live inference authorized by the order. |
+| QDesk Observatory / Dreambeans | #5146 / PR #5145 | Separate RFP for deterministic method-version candidate generation, DoE registration and Observatory. Its method pool is not the inference endpoint roster. |
+| Participant identity | #5136 (open) | Registry-issued identities, least privilege and receipted participant actions. No account/credential creation by a clone or workflow without its own gate. |
+| Role clones | #5183 (open) | Role-clone census and later participant issuance; sequencing depends on #5136 and #5176. |
+| Self-repair | PR #5208 (merged) | Existing bounded QUE self-repair observe/promote/learn loop. It is not a replacement for the admitted-task executor or DoE tournament. |
 
-## Immediate blockers / facts to resolve before live inference
+## Verified integration findings
 
-- The inspected project-task workflow is intake-only; generic admitted-artifact-to-worker execution is not established by the current docs/workflow reviewed here.
-- Issue #5146's RFP explicitly says no provider inference is needed for initial review or deterministic pool generation; provider inference is a later, separately admitted implementation-worker phase. Preserve that separation.
-- Delphi's gate says it does not select live models and keeps model ballots disabled until independently validated no-cost entitlement and fresh quota admission exist.
-- The current issue #5136 Participant Identity Plane specifies pre-issued participant identities, least privilege, route receipts, and no account creation/credential sharing without its own gates. The dispatch worker must consume those identities; it must not improvise identities or credentials.
-- The precise provider/model pool source, live free quota authority, endpoint list, and tournament metric contract must be read from their canonical files at implementation time. This document does not claim any endpoint is currently eligible or any provider inference has succeeded.
+### 1. Build-arm selection must not bypass census eligibility
 
-## Related source files
+In merged `scripts/ops/build_arm_harness.py`, automatic selection requires a census verdict of `eligible`. The explicit-arm branch checks registry `selectable` and quota-terminal state but does not require a successful census verdict. Several candidate arms are marked `selectable: true`; the workflow exposes them as explicit `workflow_dispatch` choices.
 
-- `.github/ISSUE_TEMPLATE/project-task.yml`
-- `.github/workflows/swarm-admission.yml`
-- `.github/workflows/project-task-dispatch.yml`
-- `.github/workflows/que-feed-collect.yml`
-- `.github/workflows/dispatch-watchdog.yml`
-- `scripts/ops/swarm_admission.py`
-- `scripts/dispatch/project_task.py`
-- `scripts/que/que_feed_collect.py`
-- `ops/quota/dispatch-tiers.json`
-- `ops/quota/registry.json`
-- `docs/ops/ISSUE-TEMPLATE-DISPATCH.md`
-- `docs/ops/DOE-FAMILY.md`
-- `docs/ops/DOE-DREAMBEANS-POOL.md`
-- `docs/ops/DELPHI-ORACLE-RFP-GATE.md`
-- `docs/ops/UNIFIED-PROVIDER-OBSERVABILITY-INDEX.md`
-- Issue #5136 (Participant Identity Plane)
-- Issue #5146 (QDesk Observatory / DoE pipeline RFP)
+This means explicit selection can bypass the census gate. The intended correction is: explicit choice may override ordering, never eligibility. Production build selection requires a current `verdict=eligible` and valid quota evidence. Any candidate-arm diagnostic must be a separate non-production probe with no build, commit or PR side effects.
+
+This finding was recorded on #5223 and in the #5176 execution requirements. It is a follow-up against the merged #5178 implementation, not a second selector.
+
+### 2. Inference selection-to-invocation remains unimplemented
+
+The current source trace, also recorded in PR #5224, establishes:
+- `scripts/scout_roster.py` produces an `observe_only` roster; it does not select.
+- `scripts/model_router.py` uses role-specific configured peer/residual candidates and does not consume a DoE assignment receipt.
+- `.github/workflows/provider-invoke.yml` accepts a provider directly through `workflow_dispatch`.
+- `scripts/ops/provider_invoke.py` resolves models at invocation time, may try another catalog model on 404, and may attempt a provider default when catalog resolution fails. It does not bind the call to an `inference-selection-receipt/v1`.
+- `dispatch-stamp-fanout.yml` is downstream evidence fan-out, not selection authority.
+
+The receipt schema and DoE/Scout authority contract exist in PR #5224, but runtime enforcement does not. A reviewed adapter must consume the receipt, validate freshness/eligibility and require exact equality between receipt endpoint identity and the actual provider, surface, model, protocol and route. Missing, stale, mismatched or ineligible receipts mean **no inference call**. No catalog substitution, implicit default or alternate model should qualify as the assigned treatment.
+
+### 3. The relationship graph has a branch-level consolidation conflict
+
+PR #5222 and PR #5224 both edit `docs/architecture/ROUTING-CONTROL-PLANE-GRAPH.mmd` with different content. Consolidate to one canonical graph. Carry forward #5222's verified feed timestamps, freshness caveats, watchdog/QUE separation, D1 closure and supersession chronology into the richer #5224 contract matrix/graph. Do not merge competing graph variants.
+
+### 4. Context relationship index is not current enough for this reconciliation
+
+The master manifest at `workspace/llm_map/context_relationships/manifest.json` reports collection at 2026-10-26, only 50 issues and 50 PRs per family, `PARTIAL_CONTINUATION_REQUIRED`, `next_start_page=2`, and 120 unresolved internal references. It predates the November workstreams listed above. Use current GitHub issue/PR/file evidence for this reconciliation; do not treat the October graph as a complete current relationship map. Refresh only through the trusted publisher or bounded historical-backfill workflow.
+
+## Composition boundary for PR #5085
+
+PR #5085 supplies a bounded deterministic escalation policy and an optional LangGraph treatment. The current LangGraph handoff and repair nodes are explicitly local stubs: handoff records a selected executor but does not invoke it; repair marks a local state transition but performs no real repair. No provider/tool side effects occur in this module.
+
+Therefore:
+- Keep QUE admission and #5176 as the dispatch authority.
+- Keep #5178 as the build-arm selection/execution surface, subject to the census-eligibility correction.
+- Keep DoE/Scout and the inference receipt as the separate inference-selection authority.
+- Use escalation decisions to choose bounded repair/handoff/verification treatment within those existing lifecycles; do not create a parallel execution route.
+- Preserve independent verification, authorization scope, idempotency, quota preflight, DoE treatment identity and provenance.
+- Do not describe PR #5085 as production self-building until a governed adapter composes it with the existing executor and the tournament machinery.
+
+## Recommended integration order
+
+1. Complete and oracle-verify #4979 / PR #5238.
+2. Complete #5239 so admission consumes the v2 SSOT rather than an embedded threshold mirror.
+3. Execute #5176 using the merged #5178 build-arm contract, with explicit selection unable to bypass census eligibility and with claim/fire idempotency.
+4. Complete #5152 quota metering and #5160 evidence-gated inference endpoint population/cadence.
+5. Implement #5224/#5223 receipt-bound Scout-to-invocation enforcement without a second router.
+6. Run the offline deterministic stages of #5198; enable no live tournament calls until endpoint entitlement, quota, receipt and QDesk gates are satisfied.
+7. Integrate #5146's deterministic Dreambeans method pool and Observatory as a compatible, separate population.
+8. Compose PR #5085 escalation decisions into the established execution lifecycle only after the relevant contracts and verifier boundaries are proven.
+
+## Validation disposition (2026-11-12)
+
+- PR #5178: merged; build-arm registry/harness/census/fan-out landed. Census at merge identified Gemini CLI as the only eligible build arm; other arms remain failed/candidate pending adapter work.
+- PR #5238: open; 48 checks observed, only 1 success, 31 queued at the last fetched head. No promotion claim.
+- PR #5224: open; the dedicated contract check failed on a case-sensitive phrase check despite the design declaring the endpoint-level unit; the mutation and ledger failures examined in logs were GitHub API installation rate-limit 403s. Runtime receipt enforcement remains outstanding.
+- PR #5222: open draft; shares the graph path with #5224 and requires consolidation.
+- PR #5198: open; declarative/offline plan only, not authorization for live inference.
+- PR #5085 at `716a0e1e178f40dfb99b2290e677c480fa15a085`: 50 check-runs, 42 success, 8 skipped, zero failed; no LangGraph-specific check name was present in that set. No local Termux test execution is claimed.
+- No live inference, provider account changes, quota mutation, production routing change, merge or deployment was performed by this reconciliation.

@@ -18,8 +18,11 @@ External evaluators consume that evidence through bounded adapters.
 | TDQS / Glama | MCP/tool-definition quality | tool-selection and schema-quality evidence | observational |
 | Gamut AI / ATF / ACRS / MAESTRO | agent governance, capability exposure, assurance and threat-model evidence | governance/assurance adapter when scope is appropriate | observational; framework-scoped |
 | **GAMUT benchmark** | factual completeness of open-ended generation | research benchmark for completeness/factuality cohorts | observational; benchmark-scoped |
-| Langfuse | traces, datasets, experiments, scores | hosted experiment/evaluation adapter | observational |
+| Langfuse | traces, datasets, experiments, scores | hosted experiment/evaluation adapter; CEEL candidate | observational |
 | Phoenix | traces, evaluations, datasets, experiments | open/self-hosted experiment/evaluation adapter | observational |
+| PromptLayer | prompt registry/version lineage and request analytics (candidate hypotheses; verify by version) | prompt lifecycle comparison participant | observational; not runtime-verified |
+| PostHog | event analytics, experiment assignment/exposure and cohorts (candidate hypotheses; verify by version) | product/experiment measurement participant | observational; not runtime-verified |
+| Braintrust | evaluation datasets, scorers and experiment lineage (candidate hypotheses; verify by version) | evaluation comparison participant | observational; not runtime-verified |
 | SWE-style reference suites | issue-to-patch/software-engineering task outcomes | bounded external reference comparison | observational |
 | Local cohort harnesses | project-specific task success, cost, latency, regressions | highest-fidelity manager experiments | evidence source owned by this repository |
 
@@ -84,3 +87,9 @@ The current research set already contains Langfuse, Phoenix, TDQS, Tree-sitter/L
 - Gamut AI ACRS: https://docs.gamutassure.com/frameworks/acrs/
 - Gamut AI MAESTRO: https://docs.gamutassure.com/frameworks/maestro/
 - GAMUT factual-completeness benchmark: https://arxiv.org/abs/2607.19322
+
+## CEEL multi-platform comparison
+
+Langfuse, PromptLayer, PostHog and Braintrust enter as four independent, observational candidate factors. They are not assumed to be substitutes: they may compete within one capability while complementing one another across capabilities. The CEEL matrix preregisters a native baseline and a complete 2^4 combination design when all adapters are executable. Each adapter must satisfy the admission contract; missing data stays unknown, and no vendor score becomes merge authority.
+
+The native repository evidence path remains canonical. Phoenix, DSPy, SWE-style cohorts and local harnesses remain existing participants; CEEL adds comparison links rather than duplicating their machinery.

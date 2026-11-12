@@ -1234,6 +1234,23 @@ proposals:
     gates_required:
       - proposal-lifecycle
       - repo-gate
+  - id: continuous-capability-evolution-lab
+    title: "Continuous Capability Evolution Laboratory — event-driven FOSS discovery, DoE comparison, and benefit compounding"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/continuous-capability-evolution-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs: []
+    related_branches:
+      - feat/ceel-continuous-capability-evolution-20261111
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
   - id: integration-intelligence-superpowers
     title: "Integration Intelligence foundation and Superpowers engineering methodology"
     author: ChatGPT

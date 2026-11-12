@@ -1552,3 +1552,22 @@ SUMMARY with the pre-registered selection rule; the lossless
 gate — any run whose output differs from verifier-only decoding
 disqualifies its cell — is the campaign's validity condition,
 not a metric preference.
+
+
+## Continuous capability discovery and evolution (CEEL)
+
+CEEL — Continuous Capability Evolution Laboratory — is a DoE family member for discovery and comparative evolution of capabilities across internal lanes and external FOSS/commercial candidates. It is not a new experiment ledger, scheduler, orchestrator or source of truth.
+
+- Design: docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md
+- Plan: docs/superpowers/plans/2026-11-11-continuous-capability-evolution-lab.md
+- Platform matrix: docs/integrations/PLATFORM-COMPARISON.md
+- Capability graph: docs/integrations/capability-opportunity-graph.json
+- Work ledger: docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md
+
+CEEL searches novel capabilities, classifies sources, maps candidates to internal consumers, admits comparable proposals into participant families, tests individual and combined treatments, and propagates only independently verified improvements. Existing DSPy, SWE, Phoenix, ML pipeline, ATES and evaluator lanes remain participants; they are not reimplemented.
+
+Awareness is event-driven. GitHub push, pull-request, release, issue, workflow-completion and verified repository-dispatch events are the primary sensing path. Existing bounded polling/schedules are recovery and reconciliation paths for missed events or sources without webhooks. A weekly report is not the discovery engine. Campaign-specific periodic audit rules already recorded in this family remain local to those campaigns and do not define CEEL awareness.
+
+The four initial platform factors are Langfuse, PromptLayer, PostHog and Braintrust. Their capabilities remain hypotheses until pinned documentation and runtime evidence exist. The native repository baseline is mandatory. Combination and interaction effects must be measured rather than assumed; the 2^4 full-factorial comparison has 16 cells when all four factors are executable.
+
+Every dispatched run continues to emit exactly one canonical experiment record under docs/ops/corpus/EXPERIMENT.schema.json. Candidate status, proposal status, execution state, outcome validation and promotion remain distinct. Delphi/EGM and repository dual gates retain their existing authority.

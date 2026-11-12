@@ -698,7 +698,7 @@ def hydrate(repo: str, number: int) -> dict:
     return thread
 
 
-def discover(since: str, self_login: str = SELF_LOGIN, limit: int = 300) -> list[tuple[str, int]]:
+def discover(since: str, self_login: str = SELF_LOGIN, limit: int = 1000) -> list[tuple[str, int]]:
     """Foreign PRs we authored (open AND closed) and foreign issues we commented on."""
     import urllib.parse
     out: set[tuple[str, int]] = set()
@@ -726,11 +726,11 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("paths", nargs="+")
     s = sub.add_parser("scan", help="read-only live scan of foreign threads (backfill with an old --since)")
     s.add_argument("--since", default="2026-09-01")
-    s.add_argument("--limit", type=int, default=300)
+    s.add_argument("--limit", type=int, default=1000)  # whole corpus since genesis (~127 PRs + ~140 issue threads)
     for p in (c, s):
         p.add_argument("--out", default="", help="decisions JSONL")
         p.add_argument("--lane-events", default="", help="lane_event.py --events-file JSONL")
-        a = ap.parse_args(argv)
+    a = ap.parse_args(argv)  # after BOTH subparsers have --out/--lane-events (was inside the loop: scan rejected them)
     if a.cmd == "classify":
         threads = [json.loads(Path(p).read_text(encoding="utf-8")) for p in a.paths]
     else:

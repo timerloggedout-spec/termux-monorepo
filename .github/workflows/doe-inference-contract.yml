@@ -26,6 +26,9 @@ on:
       - "docs/architecture/DOE-GOVERNED-INFERENCE-ALLOCATION.md"
       - "scripts/ci/check_doe_inference_contract.py"
       - "tests/test_doe_inference_contract.py"
+      - "apps/tribute-dashboard/desk.html"
+      - "apps/tribute-dashboard/data/desk-feed.json"
+      - "tests/test_tribute_desk_freshness.py"
 permissions:
   contents: read
 jobs:
@@ -39,4 +42,6 @@ jobs:
       - name: Check authority and schema drift
         run: python scripts/ci/check_doe_inference_contract.py
       - name: Exercise drift guards
-        run: python -m unittest discover -s tests -p "test_doe_inference_contract.py" -v
+        run: |
+          python -m unittest discover -s tests -p "test_doe_inference_contract.py" -v
+          python -m unittest discover -s tests -p "test_tribute_desk_freshness.py" -v

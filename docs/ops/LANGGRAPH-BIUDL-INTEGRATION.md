@@ -144,3 +144,30 @@ The target is autonomous escalation across capability-matched specialists and ma
 ## Broader competitive field
 
 The LangGraph catalogue is only one discovery source. The competitive matrix also evaluates Microsoft Agent Framework, OpenAI Agents SDK, Google ADK, LlamaIndex Workflows, CrewAI, and PydanticAI, while retaining archived AutoGen as historical reference only. Candidate capabilities, maturity caveats, and official source links are recorded in `docs/proposals/active/langgraph-biudl-integration/COMPETITION-MATRIX.md`. No candidate is selected by popularity or integrated without equivalent-task measurement.
+
+## LGB-004 — deterministic optional StateGraph proof
+
+The first runnable graph treatment is implemented in `she/recovery/langgraph_treatment.py`. It wraps the existing pure-Python `decide_escalation` policy rather than duplicating policy or creating a second authorization plane.
+
+**Graph shape**
+
+```text
+START → decide ── handoff ──┐
+              ├─ repair ────┼→ verify → END
+              └─ terminal → END
+```
+
+- `decide` delegates classification and bounded candidate selection to the existing controller.
+- `handoff` records a distinct eligible executor reference; it does not invoke a provider or tool.
+- `repair` is a deterministic stub, not a source-mutating repair implementation.
+- `verify` checks that the decision preserved authorization, a handoff changed executor identity, and the authorization-scope snapshot is unchanged.
+- Policy denial, security containment, exhausted budgets, and blocked routes terminate without dispatch.
+- No parallel fan-out, checkpointer, database, model call, provider adapter, or side effect is introduced. Checkpoint recovery remains LGB-005; graph telemetry remains LGB-006.
+
+**Dependency placement**
+
+`langgraph==1.2.20` is pinned only in `requirements-langgraph-test.txt`, consumed by the dedicated `.github/workflows/langgraph-treatment.yml` workflow. It is not added to `requirements-base.txt` and does not load when importing the existing SHE package. This keeps Termux's base runtime and offline operation unaffected.
+
+**Validation disposition**
+
+The workflow runs the new graph route tests and existing escalation policy tests on GitHub-hosted Ubuntu/Python 3.11. This implementation has been pushed, but the current-head workflow result is pending; no local or Termux execution is claimed. LGB-004 remains validation-pending until the hosted result is fetched and reviewed.

@@ -42,6 +42,19 @@ PSYCHOLOGY_TERMS = re.compile(
 DO_STATEMENT_TERMS = re.compile(
     r"\bDO Statements?\b|\bstanding principle\b|\bprinciple of record\b", re.I)
 FORBIDDEN_DATA_SENTINELS = ("N∅", "NOT_ESTABLISHED")
+SPECIALIST_ROLE_MAP = {
+    "scientific-quantitative": (
+        "research-scientist", "mathematician", "statistical-methodologist",
+        "experiment-designer", "measurement-scientist", "ml-research-scientist",
+        "ml-evaluation-specialist", "validation-engineer",
+        "reproducibility-auditor",
+    ),
+    "do-statements": ("do-statement-methodologist", "behavioral-scientist"),
+    "performance-psychology": (
+        "performance-psychologist", "behavioral-scientist",
+        "measurement-scientist", "experiment-designer",
+    ),
+}
 
 
 def parse_issue_body(body: str) -> dict:
@@ -83,9 +96,17 @@ def profile_lanes(fields: dict) -> dict:
         lanes.append("performance-psychology")
     if "do-statements" in lanes and "performance-psychology" in lanes:
         lanes.append("do-statements-performance-psychology")
+    specialist_roles = []
+    for lane in lanes:
+        for role_id in SPECIALIST_ROLE_MAP.get(lane, ()):
+            if role_id not in specialist_roles:
+                specialist_roles.append(role_id)
     return {
         "schema": "que-dispatch-profile/v1",
         "capability_lanes": lanes,
+        "specialist_registry_ref": "ops/roles/scientific-specialists.json",
+        "candidate_specialist_roles": specialist_roles,
+        "specialist_roles_are_assignments": False,
         "experiment_lanes": [
             {"lane": lane, "state": "candidate_not_preregistered",
              "design_ref": None, "run_ref": None}

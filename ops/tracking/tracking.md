@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-12T10:47:06Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-12T11:03:55Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-12T10:47:05Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`32304` read_at=`2026-11-12T10:47:05Z`
+Sources: PR feed read_at=`2026-11-12T11:03:54Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`32360` read_at=`2026-11-12T11:03:54Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknown=7
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=10 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5191 `ba12d157e732` 2026-11-12T04:42:17Z | land/close PR #5198 — docs(doe): establish governed free-inference endpoint tournament order |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5191 `ba12d157e732` 2026-11-12T04:42:17Z | land/close PR #5216 — feat(experiment): Delphic Bayesian Observatory — scoped research lane |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5042 `87a63a77659b` 2026-11-07T03:54:34Z | land/close PR #5208 — feat(que): QDesk self-repair loop — intake, promote gate, learn ledger [skip render] |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |

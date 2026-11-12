@@ -479,7 +479,7 @@ def build_feed(registry_text: str, active_dir: Path, passes_dir: Path,
                     "source": f"docs/proposals/passes/{pass_id}/brief.json",
                 }
                 item["summary_points"] = brief_points(variant)
-            candidate_ids = [c.get("id")
+            candidate_ids = [c.get("id") if isinstance(c, dict) else c
                              for c in pdata["meta"].get("candidates", [])]
             if impl_stage or impl_suites:
                 item["implementation_summary"] = {

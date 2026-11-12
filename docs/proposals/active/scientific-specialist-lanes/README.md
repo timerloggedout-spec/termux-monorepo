@@ -48,6 +48,7 @@ Proposal type taxonomy: [QDesk proposal type registry](../../PROPOSAL-TYPES.md).
 
 ## QDesk integration boundaries
 
+- `ops/roles/scientific-specialists.json` contains 33 specialist role contract seeds, validated by `ops/roles/scientific-specialists.schema.json`. These are not qualified agents; skill/tool references and role-specific qualification fixtures remain follow-on requirements.
 - `docs/proposals/registry.yaml` is the proposal source of record.
 - `scripts/proposals/proposals_feed.py` emits the registry projection.
 - `apps/tribute-dashboard/proposals.html` renders proposal type, status, priority, author, and related evidence from the feed.

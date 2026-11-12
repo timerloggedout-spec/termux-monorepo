@@ -1,12 +1,12 @@
 {
  "schema": "quota-usage/v1",
- "generated_at": "2026-11-04T02:00:11Z",
+ "generated_at": "2026-11-12T11:03:42Z",
  "ordered_by": "owner order 2026-10-29 via quota-specialist lane (b18fae96)",
  "built_by": "scripts/quota_usage_pack.py (auto-refresh; series1 carried verbatim - tap ruled OUT (owner 2026-11-03; self-counted nulls)",
  "registry_context": {
-  "records": 171,
+  "records": 172,
   "pools": 59,
-  "coverage": "readings coverage: 171/171 readings rows (registry at 171 records; promotion cycle carries new records into readings) \u00b7 consumption coverage: not yet published (series builder writes consumption_gap)"
+  "coverage": "readings coverage: 172/172 readings rows (registry at 172 records; promotion cycle carries new records into readings) \u00b7 consumption coverage: not yet published (series builder writes consumption_gap)"
  },
  "series1_api_core": {
   "title": "GitHub API core \u2014 shared PAT bucket",
@@ -438,6 +438,30 @@
     "runs_delta": 0,
     "jobs_delta": 0,
     "minutes_est": 0
+   },
+   {
+    "date": "2026-11-07",
+    "runs_delta": 40,
+    "jobs_delta": 74,
+    "minutes_est": 15
+   },
+   {
+    "date": "2026-11-08",
+    "runs_delta": 40,
+    "jobs_delta": 189,
+    "minutes_est": 35
+   },
+   {
+    "date": "2026-11-09",
+    "runs_delta": 40,
+    "jobs_delta": 194,
+    "minutes_est": 34
+   },
+   {
+    "date": "2026-11-10",
+    "runs_delta": 40,
+    "jobs_delta": 217,
+    "minutes_est": 35
    }
   ],
   "spike": {

@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-04T10:29:37Z",
+ "generated_at": "2026-11-12T11:03:42Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -27,7 +27,7 @@
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-04T10:29:37Z"
+   "generated_at": "2026-11-12T11:03:42Z"
   },
   {
    "id": "rate-limit-events",
@@ -36,27 +36,60 @@
   }
  ],
  "summary": {
-  "registry_model_records": 97,
-  "distinct_providers": 95,
-  "families": 35,
-  "families_direct": 34,
+  "registry_model_records": 98,
+  "distinct_providers": 96,
+  "families": 36,
+  "families_direct": 35,
   "g4f_children": 61,
   "live_verified_families": 12,
   "rate_limit_events": 8,
   "families_populated": 29,
-  "families_gap": 6,
+  "families_gap": 7,
   "records_populated": 2,
-  "records_total": 97,
+  "records_total": 98,
   "population": {
-   "providers_total": 95,
+   "providers_total": 96,
    "providers_populated": 2,
-   "providers_gap": 93,
-   "families_total": 35,
+   "providers_gap": 94,
+   "families_total": 36,
    "families_populated": 29,
-   "families_gap": 6
+   "families_gap": 7
   }
  },
  "providers": [
+  {
+   "provider": "agentrouter",
+   "record_count": 1,
+   "providers_distinct": 1,
+   "live_verified": false,
+   "population": {
+    "state": "gap",
+    "bases": []
+   },
+   "census": null,
+   "records": [
+    {
+     "id": "agentrouter.models",
+     "provider": "agentrouter",
+     "metric": "Account-scoped model catalogue visibility; quota balance and reset not established",
+     "limit": null,
+     "unit": "provider-defined",
+     "window": "unknown",
+     "reset": "unknown",
+     "live": "GET https://co.agentrouter.org/v1/models (authenticated model catalogue only; no documented remaining-credit/reset endpoint verified)",
+     "readings": {
+      "status": "unknown",
+      "used": null,
+      "remaining": null,
+      "evidence_status": "early_signal",
+      "horizon": "H1",
+      "observed_at": null
+     },
+     "usage_series": null,
+     "populated": null
+    }
+   ]
+  },
   {
    "provider": "aion",
    "record_count": 1,

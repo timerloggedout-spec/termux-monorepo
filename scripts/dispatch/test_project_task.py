@@ -5,7 +5,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
-from admission_receipt import classify_receipt\nfrom project_task import (
+from admission_receipt import classify_receipt
+from project_task import (
     incomplete_comment, parse_issue_body, profile_lanes,
     receipt_comment, validate, validate_siglary_data_record,
 )

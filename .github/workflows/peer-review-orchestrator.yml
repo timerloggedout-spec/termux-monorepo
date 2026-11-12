@@ -86,6 +86,22 @@ jobs:
       metrics_map: ${{ steps.collect.outputs.metrics_map }}
       provider_cooldowns: ${{ steps.collect.outputs.provider_cooldowns }}
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this job's evidence reads/writes drew the shared
+        # per-repo GITHUB_TOKEN bucket (1,000/h class) whose exhaustion on
+        # 2026-11-12 failed this job's runs fleet-wide (Oct-22 pattern).
+        # The Swarm App installation token carries its own 12,500 bucket.
+        # Downscoped to exactly this job's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: read
+          permission-pull-requests: read
+          permission-issues: write
+          permission-checks: read
       - name: Collect controls and provider response evidence
         id: collect
         timeout-minutes: 8
@@ -105,6 +121,9 @@ jobs:
           OPERATOR_ALLOWED_ACTIONS: ${{ vars.OPERATOR_ALLOWED_ACTIONS || 'coderabbit:trigger_review,qodo:trigger_review,devin:trigger_review' }}
           PEER_STATE_PUBLISHER_LOGINS: ${{ vars.PEER_STATE_PUBLISHER_LOGINS || github.repository_owner }}
         with:
+          # #5219 leg (a): run the evidence collection on the minted Swarm
+          # App token, not the shared default GITHUB_TOKEN bucket.
+          github-token: ${{ steps.swarm.outputs.token }}
           script: |
             const requiredProviders = (process.env.REQUIRED_PROVIDERS || 'coderabbit')
               .split(',').map(v => v.trim().toLowerCase()).filter(Boolean);

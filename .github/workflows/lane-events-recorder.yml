@@ -33,6 +33,19 @@ jobs:
     timeout-minutes: 5
     continue-on-error: true
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this workflow's API calls drew the shared per-repo
+        # GITHUB_TOKEN bucket (1,000/h class) exhausted on 2026-11-12. The
+        # Swarm App installation token carries its own 12,500 bucket.
+        # Downscoped to this workflow's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${ vars.TERMUX_FLEET_SWARM_APP_ID }
+          private-key: ${ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }
+          repositories: ${ github.event.repository.name }
+          permission-actions: read
+          permission-contents: read
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -47,7 +60,7 @@ jobs:
         if: github.event_name == 'workflow_run'
         env:
           WR: ${{ toJson(github.event.workflow_run) }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
         run: |
           set -uo pipefail
           python3 - <<'PY'

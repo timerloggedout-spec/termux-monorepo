@@ -38,9 +38,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this workflow's API calls drew the shared per-repo
+        # GITHUB_TOKEN bucket (1,000/h class) exhausted on 2026-11-12. The
+        # Swarm App installation token carries its own 12,500 bucket.
+        # Downscoped to this workflow's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${ vars.TERMUX_FLEET_SWARM_APP_ID }
+          private-key: ${ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }
+          repositories: ${ github.event.repository.name }
+          permission-contents: read
+          permission-pull-requests: read
+          permission-issues: read
+          permission-checks: read
       - name: Build SHA-bound production ledger
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
+          github-token: ${{ steps.swarm.outputs.token }}
           script: |
             const issue = context.payload.issue;
             const prNumber = Number(context.payload.pull_request?.number || (issue?.pull_request ? issue.number : 0));

@@ -47,7 +47,12 @@ on:
 
 concurrency:
   group: repo-tracking-collect
-  cancel-in-progress: false
+  # #5219 leg (b): every run re-derives the full projection from source
+  # state, so a stale in-flight refresh is worthless once a newer event
+  # lands — cancel it instead of letting refresh runs queue up behind
+  # the comment/event flurry. Pushes are atomic; the surviving run
+  # re-derives and publishes the freshest projection.
+  cancel-in-progress: true
 
 permissions:
   contents: write

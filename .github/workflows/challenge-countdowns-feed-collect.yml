@@ -30,7 +30,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this collector's API reads/writes drew the shared
+        # per-repo GITHUB_TOKEN bucket (1,000/h class) exhausted on
+        # 2026-11-12. The Swarm App installation token carries its own
+        # 12,500 bucket. Downscoped to this workflow's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${ vars.TERMUX_FLEET_SWARM_APP_ID }
+          private-key: ${ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }
+          repositories: ${ github.event.repository.name }
+          permission-contents: write
+          permission-pull-requests: write
+          permission-issues: read
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm.outputs.token }}
       - name: Collect the feed
         run: |
           set -euo pipefail
@@ -55,4 +71,4 @@ jobs:
             --body "Automated challenge countdowns feed refresh (collector: scripts/dashboards/challenge_countdowns_feed.py; contract: docs/ops/CHALLENGE-COUNTDOWNS-FEED.md). Instants are derived from docs/ops/CHALLENGE-ENTRIES-LOG.md at collection time; nothing is copied forward." \
             || echo "refresh PR already open"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}

@@ -10,8 +10,12 @@ from __future__ import annotations
 import json
 import math
 import sys
+from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Any
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.delphic_math import (
     beta_entropy,
@@ -186,6 +190,8 @@ def expected_value_of_information(
     experiment_cost: float,
 ) -> float:
     """Compute EVSI-style expected utility of information before observing outcomes."""
+    if not math.isfinite(current_expected_utility) or not math.isfinite(experiment_cost):
+        raise ValueError("current expected utility and experiment cost must be finite")
     if set(outcome_probabilities) != set(post_information_utilities):
         raise ValueError("probability and utility outcomes must have identical keys")
     probabilities = list(outcome_probabilities.values())

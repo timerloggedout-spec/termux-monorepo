@@ -103,6 +103,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Dependency-phase system | `docs/agentic/README.md` |
 | Credential names inventory | issue #184 (no values) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
+| Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
@@ -144,3 +145,8 @@ Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/down
 Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
+
+
+## Continuous Capability Evolution Laboratory (CEEL)
+
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.

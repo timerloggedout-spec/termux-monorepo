@@ -41,6 +41,12 @@
 | Cache Stats | P1 | Skill installed; no live telemetry tool exposed | Planned | Local prompt-cache/context efficiency evidence |
 | Alloy | P2 | Mission/device and Mesh Storage tools exposed | Planned | Robotics/edge mission and device evidence |
 | Klaviyo | P3 | Connector tools exposed in this session | Planned; deferred pending explicit consent-based use case | Consent-based research/release communications |
+| Langfuse | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Tracing, prompt lifecycle and evaluation comparison hypothesis |
+| PromptLayer | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Prompt registry/version lineage comparison hypothesis |
+| PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
+| Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
+
+The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 
 ## Priority rationale
 

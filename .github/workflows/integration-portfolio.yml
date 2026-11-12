@@ -7,6 +7,7 @@ on:
       - "docs.json"
       - "sitemap.md"
       - "scripts/integrations/**"
+      - "tests/test_capability_opportunity_graph.py"
       - ".github/workflows/integration-portfolio.yml"
   push:
     branches: [master, master-staging]
@@ -15,6 +16,7 @@ on:
       - "docs.json"
       - "sitemap.md"
       - "scripts/integrations/**"
+      - "tests/test_capability_opportunity_graph.py"
   workflow_dispatch:
 
 permissions:
@@ -30,3 +32,7 @@ jobs:
           python-version: "3.12"
       - name: Validate integration registry, catalog, and documentation navigation
         run: python3 scripts/integrations/validate_portfolio.py
+      - name: Validate CEEL capability graph and provenance links
+        run: python3 scripts/integrations/validate_capability_graph.py
+      - name: Test CEEL graph validation invariants
+        run: python3 -m unittest discover -s tests -p 'test_capability_opportunity_graph.py' -v

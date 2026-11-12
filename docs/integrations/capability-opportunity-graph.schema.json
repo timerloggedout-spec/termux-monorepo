@@ -1,0 +1,284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/capability-opportunity-graph.schema.json",
+  "title": "CEEL Capability Opportunity Graph",
+  "description": "Repository-maintained index of candidate capabilities, source provenance, internal consumers, evidence and relationships; not a runtime authority or parallel CMDB.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "graph_id",
+    "repository",
+    "updated_at",
+    "authority",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "authority": {
+      "const": "repository-maintained-capability-index"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "lifecycle_state",
+        "source",
+        "capabilities",
+        "evidence",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{1,95}$"
+        },
+        "kind": {
+          "enum": [
+            "external_platform",
+            "foss_project",
+            "internal_component",
+            "experiment_family",
+            "capability"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle_state": {
+          "enum": [
+            "discovered",
+            "classified",
+            "mapped",
+            "proposed",
+            "admitted",
+            "experimentally_validated",
+            "integration_candidate",
+            "integrated",
+            "monitored",
+            "rejected",
+            "deferred",
+            "blocked",
+            "superseded",
+            "retired"
+          ]
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_type",
+            "locator",
+            "revision",
+            "observed_at"
+          ],
+          "properties": {
+            "source_type": {
+              "enum": [
+                "official_documentation",
+                "source_repository",
+                "repository_file",
+                "github_issue",
+                "github_workflow",
+                "research_paper",
+                "operator_request",
+                "runtime_observation"
+              ]
+            },
+            "locator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "revision": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "observed_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capability_id",
+              "status"
+            ],
+            "properties": {
+              "capability_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{1,95}$"
+              },
+              "status": {
+                "enum": [
+                  "hypothesis",
+                  "documented",
+                  "observed",
+                  "tested",
+                  "verified",
+                  "not_supported",
+                  "unknown"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidence_id",
+              "status",
+              "reference"
+            ],
+            "properties": {
+              "evidence_id": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "unverified",
+                  "partial",
+                  "verified",
+                  "refuted",
+                  "stale"
+                ]
+              },
+              "reference": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "internal_consumers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "risk_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "relationship",
+        "status"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "relationship": {
+          "enum": [
+            "competes_with",
+            "complements",
+            "measures",
+            "consumes",
+            "implements",
+            "informs",
+            "supersedes",
+            "depends_on"
+          ]
+        },
+        "status": {
+          "enum": [
+            "hypothesis",
+            "documented",
+            "observed",
+            "tested",
+            "verified"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

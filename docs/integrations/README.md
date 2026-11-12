@@ -11,6 +11,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
 - [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
+- [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
 
 ## Authority model
 

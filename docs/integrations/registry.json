@@ -2,9 +2,9 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-06",
+  "updated_at": "2026-11-11",
   "authority": "repository-maintained-inventory",
-  "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps.",
+  "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
     {
       "id": "superpowers",
@@ -453,6 +453,62 @@
       "write_boundary": "No account creation, SSO/Directory Sync changes, billing changes, or identity mutations performed. WorkOS account setup is an explicit provisioning prerequisite.",
       "next_step": "Create/attach a WorkOS dashboard account only through the supported setup flow, then inspect operations and scopes before integration.",
       "sensitivity": "identity-and-access-control"
+    },
+    {
+      "id": "langfuse",
+      "name": "Langfuse",
+      "category": "llm-observability-and-prompt-lifecycle",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Named by the operator as a DoE participant candidate; no account authentication or runtime adapter was verified in this change.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "observational-tracing-and-evaluation-candidate",
+      "write_boundary": "Read-only/metadata-only by default. No prompt, completion, trace, dataset or customer-data export until privacy, retention, scope and redaction contracts are validated.",
+      "next_step": "Verify official documentation for a pinned version, then implement sanitized fixtures and a bounded read-only adapter proof.",
+      "sensitivity": "prompt-and-trace-metadata"
+    },
+    {
+      "id": "promptlayer",
+      "name": "PromptLayer",
+      "category": "prompt-registry-and-observability",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Named by the operator as a DoE participant candidate; no account authentication or runtime adapter was verified in this change.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "observational-prompt-lifecycle-candidate",
+      "write_boundary": "No prompt publication, mutation, external account write or raw prompt export. Validate API scopes, retention and redaction before runtime adapter.",
+      "next_step": "Verify version pinning, prompt lineage, export and rollback from official documentation and a bounded fixture-backed test.",
+      "sensitivity": "prompt-and-request-metadata"
+    },
+    {
+      "id": "posthog",
+      "name": "PostHog",
+      "category": "product-analytics-and-experimentation",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Named by the operator as a DoE participant candidate; no account authentication or runtime adapter was verified in this change.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "observational-event-and-experiment-candidate",
+      "write_boundary": "No user-level event ingestion, identity enrichment, feature-flag mutation or customer-data transfer until privacy, consent, retention and least-privilege scopes are validated.",
+      "next_step": "Verify assignment/exposure semantics, export, cohort integrity and privacy controls; use synthetic fixtures first.",
+      "sensitivity": "event-and-experiment-metadata"
+    },
+    {
+      "id": "braintrust",
+      "name": "Braintrust",
+      "category": "llm-evaluation-and-experimentation",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Named by the operator as a DoE participant candidate; no account authentication or runtime adapter was verified in this change.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "observational-evaluation-candidate",
+      "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
+      "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
+      "sensitivity": "evaluation-dataset-and-score-metadata"
     }
   ]
 }

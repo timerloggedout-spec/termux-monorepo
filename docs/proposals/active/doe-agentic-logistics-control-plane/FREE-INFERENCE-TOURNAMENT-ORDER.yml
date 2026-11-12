@@ -93,6 +93,20 @@ dispatch:
     remains mandatory. The project-task route validates and receipts intake;
     provider/manager selection and execution remain in the existing dispatch
     machinery. Do not hard-select a provider in the issue body.
+  admission_re_evaluation:
+    documented_contract: "QUE admission drain re-evaluates deferred-by-tier filings as queue clears"
+    implementation_status: "NOT_ESTABLISHED"
+    observed:
+      - "swarm-admission.yml triggers only on issues.opened and issues.reopened"
+      - "dispatch-watchdog.yml scans dispatch-queued unclaimed tasks for aging/escalation"
+      - "scripts/dispatch/dispatch_watchdog.py does not inspect deferred-by-tier or re-run admission"
+      - "No dedicated QUE admission drain workflow was found in the current workflow inventory"
+    current_coordination_task: "#5195 remains deferred-by-tier"
+    rule: >-
+      Do not remove deferred-by-tier, add swarm-admitted, reopen the issue, or
+      claim execution to bypass admission. The deferred re-evaluation mechanism
+      must be located and proven, or a separately reviewed owner-governed
+      implementation must land before this order can be dispatched.
   executor_boundary: >-
     #5176 is the admitted-to-build-dispatch executor for build-dispatch arms.
     It is not assumed to be the direct inference endpoint executor. Reuse the
@@ -242,6 +256,7 @@ stages:
       - "Inference endpoint and build-dispatch arm populations are explicitly separated."
       - "Generic issue-open provider calls are blocked until QUE admission or a separately authorized explicit command; the recorded #5195 OpenRouter HTTP 429 event is classified as an incidental, non-DoE control-gap observation, not a tournament result."
       - "PR #5134, issue #5160, #5151, #5152, #5176, #4979, #5145/#5146 and #5163 have current dispositions recorded."
+      - "The QUE deferred-by-tier re-evaluation path is located and proven; the documentation-only claim of a drain is not accepted as execution evidence. If absent, this order remains blocked pending a separately reviewed owner-governed fix."
   - id: DPLC-FIT-01
     name: "Deterministic endpoint population and eligibility projection"
     priority: P0

@@ -5,7 +5,7 @@
 | LGB-001 | Recon Awesome LangGraph, official skills, and current repository architecture | **done** | Existing native orchestration/evidence and Temporal contracts reused |
 | LGB-002 | Add repository-native LangGraph orchestration skill | **done** | Official fundamentals/persistence sources pinned by blob SHA |
 | LGB-003 | Document BIUDL integration and adapter boundaries | **done** | No duplicate control plane or mandatory dependency |
-| LGB-004 | Implement minimal optional Python StateGraph proof with deterministic stub nodes | backlog | Requires approved plan, dependency placement, and runnable test environment |
+| LGB-004 | Implement minimal optional Python StateGraph proof with deterministic stub nodes | **implemented — hosted validation pending** | `she/recovery/langgraph_treatment.py`; optional test-only pin in `requirements-langgraph-test.txt`; deterministic route tests and dedicated PR workflow; no Termux/base dependency |
 | LGB-005 | Implement automatic checkpoint recovery + side-effect idempotency proof | backlog | No approval interrupt or human-resume path; must select/test recovery backend |
 | LGB-006 | Extend existing OrchestratorTracer / ATES bridge with a versioned graph-event contract | backlog | Current schema has six event kinds and no node identity; add allowlisted fields + privacy tests; do not repurpose ACTION-EFFECT-EVENT |
 | LGB-007 | Compare native manager vs LangGraph treatments on same MVT cohort | backlog | Require task fingerprints, equal validation, cost/time/outcome measures |

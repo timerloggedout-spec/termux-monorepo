@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "f9e6d391febaada8e55204cc20cb82793272871ab6a1d2f8fa04227c5b402a25",
-  "workflow_count": 303,
+  "source_fingerprint": "738c1f009ee7d138f125150015e6bbc378aa06a81172f367e852bcc19e4b4189",
+  "workflow_count": 304,
   "workflows": [
     {
       "action_pins": [],
@@ -2419,27 +2419,18 @@
       ]
     },
     {
-      "action_pins": [
-        "actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b"
-      ],
-      "authority": "writer",
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
       "concurrency": "",
       "domain": "peer-provider-review",
       "jobs": [
-        "dispatch",
-        "invoke",
-        "review",
-        "triage"
+        "retired"
       ],
-      "name": "🔀 Gemini Dispatch (free-tier agentic)",
+      "name": "DEPRECATED — Gemini Dispatch retired",
       "path": ".github/workflows/gemini-dispatch.yml",
       "schedules": [],
       "triggers": [
-        "issue_comment",
-        "issues",
-        "pull_request",
-        "pull_request_review",
-        "pull_request_review_comment"
+        "workflow_dispatch"
       ]
     },
     {
@@ -5433,6 +5424,23 @@
       ],
       "name": "vercel-quota-probe",
       "path": ".github/workflows/vercel-quota-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "bounded-state-write",
+      "concurrency": "group: video-render-${{ inputs.issue_number }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "render"
+      ],
+      "name": "video-render",
+      "path": ".github/workflows/video-render.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

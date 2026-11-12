@@ -9,8 +9,8 @@ consumers must not mix shapes across the bump).
 ## Source of record
 
 - `docs/proposals/registry.yaml` — every registered proposal pack
-  (id, title, author, status, priority, path, related issues/PRs).
-  Registry semantics are owned by the Delphi lane; this feed carries
+  (id, title, author, status, priority, path, optional proposal_type, related issues/PRs).
+  Registry semantics are owned by the Delphi lane; optional `proposal_type` is carried verbatim and omitted/null remains unclassified (never inferred). This feed carries
   the registry's values **verbatim** — author strings, statuses and
   priorities are never normalized, merged or inferred.
 - `docs/proposals/passes/<id>/pass.json` — the Oracle Method pass
@@ -69,7 +69,7 @@ consumers must not mix shapes across the bump).
 2. A pass whose `pass.json` cannot be read is named in the feed's
    `gaps` array and still listed, never silently dropped.
 3. The page fetches only `./data/proposals-feed.json`; its filters
-   (status / priority / author) are built from the feed's own values
+   (type / status / priority / author) are built from the feed's own values
    at runtime, never hardcoded.
 4. Counts on the page come from the feed's `counts` object, computed
    by the collector from the registry — the page computes nothing
@@ -81,3 +81,12 @@ consumers must not mix shapes across the bump).
    never inferred from the registry, the proposal's own status, or
    the PR's age or number; an unresolvable ref is `unknown`, never
    a guessed state.
+
+
+## Proposal type extension (additive within v2)
+
+- Registry entries may declare an optional `proposal_type` scalar.
+- The collector carries it verbatim as `proposal_type` on each proposal and counts established values in `counts.by_type`.
+- Missing or null values remain null and are excluded from `by_type`; consumers render them as unclassified rather than inferring a type.
+- The proposals index exposes a type filter sourced from the feed's observed values. The filter does not maintain a second taxonomy list.
+- The Contribution Desk (`desk.html`) remains the operational queue/traversal projection. It links to the Proposals index; it is not a second proposal registry or proposal-type store.

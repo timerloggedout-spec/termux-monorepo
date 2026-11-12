@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 580,
-    "open_prs": 360,
+    "open_issues": 581,
+    "open_prs": 361,
     "pr_classes": {
-      "CANDIDATE": 167,
-      "EXTRACT": 12,
-      "NEED_EVIDENCE": 181,
+      "CANDIDATE": 171,
+      "EXTRACT": 11,
+      "NEED_EVIDENCE": 179,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 327,
+      "issues": 328,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 59,
-      "prs": 358,
+      "prs": 359,
       "unlabelled_numbers": [
         308,
         388,
@@ -118,7 +118,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T10:04:38Z",
+  "generated_at": "2026-11-12T10:53:34Z",
   "issues_unlabelled": [
     308,
     388,
@@ -183,10 +183,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "add7c24fe6"
+    "sha": "020d565751"
   },
   "prs": [
     {
@@ -342,20 +342,6 @@
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "accb23365c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5145,
-      "title": "docs(qdesk): propose Observatory + Delphi DoE self-implementation pipeline",
-      "updated_at": "2026-11-11T04:31:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2511,6 +2497,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "accb23365c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5145,
+      "title": "docs(qdesk): propose Observatory + Delphi DoE self-implementation pipeline",
+      "updated_at": "2026-11-11T04:31:50Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "e8c48037d4",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2699,6 +2699,48 @@
       "number": 5199,
       "title": "feat(qdesk): deadline desk \u2014 requirement-closure Gantt, T-7d/T-48h/T-12h alarms via hark:queue, page freshness audit; fix ingest + rfp-feed collectors [skip render]",
       "updated_at": "2026-11-12T09:48:51Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8f846326ec",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5205,
+      "title": "Tribute: whole-corpus versioned audit revisions + census completeness + merge attribution [skip render]",
+      "updated_at": "2026-11-12T09:56:54Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e5510451fe",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5208,
+      "title": "feat(que): QDesk self-repair loop \u2014 intake, promote gate, learn ledger [skip render]",
+      "updated_at": "2026-11-12T09:58:55Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "e393962179",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5209,
+      "title": "fix(gates): SIE target 1 \u2014 branch gates degrade platform walls instead of failing [skip render]",
+      "updated_at": "2026-11-12T09:58:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3225,12 +3267,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "69a8c82195",
+      "head_sha": "690c7795f7",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T10:01:55Z"
+      "updated_at": "2026-11-12T10:52:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3239,12 +3281,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "499a84f963",
+      "head_sha": "cf8573e853",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T10:02:42Z"
+      "updated_at": "2026-11-12T10:37:27Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3883,12 +3925,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "6ec8b8e77f",
+      "head_sha": "e103964b82",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-12T09:51:54Z"
+      "updated_at": "2026-11-12T10:26:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3897,12 +3939,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "5d8e0d6f5a",
+      "head_sha": "350fbcc396",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T09:55:29Z"
+      "updated_at": "2026-11-12T10:51:46Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4023,12 +4065,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "eae83e0a92",
+      "head_sha": "421b55411e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4424,
       "title": "chore(proposals): refresh proposals-feed.json",
-      "updated_at": "2026-11-12T08:48:49Z"
+      "updated_at": "2026-11-12T10:04:31Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5159,7 +5201,7 @@
       },
       "head_sha": "4d3c4e3041",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5178,
       "title": "Multi-arm build routing: endpoint-agnostic build-dispatch (#5151) \u2014 DO NOT MERGE",
       "updated_at": "2026-11-12T05:38:31Z"
@@ -5196,43 +5238,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "8f846326ec",
+      "head_sha": "64e8818126",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 5205,
-      "title": "Tribute: whole-corpus versioned audit revisions + census completeness + merge attribution [skip render]",
-      "updated_at": "2026-11-12T09:56:54Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "e5510451fe",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5208,
-      "title": "feat(que): QDesk self-repair loop \u2014 intake, promote gate, learn ledger [skip render]",
-      "updated_at": "2026-11-12T09:58:55Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "e393962179",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5209,
-      "title": "fix(gates): SIE target 1 \u2014 branch gates degrade platform walls instead of failing [skip render]",
-      "updated_at": "2026-11-12T09:58:56Z"
+      "number": 5216,
+      "title": "feat(experiment): Delphic Bayesian Observatory \u2014 scoped research lane",
+      "updated_at": "2026-11-12T10:53:31Z"
     }
   ],
   "schema": "operator-matrix/v1",

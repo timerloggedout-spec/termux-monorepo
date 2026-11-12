@@ -64,6 +64,7 @@ def test_valid_body_parses_and_profiles_all_requested_lanes():
                for x in profile["experiment_lanes"])
     assert profile["provider_selection"] == "existing_dispatch_policy"
     assert profile["specialist_roles_are_assignments"] is False
+    assert "doe-expert" in profile["candidate_specialist_roles"]
     assert "experiment-designer" in profile["candidate_specialist_roles"]
     assert "performance-psychologist" in profile["candidate_specialist_roles"]
     assert profile["specialist_registry_ref"] == "ops/roles/scientific-specialists.json"

@@ -34,9 +34,6 @@ jobs:
   collect:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      GH_TOKEN: ${{ github.token }}
-      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Mint Swarm app token (F1, issue #2750)
         id: swarm-token
@@ -86,6 +83,12 @@ jobs:
           PY
       - name: Fetch the RFP census cache
         if: steps.gate.outputs.skip != 'true'
+        # #5219 leg (a): the API read leg runs on the in-file Swarm mint,
+        # not the shared GITHUB_TOKEN bucket (job env cannot reference
+        # step outputs, so the token is bound at step level here).
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.swarm-token.outputs.token }}
         run: |
           set -euo pipefail
           python3 -B scripts/delphi/rfp_flood_fetch.py --cache .rfp-cache

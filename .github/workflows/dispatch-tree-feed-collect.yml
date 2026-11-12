@@ -33,7 +33,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this collector's API reads/writes drew the shared
+        # per-repo GITHUB_TOKEN bucket (1,000/h class) exhausted on
+        # 2026-11-12. The Swarm App installation token carries its own
+        # 12,500 bucket. Downscoped to this workflow's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${ vars.TERMUX_FLEET_SWARM_APP_ID }
+          private-key: ${ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }
+          repositories: ${ github.event.repository.name }
+          permission-actions: read
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm.outputs.token }}
       - name: Observe (Actions API snapshot)
         run: |
           set -uo pipefail
@@ -51,8 +68,8 @@ jobs:
             exit "$rc"
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.swarm.outputs.token }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
       - name: Collect the feed (offline)
         run: |
           set -euo pipefail
@@ -77,4 +94,4 @@ jobs:
             --body "Automated dispatch-tree feed refresh (observer: scripts/dashboards/dispatch_tree_observe.py; collector: scripts/dashboards/dispatch_tree_feed.py; contract: docs/ops/DISPATCH-TREE-FEED.md). Busy counts are read live at collection time; nothing is copied forward." \
             || echo "refresh PR already open"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}

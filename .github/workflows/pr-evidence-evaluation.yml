@@ -41,11 +41,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        # #5219 leg (a): this workflow's API calls drew the shared per-repo
+        # GITHUB_TOKEN bucket (1,000/h class) exhausted on 2026-11-12. The
+        # Swarm App installation token carries its own 12,500 bucket.
+        # Downscoped to this workflow's declared permissions.
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${ vars.TERMUX_FLEET_SWARM_APP_ID }
+          private-key: ${ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }
+          repositories: ${ github.event.repository.name }
+          permission-contents: read
+          permission-pull-requests: read
+          permission-issues: write
+          permission-checks: read
       - name: Evaluate current-SHA evidence
         if: env.BUILDKITE_BUILD_NUMBER == ''
         uses: actions/github-script@v7
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ steps.swarm.outputs.token }}
           script: |
             const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number || context.payload.review?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.comment?.pull_request_url?.match(/pulls\/(\d+)/)?.[1] || context.payload.inputs?.pr_number || '${{ inputs.pr_number }}');
             if (!prNumber) throw new Error('PR number is required');

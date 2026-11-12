@@ -215,7 +215,13 @@ def test_specialist_registry_is_machine_readable_and_non_provider_identity():
         "builder", "operator", "steward", "observer",
         "reviewer", "scout", "gambler", "participant",
     ))
+    schema = json.loads((ROOT / "ops" / "roles" / "scientific-specialists.schema.json").read_text())
+    required = set(schema["properties"]["roles"]["items"]["required"])
     ids = {role["id"] for role in registry["roles"]}
+    assert len(ids) == len(registry["roles"])
+    assert all(required.issubset(role) for role in registry["roles"])
+    assert all(role["qualification_status"] == "unqualified_until_benchmarked"
+               for role in registry["roles"])
     profile = profile_lanes(parse_issue_body(VALID_BODY))
     assert set(profile["candidate_specialist_roles"]).issubset(ids)
     assert all(role["provider_identity"] is False for role in registry["roles"])

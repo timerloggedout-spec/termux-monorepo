@@ -210,6 +210,68 @@ def staged_files(cwd: str) -> list[dict]:
     return files
 
 
+def load_gate_config() -> dict:
+    """Filing-gate caps (scripts/ci/tribute_gate_config.json).
+
+    The caps are named, versioned config -- not constants buried
+    in code -- so the lane's volume discipline is tunable by a
+    config PR and auditable in history (diagnostics follow-
+    through, 2026-11-03). Missing/unreadable config = the
+    conservative defaults below, never unlimited."""
+    defaults = {"max_open_prs_per_repo": 2,
+                "max_filings_per_repo_per_24h": 3,
+                "actor": "timerloggedout-spec"}
+    path = Path(__file__).resolve().parent / "tribute_gate_config.json"
+    try:
+        cfg = json.loads(path.read_text(encoding="utf-8"))
+        return {**defaults, **cfg}
+    except (OSError, ValueError):
+        return defaults
+
+
+def _search_count(query: str) -> int:
+    data = _api(
+        "GET",
+        "https://api.github.com/search/issues?q="
+        + urllib.parse.quote(query) + "&per_page=1")
+    if isinstance(data, dict):
+        return int(data.get("total_count") or 0)
+    return 0
+
+
+def volume_gate(owner: str, repo: str, config: dict,
+                count_fn=None) -> dict:
+    """Per-repo volume discipline (diagnostics 2026-11-03: filing
+    bursts into small repos drew maintainer cleanup waves -- 20
+    closures on 2026-10-27 alone). Two named caps from the gate
+    config: our OPEN PRs in the target repo, and our filings
+    there in the trailing 24h. Breach of either blocks the
+    filing at the gate."""
+    count_fn = count_fn or _search_count
+    actor = config.get("actor") or "timerloggedout-spec"
+    full = f"{owner}/{repo}"
+    open_prs = count_fn(
+        f"author:{actor} is:pr is:open repo:{full}")
+    if open_prs >= int(config["max_open_prs_per_repo"]):
+        return {"allowed": False, "open_prs": open_prs,
+                "reason": f"volume cap: {open_prs} open lane PRs "
+                          f"in {full} >= cap "
+                          f"{config['max_open_prs_per_repo']}"}
+    from datetime import datetime, timedelta, timezone
+    since = (datetime.now(timezone.utc) - timedelta(hours=24)) \
+        .strftime("%Y-%m-%d")
+    filed_24h = count_fn(
+        f"author:{actor} is:pr repo:{full} created:>={since}")
+    if filed_24h >= int(config["max_filings_per_repo_per_24h"]):
+        return {"allowed": False, "open_prs": open_prs,
+                "filed_24h": filed_24h,
+                "reason": f"volume cap: {filed_24h} lane filings "
+                          f"in {full} in 24h >= cap "
+                          f"{config['max_filings_per_repo_per_24h']}"}
+    return {"allowed": True, "open_prs": open_prs,
+            "filed_24h": filed_24h, "reason": ""}
+
+
 def preflight_issue(owner: str, repo: str, number: int, meta: dict) -> dict:
     """Same candidate gate as claim, re-run at the point of action."""
     try:
@@ -257,6 +319,13 @@ def main() -> int:
     if not pf["eligible"]:
         print(f"SKIP {owner}/{repo}#{number}: Tribute System 1 preflight {pf['reasons']}", file=sys.stderr)
         print("::notice::contribute_skipped_preflight=true")
+        return 0
+
+    gate_cfg = load_gate_config()
+    vg = volume_gate(owner, repo, gate_cfg)
+    if not vg["allowed"]:
+        print(f"SKIP {owner}/{repo}#{number}: {vg['reason']}", file=sys.stderr)
+        print("::notice::contribute_skipped_volume_cap=true")
         return 0
 
     fork = ensure_fork(owner, repo, args.actor_fork, token)

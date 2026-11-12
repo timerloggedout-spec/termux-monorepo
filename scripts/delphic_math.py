@@ -103,8 +103,8 @@ def posterior_predictive_variance(
     alpha: float, beta: float, trials: int = 1
 ) -> float:
     _validate_beta(alpha, beta)
-    if trials < 0:
-        raise ValueError("trials must be non-negative")
+    if type(trials) is not int or trials < 0:
+        raise ValueError("trials must be a non-negative integer")
     n = alpha + beta
     return trials * alpha * beta * (n + trials) / (n * n * (n + 1.0))
 

@@ -5,10 +5,10 @@ on:
     paths:
       - "scripts/delphic_oracle.py"
       - "scripts/delphic_graph_lab.py"
-      - "scripts/delphic_math.py"
+      - "scripts/delphic_math.py scripts/delphic_doe_pool.py"
       - "tests/test_delphic_oracle.py"
       - "tests/test_delphic_graph_lab.py"
-      - "tests/test_delphic_math.py"
+      - "tests/test_delphic_math.py tests/test_delphic_doe_pool.py"
       - "docs/schemas/delphic-oracle-control-plane.yaml"
       - "docs/schemas/delphic-math-contract.yaml"
       - "docs/schemas/graph-algorithm-registry.yaml"

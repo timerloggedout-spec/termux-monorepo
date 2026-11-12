@@ -21,10 +21,10 @@ def _timestamp(value: str) -> datetime:
     return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
 
 
-def classify_receipt(
-    comments: list[dict[str, Any]], template: str, event_at: str
-) -> str | None:
-    """Return admitted/deferred/unmatched for the newest post-event admission stamp."""
+def select_receipt(
+    comments: list[dict[str, Any]], templates: list[str], event_at: str
+) -> tuple[str | None, str]:
+    """Return decision and matched template for the newest post-event receipt."""
     boundary = _timestamp(event_at)
     receipts = []
     for comment in comments:
@@ -39,15 +39,23 @@ def classify_receipt(
             continue
         receipts.append((created, body))
     if not receipts:
-        return None
+        return None, ""
     _, body = max(receipts, key=lambda item: item[0])
-    if f"template `{template}`" not in body:
-        return "unmatched"
+    matched = next((name for name in templates if f"template `{name}`" in body), "")
+    if not matched:
+        return "unmatched", ""
     if "DISPATCH **ADMITTED**" in body:
-        return "admitted"
+        return "admitted", matched
     if "DISPATCH **DEFERRED**" in body:
-        return "deferred"
-    return "unmatched"
+        return "deferred", matched
+    return "unmatched", matched
+
+
+def classify_receipt(
+    comments: list[dict[str, Any]], template: str, event_at: str
+) -> str | None:
+    """Compatibility helper used by contract tests."""
+    return select_receipt(comments, template.split(","), event_at)[0]
 
 
 def fetch_comments(repository: str, issue: int) -> list[dict[str, Any]]:
@@ -80,8 +88,8 @@ def main(argv: list[str] | None = None) -> int:
     deadline = time.monotonic() + args.timeout
     while True:
         try:
-            decision = classify_receipt(
-                fetch_comments(repository, args.issue), args.template, args.event_at
+            decision, matched_template = select_receipt(
+                fetch_comments(repository, args.issue), args.template.split(","), args.event_at
             )
         except (subprocess.CalledProcessError, json.JSONDecodeError) as exc:
             print(f"Admission receipt fetch failed; retrying: {exc}", file=sys.stderr)

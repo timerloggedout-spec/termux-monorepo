@@ -6,13 +6,13 @@ Needs GITHUB_REPOSITORY (+ GITHUB_TOKEN for commit dates). Stdlib only; reads pu
 """
 from __future__ import annotations
 
-import argparse, json, os, re, sys, urllib.error, urllib.request
+import argparse, json, os, re, sys, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone
 
 
 def get(url: str, token: str | None = None, timeout: int = 20):
     h = {"User-Agent": "qdesk-pages-audit", "Cache-Control": "no-cache"}
-    if token and "api.github.com" in url:
+    if token and urllib.parse.urlsplit(url).hostname == "api.github.com":
         h.update({"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"})
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=timeout) as r:

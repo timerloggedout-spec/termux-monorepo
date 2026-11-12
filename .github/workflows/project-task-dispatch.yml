@@ -36,6 +36,7 @@ jobs:
             --body-file "$RUNNER_TEMP/issue-body.md" \
             --issue "${{ github.event.issue.number }}" \
             --comment-out "$RUNNER_TEMP/comment.md" \
+            --metadata-out "$RUNNER_TEMP/dispatch-profile.json" \
             --github-output "$GITHUB_OUTPUT"
 
       - name: Post routing receipt + queue (valid intake)
@@ -50,6 +51,15 @@ jobs:
             --body-file "$RUNNER_TEMP/comment.md"
           gh issue edit "${{ github.event.issue.number }}" \
             --add-label dispatch-queued
+
+      - name: Publish QUE lane profile
+        if: steps.parse.outputs.ok == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: que-dispatch-profile-${{ github.event.issue.number }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/dispatch-profile.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Post intake diagnosis (malformed intake)
         if: steps.parse.outputs.ok == 'false'

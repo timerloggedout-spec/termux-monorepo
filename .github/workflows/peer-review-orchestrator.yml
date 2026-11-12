@@ -683,70 +683,78 @@ jobs:
           # repository's default Actions token is limited to read-only access.
           github-token: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
           script: |
-            const marker = '<!-- agent-peer-response-state:v2 -->';
-            const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
-              .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
-            const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
-            if (!prNumber) return;
-            const body = [
-              marker,
-              `cycle_id: ${process.env.CYCLE_ID}`,
-              `head_sha: ${process.env.HEAD_SHA}`,
-              `cycle_started_at: ${process.env.CYCLE_STARTED_AT}`,
-              `state: ${process.env.STATE}`,
-              `ready: ${process.env.READY}`,
-              `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
-              `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
-              `context_author: ${process.env.CONTEXT_AUTHOR}`,
-              `context_author_class: ${process.env.CONTEXT_AUTHOR_CLASS}`,
-              `context_primary_class: ${process.env.CONTEXT_PRIMARY_CLASS}`,
-              `context_classes: ${process.env.CONTEXT_CLASSES}`,
-              `context_size: ${process.env.CONTEXT_SIZE}`,
-              `context_labels: ${process.env.CONTEXT_LABELS}`,
-              `metrics_map: ${process.env.METRICS_MAP}`,
-              '',
-              '### Agent peer response gate',
-              '',
-              '**Provider state:**',
-              process.env.PROVIDERS || '- none',
-              '',
-              '**Pending:**',
-              process.env.PENDING || 'none',
-              '',
-              '**Authorized interactive controls:**',
-              process.env.CONTROLS || '- none observed',
-              '',
-              'A provider-owned checkbox/button requires an authorized Operator Action Executor.',
-              'Do not copy control markup into a relay comment. After a permitted UI action, post:',
-              '```text',
-              '<!-- operator-action-ack:v1 -->',
-              `cycle_id: ${process.env.CYCLE_ID}`,
-              'provider: <provider>',
-              'control_id: <provider-control-id>',
-              'action: <allowed-action>',
-              '```',
-              'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
-              'A checked [x] control means the provider UI action occurred; it is not a completed review.',
-              'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
-              'Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.',
-            ].join('\n');
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
-            });
-            const existing = comments.filter(comment =>
-              statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
-              comment.body?.includes(marker) &&
-              comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
-              comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
-            ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+            // QDesk self-repair (SIE bootstrap): degrade known platform walls instead of failing the gate.
+            const __isPlatformWall = (e) => /rate limit exceeded|secondary rate limit|Commenting is disabled on issues with more than/i.test(String(e && e.message || e));
+            try {
+              const marker = '<!-- agent-peer-response-state:v2 -->';
+              const statePublisherLogins = new Set((process.env.PEER_STATE_PUBLISHER_LOGINS || '')
+                .split(',').map(value => value.trim().toLowerCase()).filter(Boolean));
+              const prNumber = Number(context.payload.pull_request?.number || context.payload.issue?.number);
+              if (!prNumber) return;
+              const body = [
+                marker,
+                `cycle_id: ${process.env.CYCLE_ID}`,
+                `head_sha: ${process.env.HEAD_SHA}`,
+                `cycle_started_at: ${process.env.CYCLE_STARTED_AT}`,
+                `state: ${process.env.STATE}`,
+                `ready: ${process.env.READY}`,
+                `required_providers: ${process.env.REQUIRED_PROVIDERS}`,
+                `enforce_provider_completion: ${process.env.ENFORCE_PROVIDER_COMPLETION}`,
+                `context_author: ${process.env.CONTEXT_AUTHOR}`,
+                `context_author_class: ${process.env.CONTEXT_AUTHOR_CLASS}`,
+                `context_primary_class: ${process.env.CONTEXT_PRIMARY_CLASS}`,
+                `context_classes: ${process.env.CONTEXT_CLASSES}`,
+                `context_size: ${process.env.CONTEXT_SIZE}`,
+                `context_labels: ${process.env.CONTEXT_LABELS}`,
+                `metrics_map: ${process.env.METRICS_MAP}`,
+                '',
+                '### Agent peer response gate',
+                '',
+                '**Provider state:**',
+                process.env.PROVIDERS || '- none',
+                '',
+                '**Pending:**',
+                process.env.PENDING || 'none',
+                '',
+                '**Authorized interactive controls:**',
+                process.env.CONTROLS || '- none observed',
+                '',
+                'A provider-owned checkbox/button requires an authorized Operator Action Executor.',
+                'Do not copy control markup into a relay comment. After a permitted UI action, post:',
+                '```text',
+                '<!-- operator-action-ack:v1 -->',
+                `cycle_id: ${process.env.CYCLE_ID}`,
+                'provider: <provider>',
+                'control_id: <provider-control-id>',
+                'action: <allowed-action>',
+                '```',
+                'The second-pass reviewer remains blocked until matching provider completion evidence is ingested for this SHA.',
+                'A checked [x] control means the provider UI action occurred; it is not a completed review.',
+                'A provider cooldown is also non-completing: wait for the stated retry window, then retrigger through the authorized provider path.',
+                'Pending provider evidence is advisory unless PEER_ENFORCE_PROVIDER_COMPLETION is deliberately set to true for branch protection.',
+              ].join('\n');
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, per_page: 100,
               });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
-              });
+              const existing = comments.filter(comment =>
+                statePublisherLogins.has((comment.user?.login || '').toLowerCase()) &&
+                comment.body?.includes(marker) &&
+                comment.body.includes(`cycle_id: ${process.env.CYCLE_ID}`) &&
+                comment.body.includes(`head_sha: ${process.env.HEAD_SHA}`)
+              ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))[0];
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body,
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber, body,
+                });
+              }
+            } catch (__err) {
+              if (!__isPlatformWall(__err)) throw __err;
+              core.warning(`Peer state not published to the PR thread: ${__err.message.slice(0, 160)}`);
+              await core.summary.addRaw('Peer response state kept in this run summary only (PR thread unavailable).').write();
             }
 
       - name: Dispatch verified second pass

@@ -205,6 +205,8 @@ def test_project_task_workflow_preserves_issue_event_dependencies():
     assert "types: [opened, reopened]" in workflow
     assert "workflow_run:" not in workflow
     assert "admission_receipt.py" in workflow
+    assert "que-intake-event" in workflow
+    assert "already_processed" in workflow
     assert "startsWith(github.event.issue.title, '[task] ')" in workflow
     assert "startsWith(github.event.issue.title, '[science] ')" in workflow
     assert "startsWith(github.event.issue.title, '[experiment] ')" in workflow

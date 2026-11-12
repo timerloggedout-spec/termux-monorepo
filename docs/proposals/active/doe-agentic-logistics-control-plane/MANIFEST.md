@@ -58,6 +58,7 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 - Architecture: ./ARCHITECTURE.md
 - Source map: ./SOURCE-MAP.md
 - Full README taxonomy: ./ECOSYSTEM-CATALOG.md
+- Logistics source assessment: ./LOGISTICS-PLANNING-ASSESSMENT.md
 - Dispatch observation: ./DISPATCH-OBSERVATION.md
 - Items: ./ITEMS.md
 - Free-inference tournament implementation order: ./FREE-INFERENCE-TOURNAMENT-ORDER.yml

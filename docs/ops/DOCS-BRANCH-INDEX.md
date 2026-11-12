@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-11T14:25:55Z` UTC  
+**Generated:** `2026-11-12T04:47:11Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 270 docs-lane branch(es)
+**Count:** 272 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -33,6 +33,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/agents-md-comprehensive`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agents-md-comprehensive) | `d0c128f75139` | — | — | orphan lane |
 | [`docs/agents-md-provenance-update`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agents-md-provenance-update) | `df6bd232a7e9` | — | — | orphan lane |
 | [`docs/agy-mvt-doe-v0-20261023`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agy-mvt-doe-v0-20261023) | `ea16165266f7` | [#1569](https://github.com/timerloggedout-spec/termux-monorepo/pull/1569)→`master-staging` | — | PR without registry link |
+| [`docs/ai-elves-readme-and-experiments-20261112`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ai-elves-readme-and-experiments-20261112) | `d5004805a139` | — | — | orphan lane |
 | [`docs/apk-signing`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/apk-signing) | `ab8f46a19100` | — | — | orphan lane |
 | [`docs/ar08-issue175-status-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ar08-issue175-status-alignment) | `7048b361fd1d` | — | — | orphan lane |
 | [`docs/architecture-index`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/architecture-index) | `e11826295242` | — | — | orphan lane |
@@ -156,6 +157,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/lc-002-execute-drop-data-triggers`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/lc-002-execute-drop-data-triggers) | `45212dbb833b` | — | — | orphan lane |
 | [`docs/leveling-alignment-sep-intake`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/leveling-alignment-sep-intake) | `1c00f6b0d966` | — | — | orphan lane |
 | [`docs/linguist-panel-acceptance-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/linguist-panel-acceptance-record) | `fc1c3226c9e6` | — | — | orphan lane |
+| [`docs/linguist-readme-evolution-20261111`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/linguist-readme-evolution-20261111) | `5f712c974c47` | [#5188](https://github.com/timerloggedout-spec/termux-monorepo/pull/5188)→`master` | — | PR without registry link |
 | [`docs/llm-api-hub-name-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/llm-api-hub-name-alignment) | `01758b81419b` | — | — | orphan lane |
 | [`docs/mcp-hub-risk-split`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mcp-hub-risk-split) | `f73c4f26fd2e` | — | — | orphan lane |
 | [`docs/mintlify-docs-json`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/mintlify-docs-json) | `10094f0f3ac8` | — | — | orphan lane |

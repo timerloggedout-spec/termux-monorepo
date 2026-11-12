@@ -1,0 +1,65 @@
+name: vercel-git-unlink
+
+# [MUSEai]@{role:{vercel-specialist}} Rate-limit governance QUE leg (d)
+# (owner ask 2026-11-12 via QDesk): stop the Vercel GitHub App integration
+# creating per-PR preview deployment attempts that burn the Hobby
+# 100/day cap (statuses "Vercel - <project>: Deployment rate limited").
+# git.deploymentEnabled:false does not stop PR deployment attempts.
+# Fix: remove the git link from the fleet's CLI-deployed projects.
+# Production is unaffected: batch-deploy + tribute-vercel-prod deploy
+# via `vercel link --project` + `vercel deploy --prod` (token CLI);
+# the CLI link is independent of the project's git link. Reversible:
+# the repo can be re-linked in project settings at any time.
+# Dispatch-only; read-back asserted per project.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-git-unlink
+  cancel-in-progress: false
+
+jobs:
+  unlink:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+    steps:
+      - name: Report + remove git link on CLI-deployed projects (assert null)
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          {
+            echo "## vercel-git-unlink"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for P in tribute-oversight tribute-dash termux-monorepo mcp-hub; do
+            if ! curl -fsS -H "$AUTH" "$API/v9/projects/$P?teamId=$SCOPE" > "$RUNNER_TEMP/$P.json" 2>/dev/null; then
+              echo "::warning::$P not found; skipped"
+              echo "- $P: not found, skipped" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            PID=$(jq -r '.id' "$RUNNER_TEMP/$P.json")
+            LINK=$(jq -c '.link // null' "$RUNNER_TEMP/$P.json")
+            echo "$P ($PID) link before: $LINK"
+            if [ "$LINK" = "null" ]; then
+              echo "::notice::$P has no git link (already production-only)"
+              echo "- $P: no git link (already unlinked)" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            code=$(curl -s -o /tmp/del.json -w '%{http_code}' -X DELETE -H "$AUTH" "$API/v9/projects/$PID/link?teamId=$SCOPE")
+            echo "DELETE link $P = HTTP $code"
+            case "$code" in 200|204) :;; *) cat /tmp/del.json; exit 1;; esac
+            back=$(curl -fsS -H "$AUTH" "$API/v9/projects/$PID?teamId=$SCOPE" | jq -c '.link // null')
+            echo "$P link after: $back"
+            [ "$back" = "null" ] || { echo "::error::$P link still present after DELETE"; exit 1; }
+            echo "::notice::$P git link REMOVED (read-back null)"
+            echo "- $P: git link removed (was $LINK)" >> "$GITHUB_STEP_SUMMARY"
+          done

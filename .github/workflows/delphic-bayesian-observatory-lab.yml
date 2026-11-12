@@ -1,0 +1,64 @@
+name: Delphic Bayesian Observatory Lab
+
+on:
+  pull_request:
+    paths:
+      - "scripts/delphic_oracle.py"
+      - "scripts/delphic_graph_lab.py"
+      - "scripts/delphic_math.py"
+      - "scripts/delphic_doe_pool.py"
+      - "tests/test_delphic_oracle.py"
+      - "tests/test_delphic_graph_lab.py"
+      - "tests/test_delphic_math.py"
+      - "tests/test_delphic_doe_pool.py"
+      - "docs/schemas/delphic-oracle-control-plane.yaml"
+      - "docs/schemas/delphic-math-contract.yaml"
+      - "docs/schemas/graph-algorithm-registry.yaml"
+      - "docs/schemas/observatory-window-contract.yaml"
+      - "docs/schemas/delphic-doe-task-candidate.yaml"
+      - "docs/proposals/active/delphic-bayesian-observatory-lab/**"
+      - "experiments/delphic-observatory-lab/**"
+      - "site/delphic-observatory/**"
+      - "docs/ops/DELPHIC-*-INTEGRATION.md"
+      - ".github/workflows/delphic-bayesian-observatory-lab.yml"
+  push:
+    branches:
+      - feat/delphic-doe-moneyball-integration
+      - experiment/delphic-bayesian-observatory-lab
+      - experiment/delphic-observatory-scoped-merge
+    paths:
+      - "scripts/delphic_oracle.py"
+      - "scripts/delphic_graph_lab.py"
+      - "scripts/delphic_math.py"
+      - "scripts/delphic_doe_pool.py"
+      - "tests/test_delphic_oracle.py"
+      - "tests/test_delphic_graph_lab.py"
+      - "tests/test_delphic_math.py"
+      - "tests/test_delphic_doe_pool.py"
+      - "docs/schemas/delphic-doe-task-candidate.yaml"
+      - ".github/workflows/delphic-bayesian-observatory-lab.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: delphic-observatory-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deterministic-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Python version
+        run: python3 --version
+      - name: Install pytest
+        run: python3 -m pip install --disable-pip-version-check -q pytest
+      - name: Run deterministic Delphic + DoE fixtures
+        run: python3 -m pytest -q tests/test_delphic_oracle.py tests/test_delphic_graph_lab.py tests/test_delphic_math.py tests/test_delphic_doe_pool.py
+      - name: Compile engines
+        run: python3 -m py_compile scripts/delphic_oracle.py scripts/delphic_graph_lab.py scripts/delphic_math.py scripts/delphic_doe_pool.py

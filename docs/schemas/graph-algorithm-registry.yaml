@@ -62,6 +62,20 @@ algorithms:
     notes:
       - "base, branch_1, and branch_2 are explicit inputs"
       - "Git merge semantics are not assumed for non-Git state"
+  - id: dag.expected_path_cost
+    family: probability
+    inputs: [dag, markov_trellis, edge_costs]
+    outputs: [cost_mass_by_node, expected_terminal_cost]
+    deterministic: true
+    preconditions:
+      - "input graph is a DAG"
+      - "transition probabilities are explicit, finite, non-negative, and normalized"
+      - "every traversed edge has a finite cost"
+    recurrence: "C_j += P(i->j) * (C_i + m_i * c(i,j))"
+    complexity:
+      time: "O(V+E) theoretical; O(V log V + E log E) reference implementation"
+      space: "O(V)"
+    evidence_role: derived_projection
   - id: dag.sugiyama_layout
     family: visualization
     inputs: [dag]
@@ -102,18 +116,3 @@ ui:
     contradiction: cross
     unresolved: open_circle
     recombination: bullseye
-
-
-  - id: "dag.expected_path_cost"
-    kind: "markov_trellis"
-    algorithm: "forward dynamic programming over explicit transition probabilities and edge costs"
-    semantics: "expected accumulated edge cost at each node and expected terminal cost"
-    recurrence: "C_j += P(i->j)*(C_i + m_i*c(i,j))"
-    preconditions:
-      - "DAG"
-      - "explicit normalized transition probabilities"
-      - "finite edge costs"
-    theoretical_time: "O(V+E)"
-    theoretical_space: "O(V)"
-    output: ["cost_mass_by_node", "expected_terminal_cost"]
-    evidence_role: "derived_projection"

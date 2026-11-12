@@ -10,7 +10,6 @@ from typing import TypedDict
 
 from she.recovery.escalation import (
     EscalationBudget,
-    EscalationDecision,
     ExecutorCandidate,
     decide_escalation,
 )
@@ -31,7 +30,8 @@ class EscalationGraphState(TypedDict, total=False):
     current_executor_ref: str | None
     current_family: str | None
     authorization_scope: tuple[str, ...]
-    decision: EscalationDecision
+    authorization_scope_snapshot: tuple[str, ...]
+    decision: object
     executor_ref: str | None
     repair_applied: bool
     verification_passed: bool
@@ -46,7 +46,10 @@ def _decide(state: EscalationGraphState) -> dict:
         current_executor_ref=state.get("current_executor_ref"),
         current_family=state.get("current_family"),
     )
-    return {"decision": decision}
+    return {
+        "decision": decision,
+        "authorization_scope_snapshot": state.get("authorization_scope", ()),
+    }
 
 
 def _route(state: EscalationGraphState) -> str:
@@ -83,7 +86,7 @@ def _verify(state: EscalationGraphState) -> dict:
         "verification_passed": (
             decision.authorization_preserved
             and handoff_ok
-            and isinstance(state.get("authorization_scope", ()), tuple)
+            and state.get("authorization_scope") == state.get("authorization_scope_snapshot")
         )
     }
 

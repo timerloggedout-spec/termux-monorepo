@@ -14,6 +14,9 @@ on:
       - 'scripts/dispatch/project_task.py'
       - 'scripts/dispatch/admission_receipt.py'
       - 'scripts/dispatch/test_project_task.py'
+      - '.github/ISSUE_TEMPLATE/project-task.yml'
+      - '.github/ISSUE_TEMPLATE/scientific-research-task.yml'
+      - '.github/ISSUE_TEMPLATE/behavioral-experiment-task.yml'
 
 permissions:
   contents: read
@@ -47,7 +50,7 @@ jobs:
           PY
 
   intake:
-    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened') && contains(github.event.issue.labels.*.name, 'project-task')
+    if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened') && (contains(github.event.issue.labels.*.name, 'project-task') || contains(github.event.issue.labels.*.name, 'scientific-task') || contains(github.event.issue.labels.*.name, 'behavioral-experiment'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -61,7 +64,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           EVENT_AT: ${{ github.event.issue.updated_at || github.event.issue.created_at }}
         run: |
-          python3 scripts/dispatch/admission_receipt.py --issue "$ISSUE_NUMBER" --template project-task.yml --event-at "$EVENT_AT" --timeout 600 --poll-interval 5
+          python3 scripts/dispatch/admission_receipt.py --issue "$ISSUE_NUMBER" --template project-task.yml,scientific-research-task.yml,behavioral-experiment-task.yml --event-at "$EVENT_AT" --timeout 600 --poll-interval 5
 
       - name: Fetch the admitted issue body
         if: steps.admission.outputs.decision == 'admitted'

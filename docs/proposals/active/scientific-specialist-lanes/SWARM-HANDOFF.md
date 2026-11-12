@@ -27,7 +27,7 @@ Validate the event-driven dependency contract:
 **Type:** review · **Priority:** P1  
 **Scope:** `ops/roles/scientific-specialists.json`, `scripts/dispatch/project_task.py`, `scripts/dispatch/test_project_task.py`.
 
-Review all 32 role contracts for:
+Review all 33 role contract seeds for:
 - role scope, competence boundary, methods, inputs, outputs, evidence and abstention;
 - independent reviewer separation for high-impact/confirmatory work;
 - no conflation of provider identity with capability role;

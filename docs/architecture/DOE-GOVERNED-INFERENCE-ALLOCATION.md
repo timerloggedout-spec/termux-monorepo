@@ -11,13 +11,13 @@ DoE is the sole owner of allocation and rotation across the eligible Swarm popul
 
 Scout is the execution selector. It chooses from the existing eligible provider/model endpoint pool to realize the DoE-assigned treatment. Its decision is constrained by task fit and live capability, credential, catalog, quota, safety and health evidence. Scout does not create the allocation policy or independently promote/cull endpoints.
 
-Managers/requesters specify task requirements. **Manager is a management/seat function, not a new canonical participant role**; requester_role must resolve to the existing role registry (or an explicitly registered external actor class). A manager-specific endpoint/model/settings request is a customization request, not an implicit override. It becomes active only under an approved contract and is recorded as a distinct treatment/stratum. Owner and other explicitly authorized exempt roles are represented as exemptions, not silently mixed into ordinary participant constraints.
+Managers/requesters specify task requirements. **Manager is already a canonical coordination role in AGENT-MONIKERS**, distinct from the canonical participant classes; requester_role must resolve to the existing role registry (or an explicitly registered external actor class). A manager-specific endpoint/model/settings request is a customization request, not an implicit override. It becomes active only under an approved contract and is recorded as a distinct treatment/stratum. Owner and other explicitly authorized exempt roles are represented as exemptions, not silently mixed into ordinary participant constraints.
 
 ## 2. Endpoint identity and statistical claims
 
 The unit of endpoint comparison is **provider + execution surface + exact model@version + protocol/endpoint identity**. Configured-instance identity remains separately keyed by the existing DoE `instance_key` tuple (provider, model, prompt hash, tools hash, role, moniker, context).
 
-Every inference endpoint has its own evidence series and significance decision. Provider-family aggregates and pooled means may be reported as descriptive portfolio views, but cannot establish that an individual endpoint is statistically significant.
+Every inference endpoint has its own evidence series and significance decision. Each participating actor is linked to the existing wallet invariant with participant class, canonical role, opaque wallet_id and wallet class; wallet balances remain in the wallet ledger, not the selection receipt. Provider-family aggregates and pooled means may be reported as descriptive portfolio views, but cannot establish that an individual endpoint is statistically significant.
 
 Before endpoint-level claims, the campaign design must register: primary outcome, null/alternative, test and assumptions, alpha, minimum practically important effect, planned sample/power or sequential boundary, stopping rule, confidence interval, and multiplicity correction across endpoints. Assignment integrity/SRM and task-family blocking must be checked. Until all applicable gates pass, endpoint standing is `NOT_ESTABLISHED`; n>=4 is descriptive only, not a significance threshold.
 
@@ -37,6 +37,7 @@ The contract must define the denominator to which that percentage applies, the b
 
 - DoE campaign/design/version/allocation/stratum;
 - task and selector identity;
+- participating actors, canonical participant class/role and opaque wallet references (balances remain in the wallet ledger);
 - manager, request and requester role, plus explicit exemption;
 - selected provider, surface, model@version, protocol and endpoint identity;
 - eligible-pool snapshot reference and SHA-256;

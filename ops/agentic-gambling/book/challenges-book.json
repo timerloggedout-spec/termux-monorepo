@@ -1,1662 +1,1662 @@
 {
- "book": "challenges-book",
- "calendar_binding": {
-  "forecast_rule": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) — calendar anchors are DATA ON THE SUBJECT, not a new participant class",
-  "register": "deadline-reminders/v1 (~/workspace/tracking/deadline-reminders-register.json, Tracking lane d6c12f3a; primary calendar, America/Los_Angeles)",
-  "scheme": "A CUSHION-3d · B CUSHION/landing · C WALL-day · D ESCALATION (wall-4h) · E FINAL (wall-30m); anchors carry {cushion[], landing, wall, final} mapped from the register stages per subject"
- },
- "conformity": {
-  "B1_one_record_per_subject": "each subject carries exactly ONE expectation record (Bayesian shape); positions cite the subject record; no per-position re-estimates, no parallel numbers on views/ledger lines",
-  "B2_basis_cited": "every position names its basis surface(s) per speculation registration PR #3766; uncited = invalid, does not open",
-  "B3_settlement_record_of_record_only": "each subject names its record of record at book open; settlement ONLY from that record; other surfaces are evidence legs into the posterior, never settlement sources",
-  "B4_private_ledger_first": "B4 as ruled (owner ruling via main 2026-11-02, discharged by DoE): PRIVATE LEDGER FIRST stands — ledger of record unchanged, entries internal, stakes observational, no external participation — AND a public READ-ONLY render of the ledger records on our own dashboard is authorized (book-feed.json). Render conformity: (R1) published values = ledger values verbatim, the render computes/re-estimates nothing; (R2) expectation records display TRUE STATE — INTAKE/null priors + posteriors shown as-is, never dressed, interpolated or hidden; (R3) read-only means read-only — no entry/position path from the public surface. The original no-listing condition is SUPERSEDED by this ruling; the PASS stands.",
-  "B5_rules9_significance": "Rule 9 + significance standard bind any stated probability/standing from the book (single-leg = HELD, sub-bar = no established language); the hidden metrics_internal winprob stays in its own home — the book cites records, it does not republish that metric values; stakes observational units per lane scope guard",
-  "criteria": "DoE conformity criteria for the first wagering book (doe-expert, 2026-11-02) — pass issued by DoE before entries open"
- },
- "exclusions": {
-  "canonical_key": "body contains the verbatim stamp: EGM instance #2 TEST filing (verified present on all six bodies, issues #4297-#4302; DoE quarantine key 2026-11-03)",
-  "canonical_key_sweep": "2026-11-03 re-swept with the canonical + secondary keys over book + feed + ledger + lane.json + charter: 0 hits ∀",
-  "key": "exclusion keys on the TEST STAMP — any item carrying the instance-#2 test stamp is excluded regardless of filing shape or claimed substance",
-  "reentry": "qualifying change only: DoE+main ruling that a substance is real AND entry-material — re-enters via the normal verification-to-RFP leg with test origin noted — or the owner direct word",
-  "rule": "OWNER RULING (via main, 2026-11-03): the six EGM instance-#2 test filings (DoE rubric experiment, test-stamped — incl. the deliberately refuted claim in perfect filing shape) are REDACTED from this book and all winnings/opportunities surfaces",
-  "scope": "money-facing surfaces only; the experiment own record (DoE lane) is untouched",
-  "secondary_key": "surface_id prefix RFP-EGM2-",
-  "status_at_registration": "VERIFIED CLEAN 2026-11-03 — marker scan (EGM / instance-#2 / test-stamp) over book + feed + ledger + lane.json = 0 hits; no instance-#2 item in subjects, ledger, positions or queue (positions 0; subject intake = challenge manager list + C12 only)"
- },
- "ledger_of_record": {
-  "note": "MoneyBall v2 is the scoring surface (positions' basis + settlement scoring reference), NOT the ledger. Neon is the fleet telemetry/lane-events store, NOT this ledger. The ledger of record is the append-only in-repo ledger below (git history = the private record).",
-  "positions": "ops/agentic-gambling/book/ledger.jsonl (append-only, in-repo)",
-  "store": "in-repo git (termux-monorepo, private fleet record)"
- },
- "opened": "2026-11-02 (owner directive via main)",
- "participants": "gambler (canonical participant class per naming-collapse registry, AGENT-MONIKERS.md #3828/#3830); aliases speculator/bettor/wagerer resolve to gambler at the listing layer only — records stay per-class",
- "position_rules": {
-  "basis": "every position cites its information basis (surface + record/artifact ref, per the speculation registration); uncited = invalid position",
-  "settlement": "observed outcome per the subject's resolution source vs the position; settle action; settlement does not bypass dual-gate",
-  "stakes": "observational units / soft quota tokens only; internal only"
- },
- "priority_timebox_linkage": {
-  "checkpoint_rule": "at each tier boundary for a subject: (1) review/revise its ONE expectation record — evidence legs appended, posterior updated per B1 (no parallel numbers); (2) first entries open at a checkpoint only with basis cited per B2 + the subject record cited; (3) settlement still ONLY from record_of_record at knowable (B3), tiers never settle",
-  "relation": "the book subjects are the same slate viewed as stakes; the desk-feed tier boundaries are this book expectation checkpoints",
-  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 7 traversals carry it, walls match this book subjects)",
-  "tier_anchor_map": {
-   "BASE": "window open — before the first cushion anchor",
-   "CUSHION": "subject anchors.cushion (register stages A/B)",
-   "ESCALATION": "register stage D (wall-4h)",
-   "FINAL": "subject anchors.final (register stage E, wall-30m); step-down cushion after each wall",
-   "WALL-DAY": "subject anchors.wall (register stage C)"
-  }
- },
- "schema": "agentic-gambling-book/v1",
- "scope_guard": "internal only; no real money, no external wagering; #407 trading freeze untouched",
- "subjects": [
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-03T09:00:00-08:00"
-    ],
-    "final": "2026-11-04T23:29:00-08:00",
-    "landing": "2026-11-03T09:00:00-08:00",
-    "register_item": "D1 StudySprint submission",
-    "wall": "2026-11-04"
-   },
-   "expectation_record": {
-    "evidence": [
-     {
-      "ref": "coordinator record of record @master (PR #4658 merged aea6201d87ed)",
-      "note": "settlement of record: submission SUBMITTED - PUBLISHED 2026-11-03T10:01:00-08:00, confirmation_ref as in settle.value; realized outcome Y."
-     }
-    ],
-    "posterior": {
-     "value": 1.0,
-     "range": [
-      1,
-      1
-     ],
-     "n_evidence": 1
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D1 Workshop to Ship (landing Nov 3, wall Nov 4 23:59 PT)",
-   "id": "D1-1-submission-landed",
-   "knowable": "2026-11-04",
-   "record_of_record": "entries confirmation_ref + coordinator record",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries confirmation_ref + coordinator record",
-    "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
-   },
-   "subject": "Submission landed by wall {Y/N}",
-   "window": {
-    "wall": "2026-11-04T23:59:00-08:00",
-    "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
-   }
+  "book": "challenges-book",
+  "calendar_binding": {
+    "forecast_rule": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) — calendar anchors are DATA ON THE SUBJECT, not a new participant class",
+    "register": "deadline-reminders/v1 (~/workspace/tracking/deadline-reminders-register.json, Tracking lane d6c12f3a; primary calendar, America/Los_Angeles)",
+    "scheme": "A CUSHION-3d · B CUSHION/landing · C WALL-day · D ESCALATION (wall-4h) · E FINAL (wall-30m); anchors carry {cushion[], landing, wall, final} mapped from the register stages per subject"
   },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-03T09:00:00-08:00"
-    ],
-    "final": "2026-11-04T23:29:00-08:00",
-    "landing": "2026-11-03T09:00:00-08:00",
-    "note": "anchors = the D1 submission item's set; the placement itself settles on the official results posting",
-    "register_item": "D1 StudySprint submission",
-    "wall": "2026-11-04"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D1 Workshop to Ship",
-   "id": "D1-2-placement-winner",
-   "knowable": "NOT_ESTABLISHED (judging date unpublished)",
-   "record_of_record": "Builder Center official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Builder Center official results",
-    "value": null
-   },
-   "subject": "Placement = winner (top-3) {Y/N}",
-   "window": {
-    "wall": "2026-11-04T23:59:00-08:00",
-    "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
-   }
+  "conformity": {
+    "B1_one_record_per_subject": "each subject carries exactly ONE expectation record (Bayesian shape); positions cite the subject record; no per-position re-estimates, no parallel numbers on views/ledger lines",
+    "B2_basis_cited": "every position names its basis surface(s) per speculation registration PR #3766; uncited = invalid, does not open",
+    "B3_settlement_record_of_record_only": "each subject names its record of record at book open; settlement ONLY from that record; other surfaces are evidence legs into the posterior, never settlement sources",
+    "B4_private_ledger_first": "B4 as ruled (owner ruling via main 2026-11-02, discharged by DoE): PRIVATE LEDGER FIRST stands — ledger of record unchanged, entries internal, stakes observational, no external participation — AND a public READ-ONLY render of the ledger records on our own dashboard is authorized (book-feed.json). Render conformity: (R1) published values = ledger values verbatim, the render computes/re-estimates nothing; (R2) expectation records display TRUE STATE — INTAKE/null priors + posteriors shown as-is, never dressed, interpolated or hidden; (R3) read-only means read-only — no entry/position path from the public surface. The original no-listing condition is SUPERSEDED by this ruling; the PASS stands.",
+    "B5_rules9_significance": "Rule 9 + significance standard bind any stated probability/standing from the book (single-leg = HELD, sub-bar = no established language); the hidden metrics_internal winprob stays in its own home — the book cites records, it does not republish that metric values; stakes observational units per lane scope guard",
+    "criteria": "DoE conformity criteria for the first wagering book (doe-expert, 2026-11-02) — pass issued by DoE before entries open"
   },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-03T09:00:00-08:00"
-    ],
-    "final": null,
-    "landing": "2026-11-03T09:00:00-08:00",
-    "note": "kickoff item carries stage B only in the register",
-    "register_item": "D2 Vultr kickoff",
-    "wall": null
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D2 Vultr Agent Rush (kickoff Nov 3 15:00Z, landing Nov 7, wall Nov 8 15:00 PT)",
-   "id": "D2-3-nocard-account-live",
-   "knowable": "2026-11-03 15:00Z",
-   "record_of_record": "D2 seat + gate D2-NOCARD",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "D2 seat + gate D2-NOCARD",
-    "value": null
-   },
-   "subject": "Vultr no-card account live at kickoff {Y/N}",
-   "window": {
-    "wall": "2026-11-03T15:00:00Z",
-    "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register stage B (kickoff day cushion)"
-   }
+  "exclusions": {
+    "canonical_key": "body contains the verbatim stamp: EGM instance #2 TEST filing (verified present on all six bodies, issues #4297-#4302; DoE quarantine key 2026-11-03)",
+    "canonical_key_sweep": "2026-11-03 re-swept with the canonical + secondary keys over book + feed + ledger + lane.json + charter: 0 hits ∀",
+    "key": "exclusion keys on the TEST STAMP — any item carrying the instance-#2 test stamp is excluded regardless of filing shape or claimed substance",
+    "reentry": "qualifying change only: DoE+main ruling that a substance is real AND entry-material — re-enters via the normal verification-to-RFP leg with test origin noted — or the owner direct word",
+    "rule": "OWNER RULING (via main, 2026-11-03): the six EGM instance-#2 test filings (DoE rubric experiment, test-stamped — incl. the deliberately refuted claim in perfect filing shape) are REDACTED from this book and all winnings/opportunities surfaces",
+    "scope": "money-facing surfaces only; the experiment own record (DoE lane) is untouched",
+    "secondary_key": "surface_id prefix RFP-EGM2-",
+    "status_at_registration": "VERIFIED CLEAN 2026-11-03 — marker scan (EGM / instance-#2 / test-stamp) over book + feed + ledger + lane.json = 0 hits; no instance-#2 item in subjects, ledger, positions or queue (positions 0; subject intake = challenge manager list + C12 only)"
   },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-04T09:00:00-08:00",
-     "2026-11-07T09:00:00-08:00"
-    ],
-    "final": "2026-11-08T14:30:00-08:00",
-    "landing": "2026-11-07T09:00:00-08:00",
-    "register_item": "D2 Vultr submission",
-    "wall": "2026-11-08"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D2 Vultr Agent Rush",
-   "id": "D2-4-submission-landed",
-   "knowable": "2026-11-08",
-   "record_of_record": "entries confirmation_ref",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries confirmation_ref",
-    "value": null
-   },
-   "subject": "Submission landed by wall {Y/N}",
-   "window": {
-    "wall": "2026-11-08T15:00:00-08:00",
-    "window_start": "2026-11-04T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
+  "ledger_of_record": {
+    "note": "MoneyBall v2 is the scoring surface (positions' basis + settlement scoring reference), NOT the ledger. Neon is the fleet telemetry/lane-events store, NOT this ledger. The append-only in-repo ledger is a public accounting/evidence record for non-sensitive fields only; participant-specific bidding/ante strategies, wallet-management scripts and trading specifics remain in an access-controlled private store.",
+    "positions": "ops/agentic-gambling/book/ledger.jsonl (append-only public accounting record; sensitive participant strategies excluded)",
+    "store": "in-repo git (termux-monorepo, public append-only accounting metadata; not private strategy storage)"
   },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-04T09:00:00-08:00",
-     "2026-11-07T09:00:00-08:00"
-    ],
-    "final": "2026-11-08T14:30:00-08:00",
-    "landing": "2026-11-07T09:00:00-08:00",
-    "note": "anchors = the D2 submission item's set; placement settles on official posting",
-    "register_item": "D2 Vultr submission",
-    "wall": "2026-11-08"
-   },
-   "expectation_record": {
-    "evidence": [
-     {
-      "ref": "D2 seat relay 2026-11-03 (owner framing + field correction)",
-      "note": "house-stake position POS-001 opened on this subject (stake = $200 Vultr house credit, deployed by burn). Field denominator of record corrected: 2,308 participants (2026-11-03 dashboard) vs stale 1,617 in the coordinator prior — context only; no probability is derived or republished in the book (B5)."
-     },
-     {
-      "ref": "D2 exercise run-1 (PRs #4486-#4491/#4531/#4536) + D2 seat correction 2026-11-03 23:18 PT (owner correction via main)",
-      "note": "EXERCISE SCORING ENTRY BOOKED (leg 6): slate of 6 scored (Delphi-shaped advisory, beside never merged). Pick state = OWNER-HELD — NO PICK EXECUTED; the 'D2 BUILD / pick executed' reading was rescinded by owner correction. B advisory-ranked first on revised raw (46), not picked. Repo 1445293810 (quarantine-browser-clerk), created in the rescinded sequence, stands dormant — not a build fact. Evidence leg only — posterior unchanged, no probability derived (B5)."
-     }
-    ],
-    "posterior": {
-     "n_evidence": 2,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D2 Vultr Agent Rush",
-   "id": "D2-5-placement-top3",
-   "knowable": "NOT_ESTABLISHED (post-close posting)",
-   "record_of_record": "lablab official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "lablab official results",
-    "value": null
-   },
-   "subject": "Placement top-3 {Y/N}",
-   "window": {
-    "wall": "2026-11-08T15:00:00-08:00",
-    "window_start": "2026-11-04T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
+  "opened": "2026-11-02 (owner directive via main)",
+  "participants": "gambler (canonical participant class per naming-collapse registry, AGENT-MONIKERS.md #3828/#3830); aliases speculator/bettor/wagerer resolve to gambler at the listing layer only — records stay per-class",
+  "position_rules": {
+    "basis": "every position cites its information basis (surface + record/artifact ref, per the speculation registration); uncited = invalid position",
+    "settlement": "observed outcome per the subject's resolution source vs the position; settle action; settlement does not bypass dual-gate",
+    "stakes": "observational units / soft quota tokens only; internal only"
   },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-05T09:00:00-08:00",
-     "2026-11-08T09:00:00-08:00"
-    ],
-    "final": "2026-11-09T23:29:00-08:00",
-    "landing": "2026-11-08T09:00:00-08:00",
-    "register_item": "D3 ListingLens submission",
-    "wall": "2026-11-09"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D3 Builder.io (landing Nov 8, wall Nov 9 23:59 PT)",
-   "id": "D3-6-clips-gate-cleared",
-   "knowable": "2026-11-08",
-   "record_of_record": "gate D3-CLIPS-STORAGE",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "gate D3-CLIPS-STORAGE",
-    "value": null
-   },
-   "subject": "Clips gate cleared by landing {Y/N}",
-   "window": {
-    "wall": "2026-11-08T23:59:00-08:00",
-    "window_start": "2026-11-05T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-05T09:00:00-08:00",
-     "2026-11-08T09:00:00-08:00"
-    ],
-    "final": "2026-11-09T23:29:00-08:00",
-    "landing": "2026-11-08T09:00:00-08:00",
-    "register_item": "D3 ListingLens submission",
-    "wall": "2026-11-09"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D3 Builder.io",
-   "id": "D3-7-feature-batch-b1-b3",
-   "knowable": "2026-11-08",
-   "record_of_record": "D3 seat per-PR verification",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "D3 seat per-PR verification",
-    "value": null
-   },
-   "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}",
-   "window": {
-    "wall": "2026-11-08T23:59:00-08:00",
-    "window_start": "2026-11-05T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-05T09:00:00-08:00",
-     "2026-11-08T09:00:00-08:00"
-    ],
-    "final": "2026-11-09T23:29:00-08:00",
-    "landing": "2026-11-08T09:00:00-08:00",
-    "register_item": "D3 ListingLens submission",
-    "wall": "2026-11-09"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D3 Builder.io",
-   "id": "D3-8-submission-landed",
-   "knowable": "2026-11-09",
-   "record_of_record": "entries / D3 record",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries / D3 record",
-    "value": null
-   },
-   "subject": "Submission landed (form + public Clips URL) by wall {Y/N}",
-   "window": {
-    "wall": "2026-11-09T23:59:00-08:00",
-    "window_start": "2026-11-05T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-05T09:00:00-08:00",
-     "2026-11-08T09:00:00-08:00"
-    ],
-    "final": "2026-11-09T23:29:00-08:00",
-    "landing": "2026-11-08T09:00:00-08:00",
-    "note": "anchors = the D3 submission item's set; placement settles on official posting",
-    "register_item": "D3 ListingLens submission",
-    "wall": "2026-11-09"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D3 Builder.io",
-   "id": "D3-9-placement-paid-tier",
-   "knowable": "NOT_ESTABLISHED (post-close TBD)",
-   "record_of_record": "Builder.io official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Builder.io official results",
-    "value": null
-   },
-   "subject": "Placement = paid tier (top-5) {Y/N}",
-   "window": {
-    "wall": "2026-11-09T23:59:00-08:00",
-    "window_start": "2026-11-05T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-27T09:00:00-08:00",
-     "2026-11-30T09:00:00-08:00"
-    ],
-    "final": "2026-12-01T11:30:00-08:00",
-    "landing": "2026-11-30T09:00:00-08:00",
-    "register_item": "D4 Kiro ID credit form",
-    "wall": "2026-12-01"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
-   "id": "D4-10-credit-form-filed",
-   "knowable": "2026-11-30",
-   "record_of_record": "Gates / D4 seat",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Gates / D4 seat",
-    "value": null
-   },
-   "subject": "4,000-credit form filed by Nov 30 {Y/N}",
-   "window": {
-    "wall": "2026-11-30T23:59:00-08:00",
-    "window_start": "2026-11-27T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-29T09:00:00-08:00",
-     "2026-12-02T09:00:00-08:00"
-    ],
-    "final": "2026-12-04T13:30:00-08:00",
-    "landing": "2026-12-02T09:00:00-08:00",
-    "register_item": "D4 Kiroween submission",
-    "wall": "2026-12-04"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D4 Kiroween",
-   "id": "D4-11-skeleton-apps-live",
-   "knowable": "2026-12-02",
-   "record_of_record": "D4 seat record",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "D4 seat record",
-    "value": null
-   },
-   "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}",
-   "window": {
-    "wall": "2026-12-02T23:59:00-08:00",
-    "window_start": "2026-11-29T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-29T09:00:00-08:00",
-     "2026-12-02T09:00:00-08:00"
-    ],
-    "final": "2026-12-04T13:30:00-08:00",
-    "landing": "2026-12-02T09:00:00-08:00",
-    "register_item": "D4 Kiroween submission",
-    "wall": "2026-12-04"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D4 Kiroween",
-   "id": "D4-12-submission-landed",
-   "knowable": "2026-12-04",
-   "record_of_record": "entries confirmation_ref (Devpost)",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries confirmation_ref (Devpost)",
-    "value": null
-   },
-   "subject": "Submission landed by wall {Y/N}",
-   "window": {
-    "wall": "2026-12-04T14:00:00-08:00",
-    "window_start": "2026-11-29T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-29T09:00:00-08:00",
-     "2026-12-02T09:00:00-08:00"
-    ],
-    "final": "2026-12-04T13:30:00-08:00",
-    "landing": "2026-12-02T09:00:00-08:00",
-    "note": "anchors = the D4 submission item's set; placement settles on official posting",
-    "register_item": "D4 Kiroween submission",
-    "wall": "2026-12-04"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D4 Kiroween",
-   "id": "D4-13-placement-any-prize",
-   "knowable": "NOT_ESTABLISHED (post-close TBD)",
-   "record_of_record": "Devpost official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Devpost official results",
-    "value": null
-   },
-   "subject": "Placement = any prize (overall/category/crew) {Y/N}",
-   "window": {
-    "wall": "2026-12-04T14:00:00-08:00",
-    "window_start": "2026-11-29T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-17T09:00:00-08:00"
-    ],
-    "final": null,
-    "landing": "2026-11-17T09:00:00-08:00",
-    "note": "no dedicated spot item in the register; anchors = D5 Aha kickoff stage B (the spot gates the kickoff)",
-    "register_item": "D5 Aha kickoff",
-    "wall": null
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
-   "id": "D5-14-spot-confirmation",
-   "knowable": "on receipt (pending now)",
-   "record_of_record": "entries + gate D5-SPOT",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries + gate D5-SPOT",
-    "value": null
-   },
-   "subject": "Spot confirmation received {Y/N}",
-   "window": {
-    "wall": "2026-11-17T09:00:00-08:00",
-    "window_start": "2026-11-17T09:00:00-08:00",
-    "window_start_basis": "register stage B (kickoff) — earliest anchor; spot gates the kickoff"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-15T09:00:00-08:00",
-     "2026-11-18T09:00:00-08:00"
-    ],
-    "final": "2026-11-19T11:30:00-08:00",
-    "landing": "2026-11-18T09:00:00-08:00",
-    "register_item": "D5 Aha submission",
-    "wall": "2026-11-19"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D5 Aha",
-   "id": "D5-15-submission-landed",
-   "knowable": "2026-11-19",
-   "record_of_record": "entries confirmation_ref",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "entries confirmation_ref",
-    "value": null
-   },
-   "subject": "Submission landed by wall {Y/N}",
-   "window": {
-    "wall": "2026-11-19T12:00:00-08:00",
-    "window_start": "2026-11-15T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-15T09:00:00-08:00",
-     "2026-11-18T09:00:00-08:00"
-    ],
-    "final": "2026-11-19T11:30:00-08:00",
-    "landing": "2026-11-18T09:00:00-08:00",
-    "note": "anchors = the D5 submission item's set; placement settles 2026-11-20 11:30 PT per Aha official",
-    "register_item": "D5 Aha submission",
-    "wall": "2026-11-19"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "D5 Aha",
-   "id": "D5-16-placement-winner",
-   "knowable": "2026-11-20 11:30 PT (dated)",
-   "record_of_record": "Aha official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Aha official results",
-    "value": null
-   },
-   "subject": "Placement = winner {Y/N}",
-   "window": {
-    "wall": "2026-11-19T12:00:00-08:00",
-    "window_start": "2026-11-15T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
-   "id": "AMD-17-gpu100-claim",
-   "knowable": "2026-11-07",
-   "record_of_record": "gate AMD-GPU100",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "gate AMD-GPU100",
-    "value": null
-   },
-   "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}",
-   "window": {
-    "wall": "2026-11-07T23:59:00-08:00",
-    "window_start": "2026-11-02T00:00:00-08:00",
-    "window_start_basis": "book intake date (day granularity) — no register item; earliest honest date = subject opened at book open"
-   }
-  },
-  {
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League",
-   "id": "AMD-18-m4-submitted",
-   "knowable": "2026-11-09",
-   "record_of_record": "AMD seat + League platform",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "AMD seat + League platform",
-    "value": null
-   },
-   "subject": "M4 submitted by Nov 9 target {Y/N}",
-   "window": {
-    "wall": "2026-11-09T23:59:00-08:00",
-    "window_start": "2026-11-02T00:00:00-08:00",
-    "window_start_basis": "book intake date (day granularity) — no register item"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-16T09:00:00-08:00",
-     "2026-11-19T09:00:00-08:00"
-    ],
-    "final": "2026-11-20T23:29:00-08:00",
-    "landing": "2026-11-19T09:00:00-08:00",
-    "note": "subject settles when the 5th course lands; anchors shown = AMD Academy C5 item; C1-C4 items carry their own full anchor sets in the register (C1 B Nov 6 / C2 B Nov 9 / C3 B Nov 12 / C4 B Nov 16)",
-    "register_item": "AMD Academy C5",
-    "wall": "2026-11-20"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League",
-   "id": "AMD-19-academy-5-complete",
-   "knowable": "2026-11-19",
-   "record_of_record": "Gates evidence (cert + points) + certs ledger",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Gates evidence (cert + points) + certs ledger",
-    "value": null
-   },
-   "subject": "Academy >=5 complete by Nov 19 landing {Y/N}",
-   "window": {
-    "wall": "2026-11-19T23:59:00-08:00",
-    "window_start": "2026-11-03T09:00:00-08:00",
-    "window_start_basis": "register AMD Academy C1 stage A — first anchor of the >=5 course set"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-22T09:00:00-08:00",
-     "2026-11-25T09:00:00-08:00"
-    ],
-    "final": "2026-11-28T23:29:00-08:00",
-    "landing": "2026-11-25T09:00:00-08:00",
-    "register_item": "AMD ROCm exam",
-    "wall": "2026-11-28"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League",
-   "id": "AMD-20-rocm-exam-passed",
-   "knowable": "2026-11-25",
-   "record_of_record": "Gates seat 840bd147 evidence",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Gates seat 840bd147 evidence",
-    "value": null
-   },
-   "subject": "ROCm exam passed by Nov 25 landing {Y/N}",
-   "window": {
-    "wall": "2026-11-25T23:59:00-08:00",
-    "window_start": "2026-11-22T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-25T09:00:00-08:00",
-     "2026-11-28T09:00:00-08:00"
-    ],
-    "final": "2026-12-01T10:30:00-08:00",
-    "landing": "2026-11-28T09:00:00-08:00",
-    "register_item": "AMD AI League submission",
-    "wall": "2026-12-01"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League",
-   "id": "AMD-21-m2-m3-m5-m6-submissions",
-   "knowable": "2026-11-28",
-   "record_of_record": "AMD seat records",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "AMD seat records",
-    "value": null
-   },
-   "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}",
-   "window": {
-    "wall": "2026-11-28T23:59:00-08:00",
-    "window_start": "2026-11-25T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-11-25T09:00:00-08:00",
-     "2026-11-28T09:00:00-08:00"
-    ],
-    "final": "2026-12-01T10:30:00-08:00",
-    "landing": "2026-11-28T09:00:00-08:00",
-    "note": "anchors = the League submission item's set; podium settles on official posting (may lag Dec 1)",
-    "register_item": "AMD AI League submission",
-    "wall": "2026-12-01"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "AMD AI League",
-   "id": "AMD-22-podium",
-   "knowable": "2026-12-01 (posting may lag)",
-   "record_of_record": "lablab official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "lablab official results",
-    "value": null
-   },
-   "subject": "Podium (top-3) at close {Y/N}",
-   "window": {
-    "wall": "2026-12-01T11:00:00-08:00",
-    "window_start": "2026-11-25T09:00:00-08:00",
-    "window_start_basis": "register stage A (cushion-3d)"
-   }
-  },
-  {
-   "anchors": {
-    "cushion": [
-     "2026-12-02T09:00:00-08:00",
-     "2026-12-05T09:00:00-08:00",
-     "2026-12-09T09:00:00-08:00",
-     "2026-12-12T09:00:00-08:00"
-    ],
-    "final": null,
-    "landing": "2026-12-05T09:00:00-08:00",
-    "note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages",
-    "register_item": "FCC L1 checkpoint (Dec 5) + FCC L1 exam (soft wall Dec 12)",
-    "wall": "2026-12-12 (soft)"
-   },
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "FCC L1 (baseline milestone)",
-   "id": "FCC-23-relational-db-cert",
-   "knowable": "at exam pass",
-   "record_of_record": "certs ledger #506 + FCC verify link",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "certs ledger #506 + FCC verify link",
-    "value": null
-   },
-   "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}",
-   "window": {
-    "wall": "2026-12-12T23:59:00-08:00",
-    "window_start": "2026-12-02T09:00:00-08:00",
-    "window_start_basis": "register FCC checkpoint stage A — earliest anchor (soft item)"
-   }
-  },
-  {
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "C12 (graduated 2026-11-03)",
-   "id": "C12-24-r1-submission",
-   "knowable": "2026-11-15",
-   "record_of_record": "coordinator + C12 record",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "coordinator + C12 record",
-    "value": null
-   },
-   "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
-   "window": {
-    "wall": "2026-11-15T23:45:00-08:00",
-    "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
-   }
-  },
-  {
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item for C12",
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "C12 (graduated 2026-11-03)",
-   "id": "C12-25-finalist-selection",
-   "knowable": "2026-11-21",
-   "record_of_record": "Devpost official",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Devpost official",
-    "value": null
-   },
-   "subject": "Finalist selection {Y/N}",
-   "window": {
-    "wall": "2026-11-21T23:59:00-08:00",
-    "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
-   }
-  },
-  {
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item for C12",
-   "expectation_record": {
-    "evidence": [],
-    "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
-    },
-    "prior": {
-     "basis": null,
-     "value": null
-    },
-    "quantity": "P(subject resolves Y)"
-   },
-   "group": "C12 (graduated 2026-11-03)",
-   "id": "C12-26-placement",
-   "knowable": "2026-11-30",
-   "record_of_record": "Devpost official results",
-   "settle": {
-    "field": "place earned / official outcome",
-    "source": "Devpost official results",
-    "value": null
-   },
-   "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
-   "window": {
-    "wall": "2026-11-30T23:59:00-08:00",
-    "window_start": "2026-11-03T00:00:00-08:00",
-    "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
-   }
-  },
-  {
-   "id": "SPEC-01-14db4412",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+dflash {Y/N}",
-   "participant": "Qwen/Qwen3-8B+dflash",
-   "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
-   "wallet_id": "paper:14db44122346ac5a",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
+  "priority_timebox_linkage": {
+    "checkpoint_rule": "at each tier boundary for a subject: (1) review/revise its ONE expectation record — evidence legs appended, posterior updated per B1 (no parallel numbers); (2) first entries open at a checkpoint only with basis cited per B2 + the subject record cited; (3) settlement still ONLY from record_of_record at knowable (B3), tiers never settle",
+    "relation": "the book subjects are the same slate viewed as stakes; the desk-feed tier boundaries are this book expectation checkpoints",
+    "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 7 traversals carry it, walls match this book subjects)",
+    "tier_anchor_map": {
+      "BASE": "window open — before the first cushion anchor",
+      "CUSHION": "subject anchors.cushion (register stages A/B)",
+      "ESCALATION": "register stage D (wall-4h)",
+      "FINAL": "subject anchors.final (register stage E, wall-30m); step-down cushion after each wall",
+      "WALL-DAY": "subject anchors.wall (register stage C)"
     }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
   },
-  {
-   "id": "SPEC-02-17444309",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dspark {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+dspark",
-   "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
-   "wallet_id": "paper:1744430907f07318",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
+  "schema": "agentic-gambling-book/v1",
+  "scope_guard": "internal only; no real money, no external wagering; #407 trading freeze untouched",
+  "subjects": [
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-03T09:00:00-08:00"
+        ],
+        "final": "2026-11-04T23:29:00-08:00",
+        "landing": "2026-11-03T09:00:00-08:00",
+        "register_item": "D1 StudySprint submission",
+        "wall": "2026-11-04"
+      },
+      "expectation_record": {
+        "evidence": [
+          {
+            "ref": "coordinator record of record @master (PR #4658 merged aea6201d87ed)",
+            "note": "settlement of record: submission SUBMITTED - PUBLISHED 2026-11-03T10:01:00-08:00, confirmation_ref as in settle.value; realized outcome Y."
+          }
+        ],
+        "posterior": {
+          "value": 1,
+          "range": [
+            1,
+            1
+          ],
+          "n_evidence": 1
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D1 Workshop to Ship (landing Nov 3, wall Nov 4 23:59 PT)",
+      "id": "D1-1-submission-landed",
+      "knowable": "2026-11-04",
+      "record_of_record": "entries confirmation_ref + coordinator record",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries confirmation_ref + coordinator record",
+        "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
+      },
+      "subject": "Submission landed by wall {Y/N}",
+      "window": {
+        "wall": "2026-11-04T23:59:00-08:00",
+        "window_start": "2026-11-03T09:00:00-08:00",
+        "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
+      }
     },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-03T09:00:00-08:00"
+        ],
+        "final": "2026-11-04T23:29:00-08:00",
+        "landing": "2026-11-03T09:00:00-08:00",
+        "note": "anchors = the D1 submission item's set; the placement itself settles on the official results posting",
+        "register_item": "D1 StudySprint submission",
+        "wall": "2026-11-04"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D1 Workshop to Ship",
+      "id": "D1-2-placement-winner",
+      "knowable": "NOT_ESTABLISHED (judging date unpublished)",
+      "record_of_record": "Builder Center official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Builder Center official results",
+        "value": null
+      },
+      "subject": "Placement = winner (top-3) {Y/N}",
+      "window": {
+        "wall": "2026-11-04T23:59:00-08:00",
+        "window_start": "2026-11-03T09:00:00-08:00",
+        "window_start_basis": "register stage B — earliest register anchor for the item (no stage A)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-03T09:00:00-08:00"
+        ],
+        "final": null,
+        "landing": "2026-11-03T09:00:00-08:00",
+        "note": "kickoff item carries stage B only in the register",
+        "register_item": "D2 Vultr kickoff",
+        "wall": null
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D2 Vultr Agent Rush (kickoff Nov 3 15:00Z, landing Nov 7, wall Nov 8 15:00 PT)",
+      "id": "D2-3-nocard-account-live",
+      "knowable": "2026-11-03 15:00Z",
+      "record_of_record": "D2 seat + gate D2-NOCARD",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "D2 seat + gate D2-NOCARD",
+        "value": null
+      },
+      "subject": "Vultr no-card account live at kickoff {Y/N}",
+      "window": {
+        "wall": "2026-11-03T15:00:00Z",
+        "window_start": "2026-11-03T09:00:00-08:00",
+        "window_start_basis": "register stage B (kickoff day cushion)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-04T09:00:00-08:00",
+          "2026-11-07T09:00:00-08:00"
+        ],
+        "final": "2026-11-08T14:30:00-08:00",
+        "landing": "2026-11-07T09:00:00-08:00",
+        "register_item": "D2 Vultr submission",
+        "wall": "2026-11-08"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D2 Vultr Agent Rush",
+      "id": "D2-4-submission-landed",
+      "knowable": "2026-11-08",
+      "record_of_record": "entries confirmation_ref",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries confirmation_ref",
+        "value": null
+      },
+      "subject": "Submission landed by wall {Y/N}",
+      "window": {
+        "wall": "2026-11-08T15:00:00-08:00",
+        "window_start": "2026-11-04T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-04T09:00:00-08:00",
+          "2026-11-07T09:00:00-08:00"
+        ],
+        "final": "2026-11-08T14:30:00-08:00",
+        "landing": "2026-11-07T09:00:00-08:00",
+        "note": "anchors = the D2 submission item's set; placement settles on official posting",
+        "register_item": "D2 Vultr submission",
+        "wall": "2026-11-08"
+      },
+      "expectation_record": {
+        "evidence": [
+          {
+            "ref": "D2 seat relay 2026-11-03 (owner framing + field correction)",
+            "note": "house-stake position POS-001 opened on this subject (stake = $200 Vultr house credit, deployed by burn). Field denominator of record corrected: 2,308 participants (2026-11-03 dashboard) vs stale 1,617 in the coordinator prior — context only; no probability is derived or republished in the book (B5)."
+          },
+          {
+            "ref": "D2 exercise run-1 (PRs #4486-#4491/#4531/#4536) + D2 seat correction 2026-11-03 23:18 PT (owner correction via main)",
+            "note": "EXERCISE SCORING ENTRY BOOKED (leg 6): slate of 6 scored (Delphi-shaped advisory, beside never merged). Pick state = OWNER-HELD — NO PICK EXECUTED; the 'D2 BUILD / pick executed' reading was rescinded by owner correction. B advisory-ranked first on revised raw (46), not picked. Repo 1445293810 (quarantine-browser-clerk), created in the rescinded sequence, stands dormant — not a build fact. Evidence leg only — posterior unchanged, no probability derived (B5)."
+          }
+        ],
+        "posterior": {
+          "n_evidence": 2,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D2 Vultr Agent Rush",
+      "id": "D2-5-placement-top3",
+      "knowable": "NOT_ESTABLISHED (post-close posting)",
+      "record_of_record": "lablab official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "lablab official results",
+        "value": null
+      },
+      "subject": "Placement top-3 {Y/N}",
+      "window": {
+        "wall": "2026-11-08T15:00:00-08:00",
+        "window_start": "2026-11-04T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-05T09:00:00-08:00",
+          "2026-11-08T09:00:00-08:00"
+        ],
+        "final": "2026-11-09T23:29:00-08:00",
+        "landing": "2026-11-08T09:00:00-08:00",
+        "register_item": "D3 ListingLens submission",
+        "wall": "2026-11-09"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D3 Builder.io (landing Nov 8, wall Nov 9 23:59 PT)",
+      "id": "D3-6-clips-gate-cleared",
+      "knowable": "2026-11-08",
+      "record_of_record": "gate D3-CLIPS-STORAGE",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "gate D3-CLIPS-STORAGE",
+        "value": null
+      },
+      "subject": "Clips gate cleared by landing {Y/N}",
+      "window": {
+        "wall": "2026-11-08T23:59:00-08:00",
+        "window_start": "2026-11-05T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-05T09:00:00-08:00",
+          "2026-11-08T09:00:00-08:00"
+        ],
+        "final": "2026-11-09T23:29:00-08:00",
+        "landing": "2026-11-08T09:00:00-08:00",
+        "register_item": "D3 ListingLens submission",
+        "wall": "2026-11-09"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D3 Builder.io",
+      "id": "D3-7-feature-batch-b1-b3",
+      "knowable": "2026-11-08",
+      "record_of_record": "D3 seat per-PR verification",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "D3 seat per-PR verification",
+        "value": null
+      },
+      "subject": "Feature batch B1-B3 landed by Nov 8 {Y/N}",
+      "window": {
+        "wall": "2026-11-08T23:59:00-08:00",
+        "window_start": "2026-11-05T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-05T09:00:00-08:00",
+          "2026-11-08T09:00:00-08:00"
+        ],
+        "final": "2026-11-09T23:29:00-08:00",
+        "landing": "2026-11-08T09:00:00-08:00",
+        "register_item": "D3 ListingLens submission",
+        "wall": "2026-11-09"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D3 Builder.io",
+      "id": "D3-8-submission-landed",
+      "knowable": "2026-11-09",
+      "record_of_record": "entries / D3 record",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries / D3 record",
+        "value": null
+      },
+      "subject": "Submission landed (form + public Clips URL) by wall {Y/N}",
+      "window": {
+        "wall": "2026-11-09T23:59:00-08:00",
+        "window_start": "2026-11-05T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-05T09:00:00-08:00",
+          "2026-11-08T09:00:00-08:00"
+        ],
+        "final": "2026-11-09T23:29:00-08:00",
+        "landing": "2026-11-08T09:00:00-08:00",
+        "note": "anchors = the D3 submission item's set; placement settles on official posting",
+        "register_item": "D3 ListingLens submission",
+        "wall": "2026-11-09"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D3 Builder.io",
+      "id": "D3-9-placement-paid-tier",
+      "knowable": "NOT_ESTABLISHED (post-close TBD)",
+      "record_of_record": "Builder.io official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Builder.io official results",
+        "value": null
+      },
+      "subject": "Placement = paid tier (top-5) {Y/N}",
+      "window": {
+        "wall": "2026-11-09T23:59:00-08:00",
+        "window_start": "2026-11-05T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-27T09:00:00-08:00",
+          "2026-11-30T09:00:00-08:00"
+        ],
+        "final": "2026-12-01T11:30:00-08:00",
+        "landing": "2026-11-30T09:00:00-08:00",
+        "register_item": "D4 Kiro ID credit form",
+        "wall": "2026-12-01"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D4 Kiroween (form landing Nov 30, landing Dec 2, wall Dec 4 14:00 PT)",
+      "id": "D4-10-credit-form-filed",
+      "knowable": "2026-11-30",
+      "record_of_record": "Gates / D4 seat",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Gates / D4 seat",
+        "value": null
+      },
+      "subject": "4,000-credit form filed by Nov 30 {Y/N}",
+      "window": {
+        "wall": "2026-11-30T23:59:00-08:00",
+        "window_start": "2026-11-27T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-29T09:00:00-08:00",
+          "2026-12-02T09:00:00-08:00"
+        ],
+        "final": "2026-12-04T13:30:00-08:00",
+        "landing": "2026-12-02T09:00:00-08:00",
+        "register_item": "D4 Kiroween submission",
+        "wall": "2026-12-04"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D4 Kiroween",
+      "id": "D4-11-skeleton-apps-live",
+      "knowable": "2026-12-02",
+      "record_of_record": "D4 seat record",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "D4 seat record",
+        "value": null
+      },
+      "subject": "Both Skeleton Crew apps live in public repo by Dec 2 {Y/N}",
+      "window": {
+        "wall": "2026-12-02T23:59:00-08:00",
+        "window_start": "2026-11-29T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-29T09:00:00-08:00",
+          "2026-12-02T09:00:00-08:00"
+        ],
+        "final": "2026-12-04T13:30:00-08:00",
+        "landing": "2026-12-02T09:00:00-08:00",
+        "register_item": "D4 Kiroween submission",
+        "wall": "2026-12-04"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D4 Kiroween",
+      "id": "D4-12-submission-landed",
+      "knowable": "2026-12-04",
+      "record_of_record": "entries confirmation_ref (Devpost)",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries confirmation_ref (Devpost)",
+        "value": null
+      },
+      "subject": "Submission landed by wall {Y/N}",
+      "window": {
+        "wall": "2026-12-04T14:00:00-08:00",
+        "window_start": "2026-11-29T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-29T09:00:00-08:00",
+          "2026-12-02T09:00:00-08:00"
+        ],
+        "final": "2026-12-04T13:30:00-08:00",
+        "landing": "2026-12-02T09:00:00-08:00",
+        "note": "anchors = the D4 submission item's set; placement settles on official posting",
+        "register_item": "D4 Kiroween submission",
+        "wall": "2026-12-04"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D4 Kiroween",
+      "id": "D4-13-placement-any-prize",
+      "knowable": "NOT_ESTABLISHED (post-close TBD)",
+      "record_of_record": "Devpost official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Devpost official results",
+        "value": null
+      },
+      "subject": "Placement = any prize (overall/category/crew) {Y/N}",
+      "window": {
+        "wall": "2026-12-04T14:00:00-08:00",
+        "window_start": "2026-11-29T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-17T09:00:00-08:00"
+        ],
+        "final": null,
+        "landing": "2026-11-17T09:00:00-08:00",
+        "note": "no dedicated spot item in the register; anchors = D5 Aha kickoff stage B (the spot gates the kickoff)",
+        "register_item": "D5 Aha kickoff",
+        "wall": null
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D5 Aha (kickoff Nov 17, landing Nov 18 EOD, wall Nov 19 12:00 PT)",
+      "id": "D5-14-spot-confirmation",
+      "knowable": "on receipt (pending now)",
+      "record_of_record": "entries + gate D5-SPOT",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries + gate D5-SPOT",
+        "value": null
+      },
+      "subject": "Spot confirmation received {Y/N}",
+      "window": {
+        "wall": "2026-11-17T09:00:00-08:00",
+        "window_start": "2026-11-17T09:00:00-08:00",
+        "window_start_basis": "register stage B (kickoff) — earliest anchor; spot gates the kickoff"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-15T09:00:00-08:00",
+          "2026-11-18T09:00:00-08:00"
+        ],
+        "final": "2026-11-19T11:30:00-08:00",
+        "landing": "2026-11-18T09:00:00-08:00",
+        "register_item": "D5 Aha submission",
+        "wall": "2026-11-19"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D5 Aha",
+      "id": "D5-15-submission-landed",
+      "knowable": "2026-11-19",
+      "record_of_record": "entries confirmation_ref",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "entries confirmation_ref",
+        "value": null
+      },
+      "subject": "Submission landed by wall {Y/N}",
+      "window": {
+        "wall": "2026-11-19T12:00:00-08:00",
+        "window_start": "2026-11-15T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-15T09:00:00-08:00",
+          "2026-11-18T09:00:00-08:00"
+        ],
+        "final": "2026-11-19T11:30:00-08:00",
+        "landing": "2026-11-18T09:00:00-08:00",
+        "note": "anchors = the D5 submission item's set; placement settles 2026-11-20 11:30 PT per Aha official",
+        "register_item": "D5 Aha submission",
+        "wall": "2026-11-19"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "D5 Aha",
+      "id": "D5-16-placement-winner",
+      "knowable": "2026-11-20 11:30 PT (dated)",
+      "record_of_record": "Aha official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Aha official results",
+        "value": null
+      },
+      "subject": "Placement = winner {Y/N}",
+      "window": {
+        "wall": "2026-11-19T12:00:00-08:00",
+        "window_start": "2026-11-15T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item for the M1 GPU claim; nearest register coverage starts at the League submission item",
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League (landing Nov 28, wall Dec 1 11:00 PT)",
+      "id": "AMD-17-gpu100-claim",
+      "knowable": "2026-11-07",
+      "record_of_record": "gate AMD-GPU100",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "gate AMD-GPU100",
+        "value": null
+      },
+      "subject": "M1 $100 GPU claim filed by Nov 7 {Y/N}",
+      "window": {
+        "wall": "2026-11-07T23:59:00-08:00",
+        "window_start": "2026-11-02T00:00:00-08:00",
+        "window_start_basis": "book intake date (day granularity) — no register item; earliest honest date = subject opened at book open"
+      }
+    },
+    {
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item for M4; M4 target Nov 9 predates the League submission item's cushion (Nov 25)",
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League",
+      "id": "AMD-18-m4-submitted",
+      "knowable": "2026-11-09",
+      "record_of_record": "AMD seat + League platform",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "AMD seat + League platform",
+        "value": null
+      },
+      "subject": "M4 submitted by Nov 9 target {Y/N}",
+      "window": {
+        "wall": "2026-11-09T23:59:00-08:00",
+        "window_start": "2026-11-02T00:00:00-08:00",
+        "window_start_basis": "book intake date (day granularity) — no register item"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-16T09:00:00-08:00",
+          "2026-11-19T09:00:00-08:00"
+        ],
+        "final": "2026-11-20T23:29:00-08:00",
+        "landing": "2026-11-19T09:00:00-08:00",
+        "note": "subject settles when the 5th course lands; anchors shown = AMD Academy C5 item; C1-C4 items carry their own full anchor sets in the register (C1 B Nov 6 / C2 B Nov 9 / C3 B Nov 12 / C4 B Nov 16)",
+        "register_item": "AMD Academy C5",
+        "wall": "2026-11-20"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League",
+      "id": "AMD-19-academy-5-complete",
+      "knowable": "2026-11-19",
+      "record_of_record": "Gates evidence (cert + points) + certs ledger",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Gates evidence (cert + points) + certs ledger",
+        "value": null
+      },
+      "subject": "Academy >=5 complete by Nov 19 landing {Y/N}",
+      "window": {
+        "wall": "2026-11-19T23:59:00-08:00",
+        "window_start": "2026-11-03T09:00:00-08:00",
+        "window_start_basis": "register AMD Academy C1 stage A — first anchor of the >=5 course set"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-22T09:00:00-08:00",
+          "2026-11-25T09:00:00-08:00"
+        ],
+        "final": "2026-11-28T23:29:00-08:00",
+        "landing": "2026-11-25T09:00:00-08:00",
+        "register_item": "AMD ROCm exam",
+        "wall": "2026-11-28"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League",
+      "id": "AMD-20-rocm-exam-passed",
+      "knowable": "2026-11-25",
+      "record_of_record": "Gates seat 840bd147 evidence",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Gates seat 840bd147 evidence",
+        "value": null
+      },
+      "subject": "ROCm exam passed by Nov 25 landing {Y/N}",
+      "window": {
+        "wall": "2026-11-25T23:59:00-08:00",
+        "window_start": "2026-11-22T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-25T09:00:00-08:00",
+          "2026-11-28T09:00:00-08:00"
+        ],
+        "final": "2026-12-01T10:30:00-08:00",
+        "landing": "2026-11-28T09:00:00-08:00",
+        "register_item": "AMD AI League submission",
+        "wall": "2026-12-01"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League",
+      "id": "AMD-21-m2-m3-m5-m6-submissions",
+      "knowable": "2026-11-28",
+      "record_of_record": "AMD seat records",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "AMD seat records",
+        "value": null
+      },
+      "subject": "M2/M3/M5/M6 submissions all by Nov 28 {per-match Y/N}",
+      "window": {
+        "wall": "2026-11-28T23:59:00-08:00",
+        "window_start": "2026-11-25T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-11-25T09:00:00-08:00",
+          "2026-11-28T09:00:00-08:00"
+        ],
+        "final": "2026-12-01T10:30:00-08:00",
+        "landing": "2026-11-28T09:00:00-08:00",
+        "note": "anchors = the League submission item's set; podium settles on official posting (may lag Dec 1)",
+        "register_item": "AMD AI League submission",
+        "wall": "2026-12-01"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "AMD AI League",
+      "id": "AMD-22-podium",
+      "knowable": "2026-12-01 (posting may lag)",
+      "record_of_record": "lablab official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "lablab official results",
+        "value": null
+      },
+      "subject": "Podium (top-3) at close {Y/N}",
+      "window": {
+        "wall": "2026-12-01T11:00:00-08:00",
+        "window_start": "2026-11-25T09:00:00-08:00",
+        "window_start_basis": "register stage A (cushion-3d)"
+      }
+    },
+    {
+      "anchors": {
+        "cushion": [
+          "2026-12-02T09:00:00-08:00",
+          "2026-12-05T09:00:00-08:00",
+          "2026-12-09T09:00:00-08:00",
+          "2026-12-12T09:00:00-08:00"
+        ],
+        "final": null,
+        "landing": "2026-12-05T09:00:00-08:00",
+        "note": "soft item: register carries A/B stages only (checkpoint Dec 5 + exam soft wall Dec 12); no D/E stages",
+        "register_item": "FCC L1 checkpoint (Dec 5) + FCC L1 exam (soft wall Dec 12)",
+        "wall": "2026-12-12 (soft)"
+      },
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "FCC L1 (baseline milestone)",
+      "id": "FCC-23-relational-db-cert",
+      "knowable": "at exam pass",
+      "record_of_record": "certs ledger #506 + FCC verify link",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "certs ledger #506 + FCC verify link",
+        "value": null
+      },
+      "subject": "Relational DB cert earned (5 projects + exam) by Dec 12 {Y/N}",
+      "window": {
+        "wall": "2026-12-12T23:59:00-08:00",
+        "window_start": "2026-12-02T09:00:00-08:00",
+        "window_start_basis": "register FCC checkpoint stage A — earliest anchor (soft item)"
+      }
+    },
+    {
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "C12 (graduated 2026-11-03)",
+      "id": "C12-24-r1-submission",
+      "knowable": "2026-11-15",
+      "record_of_record": "coordinator + C12 record",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "coordinator + C12 record",
+        "value": null
+      },
+      "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
+      "window": {
+        "wall": "2026-11-15T23:45:00-08:00",
+        "window_start": "2026-11-03T00:00:00-08:00",
+        "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
+      }
+    },
+    {
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item for C12",
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "C12 (graduated 2026-11-03)",
+      "id": "C12-25-finalist-selection",
+      "knowable": "2026-11-21",
+      "record_of_record": "Devpost official",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Devpost official",
+        "value": null
+      },
+      "subject": "Finalist selection {Y/N}",
+      "window": {
+        "wall": "2026-11-21T23:59:00-08:00",
+        "window_start": "2026-11-03T00:00:00-08:00",
+        "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
+      }
+    },
+    {
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item for C12",
+      "expectation_record": {
+        "evidence": [],
+        "posterior": {
+          "n_evidence": 0,
+          "range": null,
+          "value": null
+        },
+        "prior": {
+          "basis": null,
+          "value": null
+        },
+        "quantity": "P(subject resolves Y)"
+      },
+      "group": "C12 (graduated 2026-11-03)",
+      "id": "C12-26-placement",
+      "knowable": "2026-11-30",
+      "record_of_record": "Devpost official results",
+      "settle": {
+        "field": "place earned / official outcome",
+        "source": "Devpost official results",
+        "value": null
+      },
+      "subject": "Placement (Grand/2nd/3rd/Creative) at final {Y/N per tier}",
+      "window": {
+        "wall": "2026-11-30T23:59:00-08:00",
+        "window_start": "2026-11-03T00:00:00-08:00",
+        "window_start_basis": "slate graduation/intake date (day granularity) — no register item"
+      }
+    },
+    {
+      "id": "SPEC-01-14db4412",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+dflash {Y/N}",
+      "participant": "Qwen/Qwen3-8B+dflash",
+      "instance_key": "14db44122346ac5a160b3b672d2dda8f050ea12f74cbf164610fb9140a916a66",
+      "wallet_id": "paper:14db44122346ac5a",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-02-17444309",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dspark {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+dspark",
+      "instance_key": "1744430907f0731809b9114150b22df7ce485c621dc41386914aadab779697df",
+      "wallet_id": "paper:1744430907f07318",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-03-4190442c",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+dspark {Y/N}",
+      "participant": "Qwen/Qwen3-8B+dspark",
+      "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
+      "wallet_id": "paper:4190442cc17496b0",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-04-7c98617f",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+baseline {Y/N}",
+      "participant": "Qwen/Qwen3-8B+baseline",
+      "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
+      "wallet_id": "paper:7c98617f7bf96e05",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-05-7f184a82",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dflash {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+dflash",
+      "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
+      "wallet_id": "paper:7f184a82c1ad9ee2",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-06-9b8c1a76",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+eagle3 {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
+      "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
+      "wallet_id": "paper:9b8c1a767c008908",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-07-a7f76711",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+baseline {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+baseline",
+      "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
+      "wallet_id": "paper:a7f767112f17eaa7",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-08-afc8c7d5",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+peagle {Y/N}",
+      "participant": "Qwen/Qwen3-8B+peagle",
+      "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
+      "wallet_id": "paper:afc8c7d582b1c12e",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-09-cb5bae0d",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+eagle3 {Y/N}",
+      "participant": "Qwen/Qwen3-8B+eagle3",
+      "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
+      "wallet_id": "paper:cb5bae0dfbd57701",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-10-d90bd947",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+peagle {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+peagle",
+      "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
+      "wallet_id": "paper:d90bd947843c74be",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-11-f7881722",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+mtp {Y/N}",
+      "participant": "meta-llama/Llama-3.1-8B-Instruct+mtp",
+      "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
+      "wallet_id": "paper:f78817221babda31",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "SPEC-12-feeed83c",
+      "group": "Speculators — token-strategies-1 campaign (card-performance)",
+      "subject": "Campaign acceptance — Qwen/Qwen3-8B+mtp {Y/N}",
+      "participant": "Qwen/Qwen3-8B+mtp",
+      "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
+      "wallet_id": "paper:feeed83cbefe2ba2",
+      "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+      "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
+      "anchors": null,
+      "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
+      "settle": {
+        "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
+        "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
+        "value": null
+      },
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-03",
+        "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
+        "wall": null
+      }
+    },
+    {
+      "id": "PROP-01-fireworks-ai",
+      "group": "Proposals — §13 pipeline (stage-0 contracts)",
+      "subject": "Hunt finds new Fireworks AI by 2026-12-31 {Y/N}",
+      "proposal_ref": "moneyball prop-0001 (data/proposals/prop-0001.json; proposal chain data/proposal-log.jsonl, 10 receipts, chain valid; doctrine-fit stamp = Web3 seat seq9; Book intake handoff seq10, 2026-11-04T09:45:50Z)",
+      "record_of_record": "provider/quota registry — termux-monorepo ops/quota/registry.json @master (blob f60b9e22d9c7 at listing; Fireworks AI verified ABSENT at listing, firsthand)",
+      "knowable": "2026-12-31T23:59:59-08:00",
+      "anchors": null,
+      "anchors_note": "no fleet deadline-reminders register entry for this subject; knowable_at carried from the derived contract verbatim (prop-0001 stamp)",
+      "settle": {
+        "field": "resolution per the derived contract's resolution rule (carried verbatim in resolution_rule)",
+        "source": "ops/quota/registry.json @master — only landed, PR-stamped additions settle (B3); settling receipt = a registry addition entry for Fireworks AI present in the registry blob whose history carries the merging PR's stamp (PR number + merge SHA), carrying hunt attribution",
+        "value": null
+      },
+      "resolution_rule": "Y iff a landed, PR-stamped registry addition for Fireworks AI first appears in the provider/quota registry at or before knowable_at carrying hunt attribution; otherwise N (§13.4 derived contract)",
+      "proof_obligation_ref": "prop-0001#proof-obligation (5 fields: record_of_record_ref · settling_receipt_shape · stamping_role = MoneyBall seat, B3 · corroboration_leg = DoE settlement replay/audit check, single-leg settlement HELD not final · dispute_rule = correction only by receipted appended act, unresolved dispute reads as a gap)",
+      "expectation_record": {
+        "quantity": "P(subject resolves Y)",
+        "prior": {
+          "value": null,
+          "basis": null
+        },
+        "evidence": [],
+        "posterior": {
+          "value": null,
+          "range": null,
+          "n_evidence": 0
+        }
+      },
+      "window": {
+        "window_start": "2026-11-04",
+        "window_start_basis": "book listing (intake) date",
+        "wall": "2026-12-31T23:59:59-08:00"
+      }
     }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-03-4190442c",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+dspark {Y/N}",
-   "participant": "Qwen/Qwen3-8B+dspark",
-   "instance_key": "4190442cc17496b00c4b87e67afab577affd14231cb25335eaf869d2b25efb64",
-   "wallet_id": "paper:4190442cc17496b0",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
+  ],
+  "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 — subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26) + Speculators card-performance addition (owner eligibility ruling 2026-11-03 via Web3 seat; moneyball DESIGN section 10 PR #16: speculators = first-class speculation subjects; 12 configured instances of campaign token-strategies-1 per WALLETS.json PR #4640; RoR = campaign run records)",
+  "window_note": "window anchors (owner Gantt build via main 2026-11-03): every subject carries {window_start, window_start_basis, wall}. Starts are the earliest honest date of record (register stage A/B anchor, or intake/graduation date where no register item exists) — never invented. pct_consumed/pct_remaining are computed at FEED build time in book-feed.json (computed_at stamped), never hand-entered, and never in the book itself.",
+  "positions": [
+    {
+      "position_id": "POS-001",
+      "gambler": "owner (house stake, placed via the D2 entry operation)",
+      "subject_id": "D2-5-placement-top3",
+      "side": "Y — placement top-3",
+      "stake": {
+        "kind": "soft_quota_token (provider credit — house money)",
+        "instrument": "Vultr credit $200.00, applied 2026-11-03, expires ~2026-12-03 (use-it-or-lose-it; no cash at risk)",
+        "deployment_rule": "the position is taken by SPENDING the credit: every $ of burn (instances + inference, at plans-API rates) is stake deployed on the D2 entry's win expectation; unspent credit at expiry = stake never placed — a NEUTRAL state, not a loss (owner refinement 2026-11-03)",
+        "metering": "quota wiring provider row vultr {entitlement 200.00 · burn legs instances + inference}; D2 seat supplies daily credit ground-truth in build week",
+        "deployed_to_date": null
+      },
+      "basis": "owner framing direct to the D2 seat 2026-11-03 (the use of the Vultr credits is itself a wager on the win, placed with house credits) + D2 entry records D2-3/D2-4/D2-5 in this book",
+      "precondition": "D2-4-submission-landed; resolution source of record = D2 submission confirmation_ref on lablab + official results",
+      "opened": "2026-11-03",
+      "status": "open",
+      "payout": {
+        "structure": "FIXED — burn does not raise the win amount by a cent (owner refinement 2026-11-03)",
+        "pool_total": "$14,000",
+        "first_place": "$5,000 cash + $3,000 credits (tiers of record)",
+        "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
+      },
+      "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
+      "amended": "2026-11-03 (owner addendum via D2 seat: expiring-stake x fixed-payout equilibrium + demo-uptime reserve)",
+      "equilibrium": {
+        "model": "expiring stake AND fixed payout — two edges, both real (owner addendum 2026-11-03)",
+        "expiry_edge": "expiry kills salvage value: unspent credit is worth $0 on Dec 4, so hoarding buys nothing",
+        "fixed_payout_edge": "fixed payout caps the return: spend past marginal delta-p ~ 0 still dilutes (per the dilution note)",
+        "equilibrium": "deploy credit wherever it buys delta-p(win) > 0 inside the window",
+        "reserved_slice": {
+          "purpose": "demo-uptime through judging — the ONLY reserved slice with standing value",
+          "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
+          "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
+          "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
+        }
+      },
+      "exercise_entry": {
+        "kind": "D2 exercise run-1 SCORING entry (close leg 6) — the exercise's owed final leg, booked independent of any pick",
+        "pick_state": "OWNER-HELD ⛏️ — NO PICK EXECUTED. The 2026-11-03 23:16 PT 'D2 BUILD / pick executed' interpretation was RESCINDED by owner correction (via main, 2026-11-03 23:18 PT). This entry's earlier booking as an executed pick (PR #4785) is superseded by this correction.",
+        "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536)",
+        "scoring_axes": "Delphi-shaped, advisory (Tech · Presentation · Business · Originality · Buildability · FieldRoom, 0-10 each; raw = sum/60) — filed beside, never merged; NOT the MoneyBall participant axes",
+        "slate": [
+          {
+            "id": "A",
+            "candidate": "Canary Patch Gauntlet",
+            "class": "C1",
+            "raw_initial": 46,
+            "raw_revised": 45
+          },
+          {
+            "id": "B",
+            "candidate": "Quarantine Browser Clerk",
+            "class": "C1",
+            "raw_initial": 48,
+            "raw_revised": 46
+          },
+          {
+            "id": "C",
+            "candidate": "Dependency Detox Chamber",
+            "class": "C1",
+            "raw_initial": 45,
+            "raw_revised": 45
+          },
+          {
+            "id": "D",
+            "candidate": "Pipeline Rescue Desk",
+            "class": "C2",
+            "raw_initial": 40,
+            "raw_revised": 42
+          },
+          {
+            "id": "E",
+            "candidate": "Three-Way Match Room",
+            "class": "C2",
+            "raw_initial": 45,
+            "raw_revised": 46
+          },
+          {
+            "id": "F",
+            "candidate": "Renewal Risk Desk",
+            "class": "C2",
+            "raw_initial": 41,
+            "raw_revised": 42
+          }
+        ],
+        "advisory_rankings": {
+          "raw_revised": "B = E (46) > A = C (45) > F = D (42) — B raw-ranked first among C1, tied-first overall",
+          "risk_adjusted_delivered": "A > C > B > E > F > D"
+        },
+        "B_note": "B = advisory-ranked first on revised raw — NOT picked. Differentiation (lookalike-domain page attacking the AGENT = the unoccupied angle) survives the depth-recon best of the C1 trio.",
+        "field_denominator": {
+          "participants": 2308,
+          "source": "2026-11-03 official dashboard — supersedes the stale 1,617 (context only; no probability derived or republished, B5)"
+        },
+        "wager_model": "unchanged — POS-001 as opened and amended (stake = use of the $200 expiring Vultr house credit; payout FIXED $14k pool, 1st $5k cash + $3k credits; burn past marginal delta-p ~0 dilutes; expiry salvage $0 => deploy where delta-p > 0, demo-uptime reserve first). POS-001 settles at the D2 wall 2026-11-08 15:00 PT on official lablab results — a subject term, not a build clock.",
+        "dormant_repo": {
+          "repo": "timerloggedout-spec/quarantine-browser-clerk",
+          "id": 1445293810,
+          "state": "DORMANT — created inside the rescinded sequence; explicitly NOT a build fact for this book"
+        },
+        "planning_clocks": {
+          "classification": "EXERCISE PLANNING clocks — NOT build commitments (no build exists; pick OWNER-HELD)",
+          "T1_core": "<= 2026-11-04 EOD",
+          "signature_moment": "<= 2026-11-05",
+          "landing": "2026-11-07",
+          "note": "carried from the exercise run record as planning tiers only; the D2 wall 2026-11-08 15:00 PT is POS-001's subject term, not a clock in this set"
+        }
+      },
+      "entry_pick": {
+        "candidate": "B — Quarantine Browser Clerk (C1·B)",
+        "state": "OWNER-HELD ⛏️ — B NOT picked",
+        "history": "booked as EXECUTED 2026-11-03 23:16 PT under the 'D2 BUILD' reading (PR #4785) → RESCINDED 2026-11-03 23:18 PT by owner countermand via main; coordinator of record corrected to OWNER-HELD (PR #4786 merged 1d1dbb3012a9). This stamp preserves that history per append-only discipline; the live entry is POS-001.exercise_entry (PR #4793)."
+      }
     }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-04-7c98617f",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+baseline {Y/N}",
-   "participant": "Qwen/Qwen3-8B+baseline",
-   "instance_key": "7c98617f7bf96e05dc149866959496dec5c0786237875f00ad80ef5929a046e7",
-   "wallet_id": "paper:7c98617f7bf96e05",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
+  ],
+  "settlements": [
+    {
+      "subject_id": "D1-1-submission-landed",
+      "outcome": "Y",
+      "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+      "settled_at": "2026-11-03",
+      "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
+      "positions_affected": "none open on this subject"
     }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-05-7f184a82",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+dflash {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+dflash",
-   "instance_key": "7f184a82c1ad9ee240edee4dda42164ac6e9899d26457cbddbc3bcf92b0a20a7",
-   "wallet_id": "paper:7f184a82c1ad9ee2",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-06-9b8c1a76",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+eagle3 {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+eagle3",
-   "instance_key": "9b8c1a767c0089085c62468a79f6da5375ba40a2f2044e762320b79737276812",
-   "wallet_id": "paper:9b8c1a767c008908",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-07-a7f76711",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+baseline {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+baseline",
-   "instance_key": "a7f767112f17eaa7e2b7b41a48af9da385ffdf3bf663b15e58fabd9104ffde59",
-   "wallet_id": "paper:a7f767112f17eaa7",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-08-afc8c7d5",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+peagle {Y/N}",
-   "participant": "Qwen/Qwen3-8B+peagle",
-   "instance_key": "afc8c7d582b1c12ef4ef6f7d0dd30bd9a5416a5a95a2af3099e4ddf8f7df7b59",
-   "wallet_id": "paper:afc8c7d582b1c12e",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-09-cb5bae0d",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+eagle3 {Y/N}",
-   "participant": "Qwen/Qwen3-8B+eagle3",
-   "instance_key": "cb5bae0dfbd5770188cba21bddc25e29bfe9034237598b770ea1b7f00711de53",
-   "wallet_id": "paper:cb5bae0dfbd57701",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-10-d90bd947",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+peagle {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+peagle",
-   "instance_key": "d90bd947843c74be59884f4c03fa6e9ff249d5fa5e4981688b0e8a9ecd9073f0",
-   "wallet_id": "paper:d90bd947843c74be",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-11-f7881722",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — meta-llama/Llama-3.1-8B-Instruct+mtp {Y/N}",
-   "participant": "meta-llama/Llama-3.1-8B-Instruct+mtp",
-   "instance_key": "f78817221babda313c6af0e4ce40412d1eac06e1f24d9aff09e3343200809918",
-   "wallet_id": "paper:f78817221babda31",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "SPEC-12-feeed83c",
-   "group": "Speculators — token-strategies-1 campaign (card-performance)",
-   "subject": "Campaign acceptance — Qwen/Qwen3-8B+mtp {Y/N}",
-   "participant": "Qwen/Qwen3-8B+mtp",
-   "instance_key": "feeed83cbefe2ba2f7cdd96d95808f9ff752c7ce0aded03d4de64095c2d728b1",
-   "wallet_id": "paper:feeed83cbefe2ba2",
-   "record_of_record": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-   "knowable": "NOT_ESTABLISHED (campaign runs 0/48 executed at intake; knowable when this instance's run record lands)",
-   "anchors": null,
-   "anchors_note": "NOT_ESTABLISHED — no register item; intake = eligibility ruling 2026-11-03 (owner direct; moneyball DESIGN section 10, PR #16)",
-   "settle": {
-    "field": "campaign acceptance per pre-registered criteria (acceptance >=0.50 AND speedup >=1.20 AND margin >=0.10) per the instance's executed run record",
-    "source": "campaign run records — experiments/speculators/token-strategies-1 EXPERIMENT records (executed by Speculators-build seat; settlement ONLY from executed run records)",
-    "value": null
-   },
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-03",
-    "window_start_basis": "book intake (eligibility ruling 2026-11-03)",
-    "wall": null
-   }
-  },
-  {
-   "id": "PROP-01-fireworks-ai",
-   "group": "Proposals — §13 pipeline (stage-0 contracts)",
-   "subject": "Hunt finds new Fireworks AI by 2026-12-31 {Y/N}",
-   "proposal_ref": "moneyball prop-0001 (data/proposals/prop-0001.json; proposal chain data/proposal-log.jsonl, 10 receipts, chain valid; doctrine-fit stamp = Web3 seat seq9; Book intake handoff seq10, 2026-11-04T09:45:50Z)",
-   "record_of_record": "provider/quota registry — termux-monorepo ops/quota/registry.json @master (blob f60b9e22d9c7 at listing; Fireworks AI verified ABSENT at listing, firsthand)",
-   "knowable": "2026-12-31T23:59:59-08:00",
-   "anchors": null,
-   "anchors_note": "no fleet deadline-reminders register entry for this subject; knowable_at carried from the derived contract verbatim (prop-0001 stamp)",
-   "settle": {
-    "field": "resolution per the derived contract's resolution rule (carried verbatim in resolution_rule)",
-    "source": "ops/quota/registry.json @master — only landed, PR-stamped additions settle (B3); settling receipt = a registry addition entry for Fireworks AI present in the registry blob whose history carries the merging PR's stamp (PR number + merge SHA), carrying hunt attribution",
-    "value": null
-   },
-   "resolution_rule": "Y iff a landed, PR-stamped registry addition for Fireworks AI first appears in the provider/quota registry at or before knowable_at carrying hunt attribution; otherwise N (§13.4 derived contract)",
-   "proof_obligation_ref": "prop-0001#proof-obligation (5 fields: record_of_record_ref · settling_receipt_shape · stamping_role = MoneyBall seat, B3 · corroboration_leg = DoE settlement replay/audit check, single-leg settlement HELD not final · dispute_rule = correction only by receipted appended act, unresolved dispute reads as a gap)",
-   "expectation_record": {
-    "quantity": "P(subject resolves Y)",
-    "prior": {
-     "value": null,
-     "basis": null
-    },
-    "evidence": [],
-    "posterior": {
-     "value": null,
-     "range": null,
-     "n_evidence": 0
-    }
-   },
-   "window": {
-    "window_start": "2026-11-04",
-    "window_start_basis": "book listing (intake) date",
-    "wall": "2026-12-31T23:59:59-08:00"
-   }
-  }
- ],
- "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 — subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26) + Speculators card-performance addition (owner eligibility ruling 2026-11-03 via Web3 seat; moneyball DESIGN section 10 PR #16: speculators = first-class speculation subjects; 12 configured instances of campaign token-strategies-1 per WALLETS.json PR #4640; RoR = campaign run records)",
- "window_note": "window anchors (owner Gantt build via main 2026-11-03): every subject carries {window_start, window_start_basis, wall}. Starts are the earliest honest date of record (register stage A/B anchor, or intake/graduation date where no register item exists) — never invented. pct_consumed/pct_remaining are computed at FEED build time in book-feed.json (computed_at stamped), never hand-entered, and never in the book itself.",
- "positions": [
-  {
-   "position_id": "POS-001",
-   "gambler": "owner (house stake, placed via the D2 entry operation)",
-   "subject_id": "D2-5-placement-top3",
-   "side": "Y — placement top-3",
-   "stake": {
-    "kind": "soft_quota_token (provider credit — house money)",
-    "instrument": "Vultr credit $200.00, applied 2026-11-03, expires ~2026-12-03 (use-it-or-lose-it; no cash at risk)",
-    "deployment_rule": "the position is taken by SPENDING the credit: every $ of burn (instances + inference, at plans-API rates) is stake deployed on the D2 entry's win expectation; unspent credit at expiry = stake never placed — a NEUTRAL state, not a loss (owner refinement 2026-11-03)",
-    "metering": "quota wiring provider row vultr {entitlement 200.00 · burn legs instances + inference}; D2 seat supplies daily credit ground-truth in build week",
-    "deployed_to_date": null
-   },
-   "basis": "owner framing direct to the D2 seat 2026-11-03 (the use of the Vultr credits is itself a wager on the win, placed with house credits) + D2 entry records D2-3/D2-4/D2-5 in this book",
-   "precondition": "D2-4-submission-landed; resolution source of record = D2 submission confirmation_ref on lablab + official results",
-   "opened": "2026-11-03",
-   "status": "open",
-   "payout": {
-    "structure": "FIXED — burn does not raise the win amount by a cent (owner refinement 2026-11-03)",
-    "pool_total": "$14,000",
-    "first_place": "$5,000 cash + $3,000 credits (tiers of record)",
-    "subject_tier": "top-3 placement per D2-5; amounts per the tiers of record"
-   },
-   "dilution_note": "stake rises against a FIXED payout => the position dilutes as burn grows: rational spend stops where marginal delta-p(win) per $ approaches 0; past that point extra burn wagers more for the identical return. Allocations argue their marginal delta-p, never their total spend.",
-   "amended": "2026-11-03 (owner addendum via D2 seat: expiring-stake x fixed-payout equilibrium + demo-uptime reserve)",
-   "equilibrium": {
-    "model": "expiring stake AND fixed payout — two edges, both real (owner addendum 2026-11-03)",
-    "expiry_edge": "expiry kills salvage value: unspent credit is worth $0 on Dec 4, so hoarding buys nothing",
-    "fixed_payout_edge": "fixed payout caps the return: spend past marginal delta-p ~ 0 still dilutes (per the dilution note)",
-    "equilibrium": "deploy credit wherever it buys delta-p(win) > 0 inside the window",
-    "reserved_slice": {
-     "purpose": "demo-uptime through judging — the ONLY reserved slice with standing value",
-     "window": "demo VM from Nov 8 to credit death ~Dec 3 (~25 days)",
-     "cost_estimate": "~$19.80 @ 2c-4gb plans-API rate / ~$39.60 @ 4c-8gb",
-     "priority": "outranks discretionary burn — a dead demo during judging is a delta-p cliff"
-    }
-   },
-   "exercise_entry": {
-    "kind": "D2 exercise run-1 SCORING entry (close leg 6) — the exercise's owed final leg, booked independent of any pick",
-    "pick_state": "OWNER-HELD ⛏️ — NO PICK EXECUTED. The 2026-11-03 23:16 PT 'D2 BUILD / pick executed' interpretation was RESCINDED by owner correction (via main, 2026-11-03 23:18 PT). This entry's earlier booking as an executed pick (PR #4785) is superseded by this correction.",
-    "record_of_record": "D2 exercise run-1 (workspace/d2-exercise/run-2026-11-03.md; slate PRs #4486-#4491, #4531, #4536)",
-    "scoring_axes": "Delphi-shaped, advisory (Tech · Presentation · Business · Originality · Buildability · FieldRoom, 0-10 each; raw = sum/60) — filed beside, never merged; NOT the MoneyBall participant axes",
-    "slate": [
-     {
-      "id": "A",
-      "candidate": "Canary Patch Gauntlet",
-      "class": "C1",
-      "raw_initial": 46,
-      "raw_revised": 45
-     },
-     {
-      "id": "B",
-      "candidate": "Quarantine Browser Clerk",
-      "class": "C1",
-      "raw_initial": 48,
-      "raw_revised": 46
-     },
-     {
-      "id": "C",
-      "candidate": "Dependency Detox Chamber",
-      "class": "C1",
-      "raw_initial": 45,
-      "raw_revised": 45
-     },
-     {
-      "id": "D",
-      "candidate": "Pipeline Rescue Desk",
-      "class": "C2",
-      "raw_initial": 40,
-      "raw_revised": 42
-     },
-     {
-      "id": "E",
-      "candidate": "Three-Way Match Room",
-      "class": "C2",
-      "raw_initial": 45,
-      "raw_revised": 46
-     },
-     {
-      "id": "F",
-      "candidate": "Renewal Risk Desk",
-      "class": "C2",
-      "raw_initial": 41,
-      "raw_revised": 42
-     }
-    ],
-    "advisory_rankings": {
-     "raw_revised": "B = E (46) > A = C (45) > F = D (42) — B raw-ranked first among C1, tied-first overall",
-     "risk_adjusted_delivered": "A > C > B > E > F > D"
-    },
-    "B_note": "B = advisory-ranked first on revised raw — NOT picked. Differentiation (lookalike-domain page attacking the AGENT = the unoccupied angle) survives the depth-recon best of the C1 trio.",
-    "field_denominator": {
-     "participants": 2308,
-     "source": "2026-11-03 official dashboard — supersedes the stale 1,617 (context only; no probability derived or republished, B5)"
-    },
-    "wager_model": "unchanged — POS-001 as opened and amended (stake = use of the $200 expiring Vultr house credit; payout FIXED $14k pool, 1st $5k cash + $3k credits; burn past marginal delta-p ~0 dilutes; expiry salvage $0 => deploy where delta-p > 0, demo-uptime reserve first). POS-001 settles at the D2 wall 2026-11-08 15:00 PT on official lablab results — a subject term, not a build clock.",
-    "dormant_repo": {
-     "repo": "timerloggedout-spec/quarantine-browser-clerk",
-     "id": 1445293810,
-     "state": "DORMANT — created inside the rescinded sequence; explicitly NOT a build fact for this book"
-    },
-    "planning_clocks": {
-     "classification": "EXERCISE PLANNING clocks — NOT build commitments (no build exists; pick OWNER-HELD)",
-     "T1_core": "<= 2026-11-04 EOD",
-     "signature_moment": "<= 2026-11-05",
-     "landing": "2026-11-07",
-     "note": "carried from the exercise run record as planning tiers only; the D2 wall 2026-11-08 15:00 PT is POS-001's subject term, not a clock in this set"
-    }
-   },
-   "entry_pick": {
-    "candidate": "B — Quarantine Browser Clerk (C1·B)",
-    "state": "OWNER-HELD ⛏️ — B NOT picked",
-    "history": "booked as EXECUTED 2026-11-03 23:16 PT under the 'D2 BUILD' reading (PR #4785) → RESCINDED 2026-11-03 23:18 PT by owner countermand via main; coordinator of record corrected to OWNER-HELD (PR #4786 merged 1d1dbb3012a9). This stamp preserves that history per append-only discipline; the live entry is POS-001.exercise_entry (PR #4793)."
-   }
-  }
- ],
- "settlements": [
-  {
-   "subject_id": "D1-1-submission-landed",
-   "outcome": "Y",
-   "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
-   "settled_at": "2026-11-03",
-   "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
-   "positions_affected": "none open on this subject"
-  }
- ]
+  ]
 }

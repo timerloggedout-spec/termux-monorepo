@@ -44,6 +44,10 @@ class DoEInferenceContractTests(unittest.TestCase):
         self.assertEqual("active", custom["properties"]["status"]["const"])
         self.assertIn("exempt", self.schema["properties"]["request"]["required"])
         self.assertIn("constraint_reason", self.schema["properties"]["selector"]["required"])
+        self.assertIn("participants", self.schema["required"])
+        participant_props = self.schema["properties"]["participants"]["items"]["properties"]
+        self.assertIn("wallet_id", participant_props)
+        self.assertIn("participant_class", participant_props)
 
     def test_desk_cannot_claim_allocation_authority(self):
         feed = copy.deepcopy(self.feed)

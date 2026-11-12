@@ -70,6 +70,11 @@ def validate_contract(feed: dict, design: dict, schema: dict,
         errors.append("participant strategy privacy rule missing")
     if "Git history are NOT a private strategy store" not in gambling:
         errors.append("public Git history must not be described as private strategy storage")
+    if "participants" not in schema.get("required", []):
+        errors.append("selection receipt must link participating actors and wallets")
+    participant_props = schema.get("properties", {}).get("participants", {}).get("items", {}).get("properties", {})
+    if not all(key in participant_props for key in ("participant_id", "participant_class", "role", "wallet_id", "wallet_class", "exempt")):
+        errors.append("participant receipt must preserve canonical role/class and wallet identity")
     if schema.get("properties", {}).get("request", {}).get("required", []).count("exempt") != 1:
         errors.append("selection receipt must record explicit exemption state")
     if schema.get("properties", {}).get("custom_contract", {}).get("properties", {}).get("status", {}).get("const") != "active":

@@ -17,7 +17,8 @@
     "pool_snapshot",
     "assignment",
     "correlation",
-    "privacy"
+    "privacy",
+    "participants"
   ],
   "properties": {
     "schema": {
@@ -447,6 +448,122 @@
           ],
           "description": "Access-controlled collaborator-session or commit history reference; never plaintext strategy."
         }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Participant actors linked to the selection. Include Scout and each participating actor; non-participant management seats remain in request/selector identity fields.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "participant_id",
+          "participant_class",
+          "role",
+          "wallet_id",
+          "wallet_class",
+          "exempt"
+        ],
+        "properties": {
+          "participant_id": {
+            "type": "string"
+          },
+          "participant_class": {
+            "type": "string",
+            "description": "Canonical participant class from AGENT-MONIKERS; preserve record-level distinctions such as gambler vs speculator."
+          },
+          "role": {
+            "type": "string",
+            "description": "Canonical role from AGENT-MONIKERS, e.g. scout, manager, reviewer, operator."
+          },
+          "wallet_id": {
+            "type": "string",
+            "description": "Opaque wallet_id from the wallet ledger; do not include balance."
+          },
+          "wallet_class": {
+            "type": "string",
+            "description": "Wallet ledger class; do not collapse participant classes into listing aliases."
+          },
+          "wallet_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "exempt": {
+            "type": "boolean"
+          },
+          "exemption_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "strategy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "strategy_ref",
+              "commitment_sha256",
+              "visibility",
+              "release_trigger"
+            ],
+            "properties": {
+              "strategy_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Access-controlled private strategy artifact reference."
+              },
+              "commitment_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^(null|[0-9a-f]{64})$"
+              },
+              "visibility": {
+                "enum": [
+                  "private_active",
+                  "sealed_culled",
+                  "released_authorized",
+                  "not_applicable"
+                ]
+              },
+              "release_trigger": {
+                "enum": [
+                  "on_cull_with_authorization",
+                  "never",
+                  "not_applicable"
+                ]
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "exempt": {
+                  "const": true
+                }
+              },
+              "required": [
+                "exempt"
+              ]
+            },
+            "then": {
+              "required": [
+                "exemption_reason"
+              ]
+            }
+          }
+        ]
       }
     }
   },

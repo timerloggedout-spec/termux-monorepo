@@ -6,9 +6,9 @@ posted_at: 2026-10-01
 status: executing
 priority: P1
 related_issues: [968]
-related_prs: [969]
+related_prs: [5216]
 related_branches:
-  - experiment/delphic-bayesian-observatory-lab
+  - experiment/delphic-observatory-scoped-merge
 gates_required: [repo-gate, termux-smoke]
 ---
 

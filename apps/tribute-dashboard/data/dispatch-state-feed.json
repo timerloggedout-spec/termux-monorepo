@@ -2,11 +2,11 @@
  "counts": {
   "claimed": 17,
   "escalated": 13,
-  "queued": 2
+  "queued": 4
  },
  "dispatches": [
   {
-   "age_min": 12896.7,
+   "age_min": 13428.4,
    "claim": null,
    "entry": "Other",
    "issue": 4077,
@@ -23,7 +23,7 @@
    "title": "[task] LIVE TEST \u2014 project-task intake trigger (done-evidence for #3577)"
   },
   {
-   "age_min": 12454.3,
+   "age_min": 12986.0,
    "claim": {
     "at": "2026-11-03T12:41:03Z",
     "by": "optimizations-assurance"
@@ -43,7 +43,7 @@
    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item"
   },
   {
-   "age_min": 12389.6,
+   "age_min": 12921.3,
    "claim": {
     "at": "2026-11-03T13:47:14Z",
     "by": "optimizations-assurance"
@@ -63,7 +63,7 @@
    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)"
   },
   {
-   "age_min": 11854.6,
+   "age_min": 12386.4,
    "claim": null,
    "entry": "Other",
    "issue": 4655,
@@ -89,7 +89,7 @@
    "title": "[task] QUE queue board v1.1 \u2014 per-repo (ss) extension"
   },
   {
-   "age_min": 10111.1,
+   "age_min": 10642.8,
    "claim": {
     "at": "2026-11-05T03:52:49Z",
     "by": "speculators-build"
@@ -109,7 +109,7 @@
    "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt"
   },
   {
-   "age_min": 10111.1,
+   "age_min": 10642.8,
    "claim": {
     "at": "2026-11-05T03:52:10Z",
     "by": "speculators-build"
@@ -129,7 +129,7 @@
    "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA"
   },
   {
-   "age_min": 10109.1,
+   "age_min": 10640.8,
    "claim": null,
    "entry": "Records hygiene (owner ruling 2026-11-04 19:41 PT) \u2014 speculators-build audit remainder.",
    "issue": 4975,
@@ -151,7 +151,7 @@
    "title": "[task] Records hygiene \u2014 population.jsonl: pricing/maker literal token -> null"
   },
   {
-   "age_min": 10019.4,
+   "age_min": 10551.1,
    "claim": null,
    "entry": "D1 StudySprint \u2014 0.5.2 cuts train (freeze tonight 2026-11-04 23:59 PT). Filed by the Contribution Desk under the D1 seat's decision (2026-11-04 21:17 PT): swap hand = QUE, in parallel with the endpoint deploy.",
    "issue": 5001,
@@ -173,7 +173,7 @@
    "title": "[task] D1 0.5.2 - endpoint default-host swap to hostb-live-5b9d7 (live.py + web/live.js)"
   },
   {
-   "age_min": 2386.6,
+   "age_min": 2918.3,
    "claim": {
     "at": "2026-11-10T12:18:43Z",
     "by": "optimizations-assurance"
@@ -193,7 +193,7 @@
    "title": "QUE: SYSTEM UPGRADE \u2014 Opportunities prep-first + repo-internal self-eval loop + Delphi-selection pipeline"
   },
   {
-   "age_min": 2385.2,
+   "age_min": 2917.0,
    "claim": {
     "at": "2026-11-10T12:32:23Z",
     "by": "optimizations-assurance"
@@ -213,7 +213,7 @@
    "title": "[task] QUE: build the #5096 opportunity self-eval loop (prep gate + QUE priority + Delphi-rubric selection)"
   },
   {
-   "age_min": 2378.7,
+   "age_min": 2910.4,
    "claim": {
     "at": "2026-11-10T12:34:53Z",
     "by": "optimizations-assurance"
@@ -233,7 +233,7 @@
    "title": "[task] QUE: port build-dispatch (D-h pullable trigger) from repo-story \u2014 Priority 1 per owner order 2026-11-10 04:27 PT"
   },
   {
-   "age_min": 2366.9,
+   "age_min": 2898.6,
    "claim": {
     "at": "2026-11-10T12:48:43Z",
     "by": "optimizations-assurance"
@@ -253,7 +253,7 @@
    "title": "[task] QUE: MIGRATION \u2014 side-chat functions \u2192 termux-monorepo AutonomousOpsStuff (slate + tranches)"
   },
   {
-   "age_min": 2355.4,
+   "age_min": 2887.1,
    "claim": {
     "at": "2026-11-10T12:56:49Z",
     "by": "optimizations-assurance"
@@ -273,7 +273,7 @@
    "title": "[task] QUE: SIGLARY ENFORCEMENT \u2014 repo-wide enforced notation {skills \u00b7 ICM \u00b7 CLAUDE.md \u00b7 DoE dispatch} + validation/performance legs"
   },
   {
-   "age_min": 2346.6,
+   "age_min": 2878.3,
    "claim": {
     "at": "2026-11-10T14:36:13Z",
     "by": "optimizations-assurance"
@@ -293,7 +293,7 @@
    "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)"
   },
   {
-   "age_min": 2268.2,
+   "age_min": 2799.9,
    "claim": null,
    "entry": "Probe #5128 \u2014 blocked on pre-existing gate fail (\u2205 probe fault)",
    "issue": 5129,
@@ -315,7 +315,7 @@
    "title": "[task] QUE: Fix ios-termux-contribute.yml:171 plain-scalar fault (gate blocker for probe #5128)"
   },
   {
-   "age_min": 2252.9,
+   "age_min": 2784.6,
    "claim": {
     "at": "2026-11-10T14:26:38Z",
     "by": "optimizations-assurance"
@@ -335,7 +335,7 @@
    "title": "[task] Siglary Leg B \u2014 validator + performance machinery, phase 1 report-only (#5116)"
   },
   {
-   "age_min": 2248.5,
+   "age_min": 2780.2,
    "claim": {
     "at": "2026-11-10T14:29:54Z",
     "by": "optimizations-assurance"
@@ -355,7 +355,7 @@
    "title": "[task] Migration T1.1 \u2014 dispatch liveness: mint-failure paging + build-dispatch heartbeat aging (#5113)"
   },
   {
-   "age_min": 2213.8,
+   "age_min": 2745.5,
    "claim": null,
    "entry": "Other \u2014 RIDP / Repository Intelligence & Collaboration Data Plane",
    "issue": 5135,
@@ -377,7 +377,7 @@
    "title": "[task] QUE: RIDP weekly delivery & efficiency report \u2014 self-reviewing implementation proposal"
   },
   {
-   "age_min": 2171.7,
+   "age_min": 2703.4,
    "claim": null,
    "entry": "Participant Identity Plane \u2014 build (spec: workspace participant-identity-plane/SPEC.md v0, QDesk 2026-11-10; owner Q 2026-11-10 07:38 PT via main). Generalizes the fleet GitHub AppID pattern off the GitHub plane: per-function identity \u00b7 own email of record \u00b7 own quota bucket \u00b7 scoped perms \u00b7 Registry-issued moniker, created BEFORE needed, acting only under QDesk dispatch + governor oversight.",
    "issue": 5136,
@@ -399,7 +399,7 @@
    "title": "[task] QUE: Participant Identity Plane \u2014 build (Phases 0\u20132)"
   },
   {
-   "age_min": 2138.9,
+   "age_min": 2670.7,
    "claim": {
     "at": "2026-11-10T16:15:44Z",
     "by": "optimizations-assurance"
@@ -419,7 +419,7 @@
    "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)"
   },
   {
-   "age_min": 2062.6,
+   "age_min": 2594.4,
    "claim": {
     "at": "2026-11-10T17:28:16Z",
     "by": "optimizations-assurance"
@@ -439,7 +439,7 @@
    "title": "[task] Migration T1.2 \u2014 deadline fail-safes: priority_timebox-driven transitions, no chat relay (#5113)"
   },
   {
-   "age_min": 2061.9,
+   "age_min": 2593.6,
    "claim": {
     "at": "2026-11-10T17:29:06Z",
     "by": "optimizations-assurance"
@@ -459,7 +459,7 @@
    "title": "[task] Migration T1.3 \u2014 backup-state watch: backup-state/v1 feed + scheduled watch, no chat relay (#5113)"
   },
   {
-   "age_min": 2051.8,
+   "age_min": 2583.5,
    "claim": {
     "at": "2026-11-10T17:38:53Z",
     "by": "optimizations-assurance"
@@ -479,7 +479,7 @@
    "title": "[task] build-dispatch hardening \u2014 convert silent-empty SUCCESS to honest FAILURE in-run"
   },
   {
-   "age_min": 805.1,
+   "age_min": 1336.9,
    "claim": null,
    "entry": "multi-arm-build-routing",
    "issue": 5151,
@@ -496,7 +496,7 @@
    "title": "[task] Multi-arm build routing: endpoint-agnostic build-dispatch harness (arm = harness x endpoint)"
   },
   {
-   "age_min": 1429.1,
+   "age_min": 1960.8,
    "claim": null,
    "entry": "DoE / provider-pool infrastructure \u2014 free inference endpoint population and quota-aware cadence",
    "issue": 5160,
@@ -518,7 +518,7 @@
    "title": "[task] QUE: DoE free-inference pool + quota-aware cadence (autoQuotaCadence) repair"
   },
   {
-   "age_min": 1218.6,
+   "age_min": 1750.3,
    "claim": null,
    "entry": "AMD Academy C2 \"PyTorch on AMD GPUs\" \u2014 WALL RECORD (wall Nov 10 23:59 PT)",
    "issue": 5162,
@@ -540,7 +540,7 @@
    "title": "[task] QUE: AMD C2 wall record + false-HITL instance (D-k)"
   },
   {
-   "age_min": 811.0,
+   "age_min": 1342.8,
    "claim": null,
    "entry": "build-dispatch failure-path observability (follow-up to #5142)",
    "issue": 5172,
@@ -562,7 +562,7 @@
    "title": "[task] build-dispatch failure-path observability"
   },
   {
-   "age_min": 788.1,
+   "age_min": 1319.9,
    "claim": null,
    "entry": "admitted-dispatch-executor",
    "issue": 5176,
@@ -584,7 +584,7 @@
    "title": "[task] admitted\u2192dispatch executor: convert swarm-admitted filings to claim + arm dispatch"
   },
   {
-   "age_min": 783.3,
+   "age_min": 1315.0,
    "claim": null,
    "entry": "billion-tokens-page",
    "issue": 5177,
@@ -606,7 +606,7 @@
    "title": "[task] Page build: \"What can you do with a Billion Tokens\" (fleet Pages)"
   },
   {
-   "age_min": 693.9,
+   "age_min": 1225.6,
    "claim": null,
    "entry": "role-clone-doe-pool",
    "issue": 5183,
@@ -632,28 +632,16 @@
    "title": "[task] Role-clone DoE pool: side-chat roles cloned as DoE pool participants (identity+wallet+quota \u00b7 self-scheduling) \u2014 offload to free-Inference competition"
   },
   {
-   "age_min": 43.2,
-   "claim": null,
-   "entry": "Other",
-   "issue": 5193,
-   "stall_events": [],
-   "state": "queued",
-   "thresholds_min": {
-    "escalate": 60,
-    "flag": 30
-   },
-   "tier": {
-    "index": 0,
-    "name": "BASE"
-   },
-   "title": "[task] QDesk FIT-00 \u2014 reconcile and freeze free inference tournament contracts"
-  },
-  {
-   "age_min": 31.0,
+   "age_min": 562.8,
    "claim": null,
    "entry": "Other",
    "issue": 5195,
-   "stall_events": [],
+   "stall_events": [
+    {
+     "at": "2026-11-12T04:17:54Z",
+     "kind": "flag"
+    }
+   ],
    "state": "queued",
    "thresholds_min": {
     "escalate": 60,
@@ -664,9 +652,60 @@
     "name": "BASE"
    },
    "title": "[task] DoE: LangChain ecosystem \u00d7 PDDL logistics \u00d7 free-inference control systems"
+  },
+  {
+   "age_min": 97.6,
+   "claim": null,
+   "entry": "rate-limit-governance",
+   "issue": 5219,
+   "stall_events": [],
+   "state": "queued",
+   "thresholds_min": {
+    "escalate": 60,
+    "flag": 30
+   },
+   "tier": {
+    "index": 0,
+    "name": "BASE"
+   },
+   "title": "[task] QUE: rate-limit governance \u2014 Swarm App token migration + fan-out coalescing + Vercel deploy policy"
+  },
+  {
+   "age_min": 91.1,
+   "claim": null,
+   "entry": "c15-agentic-ai-cfp",
+   "issue": 5220,
+   "stall_events": [],
+   "state": "queued",
+   "thresholds_min": {
+    "escalate": 60,
+    "flag": 30
+   },
+   "tier": {
+    "index": 0,
+    "name": "BASE"
+   },
+   "title": "[task] C15 independent completion: ARA Agentic AI CFP closeout + next-cycle packet"
+  },
+  {
+   "age_min": 3.3,
+   "claim": null,
+   "entry": "bucket-headroom-alerting",
+   "issue": 5230,
+   "stall_events": [],
+   "state": "queued",
+   "thresholds_min": {
+    "escalate": 60,
+    "flag": 30
+   },
+   "tier": {
+    "index": 0,
+    "name": "BASE"
+   },
+   "title": "[task] bucket-headroom alerting: scheduled bucket reads, derived thresholds, projected-exhaustion page"
   }
  ],
- "generated_at": "2026-11-12T04:17:52Z",
+ "generated_at": "2026-11-12T13:09:35Z",
  "schema": "dispatch-state-feed/v1",
  "source": "dispatch-watchdog"
 }

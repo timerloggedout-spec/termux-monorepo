@@ -9,7 +9,7 @@ related_issues: [968]
 related_prs: [5216]
 related_branches:
   - experiment/delphic-observatory-scoped-merge
-gates_required: [repo-gate, termux-smoke]
+gates_required: [repo-gate, hosted-delphic-ci]
 ---
 
 # MANIFEST
@@ -20,7 +20,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Intent
 
-Create a separate Gemini design/style proposal that ingests existing control-plane evidence and renders three complementary analytical planes:
+Create a separate design/evaluation proposal that ingests existing control-plane evidence and renders three complementary analytical planes:
 
 - **LEFT / NOW:** tensor, graph, matrix, constellation layers.
 - **CENTER / windows:** cadence, Agile, Gantt/dependencies, integration, complexity, compute, quality, uncertainty, provenance.
@@ -68,7 +68,8 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - [x] Graph algorithm registry added
 - [x] Graph Lab reference engine added
 - [x] Graph Lab visual sandbox added
-- [x] Gemini review request prepared
-- [ ] Gemini findings received/dispositioned
-- [ ] repo-gate + termux-smoke
+- [x] Legacy Gemini review request archived as historical context
+- [x] Gemini Dispatch retired; no longer a review dependency
+- [ ] repo-gate + hosted-delphic-ci (Termux Origin offline; device smoke deferred)
+- [ ] QUE/autonomous adapter contract and integration tests
 - [ ] graduation evaluation

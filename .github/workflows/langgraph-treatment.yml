@@ -1,0 +1,43 @@
+name: LangGraph treatment
+
+on:
+  pull_request:
+    paths:
+      - "she/recovery/escalation.py"
+      - "she/recovery/langgraph_treatment.py"
+      - "tests/test_langgraph_treatment.py"
+      - "requirements-langgraph-test.txt"
+      - ".github/workflows/langgraph-treatment.yml"
+  push:
+    branches: [master, master-staging]
+    paths:
+      - "she/recovery/escalation.py"
+      - "she/recovery/langgraph_treatment.py"
+      - "tests/test_langgraph_treatment.py"
+      - "requirements-langgraph-test.txt"
+      - ".github/workflows/langgraph-treatment.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: langgraph-treatment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deterministic-graph:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-langgraph-test.txt
+      - name: Install optional graph test dependency
+        run: python -m pip install --disable-pip-version-check -r requirements-langgraph-test.txt
+      - name: Run graph and policy tests
+        run: |
+          python -m unittest discover -s tests -p 'test_langgraph_treatment.py' -v
+          python -m unittest discover -s tests -p 'test_autonomous_escalation.py' -v

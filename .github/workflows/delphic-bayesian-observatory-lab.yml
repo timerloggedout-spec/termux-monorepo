@@ -19,6 +19,7 @@ on:
   push:
     branches:
       - experiment/delphic-bayesian-observatory-lab
+      - experiment/delphic-observatory-scoped-merge
     paths:
       - "scripts/delphic_oracle.py"
       - "scripts/delphic_graph_lab.py"

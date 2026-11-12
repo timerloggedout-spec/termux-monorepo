@@ -56,6 +56,27 @@ def slice_windows(start: datetime, hours: int) -> list[tuple[datetime, datetime]
     return out
 
 
+def paged_list(gh, path: str, key: str) -> tuple[int, list[dict]]:
+    """Page a `{total_count, <key>: [...]}` list endpoint.
+
+    NOTE: the PAT helper's `all_pages` returns the raw dict for
+    non-list responses (iterating it yields string keys) -- so list
+    endpoints are paged here explicitly. Returns (server total, items).
+    """
+    items: list[dict] = []
+    total = 0
+    page = 1
+    while True:
+        sep = "&" if "?" in path else "?"
+        batch = gh.call("GET", f"{path}{sep}per_page=100&page={page}")
+        total = int(batch.get("total_count", len(batch.get(key, []))))
+        chunk = batch.get(key, [])
+        items.extend(chunk)
+        if len(chunk) < 100:
+            return total, items
+        page += 1
+
+
 def sweep_annotations(gh, runs: list[dict], max_runs: int) -> dict:
     """Count installation-limit annotations on failed runs in-window.
 
@@ -68,7 +89,7 @@ def sweep_annotations(gh, runs: list[dict], max_runs: int) -> dict:
     hits = []
     for run in swept:
         try:
-            jobs = gh.all_pages(f"/repos/{REPO}/actions/runs/{run['id']}/jobs")
+            _, jobs = paged_list(gh, f"/repos/{REPO}/actions/runs/{run['id']}/jobs", "jobs")
         except Exception as exc:  # noqa: BLE001 - record, don't crash the sweep
             hits.append({"run_id": run["id"], "error": str(exc)})
             continue
@@ -78,11 +99,14 @@ def sweep_annotations(gh, runs: list[dict], max_runs: int) -> dict:
             if not job.get("check_run_url"):
                 continue
             try:
-                anns = gh.all_pages(
+                anns = gh.call(
+                    "GET",
                     job["check_run_url"].replace(
                         "https://api.github.com", ""
-                    ) + "/annotations"
+                    ) + "/annotations",
                 )
+                if isinstance(anns, dict):
+                    anns = anns.get("annotations", [])
             except Exception:
                 continue
             for ann in anns:
@@ -131,15 +155,15 @@ def run(window_start: str, hours: int, max_annotation_runs: int) -> dict:
         # Re-list each slice's runs for the annotation sweep.
         path = (
             f"/repos/{REPO}/actions/runs"
-            f"?created={_fmt(s)}..{_fmt(e)}&per_page=100"
+            f"?created={_fmt(s)}..{_fmt(e)}"
         )
-        runs = gh.all_pages(path)
+        total, runs = paged_list(gh, path, "workflow_runs")
         all_runs.extend(runs)
         slices.append({
             "slice": [_fmt(s), _fmt(e)],
-            "server_total_count": len(runs),
+            "server_total_count": total,
             "listed": len(runs),
-            "capped": len(runs) >= LIST_CAP,
+            "capped": total >= LIST_CAP,
         })
     annotations = sweep_annotations(gh, all_runs, max_annotation_runs)
     result = {

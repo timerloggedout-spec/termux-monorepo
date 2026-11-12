@@ -25,6 +25,10 @@
 | #5183 + #5136 + #5176 + #4979 | Participant clones, identity and executor/admission sequencing. | No participant issuance or provisioning outside these gates. |
 | #5189 | Specialist-role registry proposal includes control-systems-specialist and optimization-researcher. | Extend/match existing role contracts; no parallel registry. |
 
+## Neighboring repository excluded from the LangChain ecosystem set
+
+- timerloggedout-spec/LibreChat_fork was returned by an account-wide search for the word LangChain, but its current README does not mention LangChain or LangGraph. It is therefore not counted as a LangChain ecosystem dependency in this proposal. It may be evaluated separately as a chat/UI surface if a concrete integration requirement appears.
+
 ## External candidate projects for a later license/maintenance review
 
 | Candidate | Intended fit | Boundary |
@@ -34,6 +38,13 @@
 | [Google OR-Tools](https://github.com/google/or-tools) | CP-SAT, routing, assignment and capacity/time-window optimization. | Complement to PDDL, not a replacement for symbolic action planning. |
 | [PDDLStream](https://github.com/caelan/pddlstream) | Sampling-based procedures for task-and-motion planning. | Optional robotics/embodied-planning research only. |
 | [Inference Scheduler](https://github.com/summonlabs/Inference-Scheduler) | Research candidate for bounded admission, queueing, batching, fairness and backpressure. | Project claims are not an audit; benchmark/admission review required before considering reuse. |
+
+## License observations
+
+- langchain_fork root LICENSE: MIT (blob SHA 3957738673765912ca83a0048f833e095d61e087).
+- awesome-LangGraph_fork root LICENSE: CC0 1.0 (blob SHA 1625c1793607996fcfc46420e8aa2f3d2b7efd1e); this does not relicense linked third-party projects.
+- langchain-runnableparallel-company-research_fork root LICENSE: MIT (blob SHA 14fac913ccf80234b1848540089a3bbcb6e5283d).
+- PDDL Air Cargo, rl-multiagent-transfer and FrieghtFlow have no root LICENSE file at the inspected default-branch path; reuse remains blocked pending license verification.
 
 ## Provenance limitations
 

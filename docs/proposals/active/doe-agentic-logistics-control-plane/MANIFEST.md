@@ -56,5 +56,6 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 - RFP: ./RFP.md
 - Architecture: ./ARCHITECTURE.md
 - Source map: ./SOURCE-MAP.md
+- Full README taxonomy: ./ECOSYSTEM-CATALOG.md
 - Items: ./ITEMS.md
 - Owner direction and provenance: ./source.md

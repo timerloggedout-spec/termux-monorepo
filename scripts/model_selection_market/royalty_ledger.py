@@ -180,7 +180,7 @@ class RoyaltyLedger:
                 if basis != "gross_reward_units":
                     raise RoyaltyLedgerError("unsupported royalty basis definition")
                 start = _time(payload["effective_from"], "effective_from")
-                end = _time(payload["effective_until"], "effective_until") if payload["effective_until"] else None
+                end = _time(payload["effective_until"], "effective_until") if payload["effective_until"] is not None else None
                 if end and end <= start:
                     raise RoyaltyLedgerError("effective_until must follow effective_from")
                 approved = _text(payload["approved_by"], "approved_by")
@@ -191,9 +191,11 @@ class RoyaltyLedger:
                 key = f"{policy_id}@{version}"
                 if key in state["policies"]:
                     raise RoyaltyLedgerError("policy version already activated")
-                for prior in state["policies"].values():
-                    if prior["policy_id"] != policy_id:
-                        continue
+                prior_versions = [prior for prior in state["policies"].values()
+                                  if prior["policy_id"] == policy_id]
+                if prior_versions and version != max(prior["version"] for prior in prior_versions) + 1:
+                    raise RoyaltyLedgerError("policy versions must increase sequentially")
+                for prior in prior_versions:
                     prior_start = datetime.fromisoformat(prior["effective_from"])
                     prior_end = datetime.fromisoformat(prior["effective_until"]) if prior["effective_until"] else None
                     if (end is None or prior_start < end) and (prior_end is None or start < prior_end):
@@ -245,7 +247,10 @@ class RoyaltyLedger:
                 }
                 for claim in claims.values():
                     key = (claim["beneficiary"], domain)
-                    state["payables"][key] = state["payables"].get(key, 0) + claim["units"]
+                    updated = state["payables"].get(key, 0) + claim["units"]
+                    if updated > MAX_UNITS:
+                        raise RoyaltyLedgerError("origin payable exceeds the supported integer range")
+                    state["payables"][key] = updated
             elif typ == "royalty_settlement":
                 if set(payload) != {"settlement_id", "accrual_id", "origin_artifact_id", "units",
                                     "destination", "evidence_digest", "idempotency_key"}:
@@ -333,8 +338,18 @@ class RoyaltyLedger:
                 }
             else:
                 raise RoyaltyLedgerError(f"unsupported royalty event type: {typ}")
-            if event["correlation_id"] == "":
-                raise RoyaltyLedgerError("correlation_id must be non-empty")
+            correlation_fields = {
+                "origin_register": payload.get("artifact_id"),
+                "derivative_register": payload.get("artifact_id"),
+                "policy_activate": f'{payload.get("policy_id")}@{payload.get("version")}',
+                "royalty_accrual": payload.get("accrual_id"),
+                "royalty_settlement": payload.get("settlement_id"),
+                "royalty_reversal": payload.get("reversal_id"),
+                "royalty_dispute": payload.get("dispute_id"),
+                "lineage_supersede": payload.get("supersession_id"),
+            }
+            if event["correlation_id"] != correlation_fields.get(typ):
+                raise RoyaltyLedgerError("event correlation does not match its royalty operation")
             state["ids"][event_id] = {"type": typ, "payload": payload}
         return state
 

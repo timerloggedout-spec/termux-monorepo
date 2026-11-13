@@ -49,5 +49,5 @@ Record the source SHA, publication SHA, workflow run, live URLs, Agent Ready sca
 
 ## Related website changes
 
-- Website PR #48: merged; conditional 95+ badge renderer, cache refresh, and source validator.
-- Website PR #49: merged; expanded static guide, WebPage/BreadcrumbList graph, and accessible badge label. Latest Pages build remains queued.
+- Website [PR #48](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/48) merged 2026-11-13 at `c80247abbdbc89c591a3534c4b902c59fe855db8`; conditional 95+ badge renderer, cache refresh, and source validator.
+- Website [PR #49](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/49) merged 2026-11-13 at `49f20fe97098f23d1e26b903246122f32522495a`; expanded static guide, WebPage/BreadcrumbList graph, and accessible badge label.

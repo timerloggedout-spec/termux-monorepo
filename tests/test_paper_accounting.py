@@ -440,6 +440,8 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
             self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 1},
                                                      {"recipient": "bob", "units": 1}],
                                        event_id="duplicate", distribution_id="round-2", reason="award")
+        with self.assertRaises(ValueError):
+            self.graph.place_bet(BetEntry("job", "job", "pool-task", actor_id="pool:season-1"))
         self.assertEqual(len(self.graph.accounting_snapshot()["events"]), 4)
 
     def test_csv_projection_preserves_forfeiture_and_pool_events(self):

@@ -547,14 +547,14 @@ class MarketGraph:
                    "available_disposition": available_disposition,
                    "reservation_dispositions": copy.deepcopy(reservation_dispositions)}
         self._mutate("cull", event_id, payload)
-        return copy.deepcopy(self._accounting_view()["culled"][participant])
+        return copy.deepcopy(self.accounting_snapshot()["culled"][participant])
 
     def distribute_pool(self, pool_id, allocations, *, event_id, distribution_id, reason):
         """Transfer explicit integer allocations from a consolidation pool."""
         payload = {"pool_id": pool_id, "distribution_id": distribution_id, "reason": reason,
                    "allocations": copy.deepcopy(allocations)}
         self._mutate("pool_distribute", event_id, payload)
-        return copy.deepcopy(self._accounting_view()["pool_distributions"][distribution_id])
+        return copy.deepcopy(self.accounting_snapshot()["pool_distributions"][distribution_id])
 
     def _refresh_if_needed(self):
         with self._mutex:

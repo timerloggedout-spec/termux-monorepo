@@ -232,7 +232,7 @@ def parse_csv(text: str) -> list[dict[str, str]]:
             rid = row["reservation_id"]
             if not rid or rid in reservation_ids: raise ValueError("duplicate or missing reservation id")
             reservation_ids.add(rid)
-            if not row["reservation_owner"] or row["reservation_status"] not in ("reserved", "settled", "released") or not row["units"] or not row["source_event_count"] or not row["source_digest"]: raise ValueError("invalid or incomplete reservation row")
+            if not row["reservation_owner"] or row["reservation_status"] not in ("reserved", "settled", "released", "forfeited") or not row["units"] or not row["source_event_count"] or not row["source_digest"]: raise ValueError("invalid or incomplete reservation row")
             if int(row["units"]) <= 0 or int(row["units"]) > 2**63 - 1: raise ValueError("reservation units out of range")
         if row["record_type"] == "event":
             if not row["event_id"] or row["event_id"] in event_ids or not row["event_type"] or not row["source_event_count"] or not row["source_digest"]: raise ValueError("invalid or incomplete event row")

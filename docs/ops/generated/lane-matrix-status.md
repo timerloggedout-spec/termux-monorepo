@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-13T14:28:36Z)
+# Lane matrix status (2026-11-13T14:29:13Z)
 
-- Master: `5c354ae59be3d7255983c0b1e854b262032fc4e6`
+- Master: `e29e110e731789527693865483872f3b02cd2d9d`
 - Open PRs: **375**
 - Oldest: #47 (99.95d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -24,7 +24,7 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 23.33 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 12.93 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 10.42 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4069 | 10.43 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 9.74 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 9.08 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 6.98 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |

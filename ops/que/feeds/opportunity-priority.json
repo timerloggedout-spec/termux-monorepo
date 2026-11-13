@@ -1,87 +1,13 @@
 {
   "schema": "que.opportunity-priority/v1",
-  "generated_at": "2026-11-12T20:50:16Z",
-  "run_id": "43303882339",
+  "generated_at": "2026-11-13T03:38:17Z",
+  "run_id": "43360043533",
+  "rank_method": "que-task-rank/v1",
   "opportunities": [
-    {
-      "id": "D1",
-      "slug": "d1-studysprint",
-      "rank": 1,
-      "tier": 2,
-      "score": 105.0,
-      "basis": [
-        "next_gate 2026-11-05T07:59:00Z via dates.deadline -> gate_term 1.0",
-        "prep complete -> prep_term 0.05",
-        "tier 2 (dispatch-tiers chain entry)"
-      ],
-      "next_gate": "2026-11-05T07:59:00Z",
-      "days_to_gate": -7.54,
-      "priority_timebox": {
-        "wall": "2026-11-05T07:59:00Z",
-        "landing": "2026-11-04T07:59:00Z",
-        "cushion": "2026-11-03T17:00:00Z",
-        "escalation": "2026-11-05T03:59:00Z",
-        "final": "2026-11-05T07:29:00Z",
-        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
-        "verbatim": {
-          "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
-          "wall": "2026-11-04T23:59:00-08:00",
-          "tiers": [
-            {
-              "tier": 0,
-              "name": "BASE",
-              "from": "window open",
-              "effect": "in-window development line active (continuous-development mandate); routine admission"
-            },
-            {
-              "tier": 1,
-              "name": "CUSHION",
-              "at": "2026-11-03T09:00:00-08:00",
-              "reminder": "deadline-d1-cushion-2026-11-03",
-              "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
-            },
-            {
-              "tier": 2,
-              "name": "WALL-DAY",
-              "at": "2026-11-04T00:00:00-08:00",
-              "reminder": "calendar scheme C (wall-day)",
-              "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
-            },
-            {
-              "tier": 3,
-              "name": "ESCALATION",
-              "at": "2026-11-04T19:59:00-08:00",
-              "reminder": "deadline-d1-escalation-2026-11-04",
-              "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
-            },
-            {
-              "tier": 4,
-              "name": "FINAL",
-              "at": "2026-11-04T23:29:00-08:00",
-              "reminder": "deadline-d1-final-2026-11-04",
-              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
-            }
-          ],
-          "step_down_cushion": [
-            {
-              "at": "wall+24h",
-              "tier": 1
-            },
-            {
-              "at": "wall+48h",
-              "tier": 0
-            }
-          ],
-          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
-        }
-      },
-      "prep_state": "PASS",
-      "verdict": "COMPLETE"
-    },
     {
       "id": "D2",
       "slug": "d2",
-      "rank": 2,
+      "rank": 1,
       "tier": 3,
       "score": 120.0,
       "basis": [
@@ -90,7 +16,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-11-08T23:00:00Z",
-      "days_to_gate": -3.91,
+      "days_to_gate": -4.19,
       "priority_timebox": {
         "wall": "2026-11-08T23:00:00Z",
         "landing": "2026-11-07T23:00:00Z",
@@ -153,66 +79,70 @@
         }
       },
       "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
+      "verdict": "PREP_INCOMPLETE",
+      "state": "registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
+      "nearest_wall_hours": -228.63,
+      "wall_48h": true,
+      "sub_gates": 3,
+      "rank_method": "que-task-rank/v1",
+      "active": true
     },
     {
-      "id": "D3",
-      "slug": "d3",
-      "rank": 3,
-      "tier": 3,
-      "score": 110.0,
+      "id": "D1",
+      "slug": "d1-studysprint",
+      "rank": 2,
+      "tier": 2,
+      "score": 105.0,
       "basis": [
-        "next_gate 2026-11-13T00:00:00Z via dates.winners_at -> gate_term 0.9",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
+        "next_gate 2026-11-05T07:59:00Z via dates.deadline -> gate_term 1.0",
+        "prep complete -> prep_term 0.05",
+        "tier 2 (dispatch-tiers chain entry)"
       ],
-      "next_gate": "2026-11-13T00:00:00Z",
-      "days_to_gate": 0.13,
+      "next_gate": "2026-11-05T07:59:00Z",
+      "days_to_gate": -7.82,
       "priority_timebox": {
-        "wall": "2026-11-10T07:59:00Z",
-        "landing": "2026-11-09T07:59:00Z",
-        "cushion": "2026-11-08T17:00:00Z",
-        "escalation": "2026-11-10T03:59:00Z",
-        "final": "2026-11-10T07:29:00Z",
+        "wall": "2026-11-05T07:59:00Z",
+        "landing": "2026-11-04T07:59:00Z",
+        "cushion": "2026-11-03T17:00:00Z",
+        "escalation": "2026-11-05T03:59:00Z",
+        "final": "2026-11-05T07:29:00Z",
         "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
         "verbatim": {
-          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
-          "wall": "2026-11-09T23:59:00-08:00",
+          "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
+          "wall": "2026-11-04T23:59:00-08:00",
           "tiers": [
             {
               "tier": 0,
               "name": "BASE",
-              "at": "window open",
-              "reminder": null,
-              "effect": "in-window development line active (build landed = checkpoint; public Clips demo + submission remain)",
-              "from": "window open"
+              "from": "window open",
+              "effect": "in-window development line active (continuous-development mandate); routine admission"
             },
             {
               "tier": 1,
               "name": "CUSHION",
-              "at": "2026-11-08T09:00:00-08:00",
-              "reminder": "deadline-d3-cushion-2026-11-08",
-              "effect": "HIGH \u2014 D3 admits ahead of routine slate work; landing driven to close"
+              "at": "2026-11-03T09:00:00-08:00",
+              "reminder": "deadline-d1-cushion-2026-11-03",
+              "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
             },
             {
               "tier": 2,
               "name": "WALL-DAY",
-              "at": "2026-11-09T00:00:00-08:00",
+              "at": "2026-11-04T00:00:00-08:00",
               "reminder": "calendar scheme C (wall-day)",
-              "effect": "CRITICAL \u2014 D3 preempts non-critical dispatches"
+              "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
             },
             {
               "tier": 3,
               "name": "ESCALATION",
-              "at": "2026-11-09T19:59:00-08:00",
-              "reminder": "deadline-d3-escalation-2026-11-09",
-              "effect": "MAX \u2014 submission mechanics only; all other D3 streams frozen"
+              "at": "2026-11-04T19:59:00-08:00",
+              "reminder": "deadline-d1-escalation-2026-11-04",
+              "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
             },
             {
               "tier": 4,
               "name": "FINAL",
-              "at": "2026-11-09T23:29:00-08:00",
-              "reminder": "deadline-d3-final-2026-11-09",
+              "at": "2026-11-04T23:29:00-08:00",
+              "reminder": "deadline-d1-final-2026-11-04",
               "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
             }
           ],
@@ -226,91 +156,22 @@
               "tier": 0
             }
           ],
-          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
         }
       },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
-    },
-    {
-      "id": "D5",
-      "slug": "d5",
-      "rank": 4,
-      "tier": 3,
-      "score": 80.0,
-      "basis": [
-        "next_gate 2026-11-20T19:30:00Z via dates.winners_at -> gate_term 0.6",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
-      ],
-      "next_gate": "2026-11-20T19:30:00Z",
-      "days_to_gate": 7.94,
-      "priority_timebox": {
-        "wall": "2026-11-20T19:30:00Z",
-        "landing": "2026-11-19T19:30:00Z",
-        "cushion": "2026-11-17T19:30:00Z",
-        "escalation": "2026-11-20T07:30:00Z",
-        "final": "2026-11-20T19:00:00Z",
-        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
-        "verbatim": null
-      },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
-    },
-    {
-      "id": "C14",
-      "slug": "c14",
-      "rank": 5,
-      "tier": 3,
-      "score": 80.0,
-      "basis": [
-        "next_gate 2026-11-21T07:59:00Z via dates.initial_proposal_due -> gate_term 0.6",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
-      ],
-      "next_gate": "2026-11-21T07:59:00Z",
-      "days_to_gate": 8.46,
-      "priority_timebox": {
-        "wall": "2026-11-21T07:59:00Z",
-        "landing": "2026-11-20T07:59:00Z",
-        "cushion": "2026-11-18T07:59:00Z",
-        "escalation": "2026-11-20T19:59:00Z",
-        "final": "2026-11-21T07:29:00Z",
-        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
-        "verbatim": null
-      },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
-    },
-    {
-      "id": "C13",
-      "slug": "c13",
-      "rank": 6,
-      "tier": 3,
-      "score": 80.0,
-      "basis": [
-        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.6",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
-      ],
-      "next_gate": "2026-11-21T11:59:00Z",
-      "days_to_gate": 8.63,
-      "priority_timebox": {
-        "wall": "2026-11-21T11:59:00Z",
-        "landing": "2026-11-20T11:59:00Z",
-        "cushion": "2026-11-18T11:59:00Z",
-        "escalation": "2026-11-20T23:59:00Z",
-        "final": "2026-11-21T11:29:00Z",
-        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
-        "verbatim": null
-      },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
+      "prep_state": "PASS",
+      "verdict": "COMPLETE",
+      "state": "submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
+      "nearest_wall_hours": -380.63,
+      "wall_48h": true,
+      "sub_gates": 4,
+      "rank_method": "que-task-rank/v1",
+      "active": true
     },
     {
       "id": "C12",
       "slug": "c12-receipts-vault",
-      "rank": 7,
+      "rank": 3,
       "tier": 3,
       "score": 65.0,
       "basis": [
@@ -319,7 +180,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-12-01T07:45:00Z",
-      "days_to_gate": 18.46,
+      "days_to_gate": 18.17,
       "priority_timebox": {
         "wall": "2026-11-16T07:45:00Z",
         "landing": "2026-11-14T00:00:00Z",
@@ -361,37 +222,18 @@
         }
       },
       "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
-    },
-    {
-      "id": "C11",
-      "slug": "c11",
-      "rank": 8,
-      "tier": 3,
-      "score": 65.0,
-      "basis": [
-        "next_gate 2026-12-01T19:00:00Z via deadline -> gate_term 0.45",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
-      ],
-      "next_gate": "2026-12-01T19:00:00Z",
-      "days_to_gate": 18.92,
-      "priority_timebox": {
-        "wall": "2026-12-01T19:00:00Z",
-        "landing": "2026-11-30T19:00:00Z",
-        "cushion": "2026-11-28T19:00:00Z",
-        "escalation": "2026-12-01T07:00:00Z",
-        "final": "2026-12-01T18:30:00Z",
-        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
-        "verbatim": null
-      },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
+      "verdict": "PREP_INCOMPLETE",
+      "state": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
+      "nearest_wall_hours": -531.63,
+      "wall_48h": true,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": true
     },
     {
       "id": "D4",
       "slug": "d4",
-      "rank": 9,
+      "rank": 4,
       "tier": 3,
       "score": 35.0,
       "basis": [
@@ -400,7 +242,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2027-01-29T21:00:00Z",
-      "days_to_gate": 78.01,
+      "days_to_gate": 77.72,
       "priority_timebox": {
         "wall": "2026-12-04T22:00:00Z",
         "landing": "2026-12-03T22:00:00Z",
@@ -471,12 +313,142 @@
         }
       },
       "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
+      "verdict": "PREP_INCOMPLETE",
+      "state": "registering",
+      "nearest_wall_hours": -732.13,
+      "wall_48h": true,
+      "sub_gates": 8,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C13",
+      "slug": "c13",
+      "rank": 5,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T11:59:00Z",
+      "days_to_gate": 8.35,
+      "priority_timebox": {
+        "wall": "2026-11-21T11:59:00Z",
+        "landing": "2026-11-20T11:59:00Z",
+        "cushion": "2026-11-18T11:59:00Z",
+        "escalation": "2026-11-20T23:59:00Z",
+        "final": "2026-11-21T11:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "state": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call",
+      "nearest_wall_hours": 200.36,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C14",
+      "slug": "c14",
+      "rank": 6,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-21T07:59:00Z via dates.initial_proposal_due -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T07:59:00Z",
+      "days_to_gate": 8.18,
+      "priority_timebox": {
+        "wall": "2026-11-21T07:59:00Z",
+        "landing": "2026-11-20T07:59:00Z",
+        "cushion": "2026-11-18T07:59:00Z",
+        "escalation": "2026-11-20T19:59:00Z",
+        "final": "2026-11-21T07:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "state": "HOLD / parked (watch) per opportunity evaluation via Manager 2026-11-03 \u2014 no action; revisit only on an evaluation change",
+      "nearest_wall_hours": 196.32,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "D5",
+      "slug": "d5",
+      "rank": 7,
+      "tier": 3,
+      "score": 80.0,
+      "basis": [
+        "next_gate 2026-11-20T19:30:00Z via dates.winners_at -> gate_term 0.6",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-20T19:30:00Z",
+      "days_to_gate": 7.66,
+      "priority_timebox": {
+        "wall": "2026-11-20T19:30:00Z",
+        "landing": "2026-11-19T19:30:00Z",
+        "cushion": "2026-11-17T19:30:00Z",
+        "escalation": "2026-11-20T07:30:00Z",
+        "final": "2026-11-20T19:00:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "state": "registering",
+      "nearest_wall_hours": 109.37,
+      "wall_48h": false,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C11",
+      "slug": "c11",
+      "rank": 8,
+      "tier": 3,
+      "score": 65.0,
+      "basis": [
+        "next_gate 2026-12-01T19:00:00Z via deadline -> gate_term 0.45",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-12-01T19:00:00Z",
+      "days_to_gate": 18.64,
+      "priority_timebox": {
+        "wall": "2026-12-01T19:00:00Z",
+        "landing": "2026-11-30T19:00:00Z",
+        "cushion": "2026-11-28T19:00:00Z",
+        "escalation": "2026-12-01T07:00:00Z",
+        "final": "2026-12-01T18:30:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "state": "active",
+      "nearest_wall_hours": 447.36,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
     },
     {
       "id": "DOMINO",
       "slug": "domino",
-      "rank": 10,
+      "rank": 9,
       "tier": 3,
       "score": 20.0,
       "basis": [
@@ -488,7 +460,331 @@
       "days_to_gate": null,
       "priority_timebox": "NOT_ESTABLISHED",
       "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE"
+      "verdict": "PREP_INCOMPLETE",
+      "state": "watch",
+      "nearest_wall_hours": null,
+      "wall_48h": false,
+      "sub_gates": 0,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    }
+  ],
+  "terminal_opportunities": [
+    {
+      "id": "D3",
+      "slug": "d3",
+      "rank": null,
+      "tier": 3,
+      "score": 120.0,
+      "basis": [
+        "next_gate 2026-11-13T00:00:00Z via dates.winners_at -> gate_term 1.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-13T00:00:00Z",
+      "days_to_gate": -0.15,
+      "priority_timebox": {
+        "wall": "2026-11-10T07:59:00Z",
+        "landing": "2026-11-09T07:59:00Z",
+        "cushion": "2026-11-08T17:00:00Z",
+        "escalation": "2026-11-10T03:59:00Z",
+        "final": "2026-11-10T07:29:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-11-09T23:59:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "window open",
+              "reminder": null,
+              "effect": "in-window development line active (build landed = checkpoint; public Clips demo + submission remain)",
+              "from": "window open"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-08T09:00:00-08:00",
+              "reminder": "deadline-d3-cushion-2026-11-08",
+              "effect": "HIGH \u2014 D3 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-09T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D3 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-09T19:59:00-08:00",
+              "reminder": "deadline-d3-escalation-2026-11-09",
+              "effect": "MAX \u2014 submission mechanics only; all other D3 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-09T23:29:00-08:00",
+              "reminder": "deadline-d3-final-2026-11-09",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+        }
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "state": "closed - wall 2026-11-09 passed unsubmitted; Clips demo published post-wall 2026-11-12; late-submit rejected by the closed form (terminal record 2026-11-12)",
+      "nearest_wall_hours": -404.63,
+      "wall_48h": true,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": false
+    }
+  ],
+  "gate_rows": [
+    {
+      "id": "D4",
+      "gate": "dates.reg_open",
+      "at": "2026-10-13T15:30:00Z",
+      "hours_to": -732.13,
+      "rank": 1
+    },
+    {
+      "id": "C12",
+      "gate": "dates.register_build",
+      "at": "2026-10-22T00:00:00Z",
+      "hours_to": -531.63,
+      "rank": 2
+    },
+    {
+      "id": "D3",
+      "gate": "dates.build_start",
+      "at": "2026-10-27T07:00:00Z",
+      "hours_to": -404.63,
+      "rank": 3
+    },
+    {
+      "id": "D3",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-27T07:00:00Z",
+      "hours_to": -404.63,
+      "rank": 4
+    },
+    {
+      "id": "D1",
+      "gate": "dates.build_start",
+      "at": "2026-10-28T07:00:00Z",
+      "hours_to": -380.63,
+      "rank": 5
+    },
+    {
+      "id": "D1",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-28T07:00:00Z",
+      "hours_to": -380.63,
+      "rank": 6
+    },
+    {
+      "id": "D4",
+      "gate": "dates.build_start",
+      "at": "2026-10-30T16:00:00Z",
+      "hours_to": -323.63,
+      "rank": 7
+    },
+    {
+      "id": "D4",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-30T16:00:00Z",
+      "hours_to": -323.63,
+      "rank": 8
+    },
+    {
+      "id": "D2",
+      "gate": "dates.build_start",
+      "at": "2026-11-03T15:00:00Z",
+      "hours_to": -228.63,
+      "rank": 9
+    },
+    {
+      "id": "D1",
+      "gate": "dates.build_end",
+      "at": "2026-11-05T07:59:00Z",
+      "hours_to": -187.64,
+      "rank": 10
+    },
+    {
+      "id": "D1",
+      "gate": "dates.deadline",
+      "at": "2026-11-05T07:59:00Z",
+      "hours_to": -187.64,
+      "rank": 11
+    },
+    {
+      "id": "D2",
+      "gate": "dates.build_end",
+      "at": "2026-11-08T22:00:00Z",
+      "hours_to": -101.63,
+      "rank": 12
+    },
+    {
+      "id": "D2",
+      "gate": "dates.deadline",
+      "at": "2026-11-08T23:00:00Z",
+      "hours_to": -100.63,
+      "rank": 13
+    },
+    {
+      "id": "D3",
+      "gate": "dates.build_end",
+      "at": "2026-11-10T07:59:00Z",
+      "hours_to": -67.64,
+      "rank": 14
+    },
+    {
+      "id": "D3",
+      "gate": "dates.deadline",
+      "at": "2026-11-10T07:59:00Z",
+      "hours_to": -67.64,
+      "rank": 15
+    },
+    {
+      "id": "D3",
+      "gate": "dates.winners_at",
+      "at": "2026-11-13T00:00:00Z",
+      "hours_to": -3.63,
+      "rank": 16
+    },
+    {
+      "id": "C12",
+      "gate": "dates.preliminary_due",
+      "at": "2026-11-16T07:45:00Z",
+      "hours_to": 76.12,
+      "rank": 17
+    },
+    {
+      "id": "D5",
+      "gate": "dates.build_start",
+      "at": "2026-11-17T17:00:00Z",
+      "hours_to": 109.37,
+      "rank": 18
+    },
+    {
+      "id": "D5",
+      "gate": "dates.submissions_open",
+      "at": "2026-11-17T17:00:00Z",
+      "hours_to": 109.37,
+      "rank": 19
+    },
+    {
+      "id": "D5",
+      "gate": "dates.build_end",
+      "at": "2026-11-19T20:00:00Z",
+      "hours_to": 160.37,
+      "rank": 20
+    },
+    {
+      "id": "D5",
+      "gate": "dates.deadline",
+      "at": "2026-11-19T20:00:00Z",
+      "hours_to": 160.37,
+      "rank": 21
+    },
+    {
+      "id": "D5",
+      "gate": "dates.winners_at",
+      "at": "2026-11-20T19:30:00Z",
+      "hours_to": 183.87,
+      "rank": 22
+    },
+    {
+      "id": "C12",
+      "gate": "dates.finalists_announced",
+      "at": "2026-11-21T00:00:00Z",
+      "hours_to": 188.37,
+      "rank": 23
+    },
+    {
+      "id": "C14",
+      "gate": "dates.initial_proposal_due",
+      "at": "2026-11-21T07:59:00Z",
+      "hours_to": 196.36,
+      "rank": 24
+    },
+    {
+      "id": "C13",
+      "gate": "dates.proposal_due",
+      "at": "2026-11-21T11:59:00Z",
+      "hours_to": 200.36,
+      "rank": 25
+    },
+    {
+      "id": "C12",
+      "gate": "dates.final_due",
+      "at": "2026-12-01T07:45:00Z",
+      "hours_to": 436.12,
+      "rank": 26
+    },
+    {
+      "id": "C11",
+      "gate": "deadline",
+      "at": "2026-12-01T19:00:00Z",
+      "hours_to": 447.37,
+      "rank": 27
+    },
+    {
+      "id": "D4",
+      "gate": "dates.build_end",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 522.37,
+      "rank": 28
+    },
+    {
+      "id": "D4",
+      "gate": "dates.deadline",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 522.37,
+      "rank": 29
+    },
+    {
+      "id": "D4",
+      "gate": "dates.reg_close",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 522.37,
+      "rank": 30
+    },
+    {
+      "id": "C12",
+      "gate": "dates.winners",
+      "at": "2026-12-06T00:00:00Z",
+      "hours_to": 548.37,
+      "rank": 31
+    },
+    {
+      "id": "D4",
+      "gate": "dates.judging_end",
+      "at": "2027-01-29T21:00:00Z",
+      "hours_to": 1865.37,
+      "rank": 32
+    },
+    {
+      "id": "D4",
+      "gate": "dates.winners_at",
+      "at": "2027-02-03T17:00:00Z",
+      "hours_to": 1981.37,
+      "rank": 33
     }
   ]
 }

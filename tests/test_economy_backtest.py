@@ -83,6 +83,11 @@ class EconomyBacktestTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(len(first["runs"]), 9)
         self.assertEqual(first["summary"]["baseline-0bp"]["replications"], 3)
+        self.assertIn("confidence_intervals_95", first["summary"]["baseline-0bp"])
+        self.assertEqual(
+            first["runs"][0]["run_manifest"]["source"]["digest"],
+            first["runs"][1]["run_manifest"]["source"]["digest"],
+        )
         self.assertEqual(first["verdict"], "exploratory_synthetic")
 
     def test_matrix_rejects_duplicate_policy_ids_and_seeds(self):

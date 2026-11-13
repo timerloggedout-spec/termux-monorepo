@@ -32,7 +32,7 @@ for html_path, md_path, canonical, alternate in PAGES:
     html = html_file.read_text(encoding="utf-8")
     markdown = md_file.read_text(encoding="utf-8")
 
-    hidden_controls = re.compile(r"[\\u200b\\u200e\\u200f\\u202a-\\u202e\\u2060\\ufeff]")
+    hidden_controls = re.compile(r"[\u200b\u200e\u200f\u202a-\u202e\u2060\ufeff]")
     require(hidden_controls.search(html) is None, f"{html_path}: hidden or bidirectional control character found in public HTML")
     require(hidden_controls.search(markdown) is None, f"{md_path}: hidden or bidirectional control character found in public Markdown")
 

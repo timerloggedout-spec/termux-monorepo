@@ -6,7 +6,8 @@
 
 - [x] Add canonical metadata, Open Graph fields, JSON-LD, Markdown alternates, and llms.txt discovery to Tribute, Matrix, and the project hub.
 - [x] Publish static explanatory copy, main landmarks, skip links, and glossary navigation.
-- [x] Merge the source changes through PR #5336; verify the deployment workflow updates the user-site mirrors.
+- [x] Merge the source changes through PR #5336.
+- [ ] Verify the deployment workflow updates the user-site mirrors.
 - [ ] Re-scan the public pages and record the per-page P8 result.
 
 ## ARS-002 — Enforce the public source contract

@@ -4,10 +4,16 @@
 
 - Original scan: [bCtaa4bIB7](https://agent-ready.dev/scan/bCtaa4bIB7) — 38/100; llms.txt 0/100; accessibility 77/100.
 - Follow-up scan: [vzNCPWMl7m](https://agent-ready.dev/scan/vzNCPWMl7m) — 62/100; llms.txt 100/100; accessibility 100/100; Page 7/25.
-- Latest scan: [pbDNloUP-H](https://agent-ready.dev/scan/pbDNloUP-H) — 89/100; llms.txt 100/100; accessibility 93/100; P8 pass; P11/P13 and A11 remain in the remediation queue.
+- Latest scan: [AgbKuOoQd0](https://agent-ready.dev/scan/AgbKuOoQd0) — 89/100; llms.txt 100/100; accessibility 100/100; 5 pages scanned; P5–P8 pass; P11 warns; P13 reports 7.3%; P18/P19 remain hosting-layer gaps; A11 passes.
+- Prior scan: [pbDNloUP-H](https://agent-ready.dev/scan/pbDNloUP-H) — 89/100; llms.txt 100/100; accessibility 93/100; A11 visible-label mismatch.
+- Homepage source now carries a WebPage + BreadcrumbList JSON-LD graph, an expanded project/evidence guide, and a conditional 95+ badge.
+- Source measurement: 8,573 visible text characters across 16,177 HTML characters (≈53.0% by the repository validator). The live scanner still reports 7.3% for P13; reconcile the scanner's denominator against the deployed response before closing P13.
+- Latest GitHub Pages deployment run: [43458373572](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/actions/runs/43458373572), queued behind serialized Pages builds at the latest check.
+- Badge status record: 89/100 against the 95 threshold; badge remains hidden.
 - Original P8: Open Graph `og:description` absent from the scanned landing page.
 - Live mirror inspection: `/tribute/` and `/matrix/` in the website repository still lacked canonical URLs, Open Graph fields, JSON-LD, Markdown alternates, and the linked Markdown mirrors.
-- Canonical monorepo source branch: `feat/agent-readability-do-mandate-v2` contains the corrected source pages and Markdown mirrors.
+- Monorepo governance branch: `feat/agent-readability-do-mandate-v2` carries the remediation contract, source validators, skills, and authoring mandate.
+- Website source branch: `main` in `timerloggedout-spec/timerloggedout-spec.github.io` carries the homepage, Markdown mirror, JSON-LD graph, badge assets, and score status.
 
 ## Root cause
 
@@ -25,9 +31,10 @@ The source validator checks the content value, canonical URL, meta description, 
 
 1. Merge the source PR through the repository's accepted proposal and dual-gate process.
 2. Observe `tribute-dashboard-deploy.yml` and capture the workflow run ID.
-3. Verify the published `/tribute/` and `/matrix/` HTML mirrors and Markdown mirrors.
-4. Run Agent Ready against the public origin and inspect the exact page-level P8 finding.
-5. Record the new score, scan ID, page count, llms.txt score, accessibility score, and remaining checks.
+3. Verify the published `/tribute/`, `/matrix/`, and homepage HTML and Markdown representations.
+4. Run Agent Ready against the public origin and inspect P11, P13, P18, and P19.
+5. Compare raw HTML bytes, browser DOM size, and visible text length when P13 differs from the source validator.
+6. Record the new score, scan ID, page count, llms.txt score, accessibility score, and remaining checks.
 
 ## Badge threshold
 

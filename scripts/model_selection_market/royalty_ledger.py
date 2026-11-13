@@ -188,7 +188,9 @@ class RoyaltyLedger:
                 approved = _text(payload["approved_by"], "approved_by")
                 if approved != self.policy_owner:
                     raise RoyaltyLedgerError("policy event lacks configured owner approval")
-                _time(payload["approved_at"], "approved_at")
+                approved_at = _time(payload["approved_at"], "approved_at")
+                if approved_at > start:
+                    raise RoyaltyLedgerError("policy approval must precede or match its effective start")
                 approval_digest = _digest(payload["approval_digest"], "approval_digest")
                 key = f"{policy_id}@{version}"
                 if key in state["policies"]:

@@ -82,3 +82,12 @@ GLYPHS, CHORDS, and OPERATORS remain distinct classes under [Siglary Standard](.
 A score badge is eligible only when a fresh Agent Ready receipt records `score ≥ 95`, a scan URL, and a verification timestamp. Unknown or lower scores keep the badge hidden.
 
 A source-level pass and a deployed-page pass are separate receipts. Record both before declaring the public surface complete.
+
+
+## Enforcement Surface
+
+- Run the DO Statement Style workflow on every branch push.
+- Check changed governance, skills, workflow, and proposal text.
+- Check pull-request titles and descriptions, issue titles and descriptions, issue comments, review comments, and commit comments.
+- Check every commit subject introduced by a pull request.
+- Keep the checker action-first and report each offending file, line, and required correction.

@@ -54,6 +54,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "..", "que"))
 import task_ranking  # noqa: E402  (QUE #5283 ranking method of record)
+import auto_claim  # noqa: E402  (QUE #5286 auto-claim decision logic)
 
 API = "https://api.github.com"
 DEFAULT_REPO = "timerloggedout-spec/termux-monorepo"
@@ -193,9 +194,15 @@ def classify(issue: dict, comments: list, now: datetime,
     if tb:
         flag_min, escalate_min = thresholds_for(
             tier_index, tier_name, tier_count)
+    # Timing decision of record (QUE #5286 — owner c.6843045932,
+    # QDesk c.6843060529, Cadence countersign c.6843070784): the
+    # standard escalation threshold is 15m; a tighter tier frame
+    # governs, the standard caps the rest (supersedes BASE 60m).
+    escalate_min = min(escalate_min, auto_claim.STANDARD_ESCALATE_MIN)
     base = {"issue": issue["number"], "age_min": round(age_min, 1),
             "entry": entry, "tier": tier_name,
-            "flag_min": flag_min, "escalate_min": escalate_min}
+            "flag_min": flag_min, "escalate_min": escalate_min,
+            "stall_breach": age_min > auto_claim.STALL_CEILING_MIN}
     if has_claim(issue, comments):
         return {**base, "state": "claimed", "action": None}
     if _posted(comments, ESCALATION_MARKER):
@@ -303,11 +310,13 @@ def _get_all(url: str, token: str) -> list:
 def sweep(repo: str, token: str, now: datetime, flag_min: int,
           escalate_min: int, apply: bool = True,
           timeboxes: dict | None = None,
-          feed_sink: list | None = None) -> list:
+          feed_sink: list | None = None,
+          gap_sink: list | None = None) -> list:
     issues = _get_all(
         f"{API}/repos/{repo}/issues?state=open"
         f"&labels=dispatch-queued", token)
     results = []
+    contexts = []
     for issue in issues:
         if "pull_request" in issue:
             continue
@@ -320,8 +329,19 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
         if feed_sink is not None:
             feed_sink.append(feed_row(issue, comments, verdict,
                                       timeboxes, now))
+        contexts.append({"issue": issue, "comments": comments,
+                         "verdict": verdict})
+    if apply:
+        _run_auto_claim(repo, token, now, contexts, timeboxes,
+                        gap_sink)
+    for ctx in contexts:
+        verdict = ctx["verdict"]
         if not apply or not verdict["action"]:
             continue
+        if verdict["action"] in ("auto-claimed", "exception-escalated",
+                                  "lease-released"):
+            continue  # handled by the QUE #5286 leg above
+        issue = ctx["issue"]
         base = f"{API}/repos/{repo}/issues/{issue['number']}"
         try:
             if verdict["action"] == "flag":
@@ -338,6 +358,119 @@ def sweep(repo: str, token: str, now: datetime, flag_min: int,
             verdict["action"] = f"ERROR: {exc}"  # the whole sweep;
             verdict["state"] = "error"          # surface it instead
     return results
+
+
+def _run_auto_claim(repo: str, token: str, now: datetime,
+                    contexts: list, timeboxes: dict | None,
+                    gap_sink: list | None) -> None:
+    """QUE #5286 leg of the sweep: plan auto-claims in #5283 rank
+    order, execute claims / lease releases / exception escalations,
+    and emit the SIE gap records. Mutates verdicts in place."""
+    candidates = []
+    for ctx in contexts:
+        verdict = ctx["verdict"]
+        tb = (timeboxes or {}).get(verdict.get("entry")) \
+            if verdict.get("entry") else None
+        _, wall_in_min = task_ranking.nearest_wall(tb, now)
+        claim = claim_of(ctx["comments"])
+        at_dt = None
+        if claim and claim.get("at"):
+            try:
+                at_dt = datetime.strptime(
+                    claim["at"], "%Y-%m-%dT%H:%M:%SZ").replace(
+                    tzinfo=timezone.utc)
+            except (ValueError, TypeError):
+                at_dt = None
+        tier_index = TIER_LADDER.index(verdict["tier"]) \
+            if verdict.get("tier") in TIER_LADDER else 0
+        feed_state = _FEED_STATES.get(verdict["state"], "queued")
+        score_row = {"tier": {"index": tier_index},
+                     "age_min": verdict["age_min"], "state": feed_state,
+                     "wall_in_min": wall_in_min}
+        score_row["score"] = task_ranking.score_dispatch(score_row)
+        candidates.append({
+            "issue": ctx["issue"], "comments": ctx["comments"],
+            "verdict": verdict, "score_row": score_row,
+            "wall_in_min": wall_in_min,
+            "claim": {"at_dt": at_dt} if claim else None})
+    plan_result = auto_claim.plan(candidates, now)
+    ctx_by_issue = {c["issue"]["number"]: c for c in contexts}
+
+    for rel in plan_result["releases"]:
+        ctx = ctx_by_issue[rel["issue"]]
+        base = f"{API}/repos/{repo}/issues/{rel['issue']}"
+        try:
+            _request("POST", f"{base}/comments", token,
+                     {"body": auto_claim.lease_release_comment(
+                         claim_class=rel["claim_class"],
+                         claimant=rel["claimant"], now=now)})
+            _request("DELETE", f"{base}/labels/dispatch-claimed",
+                     token)
+            ctx["verdict"]["action"] = "lease-released"
+        except Exception as exc:
+            ctx["verdict"]["action"] = f"ERROR: {exc}"
+            ctx["verdict"]["state"] = "error"
+
+    for claim in plan_result["claims"]:
+        ctx = ctx_by_issue[claim["issue"]]
+        verdict = ctx["verdict"]
+        base = f"{API}/repos/{repo}/issues/{claim['issue']}"
+        try:
+            _request("POST", f"{base}/comments", token,
+                     {"body": auto_claim.auto_claim_comment(
+                         claim_class=claim["claim_class"],
+                         claimant=claim["claimant"],
+                         rank=claim["rank"], score=claim["score"],
+                         now=now, trigger=claim["trigger"])})
+            _request("POST", f"{base}/labels", token,
+                     {"labels": ["dispatch-claimed"]})
+            try:
+                _request("DELETE", f"{base}/labels/dispatch-escalated",
+                         token)
+            except Exception:
+                pass  # label may not be present; the claim stands
+            verdict["action"] = "auto-claimed"
+            verdict["state"] = "claimed"
+        except Exception as exc:
+            try:
+                _request("POST", f"{base}/comments", token,
+                         {"body": "[MUSEai]@{role:{dispatch-watchdog}} "
+                                  f"auto-claim-failed: {exc}"})
+            except Exception:
+                pass
+            verdict["action"] = f"ERROR: {exc}"
+            verdict["state"] = "error"
+            plan_result["exceptions"].append(
+                {"issue": claim["issue"], "kind": "rejected",
+                 "reason": f"claim POST failed: {exc}"})
+
+    for exc in plan_result["exceptions"]:
+        ctx = ctx_by_issue.get(exc["issue"])
+        if ctx is None or ctx["verdict"].get("action") != "escalate":
+            continue  # already-escalated exceptions never re-fire
+        verdict = ctx["verdict"]
+        base = f"{API}/repos/{repo}/issues/{exc['issue']}"
+        try:
+            body = escalation_comment(ctx["issue"],
+                                      verdict["age_min"], verdict)
+            body += (f"\n\nauto-claim: NOT PLACED — {exc['reason']} "
+                     f"(QUE #5286: escalation is the exception; the "
+                     f"reason is stamped, never silence).")
+            if verdict.get("stall_breach"):
+                body += (f"\n\nstall-event: stall_ceiling_breach "
+                         f"age_min={verdict['age_min']:.0f} "
+                         f"ceiling_min={auto_claim.STALL_CEILING_MIN}")
+            _request("POST", f"{base}/comments", token,
+                     {"body": body})
+            _request("POST", f"{base}/labels", token,
+                     {"labels": ["dispatch-escalated"]})
+            verdict["action"] = "exception-escalated"
+        except Exception as exc2:
+            verdict["action"] = f"ERROR: {exc2}"
+            verdict["state"] = "error"
+
+    if gap_sink is not None:
+        gap_sink.extend(auto_claim.gap_records(plan_result, now))
 
 
 # ------------------------------------------------- dispatch-state feed (#4350)
@@ -371,7 +504,10 @@ def claim_of(comments: list) -> dict | None:
                 by = m.group(1).strip()
                 break
         m = re.search(r"^-\s*claimed at:\s*(\S+)", body, re.M)
-        return {"by": by, "at": m.group(1) if m else c.get("created_at")}
+        out = {"by": by, "at": m.group(1) if m else c.get("created_at")}
+        if c.get("html_url"):
+            out["ref"] = c["html_url"]
+        return out
     return None
 
 
@@ -397,19 +533,30 @@ def feed_row(issue: dict, comments: list, verdict: dict,
         if verdict.get("entry") else None
     tier_index, tier_name = current_tier(tb, now)
     wall_iso, wall_in_min = task_ranking.nearest_wall(tb, now)
+    claim = claim_of(comments)
+    stalls = stall_events_of(comments)
+    if claim:
+        # QUE #5286 point 2: a claim resolves the STALL (never the
+        # task) -- open stall events close with the claim as their
+        # resolution ref, and the stall clock stops.
+        for event in stalls:
+            event["resolved"] = True
+            event["resolution"] = (
+                f"claim by {claim.get('by')} at {claim.get('at')}"
+                + (f" ({claim['ref']})" if claim.get("ref") else ""))
     return {
         "issue": issue["number"],
         "title": issue.get("title"),
         "entry": entry_of(comments),
         "state": _FEED_STATES.get(verdict["state"], "queued"),
-        "claim": claim_of(comments),
+        "claim": claim,
         "age_min": verdict["age_min"],
         "nearest_wall": wall_iso,
         "wall_in_min": wall_in_min,
         "tier": {"index": tier_index, "name": tier_name},
         "thresholds_min": {"flag": verdict["flag_min"],
                            "escalate": verdict["escalate_min"]},
-        "stall_events": stall_events_of(comments),
+        "stall_events": stalls,
     }
 
 
@@ -470,6 +617,28 @@ def render_table(results: list) -> str:
     return "\n".join(lines)
 
 
+GAP_FEED_PATH = "ops/que/feeds/stall-gap-feed.json"
+
+
+def write_gap_feed(feed: dict) -> bool:
+    """Write-on-change for the SIE stall-gap feed (QUE #5286 point
+    5): same content gate as the dispatch-state feed. Returns True
+    when a write landed."""
+    path = os.path.join(_repo_root(), GAP_FEED_PATH)
+    existing = None
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            existing = json.load(fh)
+    if existing is not None and \
+            _feed_fingerprint(existing) == _feed_fingerprint(feed):
+        return False
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(feed, fh, indent=1, sort_keys=True)
+        fh.write("\n")
+    return True
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--repo",
@@ -495,13 +664,19 @@ def main(argv=None) -> int:
     now = datetime.now(timezone.utc)
     timeboxes = load_timeboxes(args.feed)
     feed_rows: list = []
+    gap_records: list = []
     results = sweep(args.repo, token, now, args.flag_min,
                     args.escalate_min, apply=not args.dry_run,
-                    timeboxes=timeboxes, feed_sink=feed_rows)
+                    timeboxes=timeboxes, feed_sink=feed_rows,
+                    gap_sink=gap_records)
     if not args.dry_run:
         stamped = write_feed(build_feed(feed_rows, now))
         print(f"dispatch-state feed: {'stamped (content changed)' if stamped else 'unchanged — no write'} "
               f"({len(feed_rows)} open dispatch(es))")
+        gap_stamped = write_gap_feed(auto_claim.gap_feed(gap_records,
+                                                          now))
+        print(f"stall-gap feed: {'stamped (content changed)' if gap_stamped else 'unchanged — no write'} "
+              f"({len(gap_records)} gap record(s) this cycle)")
     table = render_table(results)
     print(f"dispatch watchdog @ {now:%Y-%m-%dT%H:%M:%SZ} — "
           f"{len(results)} queued issue(s)")

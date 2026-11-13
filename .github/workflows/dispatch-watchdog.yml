@@ -66,6 +66,7 @@ jobs:
           # corrected stamp exactly that way — sweep green, push dead).
           cp ops/challenge/dispatch-state-feed.json /tmp/feed-canon.json
           cp apps/tribute-dashboard/data/dispatch-state-feed.json /tmp/feed-mirror.json
+          cp ops/que/feeds/stall-gap-feed.json /tmp/stall-gap.json
           for attempt in 1 2 3; do
             git fetch origin master
             git reset -q --hard origin/master
@@ -73,14 +74,20 @@ jobs:
           import json, sys
           ours = json.load(open('/tmp/feed-canon.json'))['generated_at']
           theirs = json.load(open('ops/challenge/dispatch-state-feed.json'))['generated_at']
-          sys.exit(0 if theirs >= ours else 1)
+          try:
+              ours_g = json.load(open('/tmp/stall-gap.json'))['generated_at']
+              theirs_g = json.load(open('ops/que/feeds/stall-gap-feed.json'))['generated_at']
+          except Exception:
+              ours_g, theirs_g = '', ''
+          sys.exit(0 if (theirs >= ours and theirs_g >= ours_g) else 1)
           "; then
               echo "a newer feed stamp already landed — superseded, no commit"
               exit 0
             fi
             cp /tmp/feed-canon.json ops/challenge/dispatch-state-feed.json
             cp /tmp/feed-mirror.json apps/tribute-dashboard/data/dispatch-state-feed.json
-            git add ops/challenge/dispatch-state-feed.json apps/tribute-dashboard/data/dispatch-state-feed.json
+            cp /tmp/stall-gap.json ops/que/feeds/stall-gap-feed.json
+            git add ops/challenge/dispatch-state-feed.json apps/tribute-dashboard/data/dispatch-state-feed.json ops/que/feeds/stall-gap-feed.json
             if git diff --cached --quiet; then
               echo "dispatch-state feed unchanged — no commit"
               exit 0

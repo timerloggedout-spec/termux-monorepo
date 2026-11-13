@@ -254,18 +254,20 @@ experiment_design:
       - selection_reason
       - trigger
       - task_or_entry_ref
+      - entry
       - provider
       - exact_model_id
+      - model
       - endpoint_or_route_id
       - workflow_run_id
       - run_attempt
       - observed_at
       - ts
     intake_field_mapping:
-      exact_model_id: "model"
-      task_or_entry_ref: "entry"
-      observed_at: "ts"
-      auditor_model_projection: "model_id (preserve existing auditor field)"
+      exact_model_id: "model (required producer field; exact configured model identity)"
+      task_or_entry_ref: "entry (required producer field; canonical work-item reference)"
+      observed_at: "ts (required producer field; ISO-8601 UTC dispatch timestamp)"
+      auditor_model_projection: "model_id is populated from model by the existing auditor adapter"
     maximum_per_trigger: 12
     stopping: "stop when the pre-registered decision rule is met; otherwise one further set after a 2-1 split or spread-in-noise; cap/window/budget reached without conclusion = INCONCLUSIVE"
     significance: "weight-bearing claims require relevant stratum and the repository's class-specific significance standard; otherwise HELD / NOT_ESTABLISHED"

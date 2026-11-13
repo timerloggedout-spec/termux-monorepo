@@ -608,8 +608,8 @@ def main(argv=None) -> int:
         status = "failed"
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-            output.write(f"arm_id={chosen_arm['arm_id']}\\n")
-            output.write(f"selection_reason={chosen_reason}\\n")
+            output.write(f"arm_id={chosen_arm['arm_id']}\n")
+            output.write(f"selection_reason={chosen_reason}\n")
     print("ARM_FINAL_SELECTION " + json.dumps({"arm_id": chosen_arm["arm_id"],
                                                 "selection_reason": chosen_reason,
                                                 "attempts": attempts}))

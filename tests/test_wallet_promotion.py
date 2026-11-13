@@ -1,5 +1,4 @@
 """Offline wallet-promotion readiness gate tests."""
-import copy
 import hashlib
 import unittest
 

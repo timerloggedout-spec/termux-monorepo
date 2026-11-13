@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "28d19d1d6acc91cb8838bc145b919c57ed93863075a7f74a32cd02e35ec90e3d",
-  "workflow_count": 306,
+  "source_fingerprint": "8ce0e394c2b2a7cb80ec1739f102e84d15eb5a218657cba8a951206c76a42ea7",
+  "workflow_count": 307,
   "workflows": [
     {
       "action_pins": [],
@@ -694,6 +694,26 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e"
+      ],
+      "authority": "writer",
+      "concurrency": "group: bucket-headroom-watch cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "watch"
+      ],
+      "name": "bucket-headroom-watch",
+      "path": ".github/workflows/bucket-headroom-watch.yml",
+      "schedules": [
+        "*/10 * * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

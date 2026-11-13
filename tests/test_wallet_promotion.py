@@ -58,7 +58,15 @@ class WalletPromotionTests(unittest.TestCase):
         with self.assertRaises(PromotionGateError):
             self.evaluate(value)
         value = manifest()
+        value["wallet"]["signer_ref"] = "vault://token=private-value"
+        with self.assertRaises(PromotionGateError):
+            self.evaluate(value)
+        value = manifest()
         value["chain"]["rpc_url"] = "https://user:password@rpc.testnet.example"
+        with self.assertRaises(PromotionGateError):
+            self.evaluate(value)
+        value = manifest()
+        value["chain"]["rpc_url"] = "https://rpc.testnet.example?token=private-value"
         with self.assertRaises(PromotionGateError):
             self.evaluate(value)
 

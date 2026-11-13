@@ -26,7 +26,7 @@
 - [x] Publish the DO-statement and CAVEMAN-6/Siglary usage contract.
 - [x] Add the root `AGENTS.md → moniker.md → CLAUDE.md` entry route.
 - [x] Link the mandate from collaborator entry points and the skill inventory.
-- [x] Carry the style into new comments, commit subjects/bodies, PR descriptions, workflow prompts, docs, and skills.
+- [x] Carry the style into new comments, commit subjects and bodies, PR descriptions, workflow prompts, docs, and skills.
 
 ## ARS-004 — Include reusable agent skills
 

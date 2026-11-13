@@ -104,5 +104,7 @@ def test_site_nav_family_link():
     # That list is pinned here for the family link instead.
     js = (APP / "site-nav.js").read_text(encoding="utf-8")
     assert '"tracking.html"' in js and '"family.html"' in js
+    assert '"surfaces-map.html"' in js
+    assert '"id":"surfaces-map","file":"surfaces-map.html"' in (APP / "versioning.js").read_text(encoding="utf-8")
     assert js.index('"tracking.html"') < js.index('"family.html"')
     assert "./site-nav.js" in (APP / "matrix.html").read_text(encoding="utf-8")

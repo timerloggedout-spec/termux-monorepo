@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "dd77e0b66a606f0844838eb12eac43af9ad2c7be04e104228779b8f143522b51",
+  "source_fingerprint": "92d2bafd799b31e7791df542723ee1ac56b44cca08c05e3d0a78c9f4405121e0",
   "workflow_count": 311,
   "workflows": [
     {
@@ -1982,7 +1982,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: do-statement-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.event.discussion.number || github.ref }} cancel-in-progress: true",
       "domain": "agentic-development",
       "jobs": [
         "action-first-language"
@@ -1991,7 +1991,8 @@
       "path": ".github/workflows/do-statement-style.yml",
       "schedules": [],
       "triggers": [
-        "commit_comment",
+        "discussion",
+        "discussion_comment",
         "issue_comment",
         "issues",
         "pull_request",

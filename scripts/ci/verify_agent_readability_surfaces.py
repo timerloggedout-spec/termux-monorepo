@@ -73,6 +73,8 @@ for statement in (
     "cp apps/project-pages-hub/index.md _site/index.md",
     "cp apps/tribute-dashboard/matrix.md _site/matrix.md",
     "cp apps/tribute-dashboard/matrix.md _user_site/matrix/index.md",
+    "main-landing-studysprint-link",
+    "force:false",
     "cp -a _tribute/. _user_site/tribute/",
 ):
     require(statement in workflow, f"Pages deployment does not publish mirror: {statement}")

@@ -15,9 +15,9 @@ Apply [`docs/ops/DO-STATEMENT-MANDATE.md`](docs/ops/DO-STATEMENT-MANDATE.md) to 
 This repository is a **Continuous Fully Automated Agentic Development Environment**.
 
 - Agents **execute to completion** on authorized lanes: implement, push, open/update PR, re-fetch checks, and **auto-promote when dual gates are green and the task outcome is verified**.
-- **Adaptive-wait is concurrent work**, not idle handoff. While jobs run, do non-conflicting progress; do not emit operator CLI homework as a substitute for automation.
-- **Dual-gate is automated evidence**, not a human gatekeeping ritual. Promote on green + verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
-- **HITL** is reserved for human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material). It is not the default development loop.
+- **Adaptive-wait is concurrent work.** Keep non-conflicting progress moving while jobs run, and automate operator steps through Actions, Codespaces, or self-host surfaces.
+- **Dual-gate is automated evidence.** Promote on green + verified outcome (see `docs/ops/REFTEMPLATES-CONSOLIDATION.md`).
+- **HITL** is reserved for the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md` (credentials, history rewrite, Class 3/4 material). Keep routine development on authorized automated lanes.
 - Size ≠ quality; mega-PRs stay **EXTRACT**.
 
 Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architecture/AGENT-TEAM-CONTROL-PLANE.md) + `.mmd`.
@@ -66,7 +66,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - Keep NO-GO mega-PRs (#2, #6) in EXTRACT-only state.
 - Keep Class 3/4 artifacts outside git; route session stores, browser profiles, and tokens through approved private storage.
 - Record consensus in the Review log or `DEBATE.md`; treat chat as source input until recorded.
-- **Recon before relay/build** (owner order, 2026-10-27): do recon so you know what you're touching & building. Verify decisive claims against the live record (repo contents, API, run/issue records) before relaying a report or amending a mission from it — a lane's report is an input, not evidence.
+- **Recon before relay/build** (owner order, 2026-10-27): inspect the target before editing. Verify decisive claims against the live record (repo contents, API, run/issue records); treat lane reports as inputs and cite the primary evidence.
 - **Agent auto-promote** when dual-gate green **and** task outcome verified. Keep the loop moving through Actions, Codespaces, and self-host surfaces for work they can run.
 - Keep credential inventory **names-only** in issues (see #184); route secret values through approved secret stores.
 
@@ -105,7 +105,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
-| Credential names inventory | issue #184 (no values) |
+| Credential names inventory | issue #184 (names-only) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
 | Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
@@ -115,7 +115,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 
 ## ICM + RinDig reference pins (smods)
 
-Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime control plane:
+Shallow gitlinks under `refTemplates/smods/` — reference layer, separate from the runtime control plane:
 
 | Pin | Role |
 |-----|------|
@@ -124,7 +124,7 @@ Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime con
 | `AuditEngine_fork` | Audit adapt surface |
 | `icm-architect_fork` | ICM hierarchy / cards method |
 
-Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gates never init submodules.
+Gitlink ops: use `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` or the specialized pin workflows. Run submodule operations through their dedicated workflow.
 
 ## Security
 
@@ -146,11 +146,11 @@ Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/down
 
 ## Superpowers engineering workflow
 
-Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
+Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, and adaptive WAIT remain authoritative.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
 
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. Keep CEEL on the existing scheduler, telemetry ledger, registry, and merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog, Braintrust, and the native repository baseline; verify external capability claims against pinned evidence. GitHub-native events are primary; bounded reconciliation is fallback. Use event-driven sensing; keep weekly reporting as a summary layer.

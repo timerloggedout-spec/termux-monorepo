@@ -1,12 +1,12 @@
-# Lane matrix status (2026-11-13T09:55:08Z)
+# Lane matrix status (2026-11-13T09:57:08Z)
 
-- Master: `a22f7500df35775465f1dc46bf32d4ac1742d3a6`
-- Open PRs: **367**
+- Master: `eca0607508d57ca6c17a294750ec3e53bb77d049`
+- Open PRs: **368**
 - Oldest: #47 (99.76d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | 116 |
+| CANDIDATE | 117 |
 | EXTRACT | 6 |
 | NEED_EVIDENCE | 76 |
 | SUPERSEDE | 169 |
@@ -14,7 +14,7 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 66 |
+| fresh | 67 |
 | mid | 236 |
 | stale | 38 |
 
@@ -24,7 +24,7 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 23.14 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 12.74 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 10.23 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4069 | 10.24 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 9.55 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 8.89 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 6.79 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
@@ -45,7 +45,7 @@
 | #1495 | 22.31 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 22.07 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 22.07 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 22.06 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1516 | 22.07 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 22.05 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 22.04 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 21.37 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |

@@ -30,6 +30,6 @@ The active workspace source currently centers on MaxUp parsing and HTML/Leptos/b
 
 ## DerpWiki / D3rpW1ki / Der9W¡K1
 
-The repository's `docs/ops/AGENT-MONIKERS.md` contains `derpWiki ≈ d3π9W1K¡` as a display-moniker graduation example. The inspected source search returned that moniker reference. Current repository evidence establishes the display example; an application, renderer, codec, or wiki corpus remains a future implementation item.
+The repository's `docs/ops/AGENT-MONIKERS.md` contains the DerpWiki display-moniker seed. Preserve these requested aliases as one concept family: `D3rpW1ki` | `Der9W¡K1` | `derpWiki` | `d3π9W1K¡`. Current repository evidence establishes a display-moniker example only; an application, renderer, reversible codec, and wiki corpus remain future implementation items.
 
-Treat DerpWiki as an internal concept seed. A future internal codec can use a versioned visible codebook and a reversible sidecar. Keep its output out of public Agent Ready fixtures and crawler-facing pages. Public HTML/Markdown stays canonical and human-readable.
+Treat DerpWiki as an internal concept seed. A future internal codec can use a versioned visible codebook and a reversible sidecar. Keep zero-width, bidi, and other invisible-character encodings out of public Agent Ready fixtures, crawler-facing pages, and canonical HTML/Markdown. Place experimental encodings in isolated internal fixtures with explicit decoder metadata and round-trip tests. Public HTML/Markdown stays canonical and human-readable.

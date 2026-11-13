@@ -397,6 +397,9 @@ class MarketGraph:
                     r["recipient"] = pool_owner
                     for bet in s["bets"]:
                         if bet["actor_id"] == participant and bet["entry_id"] == r.get("entry_id"): bet["status"] = "forfeited"
+            for bet in s["bets"]:
+                if bet["actor_id"] == participant and bet["status"] == "open":
+                    bet["status"] = "culled"
             s["culled"][participant] = copy.deepcopy(p)
         elif typ == "pool_distribute":
             self._keys(p, {"pool_id", "distribution_id", "reason", "allocations"})

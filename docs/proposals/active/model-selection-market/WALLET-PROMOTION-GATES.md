@@ -13,6 +13,18 @@
 5. **PRODUCTION_REVIEW:** require production chain/key profile, owner + security + custody approvals, legal/custody references, caps, monitoring, revocation, recovery, and rollback.
 6. **PRODUCTION:** enable only after explicit release approval and independently verified testnet evidence.
 
+## Local preflight
+
+Run the read-only validator against a reviewed manifest:
+
+```bash
+python3 -m scripts.model_selection_market.wallet_promotion wallet-manifest.json \
+  --production-chain-id 1 \
+  --production-key-namespace prod/msm
+```
+
+The receipt binds the manifest SHA-256 and returns `action: preflight_only`, with provisioning, signing, and funding each marked false.
+
 ## Code boundary
 
 `scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only manifest validation. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.

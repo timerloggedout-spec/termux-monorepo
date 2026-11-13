@@ -28,6 +28,11 @@ def load(root, rel):
     return json.loads(p.read_text()) if p.exists() else None
 
 
+def latest(rows, key):
+    values = [row.get(key) for row in (rows or []) if row.get(key)]
+    return max(values) if values else None
+
+
 def fam_of(rec_id):
     return str(rec_id).split(".")[0]
 
@@ -38,6 +43,7 @@ def build(root):
     status = load(root, "docs/ops/generated/quota-status.json") or {}
     series = load(root, "ops/quota/usage-series.json") or {}
     events_doc = load(root, "ops/quota/rate-limit-events.json") or {}
+    quota_usage = load(root, "ops/quota/quota-usage.json") or {}
 
     cen_by_fam = {}
     for row in census.get("rows", []):
@@ -129,6 +135,41 @@ def build(root):
         })
 
     events = events_doc.get("events", [])
+    s1 = quota_usage.get("series1_api_core") or {}
+    s2 = quota_usage.get("series2_snapshots") or {}
+    s3 = quota_usage.get("series3_actions") or {}
+    s4 = quota_usage.get("series4_rate_limit_events") or {}
+    s5 = quota_usage.get("series5_vultr") or {}
+    s6 = quota_usage.get("series6_self_counts") or {}
+    s6_providers = s6.get("providers") or {}
+    self_last = latest(list(s6_providers.values()), "last_at")
+    observations = [
+        {"id": "api-core", "label": "GitHub API core remaining",
+         "as_of": latest(s1.get("points"), "at"),
+         "evidence": "observed point",
+         "detail": "series1_api_core.points"},
+        {"id": "quota-snapshots", "label": "Quota service status snapshots",
+         "as_of": latest(s2.get("snapshots"), "at"),
+         "evidence": "status snapshot",
+         "detail": "series2_snapshots.snapshots"},
+        {"id": "actions-reconstructed", "label": "Actions volume corpus",
+         "as_of": latest(s3.get("days"), "date"),
+         "evidence": "reconstructed corpus",
+         "detail": "series3_actions.days; corpus growth, not fleet volume"},
+        {"id": "rate-limit-events", "label": "Rate-limit incident register",
+         "as_of": latest(s4.get("events"), "at") or latest(events, "at"),
+         "evidence": "incident event",
+         "detail": "Recorded events only; absence is not health evidence"},
+        {"id": "vultr-plan-rates", "label": "Vultr plan-rate catalog",
+         "as_of": (s5.get("plans") or {}).get("pulled_at") or s5.get("generated_at"),
+         "evidence": "catalog pull",
+         "detail": "Plan rates only; account usage legs remain explicit gaps"},
+        {"id": "self-counts", "label": "Fleet self-count events",
+         "as_of": self_last, "generated_at": s6.get("generated_at"),
+         "evidence": "self-counted records",
+         "detail": "Not provider readings"}
+    ]
+    series_inputs = series.get("inputs_generated_at") or {}
     feed = {
         "schema": "quota.swarm-feed/v1",
         "generated_at": datetime.now(timezone.utc).strftime(
@@ -152,11 +193,18 @@ def build(root):
              "generated_at": census.get("generated_at")},
             {"id": "readings", "path": "docs/ops/generated/quota-status.json",
              "generated_at": status.get("generated_at")},
+            {"id": "quota-usage-pack", "path": "ops/quota/quota-usage.json",
+             "generated_at": quota_usage.get("generated_at"),
+             "observations": observations},
             {"id": "usage-series", "path": "ops/quota/usage-series.json",
-             "generated_at": series.get("generated_at")},
+             "generated_at": series.get("generated_at"),
+             "inputs_generated_at": series_inputs},
+            {"id": "nested-family", "path": "ops/tracking/nested-family.json",
+             "generated_at": series_inputs.get("ops/tracking/nested-family.json")},
             {"id": "rate-limit-events",
              "path": "ops/quota/rate-limit-events.json",
-             "generated_at": events_doc.get("generated_at")},
+             "generated_at": events_doc.get("generated_at"),
+             "latest_event_at": latest(events, "at")},
         ],
         "summary": {
             "registry_model_records": len(model_recs),

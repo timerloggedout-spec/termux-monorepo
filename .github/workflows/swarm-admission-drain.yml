@@ -33,9 +33,9 @@ jobs:
         id: swarm
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
         with:
-          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
-          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
-          repositories: ${{ github.event.repository.name }}
+          app-id: \${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: \${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: \${{ github.event.repository.name }}
           permission-actions: read
           permission-issues: write
           permission-contents: read
@@ -43,22 +43,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          token: ${{ steps.swarm.outputs.token }}
+          token: \${{ steps.swarm.outputs.token }}
           persist-credentials: false
           fetch-depth: 1
 
       - name: Re-evaluate deferred filings
         env:
-          GH_TOKEN: ${{ steps.swarm.outputs.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          GH_TOKEN: \${{ steps.swarm.outputs.token }}
+          GITHUB_REPOSITORY: \${{ github.repository }}
+          GITHUB_SERVER_URL: \${{ github.server_url }}
+          GITHUB_RUN_ID: \${{ github.run_id }}
+          DRY_RUN: \${{ inputs.dry_run || 'false' }}
         run: |
           set -euo pipefail
           ARGS=()
           if [ "$DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
-          python3 scripts/ops/swarm_admission_drain.py \\
-            --repo "$GITHUB_REPOSITORY" \\
-            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \\
-            "${ARGS[@]}"
+          python3 scripts/ops/swarm_admission_drain.py \
+            --repo "$GITHUB_REPOSITORY" \
+            --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            "\${ARGS[@]}"

@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-13T10:59:27Z",
+ "read_at": "2026-11-13T11:12:16Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,51 +1956,12 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-13T10:59:23Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "312330a4020791bc6f0469d414b8836ceea5a16b",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-13T10:59:07Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "afebdcdf35c61dcccb9387ac7f0eadc8210ff62b",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
-   "number": 5327,
-   "title": "feat(skills): vendor AMD and NVIDIA GPU agent skills",
-   "merged_at": null,
-   "updated_at": "2026-11-13T10:59:03Z",
-   "created_at": "2026-11-13T10:58:44Z",
-   "merge_commit_sha": "5944600f7ef89ffa5165c9b9a3b3430dcbfd0001",
-   "head_ref": "feat/vendor-amd-nvidia-skills-2026-11-13",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5327",
-   "merged": false
-  },
-  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T10:49:24Z",
+   "updated_at": "2026-11-13T11:09:13Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "1b1b8d9e31b8145c2d11fed503e858975156d657",
+   "merge_commit_sha": "90c8560f14c5d0ca03bf218f20918ff3b9850219",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -2011,13 +1972,78 @@
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T10:47:10Z",
+   "updated_at": "2026-11-13T11:06:35Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "8807cb09d1c3f1388000b174441d30ea736d0cba",
+   "merge_commit_sha": "d18251581aff02ecb05cca2fdd19dd2a53b5527f",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-13T11:05:00Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "1dae1179fd087252bf41125504d60079610ec13e",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-13T11:03:18Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "b0858e9ae5df3f753a29984ba8d92006547f83ef",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
+   "number": 4069,
+   "title": "chore(dashboards): refresh surface feeds",
+   "merged_at": null,
+   "updated_at": "2026-11-13T11:02:09Z",
+   "created_at": "2026-11-03T04:16:54Z",
+   "merge_commit_sha": "c7f993d46bcba5fee404b5a2835e11ad6ed91739",
+   "head_ref": "surface-feeds/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069",
+   "merged": false
+  },
+  {
+   "number": 5328,
+   "title": "fix(que): normalize structured ranking scores in auto-claim",
+   "merged_at": null,
+   "updated_at": "2026-11-13T11:02:06Z",
+   "created_at": "2026-11-13T11:00:07Z",
+   "merge_commit_sha": "203173ec0d3408e918c29a45c6c55fff21a3c18b",
+   "head_ref": "fix/que-auto-claim-score-shape-20261113",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5328",
+   "merged": false
+  },
+  {
+   "number": 5327,
+   "title": "feat(skills): vendor AMD and NVIDIA GPU agent skills",
+   "merged_at": null,
+   "updated_at": "2026-11-13T11:00:35Z",
+   "created_at": "2026-11-13T10:58:44Z",
+   "merge_commit_sha": "5944600f7ef89ffa5165c9b9a3b3430dcbfd0001",
+   "head_ref": "feat/vendor-amd-nvidia-skills-2026-11-13",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5327",
    "merged": false
   },
   {
@@ -2161,19 +2187,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4990",
-   "merged": false
-  },
-  {
-   "number": 4069,
-   "title": "chore(dashboards): refresh surface feeds",
-   "merged_at": null,
-   "updated_at": "2026-11-13T03:34:16Z",
-   "created_at": "2026-11-03T04:16:54Z",
-   "merge_commit_sha": "d335358b301151c909cefcc06aa364d7ba98e532",
-   "head_ref": "surface-feeds/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069",
    "merged": false
   },
   {
@@ -4540,19 +4553,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4085",
-   "merged": false
-  },
-  {
-   "number": 4083,
-   "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
-   "merged_at": null,
-   "updated_at": "2026-11-03T06:01:07Z",
-   "created_at": "2026-11-03T05:53:37Z",
-   "merge_commit_sha": "b7cd4fed9537ec0c671f2715b786070d9651a422",
-   "head_ref": "feat/mesh-resiliency-admission-refresh",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4083",
    "merged": false
   }
  ],

@@ -50,6 +50,9 @@ jobs:
             --body-file "$RUNNER_TEMP/comment.md"
           gh issue edit "${{ github.event.issue.number }}" \
             --add-label dispatch-queued
+          # Clear a superseded diagnosis after valid re-intake.
+          gh issue edit "${{ github.event.issue.number }}" \
+            --remove-label intake-incomplete || true
 
       - name: Post intake diagnosis (malformed intake)
         if: steps.parse.outputs.ok == 'false'

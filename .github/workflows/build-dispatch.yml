@@ -268,6 +268,9 @@ jobs:
           ARM_ID: ${{ steps.builder-generic.outputs.arm_id || steps.arm.outputs.arm_id }}
         run: |
           set -euo pipefail
+          # Restore the task branch after agent tool execution; preserve its working-tree edits.
+          git switch "$BUILD_BRANCH"
+          test "$(git branch --show-current)" = "$BUILD_BRANCH" || { echo "build branch restore failed"; exit 1; }
           if [ -z "$(git status --porcelain)" ]; then
             echo "generic builder left no changes — verify step will judge"
             exit 0
@@ -299,7 +302,8 @@ jobs:
           BUILD_BRANCH: ${{ steps.branch.outputs.name }}
         run: |
           set -euo pipefail
-          test "$(git branch --show-current)" = "$BUILD_BRANCH" || { echo "build branch mismatch"; exit 1; }
+          git switch "$BUILD_BRANCH"
+          test "$(git branch --show-current)" = "$BUILD_BRANCH" || { echo "build branch restore failed"; exit 1; }
           if [ -z "$(git status --porcelain)" ]; then
             echo "Gemini builder left no changes; verification will judge this run."
             exit 0

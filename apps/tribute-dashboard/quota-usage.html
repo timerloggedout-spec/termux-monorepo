@@ -61,6 +61,11 @@
 <main>
 <p class="muted" id="meta">Loading pack…</p>
 
+<section aria-labelledby="freshness-heading">
+<div class="head"><h2 id="freshness-heading">Observation freshness / as-of</h2></div>
+<div class="card" id="freshness-ledger"><p class="dim">Loading per-series observation timestamps…</p></div>
+</section>
+
 <section>
 <div class="head"><h2>API core burn-down — shared PAT bucket</h2></div>
 <div class="card"><div id="burndown"></div><p class="dim" id="burnnote"></p></div>
@@ -87,6 +92,7 @@
 </section>
 
 </main>
+<script src="./quota-freshness.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
@@ -151,6 +157,17 @@ function stampText(stamp){
 if(typeof module!=="undefined"){ module.exports={parseT,burnGeom,stepPath,stateClass,barGeom,stampText,idealRemaining,yTicks,labelPlace,wallLabels,barScale}; }
 // ==== end pure logic ====
 let PACK=null;
+function renderFreshness(){
+  const rows=QuotaFreshness.rows(PACK,Date.now());
+  let out='<p class="dim">Pack generated_at is a build timestamp, not an observation timestamp. The rows below show the latest underlying point or record. Display thresholds: 24h for observed/derived records and 7d for catalog/event recency; these are visibility warnings, not provider SLAs.</p>';
+  out+='<table class="st"><thead><tr><th>Series</th><th>As of</th><th>Age</th><th>Evidence</th><th>State</th><th>Detail</th></tr></thead><tbody>';
+  for(const r of rows){
+    const cls=r.status==="FRESH"||r.status==="RECENT EVENT"?"ok":(r.status==="UNKNOWN"?"unknown":"watch");
+    out+='<tr><td><strong>'+esc(r.label)+'</strong></td><td><code>'+esc(r.as_of||"unknown")+'</code>'+(r.generated_at?'<br><span class="dim">generated '+esc(r.generated_at)+'</span>':'')+'</td><td>'+esc(r.age)+'</td><td>'+esc(r.evidence)+'</td><td><span class="chip '+cls+'">'+esc(r.status)+'</span></td><td>'+esc(r.detail)+'</td></tr>';
+  }
+  out+='</tbody></table><p class="dim">A missing point remains UNKNOWN; no value is inferred. “No recent event” means no incident is recorded in the display window, not that the provider is healthy.</p>';
+  $("freshness-ledger").innerHTML=out;
+}
 function svgEl(html){ return html; }
 function renderBurn(){
   const s=PACK.series1_api_core, W=920, H=300, P=44;
@@ -267,7 +284,7 @@ function renderOrigins(){
 fetch("./data/quota-usage.json").then(r=>{ if(!r.ok) throw new Error("pack fetch "+r.status); return r.json(); }).then(p=>{
   PACK=p;
   $("meta").textContent="Pack "+p.schema+" · generated "+p.generated_at+" · "+p.ordered_by+" · built by "+p.built_by+".";
-  renderBurn(); renderStates(); renderActions(); renderStamps(); renderOrigins();
+  renderFreshness(); renderBurn(); renderStates(); renderActions(); renderStamps(); renderOrigins();
 }).catch(e=>{ $("meta").innerHTML='<span class="wall-note">PACK ERROR</span> '+esc(e.message); });
 </script>
 </body>

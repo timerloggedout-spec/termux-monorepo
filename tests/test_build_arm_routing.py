@@ -194,7 +194,12 @@ def test_auto_build_rotates_after_quota_terminal_to_next_free_generic(tmp_path, 
     stamp = json.loads(stamp_path.read_text(encoding="utf-8"))
     assert stamp["arm_id"] == "sealion-llama"
     assert "quota-terminal rotation" in stamp["selection_reason"]
-    assert "arm_id=sealion-llama" in output_path.read_text(encoding="utf-8")
+    output_text = output_path.read_text(encoding="utf-8")
+    assert output_text.splitlines() == [
+        "arm_id=sealion-llama",
+        f"selection_reason={stamp['selection_reason']}",
+    ]
+    assert "\\\\n" not in output_text, "GITHUB_OUTPUT requires real newline delimiters"
     assert stamp["rotation_attempts"] == [
         {"arm_id": "mistral-codestral", "status": "quota_terminal"},
         {"arm_id": "sealion-llama", "status": "completed"},

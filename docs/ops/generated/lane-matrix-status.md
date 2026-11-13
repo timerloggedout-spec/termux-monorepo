@@ -1,12 +1,12 @@
-# Lane matrix status (2026-11-13T13:53:51Z)
+# Lane matrix status (2026-11-13T13:56:27Z)
 
-- Master: `5f90fe333a7a55282aee1ade6e7bd74a0a53cf6d`
-- Open PRs: **374**
+- Master: `75ff0e3f2d3519bc3afbea974e35d1a753e4189a`
+- Open PRs: **373**
 - Oldest: #47 (99.92d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | 121 |
+| CANDIDATE | 120 |
 | EXTRACT | 6 |
 | NEED_EVIDENCE | 78 |
 | SUPERSEDE | 169 |
@@ -14,7 +14,7 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 73 |
+| fresh | 72 |
 | mid | 236 |
 | stale | 38 |
 
@@ -22,7 +22,7 @@
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #1436 | 23.3 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #1436 | 23.31 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 12.9 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 10.4 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 9.71 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
@@ -36,19 +36,19 @@
 | #684 | 53.81 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 51.26 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 43.17 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 42.3 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #990 | 42.31 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 41.04 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 25.19 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
-| #1441 | 23.25 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
-| #1469 | 23.03 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1441 | 23.26 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 23.04 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 23.03 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 22.48 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 22.23 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 22.24 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 22.23 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 22.23 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 22.22 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 22.2 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 21.53 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1537 | 22.21 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1557 | 21.54 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 20.45 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 20.45 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 20.44 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

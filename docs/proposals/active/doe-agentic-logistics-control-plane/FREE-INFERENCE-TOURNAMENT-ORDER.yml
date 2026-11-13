@@ -26,6 +26,7 @@ purpose:
     - "provider-count competition"
     - "promotional-credit, prepaid, trial or card-gated inference represented as free"
     - "g4f, cookie/HAR, browser-session or unapproved proxy access"
+    - "multi-account quota aggregation, account hopping or cross-account failover used to evade provider limits"
     - "catalog presence or credential presence treated as invocation entitlement"
     - "synthetic simulator runs counted as live DoE observations"
     - "production routing-weight or account-policy mutation"
@@ -48,6 +49,7 @@ system_of_record:
     - "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md"
     - "docs/ops/PROVIDER-BATCH-IMPLEMENTATION.md"
     - "docs/ops/PROVIDER-FREE-INFERENCE.md"
+    - "docs/proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md"
     - "docs/ops/DOE-FAMILY.md"
     - "docs/ops/DOE-SCORING-INTAKE.md"
     - "docs/ops/AGENT-EVIDENCE-SUBSTRATE.md"
@@ -140,6 +142,43 @@ current_evidence_snapshot:
       Sparse and stamp-incomplete live build-task baseline; not an endpoint-level
       free-inference tournament and not evidence for an endpoint winner. The new
       inference cohort must be separately identified and must not pool these rows.
+reference_transport_adapters:
+  - id: puter-pool
+    source_repo: "https://github.com/timerloggedout-spec/puter-pool_fork"
+    source_ref: "main"
+    source_commit: "34d284fa616ad0f23fb755100ce0512185d02d71"
+    source_audit: "docs/proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md"
+    role: "OpenAI-/Anthropic-compatible transport candidate over the existing Puter provider family"
+    upstream_provider_family: "puter"
+    existing_population_ref: "g4f/Puter; ops/quota/registry.json#g4f.puter"
+    protocols: ["openai-compatible", "anthropic-compatible"]
+    state: "source_audited_candidate"
+    runtime_eligible: false
+    live_inference_authorized: false
+    account_policy:
+      max_account_scopes_per_configured_instance: 1
+      cross_account_retry: false
+      account_hopping: false
+      aggregate_credit_arithmetic: false
+      max_attempts_per_dispatch: 1
+      paid_fallback: false
+    evidence:
+      no_cost_entitlement: "unknown"
+      account_quota: "unknown"
+      quota_reset: "unknown"
+      exact_model_catalog: "requires fresh trusted observation"
+    blockers:
+      - "README/package.json declare Apache-2.0 while LICENSE contains EPL-2.0"
+      - "Account rotation/retry behavior conflicts with the no-account-hopping tournament invariant"
+      - "CreditTracker computes synthetic limits and is not quota evidence"
+      - "Token custody, raw prompt/completion persistence and API middleware ordering require remediation"
+      - "Provider-supported machine authentication and account-use terms require verification"
+    adoption_rule: >-
+      Reuse as a reference transport only. Implement a native single-account
+      adapter after DPLC-010 acceptance, license/auth/privacy remediation,
+      exact-model evidence and provider-specific entitlement/quota verification.
+      Do not count the gateway as a new provider family or endpoint until the
+      exact upstream model and configured instance are evidenced.
 population_model:
   unit_identity:
     tuple:
@@ -401,6 +440,9 @@ stages:
       - "No automatic merge, deploy, account mutation or routing-weight change."
       - "Negative, blocked and inconclusive results remain queryable."
 safety:
+  no_cross_account_retry: true
+  no_synthetic_quota_or_credit_arithmetic: true
+  no_raw_provider_token_persistence: true
   no_live_inference_during_design_or_simulation: true
   no_credentials_or_account_mutations: true
   no_paid_fallback_or_promotional_credit_substitution: true

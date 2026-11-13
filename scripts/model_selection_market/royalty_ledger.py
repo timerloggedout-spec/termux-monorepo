@@ -77,7 +77,7 @@ def _empty() -> dict[str, Any]:
     return {
         "origins": {}, "derivatives": {}, "artifacts": {}, "policies": {}, "contributions": {}, "settlement_keys": {},
         "accruals": {}, "payables": {}, "settlements": {}, "reversals": {},
-        "disputes": {}, "supersessions": {}, "ids": {},
+        "disputes": {}, "supersessions": {}, "supersession_ids": {}, "ids": {},
     }
 
 
@@ -318,7 +318,7 @@ class RoyaltyLedger:
                 replacement = _text(payload["replacement_artifact_id"], "replacement_artifact_id")
                 reason = _text(payload["reason"], "reason")
                 evidence = _digest(payload["evidence_digest"], "evidence_digest")
-                if sid in state["supersessions"] or prior not in state["artifacts"] or replacement not in state["derivatives"] or prior == replacement:
+                if sid in state["supersession_ids"] or prior not in state["artifacts"] or replacement not in state["derivatives"] or prior == replacement:
                     raise RoyaltyLedgerError("invalid supersession reference")
                 if prior in state["supersessions"]:
                     raise RoyaltyLedgerError("artifact already has a superseding artifact")

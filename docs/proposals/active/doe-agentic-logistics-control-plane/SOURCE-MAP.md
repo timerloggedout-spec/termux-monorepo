@@ -26,6 +26,15 @@
 | #5183 + #5136 + #5176 + #4979 | Participant clones, identity and executor/admission sequencing. | No participant issuance or provisioning outside these gates. |
 | #5189 | Specialist-role registry proposal includes control-systems-specialist and optimization-researcher. | Extend/match existing role contracts; no parallel registry. |
 
+## Validated ML platform research input
+
+The owner-ingested [platform validation set](https://github.com/timerloggedout-spec/termux-monorepo/tree/master/ml/labbook/platform-validation-2026-11-03) is a separate research source, not an owned upstream dependency and not an adoption decision. It was committed to master at `e4082fa6cde41c31cbbd62322143a1fe45631122` and contains:
+
+- `SYNTHESIS.md`: comparative design record across MLflow, Metaflow, ClearML, ZenML, Flyte, MLRun, Kubeflow Pipelines, Dagster, Kedro and DVC.
+- `VALIDATION.md`, `VALIDATION_Dagster.md`, `VALIDATION_DVC.md`, `VALIDATION_MLRun.md`, `VALIDATION_ClearML.md`, `VALIDATION_flyte.md`: platform-specific workload, environment, read-back and verdict evidence.
+
+**Decision use:** derive requirements for local queryable run records, append-only asset history, portable native-format/content-addressed artifacts, explicit pipeline IR/node verdicts, independent-process reproduction and failure transparency. Preserve each report's verified/claimed/unestablished distinctions. The MLRun source-server/SQLite and mock-serving experiments do not establish Kubernetes/Iguazio or a live serving endpoint; Flyte cluster behavior is likewise unestablished. See RFP §4 and ARCHITECTURE.md for the resulting constraints.
+
 ## Neighboring repository excluded from the LangChain ecosystem set
 
 - timerloggedout-spec/LibreChat_fork was returned by an account-wide search for the word LangChain, but its current README does not mention LangChain or LangGraph. It is therefore not counted as a LangChain ecosystem dependency in this proposal. It may be evaluated separately as a chat/UI surface if a concrete integration requirement appears.

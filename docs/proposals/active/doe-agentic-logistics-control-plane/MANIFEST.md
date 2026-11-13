@@ -42,7 +42,7 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 
 - [x] RECON completed against master and named upstream forks
 - [x] Existing owners, blocked dependencies and no-duplicate boundaries recorded
-- [x] Items DPLC-001 through DPLC-008 itemized
+- [x] Items DPLC-001 through DPLC-009 itemized, including the existing Library RL reproduction/benchmark workstream
 - [ ] Independent reviewer disposition recorded
 - [ ] Proposal accepted before implementation items are promoted
 - [ ] Proposal/RFP content hash and source manifest bound to QDesk/Delphi review

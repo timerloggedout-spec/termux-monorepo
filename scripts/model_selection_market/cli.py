@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Allow `python3 scripts/model_selection_market/cli.py` from repo root
@@ -59,6 +60,23 @@ def _paper_parser(sub: argparse._SubParsersAction) -> None:
     for action in (settle, release):
         action.add_argument("--reservation-id", required=True)
         action.add_argument("--event-id", required=True)
+    cull = actions.add_parser("cull", help="close a participant and disposition every active hold")
+    cull.add_argument("--participant", required=True)
+    cull.add_argument("--decision-id", required=True)
+    cull.add_argument("--reason", required=True)
+    cull.add_argument("--score", type=float)
+    cull.add_argument("--evidence-digest", required=True)
+    cull.add_argument("--captured-at")
+    cull.add_argument("--pool-id", required=True)
+    cull.add_argument("--available-disposition", choices=("retain", "donate"), required=True)
+    cull.add_argument("--reservation-dispositions", default="[]", help="JSON array: [{\"reservation_id\":\"...\",\"disposition\":\"refund|donate\"}]")
+    cull.add_argument("--event-id", required=True)
+    distribute = actions.add_parser("distribute-pool", help="allocate consolidated paper points")
+    distribute.add_argument("--pool-id", required=True)
+    distribute.add_argument("--distribution-id", required=True)
+    distribute.add_argument("--reason", required=True)
+    distribute.add_argument("--allocations", required=True, help="JSON array: [{\"recipient\":\"...\",\"units\":N}]")
+    distribute.add_argument("--event-id", required=True)
 
 
 def _paper_command(args: argparse.Namespace) -> dict:
@@ -86,6 +104,18 @@ def _paper_command(args: argparse.Namespace) -> dict:
         graph.settle(args.reservation_id, event_id=args.event_id, recipient=args.recipient)
     elif action == "release":
         graph.release(args.reservation_id, event_id=args.event_id, reason=args.reason)
+    elif action == "cull":
+        dispositions = json.loads(args.reservation_dispositions)
+        graph.cull_participant(
+            args.participant, event_id=args.event_id, decision_id=args.decision_id,
+            reason=args.reason,
+            score_snapshot={"score": args.score, "evidence_digest": args.evidence_digest,
+                            "captured_at": args.captured_at or datetime.now(timezone.utc).isoformat()},
+            pool_id=args.pool_id, available_disposition=args.available_disposition,
+            reservation_dispositions=dispositions)
+    elif action == "distribute-pool":
+        graph.distribute_pool(args.pool_id, json.loads(args.allocations), event_id=args.event_id,
+                              distribution_id=args.distribution_id, reason=args.reason)
     return graph.snapshot()
 
 

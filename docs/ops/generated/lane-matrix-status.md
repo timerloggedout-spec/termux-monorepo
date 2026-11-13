@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-13T14:32:46Z)
+# Lane matrix status (2026-11-13T14:34:27Z)
 
-- Master: `43511c3f2760d5d81b6d3641e3b1b7a58d4d506d`
+- Master: `eec46c8e7e163f4b8727df5a38a8c7cee3f0132d`
 - Open PRs: **375**
 - Oldest: #47 (99.95d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -29,13 +29,13 @@
 | #4898 | 9.08 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 6.98 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 99.95 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 97.69 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 97.7 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 96.56 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 59.28 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 55.86 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 53.84 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 51.29 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 43.19 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 43.2 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 42.33 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 41.07 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 25.22 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
@@ -55,7 +55,7 @@
 | #1626 | 20.35 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 19.59 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 19.51 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 17.54 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1694 | 17.55 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 17.14 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 17.13 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 16.4 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |

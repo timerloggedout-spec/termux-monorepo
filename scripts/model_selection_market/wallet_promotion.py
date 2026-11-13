@@ -1,13 +1,13 @@
 """Read-only wallet promotion preflight; validates policy without provisioning keys or wallets."""
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
-import argparse
-from urllib.parse import urlsplit
 from typing import Any
+from urllib.parse import urlsplit
 
 SCHEMA_VERSION = 1
 SIGNER_SCHEMES = ("vault://", "kms://", "hsm://", "test-hsm://")
@@ -121,6 +121,7 @@ def evaluate_wallet_manifest(
         raise PromotionGateError("approvals must be a list")
     required_roles = {"owner", "security"} if environment == "testnet" else {"owner", "security", "custody"}
     actors, roles = set(), set()
+    role_actors = {}
     for approval in approvals:
         if not isinstance(approval, dict) or set(approval) != {"actor", "role", "approved_at", "evidence_digest"}:
             raise PromotionGateError("each approval requires actor, role, approved_at, evidence_digest")
@@ -128,10 +129,15 @@ def evaluate_wallet_manifest(
         role = _text(approval["role"], "approval.role")
         if actor in actors:
             raise PromotionGateError("approvers must be distinct actors")
+        if role in role_actors:
+            raise PromotionGateError("each approval role must have one accountable actor")
         _timestamp(approval["approved_at"], "approval.approved_at")
         _digest(approval["evidence_digest"], "approval.evidence_digest")
         actors.add(actor)
         roles.add(role)
+        role_actors[role] = actor
+    if role_actors.get("owner") != wallet["owner"]:
+        raise PromotionGateError("owner approval actor must match wallet.owner")
     if not required_roles.issubset(roles):
         raise PromotionGateError("approval roles incomplete: " + ", ".join(sorted(required_roles - roles)))
 

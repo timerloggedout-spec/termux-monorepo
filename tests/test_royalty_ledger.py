@@ -134,7 +134,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
                 event_id="policy-2", policy_id="legacy-residual", version=2,
                 rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
                 approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
-                approval_digest=sha("approval-v2"),
+                approval_digest=sha("approval-v2"), basis_definition="owner_defined_eligible_value",
             )
             self.assertEqual(ledger.snapshot()["policies"]["legacy-residual@2"]["rate_bps"], 900)
 

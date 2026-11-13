@@ -8,7 +8,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import random
+import re
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -120,8 +124,10 @@ def _allocate(pool: int, recipients: list[str], weights: dict[str, int]) -> dict
     return {actor: units for actor, units in allocations.items() if units}
 
 
-def run_backtest(raw_manifest: dict[str, Any]) -> dict[str, Any]:
+def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED") -> dict[str, Any]:
     manifest = validate_manifest(raw_manifest)
+    if code_commit_sha != "UNPINNED" and not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", code_commit_sha):
+        raise ValueError("code_commit_sha must be a full Git SHA")
     rng = random.Random(manifest["seed"])
     policy = manifest["policy"]
     actors = {
@@ -251,6 +257,9 @@ def run_backtest(raw_manifest: dict[str, Any]) -> dict[str, Any]:
     })
     run_manifest = {
         "simulation_version": SIMULATION_VERSION,
+        "implementation": {"path": "scripts/model_selection_market/economy_backtest.py",
+                           "commit_sha": code_commit_sha},
+        "runtime": f"python-{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "manifest": manifest,
         "source": {"kind": "synthetic_cohort", "version": "cohort/v1",
                    "digest": source_digest},
@@ -260,6 +269,7 @@ def run_backtest(raw_manifest: dict[str, Any]) -> dict[str, Any]:
     result = {
         "run_id": run_id,
         "simulation_version": SIMULATION_VERSION,
+        "implementation_commit": code_commit_sha,
         "manifest_digest": run_manifest["manifest_digest"],
         "source": run_manifest["source"],
         "policy_id": policy["policy_id"],
@@ -275,7 +285,7 @@ def run_backtest(raw_manifest: dict[str, Any]) -> dict[str, Any]:
 
 
 def run_matrix(base: dict[str, Any], policies: list[dict[str, Any]],
-               seeds: list[int]) -> dict[str, Any]:
+               seeds: list[int], code_commit_sha: str = "UNPINNED") -> dict[str, Any]:
     if not isinstance(policies, list) or not policies or not isinstance(seeds, list) or not seeds:
         raise ValueError("run_matrix requires policies and seeds")
     policy_ids = [policy.get("policy_id") for policy in policies if isinstance(policy, dict)]
@@ -291,7 +301,7 @@ def run_matrix(base: dict[str, Any], policies: list[dict[str, Any]],
             manifest = dict(base)
             manifest["seed"] = seed
             manifest["policy"] = policy
-            runs.append(run_backtest(manifest))
+            runs.append(run_backtest(manifest, code_commit_sha=code_commit_sha))
     grouped: dict[str, list[dict[str, Any]]] = {}
     for run in runs:
         grouped.setdefault(run["result"]["policy_id"], []).append(run["result"]["metrics"])
@@ -331,11 +341,22 @@ def main() -> int:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--manifest", type=Path)
     source.add_argument("--matrix", type=Path)
+    parser.add_argument("--code-commit", help="full Git commit SHA; defaults to GITHUB_SHA or the checked-out HEAD")
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/economy-backtests"))
     args = parser.parse_args()
+    code_commit_sha = args.code_commit or os.environ.get("GITHUB_SHA")
+    if not code_commit_sha:
+        try:
+            code_commit_sha = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], text=True, stderr=subprocess.DEVNULL
+            ).strip()
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise SystemExit("supply --code-commit or run inside a Git checkout") from exc
+    if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", code_commit_sha):
+        raise SystemExit("--code-commit must be a full Git SHA")
     payload = json.loads((args.manifest or args.matrix).read_text(encoding="utf-8"))
     if args.matrix:
-        matrix = run_matrix(payload["base"], payload["policies"], payload["seeds"])
+        matrix = run_matrix(payload["base"], payload["policies"], payload["seeds"], code_commit_sha=code_commit_sha)
         for run in matrix["runs"]:
             run_id = run["result"]["run_id"]
             write_immutable(args.output_dir / f"{run_id}.manifest.json", run["run_manifest"])
@@ -344,7 +365,7 @@ def main() -> int:
         print(json.dumps({"matrix_digest": matrix["matrix_digest"],
                           "summary": matrix["summary"]}, indent=2, sort_keys=True))
     else:
-        run = run_backtest(payload)
+        run = run_backtest(payload, code_commit_sha=code_commit_sha)
         run_id = run["result"]["run_id"]
         write_immutable(args.output_dir / f"{run_id}.manifest.json", run["run_manifest"])
         write_immutable(args.output_dir / f"{run_id}.result.json", run["result"])

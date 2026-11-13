@@ -23,7 +23,7 @@ Use this skill to design repeatable agent loops with measurable progress, clear 
 
 ## Loop Library sources
 
-- Base documentation: `https://raw.githubusercontent.com/Forward-Future/loopy/main`
+- Base documentation: `https://raw.githubusercontent.com/Forward-Future/loopy/main/README.md`
 - Catalog Markdown: `https://[loop-library-host]/catalog.md`
 - Catalog JSON: `https://[loop-library-host]/catalog.json`
 

@@ -99,7 +99,9 @@ jobs:
         run: |
           mkdir -p _site/data
           cp apps/project-pages-hub/index.html _site/index.html
+          cp apps/project-pages-hub/index.md _site/index.md
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
+          cp apps/tribute-dashboard/matrix.md _site/matrix.md
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css
           cp apps/tribute-dashboard/site-nav.js _site/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then
@@ -171,6 +173,7 @@ jobs:
           cp -a _tribute/. _user_site/tribute/
           cp -a _tribute/. _user_site/help-wanted/
           cp apps/tribute-dashboard/matrix.html _user_site/matrix/index.html
+          cp apps/tribute-dashboard/matrix.md _user_site/matrix/index.md
           cp apps/tribute-dashboard/dashboard.css _user_site/matrix/dashboard.css
           cp apps/tribute-dashboard/site-nav.js _user_site/matrix/site-nav.js
           if [ -f docs/ops/generated/lane-matrix-status.json ]; then

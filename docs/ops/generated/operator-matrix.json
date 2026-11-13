@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 616,
-    "open_prs": 364,
+    "open_prs": 363,
     "pr_classes": {
       "CANDIDATE": 176,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 177,
+      "NEED_EVIDENCE": 176,
       "SUPERSEDE": 0
     }
   },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 60,
-      "prs": 362,
+      "prs": 361,
       "unlabelled_numbers": [
         308,
         388,
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-13T03:57:51Z",
+  "generated_at": "2026-11-13T04:09:08Z",
   "issues_unlabelled": [
     308,
     388,
@@ -188,7 +188,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "5457549ced"
+    "sha": "2055862d6f"
   },
   "prs": [
     {
@@ -3019,7 +3019,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-11-12T10:54:13Z"
@@ -3339,12 +3339,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "fef8773acf",
+      "head_sha": "f5d9401830",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-13T03:56:22Z"
+      "updated_at": "2026-11-13T04:07:06Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3353,12 +3353,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "c9e4f9f658",
+      "head_sha": "331ad711f4",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-13T03:56:24Z"
+      "updated_at": "2026-11-13T04:08:04Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4011,12 +4011,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "9db9db34b7",
+      "head_sha": "f1adaeeb5c",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-13T03:56:48Z"
+      "updated_at": "2026-11-13T04:06:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5277,20 +5277,6 @@
       "number": 5253,
       "title": "fix(rate-limit): #5219 verify script \u2014 page list endpoints explicitly",
       "updated_at": "2026-11-12T15:26:06Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "9206f1049a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5294,
-      "title": "fix(arms): census marker observability + Cohere v2 document id (QUE #5261)",
-      "updated_at": "2026-11-13T03:57:49Z"
     }
   ],
   "schema": "operator-matrix/v1",

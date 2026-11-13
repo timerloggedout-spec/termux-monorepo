@@ -16,7 +16,7 @@
 | ML command-center / repo SSOT | `.agents/skills/ml-command-center/SKILL.md` |
 | Plan Canvas / annotated plan review | `.agents/skills/plan-canvas/SKILL.md` |
 | Minesweeper peers | `.agents/skills/minesweeper-ops/SKILL.md` |
-| Legacy #175 snapshot archive (do not load for operations) | `.agents/skills/operator-hub-175/SKILL.md` |
+| Legacy #175 snapshot archive (historical reference) | `.agents/skills/operator-hub-175/SKILL.md` |
 | ICM-CCTV projection | `.agents/skills/icm-cctv-ops/SKILL.md` |
 | Admin / Termux stewardship | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
 | Agent Readability / Agent Ready | `.agents/skills/agent-readability/SKILL.md` |

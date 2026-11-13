@@ -82,7 +82,7 @@ The list is best treated as a supply map over the lifecycle rather than a packag
 | timerloggedout-spec/langchain_fork | LangChain core README + Python package monorepo. Root LICENSE is MIT. | Framework source and provider/package inventory. |
 | timerloggedout-spec/awesome-LangGraph_fork | Full ecosystem catalog; root LICENSE is CC0 1.0. | Discovery and taxonomy source; does not change the license of linked projects. |
 | timerloggedout-spec/langchain-runnableparallel-company-research_fork | Parallel retrieval, typed Pydantic results and partial-failure preservation; root LICENSE is MIT. | Parallel acquisition and resilient aggregation example. |
-| timerloggedout-spec/multi-agent-observability-opentelemetry_fork | LangGraph + OpenTelemetry reference patterns for routing, latency, errors, state, lineage and token-cost attribution. | Observability patterns; root LICENSE file not found despite README badge. |
+| [timerloggedout-spec/multi-agent-observability-opentelemetry_fork](https://github.com/timerloggedout-spec/multi-agent-observability-opentelemetry_fork) | Default branch `main`; pinned HEAD `cc0030988704c201fb2f6b3eba064f9b1b2a8565`; README blob SHA `53544adf9c226707a687f50295b66dccb3087f98`. README describes LangGraph + OpenTelemetry patterns for routing, latency, errors, state, lineage and token-cost attribution. | Observability reference only; README badge claims MIT, root LICENSE absent in inspected path; license verification remains open. No source adoption. |
 | timerloggedout-spec/LibreChat_fork | Chat UI/product README; no LangChain or LangGraph terms in inspected README. | Neighboring UI candidate, excluded from the core ecosystem set. |
 
 ## Admission and adoption rules

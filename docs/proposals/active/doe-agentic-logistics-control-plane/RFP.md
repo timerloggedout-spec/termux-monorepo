@@ -84,7 +84,7 @@ Register treatments before execution in the existing DoE family. Keep explorator
 
 Candidate factors for a staged design:
 
-1. Planning treatment: declared FIFO/dependency baseline; PDDL planner; CP-SAT/OR-Tools assignment.
+1. Planning treatment: declared FIFO/dependency baseline; PDDL planner; CP-SAT/OR-Tools assignment; existing Library RL learned policy (after reproduction and independent safety verification).
 2. Control treatment: fixed caps; threshold/hysteresis; bounded PI/PID; constrained receding-horizon policy.
 3. Workload class: independent tasks; dependency DAG; parallel fan-out; synthetic logistics/capacity workload.
 4. Plant condition: healthy/fresh; low-but-positive headroom; stale/unknown quota; reset boundary; provider degradation/429.

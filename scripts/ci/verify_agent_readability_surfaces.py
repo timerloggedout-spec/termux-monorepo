@@ -41,6 +41,8 @@ for html_path, md_path, canonical, alternate in PAGES:
     require("/glossary.md" in html, f"{html_path}: glossary link missing")
     require("<main" in html and "</main>" in html, f"{html_path}: main landmark missing")
     require("Skip to main content" in html, f"{html_path}: skip link missing")
+    if html_path == "apps/tribute-dashboard/index.html":
+        require("Evidence and freshness" in html, "Tribute page needs a static evidence/freshness explanation")
 
     blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
     require(bool(blocks), f"{html_path}: JSON-LD missing")

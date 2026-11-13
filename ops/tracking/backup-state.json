@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-13T00:41:51Z",
+ "generated_at": "2026-11-13T00:52:37Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -10,21 +10,33 @@
   {
    "id": "relays",
    "path": "ops/tracking/backup-relays.jsonl",
-   "records": 975
+   "records": 976
   },
   {
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
-   "status": "error:HTTPError: HTTP Error 403: Forbidden",
-   "read_at": "2026-11-13T00:41:50Z"
+   "status": "error:HTTPError: HTTP Error 404: Not Found",
+   "read_at": "2026-11-13T00:52:36Z"
   }
  ],
  "marker": {
-  "state_hash": "fc487b4c07d2e4a337eda5513edf13730a460dfa61933b95bfa0e3ca03a8af79",
-  "export_id": "exp-20261113T002850Z-d04656",
+  "state_hash": "6ab085d84174d994e1b334483f13a054abe6c8daa8625eeb279b305972326e07",
+  "export_id": "exp-20261113T004343Z-aefe26",
   "source": "relay"
  },
  "exports": [
+  {
+   "id": "exp-20261113T004343Z-aefe26",
+   "at": "2026-11-13T00:43:43Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "cf5607b8f667770a8778632b53fb109580f0944c",
+   "state_hash": "6ab085d84174d994e1b334483f13a054abe6c8daa8625eeb279b305972326e07"
+  },
   {
    "id": "exp-20261113T002850Z-d04656",
    "at": "2026-11-13T00:28:50Z",
@@ -11490,14 +11502,14 @@
   }
  ],
  "summary": {
-  "exports": 934,
+  "exports": 935,
   "drills": 1,
   "failed_attempts": 39,
-  "last_export_at": "2026-11-13T00:28:50Z",
-  "last_export_id": "exp-20261113T002850Z-d04656",
+  "last_export_at": "2026-11-13T00:43:43Z",
+  "last_export_id": "exp-20261113T004343Z-aefe26",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 403: Forbidden (read_at 2026-11-13T00:41:50Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-13T00:52:36Z): data may be stale; relays remain live"
  ]
 }

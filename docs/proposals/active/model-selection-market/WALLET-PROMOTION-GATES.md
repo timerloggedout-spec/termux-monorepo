@@ -1,6 +1,6 @@
 # Wallet and testnet promotion gates
 
-**Status:** policy preflight implementation; wallet provisioning and signing remain separately authorized adapter work.
+**Status:** implement policy preflight; route wallet provisioning and signing through separately authorized adapters.
 
 ## Promotion lifecycle
 
@@ -27,7 +27,7 @@ The receipt binds the manifest SHA-256 and returns `action: preflight_only`, wit
 
 ## Code boundary
 
-`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only validation implementing the field and policy constraints documented in `schemas/wallet-promotion.schema.json`. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.
+`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only validation implementing the field and policy constraints documented in `schemas/wallet-promotion.schema.json`. Keep network calls, key generation, signing, funding, wallet creation, and settlement in separately authorized adapters. Its receipt says `preflight_only`; it never asserts that a wallet exists.
 
 Testnet and production use distinct chain IDs, signer namespaces, asset classes, credentials, and operation-idempotency domains. Treat every funding or settlement command as a separately authorized action. Preserve one source of accounting truth per rail and reconcile rail-specific events into governed projections.
 

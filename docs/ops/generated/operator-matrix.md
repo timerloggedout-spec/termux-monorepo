@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-13T03:39:01Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-13T03:42:41Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `af903bdc66` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `bd72bbb35d` (hygiene: queued, smoke: queued). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 616 issues, 364 PRs. PR classes: EXTRACT 11 / CANDIDATE 179 / NEED_EVIDENCE 174 / SUPERSEDE 0.
+**Open inventory:** 616 issues, 363 PRs. PR classes: EXTRACT 12 / CANDIDATE 177 / NEED_EVIDENCE 174 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -24,6 +24,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #4516 | EXTRACT | unlabelled | `80756f2385` | success | success | unstable | feat(schema): integration 5 — schema_version discipline, state stamped end-to-en |
 | #4521 | EXTRACT | unlabelled | `b7306c42b9` | success | success | unstable | feat(ereader): EPUB reader-edition export — generator · TUI · evidence workflow  |
 | #5009 | EXTRACT | unlabelled | `c7bd349123` | success | success | unstable | fix(graph-studio): independent review and GitHub Pages release |
+| #5188 | EXTRACT | unlabelled | `5f712c974c` | success | success | unstable | docs(linguist): implement comparative README evolution (LMP-01) |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -109,7 +110,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
 | #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
-| #3916 | CANDIDATE | unlabelled | `42a4d2f6f7` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3969 | CANDIDATE | unlabelled | `d01e2c211e` | success | success | unknown | ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D pr |
 | #4006 | CANDIDATE | unlabelled | `658953af69` | success | success | unknown | Implement Merged Branch Review Audit and Production Quota Engine |
 | #4007 | CANDIDATE | unlabelled | `8a75972a42` | success | success | unknown | Wire invocation observations into Free-Tier Value evidence projection |
@@ -191,9 +191,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5170 | CANDIDATE | unlabelled | `5ec5902b37` | success | success | unknown | docs: complete non-device BIUDL lane contracts and operating handbook |
 | #5171 | CANDIDATE | unlabelled | `98f184043d` | success | success | unknown | fix(secrets): phantom-secret remediation (dead-branch) |
 | #5187 | CANDIDATE | unlabelled | `3704610023` | success | success | unknown | feat(ci): implement merged branch review audit and deployment quota engine |
-| #5188 | CANDIDATE | unlabelled | `5f712c974c` | success | success | unknown | docs(linguist): implement comparative README evolution (LMP-01) |
-| #5190 | CANDIDATE | unlabelled | `dbd19bd81e` | success | success | unknown | feat(que): add scientific and DO statement psychology experiment lanes |
-| #5197 | CANDIDATE | unlabelled | `671facbd2b` | success | success | unknown | docs(qdesk): add portfolio decision and delivery report contract |
+| #5190 | CANDIDATE | unlabelled | `dbd19bd81e` | success | success | unstable | feat(que): add scientific and DO statement psychology experiment lanes |
+| #5197 | CANDIDATE | unlabelled | `671facbd2b` | success | success | unstable | docs(qdesk): add portfolio decision and delivery report contract |
 | #5198 | CANDIDATE | unlabelled | `689c0fed42` | success | success | unknown | docs(doe): establish governed free-inference endpoint tournament order |
 | #5199 | CANDIDATE | unlabelled | `c783c2ab4d` | success | success | unknown | feat(qdesk): deadline desk — requirement-closure Gantt, T-7d/T-48h/T-12h alarms  |
 | #5205 | CANDIDATE | unlabelled | `8f846326ec` | success | success | unknown | Tribute: whole-corpus versioned audit revisions + census completeness + merge at |
@@ -285,7 +284,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3890 | NEED_EVIDENCE | unlabelled | `df01693c9c` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3890 | NEED_EVIDENCE | unlabelled | `03e58cd2a9` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3916 | NEED_EVIDENCE | unlabelled | `d93e2c7400` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -376,7 +376,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5173 | NEED_EVIDENCE | unlabelled | `c28841fa92` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #5186 | NEED_EVIDENCE | unlabelled | `ab9edf94f0` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #5253 | NEED_EVIDENCE | unlabelled | `470791e6c6` | not_reported | not_reported | unknown | fix(rate-limit): #5219 verify script — page list endpoints explicitly |
-| #5288 | NEED_EVIDENCE | unlabelled | `edd6bbfe07` | queued | queued | unstable | ops(quota): bucket-headroom alerting + probe semantics (QUE #5230) |
 
 ## Families (open)
 
@@ -392,6 +391,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 60 | 362 |
+| unlabelled | 60 | 361 |
 
 **Unlabelled open issues (60):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3752, #4008, #4052, #4212, #4214, #4215, #4216, #4217, #4218, #4219, #4220, #4221, #4222, #4223, #4224, #4225, #4226, #4227, #4228, #4229, #4230, #4231, #4232, #4233, #4234, #4235, #4236, #4237, #4524, #4547, #4718, #4721, #4873, #4963, #4977, #4979, #4994, #5032, #5050, #5071, #5114, #5152, #5157, #5189, #5196, #5223 — worked oldest-first by the issue-lifecycle lane pass.

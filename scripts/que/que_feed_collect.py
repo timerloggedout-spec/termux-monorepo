@@ -30,6 +30,9 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import task_ranking  # noqa: E402  (QUE #5283 ranking method of record)
+
 REPO = "timerloggedout-spec/termux-monorepo"
 API = "https://api.github.com"
 ROOT = Path(__file__).resolve().parents[2]
@@ -150,13 +153,22 @@ def queue_feed(queued, in_progress, tiers_doc, at):
     body = tier_feed(queued, in_progress, tiers_doc, at)
     claims = {"source": "ops/challenge/dispatch-state-feed.json",
               "source_schema": None, "source_generated_at": None,
-              "counts": {}, "active_claims": []}
+              "counts": {}, "active_claims": [], "ranking": None}
     src = ROOT / "ops" / "challenge" / "dispatch-state-feed.json"
     if src.exists():
         d = json.loads(src.read_text())
         claims["source_schema"] = d.get("schema")
         claims["source_generated_at"] = d.get("generated_at")
         claims["counts"] = d.get("counts", {})
+        # QUE #5283: fold the ranking through (score + rank per claim,
+        # claim order + delta from the producer's ranking block).
+        # A pre-#5283 source feed carries no ranking: re-derive it
+        # from the rows under the same method so the fold never
+        # publishes an unranked cycle.
+        ranking = d.get("ranking")
+        if ranking is None and d.get("dispatches"):
+            _, ranking = task_ranking.rank_dispatches(d["dispatches"])
+        claims["ranking"] = ranking
         for disp in d.get("dispatches", []):
             if disp.get("claim"):
                 claims["active_claims"].append({
@@ -164,6 +176,8 @@ def queue_feed(queued, in_progress, tiers_doc, at):
                     "entry": disp.get("entry"),
                     "title": disp.get("title"),
                     "state": disp.get("state"),
+                    "score": disp.get("score"),
+                    "rank": disp.get("rank"),
                     "claim": disp["claim"]})
     return {"schema": "que-queue-feed/v1", "generated_at": iso(at),
             "provenance": {

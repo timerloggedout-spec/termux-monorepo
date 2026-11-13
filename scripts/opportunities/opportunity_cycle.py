@@ -35,6 +35,9 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "que"))
+import task_ranking  # noqa: E402  (QUE #5283 ranking method of record)
+
 NOT_ESTABLISHED = "NOT_ESTABLISHED"
 
 # Coordinator date keys that can serve as the next gate, in preference
@@ -810,11 +813,37 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
             "cost_class": "actions-free",
         },
     }
+    # ---- QUE #5283: task-plane ranking layer (additive). Terminal /
+    # closed opportunities leave the active ranking; sub-opportunity
+    # gates (every parseable coordinator date, not just the next
+    # gate) become their own ranked rows and contribute their nearest
+    # wall to the parent; a wall inside 48h outranks past-gate score.
+    # The per-opportunity score of record above is NOT recomputed.
+    gates_by_id = {}
+    for rec in records:
+        gates = []
+        dates = (rec["record"] or {}).get("dates") or {}
+        if isinstance(dates, dict):
+            for key in sorted(dates):
+                t = parse_instant(dates[key])
+                if t is not None:
+                    gates.append({"name": f"dates.{key}", "at": iso(t)})
+        t = parse_instant((rec["record"] or {}).get("deadline"))
+        if t is not None:
+            gates.append({"name": "deadline", "at": iso(t)})
+        gates_by_id[rec["id"]] = gates
+    ranked_opps = task_ranking.rank_opportunities(
+        feed_opps,
+        {rec["id"]: rec["ingest"]["state"] for rec in records},
+        gates_by_id, now_ref)
     feed = {
         "schema": "que.opportunity-priority/v1",
         "generated_at": iso(finished),
         "run_id": run_id,
-        "opportunities": feed_opps,
+        "rank_method": task_ranking.METHOD,
+        "opportunities": ranked_opps["active"],
+        "terminal_opportunities": ranked_opps["terminal"],
+        "gate_rows": ranked_opps["gate_rows"],
     }
 
     cycles_dir.mkdir(parents=True, exist_ok=True)

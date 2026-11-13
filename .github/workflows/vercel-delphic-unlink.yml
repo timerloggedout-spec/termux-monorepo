@@ -1,0 +1,58 @@
+name: vercel-delphic-unlink
+
+# [MUSEai]@{role:{vercel-specialist}} delphic-observatory defect 2026-11-13 (QDesk route)
+# Root Directory site/delphic-observatory = 404 on master (source lives only on
+# unmerged #5244/#5335 branches) -> every master push fires a failed preview +
+# failure email. Fix = remove the project's git link (same pattern as QUE #5219
+# leg (d), PR #5218): git.deploymentEnabled:false does NOT stop preview attempts;
+# only unlink stops them. Reversible: re-link after #5244/#5335 source lands on
+# master. Production: unlink keeps the last production deployment live; it only
+# stops automatic git-triggered deploys. Dispatch ONLY after the
+# vercel-delphic-probe run is read (production-impact check first).
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-delphic-unlink
+  cancel-in-progress: false
+
+jobs:
+  unlink:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+    steps:
+      - name: Remove git link on delphic-observatory (assert null)
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          P=delphic-observatory
+          {
+            echo "## vercel-delphic-unlink"
+          } >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS -H "$AUTH" "$API/v9/projects/$P?teamId=$SCOPE" > "$RUNNER_TEMP/$P.json"
+          PID=$(jq -r '.id' "$RUNNER_TEMP/$P.json")
+          LINK=$(jq -c '.link // null' "$RUNNER_TEMP/$P.json")
+          echo "$P ($PID) link before: $LINK"
+          if [ "$LINK" = "null" ]; then
+            echo "::notice::$P has no git link (already unlinked)"
+            echo "- $P: no git link (already unlinked)" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          code=$(curl -s -o /tmp/del.json -w '%{http_code}' -X DELETE -H "$AUTH" "$API/v9/projects/$PID/link?teamId=$SCOPE")
+          echo "DELETE link $P = HTTP $code"
+          case "$code" in 200|204) :;; *) cat /tmp/del.json; exit 1;; esac
+          back=$(curl -fsS -H "$AUTH" "$API/v9/projects/$PID?teamId=$SCOPE" | jq -c '.link // null')
+          echo "$P link after: $back"
+          [ "$back" = "null" ] || { echo "::error::$P link still present after DELETE"; exit 1; }
+          echo "::notice::$P git link REMOVED (read-back null)"
+          echo "- $P: git link removed (was $LINK)" >> "$GITHUB_STEP_SUMMARY"

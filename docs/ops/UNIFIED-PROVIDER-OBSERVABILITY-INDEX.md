@@ -178,3 +178,19 @@ One dispatched/executed run = one experiment observation. A catalog/registry ent
 - `experiments/doe/util-1-provider-rotation/DESIGN.json` + `docs/ops/DOE-FAMILY.md` — live provider-rotation experiment contract.
 
 This document records an integration baseline. It does not assert that all integrations are credentialed, deployed, healthy, or approved for production traffic.
+
+## Puter Pool candidate transport — DPLC-010
+
+The owned [Puter Pool fork](https://github.com/timerloggedout-spec/puter-pool_fork) is registered as a **transport candidate over the existing Puter provider family**, not as a new provider family, quota ledger, or scheduler. The source audit and adapter contract are maintained in [PUTER-POOL-INTEGRATION.md](../proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md).
+
+- Provider identity reuses `g4f/Puter` and `ops/quota/registry.json#g4f.puter`; current entitlement, account balance and reset remain unknown.
+- Candidate protocols: OpenAI-compatible and Anthropic-compatible. Exact upstream model identity and configured-instance provenance are mandatory.
+- Initial eligible design: one authorized account scope per configured instance, one attempt per dispatch, no cross-account retry, account hopping, synthetic credit arithmetic or paid fallback.
+- Source blockers: README/package metadata say Apache-2.0 while LICENSE contains EPL-2.0; account-token custody, raw prompt/completion persistence, synthetic CreditTracker limits, API middleware ordering and startup process-kill behavior require remediation.
+- QUE admission precedes provider invocation. DoE reuses the versioned `util-1-provider-rotation` inference cohort and its existing stamps.
+- Telemetry reuses the existing provider-observation, quota, ATES/3L0, Temporal, HindSight, Provenance/Witness and dashboard surfaces. DPLC-010 records the task/QUE/configured-instance correlation fields required before schema promotion.
+- The existing telemetry-ingest sources already include the quota registry and g4f provider harvest. Inspect fresh ingest receipts before asserting current HindSight/Provenance coverage; keep both sinks independent.
+- Bifrost remains evaluation-only; n8n remains an optional adapter; Platform201 remains a deployment-host projection.
+
+**Current state:** source-audited candidate; no native adapter, live entitlement/quota proof, live inference, deployment or production routing promotion.
+

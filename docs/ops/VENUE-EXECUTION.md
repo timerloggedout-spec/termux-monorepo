@@ -50,6 +50,15 @@ DEVIATION on #5137) is the instance this supersedes.
 
 Entry `entries/venue-machinery-proof/` (machinery fixture, not a
 competition entry) binds its `proof-upload` requirement to the
-webform adapter. The venue-execution workflow's run on it —
-upload → public URL → unauthenticated verify → receipt on #5254 —
-is the filing's done-evidence ②, stamped on the filing as it lands.
+webform adapter. Live trail on #5254 (the machinery stamps its own
+receipts): venue refusals named and recorded in the open —
+0x0.st 503 ×2 (egress refusal), litterbox endpoint 404 — then
+tmpfiles.org: runs 43367104139 + 43367428428 **executed +
+unauthenticated verify OK** (public URLs issued, content marker
+confirmed through the venue's public artifact link), and run
+43367748339 committed the SUBMIT-ONCE record to
+`ops/venue-execution/state.json` on master (verified: true).
+Adapter lessons folded back as general features: descriptive
+User-Agent on POST + verify (venues 403/503 library-default
+agents), `url_template` response shaping, and verify
+link-following for preview-page venues.

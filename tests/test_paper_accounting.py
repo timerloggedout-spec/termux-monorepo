@@ -437,8 +437,10 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
         self.assertEqual(len(self.graph.accounting_snapshot()["events"]), 4)
 
     def test_csv_projection_preserves_forfeiture_and_pool_events(self):
+        import csv
         import io
-        from scripts.model_selection_market.paper_wallet import parse_csv, write_csv
+        import json
+        from scripts.model_selection_market.paper_wallet import FIELDS_V1, parse_csv, project_snapshot, write_csv
         self.fund("alice")
         self.fund("bob", 0)
         bet = BetEntry("job", "job", "donated-task", actor_id="alice",
@@ -451,13 +453,25 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
             reservation_dispositions=[{"reservation_id": "hold", "disposition": "donate"}])
         self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 10}],
                                    event_id="distribution", distribution_id="round-1", reason="award")
+        snapshot = self.graph.snapshot()
         output = io.StringIO(newline="")
-        write_csv(self.graph.snapshot(), output)
+        write_csv(snapshot, output)
         rows = parse_csv(output.getvalue())
         self.assertTrue(any(r["record_type"] == "reservation" and r["reservation_status"] == "forfeited" for r in rows))
         self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "cull" for r in rows))
         self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "pool_distribute" for r in rows))
         self.assertTrue(any(r["record_type"] == "account" and r["reservation_owner"] == "pool:season-1" for r in rows))
+        cull_payload = json.loads(next(r["event_payload"] for r in rows if r["record_type"] == "event" and r["event_type"] == "cull"))
+        pool_payload = json.loads(next(r["event_payload"] for r in rows if r["record_type"] == "event" and r["event_type"] == "pool_distribute"))
+        self.assertEqual(cull_payload["decision_id"], "decision")
+        self.assertEqual(pool_payload["allocations"], [{"recipient": "bob", "units": 10}])
+        legacy = io.StringIO(newline="")
+        writer = csv.DictWriter(legacy, fieldnames=FIELDS_V1, lineterminator="\\n")
+        writer.writeheader()
+        for row in project_snapshot(snapshot):
+            row["csv_version"] = 1
+            writer.writerow({field: row.get(field, "") for field in FIELDS_V1})
+        self.assertTrue(parse_csv(legacy.getvalue()))
 
 
     def test_culling_offer_recipient_refunds_payer_reservation(self):

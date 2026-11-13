@@ -22,7 +22,7 @@ def manifest():
                      "recovery_ref": "runbook:recover-1", "reconciliation_ref": "ledger:reconcile-1",
                      "monitoring_ref": "monitor:wallet-1"},
         "approvals": [
-            {"actor": "owner-1", "role": "owner", "approved_at": "2026-11-13T12:00:00+00:00", "evidence_digest": digest},
+            {"actor": "alice", "role": "owner", "approved_at": "2026-11-13T12:00:00+00:00", "evidence_digest": digest},
             {"actor": "security-1", "role": "security", "approved_at": "2026-11-13T12:01:00+00:00", "evidence_digest": digest},
         ],
     }

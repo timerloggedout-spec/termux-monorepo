@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-13T19:01:49Z)
+# Lane matrix status (2026-11-13T19:02:32Z)
 
-- Master: `f7ba8bbdaf0a380aa338fa043c9322b3223538b9`
+- Master: `8981437289d9f77e4862072bd7a6a1469a10a2da`
 - Open PRs: **378**
 - Oldest: #47 (100.14d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -24,8 +24,8 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 23.52 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 13.12 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 10.61 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 9.92 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #4069 | 10.62 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 9.93 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 9.27 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 7.17 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 100.14 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
@@ -61,6 +61,6 @@
 | #1966 | 16.58 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 14.42 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
 | #2577 | 13.78 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
-| #2856 | 12.71 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
+| #2856 | 12.72 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

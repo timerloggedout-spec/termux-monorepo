@@ -8,7 +8,7 @@ The project uses two complementary routines.
 
 | Routine | Cadence | Execution location | Default behavior |
 |---|---:|---|---|
-| Local Resource Sentinel | Every six hours and after reboot | BLU B160V Termux | Deterministic, read-only snapshot; sends a notification only on pressure |
+| Local Resource Sentinel | Every six hours and after reboot | BLU B160V Termux | Deterministic, read-only snapshot; notifies on pressure or unknown health |
 | Daily Project Steward | Once each day | MCP-enabled project task | Read-only device, repository, PR, and issue review; reports priorities |
 
 The local routine must remain minimal. It must not run an LLM, clone repositories, write rolling logs, download packages, start a model, modify swap, or perform GitHub operations.
@@ -18,10 +18,10 @@ The local routine must remain minimal. It must not run an LLM, clone repositorie
 From a clean checkout containing this script:
 
 ```bash
-chmod 700 scripts/termux-resource-sentinel.sh
+chmod 700 .agents/skills/termux-mcp-project-steward/templates/local-resource-sentinel.sh
 termux-job-scheduler \
   --job-id 43107 \
-  --script "$PWD/scripts/termux-resource-sentinel.sh" \
+  --script "$PWD/.agents/skills/termux-mcp-project-steward/templates/local-resource-sentinel.sh" \
   --period-ms 21600000 \
   --battery-not-low true \
   --storage-not-low false \
@@ -38,7 +38,7 @@ The job runs approximately every six hours. Android may defer background work un
 
 ## Pressure Policy
 
-The tracked snapshot marks `PRESSURE` when storage use is at least 95%, available memory is below 150 MiB, or free swap is below 128 MiB. On pressure, the sentinel displays a Termux notification and takes no corrective action.
+The tracked snapshot marks `PRESSURE` when storage use is at least 95%, available memory is below 150 MiB, or free swap is below 128 MiB. A failed or malformed snapshot produces an `UNKNOWN` health notification with captured diagnostics. The sentinel takes no corrective action.
 
 > Do not create swap automatically. Check existing swap and storage first. A swapfile can consume critical flash space, increase device wear, and may not be permitted by Android policy.
 

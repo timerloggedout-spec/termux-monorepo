@@ -73,6 +73,8 @@ Prefer affirmative construction. Use negation where exact technical meaning requ
 
 ## 6. Enforcement
 
+Configure the local commit prompt once: `git config commit.template .github/commit-template.txt`. Replace the `TER-N` placeholder with the linked issue identifier on each commit.
+
 - Treat this document as the canonical standard.
 - Agent instructions and contributor guidance link here.
 - PR template requires a communication-law self-review.

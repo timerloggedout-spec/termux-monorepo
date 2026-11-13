@@ -466,7 +466,7 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
         self.assertEqual(cull_payload["decision_id"], "decision")
         self.assertEqual(pool_payload["allocations"], [{"recipient": "bob", "units": 10}])
         legacy = io.StringIO(newline="")
-        writer = csv.DictWriter(legacy, fieldnames=FIELDS_V1, lineterminator="\\n")
+        writer = csv.DictWriter(legacy, fieldnames=FIELDS_V1, lineterminator="\n")
         writer.writeheader()
         for row in project_snapshot(snapshot):
             row["csv_version"] = 1

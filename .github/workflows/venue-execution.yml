@@ -100,12 +100,19 @@ jobs:
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          # Commit the state file ON TOP of live master (the run's
+          # checkout may be a PR ref — rebasing it is fragile, run
+          # 43367104139). Carry the file across the branch switch.
+          cp ops/venue-execution/state.json /tmp/venue-state.json
           for attempt in 1 2 3; do
+            git fetch origin master
+            git checkout -B venue-state origin/master
+            mkdir -p ops/venue-execution
+            cp /tmp/venue-state.json ops/venue-execution/state.json
             git add ops/venue-execution/state.json
             if git diff --cached --quiet; then echo "state unchanged — no commit"; exit 0; fi
             git commit -m "venue-execution: state for $ENTRY/$REQUIREMENT (run ${{ github.run_id }}) [skip ci]"
             if git push origin HEAD:master; then echo "state pushed (attempt $attempt)"; exit 0; fi
-            git fetch origin master && git rebase origin/master
           done
           echo "state push failed after 3 attempts" >&2
           exit 1

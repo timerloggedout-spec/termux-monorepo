@@ -32,9 +32,14 @@ for html_path, md_path, canonical, alternate in PAGES:
     html = html_file.read_text(encoding="utf-8")
     markdown = md_file.read_text(encoding="utf-8")
 
+    hidden_controls = re.compile(r"[\\u200b\\u200e\\u200f\\u202a-\\u202e\\u2060\\ufeff]")
+    require(hidden_controls.search(html) is None, f"{html_path}: hidden or bidirectional control character found in public HTML")
+    require(hidden_controls.search(markdown) is None, f"{md_path}: hidden or bidirectional control character found in public Markdown")
+
     require(f'<link rel="canonical" href="{canonical}">' in html, f"{html_path}: canonical missing")
     require(bool(re.search(r'<meta name="description" content="[^"]{50,}"', html)), f"{html_path}: useful meta description missing")
-    require('property="og:title"' in html and 'property="og:description"' in html, f"{html_path}: Open Graph metadata missing")
+    require('property="og:title"' in html, f"{html_path}: Open Graph title missing")
+    require(bool(re.search(r'<meta property="og:description" content="[^"]{50,}"', html)), f"{html_path}: P8 requires a populated Open Graph description of at least 50 characters")
     require('name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"' in html, f"{html_path}: AI snippet directives missing")
     require(f'<link rel="alternate" type="text/markdown" href="{alternate}">' in html, f"{html_path}: Markdown alternate missing")
     require('<link rel="describedby" href="/llms.txt">' in html, f"{html_path}: llms.txt discovery missing")

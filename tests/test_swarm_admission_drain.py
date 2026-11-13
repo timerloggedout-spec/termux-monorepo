@@ -89,9 +89,11 @@ def test_workflow_uses_unescaped_github_actions_expressions():
     workflow = (ROOT / ".github" / "workflows" / "swarm-admission-drain.yml").read_text(
         encoding="utf-8"
     )
-    assert r"\\${{" not in workflow
+    assert r"\${{" not in workflow
     assert "app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}" in workflow
     assert "private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}" in workflow
+
+
 def test_latest_fingerprint_reads_newest_receipt():
     old = "a" * 64
     new = "b" * 64

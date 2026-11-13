@@ -57,6 +57,26 @@ class RoyaltyLedgerTests(unittest.TestCase):
             self.assertEqual(snap["payables"]["author-a|paper_point"], 600)
             self.assertEqual(snap["payables"]["author-b|paper_point"], 400)
 
+    def test_accrual_requires_policy_basis_and_eligibility_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = setup_ledger(Path(directory) / "royalties.jsonl")
+            before = ledger.snapshot()["event_count"]
+            common = dict(
+                event_id="accrual-event-1", accrual_id="accrual-1",
+                contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
+                policy_id="legacy-residual", policy_version=1, basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                eligibility_decision_ref="eligibility:decision-1",
+                eligibility_evidence_digest=sha("eligibility-proof"),
+            )
+            with self.assertRaises(RoyaltyLedgerError):
+                ledger.accrue(**common, basis_definition="gross_reward_units")
+            with self.assertRaises(RoyaltyLedgerError):
+                ledger.accrue(**{**common, "event_id": "accrual-event-2"},
+                              basis_definition="owner_defined_eligible_value",
+                              eligibility_evidence_digest="invalid")
+            self.assertEqual(ledger.snapshot()["event_count"], before)
+
     def test_partial_settlement_reduces_only_matching_origin_claim(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = setup_ledger(Path(directory) / "royalties.jsonl")

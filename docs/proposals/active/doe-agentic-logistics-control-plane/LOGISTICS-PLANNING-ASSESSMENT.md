@@ -24,7 +24,7 @@ The Air Cargo semantics provide a useful minimal seed:
 - Unload(c,p,a): cargo is in plane and plane is at airport; cargo becomes at airport.
 - Fly(p,from,to): plane at origin; plane moves to destination.
 
-The README's problem instances define initial states and cargo destination goals for two to four cargo items and two to three airports/planes. This is small enough to serve as a deterministic symbolic fixture after the semantics are encoded and validated.
+The README's problem instances define initial states and cargo destination goals for two to four cargo items and two to four airports and two to three planes. This is small enough to serve as a deterministic symbolic fixture after the semantics are encoded and validated.
 
 
 ### sunsided/pddl-rs — parser candidate, not planner
@@ -80,19 +80,20 @@ Inspected default branch: main.
 **Disposition:** domain vocabulary and workflow-discovery reference only. Do not copy, install, deploy, or treat it as an available logistics execution service without owner authorization and license resolution. The README's claimed smart-contract features are not independently verified by this assessment.
 
 
-## Library multi-agent logistics example — current evidence
+## Library multi-agent logistics example — reproduction status
 
-The library example is `timerloggedout-spec/rl-multiagent-transfer_fork`, not a runnable simulator at this snapshot. Its complete `main` tree contains only `README.md` (tree SHA `8efb5703256167e29bbec4916c6dca6d1e973891`). That README names “Multi-agent Path Planning Based on Reinforcement Learning for Intelligent Logistics applied to a Library” and supplies no model, environment, agents, reward function, data, dependency lock, training/inference code, tests or benchmark. It is a domain scenario and candidate problem statement only.
+The owned `timerloggedout-spec/rl-multiagent-transfer_fork` is a full Python multi-agent library-logistics RL implementation. Its source files, training/evaluation scripts, library topology/data, serialized Q-tables and historical artifacts are inventoried above and in DPLC-009. The earlier README-only description is superseded by that source inventory.
 
-Recovery path:
-1. Locate upstream source/commit or a complete maintained fork; verify license and provenance.
-2. Define the environment: map graph, shelves/locations, pickup/drop tasks, agent capacity, one-way/blocked edges, collision zones, service times and dynamic arrivals.
-3. Establish deterministic baselines first: shortest-path routing, prioritized multi-agent path finding (MAPF), reservation-table planning and OR-Tools CP-SAT/Routing where constraints fit.
-4. Add RL only as a separately compared treatment; pin observation/action/reward definitions, seeds, train/evaluation split and policy checkpoint hashes.
-5. Verify collision-free paths, task completion, fairness, deadlock handling and constraints independently of reward. Measure throughput, makespan, travel distance, wait time, conflicts and energy proxy.
-6. Keep the library environment separate from air-cargo fixtures; share task/resource vocabulary only after both adapters are tested.
+Reproduction path:
+1. Preserve the upstream/fork commit, source-tree identity and hashes for source files, library data, saved Q-tables and historical artifacts.
+2. Resolve the absent root LICENSE and establish provenance/permission before reuse; record the missing dependency manifest and test suite as explicit gaps.
+3. Build an isolated, pinned environment and reproduce the documented single-agent training path with the existing training/curriculum code.
+4. Run the existing saved-policy two-agent visualization/evaluation path separately; distinguish trained-policy provenance from multi-agent evaluation behavior.
+5. Add deterministic fixtures and an independent transition/safety verifier for collisions, deadlocks, task completion, fairness and invalid actions.
+6. Compare against shortest-path routing, prioritized MAPF, reservation-table planning and OR-Tools baselines using fixed maps/seeds and the same task cohort.
+7. Preserve historical Q-tables and outputs separately from newly reproduced artifacts; stamp every new run with source SHA, environment, seed, policy hash and outcome metrics.
 
-No implementation or benchmark can be attributed to this README-only fork.
+This assessment establishes source/artifact presence only. A clean install, successful current-runtime execution, reproducible training/evaluation and benchmark result remain unobserved; DPLC-009 owns those experiments.
 
 ## DPLC-003 implementation boundary
 

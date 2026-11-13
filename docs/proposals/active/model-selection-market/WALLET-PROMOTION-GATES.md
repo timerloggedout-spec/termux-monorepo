@@ -23,11 +23,11 @@ python3 -m scripts.model_selection_market.wallet_promotion wallet-manifest.json 
   --production-key-namespace prod/msm
 ```
 
-The receipt binds the manifest SHA-256 and returns `action: preflight_only`, with provisioning, signing, and funding each marked false. This validator checks policy shape and identity consistency; a trusted external governance workflow must authenticate approvers and verify their evidence digests before provisioning.
+The receipt binds the manifest SHA-256 and returns `action: preflight_only`, with provisioning, signing, and funding each marked false. This validator checks policy shape and identity consistency; a trusted external governance workflow must authenticate approvers and verify their evidence digests before provisioning. The JSON Schema is the structural contract; the Python gate enforces its cross-field rules and environment-specific comparisons.
 
 ## Code boundary
 
-`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only manifest validation against `schemas/wallet-promotion.schema.json` policy shape. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.
+`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only validation implementing the field and policy constraints documented in `schemas/wallet-promotion.schema.json`. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.
 
 Testnet and production use distinct chain IDs, signer namespaces, asset classes, credentials, and operation-idempotency domains. Treat every funding or settlement command as a separately authorized action. Preserve one source of accounting truth per rail and reconcile rail-specific events into governed projections.
 

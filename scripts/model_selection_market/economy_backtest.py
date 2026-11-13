@@ -11,6 +11,8 @@ import json
 import os
 import random
 import re
+import math
+import statistics
 import subprocess
 import sys
 from pathlib import Path
@@ -253,7 +255,6 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
     source_digest = digest({
         "scenario_id": manifest["scenario_id"],
         "participants": manifest["participants"],
-        "seed": manifest["seed"],
     })
     run_manifest = {
         "simulation_version": SIMULATION_VERSION,
@@ -308,11 +309,23 @@ def run_matrix(base: dict[str, Any], policies: list[dict[str, Any]],
     summary = {}
     for policy_id, metrics in sorted(grouped.items()):
         keys = metrics[0].keys()
-        summary[policy_id] = {
+        means = {
             key: sum(float(row[key]) for row in metrics) / len(metrics)
             for key in keys
         }
+        intervals = {}
+        for key in keys:
+            values = [float(row[key]) for row in metrics]
+            deviation = statistics.stdev(values) if len(values) > 1 else 0.0
+            half_width = 1.96 * deviation / math.sqrt(len(values)) if len(values) > 1 else 0.0
+            intervals[key] = {
+                "lower": means[key] - half_width,
+                "upper": means[key] + half_width,
+                "method": "normal_approximation",
+            }
+        summary[policy_id] = means
         summary[policy_id]["replications"] = len(metrics)
+        summary[policy_id]["confidence_intervals_95"] = intervals
     matrix = {
         "matrix_version": "economy-backtest-matrix/v1",
         "simulation_version": SIMULATION_VERSION,

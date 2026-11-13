@@ -1,0 +1,67 @@
+{
+  "baseline_sha": "db16d02b7021941daed890802bec2d22efb94474",
+  "candidate_sha": "db16d02b7021941daed890802bec2d22efb94474",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43428174954"
+  ],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": 1,
+    "dispatch_status": "not_established",
+    "quota_cost_class": "free-tier",
+    "selection_reason": "rotation: first eligible free-tier arm (registry order)",
+    "set_index": 1,
+    "task_class": "entry-build"
+  },
+  "observed_at": "2026-11-13T12:49:33Z",
+  "origin": "live",
+  "outcome": "completion verification: not_established",
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": {
+    "arm": "sealion-llama",
+    "basis": "rotation: first eligible free-tier arm (registry order)",
+    "manager": "build-dispatch",
+    "request": "5334"
+  },
+  "session_id": null,
+  "status": "observed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "sealion",
+    "instance": {
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "41d1eb546dbd2d98e40ebd5e658bb278a166d2b56e409548e572140cf78ea6c6",
+      "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+      "moniker": "providers-dispatch-fix",
+      "provider": "sealion",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+        "sha256": "296e7d97d139f9b8f977edef40a2b6005406473757501ed133f236c120fb650d"
+      },
+      "tools": {
+        "ref": "scripts/ops/build_arm_harness.py#tools",
+        "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+    "provider": "sealion"
+  },
+  "usage": {
+    "source": null,
+    "status": "measured",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

@@ -19,6 +19,7 @@ done-evidence.
 """
 from __future__ import annotations
 
+import math
 import re
 from datetime import datetime, timedelta, timezone
 
@@ -218,10 +219,21 @@ def plan(candidates, now):
                                "kind": "rejected"})
             continue
         scored = dict(cand["score_row"])
+        # QUE #5283 score_dispatch() may return a structured score object.
+        # Normalize it and legacy numeric rows before unary-negation sorting.
+        score_value = scored.get("score")
+        if isinstance(score_value, dict):
+            score_value = score_value.get("score")
+        try:
+            score_value = float(score_value) if score_value is not None and not isinstance(score_value, bool) else 0.0
+            if not math.isfinite(score_value):
+                score_value = 0.0
+        except (TypeError, ValueError, OverflowError):
+            score_value = 0.0
         claims.append({"issue": issue["number"], "claim_class": claim_class,
                        "claimant": claimant,
                        "trigger": "escalation" if escalated else "wall-admission",
-                       "score": scored.get("score")})
+                       "score": score_value})
     claims.sort(key=lambda c: (-(c["score"] or 0), c["issue"]))
     for rank, claim in enumerate(claims, start=1):
         claim["rank"] = rank

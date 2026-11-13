@@ -1387,6 +1387,114 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "shorthand_planning.domain",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "domain",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a PDDL domain definition",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.problem",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "problem",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a PDDL problem instance",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.action",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "action",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a PDDL action schema",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.precondition",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "precondition",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): an action's precondition (a logical formula — operators state it)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.effect",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "effect",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): an action's effect on state",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.fluent",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "fluent",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a predicate whose truth is state (a fluent)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.goal",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "goal",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a problem's goal condition",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.object",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "object",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a PDDL object (typed instance)",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "shorthand_planning.type",
+      "domain_id": "shorthand_planning",
+      "preferred_label": "type",
+      "definition": "Shorthand-domain chord (PDDL — planning/control language of #5195/#5198): a PDDL type",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -3622,6 +3730,132 @@
       "label_id": "lbl-cmd-op-increment",
       "concept_id": "caveman_micro_dense.op_increment",
       "text": "++",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-domain",
+      "concept_id": "shorthand_planning.domain",
+      "text": "dom",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-problem",
+      "concept_id": "shorthand_planning.problem",
+      "text": "prb",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-action",
+      "concept_id": "shorthand_planning.action",
+      "text": "act",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-precondition",
+      "concept_id": "shorthand_planning.precondition",
+      "text": "pre",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-effect",
+      "concept_id": "shorthand_planning.effect",
+      "text": "eff",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-fluent",
+      "concept_id": "shorthand_planning.fluent",
+      "text": "flu",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-goal",
+      "concept_id": "shorthand_planning.goal",
+      "text": "gol",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-object",
+      "concept_id": "shorthand_planning.object",
+      "text": "obj",
+      "label_type": "symbolic_notation",
+      "language": "en",
+      "audience": "expert",
+      "register": "formal",
+      "status": "candidate",
+      "source_ids": [
+        "owner-order-caveman-v2-2026-11-04",
+        "issue-320"
+      ]
+    },
+    {
+      "label_id": "lbl-sh-shorthand_planning-type",
+      "concept_id": "shorthand_planning.type",
+      "text": "typ",
       "label_type": "symbolic_notation",
       "language": "en",
       "audience": "expert",

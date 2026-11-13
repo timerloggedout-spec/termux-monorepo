@@ -1,6 +1,6 @@
 {
   "schema": "integration-observability-index/v1",
-  "generated_at": "2026-11-05",
+  "generated_at": "2026-11-13",
   "kind": "static_inventory_contract",
   "canonical_results_index": "ops/telemetry/results-index.json",
   "systems": [
@@ -102,6 +102,14 @@
       "role": "OpenAI-compatible and Anthropic-compatible LLM gateway",
       "observed_state": "authenticated dynamic GET /v1/models adapter and unit tests added in PR; owner reports API key provisioned; authenticated account model discovery pending workflow evidence; per-inference quota/token/usage and performance metrics are provider-logged per owner; inference not admitted",
       "authority": "official provider guide and per-key model catalogue"
+    },
+    {
+      "id": "puter-pool",
+      "domain": "llm_provider_gateway",
+      "status": "source_audited_candidate",
+      "role": "OpenAI-compatible and Anthropic-compatible transport candidate over the existing Puter provider family",
+      "observed_state": "Pinned fork source inspected; no native adapter, live account authentication, authoritative no-cost entitlement, quota observation or production invocation established. Source LICENSE conflicts with README/package metadata.",
+      "authority": "DPLC-010 proposal; existing g4f/Puter provider population and ops/quota/registry.json#g4f.puter remain canonical"
     }
   ],
   "shared_observation_contract": {
@@ -143,7 +151,19 @@
       "private_context",
       "unredacted_errors"
     ],
-    "provider_metric_passthrough": "Preserve additional provider-reported usage/quota/performance metric names and values in a sanitized allowlisted metrics object with source and observed_at; do not synthesize absent metrics."
+    "provider_metric_passthrough": "Preserve additional provider-reported usage/quota/performance metric names and values in a sanitized allowlisted metrics object with source and observed_at; do not synthesize absent metrics.",
+    "proposed_correlation_extensions": {
+      "status": "proposed_under_DPLC-010; canonical schema change pending acceptance",
+      "fields": [
+        "task_ref",
+        "que_dispatch_ref",
+        "configured_instance_key",
+        "endpoint_or_route_id",
+        "account_scope_ref",
+        "source_sha"
+      ],
+      "rule": "Bind one upstream attempt to the canonical task, QUE admission, DoE instance and workflow run; use opaque account scope only."
+    }
   },
   "quota_contract": {
     "existing_implementations_to_extend": [
@@ -189,6 +209,8 @@
     "Platform201 is a host and registry entry, not a telemetry backend",
     "Witness attestations reference canonical evidence digests",
     "ForeSight is the existing radar/evidence-spine system; do not create a duplicate research registry",
-    "catalog discovery does not grant quota, credential, health, or runtime admission"
+    "catalog discovery does not grant quota, credential, health, or runtime admission",
+    "Puter Pool is a transport adapter over the existing Puter provider family, not a new provider family or quota ledger",
+    "Puter Pool account rotation, cross-account retries and synthetic credit arithmetic are excluded from free-inference eligibility"
   ]
 }

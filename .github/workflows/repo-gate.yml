@@ -55,6 +55,9 @@ jobs:
       - name: MSM economy backtest contracts
         run: python3 -B -m unittest discover -s tests -p 'test_economy_backtest.py' -v
 
+      - name: MSM origin royalty ledger contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_royalty_ledger.py' -v
+
       - name: workflow_run contract
         run: python3 scripts/ci/workflow_run_contract.py
 

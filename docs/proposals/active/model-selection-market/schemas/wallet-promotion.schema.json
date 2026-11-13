@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/wallet-promotion.schema.json",
+  "title": "Wallet Promotion Manifest",
+  "description": "Read-only policy preflight input. Provisioning, signing, funding, and settlement require separate authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "environment", "asset_class", "wallet", "chain", "limits", "controls", "approvals"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "environment": { "enum": ["testnet", "production"] },
+    "asset_class": { "enum": ["test_token", "production_asset"] },
+    "wallet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wallet_id", "owner", "key_namespace", "signer_ref"],
+      "properties": {
+        "wallet_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "owner": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "key_namespace": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "signer_ref": { "type": "string", "maxLength": 512, "pattern": "^(vault|kms|hsm|test-hsm)://.+" }
+      }
+    },
+    "chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chain_id", "rpc_url"],
+      "properties": {
+        "chain_id": { "type": "integer", "minimum": 1 },
+        "rpc_url": { "type": "string", "format": "uri", "pattern": "^https://" }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["per_transaction", "daily", "lifetime"],
+      "properties": {
+        "per_transaction": { "type": "integer", "minimum": 1 },
+        "daily": { "type": "integer", "minimum": 1 },
+        "lifetime": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dual_control", "revocation_ref", "recovery_ref", "reconciliation_ref", "monitoring_ref"],
+      "properties": {
+        "dual_control": { "const": true },
+        "revocation_ref": { "type": "string", "minLength": 1 },
+        "recovery_ref": { "type": "string", "minLength": 1 },
+        "reconciliation_ref": { "type": "string", "minLength": 1 },
+        "monitoring_ref": { "type": "string", "minLength": 1 },
+        "custody_review_ref": { "type": "string", "minLength": 1 },
+        "legal_review_ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actor", "role", "approved_at", "evidence_digest"],
+        "properties": {
+          "actor": { "type": "string", "minLength": 1 },
+          "role": { "enum": ["owner", "security", "custody"] },
+          "approved_at": { "type": "string", "format": "date-time" },
+          "evidence_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "environment": { "const": "testnet" } }, "required": ["environment"] },
+      "then": {
+        "properties": {
+          "asset_class": { "const": "test_token" },
+          "approvals": { "minItems": 2 },
+          "controls": { "not": { "anyOf": [{ "required": ["custody_review_ref"] }, { "required": ["legal_review_ref"] }] } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "environment": { "const": "production" } }, "required": ["environment"] },
+      "then": {
+        "properties": {
+          "asset_class": { "const": "production_asset" },
+          "approvals": { "minItems": 3 },
+          "controls": { "required": ["custody_review_ref", "legal_review_ref"] }
+        }
+      }
+    }
+  ]
+}

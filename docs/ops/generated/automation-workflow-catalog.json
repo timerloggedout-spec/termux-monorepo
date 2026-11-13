@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "92d2bafd799b31e7791df542723ee1ac56b44cca08c05e3d0a78c9f4405121e0",
-  "workflow_count": 311,
+  "source_fingerprint": "14335945f45003890a5ba3b5df4a13fc2eba2e77ac3397b32fd9ae96303071fd",
+  "workflow_count": 313,
   "workflows": [
     {
       "action_pins": [],
@@ -5494,6 +5494,36 @@
       ],
       "name": "vercel-batch-deploy",
       "path": ".github/workflows/vercel-batch-deploy.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vercel-delphic-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "vercel-delphic-probe",
+      "path": ".github/workflows/vercel-delphic-probe.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: vercel-delphic-unlink cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "unlink"
+      ],
+      "name": "vercel-delphic-unlink",
+      "path": ".github/workflows/vercel-delphic-unlink.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

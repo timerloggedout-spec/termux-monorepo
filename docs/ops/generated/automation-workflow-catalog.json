@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "271758ff9fc92423df8b2d7f14dd58840e5dfcac0f5e0d04600a174069cfc04e",
-  "workflow_count": 308,
+  "source_fingerprint": "660bc586f748a72423c1b390fba26276d4c19c7f1fecd7bad0a8c4028e010f62",
+  "workflow_count": 309,
   "workflows": [
     {
       "action_pins": [],
@@ -3054,6 +3054,21 @@
       "triggers": [
         "push",
         "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "matrice"
+      ],
+      "name": "matrice-search",
+      "path": ".github/workflows/matrice-search.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

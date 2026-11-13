@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-13T05:45:30Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-13T06:14:09Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-13T05:45:29Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`38580` read_at=`2026-11-13T05:45:29Z`
+Sources: PR feed read_at=`2026-11-13T06:14:08Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`38828` read_at=`2026-11-13T06:14:08Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown=8
 
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #5020 `a07d479c493f` 2026-11-06T01:54:38Z | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5069 `a60dd2b068f5` 2026-11-07T19:30:33Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5293 `4c6e8f643a4c` 2026-11-13T03:54:46Z | land/close PR #5258 — feat(ops): #5160 autoQuotaCadence — deterministic pool generation + cadence derivation |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5253 — fix(rate-limit): #5219 verify script — page list endpoints explicitly |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5238 `1b573fde5351` 2026-11-12T14:41:48Z | land/close PR #5222 — docs(architecture): reconcile swarm routing control planes |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |
@@ -67,4 +67,4 @@ Campaigns: 18 · joined: 2 · distinct instances: 11 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 121/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 120/150 (extend ops/tracking/projects.json match rules)

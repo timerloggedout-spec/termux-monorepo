@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-12T13:14:25.053926Z`
+Observed: `2026-11-13T12:16:23.845637Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-11-12T13:14:25.053926Z`
 
 ## Changes since previous snapshot
 
-- **Added (58):** `EduKru/An-Optimization-Portfolio-Decision-Science`, `ElinaKapetanaki/VRP-VNS-Open-Routes`, `Friedrich-M/AGV`, `Funkmyster/awesome-supply-chain`, `Hiago013/rl-multiagent-transfer`, `IASSCMS/Logistics`, `JuliaPlanners/PDDL.jl`, `Kchu/LLM-MAP`, `MrRobb/pddl-parser`, `Nebulyn-Labs/MediFlow`, `NeiH4207/evrp-python`, `NirmalKBandara/Planning-using-PDDL`, `PontusHanssen/pddl.vim`, `SSCIPaperSubmitter/ssciPDDLPlanner`, `SilentCoderHere/aihub`, `Tarrasch/pddl.vim`, `TonGarcia/aind-planning-cargo`, `TwgInternational/International-Logistics`, `Tyranitar-design/logistics-route-planning`, `angelina-momin/supply-chain-logistics-network-planning`, `autonull/planninj`, `blue-army/ai-planning`, `bran2ff/planning-domain-definition-language`, `chripiermarini/decision-intelligence-logistics-engine`, `djcroissant/getyrbeta`, `elbaulp/grado_informatica_tsi_PDDL-Problems`, `erynrigley/PDDL--Planning-Domain-Definition-Language`, `fernandezja/pddl-experiments`, `gerryai/pddl-parser`, `greenHamberger/ffm-logistics-planning`, `hoangchunghien/AI-Planning`, `jamesrequa/AI-Planning`, `jan-dolejsi/vscode-pddl-samples`, `javakian/AI-Planning-Domain-Definition-Language`, `jesusjosezapata99-jpg/Cendaro`, `jjriccardo42/transcend`, `koosoli/OpenShotDesigner`, `langchain-ai/langchain`, `masaisaji/space-logistics-optimization`, `midhunsezhi/LogisticsPlanning`, `murwansiddig/msp_models_for_adaptive_disaster_relief_logistics_planning`, `obsidianmd/obsidian-skills`, `pogoba/foxhole-screenparse`, `saadmaz/Nexora_Waypoint`, `samirsaci/budget-planning`, `samirsaci/supply-planning`, `samirsaci/workforce-planning`, `sunsided/pddl-rs`, `suntodai/AIND-Planning`, `syanoska/advanced-excel-logistics-system`, `tiagomonteiro0715/SymbolicAIHarvest`, `timerloggedout-spec/AI-Planning_fork-PDDL-air-transport`, `timerloggedout-spec/ab-download-manager_fork`, `timerloggedout-spec/aihub_fork`, `timerloggedout-spec/langchain_fork`, `timerloggedout-spec/rl-multiagent-transfer_fork`, `university-works/transport-logistics`, `ysharc/doamin-independent-planner`
-- **Removed (2):** `kepano/obsidian-skills`, `krishnakanthb13/jules_api_cli`
-- **Provenance changed (3):** `frappe/gantt` (issue, starred → starred), `gravitee-io/gravitee-api-management` (issue, starred → starred), `timerloggedout-spec/termux-monorepo` (issue, owned, starred → owned, starred)
+- **Added (35):** `A-make/awesome-control-theory`, `DiffEqML/torchdyn`, `Habrador/Unity-Control-systems-Tutorial`, `JuliaControl/ControlSystems.jl`, `JuliaPOMDP/POMDPs.jl`, `MikkoDT/ECE_425_Control_System_Engineering_SirMikko`, `MizuhoAOKI/path_tracking_catalog`, `OpenOCL/OpenOCL`, `YangFei9606/Control-Engineering-in-Intelligent-Transportation-Systems`, `anassinator/ilqr`, `centerforaisafety/emergent-values`, `clintschad/control_systems_engineering_nise`, `cybergalactic/MSS`, `cybergalactic/PythonVehicleSimulator`, `drgona/ML_and_control_buildings_energy`, `dylewsky/Data_Driven_Science_Python_Demos`, `dynamicslab/databook_matlab`, `ethz-adrl/control-toolbox`, `example42/psick`, `giacomo-b/CppRobotics`, `krishnakanthb13/jules_api_cli`, `liuskywalkerjskd/Control-Note`, `microsoft/AirSim`, `mohammadrezwankhan/matlab-simulink-energy-lab`, `momalab/ICSREF`, `neurobionics/onshape-robotics-toolkit`, `nsacyber/GRASSMARLIN`, `pathsim/pathsim`, `pnnl/neuromancer`, `pymor/pymor`, `roboterax/humanoid-gym`, `ros-controls/ros2_control`, `statikmaba-hub/MABA-STATIK-2026`, `thomasfermi/Algorithms-for-Automated-Driving`, `timerloggedout-spec/awesome-control-theory_fork`
+- **Removed (1):** `WebDesignPastor/BracketZenith`
+- **Provenance changed (1):** `timerloggedout-spec/listinglens` (owned → owned, starred)
 
 ## Owned
 
@@ -487,7 +487,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/fcc-salon-appointment-scheduler](https://github.com/timerloggedout-spec/fcc-salon-appointment-scheduler) | owned | termux | medium | — |
 | [timerloggedout-spec/fcc-world-cup-database](https://github.com/timerloggedout-spec/fcc-world-cup-database) | owned | termux | medium | — |
 | [timerloggedout-spec/iOS-Termux_fork](https://github.com/timerloggedout-spec/iOS-Termux_fork) | owned, starred | termux | medium | upstream-comparison |
-| [timerloggedout-spec/listinglens](https://github.com/timerloggedout-spec/listinglens) | owned | termux | medium | — |
+| [timerloggedout-spec/listinglens](https://github.com/timerloggedout-spec/listinglens) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/MAD_fork](https://github.com/timerloggedout-spec/MAD_fork) | owned | termux | medium | upstream-comparison |
 | [timerloggedout-spec/mcp-android-ssh_fork](https://github.com/timerloggedout-spec/mcp-android-ssh_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/mobile-harness_fork](https://github.com/timerloggedout-spec/mobile-harness_fork) | owned | termux | medium | upstream-comparison |
@@ -527,6 +527,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService](https://github.com/timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-ci-action_fork](https://github.com/timerloggedout-spec/awesome-ci-action_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-coderabbit_fork](https://github.com/timerloggedout-spec/awesome-coderabbit_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/awesome-control-theory_fork](https://github.com/timerloggedout-spec/awesome-control-theory_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Awesome-HFT_fork](https://github.com/timerloggedout-spec/Awesome-HFT_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-legal-nlp_fork](https://github.com/timerloggedout-spec/awesome-legal-nlp_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-moonbit_fork](https://github.com/timerloggedout-spec/awesome-moonbit_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |
@@ -977,7 +978,6 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [kaiban-ai/KaibanJS](https://github.com/kaiban-ai/KaibanJS) | starred | agent, ai | medium | dependency-candidate |
 | [Kchu/LLM-MAP](https://github.com/Kchu/LLM-MAP) | starred | agent, ai | medium | — |
 | [Kilo-Org/agentic-path](https://github.com/Kilo-Org/agentic-path) | starred | agent, ai | medium | — |
-| [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | starred | agent, ai | medium | — |
 | [kyegomez/awesome-multi-agent-papers](https://github.com/kyegomez/awesome-multi-agent-papers) | starred | agent, ai | medium | — |
 | [kyegomez/SingLoRA](https://github.com/kyegomez/SingLoRA) | starred | agent, ai | medium | — |
 | [kyegomez/swarms](https://github.com/kyegomez/swarms) | starred, watching | agent, ai | medium | dependency-candidate, workflow-candidate |
@@ -1230,6 +1230,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [juan-xin-cai/manus-cli](https://github.com/juan-xin-cai/manus-cli) | starred | agent, ai, developer-tools | medium | — |
 | [Kilo-Org/kilo-marketplace](https://github.com/Kilo-Org/kilo-marketplace) | starred | agent, ai, developer-tools | medium | — |
 | [kishormorol/agent-command-atlas](https://github.com/kishormorol/agent-command-atlas) | starred | agent, ai, developer-tools | medium | — |
+| [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | starred | agent, ai, developer-tools | medium | — |
 | [larksuite/cli](https://github.com/larksuite/cli) | starred | agent, ai, developer-tools | medium | — |
 | [Laurenfeminine36/google-jules-skill](https://github.com/Laurenfeminine36/google-jules-skill) | starred | agent, ai, developer-tools | medium | workflow-candidate |
 | [leileqiTHU/reverse-cli-anything](https://github.com/leileqiTHU/reverse-cli-anything) | starred | agent, ai, developer-tools | medium | workflow-candidate |
@@ -1492,6 +1493,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [CEDARScript/cedarscript-editor-python](https://github.com/CEDARScript/cedarscript-editor-python) | starred | ai | medium | — |
 | [CEDARScript/cedarscript-grammar](https://github.com/CEDARScript/cedarscript-grammar) | starred | ai | medium | — |
 | [CEDARScript/cedarscript-llm-prompt-engineering](https://github.com/CEDARScript/cedarscript-llm-prompt-engineering) | starred | ai | medium | — |
+| [centerforaisafety/emergent-values](https://github.com/centerforaisafety/emergent-values) | starred | ai | medium | — |
 | [CharlesCreativeContent/toolhouse-examples](https://github.com/CharlesCreativeContent/toolhouse-examples) | starred | ai | medium | dependency-candidate |
 | [charmbracelet/catwalk](https://github.com/charmbracelet/catwalk) | starred | ai | medium | — |
 | [charmbracelet/mods](https://github.com/charmbracelet/mods) | starred | ai | medium | — |
@@ -1696,6 +1698,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [openai/parameter-golf](https://github.com/openai/parameter-golf) | starred | ai | medium | — |
 | [OpenCodeInterpreter/OpenCodeInterpreter](https://github.com/OpenCodeInterpreter/OpenCodeInterpreter) | starred | ai | medium | — |
 | [OpenHUTB/hutb](https://github.com/OpenHUTB/hutb) | starred | ai | medium | — |
+| [OpenOCL/OpenOCL](https://github.com/OpenOCL/OpenOCL) | starred | ai | medium | dependency-candidate |
 | [OpenRouterTeam/ai-sdk-provider](https://github.com/OpenRouterTeam/ai-sdk-provider) | starred | ai | medium | dependency-candidate |
 | [OpenRouterTeam/awesome-openrouter](https://github.com/OpenRouterTeam/awesome-openrouter) | starred | ai | medium | — |
 | [OpenRouterTeam/openrouter-examples](https://github.com/OpenRouterTeam/openrouter-examples) | starred | ai | medium | — |
@@ -1714,6 +1717,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [phi-lira/UniversalShaderExamples](https://github.com/phi-lira/UniversalShaderExamples) | starred | ai | medium | — |
 | [phuryn/grok-build-vscode](https://github.com/phuryn/grok-build-vscode) | starred | ai | medium | — |
 | [PKU-YuanGroup/ChatLaw](https://github.com/PKU-YuanGroup/ChatLaw) | starred | ai | medium | — |
+| [pnnl/neuromancer](https://github.com/pnnl/neuromancer) | starred | ai | medium | dependency-candidate |
 | [PontusHanssen/pddl.vim](https://github.com/PontusHanssen/pddl.vim) | starred | ai | medium | — |
 | [PradyumnaKrishna/Colab-Hacks](https://github.com/PradyumnaKrishna/Colab-Hacks) | starred | ai | medium | — |
 | [Project-DARC/DARC](https://github.com/Project-DARC/DARC) | starred | ai | medium | — |
@@ -1766,6 +1770,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [srbhptl39/MCP-SuperAssistant](https://github.com/srbhptl39/MCP-SuperAssistant) | starred | ai | medium | — |
 | [sruckh/gemsAPI](https://github.com/sruckh/gemsAPI) | starred | ai | medium | — |
 | [StasShkurdau/chests-probably-fair-test](https://github.com/StasShkurdau/chests-probably-fair-test) | starred | ai | medium | — |
+| [statikmaba-hub/MABA-STATIK-2026](https://github.com/statikmaba-hub/MABA-STATIK-2026) | starred | ai | medium | — |
 | [StephanAkkerman/binance-volume-chart](https://github.com/StephanAkkerman/binance-volume-chart) | starred | ai | medium | — |
 | [StephanAkkerman/bitcoin-rainbow-chart](https://github.com/StephanAkkerman/bitcoin-rainbow-chart) | starred | ai | medium | — |
 | [stereolabs/zed-sdk](https://github.com/stereolabs/zed-sdk) | starred | ai | medium | dependency-candidate |
@@ -1996,6 +2001,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [jhlee0409/claude-code-history-viewer](https://github.com/jhlee0409/claude-code-history-viewer) | starred | ai, developer-tools | medium | — |
 | [jonathanbossenger/wp-openrouter-provider](https://github.com/jonathanbossenger/wp-openrouter-provider) | starred | ai, developer-tools | medium | — |
 | [Kochava-Studios/witsy](https://github.com/Kochava-Studios/witsy) | starred | ai, developer-tools | medium | — |
+| [krishnakanthb13/jules_api_cli](https://github.com/krishnakanthb13/jules_api_cli) | starred | ai, developer-tools | medium | — |
 | [levante-hub/levante](https://github.com/levante-hub/levante) | starred | ai, developer-tools | medium | — |
 | [lucasholder/fair](https://github.com/lucasholder/fair) | starred | ai, developer-tools | medium | dependency-candidate |
 | [microsoft/BotFramework-WebChat](https://github.com/microsoft/BotFramework-WebChat) | starred | ai, developer-tools | medium | dependency-candidate |
@@ -2047,6 +2053,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [dockersamples/example-voting-app](https://github.com/dockersamples/example-voting-app) | starred | ai, kubernetes | high | — |
 | [hyperweb-io/starship](https://github.com/hyperweb-io/starship) | starred | ai, kubernetes | high | — |
 | [kai-scheduler/KAI-Scheduler](https://github.com/kai-scheduler/KAI-Scheduler) | starred | ai, kubernetes | high | — |
+| [pathsim/pathsim](https://github.com/pathsim/pathsim) | starred | ai, kubernetes | high | dependency-candidate |
 | [shoeffner/web-openccg](https://github.com/shoeffner/web-openccg) | starred | ai, kubernetes | high | — |
 | [Wbaker7702/atomic](https://github.com/Wbaker7702/atomic) | starred | ai, kubernetes | high | upstream-comparison |
 | [Wbaker7702/webcontainer-api-starter](https://github.com/Wbaker7702/webcontainer-api-starter) | starred | ai, kubernetes | high | upstream-comparison |
@@ -2105,6 +2112,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [nilbuild/developer-roadmap](https://github.com/nilbuild/developer-roadmap) | starred | ai, research | high | — |
 | [reizist/skillopt-claude](https://github.com/reizist/skillopt-claude) | starred | ai, research | high | — |
 | [rjurney/Agile_Data_Code_2](https://github.com/rjurney/Agile_Data_Code_2) | starred | ai, research | high | — |
+| [roboterax/humanoid-gym](https://github.com/roboterax/humanoid-gym) | starred | ai, research | high | — |
 | [satoshi-create/complexity-and-network-webdesign](https://github.com/satoshi-create/complexity-and-network-webdesign) | starred | ai, research | high | — |
 | [shwgao/Awesome-Efficient-AI](https://github.com/shwgao/Awesome-Efficient-AI) | starred | ai, research | high | — |
 | [sinhaparth5/awesome-tech-books](https://github.com/sinhaparth5/awesome-tech-books) | starred | ai, research | high | — |
@@ -2120,6 +2128,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Wbaker7702/Megatron-LM](https://github.com/Wbaker7702/Megatron-LM) | starred | ai, research | high | upstream-comparison |
 | [randyridgley/awesome-aws-research](https://github.com/randyridgley/awesome-aws-research) | starred | ai, research, kubernetes | high | — |
 | [kfrural/dashboard_agro](https://github.com/kfrural/dashboard_agro) | starred | ai, research, platform | high | — |
+| [microsoft/AirSim](https://github.com/microsoft/AirSim) | starred | ai, research, platform | high | — |
 | [ScottfreeLLC/AlphaPy](https://github.com/ScottfreeLLC/AlphaPy) | starred | ai, research, platform | high | — |
 | [Dicklesworthstone/franken_engine](https://github.com/Dicklesworthstone/franken_engine) | starred | ai, research, security | high | — |
 | [samirsaci/budget-planning](https://github.com/samirsaci/budget-planning) | starred | ai, research, security | high | — |
@@ -2464,6 +2473,8 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [davidmrau/mixture-of-experts](https://github.com/davidmrau/mixture-of-experts) | starred | research | high | — |
 | [Dicklesworthstone/frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | starred | research | high | — |
 | [dwmkerr/hacker-laws](https://github.com/dwmkerr/hacker-laws) | starred | research | high | — |
+| [dylewsky/Data_Driven_Science_Python_Demos](https://github.com/dylewsky/Data_Driven_Science_Python_Demos) | starred | research | high | — |
+| [dynamicslab/databook_matlab](https://github.com/dynamicslab/databook_matlab) | starred | research | high | — |
 | [ECSIM/pem-dataset1](https://github.com/ECSIM/pem-dataset1) | starred | research | high | — |
 | [EduKru/An-Optimization-Portfolio-Decision-Science](https://github.com/EduKru/An-Optimization-Portfolio-Decision-Science) | starred | research | high | — |
 | [facebookresearch/mae](https://github.com/facebookresearch/mae) | starred | research | high | — |
@@ -2505,6 +2516,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [PetarV-/GAT](https://github.com/PetarV-/GAT) | starred | research | high | — |
 | [pipefunc/pipefunc](https://github.com/pipefunc/pipefunc) | starred | research | high | dependency-candidate, workflow-candidate |
 | [prakhar1989/awesome-courses](https://github.com/prakhar1989/awesome-courses) | starred | research | high | — |
+| [pymor/pymor](https://github.com/pymor/pymor) | starred | research | high | — |
 | [pysat/pysat](https://github.com/pysat/pysat) | starred | research | high | workflow-candidate |
 | [qiskit-community/qiskit-nature](https://github.com/qiskit-community/qiskit-nature) | starred | research | high | dependency-candidate |
 | [Research-Astute/glowing-rotary-phone](https://github.com/Research-Astute/glowing-rotary-phone) | starred | research | high | — |
@@ -2545,6 +2557,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [johnbillion/awesome-github-actions-security](https://github.com/johnbillion/awesome-github-actions-security) | starred | security | medium | workflow-candidate |
 | [MDK-4203/Competition-Schedular](https://github.com/MDK-4203/Competition-Schedular) | starred | security | medium | — |
 | [mytechnotalent/Reverse-Engineering](https://github.com/mytechnotalent/Reverse-Engineering) | starred | security | medium | — |
+| [nsacyber/GRASSMARLIN](https://github.com/nsacyber/GRASSMARLIN) | starred | security | medium | — |
 | [octo-sts/app](https://github.com/octo-sts/app) | starred | security | medium | — |
 | [q/dedrop](https://github.com/q/dedrop) | starred | security | medium | upstream-comparison |
 | [ruvnet/RuView](https://github.com/ruvnet/RuView) | starred | security | medium | — |
@@ -2621,6 +2634,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/Aegis_fork](https://github.com/timerloggedout-spec/Aegis_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/astro-loop_fork](https://github.com/timerloggedout-spec/astro-loop_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/iOS-Termux_fork](https://github.com/timerloggedout-spec/iOS-Termux_fork) | owned, starred | termux | medium | upstream-comparison |
+| [timerloggedout-spec/listinglens](https://github.com/timerloggedout-spec/listinglens) | owned, starred | termux | medium | — |
 | [timerloggedout-spec/mcp-android-ssh_fork](https://github.com/timerloggedout-spec/mcp-android-ssh_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/NerdCalci_fork](https://github.com/timerloggedout-spec/NerdCalci_fork) | owned, starred | termux | medium | upstream-comparison |
 | [timerloggedout-spec/quirk_fork](https://github.com/timerloggedout-spec/quirk_fork) | owned, starred | termux | medium | upstream-comparison |
@@ -2663,6 +2677,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [4regab/deepterm](https://github.com/4regab/deepterm) | starred | unclassified | medium | — |
 | [521xueweihan/HelloGitHub](https://github.com/521xueweihan/HelloGitHub) | starred | unclassified | medium | — |
 | [7thSamurai/steganography](https://github.com/7thSamurai/steganography) | starred | unclassified | medium | — |
+| [A-make/awesome-control-theory](https://github.com/A-make/awesome-control-theory) | starred | unclassified | medium | — |
 | [A2AxPhoenix/League](https://github.com/A2AxPhoenix/League) | starred | unclassified | medium | — |
 | [Aaron1011/IntentInterceptor](https://github.com/Aaron1011/IntentInterceptor) | starred | unclassified | medium | — |
 | [Abdillah/hypothesis-firefox](https://github.com/Abdillah/hypothesis-firefox) | starred | unclassified | medium | — |
@@ -2717,6 +2732,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [amitness/colab-connect](https://github.com/amitness/colab-connect) | starred | unclassified | medium | — |
 | [amratanshu/Ranked-Retrieval-using-Vector-Space-Model](https://github.com/amratanshu/Ranked-Retrieval-using-Vector-Space-Model) | starred | unclassified | medium | — |
 | [anacds/gantt-plotter](https://github.com/anacds/gantt-plotter) | starred | unclassified | medium | — |
+| [anassinator/ilqr](https://github.com/anassinator/ilqr) | starred | unclassified | medium | — |
 | [ANative-Lab/.github](https://github.com/ANative-Lab/.github) | starred | unclassified | medium | — |
 | [Anderson00/FreeBotCoin](https://github.com/Anderson00/FreeBotCoin) | starred | unclassified | medium | — |
 | [andrivet/ADVobfuscator](https://github.com/andrivet/ADVobfuscator) | starred | unclassified | medium | dependency-candidate |
@@ -2821,6 +2837,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [cjhCoder7/cjhCoder7](https://github.com/cjhCoder7/cjhCoder7) | starred | unclassified | medium | — |
 | [claudioscordino/wip-freegantt](https://github.com/claudioscordino/wip-freegantt) | starred | unclassified | medium | — |
 | [clearbluejar/pyghidra-mcp](https://github.com/clearbluejar/pyghidra-mcp) | starred | unclassified | medium | — |
+| [clintschad/control_systems_engineering_nise](https://github.com/clintschad/control_systems_engineering_nise) | starred | unclassified | medium | — |
 | [cloudsbird/mem0-owui](https://github.com/cloudsbird/mem0-owui) | starred | unclassified | medium | — |
 | [code100x/openrouter](https://github.com/code100x/openrouter) | starred | unclassified | medium | — |
 | [codeitcodes/codeit](https://github.com/codeitcodes/codeit) | starred | unclassified | medium | — |
@@ -2855,6 +2872,8 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [cvxgrp/cvxportfolio](https://github.com/cvxgrp/cvxportfolio) | starred | unclassified | medium | — |
 | [Cyan4973/FiniteStateEntropy](https://github.com/Cyan4973/FiniteStateEntropy) | starred | unclassified | medium | — |
 | [cyber-murmel/hal_espressif](https://github.com/cyber-murmel/hal_espressif) | starred | unclassified | medium | dependency-candidate, upstream-comparison |
+| [cybergalactic/MSS](https://github.com/cybergalactic/MSS) | starred | unclassified | medium | — |
+| [cybergalactic/PythonVehicleSimulator](https://github.com/cybergalactic/PythonVehicleSimulator) | starred | unclassified | medium | — |
 | [cycfi/q](https://github.com/cycfi/q) | starred | unclassified | medium | dependency-candidate |
 | [cynorfleet/HPC](https://github.com/cynorfleet/HPC) | starred | unclassified | medium | — |
 | [czielinski/portfolioopt](https://github.com/czielinski/portfolioopt) | starred | unclassified | medium | — |
@@ -2899,6 +2918,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Dicklesworthstone/frankenscipy](https://github.com/Dicklesworthstone/frankenscipy) | starred | unclassified | medium | — |
 | [Dicklesworthstone/phage_explorer](https://github.com/Dicklesworthstone/phage_explorer) | starred | unclassified | medium | — |
 | [Dicklesworthstone/system_resource_protection_script](https://github.com/Dicklesworthstone/system_resource_protection_script) | starred | unclassified | medium | — |
+| [DiffEqML/torchdyn](https://github.com/DiffEqML/torchdyn) | starred | unclassified | medium | dependency-candidate |
 | [Digital-Forensics-Discord-Server/DFIRGlossary](https://github.com/Digital-Forensics-Discord-Server/DFIRGlossary) | starred | unclassified | medium | — |
 | [Digital-Forensics-Discord-Server/LawEnforcementResources](https://github.com/Digital-Forensics-Discord-Server/LawEnforcementResources) | starred | unclassified | medium | — |
 | [dinusv/qml-gantt](https://github.com/dinusv/qml-gantt) | starred | unclassified | medium | dependency-candidate |
@@ -2918,6 +2938,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Drarig29/brackets-manager.js](https://github.com/Drarig29/brackets-manager.js) | starred | unclassified | medium | dependency-candidate |
 | [DreamerVulpi/bracket](https://github.com/DreamerVulpi/bracket) | starred | unclassified | medium | — |
 | [DreamSoule/ollvm17](https://github.com/DreamSoule/ollvm17) | starred | unclassified | medium | — |
+| [drgona/ML_and_control_buildings_energy](https://github.com/drgona/ML_and_control_buildings_energy) | starred | unclassified | medium | — |
 | [dstdev/awesome-hpc](https://github.com/dstdev/awesome-hpc) | starred | unclassified | medium | — |
 | [dubtran/hypemergence](https://github.com/dubtran/hypemergence) | starred | unclassified | medium | — |
 | [durgasathwik/skillopt-harness](https://github.com/durgasathwik/skillopt-harness) | starred | unclassified | medium | — |
@@ -2940,11 +2961,13 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [EricXu4630/skillopt-walkthrough](https://github.com/EricXu4630/skillopt-walkthrough) | starred | unclassified | medium | — |
 | [eshard/obfuscator-llvm](https://github.com/eshard/obfuscator-llvm) | starred | unclassified | medium | — |
 | [essandess/isp-data-pollution](https://github.com/essandess/isp-data-pollution) | starred | unclassified | medium | — |
+| [ethz-adrl/control-toolbox](https://github.com/ethz-adrl/control-toolbox) | starred | unclassified | medium | dependency-candidate |
 | [evaristocuesta/evaristocuesta](https://github.com/evaristocuesta/evaristocuesta) | starred | unclassified | medium | workflow-candidate |
 | [everestate/chartjs-plugin-waterfall](https://github.com/everestate/chartjs-plugin-waterfall) | starred | unclassified | medium | — |
 | [EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin) | starred, watching | unclassified | medium | — |
 | [EvolvingLMMs-Lab/SkillOpt-Lite](https://github.com/EvolvingLMMs-Lab/SkillOpt-Lite) | starred | unclassified | medium | — |
 | [evroon/bracket](https://github.com/evroon/bracket) | starred | unclassified | medium | — |
+| [example42/psick](https://github.com/example42/psick) | starred | unclassified | medium | — |
 | [exorlive/webwrapper](https://github.com/exorlive/webwrapper) | starred | unclassified | medium | — |
 | [extremeheat/JSPyBridge](https://github.com/extremeheat/JSPyBridge) | starred | unclassified | medium | — |
 | [Eyevinn/channel-engine](https://github.com/Eyevinn/channel-engine) | starred | unclassified | medium | dependency-candidate |
@@ -3024,6 +3047,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [gereeter/tourneys](https://github.com/gereeter/tourneys) | starred | unclassified | medium | — |
 | [getsentry/action-github-app-token](https://github.com/getsentry/action-github-app-token) | starred | unclassified | medium | — |
 | [ggreer/the_silver_searcher](https://github.com/ggreer/the_silver_searcher) | starred | unclassified | medium | — |
+| [giacomo-b/CppRobotics](https://github.com/giacomo-b/CppRobotics) | starred | unclassified | medium | dependency-candidate |
 | [gin66/rusthesia](https://github.com/gin66/rusthesia) | starred | unclassified | medium | — |
 | [gita-vahdatinia/batch-dependabot](https://github.com/gita-vahdatinia/batch-dependabot) | starred | unclassified | medium | — |
 | [github/balanced-employee-ip-agreement](https://github.com/github/balanced-employee-ip-agreement) | starred | unclassified | medium | — |
@@ -3065,6 +3089,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [h4ckf0r0day/obscura-benchmark](https://github.com/h4ckf0r0day/obscura-benchmark) | starred | unclassified | medium | — |
 | [h4ckf0r0day/reCaptchaV3-Invisible-Solver](https://github.com/h4ckf0r0day/reCaptchaV3-Invisible-Solver) | starred | unclassified | medium | — |
 | [h4wkst3r/InvisibilityCloak](https://github.com/h4wkst3r/InvisibilityCloak) | starred | unclassified | medium | — |
+| [Habrador/Unity-Control-systems-Tutorial](https://github.com/Habrador/Unity-Control-systems-Tutorial) | starred | unclassified | medium | — |
 | [haizelabs/dspy-redteam](https://github.com/haizelabs/dspy-redteam) | starred | unclassified | medium | — |
 | [hamaluik/haxe-glm](https://github.com/hamaluik/haxe-glm) | starred | unclassified | medium | — |
 | [hamaluik/kantt](https://github.com/hamaluik/kantt) | starred, watching | unclassified | medium | — |
@@ -3185,11 +3210,13 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [jsbuissnet/icm-architect-plugin](https://github.com/jsbuissnet/icm-architect-plugin) | starred | unclassified | medium | — |
 | [jshint/jshint](https://github.com/jshint/jshint) | starred | unclassified | medium | — |
 | [JuliaCollections/DataStructures.jl](https://github.com/JuliaCollections/DataStructures.jl) | starred | unclassified | medium | — |
+| [JuliaControl/ControlSystems.jl](https://github.com/JuliaControl/ControlSystems.jl) | starred | unclassified | medium | — |
 | [JuliaDiff/FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl) | starred | unclassified | medium | — |
 | [JuliaDiff/ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl) | starred | unclassified | medium | — |
 | [JuliaGPU/GPUArrays.jl](https://github.com/JuliaGPU/GPUArrays.jl) | starred | unclassified | medium | — |
 | [JuliaIO/DiskArrays.jl](https://github.com/JuliaIO/DiskArrays.jl) | starred | unclassified | medium | — |
 | [JuliaPhysics/SolidStateDetectors.jl](https://github.com/JuliaPhysics/SolidStateDetectors.jl) | starred | unclassified | medium | — |
+| [JuliaPOMDP/POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl) | starred | unclassified | medium | — |
 | [JuliaSmoothOptimizers/Krylov.jl](https://github.com/JuliaSmoothOptimizers/Krylov.jl) | starred | unclassified | medium | — |
 | [junuxyz/tiny-speculators](https://github.com/junuxyz/tiny-speculators) | starred | unclassified | medium | — |
 | [justinalsing/speculator](https://github.com/justinalsing/speculator) | starred | unclassified | medium | — |
@@ -3265,6 +3292,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Lisandro79/BeatTheBookie](https://github.com/Lisandro79/BeatTheBookie) | starred | unclassified | medium | — |
 | [liuhuanyong/CognitiveInference](https://github.com/liuhuanyong/CognitiveInference) | starred | unclassified | medium | — |
 | [liuhuanyong/LawCrimeMining](https://github.com/liuhuanyong/LawCrimeMining) | starred | unclassified | medium | — |
+| [liuskywalkerjskd/Control-Note](https://github.com/liuskywalkerjskd/Control-Note) | starred | unclassified | medium | — |
 | [livz/cloacked-pixel](https://github.com/livz/cloacked-pixel) | starred | unclassified | medium | — |
 | [LLM-Red-Team/kimi-cc](https://github.com/LLM-Red-Team/kimi-cc) | starred | unclassified | medium | — |
 | [llSourcell/ChatGPT_Sports_Betting_Bot](https://github.com/llSourcell/ChatGPT_Sports_Betting_Bot) | starred | unclassified | medium | — |
@@ -3331,15 +3359,19 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [mifi/lossless-cut](https://github.com/mifi/lossless-cut) | starred | unclassified | medium | — |
 | [mike-marcacci/angular-waterfall](https://github.com/mike-marcacci/angular-waterfall) | starred | unclassified | medium | dependency-candidate |
 | [mikerenfro/awesome-hpc-sysadmin](https://github.com/mikerenfro/awesome-hpc-sysadmin) | starred | unclassified | medium | — |
+| [MikkoDT/ECE_425_Control_System_Engineering_SirMikko](https://github.com/MikkoDT/ECE_425_Control_System_Engineering_SirMikko) | starred | unclassified | medium | — |
 | [mindspank/WaterfallChart](https://github.com/mindspank/WaterfallChart) | starred | unclassified | medium | — |
 | [mintlify/mdx](https://github.com/mintlify/mdx) | starred | unclassified | medium | — |
 | [mintlify/starter](https://github.com/mintlify/starter) | starred | unclassified | medium | — |
 | [mir-evaluation/mir_eval](https://github.com/mir-evaluation/mir_eval) | starred | unclassified | medium | — |
 | [mislav/rfc](https://github.com/mislav/rfc) | starred | unclassified | medium | — |
 | [mixuala/colab_utils](https://github.com/mixuala/colab_utils) | starred | unclassified | medium | — |
+| [MizuhoAOKI/path_tracking_catalog](https://github.com/MizuhoAOKI/path_tracking_catalog) | starred | unclassified | medium | — |
 | [Mo-Ara/Gemini-API-Master](https://github.com/Mo-Ara/Gemini-API-Master) | starred | unclassified | medium | — |
 | [modaic-ai/gepa-viz](https://github.com/modaic-ai/gepa-viz) | starred | unclassified | medium | — |
 | [Moeditor/Moeditor](https://github.com/Moeditor/Moeditor) | starred | unclassified | medium | — |
+| [mohammadrezwankhan/matlab-simulink-energy-lab](https://github.com/mohammadrezwankhan/matlab-simulink-energy-lab) | starred | unclassified | medium | — |
+| [momalab/ICSREF](https://github.com/momalab/ICSREF) | starred | unclassified | medium | — |
 | [mono/CppSharp](https://github.com/mono/CppSharp) | starred | unclassified | medium | — |
 | [moodysalem/react-tournament-bracket](https://github.com/moodysalem/react-tournament-bracket) | starred | unclassified | medium | — |
 | [moonbit-community/tonyfettes-ds4](https://github.com/moonbit-community/tonyfettes-ds4) | starred, watching | unclassified | medium | — |
@@ -3366,6 +3398,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [navikt/github-app-token-generator](https://github.com/navikt/github-app-token-generator) | starred | unclassified | medium | — |
 | [NeiH4207/evrp-python](https://github.com/NeiH4207/evrp-python) | starred | unclassified | medium | — |
 | [nestjs/nest](https://github.com/nestjs/nest) | starred | unclassified | medium | dependency-candidate |
+| [neurobionics/onshape-robotics-toolkit](https://github.com/neurobionics/onshape-robotics-toolkit) | starred | unclassified | medium | dependency-candidate |
 | [neuronetio/gantt-elastic](https://github.com/neuronetio/gantt-elastic) | starred | unclassified | medium | — |
 | [neuronetio/gantt-schedule-timeline-calendar](https://github.com/neuronetio/gantt-schedule-timeline-calendar) | starred | unclassified | medium | — |
 | [neuropsychology/NeuroKit](https://github.com/neuropsychology/NeuroKit) | starred | unclassified | medium | — |
@@ -3559,6 +3592,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Roger-Sh/SLAM](https://github.com/Roger-Sh/SLAM) | starred | unclassified | medium | — |
 | [roro2239/Stellar](https://github.com/roro2239/Stellar) | starred | unclassified | medium | — |
 | [ros-agriculture/lawn_tractor](https://github.com/ros-agriculture/lawn_tractor) | starred | unclassified | medium | — |
+| [ros-controls/ros2_control](https://github.com/ros-controls/ros2_control) | starred | unclassified | medium | dependency-candidate |
 | [rounakbende10/skillopt](https://github.com/rounakbende10/skillopt) | starred | unclassified | medium | — |
 | [router/Custom-httpd](https://github.com/router/Custom-httpd) | starred | unclassified | medium | — |
 | [router/Distance-Vector](https://github.com/router/Distance-Vector) | starred | unclassified | medium | — |
@@ -3699,6 +3733,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [TheonlyIcebear/Bloxflip-Smart-Bet](https://github.com/TheonlyIcebear/Bloxflip-Smart-Bet) | starred | unclassified | medium | — |
 | [TheUpshot/Military-Surplus-Gear](https://github.com/TheUpshot/Military-Surplus-Gear) | starred | unclassified | medium | — |
 | [thiswillbeyourgithub/WebSend](https://github.com/thiswillbeyourgithub/WebSend) | starred | unclassified | medium | — |
+| [thomasfermi/Algorithms-for-Automated-Driving](https://github.com/thomasfermi/Algorithms-for-Automated-Driving) | starred | unclassified | medium | — |
 | [tianshanghong/awesome-anki](https://github.com/tianshanghong/awesome-anki) | starred | unclassified | medium | — |
 | [tibdex/github-app-token](https://github.com/tibdex/github-app-token) | starred | unclassified | medium | workflow-candidate |
 | [tiimgreen/github-cheat-sheet](https://github.com/tiimgreen/github-cheat-sheet) | starred | unclassified | medium | — |
@@ -3998,7 +4033,6 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Wbaker7702/zed](https://github.com/Wbaker7702/zed) | starred | unclassified | medium | upstream-comparison |
 | [weak1337/Alcatraz](https://github.com/weak1337/Alcatraz) | starred | unclassified | medium | — |
 | [weaviate/retrieve-dspy](https://github.com/weaviate/retrieve-dspy) | starred, watching | unclassified | medium | — |
-| [WebDesignPastor/BracketZenith](https://github.com/WebDesignPastor/BracketZenith) | starred | unclassified | medium | — |
 | [whitewhidow/gource-live](https://github.com/whitewhidow/gource-live) | starred | unclassified | medium | — |
 | [whoeevee/EeveeSpotifyReborn](https://github.com/whoeevee/EeveeSpotifyReborn) | starred | unclassified | medium | — |
 | [wish99kaka/skilloptdiy](https://github.com/wish99kaka/skilloptdiy) | starred | unclassified | medium | — |
@@ -4017,6 +4051,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [xtrn143/hyper-gantt](https://github.com/xtrn143/hyper-gantt) | starred | unclassified | medium | — |
 | [XueFuzhao/awesome-mixture-of-experts](https://github.com/XueFuzhao/awesome-mixture-of-experts) | starred | unclassified | medium | — |
 | [xzygreen/openwebui](https://github.com/xzygreen/openwebui) | starred | unclassified | medium | — |
+| [YangFei9606/Control-Engineering-in-Intelligent-Transportation-Systems](https://github.com/YangFei9606/Control-Engineering-in-Intelligent-Transportation-Systems) | starred | unclassified | medium | — |
 | [Yanxing-Shi/Awesome-HPC](https://github.com/Yanxing-Shi/Awesome-HPC) | starred | unclassified | medium | — |
 | [yashdagar/portfolio-desk](https://github.com/yashdagar/portfolio-desk) | starred | unclassified | medium | — |
 | [YelpArchive/MOE](https://github.com/YelpArchive/MOE) | starred | unclassified | medium | — |
@@ -4675,6 +4710,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService](https://github.com/timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-ci-action_fork](https://github.com/timerloggedout-spec/awesome-ci-action_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-coderabbit_fork](https://github.com/timerloggedout-spec/awesome-coderabbit_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/awesome-control-theory_fork](https://github.com/timerloggedout-spec/awesome-control-theory_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Awesome-HFT_fork](https://github.com/timerloggedout-spec/Awesome-HFT_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-legal-nlp_fork](https://github.com/timerloggedout-spec/awesome-legal-nlp_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-moonbit_fork](https://github.com/timerloggedout-spec/awesome-moonbit_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |
@@ -5207,6 +5243,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [dockersamples/example-voting-app](https://github.com/dockersamples/example-voting-app) | starred | ai, kubernetes | high | — |
 | [hyperweb-io/starship](https://github.com/hyperweb-io/starship) | starred | ai, kubernetes | high | — |
 | [kai-scheduler/KAI-Scheduler](https://github.com/kai-scheduler/KAI-Scheduler) | starred | ai, kubernetes | high | — |
+| [pathsim/pathsim](https://github.com/pathsim/pathsim) | starred | ai, kubernetes | high | dependency-candidate |
 | [shoeffner/web-openccg](https://github.com/shoeffner/web-openccg) | starred | ai, kubernetes | high | — |
 | [Wbaker7702/atomic](https://github.com/Wbaker7702/atomic) | starred | ai, kubernetes | high | upstream-comparison |
 | [Wbaker7702/webcontainer-api-starter](https://github.com/Wbaker7702/webcontainer-api-starter) | starred | ai, kubernetes | high | upstream-comparison |
@@ -5273,6 +5310,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [nilbuild/developer-roadmap](https://github.com/nilbuild/developer-roadmap) | starred | ai, research | high | — |
 | [reizist/skillopt-claude](https://github.com/reizist/skillopt-claude) | starred | ai, research | high | — |
 | [rjurney/Agile_Data_Code_2](https://github.com/rjurney/Agile_Data_Code_2) | starred | ai, research | high | — |
+| [roboterax/humanoid-gym](https://github.com/roboterax/humanoid-gym) | starred | ai, research | high | — |
 | [satoshi-create/complexity-and-network-webdesign](https://github.com/satoshi-create/complexity-and-network-webdesign) | starred | ai, research | high | — |
 | [shwgao/Awesome-Efficient-AI](https://github.com/shwgao/Awesome-Efficient-AI) | starred | ai, research | high | — |
 | [sinhaparth5/awesome-tech-books](https://github.com/sinhaparth5/awesome-tech-books) | starred | ai, research | high | — |
@@ -5290,6 +5328,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Wbaker7702/Megatron-LM](https://github.com/Wbaker7702/Megatron-LM) | starred | ai, research | high | upstream-comparison |
 | [randyridgley/awesome-aws-research](https://github.com/randyridgley/awesome-aws-research) | starred | ai, research, kubernetes | high | — |
 | [kfrural/dashboard_agro](https://github.com/kfrural/dashboard_agro) | starred | ai, research, platform | high | — |
+| [microsoft/AirSim](https://github.com/microsoft/AirSim) | starred | ai, research, platform | high | — |
 | [ScottfreeLLC/AlphaPy](https://github.com/ScottfreeLLC/AlphaPy) | starred | ai, research, platform | high | — |
 | [timerloggedout-spec/alphadesk-terminal](https://github.com/timerloggedout-spec/alphadesk-terminal) | owned | ai, research, platform | high | upstream-comparison |
 | [Dicklesworthstone/franken_engine](https://github.com/Dicklesworthstone/franken_engine) | starred | ai, research, security | high | — |
@@ -5462,6 +5501,8 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [davidmrau/mixture-of-experts](https://github.com/davidmrau/mixture-of-experts) | starred | research | high | — |
 | [Dicklesworthstone/frankensqlite](https://github.com/Dicklesworthstone/frankensqlite) | starred | research | high | — |
 | [dwmkerr/hacker-laws](https://github.com/dwmkerr/hacker-laws) | starred | research | high | — |
+| [dylewsky/Data_Driven_Science_Python_Demos](https://github.com/dylewsky/Data_Driven_Science_Python_Demos) | starred | research | high | — |
+| [dynamicslab/databook_matlab](https://github.com/dynamicslab/databook_matlab) | starred | research | high | — |
 | [ECSIM/pem-dataset1](https://github.com/ECSIM/pem-dataset1) | starred | research | high | — |
 | [EduKru/An-Optimization-Portfolio-Decision-Science](https://github.com/EduKru/An-Optimization-Portfolio-Decision-Science) | starred | research | high | — |
 | [facebookresearch/mae](https://github.com/facebookresearch/mae) | starred | research | high | — |
@@ -5503,6 +5544,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [PetarV-/GAT](https://github.com/PetarV-/GAT) | starred | research | high | — |
 | [pipefunc/pipefunc](https://github.com/pipefunc/pipefunc) | starred | research | high | dependency-candidate, workflow-candidate |
 | [prakhar1989/awesome-courses](https://github.com/prakhar1989/awesome-courses) | starred | research | high | — |
+| [pymor/pymor](https://github.com/pymor/pymor) | starred | research | high | — |
 | [pysat/pysat](https://github.com/pysat/pysat) | starred | research | high | workflow-candidate |
 | [qiskit-community/qiskit-nature](https://github.com/qiskit-community/qiskit-nature) | starred | research | high | dependency-candidate |
 | [Research-Astute/glowing-rotary-phone](https://github.com/Research-Astute/glowing-rotary-phone) | starred | research | high | — |
@@ -5915,7 +5957,9 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [n8n-io/n8n-docs](https://github.com/n8n-io/n8n-docs) | starred | ai | medium | workflow-candidate |
 | [NousResearch/speculators](https://github.com/NousResearch/speculators) | starred, watching | ai | medium | dependency-candidate, upstream-comparison |
 | [openai/evals](https://github.com/openai/evals) | starred | ai | medium | dependency-candidate |
+| [OpenOCL/OpenOCL](https://github.com/OpenOCL/OpenOCL) | starred | ai | medium | dependency-candidate |
 | [OpenRouterTeam/ai-sdk-provider](https://github.com/OpenRouterTeam/ai-sdk-provider) | starred | ai | medium | dependency-candidate |
+| [pnnl/neuromancer](https://github.com/pnnl/neuromancer) | starred | ai | medium | dependency-candidate |
 | [seanchatmangpt/dspygen](https://github.com/seanchatmangpt/dspygen) | starred | ai | medium | dependency-candidate |
 | [SheldonLC/DeepseekWorkerMCP](https://github.com/SheldonLC/DeepseekWorkerMCP) | starred | ai | medium | workflow-candidate |
 | [SocaDLV/TFM](https://github.com/SocaDLV/TFM) | starred | ai | medium | dependency-candidate |
@@ -6131,6 +6175,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/open-router-android-client_fork](https://github.com/timerloggedout-spec/open-router-android-client_fork) | owned | ai, developer-tools, termux | medium | upstream-comparison |
 | [timerloggedout-spec/phone-mcp-server_fork](https://github.com/timerloggedout-spec/phone-mcp-server_fork) | owned | ai, developer-tools, termux | medium | upstream-comparison |
 | [Dicklesworthstone/automated_flywheel_setup_checker](https://github.com/Dicklesworthstone/automated_flywheel_setup_checker) | starred | ai, kubernetes | high | dependency-candidate |
+| [pathsim/pathsim](https://github.com/pathsim/pathsim) | starred | ai, kubernetes | high | dependency-candidate |
 | [Wbaker7702/atomic](https://github.com/Wbaker7702/atomic) | starred | ai, kubernetes | high | upstream-comparison |
 | [Wbaker7702/webcontainer-api-starter](https://github.com/Wbaker7702/webcontainer-api-starter) | starred | ai, kubernetes | high | upstream-comparison |
 | [zakirullin/laminas-servicemanager](https://github.com/zakirullin/laminas-servicemanager) | starred | ai, kubernetes | high | upstream-comparison |
@@ -6406,12 +6451,14 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [deepseek-ai/DeepEP](https://github.com/deepseek-ai/DeepEP) | starred | unclassified | medium | dependency-candidate |
 | [derekvincent/action-awesome-list-updater](https://github.com/derekvincent/action-awesome-list-updater) | starred | unclassified | medium | workflow-candidate |
 | [dhadka/DGantt](https://github.com/dhadka/DGantt) | starred | unclassified | medium | dependency-candidate |
+| [DiffEqML/torchdyn](https://github.com/DiffEqML/torchdyn) | starred | unclassified | medium | dependency-candidate |
 | [dinusv/qml-gantt](https://github.com/dinusv/qml-gantt) | starred | unclassified | medium | dependency-candidate |
 | [dispherical/awesome-readme-workflows](https://github.com/dispherical/awesome-readme-workflows) | starred | unclassified | medium | workflow-candidate |
 | [djeknet/n8n-master-workflows](https://github.com/djeknet/n8n-master-workflows) | starred | unclassified | medium | workflow-candidate |
 | [dk8996/Gantt-Chart](https://github.com/dk8996/Gantt-Chart) | starred | unclassified | medium | dependency-candidate |
 | [Drarig29/brackets-manager.js](https://github.com/Drarig29/brackets-manager.js) | starred | unclassified | medium | dependency-candidate |
 | [EleutherAI/lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) | starred | unclassified | medium | dependency-candidate |
+| [ethz-adrl/control-toolbox](https://github.com/ethz-adrl/control-toolbox) | starred | unclassified | medium | dependency-candidate |
 | [evaristocuesta/evaristocuesta](https://github.com/evaristocuesta/evaristocuesta) | starred | unclassified | medium | workflow-candidate |
 | [Eyevinn/channel-engine](https://github.com/Eyevinn/channel-engine) | starred | unclassified | medium | dependency-candidate |
 | [facebookincubator/muse-gadget-sdk](https://github.com/facebookincubator/muse-gadget-sdk) | starred | unclassified | medium | dependency-candidate |
@@ -6434,6 +6481,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [fullstack-devops/awesome-ci-action](https://github.com/fullstack-devops/awesome-ci-action) | starred | unclassified | medium | workflow-candidate |
 | [g-loot/react-tournament-brackets](https://github.com/g-loot/react-tournament-brackets) | starred | unclassified | medium | dependency-candidate |
 | [gamba-labs/gamba](https://github.com/gamba-labs/gamba) | starred | unclassified | medium | dependency-candidate |
+| [giacomo-b/CppRobotics](https://github.com/giacomo-b/CppRobotics) | starred | unclassified | medium | dependency-candidate |
 | [gitpod-io/openvscode-server](https://github.com/gitpod-io/openvscode-server) | starred | unclassified | medium | upstream-comparison |
 | [google-labs-code/jules-sdk](https://github.com/google-labs-code/jules-sdk) | starred | unclassified | medium | dependency-candidate |
 | [GothenburgBitFactory/taskchampion](https://github.com/GothenburgBitFactory/taskchampion) | starred | unclassified | medium | dependency-candidate |
@@ -6468,6 +6516,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [mintlify/starter](https://github.com/mintlify/starter) | starred | unclassified | medium | — |
 | [moonbitlang/awesome-moonbit](https://github.com/moonbitlang/awesome-moonbit) | starred, watching | unclassified | medium | dependency-candidate |
 | [nestjs/nest](https://github.com/nestjs/nest) | starred | unclassified | medium | dependency-candidate |
+| [neurobionics/onshape-robotics-toolkit](https://github.com/neurobionics/onshape-robotics-toolkit) | starred | unclassified | medium | dependency-candidate |
 | [NousResearch/NemoClaw](https://github.com/NousResearch/NemoClaw) | starred | unclassified | medium | upstream-comparison |
 | [novatorem/novatorem](https://github.com/novatorem/novatorem) | starred | unclassified | medium | — |
 | [num30/awesome-github-workflows](https://github.com/num30/awesome-github-workflows) | starred | unclassified | medium | workflow-candidate |
@@ -6495,6 +6544,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [Research-Astute/bors-ng_fork-leanprover-community](https://github.com/Research-Astute/bors-ng_fork-leanprover-community) | starred | unclassified | medium | upstream-comparison |
 | [riga/law](https://github.com/riga/law) | starred | unclassified | medium | workflow-candidate |
 | [RinDig/Animation-Workflow](https://github.com/RinDig/Animation-Workflow) | starred | unclassified | medium | workflow-candidate |
+| [ros-controls/ros2_control](https://github.com/ros-controls/ros2_control) | starred | unclassified | medium | dependency-candidate |
 | [RSamaium/RPG-JS](https://github.com/RSamaium/RPG-JS) | starred | unclassified | medium | dependency-candidate |
 | [rsamborski/run-agy-sdk](https://github.com/rsamborski/run-agy-sdk) | starred | unclassified | medium | dependency-candidate |
 | [rsim/mondrian-olap](https://github.com/rsim/mondrian-olap) | starred | unclassified | medium | dependency-candidate |
@@ -6531,6 +6581,7 @@ Observed: `2026-11-12T13:14:25.053926Z`
 | [timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService](https://github.com/timerloggedout-spec/AutoTask_fork-Shizuku_AccessibilityService) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-ci-action_fork](https://github.com/timerloggedout-spec/awesome-ci-action_fork) | owned | unclassified | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-coderabbit_fork](https://github.com/timerloggedout-spec/awesome-coderabbit_fork) | owned, starred | unclassified | medium | upstream-comparison |
+| [timerloggedout-spec/awesome-control-theory_fork](https://github.com/timerloggedout-spec/awesome-control-theory_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/Awesome-HFT_fork](https://github.com/timerloggedout-spec/Awesome-HFT_fork) | owned, starred | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-legal-nlp_fork](https://github.com/timerloggedout-spec/awesome-legal-nlp_fork) | owned | unclassified | medium | upstream-comparison |
 | [timerloggedout-spec/awesome-moonbit_fork](https://github.com/timerloggedout-spec/awesome-moonbit_fork) | owned, starred | unclassified | medium | dependency-candidate, upstream-comparison |

@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -86,14 +87,19 @@ def evaluate_wallet_manifest(
     signer = _text(wallet["signer_ref"], "wallet.signer_ref")
     if not signer.startswith(SIGNER_SCHEMES):
         raise PromotionGateError("signer_ref must identify a vault, KMS, or HSM handle")
-    if "-----BEGIN" in signer or len(signer) > 512:
-        raise PromotionGateError("signer_ref must remain a bounded reference, never key material")
+    handle = signer.split("://", 1)[1]
+    lowered_signer = signer.lower()
+    if (not handle or "-----begin" in lowered_signer or len(signer) > 512
+            or any(marker in lowered_signer for marker in ("token=", "secret=", "private_key=", "api_key=", "password="))
+            or re.fullmatch(r"(?:0x)?[0-9a-fA-F]{32,}", handle)):
+        raise PromotionGateError("signer_ref must remain a bounded non-secret handle")
 
     chain_id = _positive_int(chain["chain_id"], "chain.chain_id")
     rpc_url = _text(chain["rpc_url"], "chain.rpc_url")
     parsed = urlsplit(rpc_url)
-    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-        raise PromotionGateError("chain.rpc_url must be HTTPS without embedded credentials")
+    if (parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password
+            or parsed.query or parsed.fragment):
+        raise PromotionGateError("chain.rpc_url must be HTTPS without embedded credentials or query tokens")
     if type(production_chain_id) is not int or production_chain_id <= 0:
         raise PromotionGateError("production_chain_id must be a positive integer")
     production_key_namespace = _text(production_key_namespace, "production_key_namespace")

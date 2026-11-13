@@ -94,7 +94,7 @@ Reuse the existing chain:
 - QUE remains the admission authority. Issue-open listeners never invoke Puter before admission.
 - The existing provider-batch/native inference path remains the executor; Puter Pool does not add a second queue, scheduler, worker fleet or dispatch workflow.
 - DoE extends `util-1-provider-rotation` through its distinct, versioned free-inference cohort. Provider endpoint effects remain separate from later manager-policy effects.
-- Every scored request must carry the existing rule-7 set/instance stamps: `instance_key`, `set_index`, `cumulative_n`, `selection_reason`, `trigger`, `task_or_entry_ref`, `provider`, `exact_model_id`, `endpoint_or_route_id`, `workflow_run_id`, `run_attempt`, `observed_at`.
+- Every scored request must carry the existing rule-7 set/instance stamps: `instance_key`, `set_index`, `cumulative_n`, `selection_reason`, `trigger`, `task_or_entry_ref`, `entry`, `provider`, `exact_model_id`, `model`, `endpoint_or_route_id`, `workflow_run_id`, `run_attempt`, `observed_at`, `ts`. The producer emits intake-native `model`, `entry`, and `ts`; normalized fields map `exact_model_id ← model`, `task_or_entry_ref ← entry`, and `observed_at ← ts`; the existing auditor projection keeps `model_id` populated from `model`.
 - The deferred-by-tier re-evaluation path, generic issue-open listener gate and #5195 admission issue retain their existing blocked states until separately proven/remediated.
 
 ## 6. Telemetry contract — one event, many projections

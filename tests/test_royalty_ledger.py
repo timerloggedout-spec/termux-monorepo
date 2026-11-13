@@ -110,7 +110,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
                     event_id="policy-3", policy_id="legacy-residual", version=3,
                     rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
                     approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
-                    approval_digest=sha("approval-v3"),
+                    approval_digest=sha("approval-v3"), basis_definition="owner_defined_eligible_value",
                 )
             with self.assertRaises(RoyaltyLedgerError):
                 ledger.activate_policy(
@@ -118,7 +118,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
                     rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
                     effective_until="2026-04-01T00:00:00+00:00",
                     approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
-                    approval_digest=sha("approval-v2"),
+                    approval_digest=sha("approval-v2"), basis_definition="owner_defined_eligible_value",
                 )
 
     def test_owner_can_close_policy_then_activate_next_sequential_version(self):
@@ -165,7 +165,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
                     event_id="policy-2", policy_id="unauthorized", version=1,
                     rate_bps=100, effective_from="2026-03-01T00:00:00+00:00",
                     approved_by="different-actor", approved_at="2026-03-01T00:00:00+00:00",
-                    approval_digest=sha("bad-approval"),
+                    approval_digest=sha("bad-approval"), basis_definition="owner_defined_eligible_value",
                 )
 
     def test_duplicate_contribution_and_settlement_idempotency_key_fail_closed(self):

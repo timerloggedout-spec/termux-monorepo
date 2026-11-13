@@ -107,6 +107,7 @@ def test_verify_is_unauthenticated():
     assert result["ok"] is True and result["status"] == 200
     assert "Authorization" not in seen["headers"]
     assert "Cookie" not in seen["headers"]
+    assert "venue-execution" in seen["headers"]["User-agent"]
 
 
 def test_webform_multipart_and_url_extraction():

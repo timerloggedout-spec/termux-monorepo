@@ -70,7 +70,15 @@ def verify_public(url: str, expect_contains: str | None = None,
     credential headers of any kind (the no-login check is the
     evidence — a seat's authenticated fetch proves nothing)."""
     req = urllib.request.Request(url, method="GET")
+    # No CREDENTIAL headers — that is the no-login invariant. A
+    # descriptive User-Agent is still sent: several public hosts
+    # 403 library-default agents (tmpfiles dl path, run 43366207635),
+    # which would masquerade as a login wall.
+    req.add_header("User-Agent",
+                   "termux-fleet/venue-execution-verify "
+                   "(+https://github.com/timerloggedout-spec/termux-monorepo)")
     assert "Authorization" not in req.headers
+    assert "Cookie" not in req.headers
     open_fn = opener or urllib.request.urlopen
     try:
         with open_fn(req, timeout=30) as resp:

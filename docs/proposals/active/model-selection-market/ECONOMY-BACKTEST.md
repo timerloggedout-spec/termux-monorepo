@@ -76,3 +76,8 @@ The first 40-run policy matrix and its immutable run index are recorded in [2026
 5. Require independent review and explicit policy approval before any economic policy promotion.
 
 Synthetic outputs remain `exploratory_synthetic`; keep them separate from MoneyBall scores, observed contribution outcomes, wallet authority, and settlement records.
+
+
+## Paired policy comparisons — v2
+
+The first policy in a matrix is the declared baseline. Every participant-round receives a deterministic draw keyed by seed, round, and participant ID. The draw is independent of policy execution order and culling decisions, enabling paired policy deltas across the same seed set. Matrix summaries retain per-policy 95% normal-approximation intervals and per-metric paired-delta intervals. These intervals are exploratory summaries; they do not establish causal effects or policy suitability.

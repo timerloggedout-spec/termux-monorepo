@@ -43,7 +43,9 @@ Use saturation and anti-windup for integrator-based candidates; hysteresis to pr
 
 PDDL actions represent symbolic lifecycle moves such as admit-task, assign-task-to-arm, start-task and complete-task, and logistics moves such as load, unload, move and deliver. Preconditions/effects preserve dependency and state invariants.
 
-Use PDDL for reachability and symbolic order; use CP-SAT/Routing for numeric capacities, assignment and time windows; use runtime feedback control for dynamic pacing. Do not encode operational truth in duplicate plan files: execution receipts and task registries remain canonical.
+The existing Library RL project supplies a separate learned navigation/task policy over its own GridWorld representation. Its policy output is advisory to the adapter until a deterministic verifier accepts the transition. Keep the library map, pickup/drop-off semantics and RL state/action mapping explicit; do not silently equate its encoded state IDs with PDDL predicates or OR-Tools variables.
+
+Use PDDL for reachability and symbolic order; use CP-SAT/Routing for numeric capacities, assignment and time windows; use the Library RL policy as a measured comparative treatment for local multi-agent navigation; use runtime feedback control for dynamic pacing. Do not encode operational truth in duplicate plan files: execution receipts and task registries remain canonical.
 
 ## Failure containment
 

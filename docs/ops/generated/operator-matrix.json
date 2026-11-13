@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 609,
-    "open_prs": 363,
+    "open_issues": 616,
+    "open_prs": 364,
     "pr_classes": {
-      "CANDIDATE": 174,
+      "CANDIDATE": 179,
       "EXTRACT": 11,
-      "NEED_EVIDENCE": 178,
+      "NEED_EVIDENCE": 174,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 355,
+      "issues": 362,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 60,
-      "prs": 361,
+      "prs": 362,
       "unlabelled_numbers": [
         308,
         388,
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-12T19:47:59Z",
+  "generated_at": "2026-11-13T03:39:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -188,7 +188,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "c5c6264d74"
+    "sha": "af903bdc66"
   },
   "prs": [
     {
@@ -1099,12 +1099,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "72d9380ac6",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-13T03:28:15Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d773094e82",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-13T03:28:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -1519,6 +1547,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "42a4d2f6f7",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-13T03:34:00Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -1651,6 +1693,20 @@
       "number": 4055,
       "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
       "updated_at": "2026-11-03T03:38:45Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "82575d855f",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4069,
+      "title": "chore(dashboards): refresh surface feeds",
+      "updated_at": "2026-11-13T03:34:16Z"
     },
     {
       "class": "CANDIDATE",
@@ -2093,12 +2149,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "8022f19137",
+      "head_sha": "bc008773d3",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 4901,
       "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-12T16:05:56Z"
+      "updated_at": "2026-11-12T20:01:21Z"
     },
     {
       "class": "CANDIDATE",
@@ -2787,6 +2843,20 @@
       "updated_at": "2026-11-12T16:12:01Z"
     },
     {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "67572d6d2e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5274,
+      "title": "chore(delphi): refresh oracle-panel-feed.json",
+      "updated_at": "2026-11-12T19:50:41Z"
+    },
+    {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
@@ -3303,34 +3373,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "success"
-      },
-      "head_sha": "ea4f4068f4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-12T19:46:32Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "92dcaacc13",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-12T19:46:13Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3969,26 +4011,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e37b7e5c12",
+      "head_sha": "df01693c9c",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-12T19:43:57Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "queued"
-      },
-      "head_sha": "e6a7055f94",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-12T19:46:43Z"
+      "updated_at": "2026-11-13T03:35:30Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4059,20 +4087,6 @@
       "number": 4048,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-11-03T03:28:17Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "990d5cca9b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4069,
-      "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-12T18:48:11Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5271,12 +5285,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "67572d6d2e",
+      "head_sha": "edd6bbfe07",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 5274,
-      "title": "chore(delphi): refresh oracle-panel-feed.json",
-      "updated_at": "2026-11-12T19:46:59Z"
+      "number": 5288,
+      "title": "ops(quota): bucket-headroom alerting + probe semantics (QUE #5230)",
+      "updated_at": "2026-11-13T03:38:27Z"
     }
   ],
   "schema": "operator-matrix/v1",

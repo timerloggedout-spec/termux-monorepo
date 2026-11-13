@@ -87,7 +87,7 @@ A later observation may add, remove, change, or reclassify a relationship. Prese
 
 Use `temporal-current.json` for the latest materialized observation and `temporal/lineage.jsonl` for the append-only observation chain. The current graph remains the L1 relationship view; temporal snapshots are the L2 evidence/history layer consumed by SHE, longitudinal analysis, and future context reconstruction.
 
-Require `history_window.next_start_page == null` for complete historical coverage. Use node/edge growth as a progress measure, not a completeness verdict.
+Require `history_window.next_start_page == null` for complete historical coverage. Use node/edge growth as a progress measure and the continuation field as the completeness verdict.
 
 ## Repository commands
 
@@ -143,7 +143,7 @@ Moneyball/3L0 consumes these observations and compares integrated orchestration 
 | `verified` | Direct AST, GitHub API, native timeline event, exact permalink, scope-registry, or explicit-reference evidence exists. | State the connection and cite its evidence. |
 | `candidate` | A bounded heuristic such as file co-change or lexical similarity suggests a connection. | Recommend review and ground causality, ownership, and intent in direct evidence. |
 
-When a typed selector or direct permalink has no exact root, return an explicit empty match. Keep fuzzy results separate from exact roots. When a query reaches the node limit, disclose the bound and request an explicit wider query.
+When exact-root lookup for a typed selector or direct permalink returns empty, report an explicit empty match. Keep fuzzy results separate from exact roots. When a query reaches the node limit, disclose the bound and request an explicit wider query.
 
 ## Closeout standard
 

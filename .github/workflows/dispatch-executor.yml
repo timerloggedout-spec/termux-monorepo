@@ -46,7 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      # contents: write is for the probe-record commit ONLY
+      # (bucket-headroom feed + quota-probe ledger, QUE #5176 fold).
+      contents: write
       issues: write
       actions: write
     steps:
@@ -63,7 +65,7 @@ jobs:
           app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
           private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
           repositories: ${{ github.event.repository.name }}
-          permission-contents: read
+          permission-contents: write
           permission-issues: write
           permission-actions: write
 
@@ -82,10 +84,15 @@ jobs:
           set -euo pipefail
           WORKFLOW_SHA="$(git rev-parse HEAD:.github/workflows/dispatch-executor.yml)"
           SCRIPT_SHA="$(git rev-parse HEAD:scripts/ops/dispatch_executor.py)"
+          MEASURED_FLAG=""
+          if [ -f ops/que/feeds/bucket-headroom.json ]; then
+            MEASURED_FLAG="--measured ops/que/feeds/bucket-headroom.json"
+          fi
           python3 scripts/ops/dispatch_executor.py decide \
             --filings filings.json \
             --arms ops/dispatch/build-arms.json \
             --census ops/que/feeds/arm-census.json \
+            $MEASURED_FLAG \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --run-id "${{ github.run_id }}" \
             --max-conversions "${{ inputs.max_conversions || 1 }}" \
@@ -116,6 +123,51 @@ jobs:
             echo "fired #$n on $arm ($qc)"
           done
 
+      - name: Probe (bounded validation — quota_unknown resolves by usage)
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+        run: |
+          set -euo pipefail
+          # QUE #5176 fold c.6842923762: a quota_unknown gate outcome
+          # earns ONE bounded validation probe per run (decide()
+          # enforces the budget). Vehicle = the build-arm-census
+          # bounded smoke for that arm; its outcome is recorded via
+          # the #5230 record surface (hash-chained quota_probe event
+          # + typed headroom), committed back for the next cycle.
+          jq -c '.decisions[] | select(.probe != null)' decisions.json | while read -r d; do
+            arm="$(echo "$d" | jq -r .probe.arm)"
+            echo "probing $arm (bounded census smoke)"
+            start="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            gh workflow run build-arm-census.yml --ref master -f arm="$arm"
+            sleep 10
+            run_id="$(gh run list --workflow build-arm-census.yml --created ">=$start" --limit 1 --json databaseId --jq '.[0].databaseId')"
+            gh run watch "$run_id" --exit-status > /dev/null || true
+            mkdir -p probe-census
+            gh run download "$run_id" -n arm-census -D probe-census
+            python3 scripts/ops/dispatch_executor.py probe-result \
+              --census probe-census/arm-census.json \
+              --arms ops/dispatch/build-arms.json \
+              --arm "$arm" --run-id "$run_id" \
+              --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              --out probe-result.json
+            python3 scripts/ops/bucket_headroom.py record-probe \
+              --feed ops/que/feeds/bucket-headroom.json \
+              --probe probe-result.json \
+              --ledger ops/quota/quota-probe-ledger.jsonl \
+              --feed-out ops/que/feeds/bucket-headroom.json
+            git config user.name "termux-fleet-swarm[bot]"
+            git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+            git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+            for attempt in 1 2 3; do
+              git add ops/que/feeds/bucket-headroom.json ops/quota/quota-probe-ledger.jsonl
+              if git diff --cached --quiet; then echo "probe record unchanged — no commit"; break; fi
+              git commit -m "quota-probe: measured state for $arm (executor probe, run $run_id) [skip ci]"
+              if git push origin HEAD:master; then echo "probe record pushed (attempt $attempt)"; break; fi
+              git fetch origin master && git rebase origin/master
+            done
+          done
+
       - name: Publish receipt artifact
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -141,6 +193,7 @@ jobs:
             echo ""
             echo "- fires: $(jq '[.decisions[] | select(.action=="fire")] | length' decisions.json 2>/dev/null || echo '?')"
             echo "- holds: $(jq '[.decisions[] | select(.action=="hold")] | length' decisions.json 2>/dev/null || echo '?')"
+            echo "- probes: $(jq '[.decisions[] | select(.probe != null)] | length' decisions.json 2>/dev/null || echo '?')"
             echo ""
             echo "Holds (named causes):"
             echo ""

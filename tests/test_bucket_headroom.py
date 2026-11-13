@@ -324,3 +324,49 @@ def test_record_probe_cli_end_to_end(tmp_path):
                   "--feed-out", str(out2), "--now", str(T0 + 60)])
     assert rc == 0
     assert len(ledger.read_text().strip().splitlines()) == 1
+
+
+def test_evaluate_carries_provider_arm_rows():
+    arm_row = {"bucket": "gemini-api-free", "kind": "provider-arm",
+               "state": "unreadable",
+               "headroom": {"kind": "lower_bound", "value": 3,
+                            "unit": "requests", "as_of": bh.iso(T0),
+                            "valid_until": None},
+               "measured": {"via": "quota_probe", "event_id": "probe-x",
+                            "at": bh.iso(T0)}}
+    previous = {"buckets": [arm_row]}
+    feed, _, _ = bh.evaluate([], apps(), previous, T0 + 600)
+    carried = next(b for b in feed["buckets"]
+                   if b["bucket"] == "gemini-api-free")
+    assert carried["headroom"]["kind"] == "lower_bound"
+    assert carried["measured"]["event_id"] == "probe-x"
+
+
+def test_record_probe_creates_provider_arm_row(tmp_path):
+    feed, _, _ = bh.evaluate([], apps(), None, T0)
+    feed_path = tmp_path / "feed.json"
+    feed_path.write_text(json.dumps(feed))
+    probe = {"provider": "google", "account_or_project_ref": "fleet-actions",
+             "model": "gemini-fixture", "route": "build-arm-census",
+             "bucket_id": "gemini-api-free",
+             "quota_dimension": "daily_requests",
+             "instance_key": "dispatch-executor",
+             "source": {"type": "census-smoke", "ref": "run-1",
+                        "observed_at": bh.iso(T0), "reset_window": "daily",
+                        "reset_tz": "America/Los_Angeles"},
+             "probe": {"run_id": "run-1", "request_count": 3,
+                       "token_draw": None, "retry_count": 0},
+             "outcome": "success", "coverage_scope": "exact-bucket"}
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps(probe))
+    ledger = tmp_path / "ledger.jsonl"
+    out = tmp_path / "feed-out.json"
+    rc = bh.main(["record-probe", "--feed", str(feed_path),
+                  "--probe", str(probe_path), "--ledger", str(ledger),
+                  "--feed-out", str(out), "--now", str(T0)])
+    assert rc == 0
+    new_feed = json.loads(out.read_text())
+    row = next(b for b in new_feed["buckets"]
+               if b["bucket"] == "gemini-api-free")
+    assert row["kind"] == "provider-arm"
+    assert row["headroom"]["kind"] == "lower_bound"

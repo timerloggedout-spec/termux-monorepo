@@ -244,6 +244,14 @@ def evaluate(reads, apps, previous_feed, now_ts, drill=False, session="local"):
         if drill_events:
             raised.append("synthetic-drill")
 
+    # Carry rows for buckets outside this watcher's read universe
+    # (provider-arm buckets whose state arrives via record-probe):
+    # a watcher cycle must never erase probe-measured state.
+    universe = {r["bucket"] for r in rows}
+    for prev_row in prev_buckets.values():
+        if prev_row.get("bucket") and prev_row["bucket"] not in universe:
+            rows.append(prev_row)
+
     feed = {
         "schema": FEED_SCHEMA,
         "generated_at": iso(now_ts),
@@ -469,9 +477,20 @@ def main(argv=None):
         rows = feed.get("buckets", [])
         row = next((r for r in rows if r.get("bucket") == probe.get("bucket_id")), None)
         if row is None:
-            print(f"record-probe: bucket not in feed: {probe.get('bucket_id')}",
-                  file=sys.stderr)
-            return 2
+            # A provider-arm bucket enters the feed through its
+            # first probe (the watcher's read universe is the
+            # GitHub-API buckets; arm buckets are carried, never
+            # erased, once present — see evaluate()).
+            row = {"bucket": probe.get("bucket_id"), "kind": "provider-arm",
+                   "state": "unreadable", "read": None, "projection": None,
+                   "headroom": {"kind": "unknown", "value": None,
+                                "unit": "requests", "as_of": iso(now_ts),
+                                "valid_until": None},
+                   "probe_episode": {
+                       "episode_id": f"{probe.get('bucket_id')}@unknown-{int(now_ts)}",
+                       "probed": False}}
+            rows.append(row)
+            feed["buckets"] = rows
         prev_hash = None
         if os.path.exists(args.ledger):
             with open(args.ledger, encoding="utf-8") as fh:

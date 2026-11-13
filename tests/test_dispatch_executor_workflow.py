@@ -44,7 +44,10 @@ def test_mint_scopes_cover_claim_and_fire():
     with_ = mint["with"]
     assert with_["permission-issues"] == "write"
     assert with_["permission-actions"] == "write"
-    assert with_["permission-contents"] == "read"
+    # contents: write since the probe amendment (QUE #5176 fold
+    # c.6842923762): the executor commits ONLY the probe record
+    # (bucket-headroom feed + quota-probe ledger).
+    assert with_["permission-contents"] == "write"
 
 
 def test_decide_uses_repo_script_and_feeds():
@@ -54,6 +57,19 @@ def test_decide_uses_repo_script_and_feeds():
     assert "ops/dispatch/build-arms.json" in run
     assert "ops/que/feeds/arm-census.json" in run
     assert "--max-conversions" in run
+    assert "--measured ops/que/feeds/bucket-headroom.json" in run
+
+
+def test_probe_step_dispatches_census_and_records_via_5230_surface():
+    step = _step("Probe (bounded validation")
+    run = step["run"]
+    assert step["if"] == "inputs.dry_run != true"
+    assert "select(.probe != null)" in run
+    assert "gh workflow run build-arm-census.yml" in run
+    assert "-f arm=\"$arm\"" in run
+    assert "dispatch_executor.py probe-result" in run
+    assert "bucket_headroom.py record-probe" in run
+    assert "ops/quota/quota-probe-ledger.jsonl" in run
 
 
 def test_claim_precedes_fire_in_one_step():

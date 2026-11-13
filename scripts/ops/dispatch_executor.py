@@ -26,6 +26,10 @@ unknown):
      stale usage record means `quota_unknown` -> HOLD (the #5160
      addendum: until #5113 T2 publishes the ledger read contract,
      ledger reads are unavailable; do not invent a metering leg).
+     Probe amendment (fold c.6842923762): a quota_unknown outcome
+     earns one bounded validation probe per run, and a still-valid
+     quota_probe measurement in the #5230 headroom feed converts
+     the gate to measured — see docs/ops/EXECUTOR-PROBE-AMENDMENT.md.
   4. pre-flight — standing fleet law (lineage corrected c.6825944343:
      documented quota state from 2026-10-20 + tiers verified
      2026-10-30; #1884 = allocation layer, NOT the origin). Every
@@ -195,8 +199,54 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
     return int(total) - draws, None
 
 
+def bucket_id_for(arm: dict) -> str:
+    """The #5230 headroom-feed bucket this arm draws against (same
+    naming as the pre-flight stamp's bucket field)."""
+    provider = (arm.get("endpoint") or {}).get("provider")
+    if provider == "google" and arm.get("harness") == "run-gemini-cli":
+        return "gemini-api-free"
+    return f"{arm['arm_id']}-free-tier"
+
+
+MEASURED_UNBOUNDED_FRESH_MIN = 60
+
+
+def measured_headroom(arm: dict, measured: dict | None,
+                      now: datetime) -> dict | None:
+    """A still-valid quota_probe measurement for this arm's bucket
+    from the #5230 headroom feed, else None. Conversion per the
+    Cadence countersign (c.6842945679): exact / lower_bound /
+    zero_until_reset records measure; unknown never does; a record
+    past its valid_until is stale, and an unbounded record
+    (lower_bound) is same-cycle evidence only (60 min)."""
+    if not measured:
+        return None
+    bucket = bucket_id_for(arm)
+    row = next((b for b in measured.get("buckets", [])
+                if b.get("bucket") == bucket), None)
+    if row is None:
+        return None
+    headroom = row.get("headroom") or {}
+    if headroom.get("kind") not in ("exact", "lower_bound",
+                                    "zero_until_reset"):
+        return None
+    if headroom.get("value") is None:
+        return None
+    valid_until = headroom.get("valid_until")
+    if valid_until:
+        if now >= _parse_ts(valid_until):
+            return None
+    else:
+        as_of = headroom.get("as_of")
+        if not as_of or (now - _parse_ts(as_of)).total_seconds() \
+                > MEASURED_UNBOUNDED_FRESH_MIN * 60:
+            return None
+    return headroom
+
+
 def preflight(arm: dict, usage: dict | None, now: datetime,
-              headroom: int) -> tuple[dict | None, str | None]:
+              headroom: int,
+              measured_record: dict | None = None) -> tuple[dict | None, str | None]:
     """Live bucket-total headroom read for the stamp, or a HOLD reason.
 
     Gemini class: the pre-flight of record is fleet-draw coverage +
@@ -204,7 +254,21 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
     only. Unstamped coverage -> HOLD; upper-bound headroom < 1 -> HOLD.
     Other arms: the quota-gate read IS the live read (registry budget
     mirror + recorded draws); unknown draws already HOLDs upstream.
+
+    Probe amendment (QUE #5176 fold c.6842923762): when the gate was
+    converted by a quota_probe measurement, the measurement IS the
+    pre-flight read (its results are the attempt-2 gate's coverage
+    evidence; the gate itself is unchanged).
     """
+    if measured_record is not None:
+        return {
+            "bucket": bucket_id_for(arm),
+            "source": "quota-probe-measured",
+            "ts": measured_record.get("as_of"),
+            "headroom": headroom,
+            "headroom_kind": measured_record.get("kind"),
+            "reset_window": "per-probe-record",
+        }, None
     provider = (arm.get("endpoint") or {}).get("provider")
     if provider == "google" and arm.get("harness") == "run-gemini-cli":
         coverage = (usage or {}).get("coverage") or {}
@@ -304,8 +368,18 @@ def claim_body(filing: dict, arm: dict, stamp: dict) -> str:
 def decide(filings: list[dict], registry: dict, census: dict,
            usage: dict | None, now: datetime, run_id: str,
            max_conversions: int = 1, workflow_ref: str = "",
-           workflow_sha: str = "", script_sha: str = "") -> dict:
-    """Decide the executor's actions for one run. Pure + deterministic."""
+           workflow_sha: str = "", script_sha: str = "",
+           measured: dict | None = None,
+           probe_budget: int = 1) -> dict:
+    """Decide the executor's actions for one run. Pure + deterministic.
+
+    Probe amendment (QUE #5176 fold c.6842923762; countersign
+    c.6842945679): a quota_unknown gate outcome no longer parks a
+    filing indefinitely — the first unknown-blocked arm earns ONE
+    bounded validation probe per run (probe_budget), and a still-
+    valid probe measurement in the #5230 headroom feed converts the
+    gate from unknown to measured. Probes are metering-class; the
+    fire gates are unchanged."""
     global _REGISTRY_ORDER
     _REGISTRY_ORDER = {a["arm_id"]: i for i, a in enumerate(registry.get("arms", []))}
     decisions: list[dict] = []
@@ -315,6 +389,7 @@ def decide(filings: list[dict], registry: dict, census: dict,
     generic = [a for a in ordered if a["arm_id"] != "gemini-cli"]
     gemini = [a for a in ordered if a["arm_id"] == "gemini-cli"]
     converted = 0
+    probes_emitted = 0
     for filing in eligible:
         if converted >= max_conversions:
             decisions.append({
@@ -336,6 +411,11 @@ def decide(filings: list[dict], registry: dict, census: dict,
         for arm in generic + gemini:
             constrained = arm["arm_id"] == "gemini-cli"
             headroom, q_hold = quota_headroom(arm, usage, now, quota_class)
+            measured_record = None
+            if q_hold == "quota_unknown":
+                measured_record = measured_headroom(arm, measured, now)
+                if measured_record is not None:
+                    headroom, q_hold = int(measured_record["value"]), None
             if q_hold:
                 arm_holds.append({"arm": arm["arm_id"], "hold_reason": q_hold})
                 continue
@@ -343,7 +423,8 @@ def decide(filings: list[dict], registry: dict, census: dict,
                 # Quota-terminal for the arm-day: rotate, never backoff-burn.
                 arm_holds.append({"arm": arm["arm_id"], "hold_reason": "quota_terminal"})
                 continue
-            pf, pf_hold = preflight(arm, usage, now, headroom)
+            pf, pf_hold = preflight(arm, usage, now, headroom,
+                                    measured_record=measured_record)
             if pf_hold:
                 arm_holds.append({"arm": arm["arm_id"], "hold_reason": pf_hold})
                 continue
@@ -364,10 +445,35 @@ def decide(filings: list[dict], registry: dict, census: dict,
         else:
             # No arm fired: exactly one HOLD per filing, naming every
             # arm's cause (rotation attempted, none cleared its gate).
+            # A quota_unknown cause earns the run's bounded probe on
+            # the first unknown-blocked arm (metering-class; the
+            # filing still HOLDs this cycle — the probe converts the
+            # NEXT cycle's gate via the measured-state record).
+            probe = None
+            if probes_emitted < probe_budget:
+                unknown = next((h for h in arm_holds
+                                if h["hold_reason"] == "quota_unknown"), None)
+                if unknown:
+                    by_id = {a["arm_id"]: a for a in generic + gemini}
+                    parm = by_id[unknown["arm"]]
+                    probe = {
+                        "arm": parm["arm_id"],
+                        "bucket_id": bucket_id_for(parm),
+                        "quota_dimension": "daily_requests",
+                        "provider": (parm.get("endpoint") or {}).get("provider"),
+                        "model": parm.get("model"),
+                        "vehicle": "build-arm-census",
+                        "max_requests": 3,
+                        "reason": "quota_unknown gate outcome — bounded "
+                                  "validation probe (QUE #5176 fold "
+                                  "c.6842923762)",
+                    }
+                    probes_emitted += 1
             decisions.append({
                 "issue": filing["number"], "action": "hold",
                 "hold_reason": "no_arm_cleared_gate",
                 "arm_holds": arm_holds or [{"arm": None, "hold_reason": "no_eligible_arm"}],
+                "probe": probe,
             })
     return {
         "schema": SCHEMA,
@@ -375,6 +481,63 @@ def decide(filings: list[dict], registry: dict, census: dict,
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "eligible_count": len(eligible),
         "decisions": decisions,
+    }
+
+
+def probe_outcome_from_census(row: dict) -> str:
+    """Map one census row to a quota_probe outcome (countersign
+    enum). The probe measures QUOTA, so the invoke leg decides: a
+    successful validation draw is `success` even when the census's
+    separate agent-loop leg failed (eligibility != quota — the
+    #5151 correction discipline); a terminal 429 on either leg is
+    `quota_terminal`."""
+    checks = row.get("checks") or {}
+    invoke = checks.get("invocable_from_actions") or {}
+    if (row.get("quota_terminal") or {}).get("terminal"):
+        return "quota_terminal"
+    if invoke.get("ok"):
+        return "success"
+    err = invoke.get("error_class") or ""
+    if "quota_terminal" in err:
+        return "quota_terminal"
+    if err == "missing_secret":
+        return "auth_error"
+    if err.startswith("invoke_failed"):
+        return "route_error"
+    return "inconclusive"
+
+
+def probe_result(census: dict, registry: dict, arm_id: str,
+                 run_id: str, now: datetime) -> dict:
+    """The probe-result JSON `bucket_headroom.py record-probe`
+    consumes, built from the census feed a probe run produced."""
+    row = next((a for a in census.get("arms", [])
+                if a.get("arm_id") == arm_id), None)
+    if row is None:
+        raise ValueError(f"arm {arm_id} absent from census feed")
+    arm = next((a for a in registry.get("arms", [])
+                if a.get("arm_id") == arm_id), {})
+    return {
+        "provider": row.get("provider")
+        or (arm.get("endpoint") or {}).get("provider"),
+        "account_or_project_ref": "fleet-actions",
+        "model": row.get("model") or arm.get("model"),
+        "route": "build-arm-census",
+        "bucket_id": bucket_id_for(arm) if arm else f"{arm_id}-free-tier",
+        "quota_dimension": "daily_requests",
+        "instance_key": "dispatch-executor",
+        "source": {"type": "census-smoke", "ref": run_id,
+                   "observed_at": now.isoformat().replace("+00:00", "Z"),
+                   "reset_window": "daily",
+                   "reset_tz": "America/Los_Angeles"},
+        # request_count = the census smoke's bound (<=3); token_draw
+        # = the draw the invoke leg PROVED against the bucket (1
+        # request) — a successful probe's lower_bound is exactly
+        # that proven draw, never the bound.
+        "probe": {"run_id": run_id, "request_count": 3,
+                  "token_draw": 1, "retry_count": 0},
+        "outcome": probe_outcome_from_census(row),
+        "coverage_scope": "exact-bucket",
     }
 
 
@@ -393,6 +556,9 @@ def main(argv: list[str] | None = None) -> int:
     decide_p.add_argument("--arms", required=True)
     decide_p.add_argument("--census", required=True)
     decide_p.add_argument("--usage")
+    decide_p.add_argument("--measured",
+                          help="bucket-headroom feed (QUE #5230): "
+                               "quota_probe measured state")
     decide_p.add_argument("--now")
     decide_p.add_argument("--run-id", default="local")
     decide_p.add_argument("--max-conversions", type=int, default=1)
@@ -400,18 +566,39 @@ def main(argv: list[str] | None = None) -> int:
     decide_p.add_argument("--workflow-sha", default="")
     decide_p.add_argument("--script-sha", default="")
     decide_p.add_argument("--out")
+    probe_p = sub.add_parser(
+        "probe-result",
+        help="build the record-probe JSON from a census feed")
+    probe_p.add_argument("--census", required=True)
+    probe_p.add_argument("--arms", required=True)
+    probe_p.add_argument("--arm", required=True)
+    probe_p.add_argument("--run-id", default="local")
+    probe_p.add_argument("--now")
+    probe_p.add_argument("--out")
     args = parser.parse_args(argv)
 
     now = _parse_ts(args.now) if args.now else datetime.now(timezone.utc)
+    if args.command == "probe-result":
+        result = probe_result(_load(args.census), _load(args.arms),
+                              args.arm, args.run_id, now)
+        text = json.dumps(result, indent=2, sort_keys=True)
+        if args.out:
+            with open(args.out, "w", encoding="utf-8") as fh:
+                fh.write(text + "\n")
+        else:
+            print(text)
+        return 0
     filings = _load(args.filings)
     registry = _load(args.arms)
     census = _load(args.census)
     usage = _load(args.usage)
+    measured = _load(args.measured)
     result = decide(
         filings, registry, census, usage, now, args.run_id,
         max_conversions=args.max_conversions,
         workflow_ref=args.workflow_ref,
         workflow_sha=args.workflow_sha, script_sha=args.script_sha,
+        measured=measured,
     )
     text = json.dumps(result, indent=2, sort_keys=True)
     if args.out:

@@ -6,11 +6,11 @@
 
 ## Why
 
-Negation-heavy rules (“Don’t X”, “Do not Y”) still **name the forbidden act**. Recency bias in humans and models amplifies the trailing clause. Prefer stating the **desired** behavior.
+Action-first rules focus human and agent attention on the intended state change. Lead with the **desired** behavior and attach the smallest necessary boundary.
 
 ## Prefer / Avoid table
 
-| Prefer (directive) | Avoid (negation-first) |
+| DO statement | Legacy phrasing (reference examples) |
 |--------------------|-------------------------|
 | Keep agent shell and `gh` available in trusted ADE runs | Don’t remove agent shell access |
 | Target `master-staging` for code | Do not push code to `master` |
@@ -26,6 +26,6 @@ Negation-heavy rules (“Don’t X”, “Do not Y”) still **name the forbidde
 
 ## Scope
 
-Applies to `AGENTS.md`, `GEMINI.md`, workflow prompt strings, and ops docs agents read first.
+The active repository-wide contract is [`DO-STATEMENT-MANDATE.md`](DO-STATEMENT-MANDATE.md). Apply it to `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `SKILLS.md`, every skill, code comments, workflow prompts, commit messages, pull-request descriptions/comments, and chat relays. Keep historical examples as quoted reference material.
 
 Signed-off-by: Grok <grok@x.ai>

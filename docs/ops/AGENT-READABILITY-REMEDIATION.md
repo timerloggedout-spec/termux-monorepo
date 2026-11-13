@@ -3,10 +3,10 @@
 ## Receipts
 
 - Original scan: [bCtaa4bIB7](https://agent-ready.dev/scan/bCtaa4bIB7) — 38/100; llms.txt 0/100; accessibility 77/100.
-- Follow-up scan: [vzNCPWMl7m](https://agent-ready.dev/scan/XtuJ7lcnwd) — 62/100; llms.txt 100/100; accessibility 100/100; Page 7/25.
+- Follow-up scan: [vzNCPWMl7m](https://agent-ready.dev/scan/vzNCPWMl7m) — 62/100; llms.txt 100/100; accessibility 100/100; Page 7/25.
 - Original P8: Open Graph `og:description` absent from the scanned landing page.
 - Live mirror inspection: `/tribute/` and `/matrix/` in the website repository still lacked canonical URLs, Open Graph fields, JSON-LD, Markdown alternates, and the linked Markdown mirrors.
-- Canonical monorepo source branch: `fix/agent-readability-page-sources` contains the corrected source pages and Markdown mirrors.
+- Canonical monorepo source branch: `feat/agent-readability-do-mandate` contains the corrected source pages and Markdown mirrors.
 
 ## Root cause
 

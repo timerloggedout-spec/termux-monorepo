@@ -87,7 +87,7 @@ A later observation may add, remove, change, or reclassify a relationship. Prese
 
 Use `temporal-current.json` for the latest materialized observation and `temporal/lineage.jsonl` for the append-only observation chain. The current graph remains the L1 relationship view; temporal snapshots are the L2 evidence/history layer consumed by SHE, longitudinal analysis, and future context reconstruction.
 
-Require `history_window.next_start_page == null` for complete historical coverage. Use node/edge growth as a progress measure and the continuation field as the completeness verdict.
+Declare historical coverage complete only when `history_coverage.status == "COMPLETE"` and `history_window.next_start_page == null`. Node/edge growth remains a progress measure, never the completeness verdict.
 
 ## Repository commands
 

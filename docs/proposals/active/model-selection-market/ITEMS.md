@@ -74,5 +74,5 @@ python3 scripts/ci/termux_smoke.py
 - Wholesale MoneyBall mega-merge
 
 
-| MSM-025 | #5350 | Origin-attributed residual royalty journal; accrual/payable/settlement/reversal with cull-safe lineage | open |
+| MSM-025 | #5350 | Origin-attributed residual royalty journal; accrual/payable/settlement/reversal with cull-safe lineage | implementation PR |
 | MSM-026 | #5351 | Deterministic economy backtest engine, immutable manifests/results, policy matrix and sensitivity runs | implementation PR |

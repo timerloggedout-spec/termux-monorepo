@@ -25,7 +25,7 @@ Activate a policy version only when the configured policy owner supplies:
 - effective-from and optional effective-until timestamps
 - owner identity, timezone-aware approval timestamp, and SHA-256 approval evidence digest
 
-The current v1 basis is `gross_reward_units`. Policy versions for the same policy ID use non-overlapping effective intervals. The Python module verifies owner identity and evidence shape; an external governance workflow must authenticate the owner and verify the approval evidence digest. The rate remains unset until an owner-approved policy event is appended.
+The current v1 basis is `gross_reward_units`. Policy versions for the same policy ID use non-overlapping effective intervals. Close an open policy through an owner-approved `policy_close` event before activating its next sequential version. The Python module verifies owner identity and evidence shape; an external governance workflow must authenticate the owner and verify the approval evidence digest. The rate remains unset until an owner-approved policy event is appended.
 
 ## Accrual and payable lifecycle
 

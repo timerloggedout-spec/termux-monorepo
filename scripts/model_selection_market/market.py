@@ -105,6 +105,9 @@ class MarketGraph:
         self._accounts: dict[str, int] = {}
         self._reservations: dict[str, dict[str, Any]] = {}
         self._ids: dict[str, dict[str, Any]] = {}
+        self._culled: dict[str, dict[str, Any]] = {}
+        self._pools: dict[str, str] = {}
+        self._pool_distributions: dict[str, dict[str, Any]] = {}
         if self._store:
             with self._store.locked():
                 self._refresh()
@@ -229,11 +232,13 @@ class MarketGraph:
                     raise ValueError("invalid card metric")
             if card["metrics"] != {key: card[key] for key in ("elo", "n", "last_sha", "confidence")}:
                 raise ValueError("inconsistent card metrics")
+            if card["owner"] in s["culled"]: raise ValueError("culled participant cannot register cards")
             if card["card_id"] in s["cards"]: raise ValueError("duplicate card")
             s["cards"][card["card_id"]] = copy.deepcopy(card)
             s["edges"].append({"type": "owns", "from": card["owner"], "to": card["card_id"]})
         elif typ == "bet":
             self._keys(p, {"bet"}); bet = p["bet"]; self._bet_valid(bet)
+            if bet["actor_id"] in s["culled"]: raise ValueError("culled participant cannot place bets")
             if bet["stake"]["unit_kind"] == "paper_point":
                 raise ValueError("paper bets require a reservation event")
             key = (bet["actor_id"], bet["entry_id"])
@@ -261,7 +266,7 @@ class MarketGraph:
                 raise ValueError("unknown reservation kind")
             self._keys(r, {"reservation_id", "owner", "units", "status", "kind", "entry_id"} if kind == "bet" else {"reservation_id", "owner", "units", "status", "kind", "card_id", "to_owner"} if kind == "offer" else set())
             _owner(r["owner"]); _units(r["units"])
-            if r["owner"] in s["culled"]: raise ValueError("culled participant accounts are closed to reservations")
+            if r["owner"] in s["culled"] or (r.get("kind") == "offer" and r.get("to_owner") in s["culled"]): raise ValueError("culled participant accounts are closed to reservations")
             if not isinstance(r["reservation_id"], str) or not r["reservation_id"] or r["status"] != "reserved": raise ValueError("invalid reservation identity or status")
             if r["reservation_id"] in s["reservations"]: raise ValueError("duplicate reservation")
             if r["owner"] not in s["accounts"]: raise ValueError("reservation owner account is not open")
@@ -309,10 +314,12 @@ class MarketGraph:
             self._keys(p, {"participant", "decision_id", "reason", "score_snapshot", "pool_id", "available_disposition", "reservation_dispositions"})
             participant, pool_id = p["participant"], p["pool_id"]
             _owner(participant); _owner(pool_id); _owner(p["decision_id"]); _owner(p["reason"])
-            if participant.startswith("pool:") or participant not in s["accounts"]:
+            if participant.startswith("pool:") or pool_id.startswith("pool:") or participant not in s["accounts"]:
                 raise ValueError("cull requires an existing participant account")
             if participant in s["culled"]:
                 raise ValueError("participant already culled")
+            if any(row.get("decision_id") == p["decision_id"] for row in s["culled"].values()):
+                raise ValueError("cull decision_id already used")
             if p["available_disposition"] not in ("retain", "donate"):
                 raise ValueError("available disposition must be retain or donate")
             score = p["score_snapshot"]
@@ -359,6 +366,10 @@ class MarketGraph:
                 s["pools"][pool_id] = pool_owner
             original_reserved = sum(r["units"] for r in active.values())
             original_available = s["accounts"][participant] - original_reserved
+            donated = original_available if p["available_disposition"] == "donate" else 0
+            donated += sum(active[action["reservation_id"]]["units"] for action in actions if action["disposition"] == "donate")
+            if s["accounts"][pool_owner] + donated > MAX_UNITS:
+                raise ValueError("consolidation pool balance overflow")
             if p["available_disposition"] == "donate" and original_available:
                 s["accounts"][participant] -= original_available
                 s["accounts"][pool_owner] += original_available
@@ -367,12 +378,16 @@ class MarketGraph:
                 if action["disposition"] == "refund":
                     r["status"] = "released"
                     r["reason"] = "culled_refund"
+                    for bet in s["bets"]:
+                        if bet["actor_id"] == participant and bet["entry_id"] == r.get("entry_id"): bet["status"] = "released"
                 else:
                     s["accounts"][participant] -= r["units"]
                     s["accounts"][pool_owner] += r["units"]
                     r["status"] = "forfeited"
                     r["reason"] = "culled_donation"
                     r["recipient"] = pool_owner
+                    for bet in s["bets"]:
+                        if bet["actor_id"] == participant and bet["entry_id"] == r.get("entry_id"): bet["status"] = "forfeited"
             s["culled"][participant] = copy.deepcopy(p)
         elif typ == "pool_distribute":
             self._keys(p, {"pool_id", "distribution_id", "reason", "allocations"})
@@ -416,6 +431,8 @@ class MarketGraph:
         self._events = copy.deepcopy(events)
         self.cards, self.bets, self.edges = state["cards"], state["bets"], state["edges"]
         self._accounts, self._reservations, self._ids = state["accounts"], state["reservations"], state["ids"]
+        self._culled, self._pools = state["culled"], state["pools"]
+        self._pool_distributions = state["pool_distributions"]
 
     def _refresh(self):
         events = replay(self._store.path)
@@ -455,7 +472,8 @@ class MarketGraph:
             # Durable mode above always reconstructs from the single event stream.
             state = copy.deepcopy({"cards": self.cards, "bets": self.bets, "edges": self.edges,
                                    "accounts": self._accounts, "reservations": self._reservations,
-                                   "ids": self._ids})
+                                   "ids": self._ids, "culled": self._culled, "pools": self._pools,
+                                   "pool_distributions": self._pool_distributions})
             self._transition(state, framed)
             state["ids"][event_id] = copy.deepcopy(framed)
             events = copy.deepcopy(self._events) + [framed]

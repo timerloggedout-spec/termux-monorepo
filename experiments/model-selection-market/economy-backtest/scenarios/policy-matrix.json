@@ -1,76 +1,122 @@
 {
   "base": {
     "schema_version": 1,
-    "scenario_id": "economy-pilot-cohort-001",
+    "scenario_id": "wallet-ledger-snapshot-2026-11-03",
     "seed": 20261113,
     "horizon_rounds": 30,
     "reward_units": 100,
     "participants": [
       {
-        "participant_id": "origin-alpha",
-        "success_probability_bps": 8200,
+        "participant_id": "paper:14db44122346ac5a",
+        "success_probability_bps": 5000,
         "initial_balance": 1000,
         "origin_id": null
       },
       {
-        "participant_id": "builder-beta",
-        "success_probability_bps": 7100,
-        "initial_balance": 500,
-        "origin_id": "origin-alpha"
-      },
-      {
-        "participant_id": "builder-gamma",
-        "success_probability_bps": 6500,
-        "initial_balance": 500,
-        "origin_id": "origin-alpha"
-      },
-      {
-        "participant_id": "scout-delta",
-        "success_probability_bps": 5200,
-        "initial_balance": 300,
+        "participant_id": "paper:1744430907f07318",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
         "origin_id": null
       },
       {
-        "participant_id": "reviewer-epsilon",
-        "success_probability_bps": 4700,
-        "initial_balance": 300,
+        "participant_id": "paper:4190442cc17496b0",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
         "origin_id": null
       },
       {
-        "participant_id": "newcomer-zeta",
-        "success_probability_bps": 3500,
-        "initial_balance": 100,
+        "participant_id": "paper:7c98617f7bf96e05",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:7f184a82c1ad9ee2",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:9b8c1a767c008908",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:a7f767112f17eaa7",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:afc8c7d582b1c12e",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:cb5bae0dfbd57701",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:d90bd947843c74be",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:f78817221babda31",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "paper:feeed83cbefe2ba2",
+        "success_probability_bps": 5000,
+        "initial_balance": 1000,
         "origin_id": null
       }
     ],
     "policy": {
-      "policy_id": "baseline-paper-v1",
+      "policy_id": "baseline-wallet-ledger-v1",
       "cull_after_misses": 4,
       "pool_distribution_bps": 2500,
       "royalty_rate_bps": 0
+    },
+    "source": {
+      "kind": "wallet_ledger_snapshot",
+      "path": "ops/agentic-gambling/site/wallet-ledger.jsonl",
+      "git_blob_sha": "0b0c4d5e302ebdb14c59d5f532c5b22f487ade2b",
+      "event_count": 717,
+      "participant_class": "speculator",
+      "unit": "soft_quota_token (observational)",
+      "probability_model": "uniform_uninformed_prior",
+      "success_probability_bps": 5000
     }
   },
   "policies": [
     {
-      "policy_id": "baseline-0bp",
+      "policy_id": "pool-hold-cull-4",
+      "cull_after_misses": 4,
+      "pool_distribution_bps": 0,
+      "royalty_rate_bps": 0
+    },
+    {
+      "policy_id": "pool-recycle-25-cull-4",
       "cull_after_misses": 4,
       "pool_distribution_bps": 2500,
       "royalty_rate_bps": 0
     },
     {
-      "policy_id": "royalty-250bp",
-      "cull_after_misses": 4,
-      "pool_distribution_bps": 2500,
-      "royalty_rate_bps": 250
-    },
-    {
-      "policy_id": "recycle-5000bp",
+      "policy_id": "pool-recycle-50-cull-4",
       "cull_after_misses": 4,
       "pool_distribution_bps": 5000,
       "royalty_rate_bps": 0
     },
     {
-      "policy_id": "resilient-cull-6",
+      "policy_id": "pool-recycle-25-cull-6",
       "cull_after_misses": 6,
       "pool_distribution_bps": 2500,
       "royalty_rate_bps": 0

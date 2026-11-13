@@ -1,7 +1,26 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-13T00:00:00Z'
 updated_by: ChatGPT
 proposals:
+
+  - id: agent-readability-surface-contract
+    title: 'Agent Readability Source, Deployment, and Authoring Contract'
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/agent-readability-surface-contract/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues: []
+    related_prs:
+      - 5336
+    related_branches:
+      - feat/agent-readability-do-mandate-v2
+    gates_required:
+      - repo-gate
+      - termux-smoke
 
   - id: master-splinter
     title: 'Master Splinter — GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)'

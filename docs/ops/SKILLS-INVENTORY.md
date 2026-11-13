@@ -1,7 +1,7 @@
 # Skills Inventory (termux-monorepo)
 
 **Version:** 2026-11-13 · **Proposal:** `agent-readability-surface-contract`
-**Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
+**Primary agent entry:** [`AGENTS.md`](../../AGENTS.md) → [`moniker.md`](../../moniker.md) → [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 **Authoring contract:** [`DO-STATEMENT-MANDATE.md`](DO-STATEMENT-MANDATE.md)
 

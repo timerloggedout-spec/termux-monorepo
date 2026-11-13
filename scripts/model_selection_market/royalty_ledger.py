@@ -75,7 +75,7 @@ def _allocate(total: int, weights: dict[str, int]) -> dict[str, int]:
 
 def _empty() -> dict[str, Any]:
     return {
-        "origins": {}, "derivatives": {}, "artifacts": {}, "policies": {},
+        "origins": {}, "derivatives": {}, "artifacts": {}, "policies": {}, "contributions": {}, "settlement_keys": {},
         "accruals": {}, "payables": {}, "settlements": {}, "reversals": {},
         "disputes": {}, "supersessions": {}, "ids": {},
     }
@@ -125,12 +125,12 @@ class RoyaltyLedger:
             for origin_id, share in sorted(shares.items()) if share
         }
 
-    @classmethod
-    def _reduce(cls, events: list[dict[str, Any]]) -> dict[str, Any]:
+    def _reduce(self, events: list[dict[str, Any]]) -> dict[str, Any]:
         state = _empty()
         for index, event in enumerate(events, 1):
             expected = {"version", "seq", "event_id", "type", "payload", "timestamp", "correlation_id"}
-            if set(event) != expected or event["version"] != 1 or event["seq"] != index:
+            if (set(event) != expected or type(event["version"]) is not int or event["version"] != 1
+                    or type(event["seq"]) is not int or event["seq"] != index):
                 raise RoyaltyLedgerError(f"invalid royalty event envelope at sequence {index}")
             event_id = _text(event["event_id"], "event_id")
             typ = _text(event["type"], "event.type")
@@ -161,7 +161,7 @@ class RoyaltyLedger:
                 author = _text(payload["author_actor"], "author_actor")
                 if artifact in state["artifacts"]:
                     raise RoyaltyLedgerError("artifact identity already registered")
-                lineage = cls._lineage(payload["parents"], state)
+                lineage = self._lineage(payload["parents"], state)
                 state["derivatives"][artifact] = {
                     "artifact_id": artifact, "content_digest": content,
                     "author_actor": author, "parents": payload["parents"],
@@ -184,11 +184,20 @@ class RoyaltyLedger:
                 if end and end <= start:
                     raise RoyaltyLedgerError("effective_until must follow effective_from")
                 approved = _text(payload["approved_by"], "approved_by")
+                if approved != self.policy_owner:
+                    raise RoyaltyLedgerError("policy event lacks configured owner approval")
                 _time(payload["approved_at"], "approved_at")
                 approval_digest = _digest(payload["approval_digest"], "approval_digest")
                 key = f"{policy_id}@{version}"
                 if key in state["policies"]:
                     raise RoyaltyLedgerError("policy version already activated")
+                for prior in state["policies"].values():
+                    if prior["policy_id"] != policy_id:
+                        continue
+                    prior_start = datetime.fromisoformat(prior["effective_from"])
+                    prior_end = datetime.fromisoformat(prior["effective_until"]) if prior["effective_until"] else None
+                    if (end is None or prior_start < end) and (prior_end is None or start < prior_end):
+                        raise RoyaltyLedgerError("policy versions for one policy cannot have overlapping effective intervals")
                 state["policies"][key] = {
                     "policy_id": policy_id, "version": version, "rate_bps": rate,
                     "basis_definition": basis, "effective_from": start.isoformat(),
@@ -203,8 +212,9 @@ class RoyaltyLedger:
                 accrual_id = _text(payload["accrual_id"], "accrual_id")
                 contribution = _text(payload["contribution_id"], "contribution_id")
                 artifact = _text(payload["derivative_artifact_id"], "derivative_artifact_id")
-                if accrual_id in state["accruals"] or artifact not in state["derivatives"]:
-                    raise RoyaltyLedgerError("accrual ID or derivative artifact is invalid")
+                if (accrual_id in state["accruals"] or contribution in state["contributions"]
+                        or artifact not in state["derivatives"]):
+                    raise RoyaltyLedgerError("accrual ID, contribution ID, or derivative artifact is invalid")
                 policy_key = f'{_text(payload["policy_id"], "policy_id")}@{_integer(payload["policy_version"], "policy_version", 1)}'
                 policy = state["policies"].get(policy_key)
                 if policy is None:
@@ -227,6 +237,7 @@ class RoyaltyLedger:
                                 "settled": 0, "reversed": 0}
                     for origin_id, units in allocations.items() if units
                 }
+                state["contributions"][contribution] = accrual_id
                 state["accruals"][accrual_id] = {
                     "contribution_id": contribution, "derivative_artifact_id": artifact,
                     "policy_key": policy_key, "basis_units": basis, "unit_domain": domain,
@@ -247,7 +258,8 @@ class RoyaltyLedger:
                 evidence = _digest(payload["evidence_digest"], "evidence_digest")
                 idem = _text(payload["idempotency_key"], "idempotency_key")
                 accrual = state["accruals"].get(accrual_id)
-                if settlement_id in state["settlements"] or accrual is None or accrual["disputed"]:
+                if (settlement_id in state["settlements"] or idem in state["settlement_keys"]
+                        or accrual is None or accrual["disputed"]):
                     raise RoyaltyLedgerError("settlement is duplicate, unknown, or disputed")
                 claim = accrual["claims"].get(origin_id)
                 if claim is None or units > claim["units"] - claim["settled"] - claim["reversed"]:
@@ -255,6 +267,7 @@ class RoyaltyLedger:
                 claim["settled"] += units
                 key = (claim["beneficiary"], accrual["unit_domain"])
                 state["payables"][key] -= units
+                state["settlement_keys"][idem] = settlement_id
                 state["settlements"][settlement_id] = {
                     "accrual_id": accrual_id, "origin_artifact_id": origin_id,
                     "units": units, "destination": destination,
@@ -309,6 +322,11 @@ class RoyaltyLedger:
                     raise RoyaltyLedgerError("invalid supersession reference")
                 if prior in state["supersessions"]:
                     raise RoyaltyLedgerError("artifact already has a superseding artifact")
+                cursor = replacement
+                while cursor in state["supersessions"]:
+                    cursor = state["supersessions"][cursor]["replacement_artifact_id"]
+                    if cursor == prior:
+                        raise RoyaltyLedgerError("lineage supersession cycle detected")
                 state["supersessions"][prior] = {
                     "replacement_artifact_id": replacement, "reason": reason,
                     "evidence_digest": evidence, "supersession_id": sid,
@@ -329,6 +347,14 @@ class RoyaltyLedger:
         }
         with self.store.locked():
             self._refresh()
+            prior = next((row for row in self.events if row["event_id"] == event_id), None)
+            if prior is not None:
+                if (prior["type"] != event_type or prior["payload"] != payload
+                        or prior["correlation_id"] != correlation_id):
+                    raise RoyaltyLedgerError("event_id already used with different intent")
+                return prior
+            candidate = dict(event, version=1, seq=len(self.events) + 1)
+            self._reduce(self.events + [candidate])
             try:
                 append(self.store.path, self.events, event)
             except _Already as already:

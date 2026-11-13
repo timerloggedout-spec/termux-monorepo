@@ -42,7 +42,10 @@ def test_age_runs_from_receipt_not_creation():
     assert queued_since(issue, comments) == NOW - timedelta(minutes=45)
     verdict = classify(issue, comments, NOW)
     assert verdict["age_min"] == 45.0
-    assert verdict["action"] == "flag"
+    # QUE #5286 timing decision (countersign c.6843070784): the
+    # standard escalation threshold is 15m, so 45m unclaimed
+    # escalates (and auto-claims) instead of merely flagging.
+    assert verdict["action"] == "escalate"
 
 
 def test_claim_by_label_and_by_comment():
@@ -65,7 +68,9 @@ def test_thresholds_and_dedupe():
     flagged = _comment("DISPATCH WATCHDOG — FLAG — ...", 20)
     again = classify(_issue(minutes_old=45),
                      [_comment("ROUTING RECEIPT", 45), flagged], NOW)
-    assert again["state"] == "flagged" and again["action"] is None
+    # QUE #5286: at 45m the 15m standard escalation threshold is
+    # crossed, so a prior flag no longer parks the verdict.
+    assert again["state"] == "unclaimed" and again["action"] == "escalate"
     esc = _comment("DISPATCH WATCHDOG — ESCALATION — ...", 5)
     escalated = classify(_issue(minutes_old=120),
                          [_comment("ROUTING RECEIPT", 120), esc], NOW)
@@ -152,15 +157,16 @@ def test_classify_uses_tier_thresholds():
     issue = {"number": 9, "created_at": "2026-11-03T17:30:00Z",
              "labels": [], "user": {"login": "filer"}}
     at_1755 = datetime(2026, 11, 3, 17, 55, tzinfo=timezone.utc)
-    # CUSHION tier (since 17:00Z), 25 min unclaimed: BASE would
-    # only watch (flag at 30); CUSHION flags at 20
+    # CUSHION tier (since 17:00Z), 25 min unclaimed. QUE #5286
+    # timing decision (c.6843070784): the standard 15m escalation
+    # threshold caps CUSHION's 40m frame, so 25m escalates (and
+    # auto-claims) in both the tier and BASE frames.
     verdict = classify(issue, [receipt], at_1755,
                        timeboxes={"D1": D1_TIMEBOX})
     assert verdict["tier"] == "CUSHION"
-    assert verdict["action"] == "flag"
-    # no timebox -> BASE defaults, still watching at 25 min
+    assert verdict["action"] == "escalate"
     plain = classify(issue, [receipt], at_1755)
-    assert plain["action"] is None and plain["tier"] == "BASE"
+    assert plain["action"] == "escalate" and plain["tier"] == "BASE"
 
 
 def test_load_timeboxes_from_feed(tmp_path):
@@ -195,7 +201,8 @@ def test_match_entry_resolves_descriptive_filings():
                        timeboxes={"D1": D1_TIMEBOX})
     assert verdict["entry"] == "D1"
     assert verdict["tier"] == "CUSHION"
-    assert verdict["action"] == "flag"
+    # QUE #5286: 25m unclaimed crosses the 15m standard (see above).
+    assert verdict["action"] == "escalate"
 
 
 # ------------------------------------------- dispatch-state feed (#4350)
@@ -221,7 +228,8 @@ def test_feed_classifies_queued_claimed_escalated():
     assert queued["state"] == "queued" and queued["claim"] is None
     assert queued["entry"] == "D1" and queued["age_min"] == 10.0
     assert queued["tier"] == {"index": 0, "name": "BASE"}
-    assert queued["thresholds_min"] == {"flag": 30, "escalate": 60}
+    # QUE #5286 timing decision: standard escalate = 15m (was 60).
+    assert queued["thresholds_min"] == {"flag": 30, "escalate": 15}
 
     claimed = _row(_issue(number=12, minutes_old=300),
                    [_comment(_RECEIPT_D1, 300), _comment(_CLAIM, 290)])
@@ -243,7 +251,8 @@ def test_feed_tier_resolved_thresholds():
     row = _row(_issue(number=14, minutes_old=10),
                [_comment(_RECEIPT_D1, 10)], timeboxes=tb)
     assert row["tier"] == {"index": 1, "name": "CUSHION"}
-    assert row["thresholds_min"] == {"flag": 20, "escalate": 40}
+    # QUE #5286: effective escalate = min(tier 40, standard 15).
+    assert row["thresholds_min"] == {"flag": 20, "escalate": 15}
 
 
 def test_feed_null_honesty():

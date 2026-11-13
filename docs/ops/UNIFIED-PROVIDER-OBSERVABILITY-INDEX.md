@@ -183,7 +183,7 @@ This document records an integration baseline. It does not assert that all integ
 
 The owned [Puter Pool fork](https://github.com/timerloggedout-spec/puter-pool_fork) is registered as a **transport candidate over the existing Puter provider family**, not as a new provider family, quota ledger, or scheduler. The source audit and adapter contract are maintained in [PUTER-POOL-INTEGRATION.md](../proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md).
 
-- Provider identity reuses `g4f/Puter` and `ops/quota/registry.json#g4f.puter`; current entitlement, account balance and reset remain unknown.
+- Provider identity reuses `g4f/Puter` and `ops/quota/registry.json#g4f.puter`; current entitlement, account balance and reset remain unknown. The existing `provider-quota-coverage.json` maps the row as `manual_or_unknown`; `quota.json` projects `status=unknown` with null usage/limit/reset/observation time.
 - Candidate protocols: OpenAI-compatible and Anthropic-compatible. Exact upstream model identity and configured-instance provenance are mandatory.
 - Initial eligible design: one authorized account scope per configured instance, one attempt per dispatch, no cross-account retry, account hopping, synthetic credit arithmetic or paid fallback.
 - Source blockers: README/package metadata say Apache-2.0 while LICENSE contains EPL-2.0; account-token custody, raw prompt/completion persistence, synthetic CreditTracker limits, API middleware ordering and startup process-kill behavior require remediation.

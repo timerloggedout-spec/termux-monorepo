@@ -1,0 +1,256 @@
+{
+ "schema": "bucket-headroom/v1",
+ "generated_at": "2026-11-13T03:36:37Z",
+ "poll_interval_min": 10,
+ "buckets": [
+  {
+   "bucket": "pat-core",
+   "kind": "pat",
+   "state": "unreadable",
+   "unreadable_reason": "no_read_supplied",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "pat-core@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "github-token",
+   "kind": "github_token",
+   "state": "unreadable",
+   "unreadable_reason": "no_read_supplied",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "github-token@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-collector",
+   "kind": "app_installation",
+   "app_id": 5535733,
+   "slug": "termux-fleet-collector",
+   "state": "unreadable",
+   "unreadable_reason": "no_read_supplied",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-collector@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-publisher",
+   "kind": "app_installation",
+   "app_id": 5537873,
+   "slug": "termux-fleet-publisher",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-publisher@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-reviewer",
+   "kind": "app_installation",
+   "app_id": 5539430,
+   "slug": "termux-fleet-reviewer",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-reviewer@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-gate",
+   "kind": "app_installation",
+   "app_id": 5539499,
+   "slug": "termux-fleet-gate",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-gate@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-lifecycle",
+   "kind": "app_installation",
+   "app_id": 5539639,
+   "slug": "termux-fleet-lifecycle",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-lifecycle@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-swarm",
+   "kind": "app_installation",
+   "app_id": 5560920,
+   "slug": "termux-fleet-swarm",
+   "state": "unreadable",
+   "unreadable_reason": "no_read_supplied",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-swarm@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-crossreference",
+   "kind": "app_installation",
+   "app_id": 5564430,
+   "slug": "termux-fleet-crossreference",
+   "state": "unreadable",
+   "unreadable_reason": "no_read_supplied",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-crossreference@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-repostory",
+   "kind": "app_installation",
+   "app_id": 5565297,
+   "slug": "termux-fleet-repostory",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-repostory@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-moneyball",
+   "kind": "app_installation",
+   "app_id": 5602878,
+   "slug": "termux-fleet-moneyball",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-moneyball@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-delphioracle",
+   "kind": "app_installation",
+   "app_id": 5602904,
+   "slug": "termux-fleet-delphioracle",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-13T03:36:37Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-delphioracle@unknown-1794540997",
+    "probed": false
+   }
+  }
+ ],
+ "alerting": []
+}

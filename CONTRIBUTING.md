@@ -31,6 +31,10 @@ This monorepo is developed with **humans and agents** on Termux and CI.
 - Debate in MANIFEST Review log and optional `DEBATE.md` (chat alone is not consensus).
 - Closing rules: `docs/proposals/PROCESS.md` (all items terminal, outcome recorded, move to `closed/`).
 
+## Communication standard
+
+Apply [`docs/ops/COMMUNICATION-LAW.md`](docs/ops/COMMUNICATION-LAW.md) to comments, commits, PRs, reviews, issues, and stewardship reports. Lead with DO statements; record evidence and acceptance conditions; use CAVEMAN-6 / Siglary where precise. Keep chat to state changes and oversight.
+
 ## Security
 
 - Never commit session stores, browser profiles, cookies, or API keys.

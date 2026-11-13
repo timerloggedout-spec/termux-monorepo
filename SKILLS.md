@@ -6,7 +6,7 @@
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
-| **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
+| **Primary agent entry (BIUDL)** | [`AGENTS.md`](AGENTS.md) → [`moniker.md`](moniker.md) → [`CLAUDE.md`](CLAUDE.md) |
 | **DO-statement mandate** | [`docs/ops/DO-STATEMENT-MANDATE.md`](docs/ops/DO-STATEMENT-MANDATE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
 | Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
@@ -29,7 +29,7 @@
 | Production WAIT → VALIDATE | `.github/skills/production-reconciliation/SKILL.md` |
 | Siglary A2A notation (room↔room comms) | `.agents/skills/siglary-a2a/SKILL.md` |
 
-Root `AGENTS.md` routes through `moniker.md` to `CLAUDE.md`. Load the moniker route, then this primary governance entry.
+Start at root `AGENTS.md`, follow `moniker.md` for identity and routing, then load `CLAUDE.md` for governance and execution rules.
 
 ## Layout (both trees are first-class)
 

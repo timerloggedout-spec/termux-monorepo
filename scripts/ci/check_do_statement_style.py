@@ -23,6 +23,7 @@ IMPERATIVE = {
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
+    "automate", "clear", "exclude", "expose", "normalize", "schedule", "stabilize", "tighten",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
@@ -37,6 +38,20 @@ def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
         if NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
+
+
+def action_verb(subject: str) -> str:
+    first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
+    return first[0].lower() if first else ""
+
+
+def is_action_subject(subject: str) -> bool:
+    return action_verb(subject) in IMPERATIVE
+
+
+def git_log_args(base: str, head: str, fmt: str) -> list[str]:
+    # PR validation checks authored commits, not GitHub's synthetic merge commit.
+    return ["git", "log", "--no-merges", f"{base}..{head}", f"--format={fmt}"]
 
 
 def inspect_git_range(base: str, head: str) -> None:
@@ -56,18 +71,16 @@ def inspect_git_range(base: str, head: str) -> None:
                 )
 
     subjects = subprocess.run(
-        ["git", "log", f"{base}..{head}", "--format=%s"],
+        git_log_args(base, head, "%s"),
         check=True, capture_output=True, text=True,
     ).stdout.splitlines()
     bodies = subprocess.run(
-        ["git", "log", f"{base}..{head}", "--format=%b"],
+        git_log_args(base, head, "%b"),
         check=True, capture_output=True, text=True,
     ).stdout
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
-        verb = first[0].lower() if first else ""
-        if verb not in IMPERATIVE:
+        if not is_action_subject(subject):
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
             )
@@ -107,18 +120,24 @@ def inspect_event() -> None:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
 
-event = {}
-if EVENT_PATH and Path(EVENT_PATH).is_file():
-    event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+def main() -> int:
+    event = {}
+    if EVENT_PATH and Path(EVENT_PATH).is_file():
+        event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
 
-inspect_pr_commits()
-inspect_push_commits(event)
-inspect_event()
+    inspect_pr_commits()
+    inspect_push_commits(event)
+    inspect_event()
 
-if errors:
-    print("DO-statement style: FAIL")
-    for error in errors:
-        print(f" - {error}")
-    sys.exit(1)
+    if errors:
+        print("DO-statement style: FAIL")
+        for error in errors:
+            print(f" - {error}")
+        return 1
 
-print("DO-statement style: PASS")
+    print("DO-statement style: PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -56,6 +56,7 @@ def test_decide_uses_repo_script_and_feeds():
     assert "scripts/ops/dispatch_executor.py decide" in run
     assert "ops/dispatch/build-arms.json" in run
     assert "ops/que/feeds/arm-census.json" in run
+    assert "--usage pool-usage.json" in run
     assert "--max-conversions" in run
     assert "--measured ops/que/feeds/bucket-headroom.json" in run
 
@@ -70,6 +71,22 @@ def test_probe_step_dispatches_census_and_records_via_5230_surface():
     assert "dispatch_executor.py probe-result" in run
     assert "bucket_headroom.py record-probe" in run
     assert "ops/quota/quota-probe-ledger.jsonl" in run
+
+
+def test_derive_step_runs_before_decide_and_feeds_usage():
+    # #5160: the derivation runs first (registry + census + published
+    # snapshot when present) and emits the executor's --usage record.
+    steps = [s.get("name") for s in _steps()]
+    assert steps.index("Derive pool + cadence (#5160)") < steps.index("Decide (executor)")
+    derive = _step("Derive pool + cadence (#5160)")
+    run = derive["run"]
+    assert "scripts/ops/auto_quota_cadence.py" in run
+    assert "ops/quota/registry.json" in run
+    assert "--usage-out pool-usage.json" in run
+    assert "ledger-snapshot.json" in run  # only when the file exists
+    receipt = _step("Publish receipt artifact")
+    assert "pool-cadence.json" in receipt["with"]["path"]
+    assert "pool-usage.json" in receipt["with"]["path"]
 
 
 def test_claim_precedes_fire_in_one_step():

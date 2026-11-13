@@ -109,14 +109,31 @@ def test_funded_out_providers_are_never_arms():
 
 # ---------------------------------------------------------------- selection
 
-def test_selection_falls_back_to_gemini_when_census_passes_only_gemini():
+def test_selection_picks_gemini_as_first_eligible_free_tier_when_only_gemini_passes():
+    # #5160 clause 5: Gemini is selected as the first eligible free-tier
+    # arm in registry order -- never as a fallback-of-record.
     harness = load_harness()
     reg = registry()
     census = {"schema": "arm-census/v1", "arms": [
         {"arm_id": a["arm_id"], "verdict": "failed"} for a in reg["arms"]]}
     arm, reason = harness.select_arm(reg, census, "2026-11-11", "auto")
     assert arm["arm_id"] == "gemini-cli"
-    assert "fallback-of-record" in reason
+    assert "fallback-of-record" not in reason
+    assert "first eligible free-tier arm" in reason
+
+
+def test_selection_prefers_registry_order_free_tier_over_gemini():
+    # Mistral is earlier in registry order than Gemini; when both pass,
+    # the registry-order arm wins -- Gemini has no precedence.
+    harness = load_harness()
+    reg = registry()
+    census = {"schema": "arm-census/v1", "arms": [
+        {"arm_id": a["arm_id"],
+         "verdict": "eligible" if a["arm_id"] in ("mistral-codestral", "gemini-cli")
+         else "failed"} for a in reg["arms"]]}
+    arm, reason = harness.select_arm(reg, census, "2026-11-11", "auto")
+    assert arm["arm_id"] == "mistral-codestral"
+    assert "first eligible free-tier arm" in reason
 
 
 def test_selection_prefers_eligible_generic_free_tier_over_credit_funded():
@@ -136,7 +153,9 @@ def test_eligible_free_tier_gemini_precedes_credit_funded_generic_arm():
         {"arm_id": "baseten-gpt-oss", "verdict": "eligible"}]}
     arm, reason = harness.select_arm(reg, census, "2026-11-11", "auto")
     assert arm["arm_id"] == "gemini-cli"
-    assert "free-tier Gemini" in reason
+    # #5160 clause 5: free-tier before credit-funded, registry order --
+    # no Gemini-specific reason string anymore.
+    assert "first eligible free-tier arm" in reason
 
 
 def test_auto_build_rotates_after_quota_terminal_to_next_free_generic(tmp_path, monkeypatch):

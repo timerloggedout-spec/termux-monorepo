@@ -90,6 +90,19 @@ real asymmetries verified against the live surfaces:
 - `zai` — secret-only: `ZAI_API_KEY` wired, no catalog endpoint registered.
 - `xkiro` — public catalog; availability probe needs no secret env.
 
+## autoQuotaCadence (QUE #5160)
+
+Onboarding puts a provider on the surfaces; autoQuotaCadence decides
+whether it is dispatchable today. `scripts/ops/auto_quota_cadence.py`
+derives the DoE endpoint pool + per-arm cadence decisions from the arm
+registry + census feed + quota registry + a published ledger snapshot
+(see `docs/ops/AUTO-QUOTA-CADENCE.md` and
+`docs/ops/LEDGER-SNAPSHOT-CONTRACT.md`). The ledger read contract is
+UNPUBLISHED until #5113 T2 publishes it, so ledger reads are treated as
+unavailable and arms defer on unknown quota — no metering is invented
+in Actions. The derivation runs inside the dispatch executor's cycle;
+it adds no cron, ledger, registry, poller, or router.
+
 ## Rules
 
 - Secret **names only**, never values (fleet credential rule, issue #184).

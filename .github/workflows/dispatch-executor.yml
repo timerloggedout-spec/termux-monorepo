@@ -78,6 +78,31 @@ jobs:
             --jq '[.[] | {number, title, labels: [.labels[].name]}]' > filings.json
           echo "admitted+queued: $(jq length filings.json)"
 
+      # #5160: derive the pool + cadence decisions first (deterministic,
+      # no inference, no metering). The derivation reads the registry +
+      # census + the published ledger snapshot when one exists
+      # (ops/que/feeds/ledger-snapshot.json -- absent until #5113 T2
+      # publishes the read contract) and emits the executor's --usage
+      # record; without a snapshot the usage record is empty and the
+      # executor keeps holding on quota_unknown (fail-closed).
+      - name: Derive pool + cadence (#5160)
+        id: derive
+        run: |
+          set -euo pipefail
+          SNAPSHOT_ARGS=()
+          if [ -f ops/que/feeds/ledger-snapshot.json ]; then
+            SNAPSHOT_ARGS=(--snapshot ops/que/feeds/ledger-snapshot.json)
+          fi
+          python3 scripts/ops/auto_quota_cadence.py \
+            --arms ops/dispatch/build-arms.json \
+            --census ops/que/feeds/arm-census.json \
+            --registry ops/quota/registry.json \
+            "${SNAPSHOT_ARGS[@]}" \
+            --previous ops/que/feeds/pool-cadence.json \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --out pool-cadence.json \
+            --usage-out pool-usage.json
+
       - name: Decide (executor)
         id: decide
         run: |
@@ -92,6 +117,7 @@ jobs:
             --filings filings.json \
             --arms ops/dispatch/build-arms.json \
             --census ops/que/feeds/arm-census.json \
+            --usage pool-usage.json \
             $MEASURED_FLAG \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --run-id "${{ github.run_id }}" \
@@ -176,6 +202,8 @@ jobs:
           path: |
             decisions.json
             filings.json
+            pool-cadence.json
+            pool-usage.json
           retention-days: 30
 
       - name: "Stamp executor error on #5176"

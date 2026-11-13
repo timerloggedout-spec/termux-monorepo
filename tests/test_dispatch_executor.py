@@ -75,6 +75,37 @@ def _decide(filings, **kw):
     )
 
 
+# --- #5160 gap 2: pre-flight reset reads from usage budgets ---
+
+def test_preflight_reset_from_usage_budgets_when_present():
+    gemini = _registry()["arms"][1]
+    usage = _usage()
+    usage["budgets"] = {"gemini-cli": {"reset_window": "midnight PT",
+                                       "reset_tz": "America/Los_Angeles"}}
+    read, hold = ex.preflight(gemini, usage, NOW, headroom=13)
+    assert hold is None
+    assert read["reset_window"] == "midnight PT"
+    assert read["reset_tz"] == "America/Los_Angeles"
+
+
+def test_preflight_reset_unknown_when_budgets_absent():
+    # No hardcoded calendar inference: without a published budget the
+    # stamp says UNKNOWN (QUOTA-RESET-CONTRACT).
+    gemini = _registry()["arms"][1]
+    read, hold = ex.preflight(gemini, _usage(), NOW, headroom=13)
+    assert hold is None
+    assert read["reset_window"] == "unknown"
+    assert read["reset_tz"] == "unknown"
+
+
+def test_preflight_reset_unknown_for_generic_arm_without_budgets():
+    arm = _registry()["arms"][0]
+    read, hold = ex.preflight(arm, _usage(), NOW, headroom=5)
+    assert hold is None
+    assert read["reset_window"] == "unknown"
+    assert read["reset_tz"] == "unknown"
+
+
 # --- eligibility ---
 
 def test_claimed_filing_never_refired():

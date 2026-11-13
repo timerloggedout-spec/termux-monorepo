@@ -6,7 +6,7 @@
 <meta name="description" content="Swarm quota: the DoE participant population - every provider endpoint, its models, quota layers and rate-limit events. Distinct from the general quota registry.">
 <title>Swarm Quota · Ops · Tribute</title>
 <link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
-<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.rec{padding:.3rem 0;border-top:1px solid rgba(127,127,127,.25)}details.card summary{cursor:pointer}</style>
+<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}.rec{padding:.3rem 0;border-top:1px solid rgba(127,127,127,.25)}details.card summary{cursor:pointer}.freshness-table{width:100%;border-collapse:collapse;font-size:13px}.freshness-table td,.freshness-table th{padding:.4rem .5rem;border-bottom:1px solid rgba(127,127,127,.25);text-align:left;vertical-align:top}.freshness-state{font-weight:700;white-space:nowrap}</style>
 </head>
 <body>
 <header><div class="hero"><div><div class="eyebrow">Ops · swarm quota</div><h1>Swarm <span>Quota</span></h1><p class="lede">The Swarm is the DoE participant population — ALL providers' inference endpoints that can be dispatched to — not the general quota registry (that is <a href="./quota.html">Quota</a>). Three layers, kept legible: what the registry lists, what actually surfaces (aggregator backends collapse to one surface), and what is live-verified invoked. Quota values render only where the census or a usage series establishes them — readings used/remaining are null in the public projection by design.</p><div class="links" style="margin-top:1rem"><a class="button" href="./quota.html">Quota registry</a><a class="button" href="./family.html">Nested family</a><a class="button" href="./doe-settings.html">DoE settings</a><a class="button" href="./quota-graphs.html">Quota graphs</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/PROVIDER-DISPATCH-CAPABILITY.md">Capability spec</a><a class="button" href="./data/swarm-feed.json">Swarm feed</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching swarm feed.</small></div></div></header>
@@ -22,6 +22,9 @@
 <section aria-labelledby="layers"><div class="head"><h2 id="layers">The three layers</h2><span class="note" id="layers-stamp">—</span></div>
 <div class="card"><div id="chart-layers"></div>
 <p class="muted" id="layers-note">—</p></div></section>
+<section aria-labelledby="source-freshness"><div class="head"><h2 id="source-freshness">Source freshness / as-of</h2><span class="note" id="source-freshness-note">—</span></div>
+<div class="card"><div id="source-freshness-table"><p class="muted">Waiting for source timestamps.</p></div>
+<p class="muted">Feed generated_at ≠ source generated_at ≠ observation as_of. 24h/7d are display-warning windows, not provider SLAs. Unknown stays unknown; no readings are inferred.</p></div></section>
 <section aria-labelledby="providers"><div class="head"><h2 id="providers">Provider families</h2><span class="note" id="prov-note">—</span></div>
 <div class="card"><div class="label">Registry records per family</div><div id="chart-families"></div></div>
 <div class="grid grid-2" id="family-cards" style="margin-top:1rem"></div></section>
@@ -54,6 +57,52 @@ function recordRow(r){
     +(r.populated===false?'<br><span class="muted">gap - no readings or usage on record</span>':'')
     +(r.usage_series?('<div data-usage="'+esc(r.id)+'"></div>'):'')+'</div>';
 }
+function freshnessAge(asOf){
+  const at=Date.parse(asOf||"");
+  if(!Number.isFinite(at))return "unknown";
+  const delta=Date.now()-at;
+  if(delta<0)return "future timestamp";
+  const minutes=Math.floor(delta/60000);
+  if(minutes<60)return minutes+"m";
+  const hours=Math.floor(minutes/60);
+  if(hours<48)return hours+"h";
+  return Math.floor(hours/24)+"d "+(hours%24)+"h";
+}
+function freshnessState(asOf,thresholdMs,event){
+  const at=Date.parse(asOf||"");
+  if(!Number.isFinite(at))return "UNKNOWN";
+  const old=Date.now()-at>thresholdMs;
+  return event?(old?"NO RECENT EVENT":"RECENT EVENT"):(old?"STALE":"FRESH");
+}
+function renderSourceFreshness(feed){
+  const rows=[];
+  (feed.sources||[]).forEach(source=>{
+    rows.push({label:source.id+" · source generation",path:source.path,as_of:source.generated_at,evidence:"generated_at",threshold:86400000});
+    Object.entries(source.inputs_generated_at||{}).forEach(([path,stamp])=>{
+      rows.push({label:source.id+" · input",path,as_of:stamp,evidence:"input generated_at",threshold:86400000});
+    });
+    (source.observations||[]).forEach(observation=>{
+      rows.push({label:observation.label||observation.id,path:source.path,as_of:observation.as_of,
+        evidence:observation.evidence||"unknown",detail:observation.detail||"",generated_at:observation.generated_at,
+        threshold:observation.id==="rate-limit-events"?604800000:86400000,
+        event:observation.id==="rate-limit-events"});
+    });
+    if(source.latest_event_at){
+      rows.push({label:source.id+" · latest event",path:source.path,as_of:source.latest_event_at,
+        evidence:"recorded event",threshold:604800000,event:true});
+    }
+  });
+  let out='<table class="freshness-table"><thead><tr><th>Source / series</th><th>As of</th><th>Age</th><th>Evidence</th><th>State</th></tr></thead><tbody>';
+  rows.forEach(row=>{
+    const state=freshnessState(row.as_of,row.threshold,row.event);
+    out+='<tr><td><strong>'+esc(row.label)+'</strong><br><span class="muted">'+esc(row.path||"")+'</span>'+(row.detail?'<br><span class="muted">'+esc(row.detail)+'</span>':'')+'</td>'
+      +'<td><code>'+esc(row.as_of||"unknown")+'</code>'+(row.generated_at?'<br><span class="muted">generated '+esc(row.generated_at)+'</span>':'')+'</td>'
+      +'<td>'+esc(freshnessAge(row.as_of))+'</td><td>'+esc(row.evidence)+'</td><td class="freshness-state">'+esc(state)+'</td></tr>';
+  });
+  out+='</tbody></table>';
+  $("source-freshness-table").innerHTML=out;
+  $("source-freshness-note").textContent=rows.length+" source/observation timestamps · feed "+(feed.generated_at||"unknown");
+}
 function familyCard(p){
   const recs=p.records||[];
   const head='<div class="label">'+esc(p.provider)+'<span class="chip">'+recs.length+' records</span>'+(p.live_verified?'<span class="chip">live-verified</span>':'')+(p.population&&p.population.state==='gap'?'<span class="chip">GAP</span>':'')+'</div>'
@@ -70,6 +119,7 @@ async function load(){
   $('generated').textContent='Schema '+(feed.schema||'—')+' · generated '+(feed.generated_at||'—')+' · '+(s.registry_model_records||0)+' records · '+(s.distinct_providers||0)+' provider entries · '+(s.families||0)+' families'+(s.population?(' · population: '+s.population.providers_populated+'/'+s.population.providers_total+' providers populated, '+s.population.providers_gap+' gap · families '+s.population.families_populated+'/'+s.population.families_total+' populated, '+s.population.families_gap+' gap'):'');
   const st=CK.stampState(feed.generated_at,Date.now(),86400000);
   $('layers-stamp').textContent='Feed generated '+(feed.generated_at||'—')+(st==='STALE'?' · STALE':(st==='unknown'?' · stamp unknown':''));
+  renderSourceFreshness(feed);
   $('chart-layers').innerHTML=CK.bars([
     {label:'Registry provider entries',value:s.distinct_providers||0},
     {label:'Distinct surfaces (families)',value:s.families||0},

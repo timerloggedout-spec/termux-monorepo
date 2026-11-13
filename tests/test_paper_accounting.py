@@ -378,6 +378,7 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
     def test_culled_account_rejects_new_activity_and_settlement_recipient(self):
         self.fund("alice")
         self.fund("bob")
+        self.graph.place_bet(BetEntry("job", "job", "observational-task", actor_id="alice"))
         self.graph.cull_participant(
             "alice", event_id="cull", decision_id="decision", reason="disqualification",
             score_snapshot=self.score_snapshot(), pool_id="season-1",
@@ -388,7 +389,10 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
             self.graph.reserve_bet(BetEntry("job", "job", "late-task", actor_id="alice",
                                             unit_kind="paper_point", units=1),
                                    event_id="late-reserve", reservation_id="late-hold")
-        self.assertEqual(self.account(self.graph.accounting_snapshot(), "alice")["balance"], 100)
+        final = self.graph.accounting_snapshot()
+        self.assertEqual(self.account(final, "alice")["balance"], 100)
+        self.assertEqual(next(b for b in final["events"] if b["type"] == "bet")["payload"]["bet"]["status"], "open")
+        self.assertEqual(self.graph.snapshot()["bets"][0]["status"], "culled")
 
     def test_pool_distribution_is_bounded_idempotent_and_replayable(self):
         self.fund("alice")

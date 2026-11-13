@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-13T13:44:30Z",
+ "read_at": "2026-11-13T14:12:32Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 5336,
+   "title": "Improve agent readability of Tribute, Matrix, and project hub",
+   "merged_at": "2026-11-13T13:54:07Z",
+   "updated_at": "2026-11-13T13:57:43Z",
+   "created_at": "2026-11-13T13:44:53Z",
+   "merge_commit_sha": "75ff0e3f2d3519bc3afbea974e35d1a753e4189a",
+   "head_ref": "fix/agent-readability-page-sources",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5336",
+   "merged": true
+  },
   {
    "number": 5312,
    "title": "docs(guides): evidence index \u2014 AMD Academy C3 completion (1/5)",
@@ -1939,19 +1952,6 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4978",
    "merged": true
-  },
-  {
-   "number": 4973,
-   "title": "chore(linguist): refresh linguist-panel-feed.json",
-   "merged_at": "2026-11-05T03:48:52Z",
-   "updated_at": "2026-11-05T03:48:52Z",
-   "created_at": "2026-11-05T03:46:40Z",
-   "merge_commit_sha": "b51796ecaa35f2f96a9282dd97139cdc3438abe6",
-   "head_ref": "linguist-panel-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4973",
-   "merged": true
   }
  ],
  "open": [
@@ -1959,9 +1959,9 @@
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-13T13:43:54Z",
+   "updated_at": "2026-11-13T14:11:07Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "7c34ee6beb690ba68639764a33646f11527b898d",
+   "merge_commit_sha": "a81dd63004e66cd92ece1aacb978c91830f2642f",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
@@ -1972,9 +1972,9 @@
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T13:42:00Z",
+   "updated_at": "2026-11-13T14:06:37Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "fd59cb26729bb2d633a930088755decb636fe0c4",
+   "merge_commit_sha": "d1e16012de516132271a0217e566994122df2c4c",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1982,29 +1982,42 @@
    "merged": false
   },
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-13T13:37:59Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "0bfb870d693878f0d77291c2cc217a68d5ca71ac",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T13:36:00Z",
+   "updated_at": "2026-11-13T14:05:40Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "974030af2bb57c34d657b1c79508bc55edc3641a",
+   "merge_commit_sha": "b30d951c4688b2b496b7f57df7b25ba70ff508ab",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 5337,
+   "title": "Trigger Pages deployment after merged dashboard-source PRs",
+   "merged_at": null,
+   "updated_at": "2026-11-13T14:05:09Z",
+   "created_at": "2026-11-13T13:57:06Z",
+   "merge_commit_sha": "34adfb32d7c657546b4981314a1fcd4dbd90494f",
+   "head_ref": "fix/pages-deploy-on-pr-close",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5337",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-13T13:49:31Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "0e37eccd46e45a743dcec7740d6cc8e96cf3bfba",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -4540,19 +4553,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4355",
-   "merged": false
-  },
-  {
-   "number": 4353,
-   "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
-   "merged_at": null,
-   "updated_at": "2026-11-03T14:21:59Z",
-   "created_at": "2026-11-03T14:21:01Z",
-   "merge_commit_sha": "c60431551e89b21f29003f0020a47ec1abf9015d",
-   "head_ref": "feat/delphi-p12-verification",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4353",
    "merged": false
   }
  ],

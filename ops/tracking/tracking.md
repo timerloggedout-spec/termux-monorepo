@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-13T13:44:31Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-13T14:12:33Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-13T13:44:30Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`42476` read_at=`2026-11-13T13:44:30Z`
+Sources: PR feed read_at=`2026-11-13T14:12:32Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`42716` read_at=`2026-11-13T14:12:32Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknown=8
 
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknow
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5326 — fix(quota): automate public readings and self-count refresh |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5238 `1b573fde5351` 2026-11-12T14:41:48Z | land/close PR #5222 — docs(architecture): reconcile swarm routing control planes |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #5337 — Trigger Pages deployment after merged dashboard-source PRs |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 

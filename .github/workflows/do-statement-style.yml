@@ -1,0 +1,39 @@
+name: DO Statement Style
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  commit_comment:
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  action-first-language:
+    if: >-
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'issue_comment' ||
+      github.event_name == 'issues' ||
+      github.event_name == 'commit_comment' ||
+      github.event_name == 'pull_request_review_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check DO statements, PR text, comments, and commit subjects
+        run: python scripts/ci/check_do_statement_style.py

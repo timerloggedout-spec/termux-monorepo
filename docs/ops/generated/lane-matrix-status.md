@@ -1,8 +1,8 @@
-# Lane matrix status (2026-11-13T14:53:53Z)
+# Lane matrix status (2026-11-13T14:55:00Z)
 
-- Master: `32132d4c017658b6f663e12759cacf275a72ddd6`
+- Master: `25198141bc69dd22429c388ded31ccd6135b3e4b`
 - Open PRs: **377**
-- Oldest: #47 (99.96d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Oldest: #47 (99.97d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
@@ -28,11 +28,11 @@
 | #4621 | 9.75 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 9.09 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 7.0 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #47 | 99.96 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
+| #47 | 99.97 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 97.71 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 96.58 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 59.29 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #605 | 55.87 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #605 | 55.88 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 53.85 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 51.3 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 43.21 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |

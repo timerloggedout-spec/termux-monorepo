@@ -13,6 +13,8 @@ reviewers:
 related_issues: []
 related_prs:
   - 5336
+  - 5344
+  - 5347
 related_branches:
   - feat/agent-readability-do-mandate-v2
 gates_required: [repo-gate, termux-smoke]
@@ -47,5 +49,5 @@ Record the source SHA, publication SHA, workflow run, live URLs, Agent Ready sca
 
 ## Related website changes
 
-- Website PR #48: conditional 95+ badge renderer, cache refresh, and source validator.
-- Website PR #49: primary WebPage breadcrumb, static text expansion, and accessible badge label; awaiting CI and publication.
+- Website PR #48: merged; conditional 95+ badge renderer, cache refresh, and source validator.
+- Website PR #49: merged; expanded static guide, WebPage/BreadcrumbList graph, and accessible badge label. Latest Pages build remains queued.

@@ -138,6 +138,25 @@ class RoyaltyLedgerTests(unittest.TestCase):
             )
             self.assertEqual(ledger.snapshot()["policies"]["legacy-residual@2"]["rate_bps"], 900)
 
+    def test_policy_close_cannot_exclude_an_already_recorded_accrual(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = setup_ledger(Path(directory) / "royalties.jsonl")
+            ledger.accrue(
+                event_id="accrual-event-1", accrual_id="accrual-1",
+                contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
+                policy_id="legacy-residual", policy_version=1, basis_units=10000,
+                unit_domain="paper_point", event_time="2026-04-01T00:00:00+00:00",
+            )
+            before = ledger.snapshot()["event_count"]
+            with self.assertRaises(RoyaltyLedgerError):
+                ledger.close_policy(
+                    event_id="policy-close-1", policy_id="legacy-residual", version=1,
+                    effective_until="2026-03-01T00:00:00+00:00",
+                    approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
+                    approval_digest=sha("policy-close-proof"),
+                )
+            self.assertEqual(ledger.snapshot()["event_count"], before)
+
     def test_policy_activation_requires_configured_owner(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = setup_ledger(Path(directory) / "royalties.jsonl")

@@ -230,12 +230,17 @@ def process(gh, issue, registry, tiers_doc, picture, now, run_url, dry_run=False
     )
     if not block:
         return {"issue": issue["number"], "action": "skip_unmatched"}
-    decision, reasons, facts = decide(block, tiers_doc, picture, now)
-    digest = fingerprint(decision, reasons, facts)
-    remove, add = admission_label_delta(labels, decision)
     comments = list(pages(
         gh, f"/repos/{REPO}/issues/{issue['number']}/comments"
     ))
+    if "dispatch-claimed" in labels or any(
+        "PRODUCER CLAIM" in (comment.get("body") or "")
+        for comment in comments
+    ):
+        return {"issue": issue["number"], "action": "skip_already_claimed"}
+    decision, reasons, facts = decide(block, tiers_doc, picture, now)
+    digest = fingerprint(decision, reasons, facts)
+    remove, add = admission_label_delta(labels, decision)
     same_receipt = latest_fingerprint(comments) == digest
     run_url = run_url or f"https://github.com/{REPO}/actions"
     body = receipt_body(fname, block, decision, reasons, facts, run_url, digest)

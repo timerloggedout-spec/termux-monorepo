@@ -204,8 +204,11 @@ def write_csv(snapshot: dict[str, Any], destination: TextIO) -> int:
 
 def parse_csv(text: str) -> list[dict[str, str]]:
     reader = csv.DictReader(text.splitlines(keepends=True), strict=True)
-    legacy = FIELDS_V1[:22]
-    if reader.fieldnames not in (FIELDS, FIELDS_V1, legacy):
+    legacy_header = FIELDS_V1[:22]
+    legacy_mode = reader.fieldnames == legacy_header
+    version_one = reader.fieldnames == FIELDS_V1
+    version_two = reader.fieldnames == FIELDS
+    if reader.fieldnames not in (FIELDS, FIELDS_V1, legacy_header):
         raise ValueError("CSV header does not match paper view schema")
     result = []
     account_owners, reservation_ids = set(), set()
@@ -217,8 +220,8 @@ def parse_csv(text: str) -> list[dict[str, str]]:
             raise ValueError("malformed CSV row")
         if row.get("paper_only") != PAPER_ONLY_NOTE:
             raise ValueError("invalid paper_only label")
-        if not legacy and row["csv_version"] != ("2" if reader.fieldnames == FIELDS else "1"): raise ValueError("unsupported CSV version")
-        if legacy:
+        if not legacy_mode and row["csv_version"] != ("2" if version_two else "1"): raise ValueError("unsupported CSV version")
+        if legacy_mode:
             rows.append(row); result.append(row); continue
         for k in ("balance", "reserved", "available", "source_event_count"):
             if row[k] and (not row[k].isdigit() or int(row[k]) > 2**63 - 1):
@@ -240,7 +243,7 @@ def parse_csv(text: str) -> list[dict[str, str]]:
             if int(row["units"]) <= 0 or int(row["units"]) > 2**63 - 1: raise ValueError("reservation units out of range")
         if row["record_type"] == "event":
             if not row["event_id"] or row["event_id"] in event_ids or not row["event_type"] or not row["source_event_count"] or not row["source_digest"]: raise ValueError("invalid or incomplete event row")
-            if reader.fieldnames == FIELDS:
+            if version_two:
                 try:
                     payload = json.loads(row["event_payload"])
                 except (TypeError, json.JSONDecodeError) as exc:

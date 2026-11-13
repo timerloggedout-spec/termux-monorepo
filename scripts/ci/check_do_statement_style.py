@@ -95,7 +95,10 @@ def inspect_event() -> None:
     elif EVENT_NAME == "issues":
         inspect_text("issue.title", event.get("issue", {}).get("title") or "")
         inspect_text("issue.body", event.get("issue", {}).get("body") or "")
-    elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "commit_comment"}:
+    elif EVENT_NAME == "discussion":
+        inspect_text("discussion.title", event.get("discussion", {}).get("title") or "")
+        inspect_text("discussion.body", event.get("discussion", {}).get("body") or "")
+    elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "discussion_comment", "commit_comment"}:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
 

@@ -33,7 +33,7 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 
 - LangGraph integration: PR #5045 and its existing branch/skill. Resolve its current-head repo-gate failure before treating it as promoted.
 - QDesk/Delphi pipeline: PR #5145 and RFP issue #5146. Reuse its existing Oracle, Delphi gate, feed and acceptance contract.
-- Free-inference provider population/cadence: issue #5160; its current prerequisite is PR #5134.
+- Free-inference provider population/cadence: issue #5160; implementation PR #5258 merged 2026-11-13 (merge `87dd55c618fd4c4dc2fdc71a5902539ae9a32a1e`). First live conversion remains an execution-evidence item; this proposal does not authorize live invocation.
 - Participant identity and DoE role-clones: #5136 and #5183, with #5176 and #4979 sequencing preserved.
 - Scientific/control specialist role definitions: #5189. This proposal maps the control-systems role into that registry; it does not create another one.
 - Provider-family and DoE settings observability: provider-family-doe-observatory / PFDO-005. Extend by citation, not by duplicating its projections.

@@ -7,6 +7,10 @@ description: Operate a constrained Android Termux agentic hub alongside GitHub r
 
 Use this skill to steward GitHub projects through a connected Android Termux MCP while preserving device resources and repository hygiene.
 
+## Scheduled local sentinel
+
+Run `templates/local-resource-sentinel.sh` directly from its tracked repository path. The script derives the repository root from its own location; set `TERMUX_PROJECT_ROOT` only when relocating the script. It reports both pressure and unknown snapshot health, preserves captured diagnostics, and never performs remediation.
+
 ## Operating modes
 
 - **Read-only:** inspect device health, tunnel availability, Git status, branches, pull requests, issues, checks, and project metadata.

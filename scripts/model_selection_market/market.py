@@ -111,7 +111,7 @@ class MarketGraph:
 
     @staticmethod
     def _empty():
-        return {"cards": {}, "bets": [], "edges": [], "accounts": {}, "reservations": {}, "ids": {}}
+        return {"cards": {}, "bets": [], "edges": [], "accounts": {}, "reservations": {}, "ids": {}, "culled": {}, "pools": {}, "pool_distributions": {}}
 
     def _reduce(self, events):
         state = self._empty()
@@ -137,8 +137,11 @@ class MarketGraph:
         expected = {"event_id", "type", "payload", "timestamp", "correlation_id"}
         if not isinstance(event, dict) or set(event) != expected | {"version", "seq"}:
             raise ValueError("invalid event fields" + where)
-        if type(event["version"]) is not int or event["version"] != 1:
+        if type(event["version"]) is not int or event["version"] not in (1, 2):
             raise ValueError("unsupported event version" + where)
+        lifecycle_v2 = event["type"] in ("cull", "pool_distribute")
+        if (lifecycle_v2 and event["version"] != 2) or (not lifecycle_v2 and event["version"] != 1):
+            raise ValueError("event type/version mismatch" + where)
         if type(event["seq"]) is not int or (index is not None and event["seq"] != index):
             raise ValueError("invalid event sequence" + where)
         for key in ("event_id", "type", "timestamp", "correlation_id"):
@@ -240,11 +243,13 @@ class MarketGraph:
             s["edges"].append({"type": "stakes", "from": bet["actor_class"], "to": f'{bet["subject"]["kind"]}:{bet["subject"]["id"]}'})
         elif typ == "open_account":
             self._keys(p, {"owner", "provenance"}); _owner(p["owner"]); _provenance(p["provenance"])
+            if p["owner"].startswith("pool:"): raise ValueError("pool accounts are created by the cull lifecycle")
             if p["owner"] in s["accounts"]: raise ValueError("account already open")
             s["accounts"][p["owner"]] = 0
         elif typ == "issue":
             self._keys(p, {"owner", "units", "provenance"}); _owner(p["owner"]); _units(p["units"]); _provenance(p["provenance"])
             if p["owner"] not in s["accounts"]: raise ValueError("account is not open")
+            if p["owner"] in s["culled"]: raise ValueError("culled participant accounts are closed to issuance")
             if s["accounts"][p["owner"]] + p["units"] > MAX_UNITS: raise ValueError("account balance overflow")
             s["accounts"][p["owner"]] += p["units"]
         elif typ == "reserve":
@@ -256,6 +261,7 @@ class MarketGraph:
                 raise ValueError("unknown reservation kind")
             self._keys(r, {"reservation_id", "owner", "units", "status", "kind", "entry_id"} if kind == "bet" else {"reservation_id", "owner", "units", "status", "kind", "card_id", "to_owner"} if kind == "offer" else set())
             _owner(r["owner"]); _units(r["units"])
+            if r["owner"] in s["culled"]: raise ValueError("culled participant accounts are closed to reservations")
             if not isinstance(r["reservation_id"], str) or not r["reservation_id"] or r["status"] != "reserved": raise ValueError("invalid reservation identity or status")
             if r["reservation_id"] in s["reservations"]: raise ValueError("duplicate reservation")
             if r["owner"] not in s["accounts"]: raise ValueError("reservation owner account is not open")
@@ -288,6 +294,7 @@ class MarketGraph:
                 recipient = p["recipient"]; _owner(recipient)
                 if r["kind"] == "offer" and recipient != r["to_owner"]: raise ValueError("offer must settle to its card owner")
                 if recipient not in s["accounts"]: raise ValueError("unknown recipient")
+                if recipient in s["culled"]: raise ValueError("culled participants cannot receive settlement")
                 if recipient != r["owner"] and s["accounts"][recipient] + r["units"] > MAX_UNITS: raise ValueError("account balance overflow")
                 if recipient != r["owner"]: s["accounts"][r["owner"]] -= r["units"]; s["accounts"][recipient] += r["units"]
                 r["recipient"] = recipient; r["status"] = "settled"
@@ -298,6 +305,110 @@ class MarketGraph:
                 r["status"] = "released"; r["reason"] = p["reason"]
                 for bet in s["bets"]:
                     if bet["entry_id"] == r.get("entry_id") and bet["actor_id"] == r["owner"]: bet["status"] = "released"
+        elif typ == "cull":
+            self._keys(p, {"participant", "decision_id", "reason", "score_snapshot", "pool_id", "available_disposition", "reservation_dispositions"})
+            participant, pool_id = p["participant"], p["pool_id"]
+            _owner(participant); _owner(pool_id); _owner(p["decision_id"]); _owner(p["reason"])
+            if participant.startswith("pool:") or participant not in s["accounts"]:
+                raise ValueError("cull requires an existing participant account")
+            if participant in s["culled"]:
+                raise ValueError("participant already culled")
+            if p["available_disposition"] not in ("retain", "donate"):
+                raise ValueError("available disposition must be retain or donate")
+            score = p["score_snapshot"]
+            if not isinstance(score, dict) or set(score) != {"score", "evidence_digest", "captured_at"}:
+                raise ValueError("score snapshot requires score, evidence_digest, captured_at")
+            if score["score"] is not None:
+                try:
+                    valid_score = type(score["score"]) in (int, float) and math.isfinite(score["score"])
+                except OverflowError:
+                    valid_score = False
+                if not valid_score:
+                    raise ValueError("score snapshot must contain a finite score or null")
+            evidence = score["evidence_digest"]
+            if not isinstance(evidence, str) or len(evidence) != 64 or any(ch not in "0123456789abcdef" for ch in evidence):
+                raise ValueError("score evidence_digest must be a lowercase SHA-256 digest")
+            try:
+                captured = datetime.fromisoformat(score["captured_at"])
+            except (TypeError, ValueError) as exc:
+                raise ValueError("score snapshot captured_at must be timezone-aware") from exc
+            if captured.tzinfo is None:
+                raise ValueError("score snapshot captured_at must be timezone-aware")
+            actions = p["reservation_dispositions"]
+            if not isinstance(actions, list):
+                raise ValueError("reservation dispositions must be a list")
+            active = {rid: r for rid, r in s["reservations"].items()
+                      if r["owner"] == participant and r["status"] == "reserved"}
+            seen_actions = set()
+            for action in actions:
+                if not isinstance(action, dict) or set(action) != {"reservation_id", "disposition"}:
+                    raise ValueError("each reservation disposition requires reservation_id and disposition")
+                rid = action["reservation_id"]
+                if not isinstance(rid, str) or rid in seen_actions or rid not in active:
+                    raise ValueError("reservation disposition must identify one active participant hold")
+                if action["disposition"] not in ("refund", "donate"):
+                    raise ValueError("reservation disposition must be refund or donate")
+                seen_actions.add(rid)
+            if seen_actions != set(active):
+                raise ValueError("cull decision must disposition every active reservation")
+            pool_owner = "pool:" + pool_id
+            if pool_id not in s["pools"]:
+                if pool_owner in s["accounts"]:
+                    raise ValueError("pool account identity collision")
+                s["accounts"][pool_owner] = 0
+                s["pools"][pool_id] = pool_owner
+            original_reserved = sum(r["units"] for r in active.values())
+            original_available = s["accounts"][participant] - original_reserved
+            if p["available_disposition"] == "donate" and original_available:
+                s["accounts"][participant] -= original_available
+                s["accounts"][pool_owner] += original_available
+            for action in actions:
+                r = active[action["reservation_id"]]
+                if action["disposition"] == "refund":
+                    r["status"] = "released"
+                    r["reason"] = "culled_refund"
+                else:
+                    s["accounts"][participant] -= r["units"]
+                    s["accounts"][pool_owner] += r["units"]
+                    r["status"] = "forfeited"
+                    r["reason"] = "culled_donation"
+                    r["recipient"] = pool_owner
+            s["culled"][participant] = copy.deepcopy(p)
+        elif typ == "pool_distribute":
+            self._keys(p, {"pool_id", "distribution_id", "reason", "allocations"})
+            pool_id = p["pool_id"]
+            _owner(pool_id); _owner(p["distribution_id"]); _owner(p["reason"])
+            if pool_id not in s["pools"]:
+                raise ValueError("unknown consolidation pool")
+            if p["distribution_id"] in s["pool_distributions"]:
+                raise ValueError("distribution_id already used")
+            allocations = p["allocations"]
+            if not isinstance(allocations, list) or not allocations:
+                raise ValueError("pool distribution requires at least one allocation")
+            pool_owner = s["pools"][pool_id]
+            total = 0
+            recipients = set()
+            normalized = []
+            for allocation in allocations:
+                if not isinstance(allocation, dict) or set(allocation) != {"recipient", "units"}:
+                    raise ValueError("each allocation requires recipient and units")
+                recipient = allocation["recipient"]
+                _owner(recipient); _units(allocation["units"])
+                if recipient in recipients or recipient == pool_owner:
+                    raise ValueError("pool recipients must be unique participant accounts")
+                if recipient not in s["accounts"] or recipient in s["culled"]:
+                    raise ValueError("pool recipient must be an active account")
+                if s["accounts"][recipient] + allocation["units"] > MAX_UNITS:
+                    raise ValueError("pool recipient balance overflow")
+                recipients.add(recipient)
+                total += allocation["units"]
+                normalized.append({"recipient": recipient, "units": allocation["units"]})
+            if total > s["accounts"][pool_owner]:
+                raise ValueError("pool distribution exceeds available pool balance")
+            s["accounts"][pool_owner] -= total
+            for allocation in normalized:
+                s["accounts"][allocation["recipient"]] += allocation["units"]
+            s["pool_distributions"][p["distribution_id"]] = copy.deepcopy(p)
         else:
             raise ValueError(f"unknown event type: {typ}")
 
@@ -317,7 +428,7 @@ class MarketGraph:
 
     def _mutate_locked(self, typ, event_id, payload):
         if not isinstance(event_id, str) or not event_id.strip(): raise ValueError("event_id must be non-empty")
-        candidate = {"event_id": event_id, "type": typ, "payload": copy.deepcopy(payload), "timestamp": _now(), "correlation_id": payload.get("reservation", {}).get("reservation_id") or payload.get("reservation_id") or event_id}
+        candidate = {"version": 2 if typ in ("cull", "pool_distribute") else 1, "event_id": event_id, "type": typ, "payload": copy.deepcopy(payload), "timestamp": _now(), "correlation_id": payload.get("reservation", {}).get("reservation_id") or payload.get("reservation_id") or event_id}
         if self._store:
             with self._store.locked():
                 events = replay(self._store.path)
@@ -327,7 +438,7 @@ class MarketGraph:
                     if prior["type"] != typ or self._intent(prior["payload"]) != self._intent(payload): raise ValueError("event_id already used with different intent")
                     ensure_durable(self._store.path)
                     self._install(events, state); return prior
-                trial = copy.deepcopy(events) + [dict(candidate, version=1, seq=len(events) + 1)]
+                trial = copy.deepcopy(events) + [dict(candidate, seq=len(events) + 1)]
                 new_state = self._reduce(trial)  # validate the complete transition before durable append
                 try: append(self._store.path, events, candidate)
                 except _Already as existing:
@@ -338,7 +449,7 @@ class MarketGraph:
             if prior:
                 if prior["type"] != typ or self._intent(prior["payload"]) != self._intent(payload): raise ValueError("event_id already used with different intent")
                 return prior
-            framed = dict(candidate, version=1, seq=len(self._events) + 1)
+            framed = dict(candidate, seq=len(self._events) + 1)
             self._validate_envelope(framed, len(self._events) + 1)
             # Ephemeral mode preserves legacy live card/observational views.
             # Durable mode above always reconstructs from the single event stream.
@@ -401,6 +512,23 @@ class MarketGraph:
         self._mutate("release", event_id, {"reservation_id": reservation_id, "reason": reason})
         return copy.deepcopy(self._reservations[reservation_id])
 
+    def cull_participant(self, participant, *, event_id, decision_id, reason, score_snapshot,
+                         pool_id, available_disposition, reservation_dispositions):
+        """Atomically close a participant and route explicit donations into one pool."""
+        payload = {"participant": participant, "decision_id": decision_id, "reason": reason,
+                   "score_snapshot": copy.deepcopy(score_snapshot), "pool_id": pool_id,
+                   "available_disposition": available_disposition,
+                   "reservation_dispositions": copy.deepcopy(reservation_dispositions)}
+        self._mutate("cull", event_id, payload)
+        return copy.deepcopy(self._accounting_view()["culled"][participant])
+
+    def distribute_pool(self, pool_id, allocations, *, event_id, distribution_id, reason):
+        """Transfer explicit integer allocations from a consolidation pool."""
+        payload = {"pool_id": pool_id, "distribution_id": distribution_id, "reason": reason,
+                   "allocations": copy.deepcopy(allocations)}
+        self._mutate("pool_distribute", event_id, payload)
+        return copy.deepcopy(self._accounting_view()["pool_distributions"][distribution_id])
+
     def _refresh_if_needed(self):
         with self._mutex:
             if self._store:
@@ -415,13 +543,21 @@ class MarketGraph:
                     return self._accounting_view()
             return self._accounting_view()
 
+    def _ids_by_type(self, event_type):
+        return {event["payload"].get("participant", event["payload"].get("distribution_id")):
+                copy.deepcopy(event["payload"]) for event in self._events if event["type"] == event_type}
+
+    def _pool_owners(self):
+        return {event["payload"]["pool_id"]: "pool:" + event["payload"]["pool_id"]
+                for event in self._events if event["type"] == "cull"}
+
     def _accounting_view(self):
         reserved = {owner: 0 for owner in self._accounts}
         for reservation in self._reservations.values():
             if reservation["status"] == "reserved": reserved[reservation["owner"]] += reservation["units"]
         accounts = [{"owner": owner, "balance": balance, "reserved": reserved[owner], "available": balance - reserved[owner]} for owner, balance in sorted(self._accounts.items())]
         reservations = [copy.deepcopy(r) for _, r in sorted(self._reservations.items())]
-        return {"schema_version": 1, "asset": "paper_point", "event_count": len(self._events), "source_digest": digest(self._events), "accounts": accounts, "reservations": reservations, "events": copy.deepcopy(self._events)}
+        return {"schema_version": 1, "asset": "paper_point", "event_count": len(self._events), "source_digest": digest(self._events), "accounts": accounts, "reservations": reservations, "events": copy.deepcopy(self._events), "culled": copy.deepcopy(self._ids_by_type("cull")), "pools": copy.deepcopy({pool_id: {"owner": owner, "balance": self._accounts[owner]} for pool_id, owner in self._pool_owners().items()}), "pool_distributions": copy.deepcopy(self._ids_by_type("pool_distribute"))}
 
     def snapshot(self) -> dict[str, Any]:
         with self._mutex:
@@ -433,7 +569,7 @@ class MarketGraph:
 
     def _snapshot_view(self):
         result = {"schema_version": 1, "policy": "observational_until_promote", "cards": copy.deepcopy(list(self.cards.values())), "bets": copy.deepcopy(self.bets), "edges": copy.deepcopy(self.edges), "note": "Settlement does not bypass dual-gate"}
-        if any(e["type"] in ("open_account", "issue", "reserve", "settle", "release") for e in self._events):
+        if any(e["type"] in ("open_account", "issue", "reserve", "settle", "release", "cull", "pool_distribute") for e in self._events):
             result["paper_accounting"] = self._accounting_view()
         return result
 

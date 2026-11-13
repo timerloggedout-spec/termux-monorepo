@@ -99,6 +99,16 @@ class WalletPromotionTests(unittest.TestCase):
         with self.assertRaises(PromotionGateError):
             self.evaluate(value)
 
+    def test_owner_approval_matches_wallet_identity_and_roles_are_unique(self):
+        value = manifest()
+        value["approvals"][0]["actor"] = "different-owner"
+        with self.assertRaises(PromotionGateError):
+            self.evaluate(value)
+        value = manifest()
+        value["approvals"][1]["role"] = "owner"
+        with self.assertRaises(PromotionGateError):
+            self.evaluate(value)
+
     def test_unknown_manifest_fields_fail_closed(self):
         value = manifest()
         value["auto_fund"] = True

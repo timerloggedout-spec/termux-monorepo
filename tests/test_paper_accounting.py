@@ -307,10 +307,6 @@ class PaperAccountingTests(unittest.TestCase):
                 queue.join_thread()
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class CullAndPoolLifecycleTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
@@ -435,3 +431,30 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
                                                      {"recipient": "bob", "units": 1}],
                                        event_id="duplicate", distribution_id="round-2", reason="award")
         self.assertEqual(len(self.graph.accounting_snapshot()["events"]), 4)
+
+    def test_csv_projection_preserves_forfeiture_and_pool_events(self):
+        import io
+        from scripts.model_selection_market.paper_wallet import parse_csv, write_csv
+        self.fund("alice")
+        self.fund("bob", 0)
+        bet = BetEntry("job", "job", "donated-task", actor_id="alice",
+                       unit_kind="paper_point", units=5)
+        self.graph.reserve_bet(bet, event_id="reserve", reservation_id="hold")
+        self.graph.cull_participant(
+            "alice", event_id="cull", decision_id="decision", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="donate",
+            reservation_dispositions=[{"reservation_id": "hold", "disposition": "donate"}])
+        self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 10}],
+                                   event_id="distribution", distribution_id="round-1", reason="award")
+        output = io.StringIO(newline="")
+        write_csv(self.graph.snapshot(), output)
+        rows = parse_csv(output.getvalue())
+        self.assertTrue(any(r["record_type"] == "reservation" and r["reservation_status"] == "forfeited" for r in rows))
+        self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "cull" for r in rows))
+        self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "pool_distribute" for r in rows))
+        self.assertTrue(any(r["record_type"] == "account" and r["reservation_owner"] == "pool:season-1" for r in rows))
+
+
+if __name__ == "__main__":
+    unittest.main()

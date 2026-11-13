@@ -11,9 +11,10 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs:
+  - 5336
 related_branches:
-  - fix/agent-readability-page-sources
+  - feat/agent-readability-do-mandate
 gates_required: [repo-gate, termux-smoke]
 ---
 

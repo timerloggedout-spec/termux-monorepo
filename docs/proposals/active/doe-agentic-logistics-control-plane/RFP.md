@@ -76,7 +76,7 @@ Treat each configured provider × model × endpoint × account route as an obser
 
 **Fail-closed eligibility invariant:** a provider arm is excluded/deferred unless its exact configured instance has an approved invoke route, current successful availability evidence from the relevant execution environment, authoritative no-cost entitlement/terms for the account and model, fresh usable quota headroom with source/time/reset zone, approved data classification, and complete provenance. Unknown or stale means not eligible. Paid fallback is forbidden.
 
-Issue #5160 owns provider-pool and autoQuotaCadence implementation, and is currently blocked on prerequisite integration/external execution. This RFP may design and simulate around that contract; it must not duplicate or bypass it.
+Issue #5160 owns provider-pool and autoQuotaCadence implementation; its implementation PR #5258 merged on 2026-11-13 (`87dd55c618fd4c4dc2fdc71a5902539ae9a32a1e`). The first live conversion remains unobserved, and separate live-admission/eligibility gates remain. This RFP may design and simulate around that contract; it must not duplicate or bypass it.
 
 ### Experiment platform evidence — MUSE validation set
 

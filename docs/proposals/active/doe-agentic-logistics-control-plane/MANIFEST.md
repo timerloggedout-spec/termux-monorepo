@@ -14,6 +14,8 @@ related_issues: [5045, 5136, 5146, 5160, 5152, 5176, 5183, 5189, 4979, 5151, 517
 related_prs: [5045, 5134, 5145]
 related_branches:
   - proposal/doe-agentic-logistics-control-plane-current-20261112
+related_repos:
+  - https://github.com/timerloggedout-spec/puter-pool_fork
 related_proposals:
   - provider-family-doe-observatory
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
@@ -23,7 +25,7 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 ## Summary
 
-Establish one evidence-governed DoE program that composes the already-forked LangChain ecosystem, the concurrent LangGraph implementation, symbolic logistics planning (PDDL), constraint optimization, and control-systems methods for no-cost inference endpoints. It reuses the repository's existing QUE/QDesk, DoE, ATES, provider/quota, identity, and observability authorities. The initial deliverable is a registered RFP, source map, architecture, offline planning/control experiment plan, and a single queued task—not a production router or a claim that the upstream ecosystem is already operational.
+Establish one evidence-governed DoE program that composes the already-forked LangChain ecosystem, the concurrent LangGraph implementation, symbolic logistics planning (PDDL), constraint optimization, and control-systems methods for no-cost inference endpoints. It reuses the repository's existing QUE/QDesk, DoE, ATES, provider/quota, identity, and observability authorities. The Puter Pool fork is registered as a pinned transport-adapter candidate under DPLC-010, with account pooling, quota, license and privacy blockers preserved. The initial deliverable is a registered RFP, source map, architecture, offline planning/control experiment plan, and a single queued task—not a production router or a claim that the upstream ecosystem is already operational.
 
 ## Authorization boundary
 
@@ -42,7 +44,9 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 
 - [x] RECON completed against master and named upstream forks
 - [x] Existing owners, blocked dependencies and no-duplicate boundaries recorded
-- [x] Items DPLC-001 through DPLC-009 itemized, including the existing Library RL reproduction/benchmark workstream
+- [x] Items DPLC-001 through DPLC-010 itemized, including Library RL reproduction and Puter Pool transport adaptation
+- [x] Puter Pool source commit and relevant file hashes recorded; source/security/license findings documented
+- [ ] Puter Pool license, supported authentication, account terms and quota semantics cleared before adapter implementation
 - [ ] Independent reviewer disposition recorded
 - [ ] Proposal accepted before implementation items are promoted
 - [ ] Proposal/RFP content hash and source manifest bound to QDesk/Delphi review
@@ -60,6 +64,7 @@ The owner's 2026-11-11 request authorizes RECON, proposal registration, RFP prep
 - Full README taxonomy: ./ECOSYSTEM-CATALOG.md
 - Logistics source assessment: ./LOGISTICS-PLANNING-ASSESSMENT.md
 - Dispatch observation: ./DISPATCH-OBSERVATION.md
+- Puter Pool integration: ./PUTER-POOL-INTEGRATION.md
 - Items: ./ITEMS.md
 - Free-inference tournament implementation order: ./FREE-INFERENCE-TOURNAMENT-ORDER.yml
 - Owner direction and provenance: ./source.md

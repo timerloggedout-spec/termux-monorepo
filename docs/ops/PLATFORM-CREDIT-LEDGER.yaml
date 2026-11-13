@@ -1,0 +1,32 @@
+schema: platform-credit-ledger/v1
+policy: docs/ops/FREE-TIER-AND-CREDIT-POLICY.md
+updated_at: "2026-11-13"
+currency: USD
+entries:
+  - platform: GitHub
+    service: public repository and Actions
+    plan: free-tier-eligible
+    credit_status: none-required
+    verification: account-and-quota-review-required
+    monthly_cash_budget: 0
+  - platform: Vercel
+    service: Delphic Observatory static UI
+    plan: Hobby/free-target
+    credit_status: unverified
+    verification: account eligibility and current usage review required
+    monthly_cash_budget: 0
+  - platform: GitHub Pages
+    service: Delphic Observatory static mirror
+    plan: free-tier-target
+    credit_status: none-required
+    verification: repository Pages settings review required
+    monthly_cash_budget: 0
+  - platform: Render
+    service: optional read-only feed adapter
+    plan: free instance target
+    credit_status: unverified
+    verification: current free quota, sleep, bandwidth and build limits review required
+    provisioning: approval-gated
+    monthly_cash_budget: 0
+credit_records: []
+approval_rule: explicit approval for paid usage or credit consumption

@@ -1,0 +1,41 @@
+name: Delphic Observatory · GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "site/delphic-observatory/**"
+      - ".github/workflows/observatory-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: observatory-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical source
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload static Observatory
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/delphic-observatory
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Publish static Observatory
+        id: deployment
+        uses: actions/deploy-pages@v4

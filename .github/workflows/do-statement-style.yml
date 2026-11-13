@@ -22,25 +22,8 @@ permissions:
   contents: read
   pull-requests: read
 
-concurrency:
-  group: do-statement-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.event.discussion.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   action-first-language:
-    if: >-
-      github.event_name == 'push' ||
-      github.event_name == 'pull_request' ||
-      github.event_name == 'issues' ||
-      github.event_name == 'discussion' ||
-      (
-        (
-          github.event_name == 'issue_comment' ||
-          github.event_name == 'discussion_comment' ||
-          github.event_name == 'commit_comment' ||
-          github.event_name == 'pull_request_review_comment'
-        ) && !endsWith(github.actor, '[bot]')
-      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

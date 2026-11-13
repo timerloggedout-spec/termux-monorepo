@@ -130,3 +130,24 @@ def test_repeated_same_deferred_receipt_is_idempotent():
     second = drain.process(gh, issue, registry, TIERS, picture, NOW, "run-url")
     assert second["action"] == "unchanged"
     assert len(gh.comments) == first_comment_count
+
+
+def test_claimed_filing_is_never_re_evaluated_by_drain():
+    claim = {"body": "PRODUCER CLAIM — seat queue pickup"}
+    gh = FakeGitHub([claim])
+    issue = {
+        "number": 78,
+        "title": "[task] already claimed",
+        "labels": [
+            {"name": "project-task"},
+            {"name": "deferred-by-tier"},
+            {"name": "dispatch-claimed"},
+        ],
+    }
+    registry = {"project-task.yml": (TASK_BLOCK, ["project-task"], "[task]")}
+    result = drain.process(
+        gh, issue, registry, TIERS,
+        {"status": "unavailable", "detail": "unknown"}, NOW, "run-url",
+    )
+    assert result["action"] == "skip_already_claimed"
+    assert gh.posts == [] and gh.deletes == []

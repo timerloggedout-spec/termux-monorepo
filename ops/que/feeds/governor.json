@@ -1,6 +1,6 @@
 {
  "schema": "que.governor/v1",
- "generated_at": "2026-11-12T12:07:43Z",
+ "generated_at": "2026-11-13T15:38:06Z",
  "admission": {
   "thresholds": {
    "tier4_defers_at_queued": 400,
@@ -10,7 +10,7 @@
     2
    ]
   },
-  "deferral_stamped_issues_24h": 7,
+  "deferral_stamped_issues_24h": 6,
   "deferral_stamped_open": 16,
   "source": "swarm-admission stamps (deferred-by-tier label)"
  },
@@ -18,13 +18,15 @@
   "state": "populated",
   "event_shape": "que-governor-event/v1 (folded verbatim; counts only)",
   "batches": [
-   "governor-events-2026-11-04.jsonl"
+   "governor-events-2026-11-04.jsonl",
+   "governor-events-2026-11-13.jsonl"
   ],
-  "events_total": 4,
+  "events_total": 5,
   "by_kind": {
    "projection": 3,
-   "projection_priority_hard": 1
+   "projection_priority_hard": 1,
+   "headroom_alert": 1
   },
-  "latest_event_at": "2026-11-04T01:09:15Z"
+  "latest_event_at": "2026-11-13T11:40:05Z"
  }
 }

@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-12T12:07:43Z",
+ "generated_at": "2026-11-13T15:38:06Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,21 +10,24 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 6,
+    "queued": 8,
     "in_progress": 1,
-    "oldest_queued_at": "2026-11-12T12:03:25Z",
+    "oldest_queued_at": "2026-11-11T20:48:59Z",
     "by_workflow_queued": {
-     "Orchestration Regression Guard": 2,
+     "PR scope guard": 5,
      "repo gate": 2,
-     "PR scope guard": 2
+     "Orchestration Regression Guard": 1
     }
    },
    "2": {
     "tier": 2,
-    "queued": 0,
+    "queued": 2,
     "in_progress": 1,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-13T15:36:01Z",
+    "by_workflow_queued": {
+     "pages build and deployment": 1,
+     "tribute-dashboard-deploy": 1
+    }
    },
    "3": {
     "tier": 3,
@@ -35,62 +38,50 @@
    },
    "4": {
     "tier": 4,
-    "queued": 93,
-    "in_progress": 12,
-    "oldest_queued_at": "2026-11-12T12:03:12Z",
+    "queued": 82,
+    "in_progress": 20,
+    "oldest_queued_at": "2026-11-11T20:48:59Z",
     "by_workflow_queued": {
-     "n8n SHE bridge": 1,
-     "lane events recorder": 7,
-     "Agent Throughput Evidence": 32,
-     "vercel-git-unlink": 1,
-     "Quota Dispatch Tree": 8,
-     "Operator Matrix Generate": 1,
+     "Context Relationship + Lead/Lag Audit": 5,
+     "DeepSeek CI \u2013 Agentic Automation": 3,
+     "Sweep Accountability": 4,
      "Repository development evaluation": 2,
-     "Lane matrix event-driven inventory": 2,
-     "Sweep Accountability": 2,
-     "Operations Cadence Audit": 2,
-     "Automation Documentation Continuous Refresh": 2,
-     "hitl-control-plane-verify": 2,
-     "Context Relationship + Lead/Lag Audit": 2,
-     "graph-matrix-probe": 1,
-     "termux smoke": 2,
-     "Foresight Evidence Spine": 2,
-     "Historical Evaluation Correlation": 1,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
-     "tribute-status-refresh": 1,
-     "Agent review \u2192 auto Jules": 2,
-     "archwiz dangle check": 1,
-     "DoE inference allocation contract": 1,
-     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
-     "PR evidence evaluation": 1,
-     "PR production ledger": 2,
-     "Peer review orchestrator": 2,
-     "Action Effectiveness Ledger": 2,
-     "PR Change Effectiveness Ledger": 1,
-     "RECON INTEL discovery": 1,
      "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-     "Workflow Surface Policy": 1,
-     "Workflow Surface Evidence": 1,
-     "Advisory GitHub Actions lint": 1,
-     "Provider batch production contracts": 1,
-     "Advisory CodeQL analysis": 1
+     "PR Change Effectiveness Ledger": 2,
+     "termux smoke": 2,
+     "Lane matrix event-driven inventory": 3,
+     "PR production ledger": 3,
+     "RECON INTEL discovery": 3,
+     "Agent PR Jules Handoff": 3,
+     "Action Effectiveness Ledger": 2,
+     "Peer review orchestrator": 2,
+     "PR evidence evaluation": 2,
+     "Quota Dispatch Tree": 1,
+     "CellCog review": 1,
+     "Agent Readability Source Contract": 1,
+     "lane events recorder": 7,
+     "Agent Throughput Evidence": 30,
+     "n8n SHE bridge": 2,
+     "delphi-rfp-feed-collect": 1,
+     "repo-tracking-collect": 1,
+     "Foresight Evidence Spine": 1
     }
    }
   },
   "totals": {
-   "queued": 99,
-   "in_progress": 14
+   "queued": 92,
+   "in_progress": 22
   },
   "wedged_ancient": []
  },
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
   "source_schema": "dispatch-state-feed/v1",
-  "source_generated_at": "2026-11-12T04:17:52Z",
+  "source_generated_at": "2026-11-13T01:20:39Z",
   "counts": {
-   "claimed": 17,
-   "escalated": 13,
-   "queued": 2
+   "claimed": 20,
+   "escalated": 28,
+   "queued": 0
   },
   "active_claims": [
    {
@@ -98,6 +89,8 @@
     "entry": "D1",
     "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-03T12:41:03Z",
      "by": "optimizations-assurance"
@@ -108,6 +101,8 @@
     "entry": "D1",
     "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-03T13:47:14Z",
      "by": "optimizations-assurance"
@@ -118,6 +113,8 @@
     "entry": "D1",
     "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-05T03:52:49Z",
      "by": "speculators-build"
@@ -128,6 +125,8 @@
     "entry": "D1",
     "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-05T03:52:10Z",
      "by": "speculators-build"
@@ -138,6 +137,8 @@
     "entry": "SYSTEM-UPGRADE \u00b7 Opportunities lanes \u2200 (owner order 2026-11-10 04:11 PT, via main)",
     "title": "QUE: SYSTEM UPGRADE \u2014 Opportunities prep-first + repo-internal self-eval loop + Delphi-selection pipeline",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T12:18:43Z",
      "by": "optimizations-assurance"
@@ -148,6 +149,8 @@
     "entry": "SYSTEM-UPGRADE build leg of #5096 (owner order 2026-11-10 04:11 PT) \u00b7 parent claim: #5096 comment 6767108653 \u00b7 build spec: #5096 comment 6767350095",
     "title": "[task] QUE: build the #5096 opportunity self-eval loop (prep gate + QUE priority + Delphi-rubric selection)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T12:32:23Z",
      "by": "optimizations-assurance"
@@ -158,6 +161,8 @@
     "entry": "OWNER ORDER 2026-11-10 04:27 PT (via main): build priority \u2460 D-h pullable trigger FIRST \u00b7 parent: #5096 + fix queue #4977 Fix 5 \u00b7 source of record: timerloggedout-spec/repo-story `.github/workflows/build-dispatch.yml` (3,980 B, read firsthand 2026-11-10; proving run 41426129878 SUCCESS -> repo-story PR #6)",
     "title": "[task] QUE: port build-dispatch (D-h pullable trigger) from repo-story \u2014 Priority 1 per owner order 2026-11-10 04:27 PT",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T12:34:53Z",
      "by": "optimizations-assurance"
@@ -168,6 +173,8 @@
     "entry": "MIGRATION \u00b7 AutonomousOpsStuff (owner order 2026-11-10 04:43 PT, via main) \u2014 extension of the continuous-operation fix {D-h #5111 \u00b7 #5096 loop #5110}. Chats reduce to spec/route/verify only; operable functions move repo-side {QUE \u00b7 workflows \u00b7 governor \u00b7 Actions}.",
     "title": "[task] QUE: MIGRATION \u2014 side-chat functions \u2192 termux-monorepo AutonomousOpsStuff (slate + tranches)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T12:48:43Z",
      "by": "optimizations-assurance"
@@ -178,6 +185,8 @@
     "entry": "SIGLARY ENFORCEMENT (owner order 2026-11-10 04:54 PT, via main) \u2014 Siglary ISSUED 2026-11-10 (PR #5100 merged bd9450389a89; name of the compressed-notation system: skill + Notation Matrice + glyph/chord standard).",
     "title": "[task] QUE: SIGLARY ENFORCEMENT \u2014 repo-wide enforced notation {skills \u00b7 ICM \u00b7 CLAUDE.md \u00b7 DoE dispatch} + validation/performance legs",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T12:56:49Z",
      "by": "optimizations-assurance"
@@ -188,6 +197,8 @@
     "entry": "D3 ListingLens \u2014 L3 demo render (Clips upload leg; gate D3-CLIPS-STORAGE satisfied 2026-11-10)",
     "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T14:36:13Z",
      "by": "optimizations-assurance"
@@ -198,6 +209,8 @@
     "entry": "SIGLARY LEG B \u2014 validator + performance machinery (QUE #5116; standard of record docs/proposals/active/notation-sets/SIGLARY-STANDARD.md sections 3, 4, 6).",
     "title": "[task] Siglary Leg B \u2014 validator + performance machinery, phase 1 report-only (#5116)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T14:26:38Z",
      "by": "optimizations-assurance"
@@ -208,6 +221,8 @@
     "entry": "MIGRATION #5113 TRANCHE 1 item 1 \u2014 DISPATCH LIVENESS (D-j / issue #4977 Fix 6). Case of record: Termux Fleet Swarm App installation suspended 2026-11-07 ~20:13-23:40Z; que-feed-collect failed at its mint step on every run for ~2.5 days and NOTHING paged (diagnosis + stamps on #5096, 2026-11-10). The existing dispatch-watchdog itself mints the Swarm App, so it dies at the same step it exists to watch.",
     "title": "[task] Migration T1.1 \u2014 dispatch liveness: mint-failure paging + build-dispatch heartbeat aging (#5113)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T14:29:54Z",
      "by": "optimizations-assurance"
@@ -218,6 +233,8 @@
     "entry": "D3 ListingLens \u2014 L3 demo render machinery build (for QUE entry #5124)",
     "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T16:15:44Z",
      "by": "optimizations-assurance"
@@ -228,6 +245,8 @@
     "entry": "Migration #5113 Tranche 1.2 \u2014 deadline fail-safes (priority_timebox-driven, no chat relay)",
     "title": "[task] Migration T1.2 \u2014 deadline fail-safes: priority_timebox-driven transitions, no chat relay (#5113)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T17:28:16Z",
      "by": "optimizations-assurance"
@@ -238,6 +257,8 @@
     "entry": "Migration #5113 Tranche 1.3 \u2014 backup-state watch class (ops/vm-backup)",
     "title": "[task] Migration T1.3 \u2014 backup-state watch: backup-state/v1 feed + scheduled watch, no chat relay (#5113)",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T17:29:06Z",
      "by": "optimizations-assurance"
@@ -248,11 +269,116 @@
     "entry": "build-dispatch hardening \u2014 convert silent-empty SUCCESS into honest FAILURE in-run (evidence: false-green class, 5 silent-empty / 9 completed builds on 2026-11-10)",
     "title": "[task] build-dispatch hardening \u2014 convert silent-empty SUCCESS to honest FAILURE in-run",
     "state": "claimed",
+    "score": null,
+    "rank": null,
     "claim": {
      "at": "2026-11-10T17:38:53Z",
      "by": "optimizations-assurance"
     }
+   },
+   {
+    "issue": 5160,
+    "entry": "DoE / provider-pool infrastructure \u2014 free inference endpoint population and quota-aware cadence",
+    "title": "[task] QUE: DoE free-inference pool + quota-aware cadence (autoQuotaCadence) repair",
+    "state": "claimed",
+    "score": null,
+    "rank": null,
+    "claim": {
+     "at": "2026-11-12T15:29:04Z",
+     "by": "dispatch-executor"
+    }
    }
-  ]
+  ],
+  "ranking": {
+   "method": "que-task-rank/v1",
+   "advisory": true,
+   "claim_order": [
+    5001,
+    4077,
+    4655,
+    4975,
+    5129,
+    5135,
+    5136,
+    5162,
+    5172,
+    5177,
+    5183,
+    5195,
+    5220,
+    5230,
+    5231,
+    5239,
+    5254,
+    5256,
+    5257,
+    5259,
+    5260,
+    5261,
+    5262,
+    5263,
+    5264,
+    5265,
+    5271,
+    5276
+   ],
+   "age_order": [
+    4077,
+    4655,
+    4975,
+    5001,
+    5129,
+    5135,
+    5136,
+    5162,
+    5172,
+    5177,
+    5183,
+    5195,
+    5220,
+    5230,
+    5231,
+    5239,
+    5254,
+    5256,
+    5257,
+    5259,
+    5260,
+    5261,
+    5262,
+    5263,
+    5264,
+    5265,
+    5271,
+    5276
+   ],
+   "delta_vs_age_order": [
+    {
+     "issue": 5001,
+     "rank": 1,
+     "age_rank": 4,
+     "delta": 3
+    },
+    {
+     "issue": 4077,
+     "rank": 2,
+     "age_rank": 1,
+     "delta": -1
+    },
+    {
+     "issue": 4655,
+     "rank": 3,
+     "age_rank": 2,
+     "delta": -1
+    },
+    {
+     "issue": 4975,
+     "rank": 4,
+     "age_rank": 3,
+     "delta": -1
+    }
+   ],
+   "moved": 4
+  }
  }
 }

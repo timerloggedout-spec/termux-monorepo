@@ -3,7 +3,7 @@
 
 ## Scope
 <!-- List changed surfaces and linked proposal/issue IDs. -->
-Implements: TER-17
+Implements: TER-N
 
 ## Evidence
 - [ ] Tests / validation:

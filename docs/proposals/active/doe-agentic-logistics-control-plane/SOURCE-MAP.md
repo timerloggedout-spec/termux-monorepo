@@ -59,7 +59,7 @@ The owner-ingested [platform validation set](https://github.com/timerloggedout-s
 ## Provenance limitations
 
 - No upstream code was installed, copied, built or deployed during this RECON.
-- No live provider/model invocation was made, and no account entitlement or remaining quota was inferred.
+- During this RECON, no live provider/model invocation was made, and no account entitlement or remaining quota was inferred; the separate #5195 issue-open listener attempt is recorded in DISPATCH-OBSERVATION.md and is not a DoE observation.
 - Repository licenses other than claims surfaced in individual README badges have not been independently checked; source-specific license and dependency review precedes reuse.
 - No new fork was created. The available GitHub connector did not expose a fork/create-repository action in this session; the owned forks above are the confirmed assets.
 - The Historical Context Relationship manifest is dated 2026-10-26 and declares PARTIAL_CONTINUATION_REQUIRED; it is not used as current proof of graph completeness.

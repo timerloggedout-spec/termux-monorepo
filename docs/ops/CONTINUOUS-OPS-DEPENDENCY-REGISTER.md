@@ -69,3 +69,12 @@ crossing T-7d · supplier stamp landing.
 - **Re-projection @11:52 PT — PAGE STANDS:** 68% used; pace fell from the spike (4.94) to ≈1.19 pts/h, still ~4x the recomputed ceiling **0.30 pts/h** (32 pts / ≈108h). Sustained ⇒ exhaustion ≈ **Nov 13 ~14:45 PT**. No de-escalation: the page clears only on a sustained sub-ceiling window sequence, which has not occurred.
 - **Re-projection @20:53 PT:** 79% used (Δ+11pts/9.02h ≈ 1.22 pts/h since 11:52) ⇒ sustained exhaustion ≈ Nov 13 ~14:00 PT; PAGE control stands.
 - **Re-projection @22:24 PT — PAGE STANDS, runway now hours:** 85% used; last leg ≈3.9 pts/h (fleet-wide side-chat traffic, ¬ main) vs ≈1.2 trend. 15 pts remain: spike-sustained ⇒ exhaustion ≈ **Nov 13 ~02:15 PT**; trend ⇒ ≈ **Nov 13 ~10:30–11:00 PT**. Ceiling to reset ≈0.15 pts/h — survival requires near-silence in chat lanes; PAGE control already in force at main.
+
+## Cadence-governed run-rate + cancellation ceilings (owner order 2026-11-13 00:10 PT)
+
+Run-rate and cancellation are **cadence-governed quantities** from this stamp, held in this record with the same PAGE discipline as the token sensor. Vehicle: QUE **#5309** (elevated owner-immediate; stamp c.6847649987) — scheduled-aggregator consolidation; #5219 remains the governance record, not the fix.
+
+- **Standing ceilings (fresh 1h verify window):** run creation **<200 runs/h** · installation-limit annotations **= 0** · substantive-run share measured on the same window (acceptance component of #5309) · cancellation policy classes enforced.
+- **Cancellation classes:** NEVER-cancel = {contributor-facing runs · gate runs · evidence/ledger runs} — a cancelled NEVER-cancel run is a **defect datum** with the cancelling policy named. Safe-to-cancel = superseded duplicates / regenerable collector runs, per policy class only.
+- **Current readings of record:** run creation **5,228/h** (#5219 re-verify FAIL, ~26x the ceiling) · cancellations **176 of the last 500 runs (35%)**, 83% in two collectors {Quota Dispatch Tree 75 · repo-tracking-collect 71} via concurrency supersede — collectors rarely finish, their data goes stale.
+- **PAGE discipline:** breach of any quantity on a fresh 1h window {rate >=200/h · any installation-limit annotation · any NEVER-cancel cancellation} holds the PAGE state for this plane until a fresh 1h verify passes all quantities. As of incorporation the rate quantity is in breach ⇒ this plane opens in BREACH state; #5309's acceptance verify is the clearing event. Receipts on state change only.

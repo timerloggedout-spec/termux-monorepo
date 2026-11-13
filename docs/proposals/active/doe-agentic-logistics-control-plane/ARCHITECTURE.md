@@ -13,6 +13,7 @@
 | Runtime controller | Bounded admission, pacing, concurrency/backpressure | Fixed / hysteresis / PI / MPC treatments | Credential management, paid fallback, policy relaxation |
 | Provider capability/admission | Exact route, model/account, quota, terms, health and data policy | Existing provider index, #5134/#5160, quota registry | Discovery-only catalog claims as runtime admission |
 | Experiment design and measurement | Treatments, allocation, outcome, replication, evidence | DoE / ATES / 3L0 | Production approval |
+| Experiment evidence substrate | Reproducible runs, immutable artifacts, asset/materialization history, compiled pipeline IR and independent read-back | MUSE platform validation set (Dagster, DVC, ClearML, Flyte, MLRun; synthesis also compares MLflow, Metaflow, ZenML, Kubeflow, Kedro) | Must not create a competing queue, provider registry, scheduler or evidence dashboard |
 | Dispatch and queue admission | Work intake, tiering, dependency order, claim/lease | QUE / QDesk | Direct model/provider selection at filing |
 
 ## Data flow
@@ -27,6 +28,21 @@
 8. The controller observes telemetry and may recommend bounded admission/pacing actions. Initial trials remain offline or shadow-only.
 9. ATES/DoE records outcomes, and an independent verifier checks task correctness and safety.
 10. The Observatory consumes canonical feeds and receipts; it does not become another ledger.
+
+## Experiment evidence substrate
+
+The MUSE validation set is now a source-backed design input, not an adoption order. Its hands-on records cover MLflow 3.17.2, Metaflow 2.19.40, ClearML SDK 2.1.12, ZenML 0.98.0, Flyte 1.16.31, MLRun 1.12.1, Kubeflow Pipelines 2.18.0, Dagster 1.13.28, Kedro 1.7.0 and DVC 3.67.1. The validation method installed each platform, ran a real workload and attempted independent-process read-back; individual reports preserve PASS, FAIL and UNESTABLISHED boundaries.
+
+Requirements derived from those observed results:
+
+- **Local, queryable run ledger:** cold-process reads must recover run state and lineage without requiring a continuously running service. MLRun client-only/NopDB and Flyte local mode demonstrate why artifact files alone are not a run ledger.
+- **Asset/materialization history:** preserve append-only per-asset production history; Dagster demonstrated local SQLite history and exact metric re-derivation across independent reads.
+- **Portable, inspectable artifacts:** use native formats, explicit format/materializer metadata, content hashes and code/environment identity. DVC, ClearML and ZenML provide complementary evidence; DVC's MD5 and cache-only durability are not the target integrity contract.
+- **Versioned pipeline IR and honest execution verdicts:** enumerate every graph node as ran, skipped-by-gate or unsupported. Kubeflow's local runner silently omitting a true condition group while reporting SUCCESS is a hard anti-pattern.
+- **Failure transparency:** one primary error with the offending value, expected contract and remediation; no swallowed handler errors, indefinite polling or success-shaped incomplete records.
+- **Offline portability with explicit sync:** a self-contained evidence bundle must remain independently inspectable; remote query/serving features are separate capabilities, not inferred from client package imports.
+
+This substrate is an architectural requirement set, not a decision to install or operate all ten platforms. Reuse ATES/3L0 and canonical QUE/QDesk receipts for program governance; do not create a parallel task ledger, provider catalog, scheduler or dashboard. Any new local labbook implementation must be a scoped artifact/evidence store that interoperates with those authorities.
 
 ## Feedback-control model
 

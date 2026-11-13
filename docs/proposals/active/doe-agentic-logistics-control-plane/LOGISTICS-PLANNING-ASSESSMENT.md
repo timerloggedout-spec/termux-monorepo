@@ -26,6 +26,20 @@ The Air Cargo semantics provide a useful minimal seed:
 
 The README's problem instances define initial states and cargo destination goals for two to four cargo items and two to three airports/planes. This is small enough to serve as a deterministic symbolic fixture after the semantics are encoded and validated.
 
+
+### sunsided/pddl-rs — parser candidate, not planner
+
+Inspected default branch: main; complete tree SHA `c0a84ba41c104f9e1c04250925b6de5962e576c0`.
+
+- README describes a strongly typed PDDL 3.1 parser written in Rust using nom.
+- Cargo package `pddl` v0.3.0; edition 2021; minimum Rust 1.80. Default features enable parser + interning; pretty-print is optional.
+- README demonstrates Briefcase World parsing and a multi-block PddlFile with one domain and multiple problems.
+- `examples/pretty_print.rs` demonstrates typed names/variables/types, either-types and a durative-action pretty-print case; run with `cargo run --example pretty_print --features pretty`.
+- Cargo.toml declares EUPL-1.2. Legal compatibility review is required before adding it as a dependency or copying code. An isolated parser toolchain remains a candidate subject to supply-chain review.
+- Parser support does not establish planner/search/optimization or execution capability.
+
+**Disposition:** high-value parser/AST candidate for DPLC-003. Validate fixture coverage and AST/pretty-print round-trip in an isolated toolchain. Parser acceptance is not plan validity; the independent action-transition verifier and planner remain separate.
+
 ### timerloggedout-spec/rl-multiagent-transfer_fork
 
 Inspected default branch: main.
@@ -43,6 +57,21 @@ Inspected default branch: main.
 - No root LICENSE file was found at the inspected path.
 
 **Disposition:** domain vocabulary and workflow-discovery reference only. Do not copy, install, deploy, or treat it as an available logistics execution service without owner authorization and license resolution. The README's claimed smart-contract features are not independently verified by this assessment.
+
+
+## Library multi-agent logistics example — current evidence
+
+The library example is `timerloggedout-spec/rl-multiagent-transfer_fork`, not a runnable simulator at this snapshot. Its complete `main` tree contains only `README.md` (tree SHA `8efb5703256167e29bbec4916c6dca6d1e973891`). That README names “Multi-agent Path Planning Based on Reinforcement Learning for Intelligent Logistics applied to a Library” and supplies no model, environment, agents, reward function, data, dependency lock, training/inference code, tests or benchmark. It is a domain scenario and candidate problem statement only.
+
+Recovery path:
+1. Locate upstream source/commit or a complete maintained fork; verify license and provenance.
+2. Define the environment: map graph, shelves/locations, pickup/drop tasks, agent capacity, one-way/blocked edges, collision zones, service times and dynamic arrivals.
+3. Establish deterministic baselines first: shortest-path routing, prioritized multi-agent path finding (MAPF), reservation-table planning and OR-Tools CP-SAT/Routing where constraints fit.
+4. Add RL only as a separately compared treatment; pin observation/action/reward definitions, seeds, train/evaluation split and policy checkpoint hashes.
+5. Verify collision-free paths, task completion, fairness, deadlock handling and constraints independently of reward. Measure throughput, makespan, travel distance, wait time, conflicts and energy proxy.
+6. Keep the library environment separate from air-cargo fixtures; share task/resource vocabulary only after both adapters are tested.
+
+No implementation or benchmark can be attributed to this README-only fork.
 
 ## DPLC-003 implementation boundary
 

@@ -206,7 +206,6 @@ def parse_csv(text: str) -> list[dict[str, str]]:
     reader = csv.DictReader(text.splitlines(keepends=True), strict=True)
     legacy_header = FIELDS_V1[:22]
     legacy_mode = reader.fieldnames == legacy_header
-    version_one = reader.fieldnames == FIELDS_V1
     version_two = reader.fieldnames == FIELDS
     if reader.fieldnames not in (FIELDS, FIELDS_V1, legacy_header):
         raise ValueError("CSV header does not match paper view schema")

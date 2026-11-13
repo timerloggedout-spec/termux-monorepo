@@ -40,7 +40,7 @@ docs/ops/SKILLS-INVENTORY.md        # SSOT navigator + role matrix
 SKILLS.md                           # this file — short collaborator entry
 ```
 
-Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them so collaborators do not need private mirrors.
+Give every skill directory a `SKILL.md`. Keep the full inventory current so collaborators can load the shared in-repository skill set.
 
 ## Role quick-load
 

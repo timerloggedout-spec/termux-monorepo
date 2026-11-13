@@ -1,8 +1,9 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Version:** 2026-11-13 · **Proposal:** `agent-readability-surface-contract`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
+**Authoring contract:** [`DO-STATEMENT-MANDATE.md`](DO-STATEMENT-MANDATE.md)
 
 ## Collaborator access (parity)
 
@@ -21,6 +22,7 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 |------|------------|------|
 | **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
+| **Agent Readability / Pages** | `agent-readability` + `github-pages-operator` | `tribute-lane` · source validator · deployment workflow |
 | **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
@@ -33,6 +35,9 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | Skill | Path |
 |-------|------|
 | adaptive-feedback-cycle | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
+| agent-readability | `.agents/skills/agent-readability/SKILL.md` |
+| jules-github-development | `.agents/skills/jules-github-development/SKILL.md` |
+| loopy-api-loop-library | `.agents/skills/loopy-api-loop-library/SKILL.md` |
 | adaptive-wait | `.agents/skills/adaptive-wait/SKILL.md` |
 | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` |
 | blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` |
@@ -67,6 +72,14 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` |
 | production-reconciliation | `.github/skills/production-reconciliation/SKILL.md` |
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
+
+## Supplied skill assets and provenance
+
+- `termux-mcp-project-steward` — expanded from the supplied skill archive; report and local-sentinel templates are included.
+- `context-relationship-graph` — current repository skill retains the richer temporal evidence layer and remains the canonical version.
+- `jules-github-development` — workflow patterns transcribed from the supplied Jules reference PDF; action versions require current upstream verification.
+- `loopy-api-loop-library` — bounded-loop guidance adapted from the supplied Loopy skill export.
+- `agent-readability` — source-first scan, metadata, deployment, and score-receipt workflow.
 
 ## Help-wanted companion docs
 

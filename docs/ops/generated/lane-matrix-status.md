@@ -1,8 +1,8 @@
-# Lane matrix status (2026-11-13T10:34:27Z)
+# Lane matrix status (2026-11-13T10:35:05Z)
 
-- Master: `a7983b1e94035feb4e17ba1f90097d59601d2354`
+- Master: `b8ffac85c780552730ae50dfa3b15b57539d89e6`
 - Open PRs: **368**
-- Oldest: #47 (99.78d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Oldest: #47 (99.79d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
@@ -28,11 +28,11 @@
 | #4621 | 9.57 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 8.91 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 6.82 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #47 | 99.78 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
+| #47 | 99.79 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 97.53 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 96.4 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 59.11 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #605 | 55.69 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #605 | 55.7 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 53.67 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 51.12 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 43.03 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
@@ -47,7 +47,7 @@
 | #1515 | 22.09 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 22.09 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 22.08 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 22.06 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1537 | 22.07 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 21.4 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 20.31 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 20.31 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |

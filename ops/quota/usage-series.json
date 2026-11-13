@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-13T12:40:49Z",
+ "generated_at": "2026-11-13T12:54:17Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-13T10:58:17Z",
-  "ops/tracking/nested-family.json": "2026-11-13T12:40:21Z"
+  "ops/tracking/nested-family.json": "2026-11-13T12:42:55Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -112,6 +112,21 @@
     ],
     "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)",
     "last_point_at": "2026-10-31T06:17:14Z"
+   },
+   {
+    "key": "sealion::consumption",
+    "title": "sealion - consumption (cumulative, per-call usage of record)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-13T12:49:33Z",
+      "v": 9376
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-13T12:49:33Z"
    },
    {
     "key": "agentrouter",
@@ -994,16 +1009,6 @@
     "last_point_at": null
    },
    {
-    "key": "sealion",
-    "title": "sealion - no stamped usage yet (gap)",
-    "unit": null,
-    "kind": "gap",
-    "metric": null,
-    "points": [],
-    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
-    "last_point_at": null
-   },
-   {
     "key": "siliconflow",
     "title": "siliconflow - no stamped usage yet (gap)",
     "unit": null,
@@ -1708,10 +1713,14 @@
      {
       "t": "2026-11-02T01:19:03Z",
       "v": 4
+     },
+     {
+      "t": "2026-11-13T12:49:33Z",
+      "v": 5
      }
     ],
     "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
-    "last_point_at": "2026-11-02T01:19:03Z"
+    "last_point_at": "2026-11-13T12:49:33Z"
    },
    {
     "key": "NOT_ESTABLISHED",
@@ -1727,6 +1736,21 @@
     ],
     "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
     "last_point_at": "2026-11-02T07:46:55Z"
+   },
+   {
+    "key": "aisingapore/Llama-SEA-LION-v3-70B-IT::consumption",
+    "title": "sealion - aisingapore/Llama-SEA-LION-v3-70B-IT - consumption (cumulative)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-13T12:49:33Z",
+      "v": 9376
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-13T12:49:33Z"
    }
   ],
   "events": [
@@ -1801,22 +1825,28 @@
  },
  "coverage": {
   "providers_total": 96,
-  "providers_populated": 3,
-  "providers_gap": 95,
-  "model_series": 12,
-  "model_populated": 12
+  "providers_populated": 4,
+  "providers_gap": 94,
+  "model_series": 13,
+  "model_populated": 13
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 23,
-  "usage_stamped": 0,
+  "routed_calls": 24,
+  "usage_stamped": 1,
   "unstamped": 23,
-  "unstamped_share": 1.0,
+  "unstamped_share": 0.9583,
   "causes": {
    "no-usage-record": 23,
    "no-usage-surface": 0
   },
   "by_provider": {
+   "sealion": {
+    "provider": "sealion",
+    "calls": 5,
+    "stamped": 1,
+    "unstamped": 4
+   },
    "gemini-cli": {
     "provider": "gemini-cli",
     "calls": 1,
@@ -1831,12 +1861,6 @@
    },
    "cohere": {
     "provider": "cohere",
-    "calls": 4,
-    "stamped": 0,
-    "unstamped": 4
-   },
-   "sealion": {
-    "provider": "sealion",
     "calls": 4,
     "stamped": 0,
     "unstamped": 4

@@ -90,6 +90,33 @@ class EconomyBacktestTests(unittest.TestCase):
         )
         self.assertEqual(first["verdict"], "exploratory_synthetic")
 
+    def test_policy_variants_share_keyed_participant_round_draws(self):
+        base = manifest()
+        baseline = {**base["policy"], "policy_id": "baseline", "cull_after_misses": 1}
+        resilient = {**base["policy"], "policy_id": "resilient", "cull_after_misses": 3}
+        matrix = run_matrix(base, [baseline, resilient], [11, 22])
+        def round_two_outcome(policy_id):
+            run = next(row["result"] for row in matrix["runs"]
+                       if row["result"]["policy_id"] == policy_id and row["result"]["seed"] == 11)
+            event = next(row for row in run["events"]
+                         if row["type"] in {"task_reward", "task_miss"}
+                         and row["payload"].get("participant") == "c-worker"
+                         and row["payload"].get("round") == 2)
+            return event["type"]
+        self.assertEqual(round_two_outcome("baseline"), round_two_outcome("resilient"))
+        self.assertEqual(matrix["randomization"], "sha256_keyed_participant_round_v1")
+
+    def test_matrix_reports_paired_deltas_against_first_policy(self):
+        base = manifest()
+        baseline = {**base["policy"], "policy_id": "baseline", "royalty_rate_bps": 0}
+        royalty = {**base["policy"], "policy_id": "royalty", "royalty_rate_bps": 2500}
+        matrix = run_matrix(base, [baseline, royalty], [11, 22, 33, 44])
+        self.assertEqual(matrix["baseline_policy_id"], "baseline")
+        delta = matrix["paired_deltas_vs_baseline"]["royalty"]
+        self.assertGreater(delta["royalty_accrued_units"]["mean_delta"], 0)
+        self.assertIn("confidence_interval_95", delta["royalty_accrued_units"])
+        self.assertEqual(matrix["summary"]["royalty"]["replications"], 4)
+
     def test_matrix_rejects_duplicate_policy_ids_and_seeds(self):
         policies = [dict(manifest()["policy"]), dict(manifest()["policy"])]
         with self.assertRaises(ValueError):

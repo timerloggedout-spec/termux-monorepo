@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-13T03:40:25Z)
+# Lane matrix status (2026-11-13T03:42:16Z)
 
-- Master: `07693694164b965fc820c9c790b52521d4579636`
+- Master: `e172b12e6a40f2a6601300a1febb9dc6bbed1bca`
 - Open PRs: **363**
 - Oldest: #47 (99.5d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -24,7 +24,7 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 22.88 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 12.48 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 9.97 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4069 | 9.98 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 9.29 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 8.63 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 6.53 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
@@ -45,7 +45,7 @@
 | #1495 | 22.05 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 21.81 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 21.81 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 21.8 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1516 | 21.81 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 21.79 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 21.78 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 21.11 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |

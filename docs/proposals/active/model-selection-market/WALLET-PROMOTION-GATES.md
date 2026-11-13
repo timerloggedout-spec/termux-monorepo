@@ -23,7 +23,7 @@ python3 -m scripts.model_selection_market.wallet_promotion wallet-manifest.json 
   --production-key-namespace prod/msm
 ```
 
-The receipt binds the manifest SHA-256 and returns `action: preflight_only`, with provisioning, signing, and funding each marked false.
+The receipt binds the manifest SHA-256 and returns `action: preflight_only`, with provisioning, signing, and funding each marked false. This validator checks policy shape and identity consistency; a trusted external governance workflow must authenticate approvers and verify their evidence digests before provisioning.
 
 ## Code boundary
 

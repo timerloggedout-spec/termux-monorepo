@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-13T03:20:09Z",
+ "generated_at": "2026-11-13T03:32:29Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -27,7 +27,7 @@
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-13T03:20:08Z"
+   "generated_at": "2026-11-13T03:32:29Z"
   },
   {
    "id": "rate-limit-events",
@@ -42,7 +42,7 @@
   "families_direct": 35,
   "g4f_children": 61,
   "live_verified_families": 12,
-  "rate_limit_events": 8,
+  "rate_limit_events": 9,
   "families_populated": 29,
   "families_gap": 7,
   "records_populated": 2,
@@ -3249,6 +3249,17 @@
     "id": "census-2026-11-02T06:25:00Z-search-pat",
     "provenance": "Event #1 of record (owner directive 2026-11-01 22:28 PT). Registry lane (ac8e5e6b) firsthand report to main at 22:25 PT: GitHub Search API secondary limit hit mid-census on involves:<actor> queries over timerloggedout-spec/termux-monorepo. NOT core-bucket exhaustion - PAT core stayed >=3,049 all night (quota-gaps attestation).",
     "surface": "Search API"
+   },
+   {
+    "at": "2026-11-12T10:51:00Z",
+    "bucket": "github.api.github_token",
+    "class": "core-exhaustion",
+    "context": "Driver: run churn ~2,100/h average, bursts of 100 runs/19s {issue_comment 69% \u00b7 workflow_run 20% \u00b7 push 11%}. Recurrence: the bucket re-exhausted the same day inside the 1h post-fix verification window 13:09:35-14:09:35Z (51 installation-limit annotations on 28 runs) - audited as this episode's recurrence in audit-006 (F5/F6), not a separate register event (one-episode rule, F3; QUE #5231 scope). Correlated same-morning Vercel Hobby 100/day deploy-cap exhaustion = separate service; auditor's call per #5231: NOT a register event (this register is the github.api bucket series); its fix leg is PR #5218 (leg (d), DONE).",
+    "evidence": "api-observed",
+    "http": 403,
+    "id": "wall-2026-11-12T10:51:00Z-github-token",
+    "provenance": "main firsthand diagnosis 2026-11-12 11:04-11:12Z {PAT core healthy 289-335/5,000 \u00b7 Swarm App installation idle 1/12,500 - bucket separation proven}; annotation of record: collect-peer-responses (head d1678cb0) 11:09Z 'API rate limit exceeded for installation, request ID DC83:1898F0'; wall cluster 10:51-10:52Z across unrelated PR workflows {peer-review orchestrator \u00b7 effectiveness ledgers x3 \u00b7 repo-dev evaluation \u00b7 Jules handoff \u00b7 dangle check \u00b7 proposal-lifecycle \u00b7 scope guard}; QDesk PAT-corroborated; filed as QUE #5231 by Desk - multi-observer provenance {main \u00b7 QDesk \u00b7 Desk} per the F3 rule",
+    "surface": "REST core"
    }
   ]
  },

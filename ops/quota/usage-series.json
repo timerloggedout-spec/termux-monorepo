@@ -1,9 +1,9 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-13T03:20:08Z",
+ "generated_at": "2026-11-13T03:32:29Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-11-12T11:03:42Z",
+  "ops/quota/quota-usage.json": "2026-11-13T03:32:29Z",
   "ops/tracking/nested-family.json": "2026-11-13T03:19:35Z"
  },
  "sources": [
@@ -1722,6 +1722,22 @@
    }
   ],
   "events": [
+   {
+    "key": "github.api.github_token",
+    "title": "github.api.github_token - rate-limit events",
+    "unit": "events",
+    "kind": "event",
+    "metric": "events",
+    "points": [
+     {
+      "t": "2026-11-12T10:51:00Z",
+      "v": 1,
+      "class": "core-exhaustion"
+     }
+    ],
+    "provenance": "ops/quota/rate-limit-events.json",
+    "last_point_at": "2026-11-12T10:51:00Z"
+   },
    {
     "key": "github.api.user_token",
     "title": "github.api.user_token - rate-limit events",

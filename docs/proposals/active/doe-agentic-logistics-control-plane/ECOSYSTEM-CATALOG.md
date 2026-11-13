@@ -7,6 +7,8 @@
 - README size observed: 103,076 characters.
 - Markdown link references extracted: 565. This is a raw reference count, not 565 unique projects; it includes repeated docs, badges, API links and project references.
 - Related root fork: timerloggedout-spec/langchain_fork, default branch master, README SHA aeea8c38765f4a33c777e8755ac2f439132ffbb0, 5,891 characters.
+- Package map verified from `libs/README.md` (SHA 497c39d2f4cd967af8f274c749193ac0a4d13e39): `core/`, `langchain/` (classic), `langchain_v1/`, `model-profiles/`, `partners/`, `standard-tests/`, `text-splitters/`; most provider integrations live in separate repositories.
+- Root README product boundaries: Deep Agents is a higher-level agent package; LangGraph is low-level controllable orchestration; LangSmith covers evaluation/observability/deployment; LangChain.js is the JS/TS counterpart. These are product boundaries, not a mandate to install every component.
 - Inventory method: source README heading hierarchy, package maps, links and owned repo metadata; no packages were installed and no third-party entry was promoted.
 
 ## Framework and official product map

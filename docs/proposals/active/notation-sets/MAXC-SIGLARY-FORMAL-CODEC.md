@@ -24,6 +24,17 @@ MAXC remains a compiler/codec. It does not become the policy authority, planner,
 
 This design preserves both MAXC histories pending a source/consumer/CI inventory. It does not silently select, delete, rename, or merge either crate.
 
+## Baseline risks requiring a parser-hardening pass
+
+The current `workspace/maxc/src/parser.rs` has two behaviors that are incompatible with a semantics-preserving compiler contract:
+
+- It writes `parse_debug.log` during parsing, creating an unconditional filesystem side effect.
+- It advances past `Unknown` tokens without a structured diagnostic or preserved unknown-node representation.
+
+Before enabling semantic optimization, make parsing pure and observable: return structured diagnostics with source spans; preserve unknown syntax as an explicit opaque node where safe; fail closed when an unknown token could change meaning; keep debug output behind an explicit CLI flag. Add regression tests for unknown tokens, malformed input, no filesystem writes, and deterministic parse output.
+
+The markup parser and the new logical/Siglary parser should remain distinct frontends over the shared IR. Do not reinterpret MaxUp tokens as Siglary operators based on visual similarity.
+
 ## Target architecture
 
 ```text

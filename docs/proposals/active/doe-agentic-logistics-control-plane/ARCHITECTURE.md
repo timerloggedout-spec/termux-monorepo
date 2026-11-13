@@ -21,11 +21,12 @@
 2. QUE performs admission and tier/dependency checks; a task is not considered owned until a participant claims it.
 3. The task planner derives symbolic actions and hard precedence from a validated task/domain model.
 4. Constraint optimization allocates numeric capacity and time windows where required.
-5. The orchestration layer executes the selected graph or direct path; Temporal wraps it only when durable cross-worker execution is needed.
-6. Before a provider call, the existing per-instance admission gate verifies route, current health, no-cost entitlement, quota freshness/headroom, data classification and provenance.
-7. The controller observes telemetry and may recommend bounded admission/pacing actions. Initial trials remain offline or shadow-only.
-8. ATES/DoE records outcomes, and an independent verifier checks task correctness and safety.
-9. The Observatory consumes canonical feeds and receipts; it does not become another ledger.
+5. Where a learned policy is evaluated, the existing Library RL implementation runs behind a typed adapter against a pinned map/task fixture; an independent verifier enforces collision, deadlock, capacity and task-completion constraints.
+6. The orchestration layer executes the selected graph or direct path; Temporal wraps it only when durable cross-worker execution is needed.
+7. Before a provider call, the existing per-instance admission gate verifies route, current health, no-cost entitlement, quota freshness/headroom, data classification and provenance.
+8. The controller observes telemetry and may recommend bounded admission/pacing actions. Initial trials remain offline or shadow-only.
+9. ATES/DoE records outcomes, and an independent verifier checks task correctness and safety.
+10. The Observatory consumes canonical feeds and receipts; it does not become another ledger.
 
 ## Feedback-control model
 

@@ -1,12 +1,12 @@
 {
   "schema": "oracle-panel-feed/v1",
-  "generated_at": "2026-10-27T16:01:12Z",
+  "generated_at": "2026-11-13T05:13:03Z",
   "generator": "scripts/delphi/oracle_panel_feed.py",
   "sources": {
     "registry": "docs/proposals/registry.yaml",
-    "registry_updated_at": "2026-10-27T13:52:00Z",
-    "registry_proposals_total": 47,
-    "oracle_method_proposals": 4,
+    "registry_updated_at": "'2026-11-11T00:00:00Z'",
+    "registry_proposals_total": 64,
+    "oracle_method_proposals": 15,
     "ledger_issue": 1487,
     "ledger_verified": true
   },
@@ -1366,16 +1366,3830 @@
       },
       "live": true,
       "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "temporal-durable-execution-pi-core-resume",
+      "title": "Temporal durable execution \u2014 pi-core-resume: pi-temporal kill-and-resume core (Oracle Method pass, G6: adopt)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/temporal-durable-execution-pi-core-resume/",
+      "pass": "temporal-durable-execution",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-28T02:09:47Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 10,
+      "description": [
+        "Agent-agnostic durable core: session-file state, worker death mid-turn resumed by another worker, started-but-unrecorded side effects surfaced as unknown outcome and never blindly retried. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`, `docs/rfps/temporal-durable-execution/RECON.md`)",
+        "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical. (evidence: `docs/rfps/temporal-durable-execution/RECON.md`, `docs/proposals/active/bifrost-gateway-integration/RECON.md`, `docs/repositories/GRAVITEE-RESEARCH-SEED.md`, `config/agent_stack_integrations.json`)",
+        "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate. (evidence: `docs/rfps/temporal-durable-execution/INTAKE.md`, `ml/pipelines/moneyball/explain.py`)",
+        "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`)"
+      ],
+      "approach": null,
+      "summary_points": null,
+      "work_items": [
+        {
+          "id": "TD-001",
+          "item": "Declare the seed combination (temporalio/pi-temporal, temporalio/temporal, temporalio/cli) and the plan in this pack",
+          "state": "proposed",
+          "exit": "MANIFEST + PROVENANCE of this pack"
+        },
+        {
+          "id": "TD-002",
+          "item": "Suite: kill-resume harness (RFP \u00a76) on the echo-style starter: complete with exactly one receipt after a mid-activity worker kill",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-003",
+          "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+          "state": "proposed",
+          "exit": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/temporal-durable-execution-pi-core-resume/RFP.md",
+        "items": "docs/proposals/active/temporal-durable-execution-pi-core-resume/ITEMS.md",
+        "manifest": "docs/proposals/active/temporal-durable-execution-pi-core-resume/MANIFEST.md",
+        "provenance": "docs/proposals/active/temporal-durable-execution-pi-core-resume/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "temporal-durable-execution-pi-core-resume",
+        "points": 4,
+        "evidenced": 4,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 10,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "afd48b297e0c27d1ddab105b6fd3a0ddba6779a2e2c73269a0c98b52c6e3b1b9"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-28T02:09:47Z",
+          "evidence_sets": [
+            {
+              "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+              "items": 10,
+              "assembled_at": null
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/method_cycle.py \u2014 round-2 re-vote by the same rubric comparator over the equalized per-proposal test-results evidence set",
+              "ballots": 5,
+              "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)"
+              }
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:BRIEF:temporal-recon-lane",
+            "kind": "brief_prior",
+            "author": "BRIEF:temporal-recon-lane"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+            "items": 10,
+            "assembled_at": null
+          }
+        ],
+        "items": 10,
+        "sources": {
+          "repo:timerloggedout-spec/termux-monorepo": 10
+        },
+        "claim_areas": {
+          "docs/rfps/temporal-durable-execution/RECON": 1,
+          "docs/ops/TEMPORAL-LANGSMITH-ADAPTER": 1,
+          "scripts/temporal/hello_workflow": 1,
+          "docs/proposals/active/temporal-langsmith-adapter/MANIFEST": 1,
+          "docs/proposals/active/bifrost-gateway-integration/RECON": 1,
+          "docs/repositories/GRAVITEE-RESEARCH-SEED": 1,
+          "config/agent_stack_integrations": 1,
+          "docs/rfps/temporal-durable-execution/INTAKE": 1,
+          "ml/pipelines/moneyball/explain": 1,
+          "docs/rfps/temporal-durable-execution/RFP": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "kill-resume harness (RFP \u00a76): exactly one receipt after a mid-activity worker kill"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale",
+            "temporal-durable-execution-cookbook-agent-loop"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.654
+          },
+          "score": 23.654,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 18,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 18,
+                "temporal-durable-execution-cookbook-agent-loop": 15,
+                "temporal-durable-execution-versioned-autoscale": 18,
+                "temporal-durable-execution-contract-first": 18,
+                "temporal-durable-execution-serverless-skill": 18
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 0.577,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-cookbook-agent-loop",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "score": 25.0,
+          "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+          "ballots": null,
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 13.385,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 2,
+          "expected_score": 23.654,
+          "tolerance": 2.0
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "expected_rank": 1,
+          "expected_score": 22
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "kill-resume harness (RFP \u00a76): exactly one receipt after a mid-activity worker kill",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 1,
+        "failed": 0,
+        "suites_total": 1,
+        "suites_passed": 1
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 1,
+          "score_delta": 1.346,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "rank_delta": 2,
+          "score_delta": 3.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6458968877,
+        "calibration_comment_id": 6458969136,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "temporal-durable-execution-cookbook-agent-loop",
+      "title": "Temporal durable execution \u2014 cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle Method pass, G6: pilot)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/temporal-durable-execution-cookbook-agent-loop/",
+      "pass": "temporal-durable-execution",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-28T02:09:47Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 10,
+      "description": [
+        "Cookbook recipes as starters (agentic loop, HITL approval pause, deep-research, durable MCP) with plugin-per-framework packaging; LangSmith bridge already in-repo. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`, `docs/rfps/temporal-durable-execution/RECON.md`)",
+        "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical. (evidence: `docs/rfps/temporal-durable-execution/RECON.md`, `docs/proposals/active/bifrost-gateway-integration/RECON.md`, `docs/repositories/GRAVITEE-RESEARCH-SEED.md`, `config/agent_stack_integrations.json`)",
+        "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate. (evidence: `docs/rfps/temporal-durable-execution/INTAKE.md`, `ml/pipelines/moneyball/explain.py`)",
+        "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`)"
+      ],
+      "approach": null,
+      "summary_points": null,
+      "work_items": [
+        {
+          "id": "TD-001",
+          "item": "Declare the seed combination (temporalio/ai-cookbook, temporalio/ai-integrations, temporalio/temporal) and the plan in this pack",
+          "state": "proposed",
+          "exit": "MANIFEST + PROVENANCE of this pack"
+        },
+        {
+          "id": "TD-002",
+          "item": "Suite: HITL approval workflow: pause on signal, resume, complete",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-003",
+          "item": "Suite: kill-resume harness (RFP \u00a76)",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-004",
+          "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+          "state": "proposed",
+          "exit": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/RFP.md",
+        "items": "docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/ITEMS.md",
+        "manifest": "docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/MANIFEST.md",
+        "provenance": "docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "temporal-durable-execution-cookbook-agent-loop",
+        "points": 4,
+        "evidenced": 4,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 4,
+        "evidence_sources": 10,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "6455e434591cfb3d7c4b043a9107c4f45b012935b410a960a9302d022da0f76a"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-28T02:09:47Z",
+          "evidence_sets": [
+            {
+              "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+              "items": 10,
+              "assembled_at": null
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/method_cycle.py \u2014 round-2 re-vote by the same rubric comparator over the equalized per-proposal test-results evidence set",
+              "ballots": 5,
+              "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)"
+              }
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:BRIEF:temporal-recon-lane",
+            "kind": "brief_prior",
+            "author": "BRIEF:temporal-recon-lane"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+            "items": 10,
+            "assembled_at": null
+          }
+        ],
+        "items": 10,
+        "sources": {
+          "repo:timerloggedout-spec/termux-monorepo": 10
+        },
+        "claim_areas": {
+          "docs/rfps/temporal-durable-execution/RECON": 1,
+          "docs/ops/TEMPORAL-LANGSMITH-ADAPTER": 1,
+          "scripts/temporal/hello_workflow": 1,
+          "docs/proposals/active/temporal-langsmith-adapter/MANIFEST": 1,
+          "docs/proposals/active/bifrost-gateway-integration/RECON": 1,
+          "docs/repositories/GRAVITEE-RESEARCH-SEED": 1,
+          "config/agent_stack_integrations": 1,
+          "docs/rfps/temporal-durable-execution/INTAKE": 1,
+          "ml/pipelines/moneyball/explain": 1,
+          "docs/rfps/temporal-durable-execution/RFP": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "HITL approval workflow: pause on signal, resume, complete",
+          "kill-resume harness (RFP \u00a76)"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale",
+            "temporal-durable-execution-cookbook-agent-loop"
+          ],
+          "rank_of_this": 5,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.077
+          },
+          "score": 23.077,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 15,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 18,
+                "temporal-durable-execution-cookbook-agent-loop": 15,
+                "temporal-durable-execution-versioned-autoscale": 18,
+                "temporal-durable-execution-contract-first": 18,
+                "temporal-durable-execution-serverless-skill": 18
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 0.577,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-cookbook-agent-loop",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "score": 25.0,
+          "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+          "ballots": null,
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 13.385,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 5,
+          "expected_score": 23.077,
+          "tolerance": 2.0
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "expected_rank": 2,
+          "expected_score": 19
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "HITL approval workflow: pause on signal, resume, complete",
+            "passed": 1,
+            "failed": 0
+          },
+          {
+            "suite": "kill-resume harness (RFP \u00a76)",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 2,
+        "failed": 0,
+        "suites_total": 2,
+        "suites_passed": 2
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": -3,
+          "score_delta": 1.923,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "rank_delta": 0,
+          "score_delta": 6.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6458968877,
+        "calibration_comment_id": 6458969136,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "temporal-durable-execution-versioned-autoscale",
+      "title": "Temporal durable execution \u2014 versioned-autoscale: Worker Versioning + backlog autoscaling model (Oracle Method pass, G6: reference-only)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/temporal-durable-execution-versioned-autoscale/",
+      "pass": "temporal-durable-execution",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-28T02:09:47Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 10,
+      "description": [
+        "Worker Versioning + backlog-driven autoscaling (WCI) as the actuation layer for MoneyBall/quota routing decisions; K8s actuation itself specified_not_run (no cluster), the versioning/autoscale model and omes load evidence are the claims. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`, `docs/rfps/temporal-durable-execution/RECON.md`)",
+        "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical. (evidence: `docs/rfps/temporal-durable-execution/RECON.md`, `docs/proposals/active/bifrost-gateway-integration/RECON.md`, `docs/repositories/GRAVITEE-RESEARCH-SEED.md`, `config/agent_stack_integrations.json`)",
+        "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate. (evidence: `docs/rfps/temporal-durable-execution/INTAKE.md`, `ml/pipelines/moneyball/explain.py`)",
+        "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`)"
+      ],
+      "approach": null,
+      "summary_points": null,
+      "work_items": [
+        {
+          "id": "TD-001",
+          "item": "Declare the seed combination (temporalio/temporal-worker-controller, temporalio/temporal-auto-scaled-workers, temporalio/omes) and the plan in this pack",
+          "state": "proposed",
+          "exit": "MANIFEST + PROVENANCE of this pack"
+        },
+        {
+          "id": "TD-002",
+          "item": "Suite: omes load scenario against the self-host dev server with published scenario receipts",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-003",
+          "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+          "state": "proposed",
+          "exit": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/temporal-durable-execution-versioned-autoscale/RFP.md",
+        "items": "docs/proposals/active/temporal-durable-execution-versioned-autoscale/ITEMS.md",
+        "manifest": "docs/proposals/active/temporal-durable-execution-versioned-autoscale/MANIFEST.md",
+        "provenance": "docs/proposals/active/temporal-durable-execution-versioned-autoscale/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "temporal-durable-execution-versioned-autoscale",
+        "points": 4,
+        "evidenced": 4,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 10,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "f9d41ddbbd00d99f13b0e39b40df95d3b4bf58fbc90e1e6a279c6a77758dfea4"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-28T02:09:47Z",
+          "evidence_sets": [
+            {
+              "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+              "items": 10,
+              "assembled_at": null
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/method_cycle.py \u2014 round-2 re-vote by the same rubric comparator over the equalized per-proposal test-results evidence set",
+              "ballots": 5,
+              "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)"
+              }
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:BRIEF:temporal-recon-lane",
+            "kind": "brief_prior",
+            "author": "BRIEF:temporal-recon-lane"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+            "items": 10,
+            "assembled_at": null
+          }
+        ],
+        "items": 10,
+        "sources": {
+          "repo:timerloggedout-spec/termux-monorepo": 10
+        },
+        "claim_areas": {
+          "docs/rfps/temporal-durable-execution/RECON": 1,
+          "docs/ops/TEMPORAL-LANGSMITH-ADAPTER": 1,
+          "scripts/temporal/hello_workflow": 1,
+          "docs/proposals/active/temporal-langsmith-adapter/MANIFEST": 1,
+          "docs/proposals/active/bifrost-gateway-integration/RECON": 1,
+          "docs/repositories/GRAVITEE-RESEARCH-SEED": 1,
+          "config/agent_stack_integrations": 1,
+          "docs/rfps/temporal-durable-execution/INTAKE": 1,
+          "ml/pipelines/moneyball/explain": 1,
+          "docs/rfps/temporal-durable-execution/RFP": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "omes load scenario against the self-host dev server with published scenario receipts"
+        ],
+        "pass_rate": 0.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": false
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale",
+            "temporal-durable-execution-cookbook-agent-loop"
+          ],
+          "rank_of_this": 4,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.654
+          },
+          "score": 23.654,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 18,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 18,
+                "temporal-durable-execution-cookbook-agent-loop": 15,
+                "temporal-durable-execution-versioned-autoscale": 18,
+                "temporal-durable-execution-contract-first": 18,
+                "temporal-durable-execution-serverless-skill": 18
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 0.577,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-cookbook-agent-loop",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale"
+          ],
+          "rank_of_this": 5,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 11.615
+          },
+          "score": 11.615,
+          "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+          "ballots": null,
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 13.385,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 4,
+          "expected_score": 23.654,
+          "tolerance": 2.0
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "expected_rank": 4,
+          "expected_score": 13
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "omes load scenario against the self-host dev server with published scenario receipts",
+            "passed": 0,
+            "failed": 1
+          }
+        ],
+        "passed": 0,
+        "failed": 1,
+        "suites_total": 1,
+        "suites_passed": 0
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 1,
+          "score_delta": -12.039,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "1 failing test(s) in the implementation round"
+          ]
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "rank_delta": 1,
+          "score_delta": -1.385,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "1 failing test(s) in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6458968877,
+        "calibration_comment_id": 6458969136,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "temporal-durable-execution-contract-first",
+      "title": "Temporal durable execution \u2014 contract-first: evidence-envelope schema + generated validators (Oracle Method pass, G6: adopt as contract discipline)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/temporal-durable-execution-contract-first/",
+      "pass": "temporal-durable-execution",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-28T02:09:47Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 10,
+      "description": [
+        "Proto/schema-first lane contracts with nexgen-style generated typed models + shared validators, and workflow history treated as the projection/audit surface. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`, `docs/rfps/temporal-durable-execution/RECON.md`)",
+        "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical. (evidence: `docs/rfps/temporal-durable-execution/RECON.md`, `docs/proposals/active/bifrost-gateway-integration/RECON.md`, `docs/repositories/GRAVITEE-RESEARCH-SEED.md`, `config/agent_stack_integrations.json`)",
+        "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate. (evidence: `docs/rfps/temporal-durable-execution/INTAKE.md`, `ml/pipelines/moneyball/explain.py`)",
+        "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`)"
+      ],
+      "approach": null,
+      "summary_points": null,
+      "work_items": [
+        {
+          "id": "TD-001",
+          "item": "Declare the seed combination (temporalio/api, temporalio/nexgen, temporalio/ui) and the plan in this pack",
+          "state": "proposed",
+          "exit": "MANIFEST + PROVENANCE of this pack"
+        },
+        {
+          "id": "TD-002",
+          "item": "Suite: contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-003",
+          "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+          "state": "proposed",
+          "exit": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/temporal-durable-execution-contract-first/RFP.md",
+        "items": "docs/proposals/active/temporal-durable-execution-contract-first/ITEMS.md",
+        "manifest": "docs/proposals/active/temporal-durable-execution-contract-first/MANIFEST.md",
+        "provenance": "docs/proposals/active/temporal-durable-execution-contract-first/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "temporal-durable-execution-contract-first",
+        "points": 4,
+        "evidenced": 4,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 10,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "ef5a639ae36e2b8ad3f94e07b179b47f734f680b970c9c2e5efbb2cee17ae40c"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-28T02:09:47Z",
+          "evidence_sets": [
+            {
+              "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+              "items": 10,
+              "assembled_at": null
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/method_cycle.py \u2014 round-2 re-vote by the same rubric comparator over the equalized per-proposal test-results evidence set",
+              "ballots": 5,
+              "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)"
+              }
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:BRIEF:temporal-recon-lane",
+            "kind": "brief_prior",
+            "author": "BRIEF:temporal-recon-lane"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+            "items": 10,
+            "assembled_at": null
+          }
+        ],
+        "items": 10,
+        "sources": {
+          "repo:timerloggedout-spec/termux-monorepo": 10
+        },
+        "claim_areas": {
+          "docs/rfps/temporal-durable-execution/RECON": 1,
+          "docs/ops/TEMPORAL-LANGSMITH-ADAPTER": 1,
+          "scripts/temporal/hello_workflow": 1,
+          "docs/proposals/active/temporal-langsmith-adapter/MANIFEST": 1,
+          "docs/proposals/active/bifrost-gateway-integration/RECON": 1,
+          "docs/repositories/GRAVITEE-RESEARCH-SEED": 1,
+          "config/agent_stack_integrations": 1,
+          "docs/rfps/temporal-durable-execution/INTAKE": 1,
+          "ml/pipelines/moneyball/explain": 1,
+          "docs/rfps/temporal-durable-execution/RFP": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale",
+            "temporal-durable-execution-cookbook-agent-loop"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.654
+          },
+          "score": 23.654,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 18,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 18,
+                "temporal-durable-execution-cookbook-agent-loop": 15,
+                "temporal-durable-execution-versioned-autoscale": 18,
+                "temporal-durable-execution-contract-first": 18,
+                "temporal-durable-execution-serverless-skill": 18
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 0.577,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-cookbook-agent-loop",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "score": 25.0,
+          "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+          "ballots": null,
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 13.385,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 1,
+          "expected_score": 23.654,
+          "tolerance": 2.0
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "expected_rank": 3,
+          "expected_score": 16
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 1,
+        "failed": 0,
+        "suites_total": 1,
+        "suites_passed": 1
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 0,
+          "score_delta": 1.346,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "rank_delta": -2,
+          "score_delta": 9.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6458968877,
+        "calibration_comment_id": 6458969136,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "temporal-durable-execution-serverless-skill",
+      "title": "Temporal durable execution \u2014 serverless-skill: skill-form starter, cloud paths gated (Oracle Method pass, G6: reference-only)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/temporal-durable-execution-serverless-skill/",
+      "pass": "temporal-durable-execution",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-28T02:09:47Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 10,
+      "description": [
+        "The agent skill as the deployment starter (scope -> access checks -> packaging -> registration -> verification -> rollback); all Cloud execution paths specified_not_run under the card rule. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`, `docs/rfps/temporal-durable-execution/RECON.md`)",
+        "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical. (evidence: `docs/rfps/temporal-durable-execution/RECON.md`, `docs/proposals/active/bifrost-gateway-integration/RECON.md`, `docs/repositories/GRAVITEE-RESEARCH-SEED.md`, `config/agent_stack_integrations.json`)",
+        "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate. (evidence: `docs/rfps/temporal-durable-execution/INTAKE.md`, `ml/pipelines/moneyball/explain.py`)",
+        "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only. (evidence: `docs/rfps/temporal-durable-execution/RFP.md`)"
+      ],
+      "approach": null,
+      "summary_points": null,
+      "work_items": [
+        {
+          "id": "TD-001",
+          "item": "Declare the seed combination (temporalio/skill-temporal-serverless, temporalio/temporal-auto-scaled-workers) and the plan in this pack",
+          "state": "proposed",
+          "exit": "MANIFEST + PROVENANCE of this pack"
+        },
+        {
+          "id": "TD-002",
+          "item": "Suite: skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons",
+          "state": "proposed",
+          "exit": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+        },
+        {
+          "id": "TD-003",
+          "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+          "state": "proposed",
+          "exit": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/temporal-durable-execution-serverless-skill/RFP.md",
+        "items": "docs/proposals/active/temporal-durable-execution-serverless-skill/ITEMS.md",
+        "manifest": "docs/proposals/active/temporal-durable-execution-serverless-skill/MANIFEST.md",
+        "provenance": "docs/proposals/active/temporal-durable-execution-serverless-skill/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "temporal-durable-execution-serverless-skill",
+        "points": 4,
+        "evidenced": 4,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 10,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "589e0fd2bb787af1beebfea3efb6f06a99d6b90c198d7f6baf9de364c843fb0c"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-28T02:09:47Z",
+          "evidence_sets": [
+            {
+              "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+              "items": 10,
+              "assembled_at": null
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/method_cycle.py \u2014 round-2 re-vote by the same rubric comparator over the equalized per-proposal test-results evidence set",
+              "ballots": 5,
+              "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)"
+              }
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:BRIEF:temporal-recon-lane",
+            "kind": "brief_prior",
+            "author": "BRIEF:temporal-recon-lane"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+            "items": 10,
+            "assembled_at": null
+          }
+        ],
+        "items": 10,
+        "sources": {
+          "repo:timerloggedout-spec/termux-monorepo": 10
+        },
+        "claim_areas": {
+          "docs/rfps/temporal-durable-execution/RECON": 1,
+          "docs/ops/TEMPORAL-LANGSMITH-ADAPTER": 1,
+          "scripts/temporal/hello_workflow": 1,
+          "docs/proposals/active/temporal-langsmith-adapter/MANIFEST": 1,
+          "docs/proposals/active/bifrost-gateway-integration/RECON": 1,
+          "docs/repositories/GRAVITEE-RESEARCH-SEED": 1,
+          "config/agent_stack_integrations": 1,
+          "docs/rfps/temporal-durable-execution/INTAKE": 1,
+          "ml/pipelines/moneyball/explain": 1,
+          "docs/rfps/temporal-durable-execution/RFP": 1
+        }
+      },
+      "implementation_summary": {
+        "suites": [
+          "skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons"
+        ],
+        "pass_rate": 1.0,
+        "evidenced_ratio": 1.0,
+        "all_suites_passed": true
+      },
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale",
+            "temporal-durable-execution-cookbook-agent-loop"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.654
+          },
+          "score": 23.654,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 18,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 18,
+                "temporal-durable-execution-cookbook-agent-loop": 15,
+                "temporal-durable-execution-versioned-autoscale": 18,
+                "temporal-durable-execution-contract-first": 18,
+                "temporal-durable-execution-serverless-skill": 18
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "temporal-durable-execution-pi-core-resume": 25,
+                "temporal-durable-execution-cookbook-agent-loop": 25,
+                "temporal-durable-execution-versioned-autoscale": 25,
+                "temporal-durable-execution-contract-first": 25,
+                "temporal-durable-execution-serverless-skill": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 0.577,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": [
+            "temporal-durable-execution-contract-first",
+            "temporal-durable-execution-cookbook-agent-loop",
+            "temporal-durable-execution-pi-core-resume",
+            "temporal-durable-execution-serverless-skill",
+            "temporal-durable-execution-versioned-autoscale"
+          ],
+          "rank_of_this": 4,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 25.0
+          },
+          "score": 25.0,
+          "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+          "ballots": null,
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 13.385,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 3,
+          "expected_score": 23.654,
+          "tolerance": 2.0
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "expected_rank": 5,
+          "expected_score": 10
+        }
+      },
+      "implementation": {
+        "suites": [
+          {
+            "suite": "skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons",
+            "passed": 1,
+            "failed": 0
+          }
+        ],
+        "passed": 1,
+        "failed": 0,
+        "suites_total": 1,
+        "suites_passed": 1
+      },
+      "calibration": {
+        "LOCAL_BASELINE": {
+          "rank_delta": 1,
+          "score_delta": 1.346,
+          "within_tolerance": true,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        },
+        "BRIEF:BRIEF:temporal-recon-lane": {
+          "rank_delta": -1,
+          "score_delta": 15.0,
+          "within_tolerance": false,
+          "moved_on_evidence": [
+            "full test pass in the implementation round"
+          ]
+        }
+      },
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6458968877,
+        "calibration_comment_id": 6458969136,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "kiroween-delphi-concept-skeleton-crew",
+      "title": "Kiroween 2026 \u2014 skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/kiroween-delphi-concept-skeleton-crew/",
+      "pass": "kiroween-delphi-concept",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-30T23:44:05Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 13,
+      "description": [
+        "Data model and conflict matrix derive from the repo's CMDB design (PR #1655); specs written first in Kiro, agents generated from the specs. (evidence: `d4:concept-inputs`)",
+        "Smallest viable scope for the post-Nov-8 build window: read-only inventory views + reconciliation report, no write actions. (evidence: `d4:sequencing`)",
+        "Category shaping (official rules, stamped 2026-10-30): Skeleton Crew = foundation + TWO distinct applications, repo containing 2 separate app folders \u2014 the CMDB foundation carries the ingest/reconcile crew; the conflict viewer and the stamped-report app are the two applications. (evidence: `kiroween:category-skeleton-crew`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Skeleton Crew \u2014 a CMDB / reconciliation viewer run by a minimal crew: a tiny set of spec-first Kiro agents (ingest, reconcile, report) that keep a fleet inventory honest against its sources. The challenge lane's hand-noted input (input, not decision). Seeded from the repo's CMDB design (PR #1655); the Kiro project itself is created new inside the submission window.",
+        "planned_suites": [
+          "spec-pack completeness: inventory schema + reconciliation rules present and parse",
+          "reconciliation run against the seeded fixture inventory emits a stamped conflict report",
+          "read-only guard: no write/mutation action is exposed by any agent"
+        ],
+        "source": "docs/proposals/passes/kiroween-delphi-concept/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "Data model and conflict matrix derive from the repo's CMDB design (PR #1655); specs written first in Kiro, agents generated from the specs.",
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ]
+        },
+        {
+          "text": "Smallest viable scope for the post-Nov-8 build window: read-only inventory views + reconciliation report, no write actions.",
+          "evidence_refs": [
+            "d4:sequencing"
+          ]
+        },
+        {
+          "text": "Category shaping (official rules, stamped 2026-10-30): Skeleton Crew = foundation + TWO distinct applications, repo containing 2 separate app folders \u2014 the CMDB foundation carries the ingest/reconcile crew; the conflict viewer and the stamped-report app are the two applications.",
+          "evidence_refs": [
+            "kiroween:category-skeleton-crew"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "KW-001",
+          "item": "Spec pack (inventory schema, reconciliation rules) authored in Kiro at project creation",
+          "state": "planned",
+          "exit": "kiroween:eligibility-new-projects"
+        },
+        {
+          "id": "KW-002",
+          "item": "Ingest + reconcile agents generated from specs; viewer renders conflicts with evidence stamps",
+          "state": "planned",
+          "exit": "d4:concept-inputs"
+        },
+        {
+          "id": "KW-003",
+          "item": "Demo run against public repo data; submission by Dec 4, 2:00 PM PST",
+          "state": "planned",
+          "exit": "kiroween:deadline"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/kiroween-delphi-concept-skeleton-crew/RFP.md",
+        "items": "docs/proposals/active/kiroween-delphi-concept-skeleton-crew/ITEMS.md",
+        "manifest": "docs/proposals/active/kiroween-delphi-concept-skeleton-crew/MANIFEST.md",
+        "provenance": "docs/proposals/active/kiroween-delphi-concept-skeleton-crew/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "kiroween-delphi-concept-skeleton-crew",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "87900eaec6e29ad07ec731b8a9c443208d32e259164d1d49cc8ee3f41a69ca19"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-30T23:44:05Z",
+          "evidence_sets": [
+            {
+              "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+              "items": 13,
+              "assembled_at": "2026-10-30T23:43:55Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:challenge-entries-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "challenge-entries-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+            "items": 13,
+            "assembled_at": "2026-10-30T23:43:55Z"
+          }
+        ],
+        "items": 13,
+        "sources": {
+          "official-rules-packet": 9,
+          "github-api": 4
+        },
+        "claim_areas": {
+          "kiroween": 9,
+          "d4": 4
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "kiroween-delphi-concept-frankenstein",
+            "kiroween-delphi-concept-resurrection",
+            "kiroween-delphi-concept-skeleton-crew"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "score": 23.269,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 16,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 16,
+                "kiroween-delphi-concept-frankenstein": 16,
+                "kiroween-delphi-concept-resurrection": 16
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": true,
+            "score_spread": 0,
+            "decided_by": "scores tied across all candidates in LOCAL_BASELINE; the order is the recorded ranked_outcome \u2014 cross_vote.py rank() sorts by (-score, candidate_id), so a tie resolves by candidate id ascending"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 3,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:challenge-entries-lane (brief author)": {
+          "expected_rank": 1,
+          "expected_score": 19
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6535938191,
+        "calibration_comment_id": null,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "kiroween-delphi-concept-frankenstein",
+      "title": "Kiroween 2026 \u2014 frankenstein: decision agent stitched from proven public patterns",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/kiroween-delphi-concept-frankenstein/",
+      "pass": "kiroween-delphi-concept",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-30T23:44:05Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 13,
+      "description": [
+        "Component patterns are all public and landed: Delphi Oracle MVP (PR #1620), D0 package with fetch_evidence (PR #1702). (evidence: `d4:concept-inputs`)",
+        "Eligibility guard: the Kiro project is created in-window; only patterns/specs cross over, never a pre-existing build. (evidence: `kiroween:eligibility-new-projects`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Frankenstein \u2014 one new creature stitched from proven public parts: a Kiro-built decision agent assembled from the fleet's existing public patterns (Delphi Oracle deterministic receipts, the fetch_evidence provenance tool pattern from the D0 package, quota-panel display patterns), re-combined into a single new project created inside the window. Patterns are reused; no pre-built project is submitted.",
+        "planned_suites": [
+          "every decision emits a schema-valid receipt (Delphi receipt pattern)",
+          "evidence fetch returns provenance + freshness stamps on every item",
+          "in-window creation guard: project creation timestamp inside the submission window"
+        ],
+        "source": "docs/proposals/passes/kiroween-delphi-concept/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "Component patterns are all public and landed: Delphi Oracle MVP (PR #1620), D0 package with fetch_evidence (PR #1702).",
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ]
+        },
+        {
+          "text": "Eligibility guard: the Kiro project is created in-window; only patterns/specs cross over, never a pre-existing build.",
+          "evidence_refs": [
+            "kiroween:eligibility-new-projects"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "KW-001",
+          "item": "Kiro project created in-window; specs describe the stitched architecture before any generation",
+          "state": "planned",
+          "exit": "kiroween:eligibility-new-projects"
+        },
+        {
+          "id": "KW-002",
+          "item": "Decision kernel + evidence-fetch tool + panel UI composed per specs; receipts on every decision",
+          "state": "planned",
+          "exit": "d4:concept-inputs"
+        },
+        {
+          "id": "KW-003",
+          "item": "Demo + submission by Dec 4, 2:00 PM PST",
+          "state": "planned",
+          "exit": "kiroween:deadline"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/kiroween-delphi-concept-frankenstein/RFP.md",
+        "items": "docs/proposals/active/kiroween-delphi-concept-frankenstein/ITEMS.md",
+        "manifest": "docs/proposals/active/kiroween-delphi-concept-frankenstein/MANIFEST.md",
+        "provenance": "docs/proposals/active/kiroween-delphi-concept-frankenstein/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "kiroween-delphi-concept-frankenstein",
+        "points": 2,
+        "evidenced": 2,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "d84d32ba5da3eb4f250b6903c8be7522cfa7878525bf34b6c0c6173205c4926e"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-30T23:44:05Z",
+          "evidence_sets": [
+            {
+              "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+              "items": 13,
+              "assembled_at": "2026-10-30T23:43:55Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:challenge-entries-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "challenge-entries-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+            "items": 13,
+            "assembled_at": "2026-10-30T23:43:55Z"
+          }
+        ],
+        "items": 13,
+        "sources": {
+          "official-rules-packet": 9,
+          "github-api": 4
+        },
+        "claim_areas": {
+          "kiroween": 9,
+          "d4": 4
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "kiroween-delphi-concept-frankenstein",
+            "kiroween-delphi-concept-resurrection",
+            "kiroween-delphi-concept-skeleton-crew"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "score": 23.269,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 16,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 16,
+                "kiroween-delphi-concept-frankenstein": 16,
+                "kiroween-delphi-concept-resurrection": 16
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": true,
+            "score_spread": 0,
+            "decided_by": "scores tied across all candidates in LOCAL_BASELINE; the order is the recorded ranked_outcome \u2014 cross_vote.py rank() sorts by (-score, candidate_id), so a tie resolves by candidate id ascending"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 1,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:challenge-entries-lane (brief author)": {
+          "expected_rank": 2,
+          "expected_score": 17
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6535938191,
+        "calibration_comment_id": null,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "kiroween-delphi-concept-resurrection",
+      "title": "Kiroween 2026 \u2014 resurrection: dormant public spec rebuilt fresh in Kiro",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/kiroween-delphi-concept-resurrection/",
+      "pass": "kiroween-delphi-concept",
+      "kind": "pass-candidate",
+      "generated_at": "2026-10-30T23:44:05Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 13,
+      "description": [
+        "Candidate corpses are public and evidenced in-repo (ops docs + docs/proposals/registry.yaml); final pick is stamped as a packet claim at brief finalization. (evidence: `d4:concept-inputs`)",
+        "Rebuild is a new in-window project; the dead artifact contributes only its spec. (evidence: `kiroween:eligibility-new-projects`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Resurrection \u2014 bring a dormant public spec back from the dead: pick a stalled, publicly documented fleet spec (candidates sit in the repo's ops docs and proposal registry) and rebuild it fresh as a working Kiro project, created in-window, with the original spec as the requirements baseline and a resurrection report showing what the dead version never shipped.",
+        "planned_suites": [
+          "original-spec coverage: each requirement in the dead spec maps to implemented or explicitly deferred",
+          "resurrection report lists the dead version's unshipped gaps and their disposition",
+          "fresh-build provenance: project created in-window; only the spec crossed over"
+        ],
+        "source": "docs/proposals/passes/kiroween-delphi-concept/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "Candidate corpses are public and evidenced in-repo (ops docs + docs/proposals/registry.yaml); final pick is stamped as a packet claim at brief finalization.",
+          "evidence_refs": [
+            "d4:concept-inputs"
+          ]
+        },
+        {
+          "text": "Rebuild is a new in-window project; the dead artifact contributes only its spec.",
+          "evidence_refs": [
+            "kiroween:eligibility-new-projects"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "KW-001",
+          "item": "Corpse selection recorded with evidence refs at brief finalization (Oct 30)",
+          "state": "planned",
+          "exit": "d4:concept-inputs"
+        },
+        {
+          "id": "KW-002",
+          "item": "Specs authored in Kiro from the original spec + gap list; build after Nov 8",
+          "state": "planned",
+          "exit": "d4:sequencing"
+        },
+        {
+          "id": "KW-003",
+          "item": "Resurrection report + demo; submission by Dec 4, 2:00 PM PST",
+          "state": "planned",
+          "exit": "kiroween:deadline"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/kiroween-delphi-concept-resurrection/RFP.md",
+        "items": "docs/proposals/active/kiroween-delphi-concept-resurrection/ITEMS.md",
+        "manifest": "docs/proposals/active/kiroween-delphi-concept-resurrection/MANIFEST.md",
+        "provenance": "docs/proposals/active/kiroween-delphi-concept-resurrection/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "kiroween-delphi-concept-resurrection",
+        "points": 2,
+        "evidenced": 2,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 2,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "9bccf6f421afa094522070aee55762828ad2a9682e9c3844fbb9d3c419963177"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-10-30T23:44:05Z",
+          "evidence_sets": [
+            {
+              "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+              "items": 13,
+              "assembled_at": "2026-10-30T23:43:55Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:challenge-entries-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "challenge-entries-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+            "items": 13,
+            "assembled_at": "2026-10-30T23:43:55Z"
+          }
+        ],
+        "items": 13,
+        "sources": {
+          "official-rules-packet": 9,
+          "github-api": 4
+        },
+        "claim_areas": {
+          "kiroween": 9,
+          "d4": 4
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "kiroween-delphi-concept-frankenstein",
+            "kiroween-delphi-concept-resurrection",
+            "kiroween-delphi-concept-skeleton-crew"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "score": 23.269,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 16,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 16,
+                "kiroween-delphi-concept-frankenstein": 16,
+                "kiroween-delphi-concept-resurrection": 16
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "kiroween-delphi-concept-skeleton-crew": 25,
+                "kiroween-delphi-concept-frankenstein": 25,
+                "kiroween-delphi-concept-resurrection": 25
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": true,
+            "score_spread": 0,
+            "decided_by": "scores tied across all candidates in LOCAL_BASELINE; the order is the recorded ranked_outcome \u2014 cross_vote.py rank() sorts by (-score, candidate_id), so a tie resolves by candidate id ascending"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 2,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:challenge-entries-lane (brief author)": {
+          "expected_rank": 3,
+          "expected_score": 14
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": {
+        "ballot_comment_id": 6535938191,
+        "calibration_comment_id": null,
+        "verified": true
+      },
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "marketing-strategy-tactics-strict-separation",
+      "title": "Marketing doctrine \u2014 strict separation (verified record only)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/marketing-strategy-tactics-strict-separation/",
+      "pass": "marketing-strategy-tactics",
+      "kind": "pass-candidate",
+      "generated_at": "2026-11-01T08:04:44Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 15,
+      "description": [
+        "The blur is a class, not an instance: hero + benefits both carry the partner pitch in fleet voice, and the file\u2019s own comments claim a de-centering the data contradicts \u2014 only a doctrine (not a copy fix) prevents recurrence. (evidence: `landing:hero`, `landing:benefits`)",
+        "The verified record is sufficient copy: merge-verified landings, reproduced receipts, and live dashboards already carry one surface through a claims gate with honest negatives stated (submissions=0). (evidence: `fleet:verified-record`, `d0:claims-gate`)",
+        "On evidence, unmeasured tactics are motion: 0 attributed redemptions across the referral + FB surfaces at last snapshot, and three distribution channels with handles NOT ESTABLISHED. (evidence: `fb:mvt-snapshot`, `channels:unestablished`, `referral:muse-program`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Strict separation: fleet surfaces state ONLY the merge/receipt-verified fleet record, in fleet voice. Partner claims appear nowhere in fleet copy \u2014 partners are named as participants (link live = the assertable fact) with offers stated only as the registry verifies them; unverified offers are dropped, not footnoted. Tactics survive only with measured signal against a pre-set decision rule; unmeasured tactics are killed or instrumented before further spend.",
+        "planned_suites": null,
+        "source": "docs/proposals/passes/marketing-strategy-tactics/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "The blur is a class, not an instance: hero + benefits both carry the partner pitch in fleet voice, and the file\u2019s own comments claim a de-centering the data contradicts \u2014 only a doctrine (not a copy fix) prevents recurrence.",
+          "evidence_refs": [
+            "landing:hero",
+            "landing:benefits"
+          ]
+        },
+        {
+          "text": "The verified record is sufficient copy: merge-verified landings, reproduced receipts, and live dashboards already carry one surface through a claims gate with honest negatives stated (submissions=0).",
+          "evidence_refs": [
+            "fleet:verified-record",
+            "d0:claims-gate"
+          ]
+        },
+        {
+          "text": "On evidence, unmeasured tactics are motion: 0 attributed redemptions across the referral + FB surfaces at last snapshot, and three distribution channels with handles NOT ESTABLISHED.",
+          "evidence_refs": [
+            "fb:mvt-snapshot",
+            "channels:unestablished",
+            "referral:muse-program"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "MKT-001",
+          "item": "Hero/benefits rewritten from the verified record (PR #16 shape) and held to a claims gate on every copy change",
+          "state": "proposed",
+          "exit": "separation:pr16"
+        },
+        {
+          "id": "MKT-002",
+          "item": "Partner participation stated as fact (lane live, link tracked); offers only as verified in the registry, else omitted",
+          "state": "proposed",
+          "exit": "partners:ssot-active"
+        },
+        {
+          "id": "MKT-003",
+          "item": "Every tactic carries a metric + decision rule or is retired (MVT is the template)",
+          "state": "proposed",
+          "exit": "fb:mvt-design"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/marketing-strategy-tactics-strict-separation/RFP.md",
+        "items": "docs/proposals/active/marketing-strategy-tactics-strict-separation/ITEMS.md",
+        "manifest": "docs/proposals/active/marketing-strategy-tactics-strict-separation/MANIFEST.md",
+        "provenance": "docs/proposals/active/marketing-strategy-tactics-strict-separation/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "marketing-strategy-tactics-strict-separation",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "cb1199becef7fe366aeb780be52a7cbf537e15f860a5d9068b6414ba2c9ba401"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-11-01T08:04:44Z",
+          "evidence_sets": [
+            {
+              "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+              "items": 15,
+              "assembled_at": "2026-11-01T08:03:40Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:delphi-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "delphi-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+            "items": 15,
+            "assembled_at": "2026-11-01T08:03:40Z"
+          }
+        ],
+        "items": 15,
+        "sources": {
+          "github-api": 15
+        },
+        "claim_areas": {
+          "landing": 5,
+          "partners": 3,
+          "referral": 1,
+          "fb": 2,
+          "channels": 1,
+          "fleet": 1,
+          "d0": 1,
+          "separation": 1
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "marketing-strategy-tactics-attributed-tiered",
+            "marketing-strategy-tactics-strict-separation",
+            "marketing-strategy-tactics-partner-forward-blend"
+          ],
+          "rank_of_this": 2,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "score": 23.269,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 16,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 16,
+                "marketing-strategy-tactics-attributed-tiered": 16,
+                "marketing-strategy-tactics-partner-forward-blend": 11
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 21
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 6.807,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 2,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane (brief author)": {
+          "expected_rank": 1,
+          "expected_score": 18
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        },
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": null,
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "marketing-strategy-tactics-attributed-tiered",
+      "title": "Marketing doctrine \u2014 attributed tiering (labeled partner claims)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/marketing-strategy-tactics-attributed-tiered/",
+      "pass": "marketing-strategy-tactics",
+      "kind": "pass-candidate",
+      "generated_at": "2026-11-01T08:04:44Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 15,
+      "description": [
+        "The compliant pattern already exists on the page: the CellCog card attributes its benchmark claim to the partner\u2019s tier and snapshot \u2014 tiering generalizes the card rule instead of inventing a new one. (evidence: `landing:cellcog-card`, `landing:partners-grid`)",
+        "The registry already practices honesty fields (NOT ESTABLISHED offers, third-party-reported amounts) \u2014 tiering surfaces those markers in copy instead of hiding them in config. (evidence: `partners:unverified-offers`)",
+        "Measured tactics deserve their full run: the MVT\u2019s decision rule fires at 10 redemptions or 2026-11-10; killing instrumented tactics mid-flight destroys the signal the fleet paid to create. (evidence: `fb:mvt-design`, `fb:mvt-snapshot`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Attributed tiering: fleet voice states the verified record; partner claims MAY appear on fleet surfaces outside hero/brand \u2014 only as labeled, attributed partner content (the grid-card pattern generalized), with unverified offers carrying explicit NOT ESTABLISHED markers. Participation stays broad; tactics keep running while instrumented, and die at their decision rules rather than by doctrine.",
+        "planned_suites": null,
+        "source": "docs/proposals/passes/marketing-strategy-tactics/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "The compliant pattern already exists on the page: the CellCog card attributes its benchmark claim to the partner\u2019s tier and snapshot \u2014 tiering generalizes the card rule instead of inventing a new one.",
+          "evidence_refs": [
+            "landing:cellcog-card",
+            "landing:partners-grid"
+          ]
+        },
+        {
+          "text": "The registry already practices honesty fields (NOT ESTABLISHED offers, third-party-reported amounts) \u2014 tiering surfaces those markers in copy instead of hiding them in config.",
+          "evidence_refs": [
+            "partners:unverified-offers"
+          ]
+        },
+        {
+          "text": "Measured tactics deserve their full run: the MVT\u2019s decision rule fires at 10 redemptions or 2026-11-10; killing instrumented tactics mid-flight destroys the signal the fleet paid to create.",
+          "evidence_refs": [
+            "fb:mvt-design",
+            "fb:mvt-snapshot"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "MKT-001",
+          "item": "Hero/brand = verified record only (PR #16 lands); partner claims confined to labeled, attributed partner sections",
+          "state": "proposed",
+          "exit": "separation:pr16"
+        },
+        {
+          "id": "MKT-002",
+          "item": "Every partner claim on a fleet surface carries attribution + provenance (partner, tier, snapshot date); unverified offers carry NOT ESTABLISHED in copy",
+          "state": "proposed",
+          "exit": "partners:unverified-offers"
+        },
+        {
+          "id": "MKT-003",
+          "item": "Tactics persist while instrumented; decision rules (MVT pattern) decide continuance",
+          "state": "proposed",
+          "exit": "fb:mvt-design"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered/RFP.md",
+        "items": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered/ITEMS.md",
+        "manifest": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered/MANIFEST.md",
+        "provenance": "docs/proposals/active/marketing-strategy-tactics-attributed-tiered/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "marketing-strategy-tactics-attributed-tiered",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "c1efb87a4b7597cc7227a78c3a3bd9a53c92ba545863a47594bdc6a4fdf20dbe"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-11-01T08:04:44Z",
+          "evidence_sets": [
+            {
+              "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+              "items": 15,
+              "assembled_at": "2026-11-01T08:03:40Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:delphi-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "delphi-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+            "items": 15,
+            "assembled_at": "2026-11-01T08:03:40Z"
+          }
+        ],
+        "items": 15,
+        "sources": {
+          "github-api": 15
+        },
+        "claim_areas": {
+          "landing": 5,
+          "partners": 3,
+          "referral": 1,
+          "fb": 2,
+          "channels": 1,
+          "fleet": 1,
+          "d0": 1,
+          "separation": 1
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "marketing-strategy-tactics-attributed-tiered",
+            "marketing-strategy-tactics-strict-separation",
+            "marketing-strategy-tactics-partner-forward-blend"
+          ],
+          "rank_of_this": 1,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 23.269
+          },
+          "score": 23.269,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 16,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 16,
+                "marketing-strategy-tactics-attributed-tiered": 16,
+                "marketing-strategy-tactics-partner-forward-blend": 11
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 21
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 25,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 6.807,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 1,
+          "expected_score": 23.269,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane (brief author)": {
+          "expected_rank": 2,
+          "expected_score": 17
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        },
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": null,
+      "live": true,
+      "expectations_recorded_before_implementation": false
+    },
+    {
+      "id": "marketing-strategy-tactics-partner-forward-blend",
+      "title": "Marketing doctrine \u2014 partner-forward blend (status quo)",
+      "author": "oracle-method",
+      "status": "in_review",
+      "priority": "P1",
+      "path": "active/marketing-strategy-tactics-partner-forward-blend/",
+      "pass": "marketing-strategy-tactics",
+      "kind": "pass-candidate",
+      "generated_at": "2026-11-01T08:04:44Z",
+      "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+      "evidence_items": 15,
+      "description": [
+        "The blend is what the artifacts show today: hero + benefits in the anchor partner\u2019s pitch, live since the partners block was added (2026-09-20) \u2014 continuity is its only demonstrated property. (evidence: `landing:hero`, `landing:benefits`)",
+        "A footer disclosure covers the arrangement (affiliate/referral nature disclosed; programme terms apply), which the blend treats as sufficient discipline. (evidence: `landing:footer-disclosure`)"
+      ],
+      "approach": {
+        "executive_request": null,
+        "concept": "Partner-forward blend (status quo): the anchor partner\u2019s positioning may headline the landing in fleet voice; benchmarks and capability claims borrow the partner\u2019s framing under a footer disclosure; programme breadth is itself the growth surface and restriction is treated as loss. This is the doctrine the surfaces currently practice, stated plainly so the panel can judge it.",
+        "planned_suites": null,
+        "source": "docs/proposals/passes/marketing-strategy-tactics/brief.json"
+      },
+      "summary_points": [
+        {
+          "text": "The blend is what the artifacts show today: hero + benefits in the anchor partner\u2019s pitch, live since the partners block was added (2026-09-20) \u2014 continuity is its only demonstrated property.",
+          "evidence_refs": [
+            "landing:hero",
+            "landing:benefits"
+          ]
+        },
+        {
+          "text": "A footer disclosure covers the arrangement (affiliate/referral nature disclosed; programme terms apply), which the blend treats as sufficient discipline.",
+          "evidence_refs": [
+            "landing:footer-disclosure"
+          ]
+        },
+        {
+          "text": "The anchor partner\u2019s #1 Deep Research benchmark standing is the landing\u2019s strongest headline claim and should stay in fleet voice.",
+          "evidence_refs": [
+            "cellcog:benchmark"
+          ]
+        }
+      ],
+      "work_items": [
+        {
+          "id": "MKT-001",
+          "item": "Hero/benefits keep the anchor-partner pitch; PR #16 rejected",
+          "state": "proposed",
+          "exit": "landing:hero"
+        },
+        {
+          "id": "MKT-002",
+          "item": "Grid + banner + programmes continue as-is; disclosure footer is the claims control",
+          "state": "proposed",
+          "exit": "landing:footer-disclosure"
+        },
+        {
+          "id": "MKT-003",
+          "item": "Tactics continue without per-tactic decision rules; breadth is the strategy",
+          "state": "proposed",
+          "exit": "partners:pipeline"
+        }
+      ],
+      "documents": {
+        "rfp": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/RFP.md",
+        "items": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/ITEMS.md",
+        "manifest": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/MANIFEST.md",
+        "provenance": "docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/PROVENANCE.json"
+      },
+      "evidence_profile": {
+        "candidate": "marketing-strategy-tactics-partner-forward-blend",
+        "points": 3,
+        "evidenced": 2,
+        "unverified": 1,
+        "evidenced_ratio": 0.6666666666666666,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "dbdbe24d7e994d9f53905a5a7a53d6c763d86b18f136a9015c63738d1dd9dec3"
+      },
+      "producers": {
+        "generation": {
+          "kind": "oracle_method_generator",
+          "producer": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+          "generated_at": "2026-11-01T08:04:44Z",
+          "evidence_sets": [
+            {
+              "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+              "items": 15,
+              "assembled_at": "2026-11-01T08:03:40Z"
+            }
+          ]
+        },
+        "rounds": {
+          "round_1": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "deterministic_rubric_comparator",
+              "producer": "scripts/delphi/cross_vote.py \u2014 deterministic rubric comparator: one ballot per panel role, each scored from the candidate's generation profile (evidenced ratio, unverified count, item shape, evidence-source spread, dependency signals)",
+              "voters": [
+                "rubric:OPERATOR",
+                "rubric:builder",
+                "rubric:reviewer",
+                "rubric:Scout",
+                "rubric:cost_auditor"
+              ],
+              "weights": {
+                "source": "ledger weights file weights.json",
+                "ledger_issue": 1489,
+                "role_weights": {
+                  "OPERATOR": 1.4462,
+                  "builder": 1.2052,
+                  "reviewer": 1.2052,
+                  "Scout": 0.9641,
+                  "cost_auditor": 1.4462
+                }
+              },
+              "settings": {
+                "panel": "ops/delphi/panel.json",
+                "score_scale": "1-25 (DECISION-MATRIX Impact x Importance)",
+                "formula": "w = base * (0.5 + gate_pass_rate) * (elo / 1500)"
+              }
+            }
+          },
+          "round_2": {
+            "HUMAN_COLLABORATOR": {
+              "source_class": "HUMAN_COLLABORATOR",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no recorded human ballot file was supplied to the cross-vote; none recorded."
+            },
+            "MODEL_PROVIDER": {
+              "source_class": "MODEL_PROVIDER",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "model voting disabled (DELPHI_LLM_MAX=0); a MODEL_PROVIDER ballot is admissible only with a full run record (provider, model, run_id, response_hash) and an entitlement basis \u2014 cross_vote.py validate_ballots. None recorded."
+            },
+            "LOCAL_BASELINE": {
+              "source_class": "LOCAL_BASELINE",
+              "kind": "none_recorded",
+              "ballots": 0,
+              "reason": "no ballots recorded"
+            }
+          }
+        },
+        "expectations_sources": [
+          {
+            "source": "LOCAL_BASELINE",
+            "kind": "derived_from_round_1",
+            "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded"
+          },
+          {
+            "source": "BRIEF:delphi-lane (brief author)",
+            "kind": "brief_prior",
+            "author": "delphi-lane (brief author)"
+          }
+        ]
+      },
+      "evidence_basis": {
+        "sets": [
+          {
+            "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+            "items": 15,
+            "assembled_at": "2026-11-01T08:03:40Z"
+          }
+        ],
+        "items": 15,
+        "sources": {
+          "github-api": 15
+        },
+        "claim_areas": {
+          "landing": 5,
+          "partners": 3,
+          "referral": 1,
+          "fb": 2,
+          "channels": 1,
+          "fleet": 1,
+          "d0": 1,
+          "separation": 1
+        }
+      },
+      "implementation_summary": null,
+      "unverified_points": [
+        "The anchor partner\u2019s #1 Deep Research benchmark standing is the landing\u2019s strongest headline claim and should stay in fleet voice. (evidence refs unresolved at generation time)"
+      ],
+      "rounds": {
+        "round_1": {
+          "ranking": [
+            "marketing-strategy-tactics-attributed-tiered",
+            "marketing-strategy-tactics-strict-separation",
+            "marketing-strategy-tactics-partner-forward-blend"
+          ],
+          "rank_of_this": 3,
+          "ballots_by_class": {
+            "HUMAN_COLLABORATOR": 0,
+            "MODEL_PROVIDER": 0,
+            "LOCAL_BASELINE": 5
+          },
+          "scores_by_class": {
+            "HUMAN_COLLABORATOR": null,
+            "MODEL_PROVIDER": null,
+            "LOCAL_BASELINE": 16.462
+          },
+          "score": 16.462,
+          "classes_absent": [
+            "HUMAN_COLLABORATOR",
+            "MODEL_PROVIDER"
+          ],
+          "ballots": [
+            {
+              "voter": "rubric:OPERATOR",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 17,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:builder",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 11,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 16,
+                "marketing-strategy-tactics-attributed-tiered": 16,
+                "marketing-strategy-tactics-partner-forward-blend": 11
+              }
+            },
+            {
+              "voter": "rubric:reviewer",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 17,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            },
+            {
+              "voter": "rubric:Scout",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 21,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 21
+              }
+            },
+            {
+              "voter": "rubric:cost_auditor",
+              "source_class": "LOCAL_BASELINE",
+              "score_of_this": 17,
+              "scores": {
+                "marketing-strategy-tactics-strict-separation": 25,
+                "marketing-strategy-tactics-attributed-tiered": 25,
+                "marketing-strategy-tactics-partner-forward-blend": 17
+              }
+            }
+          ],
+          "ranking_basis": {
+            "scores_tied": false,
+            "score_spread": 6.807,
+            "decided_by": "weighted score order in LOCAL_BASELINE"
+          }
+        },
+        "round_2": {
+          "ranking": null,
+          "rank_of_this": null,
+          "ballots_by_class": null,
+          "scores_by_class": {},
+          "score": null,
+          "evidence_set_sha256": null,
+          "ballots": null,
+          "ranking_basis": null
+        }
+      },
+      "expectations": {
+        "LOCAL_BASELINE": {
+          "expected_rank": 3,
+          "expected_score": 16.462,
+          "tolerance": 2.0
+        },
+        "BRIEF:delphi-lane (brief author)": {
+          "expected_rank": 3,
+          "expected_score": 7
+        }
+      },
+      "implementation": null,
+      "calibration": null,
+      "specified_not_run": [
+        {
+          "item": "debate_revision",
+          "reason": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic"
+        },
+        {
+          "item": "implementation",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "evidence_equalization",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "cross_vote_round_2",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        },
+        {
+          "item": "calibration",
+          "reason": "no per-proposal test results supplied; round 2 as specified needs the implementation evidence"
+        }
+      ],
+      "ledger": null,
+      "live": true,
+      "expectations_recorded_before_implementation": false
     }
   ],
   "passes": [
     {
       "pass_id": "kiroween-delphi-concept",
-      "status": "stated_not_run",
+      "status": "debate_recorded",
       "n": 3,
-      "candidates": [],
-      "ranked_outcome": null,
+      "candidates": [
+        "kiroween-delphi-concept-skeleton-crew",
+        "kiroween-delphi-concept-frankenstein",
+        "kiroween-delphi-concept-resurrection"
+      ],
+      "ranked_outcome": [
+        "kiroween-delphi-concept-frankenstein",
+        "kiroween-delphi-concept-resurrection",
+        "kiroween-delphi-concept-skeleton-crew"
+      ],
       "record": "docs/proposals/passes/kiroween-delphi-concept/"
+    },
+    {
+      "pass_id": "marketing-strategy-tactics",
+      "status": "round_1_recorded",
+      "n": 3,
+      "candidates": [
+        "marketing-strategy-tactics-strict-separation",
+        "marketing-strategy-tactics-attributed-tiered",
+        "marketing-strategy-tactics-partner-forward-blend"
+      ],
+      "ranked_outcome": [
+        "marketing-strategy-tactics-attributed-tiered",
+        "marketing-strategy-tactics-strict-separation",
+        "marketing-strategy-tactics-partner-forward-blend"
+      ],
+      "record": "docs/proposals/passes/marketing-strategy-tactics/"
     },
     {
       "pass_id": "strands-rfp-response",
@@ -1392,6 +5206,26 @@
         "strands-rfp-response-packaging-first"
       ],
       "record": "docs/proposals/passes/strands-rfp-response/"
+    },
+    {
+      "pass_id": "temporal-durable-execution",
+      "status": "recorded",
+      "n": 5,
+      "candidates": [
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-cookbook-agent-loop",
+        "temporal-durable-execution-versioned-autoscale",
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-serverless-skill"
+      ],
+      "ranked_outcome": [
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-serverless-skill",
+        "temporal-durable-execution-versioned-autoscale",
+        "temporal-durable-execution-cookbook-agent-loop"
+      ],
+      "record": "docs/proposals/passes/temporal-durable-execution/"
     }
   ],
   "excluded": [

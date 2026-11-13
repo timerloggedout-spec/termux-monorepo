@@ -144,6 +144,8 @@ Exclude API keys, bearer tokens, Authorization headers, browser storage, raw pro
 
 ## 7. Web-interface contract
 
+The existing quota UI already carries the Puter family: `provider-quota-coverage.json` maps `g4f/Puter` to `g4f.puter` with `observation_method=manual_or_unknown`, while `quota.json` reports `status=unknown` and null `used`, `limit`, `reset` and `observed_at` (re-fetched 2026-11-13). Preserve this row and its unknown semantics. QUE/DoE task identity continues through the canonical `entry`/`task_or_entry_ref`, admission/dispatch receipt, experiment stamps and workflow run; the proposed correlation extension is specified above without creating a parallel task ledger.
+
 Extend the existing quota and SHE projections with:
 - provider family + exact model + gateway/protocol;
 - configured instance and opaque account scope;

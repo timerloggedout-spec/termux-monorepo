@@ -115,7 +115,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 
 ## ICM + RinDig reference pins (smods)
 
-Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime control plane:
+Shallow gitlinks under `refTemplates/smods/` — reference layer, separate from the runtime control plane:
 
 | Pin | Role |
 |-----|------|
@@ -124,7 +124,7 @@ Shallow gitlinks under `refTemplates/smods/` — reference only, not runtime con
 | `AuditEngine_fork` | Audit adapt surface |
 | `icm-architect_fork` | ICM hierarchy / cards method |
 
-Gitlink ops: `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` pattern (or specialized pin workflows). Gates never init submodules.
+Gitlink ops: use `workflow_dispatch` on `.github/workflows/ops-gitlink-lego-fork.yml` or specialized pin workflows. Run submodule operations through their dedicated workflow.
 
 ## Security
 
@@ -141,16 +141,16 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 ## Tool acquisition routes (owner, 2026-11-01)
 
 Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
-① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
+① Route exec network calls through the approval system; "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② For hosts outside the allowlist (storage.googleapis.com, googlechromelabs.github.io), request a host card and record the curl result, including rc23/EPERM and zero-byte outcomes. Route browser-channel downloads through `~/workspace/browser_downloads` and GitHub artifacts through api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
 
 
 ## Superpowers engineering workflow
 
-Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
+Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, and adaptive WAIT remain authoritative.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
 
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. Keep CEEL on the existing scheduler, telemetry ledger, registry, and merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog, Braintrust, and the native repository baseline; verify external capability claims against pinned evidence. GitHub-native events are primary; bounded reconciliation is fallback. Use weekly reporting as a summary layer over event-driven sensing.

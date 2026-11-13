@@ -29,21 +29,21 @@ jobs:
         id: swarm
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
         with:
-          app-id: \${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
-          private-key: \${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
-          repositories: \${{ github.event.repository.name }}
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
           permission-actions: read
           permission-issues: write
           permission-contents: read
 
       - name: Re-evaluate deferred filings
         env:
-          GH_TOKEN: \${{ steps.swarm.outputs.token }}
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
         run: |
-          python3 scripts/ops/swarm_admission_drain.py \\
-            --repo "\${GITHUB_REPOSITORY}" \\
-            --templates-dir .github/ISSUE_TEMPLATE \\
-            --tiers ops/quota/dispatch-tiers.json \\
-            --feeds-dir ops/que/feeds \\
-            --max-issues 100 \\
-            --run-url "\${GITHUB_SERVER_URL}/\${GITHUB_REPOSITORY}/actions/runs/\${GITHUB_RUN_ID}"
+          python3 scripts/ops/swarm_admission_drain.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --templates-dir .github/ISSUE_TEMPLATE \
+            --tiers ops/quota/dispatch-tiers.json \
+            --feeds-dir ops/que/feeds \
+            --max-issues 100 \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

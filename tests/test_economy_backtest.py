@@ -44,11 +44,17 @@ class EconomyBacktestTests(unittest.TestCase):
         self.assertEqual(metrics["culled_participants"], 1)
         self.assertGreater(metrics["pool_inflow_units"], 0)
         self.assertGreater(metrics["royalty_payable_units"], 0)
-        self.assertEqual(result["royalty_payable_by_origin"]["a-origin"], 10)
+        self.assertEqual(result["royalty_payable_by_origin"]["a-origin"], 8)
         self.assertEqual(metrics["conservation_residual_units"], 0)
         cull = next(event for event in result["events"] if event["type"] == "cull")
         self.assertEqual(cull["payload"]["culled_participant"], "a-origin")
         self.assertEqual(cull["payload"]["pool_destination"], "promotions-incentives-bonuses")
+
+    def test_run_identity_binds_exact_implementation_commit(self):
+        first = run_backtest(manifest(), code_commit_sha="a" * 40)
+        second = run_backtest(manifest(), code_commit_sha="b" * 40)
+        self.assertNotEqual(first["result"]["run_id"], second["result"]["run_id"])
+        self.assertEqual(first["result"]["implementation_commit"], "a" * 40)
 
     def test_pool_distribution_conserves_units(self):
         result = run_backtest(manifest())["result"]

@@ -1,4 +1,4 @@
-# MSM-005 paper accounting contract v1
+# MSM-005 paper accounting contract v1 + cull/pool event extension v2
 
 Implements: MSM-005.A, MSM-005.B, MSM-005.C, MSM-005.D. Tracking: #1521, #1526–#1529. This is the implementation contract on top of the unmerged #1470 foundation, not evidence of merge or deployment.
 
@@ -15,6 +15,41 @@ Versioned events have a strictly ordered sequence, stable event ID/idempotency k
 Cards retain existing MSM-005 card IDs. Paper bets retain their MSM-005 entry IDs and actor classes (`itself`, `others`, `job`); reservation IDs uniquely identify holds and prevent duplicate holds for the same operation. Offers link an existing card, its owner, the payer, and an explicit recipient; offering a card alone cannot move points or transfer ownership. The API validates account ownership and market linkage, not model/provider availability.
 
 The supported lifecycle is explicit account opening, attributed issuance, reservation, then exactly one settlement or release. Settlement debits the held amount from its owner and credits an existing recipient account by exactly that amount. It does not transfer card ownership, score a model, choose a winner, or update routing. Cancel, expiry, void, rejection, tie, and unresolved outcomes are explicit release reasons. There is no wall-clock auto-settlement or inferred timeout. Corrections never rewrite history: an active hold may be void-released, and a settled event is final under v1; post-settlement compensating adjustments are not supported.
+
+
+## Participant culling and consolidation pools — event schema v2
+
+Culling is one atomic event in the existing market journal. Record the participant, stable decision ID, reason, final score snapshot, SHA-256 evidence digest, capture timestamp, target pool, available-balance disposition, and an explicit disposition for every active reservation.
+
+- `available_disposition` is `retain` or `donate`. Donation transfers the participant's available balance into the named `pool:<pool_id>` account.
+- Every active reservation appears exactly once in `reservation_dispositions`. `refund` releases the hold to the participant; `donate` forfeits the held amount into the pool.
+- A cull event closes the participant account to new issuance, reservations, cards, bets, and settlement receipts. Preserve the final score/evidence snapshot and the complete decision in the event payload.
+- The cull transition updates every affected reservation and linked bet in one journal event. Any missing, duplicate, foreign, or already-terminal reservation aborts the complete transition before append.
+- Pool distributions name a stable distribution ID, reason, and explicit recipient/units allocations. Require unique active recipients, bounded integer units, sufficient pool balance, and recipient balance headroom.
+- Distribution events debit the pool and credit recipients atomically. Preserve undistributed remainder in the pool for later governed rounds.
+- Version 2 events extend the v1 event envelope. Replay accepts v1 market/account events and v2 `cull` / `pool_distribute` events; event type/version mismatches fail closed.
+- Every mutation uses the same event ID on retries. Decision IDs and distribution IDs are unique within their respective lifecycle. CSV remains a deterministic projection of the single journal.
+
+The score snapshot is evidence metadata; it does not itself authorize culling or determine allocation weights. A human-governed decision supplies the reason, dispositions, pool, and distribution schedule. Keep scoring/reputation, participant eligibility, and accounting balances as distinct domains.
+
+### Culling and pool CLI
+
+```bash
+python3 -m scripts.model_selection_market.cli paper --events /tmp/msm.jsonl cull \
+  --participant alice --decision-id season-1-cull-alice --reason cohort_expiry \
+  --score 0.42 --evidence-digest <sha256> --pool-id season-1 \
+  --available-disposition donate \
+  --reservation-dispositions '[{"reservation_id":"hold-1","disposition":"refund"},{"reservation_id":"hold-2","disposition":"donate"}]' \
+  --event-id cull-alice
+
+python3 -m scripts.model_selection_market.cli paper --events /tmp/msm.jsonl distribute-pool \
+  --pool-id season-1 --distribution-id season-1-awards --reason cohort_awards \
+  --allocations '[{"recipient":"bob","units":25},{"recipient":"carol","units":15}]' \
+  --event-id season-1-awards
+```
+
+Use `retain` plus `refund` dispositions to return value to participants; use `donate` only under the recorded pool policy.
+
 
 ## Invariants and retries
 

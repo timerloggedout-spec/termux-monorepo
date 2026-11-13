@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, TextIO
 
 PAPER_ONLY_NOTE = "PAPER ONLY — observational snapshot; no spendable balance or real settlement"
-FIELDS = [
+FIELDS_V1 = [
     "paper_only", "record_type", "actor_id", "actor_class", "entry_id",
     "subject_kind", "subject_id", "model", "task", "units", "unit_kind",
     "status", "prediction", "role", "card_id", "card_owner", "card_share",
@@ -21,6 +21,8 @@ FIELDS = [
     "reservation_id", "reservation_owner", "reservation_status", "reservation_kind",
     "csv_version", "event_id", "event_type", "event_correlation", "provenance", "reference",
 ]
+FIELDS = FIELDS_V1 + ["event_payload"]
+CSV_VERSION = 2
 
 
 def _safe(value: Any) -> Any:
@@ -121,7 +123,9 @@ def _accounting_rows(accounting: Any) -> tuple[list[dict[str, Any]], dict[str, d
         rows.append({"record_type": "event", "event_id": event["event_id"], "event_type": event["type"],
                      "event_correlation": event.get("correlation_id", event["event_id"]),
                      "provenance": json.dumps(event.get("provenance", event.get("payload", {}).get("provenance", "")), sort_keys=True, separators=(",", ":")),
-                     "reference": event.get("reference", event.get("payload", {}).get("provenance", {}).get("reference", event.get("payload", {}).get("reference", ""))), "source_event_count": count, "source_digest": digest})
+                     "reference": event.get("reference", event.get("payload", {}).get("provenance", {}).get("reference", event.get("payload", {}).get("reference", ""))),
+                     "event_payload": json.dumps(event.get("payload", {}), sort_keys=True, separators=(",", ":"), ensure_ascii=False),
+                     "source_event_count": count, "source_digest": digest})
     return rows, {f"{r.get('owner')}\0{r.get('entry_id')}": r for r in reservations if r.get("kind") == "bet"}
 
 
@@ -182,7 +186,7 @@ def project_snapshot(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     rows.extend(extra)
     for row in rows:
         row["paper_only"] = PAPER_ONLY_NOTE
-        row["csv_version"] = 1
+        row["csv_version"] = CSV_VERSION
     return rows
 
 
@@ -200,8 +204,8 @@ def write_csv(snapshot: dict[str, Any], destination: TextIO) -> int:
 
 def parse_csv(text: str) -> list[dict[str, str]]:
     reader = csv.DictReader(text.splitlines(keepends=True), strict=True)
-    legacy = FIELDS[:22]
-    if reader.fieldnames not in (FIELDS, legacy):
+    legacy = FIELDS_V1[:22]
+    if reader.fieldnames not in (FIELDS, FIELDS_V1, legacy):
         raise ValueError("CSV header does not match paper view schema")
     result = []
     account_owners, reservation_ids = set(), set()
@@ -213,7 +217,7 @@ def parse_csv(text: str) -> list[dict[str, str]]:
             raise ValueError("malformed CSV row")
         if row.get("paper_only") != PAPER_ONLY_NOTE:
             raise ValueError("invalid paper_only label")
-        if not legacy and row["csv_version"] != "1": raise ValueError("unsupported CSV version")
+        if not legacy and row["csv_version"] != ("2" if reader.fieldnames == FIELDS else "1"): raise ValueError("unsupported CSV version")
         if legacy:
             rows.append(row); result.append(row); continue
         for k in ("balance", "reserved", "available", "source_event_count"):
@@ -236,6 +240,12 @@ def parse_csv(text: str) -> list[dict[str, str]]:
             if int(row["units"]) <= 0 or int(row["units"]) > 2**63 - 1: raise ValueError("reservation units out of range")
         if row["record_type"] == "event":
             if not row["event_id"] or row["event_id"] in event_ids or not row["event_type"] or not row["source_event_count"] or not row["source_digest"]: raise ValueError("invalid or incomplete event row")
+            if reader.fieldnames == FIELDS:
+                try:
+                    payload = json.loads(row["event_payload"])
+                except (TypeError, json.JSONDecodeError) as exc:
+                    raise ValueError("event_payload must contain JSON") from exc
+                if not isinstance(payload, dict): raise ValueError("event_payload must be an object")
             event_ids.add(row["event_id"])
         if row["unit_kind"] == "paper_point" and row["units"] and (not row["units"].isdigit() or int(row["units"]) <= 0):
             raise ValueError("paper_point units must be a positive integer")

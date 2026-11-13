@@ -430,8 +430,8 @@ class RoyaltyLedger:
 
     def activate_policy(self, *, event_id: str, policy_id: str, version: int, rate_bps: int,
                         effective_from: str, approved_by: str, approved_at: str,
-                        approval_digest: str, effective_until: str | None = None,
-                        basis_definition: str = "gross_reward_units"):
+                        approval_digest: str, basis_definition: str,
+                        effective_until: str | None = None):
         if approved_by != self.policy_owner:
             raise RoyaltyLedgerError("policy activation requires the configured owner")
         payload = {"policy_id": _text(policy_id, "policy_id"),

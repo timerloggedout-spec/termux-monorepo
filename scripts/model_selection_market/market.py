@@ -345,7 +345,8 @@ class MarketGraph:
             if not isinstance(actions, list):
                 raise ValueError("reservation dispositions must be a list")
             active = {rid: r for rid, r in s["reservations"].items()
-                      if r["owner"] == participant and r["status"] == "reserved"}
+                      if r["status"] == "reserved" and
+                      (r["owner"] == participant or r.get("to_owner") == participant)}
             seen_actions = set()
             for action in actions:
                 if not isinstance(action, dict) or set(action) != {"reservation_id", "disposition"}:
@@ -355,6 +356,8 @@ class MarketGraph:
                     raise ValueError("reservation disposition must identify one active participant hold")
                 if action["disposition"] not in ("refund", "donate"):
                     raise ValueError("reservation disposition must be refund or donate")
+                if active[rid]["owner"] != participant and action["disposition"] != "refund":
+                    raise ValueError("counterparty reservations can only be refunded to their payer")
                 seen_actions.add(rid)
             if seen_actions != set(active):
                 raise ValueError("cull decision must disposition every active reservation")
@@ -364,10 +367,11 @@ class MarketGraph:
                     raise ValueError("pool account identity collision")
                 s["accounts"][pool_owner] = 0
                 s["pools"][pool_id] = pool_owner
-            original_reserved = sum(r["units"] for r in active.values())
+            original_reserved = sum(r["units"] for r in active.values() if r["owner"] == participant)
             original_available = s["accounts"][participant] - original_reserved
             donated = original_available if p["available_disposition"] == "donate" else 0
-            donated += sum(active[action["reservation_id"]]["units"] for action in actions if action["disposition"] == "donate")
+            donated += sum(active[action["reservation_id"]]["units"] for action in actions
+                           if action["disposition"] == "donate" and active[action["reservation_id"]]["owner"] == participant)
             if s["accounts"][pool_owner] + donated > MAX_UNITS:
                 raise ValueError("consolidation pool balance overflow")
             if p["available_disposition"] == "donate" and original_available:
@@ -381,6 +385,8 @@ class MarketGraph:
                     for bet in s["bets"]:
                         if bet["actor_id"] == participant and bet["entry_id"] == r.get("entry_id"): bet["status"] = "released"
                 else:
+                    if r["owner"] != participant:
+                        raise ValueError("counterparty reservation donation cannot debit another participant")
                     s["accounts"][participant] -= r["units"]
                     s["accounts"][pool_owner] += r["units"]
                     r["status"] = "forfeited"

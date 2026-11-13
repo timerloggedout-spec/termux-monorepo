@@ -2,9 +2,13 @@
 
 **Primary Collaborator entry for this repository.** Load this first.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+Root `AGENTS.md` routes to [`moniker.md`](moniker.md), then this file. Read the moniker route for identity; use this file and the governance sequence below for operational rules.
 
-Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
+Collaborators are addressed by **Role**, **Name**, and **Moniker** through the canonical moniker route.
+
+## Authoring style — DO statements + Siglary
+
+Apply [`docs/ops/DO-STATEMENT-MANDATE.md`](docs/ops/DO-STATEMENT-MANDATE.md) to new docs, skills, code comments, commit subjects/bodies, PR descriptions/comments, workflow prompts, and chat relays. Lead with the intended action, keep the signal dense, and attach receipts to state changes.
 
 ## Posture — Fully Automated Agentic Development Environment (FA-ADE)
 
@@ -57,14 +61,14 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - Both gates must pass before promote (automated CI + local parity):
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
-- Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
+- Add each work item to `docs/proposals/active/<id>/ITEMS.md` before implementation.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
-- **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
-- **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens).
-- Unposted chat is not consensus — write Review log or `DEBATE.md`.
+- Keep NO-GO mega-PRs (#2, #6) in EXTRACT-only state.
+- Keep Class 3/4 artifacts outside git; route session stores, browser profiles, and tokens through approved private storage.
+- Record consensus in the Review log or `DEBATE.md`; treat chat as source input until recorded.
 - **Recon before relay/build** (owner order, 2026-10-27): do recon so you know what you're touching & building. Verify decisive claims against the live record (repo contents, API, run/issue records) before relaying a report or amending a mission from it — a lane's report is an input, not evidence.
-- **Agent auto-promote** when dual-gate green **and** task outcome verified. Do not block the loop on operator CLI steps that Actions / Codespaces / self-host surfaces can run.
-- Credential inventory is **names-only** in issues (see #184). Never paste secret values.
+- **Agent auto-promote** when dual-gate green **and** task outcome verified. Keep the loop moving through Actions, Codespaces, and self-host surfaces for work they can run.
+- Keep credential inventory **names-only** in issues (see #184); route secret values through approved secret stores.
 
 ## Preferred execution loop
 
@@ -80,7 +84,7 @@ registry.yaml → pick todo item → branch from master
 After dispatch / commit / merge attempt:
 
 1. **WAIT** is a stage — re-check jobs → steps → logs → artifacts.
-2. **Do concurrent non-conflicting work** until COMPLETE; do not treat `queued`/`in_progress` as terminal and do not park the lane on human shell commands.
+2. **Do concurrent non-conflicting work** until COMPLETE; keep `queued`/`in_progress` in WAIT and advance on terminal evidence.
 3. Stall classes: admission / queue / execution / effect / pagination / routing loop.
 4. Promote when dual gates green **and** task outcome verified (FA-ADE auto-promote).
 
@@ -107,7 +111,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
+| Agent identity route | `AGENTS.md` → `moniker.md` → `docs/ops/AGENT-MONIKERS.md` |
 
 ## ICM + RinDig reference pins (smods)
 
@@ -132,7 +136,7 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 **Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
 **Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
 **Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
-**Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
+**Prior (2026-09-21):** Root `AGENTS.md` folded into this file as a historical redirect record.
 
 ## Tool acquisition routes (owner, 2026-11-01)
 

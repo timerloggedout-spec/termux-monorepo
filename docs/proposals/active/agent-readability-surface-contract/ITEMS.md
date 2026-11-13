@@ -6,7 +6,7 @@
 
 - [x] Add canonical metadata, Open Graph fields, JSON-LD, Markdown alternates, and llms.txt discovery to Tribute, Matrix, and the project hub.
 - [x] Publish static explanatory copy, main landmarks, skip links, and glossary navigation.
-- [x] Merge the source changes through PR #5336.
+- [x] Merge the source changes through [PR #5336](https://github.com/timerloggedout-spec/termux-monorepo/pull/5336) (merge commit `75ff0e3f2d3519bc3afbea974e35d1a753e4189a`).
 - [x] Verify the deployment workflow updates the user-site mirrors; public Tribute and Matrix mirrors now expose canonical URLs, Open Graph descriptions, JSON-LD, and Markdown alternates.
 - [ ] Re-scan the public pages and record the per-page P8 result.
 

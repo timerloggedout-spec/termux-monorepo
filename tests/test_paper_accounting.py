@@ -456,5 +456,24 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
         self.assertTrue(any(r["record_type"] == "account" and r["reservation_owner"] == "pool:season-1" for r in rows))
 
 
+    def test_culling_offer_recipient_refunds_payer_reservation(self):
+        self.fund("alice")
+        self.fund("bob")
+        card = self.graph.add_card(TradingCard(role="review", owner="bob"))
+        self.graph.reserve_offer(card["card_id"], "alice", "bob", 12,
+                                 event_id="offer", reservation_id="offer-hold")
+        self.graph.cull_participant(
+            "bob", event_id="cull-bob", decision_id="decision-bob", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="retain",
+            reservation_dispositions=[{"reservation_id": "offer-hold", "disposition": "refund"}])
+        snap = MarketGraph(event_path=self.path).accounting_snapshot()
+        reservations = {r["reservation_id"]: r for r in snap["reservations"]}
+        self.assertEqual(reservations["offer-hold"]["status"], "released")
+        self.assertEqual(self.account(snap, "alice")["balance"], 100)
+        self.assertEqual(self.account(snap, "bob")["balance"], 100)
+        self.assertEqual(self.account(snap, "pool:season-1")["balance"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

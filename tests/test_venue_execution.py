@@ -120,6 +120,20 @@ def test_webform_multipart_and_url_extraction():
     assert webform_adapter.extract_url("no url here", None) is None
 
 
+def test_webform_sends_descriptive_user_agent():
+    seen = {}
+
+    def transport(req, timeout=None):
+        seen["ua"] = req.headers.get("User-agent")
+        return FakeResponse(b"https://venue.test/public/x.txt")
+
+    result = webform_adapter.execute(
+        {"endpoint": "https://venue.test/post", "file_field": None},
+        artifact=None, transport=transport)
+    assert result["status"] == "executed"
+    assert "venue-execution" in seen["ua"]
+
+
 def test_clips_adapter_named_refusal_without_credential(monkeypatch):
     monkeypatch.delenv("CLIPS_FLEET_TOKEN", raising=False)
     import clips_adapter

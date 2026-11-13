@@ -59,6 +59,13 @@ def execute(binding: dict, artifact: str | None, transport=None) -> dict:
     req = urllib.request.Request(endpoint, data=body, method="POST")
     req.add_header("Content-Type",
                    f"multipart/form-data; boundary={boundary}")
+    # Several form venues (0x0.st among them) refuse library-default
+    # user agents with a 503; send a descriptive one (binding may
+    # override via user_agent).
+    req.add_header("User-Agent", binding.get(
+        "user_agent",
+        "termux-fleet/venue-execution "
+        "(+https://github.com/timerloggedout-spec/termux-monorepo)"))
     open_fn = transport or urllib.request.urlopen
     try:
         with open_fn(req, timeout=60) as resp:

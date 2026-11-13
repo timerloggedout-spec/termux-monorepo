@@ -118,6 +118,11 @@ def test_webform_multipart_and_url_extraction():
     assert webform_adapter.extract_url(
         "see https://x.test/f", r"(https://\S+)") == "https://x.test/f"
     assert webform_adapter.extract_url("no url here", None) is None
+    assert webform_adapter.extract_url(
+        '{"url":"https://tmpfiles.org/123/proof.txt"}',
+        r'"url"\s*:\s*"https://tmpfiles\.org/(\d+)/([^"]+)"',
+        "https://tmpfiles.org/dl/{1}/{2}") \
+        == "https://tmpfiles.org/dl/123/proof.txt"
 
 
 def test_webform_sends_descriptive_user_agent():

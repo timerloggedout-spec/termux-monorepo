@@ -37,11 +37,21 @@ def build_multipart(fields: dict, file_field: str | None,
     return b"".join(chunks), boundary
 
 
-def extract_url(body: str, pattern: str | None) -> str | None:
+def extract_url(body: str, pattern: str | None,
+                template: str | None = None) -> str | None:
     text = body.strip()
     if pattern:
         m = re.search(pattern, text)
-        return m.group(1) if m else None
+        if not m:
+            return None
+        if template:
+            # url_template fills {1}, {2}, ... from the match groups
+            # (e.g. a preview-page URL -> its direct-file URL).
+            url = template
+            for i, group in enumerate(m.groups(), start=1):
+                url = url.replace("{%d}" % i, group or "")
+            return url
+        return m.group(1)
     # Default shape: the whole body is the public URL.
     if text.startswith("http://") or text.startswith("https://"):
         return text.split()[0]
@@ -77,7 +87,8 @@ def execute(binding: dict, artifact: str | None, transport=None) -> dict:
     if status >= 400:
         return {"status": "refused", "reason": f"venue_http_{status}",
                 "detail": text[:200]}
-    url = extract_url(text, binding.get("url_extract"))
+    url = extract_url(text, binding.get("url_extract"),
+                      binding.get("url_template"))
     if not url:
         return {"status": "refused", "reason": "no_public_url_in_response",
                 "detail": text[:200]}

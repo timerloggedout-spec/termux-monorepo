@@ -10,6 +10,11 @@
 | MSM-003 | series \| parallel \| concurrent selector | **done** | MSM-002 | `selector.py` |
 | MSM-004 | DSPy-DoE consideration stub | **done** | MSM-000 | `dspy_doe.py` — not default router |
 | MSM-005 | Cards + bets + graph stub | **done** | MSM-002, MSM-003 | `market.py` |
+| MSM-005.A | Versioned integer paper-point account/event contract | **in_review** | MSM-005 | #1526; `PAPER-ACCOUNTING-CONTRACT.md`; extension of the existing market, not stub completion |
+| MSM-005.B | Atomic paper reserve/settle/release on market events | **in_review** | MSM-005.A | #1527; `market.py` + `accounting.py`, opt-in unified CLI, one local event stream; no money/chain/provider operations |
+| MSM-005.C | Rebuildable MSM-012 accounting projections | **in_review** | MSM-005.B, MSM-012 | #1528; `paper_wallet.py` authoritative-event export + checked view; CSV v2 exposes full lifecycle event payloads while retaining v1/legacy parsing; CSV never writes balances or authorizes settlement |
+| MSM-005.D | Offline invariant, contention, replay and recovery evidence | **in_review** | MSM-005.A, MSM-005.B, MSM-005.C | #1529; `tests/test_paper_accounting*.py`; exact candidate evidence in implementation PR; no merge/deploy claim |
+| MSM-005.E | Governed participant culling and consolidation-pool distribution | **in_review** | MSM-005.A-D | PR #5345: versioned v2 cull + pool-distribution events on the same append-only journal; atomic available/hold disposition, score/evidence snapshot, closed-account enforcement, unique active recipients, bounded allocation, replay/idempotency/conservation, and CSV projection. Testnet/real-value rails remain separate approval-gated adapters. |
 | MSM-006 | Provenance-pinned provider research ingestion + deterministic refresh PR lane | **done** | MSM-000, MSM-002 | Q; implementation #1294, generated data #1295 merged; deployed run 39373733705 passed; no runtime activation |
 | MSM-007 | Evidence-gated Bayesian/Delphi advisory ranking + dependency-aware Cadence plan | **done** | MSM-006 | Q; #1294 merged; deployed six-task plan verified; 63 focused/workflow tests + 9 legacy tests pass; production weights unchanged |
 | MSM-008 | Complete supplied resource matrix + deterministic aggregate implementation search | **done** | MSM-006 | Q; preserve all supplied links as canonical references, reviewed resource registry, offline searchable provider/resource index and existing workflow artifacts; no account activation or expanded publication authority |
@@ -29,6 +34,7 @@
 | MSM-022 | Opt-in production Ollama balance service manager with private persistence and source/freshness checks | **done** | MSM-020 | Fixed authenticated HTTPS balance source, explicit credential-selected user/Team scope, bounded no-redirect transport, private exclusive output, reset/period validity and status-only projection. No automatic collection, account identity claim, inference, admission or schedule change. Separate code/mapping readiness from live account validation. |
 
 | MSM-023 | Opt-in private OpenRouter current-key quota service observation | **done** | MSM-022 | Official GET /api/v1/key only; manual trusted-master/private secret pathway, default off. Request counters, monetary key limits and account tier remain separate; private exclusive output and status-only projection. No inference, retries, schedules, key hopping, paid fallback or routing/admission changes. |
+| MSM-024 | Wallet and testnet promotion preflight gates | **in_review** | MSM-005.E | #5346; deterministic read-only wallet manifest gate implementing the field and policy contract in schemas/wallet-promotion.schema.json; isolated testnet/production chain and signer namespaces, test/production asset separation, bounded caps, revocation, recovery, reconciliation, monitoring, dual control, and role-based approval evidence. Preflight only; external provisioning/signing remains a separately authorized adapter. |
 
 ## Runtime package
 
@@ -66,3 +72,7 @@ python3 scripts/ci/termux_smoke.py
 - Paid routes / silent weight mutation
 - Secrets in cards
 - Wholesale MoneyBall mega-merge
+
+
+| MSM-025 | #5350 | Origin-attributed residual royalty journal; accrual/payable/settlement/reversal with cull-safe lineage | open |
+| MSM-026 | #5351 | Deterministic economy backtest engine, immutable manifests/results, policy matrix and sensitivity runs | implementation PR |

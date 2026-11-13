@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Allow `python3 scripts/model_selection_market/cli.py` from repo root
@@ -18,6 +19,104 @@ from scripts.model_selection_market.dspy_doe import DoeArm, DspyDoeStub  # noqa:
 from scripts.model_selection_market.ledger import LedgerSample, PerformanceLedger  # noqa: E402
 from scripts.model_selection_market.market import BetEntry, MarketGraph, TradingCard  # noqa: E402
 from scripts.model_selection_market.selector import select_models  # noqa: E402
+
+
+def _paper_parser(sub: argparse._SubParsersAction) -> None:
+    paper = sub.add_parser("paper", help="MSM-005 nonredeemable paper points; local events only")
+    paper.add_argument("--events", type=Path, required=True, help="authoritative local MSM-005 event stream")
+    actions = paper.add_subparsers(dest="paper_action", required=True)
+    actions.add_parser("status", help="replay and display authoritative market snapshot")
+    for name in ("open", "issue"):
+        action = actions.add_parser(name)
+        action.add_argument("--owner", required=True)
+        action.add_argument("--event-id", required=True)
+        action.add_argument("--issuer", required=True)
+        action.add_argument("--source", required=True)
+        action.add_argument("--reference", required=True)
+        if name == "issue":
+            action.add_argument("--units", type=int, required=True)
+    card = actions.add_parser("card", help="register an existing MSM-005 trading card")
+    card.add_argument("--owner", required=True)
+    card.add_argument("--role", required=True)
+    bet = actions.add_parser("reserve-bet")
+    bet.add_argument("--owner", required=True)
+    bet.add_argument("--actor-class", choices=("itself", "others", "job"), required=True)
+    bet.add_argument("--subject-kind", choices=("model", "engine", "job", "card"), required=True)
+    bet.add_argument("--subject-id", required=True)
+    bet.add_argument("--prediction", default="success")
+    bet.add_argument("--card-id")
+    offer = actions.add_parser("reserve-offer")
+    offer.add_argument("--card-id", required=True)
+    offer.add_argument("--payer", required=True)
+    offer.add_argument("--to-owner", required=True)
+    for action in (bet, offer):
+        action.add_argument("--units", type=int, required=True)
+        action.add_argument("--reservation-id", required=True)
+        action.add_argument("--event-id", required=True)
+    settle = actions.add_parser("settle")
+    settle.add_argument("--recipient", required=True)
+    release = actions.add_parser("release")
+    release.add_argument("--reason", choices=("cancelled", "expired", "void", "rejected", "unresolved", "tie"), required=True)
+    for action in (settle, release):
+        action.add_argument("--reservation-id", required=True)
+        action.add_argument("--event-id", required=True)
+    cull = actions.add_parser("cull", help="close a participant and disposition every active hold")
+    cull.add_argument("--participant", required=True)
+    cull.add_argument("--decision-id", required=True)
+    cull.add_argument("--reason", required=True)
+    cull.add_argument("--score", type=float)
+    cull.add_argument("--evidence-digest", required=True)
+    cull.add_argument("--captured-at")
+    cull.add_argument("--pool-id", required=True)
+    cull.add_argument("--available-disposition", choices=("retain", "donate"), required=True)
+    cull.add_argument("--reservation-dispositions", default="[]", help="JSON array: [{\"reservation_id\":\"...\",\"disposition\":\"refund|donate\"}]")
+    cull.add_argument("--event-id", required=True)
+    distribute = actions.add_parser("distribute-pool", help="allocate consolidated paper points")
+    distribute.add_argument("--pool-id", required=True)
+    distribute.add_argument("--distribution-id", required=True)
+    distribute.add_argument("--reason", required=True)
+    distribute.add_argument("--allocations", required=True, help="JSON array: [{\"recipient\":\"...\",\"units\":N}]")
+    distribute.add_argument("--event-id", required=True)
+
+
+def _paper_command(args: argparse.Namespace) -> dict:
+    graph = MarketGraph(event_path=args.events)
+    action = args.paper_action
+    if action in ("open", "issue"):
+        provenance = {"issuer": args.issuer, "source": args.source, "reference": args.reference}
+        if action == "open":
+            graph.open_account(args.owner, event_id=args.event_id, provenance=provenance)
+        else:
+            graph.issue_points(args.owner, args.units, event_id=args.event_id, provenance=provenance)
+    elif action == "card":
+        return graph.add_card(TradingCard(role=args.role, owner=args.owner))
+    elif action == "reserve-bet":
+        graph.reserve_bet(BetEntry(
+            actor_class=args.actor_class, actor_id=args.owner,
+            subject_kind=args.subject_kind, subject_id=args.subject_id,
+            prediction=args.prediction, units=args.units, unit_kind="paper_point",
+            card_id=args.card_id,
+        ), event_id=args.event_id, reservation_id=args.reservation_id)
+    elif action == "reserve-offer":
+        graph.reserve_offer(args.card_id, args.payer, args.to_owner, args.units,
+                            event_id=args.event_id, reservation_id=args.reservation_id)
+    elif action == "settle":
+        graph.settle(args.reservation_id, event_id=args.event_id, recipient=args.recipient)
+    elif action == "release":
+        graph.release(args.reservation_id, event_id=args.event_id, reason=args.reason)
+    elif action == "cull":
+        dispositions = json.loads(args.reservation_dispositions)
+        graph.cull_participant(
+            args.participant, event_id=args.event_id, decision_id=args.decision_id,
+            reason=args.reason,
+            score_snapshot={"score": args.score, "evidence_digest": args.evidence_digest,
+                            "captured_at": args.captured_at or datetime.now(timezone.utc).isoformat()},
+            pool_id=args.pool_id, available_disposition=args.available_disposition,
+            reservation_dispositions=dispositions)
+    elif action == "distribute-pool":
+        graph.distribute_pool(args.pool_id, json.loads(args.allocations), event_id=args.event_id,
+                              distribution_id=args.distribution_id, reason=args.reason)
+    return graph.snapshot()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -34,11 +133,17 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("dspy-demo", help="MSM-004 A/B/C/D stub arms")
     sub.add_parser("market-demo", help="MSM-005 card + bet snapshot")
     sub.add_parser("all-demo", help="run all demos once")
+    _paper_parser(sub)
 
     args = p.parse_args(argv)
     out: dict = {}
 
-    if args.cmd == "bootstrap":
+    if args.cmd == "paper":
+        try:
+            out = _paper_command(args)
+        except (ValueError, OSError) as exc:
+            p.error(str(exc))
+    elif args.cmd == "bootstrap":
         out = bootstrap_equal_weights()
     elif args.cmd == "ledger-demo":
         L = PerformanceLedger(args.path)

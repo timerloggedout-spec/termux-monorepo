@@ -63,3 +63,36 @@ The user's direct continuation request authorizes extending the existing quota s
 The previously merged MSM-018 dashboard is now published through [run 39576915984](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39576915984), source `09d59cc767e522e1f70a0c4a9aeb594027389699` (quota assets unchanged from merge `7c5e0c2b`). The UI, evidence helper and coverage JSON returned HTTP 200 and matched source bytes; the latter still honestly reported 20 families, two model-service mappings and 26 service resources. This is publication evidence for that revision, not for the unmerged MSM-019 additions. Vercel was not requested and its job was skipped.
 
 The [collaborator capability map](../../../ops/PROVIDER-COLLABORATOR-CAPABILITY-MAP.md) links role/moniker declarations, concrete workflow/tool/context bindings and bounded GitHub provenance. Shared account commits do not identify an underlying model. Rubric Delphi outputs remain rubric-only, not independent provider ballots. No proposal-wide acceptance, formal review or human consensus is claimed by this implementation record. Current-head gates, technical review and deployment outcomes belong in the implementation PR and [status](../../../ops/PROVIDER-QUOTA-UPGRADE-STATUS.md).
+
+
+## MSM-005.E + MSM-024 — cull, pool, and wallet promotion delta
+
+### State
+
+- Implementation PR: #5345, stacked on #1540 → #1470.
+- Work items: MSM-005.E and MSM-024.
+- Proposal status remains posted; this record carries implementation evidence and a request for non-author review.
+- Formal votes: ∅. Author implementation and automated review signals remain distinct from operator acceptance.
+
+### Implementation
+
+- Add versioned v2 cull and pool-distribution events to the existing MSM-005 journal.
+- Capture cull decision ID, reason, score snapshot, evidence digest, timestamp, pool ID, and explicit disposition for every active hold.
+- Refund participant-owned holds, forfeit selected participant-owned holds into the pool, and route counterparty-owned offer holds back to their payer.
+- Close culled accounts to new issuance, reservations, cards, bets, and settlement receipts.
+- Preserve pool remainder and distribute only explicit, bounded integer allocations to unique active recipients.
+- Add read-only wallet promotion preflight for testnet and production manifests; bind isolated chain IDs, signer namespaces, asset classes, caps, approvals, revocation, recovery, reconciliation, and monitoring.
+- Keep wallet creation, key generation, signing, funding, and real-value settlement outside this code delta.
+
+### Non-author review request
+
+Verify v1 replay compatibility, v2 schema/type enforcement, cull atomicity, counterparty refunds, conservation, retry identity, CSV projection, CLI behavior, and wallet manifest policy. Record findings and item-scoped votes here.
+
+### Evidence and gates
+
+- PR #5345: https://github.com/timerloggedout-spec/termux-monorepo/pull/5345
+- Parent PR #1540: https://github.com/timerloggedout-spec/termux-monorepo/pull/1540
+- Foundation PR #1470: https://github.com/timerloggedout-spec/termux-monorepo/pull/1470
+- Focused tests: tests/test_paper_accounting*.py and tests/test_wallet_promotion.py
+- Required acceptance gates: repo-gate + termux-smoke
+- Current automated signals: Devin Review ✓; ECC security evidence ✓; ECC PR taxonomy ✓. Vercel preview blocked by the provider's daily deployment quota. Repository gate and Termux smoke remain pending.

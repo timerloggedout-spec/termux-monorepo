@@ -13,6 +13,8 @@ on:
       - 'tests/test_publish_provider_recon.py'
       - 'tests/test_resource_index.py'
       - 'tests/test_resource_registry.py'
+      - 'tests/test_msm_paper_wallet.py'
+      - 'tests/test_paper_accounting*.py'
       - '.github/workflows/provider-recon-compound.yml'
       - 'data/model-selection-market/**'
 permissions: {}
@@ -36,6 +38,7 @@ jobs:
           python3 -m pytest -q tests/test_provider_recon.py tests/test_market_cadence.py tests/test_publish_provider_recon.py
           python3 -m pytest -q tests/test_resource_index.py tests/test_resource_registry.py
           python3 -m unittest scripts.model_selection_market.test_msm
+          python3 -m pytest -q tests/test_msm_paper_wallet.py tests/test_paper_accounting*.py
   collect:
     needs: contracts
     if: >-

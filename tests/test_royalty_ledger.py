@@ -29,7 +29,7 @@ def setup_ledger(path):
         event_id="policy-1", policy_id="legacy-residual", version=1,
         rate_bps=1000, effective_from="2026-01-01T00:00:00+00:00",
         approved_by="governance-owner", approved_at="2026-01-01T00:00:00+00:00",
-        approval_digest=sha("approved-policy-v1"),
+        approval_digest=sha("approved-policy-v1"), basis_definition="owner_defined_eligible_value",
     )
     return ledger
 
@@ -49,8 +49,8 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.accrue(
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             snap = ledger.snapshot()
             self.assertEqual(snap["accruals"]["accrual-1"]["royalty_units"], 1000)
@@ -145,7 +145,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
                 policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-04-01T00:00:00+00:00",
+                unit_domain="paper_point", event_time="2026-04-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             before = ledger.snapshot()["event_count"]
             with self.assertRaises(RoyaltyLedgerError):

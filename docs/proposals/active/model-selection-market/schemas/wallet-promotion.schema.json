@@ -26,7 +26,7 @@
       "additionalProperties": false,
       "required": ["chain_id", "rpc_url"],
       "properties": {
-        "chain_id": { "type": "integer", "minimum": 1 },
+        "chain_id": { "type": "integer", "minimum": 1, "maximum": 9223372036854775807 },
         "rpc_url": { "type": "string", "format": "uri", "pattern": "^https://" }
       }
     },

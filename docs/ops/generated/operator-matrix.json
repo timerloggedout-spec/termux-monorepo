@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 622,
-    "open_prs": 361,
+    "open_issues": 634,
+    "open_prs": 377,
     "pr_classes": {
-      "CANDIDATE": 175,
-      "EXTRACT": 13,
-      "NEED_EVIDENCE": 173,
+      "CANDIDATE": 172,
+      "EXTRACT": 30,
+      "NEED_EVIDENCE": 175,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 368,
+      "issues": 380,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 60,
-      "prs": 359,
+      "prs": 375,
       "unlabelled_numbers": [
         308,
         388,
@@ -119,7 +119,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-13T05:49:18Z",
+  "generated_at": "2026-11-13T14:58:25Z",
   "issues_unlabelled": [
     308,
     388,
@@ -186,9 +186,9 @@
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
       "hygiene": "queued",
-      "smoke": "queued"
+      "smoke": "success"
     },
-    "sha": "9b800f2763"
+    "sha": "15ab3be1d2"
   },
   "prs": [
     {
@@ -245,7 +245,7 @@
       "mergeable_state": "unstable",
       "number": 1541,
       "title": "feat: implement THUB-017 Research and existing MSM-005 paper accounting",
-      "updated_at": "2026-10-22T12:50:29Z"
+      "updated_at": "2026-11-13T13:17:43Z"
     },
     {
       "class": "EXTRACT",
@@ -268,12 +268,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "d987568951",
+      "head_sha": "0c6394aea2",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-13T05:47:14Z"
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-13T14:56:58Z"
     },
     {
       "class": "EXTRACT",
@@ -288,6 +288,20 @@
       "number": 4021,
       "title": "feat(integrations): extend governed agent toolchain portfolio",
       "updated_at": "2026-11-03T02:27:20Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "24a3a0db07",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4069,
+      "title": "chore(dashboards): refresh surface feeds",
+      "updated_at": "2026-11-13T11:02:09Z"
     },
     {
       "class": "EXTRACT",
@@ -352,12 +366,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "162acd9a7d",
+      "head_sha": "be783eee96",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 4930,
-      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
-      "updated_at": "2026-11-11T14:38:39Z"
+      "number": 4901,
+      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+      "updated_at": "2026-11-13T08:19:21Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "336813813a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 4990,
+      "title": "chore(linguist): refresh linguist-panel-feed.json",
+      "updated_at": "2026-11-13T05:16:52Z"
     },
     {
       "class": "EXTRACT",
@@ -372,6 +400,216 @@
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "77f3474784",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5252,
+      "title": "ledger: OC-007 \u2014 D3 close (LOST $5,000, not submitted)",
+      "updated_at": "2026-11-12T16:28:53Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "43f2bb6f2c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5274,
+      "title": "chore(delphi): refresh oracle-panel-feed.json",
+      "updated_at": "2026-11-13T05:16:52Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "17513b2faa",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5311,
+      "title": "docs(challenge): AMD Academy C3 completion \u2014 gate AMD-ACADEMY-5 evidence 1/5",
+      "updated_at": "2026-11-13T11:53:27Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9f4685ecc1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5320,
+      "title": "docs(recon): correct Tribute quota publication intent and QUE findings",
+      "updated_at": "2026-11-13T09:08:58Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "31b6c6a0f7",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5322,
+      "title": "fix(tribute): expose Surfaces Map in shared navigation",
+      "updated_at": "2026-11-13T09:24:10Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a5d0401063",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5323,
+      "title": "fix(quota): automate public readings freshness on a six-hour cadence",
+      "updated_at": "2026-11-13T09:22:27Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "f228b40eaa",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5324,
+      "title": "fix(que): reconcile stale intake labels after successful re-dispatch",
+      "updated_at": "2026-11-13T09:23:01Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "89a889bb82",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5325,
+      "title": "fix(tribute): expose Surfaces Map in shared navigation",
+      "updated_at": "2026-11-13T12:42:41Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "a1c65a4978",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5326,
+      "title": "fix(quota): automate public readings and self-count refresh",
+      "updated_at": "2026-11-13T12:42:43Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "eef7702c1e",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5328,
+      "title": "fix(que): normalize structured ranking scores in auto-claim",
+      "updated_at": "2026-11-13T13:02:57Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "bfe0dda5fa",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5330,
+      "title": "feat(que): drain deferred admissions into QDesk safely",
+      "updated_at": "2026-11-13T11:16:13Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "1488bf4bca",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5331,
+      "title": "feat(que): add guarded deferred-admission drain",
+      "updated_at": "2026-11-13T13:02:59Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d32067e35a",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5335,
+      "title": "feat(observatory): migrate Delphic to Vercel + live GitHub feeds",
+      "updated_at": "2026-11-13T14:28:14Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "879edad692",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5338,
+      "title": "feat(policy): enforce DO statements, free-tier mandate and agent readiness",
+      "updated_at": "2026-11-13T14:36:16Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "284461105d",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5339,
+      "title": "docs: enforce DO-first communication law across repository",
+      "updated_at": "2026-11-13T14:41:24Z"
     },
     {
       "class": "CANDIDATE",
@@ -440,10 +678,10 @@
       },
       "head_sha": "47868ebb21",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 578,
       "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
-      "updated_at": "2026-10-06T07:08:10Z"
+      "updated_at": "2026-11-13T13:16:51Z"
     },
     {
       "class": "CANDIDATE",
@@ -1687,20 +1925,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "82575d855f",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4069,
-      "title": "chore(dashboards): refresh surface feeds",
-      "updated_at": "2026-11-13T03:34:16Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "e3301f94e9",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2135,12 +2359,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "bc008773d3",
+      "head_sha": "70aea43e8f",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4901,
-      "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
-      "updated_at": "2026-11-12T20:01:21Z"
+      "number": 4904,
+      "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
+      "updated_at": "2026-11-04T13:00:50Z"
     },
     {
       "class": "CANDIDATE",
@@ -2149,12 +2373,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "70aea43e8f",
+      "head_sha": "162acd9a7d",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 4904,
-      "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
-      "updated_at": "2026-11-04T13:00:50Z"
+      "number": 4930,
+      "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+      "updated_at": "2026-11-11T14:38:39Z"
     },
     {
       "class": "CANDIDATE",
@@ -2197,20 +2421,6 @@
       "number": 4972,
       "title": "Records hygiene: sweep-thresholds values -> null (token never storable)",
       "updated_at": "2026-11-05T03:46:33Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "336813813a",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 4990,
-      "title": "chore(linguist): refresh linguist-panel-feed.json",
-      "updated_at": "2026-11-13T05:16:52Z"
     },
     {
       "class": "CANDIDATE",
@@ -2723,20 +2933,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "689c0fed42",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5198,
-      "title": "docs(doe): establish governed free-inference endpoint tournament order",
-      "updated_at": "2026-11-12T17:14:59Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "c783c2ab4d",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2807,12 +3003,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "77f3474784",
+      "head_sha": "364906e6db",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5252,
-      "title": "ledger: OC-007 \u2014 D3 close (LOST $5,000, not submitted)",
-      "updated_at": "2026-11-12T16:28:53Z"
+      "mergeable_state": "unstable",
+      "number": 5327,
+      "title": "feat(skills): vendor AMD and NVIDIA GPU agent skills",
+      "updated_at": "2026-11-13T11:36:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -2821,12 +3017,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "43f2bb6f2c",
+      "head_sha": "7433b5be3b",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5274,
-      "title": "chore(delphi): refresh oracle-panel-feed.json",
-      "updated_at": "2026-11-13T05:16:52Z"
+      "mergeable_state": "unstable",
+      "number": 5341,
+      "title": "fix(dispatch): preserve build branch and arm outputs",
+      "updated_at": "2026-11-13T14:54:45Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3033,7 +3229,7 @@
       },
       "head_sha": "c57ef4d83c",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 969,
       "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
       "updated_at": "2026-11-12T10:54:13Z"
@@ -3350,15 +3546,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
+        "hygiene": "in_progress",
+        "smoke": "success"
+      },
+      "head_sha": "60fd883819",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-13T14:55:41Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "de3559a48c",
+      "head_sha": "b4df720e33",
       "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-13T05:47:59Z"
+      "mergeable_state": "unstable",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-13T14:56:10Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3997,26 +4207,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "9195f6a9fd",
+      "head_sha": "ced7aa7a4e",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-13T05:47:28Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
-      "head_sha": "687a5f8b7e",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-13T05:46:16Z"
+      "updated_at": "2026-11-13T14:30:28Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5243,12 +5439,40 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "3f4da063a2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5198,
+      "title": "docs(doe): establish governed free-inference endpoint tournament order",
+      "updated_at": "2026-11-13T13:03:58Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "470791e6c6",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 5253,
       "title": "fix(rate-limit): #5219 verify script \u2014 page list endpoints explicitly",
       "updated_at": "2026-11-12T15:26:06Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "609ccbf2d8",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5337,
+      "title": "Trigger Pages deployment after merged dashboard-source PRs",
+      "updated_at": "2026-11-13T14:05:09Z"
     }
   ],
   "schema": "operator-matrix/v1",

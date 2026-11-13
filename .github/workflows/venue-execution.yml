@@ -106,7 +106,7 @@ jobs:
           cp ops/venue-execution/state.json /tmp/venue-state.json
           for attempt in 1 2 3; do
             git fetch origin master
-            git checkout -B venue-state origin/master
+            git checkout -f -B venue-state origin/master
             mkdir -p ops/venue-execution
             cp /tmp/venue-state.json ops/venue-execution/state.json
             git add ops/venue-execution/state.json

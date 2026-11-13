@@ -63,8 +63,8 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.accrue(
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             ledger.settle(
                 event_id="settlement-event-1", settlement_id="settlement-1",
@@ -82,8 +82,8 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.accrue(
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             ledger.dispute(event_id="dispute-event-1", dispute_id="dispute-1",
                            accrual_id="accrual-1", reason="lineage review",
@@ -144,7 +144,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.accrue(
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
                 unit_domain="paper_point", event_time="2026-04-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             before = ledger.snapshot()["event_count"]
@@ -173,8 +173,8 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger = setup_ledger(Path(directory) / "royalties.jsonl")
             kwargs = dict(
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             ledger.accrue(event_id="accrual-event-1", accrual_id="accrual-1", **kwargs)
             with self.assertRaises(RoyaltyLedgerError):
@@ -227,8 +227,8 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.accrue(
                 event_id="accrual-event-1", accrual_id="accrual-1",
                 contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
-                policy_id="legacy-residual", policy_version=1, basis_units=10000,
-                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                policy_id="legacy-residual", policy_version=1, basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00", eligibility_decision_ref="eligibility:decision-1", eligibility_evidence_digest=sha("eligibility-proof"),
             )
             replayed = RoyaltyLedger(path, policy_owner="governance-owner")
             self.assertEqual(replayed.snapshot()["payables"]["author-a|paper_point"], 600)

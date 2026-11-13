@@ -121,6 +121,23 @@ class RoyaltyLedgerTests(unittest.TestCase):
                     approval_digest=sha("approval-v2"),
                 )
 
+    def test_owner_can_close_policy_then_activate_next_sequential_version(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = setup_ledger(Path(directory) / "royalties.jsonl")
+            ledger.close_policy(
+                event_id="policy-close-1", policy_id="legacy-residual", version=1,
+                effective_until="2026-03-01T00:00:00+00:00",
+                approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
+                approval_digest=sha("policy-close-proof"),
+            )
+            ledger.activate_policy(
+                event_id="policy-2", policy_id="legacy-residual", version=2,
+                rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
+                approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
+                approval_digest=sha("approval-v2"),
+            )
+            self.assertEqual(ledger.snapshot()["policies"]["legacy-residual@2"]["rate_bps"], 900)
+
     def test_policy_activation_requires_configured_owner(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = setup_ledger(Path(directory) / "royalties.jsonl")

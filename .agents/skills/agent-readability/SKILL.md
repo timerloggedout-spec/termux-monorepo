@@ -68,7 +68,9 @@ Show the public Agent Ready badge only when a verified scan receipt contains:
 
 - `score >= 95`;
 - a public scan URL;
-- a verification timestamp.
+- a verification timestamp;
+- evidence that the scan ran after the latest successful deployment for the same canonical origin;
+- publication evidence linking the deployed source SHA to the scan receipt.
 
 Keep the badge hidden while the score is unknown or below threshold. Keep the displayed score bound to the receipt that earned it.
 

@@ -213,6 +213,7 @@ class MarketGraph:
             expected = {"role", "owner", "share", "artifact_path", "opt_script_path", "elo", "n", "last_sha", "confidence", "trade_log", "card_id", "metrics"}
             self._keys(card, expected)
             _owner(card["owner"])
+            if card["owner"].startswith("pool:"): raise ValueError("pool accounts cannot own market cards")
             if not isinstance(card["role"], str) or not card["role"].strip() or card["share"] not in ("private", "role", "public"):
                 raise ValueError("invalid card role or sharing level")
             for key in ("artifact_path", "opt_script_path", "last_sha"):
@@ -253,6 +254,7 @@ class MarketGraph:
             s["accounts"][p["owner"]] = 0
         elif typ == "issue":
             self._keys(p, {"owner", "units", "provenance"}); _owner(p["owner"]); _units(p["units"]); _provenance(p["provenance"])
+            if p["owner"].startswith("pool:"): raise ValueError("pool accounts cannot receive issuance")
             if p["owner"] not in s["accounts"]: raise ValueError("account is not open")
             if p["owner"] in s["culled"]: raise ValueError("culled participant accounts are closed to issuance")
             if s["accounts"][p["owner"]] + p["units"] > MAX_UNITS: raise ValueError("account balance overflow")
@@ -266,6 +268,7 @@ class MarketGraph:
                 raise ValueError("unknown reservation kind")
             self._keys(r, {"reservation_id", "owner", "units", "status", "kind", "entry_id"} if kind == "bet" else {"reservation_id", "owner", "units", "status", "kind", "card_id", "to_owner"} if kind == "offer" else set())
             _owner(r["owner"]); _units(r["units"])
+            if r["owner"].startswith("pool:"): raise ValueError("pool accounts cannot reserve market activity")
             if r["owner"] in s["culled"] or (r.get("kind") == "offer" and r.get("to_owner") in s["culled"]): raise ValueError("culled participant accounts are closed to reservations")
             if not isinstance(r["reservation_id"], str) or not r["reservation_id"] or r["status"] != "reserved": raise ValueError("invalid reservation identity or status")
             if r["reservation_id"] in s["reservations"]: raise ValueError("duplicate reservation")
@@ -298,7 +301,7 @@ class MarketGraph:
             if typ == "settle":
                 recipient = p["recipient"]; _owner(recipient)
                 if r["kind"] == "offer" and recipient != r["to_owner"]: raise ValueError("offer must settle to its card owner")
-                if recipient not in s["accounts"]: raise ValueError("unknown recipient")
+                if recipient not in s["accounts"] or recipient.startswith("pool:"): raise ValueError("settlement recipient must be a participant account")
                 if recipient in s["culled"]: raise ValueError("culled participants cannot receive settlement")
                 if recipient != r["owner"] and s["accounts"][recipient] + r["units"] > MAX_UNITS: raise ValueError("account balance overflow")
                 if recipient != r["owner"]: s["accounts"][r["owner"]] -= r["units"]; s["accounts"][recipient] += r["units"]
@@ -415,7 +418,7 @@ class MarketGraph:
                     raise ValueError("each allocation requires recipient and units")
                 recipient = allocation["recipient"]
                 _owner(recipient); _units(allocation["units"])
-                if recipient in recipients or recipient == pool_owner:
+                if recipient in recipients or recipient.startswith("pool:"):
                     raise ValueError("pool recipients must be unique participant accounts")
                 if recipient not in s["accounts"] or recipient in s["culled"]:
                     raise ValueError("pool recipient must be an active account")

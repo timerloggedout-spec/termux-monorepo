@@ -1,8 +1,8 @@
 {
  "schema": "arm-census/v1",
- "generated_at": "2026-11-11T15:19:11Z",
- "generated_by": "scripts/ops/build_arm_census.py (Actions)",
- "run_id": "43045718809",
+ "generated_at": "2026-11-13T04:00:57Z",
+ "generated_by": "seat fold of run 43362362482 artifact (QUE #5261: 3-arm verdict correction; other rows untouched)",
+ "run_id": "43362362482",
  "spec": "issue #5151 census gate {free - invocable from Actions - agent loop tool round-trip}",
  "arms": [
   {
@@ -44,16 +44,18 @@
     "invocable_from_actions": {
      "ok": true,
      "http": 200,
-     "latency_ms": 550
+     "latency_ms": 369
     },
     "agent_loop": {
      "tool_call_seen": true,
-     "roundtrip_ok": false,
-     "error_class": "marker_not_reported"
+     "roundtrip_ok": true,
+     "error_class": null,
+     "final_reply_excerpt": "build-arms/v1",
+     "marker_state": "exact"
     }
    },
-   "verdict": "failed",
-   "reason": "agent_loop_marker_not_reported",
+   "verdict": "eligible",
+   "reason": "invoke_ok + tool round-trip ok",
    "quota_terminal": {
     "terminal": false
    }
@@ -70,16 +72,18 @@
     "invocable_from_actions": {
      "ok": true,
      "http": 200,
-     "latency_ms": 332
+     "latency_ms": 3283
     },
     "agent_loop": {
      "tool_call_seen": true,
-     "roundtrip_ok": false,
-     "error_class": "marker_not_reported"
+     "roundtrip_ok": true,
+     "error_class": null,
+     "final_reply_excerpt": "build-arms/v1",
+     "marker_state": "exact"
     }
    },
-   "verdict": "failed",
-   "reason": "agent_loop_marker_not_reported",
+   "verdict": "eligible",
+   "reason": "invoke_ok + tool round-trip ok",
    "quota_terminal": {
     "terminal": false
    }
@@ -96,16 +100,18 @@
     "invocable_from_actions": {
      "ok": true,
      "http": 200,
-     "latency_ms": 745
+     "latency_ms": 2944
     },
     "agent_loop": {
      "tool_call_seen": true,
-     "roundtrip_ok": false,
-     "error_class": "marker_not_reported"
+     "roundtrip_ok": true,
+     "error_class": null,
+     "final_reply_excerpt": "build-arms/v1",
+     "marker_state": "exact"
     }
    },
-   "verdict": "failed",
-   "reason": "agent_loop_marker_not_reported",
+   "verdict": "eligible",
+   "reason": "invoke_ok + tool round-trip ok",
    "quota_terminal": {
     "terminal": false
    }

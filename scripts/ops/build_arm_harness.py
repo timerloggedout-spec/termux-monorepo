@@ -370,8 +370,14 @@ def append_assistant_and_results(messages: list[dict], arm: dict, reply: dict,
                     for c in reply["tool_calls"]]}
         messages.append(amsg)
         for call, result in results:
+            # Cohere v2 requires every document block to carry an
+            # `id`; without one the API drops the document and the
+            # model never sees the tool result (the #5261 marker
+            # failure: tool_call_seen TRUE, marker never reported).
             messages.append({"role": "tool", "tool_call_id": call["id"],
-                             "content": [{"type": "document", "document": {"data": result}}]})
+                             "content": [{"type": "document",
+                                          "document": {"id": f"doc-{call['id']}",
+                                                       "data": result}}]})
     else:
         raise ArmFailure(f"harness does not drive protocol {protocol!r}")
 

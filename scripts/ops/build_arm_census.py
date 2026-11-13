@@ -100,9 +100,25 @@ def census_http_arm(arm: dict, root: Path) -> dict:
         tool_result = "\n".join(result for _, result in results)
         harness.append_assistant_and_results(messages, arm, reply, results)
         final = harness.chat_once(arm, messages, None, max_tokens=128)
+        final_text = final.get("content") or ""
         roundtrip_ok = PROBE_MARKER in tool_result and (final.get("content") or "").strip() == PROBE_MARKER
+        # Observability before protocol change (#5151 c.6823803091,
+        # QUE #5261): the final reply was previously discarded, so
+        # result-not-consumed vs prose-wrapped marker vs wrong value
+        # were indistinguishable. The excerpt + marker_state make
+        # the failure mode readable from the census row itself.
+        if not final_text.strip():
+            marker_state = "empty"
+        elif final_text.strip() == PROBE_MARKER:
+            marker_state = "exact"
+        elif PROBE_MARKER in final_text:
+            marker_state = "contained"
+        else:
+            marker_state = "absent"
         checks["agent_loop"] = {"tool_call_seen": True, "roundtrip_ok": roundtrip_ok,
-                                "error_class": None if roundtrip_ok else "marker_not_reported"}
+                                "error_class": None if roundtrip_ok else "marker_not_reported",
+                                "final_reply_excerpt": final_text[:300],
+                                "marker_state": marker_state}
         if roundtrip_ok:
             row.update(verdict="eligible", reason="invoke_ok + tool round-trip ok",
                        quota_terminal={"terminal": False})

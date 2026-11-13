@@ -1,6 +1,6 @@
 # ArchW1z proposal registry — agents read this first
 version: 1
-updated_at: "2026-10-21T09:45:00Z"
+updated_at: "2026-11-13T16:00:00Z"
 updated_by: ChatGPT
 
 proposals:
@@ -35,9 +35,12 @@ proposals:
       - id: timerloggedout-spec
         role: operator-authorizer
         status: requested
-    related_prs: []
+    related_issues: [1521, 1526, 1527, 1528, 1529]
+    related_prs: [1540, 5345]
     related_branches:
       - docs/model-selection-market-3l0-20261001
+      - cue/msm005-paper-accounting-20261022
+      - cue/msm005-cull-pool-lifecycle
     related_proposals:
       - approxination-integration
       - ml-keep-alive

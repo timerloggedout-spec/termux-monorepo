@@ -179,8 +179,8 @@ class RoyaltyLedger:
                 version = _integer(payload["version"], "version", 1, 2**31 - 1)
                 rate = _integer(payload["rate_bps"], "rate_bps", 0, BPS)
                 basis = _text(payload["basis_definition"], "basis_definition")
-                if basis != "gross_reward_units":
-                    raise RoyaltyLedgerError("unsupported royalty basis definition")
+                if len(basis) > 128:
+                    raise RoyaltyLedgerError("basis_definition exceeds 128 characters")
                 start = _time(payload["effective_from"], "effective_from")
                 end = _time(payload["effective_until"], "effective_until") if payload["effective_until"] is not None else None
                 if end and end <= start:
@@ -236,8 +236,9 @@ class RoyaltyLedger:
                 policy["effective_until"] = end.isoformat()
             elif typ == "royalty_accrual":
                 if set(payload) != {"accrual_id", "contribution_id", "derivative_artifact_id",
-                                    "policy_id", "policy_version", "basis_units", "unit_domain",
-                                    "event_time"}:
+                                    "policy_id", "policy_version", "basis_definition", "basis_units",
+                                    "unit_domain", "event_time", "eligibility_decision_ref",
+                                    "eligibility_evidence_digest"}:
                     raise RoyaltyLedgerError("invalid royalty_accrual payload")
                 accrual_id = _text(payload["accrual_id"], "accrual_id")
                 contribution = _text(payload["contribution_id"], "contribution_id")
@@ -254,7 +255,12 @@ class RoyaltyLedger:
                     raise RoyaltyLedgerError("accrual precedes policy effective interval")
                 if policy["effective_until"] and event_time >= datetime.fromisoformat(policy["effective_until"]):
                     raise RoyaltyLedgerError("accrual falls outside policy effective interval")
+                basis_definition = _text(payload["basis_definition"], "basis_definition")
+                if basis_definition != policy["basis_definition"]:
+                    raise RoyaltyLedgerError("accrual basis does not match the activated policy")
                 basis = _integer(payload["basis_units"], "basis_units", 1)
+                eligibility_ref = _text(payload["eligibility_decision_ref"], "eligibility_decision_ref")
+                eligibility_digest = _digest(payload["eligibility_evidence_digest"], "eligibility_evidence_digest")
                 domain = _text(payload["unit_domain"], "unit_domain")
                 if domain not in UNIT_DOMAINS:
                     raise RoyaltyLedgerError("unsupported royalty unit domain")
@@ -270,7 +276,10 @@ class RoyaltyLedger:
                 state["contributions"][contribution] = accrual_id
                 state["accruals"][accrual_id] = {
                     "contribution_id": contribution, "derivative_artifact_id": artifact,
-                    "policy_key": policy_key, "event_time": event_time.isoformat(), "basis_units": basis, "unit_domain": domain,
+                    "policy_key": policy_key, "event_time": event_time.isoformat(),
+                    "basis_definition": basis_definition, "basis_units": basis, "unit_domain": domain,
+                    "eligibility_decision_ref": eligibility_ref,
+                    "eligibility_evidence_digest": eligibility_digest,
                     "royalty_units": total, "claims": claims, "disputed": False,
                 }
                 for claim in claims.values():
@@ -450,15 +459,19 @@ class RoyaltyLedger:
 
     def accrue(self, *, event_id: str, accrual_id: str, contribution_id: str,
                derivative_artifact_id: str, policy_id: str, policy_version: int,
-               basis_units: int, unit_domain: str, event_time: str):
+               basis_definition: str, basis_units: int, unit_domain: str, event_time: str,
+               eligibility_decision_ref: str, eligibility_evidence_digest: str):
         payload = {"accrual_id": _text(accrual_id, "accrual_id"),
                    "contribution_id": _text(contribution_id, "contribution_id"),
                    "derivative_artifact_id": _text(derivative_artifact_id, "derivative_artifact_id"),
                    "policy_id": _text(policy_id, "policy_id"),
                    "policy_version": _integer(policy_version, "policy_version", 1),
+                   "basis_definition": _text(basis_definition, "basis_definition"),
                    "basis_units": _integer(basis_units, "basis_units", 1),
                    "unit_domain": _text(unit_domain, "unit_domain"),
-                   "event_time": _text(event_time, "event_time")}
+                   "event_time": _text(event_time, "event_time"),
+                   "eligibility_decision_ref": _text(eligibility_decision_ref, "eligibility_decision_ref"),
+                   "eligibility_evidence_digest": _digest(eligibility_evidence_digest, "eligibility_evidence_digest")}
         return self._mutate(event_id, "royalty_accrual", payload, payload["accrual_id"])
 
     def settle(self, *, event_id: str, settlement_id: str, accrual_id: str,

@@ -76,5 +76,28 @@ class TestPaperAccountingCLI(unittest.TestCase):
         self.assertFalse(self.events.exists())
 
 
+
+    def test_cull_and_pool_distribution_cli(self):
+        import hashlib
+        self.open("alice")
+        self.open("bob")
+        self.command("issue", "--owner", "alice", "--units", "20", "--event-id", "seed",
+                     "--issuer", "fixture", "--source", "synthetic", "--reference", "cli-test")
+        culled = self.command(
+            "cull", "--participant", "alice", "--decision-id", "decision-cli",
+            "--reason", "cohort_expiry", "--score", "0.25",
+            "--evidence-digest", hashlib.sha256(b"cli-score").hexdigest(),
+            "--pool-id", "season-cli", "--available-disposition", "donate",
+            "--reservation-dispositions", "[]", "--event-id", "cull-cli")
+        pool = next(a for a in culled["paper_accounting"]["accounts"] if a["owner"] == "pool:season-cli")
+        self.assertEqual(pool["balance"], 20)
+        distributed = self.command(
+            "distribute-pool", "--pool-id", "season-cli", "--distribution-id", "round-cli",
+            "--reason", "cohort_awards", "--allocations", '[{"recipient":"bob","units":12}]',
+            "--event-id", "distribution-cli")
+        balances = {a["owner"]: a["balance"] for a in distributed["paper_accounting"]["accounts"]}
+        self.assertEqual(balances, {"alice": 0, "bob": 12, "pool:season-cli": 8})
+
+
 if __name__ == "__main__":
     unittest.main()

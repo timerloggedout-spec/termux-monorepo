@@ -307,5 +307,199 @@ class PaperAccountingTests(unittest.TestCase):
                 queue.join_thread()
 
 
+class CullAndPoolLifecycleTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.path = Path(self.directory.name) / "market.jsonl"
+        self.graph = MarketGraph(event_path=self.path)
+
+    def fund(self, owner, units=100):
+        self.graph.open_account(owner, event_id="open-" + owner, provenance=dict(PROV))
+        if units:
+            self.graph.issue_points(owner, units, event_id="issue-" + owner, provenance=dict(PROV))
+
+    def account(self, snapshot, owner):
+        return next(row for row in snapshot["accounts"] if row["owner"] == owner)
+
+    def score_snapshot(self):
+        return {"score": 0.0, "evidence_digest": hashlib.sha256(b"score-fixture").hexdigest(),
+                "captured_at": "2026-11-13T12:00:00+00:00"}
+
+    def test_cull_atomically_refunds_forfeits_and_donates_available_balance(self):
+        self.fund("alice")
+        self.fund("bob", 0)
+        self.fund("carol", 0)
+        refund_bet = BetEntry("job", "job", "refund-task", actor_id="alice",
+                              unit_kind="paper_point", units=10)
+        donate_bet = BetEntry("job", "job", "donate-task", actor_id="alice",
+                              unit_kind="paper_point", units=20)
+        self.graph.reserve_bet(refund_bet, event_id="reserve-refund", reservation_id="hold-refund")
+        self.graph.reserve_bet(donate_bet, event_id="reserve-donate", reservation_id="hold-donate")
+        before = self.path.read_bytes()
+        cull_args = dict(
+            event_id="cull-alice", decision_id="decision-2026-11-13", reason="cohort_expiry",
+            score_snapshot=self.score_snapshot(), pool_id="season-1", available_disposition="donate",
+            reservation_dispositions=[
+                {"reservation_id": "hold-refund", "disposition": "refund"},
+                {"reservation_id": "hold-donate", "disposition": "donate"},
+            ])
+        self.graph.cull_participant("alice", **cull_args)
+        after_cull = self.path.read_bytes()
+        self.graph.cull_participant("alice", **cull_args)
+        self.assertEqual(self.path.read_bytes(), after_cull)
+        snap = MarketGraph(event_path=self.path).accounting_snapshot()
+        alice, pool = self.account(snap, "alice"), self.account(snap, "pool:season-1")
+        self.assertEqual((alice["balance"], alice["reserved"], alice["available"]), (10, 0, 10))
+        self.assertEqual((pool["balance"], pool["reserved"], pool["available"]), (90, 0, 90))
+        reservations = {r["reservation_id"]: r for r in snap["reservations"]}
+        self.assertEqual(reservations["hold-refund"]["status"], "released")
+        self.assertEqual(reservations["hold-refund"]["reason"], "culled_refund")
+        self.assertEqual(reservations["hold-donate"]["status"], "forfeited")
+        self.assertEqual(reservations["hold-donate"]["recipient"], "pool:season-1")
+        self.assertEqual(sum(row["balance"] for row in snap["accounts"]), 100)
+        self.assertEqual(snap["culled"]["alice"]["score_snapshot"], self.score_snapshot())
+        self.assertEqual(snap["events"][-1]["version"], 2)
+        self.assertGreater(len(self.path.read_bytes()), len(before))
+        replayed = MarketGraph(event_path=self.path).accounting_snapshot()
+        self.assertEqual(replayed["source_digest"], snap["source_digest"])
+
+    def test_cull_requires_complete_explicit_disposition_and_is_atomic(self):
+        self.fund("alice")
+        bet = BetEntry("job", "job", "active-task", actor_id="alice",
+                       unit_kind="paper_point", units=5)
+        self.graph.reserve_bet(bet, event_id="reserve", reservation_id="hold")
+        before = self.path.read_bytes()
+        with self.assertRaises(ValueError):
+            self.graph.cull_participant(
+                "alice", event_id="bad-cull", decision_id="bad-decision", reason="withdrawal",
+                score_snapshot=self.score_snapshot(), pool_id="season-1",
+                available_disposition="retain", reservation_dispositions=[])
+        self.assertEqual(self.path.read_bytes(), before)
+        self.assertNotIn("bad-cull", [e["event_id"] for e in self.graph.accounting_snapshot()["events"]])
+
+    def test_culled_account_rejects_new_activity_and_settlement_recipient(self):
+        self.fund("alice")
+        self.fund("bob")
+        self.graph.place_bet(BetEntry("job", "job", "observational-task", actor_id="alice"))
+        self.graph.cull_participant(
+            "alice", event_id="cull", decision_id="decision", reason="disqualification",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="retain", reservation_dispositions=[])
+        with self.assertRaises(ValueError):
+            self.graph.issue_points("alice", 1, event_id="late-issue", provenance=dict(PROV))
+        with self.assertRaises(ValueError):
+            self.graph.reserve_bet(BetEntry("job", "job", "late-task", actor_id="alice",
+                                            unit_kind="paper_point", units=1),
+                                   event_id="late-reserve", reservation_id="late-hold")
+        final = self.graph.accounting_snapshot()
+        self.assertEqual(self.account(final, "alice")["balance"], 100)
+        self.assertEqual(next(b for b in final["events"] if b["type"] == "bet")["payload"]["bet"]["status"], "open")
+        self.assertEqual(self.graph.snapshot()["bets"][0]["status"], "culled")
+
+    def test_pool_distribution_is_bounded_idempotent_and_replayable(self):
+        self.fund("alice")
+        self.fund("bob", 0)
+        self.fund("carol", 0)
+        self.graph.cull_participant(
+            "alice", event_id="cull", decision_id="decision", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="donate", reservation_dispositions=[])
+        allocations = [{"recipient": "bob", "units": 25}, {"recipient": "carol", "units": 15}]
+        first = self.graph.distribute_pool("season-1", allocations, event_id="distribution",
+                                           distribution_id="round-1", reason="cohort_awards")
+        before = self.path.read_bytes()
+        second = self.graph.distribute_pool("season-1", allocations, event_id="distribution",
+                                            distribution_id="round-1", reason="cohort_awards")
+        self.assertEqual(first, second)
+        self.assertEqual(self.path.read_bytes(), before)
+        snap = MarketGraph(event_path=self.path).accounting_snapshot()
+        balances = {row["owner"]: row["balance"] for row in snap["accounts"]}
+        self.assertEqual(balances, {"alice": 0, "bob": 25, "carol": 15, "pool:season-1": 60})
+        self.assertEqual(sum(balances.values()), 100)
+        self.assertEqual(snap["pool_distributions"]["round-1"]["allocations"], allocations)
+        with self.assertRaises(ValueError):
+            self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 1}],
+                                       event_id="duplicate-distribution", distribution_id="round-1", reason="duplicate")
+        with self.assertRaises(ValueError):
+            self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 61}],
+                                       event_id="overdraw", distribution_id="round-2", reason="overdraw")
+        self.assertEqual(self.path.read_bytes(), before)
+
+    def test_pool_rejects_culled_recipients_and_duplicate_allocations(self):
+        self.fund("alice")
+        self.fund("bob", 0)
+        self.graph.cull_participant(
+            "alice", event_id="cull", decision_id="decision", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="donate", reservation_dispositions=[])
+        with self.assertRaises(ValueError):
+            self.graph.distribute_pool("season-1", [{"recipient": "alice", "units": 1}],
+                                       event_id="to-culled", distribution_id="round-1", reason="award")
+        with self.assertRaises(ValueError):
+            self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 1},
+                                                     {"recipient": "bob", "units": 1}],
+                                       event_id="duplicate", distribution_id="round-2", reason="award")
+        with self.assertRaises(ValueError):
+            self.graph.place_bet(BetEntry("job", "job", "pool-task", actor_id="pool:season-1"))
+        self.assertEqual(len(self.graph.accounting_snapshot()["events"]), 4)
+
+    def test_csv_projection_preserves_forfeiture_and_pool_events(self):
+        import csv
+        import io
+        import json
+        from scripts.model_selection_market.paper_wallet import FIELDS_V1, parse_csv, project_snapshot, write_csv
+        self.fund("alice")
+        self.fund("bob", 0)
+        bet = BetEntry("job", "job", "donated-task", actor_id="alice",
+                       unit_kind="paper_point", units=5)
+        self.graph.reserve_bet(bet, event_id="reserve", reservation_id="hold")
+        self.graph.cull_participant(
+            "alice", event_id="cull", decision_id="decision", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="donate",
+            reservation_dispositions=[{"reservation_id": "hold", "disposition": "donate"}])
+        self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 10}],
+                                   event_id="distribution", distribution_id="round-1", reason="award")
+        snapshot = self.graph.snapshot()
+        output = io.StringIO(newline="")
+        write_csv(snapshot, output)
+        rows = parse_csv(output.getvalue())
+        self.assertTrue(any(r["record_type"] == "reservation" and r["reservation_status"] == "forfeited" for r in rows))
+        self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "cull" for r in rows))
+        self.assertTrue(any(r["record_type"] == "event" and r["event_type"] == "pool_distribute" for r in rows))
+        self.assertTrue(any(r["record_type"] == "account" and r["reservation_owner"] == "pool:season-1" for r in rows))
+        cull_payload = json.loads(next(r["event_payload"] for r in rows if r["record_type"] == "event" and r["event_type"] == "cull"))
+        pool_payload = json.loads(next(r["event_payload"] for r in rows if r["record_type"] == "event" and r["event_type"] == "pool_distribute"))
+        self.assertEqual(cull_payload["decision_id"], "decision")
+        self.assertEqual(pool_payload["allocations"], [{"recipient": "bob", "units": 10}])
+        legacy = io.StringIO(newline="")
+        writer = csv.DictWriter(legacy, fieldnames=FIELDS_V1, lineterminator="\n")
+        writer.writeheader()
+        for row in project_snapshot(snapshot):
+            row["csv_version"] = 1
+            writer.writerow({field: row.get(field, "") for field in FIELDS_V1})
+        self.assertTrue(parse_csv(legacy.getvalue()))
+
+
+    def test_culling_offer_recipient_refunds_payer_reservation(self):
+        self.fund("alice")
+        self.fund("bob")
+        card = self.graph.add_card(TradingCard(role="review", owner="bob"))
+        self.graph.reserve_offer(card["card_id"], "alice", "bob", 12,
+                                 event_id="offer", reservation_id="offer-hold")
+        self.graph.cull_participant(
+            "bob", event_id="cull-bob", decision_id="decision-bob", reason="withdrawal",
+            score_snapshot=self.score_snapshot(), pool_id="season-1",
+            available_disposition="retain",
+            reservation_dispositions=[{"reservation_id": "offer-hold", "disposition": "refund"}])
+        snap = MarketGraph(event_path=self.path).accounting_snapshot()
+        reservations = {r["reservation_id"]: r for r in snap["reservations"]}
+        self.assertEqual(reservations["offer-hold"]["status"], "released")
+        self.assertEqual(self.account(snap, "alice")["balance"], 100)
+        self.assertEqual(self.account(snap, "bob")["balance"], 100)
+        self.assertEqual(self.account(snap, "pool:season-1")["balance"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

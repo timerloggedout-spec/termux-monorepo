@@ -73,7 +73,7 @@ def replay(path: Path) -> list[dict[str, Any]]:
                     raise ValueError(f"invalid event at line {seq}")
                 if set(event) != {"version", "seq", "event_id", "type", "payload", "timestamp", "correlation_id"}:
                     raise ValueError(f"invalid event fields at line {seq}")
-                if type(event["version"]) is not int or event["version"] != 1:
+                if type(event["version"]) is not int or event["version"] not in (1, 2):
                     raise ValueError(f"unsupported event version at line {seq}")
                 if type(event["seq"]) is not int or event["seq"] != seq:
                     raise ValueError(f"invalid event sequence at line {seq}")
@@ -116,7 +116,7 @@ def append(path: Path, events: list[dict[str, Any]], event: dict[str, Any]) -> N
         if prior["type"] != event["type"] or prior["payload"] != event["payload"]:
             raise ValueError("event_id already used with different intent")
         raise _Already(prior)
-    framed = dict(event, version=1, seq=len(events) + 1)
+    framed = dict(event, version=event.get("version", 1), seq=len(events) + 1)
     data = (canonical(framed) + "\n").encode("utf-8")
     existed = path.exists()
     fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_APPEND, 0o600)

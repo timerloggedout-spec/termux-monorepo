@@ -39,7 +39,7 @@ def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     }
     if not isinstance(manifest, dict) or set(manifest) != required:
         raise ValueError("manifest fields must match economy-backtest/v1")
-    if manifest["schema_version"] != 1:
+    if type(manifest["schema_version"]) is not int or manifest["schema_version"] != 1:
         raise ValueError("unsupported manifest schema_version")
     if not isinstance(manifest["scenario_id"], str) or not manifest["scenario_id"].strip():
         raise ValueError("scenario_id must be non-empty")
@@ -276,8 +276,15 @@ def run_backtest(raw_manifest: dict[str, Any]) -> dict[str, Any]:
 
 def run_matrix(base: dict[str, Any], policies: list[dict[str, Any]],
                seeds: list[int]) -> dict[str, Any]:
-    if not policies or not seeds:
+    if not isinstance(policies, list) or not policies or not isinstance(seeds, list) or not seeds:
         raise ValueError("run_matrix requires policies and seeds")
+    policy_ids = [policy.get("policy_id") for policy in policies if isinstance(policy, dict)]
+    if len(policy_ids) != len(policies) or len(set(policy_ids)) != len(policy_ids):
+        raise ValueError("policy variants require unique policy_id values")
+    if any(type(seed) is not int or seed < 0 or seed > 2**63 - 1 for seed in seeds):
+        raise ValueError("seeds must be non-negative 63-bit integers")
+    if len(set(seeds)) != len(seeds):
+        raise ValueError("seeds must be unique")
     runs = []
     for policy in policies:
         for seed in seeds:
@@ -321,16 +328,28 @@ def write_immutable(path: Path, payload: dict[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", required=True, type=Path)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--manifest", type=Path)
+    source.add_argument("--matrix", type=Path)
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/economy-backtests"))
     args = parser.parse_args()
-    payload = json.loads(args.manifest.read_text(encoding="utf-8"))
-    run = run_backtest(payload)
-    run_id = run["result"]["run_id"]
-    write_immutable(args.output_dir / f"{run_id}.manifest.json", run["run_manifest"])
-    write_immutable(args.output_dir / f"{run_id}.result.json", run["result"])
-    print(json.dumps({"run_id": run_id, "result_digest": run["result"]["result_digest"],
-                      "metrics": run["result"]["metrics"]}, indent=2, sort_keys=True))
+    payload = json.loads((args.manifest or args.matrix).read_text(encoding="utf-8"))
+    if args.matrix:
+        matrix = run_matrix(payload["base"], payload["policies"], payload["seeds"])
+        for run in matrix["runs"]:
+            run_id = run["result"]["run_id"]
+            write_immutable(args.output_dir / f"{run_id}.manifest.json", run["run_manifest"])
+            write_immutable(args.output_dir / f"{run_id}.result.json", run["result"])
+        write_immutable(args.output_dir / f"{matrix['matrix_digest']}.matrix.json", matrix)
+        print(json.dumps({"matrix_digest": matrix["matrix_digest"],
+                          "summary": matrix["summary"]}, indent=2, sort_keys=True))
+    else:
+        run = run_backtest(payload)
+        run_id = run["result"]["run_id"]
+        write_immutable(args.output_dir / f"{run_id}.manifest.json", run["run_manifest"])
+        write_immutable(args.output_dir / f"{run_id}.result.json", run["result"])
+        print(json.dumps({"run_id": run_id, "result_digest": run["result"]["result_digest"],
+                          "metrics": run["result"]["metrics"]}, indent=2, sort_keys=True))
     return 0
 
 

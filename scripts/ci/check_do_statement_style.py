@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check action-first wording in newly authored repository instructions and comments."""
+"""Check action-first wording in changed repository instructions and collaboration text."""
 from __future__ import annotations
 
 import json
@@ -32,17 +32,16 @@ STYLE_PATHS = [
 
 errors: list[str] = []
 
+
 def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
         if NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
-def inspect_pr_commits() -> None:
-    if EVENT_NAME != "pull_request" or not BASE_REF:
-        return
-    subprocess.run(["git", "fetch", "origin", BASE_REF], check=True)
+
+def inspect_git_range(base: str, head: str) -> None:
     diff = subprocess.run(
-        ["git", "diff", "--unified=0", f"origin/{BASE_REF}...HEAD", "--", *STYLE_PATHS],
+        ["git", "diff", "--unified=0", f"{base}...{head}", "--", *STYLE_PATHS],
         check=True, capture_output=True, text=True,
     ).stdout
     current_path = "changed-file"
@@ -52,22 +51,46 @@ def inspect_pr_commits() -> None:
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
             if NEGATIVE_FIRST.match(added):
-                errors.append(f"{current_path}: lead with the intended DO action: {added.strip()}")
+                errors.append(
+                    f"{current_path}: lead with the intended DO action: {added.strip()}"
+                )
 
     subjects = subprocess.run(
-        ["git", "log", f"origin/{BASE_REF}..HEAD", "--format=%s"],
+        ["git", "log", f"{base}..{head}", "--format=%s"],
         check=True, capture_output=True, text=True,
     ).stdout.splitlines()
     for subject in subjects:
-        verb = subject.rsplit(": ", 1)[-1].split(maxsplit=1)[0].lower() if ": " in subject else subject.split(maxsplit=1)[0].lower()
+        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
+        verb = first[0].lower() if first else ""
         if verb not in IMPERATIVE:
-            errors.append(f"commit subject requires an imperative action verb after its scope: {subject}")
+            errors.append(
+                f"commit subject requires an imperative action verb after its scope: {subject}"
+            )
+
+
+def inspect_pr_commits() -> None:
+    if EVENT_NAME != "pull_request" or not BASE_REF:
+        return
+    subprocess.run(["git", "fetch", "origin", BASE_REF], check=True)
+    inspect_git_range(f"origin/{BASE_REF}", "HEAD")
+
+
+def inspect_push_commits(event: dict) -> None:
+    if EVENT_NAME != "push":
+        return
+    before = event.get("before") or ""
+    after = event.get("after") or "HEAD"
+    if not before or set(before) == {"0"}:
+        return
+    inspect_git_range(before, after)
+
 
 def inspect_event() -> None:
     if not EVENT_PATH or not Path(EVENT_PATH).is_file():
         return
     event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
     if EVENT_NAME == "pull_request":
+        inspect_text("pull_request.title", event.get("pull_request", {}).get("title") or "")
         inspect_text("pull_request.body", event.get("pull_request", {}).get("body") or "")
     elif EVENT_NAME == "issues":
         inspect_text("issue.title", event.get("issue", {}).get("title") or "")
@@ -75,7 +98,13 @@ def inspect_event() -> None:
     elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "commit_comment"}:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
+
+event = {}
+if EVENT_PATH and Path(EVENT_PATH).is_file():
+    event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+
 inspect_pr_commits()
+inspect_push_commits(event)
 inspect_event()
 
 if errors:

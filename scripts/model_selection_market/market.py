@@ -239,7 +239,7 @@ class MarketGraph:
             s["edges"].append({"type": "owns", "from": card["owner"], "to": card["card_id"]})
         elif typ == "bet":
             self._keys(p, {"bet"}); bet = p["bet"]; self._bet_valid(bet)
-            if bet["actor_id"] in s["culled"]: raise ValueError("culled participant cannot place bets")
+            if bet["actor_id"].startswith("pool:") or bet["actor_id"] in s["culled"]: raise ValueError("pool and culled accounts cannot place bets")
             if bet["stake"]["unit_kind"] == "paper_point":
                 raise ValueError("paper bets require a reservation event")
             key = (bet["actor_id"], bet["entry_id"])

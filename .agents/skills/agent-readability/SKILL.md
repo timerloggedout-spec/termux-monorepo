@@ -60,7 +60,7 @@ Public HTML, Markdown, llms.txt, sitemap files, and Agent Ready fixtures use dir
 
 ## MaxC boundary
 
-The current MaxC implementation compiles MaxUp to HTML, Leptos, and MaxC bytecode. A reverse HTML-to-MaxUp module exists; current workspace CLI wiring remains incomplete. MaxC bytecode is serialized MaxUp AST, and the repository's current MaxC implementation is not an HTML-to-Markdown converter. Use the documented parallel Markdown adapter design in `docs/ops/MAXC-INTEROP-STATUS.md`.
+The current MaxC implementation compiles MaxUp to HTML, Leptos, and MaxC bytecode. A reverse HTML-to-MaxUp module exists; current workspace CLI wiring remains incomplete. MaxC bytecode is serialized MaxUp AST. Markdown conversion remains a separate adapter capability; use the documented parallel design in `docs/ops/MAXC-INTEROP-STATUS.md`.
 
 ## Recognition badge
 

@@ -81,9 +81,9 @@ def test_submit_once_second_fire_reads_state_never_resends(tmp_path):
     import unittest.mock as mock
     state = root / "state.json"
     with mock.patch.object(ve, "verify_public",
-                           lambda url, expect=None: {"ok": True,
-                                                     "status": 200,
-                                                     "bytes": 11}):
+                           lambda url, expect=None, **kw: {"ok": True,
+                                                           "status": 200,
+                                                           "bytes": 11}):
         first = ve.execute("proof", "up", str(root / "media.bin"), root,
                            state, now=NOW, run_id="r1", transport=transport)
         assert first["outcome"] == "executed"
@@ -108,6 +108,40 @@ def test_verify_is_unauthenticated():
     assert "Authorization" not in seen["headers"]
     assert "Cookie" not in seen["headers"]
     assert "venue-execution" in seen["headers"]["User-agent"]
+
+
+def test_verify_follows_public_link_to_artifact():
+    pages = {
+        "https://venue.test/preview/1": (
+            200, b'<a href="https://venue.test/dl/signed/1">download</a>'),
+        "https://venue.test/dl/signed/1": (
+            200, b"the real artifact bytes with the marker inside"),
+    }
+
+    class Resp:
+        def __init__(self, status, body):
+            self.status, self._b = status, body
+
+        def read(self, n=-1):
+            return self._b
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def opener(req, timeout=None):
+        status, body = pages[req.full_url]
+        return Resp(status, body)
+
+    result = ve.verify_public(
+        "https://venue.test/preview/1", expect_contains="marker inside",
+        opener=opener,
+        follow_link_pattern=r"https://venue\.test/dl/[^\"]+")
+    assert result["ok"] is True
+    assert result["followed_link"] == "https://venue.test/dl/signed/1"
+    assert result["linked_status"] == 200
 
 
 def test_webform_multipart_and_url_extraction():

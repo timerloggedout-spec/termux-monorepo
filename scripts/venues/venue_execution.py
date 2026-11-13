@@ -64,11 +64,7 @@ def save_state(path: Path, state: dict) -> None:
                           encoding="utf-8")
 
 
-def verify_public(url: str, expect_contains: str | None = None,
-                  opener=None) -> dict:
-    """Unauthenticated verification read: a brand-new opener, NO
-    credential headers of any kind (the no-login check is the
-    evidence — a seat's authenticated fetch proves nothing)."""
+def _fetch(url: str, open_fn) -> tuple[int, bytes]:
     req = urllib.request.Request(url, method="GET")
     # No CREDENTIAL headers — that is the no-login invariant. A
     # descriptive User-Agent is still sent: several public hosts
@@ -79,20 +75,48 @@ def verify_public(url: str, expect_contains: str | None = None,
                    "(+https://github.com/timerloggedout-spec/termux-monorepo)")
     assert "Authorization" not in req.headers
     assert "Cookie" not in req.headers
+    with open_fn(req, timeout=30) as resp:
+        return resp.status, resp.read(262144)
+
+
+def verify_public(url: str, expect_contains: str | None = None,
+                  opener=None, follow_link_pattern: str | None = None) -> dict:
+    """Unauthenticated verification read: NO credential headers of
+    any kind (the no-login check is the evidence — a seat's
+    authenticated fetch proves nothing). Some venues answer the
+    public URL with a preview/interstitial page that LINKS the
+    artifact; `follow_link_pattern` (a regex over the page) names
+    that one public link, followed once, still unauthenticated."""
+    import re
     open_fn = opener or urllib.request.urlopen
     try:
-        with open_fn(req, timeout=30) as resp:
-            body = resp.read(65536)
-            status = resp.status
+        status, body = _fetch(url, open_fn)
     except Exception as exc:
         return {"ok": False, "status": None, "bytes": 0,
                 "error": f"{type(exc).__name__}: {exc}"[:200]}
-    ok = status == 200
+    result = {"ok": status == 200, "status": status, "bytes": len(body),
+              "contains_expected": None}
     if expect_contains:
-        ok = ok and expect_contains.encode() in body
-    return {"ok": ok, "status": status, "bytes": len(body),
-            "contains_expected": (expect_contains in body.decode(
-                "utf-8", "replace")) if expect_contains else None}
+        found = expect_contains.encode() in body
+        result["contains_expected"] = found
+        result["ok"] = result["ok"] and found
+        if not found and follow_link_pattern and status == 200:
+            m = re.search(follow_link_pattern,
+                          body.decode("utf-8", "replace"))
+            if m:
+                link = m.group(0)
+                result["followed_link"] = link
+                try:
+                    lstatus, lbody = _fetch(link, open_fn)
+                    result["linked_status"] = lstatus
+                    result["linked_bytes"] = len(lbody)
+                    found = expect_contains.encode() in lbody
+                    result["contains_expected"] = found
+                    result["ok"] = lstatus == 200 and found
+                except Exception as exc:
+                    result["linked_error"] = (
+                        f"{type(exc).__name__}: {exc}"[:200])
+    return result
 
 
 def plan_execution(census: dict, bindings: dict, requirement_id: str) -> dict:
@@ -145,7 +169,9 @@ def execute(entry_slug: str, requirement_id: str, artifact: str | None,
         # SUBMIT-ONCE: read state, re-verify the recorded URL, never
         # re-send. The adapter is not invoked on this path.
         verify = verify_public(prior["public_url"],
-                               binding.get("verify_contains"))
+                               binding.get("verify_contains"),
+                               follow_link_pattern=binding.get(
+                                   "verify_link_pattern"))
         return {"schema": "venue-execution-receipt/v1", "entry": entry_slug,
                 "requirement": requirement_id, "outcome": "already_executed",
                 "venue": venue, "public_url": prior["public_url"],
@@ -160,7 +186,9 @@ def execute(entry_slug: str, requirement_id: str, artifact: str | None,
                 "detail": result.get("detail"), "at": stamp,
                 "run_id": run_id}
     verify = verify_public(result["public_url"],
-                           binding.get("verify_contains"))
+                           binding.get("verify_contains"),
+                           follow_link_pattern=binding.get(
+                               "verify_link_pattern"))
     record = {"venue": venue, "public_url": result["public_url"],
               "verified": bool(verify["ok"]), "verify": verify,
               "at": stamp, "run_id": run_id,

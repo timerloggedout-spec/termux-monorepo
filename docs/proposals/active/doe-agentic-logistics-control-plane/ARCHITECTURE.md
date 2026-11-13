@@ -8,6 +8,7 @@
 | Stateful orchestration | Graph state, node transitions, fan-out, checkpoints | Existing LangGraph integration PR #5045 | Cross-worker durable timer/queue authority |
 | Durable execution | Long-running workflow state and recovery across workers | Existing Temporal adapter | Model selection and experiment truth |
 | Symbolic planner | Action preconditions/effects, goal reachability, precedence | PDDL + Unified Planning / compatible planner | Live quota, continuously changing numeric capacity |
+| Learned logistics policy | Data-driven local navigation/task execution over a validated library map | Existing Library RL Q-learning prototype, behind a typed adapter | Hard safety constraints, task authority, symbolic precedence or production admission |
 | Constraint optimizer | Assignment, capacity, time windows, routing | OR-Tools CP-SAT / Routing | Provider entitlement and execution authorization |
 | Runtime controller | Bounded admission, pacing, concurrency/backpressure | Fixed / hysteresis / PI / MPC treatments | Credential management, paid fallback, policy relaxation |
 | Provider capability/admission | Exact route, model/account, quota, terms, health and data policy | Existing provider index, #5134/#5160, quota registry | Discovery-only catalog claims as runtime admission |

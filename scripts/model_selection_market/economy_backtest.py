@@ -41,7 +41,7 @@ def _integer(value: Any, name: str, low: int, high: int) -> int:
 def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     required = {
         "schema_version", "scenario_id", "seed", "horizon_rounds",
-        "reward_units", "participants", "policy",
+        "reward_units", "participants", "policy", "source",
     }
     if not isinstance(manifest, dict) or set(manifest) != required:
         raise ValueError("manifest fields must match economy-backtest/v1")
@@ -77,6 +77,40 @@ def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         origin = row["origin_id"]
         if origin is not None and (not isinstance(origin, str) or origin not in ids):
             raise ValueError("origin_id must reference a cohort participant or null")
+    source = manifest["source"]
+    source_keys = {
+        "kind", "path", "git_blob_sha", "event_count", "participant_class",
+        "unit", "probability_model", "success_probability_bps",
+    }
+    if not isinstance(source, dict) or set(source) != source_keys:
+        raise ValueError("source fields must match economy-backtest/v1")
+    if source["kind"] not in ("synthetic_cohort", "wallet_ledger_snapshot"):
+        raise ValueError("unsupported source kind")
+    if source["kind"] == "wallet_ledger_snapshot":
+        if (not isinstance(source["path"], str) or not source["path"]
+                or not isinstance(source["git_blob_sha"], str)
+                or not re.fullmatch(r"[0-9a-f]{40}", source["git_blob_sha"])):
+            raise ValueError("wallet ledger source requires path and Git blob SHA")
+        _integer(source["event_count"], "source.event_count", 1, 10_000_000)
+        if source["participant_class"] != "speculator":
+            raise ValueError("wallet ledger participant_class must be speculator")
+        if source["unit"] != "soft_quota_token (observational)":
+            raise ValueError("wallet ledger unit must match the source record")
+        if source["probability_model"] != "uniform_uninformed_prior":
+            raise ValueError("wallet ledger simulation requires an explicit uninformed prior")
+        _integer(source["success_probability_bps"], "source.success_probability_bps", 0, BPS)
+        for row in normalized:
+            if row["success_probability_bps"] != source["success_probability_bps"]:
+                raise ValueError("participant probabilities must match the declared uniform prior")
+            if row["origin_id"] is not None:
+                raise ValueError("wallet ledger source has no verified origin-lineage mapping")
+    else:
+        if any(source[key] is not None for key in ("path", "git_blob_sha", "participant_class", "success_probability_bps")):
+            raise ValueError("synthetic source fields must remain null")
+        _integer(source["event_count"], "source.event_count", 0, 0)
+        if source["unit"] != "paper_point" or source["probability_model"] != "per_participant_assumptions":
+            raise ValueError("synthetic source labels must identify the scenario assumptions")
+
     policy = manifest["policy"]
     if not isinstance(policy, dict) or set(policy) != {
         "policy_id", "cull_after_misses", "pool_distribution_bps", "royalty_rate_bps"
@@ -96,6 +130,7 @@ def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         "seed": seed, "horizon_rounds": rounds, "reward_units": reward,
         "participants": sorted(normalized, key=lambda row: row["participant_id"]),
         "policy": policy,
+        "source": source,
     }
 
 
@@ -124,6 +159,82 @@ def _allocate(pool: int, recipients: list[str], weights: dict[str, int]) -> dict
         allocations[actor] += 1
         remainder -= 1
     return {actor: units for actor, units in allocations.items() if units}
+
+
+def _source_snapshot(manifest: dict[str, Any]) -> dict[str, Any]:
+    source = manifest["source"]
+    if source["kind"] == "synthetic_cohort":
+        return {
+            "kind": "synthetic_cohort",
+            "version": "cohort/v1",
+            "digest": digest({
+                "scenario_id": manifest["scenario_id"],
+                "participants": manifest["participants"],
+            }),
+            "probability_model": source["probability_model"],
+        }
+
+    path = Path(source["path"])
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise ValueError(f"cannot read pinned wallet ledger: {path}") from exc
+    git_blob = hashlib.sha1(
+        f"blob {len(raw)}\\0".encode("ascii") + raw
+    ).hexdigest()
+    if git_blob != source["git_blob_sha"]:
+        raise ValueError("wallet ledger Git blob SHA differs from the pinned source")
+    try:
+        events = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line.strip()]
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("wallet ledger contains invalid UTF-8 or JSONL") from exc
+    if len(events) != source["event_count"]:
+        raise ValueError("wallet ledger event count differs from the pinned source")
+    from scripts.moneyball.wallet_ledger import verify
+    errors, balances, _genesis = verify(events)
+    if errors:
+        raise ValueError("wallet ledger verification failed: " + "; ".join(errors[:5]))
+    provisioned = {
+        event["wallet_id"]: event
+        for event in events
+        if event.get("type") == "wallet_provisioned"
+        and event.get("class") == source["participant_class"]
+        and str(event.get("wallet_id", "")).startswith("paper:")
+    }
+    expected = {row["participant_id"]: row for row in manifest["participants"]}
+    if set(provisioned) != set(expected):
+        raise ValueError("scenario participants must exactly match source speculator wallets")
+    for wallet_id, event in provisioned.items():
+        row = expected[wallet_id]
+        if balances.get(wallet_id, 0) != row["initial_balance"]:
+            raise ValueError(f"starting balance mismatch for {wallet_id}")
+        if event.get("unit") != source["unit"]:
+            raise ValueError(f"wallet unit mismatch for {wallet_id}")
+    pool_wallets = {
+        event["wallet_id"] for event in events
+        if event.get("type") == "wallet_provisioned"
+        and str(event.get("wallet_id", "")).startswith("pool:")
+    }
+    pool_balance = sum(balances.get(wallet_id, 0) for wallet_id in pool_wallets)
+    return {
+        "kind": "wallet_ledger_snapshot",
+        "path": source["path"],
+        "git_blob_sha": git_blob,
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "event_count": len(events),
+        "wallet_count": len(provisioned) + len(pool_wallets),
+        "participant_count": len(provisioned),
+        "pool_wallet_count": len(pool_wallets),
+        "starting_participant_units": sum(row["initial_balance"] for row in manifest["participants"]),
+        "starting_pool_units": pool_balance,
+        "observed_cull_events": sum(event.get("type") == "cull_transferred" for event in events),
+        "observed_pool_movement_events": sum(
+            event.get("type") in ("pool_contribution", "pool_distribution") for event in events
+        ),
+        "unit": source["unit"],
+        "probability_model": source["probability_model"],
+        "success_probability_bps": source["success_probability_bps"],
+    }
 
 
 def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED") -> dict[str, Any]:
@@ -203,7 +314,7 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
                     emit("cull", {
                         "round": round_number, "culled_participant": actor,
                         "wallet_balance_at_cull": moved,
-                        "pool_destination": "promotions-incentives-bonuses",
+                        "pool_destination": "pool:other:pooled-buckets",
                     })
 
         active = [actor for actor, state in actors.items() if state["status"] == "active"]
@@ -252,18 +363,14 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
         "balance_hhi": sum(share * share for share in shares),
         "conservation_residual_units": conservation,
     }
-    source_digest = digest({
-        "scenario_id": manifest["scenario_id"],
-        "participants": manifest["participants"],
-    })
+    source_snapshot = _source_snapshot(manifest)
     run_manifest = {
         "simulation_version": SIMULATION_VERSION,
         "implementation": {"path": "scripts/model_selection_market/economy_backtest.py",
                            "commit_sha": code_commit_sha},
         "runtime": f"python-{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "manifest": manifest,
-        "source": {"kind": "synthetic_cohort", "version": "cohort/v1",
-                   "digest": source_digest},
+        "source": source_snapshot,
         "manifest_digest": digest(manifest),
     }
     run_id = digest(run_manifest)

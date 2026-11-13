@@ -27,7 +27,7 @@ The receipt binds the manifest SHA-256 and returns `action: preflight_only`, wit
 
 ## Code boundary
 
-`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only manifest validation. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.
+`scripts/model_selection_market/wallet_promotion.py` performs deterministic, read-only manifest validation against `schemas/wallet-promotion.schema.json` policy shape. It performs zero network calls, key generation, signing, funding, wallet creation, or settlement. Its receipt says `preflight_only`; it never asserts that a wallet exists.
 
 Testnet and production use distinct chain IDs, signer namespaces, asset classes, credentials, and operation-idempotency domains. Treat every funding or settlement command as a separately authorized action. Preserve one source of accounting truth per rail and reconcile rail-specific events into governed projections.
 

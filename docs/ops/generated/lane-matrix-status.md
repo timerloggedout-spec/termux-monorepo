@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-13T13:51:04Z)
+# Lane matrix status (2026-11-13T13:52:21Z)
 
-- Master: `b0ec175b4ba599b0cadada3702f7750629bdd2ee`
+- Master: `ff4466811a120f5a80924728dd618c2cb8fc7aaa`
 - Open PRs: **374**
 - Oldest: #47 (99.92d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -30,7 +30,7 @@
 | #5034 | 6.95 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 99.92 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 97.67 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 96.53 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 96.54 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 59.25 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 55.83 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 53.81 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
@@ -50,11 +50,11 @@
 | #1537 | 22.2 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 21.53 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 20.45 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 20.44 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 20.45 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 20.44 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 20.32 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 19.56 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 19.48 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1650 | 19.49 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 17.52 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 17.11 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 17.1 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |

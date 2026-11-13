@@ -286,6 +286,29 @@
     "episode_id": "app-termux-fleet-delphioracle@unknown-1794540997",
     "probed": false
    }
+  },
+  {
+   "bucket": "gemini-api-free",
+   "kind": "provider-arm",
+   "state": "unreadable",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "lower_bound",
+    "value": 1,
+    "unit": "requests",
+    "as_of": "2026-11-13T22:44:41Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "gemini-api-free@unknown-1794609881",
+    "probed": true
+   },
+   "measured": {
+    "via": "quota_probe",
+    "event_id": "probe-gemini-api-free-1794609881-43521679705",
+    "at": "2026-11-13T22:44:41Z"
+   }
   }
  ],
  "alerting": []

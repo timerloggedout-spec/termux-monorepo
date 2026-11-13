@@ -125,16 +125,14 @@ def select_arm(registry: dict, census: dict, today: str,
             raise ArmFailure(f"requested arm is quota-terminal for the PT arm-day: {requested}")
         return arm, "explicit-request"
     pool = eligible_arms(registry, census, today)
+    # #5160 clause 5: every arm competes on the same gate. Eligible
+    # free-tier arms in registry order, then credit-funded -- no harness-
+    # class preference, no Gemini fallback-of-record. Gemini is selected
+    # only as the first eligible free-tier arm in registry order, never
+    # by precedence over another eligible arm.
     free_pool = [a for a in pool if (a.get("budget") or {}).get("class") == "free-tier"]
-    generic_free = [a for a in free_pool if a.get("harness") == "generic-agent-loop"]
-    if generic_free:
-        return generic_free[0], "rotation: first eligible free-tier generic arm (registry order)"
-    gemini = arms.get("gemini-cli")
-    if gemini and gemini.get("selectable") and not arm_is_quota_terminal("gemini-cli", census, today):
-        return gemini, "fallback-of-record: eligible free-tier Gemini precedes credit-funded arms"
-    generic_credit = [a for a in pool if a.get("harness") == "generic-agent-loop"]
-    if generic_credit:
-        return generic_credit[0], "rotation: first eligible credit-funded generic arm (registry order)"
+    if free_pool:
+        return free_pool[0], "rotation: first eligible free-tier arm (registry order)"
     if pool:
         return pool[0], "rotation: first eligible arm (registry order)"
     raise ArmFailure("no eligible arm: every arm is candidate, failed, or quota-terminal today")
@@ -545,8 +543,10 @@ def main(argv=None) -> int:
     usage = {"status": "not_established"}
 
     # Automatic routing may rotate across eligible free-tier generic arms
-    # after a provider 429. Credit-funded arms never leapfrog the eligible
-    # free-tier Gemini fallback; explicit requests remain single-arm.
+    # after a provider 429. Credit-funded arms never leapfrog an eligible
+    # free-tier arm (Gemini included); when Gemini is the eligible
+    # free-tier arm it is driven by its own step (#5160 clause 5).
+    # Explicit requests remain single-arm.
     candidates = [arm]
     if args.arm == "auto":
         eligible = eligible_arms(registry, census, today_pt())

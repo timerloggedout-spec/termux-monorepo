@@ -17,9 +17,10 @@ unknown):
      remedy. The claim (comment + label) is the exactly-once mutex.
   2. arm selection — #5151 registry + census feed: eligible arms in
      registry order, free-tier before credit-funded; quota-terminal
-     arms skipped for the arm-day; if no generic arm is eligible the
-     Gemini arm is the fallback of record and the fire is stamped
-     `constrained-arm` (never a preference).
+     arms skipped for the arm-day. #5160 clause 5: no arm is a fallback
+     of record -- Gemini competes on the same gate; when it is the sole
+     eligible arm the fire is stamped `constrained-arm` (never a
+     preference).
   3. quota gate — per-arm budgets read from the registry's Cadence
      LEDGER (#5152) mirror + the census feed's quota_terminal flags.
      Draws come from the usage record when present; an absent or
@@ -279,6 +280,7 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
             return None, "preflight_quota_terminal_today"
         if headroom < 1:
             return None, "preflight_headroom_zero"
+        reset = _reset_from_usage(usage, arm["arm_id"])
         return {
             "bucket": "gemini-api-free",
             "source": "fleet-draw-coverage",
@@ -286,16 +288,35 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
             "headroom": headroom,
             "headroom_kind": "upper_bound_only",
             "coverage_stamp": coverage.get("stamped_at"),
-            "reset_window": "midnight PT",
+            "reset_window": reset["reset_window"],
+            "reset_tz": reset["reset_tz"],
         }, None
+    reset = _reset_from_usage(usage, arm["arm_id"])
     return {
         "bucket": f"{arm['arm_id']}-free-tier",
         "source": "registry-budget-mirror+recorded-draws",
         "ts": now.isoformat().replace("+00:00", "Z"),
         "headroom": headroom,
         "headroom_kind": "recorded_draws",
-        "reset_window": "daily",
+        "reset_window": reset["reset_window"],
+        "reset_tz": reset["reset_tz"],
     }, None
+
+
+def _reset_from_usage(usage: dict | None, arm_id: str) -> dict:
+    """Reset window/tz from the usage record's budgets, else UNKNOWN.
+
+    #5160 gap 2: budget records must carry explicit {reset_window,
+    reset_tz} (T2 publication). Until the snapshot supplies them, the
+    stamp says UNKNOWN -- never a hardcoded calendar inference
+    (QUOTA-RESET-CONTRACT: observe, never infer a reset).
+    """
+    budgets = (usage or {}).get("budgets") or {}
+    entry = budgets.get(arm_id) or {}
+    return {
+        "reset_window": entry.get("reset_window") or "unknown",
+        "reset_tz": entry.get("reset_tz") or "unknown",
+    }
 
 
 def build_stamp(filing: dict, arm: dict, quota_class: str,

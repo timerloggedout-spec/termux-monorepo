@@ -320,7 +320,8 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
 
     def fund(self, owner, units=100):
         self.graph.open_account(owner, event_id="open-" + owner, provenance=dict(PROV))
-        self.graph.issue_points(owner, units, event_id="issue-" + owner, provenance=dict(PROV))
+        if units:
+            self.graph.issue_points(owner, units, event_id="issue-" + owner, provenance=dict(PROV))
 
     def account(self, snapshot, owner):
         return next(row for row in snapshot["accounts"] if row["owner"] == owner)

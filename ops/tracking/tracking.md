@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-13T09:54:38Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-13T10:08:07Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-13T09:54:37Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`40551` read_at=`2026-11-13T09:54:37Z`
+Sources: PR feed read_at=`2026-11-13T10:08:07Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`40679` read_at=`2026-11-13T10:08:07Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknown=8
 
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknow
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #5020 `a07d479c493f` 2026-11-06T01:54:38Z | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5069 `a60dd2b068f5` 2026-11-07T19:30:33Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5323 — fix(quota): automate public readings freshness on a six-hour cadence |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5326 — fix(quota): automate public readings and self-count refresh |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5238 `1b573fde5351` 2026-11-12T14:41:48Z | land/close PR #5222 — docs(architecture): reconcile swarm routing control planes |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |

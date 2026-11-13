@@ -36,7 +36,7 @@ system_of_record:
   provider_population:
     - "ops/quota/registry.json"
     - "PR #5134 — provider participation index; not merged at order preparation"
-    - "issue #5160 — provider/model inference-arm pool and autoQuotaCadence repair"
+    - "issue #5160 — provider/model inference-arm pool and autoQuotaCadence repair; implementation PR #5258 merged 2026-11-13 (87dd55c618fd4c4dc2fdc71a5902539ae9a32a1e)"
   quota_and_availability:
     - "ops/quota/provider-managers.json"
     - "ops/cadence/provider-onboarding.json"
@@ -61,7 +61,7 @@ system_of_record:
     proposal_pipeline: "PR #5145"
     review_issue: "#5146"
   related_owner_tasks:
-    provider_pool_and_cadence: "#5134 -> #5160"
+    provider_pool_and_cadence: "#5134 -> #5160 (PR #5258 merged; first live conversion still unobserved)"
     quota_ledger: "#5152"
     build_dispatch_harness_arms: "#5151"
     admitted_build_dispatch_executor: "#5176"
@@ -97,11 +97,11 @@ dispatch:
     documented_contract: "QUE admission drain re-evaluates deferred-by-tier filings as queue clears"
     implementation_status: "NOT_ESTABLISHED"
     observed:
-      - "swarm-admission.yml triggers only on issues.opened and issues.reopened"
+      - "swarm-admission.yml triggers only on issues.opened and issues.reopened; no edited-event re-evaluation was observed"
       - "dispatch-watchdog.yml scans dispatch-queued unclaimed tasks for aging/escalation"
       - "scripts/dispatch/dispatch_watchdog.py does not inspect deferred-by-tier or re-run admission"
-      - "No dedicated QUE admission drain workflow was found in the current workflow inventory"
-    current_coordination_task: "#5195 remains deferred-by-tier"
+      - "Fix 3b is explicitly recorded as PHANTOM in #4977: the deferred re-evaluation drain has no implementation; #4979 repaired feed collection but did not itself land the drain"
+    current_coordination_task: "#5195 remains deferred-by-tier; no re-open/re-admission performed because reopening also invokes the generic issue-open listener control gap"
     rule: >-
       Do not remove deferred-by-tier, add swarm-admitted, reopen the issue, or
       claim execution to bypass admission. The deferred re-evaluation mechanism

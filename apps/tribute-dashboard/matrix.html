@@ -4,19 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LANE-MATRIX</title>
-<meta name="description" content="LANE-MATRIX live board — monorepo PR lanes. Not nested under Tribute.">
+<link rel="canonical" href="https://timerloggedout-spec.github.io/matrix/">
+<link rel="alternate" type="text/markdown" href="/matrix/index.md">
+<link rel="describedby" href="/llms.txt">
+<meta property="og:title" content="LANE-MATRIX">
+<meta property="og:description" content="Live board for monorepo pull-request lanes, showing lane assignment, age, reason, and source-backed status. Separate from Tribute.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timerloggedout-spec.github.io/matrix/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"LANE-MATRIX","headline":"LANE-MATRIX","description":"Live board for monorepo pull-request lanes, showing lane assignment, age, reason, and source-backed status. Separate from Tribute.","url":"https://timerloggedout-spec.github.io/matrix/","dateModified":"2026-11-13"}</script>
+<meta name="description" content="Live board for monorepo pull-request lanes, showing lane assignment, age, reason, and source-backed status. Separate from Tribute.">
 <link rel="stylesheet" href="./dashboard.css">
 <script src="./site-nav.js" defer></script>
-<style>main{padding-top:1.5rem}.table-wrap{border:1px solid var(--line);border-radius:12px}.table{min-width:760px}</style>
+<style>main{padding-top:1.5rem}.table-wrap{border:1px solid var(--line);border-radius:12px}.table{min-width:760px}.skip-link{position:absolute;left:-9999px;top:auto}.skip-link:focus{left:1rem;top:1rem;z-index:1000;background:#fff;color:#000;padding:.75rem 1rem;border-radius:.5rem}
+</style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <nav id="site-primary-nav" aria-label="Primary"></nav>
-<main>
+<main id="main-content">
   <p class="label">Live board · not a PR · not Tribute</p>
   <h1>LANE-MATRIX</h1>
-  <p class="lede" id="meta">Loading matrix…</p>
+  <p class="lede" id="meta">Live lane status is loaded from the generated lane-matrix evidence feed in the termux-monorepo. If the feed is unavailable, the board reports an unavailable state rather than inventing lane status.</p>
   <div class="grid" id="kpis"></div>
   <div class="table-wrap"><table class="table"><thead><tr><th>PR</th><th>Lane</th><th>Days</th><th>Reason</th><th>Title</th></tr></thead><tbody id="rows"></tbody></table></div>
+  <section aria-labelledby="matrix-guide"><h2 id="matrix-guide">How to read this board</h2><p>The board lists pull requests, assigned lanes, elapsed days, recorded reasons, and titles. It is a status projection, not a pull request and not the Tribute dashboard.</p></section>
+  <section aria-labelledby="matrix-sources"><h2 id="matrix-sources">Data and provenance</h2><p>Generated data: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.json">lane-matrix status JSON</a>. Policy: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/LANE-MATRIX.md">LANE-MATRIX</a>. Shared terminology: <a href="https://timerloggedout-spec.github.io/glossary.md">project glossary</a>. Site discovery: <a href="/llms.txt">llms.txt</a>.</p></section>
 </main>
 <script>
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

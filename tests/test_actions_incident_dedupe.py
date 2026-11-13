@@ -21,7 +21,7 @@ class ActionsIncidentDedupeTests(unittest.TestCase):
         self.assertIn("gh issue create", cadence)
         # Scheduled cadence was consolidated into the Tier-0 dispatcher.
         self.assertNotIn('cron: "12 */4 * * *"', cadence)
-        self.assertIn("cron: '*/10 * * * *'", dispatcher)
+        self.assertIn("cron: '*/30 * * * *'", dispatcher)
 
     def test_first_fingerprint_requests_notification_and_records_run(self):
         result = reconcile_incident(

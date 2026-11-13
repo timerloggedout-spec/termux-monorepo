@@ -4,7 +4,17 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>termux-monorepo · Project hub</title>
-<meta http-equiv="refresh" content="8;url=https://timerloggedout-spec.github.io/tribute/"/>
+<meta name="description" content="A thin project navigation hub for the termux-monorepo, with links to the authoritative source repository, operations documentation, dashboards, and project surfaces.">
+<link rel="canonical" href="https://timerloggedout-spec.github.io/termux-monorepo/">
+<link rel="alternate" type="text/markdown" href="/termux-monorepo/index.md">
+<link rel="describedby" href="/llms.txt">
+<meta property="og:title" content="Termux Monorepo — Project Hub">
+<meta property="og:description" content="A thin project navigation hub for the termux-monorepo, with links to the authoritative source repository, operations documentation, dashboards, and project surfaces.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://timerloggedout-spec.github.io/termux-monorepo/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Termux Monorepo — Project Hub","headline":"Termux Monorepo — Project Hub","description":"A thin project navigation hub for the termux-monorepo, with links to the authoritative source repository, operations documentation, dashboards, and project surfaces.","url":"https://timerloggedout-spec.github.io/termux-monorepo/","dateModified":"2026-11-13"}</script>
+
 <style>
   :root { --bg:#0b0d10; --text:#f2f4f7; --muted:#9aa3ad; --accent:#4fd1c5; --hair:#22272e; --surface:#12151a; }
   * { box-sizing: border-box; }
@@ -19,15 +29,17 @@
   .btn { display:inline-block; padding:12px 18px; border-radius:10px; background:var(--accent); color:#04211f; }
   .btn.ghost { background:transparent; color:var(--text); border:1px solid var(--hair); }
   .meta { font-size:0.85rem; color:var(--muted); margin-top:24px; }
+ .skip-link{position:absolute;left:-9999px;top:auto}.skip-link:focus{left:1rem;top:1rem;z-index:1000;background:#fff;color:#000;padding:.75rem 1rem;border-radius:.5rem}
 </style>
-<script src="./site-nav.js" defer></script>
+
 </head>
 <body>
-<div class="wrap">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<main id="main-content" class="wrap">
   <h1>termux-monorepo · Project hub</h1>
   <p>This is the <strong>GitHub project Pages</strong> root for the monorepo — not the marketing site and not a second copy of the ops dashboard.</p>
   <div class="card">
-    <p><strong>Site map</strong></p>
+    <h2>Site map</h2>
     <ul>
       <li><a href="https://timerloggedout-spec.github.io/">Marketing / referrals</a> — partners & referral programmes landing</li>
       <li><a href="https://timerloggedout-spec.github.io/tribute/">Tribute dashboard</a> — ops KPIs (canonical UI)</li>
@@ -37,12 +49,14 @@
       <li><a href="https://termux-monorepo.vercel.app">Vercel preview portal</a> (WIP)</li>
     </ul>
   </div>
+  <h2>Project sources</h2><p>Implementation authority lives in the source repository and its commit, pull-request, and workflow history. Start with the <a href="https://github.com/timerloggedout-spec/termux-monorepo">termux-monorepo repository</a>, its <a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/ops">operations documentation</a>, and <a href="https://github.com/timerloggedout-spec/termux-monorepo/actions">workflow evidence</a>.</p>
+  <h2>How to use this hub</h2><p>This is a navigation surface, not a second copy of the Tribute dashboard. Use the project links below to reach each canonical surface. Consult the <a href="https://timerloggedout-spec.github.io/glossary.md">project glossary</a> for terminology and <a href="/llms.txt">llms.txt</a> for agent discovery.</p>
   <div class="nav">
     <a class="btn" href="https://timerloggedout-spec.github.io/tribute/">Open Tribute →</a>
     <a class="btn ghost" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/generated/lane-matrix-status.md">Open lane matrix</a>
     <a class="btn ghost" href="https://timerloggedout-spec.github.io/">Marketing home</a>
   </div>
-  <p class="meta">Auto-redirect to the dashboard in a few seconds. Project Pages stays a thin hub so it is never at parity with marketing or a silent twin of <code>/help-wanted/</code>.</p>
-</div>
+  <p class="meta">Project Pages stays a thin hub so it is never at parity with marketing or a silent twin of the <code>/help-wanted/</code> dashboard.</p>
+</main>
 </body>
 </html>

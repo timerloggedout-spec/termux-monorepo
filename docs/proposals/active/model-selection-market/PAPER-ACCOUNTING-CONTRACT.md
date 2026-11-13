@@ -21,7 +21,7 @@ The supported lifecycle is explicit account opening, attributed issuance, reserv
 
 Culling is one atomic event in the existing market journal. Record the participant, stable decision ID, reason, final score snapshot, SHA-256 evidence digest, capture timestamp, target pool, available-balance disposition, and an explicit disposition for every active reservation.
 
-- `available_disposition` is `retain` or `donate`. Donation transfers the participant's available balance into the named `pool:<pool_id>` account.
+- `available_disposition` is `retain` or `donate`. Donation transfers the participant's available balance into the named `pool:<pool_id>` account. `retain` leaves the balance frozen on the closed participant account. A reservation `refund` releases its hold back to that same paper account; it is not an external cash or token payout.
 - Every active reservation appears exactly once in `reservation_dispositions`. `refund` releases the hold to the participant; `donate` forfeits the held amount into the pool.
 - A cull event closes the participant account to new issuance, reservations, cards, bets, and settlement receipts. Preserve the final score/evidence snapshot and the complete decision in the event payload. Mark the participant's remaining open observational bets as culled while preserving their original journal events.
 - When a culled participant is the recipient of another participant's active card offer, refund that hold to its payer. Apply donation only to reservations owned by the culled participant.

@@ -1,0 +1,101 @@
+{
+  "base": {
+    "schema_version": 1,
+    "scenario_id": "economy-pilot-cohort-001",
+    "seed": 20261113,
+    "horizon_rounds": 30,
+    "reward_units": 100,
+    "participants": [
+      {
+        "participant_id": "origin-alpha",
+        "success_probability_bps": 8200,
+        "initial_balance": 1000,
+        "origin_id": null
+      },
+      {
+        "participant_id": "builder-beta",
+        "success_probability_bps": 7100,
+        "initial_balance": 500,
+        "origin_id": "origin-alpha"
+      },
+      {
+        "participant_id": "builder-gamma",
+        "success_probability_bps": 6500,
+        "initial_balance": 500,
+        "origin_id": "origin-alpha"
+      },
+      {
+        "participant_id": "scout-delta",
+        "success_probability_bps": 5200,
+        "initial_balance": 300,
+        "origin_id": null
+      },
+      {
+        "participant_id": "reviewer-epsilon",
+        "success_probability_bps": 4700,
+        "initial_balance": 300,
+        "origin_id": null
+      },
+      {
+        "participant_id": "newcomer-zeta",
+        "success_probability_bps": 3500,
+        "initial_balance": 100,
+        "origin_id": null
+      }
+    ],
+    "policy": {
+      "policy_id": "baseline-paper-v1",
+      "cull_after_misses": 4,
+      "pool_distribution_bps": 2500,
+      "royalty_rate_bps": 0
+    },
+    "source": {
+      "kind": "synthetic_cohort",
+      "path": null,
+      "git_blob_sha": null,
+      "event_count": 0,
+      "participant_class": null,
+      "unit": "paper_point",
+      "probability_model": "per_participant_assumptions",
+      "success_probability_bps": null
+    }
+  },
+  "policies": [
+    {
+      "policy_id": "baseline-0bp",
+      "cull_after_misses": 4,
+      "pool_distribution_bps": 2500,
+      "royalty_rate_bps": 0
+    },
+    {
+      "policy_id": "royalty-250bp",
+      "cull_after_misses": 4,
+      "pool_distribution_bps": 2500,
+      "royalty_rate_bps": 250
+    },
+    {
+      "policy_id": "recycle-5000bp",
+      "cull_after_misses": 4,
+      "pool_distribution_bps": 5000,
+      "royalty_rate_bps": 0
+    },
+    {
+      "policy_id": "resilient-cull-6",
+      "cull_after_misses": 6,
+      "pool_distribution_bps": 2500,
+      "royalty_rate_bps": 0
+    }
+  ],
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55,
+    66,
+    77,
+    88,
+    99,
+    111
+  ]
+}

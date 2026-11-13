@@ -56,10 +56,10 @@ jobs:
             }
             const created = new Date(pr.created_at);
             const comments = await github.paginate(github.rest.issues.listComments,{owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,per_page:100});
-            for (const c of comments) if (new Date(c.created_at) >= created) scan("comment " + c.id,c.body);
+            for (const c of comments) if (c.user?.type === "User" && !c.user?.login?.endsWith("[bot]") && new Date(c.created_at) >= created) scan("comment " + c.id,c.body);
             const reviews = await github.paginate(github.rest.pulls.listReviews,{owner:context.repo.owner,repo:context.repo.repo,pull_number:pr.number,per_page:100});
-            for (const r of reviews) if (r.body && new Date(r.submitted_at || r.created_at) >= created) scan("review " + r.id,r.body);
+            for (const r of reviews) if (r.user?.type === "User" && !r.user?.login?.endsWith("[bot]") && r.body && new Date(r.submitted_at || r.created_at) >= created) scan("review " + r.id,r.body);
             const reviewComments = await github.paginate(github.rest.pulls.listReviewComments,{owner:context.repo.owner,repo:context.repo.repo,pull_number:pr.number,per_page:100});
-            for (const c of reviewComments) if (new Date(c.created_at) >= created) scan("inline review " + c.id,c.body);
+            for (const c of reviewComments) if (c.user?.type === "User" && !c.user?.login?.endsWith("[bot]") && new Date(c.created_at) >= created) scan("inline review " + c.id,c.body);
             if (violations.length) core.setFailed("DO-statement violations:\n" + violations.join("\n"));
             else core.info("✓ PR communication, new commit subjects, added prose/comments and PR discussion pass Siglary policy.");

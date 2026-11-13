@@ -154,6 +154,63 @@
      "update": "F1 standard-landed \u2192 production-proven: the preflight gate ran FIRST on quota-convergence's 45-op promotion batch (PR #4569 merged 0e400fd9b0f1) \u2014 verdict recorded in the PR body: GO-PUBLISHER, Publisher bucket 4986/5000 remaining after the read; 12 of 15 files rode the Publisher bucket. The 3 .github/workflows files split to a small PAT sub-batch \u2014 platform-forced (GitHub bars App tokens lacking workflows permission from workflow-file writes) \u2227 disclosed in the PR; the standard's PAT-fallback-only term holds (permission-forced, \u00ac bulk on PAT). Verdict line + merge state verified firsthand by quota-specialist 2026-11-03T19:20Z. The 2026-10-28 burst-publish pattern now has its counter-proof in production: bulk rode the App bucket behind a recorded preflight verdict."
     }
    ]
+  },
+  {
+   "at": "2026-11-13T03:25:00Z",
+   "auditor": "quota-specialist",
+   "events_covered": 9,
+   "findings": [
+    {
+     "cause": {
+      "bucket": "github.api.github_token (shared per-repo GITHUB_TOKEN, installation 1,000/h class)",
+      "lane_behavior": "Every Actions run's default-token API calls draw the single per-repo GITHUB_TOKEN bucket (1,000/h). Run creation measured ~2,100/h average with bursts of 100 runs/19s (69% issue_comment, 20% workflow_run, 11% push - build seat sample, #5219 receipt c.6823781174): every comment wakes every comment-subscribed workflow, and each created run's reads draw the same bucket, so the wall arrives fleet-wide across unrelated workflows at once (cluster 2026-11-12T10:51-10:52Z; annotation of record on collect-peer-responses 11:09Z, request DC83:1898F0). Bucket separation proven at the wall: PAT core healthy (289-335/5,000) and the Swarm App installation idle (1/12,500) in the same window (main firsthand 11:04-11:12Z).",
+      "pattern": "event-storm run creation drawing one shared default-token bucket",
+      "surface": "REST core (GitHub Actions)"
+     },
+     "class": "shared-actions-token-exhaustion",
+     "event_refs": [
+      "wall-2026-11-12T10:51:00Z-github-token"
+     ],
+     "id": "F5",
+     "improvement": "#5219 rate-limit governance program (QDesk-operated): (a) migrate evidence/collector workflows off the default token onto the Swarm App installation token (own 12,500/h bucket) - PR #5229 merged b0d647c231ee, 13 mints, collect-peer-responses first; (b) coalescing/concurrency on the top churners (subset landed in PR #5229); (d) Vercel git-link removal - PR #5218 merged 513aea6a7a52. Creation-layer re-fix (trigger trims + coalescing on the top cascade legs): PR #5248 merged f81db0c2cd.",
+     "owner": "QDesk (#5219 program) + build seat (execution)",
+     "state": "partial - migration and both cut rounds landed, but creation is not yet governed: the 1h post-#5229 verification window (13:09:35-14:09:35Z) measured 4,799 runs created vs the <200/h target and this bucket exhausted again inside it (51 installation-limit annotations on 28 runs - the recurrence audited in F6); the post-#5248 re-verify window (15:07:44-16:07:44Z) still failed the creation criterion (5,228 runs/h) while passing the annotation criterion (0 installation-limit hits in 1,596 swept). #5219 stays OPEN; next leg per QDesk = scheduled-aggregator consolidation, not more trigger trims."
+    },
+    {
+     "cause": {
+      "bucket": "github.api.github_token vs the Swarm App installation bucket (App 5560920, 12,500/h)",
+      "lane_behavior": "The #5219 re-fix audit doc (PR #5248, docs/ops/rate-limit-refix-audit.md) read all 51 in-window 'API rate limit exceeded for installation' annotations as the Swarm App installation bucket and stamped mint-effectiveness PROVEN. The annotation string does not discriminate buckets - the shared GITHUB_TOKEN is itself an installation token and produced the identical string in this episode's morning cluster - and the doc carried no per-job token identification and no Swarm /rate_limit read covering the window; it also stated the Swarm limit as 5,000/h against the 12,500/h limit of record.",
+      "pattern": "annotation-string attribution without per-job token identification",
+      "surface": "REST core (GitHub Actions)"
+     },
+     "class": "bucket-attribution-error",
+     "event_refs": [
+      "wall-2026-11-12T10:51:00Z-github-token"
+     ],
+     "id": "F6",
+     "improvement": "Attribution standard for register/audit work (quota-specialist adjudication 2026-11-12 on QDesk flag #5219 c.6827401300; evidence: the 51-hit annotation sweep + per-workflow token binding at the window commit b0d647c231ee): an installation-limit annotation is attributed by the failing job's token binding in its workflow file, never by the string alone. Ruling on the 51 hits: MIXED - 50 on the shared github_token (7 workflows carrying no Swarm mint: Agent PR Jules Handoff 10, Gemini review after peers 8, game-development dispatch 4, Agent review to auto Jules 2, RECON INTEL discovery 1, PR scope guard 1, Advisory CodeQL analysis 24 annotations on internal default-token calls) and 1 on the Swarm installation (collect-peer-responses, run 43227930089, 13:48:11Z - the migrated job's only installation-token call is its Swarm-bound collect step). Swarm-token workflows ran 1,936x in-window with exactly that 1 hit, so the Swarm bucket was at most momentarily exhausted; the systemic exhaustion was the shared token. The re-fix audit doc's root-cause section requires a correction leg (the all-Swarm claim, the 5,000/h figure, and mint-effectiveness PROVEN).",
+     "owner": "quota-specialist (attribution standard + ruling) + build seat (audit-doc correction)",
+     "state": "adjudicated - ruling of record 2026-11-12 (quota-specialist, firsthand token binding); PR #5248 merged on QDesk's ruling that the creation cuts are bucket-agnostic, so the doc correction is a follow-up leg, still owed; mint-effectiveness remains UNPROVEN (the migrated collect job itself drew the window's single Swarm-bucket 429)."
+    },
+    {
+     "cause": {
+      "bucket": "all fleet buckets (github.api.github_token first)",
+      "lane_behavior": "No live bucket-headroom alerting existed: this episode was found by seat reads after runs began failing (11:04Z diagnosis, ~13 min after the 10:51Z cluster), and the register + audit loop is post-hoc by design. The same blindness left post-fix verification to manual 1h sweeps.",
+      "pattern": "exhaustion discovered by failing runs, not by a watcher",
+      "surface": "REST core (GitHub Actions + API reads)"
+     },
+     "class": "bucket-headroom-blindness",
+     "event_refs": [
+      "wall-2026-11-12T10:51:00Z-github-token"
+     ],
+     "id": "F7",
+     "improvement": "QUE #5230 bucket-headroom alerting (Cadence ruling, #5219 c.6823803635): thresholds derived from live /rate_limit reads (never hardcoded), page on projected exhaustion before reset, poll floor 5m. Per the F6 adjudication, the watched bucket set names the shared github.api.github_token bucket explicitly, alongside PAT core, the AppID installation buckets and the Swarm mint path.",
+     "owner": "Cadence (ruling) + build seat (#5230 execution)",
+     "state": "filed - QUE #5230 open; claim routed to the build seat 2026-11-12 (route stamp #5230 c.6842823991); not yet landed at this audit."
+    }
+   ],
+   "id": "audit-006",
+   "register": "ops/quota/rate-limit-events.json"
   }
  ],
  "schema": "quota.rate-limit-event-audits/v1",

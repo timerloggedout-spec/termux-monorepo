@@ -51,7 +51,7 @@ The run ID binds the normalized manifest, synthetic cohort digest, and simulatio
 
 ## Policy comparison
 
-Use `run_matrix(base_manifest, policy_variants, seeds)` to compare policies across common seeds. Pre-register policy variants and seeds before reading results. Report means and per-seed rows; add confidence intervals and temporal holdouts when historical observations support them.
+Use `run_matrix(base_manifest, policy_variants, seeds)` or the committed `policy-matrix.json` to compare policies across common seeds. The matrix pins four policy variants × ten seeds (40 deterministic replications). Pre-register policy variants and seeds before reading results. Report means and per-seed rows; add confidence intervals and temporal holdouts when historical observations support them.
 
 The sample manifest sets royalty rate to zero. The test suite explores nonzero rates strictly as sensitivity hypotheses; the repository's owner-approved royalty percentage remains unset.
 

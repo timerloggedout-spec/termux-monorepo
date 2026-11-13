@@ -10,6 +10,14 @@ name: '🏟️ Venue Execution (QUE #5254)'
 # still stamps (named reason, never a silent seat fallback).
 
 on:
+  # The proof-entry run on PRs touching the machinery is the
+  # filing's live end-to-end evidence; SUBMIT-ONCE state makes
+  # repeat fires read-back-only.
+  pull_request:
+    paths:
+      - 'scripts/venues/**'
+      - '.github/workflows/venue-execution.yml'
+      - 'entries/venue-machinery-proof/**'
   workflow_dispatch:
     inputs:
       entry:
@@ -62,17 +70,21 @@ jobs:
         id: exec
         env:
           CLIPS_FLEET_TOKEN: ${{ secrets.CLIPS_FLEET_TOKEN }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
+          ARTIFACT: ${{ inputs.artifact || 'entries/venue-machinery-proof/proof.txt' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           set -euo pipefail
           ARTIFACT_FLAG=""
-          if [ -n "${{ inputs.artifact }}" ]; then
-            ARTIFACT_FLAG="--artifact ${{ inputs.artifact }}"
+          if [ -n "$ARTIFACT" ]; then
+            ARTIFACT_FLAG="--artifact $ARTIFACT"
           fi
           DRY_FLAG=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then DRY_FLAG="--dry-run"; fi
+          if [ "$DRY_RUN" = "true" ]; then DRY_FLAG="--dry-run"; fi
           python3 scripts/venues/venue_execution.py execute \
-            --entry "${{ inputs.entry }}" \
-            --requirement "${{ inputs.requirement }}" \
+            --entry "$ENTRY" \
+            --requirement "$REQUIREMENT" \
             $ARTIFACT_FLAG $DRY_FLAG \
             --run-id "${{ github.run_id }}" \
             --receipt-out receipt.json | tee receipt.txt
@@ -81,6 +93,8 @@ jobs:
         if: inputs.dry_run != true
         env:
           GH_TOKEN: ${{ steps.swarm.outputs.token }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
         run: |
           set -euo pipefail
           git config user.name "termux-fleet-swarm[bot]"
@@ -89,7 +103,7 @@ jobs:
           for attempt in 1 2 3; do
             git add ops/venue-execution/state.json
             if git diff --cached --quiet; then echo "state unchanged — no commit"; exit 0; fi
-            git commit -m "venue-execution: state for ${{ inputs.entry }}/${{ inputs.requirement }} (run ${{ github.run_id }}) [skip ci]"
+            git commit -m "venue-execution: state for $ENTRY/$REQUIREMENT (run ${{ github.run_id }}) [skip ci]"
             if git push origin HEAD:master; then echo "state pushed (attempt $attempt)"; exit 0; fi
             git fetch origin master && git rebase origin/master
           done
@@ -100,12 +114,14 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ steps.swarm.outputs.token }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
         run: |
           set -euo pipefail
           issue="$(python3 -c "
-          import json
-          b = json.load(open('entries/${{ inputs.entry }}/venue-execution.json'))
-          print((b.get('bindings') or {}).get('${{ inputs.requirement }}', {}).get('filing_issue', ''))")"
+          import json, os
+          b = json.load(open('entries/' + os.environ['ENTRY'] + '/venue-execution.json'))
+          print((b.get('bindings') or {}).get(os.environ['REQUIREMENT'], {}).get('filing_issue', ''))")"
           if [ -z "$issue" ]; then echo "no filing_issue in binding — receipt in artifact only"; exit 0; fi
           python3 - <<'PY' > receipt-comment.md
           import json, sys

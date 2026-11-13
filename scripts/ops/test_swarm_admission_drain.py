@@ -31,7 +31,7 @@ class FakeGitHub:
         self.deletes = []
 
     def get(self, path):
-        assert path.endswith("/comments")
+        assert "/comments?" in path
         return self.comments
 
     def post(self, path, body):

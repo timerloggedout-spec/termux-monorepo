@@ -1,0 +1,71 @@
+name: vercel-delphic-probe
+
+# [MUSEai]@{role:{vercel-specialist}} delphic-observatory defect 2026-11-13 (QDesk route)
+# Root Directory site/delphic-observatory = 404 on master (source lives only on
+# unmerged #5244/#5335 branches) -> every master push fires a failed preview +
+# failure email (106 failed previews/24h). Dispatch-only READ-ONLY probe:
+# project + link + rootDirectory + deployments + domains. No mutation.
+# Fix = separate vercel-delphic-unlink.yml, dispatched only after this probe is read.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-delphic-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+    steps:
+      - name: Read project, deployments, domains
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          P=delphic-observatory
+          curl -fsS -H "$AUTH" "$API/v9/projects/$P?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json"
+          PID=$(jq -r '.id' "$RUNNER_TEMP/proj.json")
+          {
+            echo "## vercel-delphic-probe"
+            echo ""
+            echo "- project: $PID / $P"
+            echo "- createdAt: $(jq -r '.createdAt' "$RUNNER_TEMP/proj.json")"
+            echo "- framework: $(jq -r '.framework // null' "$RUNNER_TEMP/proj.json")"
+            echo "- rootDirectory: $(jq -c '.rootDirectory // null' "$RUNNER_TEMP/proj.json")"
+            echo "- link: $(jq -c '.link // null' "$RUNNER_TEMP/proj.json")"
+            echo ""
+            echo "### latest 10 deployments (uid / target / state / createdAt / sha / ref / url)"
+            echo ""
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS -H "$AUTH" "$API/v6/deployments?projectId=$PID&limit=10&teamId=$SCOPE" > "$RUNNER_TEMP/deps.json"
+          jq -r '.deployments[] | [.uid, .target, .state, .createdAt, (.meta.githubCommitSha // "-"), (.meta.githubCommitRef // "-"), .url] | @tsv' "$RUNNER_TEMP/deps.json" >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS -H "$AUTH" "$API/v6/deployments?projectId=$PID&target=production&limit=5&teamId=$SCOPE" > "$RUNNER_TEMP/prod.json"
+          {
+            echo '```'
+            echo ""
+            echo "### latest 5 production deployments"
+            echo ""
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          jq -r '.deployments[] | [.uid, .state, .createdAt, (.meta.githubCommitSha // "-"), (.meta.githubCommitRef // "-"), .url] | @tsv' "$RUNNER_TEMP/prod.json" >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS -H "$AUTH" "$API/v9/projects/$PID/domains?teamId=$SCOPE" > "$RUNNER_TEMP/doms.json"
+          {
+            echo '```'
+            echo ""
+            echo "### domains"
+            echo ""
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          jq -r '.domains[]?.name // empty' "$RUNNER_TEMP/doms.json" >> "$GITHUB_STEP_SUMMARY"
+          echo "probe done: $P ($PID)"

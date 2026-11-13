@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "1cb0985afaf0e40053f4169746771b587e2c62dd49cd2045697149b3f1230c5e",
-  "workflow_count": 307,
+  "source_fingerprint": "271758ff9fc92423df8b2d7f14dd58840e5dfcac0f5e0d04600a174069cfc04e",
+  "workflow_count": 308,
   "workflows": [
     {
       "action_pins": [],
@@ -5409,6 +5409,26 @@
       "path": ".github/workflows/vantage-cost-report.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+      ],
+      "authority": "writer",
+      "concurrency": "group: venue-execution cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "execute"
+      ],
+      "name": "🏟️ Venue Execution (QUE",
+      "path": ".github/workflows/venue-execution.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "workflow_dispatch"
       ]
     },

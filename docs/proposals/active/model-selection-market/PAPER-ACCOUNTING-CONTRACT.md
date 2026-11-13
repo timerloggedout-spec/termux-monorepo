@@ -23,7 +23,7 @@ Culling is one atomic event in the existing market journal. Record the participa
 
 - `available_disposition` is `retain` or `donate`. Donation transfers the participant's available balance into the named `pool:<pool_id>` account.
 - Every active reservation appears exactly once in `reservation_dispositions`. `refund` releases the hold to the participant; `donate` forfeits the held amount into the pool.
-- A cull event closes the participant account to new issuance, reservations, cards, bets, and settlement receipts. Preserve the final score/evidence snapshot and the complete decision in the event payload.
+- A cull event closes the participant account to new issuance, reservations, cards, bets, and settlement receipts. Preserve the final score/evidence snapshot and the complete decision in the event payload. Mark the participant's remaining open observational bets as culled while preserving their original journal events.
 - When a culled participant is the recipient of another participant's active card offer, refund that hold to its payer. Apply donation only to reservations owned by the culled participant.
 - The cull transition updates every affected reservation and linked bet in one journal event. Any missing, duplicate, foreign, or already-terminal reservation aborts the complete transition before append.
 - Pool distributions name a stable distribution ID, reason, and explicit recipient/units allocations. Require unique active recipients, bounded integer units, sufficient pool balance, and recipient balance headroom.

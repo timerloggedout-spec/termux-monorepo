@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-11-13T10:53:56.587868+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 43412651361,
+    "endpoint": ".../runs/43412651361/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 131842629944,
+        "run_id": 43412651361,
+        "workflow_name": "lane events recorder",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/43412651361",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAesm7hOA",
+        "head_sha": "b8103392c6d92246f6844792781f89f4461a2500",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/131842629944",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43412651361/job/131842629944",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-13T10:53:48Z",
+        "started_at": "2026-11-13T10:53:50Z",
+        "completed_at": null,
+        "name": "record",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-13T10:53:51Z",
+            "completed_at": "2026-11-13T10:53:52Z"
+          },
+          {
+            "name": "Mint Termux Fleet Swarm token (own rate bucket)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-13T10:53:52Z",
+            "completed_at": "2026-11-13T10:53:53Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-13T10:53:53Z",
+            "completed_at": "2026-11-13T10:53:54Z"
+          },
+          {
+            "name": "build events",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-13T10:53:54Z",
+            "completed_at": "2026-11-13T10:53:54Z"
+          },
+          {
+            "name": "write to ledger",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 5,
+            "started_at": "2026-11-13T10:53:54Z",
+            "completed_at": null
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "pending",
+            "conclusion": null,
+            "number": 9,
+            "started_at": null,
+            "completed_at": null
+          },
+          {
+            "name": "Post Mint Termux Fleet Swarm token (own rate bucket)",
+            "status": "pending",
+            "conclusion": null,
+            "number": 10,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/131842629944",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1001350053,
+        "runner_name": "GitHub Actions 1001350053",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

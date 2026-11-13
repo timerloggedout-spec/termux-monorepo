@@ -1,0 +1,129 @@
+{
+  "collected_at": "2026-11-13T10:54:02.369426+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 43412576485,
+    "endpoint": ".../runs/43412576485/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 131842388167,
+        "run_id": 43412576485,
+        "workflow_name": "Gemini review after peers",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/43412576485",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAesmswxw",
+        "head_sha": "b8103392c6d92246f6844792781f89f4461a2500",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/131842388167",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43412576485/job/131842388167",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-13T10:53:16Z",
+        "started_at": "2026-11-13T10:53:18Z",
+        "completed_at": "2026-11-13T10:53:35Z",
+        "name": "second-pass",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-13T10:53:19Z",
+            "completed_at": "2026-11-13T10:53:22Z"
+          },
+          {
+            "name": "Resolve PR number from workflow_run",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-13T10:53:22Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Model router (second-pass review)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Record capability-spine observe decision",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Build second-pass prompt (API diff)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "OmniRoute second-pass (peer)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "OpenRouter second-pass (peer)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Gemini second-pass (residual)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Skip note if model budget exhausted",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 10,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-13T10:53:33Z",
+            "completed_at": "2026-11-13T10:53:33Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/131842388167",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1001350044,
+        "runner_name": "GitHub Actions 1001350044",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

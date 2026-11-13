@@ -8,7 +8,7 @@
 - Prior scan: [pbDNloUP-H](https://agent-ready.dev/scan/pbDNloUP-H) — 89/100; llms.txt 100/100; accessibility 93/100; A11 visible-label mismatch.
 - Homepage source now carries a WebPage + BreadcrumbList JSON-LD graph, an expanded project/evidence guide, and a conditional 95+ badge.
 - Source measurement: 8,573 visible text characters across 16,177 HTML characters (≈53.0% by the repository validator). The live scanner still reports 7.3% for P13; reconcile the scanner's denominator against the deployed response before closing P13.
-- Latest GitHub Pages deployment run: [43458373572](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/actions/runs/43458373572), queued behind serialized Pages builds at the latest check.
+- Latest GitHub Pages deployment run: [43459699530](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/actions/runs/43459699530), current Pages build #1472 queued after earlier superseded builds were cancelled.
 - Badge status record: 89/100 against the 95 threshold; badge remains hidden.
 - Original P8: Open Graph `og:description` absent from the scanned landing page.
 - Live mirror inspection: `/tribute/` and `/matrix/` in the website repository still lacked canonical URLs, Open Graph fields, JSON-LD, Markdown alternates, and the linked Markdown mirrors.

@@ -82,7 +82,7 @@ def _accounting_rows(accounting: Any) -> tuple[list[dict[str, Any]], dict[str, d
             raise ValueError("reservation ids must be unique and owners must reference accounts")
         ids.add(rid)
         _amount(r.get("units"), "reservation units", integer=True)
-        if r["units"] <= 0 or r.get("status") not in ("reserved", "settled", "released"):
+        if r["units"] <= 0 or r.get("status") not in ("reserved", "settled", "released", "forfeited"):
             raise ValueError("invalid reservation units or status")
         if r.get("status") == "reserved": active[owner] += r["units"]
         if r.get("kind") == "bet":

@@ -45,6 +45,6 @@ The version-controlled matrix summary preserves the 40 run IDs, per-run result d
 
 ## Evidence classification
 
-<badge color="warning">Exploratory synthetic</badge>
+**Evidence classification: EXPLORATORY SYNTHETIC**
 
 These results are a deterministic simulation baseline, not a historical backtest of observed participant activity. No wallet provisioning, testnet transaction, real-value settlement, or production policy selection follows from this run. Add a verified historical event adapter, cohort identity reconciliation, temporal holdouts, and walk-forward evaluation before treating results as predictive evidence.

@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.model_selection_market.royalty_ledger import RoyaltyLedger, RoyaltyLedgerError
+from scripts.model_selection_market.market import MarketGraph
 
 
 def sha(value):
@@ -38,8 +39,25 @@ class RoyaltyLedgerTests(unittest.TestCase):
     def test_split_merge_lineage_allocates_origin_shares_deterministically(self):
         with tempfile.TemporaryDirectory() as directory:
             ledger = setup_ledger(Path(directory) / "royalties.jsonl")
-            snap = ledger.snapshot()
-            lineage = snap["derivatives"]["artifact-ab"]["lineage"]
+            for artifact_id, ref in (("artifact-left", "commit-left:path:1-50"),
+                                     ("artifact-right", "commit-right:path:51-100")):
+                ledger.register_derivative(
+                    event_id="event-" + artifact_id, artifact_id=artifact_id,
+                    content_digest=sha(artifact_id), author_actor="splitter",
+                    parents=[{"artifact_id": "artifact-ab", "weight_bps": 10000,
+                              "lineage_ref": ref, "evidence_digest": sha(ref)}],
+                )
+            ledger.register_derivative(
+                event_id="event-merged", artifact_id="artifact-merged",
+                content_digest=sha("merged"), author_actor="merger",
+                parents=[
+                    {"artifact_id": "artifact-left", "weight_bps": 5000,
+                     "lineage_ref": "merge:left", "evidence_digest": sha("merge-left")},
+                    {"artifact_id": "artifact-right", "weight_bps": 5000,
+                     "lineage_ref": "merge:right", "evidence_digest": sha("merge-right")},
+                ],
+            )
+            lineage = ledger.snapshot()["derivatives"]["artifact-merged"]["lineage"]
             self.assertEqual(lineage["artifact-a"]["share_bps"], 6000)
             self.assertEqual(lineage["artifact-b"]["share_bps"], 4000)
 
@@ -239,6 +257,40 @@ class RoyaltyLedgerTests(unittest.TestCase):
                 )
             after = path.read_bytes() if path.exists() else b""
             self.assertEqual(before, after)
+
+    def test_culling_origin_wallet_preserves_separate_royalty_payables(self):
+        with tempfile.TemporaryDirectory() as directory:
+            royalty_path = Path(directory) / "royalties.jsonl"
+            ledger = setup_ledger(royalty_path)
+            ledger.accrue(
+                event_id="accrual-event-1", accrual_id="accrual-1",
+                contribution_id="contribution-1", derivative_artifact_id="artifact-ab",
+                policy_id="legacy-residual", policy_version=1,
+                basis_definition="owner_defined_eligible_value", basis_units=10000,
+                unit_domain="paper_point", event_time="2026-02-01T00:00:00+00:00",
+                eligibility_decision_ref="eligibility:decision-1",
+                eligibility_evidence_digest=sha("eligibility-proof"),
+            )
+            before = ledger.snapshot()
+            royalty_bytes = royalty_path.read_bytes()
+            market_path = Path(directory) / "market.jsonl"
+            market = MarketGraph(event_path=market_path)
+            provenance = {"issuer": "fixture", "source": "synthetic", "reference": "test"}
+            market.open_account("author-a", event_id="open-author-a", provenance=provenance)
+            market.issue_points("author-a", 100, event_id="issue-author-a", provenance=provenance)
+            market.cull_participant(
+                "author-a", event_id="cull-author-a", decision_id="decision-author-a",
+                reason="cohort_expiry",
+                score_snapshot={"score": 0.0, "evidence_digest": sha("score"),
+                                 "captured_at": "2026-11-13T12:00:00+00:00"},
+                pool_id="season-1", available_disposition="donate",
+                reservation_dispositions=[],
+            )
+            after = RoyaltyLedger(royalty_path, policy_owner="governance-owner").snapshot()
+            self.assertEqual(after["payables"], before["payables"])
+            self.assertEqual(after["accruals"], before["accruals"])
+            self.assertEqual(royalty_path.read_bytes(), royalty_bytes)
+            self.assertEqual(market.accounting_snapshot()["pools"]["season-1"]["balance"], 100)
 
     def test_replay_preserves_origin_claims_in_independent_journal(self):
         with tempfile.TemporaryDirectory() as directory:

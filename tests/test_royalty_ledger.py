@@ -220,7 +220,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
             after = path.read_bytes() if path.exists() else b""
             self.assertEqual(before, after)
 
-    def test_replay_preserves_claims_after_origin_cull_in_another_domain(self):
+    def test_replay_preserves_origin_claims_in_independent_journal(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "royalties.jsonl"
             ledger = setup_ledger(path)

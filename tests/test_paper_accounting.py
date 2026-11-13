@@ -337,14 +337,17 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
         self.graph.reserve_bet(refund_bet, event_id="reserve-refund", reservation_id="hold-refund")
         self.graph.reserve_bet(donate_bet, event_id="reserve-donate", reservation_id="hold-donate")
         before = self.path.read_bytes()
-        self.graph.cull_participant(
-            "alice", event_id="cull-alice", decision_id="decision-2026-11-13",
-            reason="cohort_expiry", score_snapshot=self.score_snapshot(), pool_id="season-1",
-            available_disposition="donate",
+        cull_args = dict(
+            event_id="cull-alice", decision_id="decision-2026-11-13", reason="cohort_expiry",
+            score_snapshot=self.score_snapshot(), pool_id="season-1", available_disposition="donate",
             reservation_dispositions=[
                 {"reservation_id": "hold-refund", "disposition": "refund"},
                 {"reservation_id": "hold-donate", "disposition": "donate"},
             ])
+        self.graph.cull_participant("alice", **cull_args)
+        after_cull = self.path.read_bytes()
+        self.graph.cull_participant("alice", **cull_args)
+        self.assertEqual(self.path.read_bytes(), after_cull)
         snap = MarketGraph(event_path=self.path).accounting_snapshot()
         alice, pool = self.account(snap, "alice"), self.account(snap, "pool:season-1")
         self.assertEqual((alice["balance"], alice["reserved"], alice["available"]), (10, 0, 10))
@@ -415,6 +418,9 @@ class CullAndPoolLifecycleTests(unittest.TestCase):
         self.assertEqual(balances, {"alice": 0, "bob": 25, "carol": 15, "pool:season-1": 60})
         self.assertEqual(sum(balances.values()), 100)
         self.assertEqual(snap["pool_distributions"]["round-1"]["allocations"], allocations)
+        with self.assertRaises(ValueError):
+            self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 1}],
+                                       event_id="duplicate-distribution", distribution_id="round-1", reason="duplicate")
         with self.assertRaises(ValueError):
             self.graph.distribute_pool("season-1", [{"recipient": "bob", "units": 61}],
                                        event_id="overdraw", distribution_id="round-2", reason="overdraw")

@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "simulation_version": "economy-backtest/v2",
+  "implementation_commit": "72a7dd92f9d3f9e1dc595ea656fd278f608438c3",
+  "runtime": "python-3.14.4",
+  "scenario_id": "economy-pilot-cohort-001",
+  "source_digest": "f2e9d4579dad4b514e670f29491e59f9a2a5d1d84e06689fa6afe3f42d3747ed",
+  "matrix_digest": "57735cf1cc742ead7df656ce3876cf0c1a2dfbde309d540dd334a97e2f3dffcb",
+  "randomization": "sha256_keyed_participant_round_v1",
+  "baseline_policy_id": "baseline-0bp",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55,
+    66,
+    77,
+    88,
+    99,
+    111
+  ],
+  "runs": 40,
+  "replications_per_policy": 10,
+  "verdict": "exploratory_synthetic",
+  "conservation_residual_units": [
+    0
+  ],
+  "artifact": {
+    "workflow_run_id": 43493132656,
+    "artifact_id": 14071171427,
+    "artifact_sha256": "67b2f7a23ef9c02b6d1f5b9c3463a1b0b761ac6417c6b499db0cb539dc6f10ff",
+    "size_bytes": 225508,
+    "retention_until": "2027-02-11T19:32:14Z"
+  },
+  "policy_summaries": {
+    "baseline-0bp": {
+      "retention_rate": {
+        "mean": 0.633333,
+        "ci95": [
+          0.568,
+          0.698667
+        ]
+      },
+      "task_success_rate": {
+        "mean": 0.620946,
+        "ci95": [
+          0.595283,
+          0.646609
+        ]
+      },
+      "balance_gini": {
+        "mean": 0.442613,
+        "ci95": [
+          0.391868,
+          0.493357
+        ]
+      },
+      "pool_distributed_units": {
+        "mean": 1718.9,
+        "ci95": [
+          1045.257606,
+          2392.542394
+        ]
+      },
+      "pool_remainder_units": {
+        "mean": 207.7,
+        "ci95": [
+          6.476505,
+          408.923495
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      }
+    },
+    "recycle-5000bp": {
+      "retention_rate": {
+        "mean": 0.633333,
+        "ci95": [
+          0.568,
+          0.698667
+        ]
+      },
+      "task_success_rate": {
+        "mean": 0.620946,
+        "ci95": [
+          0.595283,
+          0.646609
+        ]
+      },
+      "balance_gini": {
+        "mean": 0.442494,
+        "ci95": [
+          0.391804,
+          0.493184
+        ]
+      },
+      "pool_distributed_units": {
+        "mean": 1896.5,
+        "ci95": [
+          1140.40299,
+          2652.59701
+        ]
+      },
+      "pool_remainder_units": {
+        "mean": 56.1,
+        "ci95": [
+          -24.010203,
+          136.210203
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      }
+    },
+    "resilient-cull-6": {
+      "retention_rate": {
+        "mean": 0.9,
+        "ci95": [
+          0.827771,
+          0.972229
+        ]
+      },
+      "task_success_rate": {
+        "mean": 0.588898,
+        "ci95": [
+          0.57259,
+          0.605206
+        ]
+      },
+      "balance_gini": {
+        "mean": 0.250246,
+        "ci95": [
+          0.198446,
+          0.302045
+        ]
+      },
+      "pool_distributed_units": {
+        "mean": 439.7,
+        "ci95": [
+          83.586219,
+          795.813781
+        ]
+      },
+      "pool_remainder_units": {
+        "mean": 86.4,
+        "ci95": [
+          2.764555,
+          170.035445
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      }
+    },
+    "royalty-250bp": {
+      "retention_rate": {
+        "mean": 0.633333,
+        "ci95": [
+          0.568,
+          0.698667
+        ]
+      },
+      "task_success_rate": {
+        "mean": 0.620946,
+        "ci95": [
+          0.595283,
+          0.646609
+        ]
+      },
+      "balance_gini": {
+        "mean": 0.442793,
+        "ci95": [
+          0.39184,
+          0.493746
+        ]
+      },
+      "pool_distributed_units": {
+        "mean": 1713.1,
+        "ci95": [
+          1043.414374,
+          2382.785626
+        ]
+      },
+      "pool_remainder_units": {
+        "mean": 207.7,
+        "ci95": [
+          6.476505,
+          408.923495
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean": 74,
+        "ci95": [
+          62.474637,
+          85.525363
+        ]
+      }
+    }
+  },
+  "paired_deltas_vs_baseline": {
+    "recycle-5000bp": {
+      "retention_rate": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "task_success_rate": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "balance_gini": {
+        "mean_delta": -0.000119,
+        "ci95": [
+          -0.000442,
+          0.000204
+        ]
+      },
+      "pool_distributed_units": {
+        "mean_delta": 177.6,
+        "ci95": [
+          39.382025,
+          315.817975
+        ]
+      },
+      "pool_remainder_units": {
+        "mean_delta": -151.6,
+        "ci95": [
+          -284.102121,
+          -19.097879
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      }
+    },
+    "resilient-cull-6": {
+      "retention_rate": {
+        "mean_delta": 0.266667,
+        "ci95": [
+          0.213322,
+          0.320011
+        ]
+      },
+      "task_success_rate": {
+        "mean_delta": -0.032048,
+        "ci95": [
+          -0.051059,
+          -0.013037
+        ]
+      },
+      "balance_gini": {
+        "mean_delta": -0.192367,
+        "ci95": [
+          -0.239607,
+          -0.145127
+        ]
+      },
+      "pool_distributed_units": {
+        "mean_delta": -1279.2,
+        "ci95": [
+          -1830.01989,
+          -728.38011
+        ]
+      },
+      "pool_remainder_units": {
+        "mean_delta": -121.3,
+        "ci95": [
+          -325.232336,
+          82.632336
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      }
+    },
+    "royalty-250bp": {
+      "retention_rate": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "task_success_rate": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "balance_gini": {
+        "mean_delta": 0.00018,
+        "ci95": [
+          -0.00026,
+          0.00062
+        ]
+      },
+      "pool_distributed_units": {
+        "mean_delta": -5.8,
+        "ci95": [
+          -11.627499,
+          0.027499
+        ]
+      },
+      "pool_remainder_units": {
+        "mean_delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "royalty_accrued_units": {
+        "mean_delta": 74,
+        "ci95": [
+          62.474637,
+          85.525363
+        ]
+      }
+    }
+  }
+}

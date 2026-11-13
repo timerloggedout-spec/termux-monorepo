@@ -9,7 +9,6 @@ import argparse
 import hashlib
 import json
 import os
-import random
 import re
 import math
 import statistics
@@ -18,7 +17,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-SIMULATION_VERSION = "economy-backtest/v1"
+SIMULATION_VERSION = "economy-backtest/v2"
 BPS = 10_000
 MAX_UNITS = 2**63 - 1
 
@@ -36,6 +35,24 @@ def _integer(value: Any, name: str, low: int, high: int) -> int:
     if type(value) is not int or not low <= value <= high:
         raise ValueError(f"{name} must be an integer in [{low}, {high}]")
     return value
+
+
+def _success_draw(seed: int, round_number: int, participant_id: str) -> int:
+    """Return a policy-independent draw keyed to one participant-round."""
+    key = f"{seed}|{round_number}|{participant_id}".encode("utf-8")
+    return int.from_bytes(hashlib.sha256(key).digest()[:8], "big") % BPS
+
+
+def _confidence_interval(values: list[float]) -> dict[str, Any]:
+    mean = sum(values) / len(values)
+    deviation = statistics.stdev(values) if len(values) > 1 else 0.0
+    half_width = 1.96 * deviation / math.sqrt(len(values)) if len(values) > 1 else 0.0
+    return {
+        "lower": mean - half_width,
+        "upper": mean + half_width,
+        "method": "normal_approximation_95",
+        "replications": len(values),
+    }
 
 
 def validate_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -130,7 +147,6 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
     manifest = validate_manifest(raw_manifest)
     if code_commit_sha != "UNPINNED" and not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", code_commit_sha):
         raise ValueError("code_commit_sha must be a full Git SHA")
-    rng = random.Random(manifest["seed"])
     policy = manifest["policy"]
     actors = {
         row["participant_id"]: {
@@ -165,7 +181,7 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
                 continue
             state["attempts"] += 1
             attempts += 1
-            success = rng.randrange(BPS) < state["success_probability_bps"]
+            success = _success_draw(manifest["seed"], round_number, actor) < state["success_probability_bps"]
             if success:
                 state["miss_streak"] = 0
                 state["successes"] += 1
@@ -265,6 +281,11 @@ def run_backtest(raw_manifest: dict[str, Any], code_commit_sha: str = "UNPINNED"
         "source": {"kind": "synthetic_cohort", "version": "cohort/v1",
                    "digest": source_digest},
         "manifest_digest": digest(manifest),
+        "randomization": {
+            "method": "sha256_keyed_participant_round_v1",
+            "key_fields": ["seed", "round_number", "participant_id"],
+            "policy_independent": True,
+        },
     }
     run_id = digest(run_manifest)
     result = {
@@ -313,24 +334,46 @@ def run_matrix(base: dict[str, Any], policies: list[dict[str, Any]],
             key: sum(float(row[key]) for row in metrics) / len(metrics)
             for key in keys
         }
-        intervals = {}
-        for key in keys:
-            values = [float(row[key]) for row in metrics]
-            deviation = statistics.stdev(values) if len(values) > 1 else 0.0
-            half_width = 1.96 * deviation / math.sqrt(len(values)) if len(values) > 1 else 0.0
-            intervals[key] = {
-                "lower": means[key] - half_width,
-                "upper": means[key] + half_width,
-                "method": "normal_approximation",
+        intervals = {
+            key: _confidence_interval([float(row[key]) for row in metrics])
+            for key in keys
+        }
+        summary[policy_id] = {
+            **means,
+            "replications": len(metrics),
+            "confidence_intervals_95": intervals,
+        }
+
+    # The first declared policy is the explicit baseline. Keyed random draws
+    # make each participant-round comparable across every policy variant.
+    baseline_policy_id = policy_ids[0]
+    run_metrics = {
+        (run["result"]["policy_id"], run["result"]["seed"]): run["result"]["metrics"]
+        for run in runs
+    }
+    paired_deltas = {}
+    for policy_id in policy_ids[1:]:
+        per_metric = {}
+        for key in run_metrics[(baseline_policy_id, seeds[0])]:
+            deltas = [
+                float(run_metrics[(policy_id, seed)][key])
+                - float(run_metrics[(baseline_policy_id, seed)][key])
+                for seed in seeds
+            ]
+            per_metric[key] = {
+                "mean_delta": sum(deltas) / len(deltas),
+                "confidence_interval_95": _confidence_interval(deltas),
             }
-        summary[policy_id] = means
-        summary[policy_id]["replications"] = len(metrics)
-        summary[policy_id]["confidence_intervals_95"] = intervals
+        paired_deltas[policy_id] = per_metric
+
     matrix = {
         "matrix_version": "economy-backtest-matrix/v1",
         "simulation_version": SIMULATION_VERSION,
         "runs": runs,
         "summary": summary,
+        "baseline_policy_id": baseline_policy_id,
+        "paired_deltas_vs_baseline": paired_deltas,
+        "randomization": "sha256_keyed_participant_round_v1",
         "verdict": "exploratory_synthetic",
     }
     matrix["matrix_digest"] = digest(matrix)

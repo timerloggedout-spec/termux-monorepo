@@ -247,16 +247,19 @@ def process(gh, issue, registry, tiers_doc, picture, now, run_url, dry_run=False
     }
     if dry_run or not changed:
         return result
+    # Receipt first, then add the new decision, then remove the old one.
+    # A partial failure therefore leaves a retryable deferred label or a
+    # visible receipt; it never creates an unlabelled admission gap.
+    if not same_receipt:
+        gh.post(f"/repos/{REPO}/issues/{issue['number']}/comments", {"body": body})
+    if add:
+        gh.post(f"/repos/{REPO}/issues/{issue['number']}/labels", {"labels": add})
     for label in remove:
         try:
             gh.delete(f"/repos/{REPO}/issues/{issue['number']}/labels/{urllib.parse.quote(label, safe='')}")
         except urllib.error.HTTPError as exc:
             if exc.code != 404:
                 raise
-    if add:
-        gh.post(f"/repos/{REPO}/issues/{issue['number']}/labels", {"labels": add})
-    if not same_receipt:
-        gh.post(f"/repos/{REPO}/issues/{issue['number']}/comments", {"body": body})
     result["action"] = "updated"
     return result
 

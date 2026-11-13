@@ -47,11 +47,19 @@ python -m scripts.model_selection_market.economy_backtest \
   --output-dir artifacts/economy-backtests
 ```
 
+Run the preregistered 40-replication sensitivity matrix:
+
+```sh
+python -m scripts.model_selection_market.economy_backtest \
+  --matrix experiments/model-selection-market/economy-backtest/scenarios/policy-matrix.json \
+  --output-dir artifacts/economy-backtests
+```
+
 The run ID binds the normalized manifest, synthetic cohort digest, simulation version, exact implementation commit SHA, and Python runtime fingerprint. The CLI resolves the commit from `GITHUB_SHA` or the checked-out Git HEAD; use `--code-commit` to pin it explicitly. The result digest covers metrics, balances, event sequence, and royalty payables. Artifact writes use create-once semantics; identical reruns verify existing bytes and changed content at the same path raises an error.
 
 ## Policy comparison
 
-Use `run_matrix(base_manifest, policy_variants, seeds)` or the committed `policy-matrix.json` to compare policies across common seeds. The matrix pins four policy variants × ten seeds (40 deterministic replications). Pre-register policy variants and seeds before reading results. Report means and per-seed rows; add confidence intervals and temporal holdouts when historical observations support them.
+Use `run_matrix(base_manifest, policy_variants, seeds)` or the committed `policy-matrix.json` to compare policies across common seeds. The matrix pins four policy variants × ten seeds (40 deterministic replications). Pre-register policy variants and seeds before reading results. Report means, per-seed rows, and 95% normal-approximation intervals. Treat these intervals as descriptive for synthetic seeds; use temporal holdouts and walk-forward inference only when historical observations support them.
 
 The sample manifest sets royalty rate to zero. The test suite explores nonzero rates strictly as sensitivity hypotheses; the repository's owner-approved royalty percentage remains unset.
 

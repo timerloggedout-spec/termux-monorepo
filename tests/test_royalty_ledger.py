@@ -21,8 +21,8 @@ def setup_ledger(path):
         event_id="derivative-ab", artifact_id="artifact-ab",
         content_digest=sha("combined"), author_actor="builder",
         parents=[
-            {"artifact_id": "artifact-a", "weight_bps": 6000},
-            {"artifact_id": "artifact-b", "weight_bps": 4000},
+            {"artifact_id": "artifact-a", "weight_bps": 6000, "lineage_ref": "commit-a:path:1-60", "evidence_digest": sha("range-a")},
+            {"artifact_id": "artifact-b", "weight_bps": 4000, "lineage_ref": "commit-b:path:20-80", "evidence_digest": sha("range-b")},
         ],
     )
     ledger.activate_policy(
@@ -101,6 +101,25 @@ class RoyaltyLedgerTests(unittest.TestCase):
                 reason="incorrect attribution", evidence_digest=sha("reversal-proof"),
             )
             self.assertEqual(ledger.snapshot()["payables"]["author-a|paper_point"], 500)
+
+    def test_policy_versions_require_sequential_non_overlapping_intervals(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = setup_ledger(Path(directory) / "royalties.jsonl")
+            with self.assertRaises(RoyaltyLedgerError):
+                ledger.activate_policy(
+                    event_id="policy-3", policy_id="legacy-residual", version=3,
+                    rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
+                    approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
+                    approval_digest=sha("approval-v3"),
+                )
+            with self.assertRaises(RoyaltyLedgerError):
+                ledger.activate_policy(
+                    event_id="policy-2", policy_id="legacy-residual", version=2,
+                    rate_bps=900, effective_from="2026-03-01T00:00:00+00:00",
+                    effective_until="2026-04-01T00:00:00+00:00",
+                    approved_by="governance-owner", approved_at="2026-03-01T00:00:00+00:00",
+                    approval_digest=sha("approval-v2"),
+                )
 
     def test_policy_activation_requires_configured_owner(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -185,7 +204,7 @@ class RoyaltyLedgerTests(unittest.TestCase):
             ledger.register_derivative(
                 event_id="derivative-v2", artifact_id="artifact-ab-v2",
                 content_digest=sha("combined-v2"), author_actor="builder-v2",
-                parents=[{"artifact_id": "artifact-ab", "weight_bps": 10000}],
+                parents=[{"artifact_id": "artifact-ab", "weight_bps": 10000, "lineage_ref": "commit-ab:merge", "evidence_digest": sha("range-ab")}],
             )
             ledger.supersede(
                 event_id="supersede-event", supersession_id="supersede-1",

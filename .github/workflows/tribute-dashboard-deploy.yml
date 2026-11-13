@@ -18,6 +18,7 @@ on:
       - ".github/workflows/tribute-dashboard-preview.yml"
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"
+      - "scripts/ci/verify_agent_readability_surfaces.py"
   workflow_dispatch:
     inputs:
       target:
@@ -149,6 +150,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ci/tribute_status.py
+          python3 scripts/ci/verify_agent_readability_surfaces.py
           python3 scripts/ci/verify_tribute_dashboard.py
       - name: Prepare Tribute subtree
         run: |

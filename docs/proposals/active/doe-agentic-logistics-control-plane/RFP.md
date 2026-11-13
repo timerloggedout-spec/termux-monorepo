@@ -78,6 +78,21 @@ Treat each configured provider × model × endpoint × account route as an obser
 
 Issue #5160 owns provider-pool and autoQuotaCadence implementation, and is currently blocked on prerequisite integration/external execution. This RFP may design and simulate around that contract; it must not duplicate or bypass it.
 
+### Experiment platform evidence — MUSE validation set
+
+The owner-ingested [platform validation set](https://github.com/timerloggedout-spec/termux-monorepo/tree/master/ml/labbook/platform-validation-2026-11-03) is a completed research input to this RFP, not an adoption decision. Its synthesis compares ten platforms (MLflow, Metaflow, ClearML, ZenML, Flyte, MLRun, Kubeflow Pipelines, Dagster, Kedro and DVC); individual records retain environment, version, workload, independent read-back and verified/claimed/unestablished boundaries. The source set was committed to master as `e4082fa6cde41c31cbbd62322143a1fe45631122`.
+
+The findings constrain the experiment substrate:
+
+1. A completed run must remain queryable from a cold process; local execution that leaves no durable run record is not acceptable.
+2. Artifacts must be portable and inspectable, with explicit format/materializer, content identity, code revision and environment provenance.
+3. Asset/materialization history and run execution history are related but distinct; preserve both rather than reconstructing all lineage from mutable run records.
+4. Pipeline compilation must yield a versioned, inspectable IR. Every node receives an explicit ran/skipped/unsupported verdict; a backend may not report SUCCESS after silently dropping a gate or branch.
+5. Errors must fail loudly at the boundary and retain a primary cause. No silent exception swallowing, success-shaped incomplete records or indefinite polling.
+6. Independent-process read-back and metric re-derivation are acceptance requirements, not optional demonstrations.
+
+The MUSE records do **not** establish every platform's hosted/cluster tier. In particular, the MLRun report proves a hand-assembled source server with SQLite and mock router serving, but not live HTTP serving or Kubernetes/Iguazio deployment; the Flyte report likewise leaves the cluster tier unestablished. Do not promote those claims beyond the exact records. The labbook design remains provisional and must reuse canonical QUE/QDesk/ATES governance rather than introducing another queue, provider registry, scheduler or dashboard.
+
 ## 5. DoE design and measurement plan
 
 Register treatments before execution in the existing DoE family. Keep exploratory/simulation and live provider cohorts separate.

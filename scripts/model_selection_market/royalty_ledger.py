@@ -208,6 +208,26 @@ class RoyaltyLedger:
                     "effective_until": end.isoformat() if end else None,
                     "approved_by": approved, "approval_digest": approval_digest,
                 }
+            elif typ == "policy_close":
+                if set(payload) != {"policy_id", "version", "effective_until", "approved_by",
+                                    "approved_at", "approval_digest"}:
+                    raise RoyaltyLedgerError("invalid policy_close payload")
+                policy_id = _text(payload["policy_id"], "policy_id")
+                version = _integer(payload["version"], "version", 1, 2**31 - 1)
+                key = f"{policy_id}@{version}"
+                policy = state["policies"].get(key)
+                if policy is None or policy["effective_until"] is not None:
+                    raise RoyaltyLedgerError("policy version is unknown or already closed")
+                end = _time(payload["effective_until"], "effective_until")
+                start = datetime.fromisoformat(policy["effective_from"])
+                if end <= start:
+                    raise RoyaltyLedgerError("policy close must follow its effective start")
+                approved = _text(payload["approved_by"], "approved_by")
+                if approved != self.policy_owner:
+                    raise RoyaltyLedgerError("policy close requires configured owner approval")
+                _time(payload["approved_at"], "approved_at")
+                _digest(payload["approval_digest"], "approval_digest")
+                policy["effective_until"] = end.isoformat()
             elif typ == "royalty_accrual":
                 if set(payload) != {"accrual_id", "contribution_id", "derivative_artifact_id",
                                     "policy_id", "policy_version", "basis_units", "unit_domain",
@@ -344,6 +364,7 @@ class RoyaltyLedger:
                 "origin_register": payload.get("artifact_id"),
                 "derivative_register": payload.get("artifact_id"),
                 "policy_activate": f'{payload.get("policy_id")}@{payload.get("version")}',
+                "policy_close": f'{payload.get("policy_id")}@{payload.get("version")}',
                 "royalty_accrual": payload.get("accrual_id"),
                 "royalty_settlement": payload.get("settlement_id"),
                 "royalty_reversal": payload.get("reversal_id"),
@@ -407,6 +428,19 @@ class RoyaltyLedger:
                    "approved_at": _text(approved_at, "approved_at"),
                    "approval_digest": _digest(approval_digest, "approval_digest")}
         return self._mutate(event_id, "policy_activate", payload, f'{policy_id}@{version}')
+
+    def close_policy(self, *, event_id: str, policy_id: str, version: int,
+                     effective_until: str, approved_by: str, approved_at: str,
+                     approval_digest: str):
+        if approved_by != self.policy_owner:
+            raise RoyaltyLedgerError("policy close requires the configured owner")
+        payload = {"policy_id": _text(policy_id, "policy_id"),
+                   "version": _integer(version, "version", 1, 2**31 - 1),
+                   "effective_until": _text(effective_until, "effective_until"),
+                   "approved_by": approved_by,
+                   "approved_at": _text(approved_at, "approved_at"),
+                   "approval_digest": _digest(approval_digest, "approval_digest")}
+        return self._mutate(event_id, "policy_close", payload, f'{policy_id}@{version}')
 
     def accrue(self, *, event_id: str, accrual_id: str, contribution_id: str,
                derivative_artifact_id: str, policy_id: str, policy_version: int,

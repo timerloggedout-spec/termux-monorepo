@@ -72,9 +72,9 @@ class RoyaltyLedgerTests(unittest.TestCase):
             with self.assertRaises(RoyaltyLedgerError):
                 ledger.accrue(**common, basis_definition="gross_reward_units")
             with self.assertRaises(RoyaltyLedgerError):
-                ledger.accrue(**{**common, "event_id": "accrual-event-2"},
-                              basis_definition="owner_defined_eligible_value",
-                              eligibility_evidence_digest="invalid")
+                ledger.accrue(**{**common, "event_id": "accrual-event-2",
+                                  "eligibility_evidence_digest": "invalid"},
+                              basis_definition="owner_defined_eligible_value")
             self.assertEqual(ledger.snapshot()["event_count"], before)
 
     def test_partial_settlement_reduces_only_matching_origin_claim(self):

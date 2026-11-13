@@ -65,7 +65,7 @@ The sample manifest sets royalty rate to zero. The test suite explores nonzero r
 
 ## Recorded baseline run
 
-The first 40-run policy matrix and its immutable run index are recorded in [2026-11-13 results](../../../experiments/model-selection-market/economy-backtest/results/2026-11-13/README.md). The version-controlled `matrix-summary.json` preserves every run ID/result digest and aggregate policy metrics; the Actions artifact contains the full event streams and individual manifests/results.
+The first 40-run policy matrix and its immutable run index are recorded in [2026-11-13 results](../../../../experiments/model-selection-market/economy-backtest/results/2026-11-13/README.md). The version-controlled `matrix-summary.json` preserves every run ID/result digest and aggregate policy metrics; the Actions artifact contains the full event streams and individual manifests/results.
 
 ## Promotion gates
 

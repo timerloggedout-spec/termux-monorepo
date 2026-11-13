@@ -263,6 +263,31 @@ jobs:
           else:
               raise SystemExit("::error::prune could not land after 3 attempts")
           PYEOF
+      - name: Fast-forward legacy user-site Pages source branch
+        # The public user-site is mirrored to main; this legacy landing branch
+        # has historically been the GitHub Pages source. Keep it exactly aligned
+        # with main using a non-force update so publication cannot lag the mirror.
+        env:
+          SYNC_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.PAT_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SYNC_TOKEN:-}" ]; then
+            echo "::error::No cross-repository token available to synchronize the Pages source branch."
+            exit 1
+          fi
+          API="https://api.github.com/repos/timerloggedout-spec/timerloggedout-spec.github.io"
+          HEADERS=(-H "Authorization: Bearer $SYNC_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+          TARGET=$(curl -fsS "${HEADERS[@]}" "$API/git/ref/heads/main" | jq -r '.object.sha')
+          CURRENT=$(curl -fsS "${HEADERS[@]}" "$API/git/ref/heads/main-landing-studysprint-link" | jq -r '.object.sha')
+          echo "user-site main: $TARGET"
+          echo "legacy Pages source: $CURRENT"
+          if [ "$TARGET" = "$CURRENT" ]; then
+            echo "Pages source branch already matches main."
+            exit 0
+          fi
+          curl -fsS -X PATCH "${HEADERS[@]}" "$API/git/refs/heads/main-landing-studysprint-link" \
+            -d "$(jq -n --arg sha "$TARGET" '{sha:$sha,force:false}')"
+          echo "Fast-forwarded legacy Pages source branch to $TARGET"
       - name: User-site URLs
         run: |
           echo "https://timerloggedout-spec.github.io/tribute/ (canonical)" >> "$GITHUB_STEP_SUMMARY"

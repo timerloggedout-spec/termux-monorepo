@@ -9,7 +9,6 @@ on:
     types: [submitted, edited]
   pull_request_review_comment:
     types: [created, edited]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -60,5 +59,7 @@ jobs:
             for (const c of comments) if (new Date(c.created_at) >= created) scan("comment " + c.id,c.body);
             const reviews = await github.paginate(github.rest.pulls.listReviews,{owner:context.repo.owner,repo:context.repo.repo,pull_number:pr.number,per_page:100});
             for (const r of reviews) if (r.body && new Date(r.submitted_at || r.created_at) >= created) scan("review " + r.id,r.body);
+            const reviewComments = await github.paginate(github.rest.pulls.listReviewComments,{owner:context.repo.owner,repo:context.repo.repo,pull_number:pr.number,per_page:100});
+            for (const c of reviewComments) if (new Date(c.created_at) >= created) scan("inline review " + c.id,c.body);
             if (violations.length) core.setFailed("DO-statement violations:\n" + violations.join("\n"));
             else core.info("✓ PR communication, new commit subjects, added prose/comments and PR discussion pass Siglary policy.");

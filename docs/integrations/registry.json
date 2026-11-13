@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-13",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,22 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "puter-pool",
+      "name": "Puter Pool (owned fork)",
+      "category": "llm-provider-gateway",
+      "priority": "P1",
+      "discovery_state": "repository_reference_audited",
+      "session_evidence": "Pinned source commit 34d284fa616ad0f23fb755100ce0512185d02d71 inspected. OpenAI/Anthropic-compatible transport exists; README/package license declarations conflict with LICENSE; account rotation, synthetic quota, token custody, raw-content persistence and middleware ordering require remediation.",
+      "source_url": "https://github.com/timerloggedout-spec/puter-pool_fork",
+      "source_commit": "34d284fa616ad0f23fb755100ce0512185d02d71",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "transport-adapter-candidate-only",
+      "write_boundary": "Single-account scoped transport only after DPLC-010 acceptance, license/auth/terms/privacy remediation and account-authoritative quota verification. No account hopping, cross-account retries, aggregate credit arithmetic, paid fallback, live inference, deployment or production routing mutation.",
+      "next_step": "Execute DPLC-010: resolve license and provider-supported authentication; implement a native single-account adapter with exact model identity, one-attempt semantics, QUE/DoE task correlation, privacy-safe telemetry and existing quota/SHE projections.",
+      "sensitivity": "provider-account-credentials-and-task-execution-metadata"
     }
   ]
 }

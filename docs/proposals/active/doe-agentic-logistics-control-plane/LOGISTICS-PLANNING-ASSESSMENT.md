@@ -40,14 +40,35 @@ Inspected default branch: main; complete tree SHA `c0a84ba41c104f9e1c04250925b6d
 
 **Disposition:** high-value parser/AST candidate for DPLC-003. Validate fixture coverage and AST/pretty-print round-trip in an isolated toolchain. Parser acceptance is not plan validity; the independent action-transition verifier and planner remain separate.
 
-### timerloggedout-spec/rl-multiagent-transfer_fork
+### timerloggedout-spec/rl-multiagent-transfer_fork — full library RL implementation
 
-Inspected default branch: main.
-- Complete tree contains only README.md.
-- README describes multi-agent path planning based on reinforcement learning for intelligent library logistics.
-- No implementation, environment, policy checkpoint, tests, benchmark, dependency manifest or root LICENSE was present in the inspected tree.
+Inspected default branch: `main`. The repository is a fork of `Hiago013/rl-multiagent-transfer`; GitHub fork metadata identifies that parent. The fork has one branch and seven commits, dated 2023-10-21 through 2024-01-10. The fork and upstream root listings expose the same implementation-file blob SHAs in the inspected snapshot.
 
-**Disposition:** discovery lead only. Do not benchmark, adopt or cite algorithmic performance until source code and reproducible environment are available.
+This is **not** a README-only repository. The root tree contains a substantive Python implementation and associated data/artifacts:
+
+| Path / artifact | Observed role |
+|---|---|
+| `GridWorld.py` (17.2 KB) | Two-floor grid environment; state/action/reward transitions, pickup/drop-off/elevator/obstacle handling, dynamic flags and curriculum integration. The configured example uses a 9×9 grid, two floors and five actions (four moves + wait). |
+| `brain.py` (3.5 KB) | Tabular Q-learning policy: epsilon-greedy action selection, Q updates, Q-table save/load. |
+| `multi_agent.py` (24.2 KB) | Multi-agent coordinator, shared policy/Q-table, per-agent observations/metrics, action selection and collision-neighbor flagging; includes transfer-learning entry points. |
+| `training.py` (14.5 KB) | Staged training loop, obstacle/curriculum changes, transfer-learning stages and runtime logging. |
+| `curriculum.py`, `curriculum_kevin.py` | Curriculum state/stage generation. |
+| `transfer.py` | Q-value transfer helpers between states/policies. |
+| `view.py` (9.4 KB) | Loads a saved Q-table and runs a two-agent visualization/evaluation loop; records agent metrics. |
+| `logger.py`, `stack.py`, `node.py` | JSON logging and stack support. |
+| `library_info/` | Pickup bays, elevators, delivery points, obstacles, sample JSON and single-/double-agent data. |
+| `qtable.txt` | Serialized Q-table, 74,166,360 bytes. |
+| `qtable_backup/qtable.txt` | Backup Q-table, 72,923,780 bytes. |
+| `rewards_training/`, `Figures/` | 45 reward-plot images and 42 figure images in the inspected tree. |
+| `animation.gif` | 11,507,198-byte run/behavior visualization artifact. |
+
+Implementation evidence is directly visible in the source: `brain.learn` applies the tabular Q-learning update; `GridWorld.step` applies actions and rewards; `multi_agent.step` iterates agents against a shared environment/policy; `training.py` configures staged curriculum training; and `view.py` loads the persisted Q-table and runs a multi-agent visualization. The training script configures one agent; the view script configures two agents. This distinction matters when describing the trained policy versus the multi-agent evaluation scenario.
+
+**What is established:** full source code, serialized learned state, library topology/data, training/evaluation scripts and historical output artifacts are present. The project is a real, domain-specific multi-agent RL implementation—not merely a problem statement.
+
+**What is not yet established by this RECON:** a clean reproducible install, exact dependency versions, successful execution on the current Termux/runtime target, deterministic benchmark reproduction, or collision/deadlock guarantees. The inspected tree has no root LICENSE, dependency manifest or test suite. GitHub history is historical (last listed commit 2024-01-10), so maintenance status must be checked before depending on it. The large tracked Q-table and committed `__pycache__` also warrant repository-hygiene review.
+
+**Disposition:** retain as the existing Library RL research implementation and a primary domain-specific baseline candidate. Do not discard it or replace it with a generic newly built simulator. First preserve source identity and license provenance; then reproduce its documented training/evaluation path in an isolated environment, record dependency/runtime versions and Q-table hashes, add deterministic fixtures and independent safety checks, and benchmark it against classical MAPF/OR-Tools baselines. Distinguish historical artifacts from newly reproduced results.
 
 ### timerloggedout-spec/FrieghtFlow
 

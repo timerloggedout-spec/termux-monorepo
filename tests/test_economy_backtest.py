@@ -79,6 +79,13 @@ class EconomyBacktestTests(unittest.TestCase):
         self.assertEqual(first["summary"]["baseline-0bp"]["replications"], 3)
         self.assertEqual(first["verdict"], "exploratory_synthetic")
 
+    def test_matrix_rejects_duplicate_policy_ids_and_seeds(self):
+        policies = [dict(manifest()["policy"]), dict(manifest()["policy"])]
+        with self.assertRaises(ValueError):
+            run_matrix(manifest(), policies, [1, 2])
+        with self.assertRaises(ValueError):
+            run_matrix(manifest(), [manifest()["policy"]], [1, 1])
+
     def test_manifest_rejects_duplicate_participants_and_bool_amounts(self):
         value = manifest()
         value["participants"].append(dict(value["participants"][0]))

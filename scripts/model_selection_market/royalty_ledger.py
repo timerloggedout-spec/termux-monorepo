@@ -102,10 +102,12 @@ class RoyaltyLedger:
         inherited: dict[str, dict[str, Any]] = {}
         weights = {}
         for row in parent_rows:
-            if not isinstance(row, dict) or set(row) != {"artifact_id", "weight_bps"}:
+            if not isinstance(row, dict) or set(row) != {"artifact_id", "weight_bps", "lineage_ref", "evidence_digest"}:
                 raise RoyaltyLedgerError("each parent requires artifact_id and weight_bps")
             artifact_id = _text(row["artifact_id"], "parent.artifact_id")
             weight = _integer(row["weight_bps"], "parent.weight_bps", 1, BPS)
+            _text(row["lineage_ref"], "parent.lineage_ref")
+            _digest(row["evidence_digest"], "parent.evidence_digest")
             if artifact_id in parent_ids or artifact_id not in state["artifacts"]:
                 raise RoyaltyLedgerError("parent artifacts must be known and unique")
             parent_ids.add(artifact_id)

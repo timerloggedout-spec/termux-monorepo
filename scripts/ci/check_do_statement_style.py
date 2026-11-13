@@ -17,12 +17,12 @@ NEGATIVE_FIRST = re.compile(
     re.IGNORECASE,
 )
 IMPERATIVE = {
-    "add", "align", "apply", "audit", "build", "bump", "check", "close",
+    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
     "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "keep", "measure", "migrate", "move", "open", "preserve",
+    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve",
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "rebuild",
+    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",

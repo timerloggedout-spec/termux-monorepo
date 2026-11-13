@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
 from datetime import datetime
+from pathlib import Path
+import argparse
 from urllib.parse import urlsplit
 from typing import Any
 
@@ -149,3 +150,23 @@ def evaluate_wallet_manifest(
         "signing_performed": False,
         "funding_performed": False,
     }
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("manifest", type=Path)
+    parser.add_argument("--production-chain-id", type=int, required=True)
+    parser.add_argument("--production-key-namespace", required=True)
+    args = parser.parse_args(argv)
+    try:
+        manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+        receipt = evaluate_wallet_manifest(
+            manifest, production_chain_id=args.production_chain_id,
+            production_key_namespace=args.production_key_namespace)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        parser.error(str(exc))
+    print(json.dumps(receipt, sort_keys=True, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

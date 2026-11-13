@@ -51,6 +51,10 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "que"))
+import task_ranking  # noqa: E402  (QUE #5283 ranking method of record)
+
 API = "https://api.github.com"
 DEFAULT_REPO = "timerloggedout-spec/termux-monorepo"
 CLAIM_MARKER = "PRODUCER CLAIM"
@@ -392,6 +396,7 @@ def feed_row(issue: dict, comments: list, verdict: dict,
     tb = (timeboxes or {}).get(verdict.get("entry")) \
         if verdict.get("entry") else None
     tier_index, tier_name = current_tier(tb, now)
+    wall_iso, wall_in_min = task_ranking.nearest_wall(tb, now)
     return {
         "issue": issue["number"],
         "title": issue.get("title"),
@@ -399,6 +404,8 @@ def feed_row(issue: dict, comments: list, verdict: dict,
         "state": _FEED_STATES.get(verdict["state"], "queued"),
         "claim": claim_of(comments),
         "age_min": verdict["age_min"],
+        "nearest_wall": wall_iso,
+        "wall_in_min": wall_in_min,
         "tier": {"index": tier_index, "name": tier_name},
         "thresholds_min": {"flag": verdict["flag_min"],
                            "escalate": verdict["escalate_min"]},
@@ -410,6 +417,11 @@ def build_feed(rows: list, now: datetime) -> dict:
     counts = {"queued": 0, "claimed": 0, "escalated": 0}
     for r in rows:
         counts[r["state"]] += 1
+    # QUE #5283: score + rank on every dispatch (method
+    # que-task-rank/v1, additive -- counts/measurement unchanged).
+    # Ranking derives from row content only, so the write-on-change
+    # fingerprint below stays a content gate, not a clock gate.
+    ranked, ranking = task_ranking.rank_dispatches(rows)
     return {"schema": FEED_SCHEMA,
             "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "source": "dispatch-watchdog",
@@ -417,7 +429,8 @@ def build_feed(rows: list, now: datetime) -> dict:
             # state EXACTLY -- the distribution chart consumes the
             # keys directly, so no extra keys (no total) ride along
             "counts": counts,
-            "dispatches": sorted(rows, key=lambda r: r["issue"])}
+            "ranking": ranking,
+            "dispatches": sorted(ranked, key=lambda r: r["issue"])}
 
 
 def feed_fingerprint(feed: dict) -> str:

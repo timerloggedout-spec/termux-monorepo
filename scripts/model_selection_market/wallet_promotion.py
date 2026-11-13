@@ -1,4 +1,4 @@
-"""Read-only wallet promotion preflight; validates policy without provisioning keys or wallets."""
+"""Wallet promotion preflight. Validate policy and issue readiness receipts for governed adapters."""
 from __future__ import annotations
 
 import argparse
@@ -49,7 +49,7 @@ def _positive_int(value: Any, field: str) -> int:
 def evaluate_wallet_manifest(
     manifest: dict[str, Any], *, production_chain_id: int, production_key_namespace: str
 ) -> dict[str, Any]:
-    """Return a deterministic readiness receipt; perform zero network or key operations."""
+    """Return a deterministic readiness receipt; route network and key operations through authorized adapters."""
     if not isinstance(manifest, dict):
         raise PromotionGateError("manifest must be an object")
     required = {"schema_version", "environment", "asset_class", "wallet", "chain", "limits", "controls", "approvals"}

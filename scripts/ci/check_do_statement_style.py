@@ -59,6 +59,11 @@ def inspect_git_range(base: str, head: str) -> None:
         ["git", "log", f"{base}..{head}", "--format=%s"],
         check=True, capture_output=True, text=True,
     ).stdout.splitlines()
+    bodies = subprocess.run(
+        ["git", "log", f"{base}..{head}", "--format=%b"],
+        check=True, capture_output=True, text=True,
+    ).stdout
+    inspect_text("commit.body", bodies)
     for subject in subjects:
         first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
         verb = first[0].lower() if first else ""

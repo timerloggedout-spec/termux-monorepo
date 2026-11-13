@@ -260,6 +260,12 @@ experiment_design:
       - workflow_run_id
       - run_attempt
       - observed_at
+      - ts
+    intake_field_mapping:
+      exact_model_id: "model"
+      task_or_entry_ref: "entry"
+      observed_at: "ts"
+      auditor_model_projection: "model_id (preserve existing auditor field)"
     maximum_per_trigger: 12
     stopping: "stop when the pre-registered decision rule is met; otherwise one further set after a 2-1 split or spread-in-noise; cap/window/budget reached without conclusion = INCONCLUSIVE"
     significance: "weight-bearing claims require relevant stratum and the repository's class-specific significance standard; otherwise HELD / NOT_ESTABLISHED"
@@ -319,7 +325,7 @@ stages:
       - "Inference endpoint and build-dispatch arm populations are explicitly separated."
       - "Generic issue-open provider calls are blocked until QUE admission or a separately authorized explicit command; the recorded #5195 OpenRouter HTTP 429 event is classified as an incidental, non-DoE control-gap observation, not a tournament result."
       - "PR #5134, issue #5160, #5151, #5152, #5176, #4979, #5145/#5146 and #5163 have current dispositions recorded."
-      - "The QUE deferred-by-tier re-evaluation path is located and proven; the documentation-only claim of a drain is not accepted as execution evidence. If absent, this order remains blocked pending a separately reviewed owner-governed fix."
+      - "The QUE deferred-by-tier re-evaluation path is recorded as NOT_ESTABLISHED; this blocks live dispatch only. Offline source reconciliation, deterministic simulation and design work may proceed with fixtures."
   - id: DPLC-FIT-01
     name: "Deterministic endpoint population and eligibility projection"
     priority: P0
@@ -420,7 +426,7 @@ stages:
     name: "QDesk / Desk evidence projection and decision"
     priority: P2
     state: planned
-    dependencies: [DPLC-FIT-03, DPLC-FIT-07, DPLC-FIT-08]
+    dependencies: [DPLC-FIT-03, DPLC-FIT-07]
     live_inference: false
     work: "Expose order and cohort state through existing proposal/QUE/DoE/ATES/3L0 projections; link source evidence and freshness without creating a new dashboard truth."
     acceptance:

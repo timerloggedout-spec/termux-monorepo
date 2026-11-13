@@ -1,9 +1,36 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-13T00:35:59Z",
+ "read_at": "2026-11-13T00:37:42Z",
  "status": "ok",
- "count": 35909,
+ "count": 35912,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1e786fddf1f5df845cfaad9aa3a49c88c9f9ac46",
+   "occurred_at": "2026-11-13 00:37:16+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1e786fddf1f5df845cfaad9aa3a49c88c9f9ac46",
+   "occurred_at": "2026-11-13 00:37:12+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1e786fddf1f5df845cfaad9aa3a49c88c9f9ac46",
+   "occurred_at": "2026-11-13 00:36:50+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -276,7 +303,7 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
+   "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -285,7 +312,7 @@
   },
   {
    "lane": "she",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "n8n SHE bridge",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -316,7 +343,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "914e673992ca467f84eae32e1560cfbe93accab3",
+   "head_sha": "b07728206ba5e77b918f87ef82100e14667e696c",
    "occurred_at": "2026-11-13 00:31:50+00"
   },
   {
@@ -325,7 +352,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "b07728206ba5e77b918f87ef82100e14667e696c",
+   "head_sha": "914e673992ca467f84eae32e1560cfbe93accab3",
    "occurred_at": "2026-11-13 00:31:50+00"
   },
   {
@@ -352,7 +379,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "323e78601eb823e85f35e9590625f9c1ab42a7ba",
+   "head_sha": "914e673992ca467f84eae32e1560cfbe93accab3",
    "occurred_at": "2026-11-13 00:31:29+00"
   },
   {
@@ -361,7 +388,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "914e673992ca467f84eae32e1560cfbe93accab3",
+   "head_sha": "323e78601eb823e85f35e9590625f9c1ab42a7ba",
    "occurred_at": "2026-11-13 00:31:29+00"
   },
   {
@@ -1776,33 +1803,6 @@
    "subject_url": null,
    "head_sha": "e0bcb5ce81d0fdf5d5bd27894330b5831df182f1",
    "occurred_at": "2026-11-13 00:10:14+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "da1588a65bc67531e76af5d18547c1bb5ceba104",
-   "occurred_at": "2026-11-13 00:10:13+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "7efb4d77819c6ef2a7ad2f1aae616e530736fd38",
-   "occurred_at": "2026-11-13 00:10:11+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "e0bcb5ce81d0fdf5d5bd27894330b5831df182f1",
-   "occurred_at": "2026-11-13 00:09:57+00"
   }
  ]
 }

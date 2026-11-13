@@ -1,18 +1,16 @@
-# Delphic Observatory — versioned showcase
+# Delphic Observatory
 
-Static, dependency-free research showcase.
+Versioned static UI for the Delphic research and engineering observatory.
 
 - Entry: `index.html`
-- Version contract: `VERSION.json`
-- Release notes: `CHANGELOG.md`
-- Version policy: semantic versioning; increment patch for corrections, minor for additive research capabilities, major for incompatible contracts.
-- Source PR: #5216
-- Hosting: Vercel Git-linked project / static root directory `site/delphic-observatory`.
+- Client feed logic: `observatory.js`
+- Lane presentation index: `lane-registry.json`
+- Version: `VERSION.json`
+- Platform contract: `docs/ops/DELPHIC-OBSERVATORY-PLATFORM-MIGRATION.md`
+- Vercel project: `delphic-observatory`, Git-linked to `timerloggedout-spec/termux-monorepo`, root `site/delphic-observatory`.
+- Render: proposed read-only feed service in root `render.yaml`; requires reviewed Blueprint plan before provisioning.
+- GitHub: canonical source, lane architecture, schemas and workflow evidence.
 
-The site is a read-only research projection. It must not be used as a source of live operational status or production authority.
+The UI polls public GitHub REST endpoints. It is read-only and subject to upstream rate limits. Render aggregation is opt-in and must pass health and contract checks before use. Never infer success from missing data.
 
-
-The public showcase is versioned through `VERSION.json` and `CHANGELOG.md`. Deployment workflow: `.github/workflows/delphic-observatory-pages.yml`. GitHub Pages must be enabled for the repository before first publication.
-
-
-Latest release: **0.2.0** adds the DoE × MoneyBall configured-instance task-pool integration.
+The lane registry is a presentation index; `docs/research/LANE-ARCHITECTURE.md` remains canonical.

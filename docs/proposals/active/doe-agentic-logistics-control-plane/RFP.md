@@ -52,8 +52,9 @@ Select the least complex tool for each workflow. Linear CLI/tool work should not
 
 Use **PDDL** for domain facts, action preconditions/effects, goal states and hard precedence. Begin with the owned Air Cargo domain as an educational fixture and develop a separate, small fleet-dispatch domain only after its state/actions are precisely defined.
 
-Do not force every optimization problem into classical PDDL:
+Do not force every optimization problem into classical PDDL. The existing Library RL project is a separate learned-policy treatment, not a PDDL planner and not a replacement for symbolic planning:
 
+- **Existing Library RL baseline:** `timerloggedout-spec/rl-multiagent-transfer_fork` contains a two-floor 9×9 GridWorld, tabular Q-learning, curriculum training, transfer helpers, multi-agent coordination, saved Q-tables and visualization/evaluation scripts. The training script configures one agent while the saved-policy view configures two. Reproduce this implementation before judging its performance; do not treat committed plots/checkpoints as newly reproduced results. The current inspected tree has no root LICENSE, dependency manifest or test suite, so license and reproducibility gates precede reuse. See DPLC-009 and LOGISTICS-PLANNING-ASSESSMENT.md.
 - **Unified Planning** is a candidate for consistent problem construction, PDDL parsing/serialization and comparison of installed planner engines.
 - **Fast Downward** is a candidate classical planner for supported PDDL fragments; its supported language subset must be checked against each domain. Do not assume it provides general numeric/temporal scheduling.
 - **OR-Tools CP-SAT / Routing** is a candidate for numeric capacities, assignment, time windows, vehicle-routing and scheduling constraints.

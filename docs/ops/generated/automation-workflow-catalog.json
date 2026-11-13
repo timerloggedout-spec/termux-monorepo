@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "1dcb5cfa9509011118dc30456ed752f4f33099b1e8a0ce17f8706d0b0100637e",
-  "workflow_count": 309,
+  "source_fingerprint": "dd77e0b66a606f0844838eb12eac43af9ad2c7be04e104228779b8f143522b51",
+  "workflow_count": 311,
   "workflows": [
     {
       "action_pins": [],
@@ -275,6 +275,22 @@
       "triggers": [
         "pull_request",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "contract"
+      ],
+      "name": "Agent Readability Source Contract",
+      "path": ".github/workflows/agent-readability-source-contract.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {
@@ -1961,6 +1977,26 @@
       "triggers": [
         "schedule",
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "",
+      "domain": "agentic-development",
+      "jobs": [
+        "action-first-language"
+      ],
+      "name": "DO Statement Style",
+      "path": ".github/workflows/do-statement-style.yml",
+      "schedules": [],
+      "triggers": [
+        "commit_comment",
+        "issue_comment",
+        "issues",
+        "pull_request",
+        "pull_request_review_comment",
+        "push"
       ]
     },
     {

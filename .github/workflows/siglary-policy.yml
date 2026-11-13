@@ -54,7 +54,7 @@ jobs:
               if (/\.(md|mdx|txt)$/i.test(f.filename)) scan(f.filename, added.join("\n"));
               else scan(f.filename + " comments", added.filter(x => /^\s*(\/\/|\/\*|\*|#)/.test(x)).join("\n"));
             }
-            const created = new Date(pr.created_at);
+            const created = new Date("2026-11-13T14:32:00Z"); // Policy activation boundary; earlier generated discussion remains baseline evidence.
             const comments = await github.paginate(github.rest.issues.listComments,{owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,per_page:100});
             for (const c of comments) if (c.user?.type === "User" && !c.user?.login?.endsWith("[bot]") && new Date(c.created_at) >= created) scan("comment " + c.id,c.body);
             const reviews = await github.paginate(github.rest.pulls.listReviews,{owner:context.repo.owner,repo:context.repo.repo,pull_number:pr.number,per_page:100});

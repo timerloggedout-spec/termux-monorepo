@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "8eac648ec4689991711f7f186080a117fe0b1d0521b85472c91ca8aa828d27c1",
+  "source_fingerprint": "1cb0985afaf0e40053f4169746771b587e2c62dd49cd2045697149b3f1230c5e",
   "workflow_count": 307,
   "workflows": [
     {
@@ -1888,7 +1888,7 @@
         "actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e",
         "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
       ],
-      "authority": "bounded-state-write",
+      "authority": "writer",
       "concurrency": "group: dispatch-executor cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [

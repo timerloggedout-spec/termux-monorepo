@@ -188,8 +188,17 @@ def decide(block, tiers_doc, picture, now):
 
 
 def fingerprint(decision, reasons, facts) -> str:
+    # Keep source provenance in the receipt, but exclude the moving
+    # collector timestamp from identity. Otherwise unchanged decisions
+    # emit a new issue comment every 15-minute drain cycle.
+    stable_facts = dict(facts)
+    picture = stable_facts.get("picture")
+    if isinstance(picture, dict):
+        picture = dict(picture)
+        picture.pop("as_of", None)
+        stable_facts["picture"] = picture
     payload = json.dumps(
-        {"decision": decision, "reasons": reasons, "facts": facts},
+        {"decision": decision, "reasons": reasons, "facts": stable_facts},
         sort_keys=True, separators=(",", ":"), default=str
     )
     return hashlib.sha256(payload.encode()).hexdigest()

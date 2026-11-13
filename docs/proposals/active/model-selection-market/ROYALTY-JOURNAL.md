@@ -52,7 +52,7 @@ A replayed snapshot includes origin and derivative lineage, policy versions, acc
 ## Verification
 
 ```sh
-python3 -B -m unittest tests.test_royalty_ledger -v
+python3 -B -m unittest discover -s tests -p 'test_royalty_ledger.py' -v
 ```
 
 Tests cover split/merge lineage, deterministic allocation, policy owner approval, accrual, partial settlement, duplicate protection, dispute, reversal, supersession, replay, and append-before-validation protection.

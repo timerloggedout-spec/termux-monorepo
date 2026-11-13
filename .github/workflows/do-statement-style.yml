@@ -1,6 +1,8 @@
 name: DO Statement Style
 
 on:
+  push:
+    branches: ["**"]
   pull_request:
     types: [opened, synchronize, reopened, edited]
   issues:
@@ -19,6 +21,7 @@ permissions:
 jobs:
   action-first-language:
     if: >-
+      github.event_name == 'push' ||
       github.event_name == 'pull_request' ||
       github.event_name == 'issue_comment' ||
       github.event_name == 'issues' ||

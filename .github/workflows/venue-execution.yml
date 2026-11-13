@@ -82,12 +82,36 @@ jobs:
           fi
           DRY_FLAG=""
           if [ "$DRY_RUN" = "true" ]; then DRY_FLAG="--dry-run"; fi
+          # SUBMIT-ONCE state lives on master; on a PR checkout the
+          # branch copy can lag it — prefetch the live record.
+          git fetch origin master             && git checkout origin/master -- ops/venue-execution/state.json             || echo "no master state yet — seed state stands"
           python3 scripts/venues/venue_execution.py execute \
             --entry "$ENTRY" \
             --requirement "$REQUIREMENT" \
             $ARTIFACT_FLAG $DRY_FLAG \
             --run-id "${{ github.run_id }}" \
             --receipt-out receipt.json | tee receipt.txt
+
+      - name: Stamp receipt on the entry filing
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
+        run: |
+          set -euo pipefail
+          issue="$(python3 -c "
+          import json, os
+          b = json.load(open('entries/' + os.environ['ENTRY'] + '/venue-execution.json'))
+          print((b.get('bindings') or {}).get(os.environ['REQUIREMENT'], {}).get('filing_issue', ''))")"
+          if [ -z "$issue" ]; then echo "no filing_issue in binding — receipt in artifact only"; exit 0; fi
+          python3 - <<'PY' > receipt-comment.md
+          import json, sys
+          sys.path.insert(0, 'scripts/venues')
+          import venue_execution as ve
+          print(ve.receipt_comment(json.load(open('receipt.json'))))
+          PY
+          gh issue comment "$issue" --body-file receipt-comment.md
 
       - name: Commit execution state (SUBMIT-ONCE record)
         if: inputs.dry_run != true
@@ -116,27 +140,6 @@ jobs:
           done
           echo "state push failed after 3 attempts" >&2
           exit 1
-
-      - name: Stamp receipt on the entry filing
-        if: always()
-        env:
-          GH_TOKEN: ${{ steps.swarm.outputs.token }}
-          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
-          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
-        run: |
-          set -euo pipefail
-          issue="$(python3 -c "
-          import json, os
-          b = json.load(open('entries/' + os.environ['ENTRY'] + '/venue-execution.json'))
-          print((b.get('bindings') or {}).get(os.environ['REQUIREMENT'], {}).get('filing_issue', ''))")"
-          if [ -z "$issue" ]; then echo "no filing_issue in binding — receipt in artifact only"; exit 0; fi
-          python3 - <<'PY' > receipt-comment.md
-          import json, sys
-          sys.path.insert(0, 'scripts/venues')
-          import venue_execution as ve
-          print(ve.receipt_comment(json.load(open('receipt.json'))))
-          PY
-          gh issue comment "$issue" --body-file receipt-comment.md
 
       - name: Publish receipt artifact
         if: always()

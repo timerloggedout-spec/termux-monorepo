@@ -203,8 +203,7 @@ def build(root):
              "generated_at": series_inputs.get("ops/tracking/nested-family.json")},
             {"id": "rate-limit-events",
              "path": "ops/quota/rate-limit-events.json",
-             "generated_at": events_doc.get("generated_at"),
-             "latest_event_at": latest(events, "at")},
+             "generated_at": events_doc.get("generated_at")},
         ],
         "summary": {
             "registry_model_records": len(model_recs),

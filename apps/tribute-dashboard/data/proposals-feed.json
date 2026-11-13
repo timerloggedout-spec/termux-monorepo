@@ -1,25 +1,25 @@
 {
  "schema": "proposals-feed/v2",
- "generated_at": "2026-11-03T15:11:21Z",
+ "generated_at": "2026-11-13T05:12:54Z",
  "source": "docs/proposals/registry.yaml",
- "registry_updated_at": "2026-11-02T00:00:00Z",
+ "registry_updated_at": "2026-11-11T00:00:00Z",
  "registry_updated_by": "ChatGPT",
  "counts": {
-  "total": 60,
+  "total": 64,
   "by_status": {
-   "in_review": 18,
+   "in_review": 19,
    "posted": 18,
-   "executing": 19,
+   "executing": 21,
    "draft": 2,
-   "accepted": 3
+   "accepted": 4
   },
   "by_priority": {
-   "P1": 45,
+   "P1": 49,
    "P0": 6,
    "P2": 9
   },
   "by_author": {
-   "ChatGPT": 13,
+   "ChatGPT": 17,
    "grok": 7,
    "timerloggedout-spec": 9,
    "Manus": 3,
@@ -36,6 +36,17 @@
   "passes": 5
  },
  "proposals": [
+  {
+   "id": "master-splinter",
+   "title": "Master Splinter \u2014 GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/master-splinter/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/master-splinter/",
+   "issues": [],
+   "prs": []
+  },
   {
    "id": "agent-contributor-provenance",
    "title": "Evidence-backed agent contributor attribution and source citation ledger",
@@ -1348,6 +1359,17 @@
    "prs": []
   },
   {
+   "id": "continuous-capability-evolution-lab",
+   "title": "Continuous Capability Evolution Laboratory \u2014 event-driven FOSS discovery, DoE comparison, and benefit compounding",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/continuous-capability-evolution-lab/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/continuous-capability-evolution-lab/",
+   "issues": [],
+   "prs": []
+  },
+  {
    "id": "integration-intelligence-superpowers",
    "title": "Integration Intelligence foundation and Superpowers engineering methodology",
    "author": "ChatGPT",
@@ -1357,6 +1379,36 @@
    "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/integration-intelligence-superpowers/",
    "issues": [],
    "prs": []
+  },
+  {
+   "id": "integration-portfolio-expansion",
+   "title": "Integration portfolio expansion and documentation readiness",
+   "author": "ChatGPT",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/integration-portfolio-expansion/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/integration-portfolio-expansion/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "provider-family-doe-observatory",
+   "title": "Provider Family \u00d7 Configured Instance \u00d7 DoE settings observatory",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/provider-family-doe-observatory/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/provider-family-doe-observatory/",
+   "issues": [
+    5136
+   ],
+   "prs": [
+    {
+     "number": 5145,
+     "state": "open",
+     "merged_at": null
+    }
+   ]
   }
  ],
  "passes": [

@@ -225,7 +225,13 @@ class RoyaltyLedger:
                 approved = _text(payload["approved_by"], "approved_by")
                 if approved != self.policy_owner:
                     raise RoyaltyLedgerError("policy close requires configured owner approval")
-                _time(payload["approved_at"], "approved_at")
+                approved_at = _time(payload["approved_at"], "approved_at")
+                if end < approved_at:
+                    raise RoyaltyLedgerError("policy close cannot predate its approval")
+                for accrual in state["accruals"].values():
+                    if (accrual["policy_key"] == key
+                            and datetime.fromisoformat(accrual["event_time"]) >= end):
+                        raise RoyaltyLedgerError("policy close would exclude an already-recorded accrual")
                 _digest(payload["approval_digest"], "approval_digest")
                 policy["effective_until"] = end.isoformat()
             elif typ == "royalty_accrual":
@@ -264,7 +270,7 @@ class RoyaltyLedger:
                 state["contributions"][contribution] = accrual_id
                 state["accruals"][accrual_id] = {
                     "contribution_id": contribution, "derivative_artifact_id": artifact,
-                    "policy_key": policy_key, "basis_units": basis, "unit_domain": domain,
+                    "policy_key": policy_key, "event_time": event_time.isoformat(), "basis_units": basis, "unit_domain": domain,
                     "royalty_units": total, "claims": claims, "disputed": False,
                 }
                 for claim in claims.values():

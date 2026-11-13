@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-13T09:03:52Z",
+ "read_at": "2026-11-13T09:15:27Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,25 +1956,12 @@
  ],
  "open": [
   {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-13T09:01:43Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "9059427e7b62c82e3a748d9670036a4ab992f27b",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T08:58:56Z",
+   "updated_at": "2026-11-13T09:15:20Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "c8e8a606671a20ff0591883c4ae15611ecc447a2",
+   "merge_commit_sha": "ed16b50687fb1b1b0038e324f0da5ee4aac3969b",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1985,9 +1972,9 @@
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-13T08:58:37Z",
+   "updated_at": "2026-11-13T09:13:29Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "ee436934ce7947ec25535cb2903757e5fa4b250f",
+   "merge_commit_sha": "1ee098c21b24ff5e9250cfbcf9e79bbce8be8ec1",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1995,29 +1982,55 @@
    "merged": false
   },
   {
-   "number": 5319,
+   "number": 5321,
    "title": "fix(tribute): expose Surfaces Map in shared navigation",
    "merged_at": null,
-   "updated_at": "2026-11-13T08:55:24Z",
-   "created_at": "2026-11-13T08:52:43Z",
-   "merge_commit_sha": "7d6acce4710cc9ede0139ca018f433ee4baf0ae1",
-   "head_ref": "fix/tribute-runtime-nav-surfaces-map-2026-11-13",
+   "updated_at": "2026-11-13T09:10:55Z",
+   "created_at": "2026-11-13T09:08:19Z",
+   "merge_commit_sha": "c19ffcba7437ebdc2dde5eac39fe02d2453baeb9",
+   "head_ref": "fix/tribute-runtime-nav-surfaces-map-current-2026-11-13",
    "author": "timerloggedout-spec",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5319",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5321",
+   "merged": false
+  },
+  {
+   "number": 5320,
+   "title": "docs(recon): correct Tribute quota publication intent and QUE findings",
+   "merged_at": null,
+   "updated_at": "2026-11-13T09:08:58Z",
+   "created_at": "2026-11-13T09:07:19Z",
+   "merge_commit_sha": "286e62acf2228bf42b34294f3648ba283f519c53",
+   "head_ref": "recon/tribute-domain-que-dispatch-2026-11-13",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5320",
    "merged": false
   },
   {
    "number": 3890,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-13T08:51:41Z",
+   "updated_at": "2026-11-13T09:05:58Z",
    "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "56df3d14d2c0aeae3cb7c1a6903fde6fdbf3190e",
+   "merge_commit_sha": "b4f4c8ad1e4ae7d16daa729327b4c86a0cc005e3",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-13T09:04:46Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "425a58760c16f96a549b77baf43a80f82656aad5",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
@@ -4540,19 +4553,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2907",
-   "merged": false
-  },
-  {
-   "number": 4017,
-   "title": "feat(ops): map federated AppIDs and independent release lanes",
-   "merged_at": null,
-   "updated_at": "2026-11-03T02:35:03Z",
-   "created_at": "2026-11-03T01:05:41Z",
-   "merge_commit_sha": "ee2a4368e33a12752e94df8abf53dfb87192b4c3",
-   "head_ref": "feat/federated-appid-release-registry",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4017",
    "merged": false
   }
  ],

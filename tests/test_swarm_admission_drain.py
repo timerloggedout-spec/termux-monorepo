@@ -61,6 +61,37 @@ def test_fingerprint_is_stable_for_equivalent_facts():
     )
 
 
+def test_fingerprint_ignores_picture_timestamp_but_keeps_evidence():
+    first = {
+        "tier": 4, "queued_depth": 450, "after": {}, "chain": {},
+        "picture": {"source": "collector-feeds", "as_of": "2026-11-13T12:00:00Z"},
+    }
+    later = {
+        "tier": 4, "queued_depth": 450, "after": {}, "chain": {},
+        "picture": {"source": "collector-feeds", "as_of": "2026-11-13T12:15:00Z"},
+    }
+    changed_depth = {**later, "queued_depth": 451}
+    changed_source = {
+        **later, "picture": {"source": "live-fallback", "as_of": "2026-11-13T12:15:00Z"},
+    }
+    assert drain.fingerprint("DEFERRED", ["flow gate"], first) == drain.fingerprint(
+        "DEFERRED", ["flow gate"], later
+    )
+    assert drain.fingerprint("DEFERRED", ["flow gate"], first) != drain.fingerprint(
+        "DEFERRED", ["flow gate"], changed_depth
+    )
+    assert drain.fingerprint("DEFERRED", ["flow gate"], first) != drain.fingerprint(
+        "DEFERRED", ["flow gate"], changed_source
+    )
+
+
+def test_workflow_uses_unescaped_github_actions_expressions():
+    workflow = (ROOT / ".github" / "workflows" / "swarm-admission-drain.yml").read_text(
+        encoding="utf-8"
+    )
+    assert r"\\${{" not in workflow
+    assert "app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}" in workflow
+    assert "private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}" in workflow
 def test_latest_fingerprint_reads_newest_receipt():
     old = "a" * 64
     new = "b" * 64

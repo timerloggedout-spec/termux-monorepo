@@ -13,7 +13,7 @@ The journal records entitlement and settlement evidence. It does not authorize p
 
 ## Artifact lineage
 
-Register each original artifact with immutable artifact ID, SHA-256 content digest, and origin actor. Register derivatives with immutable digest, author, and parent artifact references. Parent weights use integer basis points summing to 10,000. Derivative lineage is computed from parent lineage using deterministic largest-remainder allocation and lexical tie-breaking.
+Register each original artifact with immutable artifact ID, SHA-256 content digest, and origin actor. Register derivatives with immutable digest, author, and parent artifact references. Each parent reference includes a source-range/lineage reference and SHA-256 evidence digest. Parent weights use integer basis points summing to 10,000. Derivative lineage is computed from parent lineage using deterministic largest-remainder allocation and lexical tie-breaking.
 
 This supports split/cherry-pick and merge lineage: a derivative can retain shares from multiple original artifacts, and later derivatives inherit those shares. Supersession records connect an earlier artifact to its replacement while preserving prior attribution and accrued claims. Historical events remain append-only.
 

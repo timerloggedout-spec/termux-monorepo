@@ -1,12 +1,12 @@
 {
  "counts": {
   "claimed": 20,
-  "escalated": 13,
-  "queued": 15
+  "escalated": 28,
+  "queued": 0
  },
  "dispatches": [
   {
-   "age_min": 13866.2,
+   "age_min": 14159.5,
    "claim": null,
    "entry": "Other",
    "issue": 4077,
@@ -23,7 +23,7 @@
    "title": "[task] LIVE TEST \u2014 project-task intake trigger (done-evidence for #3577)"
   },
   {
-   "age_min": 13423.8,
+   "age_min": 13717.1,
    "claim": {
     "at": "2026-11-03T12:41:03Z",
     "by": "optimizations-assurance"
@@ -43,7 +43,7 @@
    "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item"
   },
   {
-   "age_min": 13359.2,
+   "age_min": 13652.4,
    "claim": {
     "at": "2026-11-03T13:47:14Z",
     "by": "optimizations-assurance"
@@ -63,7 +63,7 @@
    "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)"
   },
   {
-   "age_min": 12824.2,
+   "age_min": 13117.4,
    "claim": null,
    "entry": "Other",
    "issue": 4655,
@@ -89,7 +89,7 @@
    "title": "[task] QUE queue board v1.1 \u2014 per-repo (ss) extension"
   },
   {
-   "age_min": 11080.7,
+   "age_min": 11373.9,
    "claim": {
     "at": "2026-11-05T03:52:49Z",
     "by": "speculators-build"
@@ -109,7 +109,7 @@
    "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt"
   },
   {
-   "age_min": 11080.6,
+   "age_min": 11373.9,
    "claim": {
     "at": "2026-11-05T03:52:10Z",
     "by": "speculators-build"
@@ -129,7 +129,7 @@
    "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA"
   },
   {
-   "age_min": 11078.6,
+   "age_min": 11371.9,
    "claim": null,
    "entry": "Records hygiene (owner ruling 2026-11-04 19:41 PT) \u2014 speculators-build audit remainder.",
    "issue": 4975,
@@ -151,7 +151,7 @@
    "title": "[task] Records hygiene \u2014 population.jsonl: pricing/maker literal token -> null"
   },
   {
-   "age_min": 10988.9,
+   "age_min": 11282.2,
    "claim": null,
    "entry": "D1 StudySprint \u2014 0.5.2 cuts train (freeze tonight 2026-11-04 23:59 PT). Filed by the Contribution Desk under the D1 seat's decision (2026-11-04 21:17 PT): swap hand = QUE, in parallel with the endpoint deploy.",
    "issue": 5001,
@@ -173,7 +173,7 @@
    "title": "[task] D1 0.5.2 - endpoint default-host swap to hostb-live-5b9d7 (live.py + web/live.js)"
   },
   {
-   "age_min": 3356.1,
+   "age_min": 3649.4,
    "claim": {
     "at": "2026-11-10T12:18:43Z",
     "by": "optimizations-assurance"
@@ -193,7 +193,7 @@
    "title": "QUE: SYSTEM UPGRADE \u2014 Opportunities prep-first + repo-internal self-eval loop + Delphi-selection pipeline"
   },
   {
-   "age_min": 3354.8,
+   "age_min": 3648.0,
    "claim": {
     "at": "2026-11-10T12:32:23Z",
     "by": "optimizations-assurance"
@@ -213,7 +213,7 @@
    "title": "[task] QUE: build the #5096 opportunity self-eval loop (prep gate + QUE priority + Delphi-rubric selection)"
   },
   {
-   "age_min": 3348.2,
+   "age_min": 3641.4,
    "claim": {
     "at": "2026-11-10T12:34:53Z",
     "by": "optimizations-assurance"
@@ -233,7 +233,7 @@
    "title": "[task] QUE: port build-dispatch (D-h pullable trigger) from repo-story \u2014 Priority 1 per owner order 2026-11-10 04:27 PT"
   },
   {
-   "age_min": 3336.4,
+   "age_min": 3629.6,
    "claim": {
     "at": "2026-11-10T12:48:43Z",
     "by": "optimizations-assurance"
@@ -253,7 +253,7 @@
    "title": "[task] QUE: MIGRATION \u2014 side-chat functions \u2192 termux-monorepo AutonomousOpsStuff (slate + tranches)"
   },
   {
-   "age_min": 3324.9,
+   "age_min": 3618.1,
    "claim": {
     "at": "2026-11-10T12:56:49Z",
     "by": "optimizations-assurance"
@@ -273,7 +273,7 @@
    "title": "[task] QUE: SIGLARY ENFORCEMENT \u2014 repo-wide enforced notation {skills \u00b7 ICM \u00b7 CLAUDE.md \u00b7 DoE dispatch} + validation/performance legs"
   },
   {
-   "age_min": 3316.1,
+   "age_min": 3609.4,
    "claim": {
     "at": "2026-11-10T14:36:13Z",
     "by": "optimizations-assurance"
@@ -293,7 +293,7 @@
    "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)"
   },
   {
-   "age_min": 3237.8,
+   "age_min": 3531.0,
    "claim": null,
    "entry": "Probe #5128 \u2014 blocked on pre-existing gate fail (\u2205 probe fault)",
    "issue": 5129,
@@ -315,7 +315,7 @@
    "title": "[task] QUE: Fix ios-termux-contribute.yml:171 plain-scalar fault (gate blocker for probe #5128)"
   },
   {
-   "age_min": 3222.4,
+   "age_min": 3515.7,
    "claim": {
     "at": "2026-11-10T14:26:38Z",
     "by": "optimizations-assurance"
@@ -335,7 +335,7 @@
    "title": "[task] Siglary Leg B \u2014 validator + performance machinery, phase 1 report-only (#5116)"
   },
   {
-   "age_min": 3218.0,
+   "age_min": 3511.2,
    "claim": {
     "at": "2026-11-10T14:29:54Z",
     "by": "optimizations-assurance"
@@ -355,7 +355,7 @@
    "title": "[task] Migration T1.1 \u2014 dispatch liveness: mint-failure paging + build-dispatch heartbeat aging (#5113)"
   },
   {
-   "age_min": 3183.3,
+   "age_min": 3476.6,
    "claim": null,
    "entry": "Other \u2014 RIDP / Repository Intelligence & Collaboration Data Plane",
    "issue": 5135,
@@ -377,7 +377,7 @@
    "title": "[task] QUE: RIDP weekly delivery & efficiency report \u2014 self-reviewing implementation proposal"
   },
   {
-   "age_min": 3141.2,
+   "age_min": 3434.5,
    "claim": null,
    "entry": "Participant Identity Plane \u2014 build (spec: workspace participant-identity-plane/SPEC.md v0, QDesk 2026-11-10; owner Q 2026-11-10 07:38 PT via main). Generalizes the fleet GitHub AppID pattern off the GitHub plane: per-function identity \u00b7 own email of record \u00b7 own quota bucket \u00b7 scoped perms \u00b7 Registry-issued moniker, created BEFORE needed, acting only under QDesk dispatch + governor oversight.",
    "issue": 5136,
@@ -399,7 +399,7 @@
    "title": "[task] QUE: Participant Identity Plane \u2014 build (Phases 0\u20132)"
   },
   {
-   "age_min": 3108.5,
+   "age_min": 3401.7,
    "claim": {
     "at": "2026-11-10T16:15:44Z",
     "by": "optimizations-assurance"
@@ -419,7 +419,7 @@
    "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)"
   },
   {
-   "age_min": 3032.2,
+   "age_min": 3325.4,
    "claim": {
     "at": "2026-11-10T17:28:16Z",
     "by": "optimizations-assurance"
@@ -439,7 +439,7 @@
    "title": "[task] Migration T1.2 \u2014 deadline fail-safes: priority_timebox-driven transitions, no chat relay (#5113)"
   },
   {
-   "age_min": 3031.4,
+   "age_min": 3324.7,
    "claim": {
     "at": "2026-11-10T17:29:06Z",
     "by": "optimizations-assurance"
@@ -459,7 +459,7 @@
    "title": "[task] Migration T1.3 \u2014 backup-state watch: backup-state/v1 feed + scheduled watch, no chat relay (#5113)"
   },
   {
-   "age_min": 3021.3,
+   "age_min": 3314.6,
    "claim": {
     "at": "2026-11-10T17:38:53Z",
     "by": "optimizations-assurance"
@@ -479,7 +479,7 @@
    "title": "[task] build-dispatch hardening \u2014 convert silent-empty SUCCESS to honest FAILURE in-run"
   },
   {
-   "age_min": 1774.7,
+   "age_min": 2067.9,
    "claim": null,
    "entry": "multi-arm-build-routing",
    "issue": 5151,
@@ -496,7 +496,7 @@
    "title": "[task] Multi-arm build routing: endpoint-agnostic build-dispatch harness (arm = harness x endpoint)"
   },
   {
-   "age_min": 2398.6,
+   "age_min": 2691.8,
    "claim": {
     "at": "2026-11-12T15:29:04Z",
     "by": "dispatch-executor"
@@ -521,7 +521,7 @@
    "title": "[task] QUE: DoE free-inference pool + quota-aware cadence (autoQuotaCadence) repair"
   },
   {
-   "age_min": 2188.1,
+   "age_min": 2481.4,
    "claim": null,
    "entry": "AMD Academy C2 \"PyTorch on AMD GPUs\" \u2014 WALL RECORD (wall Nov 10 23:59 PT)",
    "issue": 5162,
@@ -543,7 +543,7 @@
    "title": "[task] QUE: AMD C2 wall record + false-HITL instance (D-k)"
   },
   {
-   "age_min": 1780.6,
+   "age_min": 2073.8,
    "claim": null,
    "entry": "build-dispatch failure-path observability (follow-up to #5142)",
    "issue": 5172,
@@ -565,7 +565,7 @@
    "title": "[task] build-dispatch failure-path observability"
   },
   {
-   "age_min": 1757.7,
+   "age_min": 2050.9,
    "claim": null,
    "entry": "admitted-dispatch-executor",
    "issue": 5176,
@@ -587,7 +587,7 @@
    "title": "[task] admitted\u2192dispatch executor: convert swarm-admitted filings to claim + arm dispatch"
   },
   {
-   "age_min": 1752.8,
+   "age_min": 2046.0,
    "claim": null,
    "entry": "billion-tokens-page",
    "issue": 5177,
@@ -609,7 +609,7 @@
    "title": "[task] Page build: \"What can you do with a Billion Tokens\" (fleet Pages)"
   },
   {
-   "age_min": 1663.4,
+   "age_min": 1956.6,
    "claim": null,
    "entry": "role-clone-doe-pool",
    "issue": 5183,
@@ -635,7 +635,7 @@
    "title": "[task] Role-clone DoE pool: side-chat roles cloned as DoE pool participants (identity+wallet+quota \u00b7 self-scheduling) \u2014 offload to free-Inference competition"
   },
   {
-   "age_min": 1000.6,
+   "age_min": 1293.8,
    "claim": null,
    "entry": "Other",
    "issue": 5195,
@@ -661,7 +661,7 @@
    "title": "[task] DoE: LangChain ecosystem \u00d7 PDDL logistics \u00d7 free-inference control systems"
   },
   {
-   "age_min": 535.4,
+   "age_min": 828.6,
    "claim": null,
    "entry": "rate-limit-governance",
    "issue": 5219,
@@ -683,7 +683,7 @@
    "title": "[task] QUE: rate-limit governance \u2014 Swarm App token migration + fan-out coalescing + Vercel deploy policy"
   },
   {
-   "age_min": 528.9,
+   "age_min": 822.1,
    "claim": null,
    "entry": "c15-agentic-ai-cfp",
    "issue": 5220,
@@ -705,12 +705,17 @@
    "title": "[task] C15 independent completion: ARA Agentic AI CFP closeout + next-cycle packet"
   },
   {
-   "age_min": 441.1,
+   "age_min": 734.4,
    "claim": null,
    "entry": "bucket-headroom-alerting",
    "issue": 5230,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:56Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -722,12 +727,17 @@
    "title": "[task] bucket-headroom alerting: scheduled bucket reads, derived thresholds, projected-exhaustion page"
   },
   {
-   "age_min": 431.0,
+   "age_min": 724.3,
    "claim": null,
    "entry": "ratelimit-episode-2026-11-12-github-token",
    "issue": 5231,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:54Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -739,12 +749,17 @@
    "title": "[task] Event Audit 006: file the 2026-11-12 github_token exhaustion episode into the register + audit"
   },
   {
-   "age_min": 357.6,
+   "age_min": 650.9,
    "claim": null,
    "entry": "evaluator-flow-thresholds-ssot",
    "issue": 5239,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:52Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -756,12 +771,17 @@
    "title": "[task] evaluator re-pin: FLOW_THRESHOLDS conform to dispatch-tiers.json v2 SSOT (read at eval time, no embedded table)"
   },
   {
-   "age_min": 280.1,
+   "age_min": 573.4,
    "claim": null,
    "entry": "venue-execution-machinery",
    "issue": 5254,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:50Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -773,12 +793,17 @@
    "title": "[task] Venue-execution machinery: per-venue requirement legs in GitHub Actions (upload \u2192 public URL + no-login verify \u2192 filing), census-driven"
   },
   {
-   "age_min": 259.5,
+   "age_min": 552.7,
    "claim": null,
    "entry": "neo4j-relate-eval",
    "issue": 5256,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:47Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -790,12 +815,17 @@
    "title": "[task] Eval: Neo4j Relate (embedded Rust graph DB for agents) \u2014 fleet fit + hackathon census"
   },
   {
-   "age_min": 257.9,
+   "age_min": 551.1,
    "claim": null,
    "entry": "amd-academy-c3",
    "issue": 5257,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:46Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -807,12 +837,17 @@
    "title": "[task] AMD Academy C3: requirements census + sitting route execute-or-record (gate AMD-ACADEMY-5)"
   },
   {
-   "age_min": 251.2,
+   "age_min": 544.5,
    "claim": null,
    "entry": "github-rubicon-refcas-patterns",
    "issue": 5259,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:43Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -824,12 +859,17 @@
    "title": "[task] Project Rubicon teardown: Ref-CAS patterns for Repo Replay / Commit Replay + fleet push-contention advisory"
   },
   {
-   "age_min": 246.8,
+   "age_min": 540.0,
    "claim": null,
    "entry": "que-self-migration-app-consolidation",
    "issue": 5260,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:41Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -841,12 +881,17 @@
    "title": "[task] QUE self-migration + AppID consolidation census: workflow classes, per-App load map, wave plan (#5113 leg)"
   },
   {
-   "age_min": 240.8,
+   "age_min": 534.1,
    "claim": null,
    "entry": "adapter-fix-recensus",
    "issue": 5261,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:39Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -858,12 +903,17 @@
    "title": "[task] Adapter FIX + re-census: sealion/cohere/baseten agent-loop marker (Cohere v2 first)"
   },
   {
-   "age_min": 234.5,
+   "age_min": 527.8,
    "claim": null,
    "entry": "CEEL \u00b7 platform adapters and qualification",
    "issue": 5262,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:37Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -875,12 +925,17 @@
    "title": "[task] CEEL: provider-neutral observability adapters and four-platform qualification"
   },
   {
-   "age_min": 234.5,
+   "age_min": 527.8,
    "claim": null,
    "entry": "CEEL \u00b7 16-cell factorial design and experiment evidence",
    "issue": 5263,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:35Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -892,12 +947,17 @@
    "title": "[task] CEEL: register and validate the complete 2^4 platform-factorial DoE"
   },
   {
-   "age_min": 234.5,
+   "age_min": 527.8,
    "claim": null,
    "entry": "CEEL \u00b7 event-driven Novel Feature Search and opportunity intake",
    "issue": 5264,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:33Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -909,12 +969,17 @@
    "title": "[task] CEEL: GitHub-native event intake, idempotent opportunity updates, and QUE admission"
   },
   {
-   "age_min": 234.1,
+   "age_min": 527.4,
    "claim": null,
    "entry": "CEEL \u00b7 post-merge verification and CI failure classification",
    "issue": 5265,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:31Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -926,12 +991,17 @@
    "title": "[task] CEEL: post-merge check reconciliation and ArchWiz dangle failure diagnosis"
   },
   {
-   "age_min": 208.4,
+   "age_min": 501.6,
    "claim": null,
    "entry": "Other \u2014 QDesk portfolio report implementation / current-master reconciliation",
    "issue": 5271,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:28Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -943,12 +1013,17 @@
    "title": "[task] QDesk: rebase report strategy on current master + self-implement evidence-backed portfolio report"
   },
   {
-   "age_min": 81.2,
+   "age_min": 374.4,
    "claim": null,
    "entry": "amd-academy-full-backfill",
    "issue": 5276,
-   "stall_events": [],
-   "state": "queued",
+   "stall_events": [
+    {
+     "at": "2026-11-12T20:27:26Z",
+     "kind": "escalation"
+    }
+   ],
+   "state": "escalated",
    "thresholds_min": {
     "escalate": 60,
     "flag": 30
@@ -960,7 +1035,7 @@
    "title": "[task] AMD Academy FULL backfill by DOING: all levels C1-C5 + ROCm, logins + skills + Learnings (Qualifying & Certifications lane; supersedes #5257 scope)"
   }
  ],
- "generated_at": "2026-11-12T20:27:24Z",
+ "generated_at": "2026-11-13T01:20:39Z",
  "schema": "dispatch-state-feed/v1",
  "source": "dispatch-watchdog"
 }

@@ -25,11 +25,11 @@ Activate a policy version only when the configured policy owner supplies:
 - effective-from and optional effective-until timestamps
 - owner identity, timezone-aware approval timestamp, and SHA-256 approval evidence digest
 
-The current v1 basis is `gross_reward_units`. Policy versions for the same policy ID use non-overlapping effective intervals. Close an open policy through an owner-approved `policy_close` event before activating its next sequential version. The Python module verifies owner identity and evidence shape; an external governance workflow must authenticate the owner and verify the approval evidence digest. The rate remains unset until an owner-approved policy event is appended.
+MSM-025 v1 accepts an owner-defined basis label and records it on every accrual; it assigns no default royalty basis. Policy versions for the same policy ID use non-overlapping effective intervals. Close an open policy through an owner-approved `policy_close` event before activating its next sequential version. The Python module verifies owner identity and evidence shape; an external governance workflow must authenticate the owner and verify the approval evidence digest. The rate and calculation basis remain unset until an owner-approved policy event is appended.
 
 ## Accrual and payable lifecycle
 
-Each accrual binds a unique contribution ID, derivative artifact, policy version, basis units, event time, and unit domain. Calculate total royalty as integer basis-point arithmetic; allocate the result across inherited origins deterministically. Keep separate payable balances by beneficiary and unit domain (`paper_point`, `test_token`, or `production_asset`).
+Each accrual binds a unique contribution ID, derivative artifact, policy version, the exact owner-defined basis label, basis units, event time, unit domain, and an eligibility-decision reference plus evidence digest. The caller supplies an explicit eligibility attestation; the journal does not infer eligibility from a cull event or wallet state. Calculate total royalty as integer basis-point arithmetic; allocate the result across inherited origins deterministically. Keep separate payable balances by beneficiary and unit domain (`paper_point`, `test_token`, or `production_asset`).
 
 Each claim supports:
 - partial settlement against a named accrual and origin artifact, with destination, evidence digest, and unique idempotency key
@@ -41,7 +41,7 @@ Settlement records are evidence only; external transfer remains a separately aut
 
 ## Culling and pool treatment
 
-The royalty journal is independent from the MSM-005 market journal. Culling a participant or donating their wallet balance to a consolidation pool leaves origin registration, derivative lineage, accrued payables, and future eligible derivative claims unchanged. Pool donations and distributions never debit royalty liabilities. The origin actor can remain a royalty beneficiary after their participant wallet is culled.
+The royalty journal is independent from the MSM-005 market journal. The owner rule recorded in #3747 says the cull-wallet rule neither transfers nor extinguishes a residual/royalty stream, and leaves that stream as a separate owner decision. Culling and pool donation therefore leave registered origin lineage and already-accrued claims in this separate journal; future derivative eligibility remains unset until an owner-approved policy and eligibility decision establish it. Pool donations and distributions never debit royalty liabilities. The origin actor can remain a royalty beneficiary after their participant wallet is culled.
 
 ## Replay and idempotency
 

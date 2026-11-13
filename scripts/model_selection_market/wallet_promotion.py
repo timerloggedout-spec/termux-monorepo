@@ -133,6 +133,8 @@ def evaluate_wallet_manifest(
             raise PromotionGateError("each approval requires actor, role, approved_at, evidence_digest")
         actor = _text(approval["actor"], "approval.actor")
         role = _text(approval["role"], "approval.role")
+        if role not in ("owner", "security", "custody"):
+            raise PromotionGateError("unsupported approval role")
         if actor in actors:
             raise PromotionGateError("approvers must be distinct actors")
         if role in role_actors:

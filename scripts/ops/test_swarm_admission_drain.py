@@ -151,3 +151,13 @@ def test_claimed_filing_is_never_re_evaluated_by_drain():
     )
     assert result["action"] == "skip_already_claimed"
     assert gh.posts == [] and gh.deletes == []
+
+
+def test_workflow_expressions_and_bash_array_expansion_are_unescaped():
+    workflow = Path(__file__).resolve().parents[2] / ".github/workflows/swarm-admission-drain.yml"
+    text = workflow.read_text(encoding="utf-8")
+    assert r"\\${{" not in text
+    assert r"\\${ARGS[@]}" not in text
+    assert "app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}" in text
+    assert '"\\${ARGS[@]}"' not in text
+    assert '"${ARGS[@]}"' in text

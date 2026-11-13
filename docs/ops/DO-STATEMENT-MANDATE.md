@@ -88,7 +88,7 @@ A source-level pass and a deployed-page pass are separate receipts. Record both 
 
 - Run the DO Statement Style workflow on every branch push.
 - Check changed governance, skills, workflow, and proposal text.
-- Check pull-request titles and descriptions, issue titles and descriptions, issue comments, pull-request review comments, discussion titles, discussion bodies, discussion comments, and commit subjects.
+- Check pull-request titles and descriptions, issue titles and descriptions, issue comments, pull-request review comments, discussion titles, discussion bodies, discussion comments, and commit subjects and bodies.
 - Apply the same checker to commit-comment text when a supported webhook relay invokes it; GitHub Actions has no native commit-comment workflow trigger.
 - Check every commit subject introduced by a pull request.
 - Keep the checker action-first and report each offending file, line, and required correction.

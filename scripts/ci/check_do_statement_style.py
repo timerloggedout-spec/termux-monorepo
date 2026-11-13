@@ -69,7 +69,10 @@ def inspect_event() -> None:
     event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
     if EVENT_NAME == "pull_request":
         inspect_text("pull_request.body", event.get("pull_request", {}).get("body") or "")
-    elif EVENT_NAME in {"issue_comment", "pull_request_review_comment"}:
+    elif EVENT_NAME == "issues":
+        inspect_text("issue.title", event.get("issue", {}).get("title") or "")
+        inspect_text("issue.body", event.get("issue", {}).get("body") or "")
+    elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "commit_comment"}:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
 inspect_pr_commits()

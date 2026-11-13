@@ -1,6 +1,8 @@
 name: DO Statement Style
 
-on: [push, pull_request, issues, issue_comment, commit_comment, pull_request_review_comment, discussion, discussion_comment]
+on:
+  push:
+  pull_request:
 
 jobs:
   action-first-language:

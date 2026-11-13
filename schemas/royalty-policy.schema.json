@@ -10,7 +10,7 @@
     "policy_id": {"type": "string", "minLength": 1},
     "version": {"type": "integer", "minimum": 1, "maximum": 2147483647},
     "rate_bps": {"type": "integer", "minimum": 0, "maximum": 10000},
-    "basis_definition": {"const": "gross_reward_units"},
+    "basis_definition": {"type": "string", "minLength": 1, "maxLength": 128},
     "effective_from": {"type": "string", "format": "date-time"},
     "effective_until": {"type": ["string", "null"], "format": "date-time"},
     "approved_by": {"type": "string", "minLength": 1},

@@ -29,7 +29,7 @@ MSM-025 v1 accepts an owner-defined basis label and records it on every accrual;
 
 ## Accrual and payable lifecycle
 
-Each accrual binds a unique contribution ID, derivative artifact, policy version, the exact owner-defined basis label, basis units, event time, unit domain, and an eligibility-decision reference plus evidence digest. The caller supplies an explicit eligibility attestation; the journal does not infer eligibility from a cull event or wallet state. Calculate total royalty as integer basis-point arithmetic; allocate the result across inherited origins deterministically. Keep separate payable balances by beneficiary and unit domain (`paper_point`, `test_token`, or `production_asset`).
+Each accrual binds a unique contribution ID, derivative artifact, policy version, the exact owner-defined basis label, basis units, event time, unit domain, and an eligibility-decision reference plus evidence digest. The caller supplies an explicit eligibility attestation; an external governance workflow must verify that decision and evidence. The journal does not infer eligibility from a cull event or wallet state. Calculate total royalty as integer basis-point arithmetic; allocate the result across inherited origins deterministically. Keep separate payable balances by beneficiary and unit domain (`paper_point`, `test_token`, or `production_asset`).
 
 Each claim supports:
 - partial settlement against a named accrual and origin artifact, with destination, evidence digest, and unique idempotency key

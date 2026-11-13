@@ -47,7 +47,7 @@ python -m scripts.model_selection_market.economy_backtest \
   --output-dir artifacts/economy-backtests
 ```
 
-The run ID binds the normalized manifest, synthetic cohort digest, and simulation version. The result digest covers metrics, balances, event sequence, and royalty payables. Artifact writes use create-once semantics; identical reruns verify existing bytes and changed content at the same path raises an error.
+The run ID binds the normalized manifest, synthetic cohort digest, simulation version, exact implementation commit SHA, and Python runtime fingerprint. The CLI resolves the commit from `GITHUB_SHA` or the checked-out Git HEAD; use `--code-commit` to pin it explicitly. The result digest covers metrics, balances, event sequence, and royalty payables. Artifact writes use create-once semantics; identical reruns verify existing bytes and changed content at the same path raises an error.
 
 ## Policy comparison
 

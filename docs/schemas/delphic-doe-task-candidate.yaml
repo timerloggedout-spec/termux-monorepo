@@ -3,7 +3,7 @@ $id: "delphic-doe-task-candidate-v1"
 title: "Delphic DoE read-only task candidate packet"
 type: object
 additionalProperties: false
-required: [schema, task_id, status, selection_policy, selected, eligible, excluded, dispatch_authorized, wallet_mutation_authorized, input_digest]
+required: [schema, task_id, status, selection_policy, selected, eligible, excluded, selection_provenance, dispatch_authorized, wallet_mutation_authorized, input_digest]
 properties:
   schema: {const: "delphic-doe-task-candidate/v1"}
   task_id: {type: string, minLength: 1}
@@ -12,6 +12,13 @@ properties:
   selected: {type: [object, "null"]}
   eligible: {type: array, items: {type: object}}
   excluded: {type: array, items: {type: object}}
+  selection_provenance:
+    type: object
+    additionalProperties: false
+    required: [previous_provider, rotation_applied]
+    properties:
+      previous_provider: {type: [string, "null"]}
+      rotation_applied: {type: boolean}
   dispatch_authorized: {const: false}
   wallet_mutation_authorized: {const: false}
   input_digest: {type: string, pattern: "^[0-9a-f]{64}$"}

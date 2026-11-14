@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/device-validation/registry.schema.json",
+  "title": "QUE Device Validation Capability Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_id", "repository", "updated_at", "inventory", "tool_profiles", "module_lanes"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "registry_id": { "const": "termux-monorepo.device-validation" },
+    "repository": { "const": "timerloggedout-spec/termux-monorepo" },
+    "updated_at": { "type": "string", "format": "date" },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["coverage", "recon_scope", "last_reconciled_at"],
+      "properties": {
+        "coverage": { "enum": ["partial", "complete", "stale"] },
+        "recon_scope": { "type": "string", "minLength": 1 },
+        "last_reconciled_at": { "type": ["string", "null"], "format": "date" },
+        "known_candidate_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "tool_profiles": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/toolProfile" }
+    },
+    "module_lanes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/moduleLane" }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref", "classification"],
+      "properties": {
+        "kind": { "enum": ["repository_file", "workflow", "issue", "upstream", "runtime_observation", "test_result", "manual_review"] },
+        "ref": { "type": "string", "minLength": 1 },
+        "classification": { "enum": ["verified", "candidate", "unknown", "stale"] },
+        "observed_at": { "type": ["string", "null"], "format": "date-time" },
+        "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+        "notes": { "type": "string" }
+      }
+    },
+    "toolProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_profile_id", "name", "family", "registration_state", "implementation_state", "discovery_state", "verification_state", "availability_state", "adapter_contract", "host_requirements", "capabilities", "exclusions", "provenance", "security", "resource_profile", "evidence", "owner", "next_recon"],
+      "properties": {
+        "tool_profile_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "family": { "enum": ["android_avd", "termux_native", "termux_container", "qemu", "waydroid", "physical_device", "linux_container", "other"] },
+        "registration_state": { "enum": ["proposed", "registered", "retired"] },
+        "implementation_state": { "enum": ["absent", "planned", "implemented"] },
+        "discovery_state": { "enum": ["not_checked", "discovered", "not_found"] },
+        "verification_state": { "enum": ["unverified", "verified", "failed", "stale"] },
+        "availability_state": { "enum": ["unknown", "available", "unavailable", "degraded"] },
+        "adapter_contract": { "type": "string", "minLength": 1 },
+        "host_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["os", "architectures", "privileges"],
+          "properties": {
+            "os": { "type": "array", "items": { "type": "string" } },
+            "architectures": { "type": "array", "items": { "type": "string" } },
+            "privileges": { "type": "array", "items": { "type": "string" } },
+            "android_api_levels": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+            "termux_versions": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "capabilities": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "exclusions": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["upstream_url", "revision", "license", "retrieved_at"],
+          "properties": {
+            "upstream_url": { "type": ["string", "null"] },
+            "revision": { "type": ["string", "null"] },
+            "license": { "type": ["string", "null"] },
+            "retrieved_at": { "type": ["string", "null"], "format": "date" }
+          }
+        },
+        "security": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["isolation", "network_egress", "secret_policy", "data_retention"],
+          "properties": {
+            "isolation": { "type": "string" },
+            "network_egress": { "type": "string" },
+            "secret_policy": { "type": "string" },
+            "data_retention": { "type": "string" }
+          }
+        },
+        "resource_profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cpu", "memory_mb", "disk_mb", "startup_seconds", "concurrency", "cost_basis"],
+          "properties": {
+            "cpu": { "type": ["integer", "null"], "minimum": 1 },
+            "memory_mb": { "type": ["integer", "null"], "minimum": 1 },
+            "disk_mb": { "type": ["integer", "null"], "minimum": 1 },
+            "startup_seconds": { "type": ["number", "null"], "minimum": 0 },
+            "concurrency": { "type": ["integer", "null"], "minimum": 1 },
+            "cost_basis": { "type": "string" }
+          }
+        },
+        "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+        "owner": { "type": "string", "minLength": 1 },
+        "next_recon": { "type": "string", "minLength": 1 }
+      }
+    },
+    "moduleLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module_lane_id", "module_path", "module_name", "lane_state", "inventory_classification", "target_platforms", "required_capabilities", "hardware_requirements", "validation_profiles", "test_suites", "evidence_policy", "reset_contract", "owner", "evidence"],
+      "properties": {
+        "module_lane_id": { "type": "string", "pattern": "^device-lane:[a-z0-9][a-z0-9._-]+$" },
+        "module_path": { "type": "string", "minLength": 1 },
+        "module_name": { "type": "string", "minLength": 1 },
+        "lane_state": { "enum": ["discovered", "planned", "active", "retired"] },
+        "inventory_classification": { "enum": ["verified_device_component", "candidate_device_component", "planned_device_component"] },
+        "target_platforms": { "type": "array", "items": { "type": "string" } },
+        "required_capabilities": { "type": "array", "items": { "type": "string" } },
+        "hardware_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "capabilities"],
+          "properties": {
+            "required": { "type": "boolean" },
+            "capabilities": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "validation_profiles": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "test_suites": { "type": "array", "items": { "type": "string" } },
+        "evidence_policy": { "type": "string", "minLength": 1 },
+        "reset_contract": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } }
+      }
+    }
+  }
+}

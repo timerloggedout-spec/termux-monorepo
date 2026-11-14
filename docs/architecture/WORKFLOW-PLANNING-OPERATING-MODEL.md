@@ -270,13 +270,13 @@ A simulation receipt is a hypothesis artifact. It cannot create QUE claims, writ
 
 **Gate 5 — DoE:** run a bounded routing benchmark with pinned baseline and independent evaluation.
 
-**Gate 6 — promotion:** require dual-gate, regression checks, operator approval where side effects exist, and documented rollback.
+**Gate 6 — promotion:** require both repository gates, regression checks, verified task outcome and documented rollback; require Operator approval only for the human-only edges enumerated in `docs/proposals/AGENTIC-PERMISSIONS.md`. Routine authorized repository writes remain within FA-ADE automation.
 
 ## 12. Acceptance criteria
 
 - One WFC maps to one or more deterministic projections with stable IDs.
 - Every workflow node and transition has a declared owner and state semantics.
-- Every write or external side effect has a policy/approval class.
+- Every write or external side effect has a declared policy class; human approval is required only where `AGENTIC-PERMISSIONS.md` reserves a human-only edge.
 - PDDL artifacts pass a named planner and recorded validation command.
 - Mermaid diagrams are generated/checked from the same contract or explicitly marked hand-maintained.
 - n8n is optional and cannot become canonical state.

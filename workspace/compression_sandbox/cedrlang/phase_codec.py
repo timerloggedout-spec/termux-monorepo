@@ -27,6 +27,7 @@ INITIAL_SUBSTITUTION_PROBABILITY = 0.70
 LEET_MAP: Mapping[str, str] = {
     "a": "4",
     "e": "3",
+    "g": "6",
     "i": "1",
     "o": "0",
     "s": "5",
@@ -34,7 +35,7 @@ LEET_MAP: Mapping[str, str] = {
 }
 
 # Pre-computed translation table for 100% probability fast-path translation
-LEET_TRANS = str.maketrans("aeiostAEIOST", "431057431057")
+LEET_TRANS = str.maketrans("aegiostAEGIOST", "43610574361057")
 
 # Canonical compressed forms from CedrLang's MAPPINGS. Keeping this registry
 # local avoids importing the large document compiler and makes the phase easy
@@ -44,8 +45,21 @@ CANONICAL_TOKENS: Tuple[str, ...] = (
     "gr1m01r3", "b1dd3r", "w4g3r", "chr0n0", "l1ngu15t", "sc0ut",
     "h4rv35t3r", "em_t3chs", "em_t3ch", "pr0cur3s", "pr0cur3", "cur473s",
     "cur473", "s0urc3s", "s0urc3", "4cqs", "4cq", "c0mp1s", "c0mp1",
-    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7",
+    "r3534rchs", "r3534rch", "c0nc3p7s", "c0nc3p7", "r3vwr1gh7",
 )
+
+# Explicit candidate variants for symbol-class (e.g. ₹), punctuation (e.g. -, ·), and candidate aliases
+EXPLICIT_VARIANT_MAP: Mapping[str, str] = {
+    "r3vwr1gh7": "r3vwr1gh7",
+    "revwright": "r3vwr1gh7",
+    "rev-wright": "r3vwr1gh7",
+    "rev·wright": "r3vwr1gh7",
+    "r3vwright": "r3vwr1gh7",
+    "r3v-wright": "r3vwr1gh7",
+    "r3v·wright": "r3vwr1gh7",
+    "r3vw₹16h7": "r3vwr1gh7",
+    "r3vw16h7": "r3vwr1gh7",
+}
 
 
 def _variants(token: str) -> Iterable[str]:
@@ -64,6 +78,8 @@ def _build_variant_index(tokens: Sequence[str]) -> Dict[str, str]:
     for token in tokens:
         for variant in _variants(token):
             index.setdefault(variant.lower(), token)
+    for var, target in EXPLICIT_VARIANT_MAP.items():
+        index.setdefault(var.lower(), target)
     return index
 
 
@@ -105,7 +121,7 @@ def _build_trie_regex(words: Iterable[str]) -> str:
                 res = f"{res}?"
         return res
 
-    return r"\b(?:" + _trie_to_regex(trie) + r")\b"
+    return r"(?<!\w)(?:" + _trie_to_regex(trie) + r")(?!\w)"
 
 
 VARIANT_INDEX = _build_variant_index(CANONICAL_TOKENS)
@@ -117,14 +133,16 @@ VARIANT_REGEX = re.compile(_build_trie_regex(VARIANT_INDEX.keys()))
 NON_CANONICAL_INDEX: Dict[str, str] = {
     var: canonical for var, canonical in VARIANT_INDEX.items() if var != canonical
 }
-NON_CANONICAL_VARIANT_REGEX = re.compile(_build_trie_regex(NON_CANONICAL_INDEX.keys()))
+NON_CANONICAL_VARIANT_REGEX = re.compile(_build_trie_regex(NON_CANONICAL_INDEX.keys()), re.IGNORECASE)
 
 # Pre-computed casing mapping table for non-canonical variant replacements
 FAST_CASING_NON_CANONICAL: Dict[str, str] = {}
 for var, canonical in NON_CANONICAL_INDEX.items():
     FAST_CASING_NON_CANONICAL[var.lower()] = canonical.lower()
-    FAST_CASING_NON_CANONICAL[var.capitalize()] = canonical.capitalize()
-    FAST_CASING_NON_CANONICAL[var.upper()] = canonical.upper()
+    if var.capitalize() != var.lower():
+        FAST_CASING_NON_CANONICAL[var.capitalize()] = canonical.capitalize()
+    if var.upper() != var.lower():
+        FAST_CASING_NON_CANONICAL[var.upper()] = canonical.upper()
 
 # Module-level set of eligible leet characters
 ELIGIBLE_LEET_CHARS = set(LEET_MAP.keys())
@@ -155,7 +173,12 @@ def _from_1337_replace(match: re.Match[str]) -> str:
     res = FAST_CASING_NON_CANONICAL.get(token)
     if res is not None:
         return res
-    return NON_CANONICAL_INDEX[token.lower()]
+    low = token.lower()
+    target = NON_CANONICAL_INDEX.get(low)
+    if target is not None:
+        return target
+    clean = re.sub(r"[^\w₹]", "", low)
+    return NON_CANONICAL_INDEX.get(clean, token)
 
 
 def _replace_leet_100(match: re.Match[str]) -> str:

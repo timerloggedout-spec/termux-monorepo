@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 IMPERATIVE = frozenset({
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
-    "collect", "compare", "create", "define", "deploy", "document", "enforce", "expand",
+    "accept", "add", "align", "apply", "audit", "build", "bump", "centralize", "check", "close",
+    "collect", "compare", "cover", "create", "define", "deploy", "distinguish", "document", "enforce", "expand",
     "export", "fix", "gate", "generate", "guard", "include", "inspect", "keep", "measure",
     "migrate", "move", "open", "preserve", "publish", "recognize", "record", "reconcile", "refresh",
     "refine", "register", "regenerate", "rebuild", "remove", "rename", "repair", "replace",

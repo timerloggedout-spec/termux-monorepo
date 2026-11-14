@@ -105,7 +105,7 @@ class TestSIEPipeline(unittest.TestCase):
         }
         body = item_body(item)
         match = re.search(
-            r"## SIE stage receipt\\n```json\\n(.*?)\\n```",
+            r"## SIE stage receipt\n```json\n(.*?)\n```",
             body, re.S,
         )
         self.assertIsNotNone(match)

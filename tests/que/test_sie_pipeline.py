@@ -74,6 +74,39 @@ class TestSIEPipeline(unittest.TestCase):
         self.assertTrue(any("item_key" in error for error in errors))
         self.assertTrue(any("source" in error for error in errors))
 
+    def test_same_stage_execution_reaches_completion_then_advances(self):
+        ready = receipt("TRIAGE", "READY")
+        active = receipt("TRIAGE", "ACTIVE")
+        completed = receipt("TRIAGE", "COMPLETED")
+        research = receipt("RESEARCH", "READY")
+        self.assertEqual(validate_transition(ready, active), [])
+        self.assertEqual(validate_transition(active, completed), [])
+        self.assertEqual(validate_transition(completed, research), [])
+        self.assertTrue(validate_transition(ready, completed))
+
+    def test_blocked_stage_recovers_and_completes(self):
+        blocked = receipt("RESEARCH", "BLOCKED")
+        ready = receipt("RESEARCH", "READY")
+        active = receipt("RESEARCH", "ACTIVE")
+        completed = receipt("RESEARCH", "COMPLETED")
+        self.assertEqual(validate_transition(blocked, ready), [])
+        self.assertEqual(validate_transition(ready, active), [])
+        self.assertEqual(validate_transition(active, completed), [])
+
+    def test_receipt_rejects_schema_unknown_properties_and_optional_type_drift(self):
+        data = receipt()
+        data["unexpected"] = True
+        self.assertTrue(any("unsupported properties" in error
+                            for error in validate_receipt(data)))
+        data = receipt()
+        data["source"]["unexpected"] = True
+        self.assertTrue(any("source: unsupported properties" in error
+                            for error in validate_receipt(data)))
+        data = receipt()
+        data["owner_role"] = 17
+        self.assertTrue(any("owner_role" in error
+                            for error in validate_receipt(data)))
+
     def test_blocked_stage_resumes_in_place(self):
         before = receipt("RESEARCH", "BLOCKED")
         resumed = receipt("RESEARCH", "READY")

@@ -13,9 +13,10 @@ EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
 NEGATIVE_FIRST = re.compile(
-    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
+    r"^\\s*(?:(?:[-*]\\s*)|(?:#+\\s*))?(?:do not|don't|never|no\\b|not\\b|avoid\\b)",
     re.IGNORECASE,
 )
+# Compatibility pin: "guard" remains a registered action in the shared vocabulary.
 from do_statement_style_rules import is_imperative_subject
 
 STYLE_PATHS = [

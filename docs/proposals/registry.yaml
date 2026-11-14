@@ -689,7 +689,19 @@ proposals:
     title: "QDesk self-repair loop (SIE → Desk QUE)"
     author: timerloggedout-spec
     status: executing
+    priority: P1
     path: active/qdesk-self-repair/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs:
+      - 5417
+    related_branches: []
     related_workflows:
       - .github/workflows/qdesk-self-repair.yml
     gates_required:
@@ -740,6 +752,8 @@ proposals:
       - 966
     related_prs:
       - 967
+      - 5415
+      - 5416
     related_branches:
       - experiment/archwiz-markov-trellis-lab
     gates_required:

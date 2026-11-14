@@ -178,6 +178,16 @@ def test_amd_academy_discovery_registry_cannot_execute_unpromoted_operations():
     assert out["error"]["code"] == "not_promoted"
 
 
+def test_amd_academy_provider_enforces_assessment_integrity_boundary():
+    root = ROOT / "ops" / "web_adapter_foundry" / "providers" / "amd-academy"
+    provider = json.loads((root / "registry.json").read_text(encoding="utf-8"))
+    operations = {item["operation_id"] for item in provider["operations"]}
+    assert not any("quiz" in operation or "exam" in operation for operation in operations)
+    readme = (root / "README.md").read_text(encoding="utf-8")
+    assert "MUST stop at any quiz" in readme
+    assert "unless AMD expressly permits them" in readme
+
+
 BRIEF = {
     "target_id": "example-shop", "target": "https://shop.example.com/catalog",
     "purpose": "api-extraction", "side_effect": "read", "probe_budget": 24,

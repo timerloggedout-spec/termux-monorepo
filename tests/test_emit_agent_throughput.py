@@ -161,5 +161,104 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         self.assertTrue(all("prompt" not in row for row in rows))
 
 
+    def test_missing_execution_is_explicitly_unknown(self):
+        events = build_events(self.metadata())
+        expected = {
+            "controller": "unknown",
+            "surface": "unknown",
+            "route": "unknown",
+            "session_ref": None,
+            "adapter_version": None,
+            "attribution_method": "unresolved",
+            "confidence": 0.0,
+            "evidence_refs": [],
+        }
+        for event in events:
+            self.assertEqual(event["execution"], expected)
+
+    def test_que_execution_requires_repo_owned_adapter_and_session_evidence(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "opaque-session:que:12345",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345", "workflow_job:99"],
+        }
+        events = build_events(data)
+        for event in events:
+            self.assertEqual(event["execution"]["controller"], "que")
+            self.assertEqual(event["execution"]["surface"], "repo_owned_adapter")
+            self.assertEqual(event["execution"]["route"], "api")
+            validate_event(event)
+
+    def test_que_cannot_claim_external_computer_or_seat_browser_execution(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "seat_browser",
+            "route": "seat_browser",
+            "session_ref": "opaque-session:123",
+            "adapter_version": "external/1",
+            "attribution_method": "session_export",
+            "confidence": 1.0,
+            "evidence_refs": ["session:123"],
+        }
+        with self.assertRaisesRegex(ValueError, "QUE execution requires repo_owned_adapter"):
+            build_events(data)
+
+    def test_que_execution_without_session_or_evidence_is_rejected(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "mcp",
+            "session_ref": None,
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "workflow_name_mapping",
+            "confidence": 0.0,
+            "evidence_refs": [],
+        }
+        with self.assertRaises(ValueError):
+            build_events(data)
+
+    def test_muse_external_computer_execution_stays_attributed_to_muse(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "muse",
+            "surface": "external_computer",
+            "route": "seat_browser",
+            "session_ref": "opaque-session:muse:123",
+            "adapter_version": None,
+            "attribution_method": "session_export",
+            "confidence": 0.9,
+            "evidence_refs": ["session_export:123"],
+        }
+        events = build_events(data)
+        for event in events:
+            self.assertEqual(event["execution"]["controller"], "muse")
+            self.assertEqual(event["execution"]["surface"], "external_computer")
+            self.assertNotEqual(event["execution"]["controller"], "que")
+
+    def test_execution_provenance_rejects_raw_session_material(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "cli",
+            "session_ref": "opaque-session:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+            "session_text": "raw browser/session contents must never be stored",
+        }
+        with self.assertRaisesRegex(ValueError, "unsupported execution fields"):
+            build_events(data)
+
+
 if __name__ == "__main__":
     unittest.main()

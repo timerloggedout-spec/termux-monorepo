@@ -239,3 +239,17 @@ def test_temporal_lineage_rejects_forward_parent_and_non_monotonic_time():
     assert "parent_not_previously_observed" in reasons
     assert "non_monotonic_timestamp" in reasons
     assert result["structurally_valid"] is False
+
+
+def test_markov_layer_propagation_rejects_non_finite_or_negative_tolerance():
+    import math
+    for tolerance in (math.nan, math.inf, -1.0):
+        try:
+            m.markov_layer_propagation(
+                ["A"], {"A": {"A": 1.0}}, {"A": 1.0}, 1,
+                tolerance=tolerance,
+            )
+        except ValueError as exc:
+            assert "tolerance" in str(exc)
+        else:
+            raise AssertionError("expected invalid tolerance rejection")

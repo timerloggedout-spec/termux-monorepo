@@ -72,10 +72,10 @@ class TestProposalPackage(unittest.TestCase):
 
         gh = FakeGitHub()
         issue = {"body": (
-            "### Proposal source ref\\n" + manifest["source_ref"] +
-            "\\n### Proposal manifest ref\\n" + manifest_ref +
-            "\\n### Proposal manifest path\\n" + manifest_path +
-            "\\n### Expected package digest\\n" + manifest["package_digest"] + "\\n"
+            "### Proposal source ref\n" + manifest["source_ref"] +
+            "\n### Proposal manifest ref\n" + manifest_ref +
+            "\n### Proposal manifest path\n" + manifest_path +
+            "\n### Expected package digest\n" + manifest["package_digest"] + "\n"
         )}
         binding = verify_issue_package_binding(gh, issue)
         self.assertEqual(binding["manifest_ref"], manifest_ref)

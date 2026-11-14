@@ -8,7 +8,7 @@
 
 Adopt **QUE + specialist backends** as the architecture to evaluate, not as a pre-proven performance winner.
 
-- QUE remains the sole admission, scheduling, claim/lease, retry and task-dispatch authority.
+- QUE remains the umbrella dispatch/assurance control-plane domain; device validation adds no queue or scheduler. Existing ownership is preserved: Cadence owns admission/tiering policy, dispatch machinery owns ranking/claim/lease/watchdog behavior, and the claimable-route registry plus registered workflows own the executable trigger boundary. QUE feeds are read-model projections, not a substitute for those writers.
 - Each device-dependent repository module owns one independently addressable validation lane.
 - A shared capability registry describes tool backends and machine profiles; it does not schedule or claim work.
 - DoE/MoneyBall compares backend strategies on matched workloads and chooses by verified outcomes, not brand preference.
@@ -58,10 +58,10 @@ The registry distinguishes:
 These are orthogonal. A profile can be registered and implemented while current availability remains unknown. Fresh availability is scoped to a specific execution context and expires.
 
 ### 3.3 QUE orchestration
-QUE receives a bounded job contract containing:
+The existing intake/dispatch path receives a bounded job contract containing:
 `task_id`, `module_lane_id`, `target_sha`, `suite_id`, `required_capabilities[]`, `preferred_tool_profiles[]`, `forbidden_capabilities[]`, `hardware_required`, `resource_budget`, `deadline`, `evidence_policy_ref`, and `idempotency_key`.
 
-QUE applies its existing admission, tier, queue-pressure, claim/lease and dispatch rules. The device-validation adapter returns a backend recommendation and compatibility explanation; it never independently enqueues, claims, retries or promotes a task. If current QUE contracts cannot carry a field, that gap becomes a separately reviewed integration item rather than an undocumented side channel.
+The existing intake route files the bounded task. Cadence's admission surface applies current tier/queue-pressure policy; QUE task ranking and dispatch-watchdog machinery perform claim/lease/reclaim and escalation; only a route registered in `ops/dispatch/claimable-routes.json` may trigger execution. The adapter returns a backend recommendation and compatibility explanation; it never independently enqueues, claims, retries or promotes a task. `ops/que/feeds/` remains a read-model projection and is not treated as the dispatch API. If current contracts cannot carry a field, that gap becomes a separately reviewed integration item rather than an undocumented side channel.
 
 ### 3.4 Execution backends
 Backends implement a common adapter contract:

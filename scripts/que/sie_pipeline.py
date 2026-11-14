@@ -180,11 +180,16 @@ def build_receipt(*, source_kind: str, source_id: str, source_revision: str,
                   ref: str = "master", sha: str | None = None,
                   observed_at: str | None = None, evidence_refs: list[str] | None = None,
                   owner_role: str | None = None, claim_class: str | None = None,
-                  package_digest: str | None = None, reason: str | None = None) -> dict:
+                  package_digest: str | None = None, reason: str | None = None,
+                  event_source_id: str | None = None,
+                  event_source_revision: str | None = None) -> dict:
     at = observed_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     receipt = {
         "schema": "que.sie-stage/v1",
-        "event_id": stable_event_id(source_kind, source_id, source_revision),
+        "event_id": stable_event_id(
+            source_kind, event_source_id or source_id,
+            event_source_revision or source_revision,
+        ),
         "item_key": item_key(source_kind, source_id, failure_class),
         "stage": stage,
         "state": state,

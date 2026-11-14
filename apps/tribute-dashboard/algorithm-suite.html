@@ -41,7 +41,7 @@ function card(item,manifest){
  if(item.version_file)links.push('<a href="'+esc(repo+"/blob/"+ref+"/"+item.version_file)+'">Version record</a>');
  if(item.engine_path)links.push('<a href="'+esc(repo+"/blob/"+ref+"/"+item.engine_path)+'">Engine</a>');
  if(item.documentation_path)links.push('<a href="'+esc(repo+"/blob/"+ref+"/"+item.documentation_path)+'">Contract</a>');
- if(item.test_path){const tests=Array.isArray(item.test_path)?item.test_path:[item.test_path];links.push('<a href="'+esc(repo+"/tree/"+ref+"/"+tests[0])+'">Tests</a>')}
+ if(item.test_path){const tests=Array.isArray(item.test_path)?item.test_path:[item.test_path];const testKind=/\.[a-z0-9]+$/i.test(tests[0])?"blob":"tree";links.push('<a href="'+esc(repo+"/"+testKind+"/"+ref+"/"+tests[0])+'">Tests</a>')}
  return '<article class="component"><div class="status">'+esc(item.status||"registered")+'</div><h3>'+esc(item.title)+'</h3><div class="meta">'+esc(item.id)+' · '+esc(item.version||"version unassigned")+(item.algorithm_version?' · '+esc(item.algorithm_version):'')+'</div><p>'+esc(item.model_contract||item.role||"Registered component.")+'</p><div class="links">'+links.join("")+'</div></article>';
 }
 fetch("./algorithm-labs.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("registry HTTP "+r.status);return r.json()}).then(data=>{

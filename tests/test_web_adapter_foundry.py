@@ -145,8 +145,8 @@ def test_amd_academy_provider_registry_is_discovery_only():
         "amd_academy.module.launch",
         "amd_academy.lab.launch",
         "amd_academy.lab.submit",
-        "amd_academy.quiz.submit",
     }
+    assert "amd_academy.quiz.submit" not in ops  # AMD assessment-integrity policy hard stop
     assert all(op["status"] == "discovered" for op in ops.values())
     assert all(op["evidence_label"] == "unknown" for op in ops.values())
     assert all(op["executor"] == "browser-ui-workflow" for op in ops.values())

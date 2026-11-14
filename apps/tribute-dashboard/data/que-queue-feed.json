@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-14T15:04:06Z",
+ "generated_at": "2026-11-14T19:54:41Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,23 +10,23 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 4,
-    "in_progress": 2,
-    "oldest_queued_at": "2026-11-11T20:48:59Z",
+    "queued": 10,
+    "in_progress": 1,
+    "oldest_queued_at": "2026-11-11T20:18:40Z",
     "by_workflow_queued": {
-     "PR scope guard": 2,
-     "repo gate": 1,
-     "Orchestration Regression Guard": 1
+     "repo gate": 5,
+     "Orchestration Regression Guard": 2,
+     "PR scope guard": 3
     }
    },
    "2": {
     "tier": 2,
     "queued": 2,
-    "in_progress": 1,
-    "oldest_queued_at": "2026-11-14T15:02:56Z",
+    "in_progress": 2,
+    "oldest_queued_at": "2026-11-14T19:53:47Z",
     "by_workflow_queued": {
-     "pages build and deployment": 1,
-     "tribute-dashboard-deploy": 1
+     "tribute-dashboard-deploy": 1,
+     "pages build and deployment": 1
     }
    },
    "3": {
@@ -38,46 +38,47 @@
    },
    "4": {
     "tier": 4,
-    "queued": 90,
+    "queued": 85,
     "in_progress": 15,
-    "oldest_queued_at": "2026-11-11T20:48:59Z",
+    "oldest_queued_at": "2026-11-11T20:18:39Z",
     "by_workflow_queued": {
-     "Agent Throughput Evidence": 25,
-     "archwiz dangle check": 2,
-     "DO Statement Style": 5,
-     "Lane matrix event-driven inventory": 2,
-     "termux smoke": 3,
-     "Agent Readability Source Contract": 3,
-     "Context Relationship + Lead/Lag Audit": 5,
-     "Agent PR Jules Handoff": 2,
-     "PR Change Effectiveness Ledger": 2,
-     "Repository development evaluation": 2,
-     "DeepSeek CI \u2013 Agentic Automation": 2,
-     "PR production ledger": 5,
-     "Quota Dispatch Tree": 2,
-     "lane events recorder": 4,
-     "RECON INTEL discovery": 1,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-     "Agent review \u2192 auto Jules": 5,
-     "CellCog review": 1,
-     "Action Effectiveness Ledger": 3,
-     "Peer review orchestrator": 2,
-     "Sweep Accountability": 3,
-     "PR evidence evaluation": 1,
+     "lane events recorder": 1,
+     "Agent Throughput Evidence": 2,
+     "Quota Dispatch Tree": 5,
+     "repo-tracking-collect": 5,
+     "Gemini review after peers": 1,
+     "Agent review \u2192 auto Jules": 1,
      "Agent feedback \u2192 Linear subtasks": 1,
-     "delphi-rfp-feed-collect": 1,
-     "delphi-ledger-feed-collect": 1,
-     "Advisory CodeQL analysis": 1,
-     "repo-tracking-collect": 1,
-     "Foresight Evidence Spine": 1,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-     "graph-matrix-probe": 1,
-     "hitl-control-plane-verify": 1
+     "Context Relationship + Lead/Lag Audit": 5,
+     "PR evidence evaluation": 5,
+     "Peer review orchestrator": 5,
+     "quota-allocation-planner": 1,
+     "quota-analysis": 1,
+     "Workflow Surface Policy": 2,
+     "Foresight Evidence Spine": 2,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
+     "graph-matrix-probe": 2,
+     "termux smoke": 4,
+     "hitl-control-plane-verify": 2,
+     "Sweep Accountability": 4,
+     "doe-nc1-continuous-log": 1,
+     "Repository development evaluation": 2,
+     "Agent PR Jules Handoff": 2,
+     "CellCog review": 2,
+     "Lane matrix event-driven inventory": 4,
+     "PR Change Effectiveness Ledger": 4,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+     "Action Effectiveness Ledger": 4,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 2,
+     "RECON INTEL discovery": 4,
+     "DeepSeek CI \u2013 Agentic Automation": 2,
+     "PR production ledger": 4,
+     "archwiz dangle check": 1
     }
    }
   },
   "totals": {
-   "queued": 96,
+   "queued": 97,
    "in_progress": 18
   },
   "wedged_ancient": []

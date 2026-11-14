@@ -95,7 +95,7 @@ Secondary:
 - Missing data remains missing; no synthetic zero.
 - Retain all failed and interrupted attempts.
 - Separate simulated MiroFish results from empirical results.
-- No production routing policy change based only on simulated outcomes.
+- Promote routing policies after independent evidence and verified outcomes.
 - Pre-register stopping and promotion criteria.
 - Independent reviewer validates treatment assignment and outcomes.
 

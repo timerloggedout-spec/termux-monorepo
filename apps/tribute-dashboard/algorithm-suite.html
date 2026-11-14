@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Versioned index of the Markov, Delphic, Kahn, Bayesian and Gantt algorithm surfaces.">
+<meta name="version-assets" content="algorithm-labs.json">
+<title>Graph & Algorithm Suite · Tribute</title>
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./versioning.js" defer></script>
+<style>
+main{max-width:1440px;margin:1.5rem auto;padding:0 1rem}.intro,.group,.component{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:1rem}
+.intro{margin-bottom:1rem}.intro p{color:var(--muted);line-height:1.6}.suite-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1rem}
+.group{margin:1rem 0}.group h2{margin:.1rem 0 1rem}.component{display:flex;flex-direction:column;gap:.65rem;min-width:0}.component h3{margin:0}.component p{margin:0;color:var(--muted);line-height:1.5}.meta{font:11px ui-monospace,monospace;color:var(--muted);overflow-wrap:anywhere}.links{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:auto}.links a{border:1px solid var(--line);border-radius:7px;padding:.45rem .65rem;text-decoration:none}.links a.primary{border-color:var(--gold);color:var(--gold)}.status{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}.boundary{border-left:3px solid var(--gold);padding:.6rem .8rem;background:var(--panel2);color:var(--muted);font-size:12px;line-height:1.55}.error{color:var(--bad)}
+</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Algorithm registry · interactive research surfaces</div><h1>Graph &amp; Algorithm <span class="gold">Suite</span></h1><p class="lede">One navigable catalogue for the graph, probability and dependency utilities already in the repository. Canonical engines stay authoritative; visualization pages are versioned projections.</p></div></div></header>
+<main>
+<section class="intro">
+<h2>Suite overview</h2>
+<p id="suite-meta">Loading algorithm registry…</p>
+<div class="boundary">Semantic boundary: a dependency DAG is not a Markov chain; a strict AST is not a general DAG; Bayesian beliefs are not graph layout; a Gantt view is a projection of dependency phases. No visualization grants dispatch or evidence authority.</div>
+</section>
+<section class="group"><h2>Experiment lanes</h2><div id="labs" class="suite-grid"></div></section>
+<section class="group"><h2>Canonical algorithm components</h2><div id="components" class="suite-grid"></div></section>
+</main>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const repo="https://github.com/timerloggedout-spec/termux-monorepo";
+function card(item,manifest){
+ const source=repo+"/tree/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.source_path;
+ const links=[];
+ if(item.ui_file)links.push('<a class="primary" href="./'+esc(item.ui_file)+'?page_unique_id='+encodeURIComponent(item.id)+'&amp;version='+encodeURIComponent(manifest.version||"unverified")+'&amp;channel='+encodeURIComponent(manifest.channel||"unknown")+'">Open interactive UI</a>');
+ if(item.source_path)links.push('<a href="'+esc(source)+'">Source lane</a>');
+ if(item.engine_path)links.push('<a href="'+esc(repo+"/blob/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.engine_path)+'">Engine</a>');
+ if(item.documentation_path)links.push('<a href="'+esc(repo+"/blob/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.documentation_path)+'">Contract</a>');
+ if(item.test_path){const tests=Array.isArray(item.test_path)?item.test_path:[item.test_path];links.push('<a href="'+esc(repo+"/tree/"+encodeURIComponent(manifest.source_ref||"master")+"/"+tests[0])+'">Tests</a>')}
+ return '<article class="component"><div class="status">'+esc(item.status||"registered")+'</div><h3>'+esc(item.title)+'</h3><div class="meta">'+esc(item.id)+' · '+esc(item.version||"version unassigned")+'</div><p>'+esc(item.model_contract||item.role||"Registered component.")+'</p><div class="links">'+links.join("")+'</div></article>';
+}
+fetch("./algorithm-labs.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("registry HTTP "+r.status);return r.json()}).then(data=>{
+ return fetch("./version-manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(manifest=>{
+ $("suite-meta").textContent=data.suite_version+" · "+data.experiment_labs.length+" experiment lanes · "+data.canonical_components.length+" canonical components · dashboard build "+(manifest.version||"unverified")+" · source "+(manifest.source_sha||"unverified");
+ $("labs").innerHTML=data.experiment_labs.map(x=>card(x,manifest)).join("");
+ $("components").innerHTML=data.canonical_components.map(x=>card(x,manifest)).join("");
+ });
+}).catch(error=>{$("suite-meta").innerHTML='<span class="error">Registry unavailable: '+esc(error.message)+'</span>';});
+}());
+</script>
+</body>
+</html>

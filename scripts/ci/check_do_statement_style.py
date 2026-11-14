@@ -17,11 +17,11 @@ NEGATIVE_FIRST = re.compile(
     re.IGNORECASE,
 )
 IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "block", "build", "bump", "check", "close",
-    "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve",
-    "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "skip", "snapshot", "split", "sync",
+    "accept", "add", "align", "allow", "apply", "audit", "block", "build", "canonicalize", "centralize", "bump", "check", "close",
+    "compare", "constrain", "create", "define", "deploy", "differentiate", "distinguish", "document", "enforce", "expand", "fix", "gate",
+    "include", "inspect", "keep", "lock", "measure", "migrate", "move", "open", "preserve", "propagate",
+    "publish", "record", "reconcile", "refresh", "refine", "register", "reject", "remove", "rename", "repair",
+    "replace", "require", "restore", "route", "run", "set", "share", "skip", "snapshot", "specify", "split", "support", "sync",
     "test", "update", "use", "validate", "verify", "wire", "prevent", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [

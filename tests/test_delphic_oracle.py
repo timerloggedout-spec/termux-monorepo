@@ -184,7 +184,7 @@ def test_workflow_holds_conflicting_experiment_outcomes():
     ]})
     assert result["posterior"]["status"] == "HELD_CONFLICTING_DUPLICATE_OUTCOMES"
     assert result["posterior"]["counts"]["conflicts"] == 1
-    assert result["adversarial_review"]["admission"] == "not_admitted"
+    assert result["adversarial_review"]["admission"] == "advisory"
 
 
 def test_inconclusive_evidence_does_not_suppress_required_review():

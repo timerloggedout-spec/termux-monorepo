@@ -77,7 +77,7 @@ Wolfram is for symbolic derivation, simplification, identity checks and adversar
 
 ## Non-goals
 
-No replacement QUE scheduler, no parallel governor, no direct action execution, no automatic approval, no hidden telemetry, no external calculator dependency, no false live-state dashboard.
+Preserve QUE as the sole scheduler and governor; do not add a parallel governor, execute actions directly, approve automatically, collect hidden telemetry, depend on an external calculator, or present a false live-state dashboard.
 
 
 ## DoE / MoneyBall model-task pool integration

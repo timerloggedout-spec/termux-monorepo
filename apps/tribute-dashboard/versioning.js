@@ -60,7 +60,7 @@
       '<details class="pv-nested-group"><summary>Experiment lanes · ' + ((labs && labs.experiment_labs) ? labs.experiment_labs.length : 0) + '</summary><div class="pv-nested-list">' +
       ((labs && labs.experiment_labs) || []).map(function (lab) {
         var page = pages.find(function (p) { return p.file === lab.ui_file; });
-        var ref = encodeURIComponent(manifest.source_ref || "master").replace(/%2F/g, "/");
+        var ref = encodeURIComponent(manifest.source_sha || manifest.source_ref || "master").replace(/%2F/g, "/");
         var sourceKind = /\.[a-z0-9]+$/i.test(lab.source_path || "") ? "blob" : "tree";
         var sourceUrl = "https://github.com/" + APP + "/" + sourceKind + "/" + ref + "/" + (lab.source_path || "");
         var engineUrl = lab.engine_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + lab.engine_path : "";
@@ -76,7 +76,7 @@
       }).join("") + '</div></details>' +
       '<details class="pv-nested-group"><summary>Canonical utilities · ' + ((labs && labs.canonical_components) ? labs.canonical_components.length : 0) + '</summary><div class="pv-nested-list">' +
       ((labs && labs.canonical_components) || []).map(function (item) {
-        var ref = encodeURIComponent(manifest.source_ref || "master").replace(/%2F/g, "/");
+        var ref = encodeURIComponent(manifest.source_sha || manifest.source_ref || "master").replace(/%2F/g, "/");
         var kind = /\.[a-z0-9]+$/i.test(item.source_path || "") ? "blob" : "tree";
         var sourceUrl = "https://github.com/" + APP + "/" + kind + "/" + ref + "/" + (item.source_path || "");
         var docUrl = item.documentation_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + item.documentation_path : "";
@@ -122,16 +122,22 @@
         return '<tr><th scope="row">' + esc(id) + '</th><td>' + esc(page.title || page.file) +
           '</td><td>' + esc(changed) + '</td><td>' + previewLink + '</td><td>' + productionLink + '</td></tr>';
       }).join("");
-      var currentAssets = current.assets || [];
-      var productionAssets = prod.assets || [];
+      var currentHasAssets = Array.isArray(current.assets);
+      var productionHasAssets = Array.isArray(prod.assets);
+      var assetsComparable = currentHasAssets && productionHasAssets;
+      var currentAssets = currentHasAssets ? current.assets : [];
+      var productionAssets = productionHasAssets ? prod.assets : [];
       var assetNames = Object.create(null);
       currentAssets.concat(productionAssets).forEach(function (asset) { assetNames[asset.file] = true; });
-      var assetRows = Object.keys(assetNames).sort().map(function (name) {
+      var assetRows = assetsComparable ? Object.keys(assetNames).sort().map(function (name) {
         var a = currentAssets.find(function (item) { return item.file === name; });
         var b = productionAssets.find(function (item) { return item.file === name; });
         var status = !a ? "REMOVED FROM PREVIEW" : (!b ? "NEW ASSET" : (!a.content_sha256 || !b.content_sha256 ? "HASH UNAVAILABLE" : (a.content_sha256 !== b.content_sha256 ? "CHANGED" : "same content")));
         return '<tr><th scope="row">' + esc(name) + '</th><td>' + esc(status) + '</td><td><code>' + esc(a ? (a.content_sha256 || "unavailable") : "—") + '</code></td><td><code>' + esc(b ? (b.content_sha256 || "unavailable") : "—") + '</code></td></tr>';
-      }).join("");
+      }).join("") : "";
+      var assetMessage = assetsComparable
+        ? (assetRows || '<tr><td colspan="4">No explicit runtime assets declared.</td></tr>')
+        : '<tr><td colspan="4">Asset comparison unavailable: one or both manifests do not provide an assets inventory.</td></tr>';
       root.innerHTML = '<p><strong>Current:</strong> ' + esc(current.channel) + ' · ' +
         esc(current.version) + ' · <code>' + esc(current.source_sha || "unverified") +
         '</code></p><p><strong>Production:</strong> ' + esc(prod.version || "unverified") +
@@ -142,7 +148,7 @@
         '<div class="pv-table-wrap"><table><thead><tr><th>Page unique ID</th><th>Page</th><th>Comparison</th><th>Preview</th><th>Production</th></tr></thead><tbody>' +
         rows + '</tbody></table></div>' +
         '<h3>Runtime assets</h3><div class="pv-table-wrap"><table><thead><tr><th>Asset</th><th>Comparison</th><th>Preview SHA-256</th><th>Production SHA-256</th></tr></thead><tbody>' +
-        (assetRows || '<tr><td colspan="4">No explicit runtime assets declared.</td></tr>') + '</tbody></table></div>';
+        assetMessage + '</tbody></table></div>';
     }).catch(function (error) {
       root.innerHTML = '<p role="alert">Comparison unavailable: ' + esc(error.message) +
         '. This build is not verified against production.</p>';

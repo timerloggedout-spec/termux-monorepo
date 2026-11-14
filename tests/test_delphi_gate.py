@@ -306,3 +306,41 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+
+# ---------------------------------------------------------------- P3 (EGM-2): vote profiles, collision flags, quarantine guard
+
+def _votes(**over):
+    base = {"OPERATOR": (5, 4), "builder": (3, 5), "reviewer": (5, 3), "Scout": (5, 3), "cost_auditor": (4, 5)}
+    base.update(over)
+    return [{"role": r, "impact": i, "importance": j, "score": i * j, "veto": False} for r, (i, j) in base.items()]
+
+
+def test_vote_profile_is_canonical_and_stable():
+    v = _votes()
+    p1 = gate.vote_profile(v)
+    p2 = gate.vote_profile(list(reversed(v)))  # order-independent
+    assert p1 == p2 and "OPERATOR=5x4" in p1 and "cost_auditor=4x5" in p1
+    assert gate.vote_profile(None) is None and gate.vote_profile([]) is None
+    assert gate.vote_profile(_votes(builder=(4, 5))) != p1
+
+
+def test_board_flags_identical_profiles_inline():
+    rows = [{"number": 101, "surface": "a.x", "effective": 12.0, "decision": "parked", "profile": gate.vote_profile(_votes())},
+            {"number": 102, "surface": "b.y", "effective": 12.0, "decision": "parked", "profile": gate.vote_profile(_votes())},
+            {"number": 103, "surface": "c.z", "effective": 9.0, "decision": "parked", "profile": gate.vote_profile(_votes(Scout=(4, 3)))}]
+    md = gate.board_md(rows, "now")
+    assert "Vote profile" in md
+    assert "⚠ identical to #102" in md and "⚠ identical to #101" in md
+    assert "identical vote profiles: #101 ≡ #102" in md
+    line103 = [ln for ln in md.splitlines() if "#103" in ln][0]
+    assert "⚠" not in line103
+
+
+def test_quarantine_guard_matches_stamp_and_prefix_only():
+    s = {"id": "some.surface"}
+    assert gate.is_quarantined({"body": "text\nEGM instance #2 TEST filing\nmore"}, s)
+    assert gate.is_quarantined({"body": "ordinary"}, {"id": "RFP-EGM2-B3"})
+    assert not gate.is_quarantined({"body": "ordinary filing"}, s)
+    assert not gate.is_quarantined({"body": None}, s)
+    assert not gate.is_quarantined({}, s)

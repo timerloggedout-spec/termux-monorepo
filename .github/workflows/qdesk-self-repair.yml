@@ -41,6 +41,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Validate SIE stage contract
+        run: |
+          python3 scripts/que/sie_pipeline.py --self-test
+          python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
       - name: Observe ∧ promote ∧ learn
         env:
           GH_TOKEN: ${{ steps.app.outputs.token || github.token }}

@@ -112,7 +112,9 @@ Initial capability identifiers:
 - `android.abi.<abi>`
 - `termux.prefix.layout`
 - `termux.package.environment`
-- `termux.runtime.detect`\n- `termux.runtime.surface-smoke`\n- `termux.api.bridge`
+- `termux.runtime.detect`
+- `termux.runtime.surface-smoke`
+- `termux.api.bridge`
 - `linux.shell`
 - `linux.filesystem.permissions`
 - `cpu.arch.<arch>`

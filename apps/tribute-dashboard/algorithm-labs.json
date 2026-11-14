@@ -1,0 +1,72 @@
+{
+  "schema": "tribute.algorithm-labs/v1",
+  "updated_at": "2026-11-14",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "suite_version": "1.0.0",
+  "principle": "Reuse canonical algorithm engines; UI surfaces are projections and never execution or evidence authority.",
+  "experiment_labs": [
+    {
+      "id": "archwiz-markov-lane",
+      "title": "ArchWiz Markov Trellis",
+      "version": "0.1.0",
+      "status": "research-lab",
+      "ui_file": "markov-trellis.html",
+      "source_path": "experiments/archwiz-markov-lane/",
+      "engine_path": "experiments/archwiz-markov-lane/src/markov-engine.mjs",
+      "published_engine": "markov-engine.mjs",
+      "test_path": "experiments/archwiz-markov-lane/src/markov-engine.test.mjs",
+      "model_contract": "Transition matrix is the source of truth; strict tree preserves path occurrences; recombining trellis sums incoming path probabilities; particle sampling uses the same transition matrix.",
+      "authority": "read-only-research-projection"
+    },
+    {
+      "id": "delphic-observatory-lab",
+      "title": "Delphic Graph Observatory",
+      "version": "0.2.0",
+      "status": "research-preview",
+      "ui_file": "delphic-graph.html",
+      "source_path": "experiments/delphic-observatory-lab/",
+      "engine_path": "scripts/delphic_graph_lab.py",
+      "test_path": "tests/test_delphic_graph_lab.py",
+      "model_contract": "AST containment, dependency DAG, Markov state transitions and temporal lineage remain distinct graph families; refresh is fixture-local.",
+      "authority": "read-only-research-projection"
+    }
+  ],
+  "canonical_components": [
+    {
+      "id": "kahn.dag",
+      "title": "Canonical Kahn DAG planning",
+      "version": "kahn-reference-v2",
+      "status": "live",
+      "source_path": "she/orchestration/dag.py",
+      "documentation_path": "docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md",
+      "test_paths": ["tests/test_dag_execution.py", "tests/test_dag_properties.py"],
+      "role": "Deterministic topological order, ready frontiers and cycle-or-blocked residuals. Side-effect-free planning; does not execute work or propagate probabilities."
+    },
+    {
+      "id": "bayesian.routing",
+      "title": "Bayesian routing / uncertainty layer",
+      "version": "registered-live",
+      "status": "live",
+      "source_path": "scripts/bayesian_routing.py",
+      "documentation_path": "docs/ops/BAYESIAN-ROUTING.md",
+      "role": "Beta-Bernoulli outcome beliefs, posterior state and value-of-information. Evidence-led uncertainty layer; not a graph layout algorithm."
+    },
+    {
+      "id": "gantt.dependency-phases",
+      "title": "Gantt dependency-phase compiler",
+      "version": "N4",
+      "status": "live",
+      "source_path": "scripts/temporal/gantt_compile.py",
+      "documentation_path": "docs/agentic/DEPENDENCY_PHASES.md",
+      "test_paths": ["tests/test_temporal_gantt_compile.py"],
+      "role": "Compiles filed phases through the canonical Kahn engine into topological stages, dependency waves, critical-path depth and dependency closure."
+    }
+  ],
+  "boundaries": {
+    "visualization_is_authority": false,
+    "dag_implies_probability": false,
+    "probability_may_be_inferred_from_layout": false,
+    "missing_provenance_is_zero": false,
+    "production_routing_is_mutated": false
+  }
+}

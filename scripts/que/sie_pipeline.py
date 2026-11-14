@@ -51,6 +51,8 @@ def stable_event_id(source_kind: str, source_id: str, source_revision: str) -> s
 
 def item_key(source_kind: str, source_id: str, failure_class: str) -> str:
     """Group repeated observations of the same logical work item."""
+    if source_kind not in SOURCE_KINDS:
+        raise StageValidationError(f"unsupported source kind: {source_kind}")
     for name, value in (("source_id", source_id), ("failure_class", failure_class)):
         if not isinstance(value, str) or not value.strip():
             raise StageValidationError(f"{name} must be a non-empty string")
@@ -97,7 +99,9 @@ def validate_receipt(receipt: Any) -> list[str]:
         errors.append("observed_at: expected ISO timestamp")
     else:
         try:
-            datetime.fromisoformat(observed.replace("Z", "+00:00"))
+            parsed = datetime.fromisoformat(observed.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                errors.append("observed_at: timezone offset required")
         except ValueError:
             errors.append("observed_at: invalid ISO timestamp")
     refs = receipt.get("evidence_refs")

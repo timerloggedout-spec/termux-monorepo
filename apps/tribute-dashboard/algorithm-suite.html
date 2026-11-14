@@ -37,6 +37,7 @@ function card(item,manifest){
  const links=[];
  if(item.ui_file)links.push('<a class="primary" href="./'+esc(item.ui_file)+'?page_unique_id='+encodeURIComponent(item.id)+'&amp;version='+encodeURIComponent(manifest.version||"unverified")+'&amp;channel='+encodeURIComponent(manifest.channel||"unknown")+'">Open interactive UI</a>');
  if(item.source_path)links.push('<a href="'+esc(source)+'">Source lane</a>');
+ if(item.version_file)links.push('<a href="'+esc(repo+"/blob/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.version_file)+'">Version record</a>');
  if(item.engine_path)links.push('<a href="'+esc(repo+"/blob/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.engine_path)+'">Engine</a>');
  if(item.documentation_path)links.push('<a href="'+esc(repo+"/blob/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.documentation_path)+'">Contract</a>');
  if(item.test_path){const tests=Array.isArray(item.test_path)?item.test_path:[item.test_path];links.push('<a href="'+esc(repo+"/tree/"+encodeURIComponent(manifest.source_ref||"master")+"/"+tests[0])+'">Tests</a>')}

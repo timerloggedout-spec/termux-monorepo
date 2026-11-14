@@ -11,7 +11,7 @@
 | `CLAUDE.md` | `master` is the integration target; proposal registry/items authorize work; dual gates are repo-gate + termux-smoke; agents execute to completion when evidence gates pass. | Verified |
 | `docs/proposals/PROCESS.md` | Proposal lifecycle is ingest → register → itemize → review → execute → close; P0 requires second mind or Operator. | Verified |
 | `docs/proposals/AGENTIC-PERMISSIONS.md` | Workflow YAML writes may require Operator PAT/custom GitHub App with Workflows write; first-time permissions remain human edge. | Verified |
-| `ops/que/README.md` | QUE feeds are a producer/served-state projection; queue state and transition events are recorded; this feed collector is not evidence of an emulator fleet. | Verified |
+| `ops/que/README.md` | QUE feeds are a producer/served-state projection; queue state and transition events are recorded; this feed collector is not evidence of an emulator fleet. | Verified |\n| `docs/ops/QUE-AUTO-CLAIM.md` + `scripts/dispatch/auto_claim.py` | QUE task ranking/claim/lease/reclaim and watchdog behavior are implemented in dispatch machinery; claims resolve stalls, not tasks. | Verified |\n| `docs/ops/CLAIMABLE-ROUTES.md` + `ops/dispatch/claimable-routes.json` | A task is executed only through a registered pullable route with a run receipt. | Verified |\n| `docs/ops/QUEUE-DEPENDENCY-TIERS.md` + `ops/quota/dispatch-tiers.json` | Cadence owns admission/tiering policy and queue-pressure deferral; tier ordering is distinct from claim machinery. | Verified |
 | `docs/ops/DOE-FAMILY.md` | DoE is a family; one dispatched/executed run = one experiment observation; campaign and component evaluations remain separate. | Verified |
 | `docs/ops/corpus/EXPERIMENT.schema.json` | Existing experiment record schema is shared across DoE family. | Verified |
 | `docs/ops/EVIDENCE-ENVELOPE.schema.json` | Canonical SHA-bound evidence envelope exists and must be reused. | Verified |
@@ -34,7 +34,7 @@
 - No current live Android/Termux device session was available to this RECON.
 - No fleet-wide emulator capacity, installed QEMU/Waydroid/Termux-Docker inventory, device inventory, or live runner health is established here.
 - The complete set of device-dependent modules has not yet been exhaustively enumerated.
-- Existing QUE feed artifacts establish observed workflow queue/transition data, not device-lab machine inventory or a generic device task-dispatch API.
+- Existing QUE feed artifacts establish observed workflow queue/transition data, not device-lab machine inventory or a generic device task-dispatch API. The actual path is distributed: Cadence admission/tiering → QUE ranking/claim/lease/watchdog → registered claimable route → executor.
 
 ## Method
 

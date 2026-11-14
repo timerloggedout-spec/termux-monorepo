@@ -685,6 +685,30 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: delphic-bayesian-observatory-lab
+    title: "Delphic Bayesian Oracle × Observatory control-plane design/evaluation"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/delphic-bayesian-observatory-lab/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 968
+      - 5243
+    related_prs:
+      - 5244
+    related_branches:
+      - feat/delphic-clean-rebase-20261114
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
   - id: archwiz-markov-trellis-lab
     title: ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox
     author: ChatGPT

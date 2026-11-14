@@ -1,0 +1,51 @@
+name: archwiz mirror report
+
+# Repo-side adaptive variant of archwiz/mirror.py — see
+# scripts/ci/mirror_report.py. Advisory freshness/hygiene rollup; never
+# gates. Report lands as a workflow artifact + step summary.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/mirror_report.py'
+      - 'scripts/ci/dangle_baseline.json'
+      - '.github/workflows/archwiz-mirror.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: archwiz-mirror-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  report:
+    name: freshness rollup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_mirror_report.py' -v
+
+      - name: Mirror report
+        run: |
+          python3 scripts/ci/mirror_report.py --out mirror-report.json --silent | tee mirror-insights.txt
+          {
+            echo '## archwiz mirror report'
+            cat mirror-insights.txt
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mirror-report
+          path: mirror-report.json
+          if-no-files-found: ignore

@@ -109,7 +109,7 @@ class TestSIEPipeline(unittest.TestCase):
         self.assertEqual(groups[0]["step"], "dispatch-watchdog")
         self.assertEqual(groups[0]["key"], queue_stall_groups(feed)[0]["key"])
         body = item_body(groups[0])
-        match = re.search(r"## SIE stage receipt\\n\x60\x60\x60json\\n(.*?)\\n\x60\x60\x60", body, re.S)
+        match = re.search(r"## SIE stage receipt\n\x60\x60\x60json\n(.*?)\n\x60\x60\x60", body, re.S)
         self.assertIsNotNone(match)
         data = json.loads(match.group(1))
         self.assertEqual(validate_receipt(data), [])

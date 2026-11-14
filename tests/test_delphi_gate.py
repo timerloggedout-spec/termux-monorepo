@@ -1,5 +1,8 @@
 """Delphi Oracle RFP gate: offline, stdlib-only tests (no network, no secrets)."""
-import json, os
+import base64, json, os, tempfile
+from pathlib import Path
+
+from scripts.delphi.proposal_package import build_manifest
 
 from scripts.delphi import gate
 
@@ -306,6 +309,51 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_refs():
+    source_ref = "a" * 40
+    manifest_ref = "b" * 40
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        package = root / "proposal"
+        package.mkdir()
+        artifact = package / "RFP.md"
+        artifact.write_text("# Frozen proposal\\n", encoding="utf-8")
+        manifest = build_manifest(
+            source_ref=source_ref, package_id="proposal-1",
+            package_path="proposal", root=root,
+            files=["proposal/RFP.md"], package_author="builder",
+        )
+        manifest_bytes = json.dumps(manifest).encode("utf-8")
+        artifact_bytes = artifact.read_bytes()
+
+        class PackageGH:
+            def __init__(self):
+                self.refs = []
+            def req(self, method, path, body=None):
+                assert method == "GET"
+                ref = path.rsplit("?ref=", 1)[1]
+                self.refs.append((path.split("?", 1)[0], ref))
+                payload = manifest_bytes if path.startswith("/contents/proposal/package.json") else artifact_bytes
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(payload).decode("ascii")}
+
+        gh = PackageGH()
+        body = (
+            f"### Proposal source ref\\n\\n{source_ref}\\n\\n"
+            f"### Proposal manifest ref\\n\\n{manifest_ref}\\n\\n"
+            "### Proposal manifest path\\n\\nproposal/package.json\\n\\n"
+            f"### Expected package digest\\n\\n{manifest['package_digest']}\\n"
+        )
+        binding = gate.verify_issue_package_binding(gh, {"body": body})
+        assert binding["source_ref"] == source_ref
+        assert binding["manifest_ref"] == manifest_ref
+        assert binding["package_digest"] == manifest["package_digest"]
+        assert gh.refs == [
+            ("/contents/proposal/package.json", manifest_ref),
+            ("/contents/proposal/RFP.md", source_ref),
+        ]
+
 
 def test_open_rfp_issue_census_paginates_and_deduplicates():
     class PagedGH:

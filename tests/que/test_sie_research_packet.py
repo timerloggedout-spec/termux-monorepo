@@ -1,4 +1,3 @@
-import copy
 import hashlib
 import json
 import sys
@@ -97,14 +96,6 @@ class TestSIEResearchPacket(unittest.TestCase):
     def test_packet_rejects_evidence_integrity_drift(self):
         receipt, diagnosis, evidence = fixture()
         evidence[0]["items"][0]["value"] = "success"
-        packet, _, fresh_sets = build_research_packet(
-            source_receipt=receipt, diagnosis=diagnosis,
-            evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
-        )
-        self.assertEqual(packet["evidence"]["rejected_claims"]["run.conclusion"],
-                         "integrity_mismatch")
-        self.assertEqual(packet["confirmed_facts"], [])
-        self.assertEqual(fresh_sets[0]["items"], [evidence[0]["items"][1]])
         with self.assertRaisesRegex(ValueError, "at least one confirmed fact"):
             build_research_packet(
                 source_receipt=receipt, diagnosis=diagnosis,

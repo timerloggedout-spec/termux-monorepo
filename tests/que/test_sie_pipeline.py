@@ -120,6 +120,25 @@ class TestSIEPipeline(unittest.TestCase):
             for error in validate_transition(before, after)
         ))
 
+    def test_queue_watchdog_rejects_malformed_feed_shapes(self):
+        malformed_feeds = (
+            None, [], {"dispatches": [None]}, {"dispatches": "not-a-list"},
+            {"dispatches": [{"stall_events": [None]}]},
+            {"dispatches": [{"tier": [], "stall_events": []}]},
+        )
+        for malformed in malformed_feeds:
+            with self.subTest(malformed=malformed):
+                with self.assertRaises(ValueError):
+                    queue_stall_groups(malformed)
+
+    def test_receipt_rejects_unhashable_enum_values(self):
+        data = receipt()
+        data["state"] = []
+        self.assertTrue(any("state:" in error for error in validate_receipt(data)))
+        data = receipt()
+        data["source"]["kind"] = {}
+        self.assertTrue(any("source.kind:" in error for error in validate_receipt(data)))
+
     def test_queue_watchdog_escalations_create_stable_sie_intake(self):
         feed = {
             "dispatches": [

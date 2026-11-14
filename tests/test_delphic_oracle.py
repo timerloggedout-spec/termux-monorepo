@@ -165,3 +165,23 @@ def test_workflow_emits_replayable_provenance_digests():
         assert first[key] == second[key]
     assert first["runtime_ms"] >= 0
     assert first["executed_at"]
+
+
+def test_workflow_holds_conflicting_experiment_outcomes():
+    common = {
+        "experiment_id": "exp-conflict",
+        "source_sha": "sha-conflict",
+        "observed_at": "2026-11-14T00:00:00Z",
+        "instance_key": "instance-1",
+        "policy_version": "delphic-oracle/v1",
+        "executed": True,
+        "attributed": True,
+        "provider": "gemini",
+    }
+    result = m.workflow({"observations": [
+        {**common, "event_id": "event-1", "outcome": True},
+        {**common, "event_id": "event-2", "outcome": False},
+    ]})
+    assert result["posterior"]["status"] == "HELD_CONFLICTING_DUPLICATE_OUTCOMES"
+    assert result["posterior"]["counts"]["conflicts"] == 1
+    assert result["adversarial_review"]["admission"] == "not_admitted"

@@ -1,0 +1,36 @@
+# Routing control-plane graph
+
+Companion to [CONTRACT-TO-RUNTIME-TRACEABILITY.md](CONTRACT-TO-RUNTIME-TRACEABILITY.md).
+
+```mermaid
+flowchart TD
+  TASK[Issue / task declaration] --> CONTRACT[issue-dispatch/v1]
+  CONTRACT --> ADMIT[QUE admission]
+  TIERS[queue.dispatch-tiers/v2] --> ADMIT
+  ADMIT --> EXEC[Swarm dispatch workflow]
+  CATALOG[desk-feed/v1.3 provider catalog] --> POOL[DoE-governed pool]
+  POOL --> SCOUT[Scout task-fit selection]
+  SCOUT --> EXEC
+  EXEC --> STAMP[Canonical routed-dispatch stamp]
+  STAMP --> FAN[stamp_fanout.py]
+  FAN --> DOE[3L0 / DoE / MVT / ATES]
+  FAN --> MONEY[MoneyBall]
+  FAN --> TRAVERSAL[Desk traversal evidence]
+  MODEL[model_router.py / provider-invoke / llm_api_hub] -. receipt enforcement unresolved .-> EXEC
+  QUE[QUE collector / governor] --> QFEED[QUE feeds]
+  WATCH[Dispatch watchdog] --> WFEED[dispatch-state-feed/v1]
+  DESK[Tribute Desk read-only projection] --> QFEED
+  DESK --> WFEED
+  DESK --> TRAVERSAL
+```
+
+## Edge semantics
+
+- `declares`: issue metadata describes task intent and constraints.
+- `admits`: QUE evaluates eligibility, tier and dependency rules.
+- `assigns`: DoE determines allocation, rotation, treatment and endpoint-level evidence gates.
+- `selects`: Scout chooses a task-fit endpoint from the assigned eligible pool and emits the selection receipt.
+- `dispatches`: Swarm sends work to the selected execution surface.
+- `stamps` / `fans out`: evidence is recorded once and distributed to evaluation planes.
+- `projects`: the Desk renders independently generated feeds without executing work.
+- `receipt-handoff-unresolved`: the receipt schema is defined, but runtime enforcement from Scout through provider invocation is not yet implemented.

@@ -67,3 +67,10 @@ Broad team → focused scout/experiment lane → thin validated result → feed-
 - Issue #337 — Continuous Evaluation
 - Issue #342 — Evaluations / LeaderBoards / 3L0
 - Issue #357 — Agent attribution/provenance
+
+
+## Inference selection authority amendment (owner clarification, 2026-11-12)
+
+The general rule `scouts propose; managers decide` governs scout missions and policy proposals. It does not prohibit a DoE-authorized Scout from executing a bounded selection. For inference dispatch, DoE owns the allocation/rotation design and grants Scout the scoped authority to choose an eligible endpoint from the existing pool **within the assigned treatment**. Scout cannot change allocation proportions, statistical gates, cull/promotion decisions or exemptions.
+
+Managers and requesters may request custom provider/model/settings only through an explicit contract. Contracted settings become a distinct, separately measured treatment/stratum. The standard randomized population is not silently constrained by a manager preference.

@@ -1,12 +1,12 @@
 {
  "consumer": "viz all-4 results index page (render verbatim)",
- "generated_at": "2026-11-02T13:36:35Z",
+ "generated_at": "2026-11-14T21:08:58Z",
  "schema": "results-index/v1",
  "systems": [
   {
-   "as_of": "2026-11-02T00:17:30Z",
+   "as_of": "2026-11-02T14:23:13Z",
    "headline": {
-    "feed_generated_at": "2026-11-02T00:17:30Z",
+    "feed_generated_at": "2026-11-02T14:23:13Z",
     "invariants": [
      "abstention availability",
      "wrong-commit penalty",
@@ -47,7 +47,7 @@
    "surface_page": "ates.html"
   },
   {
-   "as_of": "2026-11-02T13:36:35Z",
+   "as_of": "2026-11-14T21:08:58Z",
    "headline": {
     "confirmed_non_null": 0,
     "observational": true,
@@ -63,27 +63,11 @@
    "surface_page": "3l0.html"
   },
   {
-   "as_of": "2026-11-02T13:36:35Z",
+   "as_of": "2026-11-14T21:08:58Z",
    "headline": {
-    "engagement": {
-     "latest": {
-      "at": "2026-10-28T22:36:40Z",
-      "conclusion": "success",
-      "event": "workflow_dispatch",
-      "id": 40781288916
-     },
-     "total_count": 2
-    },
     "persistent_instance": "none - no persistent instance; execution is ephemeral in-job",
-    "self_host_smoke": {
-     "latest": {
-      "at": "2026-10-28T19:59:44Z",
-      "conclusion": "success",
-      "event": "push",
-      "id": 40759259053
-     },
-     "total_count": 21
-    }
+    "reason": "Actions API unavailable at build",
+    "state": "NOT_ESTABLISHED_THIS_RUN"
    },
    "id": "temporal",
    "name": "Temporal",
@@ -95,10 +79,10 @@
    "surface_page": "telemetry.html"
   },
   {
-   "as_of": "2026-11-02T13:36:35Z",
+   "as_of": "2026-11-14T21:08:58Z",
    "headline": {
     "last_error_status": 402,
-    "payloads": 388,
+    "payloads": 398,
     "proof_attempted": 3,
     "proof_ok": 0,
     "retained_units": 0

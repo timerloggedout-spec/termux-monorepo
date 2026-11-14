@@ -22,6 +22,7 @@ AVAILABILITY_STATES = {"unknown", "available", "unavailable", "degraded"}
 LANE_STATES = {"discovered", "planned", "active", "retired"}
 TOOL_FAMILIES = {"android_avd", "termux_native", "termux_container", "qemu", "waydroid", "physical_device", "linux_container", "other"}
 EVIDENCE_CLASSES = {"verified", "candidate", "unknown", "stale"}
+SUPPORTED_SCHEMA_KEYS = { "$schema", "$id", "$defs", "$ref", "title", "description", "type", "additionalProperties", "required", "properties", "items", "enum", "const", "pattern", "minLength", "minimum", "minItems", "uniqueItems", "format" }
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
 LANE_ID_RE = re.compile(r"^device-lane:[a-z0-9][a-z0-9._-]+$")
 
@@ -71,6 +72,28 @@ def _format_valid(value: str, fmt: str) -> bool:
     except (TypeError, ValueError, OverflowError):
         return False
     return True
+
+
+def validate_schema_contract(schema: Any, path: str = "$") -> list[str]:
+    """Fail closed if the registry schema starts using unsupported JSON Schema keywords."""
+    if not isinstance(schema, dict):
+        return [f"{path}: schema node must be an object"]
+    errors = [f"{path}: unsupported schema keyword {key!r}" for key in schema if key not in SUPPORTED_SCHEMA_KEYS]
+    properties = schema.get("properties", {})
+    if isinstance(properties, dict):
+        for key, child in properties.items():
+            errors.extend(validate_schema_contract(child, f"{path}.properties.{key}"))
+    definitions = schema.get("$defs", {})
+    if isinstance(definitions, dict):
+        for key, child in definitions.items():
+            errors.extend(validate_schema_contract(child, f"{path}.$defs.{key}"))
+    if isinstance(schema.get("items"), dict):
+        errors.extend(validate_schema_contract(schema["items"], f"{path}.items"))
+    if isinstance(schema.get("additionalProperties"), dict):
+        errors.extend(validate_schema_contract(schema["additionalProperties"], f"{path}.additionalProperties"))
+    if schema.get("format") not in (None, "date", "date-time"):
+        errors.append(f"{path}: unsupported format {schema.get('format')!r}")
+    return errors
 
 
 def validate_json_schema(
@@ -135,10 +158,15 @@ def validate_json_schema(
         for key, child_schema in properties.items():
             if key in value and isinstance(child_schema, dict):
                 errors.extend(validate_json_schema(value[key], child_schema, root, f"{path}.{key}"))
-        if schema.get("additionalProperties") is False:
+        additional = schema.get("additionalProperties")
+        if additional is False:
             for key in value:
                 if key not in properties:
                     errors.append(f"{path}: unknown property {key!r}")
+        elif isinstance(additional, dict):
+            for key, child_value in value.items():
+                if key not in properties:
+                    errors.extend(validate_json_schema(child_value, additional, root, f"{path}.{key}"))
 
     return errors
 
@@ -172,6 +200,7 @@ def validate_registry(
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"unable to load registry schema: {exc}")
     if schema is not None:
+        errors.extend(validate_schema_contract(schema))
         errors.extend(validate_json_schema(data, schema))
 
     expected = {
@@ -309,7 +338,9 @@ def validate_registry(
             if not _is_nonempty(profile_id) or profile_id not in tool_ids:
                 errors.append(f"{prefix} references unknown tool_profile_id: {profile_id}")
                 continue
-            advertised.update(tool_by_id[profile_id].get("capabilities", []))
+            profile_capabilities = tool_by_id[profile_id].get("capabilities", [])
+            if isinstance(profile_capabilities, list):
+                advertised.update(capability for capability in profile_capabilities if _is_nonempty(capability))
         required = lane.get("required_capabilities", [])
         if isinstance(required, list):
             for capability in required:

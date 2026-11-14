@@ -81,7 +81,7 @@ class TestProposalPackage(unittest.TestCase):
         self.assertEqual(binding["manifest_ref"], manifest_ref)
         self.assertEqual(gh.refs, [(manifest_path, manifest_ref),
                                    *[(f"{package_path}/{name}", manifest["source_ref"])
-                                     for name in ("RFP.md", "MANIFEST.md", "ITEMS.md")]])
+                                     for name in ("ITEMS.md", "MANIFEST.md", "RFP.md")]])
         self.assertEqual(binding["package_digest"], manifest["package_digest"])
         self.assertEqual(binding["file_count"], 3)
 

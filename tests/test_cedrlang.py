@@ -161,3 +161,26 @@ def test_non_string_and_empty_inputs():
     assert decompile_doc(None) == ""
     assert compile_doc(12345) == ""
     assert decompile_doc(12345) == ""
+
+def test_notation_sets_and_category_theory_mappings():
+    orig = "We compute time-domain quantum state and agent efficiency telemetry using category theory."
+    expected = "We compute tdqs and ates using c47_7h30ry."
+    compiled = compile_doc(orig)
+    assert compiled == expected
+    assert decompile_doc(compiled) == orig
+
+    # Test casing preservation on notation terms
+    assert compile_doc("Category Theory") == "C47_7h30ry"
+    assert decompile_doc("C47_7h30ry") == "Category Theory"
+
+    assert compile_doc("Natural Transformation") == "N47_7r4n5"
+    assert decompile_doc("N47_7r4n5") == "Natural Transformation"
+
+def test_expand_auto_decompress_steganography_payload():
+    from workspace.compression_sandbox.cedrlang.phase_codec import ConversationalSteganographyCipher
+
+    stego = ConversationalSteganographyCipher.encode(" + script ", cover_text=" ~ code ")
+    expanded = expand(stego)
+    # Payload " + script " expands to " create script ", cover " ~ code " expands to " update code "
+    assert "create script" in expanded
+    assert "update code" in expanded

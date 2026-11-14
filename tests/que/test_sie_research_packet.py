@@ -74,6 +74,29 @@ def fixture():
 
 
 class TestSIEResearchPacket(unittest.TestCase):
+    def test_evidence_index_returns_fresh_claims_and_rejections(self):
+        _, _, evidence = fixture()
+        accepted, rejected = evidence_index(
+            evidence, datetime.fromisoformat("2026-11-14T00:05:00+00:00")
+        )
+        self.assertEqual(set(accepted), {"run.conclusion"})
+        self.assertEqual(rejected["file.blob_sha"], "stale_or_invalid_freshness")
+
+    def test_duplicate_fresh_claims_are_rejected_as_ambiguous(self):
+        _, _, evidence = fixture()
+        duplicate = json.loads(json.dumps(evidence[0]))
+        duplicate["artifact"]["ref"] = "second-run"
+        duplicate["items"] = [evidence_item(
+            "run.conclusion", "success", "/actions/runs/second",
+            "2026-11-14T00:15:00Z",
+        )]
+        accepted, rejected = evidence_index(
+            evidence + [duplicate],
+            datetime.fromisoformat("2026-11-14T00:05:00+00:00"),
+        )
+        self.assertNotIn("run.conclusion", accepted)
+        self.assertEqual(rejected["run.conclusion"], "duplicate_claim")
+
     def test_packet_preserves_freshness_and_evidence_boundaries(self):
         receipt, diagnosis, evidence = fixture()
         packet, brief, fresh_sets = build_research_packet(

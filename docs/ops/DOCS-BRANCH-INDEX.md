@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-13T14:34:59Z` UTC  
+**Generated:** `2026-11-14T13:31:08Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 276 docs-lane branch(es)
+**Count:** 277 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -34,6 +34,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/agents-md-provenance-update`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agents-md-provenance-update) | `df6bd232a7e9` | — | — | orphan lane |
 | [`docs/agy-mvt-doe-v0-20261023`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agy-mvt-doe-v0-20261023) | `ea16165266f7` | [#1569](https://github.com/timerloggedout-spec/termux-monorepo/pull/1569)→`master-staging` | — | PR without registry link |
 | [`docs/ai-elves-readme-and-experiments-20261112`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ai-elves-readme-and-experiments-20261112) | `d5004805a139` | — | — | orphan lane |
+| [`docs/amd-rocm-associate-runbook-20261114`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/amd-rocm-associate-runbook-20261114) | `8e9ae6906fb2` | [#5405](https://github.com/timerloggedout-spec/termux-monorepo/pull/5405)→`fix/dispatch-style-gates-current-master-v2-20261114` (draft) | — | PR without registry link |
 | [`docs/apk-signing`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/apk-signing) | `ab8f46a19100` | — | — | orphan lane |
 | [`docs/ar08-issue175-status-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ar08-issue175-status-alignment) | `7048b361fd1d` | — | — | orphan lane |
 | [`docs/architecture-index`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/architecture-index) | `e11826295242` | — | — | orphan lane |

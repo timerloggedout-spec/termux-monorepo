@@ -187,7 +187,7 @@ def validate_registry(
     if not isinstance(inventory, dict):
         errors.append("inventory must be an object")
     else:
-        if inventory.get("coverage") not in {"partial", "complete", "stale"}:
+        if not isinstance(inventory.get("coverage"), str) or inventory.get("coverage") not in {"partial", "complete", "stale"}:
             errors.append("inventory.coverage must be partial, complete or stale")
         if not _is_nonempty(inventory.get("recon_scope")):
             errors.append("inventory.recon_scope must be non-empty")
@@ -225,17 +225,17 @@ def validate_registry(
             tool_ids.add(tool_id)
             tool_by_id[tool_id] = tool
 
-        if tool.get("family") not in TOOL_FAMILIES:
+        if not isinstance(tool.get("family"), str) or tool.get("family") not in TOOL_FAMILIES:
             errors.append(f"{prefix}.family has invalid value")
-        if tool.get("registration_state") not in REGISTRATION_STATES:
+        if not isinstance(tool.get("registration_state"), str) or tool.get("registration_state") not in REGISTRATION_STATES:
             errors.append(f"{prefix}.registration_state is invalid")
-        if tool.get("implementation_state") not in IMPLEMENTATION_STATES:
+        if not isinstance(tool.get("implementation_state"), str) or tool.get("implementation_state") not in IMPLEMENTATION_STATES:
             errors.append(f"{prefix}.implementation_state is invalid")
-        if tool.get("discovery_state") not in DISCOVERY_STATES:
+        if not isinstance(tool.get("discovery_state"), str) or tool.get("discovery_state") not in DISCOVERY_STATES:
             errors.append(f"{prefix}.discovery_state is invalid")
-        if tool.get("verification_state") not in VERIFICATION_STATES:
+        if not isinstance(tool.get("verification_state"), str) or tool.get("verification_state") not in VERIFICATION_STATES:
             errors.append(f"{prefix}.verification_state is invalid")
-        if tool.get("availability_state") not in AVAILABILITY_STATES:
+        if not isinstance(tool.get("availability_state"), str) or tool.get("availability_state") not in AVAILABILITY_STATES:
             errors.append(f"{prefix}.availability_state is invalid")
 
         evidence = tool.get("evidence")
@@ -294,9 +294,9 @@ def validate_registry(
         else:
             lane_paths.add(module_path)
 
-        if lane.get("lane_state") not in LANE_STATES:
+        if not isinstance(lane.get("lane_state"), str) or lane.get("lane_state") not in LANE_STATES:
             errors.append(f"{prefix}.lane_state is invalid")
-        if lane.get("inventory_classification") not in {
+        if not isinstance(lane.get("inventory_classification"), str) or lane.get("inventory_classification") not in {
             "verified_device_component", "candidate_device_component", "planned_device_component"
         }:
             errors.append(f"{prefix}.inventory_classification is invalid")
@@ -304,9 +304,17 @@ def validate_registry(
         profiles = lane.get("validation_profiles")
         if not isinstance(profiles, list):
             profiles = []
+        advertised: set[str] = set()
         for profile_id in profiles:
             if not _is_nonempty(profile_id) or profile_id not in tool_ids:
                 errors.append(f"{prefix} references unknown tool_profile_id: {profile_id}")
+                continue
+            advertised.update(tool_by_id[profile_id].get("capabilities", []))
+        required = lane.get("required_capabilities", [])
+        if isinstance(required, list):
+            for capability in required:
+                if _is_nonempty(capability) and capability not in advertised:
+                    errors.append(f"{prefix} requires capability not advertised by its validation profiles: {capability}")
 
         hardware = lane.get("hardware_requirements")
         if isinstance(hardware, dict) and hardware.get("required") is True:

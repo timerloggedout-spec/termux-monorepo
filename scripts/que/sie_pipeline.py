@@ -74,6 +74,10 @@ def validate_receipt(receipt: Any) -> list[str]:
     for field in ("event_id", "item_key", "ref"):
         if not isinstance(receipt.get(field), str) or not receipt[field].strip():
             errors.append(f"{field}: expected non-empty string")
+    if isinstance(receipt.get("event_id"), str) and not re.fullmatch(r"[0-9a-f]{64}", receipt["event_id"]):
+        errors.append("event_id: expected SHA-256 identity")
+    if isinstance(receipt.get("item_key"), str) and not re.fullmatch(r"[0-9a-f]{24}", receipt["item_key"]):
+        errors.append("item_key: expected 24-character stable identity")
     if receipt.get("stage") not in STAGES:
         errors.append("stage: unsupported lifecycle stage")
     if receipt.get("state") not in STATES:
@@ -107,6 +111,9 @@ def validate_receipt(receipt: Any) -> list[str]:
     refs = receipt.get("evidence_refs")
     if not isinstance(refs, list) or not all(isinstance(x, str) and x.strip() for x in refs):
         errors.append("evidence_refs: expected array of non-empty strings")
+    for field in ("owner_role", "claim_class", "reason"):
+        if receipt.get(field) is not None and not isinstance(receipt.get(field), str):
+            errors.append(f"{field}: expected string or null")
     digest = receipt.get("package_digest")
     if digest is not None and (not isinstance(digest, str) or not DIGEST_RE.fullmatch(digest)):
         errors.append("package_digest: expected SHA-256 digest or null")

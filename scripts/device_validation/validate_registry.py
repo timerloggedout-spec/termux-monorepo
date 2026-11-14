@@ -19,6 +19,7 @@ DISCOVERY_STATES = {"not_checked", "discovered", "not_found"}
 VERIFICATION_STATES = {"unverified", "verified", "failed", "stale"}
 AVAILABILITY_STATES = {"unknown", "available", "unavailable", "degraded"}
 LANE_STATES = {"discovered", "planned", "active", "retired"}
+TOOL_FAMILIES = {"android_avd", "termux_native", "termux_container", "qemu", "waydroid", "physical_device", "linux_container", "other"}
 EVIDENCE_CLASSES = {"verified", "candidate", "unknown", "stale"}
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
 LANE_ID_RE = re.compile(r"^device-lane:[a-z0-9][a-z0-9._-]+$")
@@ -95,6 +96,8 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         for field, allowed in enum_fields:
             if tool.get(field) not in allowed:
                 errors.append(f"{prefix}.{field} has invalid value {tool.get(field)!r}")
+        if tool.get("family") not in TOOL_FAMILIES:
+            errors.append(f"{prefix}.family has invalid value")
 
         capabilities = tool.get("capabilities")
         if not isinstance(capabilities, list) or not all(_is_nonempty(x) for x in capabilities):
@@ -106,8 +109,8 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         if not isinstance(provenance, dict):
             errors.append(f"{prefix}.provenance must be an object")
         else:
-            if "upstream_url" not in provenance or "revision" not in provenance or "license" not in provenance:
-                errors.append(f"{prefix}.provenance must declare upstream_url, revision and license (null is allowed)")
+            if any(field not in provenance for field in ("upstream_url", "revision", "license", "retrieved_at")):
+                errors.append(f"{prefix}.provenance must declare upstream_url, revision, license and retrieved_at (null is allowed)")
 
         evidence = tool.get("evidence")
         if not isinstance(evidence, list) or not evidence:
@@ -129,6 +132,7 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
             isinstance(item, dict)
             and item.get("kind") == "runtime_observation"
             and _is_nonempty(item.get("observed_at"))
+            and _is_nonempty(item.get("expires_at"))
             for item in evidence
         ):
             errors.append(f"{prefix}: non-unknown availability requires a timestamped runtime_observation")
@@ -151,6 +155,8 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         module_path = lane.get("module_path")
         if not _is_nonempty(module_path):
             errors.append(f"{prefix}.module_path must be non-empty")
+        elif Path(module_path).is_absolute() or ".." in Path(module_path).parts:
+            errors.append(f"{prefix}.module_path must be a repository-relative path without traversal: {module_path}")
         elif module_path in lane_paths:
             errors.append(f"duplicate module_path across lanes: {module_path}")
         else:
@@ -159,6 +165,10 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         for field in ("module_name", "evidence_policy", "reset_contract", "owner"):
             if not _is_nonempty(lane.get(field)):
                 errors.append(f"{prefix}.{field} must be non-empty")
+        for field in ("target_platforms", "required_capabilities", "test_suites"):
+            value = lane.get(field)
+            if not isinstance(value, list) or not all(_is_nonempty(item) for item in value):
+                errors.append(f"{prefix}.{field} must be an array of non-empty strings")
         if lane.get("lane_state") not in LANE_STATES:
             errors.append(f"{prefix}.lane_state is invalid")
         if lane.get("inventory_classification") not in {

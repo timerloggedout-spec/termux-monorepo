@@ -25,6 +25,12 @@ def workflow_text() -> str:
     return WORKFLOW.read_text(encoding="utf-8")
 
 
+def test_do_statement_style_ignores_synthetic_merge_commit_metadata():
+    checker = (ROOT / "scripts" / "ci" / "check_do_statement_style.py").read_text(encoding="utf-8")
+    assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"]' in checker
+    assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"]' in checker
+
+
 def test_mint_step_after_builders_before_consumers():
     # SEC-03 redesign (accepted at the #5151 rebase adjudication, Desk
     # 2026-11-12): the builder steps never hold the App token. Checkout

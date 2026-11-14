@@ -194,7 +194,12 @@ def test_auto_build_rotates_after_quota_terminal_to_next_free_generic(tmp_path, 
     stamp = json.loads(stamp_path.read_text(encoding="utf-8"))
     assert stamp["arm_id"] == "sealion-llama"
     assert "quota-terminal rotation" in stamp["selection_reason"]
-    assert "arm_id=sealion-llama" in output_path.read_text(encoding="utf-8")
+    output_text = output_path.read_text(encoding="utf-8")
+    assert output_text.splitlines() == [
+        "arm_id=sealion-llama",
+        f"selection_reason={stamp['selection_reason']}",
+    ]
+    assert r"\n" not in output_text, "GITHUB_OUTPUT requires real newline delimiters"
     assert stamp["rotation_attempts"] == [
         {"arm_id": "mistral-codestral", "status": "quota_terminal"},
         {"arm_id": "sealion-llama", "status": "completed"},
@@ -248,6 +253,15 @@ DOE_STAMP_FIELDS = {
     "instance_key", "model_version", "run_id", "ts", "task_ref", "trigger",
     "set_index", "cumulative_n", "selection_reason",
 }
+
+
+def test_generic_builder_prompt_keeps_branch_and_commit_ownership_in_workflow():
+    harness = load_harness()
+    prompt = harness.system_prompt_text()
+    for operation in ("git checkout", "git switch", "git branch",
+                      "git commit", "git push", "git merge"):
+        assert operation in prompt
+    assert "workflow owns branch identity and commit/PR handoff" in prompt
 
 
 def test_stamp_carries_the_full_doe_set():
@@ -460,6 +474,27 @@ def test_workflow_generic_builder_commits_and_opens_pr():
     step = text[start:end]
     assert "git push" in step and "gh pr create" in step
     assert "Do not merge" in step or "do not merge" in step.lower()
+
+
+def test_build_dispatch_restores_task_branch_before_handoff_for_both_builders():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    steps = [
+        ("Commit and open PR for the generic builder", "Commit and open PR for Gemini builder"),
+        ("Commit and open PR for Gemini builder", "Guard step-summary size"),
+    ]
+    for step_name, next_step_name in steps:
+        start = text.index(f"      - name: {step_name}")
+        end = text.index(f"      - name: {next_step_name}", start + 1)
+        step = text[start:end]
+        restore = step.index('git switch "$BUILD_BRANCH"')
+        identity = step.index(
+            'test "$(git branch --show-current)" = "$BUILD_BRANCH" '
+            '|| { echo "build branch restore failed"; exit 1; }'
+        )
+        inspect_worktree = step.index('git status --porcelain')
+        assert restore < identity < inspect_worktree, (
+            f"{step_name} must restore and verify the task branch before handoff"
+        )
 
 
 def test_workflow_stamp_fanout_after_verify():

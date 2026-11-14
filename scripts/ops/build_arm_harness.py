@@ -149,7 +149,10 @@ def system_prompt_text() -> str:
         "You are the builder for timerloggedout-spec/termux-monorepo, running "
         "as one arm of the multi-arm build-dispatch route (#5151). Read the "
         "task, use the tools to implement exactly what it specifies in this "
-        "checkout, and finish with a summary of what you changed."
+        "checkout, and finish with a summary of what you changed. "
+        "Never run git checkout, git switch, git branch, git commit, git push, "
+        "or git merge: the workflow owns branch identity and commit/PR handoff. "
+        "Keep all edits in the existing task worktree."
     )
 
 
@@ -608,8 +611,8 @@ def main(argv=None) -> int:
         status = "failed"
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-            output.write(f"arm_id={chosen_arm['arm_id']}\\n")
-            output.write(f"selection_reason={chosen_reason}\\n")
+            output.write(f"arm_id={chosen_arm['arm_id']}\n")
+            output.write(f"selection_reason={chosen_reason}\n")
     print("ARM_FINAL_SELECTION " + json.dumps({"arm_id": chosen_arm["arm_id"],
                                                 "selection_reason": chosen_reason,
                                                 "attempts": attempts}))

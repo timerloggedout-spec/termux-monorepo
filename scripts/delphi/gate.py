@@ -445,7 +445,12 @@ def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
 
 def _github_regular_blob_paths(gh: "GH", ref: str) -> dict[str, dict]:
     """Return a complete immutable Git tree; reject truncation and non-regular blobs."""
-    tree = gh.req("GET", f"/git/trees/{ref}?recursive=1")
+    commit = gh.req("GET", f"/git/commits/{ref}")
+    tree_sha = commit.get("tree", {}).get("sha") if isinstance(commit, dict) else None
+    if (not isinstance(commit, dict) or commit.get("sha") != ref
+            or not isinstance(tree_sha, str) or not re.fullmatch(r"[0-9a-f]{40,64}", tree_sha)):
+        raise ValueError(f"Git commit/tree metadata for {ref} is unavailable or malformed")
+    tree = gh.req("GET", f"/git/trees/{tree_sha}?recursive=1")
     if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
         raise ValueError(f"Git tree for {ref} is unavailable or truncated")
     entries = {}
@@ -694,7 +699,7 @@ def _run(args) -> int:
         for issue in issues
     )
     census_calls = max(1, (len(issues) // 100) + 1)
-    estimated_calls_per_rfp = 6 + census_calls + (3 + MAX_PACKAGE_FILES if package_bound else 0)
+    estimated_calls_per_rfp = 6 + census_calls + (5 + MAX_PACKAGE_FILES if package_bound else 0)
     plan = cadence(registry, readings, len(issues), args.depth,
                    api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "

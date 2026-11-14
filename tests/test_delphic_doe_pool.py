@@ -63,3 +63,33 @@ class CandidatePacketTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+    def test_missing_context_evidence_is_not_a_match(self):
+        bad = candidate("p1", "alpha")
+        del bad["context_class"]
+        result = build_candidate_packet(TASK, [bad])
+        self.assertIsNone(result["selected"])
+        self.assertIn("context_class_evidence_missing", result["excluded"][0]["reasons"])
+
+    def test_malformed_tool_evidence_is_excluded_without_aborting(self):
+        malformed = candidate("p1", "alpha", available_tools={"python": True})
+        valid = candidate("p2", "beta")
+        result = build_candidate_packet(TASK, [malformed, valid])
+        self.assertEqual(result["selected"]["provider"], "beta")
+        self.assertIn("available_tools_evidence_invalid", result["excluded"][0]["reasons"])
+
+    def test_missing_or_invalid_ranking_evidence_is_not_zero_filled(self):
+        missing = candidate("p1", "alpha")
+        missing.pop("task_fit_score")
+        invalid = candidate("p2", "beta", fit=float("nan"))
+        result = build_candidate_packet(TASK, [missing, invalid])
+        self.assertIsNone(result["selected"])
+        reasons = [r for item in result["excluded"] for r in item["reasons"]]
+        self.assertIn("task_fit_score_missing_or_invalid", reasons)
+
+    def test_rotation_parameter_is_bound_into_digest_and_provenance(self):
+        first = build_candidate_packet(TASK, [candidate()], previous_provider="alpha")
+        second = build_candidate_packet(TASK, [candidate()], previous_provider="beta")
+        self.assertNotEqual(first["input_digest"], second["input_digest"])
+        self.assertEqual(first["selection_provenance"]["previous_provider"], "alpha")

@@ -62,6 +62,24 @@ class DeviceValidationRegistryTests(unittest.TestCase):
         lane = next(x for x in data["module_lanes"] if x["lane_state"] == "planned")
         self.assertFalse(any("module_path does not exist" in e for e in MODULE.validate_registry(data, ROOT)))
 
+    def test_module_path_traversal_is_rejected(self) -> None:
+        data = copy.deepcopy(REGISTRY)
+        data["module_lanes"][0]["module_path"] = "../../outside"
+        self.assertTrue(any("repository-relative path without traversal" in e for e in MODULE.validate_registry(data)))
+
+    def test_runtime_availability_requires_expiry(self) -> None:
+        data = copy.deepcopy(REGISTRY)
+        profile = data["tool_profiles"][0]
+        profile["availability_state"] = "available"
+        profile["evidence"].append({
+            "kind": "runtime_observation",
+            "ref": "workflow-run:123",
+            "classification": "verified",
+            "observed_at": "2026-11-14T00:00:00Z",
+            "notes": "test fixture"
+        })
+        self.assertTrue(any("timestamped runtime_observation" in e for e in MODULE.validate_registry(data)))
+
     def test_complete_inventory_requires_reconciliation_date(self) -> None:
         data = copy.deepcopy(REGISTRY)
         data["inventory"]["coverage"] = "complete"

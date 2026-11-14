@@ -20,7 +20,10 @@ OBSERVE → TRIAGE → RESEARCH → RFP → DELPHI → DESIGN → CLAIM → IMPL
 | Oracle Method | Research-backed proposal generation | Produces versioned research/RFP packages |
 | Delphi | Independent ballots, signed award and outcome ledger | Adjudicates package and authorizes design entry |
 | DoE family | Pre-registered design, treatment identity and EXPERIMENT records | Evaluates candidate arms |
-| ATES / SWE / DSPy / Batteries | Outcome and task-specific evaluation adapters | Supply independent, reproducible task evidence |
+| ATES | Outcome evaluation and metric reduction | Supplies deterministic outcome metrics; independent verification remains a separate authority |
+| SWE reference adapter | Optional mini-SWE benchmark context | Manual, one-instance reference run; repository development performance remains primary and benchmark resolution remains unconfirmed until a reviewed scorer exists |
+| DSPy DoE lane | Prompt/optimizer experiment design | Consideration/design lane; runtime extraction remains future work and optimizer artifacts stay outside production weights until gated |
+| Lean Batteries | Pinned Lean library and pre-proofing research substrate | Experimental research dependency; pin toolchain/revision, compile locally and retain provenance before promotion |
 | CEEL / ForeSight | Capability discovery and research evidence | Supplies opportunity and source lineage |
 | Observatory / Desk | Existing feeds and dashboard projections | Shows lifecycle and performance |
 
@@ -83,9 +86,9 @@ Candidate families include:
 - queue policy: priority, wall proximity, specialist fit, least-loaded, parallel fan-out and staged escalation;
 - recovery: retry, repair, quarantine, alternate provider and rollback;
 - research: source selection, retrieval depth, diagnosis method and RFP generation;
-- implementation: SWE Bench task suites, DSPy prompt/optimizer settings, Lean Batteries theorem/toolchain tasks and repository-native contracts.
+- implementation: repository-native contracts and performance tasks; optional manual mini-SWE reference runs (one instance/one worker); DSPy prompt/optimizer designs as candidate DoE treatments; Lean/Batteries pre-proofing experiments against the pinned revision/toolchain.
 
-Require N ≥ 2 candidate arms where the task supports meaningful comparison. Use randomization or blocking where feasible. Record one EXPERIMENT record per dispatched run. Keep repeated measures distinct from independent task replication. Independent evaluators retain failed arms and report uncertainty.
+Treat SWE reference results as context rather than repository-level proof; treat DSPy as design-only until its runtime lane lands; treat Batteries results as research evidence until a pinned Lean compile verifies the candidate. Require N ≥ 2 candidate arms where the task supports meaningful comparison. Use randomization or blocking where feasible. Record one EXPERIMENT record per dispatched run. Keep repeated measures distinct from independent task replication. Independent evaluators retain failed arms and report uncertainty.
 
 ## 6. QUE routing and formal planning
 

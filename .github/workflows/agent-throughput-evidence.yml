@@ -200,6 +200,7 @@ jobs:
                 confidence: identity.confidence,
                 evidence_refs: [`workflow_run:${run.id}`, `workflow_name:${identity.needle}`]
               },
+              execution: taskBoundary && typeof taskBoundary === 'object' ? taskBoundary.execution || null : null,
               workflow_run: {
                 id: run.id,
                 run_attempt: run.run_attempt || 1,

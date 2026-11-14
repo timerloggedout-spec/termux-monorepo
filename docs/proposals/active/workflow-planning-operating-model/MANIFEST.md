@@ -41,3 +41,8 @@ Establish a canonical declarative workflow contract that connects workflow inten
 
 - Disposition: posted for review
 - Notes: architecture and schema proposal; validator is an initial structural implementation; no production adapter or dispatch authority is enabled.
+
+### 2026-11-13 — independent architecture review corrections
+
+- Disposition: changes addressed; awaiting current-head validation
+- Notes: proposal ledger and Implements IDs added; promotion gates aligned to both repo-gate and termux-smoke; FA-ADE human-only approval boundary clarified; PDDL claim is consumed on release; WFC validator reuses the existing deterministic DAG planner.

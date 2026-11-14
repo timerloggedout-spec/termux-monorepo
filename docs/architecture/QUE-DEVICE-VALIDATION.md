@@ -10,7 +10,7 @@
 |---|---|---|
 | Module owner | Module lane record | Defines target behavior, device dependencies, test suite and acceptance contract. |
 | Tool registry | `ops/device-validation/registry.json` | Describes tool profiles, capabilities, provenance and verification state. |
-| QUE | Existing QUE admission/dispatch system | Queue, tier, claim, lease, retry and execution routing. |
+| Cadence admission | Existing admission surface + `ops/quota/dispatch-tiers.json` | Admission thresholds, tier policy and queue-pressure deferral. |\n| QUE / dispatch machinery | Existing task ranking, dispatch watchdog and claim/lease machinery | Rank, claim, lease, reclaim and escalation. |\n| Claimable routes | `ops/dispatch/claimable-routes.json` + registered workflows | Executable triggers and attributable run receipts. |\n| QUE feeds | `ops/que/feeds/` | Read-model projections; not a task-dispatch API. |
 | Backend adapter | Registered adapter contract | Capability check, isolated execution, cleanup and evidence receipt. |
 | DoE | Existing DoE family | Design and analyze controlled backend comparisons. |
 | MoneyBall | Existing value/performance decision lane | Rank verified outcomes under declared constraints; retain uncertainty and Pareto alternatives. |
@@ -25,11 +25,11 @@
 3. The capability resolver returns eligible profiles, rejected profiles and reasons.
 4. QUE applies its own admission and dispatch policy.
 5. A backend executes the module's allowlisted suite in a disposable environment.
-6. The adapter emits an evidence envelope tied to the immutable target SHA and backend fingerprint.
-7. The lane classifies product failure, harness failure, environment failure, capability mismatch or incomplete evidence.
-8. DoE/MoneyBall consumes comparable observations and recommends retain/cull/expand.
-9. Physical-device acceptance is performed when hardware or real Android behavior is required.
-10. Promotion follows the existing proposal and dual-gate rules.
+7. The adapter emits an evidence envelope tied to the immutable target SHA and backend fingerprint.
+8. The lane classifies product failure, harness failure, environment failure, capability mismatch or incomplete evidence.
+9. DoE/MoneyBall consumes comparable observations and recommends retain/cull/expand.
+10. Physical-device acceptance is performed when hardware or real Android behavior is required.
+11. Promotion follows the existing proposal and dual-gate rules.
 
 ## State dimensions
 

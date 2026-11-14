@@ -306,3 +306,123 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+
+# ---------------------------------------------------------------- P3 (EGM-2): vote profiles, collision flags, quarantine guard
+
+def _votes(**over):
+    base = {"OPERATOR": (5, 4), "builder": (3, 5), "reviewer": (5, 3), "Scout": (5, 3), "cost_auditor": (4, 5)}
+    base.update(over)
+    return [{"role": r, "impact": i, "importance": j, "score": i * j, "veto": False} for r, (i, j) in base.items()]
+
+
+def test_vote_profile_is_canonical_and_stable():
+    v = _votes()
+    p1 = gate.vote_profile(v)
+    p2 = gate.vote_profile(list(reversed(v)))  # order-independent
+    assert p1 == p2 and "OPERATOR=5x4" in p1 and "cost_auditor=4x5" in p1
+    assert gate.vote_profile(None) is None and gate.vote_profile([]) is None
+    assert gate.vote_profile(_votes(builder=(4, 5))) != p1
+
+
+def test_board_flags_identical_profiles_inline():
+    rows = [{"number": 101, "surface": "a.x", "effective": 12.0, "decision": "parked", "profile": gate.vote_profile(_votes())},
+            {"number": 102, "surface": "b.y", "effective": 12.0, "decision": "parked", "profile": gate.vote_profile(_votes())},
+            {"number": 103, "surface": "c.z", "effective": 9.0, "decision": "parked", "profile": gate.vote_profile(_votes(Scout=(4, 3)))}]
+    md = gate.board_md(rows, "now")
+    assert "Vote profile" in md
+    assert "⚠ identical to #102" in md and "⚠ identical to #101" in md
+    assert "identical vote profiles: #101 ≡ #102" in md
+    line103 = [ln for ln in md.splitlines() if "#103" in ln][0]
+    assert "⚠" not in line103
+
+
+def test_quarantine_guard_matches_stamp_and_prefix_only():
+    s = {"id": "some.surface"}
+    assert gate.is_quarantined({"body": "text\nEGM instance #2 TEST filing\nmore"}, s)
+    assert gate.is_quarantined({"body": "ordinary"}, {"id": "RFP-EGM2-B3"})
+    assert not gate.is_quarantined({"body": "ordinary filing"}, s)
+    assert not gate.is_quarantined({"body": None}, s)
+    assert not gate.is_quarantined({}, s)
+
+
+# ------------------------------------------------- P1+P2 (EGM-2): verification records, oracle resolution, B3 acceptance
+
+def _fetch_from(states):
+    def fetch(kind, ident):
+        st = states.get((kind, ident))
+        if st is None:
+            raise LookupError(f"{kind} {ident}")
+        if st == "INFRA":
+            raise gate.InfraError("down")
+        return st
+    return fetch
+
+
+def test_parse_verification_strict_grammar_cap_and_dedupe():
+    text = ("Central claim rests on PR #4290 and run 41645713037.\n"
+            "See also receipt 6603643325. Prose about PRs and runs is ignored.\n"
+            "PR #4290 again (dupe). pr #4311 lower-case works.")
+    cites = gate.parse_verification(text)
+    assert cites == [{"kind": "pr", "id": 4290}, {"kind": "run", "id": 41645713037},
+                     {"kind": "receipt", "id": 6603643325}, {"kind": "pr", "id": 4311}]
+    many = " ".join(f"PR #{1000 + i}" for i in range(15))
+    assert len(gate.parse_verification(many)) == gate.MAX_CITATIONS == 10
+    assert gate.parse_verification("") == [] and gate.parse_verification("no refs at all") == []
+    assert gate.parse_verification("run 123 too short") == []  # run ids need >= 6 digits
+
+
+def test_verification_outcome_classes():
+    fetch = _fetch_from({("pr", 1): {"merged": True, "state": "closed"},
+                         ("pr", 2): {"merged": False, "state": "closed"},
+                         ("pr", 3): {"merged": False, "state": "open"},
+                         ("run", 100000): {"conclusion": "success"},
+                         ("run", 200000): {"conclusion": "failure"},
+                         ("receipt", 300000): {"exists": True},
+                         ("pr", 4): "INFRA"})
+    s = {"verification": {"citations": [{"kind": "pr", "id": 1}, {"kind": "pr", "id": 2}, {"kind": "pr", "id": 3},
+                                        {"kind": "run", "id": 100000}, {"kind": "run", "id": 200000},
+                                        {"kind": "receipt", "id": 300000}, {"kind": "receipt", "id": 999999},
+                                        {"kind": "pr", "id": 4}]}}
+    vb = gate.verification_block(s, fetch)
+    assert vb["resolved"] and vb["tallies"] == {"verified": 4, "contradicted": 2, "unresolvable": 1, "unreachable": 1}
+
+
+def test_unreachable_and_offline_are_neutral():
+    s = {"verification": {"citations": [{"kind": "pr", "id": 4}]}}
+    vb = gate.verification_block(s, _fetch_from({("pr", 4): "INFRA"}))
+    assert vb["tallies"]["unreachable"] == 1 and vb["adjustment"] == 0.0
+    off = gate.verification_block(s, None)
+    assert off["resolved"] is False and off["adjustment"] == 0.0
+    empty = gate.verification_block({"verification": {"citations": []}}, _fetch_from({}))
+    assert empty["adjustment"] == 0.0
+
+
+def test_b3_replica_fixture_scores_at_least_2_below_shape_only():
+    """EGM-2 ACCEPTANCE (hard): a filing whose central cited claim resolves
+    FALSE (its PR was closed unmerged) must score >= 2 pts below the score
+    its shape alone earns."""
+    panel, reg, _ = _load()
+    s = {"id": "b3.replica", "title": "B3 replica fixture", "lane": "model", "horizon": "H2",
+         "registry_id": None, "sourced": True,
+         "quota": {"metric": "requests", "limit": 1000, "unit": "req", "window": "day",
+                   "reset": "00:00 UTC", "zone": "UTC", "source": "https://example.com/limits"},
+         "auth": {"actions_secret": None, "present": None},
+         "lock_in": 1, "fit": 5, "headroom": 5, "failure_modes": [],
+         "card_required": False, "overage_autobill": False,
+         "verification": {"citations": [{"kind": "pr", "id": 777}]}}
+    shape_only = gate.score_surface(dict(s), panel, reg, {}, "b3", "test")
+    assert shape_only["result"]["verification"]["adjustment"] == 0.0  # offline: unresolved, neutral
+    fetch = _fetch_from({("pr", 777): {"merged": False, "state": "closed"}})  # the claim resolves FALSE
+    s2 = dict(s)
+    s2["verification_block"] = gate.verification_block(s2, fetch)
+    resolved = gate.score_surface(s2, panel, reg, {}, "b3", "test")
+    assert resolved["result"]["verification"]["tallies"]["contradicted"] == 1
+    assert resolved["result"]["shape_score"] == shape_only["result"]["effective_score"]
+    assert resolved["result"]["effective_score"] <= shape_only["result"]["effective_score"] - 2.0
+
+
+def test_verified_record_counts_for_filing_within_bounds():
+    assert gate.verification_adjustment({"verified": 3, "contradicted": 0, "unresolvable": 0, "unreachable": 0}) == 2.0
+    assert gate.verification_adjustment({"verified": 0, "contradicted": 1, "unresolvable": 0, "unreachable": 5}) == -4.0
+    assert gate.verification_adjustment({"verified": 1, "contradicted": 1, "unresolvable": 0, "unreachable": 0}) == -1.0

@@ -335,9 +335,12 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
             def req(self, method, path, body=None):
                 assert method == "GET"
                 ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/commits/"):
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
                 if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
-                            if ref == manifest_ref else
+                            if tree_sha == "c" * 40 else
                             [{"path": "proposal/RFP.md", "type": "blob", "mode": self.source_mode}])
                     return {"truncated": False, "tree": rows}
                 self.refs.append((path.split("?", 1)[0], ref))
@@ -443,9 +446,12 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
         class FakeGH:
             def req(self, method, path, body=None):
                 ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/commits/"):
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
                 if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
-                            if ref == manifest_ref else
+                            if tree_sha == "c" * 40 else
                             [{"path": "outside.md", "type": "blob", "mode": "100644"}])
                     return {"truncated": False, "tree": rows}
                 payload = contents[path.split("?", 1)[0]]

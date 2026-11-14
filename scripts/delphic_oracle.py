@@ -159,7 +159,7 @@ def posterior(
         if type(outcome) is not bool:
             continue
         exp_id = row.get("experiment_id")
-        identity = ("source_sha", "event_id", "observed_at", "instance_key")
+        identity = ("source_sha", "event_id", "observed_at", "instance_key", "policy_version")
         if not isinstance(exp_id, str) or not exp_id or any(
             not isinstance(row.get(key), str) or not row.get(key) for key in identity
         ):

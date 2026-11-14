@@ -50,7 +50,7 @@ def normalize_execution(raw: Any = None) -> dict[str, Any]:
     controller = raw.get("controller", "unknown")
     if not isinstance(controller, str) or not controller.strip() or len(controller) > 128:
         raise ValueError("execution.controller must be a non-empty identity up to 128 characters")
-    result["controller"] = controller.strip()
+    result["controller"] = controller.strip().lower()
 
     for field, choices in (
         ("surface", EXECUTION_SURFACES),
@@ -69,6 +69,8 @@ def normalize_execution(raw: Any = None) -> dict[str, Any]:
                 raise ValueError(f"execution.{field} must be a non-empty opaque reference up to {limit} characters")
             result[field] = value.strip()
 
+    if isinstance(raw.get("confidence", 0.0), bool):
+        raise ValueError("execution.confidence must be a number, not a boolean")
     try:
         confidence = float(raw.get("confidence", 0.0))
     except (TypeError, ValueError) as exc:

@@ -197,6 +197,6 @@ def test_dashboard_pages_reference_only_present_local_scripts():
     for item in manifest["pages"]:
         page = APP / item["file"]
         html = page.read_text()
-        for source in re.findall(r'<script[^>]+src=["\\'](\\./[^"\\']+)["\\']', html):
+        for source in re.findall(r"""<script[^>]+src=["'](\\./[^"']+)["']""", html):
             asset = APP / source[2:]
             assert asset.is_file(), f"{item['file']} references missing local script {source}"

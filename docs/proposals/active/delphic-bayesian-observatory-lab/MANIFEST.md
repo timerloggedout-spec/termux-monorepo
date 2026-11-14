@@ -81,7 +81,7 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - `site/delphic-observatory/VERSION.json` — machine-readable artifact/version contract.
 - `site/delphic-observatory/CHANGELOG.md` — release history.
 - `site/delphic-observatory/README.md` — hosting and versioning policy.
-- `.github/workflows/delphic-observatory-pages.yml` — validates version metadata and publishes to GitHub Pages on master updates (Pages must be enabled for the repository).
+- Public rendering is integrated through the existing Tribute dashboard deployment (`apps/tribute-dashboard/`); no competing repository-level Pages publisher is added.
 - `docs/ops/DELPHIC-QUE-INTEGRATION.md` — staged QUE/AutonomousOpsStuff integration and cross-context authority contract.
 
 Version: 0.1.0. Public site is a research projection, not a live operations dashboard. Termux Origin is offline as of operator report 2026-11-12; native Termux validation remains pending.

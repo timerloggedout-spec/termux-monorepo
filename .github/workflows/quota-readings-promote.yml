@@ -8,8 +8,9 @@ name: quota-readings-promote
 # -> quota_poll.py --from-public -> land by PR. The effective readings
 # cache TTL was therefore unbounded (snapshot of record sat 35h+ old at
 # the 2026-11-03 diagnostic; the prior snapshot lived ~3 days).
-# This workflow runs the SAME chain in-job, event/state-driven per the
-# decision-tree doctrine (no cron): push on registry change + dispatch.
+# This workflow runs the SAME chain in-job on registry changes,
+# manual dispatch, and a six-hour scheduled freshness cycle. The state gate
+# keeps idle polls write-free without creating a second writer.
 # STATE GATE: the commit step writes only when the converted snapshot
 # differs from the committed pair (generated_at aside); idle ticks and
 # no-change pushes write nothing.
@@ -26,6 +27,8 @@ name: quota-readings-promote
 # in-job with the same invocation and env.
 
 on:
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
   push:
     branches: [master]

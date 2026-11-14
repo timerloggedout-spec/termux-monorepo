@@ -63,9 +63,10 @@ class TestProposalPackage(unittest.TestCase):
             def __init__(self):
                 self.refs = []
             def req(self, method, path):
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     paths = ([manifest_path] if tree_sha == "c" * 40 else

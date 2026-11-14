@@ -37,6 +37,8 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
 | maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
 
+| design device-component validation lanes or register emulator/tool capabilities | [`objects/platform/device-validation.md`](objects/platform/device-validation.md) | the proposal, registry schema and RECON runbook |
+
 ## One rule
 
 Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.

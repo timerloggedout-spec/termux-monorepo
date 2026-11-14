@@ -198,3 +198,49 @@ jobs:
             3. Prefer reviewing Jules/Devin PRs over duplicating work.
 
             Prefer analysis + concrete suggestions. Never commit secrets or PII.
+
+  stamp:
+    needs: [invoke]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 5
+    steps:
+      - name: Mint Swarm App token (stamp fan-out dispatch)
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - name: Emit dispatch stamp to scoring planes
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          UPSTREAM_RESULT: ${{ needs.invoke.result }}
+        run: |
+          export TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          STAMP=$(python3 - <<'PYEOF'
+          import json, os
+          stamp = {
+            "dispatch_id": "gemini-invoke-${{ github.run_id }}",
+            "ts": os.environ.get("TS"),
+            "task_class": "gemini-invoke",
+            "entry": "${{ inputs.issue_number || inputs.pr_number }}",
+            "trigger": "workflow_dispatch",
+            "provider": "gemini",
+            "model": None,
+            "role": "builder",
+            "moniker": "optimizations-assurance",
+            "context": "gemini-invoke (model router resolved; see run)",
+            "run": {"workflow": "gemini-invoke.yml", "run_id": "${{ github.run_id }}", "session_id": None},
+            "outcome": {"status": "completed" if os.environ.get("UPSTREAM_RESULT") == "success" else "failed",
+                        "summary": "gemini-invoke.yml run ${{ github.run_id }} result=" + str(os.environ.get("UPSTREAM_RESULT")),
+                        "artifact": "actions run ${{ github.run_id }}", "gate_call": None, "confirmed": None},
+            "quota": {"pool": "gemini", "cost_class": "free-tier", "slice": None},
+          }
+          print(json.dumps(stamp))
+          PYEOF
+          )
+          curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/dispatch-stamp-fanout.yml/dispatches" \
+            -d "$(python3 -c 'import json,sys; print(json.dumps({"ref": "master", "inputs": {"stamp": sys.argv[1]}}))' "$STAMP")" > /dev/null
+          echo "stamp dispatched for run ${{ github.run_id }}"

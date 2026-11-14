@@ -12,7 +12,6 @@ Subcommands
 from __future__ import annotations
 
 import argparse, base64, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.parse, urllib.request, urllib.error
-from pathlib import PurePosixPath
 
 from proposal_package import validate_manifest
 

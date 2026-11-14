@@ -1,4 +1,4 @@
-"""Tests for adaptive DO authoring classification."""
+"""Tests for adaptive DO authoring classification and event coverage."""
 import sys
 import unittest
 from pathlib import Path
@@ -39,6 +39,16 @@ class DoStatementPolicyTests(unittest.TestCase):
     def test_commit_subject_accepts_natural_and_explicit_forms(self):
         self.assertEqual(subject_action_verb("feat(ci): create adaptive gate"), "create")
         self.assertEqual(subject_action_verb("ci: DO: create adaptive gate"), "create")
+
+    def test_review_release_and_commit_comment_payloads_are_supported(self):
+        checker = (ROOT / "scripts" / "ci" / "check_do_statement_style.py").read_text(encoding="utf-8")
+        for event in ('"commit_comment"', '"pull_request_review"', '"release"'):
+            self.assertIn(event, checker)
+
+    def test_workflow_subscribes_to_review_release_and_commit_comment_events(self):
+        workflow = (ROOT / ".github" / "workflows" / "do-statement-style.yml").read_text(encoding="utf-8")
+        for event in ("pull_request_review:", "commit_comment:", "release:"):
+            self.assertIn(event, workflow)
 
 
 if __name__ == "__main__":

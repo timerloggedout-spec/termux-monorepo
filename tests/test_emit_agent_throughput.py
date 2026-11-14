@@ -290,5 +290,20 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "safe lowercase identity"):
             build_events(data)
 
+    def test_execution_provenance_rejects_boolean_confidence(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": True,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "not a boolean"):
+            build_events(data)
+
 if __name__ == "__main__":
     unittest.main()

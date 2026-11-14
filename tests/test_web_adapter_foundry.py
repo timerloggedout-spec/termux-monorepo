@@ -130,6 +130,42 @@ def test_sse_encode_and_event_bus():
     assert q.empty()
 
 
+def test_amd_academy_provider_registry_is_discovery_only():
+    path = ROOT / "ops" / "web_adapter_foundry" / "providers" / "amd-academy" / "registry.json"
+    provider = json.loads(path.read_text(encoding="utf-8"))
+    assert waf.validate_registry(provider) == []
+    assert provider["provider"] == "amd-academy-netexam"
+    ops = {op["operation_id"]: op for op in provider["operations"]}
+    assert set(ops) == {
+        "amd_academy.courses.list",
+        "amd_academy.course.progress",
+        "amd_academy.points.snapshot",
+        "amd_academy.certificate.get",
+        "amd_academy.course.enroll",
+        "amd_academy.module.launch",
+        "amd_academy.lab.launch",
+        "amd_academy.lab.submit",
+        "amd_academy.quiz.submit",
+    }
+    assert all(op["status"] == "discovered" for op in ops.values())
+    assert all(op["evidence_label"] == "unknown" for op in ops.values())
+    assert all(op["executor"] == "browser-ui-workflow" for op in ops.values())
+    assert all(op["evidence"]["amd_tenant_api_entitlement"] == "not_established"
+               for op in ops.values())
+    assert all(not op["fallback"]["allowed"] for op in ops.values())
+    assert all(op["session"]["account_isolation"] == "required" for op in ops.values())
+    assert all(not op["evidence"].get("endpoint") for op in ops.values())
+
+
+def test_amd_academy_provider_write_operations_are_never_auto_retried():
+    path = ROOT / "ops" / "web_adapter_foundry" / "providers" / "amd-academy" / "registry.json"
+    provider = json.loads(path.read_text(encoding="utf-8"))
+    writes = [op for op in provider["operations"] if op["side_effect"] == "write"]
+    assert writes
+    assert all(op["fallback"]["allowed"] == [] for op in writes)
+    assert all(op["status"] == "discovered" for op in writes)
+
+
 BRIEF = {
     "target_id": "example-shop", "target": "https://shop.example.com/catalog",
     "purpose": "api-extraction", "side_effect": "read", "probe_budget": 24,

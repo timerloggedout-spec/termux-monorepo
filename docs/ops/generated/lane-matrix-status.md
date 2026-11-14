@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-14T18:42:47Z)
+# Lane matrix status (2026-11-14T18:43:20Z)
 
-- Master: `2d36e6b2d4fe1e1da003c219581240ad07f85b3b`
+- Master: `ff223b53302abe063173be7105518fe07bbea332`
 - Open PRs: **402**
 - Oldest: #47 (101.12d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -36,7 +36,7 @@
 | #684 | 55.01 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 52.46 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 44.37 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 43.5 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #990 | 43.51 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 42.24 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 26.39 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 24.45 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |

@@ -1,0 +1,303 @@
+{
+  "provider": "amd-academy-netexam",
+  "registry_version": "0.1.0-discovery",
+  "operations": [
+    {
+      "operation_id": "amd_academy.courses.list",
+      "status": "discovered",
+      "side_effect": "read",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.course.progress",
+      "status": "discovered",
+      "side_effect": "read",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.points.snapshot",
+      "status": "discovered",
+      "side_effect": "read",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.certificate.get",
+      "status": "discovered",
+      "side_effect": "read",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.course.enroll",
+      "status": "discovered",
+      "side_effect": "write",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.module.launch",
+      "status": "discovered",
+      "side_effect": "write",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.lab.launch",
+      "status": "discovered",
+      "side_effect": "write",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.lab.submit",
+      "status": "discovered",
+      "side_effect": "write",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    },
+    {
+      "operation_id": "amd_academy.quiz.submit",
+      "status": "discovered",
+      "side_effect": "write",
+      "executor": "browser-ui-workflow",
+      "evidence_label": "unknown",
+      "fallback": {
+        "allowed": []
+      },
+      "session": {
+        "account_isolation": "required",
+        "credential_source": "vault_ref_only",
+        "refresh_strategy": "read_before_resume",
+        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
+        "write_retry_policy": "never_retry_without_readback"
+      },
+      "evidence": {
+        "platform": "NetExam",
+        "platform_identification": "observed_public_portal_title",
+        "amd_tenant_api_entitlement": "not_established",
+        "endpoint": null,
+        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
+        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
+        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
+        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
+        "verification_requirements": [
+          "read_after_action_lms_state",
+          "course_bound_certificate",
+          "actual_points_balance_screenshot",
+          "execution_provenance_receipt"
+        ]
+      }
+    }
+  ]
+}

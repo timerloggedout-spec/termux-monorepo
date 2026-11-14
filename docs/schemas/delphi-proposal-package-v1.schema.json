@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/docs/schemas/delphi-proposal-package-v1.schema.json",
+  "title": "Delphi Proposal Package Manifest",
+  "type": "object",
+  "required": [
+    "schema",
+    "source_ref",
+    "package_id",
+    "package_path",
+    "excluded_paths",
+    "files",
+    "package_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "delphi-proposal-package/v1"
+    },
+    "source_ref": {
+      "type": "string",
+      "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "package_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "excluded_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "package_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

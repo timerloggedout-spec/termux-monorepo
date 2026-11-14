@@ -139,21 +139,23 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
     'utf8',
   );
   assert.match(workflow, /pull_request_target:/);
-  assert.match(workflow, /workflow_run:\s+workflows:\s+\["lane events recorder"\]/);
-  assert.match(workflow, /const firstCycle = context\.eventName === 'schedule'/);
-  assert.match(workflow, /const slow = context\.eventName === 'schedule'/);
-  assert.match(workflow, /const eventDemand = \['pull_request_target', 'workflow_run', 'push'\]/);
-  assert.match(workflow, /repoChanged && \(slow \|\| eventDemand\)/);
-  assert.match(workflow, /cron: ['"]\*\/30 \* \* \* \*['"]/);
+  assert.match(workflow, /workflow_run:\\s+workflows:\\s+\["lane events recorder"\]/);
+  assert.match(workflow, /const firstCycle = context\\.eventName === 'schedule'/);
+  assert.match(workflow, /const slow = context\\.eventName === 'schedule'/);
+  assert.match(workflow, /const eventDemand = \\['pull_request_target', 'workflow_run', 'push'\\]/);
+  assert.match(workflow, /repoChanged && \\(slow \\|\\| eventDemand\\)/);
+  assert.match(workflow, /cron: ['"]\\*\\/30 \\* \\* \\*['"]/);
   assert.doesNotMatch(workflow, /ops-lane-matrix-sweep/);
   assert.match(workflow, /issue_comment:/);
-  assert.match(workflow, /github\.event\.comment\.body == '\/quota force all'/);
-  assert.match(workflow, /github\.event\.issue\.state == 'open'/);
-  assert.match(workflow, /github\.event\.pull_request\.head\.repo\.full_name == github\.repository/);
+  assert.match(workflow, /github\\.event\\.comment\\.body == '\\/quota force all'/);
+  assert.match(workflow, /github\\.event\\.issue\\.state == 'open'/);
+  assert.match(workflow, /github\\.event\\.pull_request\\.head\\.repo\\.full_name == github\\.repository/);
   assert.match(workflow, /complete-force-request:/);
   assert.doesNotMatch(workflow, /workflow_dispatch:/);
   assert.doesNotMatch(workflow, /force_lane/);
-  assert.match(workflow, /cancel-in-progress: false/);
+  // Deliberate coalescing: one shared group cancels stale evaluations; the
+  // 30-minute schedule is the recovery backstop if an evaluation is superseded.
+  assert.match(workflow, /cancel-in-progress: true/);
   assert.match(workflow, /issue_comment' && !force/);
 });
 

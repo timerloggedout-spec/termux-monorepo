@@ -46,3 +46,8 @@
 - [ ] Extend the event JSON Schema and pass only sanitized `taskBoundary.execution` through the workflow observer.
 - [ ] Run focused and full relevant tests.
 - [ ] Commit as `feat(que): enforce execution provenance contract`.
+
+
+## Assessment integrity boundary
+
+The execution substrate does not authorize AI assistance during external evaluations. AMD's ROCm Certified Developer Program Agreement v1.1 prohibits unauthorized assistance and generative-AI tools/services during Evaluations unless AMD expressly permits them; evaluation content is confidential. Any Academy quiz, exam, scored assessment, proctored step, or other Evaluation is a hard stop unless the applicable AMD rule explicitly authorizes the proposed assistance. The adapter must not capture, answer, submit, or replay evaluation content. Preparation and non-evaluative study remain separate.

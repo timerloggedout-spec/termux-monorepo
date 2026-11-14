@@ -227,7 +227,7 @@ Operational optimizations to test:
 - queue-aware admission and backpressure;
 - cache immutable artifacts by content digest;
 - retrieve only relevant context and record provenance;
-- avoid speculative parallelism when integration cost exceeds expected value;
+- Bound speculative parallelism when integration cost exceeds expected value;
 - use checkpoint/resume for long tasks;
 - classify retryable vs terminal errors;
 - dynamic concurrency from observed quota/resource headroom;
@@ -283,6 +283,6 @@ A simulation receipt is a hypothesis artifact. It cannot create QUE claims, writ
 - Platform201 deployment remains frozen unless its existing owner gate is satisfied.
 - QUE remains authoritative for queue admission/claims, not outcome correctness.
 - DoE results include pinned inputs, cohort, repetitions, uncertainty and evidence references.
-- No simulated result is represented as production evidence.
-- No missing metric is converted to zero.
+- Treat simulated results as hypotheses; require independent production evidence.
+- Preserve missing metrics as unknown; report explicit coverage.
 - Routing promotion is explainable from objective, constraints, eligible set, evidence snapshot, selected topology and measured outcome.

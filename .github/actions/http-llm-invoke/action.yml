@@ -16,6 +16,9 @@ inputs:
   prompt_variant: { description: 'Prompt variant identifier', required: false, default: '' }
   max_tokens: { description: 'Requested maximum response tokens; not a model capability limit. Default is the provider/model maximum requested by the experiment.', required: false, default: '131072' }
   post_comment: { description: 'Post model output to the target issue/PR', required: false, default: 'true' }
+outputs:
+  tokens_in: { description: 'Prompt/input tokens from the provider response usage object (JSON number, or null when the response carries no usage surface). Null-honest: never zero-filled.' }
+  tokens_out: { description: 'Completion/output tokens from the provider response usage object (JSON number, or null). Null-honest: never zero-filled.' }
 runs:
   using: composite
   steps:
@@ -80,6 +83,11 @@ runs:
         # for local cap detection only; they must never enter the telemetry record.
         TOKENS_IN_JSON=$(echo "$RESP" | jq -c '(.usage? // {}) as $u | ($u.prompt_tokens // $u.input_tokens) as $v | if ($v | type) == "number" and $v >= 0 and ($v | floor) == $v then $v else null end' 2>/dev/null || echo null)
         TOKENS_OUT_JSON=$(echo "$RESP" | jq -c '(.usage? // {}) as $u | ($u.completion_tokens // $u.output_tokens) as $v | if ($v | type) == "number" and $v >= 0 and ($v | floor) == $v then $v else null end' 2>/dev/null || echo null)
+        # Expose the null-honest counts as action outputs so stamp
+        # assembly in caller workflows can carry them into
+        # stamp.usage (consumption fix leg, owner 2026-11-03).
+        echo "tokens_in=${TOKENS_IN_JSON:-null}" >> "$GITHUB_OUTPUT"
+        echo "tokens_out=${TOKENS_OUT_JSON:-null}" >> "$GITHUB_OUTPUT"
         TOKENS_IN_NUM=$(printf '%s' "${TOKENS_IN_JSON:-null}" | jq -r 'if type == "number" then . else 0 end' 2>/dev/null || echo 0)
         TOKENS_OUT_NUM=$(printf '%s' "${TOKENS_OUT_JSON:-null}" | jq -r 'if type == "number" then . else 0 end' 2>/dev/null || echo 0)
         RESPONSE_MODEL="${RESPONSE_MODEL:-$MODEL}"; FINISH_REASON="${FINISH_REASON:-unknown}"

@@ -69,6 +69,7 @@ jobs:
           python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
           python3 -m unittest discover -s tests/que -p 'test_sie_research_packet.py' -v
           python3 -m unittest discover -s tests/delphi -p 'test_proposal_package.py' -v
+          python3 -m unittest discover -s tests/qdesk -p 'test_award_authorization.py' -v
 
       - name: Native orchestration contracts
         run: |

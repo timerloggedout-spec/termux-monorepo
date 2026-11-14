@@ -126,7 +126,7 @@ def test_builder_preserves_canonical_home_and_comparison_titles(tmp_path):
     ], check=True, capture_output=True, text=True)
     manifest = json.loads((tmp_path / "version-manifest.json").read_text())
     titles = {page["file"]: page["title"] for page in manifest["pages"]}
-    assert titles["index.html"] == "Help-Wanted Home"
+    assert titles["index.html"] == "Tribute Home"
     assert titles["versioning.html"] == "Version Comparison"
 
 

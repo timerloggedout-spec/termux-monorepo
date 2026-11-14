@@ -1,0 +1,27 @@
+name: Deployment Admission Contract
+
+on:
+  pull_request:
+    paths:
+      - "scripts/ci/deployment_admission.py"
+      - "tests/test_deployment_admission.py"
+      - "docs/rfps/mesh-resiliency-free-compute/**"
+      - ".github/workflows/deployment-admission-contract.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Run offline policy fixtures
+        run: python3 -m unittest discover -s tests -p 'test_deployment_admission.py' -v
+      - name: Compile policy module
+        run: python3 -m py_compile scripts/ci/deployment_admission.py
+      - name: Check patch whitespace
+        run: git diff --check

@@ -27,7 +27,10 @@ def digest(value: Any) -> str:
 
 
 def parse_time(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        raise ValueError("timestamp requires a timezone")
+    return parsed
 
 
 def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, dict], dict[str, str]]:
@@ -35,9 +38,14 @@ def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, d
     accepted: dict[str, dict] = {}
     rejected: dict[str, str] = {}
     for evidence_set in evidence_sets:
-        if evidence_set.get("schema") != EVIDENCE_SCHEMA:
+        if not isinstance(evidence_set, dict) or evidence_set.get("schema") != EVIDENCE_SCHEMA:
             raise ValueError("evidence set schema must be delphi-evidence-set/v1")
-        for item in evidence_set.get("items", []):
+        items = evidence_set.get("items")
+        if not isinstance(items, list):
+            raise ValueError("evidence set items must be an array")
+        for item in items:
+            if not isinstance(item, dict):
+                raise ValueError("evidence items must be objects")
             claim = item.get("claim")
             if not isinstance(claim, str) or not claim.strip():
                 continue
@@ -62,6 +70,8 @@ def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, d
 
 
 def _validate_diagnosis(diagnosis: dict) -> None:
+    if not isinstance(diagnosis, dict):
+        raise ValueError("diagnosis must be an object")
     required = ("summary", "owner_role", "confirmed_facts", "hypotheses",
                 "unknowns", "baseline", "related_history", "replay_recipe",
                 "acceptance_tests", "risk_envelope", "alternatives")
@@ -72,6 +82,12 @@ def _validate_diagnosis(diagnosis: dict) -> None:
                 "replay_recipe", "acceptance_tests", "alternatives"):
         if not isinstance(diagnosis[key], list):
             raise ValueError(f"diagnosis.{key} must be an array")
+    if not isinstance(diagnosis["summary"], str) or not diagnosis["summary"].strip():
+        raise ValueError("diagnosis.summary must be non-empty")
+    if not isinstance(diagnosis["owner_role"], str) or not diagnosis["owner_role"].strip():
+        raise ValueError("diagnosis.owner_role must be non-empty")
+    if not isinstance(diagnosis["baseline"], dict):
+        raise ValueError("diagnosis.baseline must be an object")
     if not diagnosis["confirmed_facts"]:
         raise ValueError("diagnosis requires at least one confirmed-fact candidate")
     if not diagnosis["replay_recipe"] or not diagnosis["acceptance_tests"]:

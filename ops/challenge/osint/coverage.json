@@ -1,6 +1,6 @@
 {
   "schema": "challenge-osint-coverage/v1",
-  "generated_at": "2026-10-28",
+  "generated_at": "2026-11-12",
   "source": "ops/challenge/coordinator.json at run time; public official pages for snapshots",
   "events": {
     "STRANDS-DECIDER": {
@@ -52,7 +52,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon"
+        "url": "https://builder.aws.com/build/hackathons/4f50957c-1d08-37ab-b11c-97516b9adeb4/agent-experience-hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "85e8b8af380f3ea2"
       }
     },
     "D0": {
@@ -104,7 +106,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool"
+        "url": "https://builder.aws.com/build/hackathons/2e275689-b202-316e-93b8-10cd6d6d1e4a/weekend-challenge-give-your-agent-a-tool",
+        "fetch_status": "ok",
+        "last_sha256": "cc4794b1efde3568"
       }
     },
     "D1": {
@@ -151,12 +155,14 @@
       },
       "field_size": {
         "status": "partial",
-        "participants": 324,
+        "participants": 651,
         "projects": 1
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship"
+        "url": "https://builder.aws.com/build/hackathons/8311dcb5-1ece-3d62-a441-2e1c2ad90b86/strands-sdk-workshop-to-ship",
+        "fetch_status": "ok",
+        "last_sha256": "46978b92c80fe861"
       }
     },
     "D2": {
@@ -203,12 +209,14 @@
       },
       "field_size": {
         "status": "partial",
-        "participants": 1617,
-        "projects": null
+        "participants": 2302,
+        "projects": 4
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://lablab.ai/ai-hackathons/vultr-hackathon"
+        "url": "https://lablab.ai/ai-hackathons/vultr-hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "8bf567b40be0eb4a"
       }
     },
     "D3": {
@@ -260,7 +268,9 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://builder.io/hackathon"
+        "url": "https://builder.io/hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "bf12075064ee96af"
       }
     },
     "D4": {
@@ -270,12 +280,12 @@
       },
       "dates": {
         "populated": true,
-        "count": 4
+        "count": 8
       },
       "prizes": {
-        "populated": false,
-        "status": "NOT_ESTABLISHED",
-        "tiers": 0
+        "populated": true,
+        "status": "ESTABLISHED",
+        "tiers": 14
       },
       "rules_constraints": {
         "populated": true,
@@ -312,7 +322,8 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://kiroween.devpost.com"
+        "url": "https://kiroween.devpost.com",
+        "fetch_status": "failed:HTTPError"
       }
     },
     "D5": {
@@ -364,16 +375,131 @@
       },
       "official_page_watch": {
         "populated": true,
-        "url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026"
+        "url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+        "fetch_status": "ok",
+        "last_sha256": "4d5d7f42d5a78da5"
+      }
+    },
+    "C11": {
+      "organizers": {
+        "populated": false,
+        "count": 0
+      },
+      "dates": {
+        "populated": false,
+        "count": 0
+      },
+      "prizes": {
+        "populated": true,
+        "status": "ESTABLISHED",
+        "tiers": 9
+      },
+      "rules_constraints": {
+        "populated": false,
+        "count": 0
+      },
+      "our_projects": {
+        "populated": false,
+        "count": 0
+      },
+      "competitor_projects_participants": {
+        "populated": false,
+        "count": 0
+      },
+      "judges": {
+        "populated": false,
+        "count": 0
+      },
+      "entity_signals": {
+        "populated": false,
+        "count": 0
+      },
+      "recruitment": {
+        "populated": false,
+        "count": 0
+      },
+      "opportunity_cost": {
+        "populated": false,
+        "ledger_entry": null
+      },
+      "field_size": {
+        "status": "open_task",
+        "participants": null,
+        "projects": null
+      },
+      "official_page_watch": {
+        "populated": false,
+        "url": null
+      }
+    },
+    "C12": {
+      "organizers": {
+        "populated": true,
+        "count": 1
+      },
+      "dates": {
+        "populated": false,
+        "count": 0
+      },
+      "prizes": {
+        "populated": false,
+        "status": "NOT_ESTABLISHED",
+        "tiers": 66
+      },
+      "rules_constraints": {
+        "populated": true,
+        "count": 806
+      },
+      "our_projects": {
+        "populated": false,
+        "count": 0
+      },
+      "competitor_projects_participants": {
+        "populated": false,
+        "count": 0
+      },
+      "judges": {
+        "populated": false,
+        "count": 0
+      },
+      "entity_signals": {
+        "populated": false,
+        "count": 0
+      },
+      "recruitment": {
+        "populated": false,
+        "count": 0
+      },
+      "opportunity_cost": {
+        "populated": false,
+        "ledger_entry": null
+      },
+      "field_size": {
+        "status": "open_task",
+        "participants": null,
+        "projects": null
+      },
+      "official_page_watch": {
+        "populated": true,
+        "url": "https://ai.ugreen.com/pages/ugreen-hackathon",
+        "fetch_status": "ok",
+        "last_sha256": "37b54c103ec78e4c"
       }
     }
   },
   "summary": {
-    "events": 7,
+    "events": 9,
     "participants_total": 1,
     "judges_total": 0,
-    "prizes_established": 6,
-    "page_snapshots_total": 0,
-    "page_changes_this_run": []
+    "prizes_established": 8,
+    "page_snapshots_total": 13,
+    "page_changes_this_run": [
+      "STRANDS-DECIDER",
+      "D0",
+      "D1",
+      "D2",
+      "D5",
+      "C12"
+    ]
   }
 }

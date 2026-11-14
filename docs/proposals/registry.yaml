@@ -1305,3 +1305,23 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+  - id: workflow-planning-operating-model
+    title: "Declarative workflow planning, routing and QUE × DoE optimization"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/workflow-planning-operating-model/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs:
+      - 5388
+    related_branches:
+      - feat/workflow-planning-operating-model
+    gates_required:
+      - repo-gate
+      - termux-smoke

@@ -275,5 +275,20 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "opaque session"):
             build_events(data)
 
+    def test_execution_provenance_rejects_unstructured_controller_identity(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que operator",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "safe lowercase identity"):
+            build_events(data)
+
 if __name__ == "__main__":
     unittest.main()

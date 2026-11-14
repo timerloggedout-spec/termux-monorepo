@@ -184,3 +184,9 @@ def test_surface_map_covers_manifest_pages_and_counts_substrates():
     assert len(substrate_ids) == 9
     assert len(used_ids) == 8
     assert "naminggate" not in used_ids
+
+
+def test_script_verifier_accepts_script_end_tag_attributes():
+    from scripts.ci.verify_tribute_js import SCRIPT_RE
+    html = '<script>const answer = 42;</script\t\n data-check="1">'
+    assert SCRIPT_RE.findall(html) == [("", "const answer = 42;")]

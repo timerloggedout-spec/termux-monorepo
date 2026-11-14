@@ -78,6 +78,9 @@ flowchart TB
     web_2["referrals.html"]
     web_3["versioning.html"]
     web_4["index.html"]
+    web_5["algorithm-suite.html"]
+    web_6["markov-trellis.html"]
+    web_7["delphic-graph.html"]
   end
   bookledger --> PL_moneyball
   feeds --> PL_coordination
@@ -107,11 +110,11 @@ flowchart TB
 ## Brand family
 
 - **Wagertome** = the record · **WagerDome** = the venue/arena mark — HELD (no arena surfaces of record yet) · **booktally** = the unit (Registry PR #4825) · **Actuary** = the actor.
-- Naming gate = PROVENANCE over the whole map (Registry reviewer of record), not a per-surface draw.
+- Naming gate = PROVENANCE over the whole map (Registry reviewer of record), not a per-surface draw. Nine substrate elements are registered; eight have surface edges, with naminggate intentionally excluded from the drawn-edge count.
 
 ## Surfaces
 
-Basis: all 37 tribute .html at master + MoneyBall section 12 set + propose.html = 43 surfaces + 2 classified classes (45 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 43 top-level Tribute dashboard HTML pages listed in `apps/tribute-dashboard/version-manifest.json` + 6 MoneyBall repo pages (five Wagertome surfaces + `propose.html`) + 2 classified Web3 classes = 51 rows. Classes have no single file/home and are counted as classes, not dashboard pages. `admin.html` is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 Levels per #4884 section C, sparse by the keying rule (a surface renders L iff its primary content IS an occupant of L or a direct projection). The topical axis is surface GROUPS - "plane" is a record word whose only referent is Pool.
 
@@ -122,6 +125,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | quota-graphs.html | tribute | Providers & Quota | ∅ | Surface feeds · Governor stream | termux-monorepo | page · series feeds (jsonl) · tests | series snapshots append-only · site deploy |
 | quota-swarm.html | tribute | Providers & Quota | ∅ | Surface feeds · QUE feeds | termux-monorepo | page · QUE/swarm feeds · tests | site deploy (Pages per merge) · version-manifest stamp · ∅ per-surface release line |
 | quota-event-audits.html | tribute | Providers & Quota | ∅ | Surface feeds | termux-monorepo | page · audits feed · tests | site deploy (Pages per merge) · version-manifest stamp · ∅ per-surface release line |
+| billion-tokens.html | tribute | Challenges & Entries | ∅ | Surface feeds | termux-monorepo | Muse invite-program state-of-record page · redemption/usage chart · referrals link | owner-recorded redemption snapshot · stamped 2026-11-11 · no per-workload equivalents inferred |
 | admin.html | tribute Pages (inert scaffold) + admin-desk project (operative, gated) | Web & Presentation | ∅ | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · status/admin feeds · systems inventory · tests | status.json gen stamps · P-phase decision log in-page · site deploy |
 | admin-graph.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | page · admin feeds · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | oracle.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo + delphi-oracle | page · oracle feed · upstream engine repo · tests | oracle feed stamps · engine-repo release line NOT_ESTABLISHED |
@@ -138,6 +142,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | dispatch-tree.html | tribute | Coordination & QUE | role | Surface feeds · QUE feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · dispatch-tree feed · tests · scout module family: scripts/scout_roster.py + scout_missions.py + ci/tribute_scout.py + archwiz/correlation_scout.py + patch_success_scout.py + deepcli/investigator/capability_scout.py + scout tests x3 (PR #4893 F.1) | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | countdowns.html | tribute | Challenges & Entries | ∅ | Surface feeds | termux-monorepo | page · countdown data (register) · tests | register of record (deadline-reminders) · wall stamps · site deploy |
 | d2-proposals.html | tribute | Challenges & Entries | ∅ | Surface feeds | termux-monorepo | page (static content of record) · tests | static of record · ∅ feed · site deploy |
+| marketing-gantt.html | tribute | Coordination & QUE | ∅ | ∅ | termux-monorepo | D2 proposal delineation and advisory Gantt visualization · owner pick held | static D2 exercise source · no live schedule or execution authority |
 | linguist.html | tribute | Identity & Registry | ∅ | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · linguist feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | delphi-rfp.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo | page · RFP feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
 | delphi-ledger.html | tribute | Scoring & Method | program | Surface feeds | termux-monorepo | page · delphi ledger feed · tests | feed generated_at stamp + STALE chip · site deploy · ∅ release line |
@@ -160,7 +165,11 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | lanes-and-scopes.html | tribute | Coordination & QUE | role | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · lanes feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | matrix.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | owner-records.html | tribute | Identity & Registry | ∅ | Surface feeds | termux-monorepo | page · records feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
+| surfaces-map.html | tribute | Web & Presentation | ∅ | Surface feeds · Algorithm-labs registry · DoE settings register · QUE feeds · Wallet ledger · Book ledger · Governor stream · AGENT-MONIKERS SSOT | termux-monorepo | draft surface/substrate map · pure grouping and consumer projections | embedded draft mapping data · review-only; naming gate remains provenance-wide |
 | versioning.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | page · version-manifest source · versioning.js · tests | site deploy (Pages per merge) · the version-stamp surface itself |
+| algorithm-suite.html | tribute | Web & Presentation | ∅ | Algorithm-labs registry | termux-monorepo | page · versioned algorithm catalogue · registry checks | site deploy · version-manifest page hash |
+| markov-trellis.html | tribute | Web & Presentation | ∅ | Markov engine · algorithm-labs registry | termux-monorepo | Canvas trellis UI · markov-engine.mjs · deterministic engine tests | site deploy · HTML + runtime asset SHA-256 · lab v0.1.0 |
+| delphic-graph.html | tribute | Web & Presentation | ∅ | Delphic graph fixtures · algorithm-labs registry | termux-monorepo | four-family graph UI · fixture validation · provenance view | site deploy · HTML + registry asset SHA-256 · lab v0.2.0 |
 | index.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | shell page · status payload · tests | site deploy (Pages per merge) · the deployment front door |
 ## Reserved names
 

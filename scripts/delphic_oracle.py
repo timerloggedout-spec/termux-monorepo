@@ -7,9 +7,12 @@ approve changes, or replace the repository evidence ledger.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import sys
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Any
@@ -31,6 +34,11 @@ _BETA_EPS = 3e-30
 _BETA_MAX_ITER = 200
 _BETA_TOL = 3e-14
 _QUANTILE_ITERS = 100
+
+
+def _digest(value: Any) -> str:
+    raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 def _beta_continued_fraction(a: float, b: float, x: float) -> float:
@@ -140,9 +148,10 @@ class Belief:
 def posterior(
     observations: list[dict[str, Any]], prior: Belief = Belief()
 ) -> tuple[Belief, dict[str, int]]:
-    seen: set[str] = set()
-    successes = failures = 0
-    belief = prior
+    # Group by experiment before updating the posterior. Identical retries
+    # remain one observation; conflicting outcomes invalidate that experiment.
+    outcomes: dict[str, bool] = {}
+    conflicts: set[str] = set()
     for row in observations:
         if row.get("executed") is not True or row.get("attributed") is not True:
             continue
@@ -150,12 +159,23 @@ def posterior(
         if type(outcome) is not bool:
             continue
         exp_id = row.get("experiment_id")
-        if not exp_id:
+        identity = ("source_sha", "event_id", "observed_at", "instance_key")
+        if not isinstance(exp_id, str) or not exp_id or any(
+            not isinstance(row.get(key), str) or not row.get(key) for key in identity
+        ):
             continue
-        if exp_id in seen:
+        if exp_id in outcomes:
+            if outcomes[exp_id] is not outcome:
+                conflicts.add(exp_id)
             continue
-        seen.add(exp_id)
-        if outcome is True:
+        outcomes[exp_id] = outcome
+
+    successes = failures = 0
+    belief = prior
+    for exp_id, outcome in outcomes.items():
+        if exp_id in conflicts:
+            continue
+        if outcome:
             belief = Belief(belief.alpha + 1.0, belief.beta)
             successes += 1
         else:
@@ -165,6 +185,7 @@ def posterior(
         "successes": successes,
         "failures": failures,
         "ignored": len(observations) - successes - failures,
+        "conflicts": len(conflicts),
     }
 
 
@@ -239,7 +260,22 @@ def adversarial_admission(
 
 
 def workflow(payload: dict[str, Any]) -> dict[str, Any]:
+    started = time.perf_counter()
     observations = payload.get("observations", [])
+    eligible = [
+        row for row in observations
+        if row.get("executed") is True and row.get("attributed") is True
+    ]
+    instance_keys = {
+        row.get("instance_key") for row in eligible
+        if isinstance(row.get("instance_key"), str) and row.get("instance_key")
+    }
+    if eligible and (
+        len(instance_keys) != 1
+        or any(not isinstance(row.get("instance_key"), str) or not row.get("instance_key")
+               for row in eligible)
+    ):
+        raise ValueError("eligible observations must carry exactly one non-empty instance_key")
     belief, counts = posterior(observations)
     interval = belief.interval95
     predictive = {
@@ -289,7 +325,7 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
         "trellis": {"states": ["unknown", "candidate", "observed", "validated", "decision"]},
         "markov": {"transition_semantics": "explicit transition probabilities only"},
     }
-    return {
+    result = {
         "schema_version": "1.1",
         "posterior": {
             "belief": asdict(belief),
@@ -315,6 +351,21 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             "routing_admission_authority": False,
         },
     }
+    result["provenance"] = {
+        "algorithm_id": "delphic.bayesian.oracle.workflow",
+        "algorithm_version": "1.1",
+        "input_digest": _digest(payload),
+        "parameters_digest": _digest({
+            "prior": asdict(Belief()),
+            "credible_interval": "equal-tail-95%",
+            "deduplication": "experiment_id; conflicting outcomes held",
+            "identity": ["source_sha", "event_id", "observed_at", "instance_key"],
+        }),
+        "executed_at": datetime.now(timezone.utc).isoformat(),
+        "runtime_ms": round((time.perf_counter() - started) * 1000.0, 3),
+        "output_digest": _digest(result),
+    }
+    return result
 
 
 def main() -> int:

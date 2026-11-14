@@ -13,6 +13,6 @@ The originating proposal is PROPOSAL.md. Items below preserve its seven-stage SI
 | QSR-07 | Learn | Outcome and role-weight ledger update | Verified outcome; regression recorded with negative adjustment |
 
 ## Non-goals
-- Do not self-certify correctness.
-- Do not self-select the winning treatment.
-- Do not bypass Owner approval for protected change classes.
+- Keep correctness claims unverified until independently checked.
+- Keep winning-treatment selection with the independent DoE reviewer.
+- Require Owner approval for protected change classes.

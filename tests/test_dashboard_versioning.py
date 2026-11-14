@@ -1,5 +1,6 @@
 """Regression contracts for stable page identities and comparable dashboard builds."""
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -160,3 +161,26 @@ def test_published_markov_runtime_asset_matches_canonical_experiment_engine():
     manifest = json.loads((APP / "version-manifest.json").read_text())
     asset_files = {asset["file"] for asset in manifest.get("assets", [])}
     assert {"algorithm-labs.json", "markov-engine.mjs"}.issubset(asset_files)
+
+
+def test_surface_map_covers_manifest_pages_and_counts_substrates():
+    page = (APP / "surfaces-map.html").read_text()
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    block = page.split("const SURFACES = [", 1)[1].split("\n ];", 1)[0]
+    rows = re.findall(r'^\\s*\\["([^"]+)"', block, flags=re.MULTILINE)
+    dashboard_pages = {item["file"] for item in manifest["pages"]}
+    assert dashboard_pages.issubset(set(rows))
+    assert len(rows) == 51
+
+    substrate_block = page.split("const SUBSTRATE = [", 1)[1].split("\n];", 1)[0]
+    substrate_ids = re.findall(r'\\{id:"([^"]+)"', substrate_block)
+    used_ids = set()
+    for match in re.finditer(
+        r'^\\s*\\["[^"]+","[^"]+","[^"]+","[^"]+",\\[([^\\]]*)\\]',
+        block,
+        flags=re.MULTILINE,
+    ):
+        used_ids.update(re.findall(r'"([^"]+)"', match.group(1)))
+    assert len(substrate_ids) == 9
+    assert len(used_ids) == 8
+    assert "naminggate" not in used_ids

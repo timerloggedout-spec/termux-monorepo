@@ -25,7 +25,7 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA = "challenge-countdowns-feed/v1.2"
+SCHEMA = "challenge-countdowns-feed/v1.3"
 LOG_REL = "docs/ops/CHALLENGE-ENTRIES-LOG.md"
 COORD_REL = "ops/challenge/coordinator.json"
 EMITTER_REL = "scripts/challenge_entries/countdowns.py"
@@ -33,7 +33,7 @@ STATUS_WORDS = ("COMPLETED", "CLOSED", "IN PROGRESS", "REGISTERING",
                 "BLOCKED", "IN REVIEW", "PENDING")
 
 SUBMISSION_RE = re.compile(
-    r"<!-- submission-data:(D\d+) state=(\S+) at=(\S+) ref=(\S+) -->")
+    r"<!-- submission-data:([A-Z]\d+) state=(\S+) at=(\S+) ref=(\S+) -->")
 
 
 def load_emitter(root):
@@ -46,7 +46,7 @@ def load_emitter(root):
 
 def display_title(header_rest):
     """'for C1, Workshop to Ship — IN PROGRESS (note)' -> 'for C1, Workshop to Ship'."""
-    rest = header_rest.strip().lstrip("—").strip()
+    rest = header_rest.strip().lstrip("—").strip()\n    rest = re.sub(r"^packet\\s*[—-]\\s*", "", rest, flags=re.I)
     parts = [p.strip() for p in rest.split(" — ")]
     keep = []
     for p in parts:

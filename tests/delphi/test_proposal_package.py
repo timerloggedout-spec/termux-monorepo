@@ -96,9 +96,26 @@ class TestProposalPackage(unittest.TestCase):
                                       package_author="builder", reviewer="builder")["disposition"],
                          "HELD")
 
-    def test_mutating_manifest_inventory_invalidates_digest(self):
+    def test_nested_symlink_is_rejected(self):
+        outside = self.root.parent / "outside-proposal.md"
+        outside.write_text("# Outside\\n")
+        nested = self.root / "nested"
+        nested.mkdir()
+        (nested / "linked.md").symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, "symlink"):
+            build_manifest(
+                source_ref="a" * 40, package_id="pkg",
+                package_path="docs/pkg", package_author="builder",
+                root=self.root, files=["nested/linked.md"],
+            )
+        outside.unlink()
+
+    def test_mutating_manifest_inventory_or_author_invalidates_digest(self):
         manifest = self.manifest()
         manifest["files"][0]["sha256"] = "f" * 64
+        self.assertTrue(validate_manifest(manifest))
+        manifest = self.manifest()
+        manifest["package_author"] = "other-builder"
         self.assertTrue(validate_manifest(manifest))
 
 

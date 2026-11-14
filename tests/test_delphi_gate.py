@@ -1,5 +1,6 @@
 """Delphi Oracle RFP gate: offline, stdlib-only tests (no network, no secrets)."""
 import base64, json, os, tempfile
+import pytest
 from pathlib import Path
 
 from scripts.delphi.proposal_package import build_manifest
@@ -359,7 +360,7 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
             ("/contents/proposal/package.json", manifest_ref),
             ("/contents/proposal/RFP.md", source_ref),
         ]
-        with __import__("pytest").raises(ValueError, match="symlink"):
+        with pytest.raises(ValueError, match="symlink"):
             gate.verify_issue_package_binding(PackageGH(source_mode="120000"), {"body": body})
 
 

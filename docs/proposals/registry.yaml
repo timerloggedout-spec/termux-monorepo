@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-14T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1301,6 +1301,28 @@ proposals:
       - 5145
     related_branches:
       - feat/provider-family-doe-observatory-20261111
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
+
+  - id: que-device-validation
+    title: "QUE device-component validation lanes and capability tooling registry"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/que-device-validation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 55
+    related_prs: []
+    related_branches:
+      - feat/que-device-capability-registry-20261114
+    related_proposals:
+      - continuous-capability-evolution-lab
     gates_required:
       - proposal-lifecycle
       - repo-gate

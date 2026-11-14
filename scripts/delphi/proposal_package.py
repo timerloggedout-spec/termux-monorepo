@@ -85,8 +85,8 @@ def build_manifest(*, source_ref: str, package_id: str, package_path: str,
     base = Path(root).resolve()
     package_path = _safe_package_path(package_path)
     excluded = {_safe_relative_path(path) for path in (excluded_paths or [])}
-    if not isinstance(package_author, str):
-        raise ValueError("package_author must be a string")
+    if not isinstance(package_author, str) or not package_author.strip():
+        raise ValueError("package_author must be non-empty")
     inventory = []
     for raw in files:
         rel = _safe_relative_path(raw)
@@ -131,8 +131,13 @@ def validate_manifest(manifest: dict) -> list[str]:
     return errors
 
 
-def verify_files(manifest: dict, root: str | Path) -> list[str]:
+def verify_files(manifest: dict, root: str | Path,
+                 checkout_sha: str | None = None) -> list[str]:
     errors = validate_manifest(manifest)
+    if checkout_sha is not None and (
+            not GIT_SHA.fullmatch(checkout_sha)
+            or checkout_sha != manifest.get("source_ref")):
+        errors.append("checked-out source SHA does not match immutable package ref")
     if errors:
         return errors
     base = Path(root).resolve()
@@ -156,8 +161,7 @@ def verify_files(manifest: dict, root: str | Path) -> list[str]:
 def verify_award(*, manifest: dict, award: dict, package_author: str,
                  reviewer: str) -> dict:
     errors = validate_manifest(manifest)
-    if not package_author and isinstance(manifest, dict):
-        package_author = manifest.get("package_author", "")
+    package_author = manifest.get("package_author", "") if isinstance(manifest, dict) else ""
     if not isinstance(award, dict):
         errors.append("award payload is missing")
     else:
@@ -191,6 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--file", action="append", default=[])
     parser.add_argument("--exclude", action="append", default=[])
     parser.add_argument("--root", required=True)
+    parser.add_argument("--checkout-sha")
     parser.add_argument("--award")
     parser.add_argument("--reviewer", default="")
     parser.add_argument("--out")
@@ -211,7 +216,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args.manifest:
         parser.error("supply --manifest or --build")
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
-    errors = verify_files(manifest, args.root)
+    errors = verify_files(manifest, args.root, checkout_sha=args.checkout_sha)
     if args.award:
         award = json.loads(Path(args.award).read_text(encoding="utf-8"))
         result = verify_award(manifest=manifest, award=award,

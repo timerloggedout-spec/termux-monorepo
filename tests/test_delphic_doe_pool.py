@@ -61,10 +61,6 @@ class CandidatePacketTests(unittest.TestCase):
             build_candidate_packet({}, [])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
     def test_missing_context_evidence_is_not_a_match(self):
         bad = candidate("p1", "alpha")
         del bad["context_class"]
@@ -93,3 +89,7 @@ if __name__ == "__main__":
         second = build_candidate_packet(TASK, [candidate()], previous_provider="beta")
         self.assertNotEqual(first["input_digest"], second["input_digest"])
         self.assertEqual(first["selection_provenance"]["previous_provider"], "alpha")
+
+
+if __name__ == "__main__":
+    unittest.main()

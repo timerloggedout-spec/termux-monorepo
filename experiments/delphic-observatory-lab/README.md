@@ -2,6 +2,13 @@
 
 A standalone Gemini-style design/evaluation surface.
 
+## Versioned Tribute surface
+
+- `VERSION.json` records the experiment-lane version (`0.2.0`, research-preview).
+- The four-family graph view is published through Tribute at `apps/tribute-dashboard/delphic-graph.html`.
+- `apps/tribute-dashboard/algorithm-labs.json` registers the lane and its UI/source/version references.
+- The nested version header links to the experiment source, engine, tests, and version record.
+
 ## Architecture
 
 ```

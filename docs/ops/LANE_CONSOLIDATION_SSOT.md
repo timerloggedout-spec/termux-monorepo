@@ -210,11 +210,12 @@ To ensure clear scope boundaries and prevent unneeded re-work, all issues, PRs, 
 | **#129 / PR #131** | `[SCOPE_LEAK]` | MoneyBall agent roster & betting arena | Lane 4: Multi-Agent | MERGED | Built into `src/team_manager.py` (AUDIT-006) |
 | **#117 / PR #143** | `[SCOPE_LEAK]` | MCP Agent Mail coordination layer | Lane 4: Multi-Agent | MERGED via #203| Composite action active in `.github/actions/mcp-agent-mail/` (AUDIT-007) |
 | **#59 / PR #137** | `[ERROR]` | Gemini Daily Quota Exhaustion & Soft Skip | Lane 5: Workflows | MERGED via #137 | Soft skip & residual fallback enabled (AUDIT-008) |
+| **#5087 / #5129** | `[GOVERNANCE]` | iOS Termux YAML plain-scalar ratchet fix & audit engine | Lane 5: Workflows | RESOLVED via #5093 | Block scalar fix and merged branch review audit (AUDIT-009) |
 
 ---
 
 *Consolidated & Approved by Grok Orchestration Engine (xAI) on behalf of the Termux Monorepo Operators, 2026.*
-*Audit Verified by Jules Agent - 2026-09-20 (Implements: RL-19).*
+*Audit Verified by Jules Agent - 2026-11-10 (Implements: RL-19).*
 
 ## Current Work & Dynamic Response Lags
 

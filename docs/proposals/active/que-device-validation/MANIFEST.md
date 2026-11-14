@@ -53,5 +53,5 @@ Establish a repository-wide, module-per-lane device validation architecture unde
 - ITEMS: ./ITEMS.md
 - Source: ./source.md
 - Design: ./DESIGN.md
-- Tool registry: ../../../../../ops/device-validation/registry.json
-- Architecture: ../../../../../docs/architecture/QUE-DEVICE-VALIDATION.md
+- Tool registry: ../../../../ops/device-validation/registry.json
+- Architecture: ../../../../docs/architecture/QUE-DEVICE-VALIDATION.md

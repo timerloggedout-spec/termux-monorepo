@@ -471,12 +471,11 @@ jobs:
           }
 
           EVIDENCE=""
-          REF="$(gh_get "repos/$REPO/git/ref/heads/$BUILD_BRANCH" true)"
+          REF="$(gh_get "repos/$REPO/git/matching-refs/heads/$BUILD_BRANCH" true)"
           if [ "$REF" = "__UNREADABLE__" ]; then fail_open "branch ref read failed"; fi
           if [ "$REF" != "__NOT_FOUND__" ]; then
-            REF_SHA="$(printf '%s' "$REF" | grep -o '"sha": *"[a-f0-9]*"' | head -n 1 | cut -d '"' -f4)"
-            if [ -z "$REF_SHA" ]; then fail_open "branch ref SHA unreadable"; fi
-            if [ "$REF_SHA" != "$BASE_BRANCH_SHA" ]; then EVIDENCE="branch ref changed during this run"; fi
+            REF_SHA="$(printf '%s' "$REF" | jq -r --arg ref "refs/heads/$BUILD_BRANCH" '[.[] | select(.ref == $ref) | .object.sha][0] // ""')" || fail_open "branch ref SHA unreadable"
+            if [ -n "$REF_SHA" ] && [ "$REF_SHA" != "$BASE_BRANCH_SHA" ]; then EVIDENCE="branch ref changed during this run"; fi
           fi
           # Check PRs even if the branch ref was deleted after merge.
           # A PR is independent completion evidence under the #5142 contract.
@@ -493,7 +492,7 @@ jobs:
           except Exception:
               print('')
           PYEOF
-          )
+          )"
           fi
 
           if [ -n "$EVIDENCE" ]; then

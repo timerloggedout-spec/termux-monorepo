@@ -1,0 +1,56 @@
+name: archwiz foresight feed
+
+# Repo-side adaptive variant of workspace/llm_map/foresight_collect.py —
+# see scripts/ci/foresight_feed.py (scoring re-derived + disclosed there).
+# Regenerates apps/help-wanted-dashboard/data/foresight_state.json.
+# Same direct-commit pattern as archwiz-repo-index.yml.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/foresight_feed.py'
+      - 'workspace/llm_map/llm_index_compact.jsonl'
+      - 'workspace/llm_map/func_index.jsonl'
+      - 'scripts/ci/dangle_baseline.json'
+      - 'ops/tracking/*.json'
+      - 'ops/challenge/desk-feed.json'
+      - '.github/workflows/archwiz-foresight.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archwiz-foresight
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build foresight state feed
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_foresight_feed.py' -v
+
+      - name: Build foresight feed
+        run: python3 scripts/ci/foresight_feed.py
+
+      - name: Commit output if changed
+        run: |
+          set -euo pipefail
+          git config user.name "archwiz-foresight"
+          git config user.email "actions@github.com"
+          git add apps/help-wanted-dashboard/data/foresight_state.json
+          if git diff --cached --quiet; then
+            echo "foresight feed unchanged"
+          else
+            git commit -m "chore(foresight): regenerate state feed [archwiz-foresight]"
+            git push
+          fi

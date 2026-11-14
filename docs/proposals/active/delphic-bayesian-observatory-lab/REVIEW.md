@@ -14,7 +14,7 @@ External provider output is untrusted research/design evidence. Repository tests
 
 Prepared in `GEMINI-REVIEW-REQUEST.md`. The request asks Gemini to review the left/right semantic split, Bayesian workflow semantics, Observatory projection boundaries, dynamic adversarial admission, visual ambiguity, and accessibility.
 
-No Gemini findings are accepted until returned and independently validated.
+Accept no Gemini findings until they are returned and independently validated.
 
 ## 2026-10-01 — retired Gemini dispatch (historical record)
 

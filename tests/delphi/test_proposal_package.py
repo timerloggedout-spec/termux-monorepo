@@ -57,19 +57,31 @@ class TestProposalPackage(unittest.TestCase):
                for name in ("RFP.md", "MANIFEST.md", "ITEMS.md")},
         }
 
+        manifest_ref = "b" * 40
+
         class FakeGitHub:
+            def __init__(self):
+                self.refs = []
             def req(self, method, path):
                 content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
+                ref = path.rsplit("?ref=", 1)[1]
+                self.refs.append((content_path, ref))
                 raw = payloads[content_path]
                 return {"type": "file", "encoding": "base64",
                         "content": base64.b64encode(raw).decode("ascii")}
 
+        gh = FakeGitHub()
         issue = {"body": (
-            "### Proposal source ref\n" + manifest["source_ref"] +
-            "\n### Proposal manifest path\n" + manifest_path +
-            "\n### Expected package digest\n" + manifest["package_digest"] + "\n"
+            "### Proposal source ref\\n" + manifest["source_ref"] +
+            "\\n### Proposal manifest ref\\n" + manifest_ref +
+            "\\n### Proposal manifest path\\n" + manifest_path +
+            "\\n### Expected package digest\\n" + manifest["package_digest"] + "\\n"
         )}
-        binding = verify_issue_package_binding(FakeGitHub(), issue)
+        binding = verify_issue_package_binding(gh, issue)
+        self.assertEqual(binding["manifest_ref"], manifest_ref)
+        self.assertEqual(gh.refs, [(manifest_path, manifest_ref),
+                                   *[(f"{package_path}/{name}", manifest["source_ref"])
+                                     for name in ("RFP.md", "MANIFEST.md", "ITEMS.md")]])
         self.assertEqual(binding["package_digest"], manifest["package_digest"])
         self.assertEqual(binding["file_count"], 3)
 

@@ -312,6 +312,8 @@ def markov_layer_propagation(
     tolerance: float = 1e-9,
 ) -> dict[str, Any]:
     """Propagate a finite-state Markov distribution and report mass per layer."""
+    if not math.isfinite(tolerance) or tolerance < 0.0:
+        raise ValueError("tolerance must be finite and non-negative")
     ordered_states = tuple(sorted(set(states)))
     if not ordered_states:
         raise ValueError("states must not be empty")

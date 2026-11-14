@@ -35,7 +35,7 @@
 
 | Domain | Canonical source |
 |---|---|
-| Routing & orchestration | [docs/ops/ROUTING-ORCHESTRATION-MAP.md](../ops/ROUTING-ORCHESTRATION-MAP.md) |
+| Routing & orchestration | [docs/ops/ROUTING-ORCHESTRATION-MAP.md](../ops/ROUTING-ORCHESTRATION-MAP.md) · [control-plane reconciliation](ROUTING-CONTROL-PLANE-RECONCILIATION.md) · [contract graph](ROUTING-CONTROL-PLANE-GRAPH.mmd) |
 | Evidence projection (read model) | [docs/ops/EVIDENCE-PROJECTION-SURFACE.md](../ops/EVIDENCE-PROJECTION-SURFACE.md) |
 | Execution & provenance contract (BIUDL) | [docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md](../ops/BIUDL-EXECUTION-AND-PROVENANCE.md) |
 | Evidence substrate | [docs/ops/AGENT-EVIDENCE-SUBSTRATE.md](../ops/AGENT-EVIDENCE-SUBSTRATE.md) |

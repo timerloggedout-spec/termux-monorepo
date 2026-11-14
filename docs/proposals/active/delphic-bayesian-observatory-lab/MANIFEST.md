@@ -6,7 +6,7 @@ posted_at: 2026-10-01
 status: executing
 priority: P1
 related_issues: [968]
-related_prs: [5244]
+related_prs: [5244, 5409]
 related_branches:
   - feat/delphic-current-master-20261114
 gates_required: [repo-gate, hosted-delphic-ci]

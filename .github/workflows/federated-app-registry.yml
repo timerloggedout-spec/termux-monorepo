@@ -1,0 +1,58 @@
+name: Federated App Registry
+
+on:
+  pull_request:
+    paths:
+      - "docs/ops/federated-app-registry.json"
+      - "docs/ops/federated-app-repository-census.json"
+      - "docs/ops/federated-app-repository-census.schema.json"
+      - "docs/ops/FEDERATED-APP-REPOSITORY-CENSUS.md"
+      - "scripts/validate_federated_app_census.py"
+      - "tests/test_federated_app_census.py"
+      - "docs/ops/federated-app-registry.schema.json"
+      - "docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md"
+      - "scripts/validate_federated_app_registry.py"
+      - "tests/test_federated_app_registry.py"
+      - ".github/workflows/federated-app-registry.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/ops/federated-app-registry.json"
+      - "docs/ops/federated-app-repository-census.json"
+      - "docs/ops/federated-app-repository-census.schema.json"
+      - "docs/ops/FEDERATED-APP-REPOSITORY-CENSUS.md"
+      - "scripts/validate_federated_app_census.py"
+      - "tests/test_federated_app_census.py"
+      - "docs/ops/federated-app-registry.schema.json"
+      - "docs/ops/FEDERATED-APP-AND-RELEASE-LANE-MAP.md"
+      - "scripts/validate_federated_app_registry.py"
+      - "tests/test_federated_app_registry.py"
+      - ".github/workflows/federated-app-registry.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: federated-app-registry-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install schema validator
+        run: python3 -m pip install --disable-pip-version-check jsonschema==4.23.0
+      - name: Validate registry
+        run: python3 scripts/validate_federated_app_registry.py
+      - name: Validate repository census
+        run: python3 scripts/validate_federated_app_census.py
+      - name: Run registry regression tests
+        run: python3 -m unittest discover -s tests -p 'test_federated_app_registry.py' -v
+      - name: Run census regression tests
+        run: python3 -m unittest discover -s tests -p 'test_federated_app_census.py' -v

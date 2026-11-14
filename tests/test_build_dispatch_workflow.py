@@ -31,6 +31,16 @@ def test_do_statement_style_ignores_synthetic_merge_commit_metadata():
     assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"]' in checker
 
 
+def test_verify_completion_evidence_handles_slash_branches_and_closes_heredoc():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("Emit rotation stamp to the scoring planes", start)
+    verify = text[start:end]
+    assert 'git/matching-refs/heads/$BUILD_BRANCH' in verify
+    assert 'jq -r --arg ref "refs/heads/$BUILD_BRANCH"' in verify
+    assert "          PYEOF\n          )\"\n          fi" in verify
+
+
 def test_mint_step_after_builders_before_consumers():
     # SEC-03 redesign (accepted at the #5151 rebase adjudication, Desk
     # 2026-11-12): the builder steps never hold the App token. Checkout

@@ -10,6 +10,16 @@ name: qdesk self-repair
 on:
   schedule:
     - cron: "41 */3 * * *"
+  workflow_run:
+    workflows:
+      - "repo gate"
+      - "termux smoke"
+      - "DO Statement Style"
+      - "Repository development evaluation"
+      - "Peer review orchestrator"
+      - "RECON INTEL discovery"
+      - "archwiz dangle check"
+    types: [completed]
   workflow_dispatch:
     inputs:
       dry_run: { description: "Observe only; write nothing", required: false, default: false, type: boolean }
@@ -25,6 +35,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   loop:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'master')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -41,6 +52,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Validate SIE stage contract
+        run: |
+          python3 scripts/que/sie_pipeline.py --self-test
+          python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
+          python3 -m unittest discover -s tests/que -p 'test_sie_research_packet.py' -v
+          python3 -m unittest discover -s tests/delphi -p 'test_proposal_package.py' -v
+          python3 -m unittest discover -s tests/qdesk -p 'test_award_authorization.py' -v
       - name: Observe ∧ promote ∧ learn
         env:
           GH_TOKEN: ${{ steps.app.outputs.token || github.token }}

@@ -11,7 +11,11 @@ Subcommands
 """
 from __future__ import annotations
 
-import argparse, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.request, urllib.error
+import argparse, base64, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.parse, urllib.request, urllib.error
+
+from proposal_package import validate_manifest
+
+MAX_PACKAGE_FILES = 25
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
@@ -253,14 +257,14 @@ def feedback(roles: dict, final_votes: list[dict], outcome: str, panel: dict) ->
 
 # ---------------------------------------------------------------- adaptive cadence
 def cadence(registry: dict, readings: dict, pending: int, depth: int, max_depth: int = 3,
-            api_remaining: int | None = None) -> dict:
+            api_remaining: int | None = None, per_rfp_calls: int = 6) -> dict:
     """Quota-aware: accelerate when free quota sits unused before its reset, defer near caps.
     Bounded by the GitHub API budget in the registry, the LIVE x-ratelimit-remaining of the
     repo-wide GITHUB_TOKEN (shared with every workflow), and a chain-depth cap."""
     reg = {s["id"]: s for s in registry.get("services", [])}
     api = reg.get("github.api.github_token", {})
     cap = int((api.get("limit") or 1000) * (api.get("planned_use", {}).get("safety", 0.8)))
-    per_rfp_calls = 6
+    per_rfp_calls = max(6, int(per_rfp_calls))
     max_rfps = max(1, cap // per_rfp_calls // 4)  # never spend more than a quarter of the hourly budget per run
     reserve = max(100, cap // 10)  # leave headroom for the repo's other workflows
     if api_remaining is not None:
@@ -421,6 +425,111 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
 
 
+def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
+    """Read one regular file from an immutable Git commit through the authenticated API."""
+    if (not isinstance(path, str) or not path or path.startswith("/") or "\\" in path
+            or any(part in ("", ".", "..") for part in path.split("/"))):
+        raise ValueError(f"unsafe repository content path: {path!r}")
+    response = gh.req("GET", f"/contents/{urllib.parse.quote(path, safe='/')}?ref={source_ref}")
+    if not isinstance(response, dict) or response.get("type") != "file" or response.get("encoding") != "base64":
+        raise ValueError(f"package input is not a regular base64 file: {path}")
+    encoded_content = response.get("content")
+    if not isinstance(encoded_content, str):
+        raise ValueError(f"package input has no base64 content: {path}")
+    encoded = re.sub(r"\s+", "", encoded_content)
+    try:
+        return base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as exc:
+        raise ValueError(f"package input has invalid base64 content: {path}") from exc
+
+
+def _github_regular_blob_paths(gh: "GH", ref: str) -> dict[str, dict]:
+    """Return a complete immutable Git tree; reject truncation and non-regular blobs."""
+    commit = gh.req("GET", f"/git/commits/{ref}")
+    tree_sha = commit.get("tree", {}).get("sha") if isinstance(commit, dict) else None
+    if (not isinstance(commit, dict) or commit.get("sha") != ref
+            or not isinstance(tree_sha, str) or not re.fullmatch(r"[0-9a-f]{40,64}", tree_sha)):
+        raise ValueError(f"Git commit/tree metadata for {ref} is unavailable or malformed")
+    tree = gh.req("GET", f"/git/trees/{tree_sha}?recursive=1")
+    if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
+        raise ValueError(f"Git tree for {ref} is unavailable or truncated")
+    entries = {}
+    for entry in tree["tree"]:
+        if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+            raise ValueError(f"Git tree for {ref} contains a malformed entry")
+        entries[entry["path"]] = entry
+    return entries
+
+
+def _require_regular_blob(entries: dict[str, dict], path: str, ref: str) -> None:
+    entry = entries.get(path)
+    if not isinstance(entry, dict) or entry.get("type") != "blob" or entry.get("mode") != "100644":
+        raise ValueError(f"package input is missing, executable, a symlink or not a regular file at {ref}: {path}")
+
+
+def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
+    """Verify optional QD-039 issue fields against the exact immutable GitHub contents."""
+    fields = parse_form(issue.get("body", ""))
+    source_ref = (fields.get("proposal_source_ref") or "").strip()
+    manifest_ref = (fields.get("proposal_manifest_ref") or "").strip()
+    manifest_path = (fields.get("proposal_manifest_path") or "").strip()
+    expected_digest = (fields.get("expected_package_digest") or "").strip()
+    supplied = [bool(source_ref), bool(manifest_ref), bool(manifest_path), bool(expected_digest)]
+    if not any(supplied):
+        return None  # legacy RFPs retain their existing path
+    if not all(supplied):
+        raise ValueError("proposal source ref, manifest ref, manifest path and expected package digest are all required")
+    sha_pattern = r"(?:[0-9a-f]{40}|[0-9a-f]{64})"
+    if not re.fullmatch(sha_pattern, source_ref):
+        raise ValueError("proposal source ref must be an immutable Git commit SHA")
+    if not re.fullmatch(sha_pattern, manifest_ref):
+        raise ValueError("proposal manifest ref must be an immutable Git commit SHA")
+    if manifest_ref == source_ref:
+        raise ValueError("proposal manifest ref must differ from its source ref")
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_digest):
+        raise ValueError("expected package digest must be a lowercase SHA-256")
+    # The manifest is committed after its source snapshot, so it cannot live at
+    # the source SHA that it records. Pin and type-check both immutable Git trees.
+    manifest_tree = _github_regular_blob_paths(gh, manifest_ref)
+    _require_regular_blob(manifest_tree, manifest_path, manifest_ref)
+    raw_manifest = _github_file_bytes(gh, manifest_path, manifest_ref)
+    try:
+        manifest = json.loads(raw_manifest.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("proposal package manifest is not valid UTF-8 JSON") from exc
+    errors = validate_manifest(manifest)
+    if errors:
+        raise ValueError("proposal package manifest held: " + "; ".join(errors))
+    if manifest["source_ref"] != source_ref:
+        raise ValueError("proposal manifest source ref does not match the issue binding")
+    if manifest["package_digest"] != expected_digest:
+        raise ValueError("proposal package digest does not match the expected digest")
+    if len(manifest["files"]) > MAX_PACKAGE_FILES:
+        raise ValueError(f"proposal package exceeds the {MAX_PACKAGE_FILES}-file verification bound")
+    source_tree = _github_regular_blob_paths(gh, source_ref)
+    package_prefix = manifest["package_path"].rstrip("/") + "/"
+    verified_files = []
+    for entry in manifest["files"]:
+        path = entry["path"]
+        if not path.startswith(package_prefix):
+            raise ValueError(f"inventory path is outside package_path: {path}")
+        _require_regular_blob(source_tree, path, source_ref)
+        content = _github_file_bytes(gh, path, source_ref)
+        actual = hashlib.sha256(content).hexdigest()
+        if actual != entry["sha256"]:
+            raise ValueError(f"proposal file hash mismatch: {path}")
+        verified_files.append(path)
+    return {
+        "source_ref": source_ref,
+        "manifest_ref": manifest_ref,
+        "manifest_path": manifest_path,
+        "package_id": manifest["package_id"],
+        "package_path": manifest["package_path"],
+        "package_digest": manifest["package_digest"],
+        "file_count": len(verified_files),
+    }
+
+
 def quantize_roles(roles: dict) -> dict:
     """Weights enter the input hash quantized (gpr to 0.1, Elo to 25) so a stream of small graded
     outcomes (tribute-outcome) re-scores the queue only when a weight moves materially."""
@@ -428,9 +537,10 @@ def quantize_roles(roles: dict) -> dict:
                 "elo": int(round(float(v.get("elo", 1500)) / 25.0) * 25)} for k, v in roles.items()}
 
 
-def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
+def input_hash(s: dict, roles: dict, registry: dict, readings: dict,
+               package_binding: dict | None = None) -> str:
     reg = {x["id"]: x for x in registry.get("services", [])}.get(s.get("registry_id") or "", {})
-    blob = json.dumps([s, quantize_roles(roles), reg, readings], sort_keys=True)
+    blob = json.dumps([s, quantize_roles(roles), reg, readings, package_binding], sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
 
@@ -446,7 +556,8 @@ def comment_md(out: dict, ih: str, reason: str) -> str:
     o = out["records"]["oracle"]["documented"]
     lines += ["", f"Oracle: {o['metric']} = {o['limit']} {o['unit']}, reset {o['reset']} {o['zone']} ([source]({o['source']}))", "",
               "<details><summary>Signed votes + HindSight/ForeSight/3l0.moneyball.v1 records</summary>", "", "```json",
-              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"], "award": a,
+              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"],
+                          "award": a, "proposal_package": out.get("proposal_package"),
                           "records": {k: v for k, v in out["records"].items() if k != "oracle"}}, indent=1), "```", "</details>"]
     return "\n".join(lines)
 
@@ -483,6 +594,39 @@ def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
         if len(batch) < 100:
             break
     return list(reversed(all_comments))
+
+
+def open_rfp_issues(gh: GH, per_page: int = 100, max_pages: int = 100) -> list[dict]:
+    """Return a complete, de-duplicated census of open Delphi RFP issues.
+
+    GitHub's Issues API is paginated and also returns pull requests. Never
+    silently treat the first 100 results as the whole queue. If the safety
+    cap is reached while the final page is full, fail closed.
+    """
+    if not 1 <= per_page <= 100:
+        raise ValueError("per_page must be between 1 and 100")
+    if max_pages < 1:
+        raise ValueError("max_pages must be positive")
+    by_number: dict[int, dict] = {}
+    for page in range(1, max_pages + 1):
+        batch = gh.req(
+            "GET",
+            f"/issues?state=open&labels=delphi:rfp&per_page={per_page}&page={page}",
+        )
+        if not isinstance(batch, list):
+            raise RuntimeError(f"Delphi RFP page {page} was not a list; census is incomplete")
+        for issue in batch:
+            if not isinstance(issue, dict) or "pull_request" in issue:
+                continue
+            number = issue.get("number")
+            if isinstance(number, int) and not isinstance(number, bool) and number > 0:
+                by_number.setdefault(number, issue)
+        if len(batch) < per_page:
+            return [by_number[number] for number in sorted(by_number)]
+    raise RuntimeError(
+        f"Delphi RFP issue pagination cap ({max_pages} pages) reached with a full final page; "
+        "refusing to process an incomplete census"
+    )
 
 
 def last_ledger(gh: GH, number: int) -> dict | None:
@@ -548,8 +692,16 @@ def _run(args) -> int:
             gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
     _, roles = weights_issue(gh, panel)
     panel = dict(panel, roles=roles)
-    issues = [i for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i]
-    plan = cadence(registry, readings, len(issues), args.depth, api_remaining=remaining)
+    issues = open_rfp_issues(gh)
+    package_bound = any(
+        any((parse_form(issue.get("body", "")).get(field) or "").strip()
+            for field in ("proposal_source_ref", "proposal_manifest_ref", "proposal_manifest_path", "expected_package_digest"))
+        for issue in issues
+    )
+    census_calls = max(1, (len(issues) // 100) + 1)
+    estimated_calls_per_rfp = 6 + census_calls + (5 + MAX_PACKAGE_FILES if package_bound else 0)
+    plan = cadence(registry, readings, len(issues), args.depth,
+                   api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "
           f"cap={plan['max_rfps_per_run']} api_remaining={remaining}")
     if plan["mode"] == "defer" and args.reason not in ("issues", "issue_comment", "workflow_dispatch"):
@@ -567,7 +719,16 @@ def _run(args) -> int:
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 continue
             try:
-                ih = input_hash(s, roles, registry, readings)
+                try:
+                    package_binding = verify_issue_package_binding(gh, issue)
+                except (ValueError, TypeError, KeyError, urllib.error.HTTPError) as exc:
+                    pending += 1
+                    summary.append(f"#{issue['number']} {s['id']}: HELD package binding")
+                    board.append({"number": issue["number"], "surface": s["id"],
+                                  "effective": None, "decision": "pending"})
+                    print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
+                    continue
+                ih = input_hash(s, roles, registry, readings, package_binding)
                 prev = last_ledger(gh, issue["number"])
                 due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
                 if prev and prev.get("input_hash") == ih and not due:
@@ -577,6 +738,10 @@ def _run(args) -> int:
                                   "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
                     continue
                 out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
+                if package_binding is not None:
+                    out["proposal_package"] = package_binding
+                    out["award"]["package_digest"] = package_binding["package_digest"]
+                    out["records"]["moneyball"]["proposal_package_digest"] = package_binding["package_digest"]
                 gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
                 labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
                 labels.add("delphi:" + out["award"]["decision"])

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/schemas/que-sie-stage-v1.schema.json",
+  "title": "QUE SIE Stage Receipt",
+  "description": "One immutable observation or transition in the QUE self-improvement lifecycle. Canonical run, issue, RFP, experiment and outcome records remain in their owning systems.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "event_id", "item_key", "stage", "state", "source", "observed_at", "repository", "ref", "sha", "evidence_refs"],
+  "properties": {
+    "schema": {"const": "que.sie-stage/v1"},
+    "event_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "item_key": {"type": "string", "pattern": "^[0-9a-f]{24}$"},
+    "stage": {"enum": ["OBSERVE", "TRIAGE", "RESEARCH", "RFP", "DELPHI", "DESIGN", "CLAIM", "IMPLEMENT", "VERIFY", "PROMOTE", "LEARN"]},
+    "state": {"enum": ["PENDING", "READY", "ACTIVE", "COMPLETED", "BLOCKED", "REJECTED", "SUPERSEDED"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": {"enum": ["workflow_run", "queue_item", "stall_gap", "feed_freshness", "desk_filing", "research_opportunity"]},
+        "id": {"type": "string", "minLength": 1},
+        "url": {"type": ["string", "null"], "format": "uri"}
+      }
+    },
+    "observed_at": {"type": "string", "format": "date-time"},
+    "repository": {"type": "string", "pattern": "^[^/]+/[^/]+$"},
+    "ref": {"type": "string", "minLength": 1},
+    "sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+    "owner_role": {"type": ["string", "null"]},
+    "claim_class": {"type": ["string", "null"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "package_digest": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "reason": {"type": ["string", "null"]}
+  }
+}

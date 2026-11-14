@@ -1,5 +1,9 @@
 """Delphi Oracle RFP gate: offline, stdlib-only tests (no network, no secrets)."""
-import json, os
+import base64, json, os, tempfile
+import pytest
+from pathlib import Path
+
+from scripts.delphi.proposal_package import build_manifest
 
 from scripts.delphi import gate
 
@@ -306,3 +310,219 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_refs():
+    source_ref = "a" * 40
+    manifest_ref = "b" * 40
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        package = root / "proposal"
+        package.mkdir()
+        artifact = package / "RFP.md"
+        artifact.write_text("# Frozen proposal\n", encoding="utf-8")
+        manifest = build_manifest(
+            source_ref=source_ref, package_id="proposal-1",
+            package_path="proposal", root=root,
+            files=["proposal/RFP.md"], package_author="builder",
+        )
+        manifest_bytes = json.dumps(manifest).encode("utf-8")
+        artifact_bytes = artifact.read_bytes()
+
+        class PackageGH:
+            def __init__(self, source_mode="100644"):
+                self.refs = []
+                self.source_mode = source_mode
+            def req(self, method, path, body=None):
+                assert method == "GET"
+                if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if tree_sha == "c" * 40 else
+                            [{"path": "proposal/RFP.md", "type": "blob", "mode": self.source_mode}])
+                    return {"truncated": False, "tree": rows}
+                self.refs.append((path.split("?", 1)[0], ref))
+                payload = manifest_bytes if path.startswith("/contents/proposal/package.json") else artifact_bytes
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(payload).decode("ascii")}
+
+        gh = PackageGH()
+        body = (
+            f"### Proposal source ref\n\n{source_ref}\n\n"
+            f"### Proposal manifest ref\n\n{manifest_ref}\n\n"
+            "### Proposal manifest path\n\nproposal/package.json\n\n"
+            f"### Expected package digest\n\n{manifest['package_digest']}\n"
+        )
+        binding = gate.verify_issue_package_binding(gh, {"body": body})
+        assert binding["source_ref"] == source_ref
+        assert binding["manifest_ref"] == manifest_ref
+        assert binding["package_digest"] == manifest["package_digest"]
+        assert gh.refs == [
+            ("/contents/proposal/package.json", manifest_ref),
+            ("/contents/proposal/RFP.md", source_ref),
+        ]
+        with pytest.raises(ValueError, match="symlink"):
+            gate.verify_issue_package_binding(PackageGH(source_mode="120000"), {"body": body})
+
+
+def test_open_rfp_issue_census_paginates_and_deduplicates():
+    class PagedGH:
+        def __init__(self):
+            self.paths = []
+
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            self.paths.append(path)
+            page = int(path.rsplit("page=", 1)[1])
+            if page == 1:
+                return [{"number": number, "title": f"RFP {number}"}
+                        for number in range(1, 101)]
+            if page == 2:
+                return (
+                    [{"number": 100, "title": "duplicate from page boundary"}]
+                    + [{"number": number, "title": f"RFP {number}"}
+                       for number in range(101, 107)]
+                    + [{"number": 107, "title": "PR-shaped result",
+                        "pull_request": {"url": "https://example.invalid/pr/107"}}]
+                )
+            return []
+
+    gh = PagedGH()
+    issues = gate.open_rfp_issues(gh)
+    assert len(issues) == 106
+    assert [issue["number"] for issue in issues] == list(range(1, 107))
+    assert all("pull_request" not in issue for issue in issues)
+    assert len(gh.paths) == 2
+    assert "page=1" in gh.paths[0] and "page=2" in gh.paths[1]
+
+
+def test_open_rfp_issue_census_fails_closed_when_page_cap_reached():
+    class FullPagesGH:
+        def req(self, method, path, body=None):
+            page = int(path.rsplit("page=", 1)[1])
+            return [{"number": (page - 1) * 100 + number}
+                    for number in range(1, 101)]
+
+    try:
+        gate.open_rfp_issues(FullPagesGH(), max_pages=2)
+    except RuntimeError as exc:
+        assert "pagination cap" in str(exc)
+    else:
+        raise AssertionError("a full final page must not be treated as a complete census")
+
+
+def test_gate_keeps_active_sweep_and_hourly_post_burst_backstop():
+    workflow_path = os.path.join(ROOT, ".github", "workflows", "delphi-gate.yml")
+    with open(workflow_path, encoding="utf-8") as handle:
+        workflow = handle.read()
+    assert "cancel-in-progress: false" in workflow
+    assert 'cron: "23 * * * *"' in workflow
+    assert "post-burst sweep guarantee" in workflow
+
+
+
+
+def test_package_binding_rejects_inventory_outside_declared_package_path():
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        (root / "proposal").mkdir()
+        (root / "proposal" / "RFP.md").write_text("# proposal\n")
+        outside = root / "outside.md"
+        outside.write_text("# outside\n")
+        source_ref, manifest_ref = "a" * 40, "b" * 40
+        manifest = build_manifest(
+            source_ref=source_ref, package_id="proposal-2",
+            package_path="proposal", root=root,
+            files=["outside.md"], package_author="builder",
+        )
+        raw = json.dumps(manifest).encode("utf-8")
+        contents = {
+            "/contents/proposal/package.json": raw,
+            "/contents/outside.md": outside.read_bytes(),
+        }
+
+        class FakeGH:
+            def req(self, method, path, body=None):
+                if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if tree_sha == "c" * 40 else
+                            [{"path": "outside.md", "type": "blob", "mode": "100644"}])
+                    return {"truncated": False, "tree": rows}
+                payload = contents[path.split("?", 1)[0]]
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(payload).decode("ascii")}
+
+        body = (
+            f"### Proposal source ref\n{source_ref}\n"
+            f"### Proposal manifest ref\n{manifest_ref}\n"
+            "### Proposal manifest path\nproposal/package.json\n"
+            f"### Expected package digest\n{manifest['package_digest']}\n"
+        )
+        with pytest.raises(ValueError, match="outside package_path"):
+            gate.verify_issue_package_binding(FakeGH(), {"body": body})
+
+def test_package_binding_rejects_non_regular_and_invalid_base64_content():
+    class FakeGH:
+        def __init__(self, response):
+            self.response = response
+        def req(self, method, path, body=None):
+            return self.response
+
+    for response, message in (
+        ({"type": "symlink", "encoding": "base64", "content": "eA=="}, "regular"),
+        ({"type": "file", "encoding": "utf-8", "content": "x"}, "regular"),
+        ({"type": "file", "encoding": "base64", "content": "%%%"},
+         "invalid base64"),
+    ):
+        with __import__("pytest").raises(ValueError, match=message):
+            gate._github_file_bytes(FakeGH(response), "proposal/RFP.md", "a" * 40)
+
+
+def test_verified_package_digest_changes_delphi_idempotency_hash():
+    panel, registry, catalog = _load()
+    surface = catalog["turso.free"]
+    baseline = gate.input_hash(surface, panel["roles"], registry, {})
+    package_a = {"package_digest": "a" * 64, "source_ref": "b" * 40}
+    package_b = {"package_digest": "c" * 64, "source_ref": "b" * 40}
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != baseline
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != gate.input_hash(
+        surface, panel["roles"], registry, {}, package_b
+    )
+
+
+def test_package_binding_rejects_self_reference_and_truncated_git_tree():
+    source_ref = "a" * 40
+    digest = "b" * 64
+    same_ref_body = (
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{source_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
+    )
+    with pytest.raises(ValueError, match="must differ"):
+        gate.verify_issue_package_binding(object(), {"body": same_ref_body})
+
+    class TruncatedGH:
+        def req(self, method, path, body=None):
+            if path.startswith("/git/commits/"):
+                ref = path.rsplit("/", 1)[1]
+                return {"sha": ref, "tree": {"sha": "c" * 40}}
+            return {"truncated": True, "tree": []}
+
+    manifest_ref = "d" * 40
+    body = (
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{manifest_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
+    )
+    with pytest.raises(ValueError, match="truncated"):
+        gate.verify_issue_package_binding(TruncatedGH(), {"body": body})

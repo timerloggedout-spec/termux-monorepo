@@ -65,11 +65,13 @@
         var sourceUrl = "https://github.com/" + APP + "/" + sourceKind + "/" + ref + "/" + (lab.source_path || "");
         var engineUrl = lab.engine_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + lab.engine_path : "";
         var testUrl = lab.test_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + (Array.isArray(lab.test_path) ? lab.test_path[0] : lab.test_path) : "";
+        var versionUrl = lab.version_file ? "https://github.com/" + APP + "/blob/" + ref + "/" + lab.version_file : "";
         return '<details class="pv-lab-item"><summary>' + esc(lab.title) + ' · v' + esc(lab.version || "unversioned") + '</summary><div class="pv-lab-links">' +
           (page ? '<a href="' + esc(makeUrl(page,manifest,"./")) + '">Open versioned UI</a>' : '') +
           '<a href="' + esc(sourceUrl) + '">Source lane</a>' +
           (engineUrl ? '<a href="' + esc(engineUrl) + '">Engine</a>' : '') +
           (testUrl ? '<a href="' + esc(testUrl) + '">Tests</a>' : '') +
+          (versionUrl ? '<a href="' + esc(versionUrl) + '">Version record</a>' : '') +
           '<small>Dashboard build ' + esc(manifest.version || "unverified") + '</small></div></details>';
       }).join("") + '</div></details>' +
       '<details class="pv-nested-group"><summary>Canonical utilities · ' + ((labs && labs.canonical_components) ? labs.canonical_components.length : 0) + '</summary><div class="pv-nested-list">' +

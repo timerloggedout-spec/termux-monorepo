@@ -78,6 +78,9 @@ flowchart TB
     web_2["referrals.html"]
     web_3["versioning.html"]
     web_4["index.html"]
+    web_5["algorithm-suite.html"]
+    web_6["markov-trellis.html"]
+    web_7["delphic-graph.html"]
   end
   bookledger --> PL_moneyball
   feeds --> PL_coordination
@@ -111,7 +114,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: all 37 tribute .html at master + MoneyBall section 12 set + propose.html = 43 surfaces + 2 classified classes (45 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 40 tribute .html at master + MoneyBall section 12 set + propose.html = 43 surfaces + 2 classified classes (45 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 Levels per #4884 section C, sparse by the keying rule (a surface renders L iff its primary content IS an occupant of L or a direct projection). The topical axis is surface GROUPS - "plane" is a record word whose only referent is Pool.
 
@@ -161,6 +164,9 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | matrix.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | owner-records.html | tribute | Identity & Registry | ∅ | Surface feeds | termux-monorepo | page · records feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | versioning.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | page · version-manifest source · versioning.js · tests | site deploy (Pages per merge) · the version-stamp surface itself |
+| algorithm-suite.html | tribute | Web & Presentation | ∅ | Algorithm-labs registry | termux-monorepo | page · versioned algorithm catalogue · registry checks | site deploy · version-manifest page hash |
+| markov-trellis.html | tribute | Web & Presentation | ∅ | Markov engine · algorithm-labs registry | termux-monorepo | Canvas trellis UI · markov-engine.mjs · deterministic engine tests | site deploy · HTML + runtime asset SHA-256 · lab v0.1.0 |
+| delphic-graph.html | tribute | Web & Presentation | ∅ | Delphic graph fixtures · algorithm-labs registry | termux-monorepo | four-family graph UI · fixture validation · provenance view | site deploy · HTML + registry asset SHA-256 · lab v0.2.0 |
 | index.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | shell page · status payload · tests | site deploy (Pages per merge) · the deployment front door |
 ## Reserved names
 

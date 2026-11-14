@@ -56,6 +56,7 @@ jobs:
         run: |
           python3 scripts/que/sie_pipeline.py --self-test
           python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
+          python3 -m unittest discover -s tests/que -p 'test_sie_research_packet.py' -v
       - name: Observe ∧ promote ∧ learn
         env:
           GH_TOKEN: ${{ steps.app.outputs.token || github.token }}

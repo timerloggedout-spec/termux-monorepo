@@ -161,5 +161,171 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         self.assertTrue(all("prompt" not in row for row in rows))
 
 
+    def test_missing_execution_is_explicitly_unknown(self):
+        events = build_events(self.metadata())
+        expected = {
+            "controller": "unknown",
+            "surface": "unknown",
+            "route": "unknown",
+            "session_ref": None,
+            "adapter_version": None,
+            "attribution_method": "unresolved",
+            "confidence": 0.0,
+            "evidence_refs": [],
+        }
+        for event in events:
+            self.assertEqual(event["execution"], expected)
+
+    def test_que_execution_requires_repo_owned_adapter_and_session_evidence(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:12345",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345", "workflow_job:99"],
+        }
+        events = build_events(data)
+        for event in events:
+            self.assertEqual(event["execution"]["controller"], "que")
+            self.assertEqual(event["execution"]["surface"], "repo_owned_adapter")
+            self.assertEqual(event["execution"]["route"], "api")
+            validate_event(event)
+
+    def test_que_cannot_claim_external_computer_or_seat_browser_execution(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "seat_browser",
+            "route": "seat_browser",
+            "session_ref": "session:que:123",
+            "adapter_version": "external/1",
+            "attribution_method": "session_export",
+            "confidence": 1.0,
+            "evidence_refs": ["session:123"],
+        }
+        with self.assertRaisesRegex(ValueError, "QUE execution requires repo_owned_adapter"):
+            build_events(data)
+
+    def test_que_execution_without_session_or_evidence_is_rejected(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "mcp",
+            "session_ref": None,
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "workflow_name_mapping",
+            "confidence": 0.0,
+            "evidence_refs": [],
+        }
+        with self.assertRaises(ValueError):
+            build_events(data)
+
+    def test_muse_external_computer_execution_stays_attributed_to_muse(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "muse",
+            "surface": "external_computer",
+            "route": "seat_browser",
+            "session_ref": "session:muse:123",
+            "adapter_version": None,
+            "attribution_method": "session_export",
+            "confidence": 0.9,
+            "evidence_refs": ["session_export:123"],
+        }
+        events = build_events(data)
+        for event in events:
+            self.assertEqual(event["execution"]["controller"], "muse")
+            self.assertEqual(event["execution"]["surface"], "external_computer")
+            self.assertNotEqual(event["execution"]["controller"], "que")
+
+    def test_execution_provenance_rejects_raw_session_material(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "cli",
+            "session_ref": "session:que:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+            "session_text": "raw browser/session contents must never be stored",
+        }
+        with self.assertRaisesRegex(ValueError, "unsupported execution fields"):
+            build_events(data)
+
+
+    def test_execution_provenance_rejects_token_bearing_session_reference(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123?token=do-not-store",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "opaque session"):
+            build_events(data)
+
+    def test_execution_provenance_rejects_unstructured_controller_identity(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que operator",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "safe lowercase identity"):
+            build_events(data)
+
+    def test_execution_provenance_rejects_boolean_confidence(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": True,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "not a boolean"):
+            build_events(data)
+
+def test_execution_controller_is_not_inferred_from_author_or_github_actor():
+    payload = {
+        "agent_id": "gemini",
+        "workflow_run": {
+            "id": 12345, "run_attempt": 1, "head_sha": "a" * 40,
+            "created_at": "2026-09-25T18:00:00Z", "conclusion": "success",
+            "name": "Gemini Dispatch", "event": "workflow_dispatch",
+        },
+        "jobs": [{
+            "id": 99, "name": "agent",
+            "started_at": "2026-09-25T18:01:00Z",
+            "completed_at": "2026-09-25T18:03:30Z", "conclusion": "success",
+        }],
+        "author": {"provider": "google", "identity_kind": "agent",
+                   "attribution_method": "workflow_name_mapping", "confidence": 0.8},
+        "github_actor": "que",
+    }
+    events = build_events(payload)
+    assert events
+    assert all(event["execution"]["controller"] == "unknown" for event in events)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -35,6 +35,25 @@ The lifecycle contract and implementation plan are registered at
 - Deterministic stage validator: `scripts/que/sie_pipeline.py`
 - Evidence-bounded research packet and Oracle Method brief adapter: `scripts/que/sie_research_packet.py`
 - Research packet schema: `docs/schemas/que-sie-research-packet-v1.schema.json`
+
+Build a research packet from a validated SIE receipt, a diagnosis JSON file and
+one or more `delphi-evidence-set/v1` files:
+
+```sh
+python3 scripts/que/sie_research_packet.py \\
+  --receipt /path/to/stage-receipt.json \\
+  --diagnosis /path/to/diagnosis.json \\
+  --evidence /path/to/evidence-set.json \\
+  --out /tmp/que-sie-research
+python3 scripts/delphi/generate_proposal.py \\
+  --brief /tmp/que-sie-research/oracle-brief.json \\
+  --evidence /tmp/que-sie-research/evidence/evidence-001.json \\
+  --out /tmp/que-sie-rfp
+```
+
+Pass each emitted fresh evidence file with a repeated `--evidence` flag.
+The packet builder preserves stale/missing claims as unverified; the Oracle
+Method generator remains the canonical proposal renderer.
 - Intake source: existing QDesk self-repair workflow and watchdog/stall-gap feed
 - Queue authority: existing QUE ranker, dispatch watchdog and auto-claim/lease machinery
 - RFP authority: Oracle Method generator

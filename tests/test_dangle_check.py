@@ -149,11 +149,12 @@ class DynamicReferenceFixture(unittest.TestCase):
 <a href="./'+esc(item.ui_file)+'?version='+encodeURIComponent(version)">dynamic</a>
 <a href="\${GH}\${esc(doc.path)}">template</a>
 <a href="missing.html">static broken</a>
+<a href="missing.html?q=a+b">static query broken</a>
 """)
             got = dc.check_links(root)
             self.assertEqual(
                 [(item["kind"], item["ref"]) for item in got],
-                [("dangling-link", "missing.html")],
+                [("dangling-link", "missing.html"), ("dangling-link", "missing.html?q=a+b")],
             )
 
     def test_feed_descriptions_and_globs_are_not_literal_file_references(self):

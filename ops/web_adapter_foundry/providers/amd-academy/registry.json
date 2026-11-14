@@ -265,39 +265,6 @@
           "execution_provenance_receipt"
         ]
       }
-    },
-    {
-      "operation_id": "amd_academy.quiz.submit",
-      "status": "discovered",
-      "side_effect": "write",
-      "executor": "browser-ui-workflow",
-      "evidence_label": "unknown",
-      "fallback": {
-        "allowed": []
-      },
-      "session": {
-        "account_isolation": "required",
-        "credential_source": "vault_ref_only",
-        "refresh_strategy": "read_before_resume",
-        "mfa_policy": "respect_and_stop_on_unhandled_challenge",
-        "write_retry_policy": "never_retry_without_readback"
-      },
-      "evidence": {
-        "platform": "NetExam",
-        "platform_identification": "observed_public_portal_title",
-        "amd_tenant_api_entitlement": "not_established",
-        "endpoint": null,
-        "operation_semantics": "operation_id_only_until_official_or_authorized_observation",
-        "official_amd_source": "https://developer.amd.com/amd-ai-academy/",
-        "netexam_api_source": "https://netexam.com/channel-partner-training-tour/api-custom-integration-sso/",
-        "lab_tracking_risk_source": "https://devcommunity.amd.com/t/jupyter-notebook-does-not-record-my-progress/971",
-        "verification_requirements": [
-          "read_after_action_lms_state",
-          "course_bound_certificate",
-          "actual_points_balance_screenshot",
-          "execution_provenance_receipt"
-        ]
-      }
     }
   ]
 }

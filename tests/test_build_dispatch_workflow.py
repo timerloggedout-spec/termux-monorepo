@@ -29,6 +29,17 @@ def test_do_statement_style_ignores_synthetic_merge_commit_metadata():
     checker = (ROOT / "scripts" / "ci" / "check_do_statement_style.py").read_text(encoding="utf-8")
     assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"]' in checker
     assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"]' in checker
+    assert '"guard"' in checker
+
+
+def test_verify_completion_evidence_handles_slash_branches_and_closes_heredoc():
+    text = workflow_text()
+    start = text.index("Verify build completion evidence")
+    end = text.index("Emit rotation stamp to the scoring planes", start)
+    verify = text[start:end]
+    assert 'git/matching-refs/heads/$BUILD_BRANCH' in verify
+    assert 'jq -r --arg ref "refs/heads/$BUILD_BRANCH"' in verify
+    assert "          PYEOF\n          )\"\n          fi" in verify
 
 
 def test_mint_step_after_builders_before_consumers():

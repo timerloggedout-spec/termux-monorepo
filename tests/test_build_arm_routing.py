@@ -262,6 +262,8 @@ def test_generic_builder_prompt_keeps_branch_and_commit_ownership_in_workflow():
                       "git commit", "git push", "git merge"):
         assert operation in prompt
     assert "workflow owns branch identity and commit/PR handoff" in prompt
+    assert "Preserve existing standards, policies, ledgers, and documentation." in prompt
+    assert "Make minimal, scoped, additive edits" in prompt
 
 
 def test_stamp_carries_the_full_doe_set():

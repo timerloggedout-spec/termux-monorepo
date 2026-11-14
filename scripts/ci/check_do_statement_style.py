@@ -16,14 +16,8 @@ NEGATIVE_FIRST = re.compile(
     r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
     re.IGNORECASE,
 )
-IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
-    "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
-    "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
-}
+from do_statement_style_rules import is_imperative_subject
+
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
@@ -65,9 +59,7 @@ def inspect_git_range(base: str, head: str) -> None:
     ).stdout
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
-        verb = first[0].lower() if first else ""
-        if verb not in IMPERATIVE:
+        if not is_imperative_subject(subject):
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
             )

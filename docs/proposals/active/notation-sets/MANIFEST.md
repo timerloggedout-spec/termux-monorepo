@@ -129,3 +129,43 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
 - Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
 - Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.
+
+
+### Claim-level nomenclature evidence (research lane)
+
+`nomenclature-matrix/seed.json` now carries `evidence_records`: assertion-level provenance for specific concept, label, and mapping claims. Each record stores a source, locator, short excerpt, retrieval date, claim boundary, reviewer, and status. The validator checks assertion references and required provenance fields. This is distinct from the source bibliography and from the Domain Composition Matrix database; candidate evidence does not promote a notation or mapping to runtime authority.
+
+
+### Deterministic nomenclature crosswalk projection
+
+- Generator: [build_nomenclature_crosswalk.py](../../../../scripts/ci/build_nomenclature_crosswalk.py).
+- Generated human-readable view: [CROSSWALK.md](./nomenclature-matrix/CROSSWALK.md).
+- Generated machine-readable view: [CROSSWALK.json](./nomenclature-matrix/CROSSWALK.json).
+- Both projections group labels by concept, list semantic mapping candidates separately, and include claim-level evidence with reviewer/status. The JSON projection retains source records and typed fields for downstream tooling.
+- Regenerate both with `python scripts/ci/build_nomenclature_crosswalk.py` (or override paths with `--output` and `--json-output`). Outputs are deterministic and must not be edited manually.
+
+### Nomenclature governance and consumer contracts
+
+- Historical lineage and verified milestones: [DECISION-LEDGER.md](./nomenclature-matrix/DECISION-LEDGER.md).
+- Claim review and lifecycle gates: [REVIEW-AND-ACCEPTANCE.md](./nomenclature-matrix/REVIEW-AND-ACCEPTANCE.md).
+- Machine-readable projection contract: [JSON-CONSUMER-CONTRACT.md](./nomenclature-matrix/JSON-CONSUMER-CONTRACT.md).
+- These documents preserve the boundary between repository implementation, candidate research, human/domain acceptance, and runtime authority. The Domain Composition Matrix remains a separate research database under Issue #1115.
+
+
+### Nomenclature governance and consumer contracts
+
+- Decision lineage: [nomenclature-matrix/DECISION-LEDGER.md](./nomenclature-matrix/DECISION-LEDGER.md).
+- Human evidence review and lifecycle: [nomenclature-matrix/REVIEW-PROTOCOL.md](./nomenclature-matrix/REVIEW-PROTOCOL.md).
+- Machine-readable projection consumer contract: [nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md](./nomenclature-matrix/CROSSWALK-CONSUMER-CONTRACT.md).
+
+These documents clarify historical decisions, domain-review expectations, and the candidate-only boundary for downstream JSON consumers. They do not confer domain acceptance or runtime authority.
+
+
+### Typed Domain Composition Matrix integration
+
+- Integration contract: [nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md](./nomenclature-matrix/DOMAIN-COMPOSITION-INTEGRATION.md).
+- Candidate reference registry: [nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json](./nomenclature-matrix/DOMAIN-COMPOSITION-LINKS.json).
+- Validator: [validate_nomenclature_domain_links.py](../../../../scripts/ci/validate_nomenclature_domain_links.py).
+- Tests: [test_nomenclature_domain_links.py](../../../../tests/test_nomenclature_domain_links.py).
+
+The registry connects nomenclature concepts to typed DCM domain/entity/operation/rule records. It is not an equivalence map; every link remains candidate and carries a non-equivalence boundary. The dedicated nomenclature workflow validates both source seeds and the typed links.

@@ -40,14 +40,14 @@ Build a research packet from a validated SIE receipt, a diagnosis JSON file and
 one or more `delphi-evidence-set/v1` files:
 
 ```sh
-python3 scripts/que/sie_research_packet.py \\
-  --receipt /path/to/stage-receipt.json \\
-  --diagnosis /path/to/diagnosis.json \\
-  --evidence /path/to/evidence-set.json \\
+python3 scripts/que/sie_research_packet.py \
+  --receipt /path/to/stage-receipt.json \
+  --diagnosis /path/to/diagnosis.json \
+  --evidence /path/to/evidence-set.json \
   --out /tmp/que-sie-research
-python3 scripts/delphi/generate_proposal.py \\
-  --brief /tmp/que-sie-research/oracle-brief.json \\
-  --evidence /tmp/que-sie-research/evidence/evidence-001.json \\
+python3 scripts/delphi/generate_proposal.py \
+  --brief /tmp/que-sie-research/oracle-brief.json \
+  --evidence /tmp/que-sie-research/evidence/evidence-001.json \
   --out /tmp/que-sie-rfp
 ```
 

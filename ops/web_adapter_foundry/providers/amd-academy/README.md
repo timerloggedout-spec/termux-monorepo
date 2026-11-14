@@ -63,3 +63,10 @@ Before promoting any operation beyond discovery-only, attach all of the followin
 5. An independent reproduction receipt tied to the adapter version.
 
 A vendor-wide NetExam API description does not satisfy item 1. A successful notebook run does not satisfy LMS completion until the Academy progress record is read back. The current registry intentionally remains discovery-only until these conditions are met.
+
+
+## Assessment integrity boundary
+
+AMD's current ROCm Certified Developer Program Agreement (v1.1, effective July 2026) prohibits unauthorized assistance, unauthorized collaboration, unauthorized materials/devices, and generative-AI tools or services during Evaluations unless AMD expressly permits them. It also treats evaluation questions, tasks, item banks, scoring rubrics, and keys as confidential Program Assets.
+
+Accordingly, the adapter MUST stop at any quiz, exam, scored assessment, proctored step, or other Evaluation unless the applicable AMD rule explicitly authorizes the proposed assistance. Do not read, capture, persist, summarize, answer, submit, or replay evaluation content. A human may continue independently under AMD's rules. Course modules and labs may be supported only outside protected evaluation steps and within the applicable course terms.

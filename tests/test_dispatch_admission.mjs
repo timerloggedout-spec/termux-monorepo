@@ -153,7 +153,9 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /complete-force-request:/);
   assert.doesNotMatch(workflow, /workflow_dispatch:/);
   assert.doesNotMatch(workflow, /force_lane/);
-  assert.match(workflow, /cancel-in-progress: false/);
+  // The dispatcher is a latest-state, idempotent re-evaluation; a newer
+  // event supersedes an in-flight decision in the shared concurrency group.
+  assert.match(workflow, /cancel-in-progress: true/);
   assert.match(workflow, /issue_comment' && !force/);
 });
 

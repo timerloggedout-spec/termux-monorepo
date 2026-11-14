@@ -218,10 +218,22 @@ def plan(candidates, now):
                                "kind": "rejected"})
             continue
         scored = dict(cand["score_row"])
+        # QUE #5283 score_dispatch() returns a structured object:
+        # {"score": <number>, "components": {...}}. Feed rows flatten
+        # that object via rank_dispatches(), but the watchdog passes
+        # the raw score_dispatch() result into this planner. Normalize
+        # both shapes here so auto-claim sorting always compares numbers.
+        score_value = scored.get("score")
+        if isinstance(score_value, dict):
+            score_value = score_value.get("score")
+        try:
+            score_value = float(score_value) if score_value is not None else 0.0
+        except (TypeError, ValueError):
+            score_value = 0.0
         claims.append({"issue": issue["number"], "claim_class": claim_class,
                        "claimant": claimant,
                        "trigger": "escalation" if escalated else "wall-admission",
-                       "score": scored.get("score")})
+                       "score": score_value})
     claims.sort(key=lambda c: (-(c["score"] or 0), c["issue"]))
     for rank, claim in enumerate(claims, start=1):
         claim["rank"] = rank

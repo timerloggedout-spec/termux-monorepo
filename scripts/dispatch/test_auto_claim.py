@@ -79,6 +79,15 @@ def test_wall_admission_claims_before_escalation():
     assert [c["issue"] for c in plan["claims"]] == [5]
     assert plan["claims"][0]["trigger"] == "wall-admission"
 
+def test_plan_normalizes_structured_task_ranking_scores():
+    low = cand(number=20, body=SWARM_TASK,
+               score={"score": 105.0, "components": {"tier": 20.0}})
+    high = cand(number=21, body=SWARM_BUILD,
+                score={"score": 1040.0, "components": {"wall": 1000.0}})
+    plan = ac.plan([low, high], NOW)
+    assert [c["issue"] for c in plan["claims"]] == [21, 20]
+    assert [c["score"] for c in plan["claims"]] == [1040.0, 105.0]
+
 
 def test_rejected_twice_becomes_exception():
     fails = [comment("auto-claim-failed: boom"), comment("auto-claim-failed: boom")]

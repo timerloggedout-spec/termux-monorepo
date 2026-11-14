@@ -22,7 +22,7 @@ EXECUTION_ROUTES = {
 }
 QUE_EXECUTION_ROUTES = {"api", "mcp", "web2api", "cli", "stdin", "dom_browser"}
 SESSION_REF_RE = re.compile(r"^session:[a-z0-9_-]+:[A-Za-z0-9._-]{1,180}$")
-SAFE_REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/#-]{0,255}$")
+SAFE_REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/#_-]{0,255}$")
 ADAPTER_VERSION_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$")
 
 

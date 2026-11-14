@@ -185,6 +185,7 @@ def test_amd_academy_provider_enforces_assessment_integrity_boundary():
     assert not any("quiz" in operation or "exam" in operation for operation in operations)
     readme = (root / "README.md").read_text(encoding="utf-8")
     assert "MUST stop at any quiz" in readme
+    assert "Program Agreement v1.1" in readme
     assert "unless AMD expressly permits them" in readme
 
 

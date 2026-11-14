@@ -159,6 +159,89 @@ def _author(metadata: Mapping[str, Any]) -> dict[str, Any]:
     return result
 
 
+EXECUTION_CONTROLLERS = {"que", "muse", "human", "unknown"}
+EXECUTION_SURFACES = {"repo_owned_adapter", "external_computer", "seat_browser", "manual", "unknown"}
+EXECUTION_ROUTES = {"api", "mcp", "web2api", "cli", "stdin", "dom_browser", "seat_browser", "manual", "unknown"}
+QUE_EXECUTION_ROUTES = {"api", "mcp", "web2api", "cli", "stdin", "dom_browser"}
+
+
+def _execution(metadata: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize execution-controller provenance separately from artifact authorship.
+
+    QUE is a claim about the actual execution controller, not the GitHub
+    actor or artifact author. It therefore requires a repo-owned adapter
+    and trusted invocation telemetry bound to an opaque session and evidence.
+    """
+    raw = metadata.get("execution")
+    if raw is None:
+        raw = {}
+    if not isinstance(raw, Mapping):
+        raise ValueError("execution must be an object")
+    allowed = {
+        "controller", "surface", "route", "session_ref", "adapter_version",
+        "attribution_method", "confidence", "evidence_refs",
+    }
+    unknown = set(raw) - allowed
+    if unknown:
+        raise ValueError(f"unsupported execution fields: {sorted(unknown)}")
+
+    result: dict[str, Any] = {
+        "controller": "unknown",
+        "surface": "unknown",
+        "route": "unknown",
+        "session_ref": None,
+        "adapter_version": None,
+        "attribution_method": "unresolved",
+        "confidence": 0.0,
+        "evidence_refs": [],
+    }
+    for field, choices in (
+        ("controller", EXECUTION_CONTROLLERS),
+        ("surface", EXECUTION_SURFACES),
+        ("route", EXECUTION_ROUTES),
+        ("attribution_method", AUTHOR_METHODS),
+    ):
+        value = raw.get(field, result[field])
+        if value not in choices:
+            raise ValueError(f"invalid execution.{field}")
+        result[field] = value
+
+    for field, limit in (("session_ref", 256), ("adapter_version", 128)):
+        value = raw.get(field)
+        if value is not None:
+            if not isinstance(value, str) or not value.strip() or len(value) > limit:
+                raise ValueError(f"execution.{field} must be a non-empty opaque reference up to {limit} characters")
+            result[field] = value.strip()
+
+    try:
+        confidence = float(raw.get("confidence", 0.0))
+    except (TypeError, ValueError) as exc:
+        raise ValueError("execution.confidence must be between 0 and 1") from exc
+    if not math.isfinite(confidence) or not 0.0 <= confidence <= 1.0:
+        raise ValueError("execution.confidence must be between 0 and 1")
+    result["confidence"] = confidence
+
+    refs = raw.get("evidence_refs", [])
+    if not isinstance(refs, list) or len(refs) > 20:
+        raise ValueError("execution.evidence_refs must be a list of at most 20 references")
+    if any(not isinstance(ref, str) or not ref.strip() or len(ref) > 256 for ref in refs):
+        raise ValueError("execution evidence references must be non-empty strings up to 256 characters")
+    result["evidence_refs"] = sorted(set(ref.strip() for ref in refs))
+
+    if result["controller"] == "que":
+        if result["surface"] != "repo_owned_adapter":
+            raise ValueError("QUE execution requires repo_owned_adapter; external computer and seat-browser work are not QUE execution")
+        if result["route"] not in QUE_EXECUTION_ROUTES:
+            raise ValueError("QUE execution requires an authorized API, MCP, Web2API, CLI, stdin, or DOM adapter route")
+        if not result["session_ref"] or not result["adapter_version"]:
+            raise ValueError("QUE execution requires an opaque session reference and adapter version")
+        if result["attribution_method"] != "invocation_telemetry":
+            raise ValueError("QUE execution requires trusted invocation_telemetry attribution")
+        if result["confidence"] <= 0 or not result["evidence_refs"]:
+            raise ValueError("QUE execution requires positive confidence and evidence references")
+    return result
+
+
 def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str,
           job: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Build the common provenance fields for one sanitized event."""
@@ -172,6 +255,7 @@ def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str,
         "gha_run_attempt": int(run.get("run_attempt", 1)),
         "source_sha": _sha(run["head_sha"]),
         "author": _author(metadata),
+        "execution": _execution(metadata),
     }
     workflow_name = run.get("name")
     if isinstance(workflow_name, str) and workflow_name.strip():
@@ -293,7 +377,7 @@ def validate_event(event: Mapping[str, Any]) -> None:
         "tokens_in", "tokens_out", "complexity_score", "metrics",
         "gha_run_id", "gha_run_attempt", "source_sha", "event_id",
         "cohort_id", "task_fingerprint", "task_contract_hash", "environment_fingerprint",
-        "author", "github_actor", "triggering_actor", "workflow_name",
+        "author", "execution", "github_actor", "triggering_actor", "workflow_name",
         "workflow_run_url", "workflow_event", "job_id", "job_name",
         "pull_request_number", "issue_number",
     }
@@ -316,6 +400,12 @@ def validate_event(event: Mapping[str, Any]) -> None:
         raise ValueError("gha_run_attempt must be positive")
     if event.get("source_sha") is not None:
         _sha(event["source_sha"])
+    if event.get("execution") is not None:
+        if not isinstance(event["execution"], Mapping):
+            raise ValueError("execution must be an object")
+        normalized = _execution({"execution": event["execution"]})
+        if dict(event["execution"]) != normalized:
+            raise ValueError("execution must be normalized and contain only contract fields")
     if event.get("author") is not None:
         if not isinstance(event["author"], Mapping):
             raise ValueError("author must be an object")

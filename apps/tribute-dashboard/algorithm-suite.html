@@ -32,7 +32,8 @@ const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const repo="https://github.com/timerloggedout-spec/termux-monorepo";
 function card(item,manifest){
- const source=repo+"/tree/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.source_path;
+ const sourceKind=/\\.[a-z0-9]+$/i.test(item.source_path||"")?"blob":"tree";
+ const source=repo+"/"+sourceKind+"/"+encodeURIComponent(manifest.source_ref||"master")+"/"+item.source_path;
  const links=[];
  if(item.ui_file)links.push('<a class="primary" href="./'+esc(item.ui_file)+'?page_unique_id='+encodeURIComponent(item.id)+'&amp;version='+encodeURIComponent(manifest.version||"unverified")+'&amp;channel='+encodeURIComponent(manifest.channel||"unknown")+'">Open interactive UI</a>');
  if(item.source_path)links.push('<a href="'+esc(source)+'">Source lane</a>');

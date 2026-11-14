@@ -1,6 +1,7 @@
 name: Delphic Bayesian Observatory Lab
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "scripts/delphic_oracle.py"
@@ -26,6 +27,7 @@ on:
       - feat/delphic-doe-moneyball-integration
       - experiment/delphic-bayesian-observatory-lab
       - experiment/delphic-observatory-scoped-merge
+      - feat/delphic-current-master-20261114
     paths:
       - "scripts/delphic_oracle.py"
       - "scripts/delphic_graph_lab.py"
@@ -37,6 +39,10 @@ on:
       - "tests/test_delphic_doe_pool.py"
       - "docs/schemas/delphic-doe-task-candidate.yaml"
       - ".github/workflows/delphic-bayesian-observatory-lab.yml"
+      - "experiments/delphic-observatory-lab/**"
+      - "site/delphic-observatory/**"
+      - "docs/proposals/active/delphic-bayesian-observatory-lab/**"
+      - "docs/ops/DELPHIC-*-INTEGRATION.md"
 
 permissions:
   contents: read

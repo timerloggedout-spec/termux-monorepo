@@ -74,6 +74,13 @@ def _validate_diagnosis(diagnosis: dict) -> None:
         raise ValueError("diagnosis requires replay steps and acceptance tests")
     if not diagnosis["alternatives"]:
         raise ValueError("diagnosis requires alternatives for Oracle Method plan")
+    if not isinstance(diagnosis["risk_envelope"], dict) or not diagnosis["risk_envelope"]:
+        raise ValueError("diagnosis requires a populated risk envelope")
+    for fact in diagnosis["confirmed_facts"] + diagnosis["hypotheses"]:
+        if not isinstance(fact, dict) or not isinstance(fact.get("text"), str) or not fact["text"].strip():
+            raise ValueError("facts and hypotheses require non-empty text")
+        if not isinstance(fact.get("evidence_refs", []), list):
+            raise ValueError("fact evidence_refs must be an array")
 
 
 def build_research_packet(*, source_receipt: dict, diagnosis: dict,

@@ -9,7 +9,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
 main{max-width:1440px;margin:auto;padding:22px}.top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel);padding:16px}
 h1{font-size:18px;margin:0;color:var(--cyan)}p{color:var(--muted);line-height:1.55}.flag{border:1px solid var(--amber);color:var(--amber);padding:6px 9px;font-size:11px;letter-spacing:.08em}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}button{background:#102330;color:var(--text);border:1px solid var(--line);padding:9px 12px;font:inherit;cursor:pointer}button[aria-selected=true]{border-color:var(--cyan);color:var(--cyan)}button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}button{background:#102330;color:var(--text);border:1px solid var(--line);padding:9px 12px;font:inherit;cursor:pointer}button[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .panel{display:none;border:1px solid var(--line);background:var(--panel);padding:16px}.panel.active{display:block}.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h2{font-size:16px;margin:0}.meta{font-size:11px;color:var(--muted)}.status{color:var(--cyan)}.warn{color:var(--amber)}.error{color:var(--red)}
 svg{display:block;width:100%;height:auto;min-height:260px;background:#08131c;border:1px solid var(--line);margin-top:12px}
@@ -24,10 +24,10 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#08131c;border:1px so
   <div class="flag">LOCAL FIXTURES · NOT LIVE REPOSITORY DATA</div>
 </header>
 <nav aria-label="Graph views">
-  <button data-view="ast" aria-selected="true">AST containment</button>
-  <button data-view="dependency" aria-selected="false">Dependency DAG</button>
-  <button data-view="markov" aria-selected="false">Markov trellis</button>
-  <button data-view="temporal" aria-selected="false">Temporal lineage</button>
+  <button data-view="ast" aria-pressed="true">AST containment</button>
+  <button data-view="dependency" aria-pressed="false">Dependency DAG</button>
+  <button data-view="markov" aria-pressed="false">Markov trellis</button>
+  <button data-view="temporal" aria-pressed="false">Temporal lineage</button>
 </nav>
 
 <section class="panel active" id="panel-ast" aria-labelledby="title-ast">
@@ -78,7 +78,7 @@ function renderMarkov(){const f=fixtures.markov,r=markov(f.states,f.rows,f.initi
 function renderTemporal(){const f=fixtures.temporal,r=temporal(f.snapshots),nodes={};f.snapshots.forEach((s,i)=>nodes[s.id]={x:150+i*300,y:115,label:s.id,warn:!s.source_sha});draw("svg-temporal",nodes,r.edges.map(([from,to])=>({from,to,label:"parent"})));document.getElementById("status-temporal").textContent=(r.structurallyValid?"READY":"WARNING")+" · "+f.snapshots.length+" snapshots · "+(r.provenanceComplete?"provenance complete":"provenance incomplete");document.getElementById("out-temporal").textContent=JSON.stringify({graphKind:"temporal_lineage",implementation:"scripts/delphic_graph_lab.py",orderedSnapshotIds:f.snapshots.map(s=>s.id),edges:r.edges,warnings:r.warnings,structurallyValid:r.structurallyValid,provenanceComplete:r.provenanceComplete,missingness:"preserved; never coerced to zero"},null,2)}
 const renderers={ast:renderAst,dependency:renderDependency,markov:renderMarkov,temporal:renderTemporal};
 function refresh(key){state[key].status="refreshing";try{renderers[key]();state[key].status="ready";state[key].renderedAt=new Date().toISOString();state[key].error=null;const status=document.getElementById("status-"+key);status.textContent+=" · fixture rendered "+state[key].renderedAt}catch(e){state[key].status="error";state[key].error=String(e);document.getElementById("status-"+key).textContent="ERROR · "+String(e)}}
-document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-selected",String(b===button)));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+button.dataset.view))}));
+document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+button.dataset.view))}));
 document.querySelectorAll("[data-refresh]").forEach(button=>button.addEventListener("click",()=>refresh(button.dataset.refresh)));
 Object.keys(renderers).forEach(refresh);
 </script>

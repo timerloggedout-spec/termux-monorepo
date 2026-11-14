@@ -21,6 +21,7 @@ EXECUTION_ROUTES = {
     "seat_browser", "manual", "unknown",
 }
 QUE_EXECUTION_ROUTES = {"api", "mcp", "web2api", "cli", "stdin", "dom_browser"}
+CONTROLLER_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
 SESSION_REF_RE = re.compile(r"^session:[a-z0-9_-]+:[A-Za-z0-9._-]{1,180}$")
 SAFE_REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/#_-]{0,255}$")
 ADAPTER_VERSION_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$")
@@ -55,6 +56,8 @@ def normalize_execution(raw: Any = None) -> dict[str, Any]:
     if not isinstance(controller, str) or not controller.strip() or len(controller) > 128:
         raise ValueError("execution.controller must be a non-empty identity up to 128 characters")
     result["controller"] = controller.strip().lower()
+    if not CONTROLLER_RE.fullmatch(result["controller"]):
+        raise ValueError("execution.controller must be a safe lowercase identity")
 
     for field, choices in (
         ("surface", EXECUTION_SURFACES),

@@ -16,7 +16,8 @@
       "published_engine": "markov-engine.mjs",
       "test_path": "experiments/archwiz-markov-lane/src/markov-engine.test.mjs",
       "model_contract": "Transition matrix is the source of truth; strict tree preserves path occurrences; recombining trellis sums incoming path probabilities; particle sampling uses the same transition matrix.",
-      "authority": "read-only-research-projection"
+      "authority": "read-only-research-projection",
+      "version_file": "experiments/archwiz-markov-lane/VERSION.json"
     },
     {
       "id": "delphic-observatory-lab",
@@ -28,7 +29,8 @@
       "engine_path": "scripts/delphic_graph_lab.py",
       "test_path": "tests/test_delphic_graph_lab.py",
       "model_contract": "AST containment, dependency DAG, Markov state transitions and temporal lineage remain distinct graph families; refresh is fixture-local.",
-      "authority": "read-only-research-projection"
+      "authority": "read-only-research-projection",
+      "version_file": "experiments/delphic-observatory-lab/VERSION.json"
     }
   ],
   "canonical_components": [
@@ -39,7 +41,10 @@
       "status": "live",
       "source_path": "she/orchestration/dag.py",
       "documentation_path": "docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md",
-      "test_paths": ["tests/test_dag_execution.py", "tests/test_dag_properties.py"],
+      "test_paths": [
+        "tests/test_dag_execution.py",
+        "tests/test_dag_properties.py"
+      ],
       "role": "Deterministic topological order, ready frontiers and cycle-or-blocked residuals. Side-effect-free planning; does not execute work or propagate probabilities."
     },
     {
@@ -58,7 +63,9 @@
       "status": "live",
       "source_path": "scripts/temporal/gantt_compile.py",
       "documentation_path": "docs/agentic/DEPENDENCY_PHASES.md",
-      "test_paths": ["tests/test_temporal_gantt_compile.py"],
+      "test_paths": [
+        "tests/test_temporal_gantt_compile.py"
+      ],
       "role": "Compiles filed phases through the canonical Kahn engine into topological stages, dependency waves, critical-path depth and dependency closure."
     }
   ],

@@ -199,7 +199,7 @@ def slugify(heading):
 def is_dynamic_reference(refv):
     """Return true when an HTML attribute contains a runtime-built URL."""
     return ("${" in refv or bool(re.search(
-        r"""(?:['"]\s*\+|\+\s*['"]|\+\s*(?:esc|safeHref|encodeURIComponent|[A-Za-z_$]))""",
+        r"""(?:['"]\s*\+|\+\s*['"])""",
         refv,
     )))
 

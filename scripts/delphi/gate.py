@@ -432,7 +432,7 @@ def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
     response = gh.req("GET", f"/contents/{urllib.parse.quote(path, safe='/')}?ref={source_ref}")
     if response.get("type") != "file" or response.get("encoding") != "base64":
         raise ValueError(f"package input is not a regular base64 file: {path}")
-    encoded = re.sub(r"\\s+", "", response.get("content") or "")
+    encoded = re.sub(r"\s+", "", response.get("content") or "")
     try:
         return base64.b64decode(encoded, validate=True)
     except (ValueError, TypeError) as exc:

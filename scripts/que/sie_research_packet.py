@@ -70,8 +70,11 @@ def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, d
             if not fresh:
                 rejected[claim] = "stale_or_invalid_freshness"
                 continue
-            accepted.setdefault(claim, item)
-    return accepted, rejected
+            if claim in accepted:
+                accepted.pop(claim, None)
+                rejected[claim] = "duplicate_claim"
+            elif claim not in rejected:
+                accepted[claim] = item
 
 
 def _validate_diagnosis(diagnosis: dict) -> None:
@@ -253,7 +256,7 @@ def main(argv: list[str] | None = None) -> int:
     evidence_dir.mkdir(exist_ok=True)
     # Remove only files owned by this generator; keep unrelated operator notes/artifacts.
     for stale in evidence_dir.iterdir():
-        if re.fullmatch(r"evidence-\\d{3}\\.json", stale.name) and (stale.is_file() or stale.is_symlink()):
+        if re.fullmatch(r"evidence-\d{3}\.json", stale.name) and (stale.is_file() or stale.is_symlink()):
             stale.unlink()
     for index, evidence_set in enumerate(fresh_sets, start=1):
         (evidence_dir / f"evidence-{index:03d}.json").write_text(

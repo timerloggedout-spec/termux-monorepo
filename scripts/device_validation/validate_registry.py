@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Validate QUE device-validation tool profiles and module lanes (stdlib only)."""
+"""Validate the QUE device-validation registry and its JSON Schema (stdlib only)."""
 from __future__ import annotations
 
 import argparse
 import json
 import re
 import sys
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -29,11 +30,149 @@ def _is_nonempty(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
-    """Return deterministic validation errors; never mutate repository state."""
+def _type_matches(value: Any, expected: str) -> bool:
+    if expected == "object":
+        return isinstance(value, dict)
+    if expected == "array":
+        return isinstance(value, list)
+    if expected == "string":
+        return isinstance(value, str)
+    if expected == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if expected == "boolean":
+        return isinstance(value, bool)
+    if expected == "null":
+        return value is None
+    return True
+
+
+def _resolve_local_ref(root_schema: dict[str, Any], ref: str) -> dict[str, Any] | None:
+    if not ref.startswith("#/"):
+        return None
+    current: Any = root_schema
+    for token in ref[2:].split("/"):
+        token = token.replace("~1", "/").replace("~0", "~")
+        if not isinstance(current, dict) or token not in current:
+            return None
+        current = current[token]
+    return current if isinstance(current, dict) else None
+
+
+def _format_valid(value: str, fmt: str) -> bool:
+    try:
+        if fmt == "date":
+            date.fromisoformat(value)
+            return True
+        if fmt == "date-time":
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            return parsed.tzinfo is not None and parsed.utcoffset() is not None
+    except (TypeError, ValueError, OverflowError):
+        return False
+    return True
+
+
+def validate_json_schema(
+    value: Any, schema: dict[str, Any], root_schema: dict[str, Any] | None = None,
+    path: str = "$",
+) -> list[str]:
+    """Validate the JSON Schema vocabulary used by this registry, without dependencies."""
+    root = root_schema or schema
+    errors: list[str] = []
+
+    ref = schema.get("$ref")
+    if ref:
+        target = _resolve_local_ref(root, ref)
+        if target is None:
+            return [f"{path}: unresolved or unsupported schema reference {ref!r}"]
+        return validate_json_schema(value, target, root, path)
+
+    expected = schema.get("type")
+    if expected is not None:
+        types = expected if isinstance(expected, list) else [expected]
+        if not any(_type_matches(value, kind) for kind in types):
+            return [f"{path}: expected type {expected!r}"]
+
+    if "const" in schema and value != schema["const"]:
+        errors.append(f"{path}: value must equal {schema['const']!r}")
+    if "enum" in schema and value not in schema["enum"]:
+        errors.append(f"{path}: value {value!r} is not in enum")
+    if isinstance(value, str):
+        if len(value) < schema.get("minLength", 0):
+            errors.append(f"{path}: string shorter than minLength")
+        pattern = schema.get("pattern")
+        if pattern and not re.fullmatch(pattern, value):
+            errors.append(f"{path}: string does not match pattern {pattern!r}")
+        fmt = schema.get("format")
+        if fmt and not _format_valid(value, fmt):
+            errors.append(f"{path}: invalid {fmt} value {value!r}")
+
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if "minimum" in schema and value < schema["minimum"]:
+            errors.append(f"{path}: value is below minimum {schema['minimum']}")
+
+    if isinstance(value, list):
+        if len(value) < schema.get("minItems", 0):
+            errors.append(f"{path}: array shorter than minItems")
+        if schema.get("uniqueItems"):
+            fingerprints = [json.dumps(item, sort_keys=True, separators=(",", ":")) for item in value]
+            if len(fingerprints) != len(set(fingerprints)):
+                errors.append(f"{path}: array items must be unique")
+        item_schema = schema.get("items")
+        if isinstance(item_schema, dict):
+            for index, item in enumerate(value):
+                errors.extend(validate_json_schema(item, item_schema, root, f"{path}[{index}]"))
+
+    if isinstance(value, dict):
+        for key in schema.get("required", []):
+            if key not in value:
+                errors.append(f"{path}: missing required property {key!r}")
+        properties = schema.get("properties", {})
+        if not isinstance(properties, dict):
+            errors.append(f"{path}: schema properties must be an object")
+            properties = {}
+        for key, child_schema in properties.items():
+            if key in value and isinstance(child_schema, dict):
+                errors.extend(validate_json_schema(value[key], child_schema, root, f"{path}.{key}"))
+        if schema.get("additionalProperties") is False:
+            for key in value:
+                if key not in properties:
+                    errors.append(f"{path}: unknown property {key!r}")
+
+    return errors
+
+
+def _parse_utc(value: Any) -> datetime | None:
+    if not _is_nonempty(value):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (TypeError, ValueError, OverflowError):
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+def validate_registry(
+    data: Any,
+    repo_root: Path | None = None,
+    schema: dict[str, Any] | None = None,
+    now: datetime | None = None,
+) -> list[str]:
+    """Return deterministic schema + semantic errors; never mutate repository state."""
     errors: list[str] = []
     if not isinstance(data, dict):
         return ["registry root must be an object"]
+
+    if schema is None and SCHEMA.exists():
+        try:
+            schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"unable to load registry schema: {exc}")
+    if schema is not None:
+        errors.extend(validate_json_schema(data, schema))
 
     expected = {
         "schema_version": "1.0.0",
@@ -64,6 +203,12 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         errors.append("module_lanes must be an array")
         lanes = []
 
+    reference_time = now or datetime.now(timezone.utc)
+    if reference_time.tzinfo is None or reference_time.utcoffset() is None:
+        errors.append("reference time must be timezone-aware")
+        reference_time = reference_time.replace(tzinfo=timezone.utc)
+    reference_time = reference_time.astimezone(timezone.utc)
+
     tool_ids: set[str] = set()
     tool_by_id: dict[str, dict[str, Any]] = {}
     for index, tool in enumerate(tools):
@@ -80,62 +225,49 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
             tool_ids.add(tool_id)
             tool_by_id[tool_id] = tool
 
-        required_strings = (
-            "name", "family", "adapter_contract", "owner", "next_recon"
-        )
-        for field in required_strings:
-            if not _is_nonempty(tool.get(field)):
-                errors.append(f"{prefix}.{field} must be non-empty")
-        enum_fields = (
-            ("registration_state", REGISTRATION_STATES),
-            ("implementation_state", IMPLEMENTATION_STATES),
-            ("discovery_state", DISCOVERY_STATES),
-            ("verification_state", VERIFICATION_STATES),
-            ("availability_state", AVAILABILITY_STATES),
-        )
-        for field, allowed in enum_fields:
-            if tool.get(field) not in allowed:
-                errors.append(f"{prefix}.{field} has invalid value {tool.get(field)!r}")
         if tool.get("family") not in TOOL_FAMILIES:
             errors.append(f"{prefix}.family has invalid value")
-
-        capabilities = tool.get("capabilities")
-        if not isinstance(capabilities, list) or not all(_is_nonempty(x) for x in capabilities):
-            errors.append(f"{prefix}.capabilities must be an array of non-empty strings")
-        elif len(capabilities) != len(set(capabilities)):
-            errors.append(f"{prefix}.capabilities contains duplicates")
-
-        provenance = tool.get("provenance")
-        if not isinstance(provenance, dict):
-            errors.append(f"{prefix}.provenance must be an object")
-        else:
-            if any(field not in provenance for field in ("upstream_url", "revision", "license", "retrieved_at")):
-                errors.append(f"{prefix}.provenance must declare upstream_url, revision, license and retrieved_at (null is allowed)")
+        if tool.get("registration_state") not in REGISTRATION_STATES:
+            errors.append(f"{prefix}.registration_state is invalid")
+        if tool.get("implementation_state") not in IMPLEMENTATION_STATES:
+            errors.append(f"{prefix}.implementation_state is invalid")
+        if tool.get("discovery_state") not in DISCOVERY_STATES:
+            errors.append(f"{prefix}.discovery_state is invalid")
+        if tool.get("verification_state") not in VERIFICATION_STATES:
+            errors.append(f"{prefix}.verification_state is invalid")
+        if tool.get("availability_state") not in AVAILABILITY_STATES:
+            errors.append(f"{prefix}.availability_state is invalid")
 
         evidence = tool.get("evidence")
-        if not isinstance(evidence, list) or not evidence:
-            errors.append(f"{prefix}.evidence must contain at least one evidence reference")
+        if not isinstance(evidence, list):
             evidence = []
-        for e_index, item in enumerate(evidence):
-            if not isinstance(item, dict) or not _is_nonempty(item.get("ref")):
-                errors.append(f"{prefix}.evidence[{e_index}] must contain a non-empty ref")
-            elif item.get("classification") not in EVIDENCE_CLASSES:
-                errors.append(f"{prefix}.evidence[{e_index}].classification is invalid")
-
         if tool.get("verification_state") == "verified" and not any(
             isinstance(item, dict) and item.get("classification") == "verified"
             for item in evidence
         ):
             errors.append(f"{prefix}: verified profile requires verified evidence")
 
-        if tool.get("availability_state") != "unknown" and not any(
-            isinstance(item, dict)
-            and item.get("kind") == "runtime_observation"
-            and _is_nonempty(item.get("observed_at"))
-            and _is_nonempty(item.get("expires_at"))
-            for item in evidence
-        ):
-            errors.append(f"{prefix}: non-unknown availability requires a timestamped runtime_observation")
+        if tool.get("availability_state") != "unknown":
+            fresh = False
+            for item in evidence:
+                if not isinstance(item, dict) or item.get("kind") != "runtime_observation":
+                    continue
+                observed = _parse_utc(item.get("observed_at"))
+                expires = _parse_utc(item.get("expires_at"))
+                if (
+                    item.get("classification") == "verified"
+                    and observed is not None
+                    and expires is not None
+                    and observed <= reference_time < expires
+                    and expires > observed
+                ):
+                    fresh = True
+                    break
+            if not fresh:
+                errors.append(
+                    f"{prefix}: non-unknown availability requires a current, verified runtime_observation "
+                    "with valid observed_at and expires_at"
+                )
 
     lane_ids: set[str] = set()
     lane_paths: set[str] = set()
@@ -162,13 +294,6 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
         else:
             lane_paths.add(module_path)
 
-        for field in ("module_name", "evidence_policy", "reset_contract", "owner"):
-            if not _is_nonempty(lane.get(field)):
-                errors.append(f"{prefix}.{field} must be non-empty")
-        for field in ("target_platforms", "required_capabilities", "test_suites"):
-            value = lane.get(field)
-            if not isinstance(value, list) or not all(_is_nonempty(item) for item in value):
-                errors.append(f"{prefix}.{field} must be an array of non-empty strings")
         if lane.get("lane_state") not in LANE_STATES:
             errors.append(f"{prefix}.lane_state is invalid")
         if lane.get("inventory_classification") not in {
@@ -177,34 +302,21 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
             errors.append(f"{prefix}.inventory_classification is invalid")
 
         profiles = lane.get("validation_profiles")
-        if not isinstance(profiles, list) or not profiles:
-            errors.append(f"{prefix}.validation_profiles must be a non-empty array")
-        else:
-            for profile_id in profiles:
-                if not _is_nonempty(profile_id) or profile_id not in tool_ids:
-                    errors.append(f"{prefix} references unknown or invalid tool_profile_id: {profile_id}")
+        if not isinstance(profiles, list):
+            profiles = []
+        for profile_id in profiles:
+            if not _is_nonempty(profile_id) or profile_id not in tool_ids:
+                errors.append(f"{prefix} references unknown tool_profile_id: {profile_id}")
 
         hardware = lane.get("hardware_requirements")
-        if not isinstance(hardware, dict) or not isinstance(hardware.get("required"), bool):
-            errors.append(f"{prefix}.hardware_requirements.required must be boolean")
-        elif hardware["required"]:
+        if isinstance(hardware, dict) and hardware.get("required") is True:
             referenced = [
                 tool_by_id.get(profile_id, {})
-                for profile_id in (profiles if isinstance(profiles, list) else [])
+                for profile_id in profiles
                 if _is_nonempty(profile_id)
             ]
             if not any(profile.get("family") == "physical_device" for profile in referenced):
                 errors.append(f"{prefix}: hardware-required lane must include a physical_device profile")
-
-        evidence = lane.get("evidence")
-        if not isinstance(evidence, list) or not evidence:
-            errors.append(f"{prefix}.evidence must contain at least one evidence reference")
-        else:
-            for e_index, item in enumerate(evidence):
-                if not isinstance(item, dict) or not _is_nonempty(item.get("ref")):
-                    errors.append(f"{prefix}.evidence[{e_index}] must contain a non-empty ref")
-                elif item.get("classification") not in EVIDENCE_CLASSES:
-                    errors.append(f"{prefix}.evidence[{e_index}].classification is invalid")
 
         if repo_root is not None and _is_nonempty(module_path):
             if lane.get("lane_state") in {"active", "discovered"}:
@@ -225,25 +337,40 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--registry", type=Path, default=REGISTRY)
     parser.add_argument("--schema", type=Path, default=SCHEMA)
     parser.add_argument("--json", action="store_true", help="emit machine-readable result")
+    parser.add_argument("--now", help="inject an RFC3339 reference time for deterministic freshness tests")
     args = parser.parse_args(argv)
 
     try:
         data = json.loads(args.registry.read_text(encoding="utf-8"))
-        # Parse the schema as a structural artifact even when jsonschema is not installed.
-        json.loads(args.schema.read_text(encoding="utf-8"))
+        schema = json.loads(args.schema.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         print(f"FAIL: unable to read registry/schema: {exc}", file=sys.stderr)
         return 2
 
-    errors = validate_registry(data, ROOT)
-    result = {"ok": not errors, "errors": errors, "registry": str(args.registry)}
+    reference_time = _parse_utc(args.now) if args.now else None
+    if args.now and reference_time is None:
+        print("FAIL: --now must be a timezone-aware RFC3339 timestamp", file=sys.stderr)
+        return 2
+
+    errors = validate_registry(data, ROOT, schema=schema, now=reference_time)
+    result = {
+        "ok": not errors,
+        "errors": errors,
+        "registry": str(args.registry),
+        "tool_profiles": len(data.get("tool_profiles", [])) if isinstance(data, dict) and isinstance(data.get("tool_profiles"), list) else None,
+        "module_lanes": len(data.get("module_lanes", [])) if isinstance(data, dict) and isinstance(data.get("module_lanes"), list) else None,
+    }
     if args.json:
         print(json.dumps(result, indent=2))
     elif errors:
         for error in errors:
             print(f"FAIL: {error}", file=sys.stderr)
     else:
-        print(f"OK: {len(data['tool_profiles'])} tool profiles; {len(data['module_lanes'])} module lanes; coverage={data['inventory']['coverage']}")
+        print(
+            f"OK: {result['tool_profiles']} tool profiles; "
+            f"{result['module_lanes']} module lanes; "
+            f"coverage={data['inventory']['coverage']}"
+        )
     return 1 if errors else 0
 
 

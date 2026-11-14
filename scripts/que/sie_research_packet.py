@@ -75,6 +75,7 @@ def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, d
                 rejected[claim] = "duplicate_claim"
             elif claim not in rejected:
                 accepted[claim] = item
+    return accepted, rejected
 
 
 def _validate_diagnosis(diagnosis: dict) -> None:

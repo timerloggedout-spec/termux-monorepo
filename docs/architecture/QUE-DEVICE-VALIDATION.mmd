@@ -14,9 +14,11 @@ flowchart TD
   L --> R["RECON + capability registry"]
   R --> C{"Capability + freshness match?"}
   C -->|"No"| X["BLOCK / NEED RECON"]
-  C -->|"Yes"| CA["Cadence admission / tier policy"]\n  CA --> Q["QUE rank / claim / lease watchdog"]\n  Q --> RT["Registered claimable route"]
-
+  C -->|"Yes"| CA["Cadence admission / tier policy"]
+  CA --> Q["QUE rank / claim / lease watchdog"]
+  Q --> RT["Registered claimable route"]
   RT --> A["Backend adapter"]
+
   A --> AV["Android AVD"]
   A --> TD["Termux Docker / Linux container"]
   A --> QE["QEMU"]

@@ -56,11 +56,11 @@ def inspect_git_range(base: str, head: str) -> None:
                 )
 
     subjects = subprocess.run(
-        ["git", "log", f"{base}..{head}", "--format=%s"],
+        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"],
         check=True, capture_output=True, text=True,
     ).stdout.splitlines()
     bodies = subprocess.run(
-        ["git", "log", f"{base}..{head}", "--format=%b"],
+        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"],
         check=True, capture_output=True, text=True,
     ).stdout
     inspect_text("commit.body", bodies)

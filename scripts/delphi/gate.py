@@ -443,6 +443,25 @@ def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
         raise ValueError(f"package input has invalid base64 content: {path}") from exc
 
 
+def _github_regular_blob_paths(gh: "GH", ref: str) -> dict[str, dict]:
+    """Return a complete immutable Git tree; reject truncation and non-regular blobs."""
+    tree = gh.req("GET", f"/git/trees/{ref}?recursive=1")
+    if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
+        raise ValueError(f"Git tree for {ref} is unavailable or truncated")
+    entries = {}
+    for entry in tree["tree"]:
+        if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+            raise ValueError(f"Git tree for {ref} contains a malformed entry")
+        entries[entry["path"]] = entry
+    return entries
+
+
+def _require_regular_blob(entries: dict[str, dict], path: str, ref: str) -> None:
+    entry = entries.get(path)
+    if not isinstance(entry, dict) or entry.get("type") != "blob" or entry.get("mode") != "100644":
+        raise ValueError(f"package input is missing, executable, a symlink or not a regular file at {ref}: {path}")
+
+
 def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
     """Verify optional QD-039 issue fields against the exact immutable GitHub contents."""
     fields = parse_form(issue.get("body", ""))
@@ -460,10 +479,14 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
         raise ValueError("proposal source ref must be an immutable Git commit SHA")
     if not re.fullmatch(sha_pattern, manifest_ref):
         raise ValueError("proposal manifest ref must be an immutable Git commit SHA")
+    if manifest_ref == source_ref:
+        raise ValueError("proposal manifest ref must differ from its source ref")
     if not re.fullmatch(r"[0-9a-f]{64}", expected_digest):
         raise ValueError("expected package digest must be a lowercase SHA-256")
     # The manifest is committed after its source snapshot, so it cannot live at
-    # the source SHA that it records. Pin the manifest blob independently.
+    # the source SHA that it records. Pin and type-check both immutable Git trees.
+    manifest_tree = _github_regular_blob_paths(gh, manifest_ref)
+    _require_regular_blob(manifest_tree, manifest_path, manifest_ref)
     raw_manifest = _github_file_bytes(gh, manifest_path, manifest_ref)
     try:
         manifest = json.loads(raw_manifest.decode("utf-8"))
@@ -478,12 +501,14 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
         raise ValueError("proposal package digest does not match the expected digest")
     if len(manifest["files"]) > MAX_PACKAGE_FILES:
         raise ValueError(f"proposal package exceeds the {MAX_PACKAGE_FILES}-file verification bound")
+    source_tree = _github_regular_blob_paths(gh, source_ref)
     package_prefix = manifest["package_path"].rstrip("/") + "/"
     verified_files = []
     for entry in manifest["files"]:
         path = entry["path"]
         if not path.startswith(package_prefix):
             raise ValueError(f"inventory path is outside package_path: {path}")
+        _require_regular_blob(source_tree, path, source_ref)
         content = _github_file_bytes(gh, path, source_ref)
         actual = hashlib.sha256(content).hexdigest()
         if actual != entry["sha256"]:
@@ -669,7 +694,7 @@ def _run(args) -> int:
         for issue in issues
     )
     census_calls = max(1, (len(issues) // 100) + 1)
-    estimated_calls_per_rfp = 6 + census_calls + (1 + MAX_PACKAGE_FILES if package_bound else 0)
+    estimated_calls_per_rfp = 6 + census_calls + (3 + MAX_PACKAGE_FILES if package_bound else 0)
     plan = cadence(registry, readings, len(issues), args.depth,
                    api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "

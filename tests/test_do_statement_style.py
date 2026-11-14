@@ -26,7 +26,7 @@ class DoStatementStyleRulesTests(unittest.TestCase):
     def test_descriptive_subjects_fail(self):
         for subject in (
             "backup-state relay: exp-20261114T155846Z-7afd1c",
-            "fix(ci): export support",
+            "fix(ci): action-first verb coverage",
             "update docs: the new standard",
             "",
         ):

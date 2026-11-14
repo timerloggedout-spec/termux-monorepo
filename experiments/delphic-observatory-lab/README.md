@@ -100,3 +100,10 @@ The lane now treats mathematics as a contract rather than presentation metadata:
 - **Provenance:** algorithm input and parameter digests cover every value capable of changing a result.
 
 Wolfram is used as an external mathematical reference/verification layer. The production research lane remains stdlib-only and does not make runtime calls to Wolfram.
+
+## Visual-model boundaries
+
+- The browser Kahn routine in graph-views.html is a small deterministic teaching fixture. The production planner remains she/orchestration/dag.py, algorithm version kahn-reference-v2.
+- The Markov panel is a probability-conservation fixture. The ArchWiz model engine in experiments/archwiz-markov-lane/src/markov-engine.mjs is the reusable transition/tree/trellis implementation.
+- AST containment and temporal lineage are validated independently; neither is silently converted into a dependency DAG.
+- Refresh recomputes local fixtures only. It does not fetch live GitHub data, mutate canonical evidence, dispatch work, or change routing authority.

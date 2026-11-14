@@ -11,7 +11,10 @@ Subcommands
 """
 from __future__ import annotations
 
-import argparse, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.request, urllib.error
+import argparse, base64, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.parse, urllib.request, urllib.error
+from pathlib import PurePosixPath
+
+from proposal_package import validate_manifest
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
@@ -421,6 +424,69 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
 
 
+def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
+    """Read one regular file from an immutable Git commit through the authenticated API."""
+    if (not isinstance(path, str) or not path or path.startswith("/") or "\\" in path
+            or any(part in ("", ".", "..") for part in path.split("/"))):
+        raise ValueError(f"unsafe repository content path: {path!r}")
+    response = gh.req("GET", f"/contents/{urllib.parse.quote(path, safe='/')}?ref={source_ref}")
+    if response.get("type") != "file" or response.get("encoding") != "base64":
+        raise ValueError(f"package input is not a regular base64 file: {path}")
+    encoded = re.sub(r"\\s+", "", response.get("content") or "")
+    try:
+        return base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as exc:
+        raise ValueError(f"package input has invalid base64 content: {path}") from exc
+
+
+def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
+    """Verify optional QD-039 issue fields against the exact immutable GitHub contents."""
+    fields = parse_form(issue.get("body", ""))
+    source_ref = (fields.get("proposal_source_ref") or "").strip()
+    manifest_path = (fields.get("proposal_manifest_path") or "").strip()
+    expected_digest = (fields.get("expected_package_digest") or "").strip()
+    supplied = [bool(source_ref), bool(manifest_path), bool(expected_digest)]
+    if not any(supplied):
+        return None  # legacy RFPs retain their existing path
+    if not all(supplied):
+        raise ValueError("proposal source ref, manifest path and expected package digest are all required")
+    if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", source_ref):
+        raise ValueError("proposal source ref must be an immutable Git commit SHA")
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_digest):
+        raise ValueError("expected package digest must be a lowercase SHA-256")
+    raw_manifest = _github_file_bytes(gh, manifest_path, source_ref)
+    try:
+        manifest = json.loads(raw_manifest.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("proposal package manifest is not valid UTF-8 JSON") from exc
+    errors = validate_manifest(manifest)
+    if errors:
+        raise ValueError("proposal package manifest held: " + "; ".join(errors))
+    if manifest["source_ref"] != source_ref:
+        raise ValueError("proposal manifest source ref does not match the issue binding")
+    if manifest["package_digest"] != expected_digest:
+        raise ValueError("proposal package digest does not match the expected digest")
+    package_prefix = manifest["package_path"].rstrip("/") + "/"
+    verified_files = []
+    for entry in manifest["files"]:
+        path = entry["path"]
+        if not path.startswith(package_prefix):
+            raise ValueError(f"inventory path is outside package_path: {path}")
+        content = _github_file_bytes(gh, path, source_ref)
+        actual = hashlib.sha256(content).hexdigest()
+        if actual != entry["sha256"]:
+            raise ValueError(f"proposal file hash mismatch: {path}")
+        verified_files.append(path)
+    return {
+        "source_ref": source_ref,
+        "manifest_path": manifest_path,
+        "package_id": manifest["package_id"],
+        "package_path": manifest["package_path"],
+        "package_digest": manifest["package_digest"],
+        "file_count": len(verified_files),
+    }
+
+
 def quantize_roles(roles: dict) -> dict:
     """Weights enter the input hash quantized (gpr to 0.1, Elo to 25) so a stream of small graded
     outcomes (tribute-outcome) re-scores the queue only when a weight moves materially."""
@@ -428,9 +494,10 @@ def quantize_roles(roles: dict) -> dict:
                 "elo": int(round(float(v.get("elo", 1500)) / 25.0) * 25)} for k, v in roles.items()}
 
 
-def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
+def input_hash(s: dict, roles: dict, registry: dict, readings: dict,
+               package_binding: dict | None = None) -> str:
     reg = {x["id"]: x for x in registry.get("services", [])}.get(s.get("registry_id") or "", {})
-    blob = json.dumps([s, quantize_roles(roles), reg, readings], sort_keys=True)
+    blob = json.dumps([s, quantize_roles(roles), reg, readings, package_binding], sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
 
@@ -446,7 +513,8 @@ def comment_md(out: dict, ih: str, reason: str) -> str:
     o = out["records"]["oracle"]["documented"]
     lines += ["", f"Oracle: {o['metric']} = {o['limit']} {o['unit']}, reset {o['reset']} {o['zone']} ([source]({o['source']}))", "",
               "<details><summary>Signed votes + HindSight/ForeSight/3l0.moneyball.v1 records</summary>", "", "```json",
-              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"], "award": a,
+              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"],
+                          "award": a, "proposal_package": out.get("proposal_package"),
                           "records": {k: v for k, v in out["records"].items() if k != "oracle"}}, indent=1), "```", "</details>"]
     return "\n".join(lines)
 
@@ -567,7 +635,14 @@ def _run(args) -> int:
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 continue
             try:
-                ih = input_hash(s, roles, registry, readings)
+                try:
+                    package_binding = verify_issue_package_binding(gh, issue)
+                except (ValueError, TypeError, KeyError, urllib.error.HTTPError) as exc:
+                    pending += 1
+                    summary.append(f"#{issue['number']} {s['id']}: HELD package binding")
+                    print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
+                    continue
+                ih = input_hash(s, roles, registry, readings, package_binding)
                 prev = last_ledger(gh, issue["number"])
                 due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
                 if prev and prev.get("input_hash") == ih and not due:
@@ -577,6 +652,10 @@ def _run(args) -> int:
                                   "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
                     continue
                 out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
+                if package_binding is not None:
+                    out["proposal_package"] = package_binding
+                    out["award"]["package_digest"] = package_binding["package_digest"]
+                    out["records"]["moneyball"]["proposal_package_digest"] = package_binding["package_digest"]
                 gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
                 labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
                 labels.add("delphi:" + out["award"]["decision"])

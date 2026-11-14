@@ -368,7 +368,7 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             "prior": asdict(Belief()),
             "credible_interval": "equal-tail-95%",
             "deduplication": "experiment_id; conflicting outcomes held",
-            "identity": ["source_sha", "event_id", "observed_at", "instance_key"],
+            "identity": ["experiment_id", "source_sha", "event_id", "observed_at", "instance_key", "policy_version"],
         }),
         "executed_at": datetime.now(timezone.utc).isoformat(),
         "runtime_ms": round((time.perf_counter() - started) * 1000.0, 3),

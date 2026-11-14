@@ -28,6 +28,7 @@ class TestProposalPackage(unittest.TestCase):
             source_ref="a" * 40,
             package_id="que-sie-test",
             package_path="docs/proposals/que-sie-test",
+            package_author="builder",
             root=self.root,
             files=["RFP.md", "MANIFEST.md", "ITEMS.md"],
             excluded_paths=["PROVENANCE.json"],
@@ -79,7 +80,8 @@ class TestProposalPackage(unittest.TestCase):
     def test_award_digest_and_independent_reviewer_are_required(self):
         manifest = self.manifest()
         award = {"package_digest": manifest["package_digest"],
-                 "decision": "shadow", "ledger_ref": "issue-comment:99"}
+                 "decision": "shadow", "ledger_ref": "issue-comment:99",
+                 "reviewer_login": "reviewer"}
         good = verify_award(manifest=manifest, award=award,
                             package_author="builder", reviewer="reviewer")
         self.assertEqual(good["disposition"], "VERIFIED")

@@ -121,5 +121,34 @@ class AgentThroughputSchemaTest(unittest.TestCase):
         )
 
 
+    def test_execution_controller_schema_is_closed_and_que_gated(self):
+        schema = json.loads(
+            (ROOT / "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json").read_text(encoding="utf-8")
+        )
+        execution = schema["properties"]["execution"]
+        self.assertFalse(execution["additionalProperties"])
+        self.assertEqual(
+            set(execution["required"]),
+            {"controller", "surface", "route", "session_ref", "adapter_version",
+             "attribution_method", "confidence", "evidence_refs"},
+        )
+        gate = execution["allOf"][0]
+        self.assertEqual(gate["if"]["properties"]["controller"]["const"], "que")
+        required = gate["then"]["properties"]
+        self.assertEqual(required["surface"]["const"], "repo_owned_adapter")
+        self.assertEqual(required["attribution_method"]["const"], "invocation_telemetry")
+        self.assertNotIn("seat_browser", required["route"]["enum"])
+        self.assertEqual(required["evidence_refs"]["minItems"], 1)
+
+    def test_author_and_execution_are_separate_closed_schema_objects(self):
+        schema = json.loads(
+            (ROOT / "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json").read_text(encoding="utf-8")
+        )
+        self.assertFalse(schema["properties"]["author"]["additionalProperties"])
+        self.assertFalse(schema["properties"]["execution"]["additionalProperties"])
+        self.assertIn("github_actor", schema["properties"])
+        self.assertNotIn("session_text", schema["properties"]["execution"]["properties"])
+
+
 if __name__ == "__main__":
     unittest.main()

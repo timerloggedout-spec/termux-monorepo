@@ -149,3 +149,12 @@ def test_graph_suite_pages_are_in_the_fallback_version_registry():
     js = (APP / "versioning.js").read_text()
     for filename in ("algorithm-suite.html", "markov-trellis.html", "delphic-graph.html"):
         assert '"file":"' + filename + '"' in js
+
+
+def test_published_markov_runtime_asset_matches_canonical_experiment_engine():
+    canonical = ROOT / "experiments" / "archwiz-markov-lane" / "src" / "markov-engine.mjs"
+    published = APP / "markov-engine.mjs"
+    assert published.read_bytes() == canonical.read_bytes()
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    asset_files = {asset["file"] for asset in manifest.get("assets", [])}
+    assert {"algorithm-labs.json", "markov-engine.mjs"}.issubset(asset_files)

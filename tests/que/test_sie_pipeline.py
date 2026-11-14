@@ -108,6 +108,11 @@ class TestSIEPipeline(unittest.TestCase):
         self.assertEqual(groups[0]["source_id"], "8123")
         self.assertEqual(groups[0]["step"], "dispatch-watchdog")
         self.assertEqual(groups[0]["key"], queue_stall_groups(feed)[0]["key"])
+        advanced = json.loads(json.dumps(feed))
+        advanced["dispatches"][0]["age_min"] = 121
+        refreshed = queue_stall_groups(advanced)[0]
+        self.assertEqual(groups[0]["source_revision"], refreshed["source_revision"])
+        self.assertGreater(refreshed["priority"], groups[0]["priority"])
         body = item_body(groups[0])
         match = re.search(r"## SIE stage receipt\n\x60\x60\x60json\n(.*?)\n\x60\x60\x60", body, re.S)
         self.assertIsNotNone(match)

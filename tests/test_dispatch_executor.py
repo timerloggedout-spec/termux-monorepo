@@ -119,15 +119,14 @@ def test_escalated_but_unclaimed_is_eligible():
     assert d["decisions"][0]["action"] == "fire"
 
 
-def test_deferred_filing_never_evaluated():
+def test_deferred_filing_never_evaluated_even_with_stale_admitted_label():
     d = _decide([_filing(4966, ("swarm-admitted", "dispatch-queued", "deferred-by-tier"))])
-    # deferred-by-tier filings do not carry the admitted snapshot the
-    # executor consumes; here the label set still matches, so the
-    # executor must NOT treat the tier label as an admission signal:
-    # the admission state machine governs. This filing carries
-    # swarm-admitted in the fixture only to prove the executor keys
-    # on the admitted snapshot, not the tier label -- see test below.
-    assert d["decisions"][0]["action"] == "fire"
+    assert d["decisions"] == []
+
+
+def test_project_task_routes_to_qdesk_not_provider_executor():
+    d = _decide([_filing(5195, ("swarm-admitted", "dispatch-queued", "project-task"))])
+    assert d["decisions"] == []
 
 
 def test_unadmitted_filing_excluded():

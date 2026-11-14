@@ -62,6 +62,22 @@ drain (Tranche 4) re-evaluates deferred filings as the queue
 clears. Evaluation errors defer too, with the error as the reason:
 admission never admits blind.
 
+### Deferred-admission drain (QUE #4977 Fix 3b)
+
+The scheduled `.github/workflows/swarm-admission-drain.yml` invokes
+`scripts/ops/swarm_admission_drain.py` every 15 minutes and supports
+manual dispatch. It scans only existing open `deferred-by-tier`
+filings, reuses the canonical template matcher, queue-picture freshness
+gate and dispatch-tiers v2 evaluator, and publishes idempotent decision
+receipts. It changes only mutually-exclusive admission labels; it
+preserves `dispatch-queued`, claim, escalation and other task labels.
+
+The drain is admission-only: it does not reopen issues, claim work,
+start `build-dispatch`, invoke providers, or change quota/cadence.
+Unknown flow-tier queue state remains deferred. Receipt identity excludes
+the moving queue-picture `as_of` timestamp while retaining source and
+decision evidence, so unchanged verdicts do not create comment churn.
+
 ## Receipts
 
 The filing's **first fleet comment is its dispatch stamp**:
@@ -78,10 +94,13 @@ point the same fields emit as plane events.
 Filed as exhibits, not parallel-built:
 
 - **project-task** (#3577, PR #4076): the form + intake workflow
-  validate and receipt filings; selection/execution happens in the
-  dispatch machinery. **The proof conversion** (below) adds the
-  block + admission in front of this existing route — the RFP/task
-  batches that routed by hand now route by contract.
+  validate and receipt filings. These filings are QDesk seat-queue
+  work: the dispatch watchdog may claim them as `qdesk-seat-queue`,
+  while `dispatch_executor.eligible_filings()` explicitly excludes
+  `project-task` so they cannot enter a provider/build arm.
+  **The proof conversion** adds the block + admission in front of
+  this existing route — the RFP/task batches that routed by hand
+  now route by contract.
 - **delphi-rfp**: filings wake the Delphi gate by event
   (`delphi-intake.yml`). Converts by adding the block; its gate
   becomes the route.

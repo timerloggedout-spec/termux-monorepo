@@ -12,6 +12,7 @@ on:
       - "apps/tribute-dashboard/**"
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"
+      - "scripts/ci/verify_tribute_js.py"
       - "tests/test_dashboard_versioning.py"
       - "experiments/archwiz-markov-lane/**"
       - "scripts/delphic_oracle.py"
@@ -48,6 +49,7 @@ on:
       - "apps/tribute-dashboard/**"
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"
+      - "scripts/ci/verify_tribute_js.py"
       - "tests/test_dashboard_versioning.py"
       - "experiments/archwiz-markov-lane/**"
       - "scripts/delphic_oracle.py"
@@ -95,3 +97,4 @@ jobs:
         run: |
           python3 -m pytest -q tests/test_dashboard_versioning.py
           python3 scripts/ci/verify_tribute_dashboard.py
+          python3 scripts/ci/verify_tribute_js.py

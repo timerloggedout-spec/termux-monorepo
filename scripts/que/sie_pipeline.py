@@ -64,6 +64,12 @@ def validate_receipt(receipt: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(receipt, dict):
         return ["receipt: expected object"]
+    allowed = {"schema", "event_id", "item_key", "stage", "state", "source",
+               "observed_at", "repository", "ref", "sha", "owner_role",
+               "claim_class", "evidence_refs", "package_digest", "reason"}
+    unknown = set(receipt) - allowed
+    if unknown:
+        errors.append("receipt: unsupported properties: " + ", ".join(sorted(unknown)))
     required = ("schema", "event_id", "item_key", "stage", "state", "source",
                 "observed_at", "repository", "ref", "sha", "evidence_refs")
     for field in required:
@@ -86,6 +92,9 @@ def validate_receipt(receipt: Any) -> list[str]:
     if not isinstance(source, dict):
         errors.append("source: expected object")
     else:
+        source_unknown = set(source) - {"kind", "id", "url"}
+        if source_unknown:
+            errors.append("source: unsupported properties: " + ", ".join(sorted(source_unknown)))
         if source.get("kind") not in SOURCE_KINDS:
             errors.append("source.kind: unsupported source kind")
         if not isinstance(source.get("id"), str) or not source["id"].strip():
@@ -128,26 +137,40 @@ def next_stage(stage: str) -> str | None:
 
 
 def validate_transition(previous: dict, current: dict) -> list[str]:
-    """Validate a single forward transition; terminal states require a new lineage."""
-    errors = validate_receipt(previous) + validate_receipt(current)
-    if errors:
-        return [f"previous: {e}" for e in validate_receipt(previous)] + [f"current: {e}" for e in validate_receipt(current)]
+    """Validate same-stage execution updates or one completed-stage advancement."""
+    previous_errors = validate_receipt(previous)
+    current_errors = validate_receipt(current)
+    if previous_errors or current_errors:
+        return ([f"previous: {error}" for error in previous_errors]
+                + [f"current: {error}" for error in current_errors])
+    errors = []
     if previous["item_key"] != current["item_key"]:
         errors.append("item_key: transition must preserve logical work identity")
     if previous["source"] != current["source"]:
         errors.append("source: transition must preserve source identity")
     if previous["state"] in TERMINAL:
         errors.append("state: terminal lineage requires a new item")
-    if previous["state"] == "BLOCKED" and current["stage"] != previous["stage"]:
-        errors.append("stage: blocked item resumes at the same stage")
-    if current["stage"] != next_stage(previous["stage"]) and not (
-        previous["state"] == "BLOCKED" and current["stage"] == previous["stage"]
-    ):
+        return errors
+
+    if current["stage"] == previous["stage"]:
+        allowed = {
+            "PENDING": {"READY", "BLOCKED", "REJECTED", "SUPERSEDED"},
+            "READY": {"ACTIVE", "BLOCKED", "REJECTED", "SUPERSEDED"},
+            "ACTIVE": {"COMPLETED", "BLOCKED", "REJECTED", "SUPERSEDED"},
+            "BLOCKED": {"READY", "ACTIVE", "REJECTED", "SUPERSEDED"},
+        }
+        if current["state"] not in allowed.get(previous["state"], set()):
+            errors.append(
+                f"state: {previous['state']} cannot transition to {current['state']} within {previous['stage']}"
+            )
+        return errors
+
+    if current["stage"] != next_stage(previous["stage"]):
         errors.append("stage: transition must advance exactly one stage")
-    if previous["state"] != "COMPLETED" and previous["state"] != "BLOCKED":
-        errors.append("state: previous stage must be COMPLETED or BLOCKED")
-    if previous["state"] == "BLOCKED" and current["state"] not in {"READY", "ACTIVE", "BLOCKED"}:
-        errors.append("state: blocked stage resumes as READY, ACTIVE or BLOCKED")
+    if previous["state"] != "COMPLETED":
+        errors.append("state: previous stage must be COMPLETED before stage advancement")
+    if current["state"] != "READY":
+        errors.append("state: next stage must enter as READY")
     return errors
 
 

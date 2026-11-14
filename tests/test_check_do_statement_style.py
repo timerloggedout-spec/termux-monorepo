@@ -45,3 +45,13 @@ def test_commit_body_scan_ignores_synthetic_merge_commits(monkeypatch):
     module["commit_bodies"]("origin/master", "HEAD")
     assert calls
     assert "--no-merges" in calls[0]
+
+
+def test_repo_action_verbs_are_recognized_as_imperative(monkeypatch):
+    module = load_style_module(monkeypatch)
+    verbs = {
+        "allow", "block", "canonicalize", "centralize", "constrain",
+        "distinguish", "lock", "propagate", "reject", "share", "specify",
+        "support", "prevent", "skip",
+    }
+    assert verbs <= module["IMPERATIVE"]

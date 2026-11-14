@@ -16,6 +16,8 @@ from pathlib import PurePosixPath
 
 from proposal_package import validate_manifest
 
+MAX_PACKAGE_FILES = 25
+
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
 PANEL = os.path.join(ROOT, "ops", "delphi", "panel.json")
@@ -256,14 +258,14 @@ def feedback(roles: dict, final_votes: list[dict], outcome: str, panel: dict) ->
 
 # ---------------------------------------------------------------- adaptive cadence
 def cadence(registry: dict, readings: dict, pending: int, depth: int, max_depth: int = 3,
-            api_remaining: int | None = None) -> dict:
+            api_remaining: int | None = None, per_rfp_calls: int = 6) -> dict:
     """Quota-aware: accelerate when free quota sits unused before its reset, defer near caps.
     Bounded by the GitHub API budget in the registry, the LIVE x-ratelimit-remaining of the
     repo-wide GITHUB_TOKEN (shared with every workflow), and a chain-depth cap."""
     reg = {s["id"]: s for s in registry.get("services", [])}
     api = reg.get("github.api.github_token", {})
     cap = int((api.get("limit") or 1000) * (api.get("planned_use", {}).get("safety", 0.8)))
-    per_rfp_calls = 6
+    per_rfp_calls = max(6, int(per_rfp_calls))
     max_rfps = max(1, cap // per_rfp_calls // 4)  # never spend more than a quarter of the hourly budget per run
     reserve = max(100, cap // 10)  # leave headroom for the repo's other workflows
     if api_remaining is not None:
@@ -430,9 +432,12 @@ def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
             or any(part in ("", ".", "..") for part in path.split("/"))):
         raise ValueError(f"unsafe repository content path: {path!r}")
     response = gh.req("GET", f"/contents/{urllib.parse.quote(path, safe='/')}?ref={source_ref}")
-    if response.get("type") != "file" or response.get("encoding") != "base64":
+    if not isinstance(response, dict) or response.get("type") != "file" or response.get("encoding") != "base64":
         raise ValueError(f"package input is not a regular base64 file: {path}")
-    encoded = re.sub(r"\s+", "", response.get("content") or "")
+    encoded_content = response.get("content")
+    if not isinstance(encoded_content, str):
+        raise ValueError(f"package input has no base64 content: {path}")
+    encoded = re.sub(r"\s+", "", encoded_content)
     try:
         return base64.b64decode(encoded, validate=True)
     except (ValueError, TypeError) as exc:
@@ -466,6 +471,8 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
         raise ValueError("proposal manifest source ref does not match the issue binding")
     if manifest["package_digest"] != expected_digest:
         raise ValueError("proposal package digest does not match the expected digest")
+    if len(manifest["files"]) > MAX_PACKAGE_FILES:
+        raise ValueError(f"proposal package exceeds the {MAX_PACKAGE_FILES}-file verification bound")
     package_prefix = manifest["package_path"].rstrip("/") + "/"
     verified_files = []
     for entry in manifest["files"]:
@@ -617,7 +624,14 @@ def _run(args) -> int:
     _, roles = weights_issue(gh, panel)
     panel = dict(panel, roles=roles)
     issues = [i for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i]
-    plan = cadence(registry, readings, len(issues), args.depth, api_remaining=remaining)
+    package_bound = any(
+        any((parse_form(issue.get("body", "")).get(field) or "").strip()
+            for field in ("proposal_source_ref", "proposal_manifest_path", "expected_package_digest"))
+        for issue in issues
+    )
+    estimated_calls_per_rfp = 6 + (1 + MAX_PACKAGE_FILES if package_bound else 0)
+    plan = cadence(registry, readings, len(issues), args.depth,
+                   api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "
           f"cap={plan['max_rfps_per_run']} api_remaining={remaining}")
     if plan["mode"] == "defer" and args.reason not in ("issues", "issue_comment", "workflow_dispatch"):

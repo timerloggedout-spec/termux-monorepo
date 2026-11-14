@@ -109,6 +109,20 @@ class TestSIEResearchPacket(unittest.TestCase):
         self.assertEqual(provenance["external_calls_by_generator"], 0)
         self.assertEqual(provenance["human_ballots_received"], 0)
         self.assertEqual(provenance["proposal_id"], brief["id"])
+        self.assertEqual(brief["related_issues"], [])
+
+    def test_issue_backed_sources_keep_issue_refs(self):
+        _, diagnosis, evidence = fixture()
+        receipt = build_receipt(
+            source_kind="queue_item", source_id="8123",
+            source_revision="issue-revision-1", failure_class="queue-repair",
+            sha="a" * 40, observed_at="2026-11-14T00:00:00Z",
+        )
+        _, brief, _ = build_research_packet(
+            source_receipt=receipt, diagnosis=diagnosis,
+            evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+        )
+        self.assertEqual(brief["related_issues"], [8123])
 
     def test_packet_rejects_evidence_integrity_drift(self):
         receipt, diagnosis, evidence = fixture()

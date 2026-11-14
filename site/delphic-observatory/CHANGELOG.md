@@ -1,17 +1,12 @@
-# Delphic Observatory changelog
+# Changelog
 
-## 0.1.0 — 2026-11-12
-
-- Initial versioned public showcase.
-- LEFT / NOW-CENTER / RIGHT spatial model.
-- Bayesian posterior, predictive, entropy, KL, information gain, EVSI and Markov path-cost contracts.
-- Interactive local Beta posterior lens; no network/runtime dependency.
-- Explicit research-only authority boundary and offline Termux validation status.
-- QUE / AutonomousOpsStuff integration intent documented; no direct production authority granted.
-
+## 0.3.0 — 2026-11-13
+- Migrate the Observatory presentation to a Git-linked Vercel project.
+- Add a live research lane matrix linked to the canonical lane architecture.
+- Add read-only GitHub pull-request and Actions feeds with explicit degraded states and freshness.
+- Add a Render feed adapter and Blueprint proposal; provisioning remains gated on plan review.
+- Document platform ownership, feed envelopes, provenance, cache behavior and authority boundaries.
 
 ## 0.2.0 — 2026-11-12
-
-- Added DoE × MoneyBall model-task pool integration.
-- Exact configured-instance allocation, quota/capacity gates and independent verification.
-- Explicit DoE, MoneyBall, QUE and Delphic authority boundaries.
+- Add DoE × MoneyBall configured-instance task-pool integration contract.
+- Add passive Tranche A candidate packet builder.

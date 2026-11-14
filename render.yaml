@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: delphic-observatory-feed
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: python --version
+    startCommand: python scripts/observatory_feed.py
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: GITHUB_REPOSITORY
+        value: timerloggedout-spec/termux-monorepo

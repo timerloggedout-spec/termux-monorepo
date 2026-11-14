@@ -64,8 +64,11 @@ class TestProposalPackage(unittest.TestCase):
                 self.refs = []
             def req(self, method, path):
                 ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/commits/"):
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
                 if path.startswith("/git/trees/"):
-                    paths = ([manifest_path] if ref == manifest_ref else
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
+                    paths = ([manifest_path] if tree_sha == "c" * 40 else
                              [f"{package_path}/{name}" for name in ("ITEMS.md", "MANIFEST.md", "RFP.md")])
                     return {"truncated": False, "tree": [
                         {"path": item, "type": "blob", "mode": "100644"} for item in paths

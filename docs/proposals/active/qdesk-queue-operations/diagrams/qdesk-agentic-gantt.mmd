@@ -1,0 +1,34 @@
+---
+title: QDesk implementation roadmap
+dateFormat: YYYY-MM-DD
+axisFormat: %b %d
+---
+gantt
+  title QDesk phased delivery — illustrative planning baseline
+  dateFormat YYYY-MM-DD
+  axisFormat %b %d
+  section P0 Contract census
+  Reconcile QUE / QDesk / SIE / DoE / throttle / WagerTome :p0, 2026-11-16, 3d
+  Inventory feeds, schemas, Projects and Gantt overlaps :p0b, after p0, 3d
+  section P1 Evidence model
+  Lifecycle and evidence contract :p1, after p0b, 3d
+  Fixtures, integrity and freshness tests :p1b, after p1, 3d
+  section P2 Read-only cockpit
+  Overview and priority worklist :p2, after p1b, 5d
+  Workers, routing, waits and escalations :p2b, after p2, 5d
+  Throttle, WagerTome, SIE and Projects roll-up :p2c, after p2b, 5d
+  section P3 Ingress quarantine
+  Intake schema and deterministic validators :p3, after p1, 5d
+  Negative, fuzz and policy tests :p3b, after p3, 3d
+  section P4 Guarded decision controls
+  Override preview and audit receipt contract :p4, after p2c, 4d
+  QUE endpoint authorization and idempotency :p4b, after p4, 5d
+  section P5 AgenticGantt
+  DAG + waterfall baseline + revision history :p5, after p2b, 5d
+  section P6 Integrations
+  GitHub Projects v2 read-only mapping :p6, after p2c, 5d
+  Browser Quarantine sanitized receipt adapter :p6b, after p3b, 4d
+  section P7 Hardening
+  SIE / DoE independent verification :p7, after p4b, 5d
+  Accessibility, load, security and rollback review :p7b, after p6, 5d
+  Final exact-head acceptance and release decision :milestone, after p7b, 1d

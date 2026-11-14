@@ -115,10 +115,11 @@ class _FakeGh:
         self.jobs_by_run = jobs_by_run
         self.anns_by_url = anns_by_url
 
-    def all_pages(self, path):
+    def call(self, method, path):
         if "/jobs" in path:
-            return self.jobs_by_run.get(path.split("/runs/")[1].split("/")[0], [])
-        return self.anns_by_url.get(path, [])
+            jobs = self.jobs_by_run.get(path.split("/runs/")[1].split("/")[0], [])
+            return {"total_count": len(jobs), "jobs": jobs}
+        return self.anns_by_url.get(path.split("?")[0], [])
 
 
 def test_sweep_counts_only_installation_limit():
@@ -134,3 +135,18 @@ def test_sweep_counts_only_installation_limit():
     assert len(out["installation_limit_hits"]) == 1
     assert out["installation_limit_hits"][0]["run_id"] == 1
     assert out["coverage_complete"] is True
+
+
+def test_paged_list_reads_server_total():
+    calls = {"n": 0}
+
+    class _OnePageGh:
+        def call(self, method, path):
+            calls["n"] += 1
+            if calls["n"] > 1:
+                return {"total_count": 250, "workflow_runs": [{"id": 2}] * 50}
+            return {"total_count": 250, "workflow_runs": [{"id": 1}] * 100}
+
+    total, items = vr.paged_list(_OnePageGh(), "/repos/x/actions/runs", "workflow_runs")
+    assert total == 250
+    assert len(items) == 150

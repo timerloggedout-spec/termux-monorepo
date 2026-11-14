@@ -253,3 +253,23 @@ def test_markov_layer_propagation_rejects_non_finite_or_negative_tolerance():
             assert "tolerance" in str(exc)
         else:
             raise AssertionError("expected invalid tolerance rejection")
+
+
+def test_three_way_reconciliation_distinguishes_booleans_from_numbers():
+    scalar = m.three_way_diff({"x": False}, {"x": False}, {"x": 0})
+    assert scalar["rows"][0]["status"] == "clean_branch_2"
+    assert scalar["merged"]["x"] == 0
+    assert type(scalar["merged"]["x"]) is int
+
+    nested = m.three_way_diff(
+        {"x": {"items": [False]}},
+        {"x": {"items": [False]}},
+        {"x": {"items": [0]}},
+    )
+    assert nested["rows"][0]["status"] == "clean_branch_2"
+    assert nested["merged"]["x"]["items"] == [0]
+
+    conflict = m.three_way_diff(
+        {"x": [False]}, {"x": [0]}, {"x": [1]},
+    )
+    assert conflict["conflicts"] == ["x"]

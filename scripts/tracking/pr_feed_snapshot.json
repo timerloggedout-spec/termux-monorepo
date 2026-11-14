@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-14T07:40:01Z",
+ "read_at": "2026-11-14T07:56:59Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,6 +1956,84 @@
  ],
  "open": [
   {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:56:22Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "587515e2af852c0e52864c4810ffa645bc821ab3",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:51:26Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "336b4310124bcc92f6733d806d00130f4a25ac8b",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:47:26Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "02b2778542abb762ac6e302dfffd2f34e6593a55",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 5397,
+   "title": "test(dispatch): align lane matrix assertion with cancellation policy",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:46:30Z",
+   "created_at": "2026-11-14T07:43:07Z",
+   "merge_commit_sha": "7e0e29c2d33aafd14b62cf1d793baf341b03c8da",
+   "head_ref": "fix/lane-matrix-test-stacked-20261114",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5397",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:45:44Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "68e7653160efba9b0821b854eac7f16e2528ec61",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 5395,
+   "title": "fix(ci): ignore synthetic merge commits in DO style gate",
+   "merged_at": null,
+   "updated_at": "2026-11-14T07:43:40Z",
+   "created_at": "2026-11-14T07:18:42Z",
+   "merge_commit_sha": "b9e288c13496a07f51208a1dac7af5b160702092",
+   "head_ref": "fix/do-statement-style-merge-commits-20261114",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5395",
+   "merged": false
+  },
+  {
    "number": 5394,
    "title": "test(amd-academy): add WAF provider discovery contract",
    "merged_at": null,
@@ -1966,19 +2044,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5394",
-   "merged": false
-  },
-  {
-   "number": 5396,
-   "title": "test(dispatch): align lane matrix assertion with cancellation policy",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:39:48Z",
-   "created_at": "2026-11-14T07:39:13Z",
-   "merge_commit_sha": "dea7f320271e9e9ff5effdf90e1dffc9dba471c2",
-   "head_ref": "fix/lane-matrix-cancel-policy-test-20261114",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5396",
    "merged": false
   },
   {
@@ -1995,45 +2060,6 @@
    "merged": false
   },
   {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:39:25Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "788637325efcf35433c5f796db2591c95b30283e",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:32:21Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "ac178391d3c13b42aae2a359d654bbf9a8b81093",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:31:06Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "7e348e9670bb32e2fe78cc02a029a332d7bbdc7b",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
    "number": 5311,
    "title": "docs(challenge): record AMD C3 outcome; execution evidence held",
    "merged_at": null,
@@ -2044,32 +2070,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5311",
-   "merged": false
-  },
-  {
-   "number": 5395,
-   "title": "fix(ci): ignore synthetic merge commits in DO style gate",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:24:54Z",
-   "created_at": "2026-11-14T07:18:42Z",
-   "merge_commit_sha": "67bb848a4978de3a35c4e9a2a598bbe333a54ba8",
-   "head_ref": "fix/do-statement-style-merge-commits-20261114",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5395",
-   "merged": false
-  },
-  {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-14T07:01:36Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "152d56cd84ad5f4615a222c26916230c402a0b8b",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {

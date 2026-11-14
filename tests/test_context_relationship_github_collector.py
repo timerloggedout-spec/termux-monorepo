@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from archwiz.context_relationships.compiler import compile_seed
-from archwiz.context_relationships.github_collector import collect_github_seed
+from archwiz.context_relationships.github_collector import CompilationError, GitHubClient, collect_github_seed
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "config/context_relationships/schema.json"
@@ -11,6 +11,7 @@ SCHEMA = ROOT / "config/context_relationships/schema.json"
 class FakeGitHubClient:
     def __init__(self):
         self.request_count = 0
+        self.limits = {}
         self.responses = {
             "/repos/example/repo/issues": [
                 {
@@ -134,6 +135,7 @@ class FakeGitHubClient:
 
     def paginate(self, path, params=None, limit=100, start_page=1):
         self.request_count += 1
+        self.limits[path] = limit
         return iter(self.responses.get(path, []))
 
     def get_json(self, path, params=None):
@@ -220,6 +222,80 @@ def test_collect_github_seed_preserves_evidence_without_persisting_discussion_bo
     assert report["counts"]["permalink_references"] == 3
     assert report["unresolved_internal_reference_count"] == 0
 
+
+
+
+
+def test_paginate_keeps_page_size_stable_and_stops_at_limit():
+    """A short final page must not shift the next page's offset or duplicate records."""
+    client = GitHubClient("unused-token", max_retries=0)
+    requests = []
+
+    def fake_get_json(path, params=None):
+        requests.append(dict(params or {}))
+        page = (params or {}).get("page", 1)
+        start = (page - 1) * 100
+        payload = [{"number": number} for number in range(start, start + 100)]
+        return payload, ' <https://api.github.com/next>; rel="next"' if page < 3 else None
+
+    client.get_json = fake_get_json
+    records = list(client.paginate("/repos/example/repo/pulls/232/commits", limit=250))
+
+    assert [request["page"] for request in requests] == [1, 2, 3]
+    assert [request["per_page"] for request in requests] == [100, 100, 100]
+    assert len(records) == 250
+    assert [record["number"] for record in records] == list(range(250))
+
+
+def test_collect_github_seed_rejects_invalid_detail_limits():
+    """Reject invalid detail bounds before any GitHub collection can begin."""
+    for parameter in ("max_files_per_pr", "max_commits_per_pr", "max_timeline_events_per_item"):
+        for invalid in (0, -1, True, 1.5):
+            try:
+                collect_github_seed(
+                    FakeGitHubClient(),
+                    "example",
+                    "repo",
+                    "master",
+                    Path("unused-scope-registry.json"),
+                    **{parameter: invalid},
+                )
+            except CompilationError:
+                continue
+            raise AssertionError(f"invalid {parameter} was accepted: {invalid!r}")
+
+
+def test_detail_endpoint_caps_are_independent_from_history_page_size(tmp_path):
+    registry = tmp_path / "scopes.json"
+    write_registry(registry)
+    client = FakeGitHubClient()
+
+    _, report = collect_github_seed(
+        client,
+        "example",
+        "repo",
+        "master",
+        registry,
+        max_items=10,
+        max_commits=2,
+        max_comments_per_item=3,
+        include_comments=False,
+        max_files_per_pr=31,
+        max_commits_per_pr=37,
+        max_timeline_events_per_item=41,
+    )
+
+    assert client.limits["/repos/example/repo/issues"] == 10
+    assert client.limits["/repos/example/repo/pulls"] == 10
+    assert client.limits["/repos/example/repo/pulls/232/files"] == 31
+    assert client.limits["/repos/example/repo/pulls/232/commits"] == 37
+    assert client.limits["/repos/example/repo/issues/236/timeline"] == 41
+    assert client.limits["/repos/example/repo/commits"] == 2
+    assert report["max_items"] == 10
+    assert report["max_commits"] == 2
+    assert report["max_files_per_pr"] == 31
+    assert report["max_commits_per_pr"] == 37
+    assert report["max_timeline_events_per_item"] == 41
 
 
 def test_reference_targets_classifies_each_occurrence_independently():

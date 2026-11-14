@@ -228,6 +228,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args.manifest:
         parser.error("supply --manifest or --build")
+    if not args.checkout_sha:
+        parser.error("--checkout-sha is required for immutable consumer verification")
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     errors = verify_files(manifest, args.root, checkout_sha=args.checkout_sha)
     if args.award:

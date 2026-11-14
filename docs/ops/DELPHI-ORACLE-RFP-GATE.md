@@ -59,7 +59,7 @@ The census has a 100-page safety cap. A full final page at the cap is an incompl
 
 ## Immutable proposal-package binding
 
-Package-bound RFPs pin two immutable commits. `proposal_manifest_ref` is the commit containing the manifest file; `proposal_source_ref` is the source snapshot recorded inside that manifest and used to retrieve every inventoried artifact. These refs are intentionally distinct because a manifest committed after its source snapshot cannot exist at the source commit it records. The gate verifies the manifest digest and each inventoried file against the appropriate pinned ref. Partial bindings and any mismatch are held; held RFPs remain visible on the results board as pending.
+Package-bound RFPs pin two immutable commits. `proposal_manifest_ref` is the commit containing the manifest file; `proposal_source_ref` is the source snapshot recorded inside that manifest and used to retrieve every inventoried artifact. These refs are intentionally distinct because a manifest committed after its source snapshot cannot exist at the source commit it records. The gate verifies the manifest digest and each inventoried file against the appropriate pinned ref. It also checks complete Git tree metadata for both refs and accepts only regular non-executable blobs, rejecting symlinks, submodules, executable files and truncated trees before reading package bytes. Partial bindings and any mismatch are held; held RFPs remain visible on the results board as pending.
 
 ## Idempotency and storage
 

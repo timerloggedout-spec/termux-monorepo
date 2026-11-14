@@ -36,7 +36,8 @@ def _eligible(candidate: dict[str, Any], task: dict[str, Any]) -> tuple[bool, li
     identity = candidate.get("instance")
     if not isinstance(identity, dict) or any(not identity.get(k) for k in REQUIRED_INSTANCE):
         reasons.append("incomplete_configured_instance_identity")
-    if candidate.get("participant_id") is None:
+    participant_id = candidate.get("participant_id")
+    if not isinstance(participant_id, str) or not participant_id.strip():
         reasons.append("participant_identity_not_issued")
     if candidate.get("route_verified") is not True:
         reasons.append("route_not_verified")
@@ -47,7 +48,10 @@ def _eligible(candidate: dict[str, Any], task: dict[str, Any]) -> tuple[bool, li
     if candidate.get("quota_state") != "available" or candidate.get("quota_class") != "free":
         reasons.append("free_quota_not_available")
     action_classes = _string_set(candidate.get("action_classes"))
-    if action_classes is None or task.get("action_class") not in action_classes:
+    action_class = task.get("action_class")
+    if not isinstance(action_class, str) or not action_class.strip():
+        reasons.append("action_class_evidence_invalid")
+    elif action_classes is None or action_class not in action_classes:
         reasons.append("action_class_not_authorized")
 
     required_tools = _string_set(task.get("required_tools", []))
@@ -71,8 +75,10 @@ def _eligible(candidate: dict[str, Any], task: dict[str, Any]) -> tuple[bool, li
 def build_candidate_packet(task: dict[str, Any], candidates: list[dict[str, Any]],
                            *, previous_provider: str | None = None) -> dict[str, Any]:
     """Build a deterministic, read-only eligibility/ranking packet."""
-    if not isinstance(task, dict) or not task.get("task_id") or not task.get("action_class"):
-        raise ValueError("task_id and action_class are required")
+    if not isinstance(task, dict) or not isinstance(task.get("task_id"), str) or not task["task_id"].strip():
+        raise ValueError("task_id is required")
+    if not isinstance(task.get("action_class"), str) or not task["action_class"].strip():
+        raise ValueError("action_class must be a non-empty string")
     eligible: list[dict[str, Any]] = []
     excluded: list[dict[str, Any]] = []
     for candidate in candidates:
@@ -106,6 +112,15 @@ def build_candidate_packet(task: dict[str, Any], candidates: list[dict[str, Any]
     eligible.sort(key=lambda x: (-x["score"], x["provider"] == previous_provider,
                                  x["provider"], x["model"], x["instance_key"]))
     selection = eligible[0] if eligible else None
+    previous_candidate = next(
+        (item for item in eligible if item["provider"] == previous_provider),
+        None,
+    )
+    rotation_applied = bool(
+        selection and previous_candidate
+        and selection["provider"] != previous_provider
+        and selection["score"] == previous_candidate["score"]
+    )
     packet = {
         "schema": "delphic-doe-task-candidate/v1",
         "task_id": task["task_id"],
@@ -116,7 +131,7 @@ def build_candidate_packet(task: dict[str, Any], candidates: list[dict[str, Any]
         "excluded": sorted(excluded, key=lambda x: (str(x.get("participant_id")), str(x.get("instance_key")))),
         "selection_provenance": {
             "previous_provider": previous_provider,
-            "rotation_applied": bool(selection and previous_provider and selection["provider"] != previous_provider),
+            "rotation_applied": rotation_applied,
         },
         "dispatch_authorized": False,
         "wallet_mutation_authorized": False,

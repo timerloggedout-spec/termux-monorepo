@@ -54,14 +54,16 @@ def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
     ], capture_output=True, text=True)
     assert result.returncode != 0
 
-def test_preview_workflow_isolated_and_preserves_existing_site():
+def test_preview_workflow_publishes_atomic_production_and_isolated_preview():
     workflow = (ROOT / ".github" / "workflows" / "tribute-dashboard-preview.yml").read_text()
     assert "workflow_dispatch:" in workflow
     assert "source_ref:" in workflow and "preview_key:" in workflow
-    assert "publish_dir: _preview" in workflow
-    assert "destination_dir: previews/${{ inputs.preview_key }}/help-wanted" in workflow
-    assert "keep_files: false" in workflow
+    assert "mkdir -p _production _preview _user_site" in workflow
+    assert "cp -a _preview/. \"_user_site/previews/$PREVIEW_KEY/tribute/\"" in workflow
+    assert "publish_dir: _user_site" in workflow
+    assert "keep_files: true" in workflow
     assert "force_orphan: true" not in workflow
+    assert "Publish production and preview atomically" in workflow
 
 
 def test_production_deployment_stamps_the_artifact():

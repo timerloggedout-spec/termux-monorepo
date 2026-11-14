@@ -3,9 +3,9 @@
     "open_issues": 651,
     "open_prs": 397,
     "pr_classes": {
-      "CANDIDATE": 201,
-      "EXTRACT": 15,
-      "NEED_EVIDENCE": 181,
+      "CANDIDATE": 206,
+      "EXTRACT": 12,
+      "NEED_EVIDENCE": 179,
       "SUPERSEDE": 0
     }
   },
@@ -120,7 +120,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-14T12:53:30Z",
+  "generated_at": "2026-11-14T13:49:16Z",
   "issues_unlabelled": [
     308,
     388,
@@ -187,10 +187,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "in_progress",
-      "smoke": "success"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "487d841b11"
+    "sha": "bdf1ad6822"
   },
   "prs": [
     {
@@ -234,20 +234,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "1624138229",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-14T12:50:53Z"
     },
     {
       "class": "EXTRACT",
@@ -376,34 +362,6 @@
       "updated_at": "2026-11-13T19:45:24Z"
     },
     {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d0557f0c0d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5388,
-      "title": "docs: establish declarative workflow planning and QUE \u00d7 DoE optimization model",
-      "updated_at": "2026-11-14T04:30:17Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d9f301e4d2",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5408,
-      "title": "feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master",
-      "updated_at": "2026-11-14T12:27:56Z"
-    },
-    {
       "class": "CANDIDATE",
       "family": "unlabelled",
       "gates": {
@@ -470,7 +428,7 @@
       },
       "head_sha": "47868ebb21",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 578,
       "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
       "updated_at": "2026-11-13T13:16:51Z"
@@ -1157,12 +1115,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "cec4245acb",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-14T13:26:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "df18f202b9",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-14T13:28:32Z"
     },
     {
       "class": "CANDIDATE",
@@ -1569,6 +1555,20 @@
       "number": 3763,
       "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
       "updated_at": "2026-11-02T10:22:23Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d326a62462",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-14T13:46:20Z"
     },
     {
       "class": "CANDIDATE",
@@ -3159,9 +3159,23 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "d0557f0c0d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5388,
+      "title": "docs: establish declarative workflow planning and QUE \u00d7 DoE optimization model",
+      "updated_at": "2026-11-14T04:30:17Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "fe0bbe54fc",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 5401,
       "title": "fix(ci): repair dispatch and DO style regression gates",
       "updated_at": "2026-11-14T11:52:22Z"
@@ -3221,6 +3235,20 @@
       "number": 5406,
       "title": "fix(challenge): correct AMD C3 coordinator provenance",
       "updated_at": "2026-11-14T11:42:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d9f301e4d2",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5408,
+      "title": "feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master",
+      "updated_at": "2026-11-14T12:27:56Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3609,7 +3637,7 @@
       },
       "head_sha": "d9f8ca0a2a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "dirty",
       "number": 1760,
       "title": "ops(tribute): participation refresh",
       "updated_at": "2026-11-13T15:34:52Z"
@@ -3753,20 +3781,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "81f1b02815",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-14T12:51:05Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4405,26 +4419,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "7cd0547e31",
+      "head_sha": "1c877ca76f",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-14T12:46:56Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "95bc7cfb5d",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-14T12:51:04Z"
+      "updated_at": "2026-11-14T13:47:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5737,7 +5737,7 @@
       },
       "head_sha": "e3d03bb869",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5390,
       "title": "feat(que): establish SIE lifecycle contract and intake receipts",
       "updated_at": "2026-11-14T12:08:21Z"
@@ -5751,7 +5751,7 @@
       },
       "head_sha": "dea2d202e9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5409,
       "title": "feat(delphic): current-master Observatory Graph Lab and DoE adapter",
       "updated_at": "2026-11-14T12:36:56Z"

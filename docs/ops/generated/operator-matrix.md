@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-14T12:53:30Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-14T13:49:16Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `487d841b11` (hygiene: in_progress, smoke: success). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `bdf1ad6822` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 651 issues, 397 PRs. PR classes: EXTRACT 15 / CANDIDATE 201 / NEED_EVIDENCE 181 / SUPERSEDE 0.
+**Open inventory:** 651 issues, 397 PRs. PR classes: EXTRACT 12 / CANDIDATE 206 / NEED_EVIDENCE 179 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -16,7 +16,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1498 | EXTRACT | unlabelled | `0a81e9b01c` | success | success | unstable | Antigravity CLI: collaborative use cases, provisioning proposal, offline readine |
 | #1514 | EXTRACT | unlabelled | `13f795adad` | success | success | unstable | feat(antigravity): isolated secondary operational pilot (#1497) |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2263 | EXTRACT | unlabelled | `1624138229` | success | success | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #4021 | EXTRACT | unlabelled | `d8ea720788` | success | success | unstable | feat(integrations): extend governed agent toolchain portfolio |
 | #4494 | EXTRACT | unlabelled | `3ac3ce9523` | success | success | unstable | feat(apk): app-package C — release trust (hardening ∀false · reproducible build  |
 | #4503 | EXTRACT | unlabelled | `8dcc310fc9` | success | success | unstable | docs: app-package D — CHANGELOG discipline · verification decision · perf budget |
@@ -26,13 +25,11 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5335 | EXTRACT | unlabelled | `6206d2d60f` | success | success | unstable | feat(observatory): migrate Delphic to Vercel + live GitHub feeds |
 | #5339 | EXTRACT | unlabelled | `284461105d` | success | success | unstable | docs: enforce DO-first communication law across repository |
 | #5381 | EXTRACT | unlabelled | `c2f20cf815` | success | success | unstable | feat(msm): add paired policy comparisons to economy backtests |
-| #5388 | EXTRACT | unlabelled | `d0557f0c0d` | success | success | unstable | docs: establish declarative workflow planning and QUE × DoE optimization model |
-| #5408 | EXTRACT | unlabelled | `d9f301e4d2` | success | success | unstable | feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
 | #527 | CANDIDATE | unlabelled | `60fc3e697b` | success | success | unknown | ops: close admission and pagination stall evidence gaps |
-| #578 | CANDIDATE | unlabelled | `47868ebb21` | success | success | unknown | feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster |
+| #578 | CANDIDATE | unlabelled | `47868ebb21` | success | success | unstable | feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster |
 | #605 | CANDIDATE | unlabelled | `b8b624d149` | success | success | unknown | feat(ar-18): extend dynamic capability spine with Paper2Agent research |
 | #752 | CANDIDATE | unlabelled | `b437529907` | success | success | unknown | feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts |
 | #761 | CANDIDATE | unlabelled | `f3473cadfe` | success | success | unknown | lane: Desktop Commander fork + Android execution alternatives |
@@ -81,7 +78,9 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
+| #2263 | CANDIDATE | unlabelled | `cec4245acb` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
+| #2310 | CANDIDATE | unlabelled | `df18f202b9` | success | success | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
 | #2343 | CANDIDATE | unlabelled | `001ef79704` | success | success | unknown | Add Merged Branch Audit and Timing Quotas Evaluator |
 | #2344 | CANDIDATE | unlabelled | `d5ba1dab07` | success | success | unknown | 📖 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th l |
@@ -111,6 +110,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3757 | CANDIDATE | unlabelled | `32224dee89` | success | success | unknown | feat(ci): archwiz foresight_feed — repo-side foresight_collect variant (re-deriv |
 | #3758 | CANDIDATE | unlabelled | `6d20b87039` | success | success | unknown | feat(ci): archwiz mirror_report — repo-side mirror variant (advisory rollup) |
 | #3763 | CANDIDATE | unlabelled | `50bba792c7` | success | success | unknown | archwiz ⑥: archaeo cursor-mode spec + inert workflow pass-through (context_relat |
+| #3916 | CANDIDATE | unlabelled | `d326a62462` | success | success | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3969 | CANDIDATE | unlabelled | `d01e2c211e` | success | success | unknown | ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D pr |
 | #4006 | CANDIDATE | unlabelled | `658953af69` | success | success | unknown | Implement Merged Branch Review Audit and Production Quota Engine |
 | #4007 | CANDIDATE | unlabelled | `8a75972a42` | success | success | unknown | Wire invocation observations into Free-Tier Value evidence projection |
@@ -224,11 +224,13 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5378 | CANDIDATE | unlabelled | `0f6486b149` | success | success | unknown | Enforce QUE admission and provider-dispatch boundaries |
 | #5380 | CANDIDATE | unlabelled | `4be33b06be` | success | success | unknown | Fix DO-statement merge history filtering |
 | #5387 | CANDIDATE | unlabelled | `9630c8bf05` | success | success | unknown | Expose per-source quota observation freshness |
-| #5401 | CANDIDATE | unlabelled | `fe0bbe54fc` | success | success | dirty | fix(ci): repair dispatch and DO style regression gates |
+| #5388 | CANDIDATE | unlabelled | `d0557f0c0d` | success | success | unknown | docs: establish declarative workflow planning and QUE × DoE optimization model |
+| #5401 | CANDIDATE | unlabelled | `fe0bbe54fc` | success | success | unknown | fix(ci): repair dispatch and DO style regression gates |
 | #5403 | CANDIDATE | unlabelled | `9e3e6c54e9` | success | success | unstable | feat(waf): add AMD Academy discovery-only provider registry |
 | #5404 | CANDIDATE | unlabelled | `c836d1697f` | success | success | unstable | feat(ates): preserve execution-controller provenance |
 | #5405 | CANDIDATE | unlabelled | `8e9ae6906f` | success | success | unstable | docs(certifications): add ROCm Associate integrity-safe runbook |
 | #5406 | CANDIDATE | unlabelled | `8335661ebd` | success | success | unstable | fix(challenge): correct AMD C3 coordinator provenance |
+| #5408 | CANDIDATE | unlabelled | `d9f301e4d2` | success | success | unknown | feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -256,7 +258,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1617 | NEED_EVIDENCE | unlabelled | `35c1f2bd5b` | not_reported | not_reported | unknown | docs: improve Mintlify agent discoverability and record integration recon |
 | #1626 | NEED_EVIDENCE | unlabelled | `7288447213` | not_reported | not_reported | unknown | docs(rfp): add first source-backed mesh provider evidence |
 | #1645 | NEED_EVIDENCE | unlabelled | `2dab66b406` | not_reported | not_reported | unknown | fix: harden Help-Wanted telemetry and evidence audits |
-| #1760 | NEED_EVIDENCE | unlabelled | `d9f8ca0a2a` | not_reported | not_reported | unknown | ops(tribute): participation refresh |
+| #1760 | NEED_EVIDENCE | unlabelled | `d9f8ca0a2a` | not_reported | not_reported | dirty | ops(tribute): participation refresh |
 | #1852 | NEED_EVIDENCE | unlabelled | `358f8f7ea6` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #1966 | NEED_EVIDENCE | unlabelled | `b5951e754e` | not_reported | not_reported | unknown | ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28) |
 | #2175 | NEED_EVIDENCE | unlabelled | `71856c6976` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -267,7 +269,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `8864eb037d` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2310 | NEED_EVIDENCE | unlabelled | `81f1b02815` | queued | queued | unstable | chore(delphi): refresh delphi-rfp-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -313,8 +314,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3890 | NEED_EVIDENCE | unlabelled | `7cd0547e31` | not_reported | not_reported | unstable | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `95bc7cfb5d` | in_progress | success | unstable | chore(reviewer-metrics): regenerate provider x context map |
+| #3890 | NEED_EVIDENCE | unlabelled | `1c877ca76f` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -408,8 +408,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5349 | NEED_EVIDENCE | unlabelled | `f8c3b15605` | not_reported | not_reported | unknown | Enforce DO-statement language and publish agent-readability skills |
 | #5375 | NEED_EVIDENCE | unlabelled | `d87967d4df` | not_reported | not_reported | unknown | Fix DO-statement merge history filtering |
 | #5382 | NEED_EVIDENCE | unlabelled | `830a7f19b3` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
-| #5390 | NEED_EVIDENCE | unlabelled | `e3d03bb869` | failure | success | unstable | feat(que): establish SIE lifecycle contract and intake receipts |
-| #5409 | NEED_EVIDENCE | unlabelled | `dea2d202e9` | not_reported | not_reported | unstable | feat(delphic): current-master Observatory Graph Lab and DoE adapter |
+| #5390 | NEED_EVIDENCE | unlabelled | `e3d03bb869` | failure | success | unknown | feat(que): establish SIE lifecycle contract and intake receipts |
+| #5409 | NEED_EVIDENCE | unlabelled | `dea2d202e9` | not_reported | not_reported | unknown | feat(delphic): current-master Observatory Graph Lab and DoE adapter |
 
 ## Families (open)
 

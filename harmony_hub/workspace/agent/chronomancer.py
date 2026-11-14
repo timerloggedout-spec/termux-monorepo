@@ -44,19 +44,26 @@ def _assistant_role(msg: dict) -> bool:
 # ─────────────────────────────── core ───────────────────────────────────
 
 def find_best_fork_point(session_id: str, account: str = 'primary') -> int | None:
-    """Return the message_id of the last assistant message before the
-    most recent validated run for this account."""
+    """Return the last eligible assistant message before this session's
+    most recent validated run.
+
+    Validation evidence is scoped to both session and account. An account-level
+    query can otherwise borrow a timestamp from an unrelated session and steer
+    this workstream to the wrong branch point.
+    """
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
-    row = conn.execute(
-        "SELECT session_id, timestamp FROM run_history "
-        "WHERE validated=1 AND account=? "
-        "ORDER BY timestamp DESC LIMIT 1",
-        (account,)
-    ).fetchone()
-    conn.close()
+    try:
+        row = conn.execute(
+            "SELECT timestamp FROM run_history "
+            "WHERE validated=1 AND account=? AND session_id=? "
+            "ORDER BY timestamp DESC, rowid DESC LIMIT 1",
+            (account, session_id)
+        ).fetchone()
+    finally:
+        conn.close()
     if not row:
-        print("No validated run found for this account.")
+        print("No validated run found for this session and account.")
         return None
 
     valid_ts = _parse_ts(row['timestamp'])

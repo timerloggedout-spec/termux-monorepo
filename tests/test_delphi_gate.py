@@ -429,9 +429,9 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
     with tempfile.TemporaryDirectory() as temp:
         root = Path(temp)
         (root / "proposal").mkdir()
-        (root / "proposal" / "RFP.md").write_text("# proposal\\n")
+        (root / "proposal" / "RFP.md").write_text("# proposal\n")
         outside = root / "outside.md"
-        outside.write_text("# outside\\n")
+        outside.write_text("# outside\n")
         source_ref, manifest_ref = "a" * 40, "b" * 40
         manifest = build_manifest(
             source_ref=source_ref, package_id="proposal-2",
@@ -461,10 +461,10 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
                         "content": base64.b64encode(payload).decode("ascii")}
 
         body = (
-            f"### Proposal source ref\\n{source_ref}\\n"
-            f"### Proposal manifest ref\\n{manifest_ref}\\n"
-            "### Proposal manifest path\\nproposal/package.json\\n"
-            f"### Expected package digest\\n{manifest['package_digest']}\\n"
+            f"### Proposal source ref\n{source_ref}\n"
+            f"### Proposal manifest ref\n{manifest_ref}\n"
+            "### Proposal manifest path\nproposal/package.json\n"
+            f"### Expected package digest\n{manifest['package_digest']}\n"
         )
         with pytest.raises(ValueError, match="outside package_path"):
             gate.verify_issue_package_binding(FakeGH(), {"body": body})
@@ -502,10 +502,10 @@ def test_package_binding_rejects_self_reference_and_truncated_git_tree():
     source_ref = "a" * 40
     digest = "b" * 64
     same_ref_body = (
-        f"### Proposal source ref\\n{source_ref}\\n"
-        f"### Proposal manifest ref\\n{source_ref}\\n"
-        "### Proposal manifest path\\nproposal/package.json\\n"
-        f"### Expected package digest\\n{digest}\\n"
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{source_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
     )
     with pytest.raises(ValueError, match="must differ"):
         gate.verify_issue_package_binding(object(), {"body": same_ref_body})
@@ -519,10 +519,10 @@ def test_package_binding_rejects_self_reference_and_truncated_git_tree():
 
     manifest_ref = "d" * 40
     body = (
-        f"### Proposal source ref\\n{source_ref}\\n"
-        f"### Proposal manifest ref\\n{manifest_ref}\\n"
-        "### Proposal manifest path\\nproposal/package.json\\n"
-        f"### Expected package digest\\n{digest}\\n"
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{manifest_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
     )
     with pytest.raises(ValueError, match="truncated"):
         gate.verify_issue_package_binding(TruncatedGH(), {"body": body})

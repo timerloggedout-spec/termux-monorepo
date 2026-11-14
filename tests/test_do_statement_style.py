@@ -19,6 +19,9 @@ class DoStatementStyleRulesTests(unittest.TestCase):
             "fix(ci): recognize export as action-first verb",
             "feat(ledger): reconcile origin claims",
             "docs(siglary): document action-first rules",
+            "test(ci): distinguish action verbs from descriptive subjects",
+            "test(ci): cover Siglary action-first commit subject rules",
+            "feat(ci): centralize Siglary action-first subject vocabulary",
         ):
             with self.subTest(subject=subject):
                 self.assertTrue(is_imperative_subject(subject))

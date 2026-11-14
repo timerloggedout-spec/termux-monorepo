@@ -3,6 +3,29 @@
   "contract": "Derived surface matrix for cadence provider onboarding; regenerate with scripts/cadence_provider_onboarding.py render. Secret names only; no values, no admission decision.",
   "providers": [
     {
+      "provider": "agentrouter",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "AGENTROUTER_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": "unsupported",
+      "quota_registry": [
+        "agentrouter.models"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "availability_env",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        }
+      ]
+    },
+    {
       "provider": "aikido",
       "kind": "review",
       "catalog_endpoint": null,
@@ -30,6 +53,26 @@
       "quota_family": "unsupported",
       "quota_registry": [
         "aion.free_tokens"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "baseten",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "BASETEN_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "BASETEN_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "baseten.api"
       ],
       "public_catalog": false,
       "review_login": null,
@@ -137,6 +180,57 @@
       "exceptions": []
     },
     {
+      "provider": "deepinfra",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "DEEPINFRA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "DEEPINFRA_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "deepinfra.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "deepseek",
+      "kind": "llm",
+      "catalog_endpoint": null,
+      "catalog_secret": null,
+      "secret_aliases": [],
+      "availability_env": [],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "deepseek.api"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": [
+        {
+          "surface": "catalog_endpoint",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "catalog_secret",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        },
+        {
+          "surface": "availability_env",
+          "reason": "auto-registered by the cadence-provider-onboarding workflow: surface absent at first detection \u2014 complete the surface or amend this reason in the auto-extend PR"
+        }
+      ]
+    },
+    {
       "provider": "devin",
       "kind": "review",
       "catalog_endpoint": null,
@@ -166,6 +260,26 @@
       "quota_family": "unsupported",
       "quota_registry": [
         "felo.api_credits"
+      ],
+      "public_catalog": false,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "friendli",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "FRIENDLI_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "FRIENDLI_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "friendli.api"
       ],
       "public_catalog": false,
       "review_login": null,
@@ -322,6 +436,26 @@
         "modelscope.api_inference"
       ],
       "public_catalog": true,
+      "review_login": null,
+      "review_check_app": null,
+      "review_trigger_actions": [],
+      "review_required_default": false,
+      "exceptions": []
+    },
+    {
+      "provider": "novita",
+      "kind": "llm",
+      "catalog_endpoint": "extension",
+      "catalog_secret": "NOVITA_API_KEY",
+      "secret_aliases": [],
+      "availability_env": [
+        "NOVITA_API_KEY"
+      ],
+      "quota_family": "public_documentation_only",
+      "quota_registry": [
+        "novita.api"
+      ],
+      "public_catalog": false,
       "review_login": null,
       "review_check_app": null,
       "review_trigger_actions": [],
@@ -699,17 +833,25 @@
     }
   ],
   "quota_registry_unmapped": {
+    "claude": [
+      "claude.seat_runtime"
+    ],
     "github": [
       "github.copilot.free"
+    ],
+    "meta": [
+      "meta.llama_api",
+      "meta.model_api",
+      "meta.muse_code"
     ]
   },
   "quota_registry_namespaced_records": 61,
   "counts": {
-    "providers": 33,
-    "llm": 27,
+    "providers": 39,
+    "llm": 33,
     "review": 6,
     "with_quota_adapter": 6,
-    "with_quota_registry": 27,
-    "exceptions": 7
+    "with_quota_registry": 33,
+    "exceptions": 11
   }
 }

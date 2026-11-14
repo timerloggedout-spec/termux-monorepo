@@ -47,7 +47,7 @@ def _safe_package_path(value: str) -> str:
 
 
 def package_digest(source_ref: str, package_id: str, package_path: str,
-                   files: list[dict]) -> str:
+                   files: list[dict], package_author: str = "") -> str:
     if not GIT_SHA.fullmatch(source_ref or ""):
         raise ValueError("source_ref must be an immutable Git commit SHA")
     if not isinstance(package_id, str) or not package_id.strip():
@@ -72,6 +72,7 @@ def package_digest(source_ref: str, package_id: str, package_path: str,
         "source_ref": source_ref,
         "package_id": package_id,
         "package_path": package_path,
+        "package_author": package_author,
         "files": normalized,
     }
     return sha256_bytes(canonical_bytes(body))
@@ -98,7 +99,7 @@ def build_manifest(*, source_ref: str, package_id: str, package_path: str,
         if base not in resolved.parents or not resolved.is_file():
             raise ValueError(f"package file is missing or outside root: {rel}")
         inventory.append({"path": rel, "sha256": sha256_bytes(resolved.read_bytes())})
-    digest = package_digest(source_ref, package_id, package_path, inventory)
+    digest = package_digest(source_ref, package_id, package_path, inventory, package_author)
     return {
         "schema": SCHEMA,
         "source_ref": source_ref,
@@ -117,7 +118,7 @@ def validate_manifest(manifest: dict) -> list[str]:
         return ["unsupported proposal package manifest schema"]
     try:
         actual = package_digest(manifest.get("source_ref"), manifest.get("package_id"),
-                                manifest.get("package_path"), manifest.get("files", []))
+                                manifest.get("package_path"), manifest.get("files", []), manifest.get("package_author", ""))
         if actual != manifest.get("package_digest"):
             errors.append("package digest mismatch")
     except (TypeError, ValueError, AttributeError) as exc:
@@ -155,6 +156,8 @@ def verify_files(manifest: dict, root: str | Path) -> list[str]:
 def verify_award(*, manifest: dict, award: dict, package_author: str,
                  reviewer: str) -> dict:
     errors = validate_manifest(manifest)
+    if not package_author and isinstance(manifest, dict):
+        package_author = manifest.get("package_author", "")
     if not isinstance(award, dict):
         errors.append("award payload is missing")
     else:
@@ -189,7 +192,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--exclude", action="append", default=[])
     parser.add_argument("--root", required=True)
     parser.add_argument("--award")
-    parser.add_argument("--package-author", default="")
     parser.add_argument("--reviewer", default="")
     parser.add_argument("--out")
     args = parser.parse_args(argv)
@@ -201,7 +203,7 @@ def main(argv: list[str] | None = None) -> int:
             package_path=args.package_path, root=args.root, files=args.file,
             package_author=args.package_author, excluded_paths=args.exclude,
         )
-        output = json.dumps(manifest, indent=2, sort_keys=True) + "\\n"
+        output = json.dumps(manifest, indent=2, sort_keys=True) + "\n"
         if args.out:
             Path(args.out).write_text(output, encoding="utf-8")
         print(output, end="")

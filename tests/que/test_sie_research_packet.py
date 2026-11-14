@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 
 from sie_pipeline import build_receipt
 from sie_research_packet import build_research_packet, digest
-from generate_proposal import generate
+from generate_proposal import generate, _sha
 
 
 def evidence_item(claim, value, path, fresh_until):
@@ -79,6 +79,9 @@ class TestSIEResearchPacket(unittest.TestCase):
             evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
         )
         self.assertEqual(packet["schema"], "que.sie-research-packet/v1")
+        self.assertEqual(packet["evidence"]["sets"][0]["source_set_digest"], _sha(evidence[0]))
+        self.assertEqual(packet["evidence"]["sets"][0]["fresh_subset_digest"], _sha(fresh_sets[0]))
+        self.assertEqual(packet["oracle_method"]["evidence_set_digests"], [_sha(fresh_sets[0])])
         self.assertEqual([fact["text"] for fact in packet["confirmed_facts"]],
                          ["The source workflow run concluded with failure."])
         self.assertEqual(len(packet["unverified_facts"]), 2)

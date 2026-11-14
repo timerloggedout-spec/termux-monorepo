@@ -1305,3 +1305,25 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: que-device-validation
+    title: "QUE device-component validation lanes and capability tooling registry"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/que-device-validation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 55
+    related_prs: []
+    related_branches:
+      - feat/que-device-validation-20261114
+    related_proposals:
+      - continuous-capability-evolution-lab
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

@@ -1,0 +1,27 @@
+{
+  "schema_version": "wfc/v1",
+  "workflow_id": "repo.routing-benchmark",
+  "name": "Routing benchmark",
+  "owner": "routing-doe",
+  "objective": "Select a routing policy with better verified task utility",
+  "scope": {
+    "repository": "timerloggedout-spec/termux-monorepo",
+    "base_sha": "0000000000000000000000000000000000000000",
+    "cohort": "routing-doe-01",
+    "ref": "master"
+  },
+  "tasks": [
+    {"id": "prepare", "type": "prepare", "depends_on": [], "side_effect_class": "read_only"},
+    {"id": "execute", "type": "experiment", "depends_on": ["prepare"], "max_attempts": 2, "side_effect_class": "read_only"},
+    {"id": "verify", "type": "verification", "depends_on": ["execute"], "side_effect_class": "read_only"}
+  ],
+  "constraints": {
+    "max_parallel": 3,
+    "max_attempts": 2,
+    "external_writes": "approval_required",
+    "budget": {"unit": "inference_tokens", "limit": 120000}
+  },
+  "success": ["verified_outcome == PASS"],
+  "evidence": ["source_sha", "run_id", "run_attempt", "artifact_digest"],
+  "policy_version": "routing-policy/v1"
+}

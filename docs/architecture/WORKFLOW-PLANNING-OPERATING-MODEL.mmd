@@ -1,0 +1,37 @@
+flowchart TB
+  INTENT["Intent / objective / constraints"]
+  WFC["Canonical Workflow Contract (WFC)"]
+  PLAN["Planning layer<br/>DAG · FSM · PDDL/HTN · CP-SAT"]
+  QUE["QUE<br/>admission · priority · claim · lease"]
+  ROUTE["Routing policy<br/>hard gates → topology → eligible endpoint"]
+  EXEC["Execution adapters<br/>GitHub Actions · Termux · Temporal"]
+  EVID["Evidence ledger<br/>SHA → run → job → step → artifact"]
+  EVAL["Evaluation<br/>DoE/MVT · causal · Bayesian · MoneyBall/3L0"]
+  LEARN["Learning / policy revision"]
+  PROJ["Projections<br/>Mermaid · n8n · Platform201 blueprint · Admin/Desk"]
+  MIRO["MiroFish scenario lab"]
+
+  INTENT --> WFC
+  WFC --> PLAN
+  PLAN --> QUE
+  QUE --> ROUTE
+  ROUTE --> EXEC
+  EXEC --> EVID
+  EVID --> EVAL
+  EVAL --> LEARN
+  LEARN -. versioned proposal .-> WFC
+  WFC --> PROJ
+  WFC --> MIRO
+  MIRO -. hypotheses / candidate treatments only .-> EVAL
+
+  subgraph GUARD["Cross-cutting invariants"]
+    SEC["Security / policy / approval"]
+    RES["Budget / quota / concurrency"]
+    PROV["Identity / provenance / immutable versions"]
+  end
+  SEC -. constrains .-> PLAN
+  SEC -. constrains .-> ROUTE
+  RES -. constrains .-> QUE
+  RES -. constrains .-> EXEC
+  PROV -. binds .-> WFC
+  PROV -. binds .-> EVID

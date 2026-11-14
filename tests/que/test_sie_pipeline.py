@@ -154,6 +154,42 @@ class TestSIEPipeline(unittest.TestCase):
         self.assertEqual(data["source"]["kind"], "stall_gap")
         self.assertEqual(data["source"]["id"], "8123")
 
+    def test_workflow_run_attempts_have_distinct_event_ids_but_shared_item_key(self):
+        def make(run_id, attempt):
+            item = {
+                "key": "build.yml:failure-signature",
+                "path": ".github/workflows/build.yml",
+                "sig": "failure-signature",
+                "priority": 1.0,
+                "failures": 1,
+                "total": 1,
+                "window_h": 6,
+                "step": "test",
+                "message": "failure",
+                "room": None,
+                "receipts": [{
+                    "url": f"https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/{run_id}",
+                    "sha": "a" * 40,
+                    "id": run_id,
+                    "run_attempt": attempt,
+                }],
+            }
+            body = item_body(item)
+            lines = body.split("\n")
+            start = lines.index("## SIE stage receipt") + 2
+            end = next(i for i in range(start, len(lines)) if lines[i].startswith(chr(96) * 3))
+            return json.loads("\n".join(lines[start:end]))
+
+        first = make(100, 1)
+        replay = make(100, 1)
+        another_run = make(101, 1)
+        rerun = make(100, 2)
+        self.assertEqual(first["event_id"], replay["event_id"])
+        self.assertNotEqual(first["event_id"], another_run["event_id"])
+        self.assertNotEqual(first["event_id"], rerun["event_id"])
+        self.assertEqual(first["item_key"], another_run["item_key"])
+        self.assertEqual(first["item_key"], rerun["item_key"])
+
     def test_self_repair_intake_embeds_valid_source_receipt(self):
         item = {
             "key": "dispatch-watchdog:abc123",

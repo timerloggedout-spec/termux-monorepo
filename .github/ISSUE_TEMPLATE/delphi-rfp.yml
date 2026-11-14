@@ -77,10 +77,15 @@ body:
       label: Proposal source ref
       description: Optional QD-039 immutable Git commit SHA. Supply this together with the manifest path and expected package digest.
   - type: input
+    id: proposal_manifest_ref
+    attributes:
+      label: Proposal manifest ref
+      description: Immutable commit SHA containing the manifest file. This differs from the source ref recorded inside the manifest.
+  - type: input
     id: proposal_manifest_path
     attributes:
       label: Proposal manifest path
-      description: Repository-relative path to the delphi-proposal-package/v1 JSON manifest at the immutable source ref.
+      description: Repository-relative path to the delphi-proposal-package/v1 JSON manifest at the manifest ref.
   - type: input
     id: expected_package_digest
     attributes:

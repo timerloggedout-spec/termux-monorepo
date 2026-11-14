@@ -77,6 +77,24 @@ jobs:
             --summary "$GITHUB_STEP_SUMMARY"
           { echo; cat docs/ops/generated/tribute-outcomes.md; } >> docs/ops/generated/tribute-status.md
 
+      - name: Audit revision — whole corpus since genesis, versioned (primary view)
+        # Owner correction 2026-11-12: rev N = every foreign PR + watched issue
+        # thread since genesis, stable content hash, diff vs rev N-1. Append-only
+        # under data/tribute-audit/revs/. Unchanged corpus => no new rev. Offline:
+        # reads only the outcome report + S1 decisions fetched above.
+        continue-on-error: true
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/tribute_audit_rev.py \
+            --outcomes docs/ops/generated/tribute-outcomes.json \
+            --decisions /tmp/s1dec \
+            --revs-dir data/tribute-audit/revs \
+            --merge-into docs/ops/generated/tribute-status.json \
+            --merge-into apps/tribute-dashboard/data/status.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+          { echo; cat docs/ops/generated/tribute-audit-rev.md; } >> docs/ops/generated/tribute-status.md
+
       - name: Settle claim auctions (replay receipts vs outcome census)
         # docs/ops/TRIBUTE-AUCTION.md: real merge -> ante + reward; stake-only /
         # closed-unmerged / no patch after claim -> ante forfeited. Writes the
@@ -115,6 +133,8 @@ jobs:
                   docs/ops/generated/tribute-auction-ledger.json \
                   docs/ops/generated/tribute-auction-new-signals.json \
                   apps/tribute-dashboard/data/tribute-auction-ledger.json || true
+          git add data/tribute-audit/revs apps/tribute-dashboard/data/tribute-audit-rev.json \
+                  docs/ops/generated/tribute-audit-rev.md 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "no status delta"
             exit 0

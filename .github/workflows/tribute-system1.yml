@@ -18,6 +18,7 @@ on:
       - "tests/test_tribute_system1_gates.py"
       - "tests/test_tribute_system1_v2.py"
       - "tests/test_tribute_s1_delphi_delta.py"
+      - "tests/test_tribute_system1_cli.py"
       - "scripts/ci/tribute_s1_delphi_delta.py"
       - "scripts/ci/tribute_followup.py"
       - "scripts/ci/tribute_scout.py"
@@ -35,6 +36,7 @@ on:
       - "tests/test_tribute_system1_gates.py"
       - "tests/test_tribute_system1_v2.py"
       - "tests/test_tribute_s1_delphi_delta.py"
+      - "tests/test_tribute_system1_cli.py"
       - "scripts/ci/tribute_s1_delphi_delta.py"
       - "scripts/ci/tribute_followup.py"
       - "scripts/ci/tribute_scout.py"
@@ -67,7 +69,7 @@ jobs:
       - name: Compile
         run: python -m py_compile scripts/ci/tribute_system1.py scripts/ci/tribute_system1_eval.py scripts/ci/tribute_s1_delphi_delta.py
       - name: Unit tests
-        run: python -m unittest -v tests.test_tribute_system1 tests.test_tribute_system1_gates tests.test_tribute_system1_v2 tests.test_tribute_s1_delphi_delta
+        run: python -m unittest -v tests.test_tribute_system1 tests.test_tribute_system1_gates tests.test_tribute_system1_v2 tests.test_tribute_s1_delphi_delta tests.test_tribute_system1_cli
       - name: Eval gate (HITL 0, false re-engage 0, seeds 100%, P/R)
         run: python scripts/ci/tribute_system1_eval.py --max-hitl-rate 0 --summary "$GITHUB_STEP_SUMMARY" --json tribute-s1-eval.json
       - uses: actions/upload-artifact@v4
@@ -92,8 +94,12 @@ jobs:
       - name: Scan (read-only)
         env:
           SINCE: ${{ inputs.since }}
+          # GET-only scan: prefer the operator token's own rate budget over the
+          # repo installation token (installation limit is shared with ~900 queued runs).
+          OPERATOR_GITHUB_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          export GITHUB_TOKEN="${OPERATOR_GITHUB_TOKEN:-$GITHUB_TOKEN}"
           since="${SINCE:-$(date -u -d '3 days ago' +%F)}"
           case "$since" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "::error::since must be YYYY-MM-DD"; exit 1;; esac
           python scripts/ci/tribute_system1.py scan --since "$since" \

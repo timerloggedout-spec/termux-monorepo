@@ -8,7 +8,7 @@ priority: P1
 related_issues: [968]
 related_prs: [5244]
 related_branches:
-  - feat/delphic-clean-rebase-20261114
+  - feat/delphic-current-master-20261114
 gates_required: [repo-gate, hosted-delphic-ci]
 ---
 

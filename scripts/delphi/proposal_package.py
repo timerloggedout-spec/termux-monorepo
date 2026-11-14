@@ -37,14 +37,22 @@ def _safe_relative_path(value: str) -> str:
     return value
 
 
+def _safe_package_path(value: str) -> str:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise ValueError("package_path must be a normalized POSIX relative path")
+    path = PurePosixPath(value)
+    if path.is_absolute() or path.as_posix() != value or any(part in ("", ".", "..") for part in path.parts):
+        raise ValueError(f"unsafe package_path: {value!r}")
+    return value
+
+
 def package_digest(source_ref: str, package_id: str, package_path: str,
                    files: list[dict]) -> str:
     if not GIT_SHA.fullmatch(source_ref or ""):
         raise ValueError("source_ref must be an immutable Git commit SHA")
     if not isinstance(package_id, str) or not package_id.strip():
         raise ValueError("package_id must be non-empty")
-    if not isinstance(package_path, str) or not package_path.strip():
-        raise ValueError("package_path must be non-empty")
+    package_path = _safe_package_path(package_path)
     normalized = []
     seen = set()
     for entry in files:
@@ -71,9 +79,13 @@ def package_digest(source_ref: str, package_id: str, package_path: str,
 
 def build_manifest(*, source_ref: str, package_id: str, package_path: str,
                    root: str | Path, files: list[str],
+                   package_author: str = "",
                    excluded_paths: list[str] | None = None) -> dict:
     base = Path(root).resolve()
-    excluded = set(excluded_paths or [])
+    package_path = _safe_package_path(package_path)
+    excluded = {_safe_relative_path(path) for path in (excluded_paths or [])}
+    if not isinstance(package_author, str):
+        raise ValueError("package_author must be a string")
     inventory = []
     for raw in files:
         rel = _safe_relative_path(raw)
@@ -92,6 +104,7 @@ def build_manifest(*, source_ref: str, package_id: str, package_path: str,
         "source_ref": source_ref,
         "package_id": package_id,
         "package_path": package_path,
+        "package_author": package_author,
         "excluded_paths": sorted(excluded),
         "files": sorted(inventory, key=lambda row: row["path"]),
         "package_digest": digest,
@@ -145,8 +158,11 @@ def verify_award(*, manifest: dict, award: dict, package_author: str,
     if not isinstance(award, dict):
         errors.append("award payload is missing")
     else:
-        if award.get("package_digest") != manifest.get("package_digest"):
+        manifest_digest = manifest.get("package_digest") if isinstance(manifest, dict) else None
+        if award.get("package_digest") != manifest_digest:
             errors.append("award package digest does not match current package")
+        if not award.get("reviewer_login") or award.get("reviewer_login") != reviewer:
+            errors.append("award reviewer identity does not match authenticated reviewer")
         if award.get("decision") not in ("shadow", "parked", "approved", "converged"):
             errors.append("award decision is not an accepted terminal disposition")
         if not award.get("ledger_ref"):
@@ -163,13 +179,35 @@ def verify_award(*, manifest: dict, award: dict, package_author: str,
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Verify Delphi proposal package and QDesk award binding")
-    parser.add_argument("--manifest", required=True)
+    parser.add_argument("--manifest")
+    parser.add_argument("--build", action="store_true", help="build a manifest from local package files")
+    parser.add_argument("--source-ref")
+    parser.add_argument("--package-id")
+    parser.add_argument("--package-path")
+    parser.add_argument("--package-author", default="")
+    parser.add_argument("--file", action="append", default=[])
+    parser.add_argument("--exclude", action="append", default=[])
     parser.add_argument("--root", required=True)
     parser.add_argument("--award")
     parser.add_argument("--package-author", default="")
     parser.add_argument("--reviewer", default="")
     parser.add_argument("--out")
     args = parser.parse_args(argv)
+    if args.build:
+        if not all((args.source_ref, args.package_id, args.package_path)) or not args.file:
+            parser.error("--build requires --source-ref, --package-id, --package-path and at least one --file")
+        manifest = build_manifest(
+            source_ref=args.source_ref, package_id=args.package_id,
+            package_path=args.package_path, root=args.root, files=args.file,
+            package_author=args.package_author, excluded_paths=args.exclude,
+        )
+        output = json.dumps(manifest, indent=2, sort_keys=True) + "\\n"
+        if args.out:
+            Path(args.out).write_text(output, encoding="utf-8")
+        print(output, end="")
+        return 0
+    if not args.manifest:
+        parser.error("supply --manifest or --build")
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     errors = verify_files(manifest, args.root)
     if args.award:

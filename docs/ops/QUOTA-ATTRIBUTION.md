@@ -124,3 +124,80 @@ Rows that share `{provider, model@version}` are DUPLICATES on the model axis alo
 - desk-feed `provider_usage[].instance_key{system_prompt_ref, tools_ref, note}` is the feed's transitional stamp object (pilot: Jules row, content hash in compact `<ref>#<sha256[:12]>` form where the dispatched content is retrievable). It maps 1:1 onto DoE `treatment.instance` (`docs/ops/corpus/EXPERIMENT.schema.json`, PR #2656): `system_prompt{ref, sha256}` / `tools{ref, sha256}` + `{provider, model, role, moniker, context}`; when both content hashes are established, the hex `instance_key` is computed by `scripts/doe/instance_key.py` and the EXPERIMENT record supersedes the feed object as the identity of record.
 - Hashes are NEVER fabricated: where the exact dispatched content is not retrievable from a repo or provider-API record (the retracted 2026-10-30 desk-spawned briefs), the stamp carries the named ref + `NOT ESTABLISHED` in its note, and the axes stay waived for pre-mandate rows.
 - Desk dispatch intake carries the stamp fields as required inputs (desk-feed `dispatch.intake_url` template): provider + session_id + model@version + both refs. No stamp ⇒ no dispatch.
+## Auditability contract — Provider Consumption & Entitlement Attribution Ledger
+
+This section strengthens auditability across the existing quota registry, provider readings, requisition stamps, cadence ticks and lane-events projection. It extends the current evidence plane; it does not create another poller, registry, instrumentation store, scheduler or runtime admission gate.
+
+### Canonical record families
+
+Keep these record families independently addressable and independently reconcilable:
+
+1. **Entitlement observation** — provider and resource IDs; account scope at a privacy-safe stable alias; plan/tier when sourced; limit; native unit; window/reset semantics; authoritative source reference; observed timestamp; freshness and evidence status. A configured registry limit is a declared entitlement datum, while a live poll is an observation. Preserve that distinction.
+2. **Consumption event** — immutable event ID; provider/resource; the existing full consumer/instance key tuple where exposed; amount and native unit; window start/end; observed timestamp; source surface and source-record reference; counted/activity classification.
+3. **Attribution assessment** — exact, activity-proxy, or unattributed match; existing established, activity-only, waived, fault, or pending status; evidence class/confidence; null reason; provider granularity capability. Provider-only and shared-bucket totals remain provider/resource-level facts.
+4. **Billing and coverage assessment** — paid, verified_no_cost, included_or_subscription, or unknown; observed cost and currency only from authoritative billing evidence; explicitly evidenced free-quota/credit coverage in its native unit; pricing snapshot reference for counterfactual paid-equivalent valuation.
+5. **Audit lineage** — schema version; collector/actor; recorded timestamp; source URI/ref and source hash where safe; idempotency key; validation result; and optional supersedes/correction reference.
+
+### Metric vocabulary and unit discipline
+
+Every quantity carries a metric name, numeric value, unit, scope, and observation window. Keep these distinct:
+
+- entitlement limit / capacity;
+- remaining balance;
+- consumption delta;
+- API request count;
+- token count (input, output, cached input where supported);
+- provider credits;
+- execution minutes / seconds;
+- deployments, sessions, and other native service units;
+- observed monetary cost;
+- paid-equivalent monetary value.
+
+Never aggregate unlike units. A request count is not a token count; a credit is not a dollar unless the provider's official conversion and billable-unit mapping support it. A remaining-balance snapshot is not a consumption event. A configured limit is not a live observation.
+
+### Append-only correction and idempotency
+
+- Persist source observations/events as append-only evidence. A correction is a new record linked to the superseded record, with reason and provenance; preserve the original.
+- Derive a deterministic idempotency key from the canonical source identity + source event/record identity + metric/unit/window. Replays become duplicate findings rather than extra consumption.
+- Preserve source timestamps separately from ingestion/recorded timestamps. Retain source window boundaries and reset epoch so counter rollover can be interpreted.
+- Keep raw credentials, account identifiers, prompts, completions and arbitrary provider payloads outside public evidence. Public projections use an explicit allowlist and privacy-safe aliases.
+
+### Reconciliation and audit findings
+
+Reconcile a snapshot delta to event-ledger totals only when provider, resource, account scope, unit, window boundaries and reset epoch match. Emit a quantified residual and a finding when they do not reconcile; never force the residual into a consumer row.
+
+The audit should classify at least:
+
+- duplicate/replayed event;
+- missing required post-mandate dispatch stamp;
+- missing source reference or source hash;
+- event timestamp outside its declared window or inverted boundaries;
+- counter reset/rollover and negative apparent delta;
+- stale or future-dated observation;
+- unit/metric mismatch;
+- scope, resource, window or reset-epoch mismatch;
+- shared-bucket / provider-only unattributed consumption;
+- unknown billing or unsupported no-cost claim;
+- missing or mismatched pricing snapshot/model version;
+- reconciliation residual and incomplete source coverage.
+
+Each finding records finding_id, finding_type, severity, affected source refs, observed scope/window, first/last observed timestamps, disposition, and resolution evidence. Unknown is a first-class state; it is never normalized to zero.
+
+### Derived economic measures
+
+Keep the following separate in the value board and source data:
+
+- **Repo time investment value** = measured repository human/agent time × an explicitly documented valuation rate.
+- **Repo time opportunity cost** = value of the best feasible alternative use of those resources that was forgone. A time-rate proxy qualifies only when its rate is explicitly grounded in that alternative-use value.
+- **Paid-equivalent API value** = observed attributable workload repriced against the matching provider/model/version paid rate card.
+- **Verified free-quota/credit coverage** = usage explicitly evidenced as covered by a free entitlement or credit.
+- **Observed provider cost** = authoritative billed cost, where available.
+- **Potential time recovered** = a scenario until measured against a comparable baseline.
+
+A paid-equivalent estimate does not establish free-tier coverage, and verified no-cost billing status does not by itself establish which entitlement covered a particular event.
+
+### Acceptance fixtures
+
+The offline contract suite should cover exact model/instance attribution; exact provider-only attribution; shared-bucket unattributed totals; activity-only records; waived historical rows; post-mandate pending and fault states; duplicate replay; counter rollover; stale/future timestamps; missing provenance; metric/unit mismatch; unknown billing; pricing snapshot/version mismatch; mismatched reconciliation scope; and a non-zero reconciliation residual.
+
+Projections must be deterministic, preserve source refs and evidence states, expose freshness/completeness/reconciliation status, and leave unresolved findings visible. Existing readers and projection scripts remain the integration points.

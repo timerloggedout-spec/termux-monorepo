@@ -1,0 +1,52 @@
+{
+  "tool_profile_id": "replace-with-stable-id",
+  "name": "Human-readable tool and profile name",
+  "family": "other",
+  "registration_state": "proposed",
+  "implementation_state": "absent",
+  "discovery_state": "not_checked",
+  "verification_state": "unverified",
+  "availability_state": "unknown",
+  "adapter_contract": "Repository adapter path or candidate-only statement",
+  "host_requirements": {
+    "os": [],
+    "architectures": [],
+    "privileges": [],
+    "android_api_levels": [],
+    "termux_versions": []
+  },
+  "capabilities": [],
+  "exclusions": [],
+  "provenance": {
+    "upstream_url": null,
+    "revision": null,
+    "license": null,
+    "retrieved_at": null
+  },
+  "security": {
+    "isolation": "Unknown until verified",
+    "network_egress": "Default deny until verified",
+    "secret_policy": "No secrets in registry or artifacts",
+    "data_retention": "Unknown until verified"
+  },
+  "resource_profile": {
+    "cpu": null,
+    "memory_mb": null,
+    "disk_mb": null,
+    "startup_seconds": null,
+    "concurrency": null,
+    "cost_basis": "Not measured"
+  },
+  "evidence": [
+    {
+      "kind": "upstream",
+      "ref": "https://example.invalid/source",
+      "classification": "candidate",
+      "observed_at": null,
+      "sha256": null,
+      "notes": "Replace with immutable source and evidence."
+    }
+  ],
+  "owner": "Device Validation RECON",
+  "next_recon": "Verify source provenance, installability, capability contract, security, reset and runtime availability."
+}

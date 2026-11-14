@@ -1,4 +1,5 @@
 import importlib.util
+import pytest
 import sys
 from pathlib import Path
 
@@ -15,7 +16,7 @@ def test_posterior_ignores_unattributed_duplicate_missing_and_unknown_outcomes()
     belief, counts = m.posterior([
         {"experiment_id": "a", "source_sha": "sha-a", "event_id": "event-a", "observed_at": "2026-11-14T00:00:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": True},
         {"experiment_id": "b", "source_sha": "sha-b", "event_id": "event-b", "observed_at": "2026-11-14T00:01:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": False},
-        {"experiment_id": "b", "executed": True, "attributed": True, "outcome": False},
+        {"experiment_id": "b", "source_sha": "sha-b", "event_id": "event-b", "observed_at": "2026-11-14T00:01:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": False},
         {"experiment_id": "c", "executed": False, "attributed": True, "outcome": False},
         {"experiment_id": "d", "executed": True, "attributed": False, "outcome": False},
         {"experiment_id": "e", "executed": True, "attributed": True, "outcome": None},

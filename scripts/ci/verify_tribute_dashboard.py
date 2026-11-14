@@ -46,6 +46,29 @@ def main() -> int:
     for item in labs.get("experiment_labs", []):
         if not (DASHBOARD / item.get("ui_file", "")).is_file():
             raise SystemExit("algorithm lab UI is missing: " + str(item.get("ui_file")))
+        for key in ("source_path", "version_file", "engine_path"):
+            value = item.get(key)
+            if value and not (ROOT / value).exists():
+                raise SystemExit("algorithm lab reference is missing: " + str(value))
+        tests = item.get("test_path", [])
+        if isinstance(tests, str):
+            tests = [tests]
+        for value in tests:
+            if not (ROOT / value).is_file():
+                raise SystemExit("algorithm lab test is missing: " + str(value))
+        version_path = item.get("version_file")
+        if version_path:
+            version = json.loads((ROOT / version_path).read_text(encoding="utf-8"))
+            if version.get("version") != item.get("version"):
+                raise SystemExit("algorithm lab version registry drift: " + str(item.get("id")))
+    for item in labs.get("canonical_components", []):
+        for key in ("source_path", "documentation_path"):
+            value = item.get(key)
+            if value and not (ROOT / value).is_file():
+                raise SystemExit("canonical algorithm reference is missing: " + str(value))
+        for value in item.get("test_paths", []):
+            if not (ROOT / value).is_file():
+                raise SystemExit("canonical algorithm test is missing: " + str(value))
     for name in ("algorithm-suite.html", "markov-trellis.html", "delphic-graph.html", "markov-engine.mjs"):
         if not (DASHBOARD / name).is_file():
             raise SystemExit("versioned algorithm surface is missing: " + name)

@@ -94,7 +94,8 @@ def main() -> int:
         raise SystemExit("shared navigation does not use the canonical Tribute route")
     if "var previewMatch = path.match" not in nav or "/previews/" not in nav:
         raise SystemExit("shared navigation does not preserve the preview route context")
-    if '"./site-nav.js"' not in service_worker or 'var CACHE = "tribute-v1"' not in service_worker:
+    cache_declared = re.search(r"""var\s+CACHE\s*=\s*["']tribute-[^"']+["']\s*;""", service_worker)
+    if '"./site-nav.js"' not in service_worker or not cache_declared:
         raise SystemExit("offline shell does not cache the shared Tribute navigation")
     nav_pages = re.findall(r'tribute \+ "([^"]+\.html)"', nav)
     missing_pages = [name for name in nav_pages if not (DASHBOARD / name).is_file()]

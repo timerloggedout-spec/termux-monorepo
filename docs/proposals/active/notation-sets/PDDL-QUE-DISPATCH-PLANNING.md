@@ -1,0 +1,101 @@
+# PDDL QUE Dispatch Planning — Extended Candidate
+
+**Status:** candidate; planner validation required  
+**Purpose:** formalize the existing QUE dispatch example with explicit resource, lease, verification and terminal-state semantics.
+
+The existing `PDDL-SIGLARY-EXAMPLE.md` remains the notation/reading example. This file extends the planning model; it does not supersede the canonical QUE implementation or workflow contract.
+
+## Planning boundary
+
+PDDL answers: *is there a sequence of legal actions that reaches the goal under declared predicates/resources?*
+
+It does not answer whether a code change is correct. Verification is represented as a required action whose result must come from an independent evidence-producing validator.
+
+For production use, pin the planner and version, retain the domain/problem files, command line, planner output, plan digest and validation receipt.
+
+## Candidate PDDL domain
+
+```lisp
+(define (domain que-dispatch-v2)
+  (:requirements :strips :typing :negative-preconditions)
+  (:types filing seat)
+  (:predicates
+    (queued ?f - filing)
+    (claimed ?f - filing ?s - seat)
+    (built ?f - filing)
+    (verified ?f - filing)
+    (merged ?f - filing)
+    (window-open ?f - filing)
+    (lease-valid ?f - filing ?s - seat)
+    (available ?s - seat)
+    (blocked ?f - filing)
+    (failed ?f - filing)
+  )
+
+  (:action claim
+    :parameters (?f - filing ?s - seat)
+    :precondition (and
+      (queued ?f)
+      (window-open ?f)
+      (available ?s)
+      (not (claimed ?f ?s))
+      (not (blocked ?f))
+    )
+    :effect (and
+      (claimed ?f ?s)
+      (lease-valid ?f ?s)
+      (not (available ?s))
+    )
+  )
+
+  (:action build
+    :parameters (?f - filing ?s - seat)
+    :precondition (and
+      (claimed ?f ?s)
+      (lease-valid ?f ?s)
+      (not (blocked ?f))
+    )
+    :effect (built ?f)
+  )
+
+  (:action verify-pass
+    :parameters (?f - filing)
+    :precondition (and (built ?f) (not (failed ?f)))
+    :effect (verified ?f)
+  )
+
+  (:action release-seat
+    :parameters (?f - filing ?s - seat)
+    :precondition (and (claimed ?f ?s) (verified ?f))
+    :effect (and
+      (available ?s)
+      (not (lease-valid ?f ?s))
+    )
+  )
+
+  (:action merge
+    :parameters (?f - filing)
+    :precondition (verified ?f)
+    :effect (and (merged ?f) (not (queued ?f)))
+  )
+)
+```
+
+## Modeling cautions
+
+- The example uses a simplified single-seat availability predicate; concurrent capacity requires numeric fluents or explicit seat objects.
+- Lease expiry, wall-clock deadlines and durative build/verification require a temporal PDDL subset or an external scheduler.
+- A real merge is an external side effect and must remain behind repository policy/approval; a planner-generated plan is not authorization.
+- Failure, retry and compensation need explicit actions and terminal conditions before this model can represent production behavior.
+- The domain is not declared valid until checked by a named PDDL planner and scenario tests.
+
+## Required validation cases
+
+1. queued + open window + available seat yields a claim plan;
+2. closed window prevents claim;
+3. blocked filing prevents claim/build;
+4. unavailable seat prevents claim;
+5. build cannot precede claim;
+6. merge cannot precede independent verification;
+7. expired lease cannot authorize build;
+8. a planner plan cannot bypass human approval or repository branch protection.

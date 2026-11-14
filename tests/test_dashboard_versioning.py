@@ -190,3 +190,13 @@ def test_script_verifier_accepts_script_end_tag_attributes():
     from scripts.ci.verify_tribute_js import SCRIPT_RE
     html = '<script>const answer = 42;</script\t\n data-check="1">'
     assert SCRIPT_RE.findall(html) == [("", "const answer = 42;")]
+
+
+def test_dashboard_pages_reference_only_present_local_scripts():
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    for item in manifest["pages"]:
+        page = APP / item["file"]
+        html = page.read_text()
+        for source in re.findall(r'<script[^>]+src=["\\'](\\./[^"\\']+)["\\']', html):
+            asset = APP / source[2:]
+            assert asset.is_file(), f"{item['file']} references missing local script {source}"

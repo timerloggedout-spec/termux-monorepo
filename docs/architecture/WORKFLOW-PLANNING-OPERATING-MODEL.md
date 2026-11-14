@@ -37,7 +37,7 @@ The layers are:
 | MiroFish | scenario exploration and simulated populations | production executor or evidence authority |
 | DoE / MVT | experimental design and comparative inference | unconstrained production traffic router |
 
-Existing QUE contract: `ops/que/README.md` and `docs/ops/QUE.md`. Existing n8n boundary: `docs/ops/N8N-FREE-COMMUNITY-WIRING.md`. Existing visual contract: `docs/ops/SHE-DASHBOARD-PRD.md`. Existing routing map: `docs/ops/ROUTING-ORCHESTRATION-MAP.md`.
+Existing QUE producer/feed contract: `ops/que/README.md`; the Desk consumer is `apps/tribute-dashboard/desk.html`. Existing n8n boundary: `docs/ops/N8N-FREE-COMMUNITY-WIRING.md`. Existing visual contract: `docs/ops/SHE-DASHBOARD-PRD.md`. Existing routing map: `docs/ops/ROUTING-ORCHESTRATION-MAP.md`.
 
 ## 3. Canonical Workflow Contract (WFC)
 

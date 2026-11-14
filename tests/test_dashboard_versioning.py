@@ -25,6 +25,11 @@ def test_versioning_header_is_injected_for_all_pages_by_build_step(tmp_path):
     (tmp_path / "index.html").write_text("<html><head><title>Test</title></head><body>ok</body></html>")
     (tmp_path / "versioning.html").write_text("<html><head></head><body>compare</body></html>")
     (tmp_path / "versioning.js").write_text("/* test */")
+    (tmp_path / "markov-engine.mjs").write_text("export const model = true;")
+    (tmp_path / "algorithm-labs.json").write_text("{}")
+    (tmp_path / "index.html").write_text(
+        '<html><head><meta name="version-assets" content="markov-engine.mjs,algorithm-labs.json"></head><body>ok</body></html>'
+    )
     subprocess.run([
         sys.executable, str(BUILDER), "--root", str(tmp_path), "--channel", "preview",
         "--source-ref", "refs/pull/1/head", "--source-sha", "0123456789abcdef",
@@ -36,6 +41,9 @@ def test_versioning_header_is_injected_for_all_pages_by_build_step(tmp_path):
     assert manifest["version"] == "1.0.1+0123456789ab"
     assert len(manifest["pages"]) == 2
     assert all(len(p["content_sha256"]) == 64 for p in manifest["pages"])
+    assets = {item["file"]: item["content_sha256"] for item in manifest["assets"]}
+    assert set(assets) == {"markov-engine.mjs", "algorithm-labs.json"}
+    assert all(len(value) == 64 for value in assets.values())
 
 
 def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
@@ -120,3 +128,24 @@ def test_builder_preserves_canonical_home_and_comparison_titles(tmp_path):
     titles = {page["file"]: page["title"] for page in manifest["pages"]}
     assert titles["index.html"] == "Help-Wanted Home"
     assert titles["versioning.html"] == "Version Comparison"
+
+
+def test_nested_algorithm_lab_navigation_and_runtime_asset_comparison_are_present():
+    js = (APP / "versioning.js").read_text()
+    assert "Experiment lanes" in js
+    assert "Canonical utilities" in js
+    assert "Open versioned UI" in js
+    assert "Runtime assets" in js
+    registry = json.loads((APP / "algorithm-labs.json").read_text())
+    assert {lab["id"] for lab in registry["experiment_labs"]} == {
+        "archwiz-markov-lane", "delphic-observatory-lab"
+    }
+    assert {item["id"] for item in registry["canonical_components"]} == {
+        "kahn.dag", "bayesian.routing", "gantt.dependency-phases"
+    }
+
+
+def test_graph_suite_pages_are_in_the_fallback_version_registry():
+    js = (APP / "versioning.js").read_text()
+    for filename in ("algorithm-suite.html", "markov-trellis.html", "delphic-graph.html"):
+        assert '"file":"' + filename + '"' in js

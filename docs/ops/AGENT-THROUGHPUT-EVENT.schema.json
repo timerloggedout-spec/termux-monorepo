@@ -33,7 +33,7 @@
       "additionalProperties": false,
       "required": ["controller", "surface", "route", "session_ref", "adapter_version", "attribution_method", "confidence", "evidence_refs"],
       "properties": {
-        "controller": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "controller": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]*$", "minLength": 1, "maxLength": 128 },
         "surface": { "enum": ["repo_owned_adapter", "external_computer", "seat_browser", "manual", "unknown"] },
         "route": { "enum": ["api", "mcp", "web2api", "cli", "stdin", "dom_browser", "seat_browser", "manual", "unknown"] },
         "session_ref": { "type": ["string", "null"], "maxLength": 256 },

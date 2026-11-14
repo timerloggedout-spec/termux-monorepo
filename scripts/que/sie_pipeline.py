@@ -51,7 +51,7 @@ def stable_event_id(source_kind: str, source_id: str, source_revision: str) -> s
 
 def item_key(source_kind: str, source_id: str, failure_class: str) -> str:
     """Group repeated observations of the same logical work item."""
-    if source_kind not in SOURCE_KINDS:
+    if not isinstance(source_kind, str) or source_kind not in SOURCE_KINDS:
         raise StageValidationError(f"unsupported source kind: {source_kind}")
     for name, value in (("source_id", source_id), ("failure_class", failure_class)):
         if not isinstance(value, str) or not value.strip():

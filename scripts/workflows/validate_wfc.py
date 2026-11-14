@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -50,7 +51,7 @@ def validate_contract(data: Any) -> list[str]:
     if not isinstance(scope, dict):
         errors.append("scope: expected an object")
     else:
-        if not _nonempty_string(scope.get("repository")) or "/" not in scope["repository"]:
+        if not _nonempty_string(scope.get("repository")) or not re.fullmatch(r"[^/]+/[^/]+", scope["repository"]):
             errors.append("scope.repository: expected owner/repository")
         if not isinstance(scope.get("base_sha"), str) or not SHA.fullmatch(scope["base_sha"]):
             errors.append("scope.base_sha: expected a lowercase 40-character Git SHA")
@@ -143,7 +144,7 @@ def validate_contract(data: Any) -> list[str]:
                 if not isinstance(budget.get("unit"), str) or budget["unit"] not in BUDGET_UNITS:
                     errors.append("constraints.budget.unit: unsupported unit")
                 limit = budget.get("limit")
-                if isinstance(limit, bool) or not isinstance(limit, (int, float)) or limit <= 0:
+                if isinstance(limit, bool) or not isinstance(limit, (int, float)) or not math.isfinite(limit) or limit <= 0:
                     errors.append("constraints.budget.limit: expected a positive number")
 
     for key in ("success", "evidence"):

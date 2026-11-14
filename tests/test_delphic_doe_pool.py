@@ -91,5 +91,36 @@ class CandidatePacketTests(unittest.TestCase):
         self.assertEqual(first["selection_provenance"]["previous_provider"], "alpha")
 
 
+    def test_empty_participant_identity_is_excluded(self):
+        bad = candidate("p1", "alpha")
+        bad["participant_id"] = ""
+        result = build_candidate_packet(TASK, [bad])
+        self.assertIsNone(result["selected"])
+        self.assertIn("participant_identity_not_issued", result["excluded"][0]["reasons"])
+
+    def test_malformed_task_action_class_is_rejected(self):
+        with self.assertRaises(ValueError):
+            build_candidate_packet({**TASK, "action_class": ["research"]}, [candidate()])
+
+    def test_rotation_provenance_only_marks_an_equal_score_tiebreak(self):
+        tied = build_candidate_packet(
+            TASK, [candidate("p1", "alpha"), candidate("p2", "beta")],
+            previous_provider="alpha",
+        )
+        higher = build_candidate_packet(
+            TASK, [candidate("p1", "alpha", 0.5), candidate("p2", "beta", 0.95)],
+            previous_provider="alpha",
+        )
+        self.assertTrue(tied["selection_provenance"]["rotation_applied"])
+        self.assertFalse(higher["selection_provenance"]["rotation_applied"])
+
+    def test_candidate_schema_declares_selection_provenance(self):
+        from pathlib import Path
+        schema = (Path(__file__).resolve().parents[1] /
+                  "docs" / "schemas" / "delphic-doe-task-candidate.yaml").read_text()
+        self.assertIn("selection_provenance", schema)
+        self.assertIn("rotation_applied", schema)
+
+
 if __name__ == "__main__":
     unittest.main()

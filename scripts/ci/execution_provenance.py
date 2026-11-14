@@ -6,6 +6,7 @@ facts. Missing controller evidence remains explicitly unknown.
 from __future__ import annotations
 
 import math
+import re
 from typing import Any, Mapping
 
 ATTRIBUTION_METHODS = {
@@ -20,6 +21,9 @@ EXECUTION_ROUTES = {
     "seat_browser", "manual", "unknown",
 }
 QUE_EXECUTION_ROUTES = {"api", "mcp", "web2api", "cli", "stdin", "dom_browser"}
+SESSION_REF_RE = re.compile(r"^session:[a-z0-9_-]+:[A-Za-z0-9._-]{1,180}$")
+SAFE_REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/#-]{0,255}$")
+ADAPTER_VERSION_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$")
 
 
 def normalize_execution(raw: Any = None) -> dict[str, Any]:
@@ -69,6 +73,11 @@ def normalize_execution(raw: Any = None) -> dict[str, Any]:
                 raise ValueError(f"execution.{field} must be a non-empty opaque reference up to {limit} characters")
             result[field] = value.strip()
 
+    if result["session_ref"] is not None and not SESSION_REF_RE.fullmatch(result["session_ref"]):
+        raise ValueError("execution.session_ref must be an opaque session:<controller>:<id> reference")
+    if result["adapter_version"] is not None and not ADAPTER_VERSION_RE.fullmatch(result["adapter_version"]):
+        raise ValueError("execution.adapter_version must be a safe version identifier")
+
     if isinstance(raw.get("confidence", 0.0), bool):
         raise ValueError("execution.confidence must be a number, not a boolean")
     try:
@@ -82,8 +91,8 @@ def normalize_execution(raw: Any = None) -> dict[str, Any]:
     refs = raw.get("evidence_refs", [])
     if not isinstance(refs, list) or len(refs) > 20:
         raise ValueError("execution.evidence_refs must be a list of at most 20 references")
-    if any(not isinstance(ref, str) or not ref.strip() or len(ref) > 256 for ref in refs):
-        raise ValueError("execution evidence references must be non-empty strings up to 256 characters")
+    if any(not isinstance(ref, str) or not SAFE_REF_RE.fullmatch(ref.strip()) for ref in refs):
+        raise ValueError("execution evidence references must be safe opaque references up to 256 characters")
     result["evidence_refs"] = sorted(set(ref.strip() for ref in refs))
 
     if result["controller"].lower() == "que":

@@ -14,12 +14,26 @@ def canonical_json(value: Any) -> bytes:
 
 def queue_stall_groups(feed: dict) -> list[dict]:
     """Create stable intake groups for unclaimed escalation and stall receipts."""
+    if not isinstance(feed, dict):
+        raise ValueError("dispatch feed must be an object")
+    dispatches = feed.get("dispatches", [])
+    if not isinstance(dispatches, list) or any(not isinstance(row, dict) for row in dispatches):
+        raise ValueError("dispatch feed entries must be objects in an array")
     groups = []
-    for row in feed.get("dispatches", []):
+    for row in dispatches:
         issue = row.get("issue")
         state = str(row.get("state") or "").lower()
         events = row.get("stall_events") or []
-        if not isinstance(issue, int) or state == "claimed" or row.get("claim"):
+        if not isinstance(events, list) or any(not isinstance(event, dict) for event in events):
+            raise ValueError("dispatch stall_events must contain objects")
+        tier = row.get("tier") or {}
+        if not isinstance(tier, dict):
+            raise ValueError("dispatch tier must be an object")
+        try:
+            age_min = float(row.get("age_min") or 0)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("dispatch age_min must be numeric") from exc
+        if not isinstance(issue, int) or isinstance(issue, bool) or state == "claimed" or row.get("claim"):
             continue
         if state != "escalated" and not events:
             continue
@@ -32,11 +46,10 @@ def queue_stall_groups(feed: dict) -> list[dict]:
         revision_material = {
             "issue": issue,
             "state": state,
-            "tier": (row.get("tier") or {}).get("name", "unknown"),
+            "tier": tier.get("name", "unknown"),
             "stall_events": events,
         }
         revision = hashlib.sha256(canonical_json(revision_material)).hexdigest()
-        age_min = float(row.get("age_min") or 0)
         groups.append({
             "path": path,
             "name": f"QUE dispatch issue #{issue} {state or 'stall'}",

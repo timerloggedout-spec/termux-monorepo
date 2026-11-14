@@ -66,9 +66,13 @@ def test_transition_preserves_identity_and_advances_one_stage():
 def test_transition_rejects_stage_skip_and_identity_drift():
     before = receipt("OBSERVE", "COMPLETED")
     skipped = receipt("RESEARCH", "READY")
-    changed = receipt("TRIAGE", "READY", source_id="999")
+    changed = receipt("TRIAGE", "READY")
+    changed["item_key"] = "changed-key"
+    changed["source"]["id"] = "999"
     assert any("advance exactly one stage" in e for e in validate_transition(before, skipped))
-    assert any("item_key" in e for e in validate_transition(before, changed))
+    errors = validate_transition(before, changed)
+    assert any("item_key" in e for e in errors)
+    assert any("source" in e for e in errors)
 
 
 def test_blocked_stage_resumes_in_place():

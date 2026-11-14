@@ -16,7 +16,7 @@
     navScript.setAttribute("data-site-nav-loader", "true");
     document.head.appendChild(navScript);
   }
-  var fallbackPages = [{"id":"3l0","file":"3l0.html","title":"3l0"},{"id":"admin-graph","file":"admin-graph.html","title":"Admin Graph"},{"id":"admin","file":"admin.html","title":"Admin"},{"id":"ates","file":"ates.html","title":"Ates"},{"id":"billion-tokens","file":"billion-tokens.html","title":"Billion Tokens"},{"id":"classifiers","file":"classifiers.html","title":"Classifiers"},{"id":"countdowns","file":"countdowns.html","title":"Countdowns"},{"id":"d2-proposals","file":"d2-proposals.html","title":"D2 Proposals"},{"id":"delphi-ledger","file":"delphi-ledger.html","title":"Delphi Ledger"},{"id":"delphi-rfp","file":"delphi-rfp.html","title":"Delphi Rfp"},{"id":"desk","file":"desk.html","title":"Desk"},{"id":"dispatch-tree","file":"dispatch-tree.html","title":"Dispatch Tree"},{"id":"doe","file":"doe.html","title":"Doe"},{"id":"family","file":"family.html","title":"Nested Family"},{"id":"free-tier-value","file":"free-tier-value.html","title":"Free Tier Value"},{"id":"tribute-home","file":"index.html","title":"Tribute Home"},{"id":"lanes-and-scopes","file":"lanes-and-scopes.html","title":"Lanes And Scopes"},{"id":"linguist","file":"linguist.html","title":"Linguist"},{"id":"matrix","file":"matrix.html","title":"Matrix"},{"id":"moneyball","file":"moneyball.html","title":"Moneyball"},{"id":"wagering-book","file":"wagering-book.html","title":"Wagering Book"},{"id":"pools","file":"pools.html","title":"Pools"},{"id":"mvt","file":"mvt.html","title":"Mvt"},{"id":"oracle","file":"oracle.html","title":"Oracle"},{"id":"owner-records","file":"owner-records.html","title":"Owner Records"},{"id":"pr-lanes","file":"pr-lanes.html","title":"Pr Lanes"},{"id":"proposals","file":"proposals.html","title":"Proposals"},{"id":"quota-event-audits","file":"quota-event-audits.html","title":"Event Audits"},{"id":"quota-graphs","file":"quota-graphs.html","title":"Quota Graphs"},{"id":"quota-swarm","file":"quota-swarm.html","title":"Swarm Quota"},{"id":"quota-usage","file":"quota-usage.html","title":"Quota Usage"},{"id":"quota","file":"quota.html","title":"Quota"},{"id":"referrals","file":"referrals.html","title":"Referrals"},{"id":"marketing-gantt","file":"marketing-gantt.html","title":"Marketing Gantt"},{"id":"results-index","file":"results-index.html","title":"Results Index"},{"id":"telemetry","file":"telemetry.html","title":"Telemetry"},{"id":"tracking","file":"tracking.html","title":"Tracking"},{"id":"version-comparison","file":"versioning.html","title":"Version Comparison"}];
+  var fallbackPages = [{"id":"3l0","file":"3l0.html","title":"3l0"},{"id":"admin-graph","file":"admin-graph.html","title":"Admin Graph"},{"id":"admin","file":"admin.html","title":"Admin"},{"id":"ates","file":"ates.html","title":"Ates"},{"id":"billion-tokens","file":"billion-tokens.html","title":"Billion Tokens"},{"id":"classifiers","file":"classifiers.html","title":"Classifiers"},{"id":"countdowns","file":"countdowns.html","title":"Countdowns"},{"id":"d2-proposals","file":"d2-proposals.html","title":"D2 Proposals"},{"id":"delphi-ledger","file":"delphi-ledger.html","title":"Delphi Ledger"},{"id":"delphi-rfp","file":"delphi-rfp.html","title":"Delphi Rfp"},{"id":"desk","file":"desk.html","title":"Desk"},{"id":"dispatch-tree","file":"dispatch-tree.html","title":"Dispatch Tree"},{"id":"doe","file":"doe.html","title":"Doe"},{"id":"family","file":"family.html","title":"Nested Family"},{"id":"free-tier-value","file":"free-tier-value.html","title":"Free Tier Value"},{"id":"tribute-home","file":"index.html","title":"Tribute Home"},{"id":"lanes-and-scopes","file":"lanes-and-scopes.html","title":"Lanes And Scopes"},{"id":"linguist","file":"linguist.html","title":"Linguist"},{"id":"matrix","file":"matrix.html","title":"Matrix"},{"id":"moneyball","file":"moneyball.html","title":"Moneyball"},{"id":"wagering-book","file":"wagering-book.html","title":"Wagering Book"},{"id":"pools","file":"pools.html","title":"Pools"},{"id":"mvt","file":"mvt.html","title":"Mvt"},{"id":"oracle","file":"oracle.html","title":"Oracle"},{"id":"owner-records","file":"owner-records.html","title":"Owner Records"},{"id":"pr-lanes","file":"pr-lanes.html","title":"Pr Lanes"},{"id":"proposals","file":"proposals.html","title":"Proposals"},{"id":"quota-event-audits","file":"quota-event-audits.html","title":"Event Audits"},{"id":"quota-graphs","file":"quota-graphs.html","title":"Quota Graphs"},{"id":"quota-swarm","file":"quota-swarm.html","title":"Swarm Quota"},{"id":"quota-usage","file":"quota-usage.html","title":"Quota Usage"},{"id":"quota","file":"quota.html","title":"Quota"},{"id":"referrals","file":"referrals.html","title":"Referrals"},{"id":"marketing-gantt","file":"marketing-gantt.html","title":"Marketing Gantt"},{"id":"results-index","file":"results-index.html","title":"Results Index"},{"id":"telemetry","file":"telemetry.html","title":"Telemetry"},{"id":"tracking","file":"tracking.html","title":"Tracking"},{"id":"version-comparison","file":"versioning.html","title":"Version Comparison"},{"id":"algorithm-suite","file":"algorithm-suite.html","title":"Graph & Algorithm Suite"},{"id":"markov-trellis","file":"markov-trellis.html","title":"ArchWiz Markov Trellis"},{"id":"delphic-graph","file":"delphic-graph.html","title":"Delphic Graph Observatory"}];
   function paramsFor(page, manifest) {
     var q = new URLSearchParams();
     q.set("page_unique_id", page.id);
@@ -61,7 +61,7 @@
       ((labs && labs.experiment_labs) || []).map(function (lab) {
         var page = pages.find(function (p) { return p.file === lab.ui_file; });
         var ref = encodeURIComponent(manifest.source_ref || "master").replace(/%2F/g, "/");
-        var sourceKind = /\\.[a-z0-9]+$/i.test(lab.source_path || "") ? "blob" : "tree";
+        var sourceKind = /\.[a-z0-9]+$/i.test(lab.source_path || "") ? "blob" : "tree";
         var sourceUrl = "https://github.com/" + APP + "/" + sourceKind + "/" + ref + "/" + (lab.source_path || "");
         var engineUrl = lab.engine_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + lab.engine_path : "";
         var testUrl = lab.test_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + (Array.isArray(lab.test_path) ? lab.test_path[0] : lab.test_path) : "";
@@ -75,7 +75,7 @@
       '<details class="pv-nested-group"><summary>Canonical utilities · ' + ((labs && labs.canonical_components) ? labs.canonical_components.length : 0) + '</summary><div class="pv-nested-list">' +
       ((labs && labs.canonical_components) || []).map(function (item) {
         var ref = encodeURIComponent(manifest.source_ref || "master").replace(/%2F/g, "/");
-        var kind = /\\.[a-z0-9]+$/i.test(item.source_path || "") ? "blob" : "tree";
+        var kind = /\.[a-z0-9]+$/i.test(item.source_path || "") ? "blob" : "tree";
         var sourceUrl = "https://github.com/" + APP + "/" + kind + "/" + ref + "/" + (item.source_path || "");
         var docUrl = item.documentation_path ? "https://github.com/" + APP + "/blob/" + ref + "/" + item.documentation_path : "";
         return '<div class="pv-lab-item"><strong>' + esc(item.title) + '</strong><small>' + esc(item.id) + ' · ' + esc(item.version || item.status || "registered") + '</small><div class="pv-lab-links"><a href="' + esc(sourceUrl) + '">Implementation</a>' + (docUrl ? '<a href="' + esc(docUrl) + '">Contract</a>' : '') + '</div></div>';
@@ -120,6 +120,16 @@
         return '<tr><th scope="row">' + esc(id) + '</th><td>' + esc(page.title || page.file) +
           '</td><td>' + esc(changed) + '</td><td>' + previewLink + '</td><td>' + productionLink + '</td></tr>';
       }).join("");
+      var currentAssets = current.assets || [];
+      var productionAssets = prod.assets || [];
+      var assetNames = Object.create(null);
+      currentAssets.concat(productionAssets).forEach(function (asset) { assetNames[asset.file] = true; });
+      var assetRows = Object.keys(assetNames).sort().map(function (name) {
+        var a = currentAssets.find(function (item) { return item.file === name; });
+        var b = productionAssets.find(function (item) { return item.file === name; });
+        var status = !a ? "REMOVED FROM PREVIEW" : (!b ? "NEW ASSET" : (!a.content_sha256 || !b.content_sha256 ? "HASH UNAVAILABLE" : (a.content_sha256 !== b.content_sha256 ? "CHANGED" : "same content")));
+        return '<tr><th scope="row">' + esc(name) + '</th><td>' + esc(status) + '</td><td><code>' + esc(a ? (a.content_sha256 || "unavailable") : "—") + '</code></td><td><code>' + esc(b ? (b.content_sha256 || "unavailable") : "—") + '</code></td></tr>';
+      }).join("");
       root.innerHTML = '<p><strong>Current:</strong> ' + esc(current.channel) + ' · ' +
         esc(current.version) + ' · <code>' + esc(current.source_sha || "unverified") +
         '</code></p><p><strong>Production:</strong> ' + esc(prod.version || "unverified") +
@@ -128,7 +138,9 @@
         encodeURIComponent(prod.source_sha) + '...' + encodeURIComponent(current.source_sha) +
         '">GitHub source diff</a></p>' : '<p>Source diff unavailable: one or both manifest source SHAs are missing.</p>') +
         '<div class="pv-table-wrap"><table><thead><tr><th>Page unique ID</th><th>Page</th><th>Comparison</th><th>Preview</th><th>Production</th></tr></thead><tbody>' +
-        rows + '</tbody></table></div>';
+        rows + '</tbody></table></div>' +
+        '<h3>Runtime assets</h3><div class="pv-table-wrap"><table><thead><tr><th>Asset</th><th>Comparison</th><th>Preview SHA-256</th><th>Production SHA-256</th></tr></thead><tbody>' +
+        (assetRows || '<tr><td colspan="4">No explicit runtime assets declared.</td></tr>') + '</tbody></table></div>';
     }).catch(function (error) {
       root.innerHTML = '<p role="alert">Comparison unavailable: ' + esc(error.message) +
         '. This build is not verified against production.</p>';

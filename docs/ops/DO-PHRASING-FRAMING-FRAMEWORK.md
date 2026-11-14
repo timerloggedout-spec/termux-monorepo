@@ -10,6 +10,15 @@ A search of the repository's canonical documentation found strong adjacent contr
 
 Until an authoritative definition is supplied, use **DO** as a descriptive label for **direct, action-first phrasing**. Do not invent an acronym expansion or imply that this document is an already-adopted external standard. If the originator supplies a source definition, reconcile this document against it and preserve the source terminology.
 
+### Terminology distinction: DO phrasing vs DO Statements
+
+This document's **DO** label means direct, action-first task phrasing. It is not the same thing as the lowercase `do` intent class in `scripts/classifiers/chat_intent.py` (`chat-intent v2`, rule `R6-do-statement`).
+
+- **DO phrasing** composes an actionable work request: action, target, outcome, scope, constraints, acceptance evidence and stop/escalation.
+- **DO Statement intent** identifies a short, bare declarative principle/criteria maxim intended to govern standing behavior. It is a candidate for durable directive-of-record memory, subject to provenance, scope and authority review.
+- The classifier's rule precedence matters: actionable maxims (for example, “always build the repo first”) remain requests; hedged maxims remain speculation. Do not force them into the standing-DO memory class.
+- Neither label invents an acronym expansion. The two mechanisms are complementary but distinct.
+
 ## 2. Core rule
 
 Frame work as an observable action with an intended result—not merely a topic, aspiration, or open-ended command.

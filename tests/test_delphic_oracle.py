@@ -13,14 +13,14 @@ spec.loader.exec_module(m)
 
 def test_posterior_ignores_unattributed_duplicate_missing_and_unknown_outcomes():
     belief, counts = m.posterior([
-        {"experiment_id": "a", "executed": True, "attributed": True, "outcome": True},
-        {"experiment_id": "b", "executed": True, "attributed": True, "outcome": False},
+        {"experiment_id": "a", "source_sha": "sha-a", "event_id": "event-a", "observed_at": "2026-11-14T00:00:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": True},
+        {"experiment_id": "b", "source_sha": "sha-b", "event_id": "event-b", "observed_at": "2026-11-14T00:01:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": False},
         {"experiment_id": "b", "executed": True, "attributed": True, "outcome": False},
         {"experiment_id": "c", "executed": False, "attributed": True, "outcome": False},
         {"experiment_id": "d", "executed": True, "attributed": False, "outcome": False},
         {"experiment_id": "e", "executed": True, "attributed": True, "outcome": None},
         {"experiment_id": None, "executed": True, "attributed": True, "outcome": True},
-        {"experiment_id": "e", "executed": True, "attributed": True, "outcome": True},
+        {"experiment_id": "e", "source_sha": "sha-e", "event_id": "event-e", "observed_at": "2026-11-14T00:02:00Z", "instance_key": "instance-1", "executed": True, "attributed": True, "outcome": True},
     ])
     assert belief.alpha == 3.0
     assert belief.beta == 2.0
@@ -69,6 +69,9 @@ def test_workflow_preserves_two_sides_and_math_contract():
         "observations": [
             {
                 "event_id": "e1",
+                "source_sha": "sha-e1",
+                "observed_at": "2026-11-14T00:00:00Z",
+                "instance_key": "instance-1",
                 "experiment_id": "x1",
                 "executed": True,
                 "attributed": True,
@@ -77,6 +80,9 @@ def test_workflow_preserves_two_sides_and_math_contract():
             },
             {
                 "event_id": "e2",
+                "source_sha": "sha-e2",
+                "observed_at": "2026-11-14T00:01:00Z",
+                "instance_key": "instance-1",
                 "experiment_id": "x2",
                 "executed": True,
                 "attributed": True,
@@ -105,3 +111,56 @@ def test_expected_value_of_information_rejects_non_finite_scalar_inputs():
     for current, cost in ((math.nan, 0.0), (0.0, math.inf)):
         with pytest.raises(ValueError):
             m.expected_value_of_information(current, {"yes": 1.0}, {"yes": 2.0}, cost)
+
+
+def test_posterior_holds_conflicting_duplicate_experiment_outcomes():
+    identity = {
+        "source_sha": "sha-1", "event_id": "event-1",
+        "observed_at": "2026-11-14T00:00:00Z", "instance_key": "instance-1",
+        "executed": True, "attributed": True, "experiment_id": "exp-1",
+    }
+    belief, counts = m.posterior([
+        {**identity, "outcome": True},
+        {**identity, "event_id": "event-2", "outcome": False},
+    ])
+    assert belief.alpha == 1.0 and belief.beta == 1.0
+    assert counts["conflicts"] == 1
+    assert counts["successes"] == counts["failures"] == 0
+
+
+def test_posterior_ignores_rows_missing_required_provenance_identity():
+    belief, counts = m.posterior([{
+        "experiment_id": "missing-source", "event_id": "event-1",
+        "observed_at": "2026-11-14T00:00:00Z", "instance_key": "instance-1",
+        "executed": True, "attributed": True, "outcome": True,
+    }])
+    assert belief.alpha == 1.0 and belief.beta == 1.0
+    assert counts["successes"] == 0
+
+
+def test_workflow_rejects_mixed_instance_observations():
+    base = {
+        "source_sha": "sha", "observed_at": "2026-11-14T00:00:00Z",
+        "executed": True, "attributed": True, "outcome": True,
+    }
+    with pytest.raises(ValueError, match="one non-empty instance_key"):
+        m.workflow({"observations": [
+            {**base, "event_id": "e1", "experiment_id": "x1", "instance_key": "instance-1"},
+            {**base, "event_id": "e2", "experiment_id": "x2", "instance_key": "instance-2"},
+        ]})
+
+
+def test_workflow_emits_replayable_provenance_digests():
+    payload = {"observations": [{
+        "event_id": "e1", "source_sha": "sha-e1",
+        "observed_at": "2026-11-14T00:00:00Z", "instance_key": "instance-1",
+        "experiment_id": "x1", "executed": True, "attributed": True,
+        "outcome": True, "provider": "gemini",
+    }]}
+    first = m.workflow(payload)["provenance"]
+    second = m.workflow(payload)["provenance"]
+    for key in ("algorithm_id", "algorithm_version", "input_digest",
+                "parameters_digest", "output_digest"):
+        assert first[key] == second[key]
+    assert first["runtime_ms"] >= 0
+    assert first["executed_at"]

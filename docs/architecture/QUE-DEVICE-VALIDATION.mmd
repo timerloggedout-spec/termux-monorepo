@@ -1,0 +1,45 @@
+flowchart TD
+  subgraph MODULES["Repository modules — independent device lanes"]
+    M1["apps.studysprint.android"]
+    M2["termux.runtime.smoke"]
+    M3["device.queue.poller — planned"]
+    MN["Future device-dependent modules"]
+  end
+
+  M1 --> L["Module lane contract"]
+  M2 --> L
+  M3 --> L
+  MN --> L
+
+  L --> R["RECON + capability registry"]
+  R --> C{"Capability + freshness match?"}
+  C -->|"No"| X["BLOCK / NEED RECON"]
+  C -->|"Yes"| Q["QUE admission / tier / claim / lease"]
+
+  Q --> A["Backend adapter"]
+  A --> AV["Android AVD"]
+  A --> TD["Termux Docker / Linux container"]
+  A --> QE["QEMU"]
+  A --> WY["Waydroid"]
+  A --> PH["Physical Android device"]
+  A --> TN["Termux-native runtime"]
+
+  AV --> E["SHA-bound evidence envelope"]
+  TD --> E
+  QE --> E
+  WY --> E
+  PH --> E
+  TN --> E
+
+  E --> V{"Independent outcome classification"}
+  V -->|"Emulator pass"| EP["EMULATOR_PASS only"]
+  V -->|"Hardware requirement"| DR["DEVICE_REQUIRED"]
+  V -->|"Failure / incomplete"| F["FAIL / NEED_EVIDENCE"]
+  DR --> PH
+  EP --> DOE["DoE comparison / MoneyBall"]
+  F --> DOE
+  DOE --> D{"Hard gates + Pareto/value review"}
+  D -->|"retain / eligible"| P["Proposal + dual-gate promotion"]
+  D -->|"cull / defer"| H["Preserve evidence + rationale"]
+  P --> OUT["PROMOTION_ELIGIBLE"]
+  H --> R

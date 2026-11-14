@@ -695,7 +695,7 @@ def _run(args) -> int:
                     pending += 1
                     summary.append(f"#{issue['number']} {s['id']}: HELD package binding")
                     board.append({"number": issue["number"], "surface": s["id"],
-                                  "effective": None, "decision": "held"})
+                                  "effective": None, "decision": "pending"})
                     print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
                     continue
                 ih = input_hash(s, roles, registry, readings, package_binding)

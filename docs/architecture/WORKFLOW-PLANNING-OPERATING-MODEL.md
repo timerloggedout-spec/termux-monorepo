@@ -107,14 +107,14 @@ A successful execution is not automatically a successful outcome; a validated re
 
 ## 4. Planning formalism selection
 
-Use the least powerful formalism that faithfully represents the problem.
+Use the least powerful formalism that faithfully represents the problem. **PDDL is a formal-planning subdomain of Siglary (PDDL ⊂ Siglary)**: Siglary governs the notation system and vocabulary; PDDL contributes typed objects, predicates, actions, preconditions, effects and goals as its specialized planning register. Linguist-owned Matrice custody governs new Siglary terms and chords.
 
 | Formalism | Use when | Limitation / boundary |
 |---|---|---|
 | DAG / dependency graph | task ordering and fan-in/fan-out | does not express rich state/resource constraints |
 | Finite-state machine | lifecycle and legal transitions | not a general optimizer |
 | BPMN 2.0 | human-readable business process, events, gateways, timers | verbose; execution semantics vary by engine |
-| PDDL STRIPS + typing | discrete actions, predicates, preconditions/effects, goal reachability | classical form omits durations, concurrency and uncertainty |
+| PDDL STRIPS + typing (Siglary planning register) | discrete actions, predicates, preconditions/effects, goal reachability | classical form omits durations, concurrency and uncertainty |
 | PDDL 2.1+ | durative actions, numeric fluents, resource/time constraints | planner support varies; keep a tested subset |
 | HTN planning | decomposing high-level missions into methods/subtasks | requires method library and domain-specific decomposition |
 | CP-SAT / MILP | assignment, capacity, scheduling, budget and resource optimization | optimization model, not the complete workflow lifecycle |
@@ -124,7 +124,7 @@ Use the least powerful formalism that faithfully represents the problem.
 
 **Recommended composition:** WFC as canonical contract; DAG/state machine for baseline validation; PDDL/HTN for discrete planning; CP-SAT for capacity/scheduling optimization where needed; Temporal/Actions/Termux as execution adapters; Bayesian/causal methods for uncertain routing and outcome learning.
 
-PDDL must be planner-checked. The existing Siglary PDDL example is explicitly marked candidate pending formal planner validation.
+Each PDDL domain/problem pair must pass a named planner and recorded validation command. The existing Siglary PDDL example remains candidate pending formal planner validation.
 
 ## 5. QUE integration
 

@@ -97,7 +97,7 @@ class TestProposalPackage(unittest.TestCase):
                          "HELD")
 
     def test_nested_symlink_is_rejected(self):
-        outside = self.root.parent / "outside-proposal.md"
+        outside = self.root / "outside-proposal.md"
         outside.write_text("# Outside\\n")
         nested = self.root / "nested"
         nested.mkdir()

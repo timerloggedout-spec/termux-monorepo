@@ -10,7 +10,7 @@ reviewers:
   - timerloggedout-spec
 related_prs: []
 related_branches:
-  - feat/que-device-capability-registry-20261114
+  - feat/que-device-validation-20261114
 gates_required:
   - proposal-lifecycle
   - repo-gate

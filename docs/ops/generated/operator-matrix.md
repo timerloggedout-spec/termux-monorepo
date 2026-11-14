@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-13T20:13:30Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-14T12:27:25Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `e03c0d5c19` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `f4e9a4352d` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 645 issues, 389 PRs. PR classes: EXTRACT 15 / CANDIDATE 194 / NEED_EVIDENCE 180 / SUPERSEDE 0.
+**Open inventory:** 651 issues, 397 PRs. PR classes: EXTRACT 13 / CANDIDATE 204 / NEED_EVIDENCE 180 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -16,18 +16,16 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1498 | EXTRACT | unlabelled | `0a81e9b01c` | success | success | unstable | Antigravity CLI: collaborative use cases, provisioning proposal, offline readine |
 | #1514 | EXTRACT | unlabelled | `13f795adad` | success | success | unstable | feat(antigravity): isolated secondary operational pilot (#1497) |
 | #1569 | EXTRACT | unlabelled | `ea16165266` | success | success | unstable | docs(agy): establish MVT-DoE V0 validation and telemetry protocol |
-| #2310 | EXTRACT | unlabelled | `36dac1c821` | success | success | unstable | chore(delphi): refresh delphi-rfp-feed.json |
 | #4021 | EXTRACT | unlabelled | `d8ea720788` | success | success | unstable | feat(integrations): extend governed agent toolchain portfolio |
 | #4494 | EXTRACT | unlabelled | `3ac3ce9523` | success | success | unstable | feat(apk): app-package C — release trust (hardening ∀false · reproducible build  |
 | #4503 | EXTRACT | unlabelled | `8dcc310fc9` | success | success | unstable | docs: app-package D — CHANGELOG discipline · verification decision · perf budget |
 | #4516 | EXTRACT | unlabelled | `80756f2385` | success | success | unstable | feat(schema): integration 5 — schema_version discipline, state stamped end-to-en |
 | #4521 | EXTRACT | unlabelled | `b7306c42b9` | success | success | unstable | feat(ereader): EPUB reader-edition export — generator · TUI · evidence workflow  |
 | #5009 | EXTRACT | unlabelled | `c7bd349123` | success | success | unstable | fix(graph-studio): independent review and GitHub Pages release |
-| #5330 | EXTRACT | unlabelled | `07501f69e2` | success | success | unstable | feat(que): drain deferred admissions into QDesk safely |
-| #5335 | EXTRACT | unlabelled | `d32067e35a` | success | success | unstable | feat(observatory): migrate Delphic to Vercel + live GitHub feeds |
-| #5338 | EXTRACT | unlabelled | `def0c87b84` | success | success | unstable | feat(policy): enforce DO statements, free-tier mandate and agent readiness |
+| #5335 | EXTRACT | unlabelled | `6206d2d60f` | success | success | unstable | feat(observatory): migrate Delphic to Vercel + live GitHub feeds |
 | #5339 | EXTRACT | unlabelled | `284461105d` | success | success | unstable | docs: enforce DO-first communication law across repository |
 | #5381 | EXTRACT | unlabelled | `c2f20cf815` | success | success | unstable | feat(msm): add paired policy comparisons to economy backtests |
+| #5408 | EXTRACT | unlabelled | `d9f301e4d2` | success | success | unstable | feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -81,7 +79,9 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #1985 | CANDIDATE | unlabelled | `c3898767c0` | success | success | unknown | 🛡️ Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction |
 | #1988 | CANDIDATE | unlabelled | `96fb09e450` | success | success | unknown | ⚡ Bolt: optimize foreign PR follow-up and recon routines |
 | #2261 | CANDIDATE | unlabelled | `b67fbebacf` | success | success | unknown | Add Merged Branch Audit & Timing Quota Governance Engine |
+| #2263 | CANDIDATE | unlabelled | `be438ef337` | success | success | unknown | chore(delphi): refresh delphi-ledger-feed.json |
 | #2304 | CANDIDATE | unlabelled | `b590f3e4c9` | success | success | unknown | 📖 Linguist: optimize token efficiency & add stego cipher |
+| #2310 | CANDIDATE | unlabelled | `77ce5cb41d` | success | success | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2330 | CANDIDATE | unlabelled | `fd02b2c8e0` | success | success | unknown | 🛡️ Sentinel: Fix umask permission exposure in token provider vault |
 | #2343 | CANDIDATE | unlabelled | `001ef79704` | success | success | unknown | Add Merged Branch Audit and Timing Quotas Evaluator |
 | #2344 | CANDIDATE | unlabelled | `d5ba1dab07` | success | success | unknown | 📖 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th l |
@@ -212,16 +212,24 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5326 | CANDIDATE | unlabelled | `a1c65a4978` | success | success | unknown | fix(quota): automate public readings and self-count refresh |
 | #5327 | CANDIDATE | unlabelled | `364906e6db` | success | success | unknown | feat(skills): vendor AMD and NVIDIA GPU agent skills |
 | #5328 | CANDIDATE | unlabelled | `eef7702c1e` | success | success | unknown | fix(que): normalize structured ranking scores in auto-claim |
-| #5341 | CANDIDATE | unlabelled | `7433b5be3b` | success | success | unknown | fix(dispatch): preserve build branch and arm outputs |
+| #5330 | CANDIDATE | unlabelled | `07501f69e2` | success | success | unknown | feat(que): drain deferred admissions into QDesk safely |
+| #5338 | CANDIDATE | unlabelled | `def0c87b84` | success | success | dirty | feat(policy): enforce DO statements, free-tier mandate and agent readiness |
 | #5343 | CANDIDATE | unlabelled | `08c58e217c` | success | success | unknown | docs(maxc): define Siglary formal semantic codec |
 | #5369 | CANDIDATE | unlabelled | `5722d95dca` | success | success | unknown | Fix QUE deferred-admission drain and QDesk routing |
-| #5370 | CANDIDATE | unlabelled | `e796e5d083` | success | success | unstable | Automate public quota readings and self-count refresh |
-| #5371 | CANDIDATE | unlabelled | `b6cd800991` | success | success | unstable | Normalize QUE auto-claim ranking scores |
-| #5372 | CANDIDATE | unlabelled | `377645d6f4` | success | success | unstable | Clear stale intake diagnosis after valid re-intake |
-| #5373 | CANDIDATE | unlabelled | `d7771916cf` | success | success | unstable | Expose Surfaces Map in shared navigation |
-| #5376 | CANDIDATE | unlabelled | `e5200e9435` | success | success | unstable | Exclude deferred and QDesk tasks from provider dispatch |
-| #5378 | CANDIDATE | unlabelled | `0f6486b149` | success | success | unstable | Enforce QUE admission and provider-dispatch boundaries |
-| #5380 | CANDIDATE | unlabelled | `4be33b06be` | success | success | unstable | Fix DO-statement merge history filtering |
+| #5370 | CANDIDATE | unlabelled | `e796e5d083` | success | success | unknown | Automate public quota readings and self-count refresh |
+| #5371 | CANDIDATE | unlabelled | `b6cd800991` | success | success | unknown | Normalize QUE auto-claim ranking scores |
+| #5372 | CANDIDATE | unlabelled | `377645d6f4` | success | success | unknown | Clear stale intake diagnosis after valid re-intake |
+| #5373 | CANDIDATE | unlabelled | `d7771916cf` | success | success | unknown | Expose Surfaces Map in shared navigation |
+| #5376 | CANDIDATE | unlabelled | `e5200e9435` | success | success | unknown | Exclude deferred and QDesk tasks from provider dispatch |
+| #5378 | CANDIDATE | unlabelled | `0f6486b149` | success | success | unknown | Enforce QUE admission and provider-dispatch boundaries |
+| #5380 | CANDIDATE | unlabelled | `4be33b06be` | success | success | unknown | Fix DO-statement merge history filtering |
+| #5387 | CANDIDATE | unlabelled | `9630c8bf05` | success | success | unknown | Expose per-source quota observation freshness |
+| #5388 | CANDIDATE | unlabelled | `d0557f0c0d` | success | success | unknown | docs: establish declarative workflow planning and QUE × DoE optimization model |
+| #5401 | CANDIDATE | unlabelled | `fe0bbe54fc` | success | success | dirty | fix(ci): repair dispatch and DO style regression gates |
+| #5403 | CANDIDATE | unlabelled | `9e3e6c54e9` | success | success | unstable | feat(waf): add AMD Academy discovery-only provider registry |
+| #5404 | CANDIDATE | unlabelled | `c836d1697f` | success | success | unstable | feat(ates): preserve execution-controller provenance |
+| #5405 | CANDIDATE | unlabelled | `8e9ae6906f` | success | success | unstable | docs(certifications): add ROCm Associate integrity-safe runbook |
+| #5406 | CANDIDATE | unlabelled | `8335661ebd` | success | success | unstable | fix(challenge): correct AMD C3 coordinator provenance |
 | #47 | NEED_EVIDENCE | unlabelled | `11b61f8139` | not_reported | not_reported | unknown | feat(refTemplates): restore metadata-only skeleton (Option B recovery) |
 | #48 | NEED_EVIDENCE | unlabelled | `7839eeb7da` | not_reported | not_reported | dirty | feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71) |
 | #81 | NEED_EVIDENCE | unlabelled | `f1d2eef16b` | not_reported | not_reported | unknown | ci: promote Gemini quota-gate + agent workflows to master (event triggers) |
@@ -260,7 +268,6 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `8864eb037d` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `8e3880801e` | in_progress | success | unstable | chore(delphi): refresh delphi-ledger-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -306,8 +313,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3500 | NEED_EVIDENCE | unlabelled | `13e71a6d8f` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #3890 | NEED_EVIDENCE | unlabelled | `e4ea4eb584` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `7a811db75c` | queued | queued | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #3890 | NEED_EVIDENCE | unlabelled | `f2105f6474` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
+| #3916 | NEED_EVIDENCE | unlabelled | `533844826e` | queued | queued | unknown | chore(reviewer-metrics): regenerate provider x context map |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -396,12 +403,13 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5186 | NEED_EVIDENCE | unlabelled | `ab9edf94f0` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #5198 | NEED_EVIDENCE | unlabelled | `3f4da063a2` | not_reported | not_reported | unknown | docs(doe): establish governed free-inference endpoint tournament order |
 | #5253 | NEED_EVIDENCE | unlabelled | `470791e6c6` | not_reported | not_reported | unknown | fix(rate-limit): #5219 verify script — page list endpoints explicitly |
-| #5311 | NEED_EVIDENCE | unlabelled | `6240266574` | not_reported | not_reported | unknown | docs(challenge): AMD Academy C3 completion — gate AMD-ACADEMY-5 evidence 1/5 |
 | #5331 | NEED_EVIDENCE | unlabelled | `70cf7eef1b` | not_reported | not_reported | unknown | feat(que): add guarded deferred-admission drain |
 | #5337 | NEED_EVIDENCE | unlabelled | `609ccbf2d8` | not_reported | not_reported | unknown | Trigger Pages deployment after merged dashboard-source PRs |
 | #5349 | NEED_EVIDENCE | unlabelled | `f8c3b15605` | not_reported | not_reported | unknown | Enforce DO-statement language and publish agent-readability skills |
 | #5375 | NEED_EVIDENCE | unlabelled | `d87967d4df` | not_reported | not_reported | unknown | Fix DO-statement merge history filtering |
-| #5382 | NEED_EVIDENCE | unlabelled | `830a7f19b3` | not_reported | not_reported | unstable | chore(recon): refresh pinned free-provider research |
+| #5382 | NEED_EVIDENCE | unlabelled | `830a7f19b3` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
+| #5390 | NEED_EVIDENCE | unlabelled | `e3d03bb869` | failure | success | unstable | feat(que): establish SIE lifecycle contract and intake receipts |
+| #5409 | NEED_EVIDENCE | unlabelled | `c4efc2d378` | queued | queued | unstable | feat(delphic): current-master Observatory Graph Lab and DoE adapter |
 
 ## Families (open)
 
@@ -410,13 +418,13 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 100 | 0 |
 | mesh | 7 | 0 |
-| other | 390 | 1 |
+| other | 396 | 1 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | quota | 1 | 0 |
 | research | 13 | 0 |
 | security | 12 | 0 |
 | temporal | 2 | 0 |
-| unlabelled | 61 | 387 |
+| unlabelled | 61 | 395 |
 
 **Unlabelled open issues (61):** #308, #388, #389, #1226, #2185, #2571, #2830, #3018, #3665, #3666, #3668, #3669, #3670, #3673, #3752, #4008, #4052, #4212, #4214, #4215, #4216, #4217, #4218, #4219, #4220, #4221, #4222, #4223, #4224, #4225, #4226, #4227, #4228, #4229, #4230, #4231, #4232, #4233, #4234, #4235, #4236, #4237, #4524, #4547, #4718, #4721, #4873, #4963, #4977, #4979, #4994, #5032, #5050, #5071, #5114, #5152, #5157, #5189, #5196, #5223, #5346 — worked oldest-first by the issue-lifecycle lane pass.

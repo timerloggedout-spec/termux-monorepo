@@ -139,6 +139,9 @@ class AgentThroughputSchemaTest(unittest.TestCase):
         self.assertEqual(required["attribution_method"]["const"], "invocation_telemetry")
         self.assertNotIn("seat_browser", required["route"]["enum"])
         self.assertEqual(required["evidence_refs"]["minItems"], 1)
+        self.assertIn("session:", execution["properties"]["session_ref"]["pattern"])
+        self.assertNotIn("?", execution["properties"]["session_ref"]["pattern"])
+        self.assertIn("_", execution["properties"]["evidence_refs"]["items"]["pattern"])
 
     def test_author_and_execution_are_separate_closed_schema_objects(self):
         schema = json.loads(

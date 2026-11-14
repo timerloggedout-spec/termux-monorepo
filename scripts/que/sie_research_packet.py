@@ -41,15 +41,17 @@ def evidence_index(evidence_sets: list[dict], at: datetime) -> tuple[dict[str, d
             claim = item.get("claim")
             if not isinstance(claim, str) or not claim.strip():
                 continue
-            payload = {"claim": claim, "value": item.get("value"),
-                       "path": (item.get("provenance") or {}).get("path")}
+            provenance = item.get("provenance") or {}
+            path = provenance.get("path")
+            payload = {"claim": claim, "value": item.get("value"), "path": path}
             expected = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
-            if item.get("sha256") != expected:
+            if not isinstance(path, str) or not path or item.get("sha256") != expected:
                 rejected[claim] = "integrity_mismatch"
                 continue
-            fresh_until = item.get("fresh_until")
             try:
-                fresh = bool(fresh_until) and parse_time(fresh_until) >= at
+                observed_at = parse_time(provenance.get("observed_at", ""))
+                fresh_until = parse_time(item.get("fresh_until", ""))
+                fresh = observed_at <= at <= fresh_until
             except (TypeError, ValueError):
                 fresh = False
             if not fresh:
@@ -78,6 +80,10 @@ def _validate_diagnosis(diagnosis: dict) -> None:
         raise ValueError("diagnosis requires alternatives for Oracle Method plan")
     if not isinstance(diagnosis["risk_envelope"], dict) or not diagnosis["risk_envelope"]:
         raise ValueError("diagnosis requires a populated risk envelope")
+    if "risks" in diagnosis["risk_envelope"] and (
+            not isinstance(diagnosis["risk_envelope"]["risks"], list)
+            or not diagnosis["risk_envelope"]["risks"]):
+        raise ValueError("diagnosis risk_envelope.risks must be a non-empty array")
     for fact in diagnosis["confirmed_facts"] + diagnosis["hypotheses"]:
         if not isinstance(fact, dict) or not isinstance(fact.get("text"), str) or not fact["text"].strip():
             raise ValueError("facts and hypotheses require non-empty text")

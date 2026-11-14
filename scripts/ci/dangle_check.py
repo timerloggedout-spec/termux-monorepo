@@ -168,7 +168,7 @@ def check_workflows(root, old_ids=None):
             if surface == "paths" and old_ids is None:
                 # path filters pointing at nothing are advisory in census
                 pat = val.rstrip("/")
-                if pat and "*" not in pat and not (root / pat).exists():
+                if pat and not pat.startswith("!") and "*" not in pat and not (root / pat).exists():
                     findings.append(finding("dangling-path-filter", rp, line,
                                             val, surface))
         if old_ids:
@@ -194,6 +194,14 @@ def slugify(heading):
     s = heading.strip().lower()
     s = re.sub(r"[^\w\s-]", "", s)
     return re.sub(r"\s+", "-", s)
+
+
+def is_dynamic_reference(refv):
+    """Return true when an HTML attribute contains a runtime-built URL."""
+    return ("${" in refv or bool(re.search(
+        r"""(?:['"]\s*\+|\+\s*['"])""",
+        refv,
+    )))
 
 
 def check_links(root):
@@ -232,6 +240,8 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
+            if p.suffix == ".html" and is_dynamic_reference(refv):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
@@ -297,6 +307,8 @@ def check_feeds(root):
         seen = set()
         for s in strings:
             cand = s.split("#")[0].split("?")[0]
+            if " + " in cand or "*" in cand:
+                continue
             if cand in seen:
                 continue
             seen.add(cand)

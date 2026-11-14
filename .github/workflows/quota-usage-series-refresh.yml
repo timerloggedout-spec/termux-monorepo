@@ -34,6 +34,7 @@ on:
       - 'experiments/doe/routed-dispatch/**'
       - 'ops/3l0/intake.jsonl'
       - 'scripts/quota_usage_pack.py'
+      - 'scripts/quota_self_counts.py'
       - 'ops/challenge/desk-feed.json'
       - 'ops/quota/allocation-plan.json'
       - 'ops/quota/allocation-verification.json'
@@ -75,6 +76,9 @@ jobs:
       - name: Rebuild the quota-usage pack + regenerate usage-series
         run: |
           set -euo pipefail
+          # Refresh the fleet's own event tally from committed dispatch,
+          # usage, rate-limit and Actions records before the pack carries it.
+          python3 -B scripts/quota_self_counts.py --root .
           python3 -B scripts/quota_usage_pack.py --root .
           python3 -B scripts/quota_usage_series.py --root .
           cp ops/quota/usage-series.json apps/tribute-dashboard/data/usage-series.json

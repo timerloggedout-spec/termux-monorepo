@@ -12,6 +12,7 @@ from sie_pipeline import (
     stable_event_id, validate_receipt, validate_transition,
 )
 from self_repair import item_body
+from sie_event_adapter import queue_stall_groups
 
 
 def receipt(stage="OBSERVE", state="COMPLETED", **kwargs):
@@ -63,7 +64,7 @@ class TestSIEPipeline(unittest.TestCase):
         before = receipt("OBSERVE", "COMPLETED")
         skipped = receipt("RESEARCH", "READY")
         changed = receipt("TRIAGE", "READY")
-        changed["item_key"] = "changed-key"
+        changed["item_key"] = "b" * 24
         changed["source"]["id"] = "999"
         self.assertTrue(any(
             "advance exactly one stage" in error
@@ -85,6 +86,35 @@ class TestSIEPipeline(unittest.TestCase):
             "terminal lineage" in error
             for error in validate_transition(before, after)
         ))
+
+    def test_queue_watchdog_escalations_create_stable_sie_intake(self):
+        feed = {
+            "dispatches": [
+                {
+                    "issue": 8123, "state": "escalated", "age_min": 91,
+                    "claim": None, "tier": {"name": "ESCALATION"},
+                    "stall_events": [{"kind": "flag"}, {"kind": "escalation"}],
+                },
+                {
+                    "issue": 8124, "state": "claimed", "age_min": 95,
+                    "claim": {"by": "worker"}, "tier": {"name": "BASE"},
+                    "stall_events": [],
+                },
+            ]
+        }
+        groups = queue_stall_groups(feed)
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]["source_kind"], "stall_gap")
+        self.assertEqual(groups[0]["source_id"], "8123")
+        self.assertEqual(groups[0]["step"], "dispatch-watchdog")
+        self.assertEqual(groups[0]["key"], queue_stall_groups(feed)[0]["key"])
+        body = item_body(groups[0])
+        match = re.search(r"## SIE stage receipt\\n\x60\x60\x60json\\n(.*?)\\n\x60\x60\x60", body, re.S)
+        self.assertIsNotNone(match)
+        data = json.loads(match.group(1))
+        self.assertEqual(validate_receipt(data), [])
+        self.assertEqual(data["source"]["kind"], "stall_gap")
+        self.assertEqual(data["source"]["id"], "8123")
 
     def test_self_repair_intake_embeds_valid_source_receipt(self):
         item = {

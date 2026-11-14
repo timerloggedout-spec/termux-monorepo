@@ -83,6 +83,15 @@ For production use, pin the planner and version, retain the domain/problem files
     )
   )
 
+  (:action release-seat-failed
+    :parameters (?f - filing ?s - seat)
+    :precondition (and (claimed ?f ?s) (failed ?f))
+    :effect (and
+      (available ?s)
+      (not (lease-valid ?f ?s))
+    )
+  )
+
   (:action merge
     :parameters (?f - filing)
     :precondition (verified ?f)
@@ -97,7 +106,7 @@ For production use, pin the planner and version, retain the domain/problem files
 - `verification-receipt-valid` is an externally established fact imported from an independently verified evidence receipt. The planner must never invent this predicate or treat its own plan as verification.
 - Lease expiry, wall-clock deadlines and durative build/verification require a temporal PDDL subset or an external scheduler.
 - A real merge is an external side effect and must remain behind repository policy/approval; a planner-generated plan is not authorization.
-- Failure, retry and compensation need explicit actions and terminal conditions before this model can represent production behavior.
+- The failed-seat release is only a simplified recovery path; retry/requeue, lease expiry and compensation still need explicit actions and terminal conditions before this model can represent production behavior.
 - The domain is not declared valid until checked by a named PDDL planner and scenario tests.
 
 ## Required validation cases

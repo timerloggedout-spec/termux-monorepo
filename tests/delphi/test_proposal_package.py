@@ -1,3 +1,4 @@
+import base64
 import json
 import sys
 import tempfile
@@ -10,6 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 from proposal_package import (
     build_manifest, package_digest, validate_manifest, verify_award, verify_files,
 )
+from gate import verify_issue_package_binding
 
 
 class TestProposalPackage(unittest.TestCase):
@@ -33,6 +35,42 @@ class TestProposalPackage(unittest.TestCase):
             files=["RFP.md", "MANIFEST.md", "ITEMS.md"],
             excluded_paths=["PROVENANCE.json"],
         )
+
+    def test_delphi_gate_binds_immutable_package_and_all_file_bytes(self):
+        manifest = self.manifest()
+        manifest_path = "docs/proposals/que-sie-test/PACKAGE.json"
+        payloads = {
+            manifest_path: json.dumps(manifest).encode("utf-8"),
+            "docs/proposals/que-sie-test/RFP.md": (self.root / "RFP.md").read_bytes(),
+            "docs/proposals/que-sie-test/MANIFEST.md": (self.root / "MANIFEST.md").read_bytes(),
+            "docs/proposals/que-sie-test/ITEMS.md": (self.root / "ITEMS.md").read_bytes(),
+        }
+
+        class FakeGitHub:
+            def req(self, method, path):
+                self.assert_method = method
+                content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
+                raw = payloads[content_path]
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(raw).decode("ascii")}
+
+        issue = {"body": (
+            "### Proposal source ref\\n" + manifest["source_ref"] +
+            "\\n### Proposal manifest path\\n" + manifest_path +
+            "\\n### Expected package digest\\n" + manifest["package_digest"] + "\\n"
+        )}
+        binding = verify_issue_package_binding(FakeGitHub(), issue)
+        self.assertEqual(binding["package_digest"], manifest["package_digest"])
+        self.assertEqual(binding["file_count"], 3)
+
+        payloads["docs/proposals/que-sie-test/RFP.md"] = b"# drift\\n"
+        with self.assertRaisesRegex(ValueError, "file hash mismatch"):
+            verify_issue_package_binding(FakeGitHub(), issue)
+
+    def test_delphi_gate_requires_all_package_binding_fields_together(self):
+        issue = {"body": "### Proposal source ref\\n" + "a" * 40 + "\\n"}
+        with self.assertRaisesRegex(ValueError, "all required"):
+            verify_issue_package_binding(object(), issue)
 
     def test_manifest_digest_is_stable_under_inventory_reordering(self):
         manifest = self.manifest()

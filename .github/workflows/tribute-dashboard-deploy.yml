@@ -19,6 +19,14 @@ on:
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"
       - "scripts/ci/verify_agent_readability_surfaces.py"
+  pull_request:
+    types: [closed]
+    branches: [master]
+    paths:
+      - "apps/tribute-dashboard/**"
+      - "apps/project-pages-hub/**"
+      - ".github/workflows/tribute-dashboard-deploy.yml"
+      - "scripts/ci/verify_agent_readability_surfaces.py"
   workflow_dispatch:
     inputs:
       target:
@@ -35,7 +43,7 @@ permissions:
 jobs:
   enable-pages:
     name: enable-project-pages
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site') }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site')) }}
     runs-on: ubuntu-latest
     steps:
       - name: Create or update Pages site (branch gh-pages)
@@ -92,7 +100,7 @@ jobs:
   pages:
     name: publish-gh-pages
     needs: [enable-pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site') }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["pages","user-site","both","all",""]'), github.event.inputs.target || 'user-site')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -138,7 +146,7 @@ jobs:
   user-site:
     name: mirror-user-github-io
     needs: [pages]
-    if: ${{ github.event_name == 'push' || contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all') }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'workflow_dispatch' && contains(fromJSON('["user-site","both","all",""]'), github.event.inputs.target || 'all')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

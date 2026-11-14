@@ -3,7 +3,7 @@
 | ID | Priority | Status | Scope | Acceptance criteria |
 |---|---:|---|---|---|
 | QSI-001 | P0 | in_review | Define the SIE lifecycle contract and typed stage transitions. | Versioned schema; deterministic transition validator; idempotent event identity; transition and terminal-state tests. |
-| QSI-002 | P0 | todo | Connect workflow failure, queue stall, watchdog and feed-freshness signals to SIE intake. | Each event family produces one deduplicated QUE improvement item with exact source receipts and owner routing. |
+| QSI-002 | P0 | in_review | Connect workflow failure, queue stall, watchdog and feed-freshness signals to SIE intake. | Workflow failure and feed freshness reuse QDesk intake; dispatch-state escalation and stall receipts produce stable, deduplicated SIE groups with issue evidence; verify live producer parity before acceptance. |
 | QSI-003 | P0 | todo | Generate research packets and Oracle Method RFP briefs from admitted SIE items. | Evidence-backed diagnosis, baseline, acceptance/replay plan, package manifest and immutable input refs. |
 | QSI-004 | P0 | todo | Bind Delphi awards to complete RFP package digest and verify award at the consumer. | QD-039 and issue #5156 acceptance; independent reviewer identity; stale package disposition held. |
 | QSI-005 | P1 | todo | Register DoE designs and competing candidate implementation arms. | Frozen task/base SHA/evaluator/tools/instance identity; pre-registered factors, assignment, sample and stopping rules. |
@@ -15,4 +15,4 @@
 
 ## Disposition
 
-QSI-001 is the initial implementation slice. QSI-002–QSI-010 remain queued behind their dependencies and existing owner/domain gates. This proposal composes existing QDesk RFP #5145 and QD-039/#5156 rather than replacing them.
+QSI-001 is the lifecycle contract slice. QSI-002 has an initial queue/watchdog adapter in review; verify live producer parity and CI before acceptance. QSI-003–QSI-010 remain queued behind their dependencies and existing owner/domain gates. This proposal composes existing QDesk RFP #5145 and QD-039/#5156 rather than replacing them.

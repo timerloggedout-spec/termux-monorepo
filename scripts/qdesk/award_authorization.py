@@ -10,7 +10,12 @@ before any packet, campaign, design, or implementation dispatch is created.
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 from typing import Callable
+
+DELPHI_MODULES = str(Path(__file__).resolve().parents[1] / "delphi")
+if DELPHI_MODULES not in sys.path:
+    sys.path.insert(0, DELPHI_MODULES)
 
 from proposal_package import verify_award, verify_files
 

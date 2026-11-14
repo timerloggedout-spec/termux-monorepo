@@ -30,6 +30,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sie_pipeline  # noqa: E402
+
 REPO = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")
 API = "https://api.github.com"
 LABEL = "que:self-repair"
@@ -102,6 +105,11 @@ class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` �
 - failing step: `{item['step'] or 'n/a'}`
 - error: {item['message'] or 'n/a'}
 {rec}
+
+## SIE stage receipt
+```json
+{stage_json}
+```
 
 ## Loop (PROPOSAL.md)
 - [ ] Research: diagnosis note with receipts (run URL ∧ SHA)

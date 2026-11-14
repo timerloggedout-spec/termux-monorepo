@@ -559,6 +559,39 @@ def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
     return list(reversed(all_comments))
 
 
+def open_rfp_issues(gh: GH, per_page: int = 100, max_pages: int = 100) -> list[dict]:
+    """Return a complete, de-duplicated census of open Delphi RFP issues.
+
+    GitHub's Issues API is paginated and also returns pull requests. Never
+    silently treat the first 100 results as the whole queue. If the safety
+    cap is reached while the final page is full, fail closed.
+    """
+    if not 1 <= per_page <= 100:
+        raise ValueError("per_page must be between 1 and 100")
+    if max_pages < 1:
+        raise ValueError("max_pages must be positive")
+    by_number: dict[int, dict] = {}
+    for page in range(1, max_pages + 1):
+        batch = gh.req(
+            "GET",
+            f"/issues?state=open&labels=delphi:rfp&per_page={per_page}&page={page}",
+        )
+        if not isinstance(batch, list):
+            raise RuntimeError(f"Delphi RFP page {page} was not a list; census is incomplete")
+        for issue in batch:
+            if not isinstance(issue, dict) or "pull_request" in issue:
+                continue
+            number = issue.get("number")
+            if isinstance(number, int) and not isinstance(number, bool) and number > 0:
+                by_number.setdefault(number, issue)
+        if len(batch) < per_page:
+            return [by_number[number] for number in sorted(by_number)]
+    raise RuntimeError(
+        f"Delphi RFP issue pagination cap ({max_pages} pages) reached with a full final page; "
+        "refusing to process an incomplete census"
+    )
+
+
 def last_ledger(gh: GH, number: int) -> dict | None:
     comments = comments_newest(gh, number)
     for c in comments:
@@ -622,13 +655,14 @@ def _run(args) -> int:
             gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
     _, roles = weights_issue(gh, panel)
     panel = dict(panel, roles=roles)
-    issues = [i for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i]
+    issues = open_rfp_issues(gh)
     package_bound = any(
         any((parse_form(issue.get("body", "")).get(field) or "").strip()
             for field in ("proposal_source_ref", "proposal_manifest_path", "expected_package_digest"))
         for issue in issues
     )
-    estimated_calls_per_rfp = 6 + (1 + MAX_PACKAGE_FILES if package_bound else 0)
+    census_calls = max(1, (len(issues) // 100) + 1)
+    estimated_calls_per_rfp = 6 + census_calls + (1 + MAX_PACKAGE_FILES if package_bound else 0)
     plan = cadence(registry, readings, len(issues), args.depth,
                    api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "

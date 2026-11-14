@@ -1,5 +1,10 @@
 """Tests for adaptive DO authoring classification."""
+import sys
 import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts" / "ci"))
 
 from do_statement_policy import (
     classify_instruction,
@@ -21,6 +26,7 @@ class DoStatementPolicyTests(unittest.TestCase):
     def test_prohibition_remains_a_valid_constraint(self):
         self.assertEqual(classify_instruction("Do not overwrite the canonical standard."), "constraint")
         self.assertEqual(classify_instruction("Never expose secrets."), "constraint")
+        self.assertEqual(classify_instruction("Avoid leaking credentials."), "constraint")
         self.assertFalse(is_hedged_instruction("Avoid leaking credentials."))
 
     def test_hedged_opening_is_classified(self):

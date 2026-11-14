@@ -1,0 +1,51 @@
+name: Publish Delphic Observatory (GitHub Pages)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'site/delphic-observatory/**'
+      - '.github/workflows/delphic-observatory-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: delphic-observatory-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate version contract
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("site/delphic-observatory")
+          version = json.loads((root / "VERSION.json").read_text())
+          assert version["schema"] == "versioned-static-artifact/v1"
+          assert version["entrypoint"] == "index.html"
+          assert (root / version["entrypoint"]).is_file()
+          assert version["version"].count(".") == 2
+          print("Validated Delphic Observatory", version["version"])
+          PY
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/delphic-observatory
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

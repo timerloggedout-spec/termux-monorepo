@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/docs/schemas/que-sie-research-packet-v1.schema.json",
+  "title": "QUE SIE Research Packet",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at",
+    "source_receipt",
+    "diagnosis",
+    "confirmed_facts",
+    "unverified_facts",
+    "evidence",
+    "oracle_method",
+    "package_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "que.sie-research-packet/v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_receipt": {
+      "$ref": "que-sie-stage-v1.schema.json"
+    },
+    "diagnosis": {
+      "type": "object"
+    },
+    "confirmed_facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fact"
+      }
+    },
+    "unverified_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "text",
+          "evidence_refs",
+          "disposition"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "disposition": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "sets",
+        "accepted_claims",
+        "rejected_claims"
+      ],
+      "properties": {
+        "sets": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "accepted_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rejected_claims": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "oracle_method": {
+      "type": "object",
+      "required": [
+        "generator",
+        "brief",
+        "evidence_set_digests"
+      ],
+      "properties": {
+        "generator": {
+          "type": "string"
+        },
+        "brief": {
+          "type": "object"
+        },
+        "evidence_set_digests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "package_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "required": [
+        "text",
+        "evidence_refs"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

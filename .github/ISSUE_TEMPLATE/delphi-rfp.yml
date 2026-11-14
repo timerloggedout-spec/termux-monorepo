@@ -71,3 +71,18 @@ body:
     attributes:
       label: Evidence links
       description: HindSight/ForeSight records, run URLs, prior evaluations.
+  - type: input
+    id: proposal_source_ref
+    attributes:
+      label: Proposal source ref
+      description: Optional QD-039 immutable Git commit SHA. Supply this together with the manifest path and expected package digest.
+  - type: input
+    id: proposal_manifest_path
+    attributes:
+      label: Proposal manifest path
+      description: Repository-relative path to the delphi-proposal-package/v1 JSON manifest at the immutable source ref.
+  - type: input
+    id: expected_package_digest
+    attributes:
+      label: Expected package digest
+      description: Lowercase SHA-256 digest from the versioned proposal package manifest.

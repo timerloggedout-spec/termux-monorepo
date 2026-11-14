@@ -185,3 +185,9 @@ def test_workflow_holds_conflicting_experiment_outcomes():
     assert result["posterior"]["status"] == "HELD_CONFLICTING_DUPLICATE_OUTCOMES"
     assert result["posterior"]["counts"]["conflicts"] == 1
     assert result["adversarial_review"]["admission"] == "not_admitted"
+
+
+def test_inconclusive_evidence_does_not_suppress_required_review():
+    result = m.workflow({"observations": [], "decision_impact": 0.95})
+    assert result["posterior"]["status"] == "INCONCLUSIVE_NO_ADMISSIBLE_OBSERVATIONS"
+    assert result["adversarial_review"]["admission"] == "required"

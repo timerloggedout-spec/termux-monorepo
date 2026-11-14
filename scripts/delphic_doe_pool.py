@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Read-only DoE/MoneyBall task candidate packet builder.
 
 No provider calls, dispatch, wallet writes, quota mutation or scheduling.

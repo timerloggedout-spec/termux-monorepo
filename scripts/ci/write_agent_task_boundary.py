@@ -14,6 +14,8 @@ import platform
 from pathlib import Path
 from typing import Any, Mapping
 
+from scripts.ci.execution_provenance import normalize_execution
+
 
 def digest(value: Mapping[str, Any]) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -57,6 +59,8 @@ def build_record(raw: Mapping[str, Any]) -> dict[str, Any]:
             "base_sha": task_contract["base_sha"],
         },
     }
+    if raw.get("execution") is not None:
+        record["execution"] = normalize_execution(raw["execution"])
     cohort_id = str(raw.get("cohort_id") or "").strip()
     if cohort_id:
         record["cohort_id"] = cohort_id

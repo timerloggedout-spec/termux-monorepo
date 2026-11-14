@@ -17,6 +17,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Mapping
 
+try:
+    from .execution_provenance import normalize_execution
+except ImportError:  # Direct script execution from scripts/ci.
+    from execution_provenance import normalize_execution
+
 
 EVENTS = {
     "task_started",
@@ -172,6 +177,7 @@ def _base(metadata: Mapping[str, Any], agent_id: str, task_id: str,
         "gha_run_attempt": int(run.get("run_attempt", 1)),
         "source_sha": _sha(run["head_sha"]),
         "author": _author(metadata),
+        "execution": normalize_execution(metadata.get("execution")),
     }
     workflow_name = run.get("name")
     if isinstance(workflow_name, str) and workflow_name.strip():
@@ -293,7 +299,7 @@ def validate_event(event: Mapping[str, Any]) -> None:
         "tokens_in", "tokens_out", "complexity_score", "metrics",
         "gha_run_id", "gha_run_attempt", "source_sha", "event_id",
         "cohort_id", "task_fingerprint", "task_contract_hash", "environment_fingerprint",
-        "author", "github_actor", "triggering_actor", "workflow_name",
+        "author", "execution", "github_actor", "triggering_actor", "workflow_name",
         "workflow_run_url", "workflow_event", "job_id", "job_name",
         "pull_request_number", "issue_number",
     }
@@ -322,6 +328,12 @@ def validate_event(event: Mapping[str, Any]) -> None:
         normalized = _author({"author": event["author"]})
         if dict(event["author"]) != normalized:
             raise ValueError("author must be normalized and contain only contract fields")
+    if event.get("execution") is not None:
+        if not isinstance(event["execution"], Mapping):
+            raise ValueError("execution must be an object")
+        normalized = normalize_execution(event["execution"])
+        if dict(event["execution"]) != normalized:
+            raise ValueError("execution must be normalized and contain only contract fields")
     for field, limit in (("github_actor", 128), ("triggering_actor", 128),
                          ("workflow_name", 256), ("job_name", 256), ("workflow_event", 64)):
         if event.get(field) is not None and (not isinstance(event[field], str) or not event[field] or len(event[field]) > limit):

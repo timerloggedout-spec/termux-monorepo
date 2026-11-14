@@ -1305,3 +1305,36 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+  - id: que-sie-pipeline-integration
+    title: "QUE SIE research, RFP, Delphi, DoE and implementation claim integration"
+    author: ChatGPT
+    status: in_review
+    priority: P0
+    path: active/que-sie-pipeline-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 5389
+      - 5283
+      - 5286
+      - 5113
+      - 5116
+      - 5156
+    related_prs:
+      - 5390
+      - 5145
+      - 5371
+      - 5372
+      - 5330
+    related_branches:
+      - feat/que-sie-pipeline-integration
+      - feat/workflow-planning-operating-model
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

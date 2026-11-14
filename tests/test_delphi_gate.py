@@ -334,9 +334,10 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
                 self.source_mode = source_mode
             def req(self, method, path, body=None):
                 assert method == "GET"
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
@@ -445,9 +446,10 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
 
         class FakeGH:
             def req(self, method, path, body=None):
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]

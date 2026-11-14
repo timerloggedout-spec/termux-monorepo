@@ -6,9 +6,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "que"))
+sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 
 from sie_pipeline import build_receipt
 from sie_research_packet import build_research_packet, digest
+from generate_proposal import generate
 
 
 def evidence_item(claim, value, path, fresh_until):
@@ -92,6 +94,21 @@ class TestSIEResearchPacket(unittest.TestCase):
                             for point in brief["summary_points"][1:]))
         claimed_digest = packet.pop("package_digest")
         self.assertEqual(claimed_digest, digest(packet))
+
+    def test_packet_feeds_existing_oracle_method_generator(self):
+        receipt, diagnosis, evidence = fixture()
+        packet, brief, fresh_sets = build_research_packet(
+            source_receipt=receipt, diagnosis=diagnosis,
+            evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+        )
+        docs = generate(brief, fresh_sets, generated_at="2026-11-14T00:05:00Z")
+        self.assertEqual(set(docs), {"MANIFEST.md", "ITEMS.md", "RFP.md", "PROVENANCE.json"})
+        self.assertIn("Confirmed: The source workflow run concluded with failure.", docs["RFP.md"])
+        self.assertIn("Unverified:", docs["RFP.md"])
+        provenance = json.loads(docs["PROVENANCE.json"])
+        self.assertEqual(provenance["external_calls_by_generator"], 0)
+        self.assertEqual(provenance["human_ballots_received"], 0)
+        self.assertEqual(provenance["proposal_id"], brief["id"])
 
     def test_packet_rejects_evidence_integrity_drift(self):
         receipt, diagnosis, evidence = fixture()

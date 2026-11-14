@@ -97,11 +97,12 @@ def item_key(path: str, sig: str) -> str:
 
 def item_body(item: dict) -> str:
     rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
-    source_kind = "feed_freshness" if item.get("step") == "freshness" else "workflow_run"
-    source_revision = (item.get("receipts") or [{}])[0].get("sha") or item["sig"]
+    source_kind = item.get("source_kind") or ("feed_freshness" if item.get("step") == "freshness" else "workflow_run")
+    source_id = item.get("source_id") or item["path"]
+    source_revision = item.get("source_revision") or (item.get("receipts") or [{}])[0].get("sha") or item["sig"]
     source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None
     stage_receipt = sie_pipeline.build_receipt(
-        source_kind=source_kind, source_id=item["path"],
+         source_kind=source_kind, source_id=source_id,
         source_revision=source_revision, failure_class=item["sig"],
         repository=REPO, ref="master", sha=source_sha,
         evidence_refs=[r["url"] for r in item["receipts"] if r.get("url")],
@@ -268,6 +269,19 @@ def stale_feeds(gh: GH) -> list[dict]:
     return out
 
 
+def queue_stall_groups() -> list[dict]:
+    """Read the canonical QUE dispatch watchdog feed as SIE observations."""
+    path = HERE / "ops" / "challenge" / "dispatch-state-feed.json"
+    if not path.exists():
+        return []
+    from sie_event_adapter import queue_stall_groups
+    try:
+        return queue_stall_groups(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError) as exc:
+        print(f"::warning::QUE stall feed unreadable; retain prior intake: {exc}")
+        return []
+
+
 def open_items(gh: GH) -> dict[str, dict]:
     items = gh.get(f"/repos/{REPO}/issues?labels={urllib.parse.quote(LABEL)}&state=open&per_page=100")
     out = {}
@@ -361,7 +375,7 @@ def main(argv: list[str] | None = None) -> int:
     gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "")
     summary = {"observe": [], "promote": [], "learn": []}
     try:
-        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh)
+        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh) + queue_stall_groups()
         summary["observe"] = file_items(gh, groups, a.dry_run, a.max_new)
         summary["promote"] = promote(gh, a.dry_run)
         summary["learn"] = run_learn(gh, a.dry_run)

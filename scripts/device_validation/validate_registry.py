@@ -181,8 +181,8 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
             errors.append(f"{prefix}.validation_profiles must be a non-empty array")
         else:
             for profile_id in profiles:
-                if profile_id not in tool_ids:
-                    errors.append(f"{prefix} references unknown tool_profile_id: {profile_id}")
+                if not _is_nonempty(profile_id) or profile_id not in tool_ids:
+                    errors.append(f"{prefix} references unknown or invalid tool_profile_id: {profile_id}")
 
         hardware = lane.get("hardware_requirements")
         if not isinstance(hardware, dict) or not isinstance(hardware.get("required"), bool):
@@ -191,6 +191,7 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
             referenced = [
                 tool_by_id.get(profile_id, {})
                 for profile_id in (profiles if isinstance(profiles, list) else [])
+                if _is_nonempty(profile_id)
             ]
             if not any(profile.get("family") == "physical_device" for profile in referenced):
                 errors.append(f"{prefix}: hardware-required lane must include a physical_device profile")
@@ -210,7 +211,7 @@ def validate_registry(data: Any, repo_root: Path | None = None) -> list[str]:
                 if not (repo_root / module_path).exists():
                     errors.append(f"{prefix}: active/discovered module_path does not exist: {module_path}")
 
-    if inventory and inventory.get("coverage") == "complete":
+    if isinstance(inventory, dict) and inventory.get("coverage") == "complete":
         if not _is_nonempty(inventory.get("last_reconciled_at")):
             errors.append("complete inventory requires last_reconciled_at")
         if not lanes:

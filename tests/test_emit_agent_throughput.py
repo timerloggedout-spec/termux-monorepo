@@ -305,5 +305,27 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not a boolean"):
             build_events(data)
 
+def test_execution_controller_is_not_inferred_from_author_or_github_actor():
+    payload = {
+        "agent_id": "gemini",
+        "workflow_run": {
+            "id": 12345, "run_attempt": 1, "head_sha": "a" * 40,
+            "created_at": "2026-09-25T18:00:00Z", "conclusion": "success",
+            "name": "Gemini Dispatch", "event": "workflow_dispatch",
+        },
+        "jobs": [{
+            "id": 99, "name": "agent",
+            "started_at": "2026-09-25T18:01:00Z",
+            "completed_at": "2026-09-25T18:03:30Z", "conclusion": "success",
+        }],
+        "author": {"provider": "google", "identity_kind": "agent",
+                   "attribution_method": "workflow_name_mapping", "confidence": 0.8},
+        "github_actor": "que",
+    }
+    events = build_events(payload)
+    assert events
+    assert all(event["execution"]["controller"] == "unknown" for event in events)
+
+
 if __name__ == "__main__":
     unittest.main()

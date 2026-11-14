@@ -496,3 +496,33 @@ def test_verified_package_digest_changes_delphi_idempotency_hash():
     assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != gate.input_hash(
         surface, panel["roles"], registry, {}, package_b
     )
+
+
+def test_package_binding_rejects_self_reference_and_truncated_git_tree():
+    source_ref = "a" * 40
+    digest = "b" * 64
+    same_ref_body = (
+        f"### Proposal source ref\\n{source_ref}\\n"
+        f"### Proposal manifest ref\\n{source_ref}\\n"
+        "### Proposal manifest path\\nproposal/package.json\\n"
+        f"### Expected package digest\\n{digest}\\n"
+    )
+    with pytest.raises(ValueError, match="must differ"):
+        gate.verify_issue_package_binding(object(), {"body": same_ref_body})
+
+    class TruncatedGH:
+        def req(self, method, path, body=None):
+            if path.startswith("/git/commits/"):
+                ref = path.rsplit("/", 1)[1]
+                return {"sha": ref, "tree": {"sha": "c" * 40}}
+            return {"truncated": True, "tree": []}
+
+    manifest_ref = "d" * 40
+    body = (
+        f"### Proposal source ref\\n{source_ref}\\n"
+        f"### Proposal manifest ref\\n{manifest_ref}\\n"
+        "### Proposal manifest path\\nproposal/package.json\\n"
+        f"### Expected package digest\\n{digest}\\n"
+    )
+    with pytest.raises(ValueError, match="truncated"):
+        gate.verify_issue_package_binding(TruncatedGH(), {"body": body})

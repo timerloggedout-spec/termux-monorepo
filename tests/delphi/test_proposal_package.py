@@ -43,6 +43,9 @@ class TestProposalPackage(unittest.TestCase):
         self.assertEqual(manifest["package_digest"], reversed_digest)
         self.assertEqual(validate_manifest(manifest), [])
         self.assertEqual(verify_files(manifest, self.root), [])
+        self.assertEqual(verify_files(manifest, self.root, checkout_sha="a" * 40), [])
+        self.assertTrue(any("checked-out source SHA" in error
+                            for error in verify_files(manifest, self.root, checkout_sha="b" * 40)))
 
     def test_each_included_document_change_invalidates_package(self):
         manifest = self.manifest()

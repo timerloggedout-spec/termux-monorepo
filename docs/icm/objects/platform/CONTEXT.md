@@ -6,6 +6,7 @@ One job: describe the bounded Android execution surface and its trusted control 
 
 - Object index: [`../_index.md`](../_index.md)
 - Stale architecture context: [`termux-agentic-hub.md`](termux-agentic-hub.md), with the archived source linked from that card
+- Proposed device validation: [`device-validation.md`](device-validation.md), with the canonical architecture and registry linked from that card
 - Governance: [`../governance/change-control.md`](../governance/change-control.md)
 - Fleet App identities: [`github-app-fleet.md`](github-app-fleet.md), with the AppID process records it cites
 
@@ -14,7 +15,8 @@ One job: describe the bounded Android execution surface and its trusted control 
 1. Read the Termux Agentic Hub card and the BLU B160V and Free-Services Envelope card when device or service assumptions are relevant. For fleet GitHub-App identity work (AppIDs, actor permissions, telemetry), read the GitHub App Fleet card and its AppID-process sources instead — that surface is repository-side, not device-side.
 2. Confirm whether the requested operation is **Observe**, **Operate**, **Change**, or **Critical**.
 3. Treat the device/free-services envelope as a design constraint, not proof of current availability.
-4. Re-verify a current canonical architecture source before any execution work; do not assume an interactive device shell, live hub, or MCP transport is available.
+4. For module-level validation design, read the Device Validation card and its proposal; use its registry to distinguish registered profiles from live availability.
+5. Re-verify a current canonical architecture source before any execution work; do not assume an interactive device shell, live hub, or MCP transport is available.
 
 ## Outputs
 

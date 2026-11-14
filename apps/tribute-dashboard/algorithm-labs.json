@@ -17,7 +17,8 @@
       "test_path": "experiments/archwiz-markov-lane/src/markov-engine.test.mjs",
       "model_contract": "Transition matrix is the source of truth; strict tree preserves path occurrences; recombining trellis sums incoming path probabilities; particle sampling uses the same transition matrix.",
       "authority": "read-only-research-projection",
-      "version_file": "experiments/archwiz-markov-lane/VERSION.json"
+      "version_file": "experiments/archwiz-markov-lane/VERSION.json",
+      "algorithm_version": "markov-trellis/v1"
     },
     {
       "id": "delphic-observatory-lab",

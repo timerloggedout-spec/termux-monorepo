@@ -99,14 +99,21 @@ def item_body(item: dict) -> str:
     rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
     source_kind = item.get("source_kind") or ("feed_freshness" if item.get("step") == "freshness" else "workflow_run")
     source_id = item.get("source_id") or item["path"]
-    source_revision = item.get("source_revision") or (item.get("receipts") or [{}])[0].get("sha") or item["sig"]
+    latest_receipt = (item.get("receipts") or [{}])[0]
+    source_revision = item.get("source_revision") or latest_receipt.get("sha") or item["sig"]
     source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None
+    event_source_id, event_source_revision = source_id, source_revision
+    if source_kind == "workflow_run" and latest_receipt.get("id") is not None:
+        event_source_id = f"{source_id}:{latest_receipt['id']}"
+        event_source_revision = f"{source_revision}:attempt:{latest_receipt.get('run_attempt') or 1}"
     stage_receipt = sie_pipeline.build_receipt(
-         source_kind=source_kind, source_id=source_id,
+        source_kind=source_kind, source_id=source_id,
         source_revision=source_revision, failure_class=item["sig"],
         repository=REPO, ref="master", sha=source_sha,
         evidence_refs=[r["url"] for r in item["receipts"] if r.get("url")],
         owner_role=item.get("room"),
+        event_source_id=event_source_id,
+        event_source_revision=event_source_revision,
     )
     stage_json = json.dumps(stage_receipt, sort_keys=True, indent=2)
     return f"""{MARK.format(key=item['key'])}
@@ -239,7 +246,9 @@ def failing_groups(gh: GH, window_h: int) -> list[dict]:
             "path": path, "name": latest["name"], "room": room, "step": step, "message": message,
             "sig": sig, "key": item_key(path, sig), "failures": len(rs), "total": max(total, len(rs)),
             "window_h": window_h, "priority": priority(len(rs), max(total, len(rs)), path),
-            "receipts": [{"url": r["html_url"], "sha": r["head_sha"]} for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
+            "receipts": [{"url": r["html_url"], "sha": r["head_sha"], "id": r["id"],
+                          "run_attempt": r.get("run_attempt", 1)}
+                         for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
         })
     # Bootstrap order: branch gates first, then priority.
     return sorted(out, key=lambda g: (Path(g["path"]).name not in BRANCH_GATES, -g["priority"]))

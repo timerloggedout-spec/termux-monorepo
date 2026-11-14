@@ -41,7 +41,7 @@ Availability expires. A profile with no fresh runtime observation remains `unkno
 Each verified runtime observation should include:
 - source repository SHA and target module SHA;
 - tool profile ID, adapter version, image digest and host fingerprint;
-- observed timestamp and expiry/freshness policy;
+- observed timestamp and expiry/freshness policy (`expires_at`);
 - capability probe and representative test result;
 - resource measurements and cost basis;
 - reset/cleanup result;

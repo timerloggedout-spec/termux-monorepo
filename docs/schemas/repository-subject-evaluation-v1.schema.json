@@ -1,0 +1,470 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/repository-subject-evaluation-v1.schema.json",
+  "title": "Repository Subject Evaluation Report",
+  "description": "Revision-pinned evidence report for evaluating a repository as a standalone software/system artifact. External certification is a separate authority decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "subject",
+    "profile",
+    "evaluation",
+    "criteria",
+    "limitations",
+    "certification",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "repository-subject-evaluation/v1"
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit_sha",
+        "ref",
+        "default_branch"
+      ],
+      "properties": {
+        "repository": {
+          "const": "timerloggedout-spec/termux-monorepo"
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "tree_sha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "default_branch": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "const": "repository-subject-evaluation"
+        },
+        "version": {
+          "const": "1"
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "started_at",
+        "completed_at",
+        "evaluator"
+      ],
+      "properties": {
+        "outcome": {
+          "enum": [
+            "PASS",
+            "CONDITIONAL",
+            "FAIL",
+            "UNKNOWN"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "evaluator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "role"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "independent": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion_id",
+          "dimension",
+          "status",
+          "evidence_refs",
+          "finding"
+        ],
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dimension": {
+            "enum": [
+              "architecture",
+              "correctness",
+              "security_privacy",
+              "build_reproducibility",
+              "portability",
+              "operations",
+              "documentation",
+              "provenance_governance"
+            ]
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "PARTIAL",
+              "UNKNOWN",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "mandatory": {
+            "type": "boolean"
+          },
+          "finding": {
+            "type": "string"
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/evidence_ref"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "PASS",
+                    "FAIL",
+                    "PARTIAL"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "evidence_refs": {
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "NOT_APPLICABLE"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "finding": {
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "program",
+        "scope_assessment"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_SUBMITTED",
+            "SUBMITTED",
+            "PENDING",
+            "CERTIFIED",
+            "REJECTED",
+            "NOT_APPLICABLE",
+            "UNKNOWN"
+          ]
+        },
+        "program": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "program_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authority": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scope_assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "basis"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_ASSESSED",
+                "OWNER_ASSERTION_UNVERIFIED",
+                "REVIEW_REQUIRED",
+                "IN_SCOPE",
+                "OUT_OF_SCOPE",
+                "UNKNOWN"
+              ]
+            },
+            "basis": {
+              "type": "string"
+            },
+            "terms_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reviewed_by": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reviewed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "CERTIFIED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "authority",
+              "decision_ref"
+            ],
+            "properties": {
+              "authority": {
+                "type": "string",
+                "minLength": 1
+              },
+              "decision_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope_assessment": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "IN_SCOPE",
+                      "OUT_OF_SCOPE"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            },
+            "required": [
+              "scope_assessment"
+            ]
+          },
+          "then": {
+            "properties": {
+              "scope_assessment": {
+                "required": [
+                  "terms_ref",
+                  "reviewed_by",
+                  "reviewed_at"
+                ],
+                "properties": {
+                  "terms_ref": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reviewed_by": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reviewed_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created_at",
+        "source_refs"
+      ],
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence_ref"
+          }
+        },
+        "tool_versions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "locator"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "commit",
+            "pull_request",
+            "workflow_run",
+            "job",
+            "step",
+            "artifact",
+            "test_result",
+            "file",
+            "external_source"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "observed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

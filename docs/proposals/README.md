@@ -10,6 +10,7 @@
 
 | ID | Priority | Status | Path |
 |----|----------|--------|------|
+| repository-subject-certification-profile | P1 | executing | [active/repository-subject-certification-profile/](active/repository-subject-certification-profile/) — standalone evaluation of the repository artifact; external certification remains separate |
 | chatgpt-critical-eval | P0 | executing | [active/chatgpt-critical-eval/](active/chatgpt-critical-eval/) |
 | kimi-cloud-offload | P1 | posted | [active/kimi-cloud-offload/](active/kimi-cloud-offload/) |
 | chatgpt-initial | P2 | posted | [active/chatgpt-initial/](active/chatgpt-initial/) |

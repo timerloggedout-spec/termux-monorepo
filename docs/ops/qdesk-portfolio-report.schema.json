@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/qdesk-portfolio-report.schema.json",
+  "title": "QDesk Portfolio Decision and Delivery Report",
+  "description": "Evidence-preserving report projection over existing QDesk, QUE, DoE, identity, and repository authorities. This schema grants no execution or promotion authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at",
+    "observation_window",
+    "source",
+    "coverage",
+    "summary",
+    "lanes",
+    "decisions",
+    "metrics",
+    "review"
+  ],
+  "properties": {
+    "schema": {
+      "const": "qdesk-portfolio-report/v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observation_window": {
+      "$ref": "#/$defs/timeWindow"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "ref", "commit_sha", "sources"],
+      "properties": {
+        "repository": {"const": "timerloggedout-spec/termux-monorepo"},
+        "ref": {"type": "string", "minLength": 1},
+        "commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "sources": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sourceRef"}
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "verified_sources", "expected_sources", "gaps"],
+      "properties": {
+        "state": {"enum": ["complete", "partial", "stale", "blocked", "not_established"]},
+        "verified_sources": {"type": "integer", "minimum": 0},
+        "expected_sources": {"type": "integer", "minimum": 0},
+        "gaps": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "top_blockers", "next_actions"],
+      "properties": {
+        "text": {"type": "string"},
+        "top_blockers": {"type": "array", "items": {"type": "string"}},
+        "next_actions": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "lanes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/lane"}
+    },
+    "decisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/decision"}
+    },
+    "metrics": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/metric"}
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["self_review_state", "independent_review_state", "findings"],
+      "properties": {
+        "self_review_state": {"enum": ["not_started", "in_progress", "complete", "blocked"]},
+        "independent_review_state": {"enum": ["not_requested", "requested", "in_progress", "complete", "blocked"]},
+        "findings": {"type": "array", "items": {"type": "string"}},
+        "unsupported_claims": {"type": "array", "items": {"type": "string"}},
+        "privacy_check": {"enum": ["pass", "fail", "not_established"]}
+      }
+    }
+  },
+  "$defs": {
+    "timeWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref", "state"],
+      "properties": {
+        "kind": {"enum": ["file", "issue", "pull_request", "workflow_run", "commit", "feed", "other"]},
+        "ref": {"type": "string", "minLength": 1},
+        "sha": {"type": ["string", "null"]},
+        "observed_at": {"type": ["string", "null"], "format": "date-time"},
+        "freshness_state": {"enum": ["fresh", "stale", "partial", "unavailable", "not_applicable", "unknown"]},
+        "state": {"enum": ["verified", "unverified", "blocked", "not_established"]}
+      }
+    },
+    "evidenceLink": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "claim"],
+      "properties": {
+        "ref": {"type": "string", "minLength": 1},
+        "sha": {"type": ["string", "null"]},
+        "claim": {"type": "string", "minLength": 1}
+      }
+    },
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "stage", "lifecycle", "admission_state", "dispatch_state", "execution_state", "evidence"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "owner": {"type": ["string", "null"]},
+        "stage": {"type": "string", "minLength": 1},
+        "lifecycle": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["proposed", "admitted", "queued", "claimed", "executing", "blocked", "deferred", "completed", "verified", "merged", "deployed", "adopted", "measured", "superseded", "unverified"]}
+        },
+        "admission_state": {"enum": ["not_submitted", "pending", "admitted", "deferred", "rejected", "unknown"]},
+        "dispatch_state": {"enum": ["not_queued", "queued", "claimed", "escalated", "blocked", "unknown"]},
+        "execution_state": {"enum": ["not_started", "in_progress", "completed", "failed", "cancelled", "unknown"]},
+        "role_context": {"type": ["string", "null"]},
+        "participant_id": {"type": ["string", "null"]},
+        "configured_instance_key": {"type": ["string", "null"]},
+        "prerequisites": {"type": "array", "items": {"type": "string"}},
+        "dependants": {"type": "array", "items": {"type": "string"}},
+        "blocker": {"type": ["string", "null"]},
+        "next_action": {"type": ["string", "null"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceLink"}}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "candidate", "decision_state", "hard_gates", "components", "evidence"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "candidate": {"type": "string", "minLength": 1},
+        "incumbent_portfolio_ref": {"type": ["string", "null"]},
+        "decision_state": {"enum": ["admit", "defer", "reject", "retain_incumbent", "replace_incumbent", "no_selection", "not_established"]},
+        "hard_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["gate", "state"],
+            "properties": {
+              "gate": {"type": "string"},
+              "state": {"enum": ["pass", "fail", "unknown", "not_applicable"]},
+              "evidence_ref": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value", "scale", "evidence_state"],
+            "properties": {
+              "name": {"type": "string"},
+              "value": {"type": ["number", "null"]},
+              "scale": {"type": ["string", "null"]},
+              "weight": {"type": ["number", "null"]},
+              "evidence_state": {"enum": ["verified", "partial", "unknown", "not_established"]}
+            }
+          }
+        },
+        "uncertainty": {"type": ["string", "null"]},
+        "displaced_work": {"type": ["string", "null"]},
+        "rationale": {"type": ["string", "null"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceLink"}}
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "state", "unit", "numerator", "denominator", "value", "window", "evidence"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "state": {"enum": ["measured", "partial", "unavailable", "not_established"]},
+        "unit": {"type": "string"},
+        "numerator": {"type": ["number", "null"]},
+        "denominator": {"type": ["number", "null"]},
+        "value": {"type": ["number", "null"]},
+        "window": {"$ref": "#/$defs/timeWindow"},
+        "cohort": {"type": ["string", "null"]},
+        "coverage_note": {"type": ["string", "null"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceLink"}}
+      }
+    }
+  }
+}

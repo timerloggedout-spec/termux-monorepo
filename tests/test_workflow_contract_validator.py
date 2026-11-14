@@ -64,6 +64,11 @@ class WorkflowContractValidatorTests(unittest.TestCase):
         self.assertTrue(any("max_parallel" in e for e in errors))
         self.assertTrue(any("budget.limit" in e for e in errors))
 
+    def test_non_finite_budget_is_rejected(self):
+        data = valid_contract()
+        data["constraints"]["budget"] = {"unit": "requests", "limit": float("nan")}
+        self.assertTrue(any("budget.limit" in e for e in validate_contract(data)))
+
     def test_invalid_sha_and_missing_evidence_are_rejected(self):
         data = valid_contract()
         data["scope"]["base_sha"] = "not-a-sha"

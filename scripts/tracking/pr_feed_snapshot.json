@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-14T11:04:46Z",
+ "read_at": "2026-11-14T11:09:08Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,10 +1956,23 @@
  ],
  "open": [
   {
+   "number": 5390,
+   "title": "feat(que): establish SIE lifecycle contract and intake receipts",
+   "merged_at": null,
+   "updated_at": "2026-11-14T11:09:00Z",
+   "created_at": "2026-11-14T04:08:18Z",
+   "merge_commit_sha": "a84b690b8cc4afbff5a97312c8619454e22950c2",
+   "head_ref": "feat/que-sie-pipeline-integration",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5390",
+   "merged": false
+  },
+  {
    "number": 5395,
    "title": "fix(ci): ignore synthetic merge commits in DO style gate",
    "merged_at": null,
-   "updated_at": "2026-11-14T11:04:42Z",
+   "updated_at": "2026-11-14T11:08:56Z",
    "created_at": "2026-11-14T07:18:42Z",
    "merge_commit_sha": "b9e288c13496a07f51208a1dac7af5b160702092",
    "head_ref": "fix/do-statement-style-merge-commits-20261114",
@@ -1972,13 +1985,52 @@
    "number": 3890,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-14T11:04:01Z",
+   "updated_at": "2026-11-14T11:08:54Z",
    "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "03840146bf53f5f4d9e3c43a76eb0dd32e2f830d",
+   "merge_commit_sha": "674d6a8a8147d106dd554395765a433dbd6dda36",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-14T11:08:36Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "a3024072c294b1b17b218ef9f49107a4d8ef17dd",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 5398,
+   "title": "fix(ci): repair dispatch and DO style regression gates",
+   "merged_at": null,
+   "updated_at": "2026-11-14T11:08:07Z",
+   "created_at": "2026-11-14T11:07:24Z",
+   "merge_commit_sha": "b6104a1f18afb8d291669e40db675a9e12f3907e",
+   "head_ref": "fix/current-master-dispatch-style-gates-20261114",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5398",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-14T11:07:44Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "5c28fb7243595ad0f2701d2613da20ff3db54bfc",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -1992,32 +2044,6 @@
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-14T10:43:05Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "b656419bb866a972dfec6697e7a35b7bce79d579",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-14T10:41:17Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "2f1d2e4ece4c56acfb4ff49ee1128ddd14382ec1",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -2070,19 +2096,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5311",
-   "merged": false
-  },
-  {
-   "number": 5390,
-   "title": "feat(que): establish SIE lifecycle contract and intake receipts",
-   "merged_at": null,
-   "updated_at": "2026-11-14T04:32:12Z",
-   "created_at": "2026-11-14T04:08:18Z",
-   "merge_commit_sha": "d6137e603922218c01a03a79205bc12b961a8009",
-   "head_ref": "feat/que-sie-pipeline-integration",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5390",
    "merged": false
   },
   {
@@ -4540,19 +4553,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4539",
-   "merged": false
-  },
-  {
-   "number": 4533,
-   "title": "feat(doe): webApp variant B \u2014 doctrine-stripped chrome, same state, panel record (#4478)",
-   "merged_at": null,
-   "updated_at": "2026-11-03T18:40:48Z",
-   "created_at": "2026-11-03T18:14:12Z",
-   "merge_commit_sha": "48b8247732dca9647697439071c1b2a06d66446d",
-   "head_ref": "feat/doe-variant-b",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4533",
    "merged": false
   }
  ],

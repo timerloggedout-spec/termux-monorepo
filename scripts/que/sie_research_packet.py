@@ -155,7 +155,12 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
         "surface": "QUE SIE",
         "priority": diagnosis.get("priority", "P1"),
         "related_issues": related_issues,
-        "executive_request": diagnosis["summary"],
+        "executive_request": (
+            diagnosis["summary"]
+            + "\\n\\nOwner role: " + str(diagnosis["owner_role"])
+            + "\\n\\nBaseline snapshot: " + json.dumps(diagnosis["baseline"], sort_keys=True)
+            + "\\n\\nRelated history: " + json.dumps(diagnosis["related_history"], sort_keys=True)
+        ),
         "summary_points": summary_points,
         "items": [{"item": test, "state": "proposed",
                    "evidence": "Pass the replay recipe against the pinned source revision."}

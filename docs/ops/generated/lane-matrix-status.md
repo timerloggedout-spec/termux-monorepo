@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-14T03:45:18Z)
+# Lane matrix status (2026-11-14T03:46:41Z)
 
-- Master: `4d608badbfaaef966e6af67de9f623cf51ebb2cf`
+- Master: `d93527e218ecde5a08660ce4def3c84867e28a90`
 - Open PRs: **391**
 - Oldest: #47 (100.5d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -35,7 +35,7 @@
 | #605 | 56.41 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 54.39 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 51.84 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 43.74 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 43.75 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 42.88 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 41.62 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 25.77 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
@@ -54,8 +54,8 @@
 | #1617 | 21.02 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 20.9 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 20.14 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 20.06 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 18.09 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1650 | 20.07 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1694 | 18.1 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 17.69 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 17.68 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 16.95 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |

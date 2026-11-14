@@ -18,9 +18,16 @@ CRON_RE = re.compile(r"""^\s*-\s*cron:\s*['"]([^'"]+)['"]\s*(?:#.*)?$""")
 TIMEZONE_RE = re.compile(r"""^\s*timezone:\s*['"]?([^'"\s#]+)['"]?\s*(?:#.*)?$""")
 GROUP_RE = re.compile(r"""^\s+group:\s*(.+?)\s*(?:#.*)?$""")
 CANCEL_RE = re.compile(r"""^\s+cancel-in-progress:\s*(true|false)\s*(?:#.*)?$""")
+SCHEDULE_HEADER_RE = re.compile(r"^  schedule:\s*$")
+CONCURRENCY_RE = re.compile(r"(?m)^\s{0,2}concurrency:\s*$")
+RESPONSE_EVENTS = ("pull_request", "pull_request_target", "issues", "issue_comment")
+EVENT_RES = {e: re.compile(rf"(?m)^\s{{2}}{re.escape(e)}:\s*$") for e in RESPONSE_EVENTS}
 
 def strip_yaml_comment(line: str) -> str:
     """Strip an unquoted YAML comment without touching # inside quotes."""
+    # Fast path: skip character loop when no comment character is present (~92% of lines)
+    if "#" not in line:
+        return line.rstrip()
     quote = None
     escaped = False
     for i, ch in enumerate(line):
@@ -38,7 +45,11 @@ def strip_yaml_comment(line: str) -> str:
 
 def event_present(text: str, event: str) -> bool:
     active = "\n".join(strip_yaml_comment(line) for line in text.splitlines())
+    pat = EVENT_RES.get(event)
+    if pat is not None:
+        return bool(pat.search(active))
     return bool(re.search(rf"(?m)^\s{{2}}{re.escape(event)}:\s*$", active))
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
@@ -49,14 +60,15 @@ def main() -> int:
 
     for path in sorted(WORKFLOWS.glob("*.y*ml")):
         text = path.read_text(encoding="utf-8")
-        lines = text.splitlines()
+        # Optimization: strip comments once per file, reusing lines and active_text
+        stripped_lines = [strip_yaml_comment(line) for line in text.splitlines()]
+        active_text = "\n".join(stripped_lines)
         schedules = []
         generated_gh_aw = "# gh-aw-metadata:" in text
         in_schedule = False
         schedule_indent = 0
-        for i, line in enumerate(lines):
-            line = strip_yaml_comment(line)
-            if re.match(r"^  schedule:\s*$", line):
+        for i, line in enumerate(stripped_lines):
+            if SCHEDULE_HEADER_RE.match(line):
                 in_schedule, schedule_indent = True, 2
                 continue
             if in_schedule:
@@ -69,7 +81,7 @@ def main() -> int:
                     continue
                 cron = m.group(1)
                 tz = None
-                for child in lines[i + 1:]:
+                for child in stripped_lines[i + 1:]:
                     if not child.strip():
                         continue
                     child_spaces = len(child) - len(child.lstrip())
@@ -88,12 +100,11 @@ def main() -> int:
                 if minute in {"0", "*"}:
                     findings.append(Finding("warning", str(path.relative_to(ROOT)), "top-of-hour", f"{cron!r} may concentrate load; prefer a staggered minute"))
 
-        events = {e: event_present(text, e) for e in ("pull_request", "pull_request_target", "issues", "issue_comment")}
+        events = {e: bool(EVENT_RES[e].search(active_text)) for e in RESPONSE_EVENTS}
         response_event = any(events.values())
-        active_text = "\n".join(strip_yaml_comment(line) for line in lines)
         group = GROUP_RE.search(active_text)
         cancel = CANCEL_RE.search(active_text)
-        if response_event and not re.search(r"(?m)^\s{0,2}concurrency:\s*$", active_text):
+        if response_event and not CONCURRENCY_RE.search(active_text):
             findings.append(Finding("error", str(path.relative_to(ROOT)), "event-concurrency", "issue/PR response workflow needs an explicit concurrency group"))
         if response_event and group and not any(k in group.group(1) for k in ("github.event.issue.number", "github.event.pull_request.number")):
             findings.append(Finding("warning", str(path.relative_to(ROOT)), "event-lease-key", "response concurrency should normally be keyed to issue/PR identity"))

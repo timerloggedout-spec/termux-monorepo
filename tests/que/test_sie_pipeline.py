@@ -1,3 +1,5 @@
+import json
+import re
 import sys
 from pathlib import Path
 
@@ -8,6 +10,7 @@ from sie_pipeline import (
     StageValidationError, build_receipt, item_key, next_stage,
     stable_event_id, validate_receipt, validate_transition,
 )
+from self_repair import item_body
 
 
 def receipt(stage="OBSERVE", state="COMPLETED", **kwargs):
@@ -85,3 +88,29 @@ def test_terminal_lineage_requires_new_item():
     before = receipt("LEARN", "REJECTED")
     after = receipt("OBSERVE", "READY")
     assert any("terminal lineage" in e for e in validate_transition(before, after))
+
+
+def test_self_repair_intake_embeds_valid_source_receipt():
+    item = {
+        "key": "dispatch-watchdog:abc123",
+        "path": ".github/workflows/dispatch-watchdog.yml",
+        "sig": "abc123def456",
+        "priority": 1.0,
+        "failures": 1,
+        "total": 1,
+        "window_h": 6,
+        "step": "test",
+        "message": "contract failure",
+        "room": None,
+        "receipts": [{
+            "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/123",
+            "sha": "a" * 40,
+        }],
+    }
+    body = item_body(item)
+    match = re.search(r"## SIE stage receipt\\n\\x60\\x60\\x60json\\n(.*?)\\n\\x60\\x60\\x60", body, re.S)
+    assert match
+    receipt_data = json.loads(match.group(1))
+    assert validate_receipt(receipt_data) == []
+    assert receipt_data["source"]["kind"] == "workflow_run"
+    assert receipt_data["sha"] == "a" * 40

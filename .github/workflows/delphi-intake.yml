@@ -66,6 +66,7 @@ jobs:
   intake:
     if: >-
       (github.event_name == 'issue_comment' &&
+       github.event.comment.author_association == 'OWNER' &&
        contains(github.event.comment.body || '', '<!-- request-delphi-intake -->')) ||
       github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -78,6 +79,9 @@ jobs:
       ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
       COMMENT_ID: ${{ github.event.comment.id || '' }}
       COMMENT_BODY: ${{ github.event.comment.body || '' }}
+      COMMENT_AUTHOR: ${{ github.event.comment.user.login || '' }}
+      COMMENT_CREATED_AT: ${{ github.event.comment.created_at || '' }}
+      COMMENT_ASSOC: ${{ github.event.comment.author_association || '' }}
       IN_SURFACE: ${{ github.event.inputs.surface_id || '' }}
       IN_LANE: ${{ github.event.inputs.lane || '' }}
       IN_QUOTA: ${{ github.event.inputs.quota || '' }}
@@ -145,7 +149,24 @@ jobs:
             source_line="comment https://github.com/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}#issuecomment-${COMMENT_ID}"
           fi
           body_file="$RUNNER_TEMP/rfp-body.md"
+          source_marker="<!-- delphi-intake-source: ${GITHUB_REPOSITORY}#${COMMENT_ID} -->"
+          if [ -n "$ISSUE_NUMBER" ] && [ -n "$COMMENT_ID" ]; then
+            existing=$(gh issue list -R "$GITHUB_REPOSITORY" --state all --label delphi:rfp --limit 1000 --json number,body --jq ".[] | select(.body | contains(\"$source_marker\")) | .number" | head -n1)
+            if [ -n "$existing" ]; then
+              report="### Delphi conversational intake"
+              report="${report}"$'\n'"- duplicate source comment already filed as #${existing}; no new RFP created"
+              {
+                echo "report<<REPORT_EOF"
+                printf '%s\n' "$report"
+                echo "REPORT_EOF"
+              } >> "$GITHUB_OUTPUT"
+              printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
           {
+            echo "$source_marker"
+            echo "Source actor: ${COMMENT_AUTHOR:-workflow_dispatch}; association: ${COMMENT_ASSOC:-manual}; created_at: ${COMMENT_CREATED_AT:-unknown}."
             echo "Filed by delphi.conversational_intake (issue #1572 end-to-end path). Source: ${source_line}."
             echo
             echo '### Surface id'

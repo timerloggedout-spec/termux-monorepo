@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "dev+unbuilt",
   "channel": "development",
-  "source_ref": "codex/admin-graph-validation-hardening",
+  "source_ref": "feat/delphic-versioned-graph-suite-final-20261114",
   "source_sha": "",
   "built_at": null,
   "comparison": {
@@ -26,6 +26,12 @@
       "id": "admin",
       "file": "admin.html",
       "title": "Admin",
+      "content_sha256": null
+    },
+    {
+      "id": "algorithm-suite",
+      "file": "algorithm-suite.html",
+      "title": "Graph & Algorithm Suite",
       "content_sha256": null
     },
     {
@@ -71,6 +77,12 @@
       "content_sha256": null
     },
     {
+      "id": "delphic-graph",
+      "file": "delphic-graph.html",
+      "title": "Delphic Graph Observatory",
+      "content_sha256": null
+    },
+    {
       "id": "desk",
       "file": "desk.html",
       "title": "Desk",
@@ -80,6 +92,12 @@
       "id": "dispatch-tree",
       "file": "dispatch-tree.html",
       "title": "Dispatch Tree",
+      "content_sha256": null
+    },
+    {
+      "id": "doe-settings",
+      "file": "doe-settings.html",
+      "title": "DoE Settings",
       "content_sha256": null
     },
     {
@@ -122,6 +140,12 @@
       "id": "marketing-gantt",
       "file": "marketing-gantt.html",
       "title": "Marketing Gantt",
+      "content_sha256": null
+    },
+    {
+      "id": "markov-trellis",
+      "file": "markov-trellis.html",
+      "title": "ArchWiz Markov Trellis",
       "content_sha256": null
     },
     {
@@ -215,6 +239,12 @@
       "content_sha256": null
     },
     {
+      "id": "surfaces-map",
+      "file": "surfaces-map.html",
+      "title": "Surfaces Map",
+      "content_sha256": null
+    },
+    {
       "id": "telemetry",
       "file": "telemetry.html",
       "title": "Telemetry",
@@ -236,6 +266,16 @@
       "id": "wagering-book",
       "file": "wagering-book.html",
       "title": "Wagering Book",
+      "content_sha256": null
+    }
+  ],
+  "assets": [
+    {
+      "file": "algorithm-labs.json",
+      "content_sha256": null
+    },
+    {
+      "file": "markov-engine.mjs",
       "content_sha256": null
     }
   ]

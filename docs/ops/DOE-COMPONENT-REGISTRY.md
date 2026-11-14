@@ -30,6 +30,10 @@ integrated surfaces**. Each component:
 | `kahn.dag` | DAG planning | live | Canonical Kahn primitives, `kahn-reference-v2` (`she/orchestration/dag.py`) — topo order, ready frontiers, cycle residuals |
 | `gantt.dependency-phases` | Gantt | live | Dependency-phase engine (`validate → topological order → compute_waves`) over the canonical plan; Gantt views are derived, never authority |
 
+## Presentation and discovery surface
+
+The versioned Tribute catalogue lives in `apps/tribute-dashboard/algorithm-labs.json` and is exposed by the nested **Experiment lanes** and **Canonical utilities** menus in `apps/tribute-dashboard/versioning.js`. It links the ArchWiz Markov and Delphic Observatory experiment views while keeping the four canonical algorithm components below independently identified. The Delphic Graph Observatory is a composed read-only visualization, not a fifth algorithm engine or a replacement for Kahn, Bayesian, Markov, or Gantt semantics. Runtime module/data assets are SHA-256 recorded by `scripts/build_dashboard_manifest.py` when declared with `meta name="version-assets"`.
+
 ## Wiring landed with this registry
 
 - **Kahn deduplication:** the Temporal N4 compiler

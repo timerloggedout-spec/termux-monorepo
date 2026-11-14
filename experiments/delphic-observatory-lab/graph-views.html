@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Delphic · Graph Semantics Observatory</title>
+<style>
+:root{color-scheme:dark;--bg:#071019;--panel:#0d1b27;--line:#294354;--text:#e4eff5;--muted:#9bb0bd;--cyan:#77e2f3;--amber:#ffcb78;--red:#ff8d8d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+main{max-width:1440px;margin:auto;padding:22px}.top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel);padding:16px}
+h1{font-size:18px;margin:0;color:var(--cyan)}p{color:var(--muted);line-height:1.55}.flag{border:1px solid var(--amber);color:var(--amber);padding:6px 9px;font-size:11px;letter-spacing:.08em}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}button{background:#102330;color:var(--text);border:1px solid var(--line);padding:9px 12px;font:inherit;cursor:pointer}button[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.panel{display:none;border:1px solid var(--line);background:var(--panel);padding:16px}.panel.active{display:block}.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h2{font-size:16px;margin:0}.meta{font-size:11px;color:var(--muted)}.status{color:var(--cyan)}.warn{color:var(--amber)}.error{color:var(--red)}
+svg{display:block;width:100%;height:auto;min-height:260px;background:#08131c;border:1px solid var(--line);margin-top:12px}
+.edge{stroke:#527487;stroke-width:2;fill:none}.node{fill:#102735;stroke:var(--cyan);stroke-width:2}.node.warn{stroke:var(--amber)}.node-label{fill:var(--text);font-size:12px;text-anchor:middle}.edge-label{fill:var(--muted);font-size:10px;text-anchor:middle}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#08131c;border:1px solid var(--line);padding:12px;color:#c8dce7;line-height:1.5}.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-top:12px}.note{font-size:12px;color:var(--muted)}@media(max-width:850px){main{padding:12px}.grid{grid-template-columns:1fr}.panel{padding:12px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <div><h1>DELPHIC / GRAPH SEMANTICS OBSERVATORY</h1><p>Four graph families. Four distinct mathematical contracts. Independent panel refresh lifecycles.</p></div>
+  <div class="flag">LOCAL FIXTURES · NOT LIVE REPOSITORY DATA</div>
+</header>
+<nav aria-label="Graph views">
+  <button data-view="ast" aria-pressed="true">AST containment</button>
+  <button data-view="dependency" aria-pressed="false">Dependency DAG</button>
+  <button data-view="markov" aria-pressed="false">Markov trellis</button>
+  <button data-view="temporal" aria-pressed="false">Temporal lineage</button>
+</nav>
+
+<section class="panel active" id="panel-ast" aria-labelledby="title-ast">
+ <div class="head"><div><h2 id="title-ast">01 · AST containment tree</h2><div class="meta">Strict tree semantics · ordered children · exactly one parent</div></div><button data-refresh="ast">Refresh AST fixture</button></div>
+ <div class="grid"><svg id="svg-ast" viewBox="0 0 900 330" role="img" aria-label="AST containment fixture"></svg><div><p id="status-ast" class="status" aria-live="polite"></p><pre id="out-ast"></pre></div></div>
+</section>
+
+<section class="panel" id="panel-dependency" aria-labelledby="title-dependency">
+ <div class="head"><div><h2 id="title-dependency">02 · Execution dependency DAG</h2><div class="meta">Kahn visual fixture · cycle members and blocked descendants remain explicit</div></div><button data-refresh="dependency">Refresh dependency fixture</button></div>
+ <div class="grid"><svg id="svg-dependency" viewBox="0 0 900 330" role="img" aria-label="Dependency DAG fixture"></svg><div><p id="status-dependency" class="status" aria-live="polite"></p><pre id="out-dependency"></pre></div></div>
+</section>
+
+<section class="panel" id="panel-markov" aria-labelledby="title-markov">
+ <div class="head"><div><h2 id="title-markov">03 · Markov state-transition trellis</h2><div class="meta">Per-source normalized rows · recombination · probability conservation per layer</div></div><button data-refresh="markov">Refresh Markov fixture</button></div>
+ <div class="grid"><svg id="svg-markov" viewBox="0 0 900 360" role="img" aria-label="Markov trellis fixture"></svg><div><p id="status-markov" class="status" aria-live="polite"></p><pre id="out-markov"></pre></div></div>
+</section>
+
+<section class="panel" id="panel-temporal" aria-labelledby="title-temporal">
+ <div class="head"><div><h2 id="title-temporal">04 · Temporal snapshot lineage</h2><div class="meta">Ordered observations · explicit parent links · missing provenance stays missing</div></div><button data-refresh="temporal">Refresh temporal fixture</button></div>
+ <div class="grid"><svg id="svg-temporal" viewBox="0 0 900 260" role="img" aria-label="Temporal snapshot lineage fixture"></svg><div><p id="status-temporal" class="status" aria-live="polite"></p><pre id="out-temporal"></pre></div></div>
+</section>
+<p class="note">Refresh recomputes only the selected local fixture. It does not fetch GitHub, refresh a remote snapshot, or mutate evidence. The browser Kahn routine is an explanatory fixture; production planning remains the canonical Python engine at <code>she/orchestration/dag.py</code> (<code>kahn-reference-v2</code>). Layout is presentation state; model output and provenance are separate.</p>
+</main>
+<script>
+const fixtures={
+ ast:{root:"Repository",tree:{Repository:["apps","scripts"],apps:["tribute-dashboard"],"tribute-dashboard":["admin.html"],scripts:["orchestration"],orchestration:["dag.py"],"admin.html":[],"dag.py":[]},xy:{Repository:[450,35],apps:[220,125],scripts:[680,125],"tribute-dashboard":[220,215],orchestration:[680,215],"admin.html":[220,295],"dag.py":[680,295]}},
+ dependency:{nodes:["schema","parse","validate","plan","render","publish"],edges:[["schema","parse"],["parse","validate"],["validate","plan"],["plan","render"],["render","publish"]],xy:{schema:[90,160],parse:[235,160],validate:[380,160],plan:[525,160],render:[670,160],publish:[815,160]}},
+ markov:{states:["queued","running","complete"],rows:{queued:{queued:.2,running:.8},running:{running:.35,complete:.65},complete:{complete:1}},initial:{queued:1},steps:3},
+ temporal:{snapshots:[
+ {id:"snap-001",observed_at:"2026-11-10T09:00:00Z",source_sha:"fixture-sha-a",parent_id:null},
+ {id:"snap-002",observed_at:"2026-11-11T09:00:00Z",source_sha:"fixture-sha-b",parent_id:"snap-001"},
+ {id:"snap-003",observed_at:"2026-11-12T09:00:00Z",source_sha:null,parent_id:"snap-002"}
+ ]}
+};
+const state=Object.fromEntries(["ast","dependency","markov","temporal"].map(k=>[k,{status:"idle",renderedAt:null,error:null}]));
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs={},textValue){const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));if(textValue!==undefined)n.textContent=String(textValue);return n}
+function draw(id,nodes,edges){const svg=document.getElementById(id);svg.replaceChildren();for(const edge of edges){const a=nodes[edge.from],b=nodes[edge.to];if(!a||!b)continue;svg.append(el("path",{d:"M"+a.x+" "+a.y+" L"+b.x+" "+b.y,class:"edge"}));if(edge.label)svg.append(el("text",{x:(a.x+b.x)/2,y:(a.y+b.y)/2-7,class:"edge-label"},edge.label))}
+ for(const n of Object.values(nodes)){svg.append(el("circle",{cx:n.x,cy:n.y,r:25,class:"node"+(n.warn?" warn":"")}));svg.append(el("text",{x:n.x,y:n.y+4,class:"node-label"},n.label))}
+}
+function astPreorder(tree,root){const seen=new Set(),active=new Set(),order=[];const walk=n=>{if(active.has(n))throw Error("AST cycle");if(seen.has(n))throw Error("AST node has multiple parents");active.add(n);seen.add(n);order.push(n);for(const c of tree[n]||[]){if(!(c in tree))throw Error("Unknown AST child: "+c);walk(c)}active.delete(n)};walk(root);if(seen.size!==Object.keys(tree).length)throw Error("AST contains unreachable nodes");return order}
+function kahn(nodes,edges){const indegree=Object.fromEntries(nodes.map(n=>[n,0])),adj=Object.fromEntries(nodes.map(n=>[n,[]]));for(const [a,b] of edges){if(!(a in adj)||!(b in adj))throw Error("Unknown dependency endpoint");adj[a].push(b);indegree[b]++}const ready=nodes.filter(n=>indegree[n]===0).sort(),order=[];while(ready.length){const n=ready.shift();order.push(n);for(const child of adj[n].sort()){indegree[child]--;if(indegree[child]===0){ready.push(child);ready.sort()}}}return {order,residual:nodes.filter(n=>!order.includes(n)),acyclic:order.length===nodes.length}}
+function markov(states,rows,initial,steps){let current=Object.fromEntries(states.map(s=>[s,initial[s]||0]));const layers=[current];for(const s of states){const row=rows[s];if(!row||Math.abs(Object.values(row).reduce((a,b)=>a+b,0)-1)>1e-9)throw Error("Transition row is not normalized for "+s)}for(let t=0;t<steps;t++){const next=Object.fromEntries(states.map(s=>[s,0]));for(const from of states)for(const [to,p] of Object.entries(rows[from])){if(!(to in next)||!Number.isFinite(p)||p<0)throw Error("Invalid transition");next[to]+=current[from]*p}const mass=Object.values(next).reduce((a,b)=>a+b,0);if(Math.abs(mass-1)>1e-9)throw Error("Probability mass not conserved at layer "+(t+1));layers.push(next);current=next}return {layers,mass:layers.map(x=>Object.values(x).reduce((a,b)=>a+b,0))}}
+function temporal(snapshots){const seen=new Set(),edges=[],warnings=[];let last=null;for(const s of snapshots){const t=Date.parse(s.observed_at);if(!Number.isFinite(t))warnings.push(s.id+": invalid timestamp");if(last!==null&&t<last)warnings.push(s.id+": non-monotonic time");if(Number.isFinite(t))last=t;if(s.parent_id&&!seen.has(s.parent_id))warnings.push(s.id+": parent not previously observed");if(s.parent_id&&seen.has(s.parent_id))edges.push([s.parent_id,s.id]);if(!s.source_sha)warnings.push(s.id+": source SHA missing");seen.add(s.id)}return {edges,warnings,structurallyValid:!warnings.some(x=>!x.endsWith("source SHA missing")),provenanceComplete:!warnings.some(x=>x.endsWith("source SHA missing"))}}
+function renderAst(){const f=fixtures.ast,order=astPreorder(f.tree,f.root),nodes={};for(const [id,[x,y]] of Object.entries(f.xy))nodes[id]={x,y,label:id};const edges=[];for(const [p,children] of Object.entries(f.tree))for(const c of children)edges.push({from:p,to:c});draw("svg-ast",nodes,edges);document.getElementById("status-ast").textContent="READY · "+order.length+" nodes · strict tree valid";document.getElementById("out-ast").textContent=JSON.stringify({graphKind:"ast_containment",implementation:"scripts/delphic_graph_lab.py",traversal:"preorder",orderedNodes:order,authority:"projection_only"},null,2)}
+function renderDependency(){const f=fixtures.dependency,r=kahn(f.nodes,f.edges),nodes={};for(const [id,[x,y]] of Object.entries(f.xy))nodes[id]={x,y,label:id,warn:r.residual.includes(id)};draw("svg-dependency",nodes,f.edges.map(([from,to])=>({from,to})));document.getElementById("status-dependency").textContent=r.acyclic?"READY · DAG · "+r.order.length+" ordered nodes":"WARNING · cycle or blocked nodes";document.getElementById("out-dependency").textContent=JSON.stringify({graphKind:"dependency_dag",algorithm:"kahn_visual_fixture",canonicalAlgorithmVersion:"kahn-reference-v2",canonicalImplementation:"she/orchestration/dag.py",topologicalOrder:r.order,cycleOrBlockedNodes:r.residual,isAcyclic:r.acyclic},null,2)}
+function renderMarkov(){const f=fixtures.markov,r=markov(f.states,f.rows,f.initial,f.steps),nodes={},edges=[];for(let t=0;t<r.layers.length;t++)for(let i=0;i<f.states.length;i++){const s=f.states[i],id=s+"@"+t;nodes[id]={x:85+t*245,y:75+i*115,label:s+" · "+r.layers[t][s].toFixed(3)}}for(let t=0;t<f.steps;t++)for(const from of f.states)for(const [to,p] of Object.entries(f.rows[from]))edges.push({from:from+"@"+t,to:to+"@"+(t+1),label:p.toFixed(2)});draw("svg-markov",nodes,edges);document.getElementById("status-markov").textContent="READY · "+r.layers.length+" layers · mass conserved";document.getElementById("out-markov").textContent=JSON.stringify({graphKind:"markov_trellis",algorithmVersion:"markov-trellis/v1",canonicalEngine:"experiments/archwiz-markov-lane/src/markov-engine.mjs",layers:r.layers,layerMass:r.mass,recombination:"same state at same time merges incoming probability"},null,2)}
+function renderTemporal(){const f=fixtures.temporal,r=temporal(f.snapshots),nodes={};f.snapshots.forEach((s,i)=>nodes[s.id]={x:150+i*300,y:115,label:s.id,warn:!s.source_sha});draw("svg-temporal",nodes,r.edges.map(([from,to])=>({from,to,label:"parent"})));document.getElementById("status-temporal").textContent=(r.structurallyValid?"READY":"WARNING")+" · "+f.snapshots.length+" snapshots · "+(r.provenanceComplete?"provenance complete":"provenance incomplete");document.getElementById("out-temporal").textContent=JSON.stringify({graphKind:"temporal_lineage",implementation:"scripts/delphic_graph_lab.py",orderedSnapshotIds:f.snapshots.map(s=>s.id),edges:r.edges,warnings:r.warnings,structurallyValid:r.structurallyValid,provenanceComplete:r.provenanceComplete,missingness:"preserved; never coerced to zero"},null,2)}
+const renderers={ast:renderAst,dependency:renderDependency,markov:renderMarkov,temporal:renderTemporal};
+function refresh(key){state[key].status="refreshing";try{renderers[key]();state[key].status="ready";state[key].renderedAt=new Date().toISOString();state[key].error=null;const status=document.getElementById("status-"+key);status.textContent+=" · fixture rendered "+state[key].renderedAt}catch(e){state[key].status="error";state[key].error=String(e);document.getElementById("status-"+key).textContent="ERROR · "+String(e)}}
+document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id==="panel-"+button.dataset.view))}));
+document.querySelectorAll("[data-refresh]").forEach(button=>button.addEventListener("click",()=>refresh(button.dataset.refresh)));
+Object.keys(renderers).forEach(refresh);
+</script>
+</body>
+</html>

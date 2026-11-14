@@ -88,6 +88,15 @@ class TestQDeskAwardAuthorization(unittest.TestCase):
         args["award"] = {**self.award, "ledger_ref": "issue-comment:does-not-exist"}
         self.assertEqual(authorize_work_packet(**args)["disposition"], "HELD")
 
+    def test_non_object_manifest_holds_at_qdesk_boundary(self):
+        for malformed in (None, [], "not-an-object"):
+            args = self.kwargs()
+            args["manifest"] = malformed
+            result = authorize_work_packet(**args)
+            self.assertEqual(result["disposition"], "HELD")
+            with self.assertRaises(WorkPacketHeld):
+                require_work_packet_authorization(**args)
+
 
 if __name__ == "__main__":
     unittest.main()

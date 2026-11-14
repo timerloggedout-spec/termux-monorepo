@@ -10,6 +10,7 @@ DASHBOARD = ROOT / "apps/tribute-dashboard"
 HTML = DASHBOARD / "index.html"
 NAV = DASHBOARD / "site-nav.js"
 VERSIONING = DASHBOARD / "versioning.js"
+ALGORITHM_LABS = DASHBOARD / "algorithm-labs.json"
 MATRIX = DASHBOARD / "matrix.html"
 SERVICE_WORKER = DASHBOARD / "sw.js"
 SITEMAP = DASHBOARD / "sitemap.xml"
@@ -29,6 +30,27 @@ def main() -> int:
     html = HTML.read_text(encoding="utf-8")
     if "/Tribute/" in html:
         raise SystemExit("dashboard HTML contains case-sensitive uppercase Tribute routes; use /tribute/")
+    if not ALGORITHM_LABS.is_file():
+        raise SystemExit("versioned algorithm-labs.json registry is missing")
+    labs = json.loads(ALGORITHM_LABS.read_text(encoding="utf-8"))
+    if labs.get("schema") != "tribute.algorithm-labs/v1":
+        raise SystemExit("algorithm labs registry schema is invalid")
+    required_labs = {"archwiz-markov-lane", "delphic-observatory-lab"}
+    actual_labs = {item.get("id") for item in labs.get("experiment_labs", [])}
+    if not required_labs.issubset(actual_labs):
+        raise SystemExit("algorithm labs registry is missing an experiment lane")
+    required_components = {"kahn.dag", "bayesian.routing", "gantt.dependency-phases"}
+    actual_components = {item.get("id") for item in labs.get("canonical_components", [])}
+    if not required_components.issubset(actual_components):
+        raise SystemExit("algorithm labs registry is missing a canonical component")
+    for item in labs.get("experiment_labs", []):
+        if not (DASHBOARD / item.get("ui_file", "")).is_file():
+            raise SystemExit("algorithm lab UI is missing: " + str(item.get("ui_file")))
+    for name in ("algorithm-suite.html", "markov-trellis.html", "delphic-graph.html", "markov-engine.mjs"):
+        if not (DASHBOARD / name).is_file():
+            raise SystemExit("versioned algorithm surface is missing: " + name)
+    if "Experiment lanes" not in VERSIONING.read_text(encoding="utf-8"):
+        raise SystemExit("version header is missing nested experiment lane navigation")
     if not NAV.is_file():
         raise SystemExit("shared site-nav.js is missing")
     nav = NAV.read_text(encoding="utf-8")

@@ -277,9 +277,6 @@ def ast_preorder(tree: dict[str, Iterable[str]], root: str) -> list[str]:
                 raise ValueError(f"AST node {child!r} has multiple parents")
     if parents[root] != 0:
         raise ValueError("AST root must not have a parent")
-    if any(count != 1 for node, count in parents.items() if node != root):
-        raise ValueError("every non-root AST node must have exactly one parent")
-
     order: list[str] = []
     visiting: set[str] = set()
     visited: set[str] = set()
@@ -288,20 +285,21 @@ def ast_preorder(tree: dict[str, Iterable[str]], root: str) -> list[str]:
         node, exiting = stack.pop()
         if exiting:
             visiting.discard(node)
-            if node not in visited:
-                visited.add(node)
-                order.append(node)
+            visited.add(node)
             continue
         if node in visiting:
             raise ValueError("AST containment contains a cycle")
         if node in visited:
             continue
         visiting.add(node)
+        order.append(node)
         stack.append((node, True))
         for child in reversed(materialized[node]):
             stack.append((child, False))
     if len(visited) != len(materialized):
         raise ValueError("AST contains nodes unreachable from root")
+    if any(count != 1 for node, count in parents.items() if node != root):
+        raise ValueError("every non-root AST node must have exactly one parent")
     return order
 
 

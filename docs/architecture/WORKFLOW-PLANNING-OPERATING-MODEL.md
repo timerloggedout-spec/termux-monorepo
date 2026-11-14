@@ -91,7 +91,7 @@ A workflow is a versioned graph of typed task nodes and typed transitions.
 }
 ```
 
-The initial structural contract is published at `docs/schemas/workflow-contract-v1.schema.json`. A standard-library validator at `scripts/workflows/validate_wfc.py` checks required fields, identifiers, SHA shape, task references, DAG cycles, side-effect classes and budget/constraint types. Its regression suite is `tests/test_workflow_contract_validator.py`. This is an initial structural validator, not a complete JSON Schema draft-2020-12 implementation or production admission gate.
+The initial structural contract is published at `docs/schemas/workflow-contract-v1.schema.json`. A no-third-party-dependency validator at `scripts/workflows/validate_wfc.py` checks required fields, identifiers, SHA shape, task references, side-effect classes and budget/constraint types, and reuses the existing canonical `she.orchestration.dag.plan_dag` implementation for deterministic graph/cycle validation. Its regression suite is `tests/test_workflow_contract_validator.py`. This is an initial structural validator, not a complete JSON Schema draft-2020-12 implementation or production admission gate.
 
 ### 3.3 State model
 

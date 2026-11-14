@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
+      - "docs/proposals/registry.yaml"
+      - "docs/proposals/active/archwiz-markov-trellis-lab/**"
+      - "docs/proposals/active/qdesk-self-repair/**"
+      - "docs/ops/DOE-COMPONENT-REGISTRY.md"
+      - "docs/ops/SURFACES-MAP.md"
       - "apps/tribute-dashboard/**"
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"
@@ -35,6 +40,11 @@ on:
       - feat/delphic-current-master-20261114
       - feat/delphic-versioned-graph-suite-20261114
     paths:
+      - "docs/proposals/registry.yaml"
+      - "docs/proposals/active/archwiz-markov-trellis-lab/**"
+      - "docs/proposals/active/qdesk-self-repair/**"
+      - "docs/ops/DOE-COMPONENT-REGISTRY.md"
+      - "docs/ops/SURFACES-MAP.md"
       - "apps/tribute-dashboard/**"
       - "scripts/build_dashboard_manifest.py"
       - "scripts/ci/verify_tribute_dashboard.py"

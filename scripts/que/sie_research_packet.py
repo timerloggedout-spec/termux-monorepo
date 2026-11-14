@@ -248,7 +248,13 @@ def main(argv: list[str] | None = None) -> int:
     (out / "oracle-brief.json").write_text(
         json.dumps(brief, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     evidence_dir = out / "evidence"
+    if evidence_dir.is_symlink():
+        raise ValueError("managed evidence output directory must not be a symlink")
     evidence_dir.mkdir(exist_ok=True)
+    # Remove only files owned by this generator; keep unrelated operator notes/artifacts.
+    for stale in evidence_dir.iterdir():
+        if re.fullmatch(r"evidence-\\d{3}\\.json", stale.name) and (stale.is_file() or stale.is_symlink()):
+            stale.unlink()
     for index, evidence_set in enumerate(fresh_sets, start=1):
         (evidence_dir / f"evidence-{index:03d}.json").write_text(
             json.dumps(evidence_set, indent=2, sort_keys=True) + "\n",

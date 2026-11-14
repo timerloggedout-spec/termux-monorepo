@@ -46,6 +46,7 @@
 | Integration mesh | [docs/ops/INTEGRATION-MESH-MATRIX.md](../ops/INTEGRATION-MESH-MATRIX.md) |
 | Web Adapter Foundry | [docs/ops/WEB-ADAPTER-FOUNDRY.md](../ops/WEB-ADAPTER-FOUNDRY.md) (+ `ops/web_adapter_foundry/`) |
 | Device pull queue | Spec: [docs/ops/P1-PULL-QUEUE-SPEC.md](../ops/P1-PULL-QUEUE-SPEC.md) · Runbook: [docs/ops/DEVICE-PULL-QUEUE.md](../ops/DEVICE-PULL-QUEUE.md) |
+| QUE device validation | [QUE-DEVICE-VALIDATION.md](QUE-DEVICE-VALIDATION.md) + [QUE-DEVICE-VALIDATION.mmd](QUE-DEVICE-VALIDATION.mmd) · RECON registry: [ops/device-validation/](../../ops/device-validation/) · DoE: [docs/ops/QUE-DEVICE-VALIDATION-DOE.md](../ops/QUE-DEVICE-VALIDATION-DOE.md) |
 | Reviewer JIT (measured reviewer policy) | [docs/ops/REVIEWER-JIT-DESIGN.md](../ops/REVIEWER-JIT-DESIGN.md) |
 | Secrets audit (phantom-secret reconciliation) | [docs/ops/PHANTOM-SECRETS-AUDIT.md](../ops/PHANTOM-SECRETS-AUDIT.md) · Credential inventory of record: Issue #184 (names / last-used only) · Naming: [docs/ops/SECRET-NAMING-CONVENTION.md](../ops/SECRET-NAMING-CONVENTION.md) · Registry: [docs/ops/secrets-and-variables-registry.md](../ops/secrets-and-variables-registry.md) |
 | Backend & free-tier architecture | [docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md](../ops/FREE-TIER-BACKEND-RECON-2026-10-21.md) · [docs/ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md](../ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md) |

@@ -111,6 +111,20 @@ class TestProposalPackage(unittest.TestCase):
                                       package_author="builder", reviewer="builder",
                                       ledger_lookup=lookup)["disposition"], "HELD")
 
+        # Keep the award and identities valid while mutating one canonical ledger field.
+        for field, value in (("package_digest", "d" * 64),
+                             ("decision", "parked"),
+                             ("reviewer_login", "different-reviewer")):
+            original = ledger[field]
+            ledger[field] = value
+            mismatch = verify_award(
+                manifest=manifest, award=award,
+                package_author="builder", reviewer="reviewer",
+                ledger_lookup=lookup,
+            )
+            self.assertEqual(mismatch["disposition"], "HELD", field)
+            ledger[field] = original
+
     def test_malformed_manifest_inventory_and_unknown_fields_fail_closed(self):
         manifest = self.manifest()
         malformed = dict(manifest, files=None)

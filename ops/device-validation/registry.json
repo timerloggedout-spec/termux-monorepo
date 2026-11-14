@@ -119,7 +119,7 @@
         "android_api_levels": [],
         "termux_versions": []
       },
-      "capabilities": ["linux.shell", "linux.filesystem.permissions"],
+      "capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.package.environment"],
       "exclusions": ["Android framework", "Termux app sandbox and Android lifecycle unless separately bridged and tested"],
       "provenance": {
         "upstream_url": "https://github.com/termux/termux-docker",
@@ -310,7 +310,7 @@
       "lane_state": "active",
       "inventory_classification": "verified_device_component",
       "target_platforms": ["termux", "linux-ci"],
-      "required_capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.package.environment"],
+      "required_capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.runtime.detect"],
       "hardware_requirements": {"required": false, "capabilities": []},
       "validation_profiles": ["termux-runtime-smoke"],
       "test_suites": ["python3 scripts/ci/termux_smoke.py", "python3 scripts/ci/termux_smoke.py --with-optional"],

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-14T03:42:10Z)
+# Lane matrix status (2026-11-14T03:43:30Z)
 
-- Master: `c5c6bf07678b125356a5174d995968a824468760`
+- Master: `51bc82a32e6ed3aec0faa27c3b10294f5a030868`
 - Open PRs: **391**
 - Oldest: #47 (100.5d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -45,22 +45,22 @@
 | #1495 | 23.05 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 22.81 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 22.81 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 22.8 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 22.79 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 22.81 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 22.8 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 22.78 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 22.11 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 21.03 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 21.02 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 21.02 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 20.9 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 20.13 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 20.14 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 20.06 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 18.09 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 17.68 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 17.68 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 16.94 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 16.95 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 14.78 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
-| #2577 | 14.14 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
+| #2577 | 14.15 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
 | #2856 | 13.08 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

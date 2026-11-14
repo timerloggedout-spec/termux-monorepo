@@ -96,7 +96,7 @@ def item_key(path: str, sig: str) -> str:
 
 
 def item_body(item: dict) -> str:
-    rec = "\\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
     source_kind = "feed_freshness" if item.get("step") == "freshness" else "workflow_run"
     source_revision = (item.get("receipts") or [{}])[0].get("sha") or item["sig"]
     source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None

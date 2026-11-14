@@ -133,6 +133,11 @@ class TestSIEPipeline(unittest.TestCase):
                     "claim": {"by": "worker"}, "tier": {"name": "BASE"},
                     "stall_events": [],
                 },
+                {
+                    "issue": 8125, "state": "claimed", "age_min": 120,
+                    "claim": None, "tier": {"name": "FINAL"},
+                    "stall_events": [{"kind": "escalation"}],
+                },
             ]
         }
         groups = queue_stall_groups(feed)
@@ -146,6 +151,11 @@ class TestSIEPipeline(unittest.TestCase):
         refreshed = queue_stall_groups(advanced)[0]
         self.assertEqual(groups[0]["source_revision"], refreshed["source_revision"])
         self.assertGreater(refreshed["priority"], groups[0]["priority"])
+        advanced["dispatches"][0]["tier"]["name"] = "FINAL"
+        advanced["dispatches"][0]["stall_events"].append({"kind": "new-observation"})
+        changed_observation = queue_stall_groups(advanced)[0]
+        self.assertEqual(groups[0]["key"], changed_observation["key"])
+        self.assertNotEqual(groups[0]["source_revision"], changed_observation["source_revision"])
         body = item_body(groups[0])
         match = re.search(r"## SIE stage receipt\n\x60\x60\x60json\n(.*?)\n\x60\x60\x60", body, re.S)
         self.assertIsNotNone(match)

@@ -409,3 +409,61 @@ def test_gate_keeps_active_sweep_and_hourly_post_burst_backstop():
     assert 'cron: "23 * * * *"' in workflow
     assert "post-burst sweep guarantee" in workflow
 
+
+
+
+def test_package_binding_rejects_inventory_outside_declared_package_path():
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        (root / "proposal").mkdir()
+        (root / "proposal" / "RFP.md").write_text("# proposal\\n")
+        (root / "outside.md").write_text("# outside\\n")
+        manifest = build_manifest(
+            source_ref="a" * 40, package_id="proposal-2",
+            package_path="proposal", root=root,
+            files=["outside.md"], package_author="builder",
+        )
+        raw = json.dumps(manifest).encode("utf-8")
+
+        class FakeGH:
+            def req(self, method, path, body=None):
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(raw).decode("ascii")}
+
+        body = (
+            f"### Proposal source ref\\n{'a' * 40}\\n\\n"
+            f"### Proposal manifest ref\\n{'b' * 40}\\n\\n"
+            "### Proposal manifest path\\nproposal/package.json\\n\\n"
+            f"### Expected package digest\\n{manifest['package_digest']}\\n"
+        )
+        with __import__("pytest").raises(ValueError, match="outside package_path"):
+            gate.verify_issue_package_binding(FakeGH(), {"body": body})
+
+
+def test_package_binding_rejects_non_regular_and_invalid_base64_content():
+    class FakeGH:
+        def __init__(self, response):
+            self.response = response
+        def req(self, method, path, body=None):
+            return self.response
+
+    for response, message in (
+        ({"type": "symlink", "encoding": "base64", "content": "eA=="}, "regular"),
+        ({"type": "file", "encoding": "utf-8", "content": "x"}, "regular"),
+        ({"type": "file", "encoding": "base64", "content": "%%%"},
+         "invalid base64"),
+    ):
+        with __import__("pytest").raises(ValueError, match=message):
+            gate._github_file_bytes(FakeGH(response), "proposal/RFP.md", "a" * 40)
+
+
+def test_verified_package_digest_changes_delphi_idempotency_hash():
+    panel, registry, catalog = _load()
+    surface = catalog["turso.free"]
+    baseline = gate.input_hash(surface, panel["roles"], registry, {})
+    package_a = {"package_digest": "a" * 64, "source_ref": "b" * 40}
+    package_b = {"package_digest": "c" * 64, "source_ref": "b" * 40}
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != baseline
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != gate.input_hash(
+        surface, panel["roles"], registry, {}, package_b
+    )

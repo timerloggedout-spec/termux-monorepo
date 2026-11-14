@@ -50,3 +50,16 @@ These are normalized operation names, **not observed NetExam endpoints**.
 ## Promotion gate
 
 An operation may move beyond `discovered` only after its exact route is established from official tenant documentation or authorized observation, its input/output contract is recorded, credentials and session boundaries are reviewed, read/write semantics and idempotency are tested, and an independent verifier reproduces the operation. This registry is not a live adapter and is not a QUE course-completion demonstration.
+
+
+## Promotion evidence checklist
+
+Before promoting any operation beyond discovery-only, attach all of the following to its operation record:
+
+1. Official AMD-tenant documentation or an authorized, reproducible observation proving the exact route and tenant entitlement.
+2. A bounded input/output contract with account and session boundaries; secrets remain vault-only.
+3. A read/write classification, explicit idempotency key, and read-after-action reconciliation behavior.
+4. Tests for expiry, unhandled MFA/CAPTCHA, ambiguous write outcomes, cross-account isolation, and secret redaction.
+5. An independent reproduction receipt tied to the adapter version.
+
+A vendor-wide NetExam API description does not satisfy item 1. A successful notebook run does not satisfy LMS completion until the Academy progress record is read back. The current registry intentionally remains discovery-only until these conditions are met.

@@ -26,6 +26,11 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical_json(value)).hexdigest()
 
 
+def oracle_method_digest(value: Any) -> str:
+    """Match the existing Oracle Method generator's evidence-set hash encoding."""
+    return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+
+
 def parse_time(value: str) -> datetime:
     parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if parsed.tzinfo is None:
@@ -152,8 +157,8 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
         fresh_sets.append(fresh_set)
         evidence_manifest.append({
             "artifact": evidence_set.get("artifact"),
-            "source_set_digest": digest(evidence_set),
-            "fresh_subset_digest": digest(fresh_set),
+            "source_set_digest": oracle_method_digest(evidence_set),
+            "fresh_subset_digest": oracle_method_digest(fresh_set),
             "accepted_claims": [item["claim"] for item in fresh_items],
         })
 
@@ -212,7 +217,7 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
         "oracle_method": {
             "generator": GENERATOR,
             "brief": brief,
-            "evidence_set_digests": [digest(item) for item in fresh_sets],
+            "evidence_set_digests": [oracle_method_digest(item) for item in fresh_sets],
         },
     }
     packet["package_digest"] = digest(packet)

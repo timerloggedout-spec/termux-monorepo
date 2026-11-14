@@ -77,7 +77,7 @@ Research packet fields:
 
 The packet builder is `scripts/que/sie_research_packet.py`; its contract is `docs/schemas/que-sie-research-packet-v1.schema.json`. It validates the source SIE receipt, checks evidence-item hashes and per-item freshness, preserves the baseline/history/replay/risk envelope, and separates supported facts from stale or missing claims. Its output includes a deterministic package digest, a structured Oracle Method brief and fresh-only evidence sets.
 
-Feed that brief and evidence sets to the existing deterministic `scripts/delphi/generate_proposal.py` generator. The generator emits MANIFEST.md, ITEMS.md, RFP.md and PROVENANCE.json; it makes zero external calls and records zero human ballots. The package manifest binds the generated documents and source evidence hashes. Delphi #5156 verifies the package digest at award and consumer time. Content drift returns the RFP to review.
+Feed that brief and evidence sets to the existing deterministic `scripts/delphi/generate_proposal.py` generator. The generator emits MANIFEST.md, ITEMS.md, RFP.md and PROVENANCE.json; it makes zero external calls and records zero human ballots. The package manifest binds the generated documents and source evidence hashes. The shared Delphi #5156 verifier is implemented, but award-time binding in the live Delphi gate and authenticated consumer-time verification in the live QDesk work-packet path remain pending. Content drift must return the RFP to review and hold consumer authorization.
 
 ## 5. DoE and implementation
 

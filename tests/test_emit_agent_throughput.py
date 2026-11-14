@@ -182,7 +182,7 @@ class AgentThroughputEmitterTests(unittest.TestCase):
             "controller": "que",
             "surface": "repo_owned_adapter",
             "route": "api",
-            "session_ref": "opaque-session:que:12345",
+            "session_ref": "session:que:12345",
             "adapter_version": "amd-academy/0.1.0",
             "attribution_method": "invocation_telemetry",
             "confidence": 1.0,
@@ -201,7 +201,7 @@ class AgentThroughputEmitterTests(unittest.TestCase):
             "controller": "que",
             "surface": "seat_browser",
             "route": "seat_browser",
-            "session_ref": "opaque-session:123",
+            "session_ref": "session:que:123",
             "adapter_version": "external/1",
             "attribution_method": "session_export",
             "confidence": 1.0,
@@ -231,7 +231,7 @@ class AgentThroughputEmitterTests(unittest.TestCase):
             "controller": "muse",
             "surface": "external_computer",
             "route": "seat_browser",
-            "session_ref": "opaque-session:muse:123",
+            "session_ref": "session:muse:123",
             "adapter_version": None,
             "attribution_method": "session_export",
             "confidence": 0.9,
@@ -249,7 +249,7 @@ class AgentThroughputEmitterTests(unittest.TestCase):
             "controller": "que",
             "surface": "repo_owned_adapter",
             "route": "cli",
-            "session_ref": "opaque-session:123",
+            "session_ref": "session:que:123",
             "adapter_version": "amd-academy/0.1.0",
             "attribution_method": "invocation_telemetry",
             "confidence": 1.0,
@@ -259,6 +259,21 @@ class AgentThroughputEmitterTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unsupported execution fields"):
             build_events(data)
 
+
+    def test_execution_provenance_rejects_token_bearing_session_reference(self):
+        data = self.metadata()
+        data["execution"] = {
+            "controller": "que",
+            "surface": "repo_owned_adapter",
+            "route": "api",
+            "session_ref": "session:que:123?token=do-not-store",
+            "adapter_version": "amd-academy/0.1.0",
+            "attribution_method": "invocation_telemetry",
+            "confidence": 1.0,
+            "evidence_refs": ["workflow_run:12345"],
+        }
+        with self.assertRaisesRegex(ValueError, "opaque session"):
+            build_events(data)
 
 if __name__ == "__main__":
     unittest.main()

@@ -296,6 +296,12 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             payload["decision_utilities"],
             float(payload.get("experiment_cost", 0.0)),
         )
+    evidence_status = (
+        "HELD_CONFLICTING_DUPLICATE_OUTCOMES" if counts["conflicts"]
+        else ("INCONCLUSIVE_NO_ADMISSIBLE_OBSERVATIONS"
+              if counts["successes"] + counts["failures"] == 0
+              else "UPDATED")
+    )
     review = adversarial_admission(
         interval_width=interval[1] - interval[0],
         benchmark_regression=bool(payload.get("benchmark_regression", False)),
@@ -328,6 +334,7 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
     result = {
         "schema_version": "1.1",
         "posterior": {
+            "status": evidence_status,
             "belief": asdict(belief),
             "mean": belief.mean,
             "sd": belief.sd,
@@ -341,7 +348,9 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
         "information_value": {
             "evsi_binary_decision": evsi_value,
         },
-        "adversarial_review": {"admission": review},
+        "adversarial_review": {
+            "admission": "not_admitted" if evidence_status != "UPDATED" else review
+        },
         "left_now": left,
         "right_interthreading": right,
         "authority": {

@@ -73,7 +73,7 @@
         "android_api_levels": [],
         "termux_versions": ["not pinned by current smoke contract"]
       },
-      "capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.package.environment"],
+      "capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.runtime.detect"],
       "exclusions": ["Android framework and permission parity", "OEM lifecycle behavior", "physical hardware APIs", "termux-api availability is optional probe only"],
       "provenance": {
         "upstream_url": null,

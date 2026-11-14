@@ -82,7 +82,7 @@ class TestSIEResearchPacket(unittest.TestCase):
         self.assertEqual(set(accepted), {"run.conclusion"})
         self.assertEqual(rejected["file.blob_sha"], "stale_or_invalid_freshness")
 
-    def test_duplicate_fresh_claims_are_rejected_as_ambiguous(self):
+    def test_duplicate_claims_across_evidence_sets_are_rejected_as_ambiguous(self):
         _, _, evidence = fixture()
         duplicate = json.loads(json.dumps(evidence[0]))
         duplicate["artifact"]["ref"] = "second-run"

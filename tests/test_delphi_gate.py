@@ -426,28 +426,40 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
         root = Path(temp)
         (root / "proposal").mkdir()
         (root / "proposal" / "RFP.md").write_text("# proposal\\n")
-        (root / "outside.md").write_text("# outside\\n")
+        outside = root / "outside.md"
+        outside.write_text("# outside\\n")
+        source_ref, manifest_ref = "a" * 40, "b" * 40
         manifest = build_manifest(
-            source_ref="a" * 40, package_id="proposal-2",
+            source_ref=source_ref, package_id="proposal-2",
             package_path="proposal", root=root,
             files=["outside.md"], package_author="builder",
         )
         raw = json.dumps(manifest).encode("utf-8")
+        contents = {
+            "/contents/proposal/package.json": raw,
+            "/contents/outside.md": outside.read_bytes(),
+        }
 
         class FakeGH:
             def req(self, method, path, body=None):
+                ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/trees/"):
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if ref == manifest_ref else
+                            [{"path": "outside.md", "type": "blob", "mode": "100644"}])
+                    return {"truncated": False, "tree": rows}
+                payload = contents[path.split("?", 1)[0]]
                 return {"type": "file", "encoding": "base64",
-                        "content": base64.b64encode(raw).decode("ascii")}
+                        "content": base64.b64encode(payload).decode("ascii")}
 
         body = (
-            f"### Proposal source ref\\n{'a' * 40}\\n\\n"
-            f"### Proposal manifest ref\\n{'b' * 40}\\n\\n"
-            "### Proposal manifest path\\nproposal/package.json\\n\\n"
+            f"### Proposal source ref\\n{source_ref}\\n"
+            f"### Proposal manifest ref\\n{manifest_ref}\\n"
+            "### Proposal manifest path\\nproposal/package.json\\n"
             f"### Expected package digest\\n{manifest['package_digest']}\\n"
         )
-        with __import__("pytest").raises(ValueError, match="outside package_path"):
+        with pytest.raises(ValueError, match="outside package_path"):
             gate.verify_issue_package_binding(FakeGH(), {"body": body})
-
 
 def test_package_binding_rejects_non_regular_and_invalid_base64_content():
     class FakeGH:

@@ -63,8 +63,14 @@ class TestProposalPackage(unittest.TestCase):
             def __init__(self):
                 self.refs = []
             def req(self, method, path):
-                content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
                 ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/trees/"):
+                    paths = ([manifest_path] if ref == manifest_ref else
+                             [f"{package_path}/{name}" for name in ("ITEMS.md", "MANIFEST.md", "RFP.md")])
+                    return {"truncated": False, "tree": [
+                        {"path": item, "type": "blob", "mode": "100644"} for item in paths
+                    ]}
+                content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
                 self.refs.append((content_path, ref))
                 raw = payloads[content_path]
                 return {"type": "file", "encoding": "base64",

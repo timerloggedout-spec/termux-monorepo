@@ -117,7 +117,7 @@ Secondary:
 - **R1 Shadow:** calculate proposed admission/routing decisions beside current decisions; do not dispatch from shadow output.
 - **R2 Bounded cohort:** controlled task suite, fixed resource cap, explicit owner approval.
 - **R3 Compare:** paired/blocked analysis, uncertainty, Pareto frontier and failure review.
-- **R4 Promote:** only after repo-gate, termux-smoke where applicable, independent review and recorded rollback.
+- **R4 Promote:** only after both `repo-gate` and `termux-smoke` pass on the same immutable head SHA, independent review, verified task outcome and recorded rollback.
 - **R5 Monitor:** change-point detection, quota/endpoint drift, regression and policy rollback thresholds.
 
 ## 7. Exit criteria

@@ -1,0 +1,134 @@
+import copy
+import hashlib
+import json
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts" / "que"))
+
+from sie_pipeline import build_receipt
+from sie_research_packet import build_research_packet, digest
+
+
+def evidence_item(claim, value, path, fresh_until):
+    payload = {"claim": claim, "value": value, "path": path}
+    return {
+        "claim": claim,
+        "value": value,
+        "provenance": {"source": "github-api", "path": path,
+                       "observed_at": "2026-11-14T00:00:00Z"},
+        "fresh_until": fresh_until,
+        "sha256": hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(),
+    }
+
+
+def fixture():
+    receipt = build_receipt(
+        source_kind="workflow_run", source_id="123",
+        source_revision="a" * 40, failure_class="repo-gate",
+        sha="a" * 40, observed_at="2026-11-14T00:00:00Z",
+    )
+    evidence = {
+        "schema": "delphi-evidence-set/v1",
+        "artifact": {"kind": "workflow_run", "ref": "123",
+                     "repo": "timerloggedout-spec/termux-monorepo"},
+        "assembled_at": "2026-11-14T00:00:00Z",
+        "fresh_until": "2026-11-14T00:15:00Z",
+        "items": [
+            evidence_item("run.conclusion", "failure", "/actions/runs/123",
+                          "2026-11-14T00:15:00Z"),
+            evidence_item("file.blob_sha", "b" * 40, "/contents/scripts/ci.py",
+                          "2026-11-13T00:15:00Z"),
+        ],
+        "material": True,
+    }
+    diagnosis = {
+        "summary": "Diagnose the failing repository gate and define a replayable repair.",
+        "owner_role": "que",
+        "confirmed_facts": [
+            {"text": "The source workflow run concluded with failure.",
+             "evidence_refs": ["run.conclusion"]},
+            {"text": "The source file evidence is stale.",
+             "evidence_refs": ["file.blob_sha"]},
+            {"text": "A referenced claim is absent.",
+             "evidence_refs": ["missing.claim"]},
+        ],
+        "hypotheses": [{"text": "A recent source change may explain the failure."}],
+        "unknowns": ["The independent replay outcome remains unmeasured."],
+        "baseline": {"queue_wait_p95_s": None, "quality": "unmeasured"},
+        "related_history": [{"ref": "PR-1", "relationship": "prior repair"}],
+        "replay_recipe": ["Run the focused regression suite.",
+                          "Run the repository gate on the candidate SHA."],
+        "acceptance_tests": ["Focused regression passes.",
+                             "Repository gate passes on the same SHA."],
+        "risk_envelope": {"risks": ["Regression risk across adjacent workflows."]},
+        "alternatives": ["Repair the producer contract.",
+                         "Add a narrow compatibility adapter."],
+    }
+    return receipt, diagnosis, [evidence]
+
+
+class TestSIEResearchPacket(unittest.TestCase):
+    def test_packet_preserves_freshness_and_evidence_boundaries(self):
+        receipt, diagnosis, evidence = fixture()
+        packet, brief, fresh_sets = build_research_packet(
+            source_receipt=receipt, diagnosis=diagnosis,
+            evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+        )
+        self.assertEqual(packet["schema"], "que.sie-research-packet/v1")
+        self.assertEqual([fact["text"] for fact in packet["confirmed_facts"]],
+                         ["The source workflow run concluded with failure."])
+        self.assertEqual(len(packet["unverified_facts"]), 2)
+        self.assertEqual(packet["evidence"]["rejected_claims"]["file.blob_sha"],
+                         "stale_or_invalid_freshness")
+        self.assertEqual(packet["evidence"]["rejected_claims"]["missing.claim"],
+                         "missing_claim")
+        self.assertEqual([item["claim"] for item in fresh_sets[0]["items"]],
+                         ["run.conclusion"])
+        self.assertEqual(brief["summary_points"][0]["evidence_refs"],
+                         ["run.conclusion"])
+        self.assertTrue(all(not point["evidence_refs"]
+                            for point in brief["summary_points"][1:]))
+        claimed_digest = packet.pop("package_digest")
+        self.assertEqual(claimed_digest, digest(packet))
+
+    def test_packet_rejects_evidence_integrity_drift(self):
+        receipt, diagnosis, evidence = fixture()
+        evidence[0]["items"][0]["value"] = "success"
+        packet, _, fresh_sets = build_research_packet(
+            source_receipt=receipt, diagnosis=diagnosis,
+            evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+        )
+        self.assertEqual(packet["evidence"]["rejected_claims"]["run.conclusion"],
+                         "integrity_mismatch")
+        self.assertEqual(packet["confirmed_facts"], [])
+        self.assertEqual(fresh_sets[0]["items"], [evidence[0]["items"][1]])
+        with self.assertRaisesRegex(ValueError, "at least one confirmed fact"):
+            build_research_packet(
+                source_receipt=receipt, diagnosis=diagnosis,
+                evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+            )
+
+    def test_packet_requires_complete_oracle_plan(self):
+        receipt, diagnosis, evidence = fixture()
+        diagnosis["alternatives"] = []
+        with self.assertRaisesRegex(ValueError, "alternatives"):
+            build_research_packet(
+                source_receipt=receipt, diagnosis=diagnosis,
+                evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+            )
+
+    def test_packet_rejects_invalid_source_receipt(self):
+        receipt, diagnosis, evidence = fixture()
+        receipt["sha"] = "invalid"
+        with self.assertRaisesRegex(ValueError, "invalid SIE source receipt"):
+            build_research_packet(
+                source_receipt=receipt, diagnosis=diagnosis,
+                evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+            )
+
+
+if __name__ == "__main__":
+    unittest.main()

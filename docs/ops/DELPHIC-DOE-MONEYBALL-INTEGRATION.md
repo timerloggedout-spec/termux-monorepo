@@ -47,7 +47,7 @@ For each task filing, the allocator must:
 - One dispatched/executed run = one EXPERIMENT record = one observation.
 - Minimum probation floor and other DOE-FAMILY rules apply; rule-7 floor n=3 is observational minimum, not proof of statistical significance.
 - Distinguish execution status → task outcome → correctness → integration → regression → resource cost.
-- No pooling observations across distinct instance_key values.
+- Keep observations separate across distinct `instance_key` values.
 - Culls and cherry-picked propagation are explicit design events with cohort/version changes.
 
 ## MoneyBall wallet and culling
@@ -55,7 +55,7 @@ For each task filing, the allocator must:
 Reuse the MoneyBall participant-wallet pattern described by DoE Family:
 - Per-participant wallet identity is attached to the registered participant, not inferred from provider/model.
 - Initial allocation is paper/test class unless the owning MoneyBall lane explicitly establishes otherwise.
-- No credit card, paid fallback, shared-bucket quota draws or unrecorded balance assumptions.
+- Use only free quota supported by current evidence; never assume a credit card, paid fallback, shared-bucket quota draw or unrecorded balance.
 - Every cull event carries, in the same record: culled participant, wallet balance at cull, and pool destination. If no wallet balance is evidenced, write `NOT_ESTABLISHED`; do not invent a value.
 - A cull outcome must not retroactively alter the experiment cohort or erase prior observations.
 - Reward/weight updates require the independent verifier leg and DoE rule 9; provider quota/infra failures do not incur quality penalties.
@@ -76,7 +76,7 @@ At minimum, each task/run receipt binds:
 - parent dispatch/schedule-rule references for self-scheduled follow-ons
 - receipt/hash-chain reference
 
-Never place secret values in a stamp; references and hashes only.
+Record references and hashes only in stamps; never include secret values.
 
 ## Integration tranches and dependencies
 
@@ -98,7 +98,7 @@ Role-clone provisioning remains blocked by #5183's full-fleet census and #5136 p
 3. A pre-registered DoE fixture produces correctly stamped observations without live provider calls.
 4. Silent-empty, quota/infra, unavailable, honest task failure and independent-verifier failure are classified distinctly.
 5. A cull fixture proves wallet balance/destination are in the same cull record and missing balance remains NOT_ESTABLISHED.
-6. No live dispatch or wallet movement until the upstream admission, identity, executor, MoneyBall and independent-verifier gates are met.
+6. Keep live dispatch and wallet movement disabled until the upstream admission, identity, executor, MoneyBall and independent-verifier gates are met.
 
 ## Authority boundary
 

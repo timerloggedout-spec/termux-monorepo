@@ -185,6 +185,76 @@ jobs:
             --cache-dir "$DEEPSEEK_CACHE_DIR" \
             --account "$DEEPSEEK_ACCOUNT"
 
+      - name: Harvest live-3 dispatch outcome (DoE observation loop)
+        # doe-expert ruling (i-a), 2026-10-31: mirror the outcome of
+        # a live-3 dispatch to the dispatch-log issue #2830, where
+        # the campaign's measurement loop can read it. The artifact
+        # (deepseek_output.json) stays metadata-only per policy; the
+        # observable channel is the analysis comment ci_mode posts
+        # on the PR, mirrored here verbatim. Outcomes that never
+        # administered (skip/error) are mirrored as such - the loop
+        # closes observably either way. Non-dispatch runs skip.
+        if: always()
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, re, subprocess, sys
+          event = json.loads(os.environ.get("GITHUB_EVENT") or "{}")
+          body = (event.get("comment") or {}).get("body") or ""
+          if "live-3-phrases-deepseek dispatch" not in body:
+              print("not a live-3 dispatch run - no harvest")
+              sys.exit(0)
+          m = re.search(r"dispatch #(\d+) \u00b7 cell `([^`]+)`.*?"
+                        r"prompt sha256 `([0-9a-f]+)`.*?"
+                        r"instance `([^`]*)`", body, re.S)
+          no, cell, psha, inst = (m.groups() if m else
+                                  ("?", "?", "?", "?"))
+          pr = (event.get("issue") or {}).get("number")
+          try:
+              out = json.load(open("deepseek_output.json"))
+          except Exception:
+              out = {"status": "missing-output", "actions": []}
+          acts = [a for a in out.get("actions", [])
+                  if a.get("type") == "live3_dispatch"]
+          header = ("[MUSEai]@{role:{doe-mgr-live-builds}} - "
+                    "live-3 dispatch harvest (deepseek-ci, ruling "
+                    f"(i-a))\n\ndispatch #{no} - cell `{cell}` - "
+                    f"prompt sha256 `{psha}` - instance `{inst}` - "
+                    f"target PR #{pr} - source run "
+                    f"{os.environ['RUN_URL']}\n\n")
+          if acts and acts[0].get("posted"):
+              comments = json.loads(subprocess.check_output(
+                  ["gh", "api", "--paginate",
+                   f"repos/{os.environ['REPO']}/issues/{pr}/comments",
+                   "--jq", "[.[] | {body: .body}]"]))
+              hits = [c["body"] for c in comments
+                      if f"live-3 dispatch #{no}" in c["body"]
+                      and "DeepSeek CI (deepcli)" in c["body"]]
+              if hits:
+                  text = (header + "response observed (posted "
+                          "analysis, mirrored verbatim):\n\n"
+                          + hits[-1])
+              else:
+                  text = (header + "ADMINISTERED but the posted "
+                          "analysis comment was not found on the PR "
+                          "- harvest gap, see source run.")
+          else:
+              text = (header + "treatment NOT administered by the "
+                      f"surface: status={out.get('status')} "
+                      f"skipped={out.get('skipped')} "
+                      f"actions={out.get('actions')}")
+          open("harvest.md", "w").write(text)
+          r = subprocess.run(["gh", "issue", "comment", "2830",
+                              "--repo", os.environ["REPO"],
+                              "--body-file", "harvest.md"])
+          if r.returncode != 0:
+              print("::warning::harvest post to #2830 failed")
+          PYEOF
+
       - name: Failure diagnostics
         if: failure()
         timeout-minutes: 5

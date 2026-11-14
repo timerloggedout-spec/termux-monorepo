@@ -12,6 +12,7 @@ import heapq
 import json
 import math
 import time
+from datetime import datetime
 from typing import Any, Iterable
 
 
@@ -247,5 +248,164 @@ def execute(
         "runtime_ms": runtime_ms,
         "output": output,
         "output_digest": _digest(output),
+        "authority": {"projection_only": True, "mutates_evidence": False},
+    }
+
+
+
+def ast_preorder(tree: dict[str, Iterable[str]], root: str) -> list[str]:
+    """Return a deterministic preorder for a strict AST containment tree.
+
+    Unlike a general dependency DAG, AST containment requires one parent per
+    non-root node, no cycles, and complete reachability from the selected root.
+    Child order is preserved because it is semantically meaningful in syntax.
+    """
+    materialized = {node: tuple(children) for node, children in tree.items()}
+    if root not in materialized:
+        raise KeyError(root)
+    for node, children in materialized.items():
+        if len(children) != len(set(children)):
+            raise ValueError(f"duplicate AST child under {node!r}")
+        for child in children:
+            if child not in materialized:
+                raise ValueError(f"unknown AST child {child!r}")
+    parents: dict[str, int] = {node: 0 for node in materialized}
+    for children in materialized.values():
+        for child in children:
+            parents[child] += 1
+            if parents[child] > 1:
+                raise ValueError(f"AST node {child!r} has multiple parents")
+    if parents[root] != 0:
+        raise ValueError("AST root must not have a parent")
+    if any(count != 1 for node, count in parents.items() if node != root):
+        raise ValueError("every non-root AST node must have exactly one parent")
+
+    order: list[str] = []
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[tuple[str, bool]] = [(root, False)]
+    while stack:
+        node, exiting = stack.pop()
+        if exiting:
+            visiting.discard(node)
+            if node not in visited:
+                visited.add(node)
+                order.append(node)
+            continue
+        if node in visiting:
+            raise ValueError("AST containment contains a cycle")
+        if node in visited:
+            continue
+        visiting.add(node)
+        stack.append((node, True))
+        for child in reversed(materialized[node]):
+            stack.append((child, False))
+    if len(visited) != len(materialized):
+        raise ValueError("AST contains nodes unreachable from root")
+    return order
+
+
+def markov_layer_propagation(
+    states: Iterable[str],
+    transitions: dict[str, dict[str, float]],
+    initial: dict[str, float],
+    steps: int,
+    *,
+    tolerance: float = 1e-9,
+) -> dict[str, Any]:
+    """Propagate a finite-state Markov distribution and report mass per layer."""
+    ordered_states = tuple(sorted(set(states)))
+    if not ordered_states:
+        raise ValueError("states must not be empty")
+    if not isinstance(steps, int) or steps < 0:
+        raise ValueError("steps must be a non-negative integer")
+    if set(initial) - set(ordered_states):
+        raise ValueError("initial distribution contains an unknown state")
+    current = {state: float(initial.get(state, 0.0)) for state in ordered_states}
+    if any(not math.isfinite(value) or value < 0.0 for value in current.values()):
+        raise ValueError("initial probabilities must be finite and non-negative")
+    if abs(math.fsum(current.values()) - 1.0) > tolerance:
+        raise ValueError("initial probability mass must sum to 1.0")
+
+    normalized: dict[str, dict[str, float]] = {}
+    for state in ordered_states:
+        row = transitions.get(state)
+        if not isinstance(row, dict) or not row:
+            raise ValueError(f"explicit non-empty transition row required for {state!r}")
+        if set(row) - set(ordered_states):
+            raise ValueError(f"transition row for {state!r} contains an unknown state")
+        values = {target: float(probability) for target, probability in row.items()}
+        if any(not math.isfinite(value) or value < 0.0 for value in values.values()):
+            raise ValueError("transition probabilities must be finite and non-negative")
+        if abs(math.fsum(values.values()) - 1.0) > tolerance:
+            raise ValueError(f"transition mass for {state!r} must sum to 1.0")
+        normalized[state] = values
+
+    layers = [current.copy()]
+    for _ in range(steps):
+        following = {state: 0.0 for state in ordered_states}
+        for source in ordered_states:
+            for target, probability in normalized[source].items():
+                following[target] += current[source] * probability
+        total = math.fsum(following.values())
+        if abs(total - 1.0) > tolerance:
+            raise ArithmeticError("Markov probability mass was not conserved")
+        layers.append(following)
+        current = following
+    return {
+        "states": list(ordered_states),
+        "layers": layers,
+        "layer_mass": [math.fsum(layer.values()) for layer in layers],
+        "steps": steps,
+        "tolerance": tolerance,
+    }
+
+
+def temporal_lineage(snapshots: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Validate an ordered snapshot lineage without imputing missing provenance."""
+    rows = list(snapshots)
+    seen: dict[str, dict[str, Any]] = {}
+    edges: list[dict[str, str]] = []
+    warnings: list[dict[str, str]] = []
+    previous_time: datetime | None = None
+    for index, snapshot in enumerate(rows):
+        snapshot_id = snapshot.get("id")
+        if not isinstance(snapshot_id, str) or not snapshot_id:
+            warnings.append({"index": str(index), "reason": "missing_snapshot_id"})
+            continue
+        if snapshot_id in seen:
+            warnings.append({"snapshot_id": snapshot_id, "reason": "duplicate_snapshot_id"})
+            continue
+        observed_at = snapshot.get("observed_at")
+        try:
+            parsed = datetime.fromisoformat(str(observed_at).replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                raise ValueError("timezone required")
+        except (TypeError, ValueError):
+            warnings.append({"snapshot_id": snapshot_id, "reason": "invalid_or_timezone_free_timestamp"})
+            parsed = None
+        if parsed is not None and previous_time is not None and parsed < previous_time:
+            warnings.append({"snapshot_id": snapshot_id, "reason": "non_monotonic_timestamp"})
+        if parsed is not None:
+            previous_time = parsed
+        parent_id = snapshot.get("parent_id")
+        if parent_id is not None:
+            if parent_id not in seen:
+                warnings.append({"snapshot_id": snapshot_id, "reason": "parent_not_previously_observed"})
+            else:
+                edges.append({"from": parent_id, "to": snapshot_id})
+        if not snapshot.get("source_sha"):
+            warnings.append({"snapshot_id": snapshot_id, "reason": "source_sha_missing"})
+        seen[snapshot_id] = snapshot
+    structural_warnings = [
+        item for item in warnings
+        if item["reason"] != "source_sha_missing"
+    ]
+    return {
+        "snapshot_ids": list(seen),
+        "edges": edges,
+        "warnings": warnings,
+        "structurally_valid": not structural_warnings,
+        "provenance_complete": not any(item["reason"] == "source_sha_missing" for item in warnings),
         "authority": {"projection_only": True, "mutates_evidence": False},
     }

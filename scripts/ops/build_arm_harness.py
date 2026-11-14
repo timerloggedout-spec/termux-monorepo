@@ -152,7 +152,11 @@ def system_prompt_text() -> str:
         "checkout, and finish with a summary of what you changed. "
         "Never run git checkout, git switch, git branch, git commit, git push, "
         "or git merge: the workflow owns branch identity and commit/PR handoff. "
-        "Keep all edits in the existing task worktree."
+        "Keep all edits in the existing task worktree. "
+        "Preserve existing standards, policies, ledgers, and documentation. "
+        "Make minimal, scoped, additive edits; read each target file in full. "
+        "Retain all existing sections and historical decisions unless the task "
+        "explicitly authorizes a specific replacement."
     )
 
 

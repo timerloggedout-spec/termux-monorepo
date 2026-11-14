@@ -108,7 +108,7 @@ def test_self_repair_intake_embeds_valid_source_receipt():
         }],
     }
     body = item_body(item)
-    match = re.search(r"## SIE stage receipt\\n\\x60\\x60\\x60json\\n(.*?)\\n\\x60\\x60\\x60", body, re.S)
+    match = re.search(r"## SIE stage receipt\n```json\n(.*?)\n```", body, re.S)
     assert match
     receipt_data = json.loads(match.group(1))
     assert validate_receipt(receipt_data) == []

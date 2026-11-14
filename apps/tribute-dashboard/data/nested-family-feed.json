@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-14T11:09:08Z",
+ "generated_at": "2026-11-14T13:01:45Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 29,
-   "records_used": 29
+   "records_read": 30,
+   "records_used": 30
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 28,
+   "records_read": 29,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 29,
+   "records_read": 30,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 54,
+   "records_read": 55,
    "records_used": 17
   }
  ],
@@ -152,19 +152,19 @@
   "providers": 16,
   "models": 21,
   "roles": 6,
-  "tasks": 50,
-  "dispatches": 33,
+  "tasks": 51,
+  "dispatches": 34,
   "registry_providers": 96,
   "zero_dispatch_providers": 90,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
    "passed": 24,
    "failed": 3,
-   "observed": 2
+   "observed": 3
   },
   "by_source": {
    "desk-usage": 17,
-   "records": 29,
+   "records": 30,
    "campaign-records": 4
   }
  },
@@ -1702,7 +1702,7 @@
       "build-dispatch multi-arm (#5151)",
       "certifications-unit l1-relational-databases-v9/quiz-bash-and-sql-a"
      ],
-     "task_count": 5,
+     "task_count": 6,
      "tasks": [
       {
        "task_class": "certifications-unit",
@@ -1832,12 +1832,38 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-43428174954-sealion-llama.json"
+      },
+      {
+       "task_class": "entry-build",
+       "role": "builder",
+       "moniker": "providers-dispatch-fix",
+       "context": "build-dispatch multi-arm (#5151)",
+       "dispatch_id": "build-dispatch-43595071315-sealion-llama",
+       "run_id": "43595071315",
+       "workflow": "build-dispatch.yml",
+       "session_id": null,
+       "ts": "2026-11-14T12:32:44Z",
+       "outcome": {
+        "status": "observed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "a7b03570542f4cd57da6c31b19bcf90e9e1b301acf8036e09f33158b78ce7f1f",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "run_id": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-43595071315-sealion-llama.json"
       }
      ]
     }
    ],
    "model_count": 1,
-   "task_count": 5,
+   "task_count": 6,
    "zero_dispatch": false
   },
   {

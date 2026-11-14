@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-14T11:09:08Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-14T13:01:45Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-14T11:09:08Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`52414` read_at=`2026-11-14T11:09:08Z`
+Sources: PR feed read_at=`2026-11-14T13:01:44Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`53607` read_at=`2026-11-14T13:01:44Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown=8
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5191 `ba12d157e732` 2026-11-12T04:42:17Z | land/close PR #5388 — docs: establish declarative workflow planning and QUE × DoE optimization model |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5191 `ba12d157e732` 2026-11-12T04:42:17Z | land/close PR #5409 — feat(delphic): current-master Observatory Graph Lab and DoE adapter |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | active | #5208 `9f75e4263357` 2026-11-12T13:17:02Z | NOT_ESTABLISHED |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
@@ -33,7 +33,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
-Campaigns: 18 · joined: 2 · distinct instances: 12 · providers: Muse, cohere, openrouter, sealion
+Campaigns: 18 · joined: 2 · distinct instances: 13 · providers: Muse, cohere, openrouter, sealion
 
 | campaign | provider | model@version | role | prompt (ref#sha12) | moniker | context | instance_key | plan | recorded | dispatched |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -61,6 +61,7 @@ Campaigns: 18 · joined: 2 · distinct instances: 12 · providers: Muse, cohere,
 | routed-dispatch | cohere | c4ai-aya-expanse-32b | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | certifications-unit l1-relational-databases-v9/061 | `7434577f5900…` | 0 | 1 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | FCC L1 M5 theory batch (cert-unit workflow dispatch) | `7e20822af41d…` | 0 | 3 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#296e7d97d139 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `41d1eb546dbd…` | 0 | 1 | 0 |
+| routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#b87aa0cd1ef9 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `a7b03570542f…` | 0 | 1 | 0 |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-2-brave | NOT_ESTABLISHED (design_only) | | | | | | | | | |
@@ -68,4 +69,4 @@ Campaigns: 18 · joined: 2 · distinct instances: 12 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 118/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 119/150 (extend ops/tracking/projects.json match rules)

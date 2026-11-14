@@ -18,7 +18,7 @@ NEGATIVE_FIRST = re.compile(
 )
 IMPERATIVE = {
     "accept", "add", "align", "allow", "apply", "audit", "block", "build", "canonicalize", "centralize", "bump", "check", "close",
-    "compare", "constrain", "create", "define", "deploy", "differentiate", "distinguish", "document", "enforce", "expand", "fix", "gate",
+    "compare", "constrain", "cover", "create", "define", "deploy", "differentiate", "distinguish", "document", "enforce", "expand", "fix", "gate",
     "include", "inspect", "keep", "lock", "measure", "migrate", "move", "open", "preserve", "propagate",
     "publish", "record", "reconcile", "refresh", "refine", "register", "reject", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "share", "skip", "snapshot", "specify", "split", "support", "sync",

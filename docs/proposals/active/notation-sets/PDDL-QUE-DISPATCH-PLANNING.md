@@ -80,6 +80,7 @@ For production use, pin the planner and version, retain the domain/problem files
     :effect (and
       (available ?s)
       (not (lease-valid ?f ?s))
+      (not (claimed ?f ?s))
     )
   )
 
@@ -89,6 +90,7 @@ For production use, pin the planner and version, retain the domain/problem files
     :effect (and
       (available ?s)
       (not (lease-valid ?f ?s))
+      (not (claimed ?f ?s))
     )
   )
 
@@ -119,4 +121,5 @@ For production use, pin the planner and version, retain the domain/problem files
 6. build cannot precede claim;
 7. merge cannot precede independent verification receipt;
 8. expired lease cannot authorize build;
-9. a planner plan cannot bypass human approval or repository branch protection.
+9. repeated release by the former claimant cannot free a seat now leased by another filing;
+10. a planner plan cannot bypass human approval or repository branch protection.

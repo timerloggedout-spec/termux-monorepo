@@ -26,6 +26,7 @@ proposals:
     status: posted
     priority: P1
     path: active/alpha-pack/
+    proposal_type: research
     reviewers:
       - id: timerloggedout-spec
         role: operator-authorizer
@@ -51,7 +52,7 @@ def test_subset_parser_matches_pyyaml_on_fixture():
     assert b["updated_at"] == a["updated_at"] and b["updated_by"] == a["updated_by"]
     assert len(b["proposals"]) == len(a["proposals"]) == 2
     for pa, pb in zip(a["proposals"], b["proposals"]):
-        for key in ("id", "title", "author", "status", "priority", "path"):
+        for key in ("id", "title", "author", "status", "priority", "path", "proposal_type"):
             assert pb[key] == pa[key]
         assert pb.get("related_issues", []) == (pa.get("related_issues") or [])
         assert pb.get("related_prs", []) == (pa.get("related_prs") or [])
@@ -65,6 +66,9 @@ def test_subset_parser_matches_pyyaml_on_live_registry():
     assert len(b["proposals"]) == len(a["proposals"])
     for pa, pb in zip(a["proposals"], b["proposals"]):
         assert pb["id"] == pa["id"] and pb["title"] == pa["title"]
+        assert pb.get("proposal_type") == pa.get("proposal_type")
+    registered = next(p for p in b["proposals"] if p["id"] == "scientific-specialist-lanes")
+    assert registered["proposal_type"] in pf.PROPOSAL_TYPES
 
 
 def test_build_feed_shape(tmp_path):
@@ -82,6 +86,9 @@ def test_build_feed_shape(tmp_path):
     assert feed["counts"]["by_status"] == {"posted": 1, "executing": 1}
     first = feed["proposals"][0]
     assert first["issues"] == [175, 772] and first["prs"] == []
+    assert first["proposal_type"] == "research"
+    assert feed["proposals"][1]["proposal_type"] is None
+    assert feed["counts"]["by_type"] == {"research": 1}
     # no states resolved -> the ref is stamped unknown, never guessed
     assert feed["proposals"][1]["prs"] == [
         {"number": 42, "state": "unknown", "merged_at": None}]
@@ -172,3 +179,14 @@ def test_build_feed_stamps_resolved_states(tmp_path):
                          fetch=lambda n, tok: calls.append(n) or
                          {"number": n, "state": "open", "merged_at": None})
     assert sorted(calls) == [7, 42]
+
+
+def test_proposal_type_vocabulary_and_unknown_type_gap(tmp_path):
+    registry = pf.parse_registry_subset(FIXTURE)
+    assert "research" in pf.PROPOSAL_TYPES
+    assert "scientific_experiment_system" in pf.PROPOSAL_TYPES
+    registry["proposals"][0]["proposal_type"] = "unregistered_type"
+    feed = pf.build_feed(registry, tmp_path, "2026-11-11T00:00:00Z")
+    assert feed["proposals"][0]["proposal_type"] == "unregistered_type"
+    assert any("unknown proposal_type" in gap for gap in feed["gaps"])
+    assert feed["counts"]["by_type"] == {"unregistered_type": 1}

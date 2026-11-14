@@ -1,0 +1,57 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: scientific-quantitative
+# que_tier: 3
+# payload_class: scientific-task
+# route: project-task-dispatch.yml
+# after:
+# chain:
+# SWARM-DISPATCH-END
+name: Scientific Research & Validation Task
+description: File a scientific, mathematical, statistical, ML, measurement, reproducibility, or validation task through QUE admission.
+title: "[science] "
+labels: ["scientific-task"]
+body:
+  - type: dropdown
+    id: entry
+    attributes:
+      label: Entry
+      description: The entry/program this task belongs to.
+      options: [D0, D1, D2, D3, D4, D5, AMD, Repo-Story, Certifications, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task / spec
+      description: State the research question, scope, methods, controls, evidence and constraints. Distinguish exploratory from confirmatory work.
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Scope
+      description: Paths/repos this task may touch.
+    validations:
+      required: true
+  - type: textarea
+    id: done-evidence
+    attributes:
+      label: Done-evidence
+      description: Specify reproducible evidence, tests, artifacts, validation and review criteria.
+    validations:
+      required: true
+  - type: input
+    id: target-repo
+    attributes:
+      label: Target repo
+      value: timerloggedout-spec/termux-monorepo
+    validations:
+      required: false
+  - type: textarea
+    id: instance-stamps
+    attributes:
+      label: Instance stamps (post-hoc)
+      description: Leave empty; execution identity and evidence are recorded after dispatch.
+    validations:
+      required: false

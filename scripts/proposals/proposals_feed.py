@@ -44,9 +44,15 @@ SCHEMA = "proposals-feed/v2"
 TREE = "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/"
 REPO = "timerloggedout-spec/termux-monorepo"
 API = "https://api.github.com"
-ITEM_KEYS = ("id", "title", "author", "status", "priority", "path")
+ITEM_KEYS = ("id", "title", "author", "status", "priority", "path", "proposal_type")
 INT_LIST_KEYS = ("related_issues", "related_prs")
 PR_STATES = ("open", "merged", "closed-unmerged", "unknown")
+PROPOSAL_TYPES = frozenset({
+    "architecture", "research", "scientific_experiment",
+    "scientific_experiment_system", "behavioral_experiment",
+    "measurement_validation", "integration", "operations", "product",
+    "governance", "security", "evaluation",
+})
 
 
 def _unquote(value: str) -> str:
@@ -219,21 +225,25 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
         return {"number": number, "state": "unknown", "merged_at": None}
 
     proposals = []
+    gaps: list[str] = []
     for entry in registry.get("proposals", []):
         path = str(entry.get("path", "")).strip()
+        proposal_type = entry.get("proposal_type")
+        if proposal_type is not None and proposal_type not in PROPOSAL_TYPES:
+            gaps.append(f"proposal {entry.get('id')}: unknown proposal_type {proposal_type!r} (preserved verbatim)")
         proposals.append({
             "id": entry.get("id"),
             "title": entry.get("title"),
             "author": entry.get("author"),
             "status": entry.get("status"),
             "priority": entry.get("priority"),
+            "proposal_type": proposal_type,
             "path": path,
             "url": TREE + path.lstrip("/"),
             "issues": [int(x) for x in entry.get("related_issues") or []],
             "prs": [pr_record(int(x)) for x in entry.get("related_prs") or []],
         })
 
-    gaps: list[str] = []
     passes = []
     passes_dir = proposals_root / "passes"
     if passes_dir.is_dir():
@@ -273,7 +283,10 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
     def tally(key: str) -> dict:
         counts: dict[str, int] = {}
         for p in proposals:
-            counts[p[key]] = counts.get(p[key], 0) + 1
+            value = p.get(key)
+            if value is None:
+                continue
+            counts[value] = counts.get(value, 0) + 1
         return counts
 
     return {
@@ -287,6 +300,7 @@ def build_feed(registry: dict, proposals_root: Path, now: str,
             "by_status": tally("status"),
             "by_priority": tally("priority"),
             "by_author": tally("author"),
+            "by_type": tally("proposal_type"),
             "passes": len(passes),
         },
         "proposals": proposals,

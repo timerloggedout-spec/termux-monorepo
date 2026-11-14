@@ -143,6 +143,17 @@ PLAIN_SCALAR_COLON = """\
       rollback: set capability-spine-observe: 'false' on each model-router action call
     """
 
+# ios-termux-contribute.yml: shell double quotes do not quote the YAML
+# plain scalar. The embedded ': ' is still parsed as a mapping delimiter.
+SHELL_QUOTED_COLON_IN_PLAIN_SCALAR = """\\
+    name: existing-pr
+    jobs:
+      report:
+        steps:
+          - name: report existing pull request
+            run: echo "Existing PR: https://github.com/$OWNER/$REPO/pull/$NUMBER" >> "$GITHUB_STEP_SUMMARY"
+    """
+
 # docs/research/RESEARCH-LANES.yaml: a JSON body pasted into YAML. The `\n` the
 # author meant as a newline stayed two characters, so the line grew a second key
 # and the document died with:
@@ -171,6 +182,10 @@ POSITIVE_FIXTURES = {
     "unquoted !( ) expression": (UNQUOTED_TAG_IF, "scans as a tag"),
     "under-indented block scalar": (UNDER_INDENTED_BLOCK_SCALAR, "block scalar body"),
     "plain scalar containing ': '": (PLAIN_SCALAR_COLON, "nested mapping"),
+    "shell-quoted colon inside YAML plain scalar": (
+        SHELL_QUOTED_COLON_IN_PLAIN_SCALAR,
+        "nested mapping",
+    ),
 }
 
 # --------------------------------------------------------------------------- #

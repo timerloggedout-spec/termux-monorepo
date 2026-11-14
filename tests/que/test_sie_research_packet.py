@@ -1,5 +1,6 @@
 import hashlib
 import json
+from datetime import datetime
 import sys
 import tempfile
 import unittest
@@ -10,7 +11,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "que"))
 sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 
 from sie_pipeline import build_receipt
-from sie_research_packet import build_research_packet, digest, main as research_packet_main
+from sie_research_packet import build_research_packet, digest, evidence_index, main as research_packet_main
 from generate_proposal import generate, _sha
 
 
@@ -168,6 +169,24 @@ class TestSIEResearchPacket(unittest.TestCase):
             self.assertTrue((evidence_dir / "evidence-001.json").exists())
             self.assertFalse((evidence_dir / "evidence-002.json").exists())
             self.assertEqual((evidence_dir / "operator-notes.txt").read_text(encoding="utf-8"), "keep")
+
+    def test_duplicate_fresh_claims_are_rejected_as_ambiguous(self):
+        receipt, diagnosis, evidence = fixture()
+        duplicate = evidence_item(
+            "run.conclusion", "success", "/actions/runs/other",
+            "2026-11-14T00:15:00Z",
+        )
+        evidence[0]["items"].append(duplicate)
+        accepted, rejected = evidence_index(
+            evidence, datetime.fromisoformat("2026-11-14T00:05:00+00:00")
+        )
+        self.assertNotIn("run.conclusion", accepted)
+        self.assertEqual(rejected["run.conclusion"], "duplicate_claim")
+        with self.assertRaisesRegex(ValueError, "at least one confirmed fact"):
+            build_research_packet(
+                source_receipt=receipt, diagnosis=diagnosis,
+                evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
+            )
 
     def test_packet_rejects_evidence_integrity_drift(self):
         receipt, diagnosis, evidence = fixture()

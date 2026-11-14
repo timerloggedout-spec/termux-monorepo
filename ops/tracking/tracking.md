@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-14T17:39:36Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-14T17:43:14Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-14T17:39:35Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`56058` read_at=`2026-11-14T17:39:35Z`
+Sources: PR feed read_at=`2026-11-14T17:43:14Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`56067` read_at=`2026-11-14T17:43:14Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown=8
 
@@ -25,7 +25,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5110 `0ee3c56df289` 2026-11-10T12:41:41Z | land/close PR #2235 — chore(osint): refresh coverage + page snapshots |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #5020 `a07d479c493f` 2026-11-06T01:54:38Z | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5069 `a60dd2b068f5` 2026-11-07T19:30:33Z | land/close PR #5427 — feat(ates): preserve execution-controller provenance |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5069 `a60dd2b068f5` 2026-11-07T19:30:33Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5034 — chore(dashboards): refresh dispatch-tree feed |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |

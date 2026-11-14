@@ -35,6 +35,15 @@ for html_path, md_path, canonical, alternate in PAGES:
     require(f'<link rel="canonical" href="{canonical}">' in html, f"{html_path}: canonical missing")
     require(bool(re.search(r'<meta name="description" content="[^"]{50,}"', html)), f"{html_path}: useful meta description missing")
     require('property="og:title"' in html and 'property="og:description"' in html, f"{html_path}: Open Graph metadata missing")
+    og_tag = re.search(
+        r'<meta\b(?=[^>]*\bproperty=["\']og:description["\'])([^>]*)>',
+        html, re.I,
+    )
+    og_content = re.search(r'\bcontent=["\']([^"\']*)["\']', og_tag.group(1), re.I) if og_tag else None
+    require(
+        bool(og_content and len(og_content.group(1).strip()) >= 50),
+        f"{html_path}: Open Graph description must contain at least 50 characters",
+    )
     require('name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"' in html, f"{html_path}: AI snippet directives missing")
     require(f'<link rel="alternate" type="text/markdown" href="{alternate}">' in html, f"{html_path}: Markdown alternate missing")
     require('<link rel="describedby" href="/llms.txt">' in html, f"{html_path}: llms.txt discovery missing")

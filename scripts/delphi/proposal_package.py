@@ -165,6 +165,8 @@ def validate_manifest(manifest: dict) -> list[str]:
 def verify_files(manifest: dict, root: str | Path,
                  checkout_sha: str | None = None) -> list[str]:
     errors = validate_manifest(manifest)
+    if errors:
+        return errors
     if checkout_sha is not None and (
             not GIT_SHA.fullmatch(checkout_sha)
             or checkout_sha != manifest.get("source_ref")):

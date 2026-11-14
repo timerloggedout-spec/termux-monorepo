@@ -130,7 +130,9 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
             facts.append(row)
             summary_points.append({"text": "Confirmed: " + fact["text"], "evidence_refs": refs})
         else:
-            reasons = {ref: rejected.get(ref, "missing_claim") for ref in missing}
+            for ref in missing:
+                rejected.setdefault(ref, "missing_claim")
+            reasons = {ref: rejected[ref] for ref in missing}
             unverified.append({**row, "disposition": reasons})
             summary_points.append({"text": "Unverified: " + fact["text"], "evidence_refs": []})
 
@@ -158,8 +160,14 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
     if not facts:
         raise ValueError("research packet requires at least one confirmed fact with fresh, intact evidence")
 
-    source_id = (source_receipt.get("source") or {}).get("id", "")
-    related_issues = [int(source_id)] if re.fullmatch(r"\d+", str(source_id)) else []
+    source = source_receipt.get("source") or {}
+    source_id = source.get("id", "")
+    related_issues = (
+        [int(source_id)]
+        if source.get("kind") in {"queue_item", "stall_gap"}
+        and re.fullmatch(r"\d+", str(source_id))
+        else []
+    )
     risks = diagnosis["risk_envelope"].get("risks") or [
         f"{key}: {value}" for key, value in diagnosis["risk_envelope"].items()
     ]

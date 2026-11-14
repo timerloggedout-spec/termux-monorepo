@@ -57,6 +57,10 @@ The gate reads the open `delphi:rfp` issue census with explicit GitHub Issues AP
 
 The census has a 100-page safety cap. A full final page at the cap is an incomplete census and fails closed; the gate must not publish a board or describe the partial set as the complete queue. API rate-limit deferral remains distinct from an incomplete or malformed census. The focused contract suite covers multi-page discovery, duplicate boundary entries, PR filtering and cap exhaustion.
 
+## Immutable proposal-package binding
+
+Package-bound RFPs pin two immutable commits. `proposal_manifest_ref` is the commit containing the manifest file; `proposal_source_ref` is the source snapshot recorded inside that manifest and used to retrieve every inventoried artifact. These refs are intentionally distinct because a manifest committed after its source snapshot cannot exist at the source commit it records. The gate verifies the manifest digest and each inventoried file against the appropriate pinned ref. Partial bindings and any mismatch are held; held RFPs remain visible on the results board as pending.
+
 ## Idempotency and storage
 
 - One concurrency group; each run processes all open RFPs and skips any whose input hash (surface facts + role weights + registry entry + live readings) matches its last ledger comment.

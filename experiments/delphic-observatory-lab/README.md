@@ -46,7 +46,7 @@ The standalone Graph Lab is the executable-explanation surface for the algorithm
 
 Algorithm definitions live in `docs/schemas/graph-algorithm-registry.yaml`, while deterministic reference implementations live in `scripts/delphic_graph_lab.py`.
 
-Open `graph-lab.html` from the experiment directory to explore the visual Step / Play / Reset interaction.
+Open `graph-lab.html` for the original Step / Play / Reset algorithm demo. Open `graph-views.html` for the four-family interactive map: AST containment, Kahn dependency DAG, Markov trellis with per-layer mass checks, and temporal snapshot lineage. The four panels have independent fixture-refresh state; refresh is local-only and never claims a remote fetch.
 
 ### Semantic boundaries
 
@@ -58,6 +58,8 @@ These graph kinds are intentionally distinct:
 - `dependency_dag`
 - `state_reconciliation`
 - `markov_trellis`
+- `ast_containment`
+- `temporal_lineage`
 
 A DAG does **not** imply that every graph operation is `O(V+E)`. Complexity is registered per algorithm.
 

@@ -17,7 +17,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Mapping
 
-from scripts.ci.execution_provenance import normalize_execution
+try:
+    from .execution_provenance import normalize_execution
+except ImportError:  # Direct script execution from scripts/ci.
+    from execution_provenance import normalize_execution
 
 
 EVENTS = {

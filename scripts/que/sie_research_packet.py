@@ -3,10 +3,12 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 import sie_pipeline
@@ -180,3 +182,41 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
     }
     packet["package_digest"] = digest(packet)
     return packet, brief, fresh_sets
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Build a QUE SIE research packet and Oracle Method brief")
+    parser.add_argument("--receipt", required=True, help="SIE stage receipt JSON")
+    parser.add_argument("--diagnosis", required=True, help="Research diagnosis JSON")
+    parser.add_argument("--evidence", action="append", default=[], help="Delphi evidence-set JSON path (repeatable)")
+    parser.add_argument("--out", required=True, help="Output directory")
+    parser.add_argument("--generated-at", help="Fixed ISO timestamp for reproducible packet builds")
+    args = parser.parse_args(argv)
+
+    receipt = json.loads(Path(args.receipt).read_text(encoding="utf-8"))
+    diagnosis = json.loads(Path(args.diagnosis).read_text(encoding="utf-8"))
+    evidence_sets = [json.loads(Path(path).read_text(encoding="utf-8"))
+                     for path in args.evidence]
+    packet, brief, fresh_sets = build_research_packet(
+        source_receipt=receipt, diagnosis=diagnosis,
+        evidence_sets=evidence_sets, generated_at=args.generated_at,
+    )
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "research-packet.json").write_text(
+        json.dumps(packet, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    (out / "oracle-brief.json").write_text(
+        json.dumps(brief, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    evidence_dir = out / "evidence"
+    evidence_dir.mkdir(exist_ok=True)
+    for index, evidence_set in enumerate(fresh_sets, start=1):
+        (evidence_dir / f"evidence-{index:03d}.json").write_text(
+            json.dumps(evidence_set, indent=2, sort_keys=True) + "\\n",
+            encoding="utf-8")
+    print(f"research packet ready: {packet['package_digest']} "
+          f"brief={brief['id']} evidence_sets={len(fresh_sets)}")
+    print("Run scripts/delphi/generate_proposal.py with oracle-brief.json and each fresh evidence file.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

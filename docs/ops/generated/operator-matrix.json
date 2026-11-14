@@ -1,10 +1,10 @@
 {
   "counts": {
-    "open_issues": 645,
-    "open_prs": 389,
+    "open_issues": 651,
+    "open_prs": 397,
     "pr_classes": {
-      "CANDIDATE": 194,
-      "EXTRACT": 15,
+      "CANDIDATE": 204,
+      "EXTRACT": 13,
       "NEED_EVIDENCE": 180,
       "SUPERSEDE": 0
     }
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 390,
+      "issues": 396,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 61,
-      "prs": 387,
+      "prs": 395,
       "unlabelled_numbers": [
         308,
         388,
@@ -120,7 +120,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-13T20:13:30Z",
+  "generated_at": "2026-11-14T12:27:25Z",
   "issues_unlabelled": [
     308,
     388,
@@ -190,7 +190,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "e03c0d5c19"
+    "sha": "f4e9a4352d"
   },
   "prs": [
     {
@@ -234,20 +234,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "36dac1c821",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2310,
-      "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-13T20:11:59Z"
     },
     {
       "class": "EXTRACT",
@@ -340,40 +326,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "07501f69e2",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5330,
-      "title": "feat(que): drain deferred admissions into QDesk safely",
-      "updated_at": "2026-11-13T19:27:26Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d32067e35a",
+      "head_sha": "6206d2d60f",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 5335,
       "title": "feat(observatory): migrate Delphic to Vercel + live GitHub feeds",
-      "updated_at": "2026-11-13T14:28:14Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "def0c87b84",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5338,
-      "title": "feat(policy): enforce DO statements, free-tier mandate and agent readiness",
-      "updated_at": "2026-11-13T15:11:35Z"
+      "updated_at": "2026-11-14T02:15:32Z"
     },
     {
       "class": "EXTRACT",
@@ -402,6 +360,20 @@
       "number": 5381,
       "title": "feat(msm): add paired policy comparisons to economy backtests",
       "updated_at": "2026-11-13T19:45:24Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d9f301e4d2",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5408,
+      "title": "feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master",
+      "updated_at": "2026-11-14T12:26:51Z"
     },
     {
       "class": "CANDIDATE",
@@ -1157,12 +1129,40 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "be438ef337",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-14T12:23:30Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "b590f3e4c9",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 2304,
       "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
       "updated_at": "2026-11-06T14:25:52Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "77ce5cb41d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 2310,
+      "title": "chore(delphi): refresh delphi-rfp-feed.json",
+      "updated_at": "2026-11-14T12:25:56Z"
     },
     {
       "class": "CANDIDATE",
@@ -2991,12 +2991,26 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "7433b5be3b",
+      "head_sha": "07501f69e2",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 5341,
-      "title": "fix(dispatch): preserve build branch and arm outputs",
-      "updated_at": "2026-11-13T15:44:30Z"
+      "number": 5330,
+      "title": "feat(que): drain deferred admissions into QDesk safely",
+      "updated_at": "2026-11-13T19:27:26Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "def0c87b84",
+      "labels": [],
+      "mergeable_state": "dirty",
+      "number": 5338,
+      "title": "feat(policy): enforce DO statements, free-tier mandate and agent readiness",
+      "updated_at": "2026-11-13T15:11:35Z"
     },
     {
       "class": "CANDIDATE",
@@ -3035,7 +3049,7 @@
       },
       "head_sha": "e796e5d083",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5370,
       "title": "Automate public quota readings and self-count refresh",
       "updated_at": "2026-11-13T19:36:26Z"
@@ -3049,10 +3063,10 @@
       },
       "head_sha": "b6cd800991",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5371,
       "title": "Normalize QUE auto-claim ranking scores",
-      "updated_at": "2026-11-13T19:31:17Z"
+      "updated_at": "2026-11-14T07:07:29Z"
     },
     {
       "class": "CANDIDATE",
@@ -3063,7 +3077,7 @@
       },
       "head_sha": "377645d6f4",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5372,
       "title": "Clear stale intake diagnosis after valid re-intake",
       "updated_at": "2026-11-13T19:31:19Z"
@@ -3077,7 +3091,7 @@
       },
       "head_sha": "d7771916cf",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5373,
       "title": "Expose Surfaces Map in shared navigation",
       "updated_at": "2026-11-13T19:31:21Z"
@@ -3091,7 +3105,7 @@
       },
       "head_sha": "e5200e9435",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5376,
       "title": "Exclude deferred and QDesk tasks from provider dispatch",
       "updated_at": "2026-11-13T19:27:24Z"
@@ -3105,7 +3119,7 @@
       },
       "head_sha": "0f6486b149",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5378,
       "title": "Enforce QUE admission and provider-dispatch boundaries",
       "updated_at": "2026-11-13T19:31:56Z"
@@ -3119,10 +3133,108 @@
       },
       "head_sha": "4be33b06be",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5380,
       "title": "Fix DO-statement merge history filtering",
       "updated_at": "2026-11-13T19:34:30Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9630c8bf05",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5387,
+      "title": "Expose per-source quota observation freshness",
+      "updated_at": "2026-11-14T02:15:59Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "d0557f0c0d",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5388,
+      "title": "docs: establish declarative workflow planning and QUE \u00d7 DoE optimization model",
+      "updated_at": "2026-11-14T04:30:17Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "fe0bbe54fc",
+      "labels": [],
+      "mergeable_state": "dirty",
+      "number": 5401,
+      "title": "fix(ci): repair dispatch and DO style regression gates",
+      "updated_at": "2026-11-14T11:52:22Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "9e3e6c54e9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5403,
+      "title": "feat(waf): add AMD Academy discovery-only provider registry",
+      "updated_at": "2026-11-14T11:47:10Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "c836d1697f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5404,
+      "title": "feat(ates): preserve execution-controller provenance",
+      "updated_at": "2026-11-14T11:39:37Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8e9ae6906f",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5405,
+      "title": "docs(certifications): add ROCm Associate integrity-safe runbook",
+      "updated_at": "2026-11-14T11:41:37Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "8335661ebd",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5406,
+      "title": "fix(challenge): correct AMD C3 coordinator provenance",
+      "updated_at": "2026-11-14T11:42:12Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3655,20 +3767,6 @@
       "number": 2252,
       "title": "chore(ops): refresh computed countdown lines",
       "updated_at": "2026-10-28T22:19:49Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "in_progress",
-        "smoke": "success"
-      },
-      "head_sha": "8e3880801e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-13T20:11:12Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4307,12 +4405,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "e4ea4eb584",
+      "head_sha": "f2105f6474",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-13T20:09:05Z"
+      "updated_at": "2026-11-14T11:15:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4321,12 +4419,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "7a811db75c",
+      "head_sha": "533844826e",
       "labels": [],
       "mergeable_state": "unknown",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-13T20:11:26Z"
+      "updated_at": "2026-11-14T12:24:27Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5567,20 +5665,6 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "6240266574",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5311,
-      "title": "docs(challenge): AMD Academy C3 completion \u2014 gate AMD-ACADEMY-5 evidence 1/5",
-      "updated_at": "2026-11-13T18:03:25Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
-      },
       "head_sha": "70cf7eef1b",
       "labels": [],
       "mergeable_state": "unknown",
@@ -5639,10 +5723,38 @@
       },
       "head_sha": "830a7f19b3",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5382,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-13T19:52:16Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "failure",
+        "smoke": "success"
+      },
+      "head_sha": "e3d03bb869",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5390,
+      "title": "feat(que): establish SIE lifecycle contract and intake receipts",
+      "updated_at": "2026-11-14T12:08:21Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "c4efc2d378",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5409,
+      "title": "feat(delphic): current-master Observatory Graph Lab and DoE adapter",
+      "updated_at": "2026-11-14T12:27:14Z"
     }
   ],
   "schema": "operator-matrix/v1",

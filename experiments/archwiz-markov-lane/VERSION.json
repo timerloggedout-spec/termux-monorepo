@@ -9,5 +9,6 @@
   "engine": "src/markov-engine.mjs",
   "tests": "src/markov-engine.test.mjs",
   "model_contract": "Transition matrix is the source of truth; strict tree preserves path occurrences; recombining trellis sums incoming path probabilities; particle sampling uses the same transition matrix.",
-  "authority": "read-only-research-projection"
+  "authority": "read-only-research-projection",
+  "algorithm_version": "markov-trellis/v1"
 }

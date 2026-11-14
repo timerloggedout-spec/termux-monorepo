@@ -1338,3 +1338,27 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: qdesk-self-repair
+    title: "QDesk self-repair and SIE orchestration"
+    author: ChatGPT
+    status: executing
+    priority: P0
+    path: active/qdesk-self-repair/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues:
+      - 5389
+    related_prs:
+      - 5390
+    related_branches:
+      - feat/que-sie-pipeline-integration
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

@@ -166,6 +166,18 @@ def test_amd_academy_provider_write_operations_are_never_auto_retried():
     assert all(op["status"] == "discovered" for op in writes)
 
 
+def test_amd_academy_discovery_registry_cannot_execute_unpromoted_operations():
+    path = ROOT / "ops" / "web_adapter_foundry" / "providers" / "amd-academy" / "registry.json"
+    provider = json.loads(path.read_text(encoding="utf-8"))
+    out = waf.handle_request({
+        "id": "amd-discovery-only",
+        "operation": "amd_academy.course.enroll",
+        "input": {"course_id": "C1"},
+    }, provider)
+    assert not out["ok"]
+    assert out["error"]["code"] == "not_promoted"
+
+
 BRIEF = {
     "target_id": "example-shop", "target": "https://shop.example.com/catalog",
     "purpose": "api-extraction", "side_effect": "read", "probe_budget": 24,

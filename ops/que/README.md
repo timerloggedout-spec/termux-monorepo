@@ -21,6 +21,12 @@ per the consumer contracts in `docs/ops/QUE.md` (PR #4624).
 
 ## SIE lifecycle integration
 
+The existing QDesk self-repair workflow consumes master gate failures through
+filtered `workflow_run` events and retains its three-hour reconciliation pass.
+The event adapter reads the canonical `ops/challenge/dispatch-state-feed.json`
+watchdog output; unclaimed escalation and stall receipts become deterministic,
+issue-bound SIE intake groups. Claimed dispatches remain with their current owner.
+
 QUE improvement work is tracked through the QDesk self-improvement loop (SIE).
 The lifecycle contract and implementation plan are registered at
 `docs/proposals/active/que-sie-pipeline-integration/` and QUE task #5389.

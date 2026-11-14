@@ -65,20 +65,20 @@ class TestProposalPackage(unittest.TestCase):
                         "content": base64.b64encode(raw).decode("ascii")}
 
         issue = {"body": (
-            "### Proposal source ref\\n" + manifest["source_ref"] +
-            "\\n### Proposal manifest path\\n" + manifest_path +
-            "\\n### Expected package digest\\n" + manifest["package_digest"] + "\\n"
+            "### Proposal source ref\n" + manifest["source_ref"] +
+            "\n### Proposal manifest path\n" + manifest_path +
+            "\n### Expected package digest\n" + manifest["package_digest"] + "\n"
         )}
         binding = verify_issue_package_binding(FakeGitHub(), issue)
         self.assertEqual(binding["package_digest"], manifest["package_digest"])
         self.assertEqual(binding["file_count"], 3)
 
-        payloads[package_path + "/RFP.md"] = b"# drift\\n"
+        payloads[package_path + "/RFP.md"] = b"# drift\n"
         with self.assertRaisesRegex(ValueError, "file hash mismatch"):
             verify_issue_package_binding(FakeGitHub(), issue)
 
     def test_delphi_gate_requires_all_package_binding_fields_together(self):
-        issue = {"body": "### Proposal source ref\\n" + "a" * 40 + "\\n"}
+        issue = {"body": "### Proposal source ref\n" + "a" * 40 + "\n"}
         with self.assertRaisesRegex(ValueError, "all required"):
             verify_issue_package_binding(object(), issue)
 
@@ -187,7 +187,7 @@ class TestProposalPackage(unittest.TestCase):
 
     def test_nested_symlink_is_rejected(self):
         outside = self.root / "outside-proposal.md"
-        outside.write_text("# Outside\\n")
+        outside.write_text("# Outside\n")
         nested = self.root / "nested"
         nested.mkdir()
         (nested / "linked.md").symlink_to(outside)

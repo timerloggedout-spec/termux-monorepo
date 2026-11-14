@@ -318,7 +318,7 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
         package = root / "proposal"
         package.mkdir()
         artifact = package / "RFP.md"
-        artifact.write_text("# Frozen proposal\\n", encoding="utf-8")
+        artifact.write_text("# Frozen proposal\n", encoding="utf-8")
         manifest = build_manifest(
             source_ref=source_ref, package_id="proposal-1",
             package_path="proposal", root=root,
@@ -340,10 +340,10 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
 
         gh = PackageGH()
         body = (
-            f"### Proposal source ref\\n\\n{source_ref}\\n\\n"
-            f"### Proposal manifest ref\\n\\n{manifest_ref}\\n\\n"
-            "### Proposal manifest path\\n\\nproposal/package.json\\n\\n"
-            f"### Expected package digest\\n\\n{manifest['package_digest']}\\n"
+            f"### Proposal source ref\n\n{source_ref}\n\n"
+            f"### Proposal manifest ref\n\n{manifest_ref}\n\n"
+            "### Proposal manifest path\n\nproposal/package.json\n\n"
+            f"### Expected package digest\n\n{manifest['package_digest']}\n"
         )
         binding = gate.verify_issue_package_binding(gh, {"body": body})
         assert binding["source_ref"] == source_ref

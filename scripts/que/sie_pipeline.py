@@ -40,7 +40,7 @@ def canonical_json(value: Any) -> bytes:
 
 def stable_event_id(source_kind: str, source_id: str, source_revision: str) -> str:
     """Return a stable idempotency key for one source event revision."""
-    if source_kind not in SOURCE_KINDS:
+    if not isinstance(source_kind, str) or source_kind not in SOURCE_KINDS:
         raise StageValidationError(f"unsupported source kind: {source_kind}")
     for name, value in (("source_id", source_id), ("source_revision", source_revision)):
         if not isinstance(value, str) or not value.strip():
@@ -84,9 +84,9 @@ def validate_receipt(receipt: Any) -> list[str]:
         errors.append("event_id: expected SHA-256 identity")
     if isinstance(receipt.get("item_key"), str) and not re.fullmatch(r"[0-9a-f]{24}", receipt["item_key"]):
         errors.append("item_key: expected 24-character stable identity")
-    if receipt.get("stage") not in STAGES:
+    if not isinstance(receipt.get("stage"), str) or receipt["stage"] not in STAGES:
         errors.append("stage: unsupported lifecycle stage")
-    if receipt.get("state") not in STATES:
+    if not isinstance(receipt.get("state"), str) or receipt["state"] not in STATES:
         errors.append("state: unsupported lifecycle state")
     source = receipt.get("source")
     if not isinstance(source, dict):
@@ -95,7 +95,7 @@ def validate_receipt(receipt: Any) -> list[str]:
         source_unknown = set(source) - {"kind", "id", "url"}
         if source_unknown:
             errors.append("source: unsupported properties: " + ", ".join(sorted(source_unknown)))
-        if source.get("kind") not in SOURCE_KINDS:
+        if not isinstance(source.get("kind"), str) or source["kind"] not in SOURCE_KINDS:
             errors.append("source.kind: unsupported source kind")
         if not isinstance(source.get("id"), str) or not source["id"].strip():
             errors.append("source.id: expected non-empty string")

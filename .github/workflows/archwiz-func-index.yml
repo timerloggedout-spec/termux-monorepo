@@ -1,0 +1,51 @@
+name: archwiz func index
+
+# Repo-side adaptive variant of workspace/llm_map/func_indexer.py — see
+# scripts/ci/func_index.py. Regenerates workspace/llm_map/func_index.jsonl
+# (consumed by archwiz-repo-index). Same direct-commit pattern as
+# archwiz-repo-index.yml; output is a data file, not a trigger path.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ci/func_index.py'
+      - '.github/workflows/archwiz-func-index.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archwiz-func-index
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build function index
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          submodules: false
+
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_func_index.py' -v
+
+      - name: Build function index
+        run: python3 scripts/ci/func_index.py
+
+      - name: Commit output if changed
+        run: |
+          set -euo pipefail
+          git config user.name "archwiz-func-index"
+          git config user.email "actions@github.com"
+          git add workspace/llm_map/func_index.jsonl
+          if git diff --cached --quiet; then
+            echo "func index unchanged"
+          else
+            git commit -m "chore(llm_map): regenerate function index [archwiz-func-index]"
+            git push
+          fi

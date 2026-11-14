@@ -18,3 +18,23 @@ via the Termux Fleet Swarm App) refreshes:
 
 Consumers: the Desk surface (board) · Quota/Cadence · DoE —
 per the consumer contracts in `docs/ops/QUE.md` (PR #4624).
+
+## SIE lifecycle integration
+
+QUE improvement work is tracked through the QDesk self-improvement loop (SIE).
+The lifecycle contract and implementation plan are registered at
+`docs/proposals/active/que-sie-pipeline-integration/` and QUE task #5389.
+
+- Stage receipt schema: `docs/schemas/que-sie-stage-v1.schema.json`
+- Deterministic stage validator: `scripts/que/sie_pipeline.py`
+- Intake source: existing QDesk self-repair workflow and watchdog/stall-gap feed
+- Queue authority: existing QUE ranker, dispatch watchdog and auto-claim/lease machinery
+- RFP authority: Oracle Method generator
+- Award authority: Delphi signed gate and package digest
+- Experiment authority: DoE family / EXPERIMENT records
+- Outcome authority: ATES and independent task verification
+
+The stage receipt is a compact pointer. Canonical workflow, issue, RFP, ballot,
+experiment, claim and outcome evidence remains with its owning producer.
+PDDL is a Siglary formal-planning subdomain; the Linguist-owned Matrice governs
+notation additions.

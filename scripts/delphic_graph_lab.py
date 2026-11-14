@@ -151,6 +151,21 @@ def forward_probability(
     return mass
 
 
+def _json_equal(left: Any, right: Any) -> bool:
+    """Compare JSON values without Python's bool/int equality collision."""
+    if isinstance(left, bool) or isinstance(right, bool):
+        return type(left) is type(right) and left == right
+    if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+        return left == right
+    if isinstance(left, dict) and isinstance(right, dict):
+        return (left.keys() == right.keys()
+                and all(_json_equal(left[key], right[key]) for key in left))
+    if isinstance(left, list) and isinstance(right, list):
+        return (len(left) == len(right)
+                and all(_json_equal(a, b) for a, b in zip(left, right)))
+    return type(left) is type(right) and left == right
+
+
 def three_way_diff(
     base: dict[str, Any],
     branch_1: dict[str, Any],
@@ -166,11 +181,11 @@ def three_way_diff(
         b = base.get(key, missing)
         one = branch_1.get(key, missing)
         two = branch_2.get(key, missing)
-        if one == two:
+        if _json_equal(one, two):
             value, status = one, "identical_or_unchanged"
-        elif one == b:
+        elif _json_equal(one, b):
             value, status = two, "clean_branch_2"
-        elif two == b:
+        elif _json_equal(two, b):
             value, status = one, "clean_branch_1"
         else:
             value, status = missing, "conflict"

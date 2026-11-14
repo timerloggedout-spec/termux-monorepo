@@ -30,6 +30,8 @@ For production use, pin the planner and version, retain the domain/problem files
     (available ?s - seat)
     (blocked ?f - filing)
     (failed ?f - filing)
+    (awaiting-verification ?f)
+    (verification-receipt-valid ?f)
   )
 
   (:action claim
@@ -38,12 +40,12 @@ For production use, pin the planner and version, retain the domain/problem files
       (queued ?f)
       (window-open ?f)
       (available ?s)
-      (not (claimed ?f ?s))
       (not (blocked ?f))
     )
     :effect (and
       (claimed ?f ?s)
       (lease-valid ?f ?s)
+      (not (queued ?f))
       (not (available ?s))
     )
   )
@@ -55,13 +57,21 @@ For production use, pin the planner and version, retain the domain/problem files
       (lease-valid ?f ?s)
       (not (blocked ?f))
     )
-    :effect (built ?f)
+    :effect (and (built ?f) (awaiting-verification ?f))
   )
 
-  (:action verify-pass
+  (:action accept-independent-verification
     :parameters (?f - filing)
-    :precondition (and (built ?f) (not (failed ?f)))
-    :effect (verified ?f)
+    :precondition (and
+      (built ?f)
+      (awaiting-verification ?f)
+      (verification-receipt-valid ?f)
+      (not (failed ?f))
+    )
+    :effect (and
+      (verified ?f)
+      (not (awaiting-verification ?f))
+    )
   )
 
   (:action release-seat
@@ -84,6 +94,7 @@ For production use, pin the planner and version, retain the domain/problem files
 ## Modeling cautions
 
 - The example uses a simplified single-seat availability predicate; concurrent capacity requires numeric fluents or explicit seat objects.
+- `verification-receipt-valid` is an externally established fact imported from an independently verified evidence receipt. The planner must never invent this predicate or treat its own plan as verification.
 - Lease expiry, wall-clock deadlines and durative build/verification require a temporal PDDL subset or an external scheduler.
 - A real merge is an external side effect and must remain behind repository policy/approval; a planner-generated plan is not authorization.
 - Failure, retry and compensation need explicit actions and terminal conditions before this model can represent production behavior.
@@ -92,10 +103,11 @@ For production use, pin the planner and version, retain the domain/problem files
 ## Required validation cases
 
 1. queued + open window + available seat yields a claim plan;
-2. closed window prevents claim;
-3. blocked filing prevents claim/build;
-4. unavailable seat prevents claim;
-5. build cannot precede claim;
-6. merge cannot precede independent verification;
-7. expired lease cannot authorize build;
-8. a planner plan cannot bypass human approval or repository branch protection.
+2. claim consumes the queued state so a second seat cannot claim the same filing;
+3. closed window prevents claim;
+4. blocked filing prevents claim/build;
+5. unavailable seat prevents claim;
+6. build cannot precede claim;
+7. merge cannot precede independent verification receipt;
+8. expired lease cannot authorize build;
+9. a planner plan cannot bypass human approval or repository branch protection.

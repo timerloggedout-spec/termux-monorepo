@@ -50,8 +50,8 @@ def test_commit_body_scan_ignores_synthetic_merge_commits(monkeypatch):
 def test_repo_action_verbs_are_recognized_as_imperative(monkeypatch):
     module = load_style_module(monkeypatch)
     verbs = {
-        "allow", "block", "canonicalize", "centralize", "constrain",
-        "cover", "carry", "distinguish", "emit", "exclude", "extend", "lock", "propagate", "reject", "share", "specify",
+        "allow", "assert", "block", "canonicalize", "centralize", "constrain",
+        "cover", "correct", "carry", "distinguish", "emit", "exclude", "extend", "lock", "propagate", "reject", "share", "specify",
         "support", "pass", "prevent", "normalize", "recognize", "skip", "ignore",
     }
     assert verbs <= module["IMPERATIVE"]

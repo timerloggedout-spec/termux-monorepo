@@ -32,7 +32,13 @@ def queue_stall_groups(feed: dict) -> list[dict]:
             "event_kinds": event_kinds,
         }
         signature = hashlib.sha256(canonical_json(fingerprint)).hexdigest()[:12]
-        revision = hashlib.sha256(canonical_json(row)).hexdigest()
+        revision_material = {
+            "issue": issue,
+            "state": state,
+            "tier": (row.get("tier") or {}).get("name", "unknown"),
+            "stall_events": events,
+        }
+        revision = hashlib.sha256(canonical_json(revision_material)).hexdigest()
         age_min = float(row.get("age_min") or 0)
         groups.append({
             "path": path,

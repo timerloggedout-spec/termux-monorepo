@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-14  
 **Proposal:** `que-device-validation`  
-**Branch:** `feat/que-device-capability-registry-20261114`  
+**Branch:** `feat/que-device-validation-20261114`  
 **Base:** `master`
 
 ## Task 1 — Governance and source record

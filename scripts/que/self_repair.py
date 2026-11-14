@@ -96,7 +96,18 @@ def item_key(path: str, sig: str) -> str:
 
 
 def item_body(item: dict) -> str:
-    rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    rec = "\\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    source_kind = "feed_freshness" if item.get("step") == "freshness" else "workflow_run"
+    source_revision = (item.get("receipts") or [{}])[0].get("sha") or item["sig"]
+    source_sha = source_revision if re.fullmatch(r"[0-9a-f]{40}", source_revision) else None
+    stage_receipt = sie_pipeline.build_receipt(
+        source_kind=source_kind, source_id=item["path"],
+        source_revision=source_revision, failure_class=item["sig"],
+        repository=REPO, ref="master", sha=source_sha,
+        evidence_refs=[r["url"] for r in item["receipts"] if r.get("url")],
+        owner_role=item.get("room"),
+    )
+    stage_json = json.dumps(stage_receipt, sort_keys=True, indent=2)
     return f"""{MARK.format(key=item['key'])}
 class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
 
@@ -119,7 +130,6 @@ class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` �
 - [ ] Promote: additive ∧ green ⇒ self-merge; destructive ∨ secrets ∨ money ⇒ Owner packet on hark:queue
 - [ ] Learn: close with `sr:verified` (or `sr:regression`) ∧ `role:<role>` ⇒ weight(role, class) step
 """
-
 
 def promote_decision(files: list[dict], checks: list[dict], candidates: int,
                      doe_pass_by: list[str], pr_author: str) -> dict:

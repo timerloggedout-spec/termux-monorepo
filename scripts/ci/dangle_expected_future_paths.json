@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "description": "Only explicit workflow path filters for deliverables that are intentionally planned but not yet present. Every entry identifies the exact workflow, exact path, and source-backed reason.",
+  "entries": [
+    {
+      "workflow": ".github/workflows/doe-cb1-acceptance.yml",
+      "path": "scripts/doe/chronomancer_emitter.py",
+      "reason": "The cb-1 acceptance workflow monitors the planned emitter deliverable specified in experiments/doe/cb-1-chronomancer-emission/DESIGN.json and its arm issues."
+    },
+    {
+      "workflow": ".github/workflows/doe-cb1-acceptance.yml",
+      "path": "tests/test_chronomancer_emitter.py",
+      "reason": "The cb-1 acceptance workflow monitors the planned emitter regression suite specified in the experiment DESIGN and arm issues."
+    }
+  ]
+}

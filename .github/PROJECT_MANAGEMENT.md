@@ -8,7 +8,7 @@ The termux-monorepo uses a structured project management approach with:
 - **8 Active Projects** organized by functional area
 - **16 Milestones** with clear acceptance criteria and dependencies
 - **Comprehensive Connector Management** for LLM providers, exchanges, GitHub, and webhooks
-- **Integration with existing workflows** (AGENTS.md, docs/proposals/, archwiz/)
+- **Integration with existing workflows** (CLAUDE.md, docs/proposals/, archwiz/)
 
 ## 📁 File Structure
 
@@ -31,7 +31,7 @@ The termux-monorepo uses a structured project management approach with:
 
 ### For New Contributors
 
-1. **Read the Navigation Guide** in [README.md](../README.md#-navigation-ssot)
+1. **Read the Navigation Guide** in [README.md](../README.md#0-fast-start-choose-the-right-map)
 2. **Check Active Projects** in [PROJECTS.md](PROJECTS.md)
 3. **Find Your Milestone** in [MILESTONES.yaml](MILESTONES.yaml)
 4. **Understand Connectors** in [CONNECTORS.md](CONNECTORS.md)
@@ -205,11 +205,11 @@ export CODERABBIT_API_KEY="your_coderabbit_api_key"
 
 ## 🔄 Integration with Existing Systems
 
-### AGENTS.md Workflow
+### CLAUDE.md Workflow
 
 The project management system integrates with the existing agent workflow:
 
-1. **Agents read** [`AGENTS.md`](../AGENTS.md) first
+1. **Agents read** [`CLAUDE.md`](../CLAUDE.md) first
 2. **Check** [`docs/proposals/registry.yaml`](../docs/proposals/registry.yaml) for active proposals
 3. **Reference** [PROJECTS.md](PROJECTS.md) for project context
 4. **Track progress** via [MILESTONES.yaml](MILESTONES.yaml)
@@ -346,7 +346,7 @@ Connector logs are stored in `.github/connectors/logs/`:
 
 ### Documentation
 
-- [AGENTS.md](../AGENTS.md) - Agent instructions and workflow
+- [CLAUDE.md](../CLAUDE.md) - Agent instructions and workflow
 - [docs/proposals/PROCESS.md](../docs/proposals/PROCESS.md) - Proposal process
 - [docs/proposals/registry.yaml](../docs/proposals/registry.yaml) - Active proposals
 - [docs/RECON.md](../docs/RECON.md) - Deep reconnaissance and proposals
@@ -411,7 +411,7 @@ All changes must pass:
 
 ## 🤝 Contributing
 
-1. **Read** [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CONTRIBUTING.md)
+1. **Read** [CLAUDE.md](../CLAUDE.md) and [CONTRIBUTING.md](../CONTRIBUTING.md)
 2. **Check** [PROJECTS.md](PROJECTS.md) for active projects
 3. **Find** a milestone in [MILESTONES.yaml](MILESTONES.yaml) that interests you
 4. **Join** the discussion in the relevant proposal

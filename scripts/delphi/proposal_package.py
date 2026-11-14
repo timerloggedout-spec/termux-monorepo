@@ -93,8 +93,11 @@ def build_manifest(*, source_ref: str, package_id: str, package_path: str,
         if rel in excluded:
             raise ValueError(f"manifest inventory includes explicitly excluded path: {rel}")
         target = base / rel
-        if target.is_symlink():
-            raise ValueError(f"symlink package entries are unsupported: {rel}")
+        cursor = base
+        for part in PurePosixPath(rel).parts:
+            cursor = cursor / part
+            if cursor.is_symlink():
+                raise ValueError(f"symlink package entries are unsupported: {rel}")
         resolved = target.resolve()
         if base not in resolved.parents or not resolved.is_file():
             raise ValueError(f"package file is missing or outside root: {rel}")
@@ -126,8 +129,15 @@ def validate_manifest(manifest: dict) -> list[str]:
     excluded = manifest.get("excluded_paths", [])
     if not isinstance(excluded, list) or any(not isinstance(p, str) for p in excluded):
         errors.append("excluded_paths must be an array of paths")
-    elif set(excluded) & {row.get("path") for row in manifest.get("files", []) if isinstance(row, dict)}:
-        errors.append("manifest inventory overlaps explicitly excluded paths")
+    else:
+        try:
+            normalized_excluded = {_safe_relative_path(path) for path in excluded}
+            if len(normalized_excluded) != len(excluded):
+                errors.append("excluded_paths contains duplicates")
+            if normalized_excluded & {row.get("path") for row in manifest.get("files", []) if isinstance(row, dict)}:
+                errors.append("manifest inventory overlaps explicitly excluded paths")
+        except ValueError as exc:
+            errors.append(str(exc))
     return errors
 
 
@@ -146,8 +156,11 @@ def verify_files(manifest: dict, root: str | Path,
         try:
             _safe_relative_path(rel)
             target = base / rel
-            if target.is_symlink():
-                raise ValueError("symlink package entries are unsupported")
+            cursor = base
+            for part in PurePosixPath(rel).parts:
+                cursor = cursor / part
+                if cursor.is_symlink():
+                    raise ValueError("symlink package entries are unsupported")
             resolved = target.resolve()
             if base not in resolved.parents or not resolved.is_file():
                 raise ValueError("file is missing or outside package root")
@@ -168,9 +181,9 @@ def verify_award(*, manifest: dict, award: dict, package_author: str,
         manifest_digest = manifest.get("package_digest") if isinstance(manifest, dict) else None
         if award.get("package_digest") != manifest_digest:
             errors.append("award package digest does not match current package")
-        if not award.get("reviewer_login") or award.get("reviewer_login") != reviewer:
+        if not award.get("reviewer_login") or str(award.get("reviewer_login")).casefold() != str(reviewer).casefold():
             errors.append("award reviewer identity does not match authenticated reviewer")
-        if award.get("decision") not in ("shadow", "parked", "approved", "converged"):
+        if award.get("decision") not in ("shadow", "parked"):
             errors.append("award decision is not an accepted terminal disposition")
         if not award.get("ledger_ref"):
             errors.append("award ledger reference is missing")

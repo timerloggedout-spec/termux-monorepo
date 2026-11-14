@@ -136,5 +136,39 @@ class BaselineRatchet(unittest.TestCase):
             self.assertEqual(rc2, 0)
 
 
+class DynamicReferenceFixture(unittest.TestCase):
+    def test_dynamic_html_fragments_do_not_hide_static_missing_paths(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, "apps/page.html",
+                  '<a href="${GH}${esc(doc.path)}">dynamic</a>\n'
+                  '<a href="\'+GH+\'/issues/1487#issuecomment-\'+esc(cid)+\'">dynamic</a>\n'
+                  '<a href="missing.html">missing</a>\n'
+                  '<a href="missing-query.html?term=${value}">static path</a>\n'
+                  '<a href="ok.html#${anchor}">dynamic anchor</a>\n'
+                  '<a href="docs/c++.md">literal plus</a>')
+            write(root, "apps/ok.html", '<h1 id="top">ok</h1>')
+            findings = dc.check_links(root)
+        self.assertEqual([f["ref"] for f in findings],
+                         ["missing.html", "missing-query.html?term=${value}",
+                          "docs/c++.md"])
+
+    def test_feed_compounds_preserve_literal_paths_with_spaces_and_plus(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, "apps/data/feed.json", json.dumps({
+                "description": "docs/a.md + scripts/b.py",
+                "compound": "docs/a.md and scripts/b.py",
+                "space_path": "docs/release notes.md",
+                "plus_path": "docs/c++.md",
+                "missing": "scripts/actually-missing.py",
+                "dynamic_query": "scripts/missing.py?term=${value}",
+            }))
+            findings = dc.check_feeds(root)
+        self.assertEqual([f["ref"] for f in findings],
+                         ["docs/release notes.md", "docs/c++.md",
+                          "scripts/actually-missing.py", "scripts/missing.py"])
+
+
 if __name__ == "__main__":
     unittest.main()

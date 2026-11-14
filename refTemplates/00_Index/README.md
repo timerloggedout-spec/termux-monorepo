@@ -6,6 +6,7 @@
 |------|------|
 | 00_Index/ | This navigator + recovery + SOURCE map |
 | 01_Agent_Runtime/ … 14_* | Categorical metadata from skeleton |
+| 01_Agent_Runtime/agentic-wallet/ | Agentic Wallet template spec (fleet-native) — per-agent wallet instantiation on the wallet-ledger of record |
 | 15_Research_Repo_Templates/ | Consolidated research scaffolds, including the Dicklesworthstone Flywheel stack profile |
 | 16_Org_Phased/ | Orgs + Enterprise phase gates |
 | 17_Papers/ | Cited research + implementation sources |

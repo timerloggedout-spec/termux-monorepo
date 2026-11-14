@@ -1,6 +1,7 @@
 import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -9,7 +10,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "que"))
 sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 
 from sie_pipeline import build_receipt
-from sie_research_packet import build_research_packet, digest
+from sie_research_packet import build_research_packet, digest, main as research_packet_main
 from generate_proposal import generate, _sha
 
 
@@ -126,6 +127,47 @@ class TestSIEResearchPacket(unittest.TestCase):
             evidence_sets=evidence, generated_at="2026-11-14T00:05:00Z",
         )
         self.assertEqual(brief["related_issues"], [8123])
+
+    def test_rebuild_removes_obsolete_managed_evidence_files(self):
+        receipt, diagnosis, evidence = fixture()
+        second = json.loads(json.dumps(evidence[0]))
+        second["artifact"]["ref"] = "second-set"
+        second["items"] = [evidence_item(
+            "second.claim", "second value", "/second/source",
+            "2026-11-14T00:15:00Z",
+        )]
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            receipt_path = root / "receipt.json"
+            diagnosis_path = root / "diagnosis.json"
+            first_evidence = root / "first-evidence.json"
+            second_evidence = root / "second-evidence.json"
+            out = root / "out"
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+            diagnosis_path.write_text(json.dumps(diagnosis), encoding="utf-8")
+            first_evidence.write_text(json.dumps(evidence[0]), encoding="utf-8")
+            second_evidence.write_text(json.dumps(second), encoding="utf-8")
+
+            common = [
+                "--receipt", str(receipt_path),
+                "--diagnosis", str(diagnosis_path),
+                "--out", str(out),
+                "--generated-at", "2026-11-14T00:05:00Z",
+            ]
+            self.assertEqual(research_packet_main(common + [
+                "--evidence", str(first_evidence),
+                "--evidence", str(second_evidence),
+            ]), 0)
+            evidence_dir = out / "evidence"
+            self.assertTrue((evidence_dir / "evidence-002.json").exists())
+            (evidence_dir / "operator-notes.txt").write_text("keep", encoding="utf-8")
+
+            self.assertEqual(research_packet_main(common + [
+                "--evidence", str(first_evidence),
+            ]), 0)
+            self.assertTrue((evidence_dir / "evidence-001.json").exists())
+            self.assertFalse((evidence_dir / "evidence-002.json").exists())
+            self.assertEqual((evidence_dir / "operator-notes.txt").read_text(encoding="utf-8"), "keep")
 
     def test_packet_rejects_evidence_integrity_drift(self):
         receipt, diagnosis, evidence = fixture()

@@ -47,3 +47,7 @@ assistant seat under owner ruling (via Manager).
 ---
 
 **NOTE 2026-11-03 (desk): D1 SUBMITTED.** The StudySprint project was published on AWS Builder Center on 2026-11-03 (confirmation_ref: https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint), a day ahead of the Nov 4 23:59 PT wall, under the owner's publish-today ruling (post-publish editability verified firsthand; the project stays editable until the freeze). OC-003 remains AT_RISK until the event closes (winners announced week of Nov 23); the submission leg of the risk is retired.
+
+---
+
+**NOTE 2026-11-12 (desk): D3 CLOSED — NOT SUBMITTED.** Builder.io Agent-Native (ListingLens): wall 2026-11-09 23:59 PT passed with submission.state none (demo blocked by the then-open Clips-storage gate). Demo rendered + published public post-wall 2026-11-12 (https://clips.agent-native.com/r/1Um5i6GLer0j); conditional late-submit attempted 2026-11-12 07:20 PT — form closed. OC-007 appends D3 LOST at the 1st-place gross ($5,000 USD cash Grand Prize). Record: PR #5250 + issue #5137 c.6827691564.

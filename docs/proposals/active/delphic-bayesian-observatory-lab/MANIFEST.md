@@ -30,7 +30,7 @@ The Bayesian/Delphic layer sits between evidence and decision explanation. It do
 
 ## Computational substrate
 
-- `docs/schemas/graph-algorithm-registry.yaml` — registered algorithm semantics and complexity.
+- `apps/tribute-dashboard/algorithm-labs.json` — versioned experiment lanes and canonical component registry.
 - `scripts/delphic_graph_lab.py` — deterministic reference implementations.
 - `scripts/delphic_math.py` — local stable formulas for prediction, entropy, KL, information gain, EVSI, and expected path cost.
 - `experiments/delphic-observatory-lab/graph-lab.html` — executable visual explanation surface.
@@ -65,7 +65,7 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - [x] Focused tests added
 - [x] Mathematical substrate expanded
 - [x] Predictive / information / EVSI / expected-cost fixtures added
-- [x] Graph algorithm registry added
+- [x] Versioned algorithm-labs registry added
 - [x] Graph Lab reference engine added
 - [x] Graph Lab visual sandbox added
 - [x] Legacy Gemini review request archived as historical context
@@ -84,4 +84,4 @@ Adversarial review admission is dynamic. Candidate admission signals are uncerta
 - Public rendering is integrated through the existing Tribute dashboard deployment (`apps/tribute-dashboard/`); no competing repository-level Pages publisher is added.
 - `docs/ops/DELPHIC-QUE-INTEGRATION.md` — staged QUE/AutonomousOpsStuff integration and cross-context authority contract.
 
-Version: 0.1.0. Public site is a research projection, not a live operations dashboard. Termux Origin is offline as of operator report 2026-11-12; native Termux validation remains pending.
+Version: 0.2.0. Public site is a research projection, not a live operations dashboard. Termux Origin is offline as of operator report 2026-11-12; native Termux validation remains pending.

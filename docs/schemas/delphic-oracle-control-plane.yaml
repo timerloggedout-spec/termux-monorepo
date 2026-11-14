@@ -47,6 +47,7 @@ bayesian:
   safeguards:
     - "admission failure is availability/capacity evidence, not model-quality failure"
     - "duplicate retries sharing experiment_id are not independent trials"
+    - "conflicting outcomes for one experiment_id are held and never update the posterior"
     - "exact equal-tail Beta posterior intervals accompany point estimates"
     - "normal approximations are explicitly labeled approximate"
     - "priors retain provenance"

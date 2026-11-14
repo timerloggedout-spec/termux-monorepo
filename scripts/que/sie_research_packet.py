@@ -183,6 +183,7 @@ def build_research_packet(*, source_receipt: dict, diagnosis: dict,
     packet["package_digest"] = digest(packet)
     return packet, brief, fresh_sets
 
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build a QUE SIE research packet and Oracle Method brief")
     parser.add_argument("--receipt", required=True, help="SIE stage receipt JSON")
@@ -203,14 +204,14 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "research-packet.json").write_text(
-        json.dumps(packet, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+        json.dumps(packet, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (out / "oracle-brief.json").write_text(
-        json.dumps(brief, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+        json.dumps(brief, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     evidence_dir = out / "evidence"
     evidence_dir.mkdir(exist_ok=True)
     for index, evidence_set in enumerate(fresh_sets, start=1):
         (evidence_dir / f"evidence-{index:03d}.json").write_text(
-            json.dumps(evidence_set, indent=2, sort_keys=True) + "\\n",
+            json.dumps(evidence_set, indent=2, sort_keys=True) + "\n",
             encoding="utf-8")
     print(f"research packet ready: {packet['package_digest']} "
           f"brief={brief['id']} evidence_sets={len(fresh_sets)}")

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planning Queue</title>
+<style>
+body{font:15px/1.4 system-ui,sans-serif;margin:0;background:#0d1117;color:#e6edf3}
+main{max-width:960px;margin:0 auto;padding:24px}h1{font-size:22px}
+form{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0}
+input,textarea,select,button{font:inherit;padding:8px;border-radius:6px;border:1px solid #30363d;background:#161b22;color:inherit}
+textarea{grid-column:1/-1;min-height:60px}button{cursor:pointer;background:#238636;border:0}
+table{width:100%;border-collapse:collapse}td,th{padding:6px;border-bottom:1px solid #21262d;text-align:left;font-size:13px}
+.s-queued{color:#58a6ff}.s-claimed{color:#d29922}.s-done{color:#3fb950}.s-failed,.s-stale{color:#f85149}#notice{min-height:1.4em}
+</style></head><body><main>
+<h1>Planning Queue</h1>
+<form id="f">
+<input name="source" placeholder="source (hark, gh-actions)" required value="dashboard">
+<input name="repo" placeholder="owner/repo (optional)">
+<input name="kind" placeholder="kind (plan, deploy, triage)" required>
+<textarea name="payload" placeholder='payload JSON, e.g. {"title":"..."}'>{}</textarea>
+<button>Queue task</button>
+<select id="status"><option value="">all statuses</option><option>queued</option><option>claimed</option><option>done</option><option>failed</option><option>stale</option></select>
+<span id="notice"></span>
+</form>
+<table><thead><tr><th>Created</th><th>Kind</th><th>Repo</th><th>Source</th><th>Status</th><th>Claimed by</th></tr></thead><tbody id="rows"></tbody></table>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+async function load(){const st=$('#status').value;try{const r=await fetch('/api/queue'+(st?'?status='+encodeURIComponent(st):''));const j=await r.json();
+$('#rows').replaceChildren(...(j.tasks||[]).map(t=>{const tr=document.createElement('tr');
+[new Date(t.createdAt).toLocaleString(),t.kind,t.repo||'',t.source,t.status,t.claimedBy||''].forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i===4)td.className='s-'+v;tr.append(td)});return tr}));}
+catch(e){$('#notice').textContent='Queue unavailable'}}
+$('#f').addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.target);let payload;
+try{payload=JSON.parse(fd.get('payload')||'{}')}catch{$('#notice').textContent='payload must be JSON';return}
+const r=await fetch('/api/task',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({source:fd.get('source'),repo:fd.get('repo')||null,kind:fd.get('kind'),payload})});
+const j=await r.json();$('#notice').textContent=r.ok?'Queued '+j.task.id:(j.error||'Failed');setTimeout(load,1200)});
+$('#status').addEventListener('change',load);load();setInterval(load,10000);
+</script></body></html>

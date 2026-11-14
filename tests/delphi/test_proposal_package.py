@@ -80,21 +80,48 @@ class TestProposalPackage(unittest.TestCase):
         (self.root / "ITEMS.md").unlink()
         self.assertTrue(any("missing" in error for error in verify_files(manifest, self.root)))
 
-    def test_award_digest_and_independent_reviewer_are_required(self):
+    def test_award_requires_authenticated_author_reviewer_and_canonical_ledger(self):
         manifest = self.manifest()
         award = {"package_digest": manifest["package_digest"],
                  "decision": "shadow", "ledger_ref": "issue-comment:99",
                  "reviewer_login": "reviewer"}
+        ledger = dict(award)
+        ledger["ledger_ref"] = award["ledger_ref"]
+        lookup = lambda ref: ledger if ref == ledger["ledger_ref"] else None
         good = verify_award(manifest=manifest, award=award,
-                            package_author="builder", reviewer="reviewer")
+                            package_author="builder", reviewer="reviewer",
+                            ledger_lookup=lookup)
         self.assertEqual(good["disposition"], "VERIFIED")
+
+        # A caller-supplied ledger reference is not proof that Delphi recorded an award.
+        unverified = verify_award(manifest=manifest, award=award,
+                                  package_author="builder", reviewer="reviewer")
+        self.assertEqual(unverified["disposition"], "HELD")
+        self.assertTrue(any("ledger lookup is unavailable" in error
+                            for error in unverified["errors"]))
+
         stale = dict(award, package_digest="c" * 64)
         self.assertEqual(verify_award(manifest=manifest, award=stale,
-                                      package_author="builder", reviewer="reviewer")["disposition"],
-                         "HELD")
+                                      package_author="builder", reviewer="reviewer",
+                                      ledger_lookup=lookup)["disposition"], "HELD")
         self.assertEqual(verify_award(manifest=manifest, award=award,
-                                      package_author="builder", reviewer="builder")["disposition"],
-                         "HELD")
+                                      package_author="attacker", reviewer="reviewer",
+                                      ledger_lookup=lookup)["disposition"], "HELD")
+        self.assertEqual(verify_award(manifest=manifest, award=award,
+                                      package_author="builder", reviewer="builder",
+                                      ledger_lookup=lookup)["disposition"], "HELD")
+
+    def test_malformed_manifest_inventory_and_unknown_fields_fail_closed(self):
+        manifest = self.manifest()
+        malformed = dict(manifest, files=None)
+        self.assertTrue(validate_manifest(malformed))
+        malformed = dict(manifest, unexpected=True)
+        self.assertTrue(any("unsupported properties" in error
+                            for error in validate_manifest(malformed)))
+        malformed = self.manifest()
+        malformed["files"][0]["unexpected"] = True
+        self.assertTrue(any("unsupported properties" in error
+                            for error in validate_manifest(malformed)))
 
     def test_nested_symlink_is_rejected(self):
         outside = self.root / "outside-proposal.md"

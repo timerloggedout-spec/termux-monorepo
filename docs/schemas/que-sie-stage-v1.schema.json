@@ -8,8 +8,8 @@
   "required": ["schema", "event_id", "item_key", "stage", "state", "source", "observed_at", "repository", "ref", "sha", "evidence_refs"],
   "properties": {
     "schema": {"const": "que.sie-stage/v1"},
-    "event_id": {"type": "string", "minLength": 1},
-    "item_key": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "item_key": {"type": "string", "pattern": "^[0-9a-f]{24}$"},
     "stage": {"enum": ["OBSERVE", "TRIAGE", "RESEARCH", "RFP", "DELPHI", "DESIGN", "CLAIM", "IMPLEMENT", "VERIFY", "PROMOTE", "LEARN"]},
     "state": {"enum": ["PENDING", "READY", "ACTIVE", "COMPLETED", "BLOCKED", "REJECTED", "SUPERSEDED"]},
     "source": {

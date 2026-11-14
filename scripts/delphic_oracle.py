@@ -349,7 +349,7 @@ def workflow(payload: dict[str, Any]) -> dict[str, Any]:
             "evsi_binary_decision": evsi_value,
         },
         "adversarial_review": {
-            "admission": "not_admitted" if evidence_status != "UPDATED" else review
+            "admission": review
         },
         "left_now": left,
         "right_interthreading": right,

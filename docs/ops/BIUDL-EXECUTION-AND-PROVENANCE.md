@@ -42,6 +42,28 @@ The observer can map a known workflow name to a provider/role. This is **workflo
 
 Confidence is not truth: preserve evidence references and the attribution method. Historical attribution from commits, reviews, comments, session exports, or PAT use remains inferred unless tied to invocation/run evidence. Do not ingest prompts, completions, raw tool arguments, credentials, browser profiles, or arbitrary comment text into canonical telemetry.
 
+
+## Execution-controller provenance
+
+**author** answers who is attributed with producing the artifact. **execution** answers which process or agent actually controlled the actions that produced the observed outcome. They are independent facts and must never be collapsed.
+
+Every normalized ATES event emitted by the current writer carries a closed **execution** object:
+
+- **controller**: canonical lowercase execution-controller identity (que, muse, another named controller, or unknown)
+- **surface**: repo_owned_adapter | external_computer | seat_browser | manual | unknown
+- **route**: api | mcp | web2api | cli | stdin | dom_browser | seat_browser | manual | unknown
+- **session_ref** and **adapter_version**: opaque, non-secret references; never raw cookies, tokens, browser profiles, OTPs, or session contents
+- **attribution_method**, **confidence**, and **evidence_refs**: explicit basis and independently inspectable evidence references
+
+Missing execution metadata normalizes to **unknown**; the emitter never infers QUE from author, GitHub actor, PAT identity, commit author, or workflow name.
+
+**QUE is a constrained claim.** A record naming controller=que is valid only when it identifies a repo-owned adapter, a supported API/MCP/Web2API/CLI/stdin/DOM route, a non-empty opaque session reference, an adapter version, trusted invocation_telemetry, positive confidence, and at least one evidence reference. A QUE record using external_computer, seat_browser, or manual is rejected. Muse or human execution remains separately attributable and cannot be relabelled as QUE.
+
+This is a provenance validator, not a cryptographic attestation system. The runtime that supplies invocation_telemetry must itself be a trusted, repo-owned boundary, and the evidence references must resolve to actual run/session/action receipts. A self-declared field without that boundary is not an acceptance demonstration.
+
+For Academy work, distinguish all of these states: COURSE_COMPLETED, EXECUTION_COMPLIANT, EVIDENCE_CAPTURED, GATE_SUBMITTED, and GATE_ACCEPTED. A certificate proves a course outcome; it does not prove who controlled the computer or whether the route complied with policy. A transcript text summary is not a substitute for the required points-balance screenshot.
+
+
 ## Source curation and citations
 
 `scripts/ci/curate_briefing_sources.py` extracts HTTP(S) citation instances from dated briefing JSON, Markdown, and the existing JSONL resource/procurement/radar records. Its output is deterministic and offline:

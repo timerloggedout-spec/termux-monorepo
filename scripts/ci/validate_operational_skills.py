@@ -21,6 +21,7 @@ REQUIRED = {
         "## Mandatory re-fetch contract",
         "## Evidence receipt",
         "## Promotion boundary",
+        "## Bounded feedback-loop integration (Loopy adaptation)",
     ],
     ".agents/skills/evidence-led-monorepo-ops/SKILL.md": [
         "## Operating contract",
@@ -152,8 +153,33 @@ def main() -> int:
         mirror_text = mp.read_text(encoding="utf-8")
         if f"{canonical}" not in mirror_text:
             errors.append(f"mirror does not identify canonical path: {mirror}")
+        if canonical == ".agents/skills/adaptive-wait/SKILL.md":
+            if "## Bounded feedback-loop integration" not in mirror_text:
+                errors.append(f"adaptive-wait mirror is missing the bounded feedback-loop integration: {mirror}")
+            if "Observe → Choose → Act → Verify → Record → Repeat" not in text or "Observe → Choose → Act → Verify → Record → Repeat" not in mirror_text:
+                errors.append("adaptive-wait canonical skill and mirror must retain the six-phase bounded-loop mapping")
         if re.search(r"(?i)(api[_-]?key|authorization:\s*bearer|private[_-]?key)\s*[:=]", text):
             errors.append(f"possible secret pattern in {canonical}")
+
+    loop_path = ROOT / "LOOPS.md"
+    try:
+        loops_text = loop_path.read_text(encoding="utf-8")
+    except OSError:
+        errors.append("missing project loop catalog: LOOPS.md")
+    else:
+        for required_text in (
+            "## Adaptive Repository Steward Loop",
+            "Observe fresh repository",
+            "Choose the highest-value authorized item",
+            "Act once on an isolated feature branch",
+            "Verify with deterministic tests",
+            "Record evidence IDs",
+            "Repeat only while new evidence can change the next action",
+            "success, clean-no-op, blocked, approval-required, exhausted, or stagnated",
+            "Never merge",
+        ):
+            if required_text not in loops_text:
+                errors.append(f"LOOPS.md is missing required bounded-loop control: {required_text}")
 
     paths = tracked_paths()
     skill_files = [p for p in paths if p.endswith("/SKILL.md") or p == "SKILL.md"]

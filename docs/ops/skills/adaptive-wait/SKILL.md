@@ -49,3 +49,20 @@ success | clean-no-op | blocked | approval-required | exhausted | stagnated
 Never report stalled, exhausted, or blocked as success.
 
 **Related:** adaptive-feedback-cycle, review-loop, production-reconciliation, evidence-envelope.
+
+## Bounded feedback-loop integration
+
+Adapt the user-supplied Loopy six-phase pattern to existing repository owners; do not create a parallel runtime or receipt store.
+
+**Observe → Choose → Act → Verify → Record → Repeat**
+
+- Observe: fresh immutable SHA, exact-root graph context, run/job/review evidence.
+- Choose: one authorized proposal item using priority, risk, dependency, and measurable outcome.
+- Act: one bounded change on an isolated branch/worktree.
+- Verify: deterministic tests and required gates on the candidate SHA.
+- Record: native evidence envelope, orchestration receipt, and relationship evidence.
+- Repeat: continue only on measurable progress or a material evidence delta; otherwise back off, do disjoint work, or stop.
+
+Keep execution state, task outcome, and promotion separate. Use success, clean-no-op, blocked, approval-required, exhausted, and stagnated as terminal states. A green run is not task success. A task pass is not automatic promotion.
+
+No new scheduler, provider invocation, spending, external message, production change, credential movement, or merge authority is introduced. The source was supplied as a JSON skill attachment without a source commit/version; this is an adapted pattern, not an upstream-published loop.

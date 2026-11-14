@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - '.agents/skills/adaptive-wait/**'
+      - '.agents/skills/adaptive-feedback-cycle/**'
+      - 'LOOPS.md'
       - '.agents/skills/evidence-led-monorepo-ops/**'
       - 'docs/ops/skills/adaptive-wait/**'
       - 'docs/ops/skills/evidence-led-monorepo-ops/**'

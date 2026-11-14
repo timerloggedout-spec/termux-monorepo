@@ -31,16 +31,18 @@
 ### Task 1: Execution provenance contract
 
 **Files:**
-- Modify: `scripts/ci/emit_agent_throughput.py`
-- Test: `tests/test_emit_agent_throughput.py`
+- Create: `scripts/ci/execution_provenance.py`
+- Modify: `scripts/ci/emit_agent_throughput.py`, `scripts/ci/write_agent_task_boundary.py`, `.github/workflows/agent-throughput-evidence.yml`, `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`
+- Test: `tests/test_emit_agent_throughput.py`, `tests/test_write_agent_task_boundary.py`
 
 **Interfaces:**
 - Input: optional `metadata["execution"]` object.
-- Output: normalized `event["execution"]` object on every emitted event.
+- Output: normalized `event["execution"]` object on every emitted event and optional sanitized `task_boundary.execution` payload.
 - Required fields: `controller`, `surface`, `route`, `session_ref`, `adapter_version`, `attribution_method`, `confidence`, `evidence_refs`.
 
 - [ ] Add failing tests for unknown defaults, compliant QUE adapter evidence, rejected QUE seat-browser attribution, and explicit Muse external-computer attribution.
 - [ ] Run the focused unittest and verify the new assertions fail because execution provenance is not yet emitted.
-- [ ] Implement a closed normalizer and event validator. QUE requires `repo_owned_adapter`, an allowed API/MCP/Web2API/CLI/stdin/DOM route, a non-empty opaque session reference, adapter version, positive confidence, and at least one evidence reference. QUE cannot use `seat_browser`, `external_computer`, or `manual`.
+- [ ] Implement the shared closed normalizer; reuse it in both task-boundary writer and ATES emitter. QUE requires `repo_owned_adapter`, an allowed API/MCP/Web2API/CLI/stdin/DOM route, a non-empty opaque session reference, adapter version, `invocation_telemetry`, positive confidence, and at least one evidence reference.
+- [ ] Extend the event JSON Schema and pass only sanitized `taskBoundary.execution` through the workflow observer.
 - [ ] Run focused and full relevant tests.
 - [ ] Commit as `feat(que): enforce execution provenance contract`.

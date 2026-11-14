@@ -33,6 +33,8 @@ The lifecycle contract and implementation plan are registered at
 
 - Stage receipt schema: `docs/schemas/que-sie-stage-v1.schema.json`
 - Deterministic stage validator: `scripts/que/sie_pipeline.py`
+- Evidence-bounded research packet and Oracle Method brief adapter: `scripts/que/sie_research_packet.py`
+- Research packet schema: `docs/schemas/que-sie-research-packet-v1.schema.json`
 - Intake source: existing QDesk self-repair workflow and watchdog/stall-gap feed
 - Queue authority: existing QUE ranker, dispatch watchdog and auto-claim/lease machinery
 - RFP authority: Oracle Method generator

@@ -63,6 +63,11 @@ jobs:
       - name: workflow_run contract
         run: python3 scripts/ci/workflow_run_contract.py
 
+      - name: QUE SIE lifecycle contracts
+        run: |
+          python3 scripts/que/sie_pipeline.py --self-test
+          python3 -m unittest discover -s tests/que -p 'test_sie_pipeline.py' -v
+
       - name: Native orchestration contracts
         run: |
           python3 scripts/ci/orchestration_contract_validator.py

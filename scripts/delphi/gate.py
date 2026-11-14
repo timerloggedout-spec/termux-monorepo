@@ -447,18 +447,24 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
     """Verify optional QD-039 issue fields against the exact immutable GitHub contents."""
     fields = parse_form(issue.get("body", ""))
     source_ref = (fields.get("proposal_source_ref") or "").strip()
+    manifest_ref = (fields.get("proposal_manifest_ref") or "").strip()
     manifest_path = (fields.get("proposal_manifest_path") or "").strip()
     expected_digest = (fields.get("expected_package_digest") or "").strip()
-    supplied = [bool(source_ref), bool(manifest_path), bool(expected_digest)]
+    supplied = [bool(source_ref), bool(manifest_ref), bool(manifest_path), bool(expected_digest)]
     if not any(supplied):
         return None  # legacy RFPs retain their existing path
     if not all(supplied):
-        raise ValueError("proposal source ref, manifest path and expected package digest are all required")
-    if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", source_ref):
+        raise ValueError("proposal source ref, manifest ref, manifest path and expected package digest are all required")
+    sha_pattern = r"(?:[0-9a-f]{40}|[0-9a-f]{64})"
+    if not re.fullmatch(sha_pattern, source_ref):
         raise ValueError("proposal source ref must be an immutable Git commit SHA")
+    if not re.fullmatch(sha_pattern, manifest_ref):
+        raise ValueError("proposal manifest ref must be an immutable Git commit SHA")
     if not re.fullmatch(r"[0-9a-f]{64}", expected_digest):
         raise ValueError("expected package digest must be a lowercase SHA-256")
-    raw_manifest = _github_file_bytes(gh, manifest_path, source_ref)
+    # The manifest is committed after its source snapshot, so it cannot live at
+    # the source SHA that it records. Pin the manifest blob independently.
+    raw_manifest = _github_file_bytes(gh, manifest_path, manifest_ref)
     try:
         manifest = json.loads(raw_manifest.decode("utf-8"))
     except (UnicodeDecodeError, ValueError) as exc:
@@ -485,6 +491,7 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
         verified_files.append(path)
     return {
         "source_ref": source_ref,
+        "manifest_ref": manifest_ref,
         "manifest_path": manifest_path,
         "package_id": manifest["package_id"],
         "package_path": manifest["package_path"],
@@ -658,7 +665,7 @@ def _run(args) -> int:
     issues = open_rfp_issues(gh)
     package_bound = any(
         any((parse_form(issue.get("body", "")).get(field) or "").strip()
-            for field in ("proposal_source_ref", "proposal_manifest_path", "expected_package_digest"))
+            for field in ("proposal_source_ref", "proposal_manifest_ref", "proposal_manifest_path", "expected_package_digest"))
         for issue in issues
     )
     census_calls = max(1, (len(issues) // 100) + 1)
@@ -687,6 +694,8 @@ def _run(args) -> int:
                 except (ValueError, TypeError, KeyError, urllib.error.HTTPError) as exc:
                     pending += 1
                     summary.append(f"#{issue['number']} {s['id']}: HELD package binding")
+                    board.append({"number": issue["number"], "surface": s["id"],
+                                  "effective": None, "decision": "held"})
                     print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
                     continue
                 ih = input_hash(s, roles, registry, readings, package_binding)

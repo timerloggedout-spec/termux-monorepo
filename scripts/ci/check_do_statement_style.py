@@ -24,7 +24,7 @@ IMPERATIVE = {
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
     "resolve", "cover", "retain", "separate", "distinguish", "assert", "reject", "bind",
-    "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse",
+    "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse", "bound",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",

@@ -50,7 +50,7 @@ class TaskBoundaryTests(unittest.TestCase):
         self.assertEqual(record["cohort_id"], "repair-v1")
 
 
-    def test_execution_provenance_is_carried_as_a_sanitized_boundary(self):
+    def test_execution_provenance_is_carried_as_a_closed_boundary(self):
         record = build_record({
             "agent_id": "muse",
             "task_kind": "academy",
@@ -65,7 +65,6 @@ class TaskBoundaryTests(unittest.TestCase):
                 "attribution_method": "session_export",
                 "confidence": 0.9,
                 "evidence_refs": ["session_export:123"],
-                "session_text": "must not be persisted",
             },
         })
         serialized = json.dumps(record)

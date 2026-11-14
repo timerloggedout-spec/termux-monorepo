@@ -685,6 +685,16 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: qdesk-self-repair
+    title: "QDesk self-repair loop (SIE → Desk QUE)"
+    author: timerloggedout-spec
+    status: executing
+    path: active/qdesk-self-repair/
+    related_workflows:
+      - .github/workflows/qdesk-self-repair.yml
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
   - id: delphic-bayesian-observatory-lab
     title: "Delphic Bayesian Oracle × Observatory control-plane design/evaluation"
     author: ChatGPT

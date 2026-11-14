@@ -4,7 +4,7 @@ principle: "probabilistic state explains uncertainty; canonical evidence remains
 
 input:
   source: "canonical evidence ledger / SHE snapshot / bounded experiment receipt"
-  required_identity: [source_sha, event_id, observed_at]
+  required_identity: [source_sha, event_id, observed_at, instance_key]
   missingness: "unknown remains unknown; never coerce to zero"
 
 left_now_layers:
@@ -72,5 +72,5 @@ observatory_projection:
   cannot: [emit_telemetry, mutate_canonical_evidence, approve_promotion, bypass_hard_gates]
 
 identity:
-  required: [experiment_id, source_sha, event_id, observed_at, policy_version]
+  required: [experiment_id, source_sha, event_id, observed_at, instance_key, policy_version]
   optional: [run_id, run_attempt, cohort_id, task_family, provider, model, topology]

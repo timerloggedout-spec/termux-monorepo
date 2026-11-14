@@ -1,0 +1,47 @@
+---
+title: QDesk / QUE routing and evidence lifecycle
+version: 1
+---
+flowchart TD
+  A[QDesk intake request] --> B[Deterministic envelope validation]
+  B --> C{Ingress decision}
+  C -->|ALLOW: eligible to request admission| D[QUE admission policy]
+  C -->|HOLD| H[Quarantine + missing evidence]
+  C -->|REJECT| R[Reject + immutable reason]
+  C -->|ESCALATE| X[Human / security / finance review]
+  H --> B
+  X -->|approved resubmission| B
+  D -->|not admitted| Q[QUE admission receipt: deferred / denied]
+  D -->|admitted| P[Priority + tier + ranker version]
+  P --> G[Dependency DAG evaluation]
+  G -->|blocked| W[Typed wait reason + next wake]
+  G -->|ready| E[Capability + health + quota + cooldown gates]
+  E -->|ineligible| W
+  E -->|eligible| S[Route selection]
+  S --> L[Claim + lease]
+  L --> O{Execution evidence?}
+  O -->|No live run / heartbeat| U[Claimed, execution unverified]
+  O -->|Live run + heartbeat| EX[Observed executing]
+  EX --> PR[Progress + output receipts]
+  PR --> V[Independent verification / DoE]
+  V -->|Fail| SI[SIE intake + diagnosis]
+  V -->|Pass| T[Owning authority terminal receipt]
+  SI --> CAND[Candidate repair + exact-head tests]
+  CAND --> IV[Independent verification]
+  IV -->|Pass + promotion gate| PROM[Authorized promotion]
+  IV -->|Fail / hold| SI
+  PROM --> LEARN[Learning + regression watch]
+  T --> LEARN
+  W -->|condition cleared| G
+  U -->|execution observed| EX
+  W --> ESC[Threshold escalation, idempotent]
+  ESC -->|operator decision| G
+  subgraph Read model only
+    QD[QDesk projection: source + timestamp + freshness + evidence level]
+  end
+  P -.-> QD
+  W -.-> QD
+  EX -.-> QD
+  V -.-> QD
+  T -.-> QD
+  ESC -.-> QD

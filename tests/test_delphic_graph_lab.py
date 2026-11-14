@@ -168,3 +168,74 @@ def test_execute_normalizes_generator_graph_once_for_algorithm_and_digest():
 def test_maximal_common_ancestors_preserves_generator_edges():
     graph = {"A": (node for node in ["B", "C"]), "B": ["D"], "C": ["D"], "D": []}
     assert m.maximal_common_ancestors(graph, "D", "D") == ["D"]
+
+
+
+def test_ast_preorder_preserves_child_order_and_rejects_non_tree_edges():
+    tree = {"Module": ["Class", "Function"], "Class": ["Method"], "Method": [], "Function": []}
+    assert m.ast_preorder(tree, "Module") == ["Module", "Class", "Method", "Function"]
+    try:
+        m.ast_preorder({"Root": ["A", "B"], "A": ["C"], "B": ["C"], "C": []}, "Root")
+    except ValueError as exc:
+        assert "multiple parents" in str(exc)
+    else:
+        raise AssertionError("expected AST multiple-parent rejection")
+
+
+def test_ast_preorder_rejects_unreachable_nodes_and_cycles():
+    try:
+        m.ast_preorder({"Root": [], "Orphan": []}, "Root")
+    except ValueError as exc:
+        assert "unreachable" in str(exc)
+    else:
+        raise AssertionError("expected unreachable AST node rejection")
+    try:
+        m.ast_preorder({"Root": ["Child"], "Child": ["Root"]}, "Root")
+    except ValueError as exc:
+        assert "parent" in str(exc) or "cycle" in str(exc)
+    else:
+        raise AssertionError("expected AST cycle rejection")
+
+
+def test_markov_layer_propagation_conserves_mass_at_every_layer():
+    result = m.markov_layer_propagation(
+        ["A", "B", "C"],
+        {"A": {"B": 0.7, "C": 0.3}, "B": {"B": 0.5, "C": 0.5}, "C": {"C": 1.0}},
+        {"A": 1.0},
+        4,
+    )
+    assert len(result["layers"]) == 5
+    assert all(abs(total - 1.0) < 1e-9 for total in result["layer_mass"])
+    assert abs(result["layers"][1]["B"] - 0.7) < 1e-9
+    assert abs(result["layers"][1]["C"] - 0.3) < 1e-9
+
+
+def test_markov_layer_propagation_rejects_unnormalized_rows():
+    try:
+        m.markov_layer_propagation(["A", "B"], {"A": {"B": 0.8}, "B": {"B": 1.0}}, {"A": 1.0}, 1)
+    except ValueError as exc:
+        assert "sum to 1.0" in str(exc)
+    else:
+        raise AssertionError("expected transition row normalization failure")
+
+
+def test_temporal_lineage_preserves_missing_provenance_and_checks_parent_order():
+    result = m.temporal_lineage([
+        {"id": "s1", "observed_at": "2026-11-01T00:00:00Z", "source_sha": "abc", "parent_id": None},
+        {"id": "s2", "observed_at": "2026-11-02T00:00:00Z", "source_sha": None, "parent_id": "s1"},
+    ])
+    assert result["structurally_valid"] is True
+    assert result["provenance_complete"] is False
+    assert result["edges"] == [{"from": "s1", "to": "s2"}]
+    assert {"snapshot_id": "s2", "reason": "source_sha_missing"} in result["warnings"]
+
+
+def test_temporal_lineage_rejects_forward_parent_and_non_monotonic_time():
+    result = m.temporal_lineage([
+        {"id": "s1", "observed_at": "2026-11-02T00:00:00Z", "source_sha": "abc", "parent_id": "s2"},
+        {"id": "s2", "observed_at": "2026-11-01T00:00:00Z", "source_sha": "def", "parent_id": None},
+    ])
+    reasons = {item["reason"] for item in result["warnings"]}
+    assert "parent_not_previously_observed" in reasons
+    assert "non_monotonic_timestamp" in reasons
+    assert result["structurally_valid"] is False

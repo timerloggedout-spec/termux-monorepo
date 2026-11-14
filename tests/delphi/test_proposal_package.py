@@ -38,7 +38,7 @@ class TestProposalPackage(unittest.TestCase):
         manifest = self.manifest()
         reversed_digest = package_digest(
             manifest["source_ref"], manifest["package_id"],
-            manifest["package_path"], list(reversed(manifest["files"])),
+            manifest["package_path"], list(reversed(manifest["files"])), manifest["package_author"],
         )
         self.assertEqual(manifest["package_digest"], reversed_digest)
         self.assertEqual(validate_manifest(manifest), [])

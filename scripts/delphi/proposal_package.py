@@ -297,7 +297,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         result = {"schema": "delphi-package-consumer-verification/v1",
                   "disposition": "VERIFIED" if not errors else "HELD",
-                  "package_digest": manifest.get("package_digest"),
+                  "package_digest": manifest.get("package_digest") if isinstance(manifest, dict) else None,
                   "errors": errors}
     output = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.out:

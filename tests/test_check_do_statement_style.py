@@ -51,7 +51,7 @@ def test_repo_action_verbs_are_recognized_as_imperative(monkeypatch):
     module = load_style_module(monkeypatch)
     verbs = {
         "allow", "block", "canonicalize", "centralize", "constrain",
-        "cover", "distinguish", "lock", "propagate", "reject", "share", "specify",
-        "support", "prevent", "normalize", "recognize", "skip", "ignore",
+        "cover", "carry", "distinguish", "emit", "exclude", "extend", "lock", "propagate", "reject", "share", "specify",
+        "support", "pass", "prevent", "normalize", "recognize", "skip", "ignore",
     }
     assert verbs <= module["IMPERATIVE"]

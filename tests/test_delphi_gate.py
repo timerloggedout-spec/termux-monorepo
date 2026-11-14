@@ -328,11 +328,17 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
         artifact_bytes = artifact.read_bytes()
 
         class PackageGH:
-            def __init__(self):
+            def __init__(self, source_mode="100644"):
                 self.refs = []
+                self.source_mode = source_mode
             def req(self, method, path, body=None):
                 assert method == "GET"
                 ref = path.rsplit("?ref=", 1)[1]
+                if path.startswith("/git/trees/"):
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if ref == manifest_ref else
+                            [{"path": "proposal/RFP.md", "type": "blob", "mode": self.source_mode}])
+                    return {"truncated": False, "tree": rows}
                 self.refs.append((path.split("?", 1)[0], ref))
                 payload = manifest_bytes if path.startswith("/contents/proposal/package.json") else artifact_bytes
                 return {"type": "file", "encoding": "base64",
@@ -353,6 +359,8 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
             ("/contents/proposal/package.json", manifest_ref),
             ("/contents/proposal/RFP.md", source_ref),
         ]
+        with __import__("pytest").raises(ValueError, match="symlink"):
+            gate.verify_issue_package_binding(PackageGH(source_mode="120000"), {"body": body})
 
 
 def test_open_rfp_issue_census_paginates_and_deduplicates():

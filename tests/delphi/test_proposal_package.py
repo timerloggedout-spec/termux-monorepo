@@ -37,18 +37,28 @@ class TestProposalPackage(unittest.TestCase):
         )
 
     def test_delphi_gate_binds_immutable_package_and_all_file_bytes(self):
-        manifest = self.manifest()
-        manifest_path = "docs/proposals/que-sie-test/PACKAGE.json"
+        package_path = "docs/proposals/que-sie-test"
+        package_root = self.root / package_path
+        package_root.mkdir(parents=True)
+        for name in ("RFP.md", "MANIFEST.md", "ITEMS.md"):
+            (package_root / name).write_bytes((self.root / name).read_bytes())
+        manifest = build_manifest(
+            source_ref="a" * 40,
+            package_id="que-sie-test",
+            package_path=package_path,
+            package_author="builder",
+            root=self.root,
+            files=[f"{package_path}/{name}" for name in ("RFP.md", "MANIFEST.md", "ITEMS.md")],
+        )
+        manifest_path = package_path + "/PACKAGE.json"
         payloads = {
             manifest_path: json.dumps(manifest).encode("utf-8"),
-            "docs/proposals/que-sie-test/RFP.md": (self.root / "RFP.md").read_bytes(),
-            "docs/proposals/que-sie-test/MANIFEST.md": (self.root / "MANIFEST.md").read_bytes(),
-            "docs/proposals/que-sie-test/ITEMS.md": (self.root / "ITEMS.md").read_bytes(),
+            **{f"{package_path}/{name}": (package_root / name).read_bytes()
+               for name in ("RFP.md", "MANIFEST.md", "ITEMS.md")},
         }
 
         class FakeGitHub:
             def req(self, method, path):
-                self.assert_method = method
                 content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
                 raw = payloads[content_path]
                 return {"type": "file", "encoding": "base64",
@@ -63,7 +73,7 @@ class TestProposalPackage(unittest.TestCase):
         self.assertEqual(binding["package_digest"], manifest["package_digest"])
         self.assertEqual(binding["file_count"], 3)
 
-        payloads["docs/proposals/que-sie-test/RFP.md"] = b"# drift\\n"
+        payloads[package_path + "/RFP.md"] = b"# drift\\n"
         with self.assertRaisesRegex(ValueError, "file hash mismatch"):
             verify_issue_package_binding(FakeGitHub(), issue)
 

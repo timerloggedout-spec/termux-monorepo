@@ -12,6 +12,9 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+from she.orchestration.dag import GraphValidationError, plan_dag
 WORKFLOW_ID = re.compile(r"^[a-z0-9][a-z0-9._-]{2,127}$")
 TASK_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 SHA = re.compile(r"^[0-9a-f]{40}$")
@@ -102,25 +105,20 @@ def validate_contract(data: Any) -> list[str]:
                 if dep not in task_ids:
                     errors.append(f"tasks.{task_id}: unresolved dependency {dep}")
 
-        # Kahn's algorithm detects cycles without relying on input ordering.
-        indegree = {task_id: 0 for task_id in task_ids}
-        children = {task_id: [] for task_id in task_ids}
-        for task_id, deps in dependencies.items():
-            for dep in deps:
-                if dep in task_ids:
-                    indegree[task_id] += 1
-                    children[dep].append(task_id)
-        ready = [task_id for task_id, degree in indegree.items() if degree == 0]
-        visited = 0
-        while ready:
-            current = ready.pop()
-            visited += 1
-            for child in children[current]:
-                indegree[child] -= 1
-                if indegree[child] == 0:
-                    ready.append(child)
-        if visited != len(task_ids):
-            errors.append("tasks: dependency graph contains a cycle")
+        # Reuse the repository's canonical deterministic DAG planner.
+        edges = [
+            (dependency, task_id)
+            for task_id, deps in dependencies.items()
+            for dependency in deps
+            if dependency in task_ids
+        ]
+        try:
+            dag_plan = plan_dag(task_ids, edges)
+        except GraphValidationError as exc:
+            errors.append(f"tasks: invalid dependency graph: {exc}")
+        else:
+            if not dag_plan.is_acyclic:
+                errors.append("tasks: dependency graph contains a cycle")
 
     constraints = data.get("constraints")
     if not isinstance(constraints, dict):

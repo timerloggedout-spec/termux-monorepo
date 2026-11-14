@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from typing import Any
 
 
@@ -20,6 +21,14 @@ REQUIRED_INSTANCE = (
 def _digest(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _string_set(value: Any) -> set[str] | None:
+    if not isinstance(value, (list, tuple)) or any(
+        not isinstance(item, str) or not item for item in value
+    ):
+        return None
+    return set(value)
 
 
 def _eligible(candidate: dict[str, Any], task: dict[str, Any]) -> tuple[bool, list[str]]:
@@ -37,13 +46,24 @@ def _eligible(candidate: dict[str, Any], task: dict[str, Any]) -> tuple[bool, li
         reasons.append("capacity_unavailable")
     if candidate.get("quota_state") != "available" or candidate.get("quota_class") != "free":
         reasons.append("free_quota_not_available")
-    if candidate.get("action_classes") is None or task.get("action_class") not in candidate.get("action_classes", []):
+    action_classes = _string_set(candidate.get("action_classes"))
+    if action_classes is None or task.get("action_class") not in action_classes:
         reasons.append("action_class_not_authorized")
-    required_tools = set(task.get("required_tools", []))
-    available_tools = set(candidate.get("available_tools", []))
-    if not required_tools.issubset(available_tools):
+
+    required_tools = _string_set(task.get("required_tools", []))
+    available_tools = _string_set(candidate.get("available_tools"))
+    if required_tools is None:
+        reasons.append("required_tools_evidence_invalid")
+    if available_tools is None:
+        reasons.append("available_tools_evidence_invalid")
+    if required_tools is not None and available_tools is not None and not required_tools.issubset(available_tools):
         reasons.append("required_tools_unavailable")
-    if candidate.get("context_class") != task.get("context_class"):
+
+    task_context = task.get("context_class")
+    candidate_context = candidate.get("context_class")
+    if not isinstance(task_context, str) or not task_context or not isinstance(candidate_context, str) or not candidate_context:
+        reasons.append("context_class_evidence_missing")
+    elif candidate_context != task_context:
         reasons.append("context_class_mismatch")
     return not reasons, reasons
 
@@ -68,10 +88,15 @@ def build_candidate_packet(task: dict[str, Any], candidates: list[dict[str, Any]
         if not ok:
             excluded.append({**record, "reasons": sorted(reasons)})
             continue
-        fit = candidate.get("task_fit_score", 0)
-        reliability = candidate.get("verified_reliability", 0)
-        if not isinstance(fit, (int, float)) or not isinstance(reliability, (int, float)):
-            excluded.append({**record, "reasons": ["non_numeric_ranking_evidence"]})
+        fit = candidate.get("task_fit_score")
+        reliability = candidate.get("verified_reliability")
+        if (type(fit) not in (int, float) or not math.isfinite(fit)
+                or not 0.0 <= fit <= 1.0):
+            excluded.append({**record, "reasons": ["task_fit_score_missing_or_invalid"]})
+            continue
+        if (type(reliability) not in (int, float) or not math.isfinite(reliability)
+                or not 0.0 <= reliability <= 1.0):
+            excluded.append({**record, "reasons": ["verified_reliability_missing_or_invalid"]})
             continue
         eligible.append({**record, "task_fit_score": fit, "verified_reliability": reliability,
                          "score": fit * 0.7 + reliability * 0.3})
@@ -89,8 +114,15 @@ def build_candidate_packet(task: dict[str, Any], candidates: list[dict[str, Any]
         "selected": selection,
         "eligible": eligible,
         "excluded": sorted(excluded, key=lambda x: (str(x.get("participant_id")), str(x.get("instance_key")))),
+        "selection_provenance": {
+            "previous_provider": previous_provider,
+            "rotation_applied": bool(selection and previous_provider and selection["provider"] != previous_provider),
+        },
         "dispatch_authorized": False,
         "wallet_mutation_authorized": False,
-        "input_digest": _digest({"task": task, "candidates": candidates}),
+        "input_digest": _digest({
+            "task": task, "candidates": candidates,
+            "previous_provider": previous_provider,
+        }),
     }
     return packet

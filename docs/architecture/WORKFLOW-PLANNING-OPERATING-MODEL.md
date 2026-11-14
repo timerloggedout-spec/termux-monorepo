@@ -91,7 +91,7 @@ A workflow is a versioned graph of typed task nodes and typed transitions.
 }
 ```
 
-This is illustrative, not a claim that a production schema or validator already exists. The next implementation must publish a formal JSON Schema and deterministic validator before workflows adopt it.
+The initial structural contract is published at `docs/schemas/workflow-contract-v1.schema.json`. It is a schema proposal, not yet a production admission validator; a deterministic validator and DAG/reference integrity checks are still required before workflows adopt it.
 
 ### 3.3 State model
 
@@ -260,7 +260,7 @@ A simulation receipt is a hypothesis artifact. It cannot create QUE claims, writ
 
 **Gate 0 — inventory:** map existing workflows and their owners; identify duplicate/stale/superseded routes.
 
-**Gate 1 — contract:** define WFC JSON Schema, validator, state model, and versioning rules.
+**Gate 1 — contract:** review `docs/schemas/workflow-contract-v1.schema.json`; implement a deterministic validator, DAG/reference integrity checks, state model and compatibility/versioning tests.
 
 **Gate 2 — read-only compiler:** generate Mermaid and planning projections; compare against existing diagrams/workflows.
 

@@ -2,7 +2,7 @@
 
 **Observed:** 2026-11-14  
 **Repository:** `timerloggedout-spec/termux-monorepo`  
-**Working branch:** `feat/que-device-capability-registry-20261114`
+**Working branch:** `feat/que-device-validation-20261114`
 
 ## Primary repository evidence
 

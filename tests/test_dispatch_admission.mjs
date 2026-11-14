@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const admission = require('../scripts/ci/dispatch_admission.js');
-const { evaluateAdmission, bucketRuns, OUTPUT_LANES } = admission;
+const { evaluateAdmission, bucketRuns, classifyPressureError, OUTPUT_LANES } = admission;
 
 const P = (byWorkflow) => ({ byWorkflow });
 
@@ -169,3 +169,37 @@ test('rate-limit deferral fails closed', () => {
   const r2 = evaluateAdmission({ pressure: null, force: true });
   for (const rec of r2.records) assert.equal(rec.admitted, true, rec.lane);
 });
+
+
+// Pressure-read failures must preserve the actual cause rather than label
+// every integration error as an API rate limit.
+test('rate-limit and permission failures have distinct admission reasons', () => {
+  assert.equal(classifyPressureError({ status: 429, message: 'rate limit exceeded' }), 'rate_limited');
+  assert.equal(classifyPressureError({
+    status: 403, response: { headers: { 'x-ratelimit-remaining': '0' } },
+  }), 'rate_limited');
+  assert.equal(classifyPressureError({
+    status: 403, message: 'Resource not accessible by integration',
+  }), 'permission_denied');
+  assert.equal(classifyPressureError({ status: 401, message: 'Bad credentials' }), 'permission_denied');
+});
+
+test('unexpected Octokit method errors are api_error, not rate_limited', () => {
+  const error = new TypeError('github.rest.actions.listWorkflows is not a function');
+  assert.equal(classifyPressureError(error), 'api_error');
+  const result = evaluateAdmission({
+    pressure: null, pressureFailureReason: classifyPressureError(error), force: false,
+  });
+  assert.ok(result.records.every((record) => record.admitted === false));
+  assert.ok(result.records.every((record) => record.reason === 'api_error'));
+});
+
+test('quota dispatch tree uses the supported Octokit workflow-list method', () => {
+  const workflow = readFileSync(
+    new URL('../.github/workflows/quota-dispatch-tree.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /github\\.rest\\.actions\\.listRepoWorkflows\\(/);
+  assert.doesNotMatch(workflow, /github\\.rest\\.actions\\.listWorkflows\\(/);
+});
+

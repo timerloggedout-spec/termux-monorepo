@@ -14,7 +14,7 @@ reviewers:
     role: author+executor
     status: executing
 related_issues: [5389, 5283, 5286, 5113, 5116, 5156]
-related_prs: [5145, 5371, 5372, 5330]
+related_prs: [5390, 5145, 5371, 5372, 5330]
 related_branches: [feat/que-sie-pipeline-integration, feat/workflow-planning-operating-model]
 gates_required: [repo-gate, termux-smoke]
 ---
@@ -44,4 +44,4 @@ Connect existing QUE ranking, claim, lease, watchdog and SIE learning machinery 
 
 - QUE task #5389 filed with source triggers, stage contract, acceptance criteria and delivery slices.
 - Added a deterministic SIE stage model, JSON Schema and regression tests.
-- Implementation status: contract slice committed on feature branch; live trigger and Delphi dispatch wiring remain subsequent items.
+- Implementation status: contract slice committed on feature branch; live trigger and Delphi dispatch wiring remain subsequent items. PR #5390 carries the initial contract and intake bridge for review.

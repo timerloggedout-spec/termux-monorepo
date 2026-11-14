@@ -19,18 +19,15 @@ def queue_stall_groups(feed: dict) -> list[dict]:
         issue = row.get("issue")
         state = str(row.get("state") or "").lower()
         events = row.get("stall_events") or []
-        if not isinstance(issue, int) or row.get("claim"):
+        if not isinstance(issue, int) or state == "claimed" or row.get("claim"):
             continue
         if state != "escalated" and not events:
             continue
-        source_kind = "stall_gap" if events else "queue_item"
+        source_kind = "stall_gap"
         path = f"dispatch-issue-{issue}"
         event_kinds = sorted({str(event.get("kind") or "unknown") for event in events})
-        fingerprint = {
-            "state": state,
-            "tier": (row.get("tier") or {}).get("name", "unknown"),
-            "event_kinds": event_kinds,
-        }
+        # One unresolved dispatch stall maps to one repair item across tier/state updates.
+        fingerprint = {"issue": issue, "failure_class": "dispatch-stall"}
         signature = hashlib.sha256(canonical_json(fingerprint)).hexdigest()[:12]
         revision_material = {
             "issue": issue,

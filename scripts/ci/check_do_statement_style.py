@@ -17,12 +17,12 @@ NEGATIVE_FIRST = re.compile(
     re.IGNORECASE,
 )
 IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
-    "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
-    "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
+    "accept", "add", "align", "allow", "apply", "assert", "audit", "block", "build", "canonicalize", "centralize", "bump", "check", "close",
+    "compare", "constrain", "correct", "cover", "create", "carry", "define", "deploy", "differentiate", "emit", "exclude", "extend", "distinguish", "document", "enforce", "expand", "fix", "gate",
+    "include", "inspect", "ignore", "keep", "lock", "measure", "migrate", "move", "normalize", "open", "preserve", "propagate",
+    "pass", "publish", "recognize", "record", "reconcile", "refresh", "refine", "register", "reject", "remove", "rename", "repair",
+    "replace", "require", "restore", "route", "run", "set", "share", "skip", "snapshot", "specify", "split", "support", "sync",
+    "test", "update", "use", "validate", "verify", "wire", "prevent", "collect", "generate", "regenerate", "rebuild",
 }
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
@@ -37,6 +37,25 @@ def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
         if NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
+
+
+def subject_verb(subject: str) -> str:
+    first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
+    return first[0].lower() if first else ""
+
+
+def commit_subjects(base: str, head: str) -> list[str]:
+    return subprocess.run(
+        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"],
+        check=True, capture_output=True, text=True,
+    ).stdout.splitlines()
+
+
+def commit_bodies(base: str, head: str) -> str:
+    return subprocess.run(
+        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"],
+        check=True, capture_output=True, text=True,
+    ).stdout
 
 
 def inspect_git_range(base: str, head: str) -> None:
@@ -55,18 +74,9 @@ def inspect_git_range(base: str, head: str) -> None:
                     f"{current_path}: lead with the intended DO action: {added.strip()}"
                 )
 
-    subjects = subprocess.run(
-        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"],
-        check=True, capture_output=True, text=True,
-    ).stdout.splitlines()
-    bodies = subprocess.run(
-        ["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"],
-        check=True, capture_output=True, text=True,
-    ).stdout
-    inspect_text("commit.body", bodies)
-    for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
-        verb = first[0].lower() if first else ""
+    inspect_text("commit.body", commit_bodies(base, head))
+    for subject in commit_subjects(base, head):
+        verb = subject_verb(subject)
         if verb not in IMPERATIVE:
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
@@ -107,18 +117,25 @@ def inspect_event() -> None:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
 
 
-event = {}
-if EVENT_PATH and Path(EVENT_PATH).is_file():
-    event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
+def main() -> int:
+    errors.clear()
+    event = {}
+    if EVENT_PATH and Path(EVENT_PATH).is_file():
+        event = json.loads(Path(EVENT_PATH).read_text(encoding="utf-8"))
 
-inspect_pr_commits()
-inspect_push_commits(event)
-inspect_event()
+    inspect_pr_commits()
+    inspect_push_commits(event)
+    inspect_event()
 
-if errors:
-    print("DO-statement style: FAIL")
-    for error in errors:
-        print(f" - {error}")
-    sys.exit(1)
+    if errors:
+        print("DO-statement style: FAIL")
+        for error in errors:
+            print(f" - {error}")
+        return 1
 
-print("DO-statement style: PASS")
+    print("DO-statement style: PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

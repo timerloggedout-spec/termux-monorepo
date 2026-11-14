@@ -86,7 +86,7 @@ def validate_contract(data: Any) -> list[str]:
             if task_id in deps:
                 errors.append(f"{prefix}.depends_on: task cannot depend on itself")
             dependencies[task_id] = deps
-            if "side_effect_class" in task and task["side_effect_class"] not in SIDE_EFFECTS:
+            if "side_effect_class" in task and (not isinstance(task["side_effect_class"], str) or task["side_effect_class"] not in SIDE_EFFECTS):
                 errors.append(f"{prefix}.side_effect_class: unsupported value")
             if "max_attempts" in task and (
                 isinstance(task["max_attempts"], bool)
@@ -133,14 +133,14 @@ def validate_contract(data: Any) -> list[str]:
                 or (key == "max_attempts" and constraints[key] > 20)
             ):
                 errors.append(f"constraints.{key}: expected a positive integer")
-        if "external_writes" in constraints and constraints["external_writes"] not in WRITE_POLICIES:
+        if "external_writes" in constraints and (not isinstance(constraints["external_writes"], str) or constraints["external_writes"] not in WRITE_POLICIES):
             errors.append("constraints.external_writes: unsupported policy")
         if "budget" in constraints:
             budget = constraints["budget"]
             if not isinstance(budget, dict):
                 errors.append("constraints.budget: expected an object")
             else:
-                if budget.get("unit") not in BUDGET_UNITS:
+                if not isinstance(budget.get("unit"), str) or budget["unit"] not in BUDGET_UNITS:
                     errors.append("constraints.budget.unit: unsupported unit")
                 limit = budget.get("limit")
                 if isinstance(limit, bool) or not isinstance(limit, (int, float)) or limit <= 0:

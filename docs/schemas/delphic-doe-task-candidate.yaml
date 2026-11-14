@@ -1,0 +1,17 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "delphic-doe-task-candidate-v1"
+title: "Delphic DoE read-only task candidate packet"
+type: object
+additionalProperties: false
+required: [schema, task_id, status, selection_policy, selected, eligible, excluded, dispatch_authorized, wallet_mutation_authorized, input_digest]
+properties:
+  schema: {const: "delphic-doe-task-candidate/v1"}
+  task_id: {type: string, minLength: 1}
+  status: {enum: [CANDIDATES_AVAILABLE, HELD_NO_ELIGIBLE_INSTANCE]}
+  selection_policy: {const: "task_fit_then_verified_reliability_no_hard_select_v1"}
+  selected: {type: [object, "null"]}
+  eligible: {type: array, items: {type: object}}
+  excluded: {type: array, items: {type: object}}
+  dispatch_authorized: {const: false}
+  wallet_mutation_authorized: {const: false}
+  input_digest: {type: string, pattern: "^[0-9a-f]{64}$"}

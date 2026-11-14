@@ -70,8 +70,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: delphic-observatory-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
+  group: delphic-observatory-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   deterministic-oracle:

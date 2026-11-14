@@ -9,9 +9,9 @@ verified_at: 2026-11-14
 
 # QUE Device Validation
 
-The **QUE Device Validation** design gives each independently owned device-dependent repository module its own validation lane. QUE remains the admission and dispatch authority; backend tools are registered capabilities, not schedulers.
+The **QUE Device Validation** design gives each independently owned device-dependent repository module its own validation lane. QUE remains the umbrella dispatch/assurance domain. Cadence owns admission/tiering, dispatch machinery owns rank/claim/lease/watchdog, and registered claimable routes own executable triggers. Backend tools are registered capabilities, not schedulers.
 
-## Canonical sources
+## Existing QUE integration sources\n\n- [QUE auto-claim and lease contract](../../../../docs/ops/QUE-AUTO-CLAIM.md)\n- [Claimable route registry contract](../../../../docs/ops/CLAIMABLE-ROUTES.md)\n- [Queue dependency tiers](../../../../docs/ops/QUEUE-DEPENDENCY-TIERS.md)\n\n## Canonical sources
 
 - Architecture: [QUE-DEVICE-VALIDATION.md](../../../../docs/architecture/QUE-DEVICE-VALIDATION.md)
 - Mermaid source: [QUE-DEVICE-VALIDATION.mmd](../../../../docs/architecture/QUE-DEVICE-VALIDATION.mmd)

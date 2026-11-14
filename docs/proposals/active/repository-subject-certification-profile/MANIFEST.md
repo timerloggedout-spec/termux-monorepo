@@ -12,7 +12,7 @@ reviewers:
   - id: ChatGPT
     role: author+executor
     status: executing
-related_prs: []
+related_prs: [5433]
 related_issues: []
 gates_required:
   - repo-gate

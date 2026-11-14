@@ -5,6 +5,10 @@
 
 The existing `PDDL-SIGLARY-EXAMPLE.md` remains the notation/reading example. This file extends the planning model; it does not supersede the canonical QUE implementation or workflow contract.
 
+## Siglary relationship
+
+**PDDL ⊂ Siglary.** Siglary is the parent notation system and vocabulary governance; PDDL is its specialized formal-planning register. Preserve standard PDDL domain/problem syntax wherever planner interoperability requires it. Siglary metadata and adapters supply the wider notation context, operator vocabulary mapping and provenance. Register new Siglary terms/chords through the Linguist-owned Matrice; keep planner-facing PDDL tokens standards-compatible.
+
 ## Planning boundary
 
 PDDL answers: *is there a sequence of legal actions that reaches the goal under declared predicates/resources?*

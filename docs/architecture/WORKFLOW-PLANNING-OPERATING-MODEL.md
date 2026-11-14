@@ -91,7 +91,7 @@ A workflow is a versioned graph of typed task nodes and typed transitions.
 }
 ```
 
-The initial structural contract is published at `docs/schemas/workflow-contract-v1.schema.json`. It is a schema proposal, not yet a production admission validator; a deterministic validator and DAG/reference integrity checks are still required before workflows adopt it.
+The initial structural contract is published at `docs/schemas/workflow-contract-v1.schema.json`. A standard-library validator at `scripts/workflows/validate_wfc.py` checks required fields, identifiers, SHA shape, task references, DAG cycles, side-effect classes and budget/constraint types. Its regression suite is `tests/test_workflow_contract_validator.py`. This is an initial structural validator, not a complete JSON Schema draft-2020-12 implementation or production admission gate.
 
 ### 3.3 State model
 
@@ -260,7 +260,7 @@ A simulation receipt is a hypothesis artifact. It cannot create QUE claims, writ
 
 **Gate 0 — inventory:** map existing workflows and their owners; identify duplicate/stale/superseded routes.
 
-**Gate 1 — contract:** review `docs/schemas/workflow-contract-v1.schema.json`; implement a deterministic validator, DAG/reference integrity checks, state model and compatibility/versioning tests.
+**Gate 1 — contract:** review the schema and initial validator; add full schema conformance, state-machine semantics, compatibility/versioning tests and consumer adoption checks.
 
 **Gate 2 — read-only compiler:** generate Mermaid and planning projections; compare against existing diagrams/workflows.
 

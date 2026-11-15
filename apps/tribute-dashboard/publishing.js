@@ -1,6 +1,7 @@
 (function (root) {
   "use strict";
   var REPOSITORY = "timerloggedout-spec/timerloggedout-spec.github.io";
+  var PAGES_SOURCE_BRANCH = "main-landing-studysprint-link";
   var API_ROOT = "https://api.github.com";
   var MAX_PR_COMPARISONS = 20;
   function classifyComparison(compare) {
@@ -9,6 +10,14 @@
     if (compare.ahead_by > 0 && compare.behind_by === 0) return "AHEAD";
     if (compare.ahead_by > 0 && compare.behind_by > 0) return "DIVERGED";
     if (compare.ahead_by === 0 && compare.behind_by > 0) return "BEHIND";
+    return "UNKNOWN";
+  }
+  function classifyPagesSource(compare) {
+    if (!compare || !Number.isFinite(compare.ahead_by) || !Number.isFinite(compare.behind_by)) return "UNKNOWN";
+    if (compare.ahead_by === 0 && compare.behind_by === 0) return "ALIGNED";
+    if (compare.ahead_by > 0 && compare.behind_by === 0) return "FAST_FORWARD_AVAILABLE";
+    if (compare.ahead_by > 0 && compare.behind_by > 0) return "DIVERGED";
+    if (compare.ahead_by === 0 && compare.behind_by > 0) return "SOURCE_AHEAD";
     return "UNKNOWN";
   }
   function buildBranchRows(branches, pulls, comparisons, auditedComparisons, defaultBranch) {
@@ -99,6 +108,15 @@
     var repository = results[0], branches = results[1], pulls = results[2];
     var publicationRuns = selectPublicationRuns(results[3],results[4]);
     var defaultBranch = repository.default_branch || "main";
+    var pagesSourceResult = await fetchOptionalJson(compareUrl(REPOSITORY,PAGES_SOURCE_BRANCH,REPOSITORY,defaultBranch));
+    var pagesSourceBranch = branches.find(function (branch) { return branch.name === PAGES_SOURCE_BRANCH; });
+    var defaultBranchInfo = branches.find(function (branch) { return branch.name === defaultBranch; });
+    var pagesSource = {
+      branch:PAGES_SOURCE_BRANCH, defaultBranch:defaultBranch,
+      sourceSha:pagesSourceBranch && pagesSourceBranch.commit ? pagesSourceBranch.commit.sha : null,
+      targetSha:defaultBranchInfo && defaultBranchInfo.commit ? defaultBranchInfo.commit.sha : null,
+      comparison:pagesSourceResult.data || null, error:pagesSourceResult.error || null
+    };
     var comparisons = {}, auditedComparisons = {}, selectedPulls = pulls.slice(0,MAX_PR_COMPARISONS);
     await Promise.all(selectedPulls.map(async function (pr) {
       var baseRepo = pr.base && pr.base.repo && pr.base.repo.full_name ? pr.base.repo.full_name : REPOSITORY;
@@ -112,7 +130,7 @@
       catch (error) { auditedComparisons[b.name] = {error:error.message}; }
     }));
     return {branches:branches,pulls:pulls,comparisons:comparisons,auditedComparisons:auditedComparisons,
-      publicationRuns:publicationRuns,defaultBranch:defaultBranch,comparedPullCount:selectedPulls.length,compareLimit:MAX_PR_COMPARISONS,checkedAt:new Date().toISOString()};
+      publicationRuns:publicationRuns,pagesSource:pagesSource,defaultBranch:defaultBranch,comparedPullCount:selectedPulls.length,compareLimit:MAX_PR_COMPARISONS,checkedAt:new Date().toISOString()};
   }
   function renderSnapshot(snapshot) {
     var rows = buildBranchRows(snapshot.branches,snapshot.pulls,snapshot.comparisons,snapshot.auditedComparisons,snapshot.defaultBranch);
@@ -143,6 +161,18 @@
       var mergeBaseSha = cmp && cmp.merge_base_commit && cmp.merge_base_commit.sha ? shortSha(cmp.merge_base_commit.sha) : "unknown";
       return '<tr><td><a href="' + escapeHtml(pr.html_url) + '" target="_blank" rel="noopener noreferrer">#' + pr.number + "</a></td><td>" + escapeHtml(pr.title) + "</td><td><code>" + escapeHtml(baseVersion) + "</code></td><td><code>" + escapeHtml(mergeBaseSha) + "</code></td><td><code>" + escapeHtml(shortSha(pr.head && pr.head.sha)) + "</code></td><td>" + pill(state,state === "DIVERGED" || state === "BEHIND" ? "bad" : "") + ' <span class="muted">' + ahead + " ahead / " + behind + " behind</span></td><td>" + escapeHtml((pr.updated_at || "").slice(0,10)) + '</td><td><a href="' + escapeHtml(pr.html_url + "/checks") + '" target="_blank" rel="noopener noreferrer">Open checks</a></td></tr>';
     }).join("") + "</tbody></table></div>" : '<p class="empty">No open pull requests found for this repository.</p>';
+    var pagesSourceNode = document.getElementById("publishing-pages-source");
+    var sourceComparison = snapshot.pagesSource.comparison;
+    var sourceState = classifyPagesSource(sourceComparison);
+    var sourceAhead = sourceComparison && Number.isFinite(sourceComparison.ahead_by) ? sourceComparison.ahead_by : "?";
+    var sourceBehind = sourceComparison && Number.isFinite(sourceComparison.behind_by) ? sourceComparison.behind_by : "?";
+    var sourceTone = sourceState === "ALIGNED" || sourceState === "FAST_FORWARD_AVAILABLE" ? "ok" : (sourceState === "DIVERGED" || sourceState === "SOURCE_AHEAD" ? "bad" : "");
+    var sourceDetail = snapshot.pagesSource.error
+      ? "Comparison unavailable: " + snapshot.pagesSource.error
+      : (sourceState === "FAST_FORWARD_AVAILABLE"
+        ? snapshot.pagesSource.defaultBranch + " is " + sourceAhead + " commits ahead / " + sourceBehind + " behind; a fast-forward is available."
+        : (sourceState === "ALIGNED" ? "The Pages source branch matches the default branch." : "Comparison: " + sourceAhead + " ahead / " + sourceBehind + " behind."));
+    pagesSourceNode.innerHTML = '<p>' + pill(sourceState,sourceTone) + ' <strong>' + escapeHtml(snapshot.pagesSource.branch) + "</strong> → <strong>" + escapeHtml(snapshot.pagesSource.defaultBranch) + "</strong></p><p>" + escapeHtml(sourceDetail) + '</p><p class="muted">Source SHA <code>' + escapeHtml(shortSha(snapshot.pagesSource.sourceSha)) + '</code> · Target SHA <code>' + escapeHtml(shortSha(snapshot.pagesSource.targetSha)) + '</code> · <a href="https://github.com/' + REPOSITORY + '/compare/' + encodeURIComponent(snapshot.pagesSource.branch) + '...' + encodeURIComponent(snapshot.pagesSource.defaultBranch) + '" target="_blank" rel="noopener noreferrer">Open exact comparison</a></p>';
     var deploymentNode = document.getElementById("publishing-deployments");
     deploymentNode.innerHTML = snapshot.publicationRuns.map(function (group) {
       var heading = "<h3>" + escapeHtml(group.label) + "</h3>";
@@ -174,7 +204,7 @@
       status.textContent = "Unable to refresh public GitHub evidence: " + error.message;
     } finally { button.disabled = false; }
   }
-  var api = {classifyComparison:classifyComparison,buildBranchRows:buildBranchRows,summarize:summarize,selectPublicationRuns:selectPublicationRuns};
+  var api = {classifyComparison:classifyComparison,classifyPagesSource:classifyPagesSource,buildBranchRows:buildBranchRows,summarize:summarize,selectPublicationRuns:selectPublicationRuns};
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root) root.PublishingReconciliation = api;
   if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded",function () {

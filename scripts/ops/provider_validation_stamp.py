@@ -35,6 +35,10 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
     no_cost = receipt.get("no_cost_verified") is True
     if status == "inference_validated" and not no_cost:
         raise ValueError("success_without_no_cost_evidence")
+    if status == "inference_validated" and receipt.get("policy_admitted") is not True:
+        raise ValueError("success_without_provider_policy_admission")
+    if status == "inference_validated" and (receipt.get("terms_accepted") != "policy_asserted" or receipt.get("entitlement_verified") != "policy_asserted"):
+        raise ValueError("success_without_policy_assertions")
     if receipt.get("validation_scope") != "policy_gated_no_cost_inference_smoke":
         raise ValueError("receipt_validation_scope_invalid")
     if receipt.get("terms_accepted") not in {"policy_asserted", "not_verified"} or receipt.get("entitlement_verified") not in {"policy_asserted", "not_verified"}:

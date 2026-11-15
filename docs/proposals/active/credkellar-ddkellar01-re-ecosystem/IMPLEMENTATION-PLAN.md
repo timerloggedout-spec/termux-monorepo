@@ -125,6 +125,8 @@
 
 ### Task 6: QUE admission, ranking and execution handoff
 
+**Initial intake:** [QUE issue #5457](https://github.com/timerloggedout-spec/termux-monorepo/issues/5457) (research-only, tier-3 project-task filing; actual rank/claim state must be read from canonical QUE receipts).
+
 **Files:**
 - Create/update: canonical QUE issue(s), using existing project-task filing and dispatch stamp contract.
 - Update: proposal status only when QUE receipts support it.

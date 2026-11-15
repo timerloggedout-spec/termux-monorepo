@@ -417,6 +417,7 @@ FROM counts
 RETURNING records_inserted::text || '|' || records_duplicates::text;
 """
     sql = (
+        "SET standard_conforming_strings = on;\n"
         "BEGIN;\n"
         "CREATE TEMP TABLE _integration_batch_docs (doc jsonb NOT NULL) ON COMMIT DROP;\n"
         "INSERT INTO _integration_batch_docs(doc) VALUES\n" + values + ";\n"

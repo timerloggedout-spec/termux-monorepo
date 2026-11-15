@@ -21,6 +21,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 
 from llm_api_hub.server import research_providers, provider_extensions, provider_protocols
+from scripts import provider_model_catalog
 
 try:
     from scripts import provider_catalog_protocols

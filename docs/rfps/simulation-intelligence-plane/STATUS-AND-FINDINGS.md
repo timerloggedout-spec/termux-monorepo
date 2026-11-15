@@ -15,6 +15,20 @@ State: proposal and initial design package in parallel branch; no runtime implem
 - Workflow Planning Operating Model PR #5388 proposes WFC and explicit QUE × DoE optimization while reusing the existing DAG planner. Its PR status/base must be checked before depending on its files.
 - Existing DoE simulation work (e.g. MSM-026 economy backtests and field-simulation forecast work) demonstrates repository familiarity with deterministic seeded simulation, paired policy comparisons and immutable manifests. These are not the same as social multi-agent simulation.
 
+### Adapter and control-plane reconciliation
+
+- PR #4086 adds read-only provider evidence adapters and explicitly reuses existing router/capability-spine machinery rather than adding a duplicate router. It is a strong precedent for SIP's pure normalization boundary.
+- PR #5438 / #5437 establish an additive serialization adapter pattern: JSON remains canonical, external notation is an adapter, and QUE routing remains opt-in. SIP follows the same canonical-contract approach.
+- PR #5222 documents swarm-routing control-plane reconciliation, contract/runtime matrix, supersession register and unresolved composition questions.
+- PR #5029 establishes the Repository Intelligence & Collaboration Data Plane (RIDP); SIP must consume its repository intelligence rather than create a parallel data plane.
+- PR #5170 defines control-plane implementation contracts including capability registration, bounded dispatch, action/effect receipts and Admin Graph read model.
+- PR #5042 is the successor demand-driven lane matrix / Plan Canvas implementation; PR #5012 is its superseded draft.
+- PR #5194 / #5198 establish the DoE agentic logistics/free-inference control-plane proposal; SIP is not a competing logistics or provider-routing controller.
+- PR #5388 proposes the Workflow Contract connecting QUE, routing, PDDL/HTN, DoE/MVT and evidence while reusing the existing DAG planner. The contract was inspected on branch `feat/workflow-planning-operating-model`; its PR merge/rebase state must be verified before depending on its paths.
+- Branch-name reconnaissance also surfaced `control-plane-inventory-1`, `control-plane-readmodel`, `feat/hitl-control-plane-739`, `feat/ops-hitl-control-plane`, `feat/agent-toolchain-adapters`, `feat/system-one-adapter`, `feat/temporal-langsmith-adapter`, `feat/unified-feed-adapter-20261114`, `feat/web-adapter-foundry` and `test/llm-adapters`. A branch name is discovery evidence only; these are not all verified as merged or runtime-active.
+
+The resulting boundary is: SIP provides a domain adapter and simulation evidence model. It does not own admission, workflow planning, control-plane read models, provider routing, generic adapter infrastructure, or the canonical repository intelligence graph.
+
 ### Not yet confirmed
 - No verified MiroFish or OASIS adapter in the default-branch code search performed for this proposal.
 - No verified runtime deployment, credentials, package install, provider access or successful end-to-end run.

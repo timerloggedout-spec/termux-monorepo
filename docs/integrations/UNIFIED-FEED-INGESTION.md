@@ -178,7 +178,9 @@ The writer is `scripts/ops/integration_event.py`. It groups records by integrati
 - Delivery is assumed at-least-once.
 - Deduplication uses stable provider identity + source version; arrival time is not an idempotency key.
 - Preserve out-of-order arrivals with source event time, observation time and database record time.
-- Persist source cursors only after the corresponding batch transaction is acknowledged.
+- Persist source cursors only after the corresponding batch transaction is acknowledged. A `--batch-metadata-file` supplies optional cursor metadata keyed by record type and integration ID; `cursor_before` is attached to the first chunk and `cursor_after` only to the final chunk. Failed receipts always store a null `cursor_after`.
+- The read-only `integration_latest_cursors` view exposes only the latest emitted receipt with a non-null `cursor_after`; partially committed pages cannot advance the source checkpoint.
+- Cursor values are non-secret opaque identifiers (maximum 512 characters). Providers whose continuation tokens contain credentials keep those tokens in secret-backed state and store only a non-secret identifier/hash in the receipt.
 - The batch writer performs one attempt and never retries internally. The owning workflow may retry only classified transient failures with bounded exponential backoff and provider Retry-After when present; every attempt gets a new batch receipt and stable record idempotency keys.
 - Authentication, permission, signature, schema, privacy and source-integrity errors stop the adapter.
 - A failed batch does not block unrelated integrations.
@@ -271,11 +273,25 @@ LANE_EVENTS_MIGRATION_DATABASE_URL=<operator-provisioned-migration-url> \
 
 LANE_EVENTS_WRITER_DATABASE_URL=<dedicated-writer-url> \
   python3 scripts/ops/integration_event.py record \
-  --events-file events.jsonl --measurements-file measurements.jsonl \\\n  --batch-metadata-file batch-cursors.json
+  --events-file events.jsonl --measurements-file measurements.jsonl \\
+  --batch-metadata-file batch-cursors.json
 
 LANE_EVENTS_READONLY_DATABASE_URL=<read-only-url> \
   python3 scripts/ops/integration_event.py count
 python3 -m unittest discover -s tests -p 'test_integration_event_batch.py' -v
+```
+
+Example `batch-cursors.json`:
+
+```json
+{
+  "event": {
+    "github-actions": {
+      "cursor_before": "page:4",
+      "cursor_after": "page:5"
+    }
+  }
+}
 ```
 
 The dry run validates records and prints bounded batch plans without resolving credentials or contacting Neon. The schema command requires the operator-provisioned `LANE_EVENTS_MIGRATION_DATABASE_URL` and applies only to the already-existing `lane-events` Neon project/database. The record command requires `LANE_EVENTS_WRITER_DATABASE_URL` or `NEON_API_KEY` resolving an existing dedicated `integration_ingest`/`lane_events_writer` role. It never uses the legacy `LANE_EVENTS_DATABASE_URL`, never falls back to `neondb_owner`, and never auto-applies DDL. Count uses a read-only URL or the dedicated writer role with SELECT.

@@ -1,6 +1,6 @@
 # Project Management System - termux-monorepo
 
-This document provides a comprehensive overview of the project management system for the termux-monorepo, including Projects, Milestones, Connectors, and their integration.
+This document provides a comprehensive overview of the project management system for the termux-monorepo, including Projects, Milestones, Connectors, and their integration. For current repository governance and agent instructions, start with root [CLAUDE.md](../CLAUDE.md); this document is a project-management reference, not an agent-policy entrypoint.
 
 ## 🎯 Overview
 

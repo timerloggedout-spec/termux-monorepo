@@ -57,7 +57,7 @@ def test_metadata_explorer_controls_are_accessible():
         assert control in html
     assert 'role="status" aria-live="polite"' in html
     assert "Search covers L1 metadata only." in html
-    assert "No body search" in html
+    assert "no body search" in html
 
 
 def test_build_identity_uses_manifest_without_adding_primary_navigation():

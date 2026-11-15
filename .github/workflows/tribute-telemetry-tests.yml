@@ -24,6 +24,7 @@ on:
       - "tests/test_tribute_scout_evidence.py"
       - "tests/test_tribute_status_outcomes.py"
       - "tests/test_tribute_audit.py"
+      - "tests/test_public_surface_reconciliation.cjs"
   push:
     branches: [master]
     paths:
@@ -65,6 +66,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Run public-surface reconciliation contract tests
+        run: node tests/test_public_surface_reconciliation.cjs
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

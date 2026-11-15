@@ -11,6 +11,7 @@ flowchart TB
   subgraph SUB["Shared substrate"]
     monikers["AGENT-MONIKERS SSOT"]
     feeds["Surface feeds"]
+    githubApi["GitHub public API"]
     doeSettings["DoE settings register"]
     quefeeds["QUE feeds"]
     walletledger["Wallet ledger"]
@@ -77,6 +78,7 @@ flowchart TB
     web_1["admin-graph.html"]
     web_2["referrals.html"]
     web_3["versioning.html"]
+    web_5["publishing.html"]
     web_4["index.html"]
   end
   bookledger --> PL_moneyball
@@ -89,6 +91,7 @@ flowchart TB
   doeSettings --> PL_scoring
   feeds --> PL_scoring
   feeds --> PL_web
+  githubApi --> PL_web
   governor --> PL_entries
   governor --> PL_quota
   monikers --> PL_coordination
@@ -111,7 +114,7 @@ flowchart TB
 
 ## Surfaces
 
-Basis: all 37 tribute .html at master + MoneyBall section 12 set + propose.html = 43 surfaces + 2 classified classes (45 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
+Basis: all 38 tribute .html at master + MoneyBall section 12 set + propose.html = 44 surfaces + 2 classified classes (46 rows; classes counted as classes). admin.html is dual-home: Pages scaffold (inert) + gated admin-desk project (operative).
 
 Levels per #4884 section C, sparse by the keying rule (a surface renders L iff its primary content IS an occupant of L or a direct projection). The topical axis is surface GROUPS - "plane" is a record word whose only referent is Pool.
 
@@ -160,6 +163,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 | lanes-and-scopes.html | tribute | Coordination & QUE | role | Surface feeds · AGENT-MONIKERS SSOT | termux-monorepo | page · lanes feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | matrix.html | tribute | Coordination & QUE | ∅ | Surface feeds | termux-monorepo | page · matrix feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
 | owner-records.html | tribute | Identity & Registry | ∅ | Surface feeds | termux-monorepo | page · records feed · tests | site deploy (Pages per merge) · version-manifest stamp · no per-surface release line |
+| publishing.html | tribute | Web & Presentation | ∅ | GitHub public API | termux-monorepo + timerloggedout-spec.github.io | page · public GitHub REST repository/branch/PR/compare APIs · publishing.js · classifier tests | version-manifest stamp · browser-time snapshot · read-only · no merge/deploy authority |
 | versioning.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | page · version-manifest source · versioning.js · tests | site deploy (Pages per merge) · the version-stamp surface itself |
 | index.html | tribute | Web & Presentation | ∅ | Surface feeds | termux-monorepo | shell page · status payload · tests | site deploy (Pages per merge) · the deployment front door |
 ## Reserved names
@@ -173,6 +177,7 @@ Levels per #4884 section C, sparse by the keying rule (a surface renders L iff i
 |---|---|---|
 | AGENT-MONIKERS SSOT | canonical names · collapse registry · moniker graduations | 10 |
 | Surface feeds | per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts | 38 |
+| GitHub public API | public repository metadata · branch refs · open PRs · compare API (read-only) | 1 |
 | DoE settings register | ops/doe/settings-register.json — versioned method/settings projection with source provenance | 1 |
 | QUE feeds | measurement · governor · queue-by-tier · priority windows | 4 |
 | Wallet ledger | ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds | 6 |

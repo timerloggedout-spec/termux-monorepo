@@ -20,6 +20,8 @@
 .controls{display:grid;grid-template-columns:1.2fr 1fr;gap:.8rem}.timeline{display:grid;gap:.5rem}.event{display:grid;grid-template-columns:120px 1fr auto;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line)}.event time{color:var(--gold);font-size:.75rem}.event .sha{font-family:ui-monospace,monospace;color:var(--blue);font-size:.75rem}.policy{margin:0;padding-left:1.1rem;color:var(--muted)}
 @media(max-width:850px){.controls{grid-template-columns:1fr}.event{grid-template-columns:1fr}}
 .skip-link{position:absolute;left:-9999px;top:auto}.skip-link:focus{left:1rem;top:1rem;z-index:1000;background:#fff;color:#000;padding:.75rem 1rem;border-radius:.5rem}
+
+.video-feature{display:grid;grid-template-columns:96px 1fr;gap:1rem;align-items:center;margin:1.25rem 0;padding:1rem;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.video-feature img{width:96px;aspect-ratio:9/16;object-fit:cover;border-radius:8px}.video-feature p{margin:.3rem 0}.video-feature a{color:var(--gold)}@media(max-width:600px){.video-feature{grid-template-columns:76px 1fr}.video-feature img{width:76px}}
 </style>
  <script src="./versioning.js" defer></script>
 </head>
@@ -34,6 +36,10 @@
 <a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
 <a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a><a href="https://timerloggedout-spec.github.io/glossary.md">Glossary</a></nav>
 <header><div class="hero"><div><div class="eyebrow">Contributor lane · evidence + control surface</div><h1><span class="gold">Tribute</span></h1><p class="lede">Observe the upstream contribution lane from scout → claim → PR → follow-up → evidence → publication. This surface is a projection of repository evidence, not a second source of truth and not a MoneyBall admission score.</p><div id="pipeline" class="links" style="margin-top:1rem" aria-label="Pipeline"></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching snapshot.</small></div></div></header>
+<section class="video-feature" aria-label="Latest LoggedOut Timer video">
+  <a href="https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML" target="_blank" rel="noopener noreferrer"><img src="https://i.ytimg.com/vi/i0FusuYuRUs/frame0.jpg" alt="Latest LoggedOut Timer Short thumbnail" loading="lazy"></a>
+  <div><div class="eyebrow">LATEST PUBLIC SHORT · NOV 14, 2026</div><strong>Releases are dropping soon. Find your place(s).</strong><p>Watch the 8-second update or explore the <a href="https://timerloggedout-spec.github.io/videos.html">full video and demo library</a>.</p></div>
+</section>
 <main id="main-content">
 <p class="muted" id="agent-context">Evidence and freshness: this dashboard is a projection of generated GitHub repository evidence. Use the linked source records and generated-at timestamps to verify claims. A missing or stale feed is an evidence gap, not proof of success or failure.</p>
 <section aria-labelledby="overview"><div class="head"><h2 id="overview">Live board</h2><span class="note" id="summary">—</span></div><div class="grid" id="kpis"></div></section>

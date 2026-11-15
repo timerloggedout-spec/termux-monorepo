@@ -74,7 +74,8 @@ def test_build_identity_uses_manifest_without_adding_primary_navigation():
 
 def test_envelope_validation_fails_closed_and_keeps_bodies_out_of_page():
     html = PAGE.read_text()
-    for marker in ("validateEnvelope", "FORBIDDEN_BODY_FIELDS", "owner-records/v1",
+    for marker in ("validateEnvelope", "ALLOWED_ENVELOPE_FIELDS", "ALLOWED_RECORD_FIELDS",
+                   "FORBIDDEN_BODY_FIELDS", "owner-records/v1",
                    "No unvalidated data was rendered.", "Envelope rejected:"):
         assert marker in html
     # This public projection must not request an age identity or call a

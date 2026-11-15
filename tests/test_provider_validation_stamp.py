@@ -91,3 +91,10 @@ def test_dry_run_reads_receipts_without_token_or_network(tmp_path, monkeypatch, 
     output = capsys.readouterr().out
     assert '"provider": "groq"' in output
     assert "provider_validation_stamps_emitted=0" in output
+
+
+def test_build_stamp_rejects_unsafe_experiment_label():
+    with pytest.raises(ValueError, match="experiment_label_invalid"):
+        stamp.build_stamp(receipt(), run_id="12345", run_attempt="1",
+                          run_url="https://github.com/org/repo/actions/runs/12345",
+                          experiment_label="QUE-5454\nmalicious")

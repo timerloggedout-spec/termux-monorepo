@@ -58,6 +58,7 @@ Acceptance:
 - Append-only UPDATE/DELETE guards and indexes support event time, observation time and metric series.
 - Writer enforces default 250 records / 512 KiB and hard 500 records / 1 MiB ceilings.
 - One transaction inserts a batch's records and receipt; stable idempotency keys account for duplicate delivery.
+- Optional source cursors are attached to the first/last chunk; a derived `integration_latest_cursors` view exposes only acknowledged final cursors.
 - Failed transactions roll back data and attempt a metadata-only failed receipt.
 - Invalid schema, privacy, timestamp, size and secret-shaped values fail closed.
 - Neon project lookup is read-only; missing project is a blocker, not a project-creation request.

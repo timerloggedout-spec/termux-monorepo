@@ -271,7 +271,7 @@ LANE_EVENTS_MIGRATION_DATABASE_URL=<operator-provisioned-migration-url> \
 
 LANE_EVENTS_WRITER_DATABASE_URL=<dedicated-writer-url> \
   python3 scripts/ops/integration_event.py record \
-  --events-file events.jsonl --measurements-file measurements.jsonl
+  --events-file events.jsonl --measurements-file measurements.jsonl \\\n  --batch-metadata-file batch-cursors.json
 
 LANE_EVENTS_READONLY_DATABASE_URL=<read-only-url> \
   python3 scripts/ops/integration_event.py count

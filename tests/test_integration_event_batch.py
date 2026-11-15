@@ -50,6 +50,21 @@ class IntegrationEventBatchTests(unittest.TestCase):
     def test_v1_event_is_accepted_without_observed_at(self):
         self.assertEqual(ie.validate_event(dict(EVENT))["schema_version"], "1.0.0")
 
+    def test_manual_validator_matches_published_contract_keys(self):
+        event_schema = json.loads((ROOT / "docs/integrations/schemas/integration-event.schema.json").read_text())
+        measurement_schema = json.loads((ROOT / "docs/integrations/schemas/integration-measurement.schema.json").read_text())
+        self.assertEqual(set(event_schema["properties"]), ie.EVENT_ALLOWED)
+        self.assertEqual(set(event_schema["required"]), ie.EVENT_REQUIRED)
+        self.assertEqual(set(measurement_schema["properties"]), ie.MEASUREMENT_ALLOWED)
+        self.assertEqual(set(measurement_schema["required"]), ie.MEASUREMENT_REQUIRED)
+        self.assertFalse(event_schema["additionalProperties"])
+        self.assertFalse(measurement_schema["additionalProperties"])
+
+    def test_v10_rejects_v11_timestamp_fields(self):
+        event = dict(EVENT, observed_at="2026-11-14T12:00:02Z")
+        with self.assertRaisesRegex(ValueError, "require schema_version 1.1.0"):
+            ie.validate_event(event)
+
     def test_v11_requires_observed_at_and_privacy_classification(self):
         event = dict(EVENT, schema_version="1.1.0", observed_at="2026-11-14T12:00:02Z",
                      privacy={"classification": "internal", "contains_raw_prompt": False,

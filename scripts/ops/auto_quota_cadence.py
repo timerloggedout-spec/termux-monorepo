@@ -131,11 +131,14 @@ def _pool_allocation(allocations_doc: dict | None, pool_id: str, focus: str) -> 
     """Find the explicit pool/focus allocation; never infer a pool from a provider name."""
     if not isinstance(allocations_doc, dict):
         return None
-    pool = next((p for p in allocations_doc.get("pools", []) if p.get("id") == pool_id), None)
-    if pool is None:
+    pools = allocations_doc.get("pools")
+    if not isinstance(pools, list):
         return None
-    return next((a for a in pool.get("allocations", []) if a.get("focus") == focus), None)
-
+    pool = next((p for p in pools if isinstance(p, dict) and p.get("id") == pool_id), None)
+    if pool is None or not isinstance(pool.get("allocations"), list):
+        return None
+    return next((a for a in pool["allocations"]
+                 if isinstance(a, dict) and a.get("focus") == focus), None)
 
 def derive(
     arms_doc: dict,
@@ -187,8 +190,12 @@ def derive(
         }
     snap_arms = (snapshot or {}).get("arms", {}) if snapshot_fresh else {}
     snap_coverage = (snapshot or {}).get("coverage", {}) if snapshot_fresh else {}
+    if not isinstance(snap_coverage, dict):
+        snap_coverage = {}
     snap_budgets = (snapshot or {}).get("budgets", {}) if snapshot_fresh else {}
     snap_pools = (snapshot or {}).get("pools", {}) if snapshot_fresh else {}
+    if not isinstance(snap_pools, dict):
+        snap_pools = {}
 
     seen_routes: set[str] = set()
     arm_rows: list[dict] = []
@@ -258,7 +265,9 @@ def derive(
             allocation = _pool_allocation(allocations_doc, pool_id, focus) if pool_id and focus else None
             if allocation is None:
                 pool_reasons.append("pool_allocation_unknown")
-            pool_state = snap_pools.get(pool_id) if snapshot_fresh and pool_id else None
+            pool_state = snap_pools.get(pool_id) if snapshot_fresh and isinstance(pool_id, str) and pool_id else None
+            if not isinstance(pool_state, dict):
+                pool_state = None
             if pool_state is None:
                 pool_reasons.append("pool_unknown")
             else:
@@ -266,8 +275,8 @@ def derive(
                     pool_reasons.append("pool_coverage_incomplete")
                 observed_at = pool_state.get("observed_at")
                 try:
-                    pool_age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
-                except ValueError:
+                    pool_age = (now - _parse_ts(observed_at)).total_seconds() if isinstance(observed_at, str) else None
+                except (ValueError, TypeError, AttributeError):
                     pool_age = None
                 if pool_age is None or pool_age < 0:
                     pool_reasons.append("pool_unstamped")
@@ -287,13 +296,18 @@ def derive(
                     pool_reasons.append("pool_experiment_label_mismatch")
             if allocation is not None:
                 mode = allocation.get("mode")
-                pct = int(allocation.get("pct", 0))
-                if mode == "standing" and pct > 0:
+                try:
+                    pct = int(allocation.get("pct", 0))
+                except (TypeError, ValueError):
+                    pct = None
+                if mode == "standing" and pct is not None and pct > 0:
                     pass
                 elif mode == "leftover-only" and pool_state and pool_state.get("leftover_available") is True:
                     pass
                 elif mode == "leftover-only":
                     pool_reasons.append("pool_leftover_unverified")
+                elif pct is None:
+                    pool_reasons.append("pool_allocation_unknown")
                 else:
                     pool_reasons.append("pool_allocation_zero" if pct <= 0 else "pool_allocation_unknown")
             reasons.extend(pool_reasons)

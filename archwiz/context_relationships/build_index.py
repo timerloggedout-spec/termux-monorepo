@@ -416,8 +416,10 @@ def build_index(
     summary["performance"]["publish_seconds"] = round(publish_seconds, 6)
     summary["performance"]["wall_seconds"] = round(time.perf_counter() - wall_started, 6)
     summary["performance"]["process_cpu_seconds"] = round(time.process_time() - cpu_started, 6)
-    # Rewrite the summary artifact with final publication and end-to-end timings.
-    write_json(output / "build-summary.json", summary)
+    # Publish the final timing receipt atomically after the measured work completes.
+    summary_temp = output / ".build-summary.json.tmp"
+    write_json(summary_temp, summary)
+    os.replace(summary_temp, output / "build-summary.json")
     return summary
 
 

@@ -37,6 +37,8 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
         raise ValueError("success_without_no_cost_evidence")
     if status == "inference_validated" and receipt.get("policy_admitted") is not True:
         raise ValueError("success_without_provider_policy_admission")
+    if status == "inference_validated" and "chat_completion" not in (receipt.get("capabilities_verified") or []):
+        raise ValueError("success_without_chat_capability_validation")
     if status == "inference_validated" and (receipt.get("terms_accepted") != "policy_asserted" or receipt.get("entitlement_verified") != "policy_asserted"):
         raise ValueError("success_without_policy_assertions")
     if receipt.get("validation_scope") != "policy_gated_no_cost_inference_smoke":
@@ -82,7 +84,10 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
                       "dispatch_eligible": False,
                       "terms_accepted": receipt.get("terms_accepted"),
                       "entitlement_verified": receipt.get("entitlement_verified"),
-                      "quota_class": receipt.get("quota_class"), "pool_id": receipt.get("pool_id")},
+                      "quota_class": receipt.get("quota_class"), "pool_id": receipt.get("pool_id"),
+                      "capabilities_declared": receipt.get("capabilities_declared", []),
+                      "capabilities_verified": receipt.get("capabilities_verified", []),
+                      "capability_source": receipt.get("capability_source")},
         "origin": "live",
     }
 

@@ -9,7 +9,7 @@ name: opportunity-cycle
 
 on:
   schedule:
-    - cron: "17 13 * * *"
+    - cron: "17 1,7,13,19 * * *"  # 6h: feed stays inside its 12h freshness window
   workflow_dispatch:
   push:
     branches: [master]

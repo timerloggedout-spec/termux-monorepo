@@ -74,7 +74,7 @@ Before promotion:
 6. Run repository gates on the same immutable commit SHA.
 7. Record current workflow/run/job/artifact references and per-batch accepted/duplicate/rejected counts.
 8. Keep database project resolution read-only; an adapter must never create a new Neon project as an ingestion fallback.
-8. Re-fetch the final repository and provider state before declaring validated.
+9. Re-fetch the final repository and provider state before declaring validated.
 
 ## 7. Failure semantics
 

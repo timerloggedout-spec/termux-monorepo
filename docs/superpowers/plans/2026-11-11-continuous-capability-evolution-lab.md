@@ -29,6 +29,19 @@ Land a complete, reviewable foundation: proposal registration, capability graph 
 
    Inspect diff and secret/privacy scan; open PR with Implements: CCEL-001, CCEL-002, CCEL-003, CCEL-004; WAIT for Actions; re-fetch checks/jobs/logs/artifacts; verify required gates on the same immutable head SHA; record review disposition and update ITEMS; merge/promote only under policy.
 
+## SIP-001 candidate cohort integration (2026-11-14)
+
+The SIP candidate queue is consumed as a CEEL research cohort, not copied into a competing registry:
+- Source queue: `docs/rfps/simulation-intelligence-plane/candidate-queue.json`.
+- Cross-indexes: Integration Intelligence and FOSS Foresight procurement registry.
+- Comparison family: social simulation, ABM, agent orchestration, durable execution, and offline control are distinct role classes.
+- Existing LangGraph and Temporal implementations are reuse candidates, not greenfield work. Temporal's prior Oracle pass is recorded.
+- Mesa and NetLogo retain their existing evidence limitations.
+- The new simulation RFP form is QUE-admitted and produces a G0 intake receipt; Delphi generation remains an explicit subsequent dispatch.
+- DoE admission remains blocked until a committed design record and EXPERIMENT-conforming run evidence exist.
+
+No CEEL scheduler, queue, graph store or experiment ledger is added by SIP-001.
+
 ## Execution truth
 
 GitHub object creation/retrieval is available; a local checkout and shell runner are not. CI runs are the executable validation evidence and must be observed before checks are reported passed. A successful commit or PR is not a substitute.

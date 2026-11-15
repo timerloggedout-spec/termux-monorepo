@@ -153,9 +153,13 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
             return [], "cadence_pool_unstamped"
         if not isinstance(pool.get("eligible"), list):
             return [], "cadence_pool_unstamped"
+        if any(not isinstance(value, str) or not value for value in pool["eligible"]):
+            return [], "cadence_pool_ids_invalid"
         cadence_ids = set(pool["eligible"])
         probe_ids = pool.get("probe_candidates", [])
-        if not isinstance(probe_ids, list):
+        if not isinstance(probe_ids, list) or any(
+            not isinstance(value, str) or not value for value in probe_ids
+        ):
             return [], "cadence_probe_candidates_invalid"
         if not cadence_ids and not probe_ids:
             return [], "cadence_no_eligible_arms"
@@ -526,7 +530,11 @@ def decide(filings: list[dict], registry: dict, census: dict,
     # Probe-only candidates are never selectable for dispatch. They are
     # carried separately by pool-cadence/v1 and used only for one bounded
     # quota measurement when no fresh quota snapshot exists.
-    probe_ids = set(((cadence or {}).get("pool") or {}).get("probe_candidates", []))
+    cadence_pool = cadence.get("pool") if isinstance(cadence, dict) else {}
+    if not isinstance(cadence_pool, dict):
+        cadence_pool = {}
+    raw_probe_ids = cadence_pool.get("probe_candidates", [])
+    probe_ids = set(raw_probe_ids) if isinstance(raw_probe_ids, list) else set()
     census_by_id = {row.get("arm_id"): row for row in census.get("arms", [])}
     probe_candidates = []
     for candidate in registry.get("arms", []):

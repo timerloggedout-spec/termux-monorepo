@@ -137,3 +137,24 @@ def test_timestamp_accepts_annotated_census_date():
     parsed = _timestamp("2026-11-01 (Actions census)")
     assert parsed is not None
     assert parsed.isoformat() == "2026-11-01T00:00:00+00:00"
+
+
+def test_g4f_census_preserves_selected_and_not_started_counts(tmp_path):
+    from datetime import datetime, timezone
+    from scripts.ops.provider_population_census import _load_g4f_receipt
+    receipt = tmp_path / "g4f.json"
+    receipt.write_text(json.dumps({
+        "schema": "g4f-inference-smoke/v1",
+        "observed_at": "2026-11-15T12:00:00Z",
+        "selected_count": 200,
+        "attempted": 6,
+        "not_started": 194,
+        "inference_ok": 2,
+        "results": [],
+    }), encoding="utf-8")
+    report = _load_g4f_receipt(
+        receipt, datetime(2026, 11, 15, 13, 0, tzinfo=timezone.utc)
+    )
+    assert report["selected_count"] == 200
+    assert report["attempted"] == 6
+    assert report["not_started"] == 194

@@ -14,7 +14,7 @@ def is_negative_first_line(line: str) -> bool:
     return bool(NEGATIVE_FIRST.match(line))
 
 IMPERATIVE = frozenset({
-    "accept", "add", "align", "apply", "audit", "build", "bound", "bump", "centralize", "check", "close",
+    "accept", "add", "align", "apply", "audit", "build", "bound", "bump", "centralize", "check", "close", "consolidate",
     "collect", "compare", "cover", "create", "define", "deploy", "distinguish", "document", "enforce", "expand",
     "export", "fix", "gate", "generate", "guard", "include", "inspect", "keep", "measure",
     "migrate", "move", "open", "preserve", "publish", "recognize", "record", "reject", "reconcile", "refresh",

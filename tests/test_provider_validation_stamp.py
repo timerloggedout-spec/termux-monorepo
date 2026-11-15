@@ -15,6 +15,9 @@ def receipt(status="inference_validated", no_cost=True):
         "inference_status": "passed" if status == "inference_validated" else "not_attempted",
         "no_cost_verified": no_cost,
         "policy_admitted": True,
+        "capabilities_declared": ["chat_completion"],
+        "capabilities_verified": ["chat_completion"] if status == "inference_validated" else [],
+        "capability_source": "https://provider.example/capabilities",
         "validation_scope": "policy_gated_no_cost_inference_smoke",
         "terms_accepted": "policy_asserted",
         "entitlement_verified": "policy_asserted",
@@ -42,6 +45,7 @@ def test_build_stamp_maps_passed_no_cost_validation_to_completed_free_tier():
     assert result["usage"]["status"] == "observed"
     assert result["usage"]["value"] == 2 and result["usage"]["unit"] == "tokens"
     assert result["usage"]["input_tokens"] == 4
+    assert result["selection"]["capabilities_verified"] == ["chat_completion"]
 
 
 def test_build_stamp_keeps_deferred_quota_class_unestablished():
@@ -121,6 +125,15 @@ def test_success_stamp_requires_current_policy_admission():
     value = receipt()
     value["policy_admitted"] = False
     with pytest.raises(ValueError, match="success_without_provider_policy_admission"):
+        stamp.build_stamp(value, run_id="12345", run_attempt="1",
+                          run_url="https://github.com/org/repo/actions/runs/12345",
+                          experiment_label="QUE-5454")
+
+
+def test_build_stamp_rejects_success_without_verified_chat_capability():
+    value = receipt()
+    value["capabilities_verified"] = []
+    with pytest.raises(ValueError, match="success_without_chat_capability_validation"):
         stamp.build_stamp(value, run_id="12345", run_attempt="1",
                           run_url="https://github.com/org/repo/actions/runs/12345",
                           experiment_label="QUE-5454")

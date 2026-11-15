@@ -47,7 +47,7 @@ def _timestamp(value: Any) -> dt.datetime | None:
     except ValueError:
         # Some checked-in census snapshots use a date followed by a
         # human-readable source annotation, e.g. "2026-11-01 (Actions census)".
-        match = re.match(r"^(\\d{4}-\\d{2}-\\d{2})(?:\\s|$)", value)
+        match = re.match(r"^(\d{4}-\d{2}-\d{2})(?:\s|$)", value)
         if not match:
             return None
         try:

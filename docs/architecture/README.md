@@ -22,6 +22,7 @@
 | [AGENT-TEAM-CONTROL-PLANE.md](AGENT-TEAM-CONTROL-PLANE.md) (+ `.mmd`) | Architecture spec | Stated (2026-10-28 backfill): canonical architecture description | The agent-team operating loop and control-plane shape |
 | [CANONICAL-ISSUE-OBSERVATORY.md](CANONICAL-ISSUE-OBSERVATORY.md) | Spec | Stated (2026-10-28 backfill): spec, implemented | Issue lifecycle evidence plane; GitHub remains the system of record |
 | [DETERMINISTIC-DAG-ORCHESTRATION.md](DETERMINISTIC-DAG-ORCHESTRATION.md) | Spec | Stated: reference implementation only | Static dependency-graph planning and dependency admission; plans and classifies, does not execute |
+| [WORKFLOW-PLANNING-OPERATING-MODEL.md](WORKFLOW-PLANNING-OPERATING-MODEL.md) (+ `.mmd`) | Proposal | Proposed; PR #5388 in review | Declarative Workflow Contract (WFC) proposal spanning QUE admission, routing, PDDL/HTN planning, DoE/MVT, execution adapters and evidence projections; reuses the deterministic DAG planner and does not replace it |
 | [SELF-HEALING-ENGINE.md](SELF-HEALING-ENGINE.md) | Design proposal | Stated: Proposed P0 architecture | End-to-end autonomous remediation factory workload (detect → incident → diagnose → dispatch → verify → promote/escalate) |
 | [SELF-HEALING-ENGINE-ROADMAP.md](SELF-HEALING-ENGINE-ROADMAP.md) | Delivery roadmap | Stated per slice (implemented / in progress) | P0 delivery slices for the Self-Healing Engine; companion to the proposal above, not a duplicate |
 | [termux-agentic-hub.md](termux-agentic-hub.md) | Architecture spec | Stated (2026-10-28 backfill): spec, implemented in hub_mcp/ | Termux Agentic Hub runtime topology on the BLU B160V; capability-envelope execution, no free-form commands |
@@ -36,6 +37,7 @@
 | Domain | Canonical source |
 |---|---|
 | Routing & orchestration | [docs/ops/ROUTING-ORCHESTRATION-MAP.md](../ops/ROUTING-ORCHESTRATION-MAP.md) |
+| Declarative workflow contract / planning (proposal) | [WORKFLOW-PLANNING-OPERATING-MODEL.md](WORKFLOW-PLANNING-OPERATING-MODEL.md) · [QUE × DoE routing optimization](../ops/QUE-DOE-ROUTING-OPTIMIZATION.md) |
 | Evidence projection (read model) | [docs/ops/EVIDENCE-PROJECTION-SURFACE.md](../ops/EVIDENCE-PROJECTION-SURFACE.md) |
 | Execution & provenance contract (BIUDL) | [docs/ops/BIUDL-EXECUTION-AND-PROVENANCE.md](../ops/BIUDL-EXECUTION-AND-PROVENANCE.md) |
 | Evidence substrate | [docs/ops/AGENT-EVIDENCE-SUBSTRATE.md](../ops/AGENT-EVIDENCE-SUBSTRATE.md) |

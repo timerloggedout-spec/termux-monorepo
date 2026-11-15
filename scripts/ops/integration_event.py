@@ -49,7 +49,7 @@ SECRET_KEY_NAMES = {
     "prompt", "completion", "api_key", "authorization", "cookie",
     "password", "secret", "access_token", "refresh_token", "credential",
     "raw_request_body", "raw_response_body", "session_transcript",
-    "private_context",
+    "private_context", "token",
 }
 SECRET_VALUE_RE = re.compile(
     r"(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|"
@@ -353,7 +353,11 @@ def chunk_records(records: list[dict], max_records: int = DEFAULT_MAX_RECORDS,
     return chunks
 
 
-def sql_literal(value: str) -> str:
+def sql_literal(value: str | None) -> str:
+    if value is None:
+        return "NULL"
+    if not isinstance(value, str):
+        raise TypeError("SQL literal must be a string or None")
     return "'" + value.replace("'", "''") + "'"
 
 
@@ -405,6 +409,7 @@ WITH inserted AS (
     COALESCE(NULLIF(doc->>'observed_at','')::timestamptz, clock_timestamp()),
     {sql_literal(batch_id)}::uuid, doc
   FROM _integration_batch_docs
+  WHERE true
   ON CONFLICT (idempotency_key) DO NOTHING
   RETURNING event_id
 )
@@ -450,8 +455,10 @@ RETURNING records_inserted::text || '|' || records_duplicates::text;
 """
     cursor_guard = ""
     if cursor_after is not None:
+        # A random tag prevents untrusted cursor text from terminating the DO body.
+        guard_tag = "cursor_guard_" + uuid.uuid4().hex
         cursor_guard = f"""
-DO $cursor_guard$
+DO ${guard_tag}$
 DECLARE current_cursor text;
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended(
@@ -466,7 +473,7 @@ BEGIN
     RAISE EXCEPTION 'integration_cursor_conflict';
   END IF;
 END
-$cursor_guard$;
+${guard_tag}$;
 """
     sql = (
         "SET standard_conforming_strings = on;\n"

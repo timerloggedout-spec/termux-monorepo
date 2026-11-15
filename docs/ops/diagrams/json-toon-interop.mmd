@@ -1,0 +1,17 @@
+flowchart TD
+  A["Canonical JSON"] --> B["Schema validation"]
+  B --> C{"Payload cohort"}
+  C -->|"LLM-facing / eligible"| D["Official TOON encoder"]
+  C -->|"API / ledger / evidence"| E["Keep JSON"]
+  D --> F["TOON prompt or transport view"]
+  F --> G["Official TOON decoder"]
+  G --> H{"Structural round-trip equality?"}
+  H -->|"No"| I["Reject TOON; retain JSON"]
+  H -->|"Yes"| J["Consumer validation"]
+  J --> K["Optional adoption by payload family"]
+  K --> L["Siglary clarity + receipt checks"]
+  M["Tokenizer comparison"] --> N["o200k / cl100k / target tokenizer"]
+  D --> M
+  E --> O["Canonical JSON remains source of truth"]
+  I --> O
+  L --> O

@@ -51,10 +51,15 @@ def main():
     ap.add_argument("--universe", default="data/g4f-working/universe.json")
     ap.add_argument("--output", default="g4f-inference-smoke.json")
     ap.add_argument("--limit", type=int, default=100, help="max completions this run")
+    ap.add_argument("--offset", type=int, default=0, help="zero-based offset into the selected source population")
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--timeout", type=int, default=90, help="per-call timeout seconds")
     ap.add_argument("--deadline", type=int, default=1500, help="global wall-clock deadline seconds; stragglers recorded as DeadlineExceeded and the receipt still writes")
     args = ap.parse_args()
+    if args.offset < 0:
+        ap.error("--offset must be non-negative")
+    if args.limit < 0:
+        ap.error("--limit must be non-negative")
 
     if args.source == "working":
         doc = json.loads(Path(args.working).read_text())
@@ -68,7 +73,8 @@ def main():
         for p in catalog["providers"]:
             for wm in p.get("working_models", []):
                 entries.append((p["id"], wm["model"]))
-    entries = entries[: args.limit]
+    total_entries = len(entries)
+    entries = entries[args.offset : args.offset + args.limit]
 
     results = []
     ex = concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
@@ -92,6 +98,12 @@ def main():
         "schema": "g4f-inference-smoke/v1",
         "observed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "source": args.source,
+        "offset": args.offset,
+        "limit": args.limit,
+        "source_population_total": total_entries,
+        "workers": args.workers,
+        "timeout_s": args.timeout,
+        "deadline_s": args.deadline,
         "attempted": len(results),
         "inference_ok": sum(1 for r in results if r["inference_ok"]),
         "providers_ok": sorted({r["provider"] for r in results if r["inference_ok"]}),

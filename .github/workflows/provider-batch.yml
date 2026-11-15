@@ -168,6 +168,7 @@ on:
       - 'deepcli/deepagent.py'
       - 'tests/test_deepagent_entrypoint.py'
       - 'tests/test_deepagent_worktree_base.py'
+      - 'tests/test_build_dispatch_workflow.py'
       - '.github/workflows/provider-batch.yml'
 permissions: {}
 concurrency:

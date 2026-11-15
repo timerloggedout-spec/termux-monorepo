@@ -1,8 +1,8 @@
-# Lane matrix status (2026-11-15T06:29:14Z)
+# Lane matrix status (2026-11-15T06:31:25Z)
 
-- Master: `d28f93ee756bbf4703b64d7c8b1d36b95b6c9649`
+- Master: `6b9a6d20d77547fda8c896415eea7eeff7a961a7`
 - Open PRs: **406**
-- Oldest: #47 (101.61d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Oldest: #47 (101.62d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
@@ -22,17 +22,17 @@
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #1436 | 24.99 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #1436 | 25.0 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 14.59 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 12.09 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 11.4 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 10.74 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 8.65 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #47 | 101.61 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
+| #47 | 101.62 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 99.36 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 98.23 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 60.94 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #605 | 57.52 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #605 | 57.53 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 55.5 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 52.95 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 44.86 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
@@ -47,9 +47,9 @@
 | #1515 | 23.92 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 23.92 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 23.91 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 23.89 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1537 | 23.9 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 23.23 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 22.14 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 22.15 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 22.14 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 22.13 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 22.01 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

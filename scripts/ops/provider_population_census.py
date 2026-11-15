@@ -45,7 +45,17 @@ def _timestamp(value: Any) -> dt.datetime | None:
     try:
         parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
-        return None
+        # Some checked-in census snapshots use a date followed by a
+        # human-readable source annotation, e.g. "2026-11-01 (Actions census)".
+        match = re.match(r"^(\\d{4}-\\d{2}-\\d{2})(?:\\s|$)", value)
+        if not match:
+            return None
+        try:
+            parsed = dt.datetime.fromisoformat(match.group(1)).replace(
+                tzinfo=dt.timezone.utc
+            )
+        except ValueError:
+            return None
     if parsed.tzinfo is None:
         # The canonical endpoint census records a date plus prose; use only
         # that explicit date, never infer a time-of-day.

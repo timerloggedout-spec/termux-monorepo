@@ -59,6 +59,30 @@ class DoStatementStyleRulesTests(unittest.TestCase):
             with self.subTest(subject=subject):
                 self.assertTrue(is_imperative_subject(subject))
 
+    def test_existing_pr_commit_subject_history_is_accepted(self):
+        subjects = (
+            "fix(ci): use shared Siglary imperative subject rules",
+            "feat(ci): centralize Siglary action-first subject vocabulary",
+            "test(ci): cover Siglary action-first commit subject rules",
+            "fix(ci): recognize action-first subject verbs",
+            "test(ci): distinguish action verbs from descriptive subjects",
+            "ci(siglary): run action-first subject contract tests",
+            "fix(siglary): recognize existing action verbs",
+            "fix(siglary): preserve checker vocabulary contract",
+            "test(siglary): cover existing action verbs",
+            "fix(siglary): restore negative-first detection rules",
+            "fix(siglary): apply shared negative-first detection",
+            "test(siglary): cover negative-first wording forms",
+            "fix(siglary): consolidate shared checker imports",
+            "fix(siglary): bound negative-first keyword matches",
+            "test(siglary): reject positive-prefix false positives",
+            "fix(siglary): recognize reject as an action verb",
+            "test(siglary): cover reject action subject",
+        )
+        for subject in subjects:
+            with self.subTest(subject=subject):
+                self.assertTrue(is_imperative_subject(subject))
+
     def test_descriptive_subjects_fail(self):
         for subject in (
             "backup-state relay: exp-20261114T155846Z-7afd1c",

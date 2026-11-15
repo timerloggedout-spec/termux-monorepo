@@ -59,6 +59,7 @@ def test_decide_uses_repo_script_and_feeds():
     assert "--usage pool-usage.json" in run
     assert "--max-conversions" in run
     assert "--measured ops/que/feeds/bucket-headroom.json" in run
+    assert "--cadence pool-cadence.json" in run
 
 
 def test_probe_step_dispatches_census_and_records_via_5230_surface():
@@ -83,7 +84,7 @@ def test_derive_step_runs_before_decide_and_feeds_usage():
     assert "scripts/ops/auto_quota_cadence.py" in run
     assert "ops/quota/registry.json" in run
     assert "--allocations ops/quota/allocations.json" in run
-    assert "--cadence pool-cadence.json" in run
+    assert "--out pool-cadence.json" in run
     assert "--usage-out pool-usage.json" in run
     assert "ledger-snapshot.json" in run  # only when the file exists
     receipt = _step("Publish receipt artifact")

@@ -94,7 +94,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os
+          import json, os, hashlib
           d=json.load(open('/tmp/catalog.json',encoding='utf-8'))
           lane=os.environ['LANE']; trial=int(os.environ['TRIAL']); cohort=os.environ['COHORT']; manager=os.environ['MANAGER']; requested=os.environ.get('OX_MODEL','').strip()
           def free(r): return r['pricing_classification']=='free_zero_price' or r['free_suffix'] or r.get('access_classification')=='free_trial'
@@ -131,7 +131,7 @@ jobs:
           model=rows[0]['id'] if rows else ''
           treatment=f'{lane}:trial-{trial}'; experiment_id=f'team-mvt-{os.environ.get("GITHUB_RUN_ID","local")}-{manager}-{treatment}'
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-              for k,v in {'provider':provider,'model':model,'variant':variant,'eligible':eligible,'skip_reason':skip_reason,'max_tokens':max_tokens,'task_role':task_role,'hypothesis':hypothesis,'comparison_class':comparison_class,'sequence_control':sequence_control,'treatment':treatment,'experiment_id':experiment_id}.items(): f.write(f'{k}={v}\n')
+              for k,v in {'provider':provider,'model':model,'variant':variant,'eligible':eligible,'skip_reason':skip_reason,'max_tokens':max_tokens,'task_role':task_role,'hypothesis':hypothesis,'comparison_class':comparison_class,'sequence_control':sequence_control,'prompt_sha256':hashlib.sha256(prompt.encode('utf-8')).hexdigest(),'treatment':treatment,'experiment_id':experiment_id}.items(): f.write(f'{k}={v}\n')
               f.write('prompt<<EOF\n'+prompt+'\nEOF\n')
           print(json.dumps({'lane':lane,'trial':trial,'provider':provider,'model':model or 'SKIP','variant':variant,'manager':manager,'eligible':eligible,'max_tokens':max_tokens,'comparison_class':comparison_class,'sequence_control':sequence_control,'hypothesis':hypothesis,'skip_reason':skip_reason},sort_keys=True))
           PY
@@ -213,6 +213,7 @@ jobs:
           TRIAL: ${{ matrix.trial }}
           COMPARISON_CLASS: ${{ steps.lane.outputs.comparison_class }}
           SEQUENCE_CONTROL: ${{ steps.lane.outputs.sequence_control }}
+          PROMPT_SHA256: ${{ steps.lane.outputs.prompt_sha256 }}
         run: |
           mkdir -p /tmp/evaluation
           python3 - <<'PY'
@@ -234,7 +235,7 @@ jobs:
                   pass
               if telemetry: break
           if eligible == 'true': execution_status='success' if telemetry.get('route_status') == 'succeeded' else 'failure'
-          data={'schema':'team-mvt/v5','run_id':'${{ github.run_id }}','lane':lane,'trial':trial,'provider':'${{ steps.lane.outputs.provider }}','model':'${{ steps.lane.outputs.model }}','prompt_variant':'${{ steps.lane.outputs.variant }}','task_role':'${{ steps.lane.outputs.task_role }}','hypothesis':'''${{ steps.lane.outputs.hypothesis }}''','manager':os.environ['MANAGER'],'cohort':os.environ['COHORT'],'eligible':eligible,'execution_status':execution_status,'skip_reason':'''${{ steps.lane.outputs.skip_reason }}''','max_tokens':'${{ steps.lane.outputs.max_tokens }}','comparison_class':os.environ['COMPARISON_CLASS'],'sequence_control':os.environ['SEQUENCE_CONTROL'],'treatment_id':'${{ steps.lane.outputs.treatment }}','experiment_id':'${{ steps.lane.outputs.experiment_id }}','telemetry':telemetry,'task_outcome':'UNKNOWN','correctness':'UNKNOWN','integration':'UNKNOWN','regression':'UNKNOWN'}
+          data={'schema':'team-mvt/v5','run_id':'${{ github.run_id }}','lane':lane,'trial':trial,'provider':'${{ steps.lane.outputs.provider }}','model':'${{ steps.lane.outputs.model }}','prompt_variant':'${{ steps.lane.outputs.variant }}','task_role':'${{ steps.lane.outputs.task_role }}','hypothesis':'''${{ steps.lane.outputs.hypothesis }}''','manager':os.environ['MANAGER'],'cohort':os.environ['COHORT'],'eligible':eligible,'execution_status':execution_status,'skip_reason':'''${{ steps.lane.outputs.skip_reason }}''','max_tokens':'${{ steps.lane.outputs.max_tokens }}','comparison_class':os.environ['COMPARISON_CLASS'],'sequence_control':os.environ['SEQUENCE_CONTROL'],'prompt_sha256':os.environ['PROMPT_SHA256'],'treatment_id':'${{ steps.lane.outputs.treatment }}','experiment_id':'${{ steps.lane.outputs.experiment_id }}','telemetry':telemetry,'task_outcome':'UNKNOWN','correctness':'UNKNOWN','integration':'UNKNOWN','regression':'UNKNOWN'}
           with open('/tmp/evaluation/lane.json','w',encoding='utf-8') as f: json.dump(data,f,sort_keys=True,indent=2)
           PY
 
@@ -272,6 +273,8 @@ jobs:
           lanes={r['lane'] for r in rows}
           primary=[r for r in rows if r.get('comparison_class')=='primary_same_task']
           diagnostic=[r for r in rows if r.get('comparison_class')=='diagnostic_non_comparable']
+          primary_prompt_hashes={trial:{r.get('prompt_sha256') for r in primary if r.get('trial')==trial} for trial in (1,2,3)}
+          primary_prompt_parity=(len(primary)==6 and all(len(hashes)==1 and None not in hashes for hashes in primary_prompt_hashes.values()))
           expected=15
           lane_result='${{ needs.lane.result }}'
           # Mixed matrix: cancelled siblings make needs.lane.result=failure, not cancelled
@@ -279,11 +282,11 @@ jobs:
           # evidence is not promotion-ready and is not an evaluator defect when no uploaded
           # lane reports execution_status=failure.
           if len(rows)<expected and lane_result in ('cancelled','failure') and not failed:
-              summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'expected':expected,'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'primary_same_task_cells':len(primary),'diagnostic_non_comparable_cells':len(diagnostic),'lanes':sorted(lanes),'promotion_ready':False,'reason':'incomplete DOE cells after cancelled or failed-closed matrix jobs; not a catalog or evaluator defect'}
+              summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'expected':expected,'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'primary_same_task_cells':len(primary),'diagnostic_non_comparable_cells':len(diagnostic),'primary_prompt_parity':primary_prompt_parity,'lanes':sorted(lanes),'promotion_ready':False,'reason':'incomplete DOE cells after cancelled or failed-closed matrix jobs; not a catalog or evaluator defect'}
               print(json.dumps(summary,sort_keys=True)); os.makedirs('/tmp/evaluation',exist_ok=True); json.dump(summary,open('/tmp/evaluation/summary.json','w'),indent=2)
               raise SystemExit(0)
           if len(rows)<expected: raise SystemExit(f'FAIL: expected {expected} DOE cells, found {len(rows)} (lane result {lane_result})')
-          summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'primary_same_task_cells':len(primary),'diagnostic_non_comparable_cells':len(diagnostic),'primary_executed':sum(r['execution_status']=='success' for r in primary),'primary_execution_failures':sum(r['execution_status']=='failure' for r in primary),'diagnostic_executed':sum(r['execution_status']=='success' for r in diagnostic),'lanes':sorted(lanes),'promotion_ready':False,'reason':'primary A/B are same-task comparisons; C/D/E are diagnostic-only and excluded from pooled treatment effects; task correctness remains UNKNOWN'}
+          summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'primary_same_task_cells':len(primary),'diagnostic_non_comparable_cells':len(diagnostic),'primary_prompt_parity':primary_prompt_parity,'primary_executed':sum(r['execution_status']=='success' for r in primary),'primary_execution_failures':sum(r['execution_status']=='failure' for r in primary),'diagnostic_executed':sum(r['execution_status']=='success' for r in diagnostic),'lanes':sorted(lanes),'promotion_ready':False,'reason':'primary A/B are same-task comparisons; C/D/E are diagnostic-only and excluded from pooled treatment effects; task correctness remains UNKNOWN'}
           print(json.dumps(summary,sort_keys=True)); os.makedirs('/tmp/evaluation',exist_ok=True); json.dump(summary,open('/tmp/evaluation/summary.json','w'),indent=2)
           PY
 

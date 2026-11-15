@@ -183,6 +183,69 @@ jobs:
           path: /tmp/receipt.json
           if-no-files-found: error
           retention-days: 14
+  census:
+    needs: [validate]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Materialize admission policy for read-only census
+        env:
+          POLICY_JSON: ${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}
+        run: |
+          set -euo pipefail
+          if [ -n "${POLICY_JSON:-}" ]; then
+            printf '%s' "$POLICY_JSON" > /tmp/provider-admission.json
+          else
+            printf '%s' '{"schema":"research-provider-admission/v1","entries":[]}' > /tmp/provider-admission.json
+          fi
+      - name: Download provider validation receipts
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: provider-validation-*
+          path: /tmp/provider-validation-receipts
+          merge-multiple: false
+          if-no-artifact-found: warn
+      - name: Build source-pinned provider population census
+        run: |
+          set -euo pipefail
+          python3 -m pip install PyYAML==6.0.3
+          python3 scripts/ops/provider_population_census.py \
+            --policy /tmp/provider-admission.json \
+            --receipts-dir /tmp/provider-validation-receipts \
+            --out /tmp/provider-population-census.json
+          python3 - <<'PY'
+          import json, os
+          report = json.load(open('/tmp/provider-population-census.json', encoding='utf-8'))
+          p = report['canonical_population']
+          g = report['g4f_population']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+              f.write('## QUE provider population census\n\n')
+              f.write(f"All-lane providers: **{p['all_lane_distinct_providers']}**  \n")
+              f.write(f"Model-lane distinct providers: **{p['model_lane_distinct_providers']}**  \n")
+              f.write(f"Invoke wiring records: **{p['invoke_wiring_records']}/{p['invoke_wiring_record_denominator']}**  \n")
+              f.write(f"Historical verified endpoint floor: **{p['endpoint_verified_floor']}** (counted {p['endpoint_census_counted_at']})  \n")
+              f.write(f"g4f universe pairs: **{g['universe_pairs_total']}**; historical inference successes: **{g['historical_probe_inference_ok']} / {g['historical_probe_attempted']}**  \n")
+              f.write(f"Configured build arms: **{report['build_dispatch']['configured_build_arms']}**  \n")
+              f.write(f"Current policy entries: **{report['policy']['entry_count']}**  \n")
+              f.write(f"Current inference-validated receipts: **{report['validation_receipts']['inference_validated']}**  \n")
+              f.write('Historical endpoint/g4f figures are not current activation proof. Dispatch eligibility is separately gated.\n')
+          PY
+      - name: Upload provider population census
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-population-census
+          path: /tmp/provider-population-census.json
+          if-no-files-found: error
+          retention-days: 14
+
   stamp:
     needs: [validate]
     if: always() && inputs.emit_stamps

@@ -36,7 +36,7 @@ class CensusFixture(unittest.TestCase):
               '<a href="missing.html">x</a><a href="ok.html">y</a>'
               '<h1 id="top">t</h1><a href="#top">top</a>'
               '<a href="\' + item.path + \'">dynamic</a>'
-              '<a href="./\' + item.surface + \'.html">templated</a>\\n')
+              '<a href="./\' + item.surface + \'.html">templated</a>\n')
         write(self.root, "apps/site/ok.html", "<p>ok</p>\n")
         write(self.root, "apps/site/data/feed.json",
               json.dumps({"good": "scripts/tool.py",

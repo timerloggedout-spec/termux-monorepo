@@ -124,7 +124,8 @@ def _validate_entry(entry: Mapping[str, Any], provider: str, model: str, now: da
             raise ProviderAdmissionError(503, "native provider account is not configured", "provider_unconfigured")
 
 
-def authorize(provider: str, model: str) -> str:
+def admission_entry(provider: str, model: str) -> dict[str, Any]:
+    """Return the exact current operator-admitted entry after base policy checks."""
     if not isinstance(provider, str) or provider not in ENDPOINTS or not _valid_model(model):
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
     entries = _policy()["entries"]
@@ -132,6 +133,14 @@ def authorize(provider: str, model: str) -> str:
     if len(matches) != 1:
         raise ProviderAdmissionError(403, "native provider model is not admitted", "provider_not_admitted")
     _validate_entry(matches[0], provider, model, datetime.now(timezone.utc))
+    key = next((os.environ.get(k) for k in ENDPOINTS[provider][1] if os.environ.get(k)), None)
+    if not key:
+        raise ProviderAdmissionError(503, "native provider credential is not configured", "provider_unconfigured")
+    return dict(matches[0])
+
+
+def authorize(provider: str, model: str) -> str:
+    admission_entry(provider, model)
     key = next((os.environ.get(k) for k in ENDPOINTS[provider][1] if os.environ.get(k)), None)
     if not key:
         raise ProviderAdmissionError(503, "native provider credential is not configured", "provider_unconfigured")

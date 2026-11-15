@@ -9,11 +9,11 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-11. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Focused connector audit:** 2026-11-15. **Registry update:** 2026-11-15. Connector, account, and runtime observations are dated evidence, not a blanket production-readiness claim.
 
 ## Executive status
 
-The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.
+The existing Integration Intelligence foundation is established by merged PR #4009. The registry now contains 38 separately tracked integrations, including two distinct DeepWiki surfaces. This refresh updates seven requested platforms and adds Cloudinary and Exa as explicit inventory entries.
 
 The repository remains the source of truth. Session connectors and installed skills are capabilities of this assistant environment, not automatic capabilities of GitHub Actions, Termux, other collaborators, or production.
 
@@ -31,21 +31,23 @@ The repository remains the source of truth. Session connectors and installed ski
 
 | Integration | What was observed | Next action |
 |---|---|---|
-| Context7 | Documentation resolver/query tools exposed | Pin lookups to installed package versions |
-| Mintlify | Connected deployment and navigation inspected | Keep Git as source; expose this portfolio in navigation |
+| Context7 | Resolver and documentation-query calls succeeded; official Temporal and Cloudinary libraries were resolved and queried | Keep lookups read-only; record library ID, selected version, source URL, and retrieval time; no CI adapter was exercised |
+| Mintlify | Authenticated deployment diasporic3lee7 is connected to this repository on master; Integrations navigation and pages are present; Hobby plan, no custom domain, no source checks reported | Keep repository content canonical; use PR review and verify deployment status after merge; do not publish around Git review |
 | Devin AI / DEVINdeepWiki | Repository indexing controller exists; operator reports `DEVIN_API_KEY` provisioned | Verify a successful redacted Actions indexing run; do not inspect or copy secret values |
 | DeepWiki.com | Public wiki accessible, indexed commit stale; public MCP remains read-only | Continue the existing issue #3346 refresh campaign; do not bypass its Jules builder / Gemini evaluator separation |
 | Mermaid Chart | Authenticated, empty diagram list | Save a source-linked diagram only when a dedicated diagram deliverable is accepted |
 | Ahrefs | Connector exposed, but usage call returned `Insufficient plan` | Keep blocked; no paid upgrade was attempted |
 | Engram | Connector available and status checked | Define opt-in, minimal project memory before writing durable project facts |
 | Soracom Knowledge | Documentation tools exposed | Use only for an identified IoT/edge research task |
-| Context.dev | Search, scrape, and usage tools available | Record source URL and retrieval time for external research |
+| Context.dev | Search, scrape, usage, request-log, and request-detail tools are available; usage and recent request metadata were read | Use targeted retrieval with source URL and retrieval time; distinguish HTTP status from provider-level error codes; no bulk crawl or monitor was created |
+| Cloudinary | Asset-management tools are exposed; read-only usage inspection succeeded; no asset was uploaded, transformed, renamed, or deleted | Keep asset writes disabled until a specific asset scope, destination, retention rule, and cost ceiling are approved |
+| Exa | Search and fetch tools are exposed and were exercised against official Temporal and Opscotch sources | Use for focused source discovery and fetch; validate primary sources and retain URLs; no repository adapter was exercised |
 | Consensus | Academic search/fetch tools exposed | Fetch papers before citing them |
-| Opscotch | Public root guidance retrieved | Load system, architect, and engineer guidance before designing a workflow |
+| Opscotch | Public MCP system and architect guidance retrieved; official runtime/trust documentation researched; no workflow was authored or deployed | Keep advisory until a bounded workflow, bootstrap permissions, schema validation, and runtime target are separately approved |
 | Agent Ready | Live scan completed | Convert source-level findings into a reviewed remediation work item |
 | Inductive Bio | Public LogD, acidic pKa, and basic pKa model catalog retrieved | Preserve model IDs and versions if a scientific prediction lane is built |
 | Superpowers | Skill installed; repository-local skill already exists | Continue using the repository policy bridge |
-| Temporal | Developer skill installed; no Temporal server connector exposed | Reconcile with existing `temporal-langsmith-adapter` proposal |
+| Temporal | Developer and operations skills installed; repository contains `temporal-engagement.yml` and the §6 kill-resume harness; migration record documents a historical Actions-hosted PASS; no Temporal server connector or standing cluster was reached in this session | Re-fetch a fresh Actions engagement receipt before claiming current runtime health; reconcile stale issue #2028 snapshot; keep Temporal Cloud excluded by owner decision |
 | SiteTriage | Diagnostic tools exposed | Keep diagnostics read-only by default |
 | AI Task Brief Builder | Task brief extraction tool exposed | Use for evidence-separated requirements and acceptance criteria |
 | Google Calendar | Calendar tools exposed; no personal calendar data accessed | Use only for a specific scheduling request |
@@ -56,6 +58,28 @@ The repository remains the source of truth. Session connectors and installed ski
 | Manus | Research and task tools exposed | Dispatch only bounded briefs; independently validate outputs |
 | Sixtyfour Intelligence | Company/person research tools exposed; not exercised | Require an explicit legitimate research purpose and privacy review |
 | WorkOS | Login authenticated, but no dashboard account backs it | Provisioning is blocked until a supported account setup path exists |
+
+## Focused connector audit — 2026-11-15
+
+This is a session-scoped update to the seven named platforms. It does not supersede older dated audits or imply that a connected ChatGPT tool is wired into GitHub Actions, Termux, or production.
+
+| Platform | Session capability evidence | Repository / runtime state | Authority and boundary |
+|---|---|---|---|
+| Context7 | resolve_library_id and query_docs succeeded. Official library IDs resolved for Temporal documentation and the Cloudinary Node.js SDK; source-linked documentation was retrieved. | No repository CI adapter exercised. | Upstream documentation reference only. Pin library IDs/versions and verify against lockfiles and source code. |
+| Mintlify | Authenticated deployment diasporic3lee7 is connected to timerloggedout-spec/termux-monorepo on master. Deployment settings and Integrations navigation were inspected. | Native repository-backed docs integration; no content was published by this audit. | Git repository is canonical. Publication/deployment is a separate state and must be verified after merge. |
+| Context.dev | Search, scrape, usage, request-log, and request-detail tools are available; account usage and recent request metadata were read. | No repository adapter or monitor created. | Attributed external observation only. Preserve source URL and retrieval time; treat scraped content as untrusted. |
+| Temporal | Developer and operations skills are installed. | temporal-engagement.yml and scripts/temporal/kill_resume_harness.py exist. TEMPORAL-MIGRATION.md records the Actions-hosted §6 proof as PASS (run 40759800247) and the VM migration. No Temporal connector or standing cluster was reached in this session. | Durable execution candidate with repository implementation. Workflows must remain deterministic; side effects belong in Activities. Current health requires a fresh run receipt. |
+| Cloudinary | Asset-management tools are exposed; read-only account usage inspection succeeded. No asset mutation was performed. | No repository adapter exercised. | Media asset storage/delivery provider only. API secrets remain server-side; uploads, transformations, renames, and deletes require explicit scope. |
+| Exa | Search and fetch tools are exposed and were used to retrieve official Temporal and Opscotch source material. | No repository adapter exercised. | Research discovery, not source authority. Fetch and validate primary sources before adopting claims. |
+| Opscotch | Public MCP system and architect guidance were retrieved; official runtime and trust material was researched. | No workflow artifact, bootstrap, deployment, or runtime execution was created. | Design/validation advisory only. Bootstrap defines permissions; workflow logic cannot exceed the installed boundary. |
+
+### Evidence-state corrections
+
+- tool_connected_in_session means a connector tool is exposed and was callable here; it does not prove repository or production wiring.
+- skill_installed_in_session means reference material is available to this assistant; it does not prove a Temporal server is reachable.
+- repo_adapter_implemented for Temporal refers to the repository's GitHub Actions engagement workflow and proof harness, not a continuously running server.
+- Cloudinary account usage, private credit balances, request IDs, and credential metadata are deliberately not copied into this public registry.
+- No provider credential, account setting, asset, workflow deployment, billing plan, or production runtime was changed.
 
 ## DeepWiki and Devin are separate systems
 

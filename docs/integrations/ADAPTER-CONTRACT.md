@@ -48,7 +48,7 @@ Do not emit raw prompts, completions, cookies, tokens, credentials, session tran
 - Require explicit authorization for writes, paid inference, data export/publication, deployment, campaign sends, and physical device/robot actions.
 - Enforce bounded retries, concurrency, timeouts, rate limits, and spend.
 - Preserve source IDs and immutable repository SHAs.
-- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation. Use bounded batches with explicit record/byte ceilings, one transaction per batch, durable accepted/duplicate/failed receipts, and cursor advancement only after durable acknowledgement.
+- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation. Use bounded batches with explicit record/byte ceilings, one transaction per batch, durable accepted/duplicate/failed receipts, and cursor advancement only after durable acknowledgement. Separate migration, writer and read-only credentials; never use the legacy owner URL or auto-apply DDL from the runtime writer.
 - Keep unknown actor/model attribution null; GitHub actor identity is not provider authorship.
 
 ## 5. Provider-specific guardrails

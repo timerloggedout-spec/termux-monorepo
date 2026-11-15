@@ -18,7 +18,8 @@ One normalized integration-event and time-series measurement ingestion contract,
 - Preserve `lane_events`, provider-observation, Provenance, HindSight, Evidence Envelope, JSONL history and dashboard-surface-feed authorities.
 - No browser database credentials.
 - No workflow YAML edits: `.github/workflows/**` is operator-owned under `docs/proposals/AGENTIC-PERMISSIONS.md`.
-- No live database migration without an authorized production credential and a reviewed execution plan.
+- No live database migration without `LANE_EVENTS_MIGRATION_DATABASE_URL` and a reviewed operator execution plan.
+- Runtime ingestion requires `LANE_EVENTS_WRITER_DATABASE_URL` or a read-only Neon API lookup of the dedicated `integration_ingest`/`lane_events_writer` role; legacy owner URLs are excluded.
 - No automatic retry in the writer; the owning workflow classifies and decides retries.
 
 ## Task 1 — Canonical event/measurement/batch contracts

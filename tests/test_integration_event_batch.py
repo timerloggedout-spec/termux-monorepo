@@ -203,6 +203,21 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with patch.dict(os.environ, {"LANE_EVENTS_MIGRATION_DATABASE_URL": "postgresql://migration"}, clear=True):
             self.assertEqual(ie.resolve_migration_url(), "postgresql://migration")
 
+    def test_record_does_not_apply_schema_automatically(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "events.jsonl"
+            path.write_text(json.dumps(EVENT) + "\n", encoding="utf-8")
+            with patch.object(ie, "resolve_writer_url", return_value="postgresql://writer"), \
+                 patch.object(ie, "ingest", return_value=[]), \
+                 patch.object(ie.lane_event, "psql") as psql:
+                self.assertEqual(ie.main(["record", "--events-file", str(path)]), 0)
+            psql.assert_not_called()
+
+    def test_schema_command_requires_operator_migration_credential(self):
+        with patch.dict(os.environ, {}, clear=True), patch.object(ie.lane_event, "psql") as psql:
+            self.assertEqual(ie.main(["schema"]), 2)
+            psql.assert_not_called()
+
     def test_database_migration_is_append_only_and_indexed(self):
         ddl = (ROOT / "ops" / "lane-events" / "integration-events.sql").read_text(encoding="utf-8")
         for table in ("integration_events", "integration_measurements", "integration_ingest_batches"):

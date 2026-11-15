@@ -225,11 +225,15 @@ Use evidence labels consistently:
 - Integration owner: named only when the task is admitted and an authorized seat claims it.
 - Human owner: approves any transition from research to source import, real-sample execution, external network activity, or production adoption.
 
-## 11. Current decision requested
+## 11. QUE admission record
+
+The initial research-only task is filed as [QUE issue #5457](https://github.com/timerloggedout-spec/termux-monorepo/issues/5457). It uses the existing `issue-dispatch/v1` project-task route at tier 3. This filing is an intake/admission request, not a claim that the task has been ranked, claimed, executed or completed. Reconcile the actual QUE feed/claim receipts before reporting execution state.
+
+## 12. Current decision requested
 
 Approve WP0 and WP1 as the initial research tranche. Keep WP2–WP5 staged behind their dependencies. The RFP is not an approval to run images, detonate files, scan external networks, create credentials, or import code. Those require separate evidence and authorization.
 
-## 12. Source register
+## 13. Source register
 
 - Docker Hub profile: https://hub.docker.com/u/credkellar
 - Docker Hub Sandbox-API: https://hub.docker.com/r/credkellar/sandbox-api

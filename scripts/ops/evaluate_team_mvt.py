@@ -41,6 +41,13 @@ def summarize(rows: list[dict[str, Any]], lane_result: str) -> tuple[dict[str, A
         )
         return {**base, "status": "incomplete", "reason": reason}, False
 
+    if failed:
+        return {
+            **base,
+            "status": "execution_failed",
+            "reason": f"{len(failed)} eligible DOE cell(s) reported execution failure",
+        }, True
+
     if len(rows) < EXPECTED_CELLS:
         return {
             **base,

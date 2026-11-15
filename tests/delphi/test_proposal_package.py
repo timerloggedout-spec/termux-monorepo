@@ -66,7 +66,6 @@ class TestProposalPackage(unittest.TestCase):
                 if path.startswith("/git/commits/"):
                     ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     paths = ([manifest_path] if tree_sha == "c" * 40 else
@@ -74,6 +73,7 @@ class TestProposalPackage(unittest.TestCase):
                     return {"truncated": False, "tree": [
                         {"path": item, "type": "blob", "mode": "100644"} for item in paths
                     ]}
+                ref = path.rsplit("?ref=", 1)[1]
                 content_path = path.split("/contents/", 1)[1].split("?ref=", 1)[0]
                 self.refs.append((content_path, ref))
                 raw = payloads[content_path]

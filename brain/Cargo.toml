@@ -1,0 +1,11 @@
+[package]
+name = "termux-brain"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Provider-neutral cognitive kernel shared across the Termux monorepo"
+license = "MIT"
+publish = false
+
+[lib]
+path = "src/lib.rs"

@@ -106,6 +106,7 @@ def test_no_snapshot_defers_everything_quota_unknown():
     assert feed["ledger_read"]["status"] == "unavailable"
     assert feed["ledger_read"]["reason"] == "ledger_snapshot_absent"
     assert feed["pool"]["eligible"] == []
+    assert feed["pool"]["probe_candidates"] == ["alpha", "beta"]
     for row in feed["arms"]:
         assert "quota_unknown" in row["defer_reasons"]
         assert "reset_window_unknown" in row["defer_reasons"]

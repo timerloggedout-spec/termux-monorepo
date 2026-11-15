@@ -250,7 +250,7 @@ jobs:
 
   stamp:
     needs: [discover, validate]
-    if: always() && inputs.emit_stamps
+    if: always() && inputs.emit_stamps && needs.discover.result == 'success'
     runs-on: ubuntu-latest
     permissions: {}
     timeout-minutes: 20

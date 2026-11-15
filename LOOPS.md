@@ -128,3 +128,5 @@ The current `master` desk-feed snapshot distinguishes these counts:
 - The current build-arm registry has **7** arms. The native validation workflow menu has **30** choices; **28** intersect the current native admission adapter map. The menu is not the provider universe.
 
 Use `scripts/ops/provider_population_census.py` to regenerate a source-hashed census. The manual validation workflow uploads a `provider-population-census` artifact after the provider receipts are collected. Always preserve the definitions above when reporting counts; never label 7 arms, 30 menu choices, 92 wiring records, or 9,588 enumerated g4f pairs as the full active endpoint population.
+
+- The same desk-feed also contains **95 inference-availability records**: 23 wired-unproven, 2 triggerable, 65 inference-only, and 5 proven. Only 16 are covered by the provider-availability probe, 1 is secret-only, 74 are not covered, and 14 have a batch endpoint wired. These are registry-record classifications, not live success counts.

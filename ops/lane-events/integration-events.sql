@@ -104,6 +104,8 @@ CREATE TABLE IF NOT EXISTS integration_events (
 ALTER TABLE integration_events
   DROP CONSTRAINT IF EXISTS integration_events_idempotency_key_key;
 ALTER TABLE integration_events
+  DROP CONSTRAINT IF EXISTS integration_events_integration_idempotency_uk;
+ALTER TABLE integration_events
   ADD CONSTRAINT integration_events_integration_idempotency_uk
   UNIQUE (integration_id, idempotency_key);
 
@@ -167,6 +169,8 @@ CREATE TABLE IF NOT EXISTS integration_measurements (
 
 ALTER TABLE integration_measurements
   DROP CONSTRAINT IF EXISTS integration_measurements_idempotency_key_key;
+ALTER TABLE integration_measurements
+  DROP CONSTRAINT IF EXISTS integration_measurements_integration_idempotency_uk;
 ALTER TABLE integration_measurements
   ADD CONSTRAINT integration_measurements_integration_idempotency_uk
   UNIQUE (integration_id, idempotency_key);

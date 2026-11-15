@@ -41,7 +41,7 @@ The canonical graph and temporal evidence formats are unchanged. `build-summary.
 The final summary is written through a temporary file and atomic replacement.
 
 ### Benchmark comparator
-`scripts/ops/iie_benchmark.py` compares baseline and treatment receipts. It first checks repository, ref, source SHA, graph counts and coverage. Any mismatch yields `PARITY_FAILED`; efficiency ratios are reported only as descriptive metrics. A zero/missing denominator produces an unavailable ratio, not an invented infinite speedup.
+`scripts/ops/iie_benchmark.py` compares baseline and treatment receipts. It first checks repository, ref, source SHA, canonical node/edge hashes, graph counts and coverage. Any mismatch yields `PARITY_FAILED`; efficiency ratios are reported only as descriptive metrics. A zero/missing denominator produces an unavailable ratio, not an invented infinite speedup.
 
 Example:
 

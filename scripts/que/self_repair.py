@@ -30,6 +30,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from scripts.que.branch_reconciliation_intake import branch_reconciliation_groups
+
 REPO = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")
 API = "https://api.github.com"
 LABEL = "que:self-repair"
@@ -94,6 +96,8 @@ def item_key(path: str, sig: str) -> str:
 
 def item_body(item: dict) -> str:
     rec = "\n".join(f"- run {r['url']} @ `{r['sha'][:8]}`" for r in item["receipts"][:5])
+    detail = item.get("detail", "")
+    detail_section = f"\n## Branch reconciliation\n{detail}\n" if detail else ""
     return f"""{MARK.format(key=item['key'])}
 class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
 
@@ -102,7 +106,7 @@ class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` �
 - failing step: `{item['step'] or 'n/a'}`
 - error: {item['message'] or 'n/a'}
 {rec}
-
+{detail_section}
 ## Loop (PROPOSAL.md)
 - [ ] Research: diagnosis note with receipts (run URL ∧ SHA)
 - [ ] RFP: fix spec ∧ acceptance test ∧ replay of the failing run
@@ -277,11 +281,12 @@ def file_items(gh: GH, groups: list[dict], dry: bool, cap: int) -> list[str]:
             log.append(f"defer {g['key']} (per-run cap)")
             continue
         cap -= 1
-        title = f"self-repair: {g['name']} · {g['step'] or 'failure'} [{g['sig']}]"[:200]
+        prefix = "branch-reconciliation" if g.get("class") == "branch-reconciliation" else "self-repair"
+        title = f"{prefix}: {g['name']} · {g['step'] or 'failure'} [{g['sig']}]"[:200]
         if dry:
             log.append(f"would-open {g['key']} p={g['priority']}")
         else:
-            it = gh.req("POST", f"/repos/{REPO}/issues", {"title": title, "body": item_body(g), "labels": [LABEL, "class:self-repair"]})
+            it = gh.req("POST", f"/repos/{REPO}/issues", {"title": title, "body": item_body(g), "labels": [LABEL, f"class:{g.get('class', 'self-repair')}"]})
             log.append(f"open #{it['number']} {g['key']} p={g['priority']}")
     return log
 
@@ -339,11 +344,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--window-hours", type=int, default=int(os.environ.get("QUE_SR_WINDOW_HOURS", "6")))
     ap.add_argument("--max-new", type=int, default=int(os.environ.get("QUE_SR_MAX_NEW", "5")))
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--branch-inventory", default=None)
     a = ap.parse_args(argv)
     gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "")
     summary = {"observe": [], "promote": [], "learn": []}
     try:
         groups = failing_groups(gh, a.window_hours) + stale_feeds(gh)
+        if a.branch_inventory:
+            groups += branch_reconciliation_groups(a.branch_inventory)
         summary["observe"] = file_items(gh, groups, a.dry_run, a.max_new)
         summary["promote"] = promote(gh, a.dry_run)
         summary["learn"] = run_learn(gh, a.dry_run)

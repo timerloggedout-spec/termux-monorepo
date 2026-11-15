@@ -166,6 +166,7 @@ jobs:
           elif [ "$BASELINE_OUTCOME" != success ]; then failed_stage=prepare-baseline; reason="Could not prepare detached baseline worktree";
           elif [ "$COMPARE_ONLY" != true ] && [ "$DEPS_OUTCOME" != success ]; then failed_stage=install-dependencies; reason="Validation dependencies could not be installed";
           elif [ "$COMPARE_ONLY" != true ] && [ "$VALIDATE_OUTCOME" != success ]; then failed_stage=validation; reason="Validation step did not complete normally";
+          elif [ "$COMPARE_ONLY" != true ] && { [ "${BASELINE_EXIT:--1}" != 0 ] || [ "${CANDIDATE_EXIT:--1}" != 0 ]; }; then failed_stage=validation; reason="One or both immutable refs failed the selected suite";
           fi
           baseline_exit="${BASELINE_EXIT:--1}"
           candidate_exit="${CANDIDATE_EXIT:--1}"

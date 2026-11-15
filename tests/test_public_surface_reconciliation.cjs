@@ -75,4 +75,17 @@ assert.equal(summary.unlinkedBranchCount, 2);
 assert.equal(summary.divergedCount, 1);
 assert.equal(summary.behindCount, 1);
 
+const publicationRuns = api.selectPublicationRuns(
+  { data: { workflow_runs: [{ id: 10, name: "tribute-dashboard-deploy", status: "queued" }] } },
+  { data: { workflow_runs: [
+    { id: 20, name: "Unrelated CI", status: "completed" },
+    { id: 21, name: "pages build and deployment", status: "completed", conclusion: "success" }
+  ] } }
+);
+assert.equal(publicationRuns.length, 2);
+assert.equal(publicationRuns[0].runs[0].id, 10);
+assert.equal(publicationRuns[1].runs.length, 1);
+assert.equal(publicationRuns[1].runs[0].id, 21);
+assert.equal(api.selectPublicationRuns({ error: "rate limited" }, { error: "forbidden" })[0].error, "rate limited");
+
 console.log("public surface reconciliation contract: PASS");

@@ -231,6 +231,7 @@ jobs:
               f.write(f"All-lane providers: **{p['all_lane_distinct_providers']}**  \n")
               f.write(f"Model-lane distinct providers: **{p['model_lane_distinct_providers']}**  \n")
               f.write(f"Invoke wiring records: **{p['invoke_wiring_records']}/{p['invoke_wiring_record_denominator']}**  \n")
+              f.write(f"Inference-availability records: **{p['inference_availability_records']}**; covered **{p['availability_covered_records']}**; secret-only **{p['availability_secret_only_records']}**; not covered **{p['availability_not_covered_records']}**  \n")
               f.write(f"Historical verified endpoint floor: **{p['endpoint_verified_floor']}** (counted {p['endpoint_census_counted_at']})  \n")
               f.write(f"g4f universe pairs: **{g['universe_pairs_total']}**; historical inference successes: **{g['historical_probe_inference_ok']} / {g['historical_probe_attempted']}**  \n")
               f.write(f"Configured build arms: **{report['build_dispatch']['configured_build_arms']}**  \n")

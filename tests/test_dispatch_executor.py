@@ -72,6 +72,11 @@ def _decide(filings, **kw):
         kw.get("usage", _usage()), NOW, run_id="test-1",
         max_conversions=kw.get("max_conversions", 1),
         workflow_ref="w.yml", workflow_sha="aa" * 20, script_sha="bb" * 20,
+        cadence=kw.get("cadence", {
+            "schema": "pool-cadence/v1",
+            "generated_at": NOW.isoformat(),
+            "pool": {"eligible": ["gemini-cli"], "deferred": []},
+        }),
     )
 
 
@@ -229,7 +234,9 @@ def _decide_full(filings, usage=None, measured=None, probe_budget=1):
     return ex.decide(
         filings, _registry(), _census(), usage, NOW, run_id="test-probe",
         max_conversions=1, workflow_ref="w.yml", workflow_sha="aa" * 20,
-        script_sha="bb" * 20, measured=measured, probe_budget=probe_budget)
+        script_sha="bb" * 20, measured=measured, probe_budget=probe_budget,
+        cadence={"schema": "pool-cadence/v1", "generated_at": NOW.isoformat(),
+                 "pool": {"eligible": ["gemini-cli"], "deferred": []}})
 
 
 def _measured(kind, value, as_of="2026-11-12T14:30:00Z", valid_until=None,
@@ -478,3 +485,13 @@ def test_executor_holds_on_invalid_cadence_schema():
                          run_id="cadence-invalid", cadence=cadence)
     assert decision["decisions"][0]["action"] == "hold"
     assert decision["decisions"][0]["hold_reason"] == "cadence_schema_invalid"
+
+
+def test_missing_cadence_holds_even_when_registry_and_census_pass():
+    decision = ex.decide(
+        [_filing(5488)], _registry(), _census(), _usage(), NOW,
+        run_id="missing-cadence", cadence=None,
+    )
+    row = decision["decisions"][0]
+    assert row["action"] == "hold"
+    assert row["hold_reason"] == "cadence_missing"

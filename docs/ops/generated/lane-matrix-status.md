@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-15T08:42:20Z)
+# Lane matrix status (2026-11-15T08:43:28Z)
 
-- Master: `371911e1b919d05571209ba302163a8d796650d1`
+- Master: `a582fbf34d9e1cf2d75d7af96519682f850a55e6`
 - Open PRs: **412**
 - Oldest: #47 (101.71d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -23,9 +23,9 @@
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
 | #1436 | 25.09 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
-| #2702 | 14.68 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 12.18 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 11.49 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #2702 | 14.69 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
+| #4069 | 12.19 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 11.5 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 10.84 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 8.74 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 101.71 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
@@ -61,6 +61,6 @@
 | #1966 | 18.15 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 15.99 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
 | #2577 | 15.35 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
-| #2856 | 14.28 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
+| #2856 | 14.29 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

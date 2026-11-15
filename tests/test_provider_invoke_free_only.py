@@ -154,7 +154,13 @@ def test_native_provider_validation_matrix_covers_every_manual_provider_with_fre
     assert len(actual) == 30
     assert set(batch_events) == {"workflow_dispatch"}
     assert batch_events["workflow_dispatch"]["inputs"]["experiment_label"]["required"] is True
+    assert batch_events["workflow_dispatch"]["inputs"]["emit_stamps"]["default"] is True
     assert batch["jobs"]["validate"]["strategy"]["max-parallel"] == 2
+    assert batch["jobs"]["stamp"]["needs"] == ["validate"]
+    assert "inputs.emit_stamps" in batch["jobs"]["stamp"]["if"]
+    stamp_step = next(s for s in batch["jobs"]["stamp"]["steps"] if "provider_validation_stamp.py" in s.get("run", ""))
+    assert "dispatch-stamp-fanout" in (root / "scripts/ops/provider_validation_stamp.py").read_text()
+    assert "GH_TOKEN" in stamp_step["env"]
     step = next(s for s in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in s.get("run", ""))
     assert "--free-only" in step["run"]
     assert "inference-health-smoke.md" in step["run"]

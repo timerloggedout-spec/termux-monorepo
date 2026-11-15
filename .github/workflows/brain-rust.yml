@@ -41,7 +41,17 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt, clippy
-      - name: Format
+      - name: Format sources for inspection
+        run: cargo fmt --all
+      - name: Upload rustfmt output
+        uses: actions/upload-artifact@v4
+        with:
+          name: brain-rustfmt-output
+          path: |
+            brain.rs
+            brain/src/lib.rs
+            brain/tests/brain.rs
+      - name: Verify format
         run: cargo fmt --check
       - name: Check
         run: cargo check --all-targets

@@ -162,7 +162,7 @@ class IntegrationEventBatchTests(unittest.TestCase):
             dict(MEASUREMENT, measurement_id=f"m-{i}", idempotency_key=f"key-{i}")
             for i in range(3)
         ]
-        cursors = {"github-actions": {"cursor_before": "page-004", "cursor_after": "page-005"}}
+        cursors = {MEASUREMENT["integration_id"]: {"cursor_before": "page-004", "cursor_after": "page-005"}}
         batches = ie.plan(records, 2, ie.HARD_MAX_BYTES, cursors)[0]["batches"]
         self.assertEqual(batches[0]["cursor_before"], "page-004")
         self.assertNotIn("cursor_after", batches[0])

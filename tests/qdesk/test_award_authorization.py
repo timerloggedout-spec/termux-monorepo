@@ -131,7 +131,7 @@ class TestQDeskAwardAuthorization(unittest.TestCase):
                         "user": {"type": "Bot", "login": "github-actions[bot]"},
                         "body": body_text,
                     }
-                if path == "/issues/5156/comments?per_page=100&page=1":
+                if path.startswith("/issues/5156/comments?"):
                     return [{
                         "id": 8123,
                         "user": {"type": "Bot", "login": "github-actions[bot]"},

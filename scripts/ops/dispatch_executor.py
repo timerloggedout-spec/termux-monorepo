@@ -125,9 +125,10 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
     """Return (eligible arms, hold reason or None).
 
     Eligible = registry status eligible AND census verdict passed AND
-    not quota-terminal for the arm-day. The census feed is the
-    eligibility record of #5151; a stale census makes eligibility
-    unknown -> HOLD.
+    not quota-terminal for the arm-day. When supplied, the fresh
+    pool-cadence/v1 feed is an additional required intersection: an arm
+    absent from cadence.pool.eligible cannot dispatch. This makes the
+    cadence route/entitlement/quota-or-pool decision authoritative.
     """
     generated_at = census.get("generated_at")
     if not generated_at:
@@ -676,7 +677,7 @@ def main(argv: list[str] | None = None) -> int:
     decide_p.add_argument("--arms", required=True)
     decide_p.add_argument("--census", required=True)
     decide_p.add_argument("--usage")
-    decide_p.add_argument("--cadence",
+    decide_p.add_argument("--cadence", required=True,
                           help="pool-cadence/v1 eligibility feed from autoQuotaCadence")
     decide_p.add_argument("--measured",
                           help="bucket-headroom feed (QUE #5230): "

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,10 +11,8 @@ from pathlib import Path
 EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
-NEGATIVE_FIRST = re.compile(
-    r"^\\s*(?:(?:[-*]\\s*)|(?:#+\\s*))?(?:do not|don't|never|no\\b|not\\b|avoid\\b)",
-    re.IGNORECASE,
-)
+# Compatibility pin: "guard" remains a registered action in the shared vocabulary.
+from do_statement_style_rules import is_imperative_subject, is_negative_first_line
 # Compatibility pin: "guard" remains a registered action in the shared vocabulary.
 from do_statement_style_rules import is_imperative_subject
 
@@ -30,7 +27,7 @@ errors: list[str] = []
 
 def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
-        if NEGATIVE_FIRST.match(line):
+        if is_negative_first_line(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
 
@@ -45,7 +42,7 @@ def inspect_git_range(base: str, head: str) -> None:
             current_path = line[6:]
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
-            if NEGATIVE_FIRST.match(added):
+            if is_negative_first_line(added):
                 errors.append(
                     f"{current_path}: lead with the intended DO action: {added.strip()}"
                 )

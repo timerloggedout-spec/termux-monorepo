@@ -67,7 +67,7 @@ def main() -> int:
     summary, failed = summarize(rows, args.lane_result)
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(summary, sort_keys=True, indent=2) + "\\n", encoding="utf-8")
+    output.write_text(json.dumps(summary, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(summary, sort_keys=True))
     return 1 if failed else 0
 

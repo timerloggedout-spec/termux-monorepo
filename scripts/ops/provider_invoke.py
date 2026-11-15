@@ -77,7 +77,7 @@ def http_json(method: str, url: str, token: str, payload=None, timeout=90):
             body = {}
         return e.code, body
     except Exception as e:  # DNS, TLS, egress blocks, timeouts
-        return None, {"transport_error": f"{type(e).__name__}: {e}"}
+        return None, {"transport_error": type(e).__name__}
 
 
 def pick_model(catalog: dict) -> str | None:
@@ -298,21 +298,17 @@ def main() -> int:
         if verdict["ok"]:
             break
         if status is None:
-            verdict["diagnosis"] = "transport: " + str(body.get("transport_error"))[:200]
+            verdict["diagnosis"] = "transport_error"
             break
         if status == 404 and attempt_model != attempts[-1]:
             continue  # catalog/serving skew: fall over to the next catalog model
-        err = body.get("error") if isinstance(body, dict) else None
-        msg = (err.get("message") if isinstance(err, dict) else None) or ""
         if status == 200:
-            verdict["diagnosis"] = f"http 200 but no completion text at max_tokens 1024 (response shape {sorted(body.keys())})"
+            verdict["diagnosis"] = f"http 200 but no completion text (response shape {sorted(body.keys())})"
         else:
-            verdict["diagnosis"] = f"http {status}: {str(msg)[:200]}"
+            verdict["diagnosis"] = f"http {status}"
         break
     else:
-        err = body.get("error") if isinstance(body, dict) else None
-        msg = (err.get("message") if isinstance(err, dict) else None) or ""
-        verdict["diagnosis"] = f"http {status}: {str(msg)[:200]}"
+        verdict["diagnosis"] = f"http {status}"
     print("INVOKE_VERDICT " + json.dumps(verdict))
     return 0
 

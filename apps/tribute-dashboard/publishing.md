@@ -21,6 +21,6 @@ Read-only live view for public website branches and open pull requests.
 - NO_DELTA: head and base are identical.
 - UNKNOWN: comparison unavailable or incomplete.
 
-The browser reads the public GitHub API without credentials. It compares open PR heads (up to 20 per refresh) and performs a targeted comparison for branches whose names contain ai-elves. Other unlinked branches are listed without full history comparison.
+The browser reads the public GitHub API without credentials. It lists up to 100 branches and 100 open PRs, compares up to 20 PR heads per refresh, and performs targeted comparisons for branches whose names contain ai-elves. The PR table shows base ref/SHA, merge-base SHA, and head SHA. Other unlinked branches are listed without full history comparison.
 
 Deployment and publication remain separate evidence steps. This view never approves, merges, deletes branches or claims that a live URL serves a particular SHA.

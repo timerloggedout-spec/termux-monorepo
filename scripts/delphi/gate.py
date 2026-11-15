@@ -888,13 +888,17 @@ def _run(args) -> int:
     if early["mode"] == "defer_api":
         print(f"::warning::delphi deferred: shared GITHUB_TOKEN remaining={remaining} is inside the reserve; next event or heartbeat resumes")
         return 0
-    have = {l["name"] for l in gh.req("GET", "/labels?per_page=100")}
-    for name, (color, desc) in LABELS.items():
-        if name not in have:
-            gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
-    _, roles = weights_issue(gh, panel)
-    panel = dict(panel, roles=roles)
-    issues = open_rfp_issues(gh)
+    try:
+        have = {l["name"] for l in gh.req("GET", "/labels?per_page=100")}
+        for name, (color, desc) in LABELS.items():
+            if name not in have:
+                gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
+        _, roles = weights_issue(gh, panel)
+        panel = dict(panel, roles=roles)
+        issues = open_rfp_issues(gh)
+    except RateLimited as exc:
+        print(f"::warning::delphi census deferred before scoring on GitHub rate limit: {exc}")
+        return 0
     review_target = 0
     if (os.environ.get("DELPHI_REVIEW_COMMENT_BODY", "").strip() == "/delphi approve"):
         try:

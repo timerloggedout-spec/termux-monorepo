@@ -13,6 +13,7 @@ import math
 import os
 import re
 import sys
+import subprocess
 import tempfile
 import uuid
 from collections import OrderedDict
@@ -616,7 +617,7 @@ def plan(records: list[dict], max_records: int, max_bytes: int,
                 "records": len(chunk),
                 "payload_bytes": len(("\n".join(canonical_json(x) for x in chunk) + "\n").encode("utf-8")),
             }
-            if index == 0 and before is not None:
+            if (index == 0 or index == len(chunks) - 1) and before is not None:
                 batch["cursor_before"] = before
             if index == len(chunks) - 1 and after is not None:
                 batch["cursor_after"] = after
@@ -643,7 +644,7 @@ def ingest(url: str, records: list[dict], record_type: str,
         for index, chunk in enumerate(chunks):
             results.append(run_batch(
                 url, chunk, record_type, adapter_version,
-                before if index == 0 else None,
+                before if index == 0 or index == len(chunks) - 1 else None,
                 after if index == len(chunks) - 1 else None,
             ))
     return results
@@ -728,6 +729,9 @@ def main(argv: list[str] | None = None) -> int:
     except BlockedError as exc:
         print(json.dumps({"status": "blocked", "reason": str(exc)[:300]}), file=sys.stderr)
         return 2
+    except subprocess.TimeoutExpired:
+        print(json.dumps({"status": "failed", "error_class": "TimeoutExpired", "message": "database command timed out; connection details suppressed"}), file=sys.stderr)
+        return 1
     except (OSError, ValueError, TypeError, KeyError, RuntimeError) as exc:
         print(json.dumps({"status": "failed", "error_class": type(exc).__name__, "message": str(exc)[:300]}), file=sys.stderr)
         return 1

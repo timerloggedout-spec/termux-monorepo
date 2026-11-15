@@ -1,5 +1,7 @@
 "use strict";
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 
 let api;
 try {
@@ -87,5 +89,8 @@ assert.equal(publicationRuns[0].runs[0].id, 10);
 assert.equal(publicationRuns[1].runs.length, 1);
 assert.equal(publicationRuns[1].runs[0].id, 21);
 assert.equal(api.selectPublicationRuns({ error: "rate limited" }, { error: "forbidden" })[0].error, "rate limited");
+
+const publisherWorkflow = fs.readFileSync(path.join(__dirname, "../.github/workflows/tribute-dashboard-deploy.yml"), "utf8");
+assert.match(publisherWorkflow, /concurrency:\s*group:\s*tribute-dashboard-publish\s*cancel-in-progress:\s*false/);
 
 console.log("public surface reconciliation contract: PASS");

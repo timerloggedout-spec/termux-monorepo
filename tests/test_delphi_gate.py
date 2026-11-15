@@ -597,3 +597,42 @@ def test_delphi_ledger_ref_rejects_non_positive_or_non_integer_ids():
     for value in (0, -1, True, "8123"):
         with pytest.raises(ValueError):
             gate.delphi_ledger_ref(value)
+
+
+def test_last_ledger_ignores_human_forged_marker_comments():
+    payload = {
+        "input_hash": "abc123",
+        "award": {"decision": "shadow", "package_digest": "a" * 64},
+    }
+    fence = chr(96) * 3
+    body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
+
+    class FakeGH:
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            if path.endswith("page=1"):
+                return [
+                    {"body": body, "user": {"type": "User", "login": "attacker"}},
+                    {"body": body, "user": {"type": "Bot", "login": "github-actions[bot]"}},
+                ]
+            return []
+
+    # The bot entry is the only trusted ledger record; the forged user entry
+    # must not become authoritative even if it appears later in API order.
+    assert gate.last_ledger(FakeGH(), 5156) == {
+        "input_hash": "abc123",
+        "award": {"decision": "shadow", "package_digest": "a" * 64},
+    }
+
+
+def test_review_approval_context_is_part_of_package_input_hash():
+    panel, registry, catalog = _load()
+    surface = catalog["turso.free"]
+    package = {"package_digest": "a" * 64, "source_ref": "b" * 40}
+    without = gate.input_hash(surface, panel["roles"], registry, {}, {
+        "package_binding": package, "reviewer_login": None
+    })
+    with_review = gate.input_hash(surface, panel["roles"], registry, {}, {
+        "package_binding": package, "reviewer_login": "reviewer-1"
+    })
+    assert without != with_review

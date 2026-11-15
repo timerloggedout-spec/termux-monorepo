@@ -1,5 +1,9 @@
 name: Delphi Gate Contract Tests
 
+# Shared Actions budget: github.actions.minutes in ops/quota/registry.json,
+# allocated under the github pool in ops/quota/allocations.json. One read-only
+# path-filtered job, 10-minute timeout, no schedule; manual dispatch is explicit.
+
 on:
   pull_request:
     paths:

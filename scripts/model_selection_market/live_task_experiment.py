@@ -438,7 +438,13 @@ def run(args):
                 private = Path(directory)
                 private.chmod(0o700)
                 publish_counter(private, payload, model)
-                result.update(execute_pilot(tasks, model, key, private, output, plan, run_id))
+                try:
+                    result.update(execute_pilot(tasks, model, key, private, output, plan, run_id))
+                finally:
+                    metrics = reservation_metrics(private)
+                    result['inference_requests_dispatched'] = metrics['sent']
+                    result['request_reservation_states'] = metrics['states']
+                    result['unsettled_sent_requests'] = metrics['unsettled_sent_requests']
             result['status'] = ('SCREENING_COMPLETE' if all(item['outcome'] in {'PASS', 'FAIL'} for item in result['attempts']) else 'SCREENING_INCOMPLETE')
             result['statistics'] = plan.analyze(look=args.pairs_per_context)
     except LiveBlocked as exc:

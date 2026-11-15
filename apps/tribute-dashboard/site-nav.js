@@ -37,6 +37,7 @@
     ["Delphi ledger", tribute + "delphi-ledger.html", "delphi-ledger"],
     ["Classifiers", tribute + "classifiers.html", "classifiers"],
     ["PR lanes", tribute + "pr-lanes.html", "pr-lanes"],
+    ["Publishing", tribute + "publishing.html", "publishing"],
     ["Proposals", tribute + "proposals.html", "proposals"],
     ["Referrals", tribute + "referrals.html", "referrals"],
     ["Marketing Gantt", tribute + "marketing-gantt.html", "marketing-gantt"],

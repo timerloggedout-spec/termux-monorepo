@@ -199,7 +199,7 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     assert census_job["needs"] == ["discover", "validate"]
     assert any("provider-population-census" in step.get("with", {}).get("name", "") for step in census_job["steps"])
     stamp_job = batch["jobs"]["stamp"]
-    assert stamp_job["needs"] == ["discover", "validate"] and "inputs.emit_stamps" in stamp_job["if"]
+    assert stamp_job["needs"] == ["discover", "validate"] and "inputs.emit_stamps" in stamp_job["if"] and "needs.discover.result == 'success'" in stamp_job["if"]
     stamp_step = next(step for step in stamp_job["steps"] if "provider_validation_stamp.py" in step.get("run", ""))
     assert "GH_TOKEN" in stamp_step["env"]
     assert "dispatch-stamp-fanout" in (root / "scripts/ops/provider_validation_stamp.py").read_text()

@@ -60,15 +60,23 @@ jobs:
       - name: Install g4f
         run: pip install --quiet g4f aiohttp_socks PyYAML==6.0.3
       - name: Bounded smoke over catalog working entries
-        run: >
-          python3 scripts/ops/g4f_free_smoke.py
-          --source "${{ inputs.source }}"
-          --output g4f-inference-smoke.json
-          --limit "${{ inputs.limit }}"
-          --offset "${{ inputs.offset }}"
-          --timeout "${{ inputs.timeout_s }}"
-          --workers "${{ inputs.workers }}"
-          --deadline "${{ inputs.deadline_s }}"
+        env:
+          SOURCE: ${{ inputs.source }}
+          LIMIT: ${{ inputs.limit }}
+          OFFSET: ${{ inputs.offset }}
+          TIMEOUT_S: ${{ inputs.timeout_s }}
+          WORKERS: ${{ inputs.workers }}
+          DEADLINE_S: ${{ inputs.deadline_s }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ops/g4f_free_smoke.py \
+            --source "$SOURCE" \
+            --output g4f-inference-smoke.json \
+            --limit "$LIMIT" \
+            --offset "$OFFSET" \
+            --timeout "$TIMEOUT_S" \
+            --workers "$WORKERS" \
+            --deadline "$DEADLINE_S"
       - name: Build provider population census with current g4f receipt
         if: always() && hashFiles('g4f-inference-smoke.json') != ''
         run: python3 scripts/ops/provider_population_census.py --g4f-receipt g4f-inference-smoke.json --out provider-population-census.json

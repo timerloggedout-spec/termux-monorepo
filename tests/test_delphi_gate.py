@@ -736,3 +736,20 @@ def test_review_approval_context_is_part_of_package_input_hash():
         "package_binding": package, "reviewer_login": "reviewer-1"
     })
     assert without != with_review
+
+
+def test_package_verification_budget_preserves_shared_token_reserve():
+    available = gate.package_verification_budget_available
+    assert available(500, 100, 100, 30)
+    assert not available(220, 100, 100, 30)
+    # Unknown live budget relies on the bounded per-run admission cap.
+    assert available(None, 10_000, 100, 30)
+
+
+def test_comment_pagination_cap_fails_closed():
+    class FullPageGH:
+        def req(self, method, path, body=None):
+            return [{"id": index} for index in range(100)]
+
+    with pytest.raises(RuntimeError, match="pagination cap"):
+        gate.comments_newest(FullPageGH(), 5156, max_pages=1)

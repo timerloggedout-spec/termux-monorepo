@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-15T11:58:29Z",
+ "read_at": "2026-11-15T11:59:39Z",
  "status": "ok",
- "count": 61097,
+ "count": 61098,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "9db52d5589b90e465dcce0546e0d79d6f2e7b1fc",
+   "occurred_at": "2026-11-15 11:58:38+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -1666,7 +1675,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "b42ba0bf7c28e34196fd85b8aafdc64cbe9b4b58",
+   "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
    "occurred_at": "2026-11-15 10:58:32+00"
   },
   {
@@ -1675,7 +1684,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
+   "head_sha": "b42ba0bf7c28e34196fd85b8aafdc64cbe9b4b58",
    "occurred_at": "2026-11-15 10:58:32+00"
   },
   {
@@ -1711,15 +1720,6 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "b42ba0bf7c28e34196fd85b8aafdc64cbe9b4b58",
-   "occurred_at": "2026-11-15 10:58:07+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
    "head_sha": "08edd4c8b5cf780d6438b75343ec930d0ab92a78",
    "occurred_at": "2026-11-15 10:58:07+00"
   },
@@ -1730,6 +1730,15 @@
    "conclusion": "success",
    "subject_url": null,
    "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
+   "occurred_at": "2026-11-15 10:58:07+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "b42ba0bf7c28e34196fd85b8aafdc64cbe9b4b58",
    "occurred_at": "2026-11-15 10:58:07+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "ca54ee2b9e06ed940353abca2cc21c60aad561a5",
    "occurred_at": "2026-11-15 10:57:42+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "f46461c977666eb316676279cea54ed22deb08c6",
-   "occurred_at": "2026-11-15 10:57:25+00"
   }
  ]
 }

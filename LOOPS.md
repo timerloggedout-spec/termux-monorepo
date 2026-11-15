@@ -35,6 +35,7 @@ Every configured arm must pass the same validation baseline, regardless of quota
 - Explicit dispatch disposition.
 
 Policy values such as `terms_accepted` and `free_account_verified` are owner assertions, not independent provider verification. Receipts must say `policy_asserted`, never provider-verified.
+The shared validator rejects future or stale evidence timestamps: pricing ≤30 days, capability ≤90 days, terms ≤365 days. The same validator is used by the smoke and execution paths.
 
 ### Quota and pool semantics
 

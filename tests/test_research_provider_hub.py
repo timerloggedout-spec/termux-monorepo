@@ -229,3 +229,22 @@ def test_cloudflare_missing_account_is_not_listed_or_sent(client, monkeypatch, t
     response = client.post('/v1/chat/completions', json=request_body(f'cloudflare/{model}'))
     assert response.status_code == 503
     assert f'cloudflare/{model}' not in [r['id'] for r in client.get('/v1/models').json()['data']]
+
+
+def test_admission_entry_returns_only_the_exact_current_policy_record(monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "policy-key")
+    admitted = entry()
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [admitted])))
+    result = providers.admission_entry("groq", admitted["model"])
+    assert result["provider"] == "groq"
+    assert result["model"] == admitted["model"]
+    assert result["terms_accepted"] is True
+    assert "policy-key" not in json.dumps(result)
+
+
+def test_admission_entry_rejects_duplicate_exact_model(monkeypatch, tmp_path):
+    monkeypatch.setenv("GROQ_API_KEY", "policy-key")
+    monkeypatch.setenv("LLM_API_HUB_PROVIDER_POLICY", str(policy_file(tmp_path, [entry(), entry()])))
+    with pytest.raises(providers.ProviderAdmissionError) as exc:
+        providers.admission_entry("groq", "llama-3.3-70b-versatile")
+    assert exc.value.code == "provider_not_admitted"

@@ -425,6 +425,73 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
 
 
+def authenticated_reviewer_for_issue(issue: dict, env=None) -> str | None:
+    """Accept only an explicit approval comment from a trusted repository collaborator.
+
+    The workflow passes raw GitHub event fields; this function independently
+    checks issue binding, association, exact command and distinct identity.
+    """
+    env = os.environ if env is None else env
+    try:
+        target_issue = int(env.get("DELPHI_REVIEW_ISSUE", ""))
+    except (TypeError, ValueError):
+        return None
+    login = (env.get("DELPHI_REVIEWER_LOGIN") or "").strip()
+    association = (env.get("DELPHI_REVIEWER_ASSOCIATION") or "").upper()
+    command = (env.get("DELPHI_REVIEW_COMMENT_BODY") or "").strip()
+    if target_issue != issue.get("number"):
+        return None
+    if association not in {"OWNER", "MEMBER", "COLLABORATOR"}:
+        return None
+    if command != "/delphi approve":
+        return None
+    if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
+        return None
+    return login
+
+
+def delphi_ledger_ref(comment_id: int) -> str:
+    if not isinstance(comment_id, int) or isinstance(comment_id, bool) or comment_id <= 0:
+        raise ValueError("GitHub ledger comment ID must be a positive integer")
+    return f"github:issue-comment:{comment_id}"
+
+
+def lookup_delphi_ledger_record(gh: "GH", ledger_ref: str) -> dict | None:
+    """Resolve an award only from the exact bot-authored canonical RFP comment."""
+    match = re.fullmatch(r"github:issue-comment:([1-9][0-9]*)", ledger_ref or "")
+    if not match:
+        return None
+    comment_id = int(match.group(1))
+    comment = gh.req("GET", f"/issues/comments/{comment_id}")
+    if not isinstance(comment, dict) or comment.get("id") != comment_id:
+        return None
+    user = comment.get("user") or {}
+    if user.get("type") != "Bot" or user.get("login") != "github-actions[bot]":
+        return None
+    issue_url = comment.get("issue_url") or ""
+    if not issue_url.startswith(f"https://api.github.com/repos/{gh.repo}/issues/"):
+        return None
+    body = comment.get("body") or ""
+    if not body.startswith(LEDGER_MARK):
+        return None
+    payload = re.search(r"```json\n(.*?)\n```", body, re.S)
+    if not payload:
+        return None
+    try:
+        record = json.loads(payload.group(1))
+    except ValueError:
+        return None
+    award = record.get("award") if isinstance(record, dict) else None
+    if not isinstance(award, dict) or award.get("ledger_ref") != ledger_ref:
+        return None
+    return {
+        "ledger_ref": ledger_ref,
+        "package_digest": award.get("package_digest"),
+        "decision": award.get("decision"),
+        "reviewer_login": award.get("reviewer_login"),
+    }
+
+
 def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
     """Read one regular file from an immutable Git commit through the authenticated API."""
     if (not isinstance(path, str) or not path or path.startswith("/") or "\\" in path
@@ -742,7 +809,21 @@ def _run(args) -> int:
                     out["proposal_package"] = package_binding
                     out["award"]["package_digest"] = package_binding["package_digest"]
                     out["records"]["moneyball"]["proposal_package_digest"] = package_binding["package_digest"]
-                gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
+                    reviewer = authenticated_reviewer_for_issue(issue)
+                    if reviewer and reviewer.casefold() != package_binding.get("package_author", "").casefold():
+                        out["award"]["reviewer_login"] = reviewer
+                # Create first to obtain GitHub's immutable comment ID, then bind
+                # that ID into the final ledger payload. If the PATCH fails, no
+                # canonical self-referencing award exists and QDesk must hold it.
+                created = gh.req("POST", f"/issues/{issue['number']}/comments",
+                                 {"body": comment_md(out, ih, args.reason)})
+                if package_binding is not None:
+                    comment_id = created.get("id") if isinstance(created, dict) else None
+                    if not isinstance(comment_id, int) or isinstance(comment_id, bool) or comment_id <= 0:
+                        raise ValueError("GitHub did not return a canonical Delphi ledger comment ID")
+                    out["award"]["ledger_ref"] = delphi_ledger_ref(comment_id)
+                    gh.req("PATCH", f"/issues/comments/{comment_id}",
+                           {"body": comment_md(out, ih, args.reason)})
                 labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
                 labels.add("delphi:" + out["award"]["decision"])
                 if out["result"]["converged"]:

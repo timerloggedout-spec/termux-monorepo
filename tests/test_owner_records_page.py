@@ -4,6 +4,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -55,6 +56,32 @@ class OwnerRecordsPageTests(unittest.TestCase):
         self.assertIn('role="status" aria-live="polite"', html)
         self.assertIn("Search covers L1 metadata only.", html)
         self.assertIn("no body search", html)
+
+    def test_deployed_build_preserves_owner_records_d4_boundary(self):
+        # The deployment builder injects versioning.js into ordinary pages;
+        # that script loads shared navigation and an all-pages menu. Owner
+        # Records verifies its manifest itself and must remain excluded.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "owner-records.html").write_text(
+                """<!doctype html><html><head></head><body>Owner Records</body></html>"""
+            )
+            (root / "admin.html").write_text(
+                """<!doctype html><html><head></head><body>Admin</body></html>"""
+            )
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts/build_dashboard_manifest.py"),
+                 "--root", tmp, "--channel", "preview",
+                 "--source-ref", "refs/pull/5448/head",
+                 "--source-sha", "4b0a550750c9230b17669eda09713ea593cbb370"],
+                cwd=ROOT, capture_output=True, text=True, check=False)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            owner_html = (root / "owner-records.html").read_text()
+            admin_html = (root / "admin.html").read_text()
+            self.assertNotIn('src="./versioning.js"', owner_html)
+            self.assertIn('src="./versioning.js"', admin_html)
+            manifest = json.loads((root / "version-manifest.json").read_text())
+            self.assertIn("owner-records.html", [page["file"] for page in manifest["pages"]])
 
     def test_build_identity_uses_manifest_without_adding_primary_navigation(self):
         html = PAGE.read_text()

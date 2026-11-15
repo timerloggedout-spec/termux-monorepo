@@ -245,3 +245,20 @@ def test_missing_tiers_file_defers_not_crashes(tmp_path):
     body = comment.read_text()
     assert "DEFERRED" in body and "evaluation error" in body
     assert "decision=deferred" in out.read_text()
+
+
+def test_admitted_stamp_carries_mandate_block(tmp_path):
+    """que-superagent P1: an ADMITTED stamp ends with a que-mandate/v1 block."""
+    import sys as _s
+    from pathlib import Path as _P
+    _s.path.insert(0, str(_P(__file__).resolve().parents[1] / "que"))
+    import que_item_fields as qf
+    import swarm_admission as sa
+    tiers = tmp_path / "tiers.json"
+    tiers.write_text('{"schema": "queue.dispatch-tiers/v2", "tiers": []}')
+    blk = sa.mandate_block(str(tiers), "project-task.yml",
+                           {"route": "project-task-dispatch"}, "dependabot[bot]", "7")
+    m = qf.latest(qf.parse_blocks(blk), qf.MANDATE_SCHEMA)
+    assert m["strength"] == "inferred" and m["trigger_id"] == "issue#7"
+    assert m["policy_version"].startswith("queue.dispatch-tiers/v2@")
+    assert sa.mandate_block(str(tmp_path / "missing.json"), "x.yml", {}, "", "") == ""

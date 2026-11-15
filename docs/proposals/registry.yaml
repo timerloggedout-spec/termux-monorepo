@@ -1305,3 +1305,22 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+  - id: que-superagent
+    title: 'QUE ⇐ dsh-superagent domain model: Mandate, Report, serial Eval, fan-out, shadow mode'
+    author: Hark
+    status: executing
+    priority: P1
+    path: active/que-superagent/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: Hark
+        role: author+executor
+        status: executing
+    related_prs:
+      - 5483
+    related_branches:
+      - hark/que-superagent-p1
+    gates_required:
+      - repo-gate

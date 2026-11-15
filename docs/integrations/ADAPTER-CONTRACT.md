@@ -47,7 +47,7 @@ Do not emit raw prompts, completions, cookies, tokens, credentials, session tran
 - Require explicit authorization for writes, paid inference, data export/publication, deployment, campaign sends, and physical device/robot actions.
 - Enforce bounded retries, concurrency, timeouts, rate limits, and spend.
 - Preserve source IDs and immutable repository SHAs.
-- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation.
+- Make ingestion idempotent and append-only; corrections are new events with explicit supersession links, not silent mutation. Use bounded batches with explicit record/byte ceilings, one transaction per batch, durable accepted/duplicate/failed receipts, and cursor advancement only after durable acknowledgement.
 - Keep unknown actor/model attribution null; GitHub actor identity is not provider authorship.
 
 ## 5. Provider-specific guardrails
@@ -72,7 +72,7 @@ Before promotion:
 4. Compare event and measurement output against their JSON Schemas; preserve v1.0.0 compatibility.
 5. Verify no secrets or raw sensitive content in logs/artifacts.
 6. Run repository gates on the same immutable commit SHA.
-7. Record current workflow/run/job/artifact references and per-batch accepted/duplicate/rejected counts.
+7. Record current workflow/run/job/artifact references and per-batch accepted/duplicate/rejected counts.\n8. Keep database project resolution read-only; an adapter must never create a new Neon project as an ingestion fallback.
 8. Re-fetch the final repository and provider state before declaring validated.
 
 ## 7. Failure semantics

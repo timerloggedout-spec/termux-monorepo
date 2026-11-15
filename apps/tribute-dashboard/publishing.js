@@ -69,6 +69,22 @@
     }
     return response.json();
   }
+  async function fetchOptionalJson(url) {
+    try { return {data:await fetchJson(url),error:null}; }
+    catch (error) { return {data:null,error:error.message}; }
+  }
+  function selectPublicationRuns(sourceResult,siteResult) {
+    sourceResult = sourceResult || {};
+    siteResult = siteResult || {};
+    var sourceRuns = sourceResult.data && Array.isArray(sourceResult.data.workflow_runs) ? sourceResult.data.workflow_runs : [];
+    var siteRuns = siteResult.data && Array.isArray(siteResult.data.workflow_runs) ? siteResult.data.workflow_runs : [];
+    return [
+      {label:"Tribute + Matrix publisher",repository:"termux-monorepo",runs:sourceRuns.slice(0,5),error:sourceResult.error || null},
+      {label:"Public website Pages",repository:REPOSITORY,
+        runs:siteRuns.filter(function (run) { return /pages build and deployment|deploy github pages/i.test(run.name || ""); }).slice(0,5),
+        error:siteResult.error || null}
+    ];
+  }
   function compareUrl(baseRepo,baseRef,headRepo,headRef) {
     var headSpec = headRepo && headRepo !== baseRepo ? headRepo + ":" + headRef : headRef;
     return API_ROOT + "/repos/" + baseRepo + "/compare/" + encodeURIComponent(baseRef) + "..." + encodeURIComponent(headSpec);
@@ -76,9 +92,12 @@
   async function loadSnapshot() {
     var base = API_ROOT + "/repos/" + REPOSITORY;
     var results = await Promise.all([
-      fetchJson(base), fetchJson(base + "/branches?per_page=100"), fetchJson(base + "/pulls?state=open&per_page=100")
+      fetchJson(base), fetchJson(base + "/branches?per_page=100"), fetchJson(base + "/pulls?state=open&per_page=100"),
+      fetchOptionalJson(API_ROOT + "/repos/timerloggedout-spec/termux-monorepo/actions/workflows/tribute-dashboard-deploy.yml/runs?per_page=5"),
+      fetchOptionalJson(base + "/actions/runs?per_page=30")
     ]);
     var repository = results[0], branches = results[1], pulls = results[2];
+    var publicationRuns = selectPublicationRuns(results[3],results[4]);
     var defaultBranch = repository.default_branch || "main";
     var comparisons = {}, auditedComparisons = {}, selectedPulls = pulls.slice(0,MAX_PR_COMPARISONS);
     await Promise.all(selectedPulls.map(async function (pr) {
@@ -93,7 +112,7 @@
       catch (error) { auditedComparisons[b.name] = {error:error.message}; }
     }));
     return {branches:branches,pulls:pulls,comparisons:comparisons,auditedComparisons:auditedComparisons,
-      defaultBranch:defaultBranch,comparedPullCount:selectedPulls.length,compareLimit:MAX_PR_COMPARISONS,checkedAt:new Date().toISOString()};
+      publicationRuns:publicationRuns,defaultBranch:defaultBranch,comparedPullCount:selectedPulls.length,compareLimit:MAX_PR_COMPARISONS,checkedAt:new Date().toISOString()};
   }
   function renderSnapshot(snapshot) {
     var rows = buildBranchRows(snapshot.branches,snapshot.pulls,snapshot.comparisons,snapshot.auditedComparisons,snapshot.defaultBranch);
@@ -124,6 +143,17 @@
       var mergeBaseSha = cmp && cmp.merge_base_commit && cmp.merge_base_commit.sha ? shortSha(cmp.merge_base_commit.sha) : "unknown";
       return '<tr><td><a href="' + escapeHtml(pr.html_url) + '" target="_blank" rel="noopener noreferrer">#' + pr.number + "</a></td><td>" + escapeHtml(pr.title) + "</td><td><code>" + escapeHtml(baseVersion) + "</code></td><td><code>" + escapeHtml(mergeBaseSha) + "</code></td><td><code>" + escapeHtml(shortSha(pr.head && pr.head.sha)) + "</code></td><td>" + pill(state,state === "DIVERGED" || state === "BEHIND" ? "bad" : "") + ' <span class="muted">' + ahead + " ahead / " + behind + " behind</span></td><td>" + escapeHtml((pr.updated_at || "").slice(0,10)) + '</td><td><a href="' + escapeHtml(pr.html_url + "/checks") + '" target="_blank" rel="noopener noreferrer">Open checks</a></td></tr>';
     }).join("") + "</tbody></table></div>" : '<p class="empty">No open pull requests found for this repository.</p>';
+    var deploymentNode = document.getElementById("publishing-deployments");
+    deploymentNode.innerHTML = snapshot.publicationRuns.map(function (group) {
+      var heading = "<h3>" + escapeHtml(group.label) + "</h3>";
+      if (group.error) return heading + '<p class="muted">Workflow evidence unavailable: ' + escapeHtml(group.error) + "</p>";
+      if (!group.runs.length) return heading + '<p class="muted">No matching workflow runs found in the inspected window.</p>';
+      return heading + '<div class="publishing-table-wrap"><table class="publishing-table"><thead><tr><th>Run</th><th>Status</th><th>Source SHA</th><th>Event</th><th>Updated</th></tr></thead><tbody>' + group.runs.map(function (run) {
+        var status = run.status === "completed" ? (run.conclusion || "completed") : (run.status || "unknown");
+        var tone = status === "success" ? "ok" : (status === "failure" || status === "cancelled" ? "bad" : "");
+        return '<tr><td><a href="' + escapeHtml(run.html_url || "#") + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(run.name || "Workflow run") + " #" + escapeHtml(run.run_number || run.id) + "</a></td><td>" + pill(status,tone) + "</td><td><code>" + escapeHtml(shortSha(run.head_sha)) + "</code></td><td>" + escapeHtml(run.event || "—") + "</td><td>" + escapeHtml((run.updated_at || run.created_at || "").replace("T"," ").slice(0,16)) + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+    }).join("");
     checkedNode.textContent = "Last checked " + new Date(snapshot.checkedAt).toLocaleString() + ". Public API snapshot; no merge or deployment action.";
     var warnings = [snapshot.pulls.length > snapshot.comparedPullCount
       ? "Compared " + snapshot.comparedPullCount + " of " + snapshot.pulls.length + " open PR heads to stay within the public API request budget."
@@ -144,7 +174,7 @@
       status.textContent = "Unable to refresh public GitHub evidence: " + error.message;
     } finally { button.disabled = false; }
   }
-  var api = {classifyComparison:classifyComparison,buildBranchRows:buildBranchRows,summarize:summarize};
+  var api = {classifyComparison:classifyComparison,buildBranchRows:buildBranchRows,summarize:summarize,selectPublicationRuns:selectPublicationRuns};
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root) root.PublishingReconciliation = api;
   if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded",function () {

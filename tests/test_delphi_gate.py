@@ -753,3 +753,15 @@ def test_comment_pagination_cap_fails_closed():
 
     with pytest.raises(RuntimeError, match="pagination cap"):
         gate.comments_newest(FullPageGH(), 5156, max_pages=1)
+
+
+def test_delphi_rfp_sweep_rotation_eventually_admits_later_issues():
+    issues = [{"number": number} for number in range(1, 36)]
+    first = gate.rotate_rfp_issues(issues, after_issue=0)
+    second = gate.rotate_rfp_issues(issues, after_issue=28)
+    assert [item["number"] for item in first[:28]] == list(range(1, 29))
+    assert [item["number"] for item in second[:7]] == list(range(29, 36))
+    assert 29 in [item["number"] for item in second[:28]]
+    prioritized = gate.rotate_rfp_issues(issues, after_issue=28, priority_issue=34)
+    assert prioritized[0]["number"] == 34
+    assert len({item["number"] for item in prioritized}) == len(issues)

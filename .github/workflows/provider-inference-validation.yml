@@ -22,44 +22,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  discover:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      providers: ${{ steps.matrix.outputs.providers }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Derive the complete native provider adapter matrix (read-only)
+        id: matrix
+        run: |
+          set -euo pipefail
+          python3 -m pip install PyYAML==6.0.3
+          python3 scripts/ops/provider_population_census.py --out /tmp/provider-population-census.json
+          python3 - <<'PY'
+          import json, os
+          report = json.load(open('/tmp/provider-population-census.json', encoding='utf-8'))
+          providers = report.get('adapter_population', {}).get('native_provider_ids', [])
+          if not providers:
+              raise SystemExit('native provider adapter matrix is empty')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('providers=' + json.dumps(providers, separators=(',', ':')) + '\n')
+          print('Native provider adapters discovered:', len(providers))
+          PY
+
   validate:
+    needs: [discover]
     runs-on: ubuntu-latest
     timeout-minutes: 8
     strategy:
       fail-fast: false
       max-parallel: 2
       matrix:
-        provider:
-          - gemini
-          - cohere
-          - sambanova
-          - zai
-          - llm7
-          - routeway
-          - unorouter
-          - siliconflow
-          - huggingface
-          - groq
-          - xkiro
-          - cerebras
-          - kilo
-          - mistral
-          - modelscope
-          - ovhcloud
-          - requesty
-          - typhoon
-          - xfyun
-          - aion
-          - sealion
-          - cloudflare
-          - nvidia
-          - felo
-          - omni
-          - deepinfra
-          - novita
-          - friendli
-          - baseten
-          - deepseek
+        provider: ${{ fromJson(needs.discover.outputs.providers) }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -184,7 +183,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   census:
-    needs: [validate]
+    needs: [discover, validate]
     if: always()
     runs-on: ubuntu-latest
     permissions:
@@ -248,7 +247,7 @@ jobs:
           retention-days: 14
 
   stamp:
-    needs: [validate]
+    needs: [discover, validate]
     if: always() && inputs.emit_stamps
     runs-on: ubuntu-latest
     permissions: {}

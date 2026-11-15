@@ -1305,3 +1305,22 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+  - id: qdesk-self-repair
+    title: QDesk self-repair loop
+    author: termux-ops
+    status: executing
+    priority: P1
+    path: active/qdesk-self-repair/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 5214
+    related_prs:
+      - 5207
+      - 5208
+    related_branches: []
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate

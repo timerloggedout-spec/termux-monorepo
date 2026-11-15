@@ -31,6 +31,7 @@ IMPERATIVE = {
     "account",
     "include",
     "make",
+    "rotate", "enforce", "defer", "link",
     "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse", "bound", "recognize",
 }
 STYLE_PATHS = [

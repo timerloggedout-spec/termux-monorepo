@@ -55,8 +55,10 @@ The operator explicitly directed consolidation of the repository's many dashboar
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [ ] PR cites `Implements: IIS-001`\n- [ ] IIS-002 PR cites `Implements: IIS-002` and links `docs/superpowers/plans/2026-11-14-unified-feed-ingestion.md`
-- [ ] repo-gate and termux-smoke green on the same head for IIS-001\n- [ ] IIS-002 focused tests and dual gates green on one immutable head
+- [ ] PR cites `Implements: IIS-001`
+- [ ] IIS-002 PR cites `Implements: IIS-002` and links `docs/superpowers/plans/2026-11-14-unified-feed-ingestion.md`
+- [ ] repo-gate and termux-smoke green on the same head for IIS-001
+- [ ] IIS-002 focused tests and dual gates green on one immutable head
 - [ ] Non-author review and current check disposition recorded
 - [ ] Close and move to `closed/` only when all gates are terminal
 
@@ -64,4 +66,5 @@ The operator explicitly directed consolidation of the repository's many dashboar
 
 - ITEMS: ./ITEMS.md
 - Design: ../../../superpowers/specs/2026-11-02-integration-intelligence-design.md
-- Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md\n- Unified feed plan: ../../../superpowers/plans/2026-11-14-unified-feed-ingestion.md
+- Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md
+- Unified feed plan: ../../../superpowers/plans/2026-11-14-unified-feed-ingestion.md

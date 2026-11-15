@@ -158,3 +158,24 @@ def test_g4f_census_preserves_selected_and_not_started_counts(tmp_path):
     assert report["selected_count"] == 200
     assert report["attempted"] == 6
     assert report["not_started"] == 194
+
+
+def test_g4f_census_marks_inconsistent_population_counts_unknown(tmp_path):
+    from datetime import datetime, timezone
+    from scripts.ops.provider_population_census import _load_g4f_receipt
+    receipt = tmp_path / "g4f-invalid.json"
+    receipt.write_text(json.dumps({
+        "schema": "g4f-inference-smoke/v1",
+        "observed_at": "2026-11-15T12:00:00Z",
+        "selected_count": 200,
+        "attempted": 6,
+        "not_started": 195,
+        "inference_ok": 7,
+        "results": [],
+    }), encoding="utf-8")
+    report = _load_g4f_receipt(
+        receipt, datetime(2026, 11, 15, 13, 0, tzinfo=timezone.utc)
+    )
+    assert report["counts_consistent"] is False
+    assert report["success_rate"] is None
+    assert report["dispatch_eligible"] == 0

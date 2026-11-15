@@ -1,7 +1,7 @@
 # ArchW1z Gate Spine
 
 > **Status:** LIVE
- > **Workflow triggers (verified 2026-11-15):** both gates run on pull requests; repo-gate also runs on pushes to `master` and `master-staging`; termux-smoke runs on pushes to `master`, `master-staging`, and `termux-smoke`. See the workflow YAML for the executable trigger contract.
+> **Workflow triggers (verified 2026-11-15):** both gates run on pull requests; repo-gate also runs on pushes to `master` and `master-staging`; termux-smoke runs on pushes to `master`, `master-staging`, and `termux-smoke`. See the workflow YAML for the executable trigger contract.
 
 ## Two gates, one constitution
 

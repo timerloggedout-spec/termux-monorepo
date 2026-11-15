@@ -2,12 +2,12 @@
 
 Owner-specific records {authorizations · gates · clearances · bets ·
 decisions} get a visual layer: `apps/tribute-dashboard/owner-records.html`
-on a dedicated Vercel project gated by Vercel Authentication (SSO,
+and a dedicated Vercel project gated by Vercel Authentication (SSO,
 scope = all). Data lives here; presentation never carries plaintext bodies.
 
 ## Layout
 
-- `index.json` — the envelope (`owner-records/v1`). L1 metadata only:
+- `index.json` — the canonical envelope (`owner-records/v1`). L1 metadata only:
   per record {id, class, title, state, holder, since?, source{path,
   section}, key_class, body_status, body_file}. **Never body text.**
   D3: L1 by default; a record may opt into L2 (stricter metadata
@@ -22,17 +22,38 @@ scope = all). Data lives here; presentation never carries plaintext bodies.
 - Private halves: Secure Vault entry `OWNER_RECORDS_AGE_KEYS` + the
   owner's offline backup. **Never in this repo, never in chat.**
 
-## Rules
+## Surface and decryption boundary
 
-- Decryption is client-side only (D2): the gated page takes the owner's
-  age identity in the browser and decrypts locally. No server, no build
-  step ever sees a private half or a plaintext body.
+- The Vercel deploy stages a same-origin `owner-records.json` copy from
+  the exact checked-out `index.json`; the page prefers this build-pinned
+  copy before falling back to the public `master` raw URL on GitHub Pages.
+  The staged copy is L1 metadata only, not ciphertext or plaintext.
+- The GitHub Pages `owner-records.html` route is a **public L1 metadata
+  projection**. It may fetch the validated envelope only; it must not
+  fetch ciphertext, accept an age identity, or render record bodies.
+- The dedicated Vercel `owner-records` project is SSO-protected
+  (`deploymentType=all`) and stages `owner-records.xml`. This is an
+  access-control and transport boundary, **not proof that browser-side
+  decryption is implemented**.
+- Current page implementation is metadata-only: it has no age identity
+  input or age decryption runtime. Client-side decryption remains
+  **NOT_IMPLEMENTED / NOT_VERIFIED** until a separate reviewed change
+  supplies a browser-compatible age implementation, threat model,
+  zero-network plaintext handling, and tests. Never infer decryption
+  capability from the SSO gate or ciphertext staging alone.
 - The XML surface (`owner-records.xml`, envelope + ciphertext inline,
   built by `scripts/owner_records.py xml`) is Vercel-only in v1 (D5):
   it is staged into the gated project's deploy tree, never committed
   to the dashboard app tree and never served from GitHub Pages.
 - The public repo-tracking feed may join **envelope rows only** —
   never bodies, never ciphertext (inventory caution, PR #3505).
+
+## Rules
+
+- Decryption, if separately implemented and approved, is client-side
+  only (D2): the gated page must take the owner's age identity in the
+  browser and decrypt locally. No server or build step may see a private
+  half or a plaintext body.
 - Adding a record: PR that (1) appends the envelope row, (2) adds the
   body file encrypted to the class recipient
   (`age -r $(cat keys/<class>.pub) -o bodies/<id>.age`), (3) keeps
@@ -44,3 +65,10 @@ scope = all). Data lives here; presentation never carries plaintext bodies.
   `docs/ops/OWNER-REQUESTS.md` (16 OPEN + RESOLVED rows).
   Authorizations, clearances and bets are `not_established` classes
   with zero records until registers exist — absence renders honestly.
+
+## Runtime regression coverage
+
+- `tests/owner-records-runtime.test.mjs` executes the page's actual inline browser runtime in a Node VM with a deterministic DOM and fetch harness.
+- `.github/workflows/tribute-telemetry-tests.yml` runs the browser-runtime contract suite with Node's built-in test runner inside its existing regression job.
+- The suite exercises envelope acceptance and rejection, combined search/class/state filters, and last-good view retention after a failed refresh.
+- The runtime harness uses only Node built-ins and runs inside the existing Tribute telemetry regression job.

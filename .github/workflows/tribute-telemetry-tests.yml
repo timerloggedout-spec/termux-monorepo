@@ -24,7 +24,15 @@ on:
       - "tests/test_tribute_scout_evidence.py"
       - "tests/test_tribute_status_outcomes.py"
       - "tests/test_tribute_audit.py"
+      - "apps/tribute-dashboard/owner-records.html"
+      - "apps/tribute-dashboard/version-manifest.json"
+      - "ops/owner-records/index.json"
+      - "tests/owner-records-runtime.test.mjs"
       - "tests/test_public_surface_reconciliation.cjs"
+      - "apps/tribute-dashboard/owner-records.html"
+      - "apps/tribute-dashboard/version-manifest.json"
+      - "ops/owner-records/index.json"
+      - "tests/owner-records-runtime.test.mjs"
   push:
     branches: [master]
     paths:
@@ -68,6 +76,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Run public-surface reconciliation contract tests
         run: node tests/test_public_surface_reconciliation.cjs
+      - name: Run Owner Records browser-runtime contracts
+        run: node --test tests/owner-records-runtime.test.mjs
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

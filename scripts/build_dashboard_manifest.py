@@ -52,6 +52,10 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
         duplicates = sorted({page_id(name) for name in [p.name for p in pages] if ids.count(page_id(name)) > 1})
         raise ValueError(f"duplicate page unique IDs: {duplicates}")
     for page in pages:
+        # Owner Records verifies its own manifest and must not inherit shared
+        # primary navigation or the all-pages version menu via versioning.js.
+        if page.name == "owner-records.html":
+            continue
         html = page.read_text(encoding="utf-8")
         if 'src="./versioning.js"' not in html:
             if "</head>" not in html.lower():

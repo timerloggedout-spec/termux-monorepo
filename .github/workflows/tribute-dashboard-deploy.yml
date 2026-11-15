@@ -142,6 +142,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Test public-surface reconciliation classifier
+        run: node tests/test_public_surface_reconciliation.cjs
       - name: Refresh offline provider quota coverage
         run: python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Refresh provenance-aware dashboard snapshot

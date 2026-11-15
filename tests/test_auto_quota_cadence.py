@@ -484,3 +484,9 @@ def test_daily_pool_rejects_credit_funded_arm():
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    _daily_pool_snapshot(), allocations=_daily_pool_allocations())
     assert "pool_paid_budget_forbidden" in _row(feed, "alpha")["defer_reasons"]
+
+def test_escalation_budget_uses_reserved_capacity_when_primary_is_exhausted():
+    from scripts.ops.auto_quota_cadence import _budget_total
+    budget = {"spendable_primary": 0, "reserved_escalation": 4}
+    assert _budget_total(budget, "primary") == 0
+    assert _budget_total(budget, "escalation") == 4

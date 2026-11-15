@@ -18,6 +18,8 @@ PARITY_FIELDS = (
     "repository",
     "ref",
     "source_sha",
+    "nodes_sha256",
+    "edges_sha256",
     "node_count",
     "edge_count",
     "verified_edge_count",
@@ -41,7 +43,7 @@ def load_receipt(path: Path) -> dict[str, Any]:
     missing = [field for field in (*PARITY_FIELDS, "github_requests") if field not in value]
     if missing:
         raise ValueError(f"receipt {path} is missing required fields: {', '.join(missing)}")
-    for field in ("repository", "ref", "source_sha", "coverage"):
+    for field in ("repository", "ref", "source_sha", "nodes_sha256", "edges_sha256", "coverage"):
         if not isinstance(value[field], str) or not value[field]:
             raise ValueError(f"receipt {path} has invalid {field}")
     for field in ("node_count", "edge_count", "verified_edge_count", "candidate_edge_count", "github_requests"):

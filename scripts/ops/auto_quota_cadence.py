@@ -405,6 +405,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--census", required=True)
     parser.add_argument("--registry", required=True)
     parser.add_argument("--snapshot", default=None)
+    parser.add_argument("--allocations", default=None,
+                        help="canonical ops/quota/allocations.json pool/focus allocations")
     parser.add_argument("--previous", default=None)
     parser.add_argument("--now", required=True)
     parser.add_argument("--out", required=True)
@@ -430,13 +432,17 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 2
         snapshot_sha = _sha256_file(args.snapshot)
+    allocations = None
+    if args.allocations:
+        with open(args.allocations) as fh:
+            allocations = json.load(fh)
     previous = None
     if args.previous:
         with open(args.previous) as fh:
             previous = json.load(fh)
 
     now = _parse_ts(args.now)
-    feed = derive(arms_doc, census_doc, registry_doc, snapshot, previous, now)
+    feed = derive(arms_doc, census_doc, registry_doc, snapshot, previous, now, allocations)
     feed["sources"] = {
         "arms": args.arms,
         "arms_sha256": _sha256_file(args.arms),
@@ -446,6 +452,8 @@ def main(argv: list[str] | None = None) -> int:
         "registry_sha256": _sha256_file(args.registry),
         "snapshot": args.snapshot,
         "snapshot_sha256": snapshot_sha,
+        "allocations": args.allocations,
+        "allocations_sha256": _sha256_file(args.allocations) if args.allocations else None,
     }
     with open(args.out, "w") as fh:
         json.dump(feed, fh, indent=1, sort_keys=True)

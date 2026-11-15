@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from swarm_admission import evaluate, match_template, parse_block, template_identity
+from swarm_admission import evaluate, match_template, parse_block, picture_from_feeds, template_identity, _parse_ts
 
 NOW = datetime(2026, 11, 3, 22, 30, tzinfo=timezone.utc)
 
@@ -245,3 +245,34 @@ def test_missing_tiers_file_defers_not_crashes(tmp_path):
     body = comment.read_text()
     assert "DEFERRED" in body and "evaluation error" in body
     assert "decision=deferred" in out.read_text()
+
+
+
+def test_iso8601_offset_and_fractional_timestamps_are_normalized():
+    parsed = _parse_ts("2026-11-03T17:30:00.125-05:00")
+    assert parsed == datetime(2026, 11, 3, 22, 30, 0, 125000, tzinfo=timezone.utc)
+
+
+def test_invalid_timestamp_remains_conservative_for_active_run():
+    b = parse_block(TEMPLATE)
+    b["after"] = ["release-cut"]
+    malformed = run("release-cut", created="not-a-timestamp")
+    decision, reasons, _ = evaluate(b, TIERS, [malformed], now=NOW)
+    # Unknown age is not silently treated as ancient; preserve fail-closed admission.
+    assert decision == "DEFERRED"
+    assert any("release-cut" in reason for reason in reasons)
+
+
+def test_future_dated_queue_feed_is_not_treated_as_fresh(tmp_path):
+    import json as _json
+
+    feeds = tmp_path / "feeds"
+    feeds.mkdir()
+    (feeds / "queue-by-tier.json").write_text(_json.dumps({
+        "schema": "que.queue-by-tier/v1",
+        "generated_at": "2026-11-03T22:31:00Z",
+        "tiers": {},
+    }))
+    (feeds / "state.json").write_text(_json.dumps({"active": {}}))
+    resolved = picture_from_feeds(feeds, NOW)
+    assert resolved is None

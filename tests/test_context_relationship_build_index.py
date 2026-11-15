@@ -102,6 +102,17 @@ def test_build_index_publishes_only_canonical_artifacts_and_uses_checkpoint(monk
     )
 
     assert first["node_count"] == 3
+    assert len(first["nodes_sha256"]) == 64
+    assert len(first["edges_sha256"]) == 64
+    assert set(first["performance"]) == {
+        "collection_seconds", "compile_seconds", "publish_seconds",
+        "wall_seconds", "process_cpu_seconds", "peak_rss_bytes",
+    }
+    assert first["performance"]["collection_seconds"] >= 0
+    assert first["performance"]["compile_seconds"] >= 0
+    assert first["performance"]["publish_seconds"] >= 0
+    assert first["performance"]["wall_seconds"] >= first["performance"]["publish_seconds"]
+    assert first["performance"]["process_cpu_seconds"] >= 0
     assert second["incremental_since"] == "2026-08-18T12:00:00Z"
     assert observed_since == [None, "2026-08-18T12:00:00Z", None]
     assert {path.name for path in output.iterdir()} == {

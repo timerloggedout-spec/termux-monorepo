@@ -120,12 +120,9 @@ def _incomplete(runs, patterns, now):
         if r.get("status") not in ("queued", "in_progress"):
             continue
         created = r.get("created_at", "")
-        try:
-            dt = datetime.strptime(created, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-            if now - dt >= timedelta(days=ANCIENT_DAYS):
-                continue
-        except ValueError:
-            pass
+        dt = _parse_ts(created)
+        if dt is not None and now - dt >= timedelta(days=ANCIENT_DAYS):
+            continue
         name = (r.get("name") or "").lower()
         if any(p.lower() in name for p in patterns):
             out.append(r)
@@ -177,11 +174,21 @@ def evaluate(block, tiers_doc, runs, now=None):
     return decision, reasons, facts
 
 
-def _parse_ts(text):
-    try:
-        return datetime.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-    except (ValueError, TypeError):
+def _parse_ts(value):
+    """Parse GitHub ISO-8601 timestamps, including offsets and fractional seconds.
+
+    Naive timestamps are interpreted as UTC for compatibility with legacy
+    feed fixtures. Invalid values return None so callers can fail safely.
+    """
+    if not isinstance(value, str) or not value.strip():
         return None
+    try:
+        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
 
 
 def picture_from_feeds(feeds_dir, now, max_age_seconds=FEED_FRESH_SECONDS):
@@ -199,7 +206,8 @@ def picture_from_feeds(feeds_dir, now, max_age_seconds=FEED_FRESH_SECONDS):
     except Exception:
         return None
     generated = _parse_ts(by_tier.get("generated_at"))
-    if generated is None or (now - generated).total_seconds() > max_age_seconds:
+    age_seconds = (now - generated).total_seconds() if generated is not None else None
+    if age_seconds is None or age_seconds < 0 or age_seconds > max_age_seconds:
         return None
     runs = [
         {"name": v.get("workflow"), "status": v.get("status"), "created_at": v.get("created_at", "")}
@@ -217,6 +225,8 @@ def _feeds_stale_detail(feeds_dir, now, max_age_seconds):
         gen_dt = _parse_ts(generated)
         if gen_dt is not None:
             age = int((now - gen_dt).total_seconds())
+            if age < 0:
+                return f"collector feeds clock-skewed (as-of {generated}, {abs(age)}s in the future)"
             return f"collector feeds stale (as-of {generated}, age {age}s > gate {max_age_seconds}s)"
         return "collector feeds unreadable (no generated_at)"
     except Exception:

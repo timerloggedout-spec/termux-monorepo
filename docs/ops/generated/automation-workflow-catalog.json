@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "6230fa9932419b420e93cdb2b57f56f7cb616b8be71c91bfc85faaef9ea9b2f6",
-  "workflow_count": 313,
+  "source_fingerprint": "43a7a4c96cb8d855aeb6cb08bd5497f10221a5137732648fe9d6828a669cfff4",
+  "workflow_count": 314,
   "workflows": [
     {
       "action_pins": [],
@@ -3177,6 +3177,25 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: mesh-upstash-heartbeat cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "enqueue-on-failure",
+        "heartbeat"
+      ],
+      "name": "Mesh Upstash Heartbeat",
+      "path": ".github/workflows/mesh-upstash-heartbeat.yml",
+      "schedules": [
+        "17 9 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

@@ -337,13 +337,13 @@ def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_re
                 if path.startswith("/git/commits/"):
                     ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
                             if tree_sha == "c" * 40 else
                             [{"path": "proposal/RFP.md", "type": "blob", "mode": self.source_mode}])
                     return {"truncated": False, "tree": rows}
+                ref = path.rsplit("?ref=", 1)[1]
                 self.refs.append((path.split("?", 1)[0], ref))
                 payload = manifest_bytes if path.startswith("/contents/proposal/package.json") else artifact_bytes
                 return {"type": "file", "encoding": "base64",
@@ -449,7 +449,6 @@ def test_package_binding_rejects_inventory_outside_declared_package_path():
                 if path.startswith("/git/commits/"):
                     ref = path.rsplit("/", 1)[1]
                     return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
-                ref = path.rsplit("?ref=", 1)[1]
                 if path.startswith("/git/trees/"):
                     tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
                     rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
@@ -604,6 +603,7 @@ def test_last_ledger_ignores_human_forged_marker_comments():
         "input_hash": "abc123",
         "award": {"decision": "shadow", "package_digest": "a" * 64,
                   "ledger_ref": "github:issue-comment:8123"},
+        "effective_score": None,
     }
     fence = chr(96) * 3
     ledger_body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence

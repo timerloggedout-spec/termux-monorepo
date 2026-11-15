@@ -432,3 +432,10 @@ def test_dispatch_fires_daily_pool_arm_without_provider_quota_headroom():
     assert fired["stamp"]["provider_quota_class"] == "daily_pool_no_provider_quota"
     assert fired["stamp"]["preflight"]["headroom"] is None
     assert fired["stamp"]["preflight"]["headroom_kind"] == "not_applicable"
+
+def test_dispatch_rejects_credit_funded_daily_pool_arm():
+    arm = _daily_pool_arm()
+    arm["budget"]["class"] = "credit-funded"
+    headroom, hold = ex.quota_headroom(arm, _daily_pool_usage(), NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_paid_budget_forbidden"

@@ -66,7 +66,7 @@ Field rules:
   daily-pool/no-provider-quota arms defer on `pool_unknown`.
 - `arms[arm_id][YYYY-MM-DD].draws` and `budgets[arm_id]` are required for
   provider-quota-backed arms. An arm absent from `arms` is `quota_unknown`,
-  never zero.
+  Treat the missing arm record as unknown; do not synthesize zero draws.
 - `pools[pool_id]` is required for `daily_pool_no_provider_quota` arms and
   carries `status`, `observed_at`, `reset_window`, `reset_tz`, `source_ref`,
   and `experiment_label`. These arms do not require provider-specific

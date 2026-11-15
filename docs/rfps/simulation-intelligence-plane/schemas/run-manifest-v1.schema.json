@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/rfps/simulation-intelligence-plane/schemas/run-manifest-v1.schema.json",
+  "title": "Simulation Run Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "scenario_id",
+    "experiment_id",
+    "status",
+    "reproducibility",
+    "limits",
+    "usage",
+    "started_at",
+    "source_classification"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sip.run-manifest.v1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "prepared",
+        "admitted",
+        "queued",
+        "starting",
+        "running",
+        "paused",
+        "stopping",
+        "finalizing",
+        "completed",
+        "failed",
+        "cancelled",
+        "blocked",
+        "recovery_required"
+      ]
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_sha",
+        "scenario_sha256",
+        "graph_sha256",
+        "engine",
+        "adapter_version",
+        "seed",
+        "config_sha256"
+      ],
+      "properties": {
+        "repository_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "scenario_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "graph_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "engine": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "version"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        },
+        "adapter_version": {
+          "type": "string"
+        },
+        "model_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "randomization_method": {
+          "type": "string"
+        },
+        "config_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "prompt_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dependency_lock_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agents",
+        "steps",
+        "wall_seconds",
+        "max_concurrent_runs"
+      ],
+      "properties": {
+        "agents": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "wall_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_concurrent_runs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "max_cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tokens_status",
+        "cost_status",
+        "wall_seconds"
+      ],
+      "properties": {
+        "input_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "tokens_status": {
+          "enum": [
+            "measured",
+            "estimated",
+            "activity_only",
+            "not_established"
+          ]
+        },
+        "cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cost_status": {
+          "enum": [
+            "measured",
+            "estimated",
+            "activity_only",
+            "not_established"
+          ]
+        },
+        "wall_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "peak_memory_mb": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "started_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "source_classification": {
+      "enum": [
+        "synthetic_only",
+        "public_source_derived",
+        "restricted_research",
+        "mixed"
+      ]
+    },
+    "artifact_refs": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "string"
+      }
+    },
+    "error_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "finalization_status": {
+      "enum": [
+        "not_started",
+        "pending",
+        "complete",
+        "partial",
+        "failed"
+      ]
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/rfps/simulation-intelligence-plane/schemas/event-v1.schema.json",
+  "title": "Simulation Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "run_id",
+    "event_type",
+    "event_time",
+    "capture_time",
+    "sequence",
+    "payload_digest",
+    "provenance",
+    "idempotency_key"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sip.event.v1"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "enum": [
+        "run.prepared",
+        "run.admitted",
+        "run.queued",
+        "run.started",
+        "run.paused",
+        "run.resumed",
+        "platform.step",
+        "agent.action",
+        "platform.completed",
+        "run.stop_requested",
+        "run.finalizing",
+        "run.completed",
+        "run.failed",
+        "run.cancelled",
+        "artifact.created",
+        "usage.measured",
+        "recovery.detected"
+      ]
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "capture_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "platform": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "agent_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^synthetic:[A-Za-z0-9._:-]+$"
+    },
+    "payload_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "payload_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "attribution"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "oasis",
+            "mirofish-adapter",
+            "mesa",
+            "deterministic-fake",
+            "supervisor"
+          ]
+        },
+        "attribution": {
+          "enum": [
+            "direct",
+            "provider_reported",
+            "derived",
+            "unknown"
+          ]
+        },
+        "engine_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contains_secret",
+        "contains_raw_prompt"
+      ],
+      "properties": {
+        "contains_secret": {
+          "const": false
+        },
+        "contains_raw_prompt": {
+          "const": false
+        },
+        "classification": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "restricted"
+          ]
+        }
+      }
+    }
+  }
+}

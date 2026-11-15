@@ -1,0 +1,218 @@
+{
+  "schema_version": "sip.candidate-queue.v1",
+  "queue_id": "simulation-intelligence-plane-alternatives",
+  "updated_at": "2026-11-14",
+  "authority": "research-and-procurement-candidate-register",
+  "policy": {
+    "admission": "research-only; candidate registration is not adoption, runtime readiness, or DoE admission",
+    "reuse": "reuse existing repository integrations and evidence; no duplicate control plane or integration work",
+    "comparison": "compare candidates by role; simulation engines are not scored as orchestration frameworks",
+    "doe": "a DoE campaign joins the family only after a committed design record and EXPERIMENT-conforming run evidence",
+    "source": "official upstream sources first; pin source SHA/tag, license and dependencies before implementation",
+    "safety": [
+      "no public social writes",
+      "no paid provider calls by default",
+      "no unbounded runs",
+      "simulation outputs are not factual corpus evidence"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "mirofish",
+      "name": "MiroFish",
+      "class": "graph-to-simulation-workbench-reference",
+      "role": "scenario preparation and graph-to-persona workflow reference",
+      "status": "discovered_reference",
+      "priority": "P1",
+      "upstream": "https://github.com/666ghj/MiroFish",
+      "license": "AGPL-3.0 (verify pinned commit)",
+      "in_repo_evidence": [
+        "SIP-001 source register",
+        "PR #5439"
+      ],
+      "existing_work": "Use architecture and workflow as reference; no source code reuse until license review",
+      "comparison": "graph ingestion fidelity, ontology/provenance, persona traceability, adapter separation, workflow recoverability"
+    },
+    {
+      "id": "mirofish-refactor-fork",
+      "name": "mj3b/MiroFish refactoring fork",
+      "class": "workbench-architecture-reference",
+      "role": "architectural refactor reference: workbench core, resource adapters, composable tools and thin API shells",
+      "status": "discovered_reference",
+      "priority": "P1",
+      "upstream": "https://github.com/mj3b/MiroFish",
+      "license": "AGPL-3.0 per current fork README; verify exact pinned commit",
+      "in_repo_evidence": [
+        "SIP-001 source register",
+        "PR #5439"
+      ],
+      "existing_work": "Architecture reference only; no fork runtime verified and no source code reuse authorized",
+      "comparison": "separation of concerns, adapter boundaries, storage abstraction, composable tools, API shell thinness, license delta"
+    },
+    {
+      "id": "camel-ai-oasis",
+      "name": "CAMEL-AI OASIS",
+      "class": "social-simulation-engine",
+      "role": "primary candidate execution engine",
+      "status": "discovered_candidate",
+      "priority": "P1",
+      "upstream": "https://github.com/camel-ai/oasis",
+      "license": "Apache-2.0 (verify pinned release)",
+      "in_repo_evidence": [
+        "SIP-001 source register"
+      ],
+      "existing_work": "No package installation or live run verified",
+      "comparison": "social action semantics, environment dynamics, multi-platform completion, persistence, process lifecycle, cost and reproducibility"
+    },
+    {
+      "id": "mesa",
+      "name": "Mesa",
+      "class": "agent-based-modeling-engine",
+      "role": "Python ABM alternative and model-first baseline",
+      "status": "existing_research_reference",
+      "priority": "P1",
+      "upstream": "https://mesa.readthedocs.io/stable/",
+      "license": "Apache-2.0 (verify release)",
+      "in_repo_evidence": [
+        "docs/ops/DOE-FAMILY.md",
+        "PR #5439"
+      ],
+      "existing_work": "Existing DoE rule places Mesa in control-seat pre-screening/observational role, never live evidence; preserve until an explicit new proof",
+      "comparison": "determinism, model expressiveness, data collection, experiment design, scale and adapter effort"
+    },
+    {
+      "id": "repast",
+      "name": "Repast Suite",
+      "class": "agent-based-modeling-engine",
+      "role": "scientific and distributed ABM alternative",
+      "status": "research_candidate",
+      "priority": "P2",
+      "upstream": "https://repast.github.io/",
+      "license": "verify exact Repast component/version",
+      "in_repo_evidence": [
+        "SIP-001 source register"
+      ],
+      "existing_work": "No in-repo runtime integration verified",
+      "comparison": "scientific model semantics, distributed execution, Python interoperability, portability and reproducibility"
+    },
+    {
+      "id": "netlogo",
+      "name": "NetLogo",
+      "class": "agent-based-modeling-engine",
+      "role": "established ABM alternative and reference corpus",
+      "status": "existing_research_reference",
+      "priority": "P2",
+      "upstream": "https://www.netlogo.org/",
+      "license": "verify exact version and component terms",
+      "in_repo_evidence": [
+        "docs/ops/FINDINGS-REGISTER-2026-11-03.md",
+        "SFI ABM equivalency rehearsal",
+        "PR #5439"
+      ],
+      "existing_work": "NetLogo corpus already appears in the SFI ABM equivalency context; no in-repo runtime adapter verified",
+      "comparison": "model authoring, headless execution, reproducibility, extension ecosystem and integration cost"
+    },
+    {
+      "id": "deterministic-fake",
+      "name": "In-repository deterministic simulator",
+      "class": "offline-reference-engine",
+      "role": "mandatory offline oracle and safety fixture baseline",
+      "status": "planned_in_sip",
+      "priority": "P0",
+      "upstream": null,
+      "license": "repository license",
+      "in_repo_evidence": [
+        "SIP-001 contracts and tests",
+        "PR #5439"
+      ],
+      "existing_work": "Contract validator exists; full engine is next implementation milestone",
+      "comparison": "golden outputs, deterministic replay, state-machine correctness and no-network/no-credential execution"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph",
+      "class": "agent-orchestration-framework",
+      "role": "graph-based agent workflow/control alternative; not a social simulator",
+      "status": "existing_repo_work",
+      "priority": "P1",
+      "upstream": "https://github.com/langchain-ai/langgraph",
+      "license": "MIT (verify pinned package/dependencies)",
+      "in_repo_evidence": [
+        "PR #5045",
+        "PR #5062",
+        "PR #5085",
+        "PR #5194"
+      ],
+      "existing_work": "Existing BIUDL orchestration integration and autonomous escalation work; reuse and compare, do not create duplicate adapter",
+      "comparison": "stateful graph execution, node retry semantics, interrupt/resume, tool orchestration and fit with Temporal plugin"
+    },
+    {
+      "id": "temporal",
+      "name": "Temporal",
+      "class": "durable-workflow-runtime",
+      "role": "durable execution substrate for long-running runs only if QUE/WFC execution proof requires it",
+      "status": "existing_repo_work_and_prior_rfp",
+      "priority": "P1",
+      "upstream": "https://github.com/temporalio/temporal",
+      "license": "MIT (verify exact components)",
+      "in_repo_evidence": [
+        "docs/rfps/temporal-durable-execution/",
+        "docs/proposals/passes/temporal-durable-execution/pass.json",
+        "PR #1885",
+        "PR #1888",
+        "PR #1890",
+        "PR #1989",
+        "PR #2171",
+        "PR #2193",
+        "PR #5439"
+      ],
+      "existing_work": "Self-hosted Temporal and prior Oracle RFP/pass already exist; prior pass recorded, do not re-run a duplicate Temporal RFP",
+      "comparison": "kill/resume, workflow replay, worker replacement, event history, lifecycle observability and cost/ops burden"
+    },
+    {
+      "id": "autogen",
+      "name": "Microsoft AutoGen",
+      "class": "agent-orchestration-framework",
+      "role": "multi-agent orchestration alternative",
+      "status": "research_candidate",
+      "priority": "P2",
+      "upstream": "https://github.com/microsoft/autogen",
+      "license": "MIT (verify package/dependencies)",
+      "in_repo_evidence": [
+        "SIP-001 candidate RFP"
+      ],
+      "existing_work": "No in-repo integration verified in this audit",
+      "comparison": "agent coordination, group chat, tool execution, persistence, human control and testability"
+    },
+    {
+      "id": "crewai",
+      "name": "CrewAI",
+      "class": "agent-orchestration-framework",
+      "role": "role/task-oriented agent orchestration alternative",
+      "status": "research_candidate",
+      "priority": "P2",
+      "upstream": "https://github.com/crewAIInc/crewAI",
+      "license": "MIT (verify package/dependencies)",
+      "in_repo_evidence": [
+        "SIP-001 candidate RFP"
+      ],
+      "existing_work": "No in-repo integration verified in this audit",
+      "comparison": "role/task model, flow persistence, tool isolation, replay and instrumentation"
+    },
+    {
+      "id": "openai-agents-sdk",
+      "name": "OpenAI Agents SDK",
+      "class": "agent-orchestration-framework",
+      "role": "agent runtime and handoff alternative",
+      "status": "research_candidate",
+      "priority": "P2",
+      "upstream": "https://github.com/openai/openai-agents-python",
+      "license": "MIT (verify package/dependencies)",
+      "in_repo_evidence": [
+        "SIP-001 candidate RFP"
+      ],
+      "existing_work": "No in-repo integration verified in this audit",
+      "comparison": "handoffs, guardrails, tracing, tool policies, model neutrality and durable workflow composition"
+    }
+  ]
+}

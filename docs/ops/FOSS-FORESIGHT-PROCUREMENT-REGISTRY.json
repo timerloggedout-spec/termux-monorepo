@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "registry_id": "termux-monorepo.foss-foresight",
-  "updated_at": "2026-10-26T00:00:00Z",
+  "updated_at": "2026-11-14T00:00:00Z",
   "maintainer": "timerloggedout-spec",
   "policy": {
     "horizons": [
@@ -678,6 +678,365 @@
         "arm64",
         "android-adjacent"
       ]
+    },
+    {
+      "id": "mirofish",
+      "name": "MiroFish",
+      "category": "graph-to-agent-simulation-workbench",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "AGPL-3.0 — verify pinned commit",
+      "canonical_sources": [
+        "https://github.com/666ghj/MiroFish"
+      ],
+      "capabilities": [
+        "evidence-ingestion",
+        "ontology-and-graph-preparation",
+        "synthetic-persona-projection",
+        "OASIS-workflow-reference"
+      ],
+      "lock_in_risk": "HIGH",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "RESEARCH_ONLY_LICENSE_REVIEW_REQUIRED",
+      "unresolved": "AGPL obligations and exact fork/upstream delta must be reviewed; do not copy source into the monorepo.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "camel-ai-oasis",
+      "name": "CAMEL-AI OASIS",
+      "category": "multi-agent-social-simulation",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "Apache-2.0 — verify pinned release",
+      "canonical_sources": [
+        "https://github.com/camel-ai/oasis"
+      ],
+      "capabilities": [
+        "social-agent-simulation",
+        "platform-actions",
+        "agent-populations",
+        "environment-dynamics"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "P1_SANDBOX_COMPARISON_CANDIDATE",
+      "unresolved": "Resolve Python/CAMEL dependency pins; no public social writes or unbounded provider use.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "mesa",
+      "name": "Mesa",
+      "category": "agent-based-modeling",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "Apache-2.0 — verify release",
+      "canonical_sources": [
+        "https://mesa.readthedocs.io/stable/"
+      ],
+      "capabilities": [
+        "python-agent-based-modeling",
+        "deterministic-models",
+        "data-collection",
+        "visualization"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "EXISTING_REFERENCE_PRESCREEN_ONLY",
+      "unresolved": "DOE-FAMILY explicitly restricts Mesa to control-seat pre-screening/observational use, never live evidence without amended proof.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "repast",
+      "name": "Repast Suite",
+      "category": "scientific-agent-based-modeling",
+      "horizon": "H2",
+      "evidence_status": "ATTRIBUTED",
+      "license": "verify per component",
+      "canonical_sources": [
+        "https://repast.github.io/"
+      ],
+      "capabilities": [
+        "scientific-agent-based-modeling",
+        "distributed-simulation",
+        "python-integration"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "RESEARCH_ONLY",
+      "unresolved": "Confirm exact component license, release, Python support, distributed-runtime requirements and portability.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "netlogo",
+      "name": "NetLogo",
+      "category": "agent-based-modeling",
+      "horizon": "H2",
+      "evidence_status": "ATTRIBUTED",
+      "license": "verify exact version/component",
+      "canonical_sources": [
+        "https://www.netlogo.org/"
+      ],
+      "capabilities": [
+        "agent-based-modeling",
+        "headless-execution",
+        "model-authoring",
+        "experiment-design"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "LOW",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "EXISTING_CORPUS_REFERENCE_ONLY",
+      "unresolved": "NetLogo occurs in SFI ABM equivalency research; corpus presence does not prove a runtime adapter.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph",
+      "category": "agent-orchestration",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "MIT — verify pinned package/dependencies",
+      "canonical_sources": [
+        "https://github.com/langchain-ai/langgraph"
+      ],
+      "capabilities": [
+        "stateful-agent-workflows",
+        "graph-orchestration",
+        "interrupt-resume",
+        "tool-orchestration"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "HIGH",
+      "procurement_action": "EXISTING_REPO_WORK_REUSE_ONLY",
+      "unresolved": "PRs #5045/#5062/#5085 and #5194 exist; compare against existing implementation, do not duplicate.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "autogen",
+      "name": "Microsoft AutoGen",
+      "category": "multi-agent-orchestration",
+      "horizon": "H2",
+      "evidence_status": "ATTRIBUTED",
+      "license": "MIT — verify package/dependencies",
+      "canonical_sources": [
+        "https://github.com/microsoft/autogen"
+      ],
+      "capabilities": [
+        "multi-agent-coordination",
+        "group-chat",
+        "tool-execution"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "RESEARCH_ONLY",
+      "unresolved": "Compare as orchestration framework, not social simulation engine.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "crewai",
+      "name": "CrewAI",
+      "category": "agent-orchestration",
+      "horizon": "H2",
+      "evidence_status": "ATTRIBUTED",
+      "license": "MIT — verify package/dependencies",
+      "canonical_sources": [
+        "https://github.com/crewAIInc/crewAI"
+      ],
+      "capabilities": [
+        "role-task-agent-orchestration",
+        "flows",
+        "tool-integration"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "RESEARCH_ONLY",
+      "unresolved": "Compare persistence, retries, tool policy and traceability; not a drop-in social simulator.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "openai-agents-sdk",
+      "name": "OpenAI Agents SDK",
+      "category": "agent-orchestration",
+      "horizon": "H2",
+      "evidence_status": "ATTRIBUTED",
+      "license": "MIT — verify package/dependencies",
+      "canonical_sources": [
+        "https://github.com/openai/openai-agents-python"
+      ],
+      "capabilities": [
+        "agent-handoffs",
+        "guardrails",
+        "tool-policies",
+        "tracing"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "RESEARCH_ONLY",
+      "unresolved": "Compare orchestration capabilities only; no paid inference or provider calls authorized.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "temporal",
+      "name": "Temporal",
+      "category": "durable-workflow-execution",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "MIT — verify exact component",
+      "canonical_sources": [
+        "https://github.com/temporalio/temporal"
+      ],
+      "capabilities": [
+        "durable-workflows",
+        "event-history",
+        "replay",
+        "worker-recovery",
+        "signals-and-queries"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "EXISTING_CAPABILITY_PRIOR_RFP_RECORDED",
+      "unresolved": "Prior durable-execution RFP #1885 has recorded Oracle pass and existing self-host/Delphi-cycle implementation; no duplicate procurement.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "deterministic-fake",
+      "name": "SIP deterministic fake engine",
+      "category": "offline-reference-simulation",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "repository license",
+      "canonical_sources": [
+        "https://github.com/timerloggedout-spec/termux-monorepo"
+      ],
+      "capabilities": [
+        "deterministic-replay",
+        "offline-fixtures",
+        "contract-validation",
+        "safety-oracle"
+      ],
+      "lock_in_risk": "LOW",
+      "egress_risk": "LOW",
+      "reproducibility": "HIGH",
+      "procurement_action": "P0_BUILD_AS_OFFLINE_CONTROL",
+      "unresolved": "Planned SIP baseline; no external runtime dependency and no live model/provider calls.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "mirofish-refactor-fork",
+      "name": "mj3b/MiroFish refactoring fork",
+      "category": "graph-to-agent-workbench-architecture",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "AGPL-3.0 — verify pinned commit and fork delta",
+      "canonical_sources": [
+        "https://github.com/mj3b/MiroFish"
+      ],
+      "capabilities": [
+        "workbench-core-separation",
+        "resource-adapters",
+        "composable-tools",
+        "thin-api-shells",
+        "graph-storage-abstraction"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "ARCHITECTURE_REFERENCE_ONLY_LICENSE_REVIEW_REQUIRED",
+      "unresolved": "Fork commit, exact license state, dependency delta, storage behavior and API stability require pinned verification; no source reuse authorized.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
     }
   ]
 }

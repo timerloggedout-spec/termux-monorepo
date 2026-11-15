@@ -9,11 +9,11 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-11. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-14. MiroFish and OASIS source observations were added on 2026-11-14; earlier connector observations retain their original snapshot dates. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
 
 ## Executive status
 
-The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.
+The existing Integration Intelligence foundation is established by merged PR #4009. The integration registry is maintained as a dated inventory. SIP-001 adds a role-separated simulation and orchestration candidate cohort; candidate registration is research-only and does not imply installation, account access, runtime validation, or adoption.
 
 The repository remains the source of truth. Session connectors and installed skills are capabilities of this assistant environment, not automatic capabilities of GitHub Actions, Termux, other collaborators, or production.
 
@@ -45,7 +45,16 @@ The repository remains the source of truth. Session connectors and installed ski
 | Agent Ready | Live scan completed | Convert source-level findings into a reviewed remediation work item |
 | Inductive Bio | Public LogD, acidic pKa, and basic pKa model catalog retrieved | Preserve model IDs and versions if a scientific prediction lane is built |
 | Superpowers | Skill installed; repository-local skill already exists | Continue using the repository policy bridge |
-| Temporal | Developer skill installed; no Temporal server connector exposed | Reconcile with existing `temporal-langsmith-adapter` proposal |
+| Temporal | Existing self-host/Delphi-cycle implementation, Temporal-LangSmith adapter and recorded prior Oracle RFP pass (#1885) | Reuse the existing capability; no duplicate Temporal RFP. Map SIP lifecycle requirements to existing QUE/WFC and kill-resume evidence |
+| MiroFish | Upstream workflow and refactor references researched; no runtime verified | Keep as graph-to-agent workflow reference; review AGPL-3.0 before code reuse |
+| CAMEL-AI OASIS | Upstream repository/docs researched; no package install or run verified | Primary sandbox engine candidate; pin release and resolve CAMEL dependency compatibility |
+| Mesa | Existing DoE-family pre-screening/observational reference; no SIP live-engine proof | Keep pre-screening only; require amended DoE design and independent evidence before live-engine status |
+| Repast Suite | Official ABM project identified; no in-repo runtime verified | Research-only candidate; pin component, license, runtime and portability before any build |
+| NetLogo | Existing SFI ABM equivalency corpus reference; no runtime adapter verified | Reconcile corpus evidence; do not infer installed/runtime capability |
+| LangGraph | Existing BIUDL orchestration and autonomous escalation PRs #5045/#5062/#5085; #5194 logistics/control-plane research | Reuse existing code/contracts; compare orchestration role only and avoid duplicate integration |
+| Microsoft AutoGen | Official upstream identified; no in-repo adapter verified | Research-only orchestration candidate; compare against LangGraph/Agents SDK |
+| CrewAI | Official upstream identified; no in-repo adapter verified | Research-only orchestration candidate; compare persistence, tool policy and instrumentation |
+| OpenAI Agents SDK | Official upstream identified; no in-repo runtime integration verified | Research-only orchestration candidate; no paid inference or provider calls authorized |
 | SiteTriage | Diagnostic tools exposed | Keep diagnostics read-only by default |
 | AI Task Brief Builder | Task brief extraction tool exposed | Use for evidence-separated requirements and acceptance criteria |
 | Google Calendar | Calendar tools exposed; no personal calendar data accessed | Use only for a specific scheduling request |

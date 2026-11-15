@@ -33,6 +33,14 @@ Research-Astute and other organizations may publish evidence records. The manage
 ## CI contract
 scripts/ci/verify_foss_registry.py validates JSON, required fields, vocabulary, HTTPS primary sources, unique IDs, procurement dimensions, and secret absence. The workflow emits an immutable receipt linked to the source SHA and run ID.
 
+## SIP-001 simulation and agent-framework candidate cohort (2026-11-14)
+
+The FOSS procurement register now includes the role-separated SIP candidate cohort. The canonical technical queue is `docs/rfps/simulation-intelligence-plane/candidate-queue.json`; the procurement dispositions are cross-indexed in `docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json`.
+
+Candidate roles are distinct: MiroFish workbench references; OASIS social simulation; Mesa/Repast/NetLogo ABM; deterministic offline control; LangGraph/AutoGen/CrewAI/OpenAI Agents SDK orchestration; Temporal durable execution. LangGraph and Temporal are existing repository capabilities, Mesa and NetLogo have existing research-only dispositions, and Temporal's prior RFP/pass is reused.
+
+These records are research/procurement inputs, not evidence of runtime compatibility or adoption. Exact release/license/dependency pins and target-specific evidence remain required. The simulation RFP form enters through QUE admission; only an admitted filing produces a G0 intake receipt. Delphi generation and DoE admission remain separate gates.
+
 ## Research lanes
 local/edge inference; ARM/Android measurements; MCP conformance; Docker/Codespaces/Nix parity; Tree-sitter/Lizard/Radon labeled complexity; Langfuse/Phoenix identical-cohort comparison; MASEval manager tournaments; Sigstore/SLSA/Witness provenance; Firecracker/gVisor sandbox experiments; NIST traceability implementation tracking.
 

@@ -22,7 +22,7 @@
 | Context.dev | P1 | Search/scrape and usage tools available | Planned | Attributed web research and extraction |
 | Consensus | P1 | Academic search/fetch tools exposed | Planned | Peer-reviewed research |
 | Opscotch | P1 | Root guidance retrieved | Planned | Constrained workflow runtime |
-| Temporal | P1 | Developer skill installed; server access not established | Existing adapter proposal requires reconciliation | Durable workflow orchestration |
+| Temporal | P1 | Existing self-host, Delphi-cycle and prior Oracle pass (#1885) | Existing capability; reuse, no duplicate RFP | Durable workflow execution; QUE remains admission authority |
 | SiteTriage | P1 | Diagnostic tools exposed | Planned | Read-only DNS/TLS/HTTP diagnostics |
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
 | Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |
@@ -46,6 +46,16 @@
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
 
+| MiroFish | P1 | Upstream workflow and refactor references identified; no runtime verified | Planned (`mirofish`) | Graph-to-agent scenario preparation and simulation analysis reference |
+| CAMEL-AI OASIS | P1 | Upstream repository/docs identified; no package install or run verified | Planned (`camel-ai-oasis`) | Sandboxed multi-agent social simulation engine |
+| Mesa | P1 | Existing DoE pre-screening/observational reference; no SIP live-engine proof | Existing research reference; pre-screen only | Python ABM comparison baseline; never live evidence without amended DoE proof |
+| Repast Suite | P2 | Official project identified; no repository runtime verified | Candidate queue only | Scientific/distributed ABM comparison |
+| NetLogo | P2 | Existing SFI ABM equivalency corpus; no runtime adapter verified | Existing research reference | ABM model/corpus comparison, not runtime readiness |
+| LangGraph | P1 | Existing BIUDL integration and autonomous escalation PRs #5045/#5062/#5085 | Existing repository work; reconcile, do not duplicate | Agent orchestration only, not social simulation |
+| Microsoft AutoGen | P2 | Official upstream identified; no repository integration verified | Candidate queue only | Multi-agent orchestration comparison |
+| CrewAI | P2 | Official upstream identified; no repository integration verified | Candidate queue only | Role/task agent orchestration comparison |
+| OpenAI Agents SDK | P2 | Official upstream identified; no repository integration verified | Candidate queue only | Agent handoffs, guardrails and tool orchestration comparison |
+
 The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 
 ## Priority rationale
@@ -63,6 +73,9 @@ Do not collapse these states into a single `integrated: true` flag:
 - `skill_installed_in_session`: a skill is available in this assistant environment.
 - `not_exposed_in_session`: no matching tool was found in this session; this does not prove the provider lacks an integration.
 - `repo_adapter_planned`: adapter is specified but not implemented.
+- `existing_repo_work`: a capability or proposal already exists and must be reconciled before new work.
+- `existing_research_reference`: the project appears in a research corpus or pre-screening method, not a validated runtime adapter.
+- `candidate_queue_only`: registered for research comparison; no repository runtime or adapter is claimed.
 - `repo_adapter_implemented`: repository code exists; this does not prove successful runtime execution.
 - `validated`: end-to-end evidence confirms behavior on a pinned revision.
 - `promoted`: explicitly accepted into the production lane under repository policy.

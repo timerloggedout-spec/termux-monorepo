@@ -32,6 +32,23 @@ propagations recorded as design events in the campaign record.
 | token-strategies-1 — Speculators: multiple token strategies (speculative decoding) × verifiers (#195) | campaign | admitted 2026-10-30 — design-only, **pre-registered**; DoE-wired 2026-11-02 (EXPERIMENT records + provider-phrases wiring in the harness; execution rides GPU/provider lanes) | `experiments/speculators/token-strategies/` |
 | Future design classes | campaign types | taxonomy in `docs/ops/DOE-TAXONOMY.md`: implemented generators today = full factorial + Taguchi L9 (fractional orthogonal array); fractional factorial, Plackett–Burman, sequential = skill-named, no generator; foldover, central composite, Box–Behnken, RSM, mixture, split-plot, Latin hypercube = candidates. Randomized assignment (`mvt_shuffle`) is an assignment mechanism, not a design class | DoE surface |
 
+## Simulation Intelligence Plane — proposed comparison lane (2026-11-14)
+
+**State: proposal / not admitted.** SIP-001 maintains a role-separated candidate queue at `docs/rfps/simulation-intelligence-plane/candidate-queue.json` and a pre-registration design proposal at `experiments/doe/sip-001-engine-comparison/DESIGN.md`. Its population includes MiroFish (workbench reference), CAMEL-AI OASIS (social simulation), Mesa/Repast/NetLogo (ABM engines), deterministic fake engine (offline oracle), LangGraph/AutoGen/CrewAI/OpenAI Agents SDK (orchestration), and Temporal (durable execution substrate).
+
+This is a proposed comparison programme, not a DoE family member yet. Under the family intake rule, it cannot join as a campaign until it has a committed design record AND EXPERIMENT-conforming run evidence. A queue record, RFP issue, generated proposal, or adapter contract alone is insufficient.
+
+**Existing-authority preservation:**
+- Mesa remains in its existing control-seat pre-screening / observational role, never live evidence, unless an amended design and separate proof explicitly change that.
+- NetLogo's presence in the SFI ABM equivalency corpus is research-reference evidence, not proof of an installed runtime adapter.
+- LangGraph is an existing orchestration capability (PRs #5045/#5062/#5085 and #5194); it is not a social simulator and must not be re-integrated.
+- Temporal already has a completed durable-execution Oracle RFP/pass (#1885; `docs/proposals/passes/temporal-durable-execution/pass.json` status `recorded`) plus self-host/Delphi-cycle implementation evidence. SIP must reuse this work, not file a duplicate Temporal procurement cycle.
+- The deterministic fake engine is the offline control and safety oracle; it must not be replaced by an LLM-driven simulator in CI.
+
+**Proposed experimental design:** compare engines only within their role classes; do not rank orchestration frameworks against social simulation engines. Freeze scenario, source cohort, graph snapshot, model/prompt/config hashes, resource ceilings, evaluator and paired seed plan before execution. Each executed run yields one existing EXPERIMENT record; failures and missing runs remain visible. Primary outcomes: contract correctness, reproducibility, lifecycle recovery, provenance completeness and task validity. Secondary outcomes: latency, memory/storage, token/cost, throughput and maintenance burden.
+
+**No result is claimed here.** SIP-001 is currently proposal work; no candidate engine has been admitted to a live DoE campaign by this registration.
+
 ## Family-level shared
 
 - **Experiment record schema** — `docs/ops/corpus/EXPERIMENT.schema.json`

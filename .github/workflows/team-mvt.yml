@@ -283,7 +283,7 @@ jobs:
               print(json.dumps(summary,sort_keys=True)); os.makedirs('/tmp/evaluation',exist_ok=True); json.dump(summary,open('/tmp/evaluation/summary.json','w'),indent=2)
               raise SystemExit(0)
           if len(rows)<expected: raise SystemExit(f'FAIL: expected {expected} DOE cells, found {len(rows)} (lane result {lane_result})')
-          summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'lanes':sorted(lanes),'promotion_ready':False,'reason':'task correctness/evaluator evidence remains UNKNOWN until independent evaluation'}
+          summary={'schema':'team-mvt-evaluation/v2','cells':len(rows),'eligible':len(eligible),'executed':len(executed),'execution_failures':len(failed),'skipped':len(skipped),'primary_same_task_cells':len(primary),'diagnostic_non_comparable_cells':len(diagnostic),'primary_executed':sum(r['execution_status']=='success' for r in primary),'primary_execution_failures':sum(r['execution_status']=='failure' for r in primary),'diagnostic_executed':sum(r['execution_status']=='success' for r in diagnostic),'lanes':sorted(lanes),'promotion_ready':False,'reason':'primary A/B are same-task comparisons; C/D/E are diagnostic-only and excluded from pooled treatment effects; task correctness remains UNKNOWN'}
           print(json.dumps(summary,sort_keys=True)); os.makedirs('/tmp/evaluation',exist_ok=True); json.dump(summary,open('/tmp/evaluation/summary.json','w'),indent=2)
           PY
 

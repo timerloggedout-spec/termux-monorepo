@@ -1,0 +1,60 @@
+name: QUE Inference Contracts
+
+on:
+  push:
+    branches:
+      - feat/que-free-inference-validation-5454
+    paths:
+      - 'scripts/ops/provider_invoke.py'
+      - 'scripts/provider_availability_probe.py'
+      - 'scripts/ops/auto_quota_cadence.py'
+      - 'scripts/ops/dispatch_executor.py'
+      - 'tests/test_provider_invoke_free_only.py'
+      - 'tests/test_provider_availability_probe.py'
+      - 'tests/test_auto_quota_cadence.py'
+      - 'tests/test_dispatch_executor.py'
+      - 'tests/test_dispatch_executor_workflow.py'
+      - '.github/workflows/provider-invoke.yml'
+      - '.github/workflows/dispatch-executor.yml'
+  pull_request:
+    paths:
+      - 'scripts/ops/provider_invoke.py'
+      - 'scripts/provider_availability_probe.py'
+      - 'scripts/ops/auto_quota_cadence.py'
+      - 'scripts/ops/dispatch_executor.py'
+      - 'tests/test_provider_invoke_free_only.py'
+      - 'tests/test_provider_availability_probe.py'
+      - 'tests/test_auto_quota_cadence.py'
+      - 'tests/test_dispatch_executor.py'
+      - 'tests/test_dispatch_executor_workflow.py'
+      - '.github/workflows/provider-invoke.yml'
+      - '.github/workflows/dispatch-executor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: que-inference-contracts-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Install isolated test dependencies
+        run: python3 -m pip install pytest==8.4.2 fastapi==0.143.3 pydantic==2.14.1 httpx==0.28.1 PyYAML==6.0.3
+      - name: Run QUE inference and dispatch contracts
+        run: |
+          set -euo pipefail
+          python3 -m pytest -q \
+            tests/test_provider_invoke_free_only.py \
+            tests/test_provider_availability_probe.py \
+            tests/test_auto_quota_cadence.py \
+            tests/test_dispatch_executor.py \
+            tests/test_dispatch_executor_workflow.py \
+            tests/test_provider_model_catalog.py

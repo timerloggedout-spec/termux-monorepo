@@ -138,7 +138,7 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
         return [], "census_stale"
     cadence_ids = None
     if cadence is not None:
-        if cadence.get("schema") != "pool-cadence/v1":
+        if not isinstance(cadence, dict) or cadence.get("schema") != "pool-cadence/v1":
             return [], "cadence_schema_invalid"
         try:
             cadence_age = (now - _parse_ts(cadence.get("generated_at"))).total_seconds()

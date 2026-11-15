@@ -528,16 +528,19 @@ def test_package_binding_rejects_self_reference_and_truncated_git_tree():
 
 
 def test_human_award_reviewer_requires_exact_authenticated_issue_comment():
-    issue_body = "### Proposal source ref\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n### Proposal manifest ref\nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n### Proposal manifest path\nproposal/package.json\n### Expected package digest\ncccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n"
-    issue = {"number": 5156, "body": issue_body}
+    issue_body = "### Surface id\ncustom.surface\n### Lane\ndata\n### Free quota\n100 requests/day\n### Reset and zone\n00:00 UTC daily\n### Auth from Actions\nAPI_TOKEN\n### Lock-in\n2\n### Failure modes\nquota exhaustion\n### Proposal source ref\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n### Proposal manifest ref\nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n### Proposal manifest path\nproposal/package.json\n### Expected package digest\ncccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n"
+    issue = {"number": 5156, "title": "[delphi:rfp] custom.surface", "body": issue_body}
     trusted = {
         "DELPHI_REVIEW_ISSUE": "5156",
         "DELPHI_REVIEWER_LOGIN": "reviewer-1",
         "DELPHI_REVIEWER_ASSOCIATION": "MEMBER",
         "DELPHI_REVIEW_COMMENT_BODY": "/delphi approve",
         "DELPHI_REVIEW_ISSUE_BODY": issue_body,
+        "DELPHI_REVIEW_ISSUE_TITLE": issue["title"],
     }
     assert gate.authenticated_reviewer_for_issue(issue, trusted) == "reviewer-1"
+    changed_failure_modes = dict(issue, body=issue_body.replace("quota exhaustion", "automatic overage billing"))
+    assert gate.authenticated_reviewer_for_issue(changed_failure_modes, trusted) is None
     assert gate.authenticated_reviewer_for_issue(
         issue, dict(trusted, DELPHI_REVIEW_ISSUE_BODY=issue_body.replace("proposal/package.json", "proposal/other.json"))
     ) is None

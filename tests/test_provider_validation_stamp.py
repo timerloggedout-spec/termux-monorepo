@@ -14,6 +14,10 @@ def receipt(status="inference_validated", no_cost=True):
         "validation_status": status,
         "inference_status": "passed" if status == "inference_validated" else "not_attempted",
         "no_cost_verified": no_cost,
+        "validation_scope": "no_cost_inference_smoke_only",
+        "terms_accepted": "not_verified",
+        "entitlement_verified": "not_verified",
+        "dispatch_eligible": False,
         "diagnosis": "invoke succeeded" if status == "inference_validated" else "no verified free model",
         "experiment_label": "QUE-5454",
         "observed_at": "2026-11-15T13:00:00Z",
@@ -98,3 +102,11 @@ def test_build_stamp_rejects_unsafe_experiment_label():
         stamp.build_stamp(receipt(), run_id="12345", run_attempt="1",
                           run_url="https://github.com/org/repo/actions/runs/12345",
                           experiment_label="QUE-5454\nmalicious")
+
+def test_smoke_receipt_cannot_claim_dispatch_eligibility():
+    value = receipt()
+    value["dispatch_eligible"] = True
+    with pytest.raises(ValueError, match="smoke_receipt_cannot_assert_dispatch_eligibility"):
+        stamp.build_stamp(value, run_id="12345", run_attempt="1",
+                          run_url="https://github.com/org/repo/actions/runs/12345",
+                          experiment_label="QUE-5454")

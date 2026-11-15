@@ -1,27 +1,22 @@
 #!/usr/bin/env python3
-"""Bounded per-provider invoke for the class-corrected inference batch.
+"""Policy-gated no-cost provider health smoke for QUE.
 
-Resolves the provider's chat endpoint + secret env names from the repo's own
-reviewed sources at runtime (llm_api_hub research_providers / provider_extensions
-/ provider_protocols + the MSM catalog secret map) — no hard-pinned routes, so
-the wiring can move without touching this script. Picks a chat model from the
-provider's live /models catalog (dispatch-time resolution), fires ONE bounded
-chat completion carrying a production-work prompt, and emits a verdict line:
-
-  INVOKE_VERDICT {"provider": ..., "ok": bool, "diagnosis": ..., ...}
-
-Exit code is 0 whenever a verdict was produced (provider outcomes live in the
-verdict, not the exit code); nonzero only on harness misuse.
+Catalog-only mode performs model-catalog discovery without inference. Inference
+mode requires an exact current research-provider admission entry, source-backed
+pricing/terms/capability evidence, and explicit quota or daily-pool classification.
+It makes at most one bounded health completion, with no paid or model fallback.
 """
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import os
 import sys
 import time
 import urllib.request
 import urllib.error
+from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 

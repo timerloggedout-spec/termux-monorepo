@@ -63,13 +63,16 @@ The refactoring work is particularly relevant: consolidate a workbench core, sep
 ### Primary execution candidate: CAMEL-AI OASIS
 Evaluate OASIS as the social simulation runtime: agent population, platform actions, recommendation/environment dynamics, custom agent models/tools/prompts, action logs and database persistence. Confirm the exact supported platform, action semantics, scale, process lifecycle, storage and version behavior against a pinned release.
 
-### Alternatives to compare
-- Mesa (Python agent-based modeling): strong model-first ABM alternative; evaluate discrete environment semantics and deterministic control.
-- Agent-based modeling with Repast / NetLogo: established ABM environments; evaluate integration and reproducibility cost.
-- LangGraph / AutoGen / CrewAI / OpenAI Agents SDK: agent orchestration frameworks, not automatically equivalent to a social simulation environment. Evaluate only as orchestration/control alternatives, not as drop-in OASIS replacements.
-- Custom deterministic simulator: minimal dependency baseline for fixtures and policy tests.
-- Temporal: durable workflow substrate candidate only if existing GitHub Actions / QUE / Workflow Contract execution proves insufficient; not a second queue or scheduler.
-- Existing repository graph and Delphic engines: reuse for graph analysis and decision support; do not assume they provide a social simulation runtime.
+### Alternatives and existing-work reconciliation
+- **Mesa:** Python ABM candidate/reference. The current DoE family explicitly limits Mesa to control-seat pre-screening and observational use, never live evidence. SIP preserves that boundary; a live-engine comparison requires a separately amended design and proof.
+- **Repast Suite:** scientific/distributed ABM candidate; exact component, Python support, license and portability remain to be pinned.
+- **NetLogo:** established ABM candidate and existing SFI ABM equivalency corpus reference. Corpus presence is not runtime-adapter evidence.
+- **Deterministic in-repo simulator:** mandatory offline control/oracle; no external model or provider dependency.
+- **LangGraph:** existing repository orchestration integration and autonomous escalation work (#5045/#5062/#5085; also #5194). Reuse it; do not create a duplicate adapter. It is an orchestration framework, not a social simulation engine.
+- **Microsoft AutoGen, CrewAI and OpenAI Agents SDK:** optional orchestration comparisons only; they are not drop-in OASIS social environments.
+- **Temporal:** existing self-host and Delphi-cycle capability plus the completed/recorded prior durable-execution Oracle RFP (#1885). Do not open a duplicate Temporal RFP. Consider only a SIP-specific workflow use case after mapping to QUE/WFC and existing kill/resume evidence.
+- **Existing repository graph and Delphic engines:** reuse for graph analysis and decision support; do not assume they provide a social simulation runtime.
+
 
 ## 6. Requirements
 
@@ -99,12 +102,14 @@ NF-08 No live engine/provider call may be required for the default CI suite.
 
 ## 7. Comparative evaluation design
 
-Run a multi-criteria DoE comparison with the same frozen scenarios and cohorts across candidates. Minimum candidates:
-A. deterministic in-repo simulator baseline;
-B. CAMEL-AI OASIS adapter;
-C. MiroFish-compatible workflow using OASIS;
-D. one alternative ABM engine (Mesa recommended initial candidate);
-E. optional orchestration substrate variant only if a measurable durability question exists.
+Run a multi-criteria DoE comparison within role classes, not as one undifferentiated leaderboard. Initial slate:
+A. deterministic in-repo simulator baseline (mandatory offline control);
+B. CAMEL-AI OASIS (primary social-simulation runtime candidate);
+C. MiroFish-compatible graph/persona preparation workflow with OASIS (workbench integration treatment);
+D. ABM alternatives: Mesa, Repast and NetLogo (research queue; Mesa remains pre-screen-only unless its DoE authority is explicitly amended);
+E. orchestration alternatives: existing LangGraph first, then optional AutoGen/CrewAI/OpenAI Agents SDK only if a specific orchestration question remains;
+F. Temporal is not a new RFP candidate: reuse the existing implementation and recorded pass; test only a SIP-specific durability gap if demonstrated.
+
 
 Factors: engine, agent count, steps, activation probability, persona source, memory mode, recommendation policy, intervention, seed, model/provider class and persistence mode. Keep dataset, graph snapshot, scenario contract, outcome rubric and evaluator fixed within each paired comparison.
 

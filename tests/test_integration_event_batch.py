@@ -96,6 +96,27 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "secret-shaped"):
             ie.validate_event(event)
 
+    def test_measurement_rejects_provider_token_dimension(self):
+        record = dict(MEASUREMENT, dimensions={"provider_token": "opaque-value"})
+        with self.assertRaisesRegex(ValueError, "sensitive field rejected"):
+            ie.validate_measurement(record)
+
+    def test_sql_literal_handles_null_cursor(self):
+        self.assertEqual(ie.sql_literal(None), "NULL")
+        sql, _ = ie.build_batch_sql([dict(EVENT)], "event", str(uuid.uuid4()))
+        self.assertIn("NULL,\n  NULL,", sql)
+
+    def test_insert_select_conflict_clause_is_disambiguated(self):
+        for record, kind in ((dict(EVENT), "event"), (dict(MEASUREMENT), "measurement")):
+            sql, _ = ie.build_batch_sql([record], kind, str(uuid.uuid4()))
+            self.assertIn("FROM _integration_batch_docs\\n  WHERE true\\n  ON CONFLICT", sql)
+
+    def test_cursor_guard_uses_non_input_dollar_quote_tag(self):
+        sql, _ = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()),
+                                    cursor_before="before", cursor_after="after$cursor_guard$; SELECT 1; --")
+        self.assertIn("DO $cursor_guard_", sql)
+        self.assertIn("integration_cursor_conflict", sql)
+
     def test_measurement_accepts_finite_numeric_point(self):
         self.assertEqual(ie.validate_measurement(dict(MEASUREMENT))["value"], 1000)
 

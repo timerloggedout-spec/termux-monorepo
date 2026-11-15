@@ -7,6 +7,8 @@ def test_qdesk_page_has_required_surfaces():
         assert s in h
     assert "usage-series.json" in j
     assert "consumption-series" in h
+    assert "throttle-gauges" in h
+    assert "last_point_at" in j
     assert "kind" in j and "consumption" in j
 def test_frontend_has_no_write_authority():
     j=(ROOT/"apps/tribute-dashboard/qdesk.js").read_text()

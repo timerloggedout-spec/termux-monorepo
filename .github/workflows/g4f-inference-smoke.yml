@@ -65,6 +65,7 @@ jobs:
           --source "${{ inputs.source }}"
           --output g4f-inference-smoke.json
           --limit "${{ inputs.limit }}"
+          --offset "${{ inputs.offset }}"
           --timeout "${{ inputs.timeout_s }}"
           --workers "${{ inputs.workers }}"
           --deadline "${{ inputs.deadline_s }}"

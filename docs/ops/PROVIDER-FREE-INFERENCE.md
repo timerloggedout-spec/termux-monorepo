@@ -49,3 +49,20 @@ The manual `diagnose_free_limits` input defaults to false. When explicitly selec
 Future smoke failures preserve only allowlisted 429 categories and header/reset-state indicators. Generic 429/rate-limit errors remain unknown; upstream capacity requires explicit provider evidence. Daily token and request limits are distinct. Error-body reads are bounded and no raw error text is logged or persisted. No retry loop, model switch, paid fallback, secret mutation, production admission change, or scheduled inference is introduced.
 
 Official semantics: [OpenRouter limits and read-only key metadata](https://openrouter.ai/docs/api_reference/limits) distinguish platform limits from upstream rate limiting; [error handling](https://openrouter.ai/docs/api_reference/errors-and-debugging) explains typed error metadata and optional `Retry-After`. A missing reset is not proof that waiting is sufficient, and deprecated key spending-limit fields are not a free-model request quota.
+
+
+## Puter Pool — candidate transport adapter (DPLC-010)
+
+The owned [Puter Pool fork](https://github.com/timerloggedout-spec/puter-pool_fork) is a candidate OpenAI-/Anthropic-compatible transport over the existing Puter provider family. It is tracked as an adapter reference, not a new provider family, account pool, quota manager or dispatch scheduler. Source audit, pinned commit, security/license findings, QUE/DoE correlation and acceptance gates live in [PUTER-POOL-INTEGRATION.md](../proposals/active/doe-agentic-logistics-control-plane/PUTER-POOL-INTEGRATION.md).
+
+**Existing pool/UI state, re-fetched 2026-11-13:**
+- `ops/quota/registry.json#g4f.puter` already owns the provider-family quota record; `runtime_eligible=false`, with limit/window/reset/account balance unknown.
+- `apps/tribute-dashboard/data/provider-quota-coverage.json` already maps `g4f/Puter` → `g4f.puter`; `observation_method=manual_or_unknown`.
+- `apps/tribute-dashboard/data/quota.json` already projects `g4f.puter` as `status=unknown`, with `used`, `limit`, `reset` and `observed_at` null.
+- The telemetry ingest source manifest already includes the quota registry and g4f provider harvest; reuse its existing HindSight and Provenance paths.
+
+**Admission:** exact model + one authorized account scope + execution-environment availability + provider-authoritative no-cost entitlement/quota + accepted terms + data-class policy. Until all gates pass, the existing UI remains `UNKNOWN / DEFERRED`.
+
+**Adapter posture:** single-account instance, one attempt per dispatch, exact upstream model identity, task/QUE/DoE/run correlation, sanitized telemetry. Account rotation, cross-account retries, synthetic credit arithmetic and paid fallback are excluded. README/package metadata claim Apache-2.0 while the checked-in LICENSE contains EPL-2.0; license resolution and security remediation precede source reuse or runtime activation.
+
+DPLC-010 remains queued under the in-review DoE proposal. This registration establishes source provenance and integration intent; it does not establish live entitlement, quota, inference success or production admission.

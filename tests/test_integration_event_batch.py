@@ -58,6 +58,10 @@ class IntegrationEventBatchTests(unittest.TestCase):
         del event["observed_at"]
         with self.assertRaisesRegex(ValueError, "observed_at"):
             ie.validate_event(event)
+        event["observed_at"] = "2026-11-14T12:00:02Z"
+        del event["privacy"]["classification"]
+        with self.assertRaisesRegex(ValueError, "classification"):
+            ie.validate_event(event)
 
     def test_unknown_fields_fail_closed(self):
         event = dict(EVENT, unexpected="value")

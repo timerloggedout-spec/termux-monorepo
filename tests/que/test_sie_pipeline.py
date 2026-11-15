@@ -125,6 +125,10 @@ class TestSIEPipeline(unittest.TestCase):
             None, [], {"dispatches": [None]}, {"dispatches": "not-a-list"},
             {"dispatches": [{"stall_events": [None]}]},
             {"dispatches": [{"tier": [], "stall_events": []}]},
+            {"dispatches": [{"issue": 8126, "state": "escalated", "age_min": "Infinity",
+                              "stall_events": [{"kind": "escalation"}]}]},
+            {"dispatches": [{"issue": 8127, "state": "escalated", "age_min": "NaN",
+                              "stall_events": [{"kind": "escalation"}]}]},
         )
         for malformed in malformed_feeds:
             with self.subTest(malformed=malformed):

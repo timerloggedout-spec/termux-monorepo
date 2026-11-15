@@ -765,3 +765,18 @@ def test_delphi_rfp_sweep_rotation_eventually_admits_later_issues():
     prioritized = gate.rotate_rfp_issues(issues, after_issue=28, priority_issue=34)
     assert prioritized[0]["number"] == 34
     assert len({item["number"] for item in prioritized}) == len(issues)
+
+
+def test_delphi_board_persists_last_admitted_sweep_cursor():
+    class BoardGH:
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            return [{
+                "number": 9001,
+                "title": gate.BOARD_TITLE,
+                "body": "<!-- delphi-board v1 -->\\n<!-- delphi-sweep-cursor:28 -->",
+            }]
+
+    assert gate.board_sweep_cursor(BoardGH()) == 28
+    rendered = gate.board_md([], "2026-11-15 00:00 UTC", sweep_cursor=29)
+    assert "<!-- delphi-sweep-cursor:29 -->" in rendered

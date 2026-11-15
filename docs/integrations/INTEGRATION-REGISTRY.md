@@ -46,6 +46,9 @@
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
 
+| MiroFish | P1 | Upstream workflow and refactor references identified; no runtime verified | Planned (`mirofish`) | Graph-to-agent scenario preparation and simulation analysis reference |
+| CAMEL-AI OASIS | P1 | Upstream repository/docs identified; no package install or run verified | Planned (`camel-ai-oasis`) | Sandboxed multi-agent social simulation engine |
+
 The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 
 ## Priority rationale

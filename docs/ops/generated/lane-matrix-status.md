@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-15T06:56:00Z)
+# Lane matrix status (2026-11-15T06:56:48Z)
 
-- Master: `ff88101b94c90b343bfc4bd1e5b265eff8f638a1`
+- Master: `04ff05c64289f3b57a6c3e498176d636ea44fbe7`
 - Open PRs: **408**
 - Oldest: #47 (101.63d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -48,7 +48,7 @@
 | #1516 | 23.94 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 23.93 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 23.91 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 23.24 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1557 | 23.25 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 22.16 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 22.16 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 22.15 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

@@ -26,12 +26,12 @@ A source's existence does not establish adoption. A successful benchmark run doe
 
 | ID | Source | Evidence / revision | Skill use | Limitation / reconciliation |
 |---|---|---|---|---|
-| R01 | [Root CLAUDE.md](../../CLAUDE.md) | CURRENT-REPO; blob `fc6fd4e` | First entry, governance order, FA-ADE, BIUDL, CEEL | Primary collaborator entry; downstream docs contain drift and must not silently override it |
+| R01 | [Root CLAUDE.md](../../CLAUDE.md) | CURRENT-REPO; blob `98542cc` | First entry, governance order, FA-ADE, BIUDL, CEEL | Primary collaborator entry; downstream docs contain drift and must not silently override it |
 | R02 | [SKILLS.md](../../SKILLS.md) | CURRENT-REPO; blob `32c7726` | Short collaborator navigation | Keep synchronized with inventory and current skills |
-| R03 | [Skills Inventory](SKILLS-INVENTORY.md) | CURRENT-REPO; blob `23b0e26` | Skill discovery, role load matrix | Header says 2026-09-30 and old master tip; refresh metadata/counts from the live tree before claiming exhaustive inventory |
-| R04 | [Skill Discovery Matrix](SKILL-DISCOVERY-MATRIX.md) | CURRENT-REPO; blob `1cbdf32` | Relationship/evidence skill cluster | Its discovery SHA/counts are historical; do not treat as current tree census |
-| R05 | [Proposal Process](../proposals/PROCESS.md) | CURRENT-REPO; blob `346b1c9` | Authorization and lifecycle | Conflicts with CLAUDE.md: says read root AGENTS.md and branch/PR to master-staging |
-| R06 | [ArchW1z Gate](../ARCHW1Z-GATE.md) | CURRENT-REPO; blob `aeb4d62` | Dual-gate contract | Branch-specific wording is stale/incomplete versus current workflow triggers and LANE-MATRIX policy |
+| R03 | [Skills Inventory](SKILLS-INVENTORY.md) | CURRENT-REPO; blob `73fd26d` | Skill discovery, role load matrix | Header says 2026-09-30 and old master tip; refresh metadata/counts from the live tree before claiming exhaustive inventory |
+| R04 | [Skill Discovery Matrix](SKILL-DISCOVERY-MATRIX.md) | CURRENT-REPO; blob `acb9f84` | Relationship/evidence skill cluster | Its discovery SHA/counts are historical; do not treat as current tree census |
+| R05 | [Proposal Process](../proposals/PROCESS.md) | CURRENT-REPO; updated blob `393fbab` | Authorization and lifecycle | Entrypoint and branch guidance reconciled to CLAUDE.md and LANE-MATRIX |
+| R06 | [ArchW1z Gate](../ARCHW1Z-GATE.md) | CURRENT-REPO; updated blob `da1630b` | Dual-gate contract | Workflow trigger wording now matches the inspected YAML; live promotion still follows LANE-MATRIX |
 | R07 | [Lane Matrix](LANE-MATRIX.md) | CURRENT-REPO; blob `1c469a0` | Current PR disposition and promotion evidence | Live generated board/API still must be fetched for each decision |
 | R08 | [Approxination proposal ITEMS](../proposals/active/approxination-integration/ITEMS.md) | CURRENT-REPO; item APPROX-001..008 | Scope/acceptance tracking | APPROX-006 formal A/B/C/D smoke remains separate backlog work; APPROX-008 covers skill/source reconciliation |
 
@@ -39,14 +39,14 @@ A source's existence does not establish adoption. A successful benchmark run doe
 
 | ID | Source | Evidence / revision | Skill use | Limitation / reconciliation |
 |---|---|---|---|---|
-| R09 | [approxination-lane skill](../../.agents/skills/approxination-lane/SKILL.md) | CURRENT-REPO; blob `6488453` | Search, generate, feedback, benchmark routing | Existing workflow; this upgrade makes substantive skill creation/upgrade competition mandatory |
-| R10 | [Approxination ops card](APPROXINATION-LANE.md) | CURRENT-REPO; blob `bba54be` | Tool-layer comparison and contribution cadence | Formal A/B/C/D execution is a separately tracked experiment |
-| R11 | [Approxination cohort](../evaluations/approxination/COHORT.md) | CURRENT-REPO; blob `4e228a4` | A/B/C/D treatment definition and evidence freeze | Existing cohort says it implements APPROX-001..004; new competition requirements belong in APPROX-008 |
+| R09 | [approxination-lane skill](../../.agents/skills/approxination-lane/SKILL.md) | CURRENT-REPO; blob `85f9de4` | Search, generate, feedback, benchmark routing | Existing workflow; this upgrade makes substantive skill creation/upgrade competition mandatory |
+| R10 | [Approxination ops card](APPROXINATION-LANE.md) | CURRENT-REPO; blob `137754f` | Tool-layer comparison and contribution cadence | Formal A/B/C/D execution is a separately tracked experiment |
+| R11 | [Approxination cohort](../evaluations/approxination/COHORT.md) | CURRENT-REPO; blob `7425b1c` | A/B/C/D treatment definition and evidence freeze | Existing cohort says it implements APPROX-001..004; new competition requirements belong in APPROX-008 |
 | R12 | [Approxination Benchmark fork README](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork/blob/5ad5a3a45b4026b27e6408f3a838ba969a4fd113/README.md) | PINNED-REPO; README blob `5ad5a3a` | Fixed 67-task, four-mode tool-layer comparison; blind pairwise judging; category breakdown and multiple ELO estimators | Reference fork, not monorepo runtime; inspect current pinned content before each formal run |
 | R13 | [Approxination task schema](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork/blob/06b31d8eff1a7e23858a1dd7d4c624dc3717b620/SCHEMA.md) | PINNED-REPO; blob `06b31d8` | Agent-agnostic task prompts and deterministic output criteria | Task set/version and graders must be pinned together |
 | R14 | [Inverse Arena fork README](https://github.com/timerloggedout-spec/Inverse-Arena_fork/blob/ac8adef355fb3fe02cac4c1279a40daeba7f4487/README.md) | PINNED-REPO; blob `ac8adef` | Execution-backed skill feedback, pairwise ranking, fuzzy scoring and ELO | Hosted arena includes behavior not necessarily present in open-source fork; do not equate public ranking with causal benchmark evidence |
-| R15 | [Blind Agent Evaluation skill](../../.agents/skills/blind-agent-evaluation/SKILL.md) | CURRENT-REPO; blob `a63d0e3` | Blinding, attribution preservation, outcome-first scoring | Blinding is partial when identity is inferable or operationally required |
-| R16 | [Multivariate DoE skill](../../.agents/skills/multivariate-doe/SKILL.md) | CURRENT-REPO; blob `f650b10` | Factors, blocking, randomization, replication, multi-response analysis | A/B/C/D tool-layer arms are not the same thing as candidate skill variants |
+| R15 | [Blind Agent Evaluation skill](../../.agents/skills/blind-agent-evaluation/SKILL.md) | CURRENT-REPO; blob `fddfc1e` | Blinding, attribution preservation, outcome-first scoring | Blinding is partial when identity is inferable or operationally required |
+| R16 | [Multivariate DoE skill](../../.agents/skills/multivariate-doe/SKILL.md) | CURRENT-REPO; blob `e4abf7f` | Factors, blocking, randomization, replication, multi-response analysis | A/B/C/D tool-layer arms are not the same thing as candidate skill variants |
 | R17 | [Agent Evaluation Framework](../architecture/AGENT-EVALUATION-FRAMEWORK.md) | CURRENT-REPO navigation target | AEF oversight and MoneyBall/3L0 integration | Load the current document and schemas before defining score fields |
 
 ## 4. Skill authoring, execution loops, and provenance bundle

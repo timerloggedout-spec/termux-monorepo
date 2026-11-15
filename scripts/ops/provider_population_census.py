@@ -195,7 +195,10 @@ def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
             adapter_counts = {"catalog_adapters": catalog_adapters, "native_invoke_adapters": native_adapters,
                               "workflow_menu_choices": len(menu), "menu_supported_by_native_adapter": len(menu_supported),
                               "menu_without_native_adapter": menu_unadapted,
-                              "native_adapters_not_in_menu": adapters_not_in_menu}
+                              "native_adapters_not_in_menu": adapters_not_in_menu,
+                              "native_provider_ids": sorted(research_providers.ENDPOINTS),
+                              "catalog_provider_ids": sorted(provider_model_catalog.ENDPOINTS),
+                              "menu_supported_provider_ids": menu_supported}
         except Exception as exc:
             adapter_counts = {"error_class": type(exc).__name__}
 

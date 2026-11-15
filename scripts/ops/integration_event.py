@@ -448,12 +448,33 @@ SELECT
 FROM counts
 RETURNING records_inserted::text || '|' || records_duplicates::text;
 """
+    cursor_guard = ""
+    if cursor_after is not None:
+        cursor_guard = f"""
+DO $cursor_guard$
+DECLARE current_cursor text;
+BEGIN
+  PERFORM pg_advisory_xact_lock(hashtextextended(
+    {sql_literal(integration_id + ":" + record_type)}, 0
+  ));
+  SELECT cursor_after INTO current_cursor
+  FROM integration_latest_cursors
+  WHERE integration_id = {sql_literal(integration_id)}
+    AND record_type = {sql_literal(record_type)};
+  IF current_cursor IS DISTINCT FROM {sql_literal(cursor_before)}
+     AND current_cursor IS DISTINCT FROM {sql_literal(cursor_after)} THEN
+    RAISE EXCEPTION 'integration_cursor_conflict';
+  END IF;
+END
+$cursor_guard$;
+"""
     sql = (
-        "SET standard_conforming_strings = on;\n"
-        "BEGIN;\n"
-        "CREATE TEMP TABLE _integration_batch_docs (doc jsonb NOT NULL) ON COMMIT DROP;\n"
-        "INSERT INTO _integration_batch_docs(doc) VALUES\n" + values + ";\n"
-        + insert + receipt + "COMMIT;\n"
+        "SET standard_conforming_strings = on;\\n"
+        "BEGIN;\\n"
+        + cursor_guard
+        + "CREATE TEMP TABLE _integration_batch_docs (doc jsonb NOT NULL) ON COMMIT DROP;\\n"
+        + "INSERT INTO _integration_batch_docs(doc) VALUES\\n" + values + ";\\n"
+        + insert + receipt + "COMMIT;\\n"
     )
     meta = {
         "batch_id": batch_id, "integration_id": integration_id,

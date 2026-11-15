@@ -142,6 +142,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate Publishing dashboard JavaScript syntax
+        run: node --check apps/tribute-dashboard/publishing.js
       - name: Test public-surface reconciliation classifier
         run: node tests/test_public_surface_reconciliation.cjs
       - name: Refresh offline provider quota coverage

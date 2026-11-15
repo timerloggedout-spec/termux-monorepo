@@ -49,3 +49,12 @@ The manual `diagnose_free_limits` input defaults to false. When explicitly selec
 Future smoke failures preserve only allowlisted 429 categories and header/reset-state indicators. Generic 429/rate-limit errors remain unknown; upstream capacity requires explicit provider evidence. Daily token and request limits are distinct. Error-body reads are bounded and no raw error text is logged or persisted. No retry loop, model switch, paid fallback, secret mutation, production admission change, or scheduled inference is introduced.
 
 Official semantics: [OpenRouter limits and read-only key metadata](https://openrouter.ai/docs/api_reference/limits) distinguish platform limits from upstream rate limiting; [error handling](https://openrouter.ai/docs/api_reference/errors-and-debugging) explains typed error metadata and optional `Retry-After`. A missing reset is not proof that waiting is sufficient, and deprecated key spending-limit fields are not a free-model request quota.
+
+
+## QUE multi-provider smoke boundary
+
+The manual `provider-inference-validation.yml` matrix covers the 30 provider choices in `provider-invoke.yml`, but it does not blindly invoke all 30. Each job first loads `LLM_API_HUB_PROVIDER_POLICY_JSON`; if the secret is absent, an empty admission policy is used and no provider inference request is made. A provider/model must pass exact-model admission, current free-account/terms/public-data checks, source-backed no-cost/pricing/terms/capability evidence, and quota-class evidence before a single bounded health completion is attempted.
+
+The smoke uses one exact zero-price or verified-free-trial model, no paid fallback, no model fallback, a short health prompt, and bounded concurrency. The result is a provider-health receipt only. It does not establish dispatch eligibility; the receipt keeps `dispatch_eligible=false` until the separate current QUE census and quota/daily-pool cadence checks pass. Scoring-plane stamps are opt-in (`emit_stamps=false` by default).
+
+Catalog-only observations are distinct from inference attempts. A catalog response never sets `inference_status=passed`.

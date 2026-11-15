@@ -592,6 +592,7 @@ def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
         "manifest_path": manifest_path,
         "package_id": manifest["package_id"],
         "package_path": manifest["package_path"],
+        "package_author": manifest["package_author"],
         "package_digest": manifest["package_digest"],
         "file_count": len(verified_files),
     }

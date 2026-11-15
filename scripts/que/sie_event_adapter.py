@@ -26,7 +26,9 @@ def queue_stall_groups(feed: dict) -> list[dict]:
         events = row.get("stall_events") or []
         if not isinstance(events, list) or any(not isinstance(event, dict) for event in events):
             raise ValueError("dispatch stall_events must contain objects")
-        tier = row.get("tier") or {}
+        tier = row.get("tier", {})
+        if tier is None:
+            tier = {}
         if not isinstance(tier, dict):
             raise ValueError("dispatch tier must be an object")
         try:

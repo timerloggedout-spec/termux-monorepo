@@ -253,6 +253,14 @@ class IntegrationEventBatchTests(unittest.TestCase):
                 self.assertEqual(ie.main(["record", "--events-file", str(path)]), 0)
             psql.assert_not_called()
 
+    def test_empty_record_batch_cannot_advance_cursor(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "batch.json"
+            path.write_text(json.dumps({
+                "event": {"github-actions": {"cursor_after": "page-005"}}
+            }), encoding="utf-8")
+            self.assertEqual(ie.main(["record", "--batch-metadata-file", str(path)]), 2)
+
     def test_schema_command_requires_operator_migration_credential(self):
         with patch.dict(os.environ, {}, clear=True), patch.object(ie.lane_event, "psql") as psql:
             self.assertEqual(ie.main(["schema"]), 2)

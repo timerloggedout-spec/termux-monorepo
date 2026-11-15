@@ -60,6 +60,8 @@ jobs:
           W="$RUNNER_TEMP/deploy-$PROJECT"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
           vercel link --yes --project "$PROJECT" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
           cp -a "$GITHUB_WORKSPACE/apps/tribute-dashboard/." "$W/"
+          # Pin the same-origin metadata envelope to this deployment SHA.
+          cp "$GITHUB_WORKSPACE/ops/owner-records/index.json" "$W/owner-records.json"
           mkdir -p "$W/data"
           G="$GITHUB_WORKSPACE/docs/ops/generated"
           [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$W/data/status.json" || true

@@ -113,3 +113,18 @@ A successful inference smoke alone is never terminal success for QUE activation.
 - [#5151 — Multi-arm build routing](https://github.com/timerloggedout-spec/termux-monorepo/issues/5151)
 - [#5160 / #5152 — Free inference pool and per-arm quota ledger](https://github.com/timerloggedout-spec/termux-monorepo/issues/5160)
 - [#5283 — Task-plane priority and claim order](https://github.com/timerloggedout-spec/termux-monorepo/issues/5283)
+
+
+
+### Population count definitions and census artifact
+
+The current `master` desk-feed snapshot distinguishes these counts:
+
+- **110** distinct providers across all lanes; this includes non-model service lanes.
+- **89** distinct providers in the model lane, represented by **91** model-lane records.
+- **92/93** inference-wiring records accounted as wired; the remaining one is excluded by kind. These are wiring records, not unique provider counts.
+- **7,341** provider×model endpoint verified floor, counted **2026-11-01**. This is a historical census floor, not current live activation proof.
+- g4f: **60** fork-catalog provider rows, **4,242** raw model rows / **4,241** distinct fork pairs; the separate universe enumerates **9,588** pairs across **160** providers. The historical probe attempted 9,588 and recorded **160** inference successes. None of these historical successes is current activation evidence.
+- The current build-arm registry has **7** arms. The native validation workflow menu has **30** choices; **28** intersect the current native admission adapter map. The menu is not the provider universe.
+
+Use `scripts/ops/provider_population_census.py` to regenerate a source-hashed census. The manual validation workflow uploads a `provider-population-census` artifact after the provider receipts are collected. Always preserve the definitions above when reporting counts; never label 7 arms, 30 menu choices, 92 wiring records, or 9,588 enumerated g4f pairs as the full active endpoint population.

@@ -50,3 +50,16 @@ def test_ratio_handles_missing_and_zero_values():
     assert MODULE.ratio(None, 2) is None
     assert MODULE.ratio(0, 2) is None
     assert MODULE.ratio(4, 0) is None
+
+
+
+def test_load_receipt_rejects_missing_source_identity(tmp_path):
+    import json
+    import pytest
+
+    path = tmp_path / "receipt.json"
+    invalid = receipt()
+    invalid.pop("source_sha")
+    path.write_text(json.dumps(invalid), encoding="utf-8")
+    with pytest.raises(ValueError, match="source_sha"):
+        MODULE.load_receipt(path)

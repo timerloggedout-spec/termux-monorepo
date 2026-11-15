@@ -32,6 +32,11 @@ permissions:
   pages: write
   id-token: write
 
+# Keep one publisher active; newer pending snapshots replace older pending ones.
+concurrency:
+  group: tribute-dashboard-publish
+  cancel-in-progress: false
+
 jobs:
   enable-pages:
     name: enable-project-pages

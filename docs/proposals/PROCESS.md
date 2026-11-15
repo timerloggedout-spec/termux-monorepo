@@ -2,7 +2,7 @@
 
 Structured lifecycle: **ingest → register → itemize → review → execute → close**.
 
-**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `AGENTS.md` · `docs/CONSENSUS.md`
+**Also read:** `AGENTIC-PERMISSIONS.md` · `registry.yaml` · root `CLAUDE.md` · `docs/CONSENSUS.md`
 
 ## Directory layout
 
@@ -48,12 +48,12 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 ## Agent entrypoint
 
 ```text
-1. Read AGENTS.md then registry.yaml
-2. Pick highest-priority accepted/executing todo item
-3. Branch off master-staging
-4. PR → master-staging with Implements: <ITEM-ID>
-5. Update ITEMS.md + registry when possible
-6. Never close P0 security without Operator evidence
+1. Read root CLAUDE.md first, then registry.yaml, permissions, current gate policy, and the relevant ICM route.
+2. Pick the highest-priority authorized accepted/executing todo item; add an ITEMS row before expanding scope.
+3. Branch from live master unless the active lane or current LANE-MATRIX explicitly requires master-staging.
+4. Target the PR base required by that active lane; cite Implements: <ITEM-ID>.
+5. Update ITEMS.md + registry when the durable state changes.
+6. Never close P0 security without Operator evidence.
 ```
 
 ## Automation
@@ -67,3 +67,8 @@ All ITEMS terminal + Review log outcome + move active/ → closed/ + registry up
 
 Large external proposals may live on a **docs/** branch with a **pointer** on master
 (see `corrected_cloud_offload_evaluation.md` → `active/kimi-cloud-offload/`).
+
+
+## Entrypoint and live branch policy
+
+Root `CLAUDE.md` is the primary collaborator entry and marks root `AGENTS.md` deprecated. Do not require a missing/deprecated AGENTS.md as the first read. Branch/base selection is governed by root CLAUDE.md plus the current lane's explicit policy and `docs/ops/LANE-MATRIX.md`; this process document does not independently select a permanent staging branch.

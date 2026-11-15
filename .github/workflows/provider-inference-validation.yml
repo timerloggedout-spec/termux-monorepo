@@ -135,6 +135,10 @@ jobs:
               'validation_status': status,
               'inference_status': inference_status,
               'no_cost_verified': bool(verdict.get('no_cost_verified', False)),
+              'validation_scope': 'no_cost_inference_smoke_only',
+              'terms_accepted': 'not_verified',
+              'entitlement_verified': 'not_verified',
+              'dispatch_eligible': False,
               'pricing_classification': verdict.get('model_pricing_classification'),
               'access_classification': verdict.get('model_access_classification'),
               'latency_ms': verdict.get('latency_ms'),
@@ -154,6 +158,7 @@ jobs:
               summary.write('Inference: `' + inference_status + '`  \n')
               summary.write('Reason: `' + (diagnosis or 'none') + '`  \n')
               summary.write('Experiment: `' + receipt['experiment_label'] + '`\n')
+              summary.write('Dispatch eligibility: `not established` (terms/entitlement pending)\n')
           PY
       - name: Upload sanitized validation receipt only
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

@@ -260,6 +260,7 @@ def activation_entry(**updates):
         terms_verified_at=now,
         capability_source="https://provider.example/models",
         capability_verified_at=now,
+        capabilities=["chat_completion"],
         quota_class="daily_pool_no_provider_quota",
         pool_id="daily-free-pool",
         pool_evidence_ref="https://provider.example/free-pool",
@@ -290,3 +291,21 @@ def test_activation_evidence_rejects_missing_or_invalid_assertions(updates, expe
 
 def test_unknown_quota_is_not_coerced_to_no_quota():
     assert providers.validate_activation_entry(activation_entry(quota_class="quota_unknown")) is None
+
+
+
+def test_activation_evidence_requires_explicit_chat_capability():
+    assert providers.validate_activation_entry(activation_entry(capabilities=[])) == "policy_capability_missing:chat_completion"
+
+
+def test_build_harness_requires_explicit_tool_calling_capability():
+    assert providers.validate_activation_entry(
+        activation_entry(), required_capabilities=("chat_completion", "tool_calling")
+    ) == "policy_capability_missing:tool_calling"
+
+
+def test_tool_calling_capability_is_accepted_when_declared():
+    assert providers.validate_activation_entry(
+        activation_entry(capabilities=["chat_completion", "tool_calling"]),
+        required_capabilities=("chat_completion", "tool_calling"),
+    ) is None

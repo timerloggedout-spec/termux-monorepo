@@ -8,7 +8,10 @@
 - [ ] Exact MiroFish upstream commit, release, LICENSE and dependency licenses recorded.
 - [ ] Refactoring fork commit and architectural delta recorded.
 - [ ] CAMEL-AI OASIS release/tag, supported Python/runtime matrix, LICENSE and dependency lock recorded.
-- [ ] Mesa and deterministic-baseline versions and license recorded.
+- [ ] Mesa, Repast and NetLogo versions/licenses/runtime matrices recorded; existing Mesa pre-screen-only and NetLogo corpus-only authority is preserved.
+- [ ] LangGraph work (#5045/#5062/#5085/#5194) and Temporal prior RFP/pass (#1885) are reconciled; no duplicate integration or Temporal procurement cycle is created.
+- [ ] AutoGen, CrewAI and OpenAI Agents SDK are assessed as orchestration alternatives only, not social simulation engines.
+- [ ] Candidate queue and FOSS procurement registry entries agree on identity, role, status and evidence.
 - [ ] Model/data terms and redistribution constraints reviewed.
 - [ ] No AGPL-derived code copied into this repository before explicit review.
 

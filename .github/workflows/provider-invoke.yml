@@ -1,15 +1,10 @@
-name: Provider invoke (inference batch)
-
-# Per-provider bounded invoke for the class-corrected inference batch:
-# one dispatch = one provider, one production-work completion, verdict +
-# completion posted to the batch evidence issue. Endpoints/secrets resolve
-# from the repo's reviewed hub sources at runtime (no hard-pinned routes).
+name: Provider invoke (policy-gated no-cost smoke)
 
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "invoke (one completion) or catalog (count live models)"
+        description: "invoke one admitted no-cost health smoke or catalog-only census"
         required: false
         default: invoke
         type: choice
@@ -17,16 +12,16 @@ on:
           - invoke
           - catalog
       free_only:
-        description: "Require a catalog-verified no-cost model; never fall back to paid or unknown pricing"
+        description: "Required for inference; false fails closed without sending a request"
         required: false
         default: true
         type: boolean
       model:
-        description: "Optional exact model id (per-model shard); blank = first catalog chat model"
+        description: "Optional exact model id; must match the current admission policy"
         required: false
         type: string
       provider:
-        description: "Inference provider to invoke"
+        description: "Inference provider to inspect"
         required: true
         type: choice
         options:
@@ -60,23 +55,48 @@ on:
           - friendli
           - baseten
           - deepseek
+      experiment_label:
+        description: "Required audit label"
+        required: true
+        default: QUE-5454
+        type: string
+      emit_stamps:
+        description: "Opt in to publishing this receipt through the scoring-plane fan-out"
+        required: true
+        default: false
+        type: boolean
 
 permissions: {}
+
+concurrency:
+  group: provider-invoke-${{ inputs.provider }}
+  cancel-in-progress: false
 
 jobs:
   invoke:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
-      - name: Invoke provider against production work
-        id: invoke
+      - name: Materialize exact provider admission policy (fail closed)
         env:
+          POLICY_JSON: ${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}
+        run: |
+          set -euo pipefail
+          if [ -n "${POLICY_JSON:-}" ]; then
+            printf '%s' "$POLICY_JSON" > /tmp/provider-admission.json
+          else
+            printf '%s' '{"schema":"research-provider-admission/v1","entries":[]}' > /tmp/provider-admission.json
+            echo "No provider admission policy configured; inference will be deferred."
+          fi
+          echo "LLM_API_HUB_PROVIDER_POLICY=/tmp/provider-admission.json" >> "$GITHUB_ENV"
+      - name: Inspect provider or invoke one admitted no-cost health model
+        env:
+          EXPERIMENT_LABEL: ${{ inputs.experiment_label }}
           INVOKE_MODEL: ${{ inputs.model }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
@@ -117,76 +137,105 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OMNI_API_KEY: ${{ secrets.OMNI_API_KEY }}
         run: |
-          set -o pipefail
-          python3 scripts/ops/provider_invoke.py \
-            --provider "${{ inputs.provider }}" \
-            --prompt-file docs/ops/tasks/inference-batch-ww3.md \
-            --out /tmp/invoke-completion.md \
-            ${{ inputs.mode == 'catalog' && '--catalog-only' || '' }} ${{ inputs.mode == 'invoke' && inputs.free_only && '--free-only' || '' }} 2>&1 | tee /tmp/invoke.log
-          grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/invoke.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
-          python3 - <<'PYEOF'
-          import json
-          v = json.load(open('/tmp/verdict.json'))
-          with open('/tmp/invoke-comment.md', 'w') as f:
-              if 'models' in v:
-                  f.write('[MUSEai]@{role:{optimizations-assurance}} ENDPOINT CENSUS — provider **%s**: %s\n\n' % (
-                      v['provider'], ('**%d models**' % v['models']) if v['models'] is not None else 'not countable from CI'))
-                  f.write('verdict: `%s`\n' % json.dumps(v))
-                  raise SystemExit(0)
-              f.write('[MUSEai]@{role:{optimizations-assurance}} INFERENCE BATCH invoke — provider **%s**: %s\n\n' % (
-                  v['provider'], '✓ INVOKE OK' if v['ok'] else '✗ ' + v['diagnosis']))
-              f.write('verdict: `%s`\n' % json.dumps(v))
-              if v['ok']:
-                  f.write('\n<details><summary>completion (production work product)</summary>\n\n')
-                  f.write(open('/tmp/invoke-completion.md').read())
-                  f.write('\n</details>\n')
-          PYEOF
-      - name: Post invoke evidence
-        run: |
-          GH_TOKEN="${{ github.token }}" gh issue comment "3141" --repo timerloggedout-spec/termux-monorepo --body-file /tmp/invoke-comment.md
+          set -euo pipefail
+          if [ "${{ inputs.mode }}" = "catalog" ]; then
+            python3 scripts/ops/provider_invoke.py --provider "${{ inputs.provider }}" --prompt-file docs/ops/tasks/inference-health-smoke.md --out /tmp/no-inference-output.txt --catalog-only 2>&1 | tee /tmp/provider.log
+          else
+            python3 scripts/ops/provider_invoke.py --provider "${{ inputs.provider }}" --prompt-file docs/ops/tasks/inference-health-smoke.md --out /tmp/inference-output.txt ${{ inputs.free_only && '--free-only' || '' }} 2>&1 | tee /tmp/provider.log
+          fi
+          grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/provider.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          verdict = json.load(open('/tmp/verdict.json', encoding='utf-8'))
+          catalog_only = 'models' in verdict
+          diagnosis = str(verdict.get('diagnosis') or '')
+          if not catalog_only and verdict.get('ok') and verdict.get('no_cost_verified'):
+              status, inference = 'inference_validated', 'passed'
+          elif catalog_only or not verdict.get('policy_admitted') or any(x in diagnosis for x in ('not_admitted', 'policy_', 'missing_secret', 'no_verified_no_cost', 'admitted_model_not_verified_no_cost', 'no_canonical_model_catalog')):
+              status, inference = 'deferred', 'not_attempted'
+          else:
+              status, inference = 'failed', ('failed' if verdict.get('no_cost_verified') else 'not_attempted')
+          receipt = {
+              'schema': 'provider-inference-validation/v1',
+              'provider': verdict.get('provider'),
+              'model': verdict.get('model'),
+              'validation_status': status,
+              'inference_status': inference,
+              'no_cost_verified': bool(verdict.get('no_cost_verified', False)),
+              'policy_admitted': bool(verdict.get('policy_admitted', False)),
+              'validation_scope': verdict.get('validation_scope', 'policy_gated_no_cost_inference_smoke'),
+              'terms_accepted': verdict.get('terms_accepted', 'not_verified'),
+              'entitlement_verified': verdict.get('entitlement_verified', 'not_verified'),
+              'dispatch_eligible': False,
+              'pricing_classification': verdict.get('model_pricing_classification'),
+              'access_classification': verdict.get('model_access_classification'),
+              'quota_class': verdict.get('quota_class', 'unclassified'),
+              'pool_id': verdict.get('pool_id'),
+              'diagnosis': diagnosis,
+              'experiment_label': os.environ['EXPERIMENT_LABEL'],
+              'observed_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'),
+              'run_id': os.environ.get('GITHUB_RUN_ID'),
+              'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'latency_ms': verdict.get('latency_ms'),
+              'source_ref': os.environ.get('GITHUB_SERVER_URL', '') + '/' + os.environ.get('GITHUB_REPOSITORY', '') + '/actions/runs/' + os.environ.get('GITHUB_RUN_ID', ''),
+          }
+          json.dump(receipt, open('/tmp/receipt.json', 'w', encoding='utf-8'), indent=2, sort_keys=True)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write('## ' + str(receipt['provider']) + ': ' + status + '\n\n')
+              summary.write('Model: `' + str(receipt['model']) + '`  \n')
+              summary.write('Inference: `' + inference + '`  \n')
+              summary.write('Policy admitted: `' + str(receipt['policy_admitted']) + '`  \n')
+              summary.write('Dispatch eligibility: `not established` (quota/pool cadence pending)\n')
+              summary.write('Reason: `' + (diagnosis or 'none') + '`\n')
+          PY
+      - name: Upload sanitized receipt only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-validation-single
+          path: /tmp/receipt.json
+          if-no-files-found: error
+          retention-days: 14
 
   stamp:
     needs: [invoke]
-    if: always()
+    if: always() && inputs.emit_stamps
     runs-on: ubuntu-latest
     permissions: {}
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - name: Mint Swarm App token (stamp fan-out dispatch)
+      - name: Mint Swarm App token for canonical evidence fan-out
         id: app-token
         uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
         with:
           app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
           private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
-      - name: Emit dispatch stamp to scoring planes
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+      - name: Download sanitized receipt
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: provider-validation-single
+          path: /tmp/provider-validation-receipts/provider-validation-single
+          if-no-artifact-found: warn
+      - name: Emit provider stamp
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          UPSTREAM_RESULT: ${{ needs.invoke.result }}
+          EXPERIMENT_LABEL: ${{ inputs.experiment_label }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPOSITORY: ${{ github.repository }}
         run: |
-          export TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          STAMP=$(python3 - <<'PYEOF'
-          import json, os
-          stamp = {
-            "dispatch_id": "provider-invoke-${{ github.run_id }}",
-            "ts": os.environ.get("TS"),
-            "task_class": "inference-invoke",
-            "entry": "3141",
-            "trigger": "workflow_dispatch",
-            "provider": "${{ inputs.provider }}",
-            "model": "${{ inputs.model }}" or None,
-            "role": "builder",
-            "moniker": "optimizations-assurance",
-            "context": "provider-invoke mode=${{ inputs.mode }}",
-            "run": {"workflow": "provider-invoke.yml", "run_id": "${{ github.run_id }}", "session_id": None},
-            "outcome": {"status": "completed" if os.environ.get("UPSTREAM_RESULT") == "success" else "failed",
-                        "summary": "provider-invoke.yml run ${{ github.run_id }} result=" + str(os.environ.get("UPSTREAM_RESULT")),
-                        "artifact": "actions run ${{ github.run_id }}", "gate_call": None, "confirmed": None},
-            "quota": {"pool": "${{ inputs.provider }}", "cost_class": "free-tier", "slice": None},
-          }
-          print(json.dumps(stamp))
-          PYEOF
-          )
-          curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/dispatch-stamp-fanout.yml/dispatches" \
-            -d "$(python3 -c 'import json,sys; print(json.dumps({"ref": "master", "inputs": {"stamp": sys.argv[1]}}))' "$STAMP")" > /dev/null
-          echo "stamp dispatched for run ${{ github.run_id }}"
+          set -euo pipefail
+          python3 scripts/ops/provider_validation_stamp.py \
+            --receipts-dir /tmp/provider-validation-receipts \
+            --repository "$REPOSITORY" \
+            --run-id "$RUN_ID" \
+            --run-attempt "$RUN_ATTEMPT" \
+            --run-url "$RUN_URL" \
+            --experiment-label "$EXPERIMENT_LABEL"

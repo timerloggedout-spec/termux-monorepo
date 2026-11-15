@@ -1305,3 +1305,25 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: tribute-owner-records-explorer
+    title: "Tribute Owner Records metadata explorer and D4-safe build surface"
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/tribute-owner-records-explorer/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_prs:
+      - 5448
+    related_branches:
+      - feat/tribute-owner-records-explorer-rebased-20261115
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

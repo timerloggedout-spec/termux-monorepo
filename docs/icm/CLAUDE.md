@@ -24,6 +24,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 |---|---|---|
 | orient before a change | [`CONTEXT.md`](CONTEXT.md) | the one relevant object or process card |
 | change the Android execution plane | [`objects/platform/termux-agentic-hub.md`](objects/platform/termux-agentic-hub.md) | the cited architecture source |
+| change the shared cognitive kernel | [`objects/operations/brain-kernel.md`](objects/operations/brain-kernel.md) | the root brain.rs contract, tests and injected adapter boundary |
 | check device or service assumptions | [`objects/platform/blu-b160v-free-services.md`](objects/platform/blu-b160v-free-services.md) | the declared envelope and the required re-verification boundary |
 | change ArchWiz or a verification tool | [`objects/operations/archwiz.md`](objects/operations/archwiz.md) | the cited tool catalog or source path |
 | use the initiated visual-review cards or plan a human checkpoint | [`objects/operations/optional-visual-review.md`](objects/operations/optional-visual-review.md) | the canonical source artifact and human approval boundary |

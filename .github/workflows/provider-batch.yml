@@ -105,6 +105,9 @@ on:
       - 'deepcli/deepagent.py'
       - 'tests/test_deepagent_entrypoint.py'
       - 'tests/test_deepagent_worktree_base.py'
+      - '.github/workflows/team-mvt.yml'
+      - 'scripts/ops/evaluate_team_mvt.py'
+      - 'tests/test_team_mvt_evaluation.py'
       - '.github/workflows/provider-batch.yml'
   push:
     branches: [master]
@@ -203,6 +206,7 @@ jobs:
           python3 -m unittest scripts.model_selection_market.test_msm
           python3 -m pytest -q tests/test_provider_quota_managers.py tests/test_provider_quota_transport.py tests/test_provider_quota_service.py tests/test_provider_quota_openrouter.py tests/test_provider_quota_private_workflow.py tests/test_provider_quota_coverage.py tests/test_quota_dashboard.py tests/test_quota_poll.py tests/test_delphi_gate.py
           python3 -m pytest -q tests/test_quota_allocations.py
+          python3 -m pytest -q tests/test_team_mvt_evaluation.py
           python3 scripts/provider_quota_coverage.py --check apps/tribute-dashboard/data/provider-quota-coverage.json
       - name: Upload contracts log for diagnostics
         if: failure()

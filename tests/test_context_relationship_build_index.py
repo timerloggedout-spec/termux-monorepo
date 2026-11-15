@@ -102,6 +102,8 @@ def test_build_index_publishes_only_canonical_artifacts_and_uses_checkpoint(monk
     )
 
     assert first["node_count"] == 3
+    assert len(first["nodes_sha256"]) == 64
+    assert len(first["edges_sha256"]) == 64
     assert set(first["performance"]) == {
         "collection_seconds", "compile_seconds", "publish_seconds",
         "wall_seconds", "process_cpu_seconds", "peak_rss_bytes",

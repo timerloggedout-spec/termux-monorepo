@@ -171,6 +171,9 @@ on:
       - 'deepcli/deepagent.py'
       - 'tests/test_deepagent_entrypoint.py'
       - 'tests/test_deepagent_worktree_base.py'
+      - '.github/workflows/team-mvt.yml'
+      - 'scripts/ops/evaluate_team_mvt.py'
+      - 'tests/test_team_mvt_evaluation.py'
       - '.github/workflows/provider-batch.yml'
 permissions: {}
 concurrency:

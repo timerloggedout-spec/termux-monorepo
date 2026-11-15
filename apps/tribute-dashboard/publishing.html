@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Read-only public branch, pull-request and release-evidence reconciliation for the LoggedOut Timer web surfaces.">
+<title>Publishing reconciliation · Tribute</title>
+<link rel="alternate" type="text/markdown" href="./publishing.md">
+<link rel="stylesheet" href="./dashboard.css">
+<script src="./publishing.js" defer></script>
+<style>
+main{max-width:1440px;margin:2rem auto;padding:0 1rem}
+.panel{padding:1rem;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin:1rem 0}
+.panel h2{margin-top:0}.lede{max-width:900px}
+.publishing-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.publishing-toolbar button{border:1px solid var(--line);border-radius:8px;padding:.55rem .85rem;background:var(--panel2);color:var(--text);font-weight:700;cursor:pointer}
+.publishing-toolbar button:disabled{opacity:.55;cursor:wait}
+.publishing-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.7rem;margin:1rem 0}
+.publishing-stat{padding:.8rem;border:1px solid var(--line);border-radius:9px;background:var(--panel2)}
+.publishing-stat .label{color:var(--muted);font-size:.8rem}.publishing-stat .value{font-size:1.65rem;font-weight:800;font-variant-numeric:tabular-nums}
+.publishing-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}
+.publishing-table{width:100%;min-width:850px;border-collapse:collapse}
+.publishing-table th,.publishing-table td{text-align:left;vertical-align:top;padding:.65rem;border-bottom:1px solid var(--line)}
+.publishing-table th{color:var(--gold);font-size:.85rem}.publishing-table td{font-size:.9rem}
+.publishing-table code{overflow-wrap:anywhere}.publishing-table a{color:var(--link,#8dd5ff)}
+.publishing-pill{display:inline-block;padding:.15rem .5rem;border:1px solid var(--line);border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.04em}
+.publishing-pill.ok{border-color:#367f62;color:#8be0b7}.publishing-pill.bad{border-color:#8a5555;color:#ffb5b5}
+.muted{color:var(--muted)}.callout{border-left:3px solid var(--gold);padding:.7rem 1rem;background:var(--panel2)}
+#publishing-status{font-weight:700}#publishing-warning{font-size:.85rem}
+@media(max-width:600px){main{padding:0 .7rem}.panel{padding:.75rem}.publishing-stat .value{font-size:1.35rem}}
+</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">Release engineering · public evidence</div><h1>Publishing <span class="gold">reconciliation</span></h1><p class="lede">A read-only view joining public website branches, open pull requests and source divergence. It complements Tribute's version manifests, PR Lanes and Surfaces Map; it does not merge, delete branches or certify a deployment.</p></div></div></header>
+<main>
+<section class="panel">
+  <div class="publishing-toolbar"><div><h2>Live branch and PR evidence</h2><p class="muted">Source repository: <a href="https://github.com/timerloggedout-spec/timerloggedout-spec.github.io" target="_blank" rel="noopener noreferrer">timerloggedout-spec.github.io</a></p></div><button id="publishing-refresh" type="button">Refresh evidence</button></div>
+  <p id="publishing-status" role="status" aria-live="polite">Loading public GitHub evidence…</p>
+  <p id="publishing-checked" class="muted"></p>
+  <div id="publishing-summary" class="publishing-summary" aria-live="polite"></div>
+  <p id="publishing-warning" class="muted"></p>
+</section>
+<section class="panel">
+  <h2>Website branch inventory</h2>
+  <p class="callout">Open PR heads are compared with their declared base. Branches without an open PR are shown as <strong>UNLINKED</strong>, not automatically stale or obsolete. Branches whose names contain AI ELVES receive a targeted comparison against the repository default branch.</p>
+  <div id="publishing-branches"><p class="muted">Waiting for GitHub API response…</p></div>
+</section>
+<section class="panel">
+  <h2>Open website pull requests</h2>
+  <div id="publishing-prs"><p class="muted">Waiting for GitHub API response…</p></div>
+</section>
+<section class="panel">
+  <h2>Reconciliation and release evidence</h2>
+  <ul>
+    <li><a href="./pr-lanes.html">PR Lanes</a> — monorepo PR classification and workstream routing.</li>
+    <li><a href="./versioning.html">Version Comparison</a> — preview-versus-production manifests, source SHAs and page-content hashes.</li>
+    <li><a href="./surfaces-map.html">Surfaces Map</a> — page ownership, dependencies and release layers.</li>
+    <li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOCS-BRANCH-INDEX.md">Docs Branch Index</a> — generated inventory of documentation lanes.</li>
+    <li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/DEPLOYMENT-LANES.md">Deployment Lanes</a> — hosting and publication contracts.</li>
+    <li><a href="https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/branches">Website branch list</a> · <a href="https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pulls?q=is%3Apr+is%3Aopen">Open website PRs</a></li>
+  </ul>
+  <p class="callout">A branch, open PR, green check or preview is not a deployment receipt. Verify the merged source SHA, deployment run, live URL and production manifest independently.</p>
+</section>
+</main>
+</body>
+</html>

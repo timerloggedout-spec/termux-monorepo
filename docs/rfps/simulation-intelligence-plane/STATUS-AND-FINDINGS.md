@@ -38,6 +38,14 @@ The resulting boundary is: SIP provides a domain adapter and simulation evidence
 - **Repast, AutoGen, CrewAI and OpenAI Agents SDK:** candidate-queue entries only; no in-repo runtime or successful adapter execution is claimed.
 - **Research and procurement routing:** all SIP candidates are in `candidate-queue.json`, Integration Intelligence registry and FOSS Foresight procurement registry. RFP requests use the new title-prefix template and QUE-admitted G0 intake route; the free-tier-only `delphi:rfp` gate is intentionally not reused.
 
+### Delivered in the current proposal branch
+
+- Twelve candidates are registered in `candidate-queue.json`, including the MiroFish refactoring fork and all engine/orchestration alternatives.
+- Integration Intelligence and FOSS Foresight procurement registries now represent the cohort; the human integration catalog matches the machine registry.
+- Mesa, NetLogo, LangGraph and Temporal have explicit repository-local dispositions. Temporal's prior RFP/pass is reused; LangGraph is existing work; Mesa remains pre-screen-only; NetLogo remains corpus/reference-only.
+- A QUE-admitted simulation RFP form and post-admission G0 receipt route are committed. The actual issue has not been filed because the trigger must be merged before use.
+- Offline contract, intake and candidate-queue tests are wired into repo-gate; no successful exact-head run is established yet.
+
 ### Not yet confirmed
 - No verified MiroFish or OASIS adapter in the default-branch code search performed for this proposal.
 - No verified runtime deployment, credentials, package install, provider access or successful end-to-end run.

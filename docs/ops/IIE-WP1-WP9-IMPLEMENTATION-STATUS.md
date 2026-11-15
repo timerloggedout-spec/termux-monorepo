@@ -11,7 +11,7 @@ This status records what is implemented, what is merely instrumented, and what r
 | WP | State | Evidence / next action |
 |---|---|---|
 | WP0 — architecture reconciliation | **Implemented (docs)** | RFP maps CEEL, ATES, L1/L2 graph, Rust accelerator, historical backfill, queue v2 and admission owner. |
-| WP1 — baseline instrumentation | **Instrumented; baseline pending** | Graph build receipt now records collection/compile/publish/wall/CPU/peak-RSS metrics. `scripts/ops/iie_benchmark.py` compares two receipts and rejects deterministic parity drift. Run repeated same-SHA baseline/treatment cohorts before claims. |
+| WP1 — baseline instrumentation | **Instrumented; baseline pending** | Graph build receipt now records collection/compile/publish/wall/CPU/peak-RSS metrics plus SHA-256 fingerprints of canonical nodes and edges. `scripts/ops/iie_benchmark.py` compares two receipts and rejects exact artifact, count, source and coverage parity drift. Run repeated same-SHA baseline/treatment cohorts before claims. |
 | WP2 — incremental ingestion | **Existing path confirmed; enhancement gated** | Builder already uses checkpoint `since`, retained history, bounded page continuation and checkpoint eligibility. This slice does not add a new event broker or persistent raw-response cache. Next: baseline actual request counts, then optimize only demonstrated duplicate/unchanged reads. |
 | WP3 — queue dependency admission | **Targeted hardening implemented; CI pending** | Existing queue v2 evaluator retained. ISO-8601 offset/fractional timestamps now parse; future-dated feeds fail freshness; malformed active-run timestamps remain conservatively blocking. New regression tests added. |
 | WP4 — semantic retrieval | **Research design only** | No approved, sanitized, frozen embedding corpus or measured recall labels was available in this implementation pass. Next: build evaluation corpus and exact lexical/vector baselines before FAISS ANN. |
@@ -36,7 +36,7 @@ The canonical graph and temporal evidence formats are unchanged. `build-summary.
 - `publish_seconds`
 - `wall_seconds`
 - `process_cpu_seconds`
-- `peak_rss_bytes` (best effort; null if unavailable)
+- `peak_rss_bytes` (best effort; null if unavailable)\n- `nodes_sha256` and `edges_sha256` (SHA-256 of the published canonical JSONL bytes)
 
 The final summary is written through a temporary file and atomic replacement.
 

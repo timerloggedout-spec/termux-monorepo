@@ -47,7 +47,9 @@ compare performs encode → decode and checks structural equality against
 the source JSON. It reports pretty/compact JSON and TOON character/UTF-8
 sizes, plus o200k_base and cl100k_base token counts when tiktoken is
 installed. Missing optional tokenizer support is represented by JSON nulls
-and an explicit availability reason, never by an invented zero.
+and an explicit availability reason, never by an invented zero. Tokenizer
+assets must be pre-cached for isolated/offline runs; tiktoken may retrieve
+encoding data on first use when its cache is empty.
 
 Set TOON_IMPLEMENTATION_VERSION and TOON_SPEC_VERSION in the evaluation
 environment to bind the report to exact versions. Do not infer versions from
@@ -72,7 +74,9 @@ Use structural cohorts, not one cherry-picked example:
 - large integers, Unicode, escaping, delimiter collisions, and truncation.
 
 Report characters, UTF-8 bytes, tokens per named tokenizer, round-trip
-equality, encoder/decoder versions, and runtime. Keep model comprehension
+equality, encoder/decoder versions, and encode/decode runtime. The adapter
+uses a bounded 60-second CLI timeout, rejects duplicate JSON keys and
+non-finite host-number results, and invokes the executable without a shell. Keep model comprehension
 accuracy as a separate experiment: token reduction is not evidence of
 correctness or answer quality.
 

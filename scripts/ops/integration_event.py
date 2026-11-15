@@ -487,9 +487,13 @@ def run_batch(url: str, records: list[dict], record_type: str,
                 pass
 
 
-def resolve_existing_url() -> str | None:
-    """Resolve the already-existing Neon project; never auto-create a project."""
-    url = os.environ.get("LANE_EVENTS_DATABASE_URL", "").strip()
+class BlockedError(RuntimeError):
+    """A missing least-privilege credential or prerequisite requiring operator action."""
+
+
+def resolve_writer_url() -> str | None:
+    """Resolve a dedicated writer URL; never fall back to the legacy owner credential."""
+    url = os.environ.get("LANE_EVENTS_WRITER_DATABASE_URL", "").strip()
     if url:
         return url
     key = os.environ.get("NEON_API_KEY", "").strip()
@@ -499,15 +503,28 @@ def resolve_existing_url() -> str | None:
     projects = lane_event._neon("GET", f"/projects?search={quote(project_name)}&limit=50", key).get("projects", [])
     project = next((p for p in projects if p.get("name") == project_name), None)
     if project is None:
-        raise RuntimeError(f"existing Neon project {project_name!r} was not found; auto-creation is disabled")
+        raise BlockedError(f"existing Neon project {project_name!r} was not found; project creation is disabled")
     branches = lane_event._neon("GET", f"/projects/{project['id']}/branches", key).get("branches", [])
     branch = next((b for b in branches if b.get("default")), branches[0] if branches else None)
     if branch is None:
-        raise RuntimeError("existing Neon project has no branch")
+        raise BlockedError("existing Neon project has no branch")
     roles = lane_event._neon("GET", f"/projects/{project['id']}/branches/{branch['id']}/roles", key).get("roles", [])
-    role = next((r["name"] for r in roles if not r.get("protected")), "neondb_owner")
+    role = next((r["name"] for r in roles if r.get("name") in {"integration_ingest", "lane_events_writer"}), None)
+    if role is None:
+        raise BlockedError("dedicated integration_ingest/lane_events_writer role is absent; operator must provision least-privilege access")
     path = f"/projects/{project['id']}/connection_uri?database_name=neondb&role_name={quote(role)}&branch_id={quote(branch['id'])}"
     return lane_event._neon("GET", path, key)["uri"]
+
+
+def resolve_read_url() -> str | None:
+    """Prefer a read-only URL; otherwise use the dedicated writer role with SELECT grants."""
+    url = os.environ.get("LANE_EVENTS_READONLY_DATABASE_URL", "").strip()
+    return url or resolve_writer_url()
+
+
+def resolve_migration_url() -> str | None:
+    """Schema DDL requires a separately provisioned operator migration credential."""
+    return os.environ.get("LANE_EVENTS_MIGRATION_DATABASE_URL", "").strip() or None
 
 
 def plan(records: list[dict], max_records: int, max_bytes: int) -> list[dict]:
@@ -570,16 +587,20 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({"status": "clean_noop", "events": 0, "measurements": 0}))
             return 0
 
-        url = resolve_existing_url()
-        if not url:
-            print(json.dumps({"status": "blocked", "reason": "LANE_EVENTS_DATABASE_URL or NEON_API_KEY is unavailable"}))
-            return 2
-        if args.command in {"schema", "record"}:
-            lane_event.psql(url, ["-f", str(SQL_DIR / "integration-events.sql")])
         if args.command == "schema":
+            url = resolve_migration_url()
+            if not url:
+                print(json.dumps({"status": "blocked", "reason": "LANE_EVENTS_MIGRATION_DATABASE_URL is unavailable"}))
+                return 2
+            lane_event.psql(url, ["-f", str(SQL_DIR / "integration-events.sql")])
             print(json.dumps({"status": "schema_applied", "database": "existing-lane-events"}))
             return 0
+
         if args.command == "count":
+            url = resolve_read_url()
+            if not url:
+                print(json.dumps({"status": "blocked", "reason": "LANE_EVENTS_READONLY_DATABASE_URL or dedicated writer role is unavailable"}))
+                return 2
             output = lane_event.psql(
                 url, ["-At", "-c",
                       "SELECT (SELECT count(*) FROM integration_events),"
@@ -589,6 +610,15 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({"status": "observed", "counts": output}))
             return 0
 
+        try:
+            url = resolve_writer_url()
+        except BlockedError as exc:
+            print(json.dumps({"status": "blocked", "reason": str(exc)}))
+            return 2
+        if not url:
+            print(json.dumps({"status": "blocked", "reason": "LANE_EVENTS_WRITER_DATABASE_URL or dedicated integration_ingest role is unavailable"}))
+            return 2
+
         event_receipts = ingest(url, events, "event", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
         measurement_receipts = ingest(url, measurements, "measurement", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
         print(json.dumps({
@@ -597,6 +627,9 @@ def main(argv: list[str] | None = None) -> int:
             "measurements": {"received": len(measurements), "batches": measurement_receipts},
         }, sort_keys=True))
         return 0
+    except BlockedError as exc:
+        print(json.dumps({"status": "blocked", "reason": str(exc)[:300]}), file=sys.stderr)
+        return 2
     except (OSError, ValueError, TypeError, KeyError, RuntimeError) as exc:
         print(json.dumps({"status": "failed", "error_class": type(exc).__name__, "message": str(exc)[:300]}), file=sys.stderr)
         return 1

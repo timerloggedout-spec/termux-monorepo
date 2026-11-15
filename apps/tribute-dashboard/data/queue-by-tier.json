@@ -1,27 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-15T10:55:14Z",
+ "generated_at": "2026-11-15T17:36:04Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 7,
+   "queued": 5,
    "in_progress": 0,
    "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
-    "PR scope guard": 2,
     "repo gate": 3,
     "Orchestration Regression Guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-15T10:52:04Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 2
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,44 +29,28 @@
   },
   "4": {
    "tier": 4,
-   "queued": 79,
-   "in_progress": 17,
-   "oldest_queued_at": "2026-11-11T20:23:57Z",
+   "queued": 83,
+   "in_progress": 18,
+   "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 19,
-    "Quota Dispatch Tree": 3,
-    "lane events recorder": 11,
-    "n8n SHE bridge": 1,
-    "Gemini review after peers": 2,
-    "archwiz dangle check": 1,
-    "Agent PR Jules Handoff": 2,
-    "Agent Readability Source Contract": 1,
-    "Action Effectiveness Ledger": 3,
-    "RECON INTEL discovery": 2,
-    "Repository development evaluation": 2,
-    "termux smoke": 3,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "DO Statement Style": 1,
-    "PR evidence evaluation": 2,
-    "Agent review \u2192 auto Jules": 3,
-    "PR production ledger": 3,
-    "Agent feedback \u2192 Linear subtasks": 1,
-    "Lane matrix event-driven inventory": 1,
-    "Sweep Accountability": 3,
-    "Peer review orchestrator": 1,
+    "lane events recorder": 30,
+    "Agent Throughput Evidence": 34,
     "repo-tracking-collect": 2,
     "Foresight Evidence Spine": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
     "graph-matrix-probe": 2,
+    "termux smoke": 2,
+    "Quota Dispatch Tree": 2,
     "hitl-control-plane-verify": 2,
     "Context Relationship + Lead/Lag Audit": 2,
+    "Sweep Accountability": 2,
     "doe-nc1-continuous-log": 1
    }
   }
  },
  "totals": {
   "queued": 88,
-  "in_progress": 18
+  "in_progress": 19
  },
  "wedged_ancient": [],
  "wedged_excluded_from_counts": true

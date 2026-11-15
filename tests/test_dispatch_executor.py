@@ -466,3 +466,15 @@ def test_executor_holds_on_stale_cadence_feed():
                          run_id="cadence-stale", cadence=cadence)
     assert decision["decisions"][0]["action"] == "hold"
     assert decision["decisions"][0]["hold_reason"] == "cadence_stale"
+
+def test_executor_holds_on_invalid_cadence_schema():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "wrong-version", "generated_at": "2026-11-12T14:59:00Z",
+               "pool": {"eligible": ["daily-pool-arm"]}}
+    decision = ex.decide([_filing(5457)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-invalid", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_schema_invalid"

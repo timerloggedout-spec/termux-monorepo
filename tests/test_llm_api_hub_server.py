@@ -81,7 +81,7 @@ class HubServerTests(unittest.TestCase):
         module.completion_response = lambda model, content: {
             'id': 'usage-fixture', 'object': 'chat.completion', 'model': model,
             'choices': [{'message': {'role': 'assistant', 'content': content}}],
-            'usage': {'total_tokens': 'not-an-integer'},
+            'usage': {'total_tokens': 'not-an-integer', 'input_tokens': 2, 'output_tokens': 3},
         }
         response = self.client(module).post(
             '/v1/chat/completions',

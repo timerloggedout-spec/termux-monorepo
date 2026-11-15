@@ -12,7 +12,13 @@
     "dockerhub_profile_reported_repository_count": 90,
     "dockerhub_pages_reported": 3,
     "all_pages_inspected": false,
-    "github_repository_census_complete": false
+    "github_repository_census_complete": false,
+    "dockerhub_pages_inspected": [
+      1
+    ],
+    "page_1_observed_repository_count": 30,
+    "profile_page_1_snapshot": "docs/proposals/active/credkellar-ddkellar01-re-ecosystem/DOCKERHUB-PROFILE-PAGE-1.md",
+    "github_search_status": "connected GitHub repository search returned zero results for bare queries ddkellar01 and credkellar; this is not proof that accounts or repositories do not exist"
   },
   "identity_resolution": [
     {
@@ -274,6 +280,158 @@
         "source owner differs from Docker namespace; do not attribute to CredKellar absent evidence",
         "capability and safety review required"
       ]
+    },
+    {
+      "id": "llm-brutalforce-10k",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "llm-brutalforce-10k",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/llm-brutalforce-10k",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "2,000-bot R&D engine",
+        "scout and worker agents",
+        "sandbox testing and brute-force verification"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source repo and build provenance unknown",
+        "resource/concurrency limits and permissions unknown",
+        "brute-force semantics require dual-use review"
+      ]
+    },
+    {
+      "id": "terms-x-conditions",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "terms-x-conditions",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/terms-x-conditions",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "educational security research lab",
+        "web consent mechanics",
+        "client trust flaws and terms bypass vectors"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source and license unknown",
+        "authorization boundaries and bypass behavior require review"
+      ]
+    },
+    {
+      "id": "facevoiceid",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "facevoiceid",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/facevoiceid",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "face recognition and voiceprint authentication",
+        "local-first API"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "biometric data handling and retention unknown",
+        "consent, deletion and model provenance unknown",
+        "not a direct RE fit absent further evidence"
+      ]
+    },
+    {
+      "id": "prism-vortex",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "prism-vortex",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/prism-vortex",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "multi-agent threat scouting",
+        "geospatial, identity and telemetry data fusion"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "identity/geolocation data privacy and authorization unknown",
+        "source provenance and component map unknown",
+        "not an RE adoption signal by default"
+      ]
+    },
+    {
+      "id": "rhea-max-payout",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "rhea-max-payout",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/rhea-max-payout",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "NEAR/Rust audit harness",
+        "Kani proofs and AI scanning",
+        "CVSS scoring"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source and license unknown",
+        "proof harness reproducibility unknown",
+        "financial bounty language is not evidence of audit quality"
+      ]
+    },
+    {
+      "id": "neurobypass",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "neurobypass",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/neurobypass",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "AI guardrail resilience red-team framework",
+        "prompt mutations, scanning and judging"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source provenance and authorization boundaries unknown",
+        "prompt/data handling and eval integrity unknown",
+        "dual-use review required"
+      ]
+    },
+    {
+      "id": "agents-xcorps",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "agents-xcorps",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/agents-xcorps",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "banking AI agent fleet orchestration at large scale"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "financial system integration and credential scope unknown",
+        "resource and agent action controls unknown",
+        "not an RE fit absent concrete components"
+      ]
+    },
+    {
+      "id": "omnistream-cluster",
+      "kind": "container-image-cluster",
+      "namespace": "credkellar",
+      "name": "OmniStream 14-image platform family",
+      "priority": "P3",
+      "dockerhub_url": "https://hub.docker.com/u/credkellar",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "14 related streaming, transcoding, ingest, auth, metadata, analytics, promotion and social-adapter images"
+      ],
+      "evidence_class": "publisher-claimed-profile-observation",
+      "blockers": [
+        "page-one listing only; source repository mapping unknown",
+        "service dependency and image digest map incomplete",
+        "outside primary RE scope; retain as ecosystem census only"
+      ]
     }
   ],
   "dispositions": {
@@ -310,5 +468,37 @@
     "https://github.com/timerloggedout-spec/termux-monorepo/issues/336",
     "https://github.com/timerloggedout-spec/termux-monorepo/issues/5283",
     "https://github.com/timerloggedout-spec/termux-monorepo/issues/5286"
+  ],
+  "profile_page_1_repositories": [
+    "omnistream-media-transformer",
+    "omnistream-api-gateway",
+    "omnistream-metadata-service",
+    "omnistream-transcoding-worker",
+    "omnistream-video-ingest-service",
+    "omnistream-auth-manager",
+    "omnistream-youtube-adapter",
+    "omnistream-streaming-service",
+    "omnistream-x-adapter",
+    "omnistream-promotion-orchestrator",
+    "omnistream-analytics-aggregator",
+    "omnistream-facebook-adapter",
+    "omnistream-snapchat-adapter",
+    "omnistream-instagram-adapter",
+    "llm-brutalforce-10k",
+    "gpu-distributed-compressor",
+    "monad-ultra-infinite-matrix",
+    "agents-xcorps",
+    "intuition",
+    "plan-test-deploy-promote-monetize",
+    "facevoiceid",
+    "terms-x-conditions",
+    "ommihear-ai",
+    "prism-vortex",
+    "rhea-max-payout",
+    "neurobypass",
+    "eduguard-abstractor",
+    "hyper-ai-runtime",
+    "mon-ultra-matrix",
+    "iso-iecx"
   ]
 }

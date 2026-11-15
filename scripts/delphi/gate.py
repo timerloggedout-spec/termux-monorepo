@@ -13,7 +13,10 @@ from __future__ import annotations
 
 import argparse, base64, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.parse, urllib.request, urllib.error
 
-from proposal_package import validate_manifest
+try:
+    from .proposal_package import validate_manifest
+except ImportError:  # direct script execution keeps the sibling-module path
+    from proposal_package import validate_manifest
 
 MAX_PACKAGE_FILES = 25
 

@@ -38,14 +38,15 @@
       return a.name.localeCompare(b.name);
     });
   }
-  function summarize(rows, pulls) {
+  function summarize(rows, pulls, comparisons) {
     rows = Array.isArray(rows) ? rows : [];
     pulls = Array.isArray(pulls) ? pulls : [];
+    comparisons = comparisons || {};
     return {
       branchCount:rows.length, openPrCount:pulls.length,
       linkedBranchCount:rows.filter(function (r) { return !!r.pr; }).length,
       unlinkedBranchCount:rows.filter(function (r) { return r.state === "UNLINKED"; }).length,
-      divergedCount:rows.filter(function (r) { return r.comparisonState === "DIVERGED"; }).length,
+      divergedCount:Object.keys(comparisons).filter(function (key) { return classifyComparison(comparisons[key]) === "DIVERGED"; }).length,
       behindCount:rows.filter(function (r) { return r.comparisonState === "BEHIND"; }).length,
       aheadCount:rows.filter(function (r) { return r.comparisonState === "AHEAD"; }).length,
       noDeltaCount:rows.filter(function (r) { return r.comparisonState === "NO_DELTA"; }).length,
@@ -96,7 +97,7 @@
   }
   function renderSnapshot(snapshot) {
     var rows = buildBranchRows(snapshot.branches,snapshot.pulls,snapshot.comparisons,snapshot.auditedComparisons,snapshot.defaultBranch);
-    var summary = summarize(rows,snapshot.pulls);
+    var summary = summarize(rows,snapshot.pulls,snapshot.comparisons);
     var summaryNode = document.getElementById("publishing-summary");
     var branchNode = document.getElementById("publishing-branches");
     var prNode = document.getElementById("publishing-prs");
@@ -108,23 +109,26 @@
     ].map(function (item) {
       return '<article class="publishing-stat"><div class="label">' + escapeHtml(item[0]) + '</div><div class="value">' + item[1] + "</div></article>";
     }).join("");
-    branchNode.innerHTML = '<div class="publishing-table-wrap"><table class="publishing-table"><thead><tr><th>Branch</th><th>Head SHA</th><th>Disposition</th><th>Compare vs ' + escapeHtml(snapshot.defaultBranch) + '</th><th>Pull request</th></tr></thead><tbody>' + rows.map(function (row) {
+    branchNode.innerHTML = '<div class="publishing-table-wrap"><table class="publishing-table"><thead><tr><th>Branch</th><th>Head SHA</th><th>Disposition</th><th>Compare</th><th>Base</th><th>Pull request</th></tr></thead><tbody>' + rows.map(function (row) {
       var tone = row.state === "AHEAD" ? "ok" : (row.state === "DIVERGED" || row.state === "BEHIND" ? "bad" : "");
       var compareText = row.ahead === null || row.behind === null ? "not compared" : row.ahead + " ahead / " + row.behind + " behind";
       var prLink = row.pr ? '<a href="' + escapeHtml(row.pr.html_url) + '" target="_blank" rel="noopener noreferrer">#' + row.pr.number + " · " + escapeHtml(row.pr.title) + "</a>" : "—";
       var audit = row.audited ? ' <span class="muted">(targeted audit)</span>' : "";
-      return "<tr><td><code>" + escapeHtml(row.name) + "</code>" + audit + "</td><td><code>" + escapeHtml(shortSha(row.sha)) + "</code></td><td>" + pill(row.state,tone) + ' <span class="muted">' + escapeHtml(row.comparisonState) + "</span></td><td>" + escapeHtml(compareText) + "</td><td>" + prLink + "</td></tr>";
+      return "<tr><td><code>" + escapeHtml(row.name) + "</code>" + audit + "</td><td><code>" + escapeHtml(shortSha(row.sha)) + "</code></td><td>" + pill(row.state,tone) + ' <span class="muted">' + escapeHtml(row.comparisonState) + "</span></td><td>" + escapeHtml(compareText) + "</td><td>" + escapeHtml(row.pr ? row.pr.base.ref : (row.audited ? snapshot.defaultBranch : "—")) + "</td><td>" + prLink + "</td></tr>";
     }).join("") + "</tbody></table></div>";
-    prNode.innerHTML = snapshot.pulls.length ? '<div class="publishing-table-wrap"><table class="publishing-table"><thead><tr><th>PR</th><th>Title</th><th>Head SHA</th><th>Compare</th><th>Updated</th><th>Checks</th></tr></thead><tbody>' + snapshot.pulls.map(function (pr) {
+    prNode.innerHTML = snapshot.pulls.length ? '<div class="publishing-table-wrap"><table class="publishing-table"><thead><tr><th>PR</th><th>Title</th><th>Base</th><th>Head SHA</th><th>Compare</th><th>Updated</th><th>Checks</th></tr></thead><tbody>' + snapshot.pulls.map(function (pr) {
       var cmp = snapshot.comparisons[pr.number], state = classifyComparison(cmp);
       var ahead = cmp && Number.isFinite(cmp.ahead_by) ? cmp.ahead_by : "?";
       var behind = cmp && Number.isFinite(cmp.behind_by) ? cmp.behind_by : "?";
-      return '<tr><td><a href="' + escapeHtml(pr.html_url) + '" target="_blank" rel="noopener noreferrer">#' + pr.number + "</a></td><td>" + escapeHtml(pr.title) + "</td><td><code>" + escapeHtml(shortSha(pr.head && pr.head.sha)) + "</code></td><td>" + pill(state,state === "DIVERGED" || state === "BEHIND" ? "bad" : "") + ' <span class="muted">' + ahead + " ahead / " + behind + " behind</span></td><td>" + escapeHtml((pr.updated_at || "").slice(0,10)) + '</td><td><a href="' + escapeHtml(pr.html_url + "/checks") + '" target="_blank" rel="noopener noreferrer">Open checks</a></td></tr>';
+      return '<tr><td><a href="' + escapeHtml(pr.html_url) + '" target="_blank" rel="noopener noreferrer">#' + pr.number + "</a></td><td>" + escapeHtml(pr.title) + "</td><td>" + escapeHtml(pr.base && pr.base.ref) + "</td><td><code>" + escapeHtml(shortSha(pr.head && pr.head.sha)) + "</code></td><td>" + pill(state,state === "DIVERGED" || state === "BEHIND" ? "bad" : "") + ' <span class="muted">' + ahead + " ahead / " + behind + " behind</span></td><td>" + escapeHtml((pr.updated_at || "").slice(0,10)) + '</td><td><a href="' + escapeHtml(pr.html_url + "/checks") + '" target="_blank" rel="noopener noreferrer">Open checks</a></td></tr>';
     }).join("") + "</tbody></table></div>" : '<p class="empty">No open pull requests found for this repository.</p>';
     checkedNode.textContent = "Last checked " + new Date(snapshot.checkedAt).toLocaleString() + ". Public API snapshot; no merge or deployment action.";
-    document.getElementById("publishing-warning").textContent = snapshot.pulls.length > snapshot.comparedPullCount
+    var warnings = [snapshot.pulls.length > snapshot.comparedPullCount
       ? "Compared " + snapshot.comparedPullCount + " of " + snapshot.pulls.length + " open PR heads to stay within the public API request budget."
-      : "Compared all open PR heads. Unlinked branches are listed without full history comparison, except targeted AI ELVES audit branches.";
+      : "Compared all open PR heads. Unlinked branches are listed without full history comparison, except targeted AI ELVES audit branches."];
+    if (snapshot.branches.length === 100) warnings.push("Branch listing reached the 100-ref API page limit; inspect the repository branch list for further refs.");
+    if (snapshot.pulls.length === 100) warnings.push("Open PR listing reached the 100-item API page limit.");
+    document.getElementById("publishing-warning").textContent = warnings.join(" ");
   }
   async function refresh() {
     var status = document.getElementById("publishing-status");

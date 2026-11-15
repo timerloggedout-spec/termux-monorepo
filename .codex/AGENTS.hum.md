@@ -1,6 +1,6 @@
 # ECC for Codex CLI
 
-This supplements the root `AGENTS.md` with a repo-local ECC baseline.
+This is the human-readable Codex-local ECC baseline. Repository governance starts at root `CLAUDE.md`; root `AGENTS.md` is deprecated and is not a prerequisite.
 
 ## Repo Skill
 

@@ -1305,3 +1305,22 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: simulation-intelligence-plane
+    title: "MiroFish × CAMEL-AI OASIS Simulation Intelligence Plane"
+    author: ChatGPT
+    status: draft
+    priority: P1
+    path: active/simulation-intelligence-plane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs:
+      - 5439
+    related_branches:
+      - proposal/simulation-intelligence-plane-20261114
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

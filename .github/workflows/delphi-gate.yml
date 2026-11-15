@@ -129,6 +129,7 @@ jobs:
           DELPHI_REVIEWER_LOGIN: ${{ github.event.comment.user.login }}
           DELPHI_REVIEWER_ASSOCIATION: ${{ github.event.comment.author_association }}
           DELPHI_REVIEW_COMMENT_BODY: ${{ github.event.comment.body }}
+          DELPHI_REVIEW_ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
           set -euo pipefail
           case "$DEPTH" in ''|*[!0-9]*) DEPTH=0;; esac

@@ -474,3 +474,13 @@ def test_daily_pool_requires_complete_ledger_coverage():
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    snapshot, allocations=_daily_pool_allocations())
     assert "pool_coverage_incomplete" in _row(feed, "alpha")["defer_reasons"]
+
+def test_daily_pool_rejects_credit_funded_arm():
+    arm = _daily_pool_arm()
+    arm["budget"]["class"] = "credit-funded"
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   _daily_pool_snapshot(), allocations=_daily_pool_allocations())
+    assert "pool_paid_budget_forbidden" in _row(feed, "alpha")["defer_reasons"]

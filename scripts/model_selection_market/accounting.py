@@ -67,8 +67,18 @@ class PaperMarket:
 
             def __enter__(inner):
                 _LOCK.acquire()
-                inner.f = self.path.with_suffix(self.path.suffix + '.lock').open('a+')
-                fcntl.flock(inner.f, fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+                inner.f = None
+                try:
+                    inner.f = self.path.with_suffix(self.path.suffix + '.lock').open('a+', encoding='utf-8')
+                    fcntl.flock(inner.f, fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+                except BaseException:
+                    if inner.f is not None:
+                        try:
+                            inner.f.close()
+                        except OSError:
+                            pass
+                    _LOCK.release()
+                    raise
                 return inner
 
             def __exit__(inner, *exc):

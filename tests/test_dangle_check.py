@@ -34,13 +34,13 @@ class CensusFixture(unittest.TestCase):
         write(self.root, "scripts/tool.py", "print('ok')\n")
         write(self.root, "apps/site/index.html",
               '<a href="missing.html">x</a><a href="ok.html">y</a>'
-              '<h1 id="top">t</h1><a href="#top">top</a>\n')
+              '<h1 id="top">t</h1><a href="#top">top</a>'\n              '<a href="${GH}${esc(item.path)}">dynamic</a>'\n              '<a href="./${esc(item.surface)}.html">templated</a>\n')
         write(self.root, "apps/site/ok.html", "<p>ok</p>\n")
         write(self.root, "apps/site/data/feed.json",
               json.dumps({"good": "scripts/tool.py",
                           "bad": "scripts/vanished.py",
                           "url": "https://example.com/x.py",
-                          "num": 3}))
+                          "multi": "docs/a.md + scripts/b.py",\n                          "glob": "docs/ops/generated/actions-*.json",\n                          "num": 3}))
         write(self.root, ".github/workflows/clean.yml",
               "name: clean flow\non:\n  workflow_dispatch:\njobs:\n"
               "  run:\n    steps:\n      - run: python3 scripts/tool.py\n")

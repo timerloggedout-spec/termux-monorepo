@@ -2,6 +2,7 @@
 
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -25,9 +26,9 @@ def policy_entry(**overrides):
         "provider": "groq", "model": "free/chat", "free_account_verified": True,
         "terms_accepted": True, "data_class": "public", "expires_at": "2099-01-01T00:00:00Z",
         "no_cost_verified": True, "pricing_source": "https://provider.example/pricing",
-        "pricing_verified_at": "2026-11-15T12:00:00Z", "terms_source": "https://provider.example/terms",
-        "terms_verified_at": "2026-11-15T12:00:00Z", "capability_source": "https://provider.example/models",
-        "capability_verified_at": "2026-11-15T12:00:00Z", "quota_class": "daily_pool_no_provider_quota",
+        "pricing_verified_at": datetime.now(timezone.utc).isoformat(), "terms_source": "https://provider.example/terms",
+        "terms_verified_at": datetime.now(timezone.utc).isoformat(), "capability_source": "https://provider.example/models",
+        "capability_verified_at": datetime.now(timezone.utc).isoformat(), "quota_class": "daily_pool_no_provider_quota",
         "pool_id": "daily-free-inference", "pool_evidence_ref": "https://provider.example/free-pool"}
     value.update(overrides)
     return value
@@ -76,7 +77,7 @@ def test_provider_invoke_workflow_defaults_to_policy_gated_free_only():
     assert events["workflow_dispatch"]["inputs"]["emit_stamps"]["default"] is False
     steps = workflow["jobs"]["invoke"]["steps"]
     policy_step = next(step for step in steps if "provider-admission.json" in step.get("run", ""))
-    assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
+    assert policy_step["env"]["POLICY_JSON"] == "${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}"
     invoke_step = next(step for step in steps if "scripts/ops/provider_invoke.py" in step.get("run", ""))
     assert "inference-health-smoke.md" in invoke_step["run"] and "--free-only" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "OLLAMA_API_KEY" in invoke_step["env"]
@@ -116,7 +117,7 @@ def test_policy_missing_defers_without_catalog_or_inference(tmp_path, monkeypatc
     monkeypatch.setenv("GROQ_API_KEY", "fixture-secret")
     monkeypatch.setattr(research_providers, "admitted_models", lambda: [])
     monkeypatch.setattr(provider_model_catalog, "poll", lambda *a, **k: (_ for _ in ()).throw(AssertionError("catalog must not be polled")))
-    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--free-only"])
+    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--out", str(tmp_path / "completion.txt"), "--free-only"])
     assert invoke.main() == 0
     verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
     assert verdict["ok"] is False and verdict["diagnosis"] == "provider_model_not_admitted"
@@ -191,7 +192,7 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     assert batch_events["workflow_dispatch"]["inputs"]["experiment_label"]["required"] is True
     assert batch_events["workflow_dispatch"]["inputs"]["emit_stamps"]["default"] is False
     policy_step = next(step for step in batch["jobs"]["validate"]["steps"] if "provider-admission.json" in step.get("run", ""))
-    assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
+    assert policy_step["env"]["POLICY_JSON"] == "${{ secrets.LLM_API_HUB_PROVIDER_POLICY_JSON }}"
     invoke_step = next(step for step in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in step.get("run", ""))
     assert "--free-only" in invoke_step["run"] and "inference-health-smoke.md" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "'dispatch_eligible': False" in invoke_step["run"]

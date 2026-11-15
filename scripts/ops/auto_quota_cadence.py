@@ -228,32 +228,103 @@ def derive(
         if record is None:
             reasons.append("entitlement_unknown")
 
-        # 4. quota headroom: snapshot-only, never invented.
+        # 4. Quota is conditional: provider-quota arms use per-arm headroom;
+        # daily-pool/no-provider-quota arms use a shared, fresh pool snapshot.
+        quota_class = budget.get("quota_class") or "provider_quota_backed"
+        pool_id = budget.get("pool_id")
         headroom: int | None = None
         reset_window: str | None = None
         reset_tz: str | None = None
-        snap_budget = snap_budgets.get(arm_id) or {}
-        if snap_budget:
-            reset_window = snap_budget.get("reset_window")
-            reset_tz = snap_budget.get("reset_tz")
-        total = _budget_total(budget)
-        if total is None:
-            reasons.append("quota_unbudgeted")
-        elif not snapshot_fresh:
-            reasons.append("quota_unknown")
+        pool_state = None
+        pool_reasons: list[str] = []
+        if quota_class == "daily_pool_no_provider_quota":
+            focus = budget.get("focus")
+            experiment_label = budget.get("experiment_label")
+            quota_evidence_ref = budget.get("quota_evidence_ref")
+            if (record is None or record.get("quota_class") != quota_class
+                    or not quota_evidence_ref):
+                pool_reasons.append("quota_class_evidence_missing")
+            if not pool_id:
+                pool_reasons.append("pool_id_missing")
+            if not focus:
+                pool_reasons.append("pool_focus_missing")
+            if not experiment_label:
+                pool_reasons.append("pool_experiment_label_missing")
+            allocation = _pool_allocation(allocations_doc, pool_id, focus) if pool_id and focus else None
+            if allocation is None:
+                pool_reasons.append("pool_allocation_unknown")
+            pool_state = snap_pools.get(pool_id) if snapshot_fresh and pool_id else None
+            if pool_state is None:
+                pool_reasons.append("pool_unknown")
+            else:
+                observed_at = pool_state.get("observed_at")
+                try:
+                    pool_age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
+                except ValueError:
+                    pool_age = None
+                if pool_age is None or pool_age < 0:
+                    pool_reasons.append("pool_unstamped")
+                elif pool_age > SNAPSHOT_MAX_AGE_SECONDS:
+                    pool_reasons.append("pool_stale")
+                if pool_state.get("status") == "exhausted":
+                    pool_reasons.append("pool_exhausted")
+                elif pool_state.get("status") != "available":
+                    pool_reasons.append("pool_unavailable")
+                if not pool_state.get("reset_window"):
+                    pool_reasons.append("pool_reset_window_unknown")
+                if not pool_state.get("reset_tz"):
+                    pool_reasons.append("pool_reset_tz_unknown")
+                if not pool_state.get("source_ref"):
+                    pool_reasons.append("pool_source_unknown")
+                if pool_state.get("experiment_label") != experiment_label:
+                    pool_reasons.append("pool_experiment_label_mismatch")
+            if allocation is not None:
+                mode = allocation.get("mode")
+                pct = int(allocation.get("pct", 0))
+                if mode == "standing" and pct > 0:
+                    pass
+                elif mode == "leftover-only" and pool_state and pool_state.get("leftover_available") is True:
+                    pass
+                elif mode == "leftover-only":
+                    pool_reasons.append("pool_leftover_unverified")
+                else:
+                    pool_reasons.append("pool_allocation_zero" if pct <= 0 else "pool_allocation_unknown")
+            reasons.extend(pool_reasons)
+            if pool_state:
+                reset_window = pool_state.get("reset_window")
+                reset_tz = pool_state.get("reset_tz")
+            pool_eligibility_rows[arm_id] = {
+                "status": "eligible" if not pool_reasons else "deferred",
+                "hold_reason": pool_reasons[0] if pool_reasons else None,
+                "pool_id": pool_id,
+                "experiment_label": experiment_label,
+                "observed_at": (pool_state or {}).get("observed_at"),
+                "reset_window": reset_window or "unknown",
+                "reset_tz": reset_tz or "unknown",
+                "source_ref": (pool_state or {}).get("source_ref"),
+            }
         else:
-            day = (snap_arms.get(arm_id) or {}).get(now.date().isoformat())
-            if day is None:
+            snap_budget = snap_budgets.get(arm_id) or {}
+            if snap_budget:
+                reset_window = snap_budget.get("reset_window")
+                reset_tz = snap_budget.get("reset_tz")
+            total = _budget_total(budget)
+            if total is None:
+                reasons.append("quota_unbudgeted")
+            elif not snapshot_fresh:
                 reasons.append("quota_unknown")
             else:
-                headroom = total - int(day.get("draws", 0))
-                if headroom < 1:
-                    reasons.append("quota_exhausted")
-        if reset_window is None:
-            reasons.append("reset_window_unknown")
-        if reset_tz is None:
-            reasons.append("reset_tz_unknown")
-
+                day = (snap_arms.get(arm_id) or {}).get(now.date().isoformat())
+                if day is None:
+                    reasons.append("quota_unknown")
+                else:
+                    headroom = total - int(day.get("draws", 0))
+                    if headroom < 1:
+                        reasons.append("quota_exhausted")
+            if reset_window is None:
+                reasons.append("reset_window_unknown")
+            if reset_tz is None:
+                reasons.append("reset_tz_unknown")
         status = "eligible" if not reasons else "deferred"
         arm_rows.append(
             {
@@ -267,6 +338,10 @@ def derive(
                 "route_id": route_id,
                 "registry_record": record_id,
                 "census_verdict": (row or {}).get("verdict"),
+                "quota_class": quota_class,
+                "pool_id": pool_id,
+                "pool_status": (pool_state or {}).get("status"),
+                "pool_eligibility_status": (pool_eligibility_rows.get(arm_id) or {}).get("status"),
             }
         )
 
@@ -296,6 +371,8 @@ def derive(
             "last_quota_terminal": snap_coverage.get("last_quota_terminal"),
         },
         "budgets": snap_budgets,
+        "pools": snap_pools,
+        "pool_eligibility": pool_eligibility_rows,
     }
 
     return {

@@ -1,0 +1,314 @@
+{
+  "schema": "re-candidate-inventory/v1",
+  "title": "CredKellar / ddkellar01 external RE ecosystem candidates",
+  "observed_at": "2026-11-15",
+  "status": "proposal-only",
+  "completeness": {
+    "github_handles": [
+      "credkellar",
+      "ddkellar01"
+    ],
+    "dockerhub_namespace": "credkellar",
+    "dockerhub_profile_reported_repository_count": 90,
+    "dockerhub_pages_reported": 3,
+    "all_pages_inspected": false,
+    "github_repository_census_complete": false
+  },
+  "identity_resolution": [
+    {
+      "id": "dockerhub-credkellar",
+      "kind": "dockerhub-namespace",
+      "value": "credkellar",
+      "status": "observed",
+      "relationship": "publisher namespace; does not establish GitHub ownership"
+    },
+    {
+      "id": "github-ddkellar01",
+      "kind": "github-user",
+      "value": "ddkellar01",
+      "status": "linked-profile-lead",
+      "relationship": "Docker Hub profile links to this GitHub account; account identity details still require corroboration"
+    },
+    {
+      "id": "github-credkellar",
+      "kind": "github-user-or-org",
+      "value": "credkellar",
+      "status": "unresolved",
+      "relationship": "claimed source URLs use this owner; prior GitHub connector lookups for Sandbox-API and Hack-Dhe-Net returned 404"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "sandbox-api",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "sandbox-api",
+      "priority": "P0",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/sandbox-api",
+      "claimed_source_url": "https://github.com/credkellar/Sandbox-API",
+      "github_owner_alternates": [
+        "credkellar",
+        "ddkellar01"
+      ],
+      "source_status": "unverified",
+      "image_metadata": {
+        "reported_size_mb": 508.7,
+        "reported_digest_prefix": "sha256:99fdb236a",
+        "reported_pull_count_approx": 7600,
+        "reported_recent_update": true
+      },
+      "publisher_claims": [
+        "file detonation across PC, mobile and cloud",
+        "AI-driven threat reports"
+      ],
+      "evidence_class": "publisher-claimed-plus-observed-metadata",
+      "blockers": [
+        "source repository not resolved through connected GitHub lookup",
+        "source-to-image build provenance not verified",
+        "sandbox isolation and egress controls unverified",
+        "sample retention and deletion semantics unknown",
+        "license unknown"
+      ],
+      "execution_policy": "metadata-and-static-review-only; no real sample execution"
+    },
+    {
+      "id": "hack-dhe-net",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "hack-dhe-net",
+      "priority": "P0",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/hack-dhe-net",
+      "claimed_source_url": "https://github.com/credkellar/Hack-Dhe-Net",
+      "github_owner_alternates": [
+        "credkellar",
+        "ddkellar01"
+      ],
+      "source_status": "unverified",
+      "image_metadata": {
+        "reported_size_mb": 48.6,
+        "reported_recent_update": true
+      },
+      "publisher_claims": [
+        "authorized-scope pentest lab",
+        "scope registry gate before network packets",
+        "connect scans, service/banner detection, TLS and directory discovery",
+        "offline CVE cross-reference and CVSS 3.1 scoring",
+        "topology/trust mapping and offline fixtures"
+      ],
+      "evidence_class": "publisher-claimed-plus-observed-metadata",
+      "blockers": [
+        "source repository not resolved through connected GitHub lookup",
+        "scope enforcement and DNS/redirect behavior untested",
+        "source-to-image provenance unknown",
+        "license and dependency state unknown"
+      ],
+      "execution_policy": "static-review-and-loopback-synthetic-fixtures-only; no third-party scanning"
+    },
+    {
+      "id": "diffre-lab",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "diffre-lab",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/diffre-lab",
+      "claimed_source_url": "https://github.com/credkellar/DiffRE-Lab",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "binary diff and static RE",
+        "PE/ELF/Mach-O headers",
+        "firmware signature scanning",
+        "strings/entropy and Mermaid call graphs"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source and image provenance not checked",
+        "license unknown"
+      ]
+    },
+    {
+      "id": "php-vuln-re",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "php-vuln-re",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/php-vuln-re",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "PHP static vulnerability research lab",
+        "synthetic samples",
+        "source-to-sink taint mapping",
+        "obfuscation and framework fingerprinting"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source repository mapping not checked",
+        "license unknown",
+        "static-only claim not independently verified"
+      ]
+    },
+    {
+      "id": "malware-research-hub",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "malware-research-hub",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/malware-research-hub",
+      "source_status": "unknown",
+      "publisher_claims": [
+        "encrypted malware sample collection and family metadata"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "sample provenance and lawful custody unknown",
+        "content safety and licensing unknown",
+        "do not download samples"
+      ]
+    },
+    {
+      "id": "malware-sandbox-suite",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "malware-sandbox-suite",
+      "priority": "P1",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/malware-sandbox-suite",
+      "source_status": "unknown",
+      "image_metadata": {
+        "reported_size_gb_approx": 4.41
+      },
+      "publisher_claims": [
+        "scalable threat-analysis environment"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "large image; no Termux pull",
+        "source-to-image provenance unknown",
+        "sandbox isolation not verified"
+      ]
+    },
+    {
+      "id": "mon-ultra-matrix",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "mon-ultra-matrix",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/mon-ultra-matrix",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "Monad/EVM/ABI reverse-engineering lab",
+        "contract audit and transaction forensics",
+        "claims composition of multiple repositories and images"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "constituent projects and duplicated functionality unresolved",
+        "source provenance unknown",
+        "dual-use review required"
+      ]
+    },
+    {
+      "id": "monad-ultra-infinite-matrix",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "monad-ultra-infinite-matrix",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/monad-ultra-infinite-matrix",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "composite RE ecosystem",
+        "claims composition of 23 sources"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source list and constituent identities not verified",
+        "overlap with mon-ultra-matrix unresolved"
+      ]
+    },
+    {
+      "id": "a-c-d-matrix-force",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "a-c-d-matrix-force",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/a-c-d-matrix-force",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "network analyzer",
+        "CVE-RE",
+        "sysadmin footprint mask",
+        "Sandbox-API and honeypot components"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "component provenance and overlap unknown",
+        "dual-use/security review required"
+      ]
+    },
+    {
+      "id": "q6g-1tb",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "q6g-1tb",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/q6g-1tb",
+      "source_status": "unverified",
+      "publisher_claims": [
+        "composite images including components described as lacking public source repositories"
+      ],
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source transparency explicitly unresolved",
+        "not eligible for code adoption without source"
+      ]
+    },
+    {
+      "id": "reflashx-exploit-bomb",
+      "kind": "container-image",
+      "namespace": "credkellar",
+      "name": "reflashx-exploit-bomb",
+      "priority": "P2",
+      "dockerhub_url": "https://hub.docker.com/r/credkellar/reflashx-exploit-bomb",
+      "claimed_source_url": "https://github.com/kimanicollier44-cmyk/reflashx-exploit-bomb",
+      "source_status": "provenance-anomaly",
+      "evidence_class": "publisher-claimed",
+      "blockers": [
+        "source owner differs from Docker namespace; do not attribute to CredKellar absent evidence",
+        "capability and safety review required"
+      ]
+    }
+  ],
+  "dispositions": {
+    "default": "reference-or-adapt",
+    "allowed": [
+      "ADOPT",
+      "ADAPT",
+      "REFERENCE",
+      "DEFER",
+      "REJECT"
+    ],
+    "promotion_requires": [
+      "identity-and-provenance-review",
+      "license-review",
+      "security-review",
+      "capability-overlap-review",
+      "QUE-admission",
+      "independent-verification"
+    ]
+  },
+  "safety": {
+    "unknown_sample_execution": false,
+    "third_party_network_scanning": false,
+    "termux_large_image_pull": false,
+    "credentials_in_git": false,
+    "real_malware_sample_download": false
+  },
+  "sources": [
+    "https://hub.docker.com/u/credkellar",
+    "https://github.com/ddkellar01",
+    "https://github.com/credkellar/Sandbox-API",
+    "https://github.com/credkellar/Hack-Dhe-Net",
+    "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/reverse_engineering/taxonomy.json",
+    "https://github.com/timerloggedout-spec/termux-monorepo/issues/336",
+    "https://github.com/timerloggedout-spec/termux-monorepo/issues/5283",
+    "https://github.com/timerloggedout-spec/termux-monorepo/issues/5286"
+  ]
+}

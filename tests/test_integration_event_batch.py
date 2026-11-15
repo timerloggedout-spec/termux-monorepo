@@ -5,6 +5,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 import uuid
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -143,7 +144,7 @@ class IntegrationEventBatchTests(unittest.TestCase):
 
     def test_batch_sql_records_receipt_in_same_transaction(self):
         sql, meta = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()))
-        self.assertTrue(sql.startswith("BEGIN;"))
+        self.assertTrue(sql.startswith("SET standard_conforming_strings = on;\nBEGIN;"))
         self.assertIn("INSERT INTO integration_measurements", sql)
         self.assertIn("INSERT INTO integration_ingest_batches", sql)
         self.assertIn("COMMIT;", sql)
@@ -160,6 +161,16 @@ class IntegrationEventBatchTests(unittest.TestCase):
             finally:
                 ie.resolve_existing_url = original
 
+    def test_failed_database_batch_writes_metadata_only_receipt(self):
+        with patch.object(ie.lane_event, "psql", side_effect=[RuntimeError("connection detail"), ""]) as mocked:
+            with self.assertRaisesRegex(RuntimeError, "connection detail"):
+                ie.run_batch("postgresql://redacted", [dict(MEASUREMENT)], "measurement")
+        self.assertEqual(mocked.call_count, 2)
+        failure_sql = mocked.call_args_list[1].args[1][1]
+        self.assertIn("'failed'", failure_sql)
+        self.assertIn("'RuntimeError'", failure_sql)
+        self.assertNotIn("connection detail", failure_sql)
+
     def test_database_migration_is_append_only_and_indexed(self):
         ddl = (ROOT / "ops" / "lane-events" / "integration-events.sql").read_text(encoding="utf-8")
         for table in ("integration_events", "integration_measurements", "integration_ingest_batches"):
@@ -167,6 +178,7 @@ class IntegrationEventBatchTests(unittest.TestCase):
             self.assertIn(f"ON {table}", ddl)
         self.assertIn("BEFORE UPDATE OR DELETE", ddl)
         self.assertIn("BEFORE TRUNCATE", ddl)
+        self.assertIn("REFERENCES integration_ingest_batches(batch_id)", ddl)
         self.assertIn("FOREIGN KEY (event_id, integration_id)", ddl)
         self.assertIn("DEFERRABLE INITIALLY DEFERRED", ddl)
         self.assertIn("value NOT IN", ddl)

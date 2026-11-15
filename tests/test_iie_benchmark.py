@@ -49,4 +49,4 @@ def test_comparison_rejects_coverage_or_graph_drift():
 def test_ratio_handles_missing_and_zero_values():
     assert MODULE.ratio(None, 2) is None
     assert MODULE.ratio(0, 2) is None
-    assert MODULE.ratio(4, 0) == 0.0
+    assert MODULE.ratio(4, 0) is None

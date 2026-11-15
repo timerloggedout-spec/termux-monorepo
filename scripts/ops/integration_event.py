@@ -199,8 +199,8 @@ def validate_event(event: dict) -> dict:
         privacy = event["privacy"]
         _keys(privacy, {"classification", "contains_raw_prompt", "contains_secret", "redaction_applied"}, "event.privacy")
         _required(privacy, {"classification"}, "event.privacy")
-    elif "observed_at" in event:
-        parse_timestamp(event["observed_at"], "event.observed_at")
+    elif any(field in event for field in ("event_at", "observed_at", "supersedes")):
+        raise ValueError("event_at, observed_at and supersedes require schema_version 1.1.0")
 
     if "event_at" in event:
         parse_timestamp(event["event_at"], "event.event_at", nullable=True)

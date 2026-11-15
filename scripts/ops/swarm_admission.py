@@ -296,6 +296,31 @@ def stamp(fname, block, decision, reasons, facts, run_url):
     return "\n\n".join(parts)
 
 
+def mandate_block(tiers_path, fname, block, author, number):
+    """que-superagent P1: the admission receipt carries an immutable Mandate
+    (que-mandate/v1, scripts/que/que_item_fields.py). Fail-soft: a Mandate
+    error never changes the Decision; it returns an empty string."""
+    import pathlib
+    try:
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "que"))
+        import que_item_fields as qf
+        raw = pathlib.Path(tiers_path).read_bytes()
+        schema = json.loads(raw).get("schema", "queue.dispatch-tiers")
+        m = qf.make_mandate(
+            policy_version=qf.policy_version(schema, raw),
+            scope=block.get("route") or fname,
+            strength=qf.strength_for_sender(author),
+            matched_rules=[fname],
+            source="github",
+            receiving_scope="issues.new",
+            sender=author,
+            trigger_id=f"issue#{number}" if number else "",
+        )
+        return "\n\n" + qf.render_block(m)
+    except Exception:
+        return ""
+
+
 def picture_gate(argv):
     """Workflow gate: are the checkout's collector feeds fresh?
 
@@ -337,6 +362,8 @@ def main(argv):
     ap.add_argument("--issue-labels", default="")
     ap.add_argument("--issue-title", default="")
     ap.add_argument("--run-url", default="")
+    ap.add_argument("--issue-author", default="", help="filing author login (Mandate sender)")
+    ap.add_argument("--issue-number", default="", help="filing number (Mandate trigger id)")
     ap.add_argument("--comment-out", required=True)
     ap.add_argument("--github-output", default="")
     a = ap.parse_args(argv)
@@ -397,7 +424,10 @@ def main(argv):
                                      "detail": picture["detail"]}}
         except Exception as e:  # fail-soft: defer, never admit blind
             decision, reasons, facts = "DEFERRED", [f"admission evaluation error: {type(e).__name__}: {e}"], {"tier": block["que_tier"], "queued_depth": -1, "after": {}, "chain": {}}
-        pathlib.Path(a.comment_out).write_text(stamp(fname, block, decision, reasons, facts, a.run_url))
+        body = stamp(fname, block, decision, reasons, facts, a.run_url)
+        if decision == "ADMITTED":
+            body += mandate_block(a.tiers, fname, block, a.issue_author, a.issue_number)
+        pathlib.Path(a.comment_out).write_text(body)
         out = {
             "matched": "true",
             "decision": decision.lower(),

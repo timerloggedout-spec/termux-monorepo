@@ -534,7 +534,7 @@ def decide(filings: list[dict], registry: dict, census: dict,
     if not isinstance(cadence_pool, dict):
         cadence_pool = {}
     raw_probe_ids = cadence_pool.get("probe_candidates", [])
-    probe_ids = set(raw_probe_ids) if isinstance(raw_probe_ids, list) else set()
+    probe_ids = {value for value in raw_probe_ids if isinstance(value, str) and value} if isinstance(raw_probe_ids, list) else set()
     census_by_id = {row.get("arm_id"): row for row in census.get("arms", [])}
     probe_candidates = []
     for candidate in registry.get("arms", []):

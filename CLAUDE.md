@@ -47,7 +47,8 @@ BIUDL is the compounding development motion: a broad system view selects a focus
 4. [`docs/ARCHW1Z-GATE.md`](docs/ARCHW1Z-GATE.md) — dual gates (automated)
 5. [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) — human-only edges
 6. [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) — adaptive wait + ops skills
-7. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — living session SSOT (rewrite every admin cycle)
+7. [`docs/ops/SKILL-CREATION-SOURCE-REGISTER.md`](docs/ops/SKILL-CREATION-SOURCE-REGISTER.md) — source freshness, skill reading bundles, and mandatory approximation competition for substantive skill changes
+8. [`docs/ops/LANE-MATRIX.md`](docs/ops/LANE-MATRIX.md) — current PR-disposition policy; read its live generated board/API for each admin cycle
 
 Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one verified component or process card before loading deeper source.
 
@@ -99,6 +100,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
+| Skill source register + approximation competition | `docs/ops/SKILL-CREATION-SOURCE-REGISTER.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
 | Credential names inventory | issue #184 (no values) |
@@ -150,3 +152,12 @@ Integration catalog and event contract: `docs/integrations/README.md`. Design an
 ## Continuous Capability Evolution Laboratory (CEEL)
 
 Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+
+
+## Skill authoring and approximation competition
+
+For substantive skill creation or upgrades, read `docs/ops/SKILL-CREATION-SOURCE-REGISTER.md` and route through `.agents/skills/approxination-lane/SKILL.md`, `.agents/skills/multivariate-doe/SKILL.md`, and `.agents/skills/blind-agent-evaluation/SKILL.md`. Compare the incumbent with sourced and independently designed alternatives where feasible; preserve provenance, blind evaluation, correctness-first outcomes, and replication. Approxination rankings are evidence, never promotion authority. A formal hosted benchmark must be reported NOT RUN unless its pinned execution artifacts exist.
+
+## Entry-point freshness / known documentation drift
+
+This file remains the primary collaborator entry. The current source review found downstream contradictions in `docs/proposals/PROCESS.md` (deprecated root `AGENTS.md` and old branch instructions) and `docs/ARCHW1Z-GATE.md` (branch-only gate wording). Follow this file plus the current `docs/ops/LANE-MATRIX.md` and actual workflow triggers while those documents are reconciled; do not infer current policy from their stale snippets.

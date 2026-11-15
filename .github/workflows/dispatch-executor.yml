@@ -96,6 +96,7 @@ jobs:
           python3 scripts/ops/auto_quota_cadence.py \
             --arms ops/dispatch/build-arms.json \
             --census ops/que/feeds/arm-census.json \
+            --cadence pool-cadence.json \
             --registry ops/quota/registry.json \
             --allocations ops/quota/allocations.json \
             "${SNAPSHOT_ARGS[@]}" \

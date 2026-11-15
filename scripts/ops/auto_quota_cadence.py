@@ -247,7 +247,7 @@ def derive(
             experiment_label = budget.get("experiment_label")
             quota_evidence_ref = budget.get("quota_evidence_ref")
             if (record is None or record.get("quota_class") != quota_class
-                    or not quota_evidence_ref):
+                    or not record.get("source") or not quota_evidence_ref):
                 pool_reasons.append("quota_class_evidence_missing")
             if not pool_id:
                 pool_reasons.append("pool_id_missing")
@@ -262,6 +262,8 @@ def derive(
             if pool_state is None:
                 pool_reasons.append("pool_unknown")
             else:
+                if not snap_coverage.get("complete"):
+                    pool_reasons.append("pool_coverage_incomplete")
                 observed_at = pool_state.get("observed_at")
                 try:
                     pool_age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
@@ -302,7 +304,11 @@ def derive(
                 "status": "eligible" if not pool_reasons else "deferred",
                 "hold_reason": pool_reasons[0] if pool_reasons else None,
                 "pool_id": pool_id,
+                "focus": focus,
+                "allocation_mode": (allocation or {}).get("mode"),
+                "allocation_pct": (allocation or {}).get("pct"),
                 "experiment_label": experiment_label,
+                "quota_evidence_ref": quota_evidence_ref,
                 "observed_at": (pool_state or {}).get("observed_at"),
                 "reset_window": reset_window or "unknown",
                 "reset_tz": reset_tz or "unknown",

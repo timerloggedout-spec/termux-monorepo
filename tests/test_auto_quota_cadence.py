@@ -411,6 +411,7 @@ def test_daily_pool_no_provider_quota_is_eligible_without_provider_quota_counter
     arm = _daily_pool_arm()
     registry = _quota_registry(["example.api"])
     registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    _daily_pool_snapshot(), allocations=_daily_pool_allocations())
     row = _row(feed, "alpha")
@@ -428,6 +429,7 @@ def test_daily_pool_missing_pool_snapshot_defers_as_pool_unknown_not_quota_unkno
     arm = _daily_pool_arm()
     registry = _quota_registry(["example.api"])
     registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    _snapshot(), allocations=_daily_pool_allocations())
     reasons = _row(feed, "alpha")["defer_reasons"]
@@ -439,6 +441,7 @@ def test_daily_pool_exhausted_defers_without_provider_quota_counter():
     arm = _daily_pool_arm()
     registry = _quota_registry(["example.api"])
     registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    _daily_pool_snapshot("exhausted"), allocations=_daily_pool_allocations())
     assert "pool_exhausted" in _row(feed, "alpha")["defer_reasons"]
@@ -456,6 +459,18 @@ def test_daily_pool_requires_nonzero_standing_or_verified_leftover_allocation():
     arm = _daily_pool_arm()
     registry = _quota_registry(["example.api"])
     registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
     feed = _derive(_registry([arm]), _census(["alpha"]), registry,
                    _daily_pool_snapshot(), allocations=_daily_pool_allocations("leftover-only", 0))
     assert "pool_leftover_unverified" in _row(feed, "alpha")["defer_reasons"]
+
+def test_daily_pool_requires_complete_ledger_coverage():
+    arm = _daily_pool_arm()
+    registry = _quota_registry(["example.api"])
+    registry["services"][0]["quota_class"] = "daily_pool_no_provider_quota"
+    registry["services"][0]["source"] = "https://provider.example/terms/free-pool"
+    snapshot = _daily_pool_snapshot()
+    snapshot["coverage"]["complete"] = False
+    feed = _derive(_registry([arm]), _census(["alpha"]), registry,
+                   snapshot, allocations=_daily_pool_allocations())
+    assert "pool_coverage_incomplete" in _row(feed, "alpha")["defer_reasons"]

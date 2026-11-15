@@ -250,6 +250,8 @@ def derive(
         pool_state = None
         pool_reasons: list[str] = []
         if quota_class == "daily_pool_no_provider_quota":
+            if budget.get("class") == "credit-funded":
+                pool_reasons.append("pool_paid_budget_forbidden")
             focus = budget.get("focus")
             experiment_label = budget.get("experiment_label")
             quota_evidence_ref = budget.get("quota_evidence_ref")

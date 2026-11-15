@@ -506,11 +506,12 @@ def plan(records: list[dict], max_records: int, max_bytes: int) -> list[dict]:
 
 
 def ingest(url: str, records: list[dict], record_type: str,
-           max_records: int, max_bytes: int) -> list[dict]:
+           max_records: int, max_bytes: int,
+           adapter_version: str = ADAPTER_VERSION) -> list[dict]:
     results = []
     for group in group_by_integration(records).values():
         for chunk in chunk_records(group, max_records, max_bytes):
-            results.append(run_batch(url, chunk, record_type))
+            results.append(run_batch(url, chunk, record_type, adapter_version))
     return results
 
 
@@ -565,8 +566,8 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({"status": "observed", "counts": output}))
             return 0
 
-        event_receipts = ingest(url, events, "event", args.max_batch_records, args.max_batch_bytes)
-        measurement_receipts = ingest(url, measurements, "measurement", args.max_batch_records, args.max_batch_bytes)
+        event_receipts = ingest(url, events, "event", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
+        measurement_receipts = ingest(url, measurements, "measurement", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
         print(json.dumps({
             "status": "emitted",
             "events": {"received": len(events), "batches": event_receipts},

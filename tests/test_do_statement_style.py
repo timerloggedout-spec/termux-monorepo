@@ -54,6 +54,7 @@ class DoStatementStyleRulesTests(unittest.TestCase):
             "test(ci): distinguish action verbs from descriptive subjects",
             "test(ci): cover Siglary action-first commit subject rules",
             "feat(ci): centralize Siglary action-first subject vocabulary",
+            "test(siglary): reject positive-prefix false positives",
         ):
             with self.subTest(subject=subject):
                 self.assertTrue(is_imperative_subject(subject))

@@ -74,6 +74,7 @@ from datetime import datetime, timezone
 
 SCHEMA = "dispatch-executor/stamp-v1"
 CENSUS_MAX_AGE_HOURS = 48
+CADENCE_MAX_AGE_SECONDS = 3600
 USAGE_MAX_AGE_HOURS = 48
 CLAIM_MARKER = "PRODUCER CLAIM"
 STAMP_MARKER = "DISPATCH-EXECUTOR STAMP"
@@ -119,7 +120,8 @@ def eligible_filings(filings: list[dict]) -> list[dict]:
     return sorted(out, key=lambda f: f["number"])
 
 
-def census_eligible_arms(registry: dict, census: dict, now: datetime) -> tuple[list[dict], str | None]:
+def census_eligible_arms(registry: dict, census: dict, now: datetime,
+                         cadence: dict | None = None) -> tuple[list[dict], str | None]:
     """Return (eligible arms, hold reason or None).
 
     Eligible = registry status eligible AND census verdict passed AND
@@ -132,12 +134,30 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime) -> tuple[l
         return [], "census_unstamped"
     if _age_hours(generated_at, now) > CENSUS_MAX_AGE_HOURS:
         return [], "census_stale"
+    cadence_ids = None
+    if cadence is not None:
+        if cadence.get("schema") != "pool-cadence/v1":
+            return [], "cadence_schema_invalid"
+        try:
+            cadence_age = (now - _parse_ts(cadence.get("generated_at"))).total_seconds()
+        except (ValueError, TypeError, AttributeError):
+            cadence_age = None
+        if cadence_age is None or cadence_age < 0 or cadence_age > CADENCE_MAX_AGE_SECONDS:
+            return [], "cadence_stale"
+        pool = cadence.get("pool")
+        if not isinstance(pool, dict) or not isinstance(pool.get("eligible"), list):
+            return [], "cadence_pool_unstamped"
+        cadence_ids = set(pool["eligible"])
+        if not cadence_ids:
+            return [], "cadence_no_eligible_arms"
     census_by_id = {a["arm_id"]: a for a in census.get("arms", [])}
     eligible = []
     for arm in registry.get("arms", []):
         if not arm.get("selectable", False):
             continue
         if arm.get("status") != "eligible":
+            continue
+        if cadence_ids is not None and arm["arm_id"] not in cadence_ids:
             continue
         row = census_by_id.get(arm["arm_id"])
         # Census verdict vocabulary of record (#5151 run 43045718809):
@@ -469,7 +489,8 @@ def decide(filings: list[dict], registry: dict, census: dict,
            max_conversions: int = 1, workflow_ref: str = "",
            workflow_sha: str = "", script_sha: str = "",
            measured: dict | None = None,
-           probe_budget: int = 1) -> dict:
+           probe_budget: int = 1,
+           cadence: dict | None = None) -> dict:
     """Decide the executor's actions for one run. Pure + deterministic.
 
     Probe amendment (QUE #5176 fold c.6842923762; countersign
@@ -483,7 +504,7 @@ def decide(filings: list[dict], registry: dict, census: dict,
     _REGISTRY_ORDER = {a["arm_id"]: i for i, a in enumerate(registry.get("arms", []))}
     decisions: list[dict] = []
     eligible = eligible_filings(filings)
-    arms, census_hold = census_eligible_arms(registry, census, now)
+    arms, census_hold = census_eligible_arms(registry, census, now, cadence)
     ordered = order_arms(arms)
     generic = [a for a in ordered if a["arm_id"] != "gemini-cli"]
     gemini = [a for a in ordered if a["arm_id"] == "gemini-cli"]
@@ -655,6 +676,8 @@ def main(argv: list[str] | None = None) -> int:
     decide_p.add_argument("--arms", required=True)
     decide_p.add_argument("--census", required=True)
     decide_p.add_argument("--usage")
+    decide_p.add_argument("--cadence",
+                          help="pool-cadence/v1 eligibility feed from autoQuotaCadence")
     decide_p.add_argument("--measured",
                           help="bucket-headroom feed (QUE #5230): "
                                "quota_probe measured state")
@@ -691,6 +714,7 @@ def main(argv: list[str] | None = None) -> int:
     registry = _load(args.arms)
     census = _load(args.census)
     usage = _load(args.usage)
+    cadence = _load(args.cadence)
     measured = _load(args.measured)
     result = decide(
         filings, registry, census, usage, now, args.run_id,
@@ -698,6 +722,7 @@ def main(argv: list[str] | None = None) -> int:
         workflow_ref=args.workflow_ref,
         workflow_sha=args.workflow_sha, script_sha=args.script_sha,
         measured=measured,
+        cadence=cadence,
     )
     text = json.dumps(result, indent=2, sort_keys=True)
     if args.out:

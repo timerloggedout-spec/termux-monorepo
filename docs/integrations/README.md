@@ -12,6 +12,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 - [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
 - [Incremental Intelligence / queue integration RFP](../superpowers/specs/2026-11-15-incremental-intelligence-queue-integration-rfp.md), [parallel implementation plan](../superpowers/plans/2026-11-15-incremental-intelligence-implementation-plan.md), and [technology evaluation matrix](../ops/IIE-TECHNOLOGY-EVALUATION-MATRIX.md).
+- [IIE WP1–WP9 implementation status](../ops/IIE-WP1-WP9-IMPLEMENTATION-STATUS.md) — implemented slices, outstanding validation, and promotion gates.
 
 ## Authority model
 

@@ -1,0 +1,55 @@
+name: Branch reconciliation inventory
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "scripts/branch_reconciliation_registry.py"
+      - ".github/workflows/branch-reconciliation.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "scripts/branch_reconciliation_registry.py"
+      - "tests/test_branch_reconciliation_registry.py"
+      - ".github/workflows/branch-reconciliation.yml"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: branch-reconciliation-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out complete Git history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run classification tests
+        run: python -m unittest discover -s tests -p "test_branch_reconciliation_registry.py" -v
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh auth status
+      - name: Build branch registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/branch_reconciliation_registry.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --default-branch "${{ github.event.repository.default_branch }}"
+      - name: Upload reconciliation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: branch-reconciliation-${{ github.run_id }}
+          path: artifacts/branch-reconciliation/
+          if-no-files-found: error
+          retention-days: 90

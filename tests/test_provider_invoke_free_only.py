@@ -171,20 +171,28 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     batch = yaml.safe_load((root / ".github/workflows/provider-inference-validation.yml").read_text())
     single_events = single.get("on", single.get(True))
     batch_events = batch.get("on", batch.get(True))
-    expected = set(single_events["workflow_dispatch"]["inputs"]["provider"]["options"])
-    actual = set(batch["jobs"]["validate"]["strategy"]["matrix"]["provider"])
-    assert actual == expected and len(actual) == 30
+    assert len(single_events["workflow_dispatch"]["inputs"]["provider"]["options"]) == 30
+    discover = batch["jobs"]["discover"]
+    assert discover["outputs"]["providers"] == "${{ steps.matrix.outputs.providers }}"
+    matrix_step = next(step for step in discover["steps"] if "provider_population_census.py" in step.get("run", ""))
+    assert "native_provider_ids" in (root / "scripts/ops/provider_population_census.py").read_text()
+    assert "GITHUB_OUTPUT" in matrix_step["run"]
+    assert batch["jobs"]["validate"]["needs"] == ["discover"]
+    assert batch["jobs"]["validate"]["strategy"]["matrix"]["provider"] == "${{ fromJson(needs.discover.outputs.providers) }}"
+    assert batch["jobs"]["validate"]["strategy"]["max-parallel"] == 2
     assert set(batch_events) == {"workflow_dispatch"}
     assert batch_events["workflow_dispatch"]["inputs"]["experiment_label"]["required"] is True
     assert batch_events["workflow_dispatch"]["inputs"]["emit_stamps"]["default"] is False
-    assert batch["jobs"]["validate"]["strategy"]["max-parallel"] == 2
     policy_step = next(step for step in batch["jobs"]["validate"]["steps"] if "provider-admission.json" in step.get("run", ""))
     assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
     invoke_step = next(step for step in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in step.get("run", ""))
     assert "--free-only" in invoke_step["run"] and "inference-health-smoke.md" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "'dispatch_eligible': False" in invoke_step["run"]
+    census_job = batch["jobs"]["census"]
+    assert census_job["needs"] == ["discover", "validate"]
+    assert any("provider-population-census" in step.get("with", {}).get("name", "") for step in census_job["steps"])
     stamp_job = batch["jobs"]["stamp"]
-    assert stamp_job["needs"] == ["validate"] and "inputs.emit_stamps" in stamp_job["if"]
+    assert stamp_job["needs"] == ["discover", "validate"] and "inputs.emit_stamps" in stamp_job["if"]
     stamp_step = next(step for step in stamp_job["steps"] if "provider_validation_stamp.py" in step.get("run", ""))
     assert "GH_TOKEN" in stamp_step["env"]
     assert "dispatch-stamp-fanout" in (root / "scripts/ops/provider_validation_stamp.py").read_text()

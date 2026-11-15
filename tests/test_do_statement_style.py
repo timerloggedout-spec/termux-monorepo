@@ -7,10 +7,31 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts" / "ci"))
 
-from do_statement_style_rules import is_imperative_subject
+from do_statement_style_rules import is_imperative_subject, is_negative_first_line
 
 
 class DoStatementStyleRulesTests(unittest.TestCase):
+    def test_negative_first_prose_is_detected(self):
+        for line in (
+            "Do not bypass the validation gate",
+            "- Never skip the evidence check",
+            "* Avoid silent promotion",
+            "# No unverified release",
+            "  Not ready for promotion",
+            "Don't suppress the failure",
+        ):
+            with self.subTest(line=line):
+                self.assertTrue(is_negative_first_line(line))
+
+    def test_action_first_prose_passes(self):
+        for line in (
+            "Validate the evidence before promotion",
+            "- Preserve the audit trail",
+            "# Record the execution result",
+        ):
+            with self.subTest(line=line):
+                self.assertFalse(is_negative_first_line(line))
+
     def test_export_subject_passes(self):
         self.assertTrue(is_imperative_subject("backup-state relay: export exp-20261114T155846Z-7afd1c"))
 

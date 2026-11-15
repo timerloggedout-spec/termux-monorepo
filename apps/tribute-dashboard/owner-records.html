@@ -159,7 +159,7 @@
   function recordCard(record) {
     const href = sourceHref(record.source.path);
     const source = href
-      ? '<a href="' + esc(href) + '" rel="noopener noreferrer">' + esc(record.source.path) + "</a>"
+      ? '<a href="#" data-source-path="' + esc(record.source.path) + '" rel="noopener noreferrer">' + esc(record.source.path) + "</a>"
       : esc(record.source.path) + " (source link withheld: invalid relative path)";
     const holder = record.holder ? "Holder: " + esc(record.holder) + " · " : "";
     const since = record.since ? "Since: " + esc(record.since) + " · " : "";
@@ -344,6 +344,15 @@
     $("class-filter").value = "";
     $("state-filter").value = "";
     if (state.envelope) render();
+  });
+
+  $("classes").addEventListener("click", event => {
+    const link = event.target.closest && event.target.closest("a[data-source-path]");
+    if (!link) return;
+    const href = sourceHref(link.getAttribute("data-source-path"));
+    if (!href) return;
+    event.preventDefault();
+    window.open(href, "_blank", "noopener,noreferrer");
   });
 
   document.addEventListener("visibilitychange", () => {

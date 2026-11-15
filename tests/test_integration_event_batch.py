@@ -109,7 +109,7 @@ class IntegrationEventBatchTests(unittest.TestCase):
     def test_insert_select_conflict_clause_is_disambiguated(self):
         for record, kind in ((dict(EVENT), "event"), (dict(MEASUREMENT), "measurement")):
             sql, _ = ie.build_batch_sql([record], kind, str(uuid.uuid4()))
-            self.assertIn("FROM _integration_batch_docs\\n  WHERE true\\n  ON CONFLICT", sql)
+            self.assertIn("FROM _integration_batch_docs\n  WHERE true\n  ON CONFLICT", sql)
 
     def test_cursor_guard_uses_non_input_dollar_quote_tag(self):
         sql, _ = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()),

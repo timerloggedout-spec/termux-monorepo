@@ -27,7 +27,7 @@ class OwnerRecordsPageTests(unittest.TestCase):
         self.assertNotIn("owner-records.html", (APP / "sitemap.xml").read_text())
         nav_pages = [p for p in APP.glob("*.html") if p != PAGE]
         for page in nav_pages:
-            match = re.search(r'<nav aria-label="Primary">([\\s\\S]*?)</nav>', page.read_text())
+            match = re.search(r'<nav aria-label="Primary">([\s\S]*?)</nav>', page.read_text())
             if match:
                 self.assertNotIn("owner-records", match.group(1), page.name)
 

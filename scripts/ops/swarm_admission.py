@@ -225,6 +225,8 @@ def _feeds_stale_detail(feeds_dir, now, max_age_seconds):
         gen_dt = _parse_ts(generated)
         if gen_dt is not None:
             age = int((now - gen_dt).total_seconds())
+            if age < 0:
+                return f"collector feeds clock-skewed (as-of {generated}, {abs(age)}s in the future)"
             return f"collector feeds stale (as-of {generated}, age {age}s > gate {max_age_seconds}s)"
         return "collector feeds unreadable (no generated_at)"
     except Exception:

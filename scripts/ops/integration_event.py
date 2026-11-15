@@ -650,6 +650,8 @@ def main(argv: list[str] | None = None) -> int:
             }, sort_keys=True))
             return 0
         if args.command == "record" and not events and not measurements:
+            if batch_metadata["event"] or batch_metadata["measurement"]:
+                raise ValueError("batch cursor metadata cannot advance without corresponding records")
             print(json.dumps({"status": "clean_noop", "events": 0, "measurements": 0}))
             return 0
 

@@ -28,7 +28,7 @@ A source's existence does not establish adoption. A successful benchmark run doe
 |---|---|---|---|---|
 | R01 | [Root CLAUDE.md](../../CLAUDE.md) | CURRENT-REPO; blob `98542cc` | First entry, governance order, FA-ADE, BIUDL, CEEL | Primary collaborator entry; downstream docs contain drift and must not silently override it |
 | R02 | [SKILLS.md](../../SKILLS.md) | CURRENT-REPO; blob `32c7726` | Short collaborator navigation | Keep synchronized with inventory and current skills |
-| R03 | [Skills Inventory](SKILLS-INVENTORY.md) | CURRENT-REPO; blob `73fd26d` | Skill discovery, role load matrix | Header says 2026-09-30 and old master tip; refresh metadata/counts from the live tree before claiming exhaustive inventory |
+| R03 | [Skills Inventory](SKILLS-INVENTORY.md) | CURRENT-REPO; blob `73fd26d` | Skill discovery, role load matrix | Metadata refreshed 2026-11-15; the historic path/count snapshot still requires a live recursive-tree check before claiming exhaustive inventory |
 | R04 | [Skill Discovery Matrix](SKILL-DISCOVERY-MATRIX.md) | CURRENT-REPO; blob `acb9f84` | Relationship/evidence skill cluster | Its discovery SHA/counts are historical; do not treat as current tree census |
 | R05 | [Proposal Process](../proposals/PROCESS.md) | CURRENT-REPO; updated blob `393fbab` | Authorization and lifecycle | Entrypoint and branch guidance reconciled to CLAUDE.md and LANE-MATRIX |
 | R06 | [ArchW1z Gate](../ARCHW1Z-GATE.md) | CURRENT-REPO; updated blob `da1630b` | Dual-gate contract | Workflow trigger wording now matches the inspected YAML; live promotion still follows LANE-MATRIX |
@@ -41,7 +41,7 @@ A source's existence does not establish adoption. A successful benchmark run doe
 |---|---|---|---|---|
 | R09 | [approxination-lane skill](../../.agents/skills/approxination-lane/SKILL.md) | CURRENT-REPO; blob `85f9de4` | Search, generate, feedback, benchmark routing | Existing workflow; this upgrade makes substantive skill creation/upgrade competition mandatory |
 | R10 | [Approxination ops card](APPROXINATION-LANE.md) | CURRENT-REPO; blob `137754f` | Tool-layer comparison and contribution cadence | Formal A/B/C/D execution is a separately tracked experiment |
-| R11 | [Approxination cohort](../evaluations/approxination/COHORT.md) | CURRENT-REPO; blob `7425b1c` | A/B/C/D treatment definition and evidence freeze | Existing cohort says it implements APPROX-001..004; new competition requirements belong in APPROX-008 |
+| R11 | [Approxination cohort](../evaluations/approxination/COHORT.md) | CURRENT-REPO; blob `7425b1c` | A/B/C/D treatment definition and evidence freeze | Cohort now distinguishes A/B/C/D tool modes from skill candidate treatments and references APPROX-008; formal smoke remains APPROX-006 |
 | R12 | [Approxination Benchmark fork README](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork/blob/5ad5a3a45b4026b27e6408f3a838ba969a4fd113/README.md) | PINNED-REPO; README blob `5ad5a3a` | Fixed 67-task, four-mode tool-layer comparison; blind pairwise judging; category breakdown and multiple ELO estimators | Reference fork, not monorepo runtime; inspect current pinned content before each formal run |
 | R13 | [Approxination task schema](https://github.com/timerloggedout-spec/Approxination-Benchmark_fork/blob/06b31d8eff1a7e23858a1dd7d4c624dc3717b620/SCHEMA.md) | PINNED-REPO; blob `06b31d8` | Agent-agnostic task prompts and deterministic output criteria | Task set/version and graders must be pinned together |
 | R14 | [Inverse Arena fork README](https://github.com/timerloggedout-spec/Inverse-Arena_fork/blob/ac8adef355fb3fe02cac4c1279a40daeba7f4487/README.md) | PINNED-REPO; blob `ac8adef` | Execution-backed skill feedback, pairwise ranking, fuzzy scoring and ELO | Hosted arena includes behavior not necessarily present in open-source fork; do not equate public ranking with causal benchmark evidence |
@@ -83,6 +83,7 @@ A source's existence does not establish adoption. A successful benchmark run doe
 | R35 | [ICM routing resource](../icm/routing.md) | CURRENT-REPO; updated in this branch | Previously called CLAUDE.md and AGENTS.md byte-identical aliases | Updated: CLAUDE.md is canonical; root AGENTS.md is deprecated |
 | R36 | [CLAUDE human compatibility copy](../../CLAUDE.hum.md) | CURRENT-REPO; updated in this branch | Historical Linguist/CedrLang copy contains old branch rules and inventory statistics | Marked compatibility-only; not current authority |
 | R37 | [GitHub project management reference](../../.github/PROJECT_MANAGEMENT.md) | CURRENT-REPO; updated in this branch | Previously named AGENTS.md as workflow integration surface | Updated to route governance to CLAUDE.md |
+| R38 | [Consensus process](../CONSENSUS.md) | CURRENT-REPO; updated in this branch | Previously linked the deprecated root AGENTS.md and prescribed master-staging as the universal branch base | Updated to reference CLAUDE.md and defer branch selection to current lane policy |
 
 ## 7. Reading bundles by skill
 

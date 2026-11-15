@@ -66,6 +66,9 @@ Participant families are grouped by capability contract, not vendor brand. A par
 | Context/memory | Context relationship graph and memory lanes | Which representation improves task success per token/cost? |
 | Security/assurance | Existing security checks, policy lanes and FOSS scanners | Which checks reduce risk without false assurance? |
 | Documentation/DX | FOSS templates, docs tooling, API impact tools | Which patterns reduce integration time and defects? |
+| Simulation and ABM | MiroFish/OASIS, Mesa/Repast/NetLogo, deterministic baseline | Which graph-to-agent or ABM treatment produces reproducible, provenance-safe simulation evidence? |
+| Agent orchestration | Existing LangGraph, AutoGen, CrewAI, OpenAI Agents SDK | Which orchestration model improves state management, recovery and task quality without duplicating QUE/WFC? |
+| Durable execution | Existing Temporal capability and prior Oracle pass | Which SIP-specific lifecycle gap remains after reuse of the existing Temporal/QUE/WFC substrate? |
 
 DSPy, SWE and existing ML pipeline lanes are participants, not implementations to duplicate. CEEL adds comparison links and common outcome definitions.
 
@@ -182,3 +185,18 @@ Track discovery-to-classification lead time, fraction of candidates with immutab
 ### Novelty is not adoption
 
 A candidate may be novel but low-value, high-risk, unmaintained, incompatible or duplicative. Keep its disposition and evidence so it can be reconsidered when internal demand or external maturity changes. Rejected/deferred candidates are not erased; supersession and reconsideration are append-only state transitions.
+
+
+## 11. SIP-001 candidate cohort linkage (2026-11-14)
+
+The Simulation Intelligence Plane candidate cohort is registered in `docs/rfps/simulation-intelligence-plane/candidate-queue.json` and cross-indexed in Integration Intelligence and the FOSS Foresight procurement registry. CEEL consumes that queue; it does not create a second copy of the candidate ledger.
+
+Repository-local constraints carried into CEEL:
+- Mesa remains pre-screening/observational only under the existing DoE family rule; no live-evidence authority is implied.
+- NetLogo's SFI ABM corpus presence is a research reference, not runtime-adapter proof.
+- LangGraph is existing repo work (#5045/#5062/#5085/#5194); reuse it rather than adding a duplicate adapter.
+- Temporal has an existing implementation and recorded prior Oracle RFP/pass (#1885); no duplicate Temporal RFP.
+- MiroFish and its refactor fork are architecture/workbench references; no AGPL source reuse without review.
+- OASIS is the primary social-simulation runtime candidate; Repast, AutoGen, CrewAI and OpenAI Agents SDK remain research-only until pinned and compared.
+
+RFP requests use SIP's QUE-admitted simulation RFP template. Delphi generation remains explicit and generation-first after G0 brief/evidence freeze. DoE family admission still requires a committed design record and EXPERIMENT-conforming run evidence.

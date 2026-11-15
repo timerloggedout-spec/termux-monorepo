@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 NEGATIVE_FIRST = re.compile(
-    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
+    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no|not|avoid)\b",
     re.IGNORECASE,
 )
 

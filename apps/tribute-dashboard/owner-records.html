@@ -180,9 +180,9 @@
     const note = cls.note ? '<p class="muted">' + esc(cls.note) + "</p>" : "";
     let body;
     if (count) body = '<div class="grid grid-2">' + records.map(recordCard).join("") + "</div>";
-    else if (!state.query && !state.recordState && cls.records.length === 0 && cls.state === "not_established") {
+    else if (cls.records.length === 0 && cls.state === "not_established") {
       body = '<div class="card empty">NOT_ESTABLISHED — no register exists for this class yet. Nothing is inferred.</div>';
-    } else if (!state.query && !state.recordState && cls.records.length === 0) {
+    } else if (cls.records.length === 0) {
       body = '<div class="card empty">No records are currently listed for this established class.</div>';
     } else body = '<div class="owner-empty muted">No records in this class match the current filters.</div>';
     return head + note + body + "</section>";
@@ -249,8 +249,8 @@
       const bust = Date.now();
       let env = null;
       const urls = [
-        "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t=" + bust,
-        "./owner-records.json?t=" + bust
+        "./owner-records.json?t=" + bust,
+        "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t=" + bust
       ];
       for (const url of urls) {
         try {
@@ -267,14 +267,23 @@
       setFreshness(env.generated_at);
       render();
     } catch (error) {
-      $("freshness").dataset.state = "ERROR";
-      $("freshness").textContent = "Envelope unavailable";
-      $("generated").textContent = "No unvalidated data was rendered.";
-      $("classes").replaceChildren();
-      $("chart-classes").replaceChildren();
-      $("results-count").textContent = "Record search unavailable.";
-      $("load-error").textContent = String(error && error.message ? error.message : error);
-      $("load-error").hidden = false;
+      const message = String(error && error.message ? error.message : error);
+      if (state.envelope) {
+        $("freshness").dataset.state = "STALE";
+        $("freshness").textContent = "Refresh failed · showing last validated envelope";
+        $("generated").textContent = "Last validated " + (state.envelope.generated_at || "at unknown time") + ".";
+        $("load-error").textContent = "Refresh failed: " + message;
+        $("load-error").hidden = false;
+      } else {
+        $("freshness").dataset.state = "ERROR";
+        $("freshness").textContent = "Envelope unavailable";
+        $("generated").textContent = "No unvalidated data was rendered.";
+        $("classes").replaceChildren();
+        $("chart-classes").replaceChildren();
+        $("results-count").textContent = "Record search unavailable.";
+        $("load-error").textContent = message;
+        $("load-error").hidden = false;
+      }
     } finally {
       loading = false;
     }

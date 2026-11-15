@@ -143,7 +143,7 @@ jobs:
           else
             MODEL_ARGS=()
             if [ -n "${INVOKE_MODEL:-}" ]; then MODEL_ARGS+=(--model "$INVOKE_MODEL"); fi
-            python3 scripts/ops/provider_invoke.py --provider "${{ inputs.provider }}" --prompt-file docs/ops/tasks/inference-health-smoke.md --out /tmp/inference-output.txt "${MODEL_ARGS[@]}" ${{ inputs.free_only && '--free-only' || '' }} 2>&1 | tee /tmp/provider.log
+            python3 scripts/ops/provider_invoke.py --provider "${{ inputs.provider }}" --prompt-file docs/ops/tasks/inference-health-smoke.md --out /tmp/inference-output.txt --max-tokens 16 "${MODEL_ARGS[@]}" ${{ inputs.free_only && '--free-only' || '' }} 2>&1 | tee /tmp/provider.log
           fi
           grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/provider.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
           python3 - <<'PY'

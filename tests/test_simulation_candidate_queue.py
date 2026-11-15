@@ -23,6 +23,7 @@ class SimulationCandidateQueueTests(unittest.TestCase):
         candidates = self.queue["candidates"]
         ids = [item["id"] for item in candidates]
         self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(len(ids), 12)
         expected = {
             "mirofish", "mirofish-refactor-fork", "camel-ai-oasis", "mesa", "repast", "netlogo",
             "deterministic-fake", "langgraph", "temporal", "autogen",

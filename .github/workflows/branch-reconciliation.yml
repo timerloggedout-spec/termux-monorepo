@@ -9,6 +9,12 @@ on:
     paths:
       - "scripts/branch_reconciliation_registry.py"
       - ".github/workflows/branch-reconciliation.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "scripts/branch_reconciliation_registry.py"
+      - "tests/test_branch_reconciliation_registry.py"
+      - ".github/workflows/branch-reconciliation.yml"
 
 permissions:
   contents: read
@@ -30,6 +36,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Run classification tests
+        run: python -m unittest discover -s tests -p "test_branch_reconciliation_registry.py" -v
       - name: Authenticate GitHub CLI
         env:
           GH_TOKEN: ${{ github.token }}

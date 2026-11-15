@@ -53,7 +53,7 @@ Official semantics: [OpenRouter limits and read-only key metadata](https://openr
 
 ## QUE multi-provider smoke boundary
 
-The manual `provider-inference-validation.yml` matrix covers the 30 provider choices in `provider-invoke.yml`, but it does not blindly invoke all 30. Each job first loads `LLM_API_HUB_PROVIDER_POLICY_JSON`; if the secret is absent, an empty admission policy is used and no provider inference request is made. A provider/model must pass exact-model admission, current free-account/terms/public-data checks, source-backed no-cost/pricing/terms/capability evidence, and quota-class evidence before a single bounded health completion is attempted.
+The manual `provider-inference-validation.yml` matrix discovers the 29 native `research_providers.ENDPOINTS` adapters at runtime. The separate `provider-invoke.yml` manual menu has 31 choices; Felo and Omni are catalog-only and are not members of the native inference matrix. Each job first loads `LLM_API_HUB_PROVIDER_POLICY_JSON`; if the secret is absent, an empty admission policy is used and no provider inference request is made. A provider/model must pass exact-model admission, current free-account/terms/public-data checks, source-backed no-cost/pricing/terms/capability evidence, and quota-class evidence before a single bounded health completion is attempted.
 
 The smoke uses one exact zero-price or verified-free-trial model, no paid fallback, no model fallback, a short health prompt, and bounded concurrency. The result is a provider-health receipt only. It does not establish dispatch eligibility; the receipt keeps `dispatch_eligible=false` until the separate current QUE census and quota/daily-pool cadence checks pass. Scoring-plane stamps are opt-in (`emit_stamps=false` by default).
 

@@ -1,6 +1,7 @@
 """Offline tests for the unified Integration Intelligence batch adapter."""
 import importlib.util
 import json
+import os
 import pathlib
 import sys
 import tempfile
@@ -154,12 +155,12 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = pathlib.Path(tmp) / "events.jsonl"
             path.write_text(json.dumps(EVENT) + "\n", encoding="utf-8")
-            original = ie.resolve_existing_url
-            ie.resolve_existing_url = lambda: (_ for _ in ()).throw(AssertionError("database must not be touched"))
+            original = ie.resolve_writer_url
+            ie.resolve_writer_url = lambda: (_ for _ in ()).throw(AssertionError("database must not be touched"))
             try:
                 self.assertEqual(ie.main(["record", "--events-file", str(path), "--dry-run"]), 0)
             finally:
-                ie.resolve_existing_url = original
+                ie.resolve_writer_url = original
 
     def test_failed_database_batch_writes_metadata_only_receipt(self):
         with patch.object(ie.lane_event, "psql", side_effect=[RuntimeError("connection detail"), ""]) as mocked:
@@ -170,6 +171,37 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("'failed'", failure_sql)
         self.assertIn("'RuntimeError'", failure_sql)
         self.assertNotIn("connection detail", failure_sql)
+
+    def test_legacy_database_url_is_never_used_as_writer_credential(self):
+        with patch.dict(os.environ, {"LANE_EVENTS_DATABASE_URL": "postgresql://legacy-owner"}, clear=True):
+            self.assertIsNone(ie.resolve_writer_url())
+
+    def test_writer_role_resolution_requires_dedicated_role(self):
+        with patch.dict(os.environ, {"NEON_API_KEY": "dummy"}, clear=True):
+            with patch.object(ie.lane_event, "_neon", side_effect=[
+                {"projects": [{"id": "project-1", "name": ie.lane_event.NEON_PROJECT}]},
+                {"branches": [{"id": "branch-1", "default": True}]},
+                {"roles": [{"name": "neondb_owner"}, {"name": "integration_ingest"}]},
+                {"uri": "postgresql://dedicated-writer"},
+            ]) as neon:
+                self.assertEqual(ie.resolve_writer_url(), "postgresql://dedicated-writer")
+                self.assertIn("role_name=integration_ingest", neon.call_args_list[3].args[1])
+
+    def test_owner_role_is_not_used_as_writer_fallback(self):
+        with patch.dict(os.environ, {"NEON_API_KEY": "dummy"}, clear=True):
+            with patch.object(ie.lane_event, "_neon", side_effect=[
+                {"projects": [{"id": "project-1", "name": ie.lane_event.NEON_PROJECT}]},
+                {"branches": [{"id": "branch-1", "default": True}]},
+                {"roles": [{"name": "neondb_owner"}]},
+            ]):
+                with self.assertRaises(ie.BlockedError):
+                    ie.resolve_writer_url()
+
+    def test_migration_credential_is_separate_from_writer_credential(self):
+        with patch.dict(os.environ, {"LANE_EVENTS_WRITER_DATABASE_URL": "postgresql://writer"}, clear=True):
+            self.assertIsNone(ie.resolve_migration_url())
+        with patch.dict(os.environ, {"LANE_EVENTS_MIGRATION_DATABASE_URL": "postgresql://migration"}, clear=True):
+            self.assertEqual(ie.resolve_migration_url(), "postgresql://migration")
 
     def test_database_migration_is_append_only_and_indexed(self):
         ddl = (ROOT / "ops" / "lane-events" / "integration-events.sql").read_text(encoding="utf-8")

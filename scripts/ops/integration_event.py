@@ -93,7 +93,8 @@ def _reject_sensitive(value: object, path: str = "$") -> None:
     if isinstance(value, dict):
         for key, child in value.items():
             normalized = str(key).lower().replace("-", "_")
-            if normalized in SECRET_KEY_NAMES:
+            credential_name = re.search(r"(?:^|_)(?:secret|password|private_key|access_key|api_key|auth_token|access_token|refresh_token|credential)(?:_|$)", normalized)
+            if normalized in SECRET_KEY_NAMES or credential_name:
                 raise ValueError(f"sensitive field rejected at {path}.{key}")
             _reject_sensitive(child, f"{path}.{key}")
     elif isinstance(value, list):
@@ -412,7 +413,7 @@ WITH inserted AS (
     {sql_literal(batch_id)}::uuid, doc
   FROM _integration_batch_docs
   WHERE true
-  ON CONFLICT (idempotency_key) DO NOTHING
+  ON CONFLICT (integration_id, idempotency_key) DO NOTHING
   RETURNING event_id
 )
 """
@@ -567,10 +568,18 @@ def resolve_writer_url() -> str | None:
     project = next((p for p in projects if p.get("name") == project_name), None)
     if project is None:
         raise BlockedError(f"existing Neon project {project_name!r} was not found; project creation is disabled")
-    branches = lane_event._neon("GET", f"/projects/{project['id']}/branches", key).get("branches", [])
-    branch = next((b for b in branches if b.get("default")), branches[0] if branches else None)
+    branches = []
+    cursor = None
+    while True:
+        endpoint = f"/projects/{project['id']}/branches" + (f"?cursor={quote(cursor)}" if cursor else "")
+        page = lane_event._neon("GET", endpoint, key)
+        branches.extend(page.get("branches", []))
+        cursor = (page.get("pagination") or {}).get("next")
+        if not cursor:
+            break
+    branch = next((b for b in branches if b.get("default")), None)
     if branch is None:
-        raise BlockedError("existing Neon project has no branch")
+        raise BlockedError("existing Neon project has no default branch")
     roles = lane_event._neon("GET", f"/projects/{project['id']}/branches/{branch['id']}/roles", key).get("roles", [])
     role = next((r["name"] for r in roles if r.get("name") in {"integration_ingest", "lane_events_writer"}), None)
     if role is None:

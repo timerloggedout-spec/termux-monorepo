@@ -23,6 +23,17 @@ class DoStatementStyleRulesTests(unittest.TestCase):
             with self.subTest(line=line):
                 self.assertTrue(is_negative_first_line(line))
 
+    def test_positive_words_with_negative_prefixes_pass(self):
+        for line in (
+            "Do notice the changed exit status",
+            "Nevertheless, preserve the original receipt",
+            "Nobody requested a rollback",
+            "Notation remains registered",
+            "Avoidance is a policy label, not a command",
+        ):
+            with self.subTest(line=line):
+                self.assertFalse(is_negative_first_line(line))
+
     def test_action_first_prose_passes(self):
         for line in (
             "Validate the evidence before promotion",

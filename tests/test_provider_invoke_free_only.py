@@ -164,6 +164,8 @@ def test_native_provider_validation_matrix_covers_every_manual_provider_with_fre
     step = next(s for s in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in s.get("run", ""))
     assert "--free-only" in step["run"]
     assert "inference-health-smoke.md" in step["run"]
+    assert "'dispatch_eligible': False" in step["run"]
+    assert "'terms_accepted': 'not_verified'" in step["run"]
     upload = next(s for s in batch["jobs"]["validate"]["steps"] if "upload-artifact" in s.get("uses", ""))
     assert upload["with"]["path"] == "/tmp/receipt.json"
     assert "completion.txt" not in upload["with"]["path"]

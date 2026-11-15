@@ -103,6 +103,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Dependency-phase system | `docs/agentic/README.md` |
 | Credential names inventory | issue #184 (no values) |
 | BIUDL control plane | `docs/architecture/AGENT-TEAM-CONTROL-PLANE.md` |
+| Shared Brain kernel | `brain.rs`, `brain/`, `docs/superpowers/specs/2026-11-15-monorepo-brain-kernel-design.md` |
 | Continuous capability discovery / DoE | `docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md` |
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |

@@ -27,7 +27,8 @@ def build_record(*, experiment_id: str, observed_at: str,
                  candidate_exit_code: int | None,
                  compare_only: bool, repository: str,
                  run_id: str, run_attempt: str,
-                 manager_policy_id: str | None = None) -> dict[str, Any]:
+                 manager_policy_id: str | None = None,
+                 failed_stage: str = "none", failure_reason: str = "") -> dict[str, Any]:
     """Return a schema-v1 record with explicit terminal status and provenance."""
     if not SHA40.fullmatch(baseline_sha) or not SHA40.fullmatch(candidate_sha):
         raise ValueError("baseline_sha and candidate_sha must be resolved 40-hex commit SHAs")
@@ -63,7 +64,9 @@ def build_record(*, experiment_id: str, observed_at: str,
         "metrics": {
             "baseline_exit_code": baseline_exit_code,
             "candidate_exit_code": candidate_exit_code,
-            "run_attempt": int(run_attempt) if str(run_attempt).isdigit() else None
+            "run_attempt": int(run_attempt) if str(run_attempt).isdigit() else None,
+            "failed_stage": failed_stage,
+            "failure_reason": failure_reason[:500] or None
         },
         "provenance": "github",
         "confidence": "low",
@@ -146,7 +149,8 @@ def main() -> int:
         baseline_exit_code=args.baseline_exit,
         candidate_exit_code=args.candidate_exit,
         compare_only=args.compare_only, repository=args.repository,
-        run_id=args.run_id, run_attempt=args.run_attempt
+        run_id=args.run_id, run_attempt=args.run_attempt,
+        failed_stage=args.failed_stage, failure_reason=args.failure_reason
     )
     validate_record(record, args.schema)
     Path(args.output).write_text(

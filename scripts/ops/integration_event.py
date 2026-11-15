@@ -91,7 +91,7 @@ def _reject_sensitive(value: object, path: str = "$") -> None:
     if isinstance(value, dict):
         for key, child in value.items():
             normalized = str(key).lower().replace("-", "_")
-            if normalized in SECRET_KEY_NAMES:
+            if normalized in SECRET_KEY_NAMES or normalized.endswith("_token") or "token" in normalized:
                 raise ValueError(f"sensitive field rejected at {path}.{key}")
             _reject_sensitive(child, f"{path}.{key}")
     elif isinstance(value, list):

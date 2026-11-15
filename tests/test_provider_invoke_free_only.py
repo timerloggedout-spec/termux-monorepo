@@ -27,7 +27,7 @@ def policy_entry(**overrides):
         "no_cost_verified": True, "pricing_source": "https://provider.example/pricing",
         "pricing_verified_at": "2026-11-15T12:00:00Z", "terms_source": "https://provider.example/terms",
         "terms_verified_at": "2026-11-15T12:00:00Z", "capability_source": "https://provider.example/models",
-        "capability_verified_at": "2026-11-15T12:00:00Z", "quota_class": "daily_pool_no_provider_quota",
+        "capability_verified_at": "2026-11-15T12:00:00Z", "capabilities": ["chat_completion"], "quota_class": "daily_pool_no_provider_quota",
         "pool_id": "daily-free-inference", "pool_evidence_ref": "https://provider.example/free-pool"}
     value.update(overrides)
     return value

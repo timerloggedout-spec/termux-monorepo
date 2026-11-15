@@ -155,9 +155,30 @@ def main() -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--max-tokens", type=int, default=300)
     parser.add_argument("--free-only", action="store_true")
+    parser.add_argument("--catalog-only", action="store_true")
     args = parser.parse_args()
     provider = args.provider.lower()
-    verdict = {"provider": provider, "model": args.model, "ok": False,
+    if args.catalog_only:
+        catalog_verdict = {"provider": provider, "models": None, "free_model_count": 0,
+                           "catalog_ok": False, "inference_status": "not_attempted", "diagnosis": None}
+        if provider not in provider_model_catalog.ENDPOINTS:
+            catalog_verdict["diagnosis"] = "no_canonical_model_catalog"
+        else:
+            token, _env_name = provider_model_catalog.resolve_secret(provider)
+            if not token and provider not in provider_model_catalog.PUBLIC_CATALOGS:
+                catalog_verdict["diagnosis"] = "missing_secret"
+            else:
+                try:
+                    models, _headers = provider_model_catalog.poll(provider, token)
+                    catalog_verdict["models"] = len(models)
+                    catalog_verdict["free_model_count"] = sum(1 for model in models if is_verified_no_cost_model(model))
+                    catalog_verdict["catalog_ok"] = bool(models)
+                    catalog_verdict["diagnosis"] = "catalog_ok" if models else "empty_catalog"
+                except Exception as exc:
+                    catalog_verdict["diagnosis"] = "catalog_unavailable_" + type(exc).__name__
+        print("CATALOG_VERDICT", json.dumps(catalog_verdict, sort_keys=True))
+        return 0
+    verdict = {"provider": provider, "model": args.model, "ok": False,    verdict = {"provider": provider, "model": args.model, "ok": False,
                "no_cost_verified": False, "policy_admitted": False,
                "terms_accepted": "not_verified", "entitlement_verified": "not_verified",
                "dispatch_eligible": False, "validation_scope": "policy_gated_no_cost_inference_smoke",

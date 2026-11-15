@@ -45,9 +45,9 @@ def test_population_census_keeps_all_denominators_separate(tmp_path):
     root = fixture_repo(tmp_path)
     report = build_census(root, adapter_counts={
         "catalog_adapters": 95, "native_invoke_adapters": 29,
-        "workflow_menu_choices": 30, "menu_supported_by_native_adapter": 28,
+        "workflow_menu_choices": 31, "menu_supported_by_native_adapter": 29,
         "menu_without_native_adapter": ["felo", "omni"],
-        "native_adapters_not_in_menu": ["ollama"],
+        "native_adapters_not_in_menu": [],
     })
     canonical = report["canonical_population"]
     assert canonical["all_lane_distinct_providers"] == 110
@@ -59,8 +59,8 @@ def test_population_census_keeps_all_denominators_separate(tmp_path):
     assert canonical["inference_availability_records"] == 95
     assert canonical["availability_covered_records"] == 16
     assert canonical["availability_not_covered_records"] == 74
-    assert report["adapter_population"]["workflow_menu_choices"] == 30
-    assert report["adapter_population"]["menu_supported_by_native_adapter"] == 28
+    assert report["adapter_population"]["workflow_menu_choices"] == 31
+    assert report["adapter_population"]["menu_supported_by_native_adapter"] == 29
     assert report["g4f_population"]["catalog_fork_pairs_distinct"] == 4
     assert report["g4f_population"]["universe_pairs_total"] == 8
     assert report["g4f_population"]["historical_probe_inference_ok"] == 2

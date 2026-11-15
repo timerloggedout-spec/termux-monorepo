@@ -48,3 +48,10 @@ Never commit keys. Actions secrets only.
 3. **Monorepo evidence** — digest under `docs/evaluations/approxination/`
 
 BIUDL. Agent-Identity: Grok (Administrator)
+
+
+## Mandatory skill approximation competition
+
+For substantive skill creation or upgrades, compare the incumbent repository skill with a sourced candidate and an independently designed alternative when feasible. Route through `.agents/skills/approxination-lane/SKILL.md`, `.agents/skills/multivariate-doe/SKILL.md`, and `.agents/skills/blind-agent-evaluation/SKILL.md`.
+
+Keep the Approxination Benchmark's A/B/C/D **tool-surface modes** distinct from the **skill implementation candidates** being compared. Use matched tasks, pinned source/task revisions, fixed solver/evaluator settings, randomized or rotated order, blinded evaluation where safe, correctness-first scoring, and replication. If hosted Approxination is unavailable, record an offline comparison and mark formal hosted competition NOT RUN. Search rank/ELO never grants repository promotion authority.

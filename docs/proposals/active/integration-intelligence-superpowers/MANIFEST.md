@@ -13,6 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/integration-intelligence-superpowers
+  - feat/unified-feed-adapter-20261114
 gates_required: [repo-gate, termux-smoke]
 ---
 

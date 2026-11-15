@@ -151,8 +151,13 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
         pool = cadence.get("pool")
         if not isinstance(pool, dict) or not isinstance(pool.get("eligible"), list):
             return [], "cadence_pool_unstamped"
+        if not isinstance(pool.get("eligible"), list):
+            return [], "cadence_pool_unstamped"
         cadence_ids = set(pool["eligible"])
-        if not cadence_ids:
+        probe_ids = pool.get("probe_candidates", [])
+        if not isinstance(probe_ids, list):
+            return [], "cadence_probe_candidates_invalid"
+        if not cadence_ids and not probe_ids:
             return [], "cadence_no_eligible_arms"
     census_by_id = {a["arm_id"]: a for a in census.get("arms", [])}
     eligible = []
@@ -518,6 +523,24 @@ def decide(filings: list[dict], registry: dict, census: dict,
     eligible = eligible_filings(filings)
     arms, census_hold = census_eligible_arms(registry, census, now, cadence)
     ordered = order_arms(arms)
+    # Probe-only candidates are never selectable for dispatch. They are
+    # carried separately by pool-cadence/v1 and used only for one bounded
+    # quota measurement when no fresh quota snapshot exists.
+    probe_ids = set(((cadence or {}).get("pool") or {}).get("probe_candidates", []))
+    census_by_id = {row.get("arm_id"): row for row in census.get("arms", [])}
+    probe_candidates = []
+    for candidate in registry.get("arms", []):
+        if candidate.get("arm_id") not in probe_ids:
+            continue
+        if not candidate.get("selectable") or candidate.get("status") != "eligible":
+            continue
+        row = census_by_id.get(candidate.get("arm_id")) or {}
+        if row.get("verdict") not in ("passed", "eligible"):
+            continue
+        terminal = row.get("quota_terminal") or {}
+        if terminal.get("terminal") and terminal.get("date") == now.date().isoformat():
+            continue
+        probe_candidates.append(candidate)
     generic = [a for a in ordered if a["arm_id"] != "gemini-cli"]
     gemini = [a for a in ordered if a["arm_id"] == "gemini-cli"]
     converted = 0
@@ -588,6 +611,14 @@ def decide(filings: list[dict], registry: dict, census: dict,
                 if unknown:
                     by_id = {a["arm_id"]: a for a in generic + gemini}
                     parm = by_id[unknown["arm"]]
+                elif probe_candidates:
+                    # The cadence producer has already excluded any candidate
+                    # with non-quota blockers. Probe-only candidates are never
+                    # appended to the dispatch-eligible arm list above.
+                    parm = probe_candidates[0]
+                else:
+                    parm = None
+                if parm is not None:
                     probe = {
                         "arm": parm["arm_id"],
                         "bucket_id": bucket_id_for(parm),

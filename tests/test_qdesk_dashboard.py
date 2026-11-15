@@ -6,6 +6,8 @@ def test_qdesk_page_has_required_surfaces():
     for s in ("Overview","Priority","Workers","Routing","Quota consumption","AgenticGantt","GitHub Projects","WagerTome","QDesk"):
         assert s in h
     assert "usage-series.json" in j
+    assert "consumption-series" in h
+    assert "kind" in j and "consumption" in j
 def test_frontend_has_no_write_authority():
     j=(ROOT/"apps/tribute-dashboard/qdesk.js").read_text()
     assert j.count("fetch(")==1

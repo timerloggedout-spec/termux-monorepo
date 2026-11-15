@@ -51,6 +51,11 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
         duplicates = sorted({page_id(name) for name in [p.name for p in pages] if ids.count(page_id(name)) > 1})
         raise ValueError(f"duplicate page unique IDs: {duplicates}")
     for page in pages:
+        # Owner Records has a strict D4 discovery boundary. Its own page code
+        # verifies version-manifest.json; do not inject versioning.js, which
+        # loads shared site navigation and the all-pages version menu.
+        if page.name == "owner-records.html":
+            continue
         html = page.read_text(encoding="utf-8")
         if 'src="./versioning.js"' not in html:
             if "</head>" not in html.lower():

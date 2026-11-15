@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -17,8 +18,12 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
     provider = receipt.get("provider")
     if not isinstance(provider, str) or not provider:
         raise ValueError("receipt_provider_missing")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,63}", experiment_label):
+        raise ValueError("experiment_label_invalid")
     if receipt.get("experiment_label") != experiment_label:
         raise ValueError("receipt_experiment_label_mismatch")
+    if not isinstance(receipt.get("observed_at"), str) or not receipt["observed_at"]:
+        raise ValueError("receipt_timestamp_missing")
     status = receipt.get("validation_status")
     outcome_status = {
         "inference_validated": "completed",
@@ -30,7 +35,7 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
     no_cost = receipt.get("no_cost_verified") is True
     confirmed = True if status == "inference_validated" else (False if status == "failed" else None)
     model = receipt.get("model")
-    diagnosis = str(receipt.get("diagnosis") or "")[:240]
+    diagnosis = str(receipt.get("diagnosis") or "").replace("\\n", " ")[:240]
     return {
         "dispatch_id": f"provider-validation-{run_id}-{run_attempt}-{provider}",
         "ts": receipt.get("observed_at"),

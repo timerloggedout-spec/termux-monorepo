@@ -4,10 +4,12 @@ import unittest
 from pathlib import Path
 
 from scripts.ops.swarm_admission import parse_block, template_identity
+from scripts.integrations.validate_capability_graph import validate_graph
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE = ROOT / "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
 TEMPLATE = ROOT / ".github/ISSUE_TEMPLATE/simulation-rfp.yml"
+GRAPH = ROOT / "docs/integrations/capability-opportunity-graph.json"
 
 
 class SimulationCandidateQueueTests(unittest.TestCase):
@@ -40,6 +42,14 @@ class SimulationCandidateQueueTests(unittest.TestCase):
         self.assertEqual(by_id["langgraph"]["class"], "agent-orchestration-framework")
         self.assertEqual(by_id["temporal"]["class"], "durable-workflow-runtime")
         self.assertEqual(by_id["mirofish"]["class"], "graph-to-simulation-workbench-reference")
+
+    def test_candidate_queue_is_projected_into_ceel_graph(self):
+        graph = json.loads(GRAPH.read_text(encoding="utf-8"))
+        self.assertEqual(validate_graph(graph), [])
+        graph_ids = {node["id"] for node in graph["nodes"]}
+        queue_ids = {item["id"] for item in self.queue["candidates"]}
+        self.assertTrue(queue_ids.issubset(graph_ids))
+        self.assertIn("simulation-intelligence-plane", graph_ids)
 
     def test_issue_template_declares_que_admission_route(self):
         block = parse_block(self.template_text)

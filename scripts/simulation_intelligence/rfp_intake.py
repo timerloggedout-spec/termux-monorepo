@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deterministic, offline SIP RFP intake after QUE admission.
 
-This records a frozen request envelope. It does not run Delphi generation,
+This records a validated, content-hashed request envelope for a later G0 freeze. It does not run Delphi generation,
 admit a DoE campaign, start a simulator, or invoke a model/provider.
 """
 from __future__ import annotations

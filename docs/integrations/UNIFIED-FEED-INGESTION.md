@@ -269,6 +269,10 @@ python3 scripts/ops/integration_event.py record \
 LANE_EVENTS_MIGRATION_DATABASE_URL=<operator-provisioned-migration-url> \
   python3 scripts/ops/integration_event.py schema
 
+LANE_EVENTS_WRITER_DATABASE_URL=<dedicated-writer-url> \
+  python3 scripts/ops/integration_event.py record \
+  --events-file events.jsonl --measurements-file measurements.jsonl
+
 LANE_EVENTS_READONLY_DATABASE_URL=<read-only-url> \
   python3 scripts/ops/integration_event.py count
 python3 -m unittest discover -s tests -p 'test_integration_event_batch.py' -v

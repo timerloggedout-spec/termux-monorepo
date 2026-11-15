@@ -37,11 +37,14 @@ View counts are intentionally omitted because they change and are not needed for
 ## Publication and verification boundary
 
 - YouTube media was already public before this repository work.
-- Site and monorepo changes are proposed through reviewable pull requests.
+- Website PR #51 merged to `main` at `7b094e2d2fe8f203e5db3290360c1df885f331b7`; the gallery was fetched live at `https://timerloggedout-spec.github.io/videos.html` and returned the curated HTML and Markdown alternate.
+- Monorepo PR #5456 merged to `master` at `dacd20c4c57c1e06c292de46674ec56e89498497`; README and Tribute source now contain the featured Short and Publishing reconciliation page.
+- The existing `.github/workflows/tribute-dashboard-deploy.yml` is the canonical cross-repository publisher: it publishes the project hub to `gh-pages`, then mirrors the Tribute and Matrix subtrees into the user-site repository's `main` branch. The post-merge run is tracked at [workflow run 43720388998](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43720388998); its Pages-enable job was still queued at the last inspection.
+- The Tribute Publishing page is merged source but not yet live-verified; its public URL should not be described as deployed until that workflow completes and a fresh URL fetch succeeds.
 - A branch or PR is not a publication. A merge, successful Pages deployment, and live URL verification are separate evidence steps.
 - Keep this change scoped to repository and website promotion; do not upload, edit, pay-promote, or publish a YouTube Community post.
 - Thumbnail links open YouTube; the gallery does not autoplay or embed multiple players.
 
 ## Reconciliation note
 
-The previous single-Short promotion branches were based on older repository tips. The current gallery changes are being rebuilt from current default branches in fresh branches so the publication work is additive and reviewable. Existing branches are not deleted, and no default branch is modified directly.
+The earlier single-Short promotion branches were superseded by the curated gallery and consolidated monorepo PR. The website and monorepo publication changes are merged. Remaining work is deployment verification for the Tribute subtree; no unrelated branch was deleted or rewritten.

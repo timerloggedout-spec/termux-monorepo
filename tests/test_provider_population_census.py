@@ -99,3 +99,34 @@ def test_census_reports_missing_optional_live_sources_as_unavailable(tmp_path):
     assert report["validation_receipts"]["supplied"] is False
     assert report["availability_observation"]["supplied"] is False
     assert report["cadence"]["supplied"] is False
+
+
+
+def test_census_ingests_current_g4f_receipt_without_promoting_dispatch(tmp_path):
+    root = fixture_repo(tmp_path)
+    receipt = write_json(tmp_path, "g4f-inference-smoke.json", {
+        "schema": "g4f-inference-smoke/v1",
+        "observed_at": "2026-11-15T12:00:00Z",
+        "source": "universe",
+        "offset": 200,
+        "limit": 200,
+        "source_population_total": 9588,
+        "attempted": 2,
+        "inference_ok": 1,
+        "providers_ok": ["ProviderA"],
+        "results": [
+            {"provider": "ProviderA", "model": "m1", "inference_ok": True, "error": None},
+            {"provider": "ProviderB", "model": "m2", "inference_ok": False, "error": "TimeoutError"},
+        ],
+        "dispatch_eligible": False,
+        "quota_class": "unclassified",
+    })
+    report = build_census(root, g4f_receipt_path=receipt, adapter_counts={})
+    live = report["g4f_live_validation"]
+    assert live["supplied"] is True
+    assert live["source"] == "universe" and live["offset"] == 200
+    assert live["attempted"] == 2 and live["inference_ok"] == 1
+    assert live["providers_ok_count"] == 1
+    assert live["dispatch_eligible"] == 0
+    assert live["quota_class"] == "unclassified"
+    assert report["g4f_receipt_source"]["sha256"]

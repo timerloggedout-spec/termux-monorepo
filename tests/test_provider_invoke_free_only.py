@@ -138,3 +138,26 @@ def test_free_only_refuses_when_catalog_has_no_verified_no_cost_model(tmp_path, 
     verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
     assert verdict["ok"] is False
     assert verdict["diagnosis"] == "no_verified_no_cost_chat_model"
+
+def test_native_provider_validation_matrix_covers_every_manual_provider_with_free_only_gate():
+    from pathlib import Path
+    import yaml
+
+    root = Path(__file__).resolve().parents[1]
+    single = yaml.safe_load((root / ".github/workflows/provider-invoke.yml").read_text())
+    batch = yaml.safe_load((root / ".github/workflows/provider-inference-validation.yml").read_text())
+    single_events = single.get("on", single.get(True))
+    batch_events = batch.get("on", batch.get(True))
+    expected = set(single_events["workflow_dispatch"]["inputs"]["provider"]["options"])
+    actual = set(batch["jobs"]["validate"]["strategy"]["matrix"]["provider"])
+    assert actual == expected
+    assert len(actual) == 30
+    assert set(batch_events) == {"workflow_dispatch"}
+    assert batch_events["workflow_dispatch"]["inputs"]["experiment_label"]["required"] is True
+    assert batch["jobs"]["validate"]["strategy"]["max-parallel"] == 2
+    step = next(s for s in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in s.get("run", ""))
+    assert "--free-only" in step["run"]
+    assert "inference-health-smoke.md" in step["run"]
+    upload = next(s for s in batch["jobs"]["validate"]["steps"] if "upload-artifact" in s.get("uses", ""))
+    assert upload["with"]["path"] == "/tmp/receipt.json"
+    assert "completion.txt" not in upload["with"]["path"]

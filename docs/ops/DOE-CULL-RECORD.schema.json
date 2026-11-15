@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOE-CULL-RECORD.schema.json",
+  "title": "DoE Participant Cull Cross-Ledger Record",
+  "type": "object",
+  "required": [
+    "schema",
+    "event_id",
+    "participant_id",
+    "culled_at",
+    "reason_ref",
+    "wallet_id",
+    "wallet_balance_at_cull",
+    "wallet_unit",
+    "pool_destination",
+    "royalty_account_ref",
+    "royalty_disposition",
+    "throughput_card_ref",
+    "throughput_snapshot_sha256",
+    "prior_lifecycle_state",
+    "new_lifecycle_state"
+  ],
+  "properties": {
+    "schema": {
+      "const": "doe-participant-cull/v1"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "participant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "culled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reason_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wallet_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wallet_balance_at_cull": {
+      "type": [
+        "integer",
+        "number"
+      ],
+      "minimum": 0
+    },
+    "wallet_unit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pool_destination": {
+      "type": "string",
+      "minLength": 1
+    },
+    "royalty_account_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "royalty_disposition": {
+      "const": "preserve_origin_claims"
+    },
+    "throughput_card_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "throughput_snapshot_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "prior_lifecycle_state": {
+      "enum": [
+        "active",
+        "paused"
+      ]
+    },
+    "new_lifecycle_state": {
+      "const": "culled"
+    }
+  },
+  "additionalProperties": false
+}

@@ -9,7 +9,7 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Focused connector audit:** 2026-11-15. **Registry update:** 2026-11-15. Connector, account, and runtime observations are dated evidence, not a blanket production-readiness claim.
+**Audit performed:** 2026-11-15. **Registry update date:** 2026-11-15. Connector, account, and runtime observations are dated evidence, not a blanket production-readiness claim.
 
 ## Executive status
 

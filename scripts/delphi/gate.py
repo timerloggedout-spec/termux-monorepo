@@ -19,6 +19,7 @@ except ImportError:  # direct script execution keeps the sibling-module path
     from proposal_package import validate_manifest
 
 MAX_PACKAGE_FILES = 25
+MAX_LEDGER_COMMENT_PAGES = 20
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
@@ -700,7 +701,7 @@ def pick_ledger_issue(found: list[dict], title: str) -> int | None:
     return found[0]["number"] if found else None
 
 
-def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
+def comments_newest(gh: GH, number: int, max_pages: int = MAX_LEDGER_COMMENT_PAGES) -> list[dict]:
     """Return canonical issue comments newest-first with a fail-closed page cap.
 
     The per-issue GitHub endpoint supports pagination but not sort/direction
@@ -849,7 +850,8 @@ def _run(args) -> int:
         for issue in issues
     )
     census_calls = max(1, (len(issues) // 100) + 1)
-    estimated_calls_per_rfp = 6 + census_calls + (5 + MAX_PACKAGE_FILES if package_bound else 0)
+    estimated_calls_per_rfp = (6 + census_calls + MAX_LEDGER_COMMENT_PAGES
+                               + (5 + MAX_PACKAGE_FILES if package_bound else 0))
     plan = cadence(registry, readings, len(issues), args.depth,
                    api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "

@@ -15,6 +15,7 @@ It is deliberately parallel to the existing QUE/RFP/Delphi/DoE pipelines. It doe
 - [DESIGN](DESIGN.md) — architecture, trust boundaries, schemas, lifecycle and integration contracts.
 - [ACCEPTANCE](ACCEPTANCE.md) — measurable phase gates and adversarial acceptance tests.
 - [STATUS-AND-FINDINGS](STATUS-AND-FINDINGS.md) — evidence, assumptions, decisions and open questions.
+- [SOURCES-AND-ALTERNATIVES](SOURCES-AND-ALTERNATIVES.md) — upstream references, alternatives, license and dependency compatibility findings.
 
 ## One-sentence concept
 

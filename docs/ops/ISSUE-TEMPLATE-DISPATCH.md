@@ -97,7 +97,7 @@ generic and needs no change:
 
 `apk-cross-reference` · `apk-cross-reference-findings` · `bug` ·
 `data-ingestion` · `delphi-rfp` · `egm-review` · `proposal` ·
-`research-provider` · `research-service` ·
+`research-provider` · `research-service` · `simulation-rfp` ·
 `reverse-engineering-taxonomy` ·
 `reverse-engineering-taxonomy-record` · `target-brief` · `game-development-task`.
 

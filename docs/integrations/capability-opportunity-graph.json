@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "graph_id": "termux-monorepo.ceel.opportunity-graph",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-14",
   "authority": "repository-maintained-capability-index",
   "nodes": [
     {
@@ -500,6 +500,742 @@
         "template",
         "discovery"
       ]
+    },
+    {
+      "id": "mirofish",
+      "kind": "external_platform",
+      "name": "MiroFish",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/666ghj/MiroFish",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.graph.persona",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.ontology.extraction",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.report.generation",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-mirofish-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "AGPL-3.0 — verify pinned commit",
+      "risk_notes": [
+        "AGPL reuse requires review; no source copied."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "mirofish-refactor-fork",
+      "kind": "foss_project",
+      "name": "mj3b/MiroFish refactoring fork",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/mj3b/MiroFish",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.workbench.core",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.resource.adapters",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.composable.tools",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-mirofish-refactor-fork-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "AGPL-3.0 — verify pinned fork commit",
+      "risk_notes": [
+        "Architecture reference only; no fork runtime or source reuse verified."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "camel-ai-oasis",
+      "kind": "external_platform",
+      "name": "CAMEL-AI OASIS",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/camel-ai/oasis",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.social.environment",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.agent.actions",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.platform.dynamics",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-camel-ai-oasis-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "Apache-2.0 — verify pinned release",
+      "risk_notes": [
+        "No package install or live run; pin Python/CAMEL dependencies and bound resources."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "mesa",
+      "kind": "external_platform",
+      "name": "Mesa",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://mesa.readthedocs.io/stable/",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.abm.python",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.model.determinism",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.experiment.collection",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-mesa-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "Apache-2.0 — verify release",
+      "risk_notes": [
+        "Existing DoE authority is pre-screening/observational only, never live evidence."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "repast",
+      "kind": "external_platform",
+      "name": "Repast Suite",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://repast.github.io/",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.abm.scientific",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.abm.distributed",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.abm.python",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-repast-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "verify exact component/version",
+      "risk_notes": [
+        "Research-only; component license and Python/runtime matrix not pinned."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "netlogo",
+      "kind": "external_platform",
+      "name": "NetLogo",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://www.netlogo.org/",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.abm.netlogo",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.abm.headless",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.abm.experiment",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-netlogo-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "verify exact version/component",
+      "risk_notes": [
+        "Existing SFI corpus reference is not runtime adapter evidence."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "sip-deterministic-fake",
+      "kind": "internal_component",
+      "name": "SIP deterministic fake engine",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/rfps/simulation-intelligence-plane/",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.offline.oracle",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.deterministic.replay",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "simulation.contract.validation",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-sip-deterministic-fake-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "repository license",
+      "risk_notes": [
+        "Planned offline baseline; engine implementation not yet claimed."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "langgraph",
+      "kind": "external_platform",
+      "name": "LangGraph",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/langchain-ai/langgraph",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.workflow.graph",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.state.persistence",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.workflow.interrupt",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-langgraph-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "MIT — verify pinned package/dependencies",
+      "risk_notes": [
+        "Existing repository work #5045/#5062/#5085/#5194; reuse, do not duplicate."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "temporal",
+      "kind": "external_platform",
+      "name": "Temporal",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/temporalio/temporal",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "workflow.durable.execution",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "workflow.history.replay",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "workflow.worker.recovery",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-temporal-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "MIT — verify exact components",
+      "risk_notes": [
+        "Existing self-host and prior Oracle RFP #1885 pass recorded; no duplicate RFP."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "autogen",
+      "kind": "external_platform",
+      "name": "Microsoft AutoGen",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/microsoft/autogen",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.multiagent.coordination",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.group.chat",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.tool.execution",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-autogen-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "MIT — verify dependencies",
+      "risk_notes": [
+        "Orchestration comparison only; no in-repo runtime verified."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "crewai",
+      "kind": "external_platform",
+      "name": "CrewAI",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/crewAIInc/crewAI",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.role.task.orchestration",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.flow.persistence",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.tool.policy",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-crewai-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "MIT — verify dependencies",
+      "risk_notes": [
+        "Orchestration comparison only; no in-repo runtime verified."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "openai-agents-sdk",
+      "kind": "external_platform",
+      "name": "OpenAI Agents SDK",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/openai/openai-agents-python",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "agent.handoffs",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.guardrails",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        },
+        {
+          "capability_id": "agent.tool.policy",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-openai-agents-sdk-candidate-queue",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/candidate-queue.json",
+          "notes": "Candidate identity and role are registered; runtime capability and adoption remain unverified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "simulation-intelligence-plane",
+        "doe-family",
+        "ates"
+      ],
+      "license": "MIT — verify dependencies",
+      "risk_notes": [
+        "Orchestration comparison only; no in-repo runtime verified."
+      ],
+      "tags": [
+        "sip-001",
+        "research-candidate"
+      ]
+    },
+    {
+      "id": "simulation-intelligence-plane",
+      "kind": "experiment_family",
+      "name": "Simulation Intelligence Plane (SIP-001)",
+      "lifecycle_state": "proposed",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/rfps/simulation-intelligence-plane/RFP.md",
+        "revision": null,
+        "observed_at": "2026-11-14T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "simulation.reproducible.evidence",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/RFP.md"
+          ]
+        },
+        {
+          "capability_id": "simulation.engine.adapter",
+          "status": "hypothesis",
+          "evidence_refs": [
+            "docs/rfps/simulation-intelligence-plane/DESIGN.md"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "sip-001-rfp",
+          "status": "partial",
+          "reference": "docs/rfps/simulation-intelligence-plane/RFP.md",
+          "notes": "Proposal and contracts exist; runtime adapter and live experiment remain unverified."
+        }
+      ],
+      "owner": "simulation-intelligence-plane",
+      "internal_consumers": [
+        "que",
+        "workflow-contract",
+        "doe-family",
+        "ates",
+        "delphic",
+        "she"
+      ],
+      "risk_notes": [
+        "Not admitted to live DoE; no model/provider calls or public social writes."
+      ],
+      "tags": [
+        "proposal",
+        "research-only"
+      ]
     }
   ],
   "edges": [
@@ -604,6 +1340,258 @@
       "to": "doe-family",
       "relationship": "measures",
       "status": "hypothesis"
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "mirofish",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "mirofish-refactor-fork",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "camel-ai-oasis",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "mesa",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "repast",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "netlogo",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "deterministic-fake",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "langgraph",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "temporal",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "autogen",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "crewai",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "simulation-intelligence-plane",
+      "to": "openai-agents-sdk",
+      "relationship": "consumes",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "mirofish",
+      "to": "camel-ai-oasis",
+      "relationship": "complements",
+      "status": "documented",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "mirofish-refactor-fork",
+      "to": "mirofish",
+      "relationship": "complements",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "mesa",
+      "to": "repast",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "mesa",
+      "to": "netlogo",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "repast",
+      "to": "netlogo",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "langgraph",
+      "to": "autogen",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "langgraph",
+      "to": "crewai",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "langgraph",
+      "to": "openai-agents-sdk",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "autogen",
+      "to": "crewai",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "autogen",
+      "to": "openai-agents-sdk",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "crewai",
+      "to": "openai-agents-sdk",
+      "relationship": "competes_with",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "temporal",
+      "to": "langgraph",
+      "relationship": "complements",
+      "status": "documented",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "sip-deterministic-fake",
+      "to": "camel-ai-oasis",
+      "relationship": "measures",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "sip-deterministic-fake",
+      "to": "mesa",
+      "relationship": "measures",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "sip-deterministic-fake",
+      "to": "repast",
+      "relationship": "measures",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
+    },
+    {
+      "from": "sip-deterministic-fake",
+      "to": "netlogo",
+      "relationship": "measures",
+      "status": "hypothesis",
+      "evidence_refs": [
+        "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+      ]
     }
   ]
 }

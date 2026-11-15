@@ -130,3 +130,10 @@ def test_census_ingests_current_g4f_receipt_without_promoting_dispatch(tmp_path)
     assert live["dispatch_eligible"] == 0
     assert live["quota_class"] == "unclassified"
     assert report["g4f_receipt_source"]["sha256"]
+
+
+def test_timestamp_accepts_annotated_census_date():
+    from scripts.ops.provider_population_census import _timestamp
+    parsed = _timestamp("2026-11-01 (Actions census)")
+    assert parsed is not None
+    assert parsed.isoformat() == "2026-11-01T00:00:00+00:00"

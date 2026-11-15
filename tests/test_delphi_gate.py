@@ -687,6 +687,41 @@ def test_last_ledger_ignores_human_forged_marker_comments():
     }
 
 
+def test_last_ledger_fails_closed_on_newer_provisional_package_award():
+    fence = chr(96) * 3
+    def body(award):
+        payload = {"input_hash": "abc123", "award": award, "effective_score": 10}
+        return gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
+
+    old = {
+        "id": 8123,
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body({
+            "ledger_ref": "github:issue-comment:8123",
+            "package_digest": "a" * 64,
+            "decision": "shadow",
+            "reviewer_login": "reviewer-1",
+        }),
+    }
+    provisional = {
+        "id": 8124,
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body({
+            "package_digest": "b" * 64,
+            "decision": "parked",
+        }),
+    }
+
+    class FakeGH:
+        def req(self, method, path, request_body=None):
+            assert method == "GET"
+            if path.endswith("page=1"):
+                return [old, provisional]  # API's default ascending ID order
+            return []
+
+    assert gate.last_ledger(FakeGH(), 5156) is None
+
+
 def test_review_approval_context_is_part_of_package_input_hash():
     panel, registry, catalog = _load()
     surface = catalog["turso.free"]

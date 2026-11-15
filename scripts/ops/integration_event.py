@@ -57,6 +57,7 @@ SECRET_VALUE_RE = re.compile(
     r"AKIA[0-9A-Z]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)"
 )
 INTEGRATION_RE = re.compile(r"^[a-z0-9][a-z0-9-]{1,63}$")
+ADAPTER_VERSION_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,99}$")
 REPOSITORY_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,64}$")
 EVENT_EXECUTION = {"queued", "running", "succeeded", "failed", "cancelled", "blocked", "unknown"}
@@ -336,6 +337,8 @@ def build_batch_sql(records: list[dict], record_type: str, batch_id: str,
                     adapter_version: str = ADAPTER_VERSION) -> tuple[str, dict]:
     if record_type not in {"event", "measurement"} or not records:
         raise ValueError("record_type must be event/measurement and records must be non-empty")
+    if not isinstance(adapter_version, str) or not ADAPTER_VERSION_RE.fullmatch(adapter_version):
+        raise ValueError("adapter_version must match the safe 1..100 character identifier pattern")
     integration_id = records[0]["integration_id"]
     if any(r["integration_id"] != integration_id for r in records):
         raise ValueError("a batch must contain exactly one integration_id")
@@ -551,8 +554,8 @@ def main(argv: list[str] | None = None) -> int:
             raise ValueError(f"--max-batch-records must be 1..{HARD_MAX_RECORDS}")
         if not 1 <= args.max_batch_bytes <= HARD_MAX_BYTES:
             raise ValueError(f"--max-batch-bytes must be 1..{HARD_MAX_BYTES}")
-        if not args.adapter_version or len(args.adapter_version) > 100:
-            raise ValueError("--adapter-version must be 1..100 characters")
+        if not ADAPTER_VERSION_RE.fullmatch(args.adapter_version):
+            raise ValueError("--adapter-version must match the safe 1..100 character identifier pattern")
 
         events = load_jsonl(args.events_file, validate_event)
         measurements = load_jsonl(args.measurements_file, validate_measurement)

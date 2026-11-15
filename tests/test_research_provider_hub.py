@@ -248,3 +248,42 @@ def test_admission_entry_rejects_duplicate_exact_model(monkeypatch, tmp_path):
     with pytest.raises(providers.ProviderAdmissionError) as exc:
         providers.admission_entry("groq", "llama-3.3-70b-versatile")
     assert exc.value.code == "provider_not_admitted"
+
+
+def activation_entry(**updates):
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    value = entry(
+        no_cost_verified=True,
+        pricing_source="https://provider.example/pricing",
+        pricing_verified_at=now,
+        terms_source="https://provider.example/terms",
+        terms_verified_at=now,
+        capability_source="https://provider.example/models",
+        capability_verified_at=now,
+        quota_class="daily_pool_no_provider_quota",
+        pool_id="daily-free-pool",
+        pool_evidence_ref="https://provider.example/free-pool",
+    )
+    value.update(updates)
+    return value
+
+
+def test_activation_evidence_accepts_daily_pool_without_provider_quota_counter():
+    assert providers.validate_activation_entry(activation_entry()) is None
+
+
+@pytest.mark.parametrize(("updates", "expected"), [
+    ({"no_cost_verified": False}, "policy_no_cost_not_verified"),
+    ({"pricing_source": ""}, "policy_pricing_source_missing"),
+    ({"terms_source": ""}, "policy_terms_source_missing"),
+    ({"capability_verified_at": "not-a-timestamp"}, "policy_capability_verified_at_invalid"),
+    ({"quota_class": "daily_pool_no_provider_quota", "pool_evidence_ref": ""}, "policy_daily_pool_evidence_missing"),
+    ({"quota_class": "provider_quota_backed", "quota_evidence_ref": ""}, "policy_quota_evidence_missing"),
+    ({"quota_class": "quota_not_applicable", "quota_evidence_ref": ""}, "policy_quota_evidence_missing"),
+])
+def test_activation_evidence_rejects_missing_or_invalid_assertions(updates, expected):
+    assert providers.validate_activation_entry(activation_entry(**updates)) == expected
+
+
+def test_unknown_quota_is_not_coerced_to_no_quota():
+    assert providers.validate_activation_entry(activation_entry(quota_class="quota_unknown")) is None

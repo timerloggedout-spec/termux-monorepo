@@ -680,24 +680,25 @@ def pick_ledger_issue(found: list[dict], title: str) -> int | None:
 def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
     """Return canonical issue comments newest-first with a fail-closed page cap.
 
-    GitHub's default comment order is oldest-first. Request descending creation
-    order explicitly so a bounded read can establish the current ledger head.
-    If the configured cap is exhausted on a full page, the latest record is not
-    established and callers must hold rather than trust a potentially stale one.
+    The per-issue GitHub endpoint supports pagination but not sort/direction
+    parameters. Its documented default is ascending comment ID, so collect the
+    complete bounded sequence and reverse it locally before selecting the
+    canonical ledger head. If the cap is exhausted on a full page, the latest
+    record is not established and callers must hold rather than trust stale data.
     """
     all_comments: list[dict] = []
     for page in range(1, max_pages + 1):
         batch = gh.req(
             "GET",
-            f"/issues/{number}/comments?sort=created&direction=desc&per_page=100&page={page}",
+            f"/issues/{number}/comments?per_page=100&page={page}",
         )
         if not isinstance(batch, list):
             raise RuntimeError("Delphi issue comment page is not a list; latest ledger is unverified")
         if not batch:
-            return all_comments
+            return list(reversed(all_comments))
         all_comments.extend(batch)
         if len(batch) < 100:
-            return all_comments
+            return list(reversed(all_comments))
     raise RuntimeError(
         f"Delphi issue comment pagination cap ({max_pages} pages) reached; latest ledger is unverified"
     )

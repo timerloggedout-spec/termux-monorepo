@@ -526,3 +526,74 @@ def test_package_binding_rejects_self_reference_and_truncated_git_tree():
     )
     with pytest.raises(ValueError, match="truncated"):
         gate.verify_issue_package_binding(TruncatedGH(), {"body": body})
+
+
+def test_human_award_reviewer_requires_exact_authenticated_issue_comment():
+    issue = {"number": 5156}
+    trusted = {
+        "DELPHI_REVIEW_ISSUE": "5156",
+        "DELPHI_REVIEWER_LOGIN": "reviewer-1",
+        "DELPHI_REVIEWER_ASSOCIATION": "MEMBER",
+        "DELPHI_REVIEW_COMMENT_BODY": "/delphi approve",
+    }
+    assert gate.authenticated_reviewer_for_issue(issue, trusted) == "reviewer-1"
+    for key, value in (
+        ("DELPHI_REVIEW_ISSUE", "5157"),
+        ("DELPHI_REVIEWER_ASSOCIATION", "CONTRIBUTOR"),
+        ("DELPHI_REVIEW_COMMENT_BODY", "/delphi approve please"),
+        ("DELPHI_REVIEWER_LOGIN", "not a login"),
+    ):
+        altered = dict(trusted, **{key: value})
+        assert gate.authenticated_reviewer_for_issue(issue, altered) is None
+
+
+def test_delphi_ledger_lookup_resolves_only_exact_bot_authored_record():
+    ledger_ref = gate.delphi_ledger_ref(8123)
+    assert ledger_ref == "github:issue-comment:8123"
+    record = {
+        "input_hash": "abc123",
+        "award": {
+            "ledger_ref": ledger_ref,
+            "package_digest": "a" * 64,
+            "decision": "shadow",
+            "reviewer_login": "reviewer-1",
+        },
+    }
+    fence = chr(96) * 3
+    body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(record) + "\n" + fence
+
+    class FakeGH:
+        repo = "timerloggedout-spec/termux-monorepo"
+        def __init__(self, comment):
+            self.comment = comment
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            assert path == "/issues/comments/8123"
+            return self.comment
+
+    valid = {
+        "id": 8123,
+        "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body,
+    }
+    assert gate.lookup_delphi_ledger_record(FakeGH(valid), ledger_ref) == {
+        "ledger_ref": ledger_ref,
+        "package_digest": "a" * 64,
+        "decision": "shadow",
+        "reviewer_login": "reviewer-1",
+    }
+    for mutate in (
+        lambda c: dict(c, id=8124),
+        lambda c: dict(c, user={"type": "User", "login": "reviewer-1"}),
+        lambda c: dict(c, issue_url="https://api.github.com/repos/other/repo/issues/5156"),
+        lambda c: dict(c, body="not a Delphi ledger"),
+    ):
+        assert gate.lookup_delphi_ledger_record(FakeGH(mutate(valid)), ledger_ref) is None
+    assert gate.lookup_delphi_ledger_record(FakeGH(valid), "issue:5156") is None
+
+
+def test_delphi_ledger_ref_rejects_non_positive_or_non_integer_ids():
+    for value in (0, -1, True, "8123"):
+        with pytest.raises(ValueError):
+            gate.delphi_ledger_ref(value)

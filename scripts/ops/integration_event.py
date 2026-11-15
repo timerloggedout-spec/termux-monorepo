@@ -97,7 +97,7 @@ def _reject_sensitive(value: object, path: str = "$") -> None:
         for index, child in enumerate(value):
             _reject_sensitive(child, f"{path}[{index}]")
     elif isinstance(value, str):
-        if "\\x00" in value:
+        if "\x00" in value:
             raise ValueError(f"NUL character rejected at {path}")
         if SECRET_VALUE_RE.search(value):
             raise ValueError(f"secret-shaped value rejected at {path}")

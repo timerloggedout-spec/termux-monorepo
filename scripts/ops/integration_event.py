@@ -301,6 +301,30 @@ def load_jsonl(path: str, validator) -> list[dict]:
     return records
 
 
+def load_batch_metadata(path: str) -> dict:
+    if not path:
+        return {"event": {}, "measurement": {}}
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{path}: invalid batch metadata JSON: {exc}") from exc
+    _keys(data, {"event", "measurement"}, "batch_metadata")
+    result = {"event": {}, "measurement": {}}
+    for record_type, integrations in data.items():
+        if not isinstance(integrations, dict):
+            raise ValueError(f"batch_metadata.{record_type} must be an object")
+        for integration_id, cursors in integrations.items():
+            if not INTEGRATION_RE.fullmatch(integration_id):
+                raise ValueError(f"batch_metadata integration_id is invalid: {integration_id!r}")
+            _keys(cursors, {"cursor_before", "cursor_after"}, f"batch_metadata.{record_type}.{integration_id}")
+            result[record_type][integration_id] = {
+                "cursor_before": validate_cursor(cursors.get("cursor_before"), "cursor_before"),
+                "cursor_after": validate_cursor(cursors.get("cursor_after"), "cursor_after"),
+            }
+    _reject_sensitive(result)
+    return result
+
+
 def group_by_integration(records: list[dict]) -> OrderedDict[str, list[dict]]:
     groups: OrderedDict[str, list[dict]] = OrderedDict()
     for record in records:
@@ -334,11 +358,15 @@ def sql_literal(value: str) -> str:
 
 
 def build_batch_sql(records: list[dict], record_type: str, batch_id: str,
-                    adapter_version: str = ADAPTER_VERSION) -> tuple[str, dict]:
+                    adapter_version: str = ADAPTER_VERSION,
+                    cursor_before: str | None = None,
+                    cursor_after: str | None = None) -> tuple[str, dict]:
     if record_type not in {"event", "measurement"} or not records:
         raise ValueError("record_type must be event/measurement and records must be non-empty")
     if not isinstance(adapter_version, str) or not ADAPTER_VERSION_RE.fullmatch(adapter_version):
         raise ValueError("adapter_version must match the safe 1..100 character identifier pattern")
+    cursor_before = validate_cursor(cursor_before, "cursor_before")
+    cursor_after = validate_cursor(cursor_after, "cursor_after")
     integration_id = records[0]["integration_id"]
     if any(r["integration_id"] != integration_id for r in records):
         raise ValueError("a batch must contain exactly one integration_id")
@@ -409,13 +437,14 @@ WITH inserted AS (
 INSERT INTO integration_ingest_batches (
   batch_id, integration_id, adapter_version, record_type, status,
   records_received, records_inserted, records_duplicates, records_rejected,
-  payload_bytes, payload_sha256, started_at, completed_at
+  payload_bytes, payload_sha256, cursor_before, cursor_after, started_at, completed_at
 )
 SELECT
   {sql_literal(batch_id)}::uuid, {sql_literal(integration_id)},
   {sql_literal(adapter_version)}, {sql_literal(record_type)}, 'emitted',
   {len(records)}, counts.inserted_count, {len(records)} - counts.inserted_count,
-  0, {payload_bytes}, {sql_literal(payload_sha)}, {sql_literal(started_at)}::timestamptz, clock_timestamp()
+  0, {payload_bytes}, {sql_literal(payload_sha)}, {sql_literal(cursor_before)},
+  {sql_literal(cursor_after)}, {sql_literal(started_at)}::timestamptz, clock_timestamp()
 FROM counts
 RETURNING records_inserted::text || '|' || records_duplicates::text;
 """
@@ -430,7 +459,8 @@ RETURNING records_inserted::text || '|' || records_duplicates::text;
         "batch_id": batch_id, "integration_id": integration_id,
         "record_type": record_type, "records_received": len(records),
         "payload_bytes": payload_bytes, "payload_sha256": payload_sha,
-        "started_at": started_at,
+        "started_at": started_at, "cursor_before": cursor_before,
+        "cursor_after": cursor_after,
     }
     return sql, meta
 
@@ -442,22 +472,24 @@ def record_failed_batch(url: str, meta: dict, adapter_version: str,
 INSERT INTO integration_ingest_batches (
   batch_id, integration_id, adapter_version, record_type, status,
   records_received, records_inserted, records_duplicates, records_rejected,
-  payload_bytes, payload_sha256, started_at, completed_at, error_class
+  payload_bytes, payload_sha256, cursor_before, cursor_after, started_at, completed_at, error_class
 ) VALUES (
   {sql_literal(meta["batch_id"])}::uuid, {sql_literal(meta["integration_id"])},
   {sql_literal(adapter_version)}, {sql_literal(meta["record_type"])}, 'failed',
   {meta["records_received"]}, 0, 0, 0, {meta["payload_bytes"]},
-  {sql_literal(meta["payload_sha256"])}, {sql_literal(meta["started_at"])}::timestamptz,
-  clock_timestamp(), {sql_literal(error_class)}
+  {sql_literal(meta["payload_sha256"])}, {sql_literal(meta.get("cursor_before"))}, NULL,
+  {sql_literal(meta["started_at"])}::timestamptz, clock_timestamp(), {sql_literal(error_class)}
 ) ON CONFLICT (batch_id) DO NOTHING;
 """
     lane_event.psql(url, ["-c", sql])
 
 
 def run_batch(url: str, records: list[dict], record_type: str,
-              adapter_version: str = ADAPTER_VERSION) -> dict:
+              adapter_version: str = ADAPTER_VERSION,
+              cursor_before: str | None = None,
+              cursor_after: str | None = None) -> dict:
     batch_id = str(uuid.uuid4())
-    sql, meta = build_batch_sql(records, record_type, batch_id, adapter_version)
+    sql, meta = build_batch_sql(records, record_type, batch_id, adapter_version, cursor_before, cursor_after)
     temp_path = None
     try:
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".sql", delete=False) as handle:
@@ -527,31 +559,63 @@ def resolve_migration_url() -> str | None:
     return os.environ.get("LANE_EVENTS_MIGRATION_DATABASE_URL", "").strip() or None
 
 
-def plan(records: list[dict], max_records: int, max_bytes: int) -> list[dict]:
+def validate_cursor(value: str | None, field: str) -> str | None:
+    if value is None:
+        return None
+    _nonempty(value, field, 512)
+    _reject_sensitive(value)
+    return value
+
+
+def plan(records: list[dict], max_records: int, max_bytes: int,
+         cursor_metadata: dict | None = None) -> list[dict]:
     out = []
-    for integration_id, group in group_by_integration(records).items():
+    cursor_metadata = cursor_metadata or {}
+    groups = group_by_integration(records)
+    unused = set(cursor_metadata) - set(groups)
+    if unused:
+        raise ValueError(f"batch cursor metadata references integrations absent from records: {sorted(unused)}")
+    for integration_id, group in groups.items():
         chunks = chunk_records(group, max_records, max_bytes)
-        out.append({
-            "integration_id": integration_id,
-            "records": len(group),
-            "batches": [
-                {
-                    "records": len(chunk),
-                    "payload_bytes": len(("\n".join(canonical_json(x) for x in chunk) + "\n").encode("utf-8")),
-                }
-                for chunk in chunks
-            ],
-        })
+        cursors = cursor_metadata.get(integration_id, {})
+        before = validate_cursor(cursors.get("cursor_before"), "cursor_before")
+        after = validate_cursor(cursors.get("cursor_after"), "cursor_after")
+        batches = []
+        for index, chunk in enumerate(chunks):
+            batch = {
+                "records": len(chunk),
+                "payload_bytes": len(("\n".join(canonical_json(x) for x in chunk) + "\n").encode("utf-8")),
+            }
+            if index == 0 and before is not None:
+                batch["cursor_before"] = before
+            if index == len(chunks) - 1 and after is not None:
+                batch["cursor_after"] = after
+            batches.append(batch)
+        out.append({"integration_id": integration_id, "records": len(group), "batches": batches})
     return out
 
 
 def ingest(url: str, records: list[dict], record_type: str,
            max_records: int, max_bytes: int,
-           adapter_version: str = ADAPTER_VERSION) -> list[dict]:
+           adapter_version: str = ADAPTER_VERSION,
+           cursor_metadata: dict | None = None) -> list[dict]:
     results = []
-    for group in group_by_integration(records).values():
-        for chunk in chunk_records(group, max_records, max_bytes):
-            results.append(run_batch(url, chunk, record_type, adapter_version))
+    cursor_metadata = cursor_metadata or {}
+    groups = group_by_integration(records)
+    unused = set(cursor_metadata) - set(groups)
+    if unused:
+        raise ValueError(f"batch cursor metadata references integrations absent from records: {sorted(unused)}")
+    for integration_id, group in groups.items():
+        chunks = chunk_records(group, max_records, max_bytes)
+        cursors = cursor_metadata.get(integration_id, {})
+        before = validate_cursor(cursors.get("cursor_before"), "cursor_before")
+        after = validate_cursor(cursors.get("cursor_after"), "cursor_after")
+        for index, chunk in enumerate(chunks):
+            results.append(run_batch(
+                url, chunk, record_type, adapter_version,
+                before if index == 0 else None,
+                after if index == len(chunks) - 1 else None,
+            ))
     return results
 
 
@@ -563,6 +627,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-batch-records", type=int, default=DEFAULT_MAX_RECORDS)
     parser.add_argument("--max-batch-bytes", type=int, default=DEFAULT_MAX_BYTES)
     parser.add_argument("--adapter-version", default=ADAPTER_VERSION)
+    parser.add_argument("--batch-metadata-file", default="", help="JSON cursors keyed by record type and integration_id")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
 
@@ -576,11 +641,12 @@ def main(argv: list[str] | None = None) -> int:
 
         events = load_jsonl(args.events_file, validate_event)
         measurements = load_jsonl(args.measurements_file, validate_measurement)
+        batch_metadata = load_batch_metadata(args.batch_metadata_file)
         if args.command == "record" and args.dry_run:
             print(json.dumps({
                 "status": "validated_dry_run",
-                "events": plan(events, args.max_batch_records, args.max_batch_bytes),
-                "measurements": plan(measurements, args.max_batch_records, args.max_batch_bytes),
+                "events": plan(events, args.max_batch_records, args.max_batch_bytes, batch_metadata["event"]),
+                "measurements": plan(measurements, args.max_batch_records, args.max_batch_bytes, batch_metadata["measurement"]),
             }, sort_keys=True))
             return 0
         if args.command == "record" and not events and not measurements:
@@ -619,8 +685,8 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps({"status": "blocked", "reason": "LANE_EVENTS_WRITER_DATABASE_URL or dedicated integration_ingest role is unavailable"}))
             return 2
 
-        event_receipts = ingest(url, events, "event", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
-        measurement_receipts = ingest(url, measurements, "measurement", args.max_batch_records, args.max_batch_bytes, args.adapter_version)
+        event_receipts = ingest(url, events, "event", args.max_batch_records, args.max_batch_bytes, args.adapter_version, batch_metadata["event"])
+        measurement_receipts = ingest(url, measurements, "measurement", args.max_batch_records, args.max_batch_bytes, args.adapter_version, batch_metadata["measurement"])
         print(json.dumps({
             "status": "emitted",
             "events": {"received": len(events), "batches": event_receipts},

@@ -319,6 +319,26 @@ class GH:
                                   f"retry-after={h.get('retry-after')} on {method} {path.split('?')[0]}") from None
             raise
 
+class ReservedGH:
+    """Proxy that refuses API calls which would consume the shared-token reserve."""
+
+    def __init__(self, gh: GH, remaining: int | None, reserve: int):
+        self._gh, self.remaining, self.reserve = gh, remaining, reserve
+
+    @property
+    def repo(self):
+        return self._gh.repo
+
+    @property
+    def calls(self):
+        return self._gh.calls
+
+    def req(self, method: str, path: str, body=None):
+        if (self.remaining is not None
+                and self.remaining - self._gh.calls - self.reserve < 1):
+            raise RateLimited("shared GITHUB_TOKEN reserve protected before API request")
+        return self._gh.req(method, path, body)
+
 
 def api_remaining(gh: "GH") -> int | None:
     """GET /rate_limit does not count against the limit. None = unreadable (stay neutral)."""
@@ -858,6 +878,12 @@ def _run(args) -> int:
     panel, registry, readings = load(PANEL), load(REGISTRY), load_readings()
     catalog = {s["id"]: s for s in load(SURFACES)["surfaces"]}
     remaining = api_remaining(gh)
+    api_cfg = next((item for item in registry.get("services", [])
+                    if item.get("id") == "github.api.github_token"), {})
+    api_cap = int((api_cfg.get("limit") or 1000)
+                  * (api_cfg.get("planned_use", {}).get("safety", 0.8)))
+    api_reserve = max(100, api_cap // 10)
+    gh = ReservedGH(gh, remaining, api_reserve)
     early = cadence(registry, readings, 1, args.depth, api_remaining=remaining)
     if early["mode"] == "defer_api":
         print(f"::warning::delphi deferred: shared GITHUB_TOKEN remaining={remaining} is inside the reserve; next event or heartbeat resumes")
@@ -892,11 +918,6 @@ def _run(args) -> int:
         return 0
     budget, done, pending = {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}, 0, 0
     verification_attempts = 0
-    api_cfg = next((item for item in registry.get("services", [])
-                    if item.get("id") == "github.api.github_token"), {})
-    api_cap = int((api_cfg.get("limit") or 1000)
-                  * (api_cfg.get("planned_use", {}).get("safety", 0.8)))
-    api_reserve = max(100, api_cap // 10)
     package_verify_call_bound = 5 + MAX_PACKAGE_FILES
     session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
     os.environ["DELPHI_REASON"] = args.reason

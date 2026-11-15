@@ -454,7 +454,14 @@ def authenticated_reviewer_for_issue(issue: dict, env=None) -> str | None:
     event_body = env.get("DELPHI_REVIEW_ISSUE_BODY")
     if not isinstance(event_body, str):
         return None
+    event_title = env.get("DELPHI_REVIEW_ISSUE_TITLE")
+    if not isinstance(event_title, str) or event_title != issue.get("title"):
+        return None
+    # Bind every field consumed by surface_from_issue, not only package identity.
+    # A queued approval must not survive edits to any scoring input.
     binding_fields = (
+        "surface_id", "lane", "free_quota", "reset_and_zone",
+        "auth_from_actions", "lock_in", "failure_modes",
         "proposal_source_ref", "proposal_manifest_ref",
         "proposal_manifest_path", "expected_package_digest",
     )
@@ -463,7 +470,11 @@ def authenticated_reviewer_for_issue(issue: dict, env=None) -> str | None:
     for field in binding_fields:
         event_value = (event_fields.get(field) or "").strip()
         current_value = (current_fields.get(field) or "").strip()
-        if not event_value or event_value != current_value:
+        if event_value != current_value:
+            return None
+    for field in ("proposal_source_ref", "proposal_manifest_ref",
+                  "proposal_manifest_path", "expected_package_digest"):
+        if not (current_fields.get(field) or "").strip():
             return None
     if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
         return None
@@ -835,16 +846,39 @@ def _run(args) -> int:
         print("::notice::delphi deferred: free quotas near cap; waiting for reset or an explicit event")
         return 0
     budget, done, pending = {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}, 0, 0
+    verification_attempts = 0
+    api_cfg = next((item for item in registry.get("services", [])
+                    if item.get("id") == "github.api.github_token"), {})
+    api_cap = int((api_cfg.get("limit") or 1000)
+                  * (api_cfg.get("planned_use", {}).get("safety", 0.8)))
+    api_reserve = max(100, api_cap // 10)
+    package_verify_call_bound = 5 + MAX_PACKAGE_FILES
     session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
     os.environ["DELPHI_REASON"] = args.reason
     summary, board = [], []
     try:
         for issue in sorted(issues, key=lambda i: (i["number"] != review_target, i["number"])):
             s = surface_from_issue(issue, catalog)
-            if done >= plan["max_rfps_per_run"]:
+            # Count every admitted verification attempt, including unchanged and held
+            # packages. The scoring counter below advances only when a new award is
+            # written and therefore cannot safely enforce the API verification budget.
+            if verification_attempts >= plan["max_rfps_per_run"]:
                 pending += 1
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 continue
+            fields = parse_form(issue.get("body", ""))
+            issue_package_bound = any(
+                (fields.get(field) or "").strip()
+                for field in ("proposal_source_ref", "proposal_manifest_ref",
+                              "proposal_manifest_path", "expected_package_digest")
+            )
+            if (issue_package_bound and remaining is not None
+                    and remaining - gh.calls - api_reserve < package_verify_call_bound):
+                pending += 1
+                board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
+                print(f"::warning::Delphi package verification deferred for #{issue['number']}: shared API reserve protected")
+                continue
+            verification_attempts += 1
             try:
                 try:
                     package_binding = verify_issue_package_binding(gh, issue)
@@ -856,7 +890,17 @@ def _run(args) -> int:
                     print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
                     continue
                 base_ih = input_hash(s, roles, registry, readings, package_binding)
-                prev = last_ledger(gh, issue["number"])
+                try:
+                    prev = last_ledger(gh, issue["number"])
+                except RuntimeError as exc:
+                    # An incomplete comment census makes the ledger head unknown.
+                    # Hold this issue only; preserve the rest of the sweep.
+                    pending += 1
+                    summary.append(f"#{issue['number']} {s['id']}: HELD ledger pagination")
+                    board.append({"number": issue["number"], "surface": s["id"],
+                                  "effective": None, "decision": "pending"})
+                    print(f"::warning::Delphi ledger HELD for #{issue['number']}: {exc}")
+                    continue
                 reviewer = authenticated_reviewer_for_issue(issue) if package_binding is not None else None
                 if package_binding is not None:
                     package_author = package_binding.get("package_author", "")

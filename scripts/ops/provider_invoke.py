@@ -9,7 +9,6 @@ It makes at most one bounded health completion, with no paid or model fallback.
 from __future__ import annotations
 
 import argparse
-import datetime as dt
 import json
 import os
 import sys
@@ -86,35 +85,6 @@ def select_free_chat_model(models: list[dict], requested_model: str | None = Non
     if requested_model is not None:
         return requested_model if requested_model in eligible else None
     return eligible[0] if eligible else None
-
-def _policy_evidence_issue(entry: dict) -> str | None:
-    if entry.get("no_cost_verified") is not True:
-        return "policy_no_cost_not_verified"
-    for key in ("pricing_source", "terms_source", "capability_source"):
-        value = entry.get(key)
-        if not isinstance(value, str) or not value.startswith("https://"):
-            return f"policy_{key}_missing"
-    for key in ("pricing_verified_at", "terms_verified_at", "capability_verified_at"):
-        value = entry.get(key)
-        if not isinstance(value, str):
-            return f"policy_{key}_missing"
-        try:
-            parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
-        except ValueError:
-            return f"policy_{key}_invalid"
-        if parsed.tzinfo is None or parsed > dt.datetime.now(dt.timezone.utc):
-            return f"policy_{key}_invalid"
-    quota_class = entry.get("quota_class")
-    allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
-    if quota_class not in allowed:
-        return "policy_quota_class_missing"
-    if quota_class == "daily_pool_no_provider_quota":
-        if not entry.get("pool_id") or not str(entry.get("pool_evidence_ref", "")).startswith("https://"):
-            return "policy_daily_pool_evidence_missing"
-    if quota_class in {"provider_quota_backed", "quota_not_applicable"}:
-        if not str(entry.get("quota_evidence_ref", "")).startswith("https://"):
-            return "policy_quota_evidence_missing"
-    return None
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -207,7 +177,7 @@ def main() -> int:
         "model_pricing_classification": selected_row.get("pricing_classification"),
         "model_access_classification": selected_row.get("access_classification"),
     })
-    policy_issue = _policy_evidence_issue(entry)
+    policy_issue = research_providers.validate_activation_entry(entry)
     if policy_issue:
         verdict["diagnosis"] = policy_issue
         return finish()

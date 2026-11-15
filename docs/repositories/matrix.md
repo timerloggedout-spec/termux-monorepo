@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-14T11:36:06.277207Z`
+Observed: `2026-11-15T11:59:12.864195Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-11-14T11:36:06.277207Z`
 
 ## Changes since previous snapshot
 
-- **Added (71):** `0xshubhs/SWARM`, `1SHAMAY1/CORTEX`, `Abhinesh2004/mirage-cortex`, `Aerovity/HyperSwarm---Trading-Multi-Agent-System`, `AnukritiAi-hq/anukriti-swarm`, `CellSimulationLabs/bsim`, `DunngenMaster/swarms-AI-crisis-management-flow`, `Dynamical-Systems-Laboratory/NR-ABM-population`, `ERC-BPGC/swarmbots`, `EcosystemNetwork/SwarmTrade`, `ErgodicEntropy/Rat-Utopia-simulation`, `IShielDI/AlphaSwarm`, `KeshavCracks/VibeTrading`, `Kromtec/Vivarium`, `Munharis14/TradingSwarm`, `MySwarmbots/Swarmbots`, `NVIDIA-NeMo/UserSim`, `PizzaHi5/flock_it`, `STOKES-DOT/Multi-Agent-Swarm`, `SimarcLabs/pybullet-swarm-sim`, `Sohebdsa/AgentsTrading`, `Swarm-Squad/Swarm-Squad`, `SwarmXdev/swarmx-api`, `The-Swarm-Corporation/AutoHedge`, `The-Swarm-Corporation/ForexTreeSwarm`, `The-Swarm-Corporation/HTX-Swarm`, `The-Swarm-Corporation/automated-crypto-fund`, `TheSnowGuru/Market-Swarm-Agents-`, `UmbertoGostoli/Lone-Parents-Model`, `XandlerQ/Aviary`, `alevani/master_project`, `bbengfort/swarm-simulator`, `ccapontep/Multi-Agent_Swarm_Collective-Decision-Making`, `chengsshi/game`, `dakshjain-1616/Stock-trading-Agent-Swarm`, `dorucioclea/AskEliraTrader`, `eli5-claw/ruflo-crypto-swarm`, `fintools-ai/trade-copilot-agent-swarm`, `framerslab/paracosm`, `habeneyasu/afrigate`, `henkb1987/CityEconomy`, `holdrfoldr/swarm-trading-api`, `i-m-iron-man/abmax`, `iamdflame/chorus`, `irawinder/EpiSim`, `israelgonzalezb/Swarm-Adversarial-Collection`, `ivarfresh/Interaction_LLMs`, `jaimasih05-commits/swarm-foraging-qlearn`, `jayclim/InvestBot`, `jery04/Population-Simulation`, `jmanhype/claude-code-plugin-marketplace`, `kennyderek/adap`, `lemo1bot/monad-swarm`, `naiplawan/swarm-fish`, `nhcarter/tiger_abm`, `oathe-ai/oathfish`, `oztalha/Population-Synthesis`, `plewczynski/cog-abm`, `qwerty35/swarm_simulator`, `redactedCHAD/poly-predict`, `sethkarten/LLM-Economist`, `srotzin/hive-swarm-trader`, `steveprovip/he_thong_da_tac_tu`, `swarm-ai-research/swarm`, `swarm-workflows/swarm-agents-llms`, `timerloggedout-spec/MergeEarn_fork`, `tjcrowley/swarmtrade`, `uofs-simlab/flood_abm`, `visionKinger/trading-agents-swarm`, `zhound420/swarm-trader`, `zijunwa/swarm-control`
-- **Removed (3):** `credkellar/Commit`, `credkellar/iOS-Termux`, `timerloggedout-spec/MergeEarn`
-- **Provenance changed (5):** `credkellar/OSx` (starred, watching → watching), `frappe/gantt` (starred → issue, starred), `gravitee-io/gravitee-api-management` (starred → issue, starred), `timerloggedout-spec/machine-learning-for-trading_fork` (owned → owned, starred), `timerloggedout-spec/termux-monorepo` (owned, starred → issue, owned, starred)
+- **Added (0):** —
+- **Removed (1):** `AnukritiAi-hq/anukriti-swarm`
+- **Provenance changed (0):** —
 
 ## Owned
 
@@ -796,7 +796,6 @@ Observed: `2026-11-14T11:36:06.277207Z`
 | [alvinunreal/oh-my-opencode-slim](https://github.com/alvinunreal/oh-my-opencode-slim) | starred | agent | medium | — |
 | [anomalyco/opencode](https://github.com/anomalyco/opencode) | starred | agent | medium | — |
 | [anthropics/skills](https://github.com/anthropics/skills) | starred | agent | medium | — |
-| [AnukritiAi-hq/anukriti-swarm](https://github.com/AnukritiAi-hq/anukriti-swarm) | starred | agent | medium | — |
 | [augmentcode/augment-agent](https://github.com/augmentcode/augment-agent) | starred | agent | medium | — |
 | [Azure-Samples/Cognitive-Speech-TTS](https://github.com/Azure-Samples/Cognitive-Speech-TTS) | starred | agent | medium | dependency-candidate |
 | [baresip/baresip](https://github.com/baresip/baresip) | starred, watching | agent | medium | — |
@@ -1067,7 +1066,7 @@ Observed: `2026-11-14T11:36:06.277207Z`
 | [RightNow-AI/openfang](https://github.com/RightNow-AI/openfang) | starred | agent, ai | medium | dependency-candidate |
 | [rivet-dev/agentos](https://github.com/rivet-dev/agentos) | starred, watching | agent, ai | medium | — |
 | [rui05-peng/my-awesome-automation](https://github.com/rui05-peng/my-awesome-automation) | starred | agent, ai | medium | workflow-candidate |
-| [ruvnet/ruv-FANN](https://github.com/ruvnet/ruv-FANN) | starred | agent, ai | medium | dependency-candidate |
+| [ruvnet/ruv-FANN](https://github.com/ruvnet/ruv-FANN) | starred | agent, ai | medium | — |
 | [samugit83/AgentGraphMachine](https://github.com/samugit83/AgentGraphMachine) | starred, watching | agent, ai | medium | workflow-candidate |
 | [sarbarshem/grok-bot-3d-campus](https://github.com/sarbarshem/grok-bot-3d-campus) | starred | agent, ai | medium | — |
 | [sbhavani/jules-app](https://github.com/sbhavani/jules-app) | starred | agent, ai | medium | — |
@@ -5800,7 +5799,6 @@ Observed: `2026-11-14T11:36:06.277207Z`
 | [Orkas-AI/Orkas](https://github.com/Orkas-AI/Orkas) | starred | agent, ai | medium | workflow-candidate |
 | [RightNow-AI/openfang](https://github.com/RightNow-AI/openfang) | starred | agent, ai | medium | dependency-candidate |
 | [rui05-peng/my-awesome-automation](https://github.com/rui05-peng/my-awesome-automation) | starred | agent, ai | medium | workflow-candidate |
-| [ruvnet/ruv-FANN](https://github.com/ruvnet/ruv-FANN) | starred | agent, ai | medium | dependency-candidate |
 | [samugit83/AgentGraphMachine](https://github.com/samugit83/AgentGraphMachine) | starred, watching | agent, ai | medium | workflow-candidate |
 | [Scarmonit/antigravity-jules-orchestration](https://github.com/Scarmonit/antigravity-jules-orchestration) | starred | agent, ai | medium | workflow-candidate |
 | [sendaifun/solana-agent-kit](https://github.com/sendaifun/solana-agent-kit) | starred | agent, ai | medium | — |

@@ -2,10 +2,31 @@
 import io
 import json
 import os
+import subprocess
+import pytest
 from pathlib import Path
 
 from scripts.model_selection_market.market import MarketGraph, BetEntry, TradingCard
 from scripts.model_selection_market.paper_wallet import write_csv
+from scripts.ci.research_paper_receipt import receipt
+
+
+
+def test_receipt_refuses_dirty_worktree_including_untracked_files(tmp_path):
+    root = tmp_path / 'repo'
+    root.mkdir()
+    subprocess.run(['git', 'init', str(root)], check=True, capture_output=True)
+    subprocess.run(['git', '-C', str(root), 'config', 'user.email', 'fixture@example.invalid'], check=True)
+    subprocess.run(['git', '-C', str(root), 'config', 'user.name', 'Fixture'], check=True)
+    tracked = root / 'tracked.txt'
+    tracked.write_text('baseline\\n')
+    subprocess.run(['git', '-C', str(root), 'add', 'tracked.txt'], check=True)
+    subprocess.run(['git', '-C', str(root), 'commit', '-m', 'fixture'], check=True, capture_output=True)
+    with pytest.raises(ValueError, match='working tree must be clean'):
+        receipt(root, [])
+    (root / 'untracked.txt').write_text('untracked\\n')
+    with pytest.raises(ValueError, match='working tree must be clean'):
+        receipt(root, [])
 
 
 def test_four_scope_lifecycle_has_one_authority_and_rebuildable_csv(tmp_path):

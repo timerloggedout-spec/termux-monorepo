@@ -61,6 +61,14 @@ The census has a 100-page safety cap. A full final page at the cap is an incompl
 
 Package-bound RFPs pin two immutable commits. `proposal_manifest_ref` is the commit containing the manifest file; `proposal_source_ref` is the source snapshot recorded inside that manifest and used to retrieve every inventoried artifact. These refs are intentionally distinct because a manifest committed after its source snapshot cannot exist at the source commit it records. The gate verifies the manifest digest and each inventoried file against the appropriate pinned ref. It also checks complete Git tree metadata for both refs and accepts only regular non-executable blobs, rejecting symlinks, submodules, executable files and truncated trees before reading package bytes. Partial bindings and any mismatch are held; held RFPs remain visible on the results board as pending.
 
+## QD-039 human review and canonical award reference
+
+A Delphi rubric result is an advisory score, not independent human approval. For a package-bound RFP, a trusted repository collaborator must add the exact issue comment `/delphi approve`. The workflow passes the authenticated GitHub comment actor, association and issue number to the gate; the gate accepts only OWNER, MEMBER or COLLABORATOR associations, only for that same issue, and rejects a reviewer whose login matches the manifest's package author.
+
+The gate first creates the ledger comment to obtain its immutable GitHub comment ID, then patches that same comment to include `ledger_ref=github:issue-comment:<id>`, the verified package digest, decision, reviewer login and the scored-input hash. If the patch does not complete, the reference cannot resolve and QDesk must hold the packet. A later scheduled run preserves the review only while both the package digest and the exact scored-input hash remain unchanged; a changed package or changed scoring inputs requires a fresh approval.
+
+QDesk can resolve the reference with `gate.lookup_delphi_ledger_record`. The resolver fetches that exact comment through the authenticated GitHub API and requires the expected repository issue URL, the `github-actions[bot]` author, the Delphi ledger marker, a valid JSON payload and a self-matching comment ID. This is an API-backed append-only ledger reference, not a cryptographic signature or proof of a live QDesk caller. QDesk must still provide authenticated package-author and reviewer principals and call its authorization guard before packet creation. The repository currently contains the guard and resolver contracts; a production QDesk packet-creation caller is still an integration dependency.
+
 ## Idempotency and storage
 
 - One concurrency group; each run processes all open RFPs and skips any whose input hash (surface facts + role weights + registry entry + live readings) matches its last ledger comment.

@@ -125,6 +125,36 @@ def _load_availability(path: Path | None) -> dict[str, Any]:
             "observed_at": value.get("observed_at")}
 
 
+def _load_g4f_receipt(path: Path | None, now: dt.datetime) -> dict[str, Any]:
+    value = _read_json(path) if path else None
+    if value is None or value.get("schema") != "g4f-inference-smoke/v1":
+        return {"supplied": False, "attempted": None, "inference_ok": None,
+                "providers_ok": None, "observed_at": None, "age_hours": None,
+                "dispatch_eligible": 0, "quota_class": "unclassified"}
+    rows = value.get("results") if isinstance(value.get("results"), list) else []
+    errors = Counter(str(x.get("error") or "none") for x in rows if isinstance(x, dict))
+    attempted = value.get("attempted", len(rows))
+    inference_ok = value.get("inference_ok", sum(x.get("inference_ok") is True for x in rows if isinstance(x, dict)))
+    providers_ok = value.get("providers_ok") if isinstance(value.get("providers_ok"), list) else []
+    return {
+        "supplied": True,
+        "schema": value.get("schema"),
+        "source": value.get("source"),
+        "offset": value.get("offset"),
+        "limit": value.get("limit"),
+        "source_population_total": value.get("source_population_total"),
+        "attempted": attempted,
+        "inference_ok": inference_ok,
+        "success_rate": round(inference_ok / attempted, 4) if isinstance(attempted, int) and attempted > 0 and isinstance(inference_ok, int) else None,
+        "providers_ok_count": len(providers_ok),
+        "error_classes": dict(errors),
+        "observed_at": value.get("observed_at"),
+        "age_hours": _age_hours(value.get("observed_at"), now),
+        "dispatch_eligible": 0,
+        "quota_class": "unclassified",
+    }
+
+
 def _load_cadence(path: Path | None, now: dt.datetime) -> dict[str, Any]:
     value = _read_json(path) if path else None
     if value is None:
@@ -139,7 +169,8 @@ def _load_cadence(path: Path | None, now: dt.datetime) -> dict[str, Any]:
 
 def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
                  receipts_dir: Path | None = None, availability_path: Path | None = None,
-                 cadence_path: Path | None = None, now: dt.datetime | None = None,
+                 cadence_path: Path | None = None, g4f_receipt_path: Path | None = None,
+                 now: dt.datetime | None = None,
                  adapter_counts: dict[str, Any] | None = None) -> dict[str, Any]:
     now = now or dt.datetime.now(dt.timezone.utc)
     paths = {
@@ -263,6 +294,7 @@ def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
         "validation_receipts": _load_receipts(receipts_dir),
         "availability_observation": _load_availability(availability_path),
         "cadence": _load_cadence(cadence_path, now),
+        "g4f_live_validation": _load_g4f_receipt(g4f_receipt_path, now),
         "sources": {name: {"path": str(path.relative_to(repo_root)), **_digest(path)} for name, path in paths.items()},
     }
     result["status"] = "complete_inventory" if all(docs.get(k) is not None for k in ("desk_feed", "quota_registry", "g4f_catalog", "g4f_universe", "g4f_working_probe", "build_arms", "arm_census")) else "partial_inventory"
@@ -276,10 +308,12 @@ def main() -> int:
     parser.add_argument("--receipts-dir", type=Path)
     parser.add_argument("--availability", type=Path)
     parser.add_argument("--cadence", type=Path)
+    parser.add_argument("--g4f-receipt", type=Path)
     parser.add_argument("--out", type=Path, default=Path("-"))
     args = parser.parse_args()
     report = build_census(args.repo_root, policy_path=args.policy, receipts_dir=args.receipts_dir,
-                          availability_path=args.availability, cadence_path=args.cadence)
+                          availability_path=args.availability, cadence_path=args.cadence,
+                          g4f_receipt_path=args.g4f_receipt)
     payload = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if str(args.out) == "-":
         print(payload, end="")

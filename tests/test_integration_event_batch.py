@@ -199,14 +199,18 @@ class IntegrationEventBatchTests(unittest.TestCase):
     def test_failed_database_batch_writes_metadata_only_receipt(self):
         with patch.object(ie.lane_event, "psql", side_effect=[RuntimeError("connection detail"), ""]) as mocked:
             with self.assertRaisesRegex(RuntimeError, "connection detail"):
-                ie.run_batch("postgresql://redacted", [dict(MEASUREMENT)], "measurement")
+                ie.run_batch("postgresql://redacted", [dict(MEASUREMENT)], "measurement",
+                             cursor_before="page-004", cursor_after="page-005")
         self.assertEqual(mocked.call_count, 2)
         failure_sql = mocked.call_args_list[1].args[1][1]
         self.assertIn("'failed'", failure_sql)
         self.assertIn("'RuntimeError'", failure_sql)
         self.assertNotIn("connection detail", failure_sql)
+        self.assertIn("cursor_before", failure_sql)
+        self.assertIn("'page-004'", failure_sql)
         self.assertIn("cursor_after", failure_sql)
         self.assertIn("NULL", failure_sql)
+        self.assertNotIn("page-005", failure_sql)
 
     def test_legacy_database_url_is_never_used_as_writer_credential(self):
         with patch.dict(os.environ, {"LANE_EVENTS_DATABASE_URL": "postgresql://legacy-owner"}, clear=True):

@@ -1,21 +1,7 @@
 name: QUE Inference Contracts
 
 on:
-  push:
-    branches:
-      - feat/que-free-inference-validation-5454
-    paths:
-      - 'scripts/ops/provider_invoke.py'
-      - 'scripts/provider_availability_probe.py'
-      - 'scripts/ops/auto_quota_cadence.py'
-      - 'scripts/ops/dispatch_executor.py'
-      - 'tests/test_provider_invoke_free_only.py'
-      - 'tests/test_provider_availability_probe.py'
-      - 'tests/test_auto_quota_cadence.py'
-      - 'tests/test_dispatch_executor.py'
-      - 'tests/test_dispatch_executor_workflow.py'
-      - '.github/workflows/provider-invoke.yml'
-      - '.github/workflows/dispatch-executor.yml'
+
   pull_request:
     paths:
       - 'scripts/ops/provider_invoke.py'

@@ -144,3 +144,25 @@ The brain/ crate is a thin facade over root brain.rs, allowing other Rust crates
 ## Promotion boundary
 
 The kernel is committed and remotely tested as a standalone crate. That does not imply the Python orchestrators have been switched to it. A later adapter/integration item must demonstrate protocol parity and task-outcome benefit before existing execution paths are redirected.
+
+## Research references
+
+### Internal monorepo sources
+
+- [Python orchestration entrypoint](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/src/orchestrator.py)
+- [Agent manager](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/llm_map/manager_agent.py)
+- [Task dispatcher](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/workspace/llm_map/dispatch_task.py)
+- [Decision-engine comparison](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/decision_engines.py)
+- [Orchestration contracts](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ORCHESTRATION-CONTRACTS.md)
+- [Polyglot acceleration contract](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md)
+- [Agent compute-engine comparison](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md)
+
+### External projects
+
+- [AgentincOS Native — seven-stage brain engine](https://github.com/timerloggedout-spec/AgentincOS-Native_fork/blob/main/src/lib/brain-engine.ts)
+- [JARVIS Cognitive OS](https://github.com/oguzemirtopuz/JARVIS-Cognitive-OS)
+- [BLADE — Rust brain/context implementation](https://github.com/sb-arnav/BLADE)
+- [brainctl — persistent-memory architecture](https://github.com/TSchonleber/brainctl/blob/main/ARCHITECTURE.md)
+- [Tended — local-first knowledge and coordination hub](https://github.com/misabegovic/tended)
+- [Rig — Rust agent framework concepts](https://rig.rs/docs/concepts/)
+- [LangGraph — stateful agent orchestration](https://docs.langchain.com/oss/python/langgraph/overview)

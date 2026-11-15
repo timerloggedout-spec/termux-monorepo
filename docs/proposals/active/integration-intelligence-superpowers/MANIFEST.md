@@ -24,6 +24,10 @@ Establish a repository-native Integration Intelligence foundation and make the S
 
 This is a documentation-and-contract foundation. It does not claim that external providers are authenticated, that adapters are implemented, or that any provider is a source of truth.
 
+## Operator amendment — 2026-11-14
+
+The operator explicitly directed consolidation of the repository's many dashboard feeds around one adapter and database contract, with high-throughput ingestion discipline and multiple presentation lanes. This amendment adds IIS-002 through IIS-005. The first implementation slice is restricted to the existing Neon `lane-events` project and its existing credentials; it does not create a second database, scheduler, source registry, or merge authority. Existing source ledgers remain authoritative and feed surfaces remain projections.
+
 ## Boundaries
 
 - Repository policy in `CLAUDE.md`, proposal lifecycle, dual gates, and human-only permission edges remain authoritative.

@@ -63,8 +63,8 @@ def test_explicit_model_must_match_an_exact_verified_no_cost_chat_model():
 
 
 def test_daily_pool_policy_requires_pool_evidence():
-    assert invoke._policy_evidence_issue(policy_entry()) is None
-    assert invoke._policy_evidence_issue(policy_entry(pool_evidence_ref="")) == "policy_daily_pool_evidence_missing"
+    assert research_providers.validate_activation_entry(policy_entry()) is None
+    assert research_providers.validate_activation_entry(policy_entry(pool_evidence_ref="")) == "policy_daily_pool_evidence_missing"
 
 
 def test_provider_invoke_workflow_defaults_to_policy_gated_free_only():

@@ -153,6 +153,11 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("INSERT INTO integration_ingest_batches", sql)
         self.assertIn("'page-004'", sql)
         self.assertIn("'page-005'", sql)
+        self.assertIn("pg_advisory_xact_lock(hashtextextended(", sql)
+        self.assertIn("FROM integration_latest_cursors", sql)
+        self.assertIn("IS DISTINCT FROM 'page-004'", sql)
+        self.assertIn("IS DISTINCT FROM 'page-005'", sql)
+        self.assertIn("integration_cursor_conflict", sql)
         self.assertIn("COMMIT;", sql)
         self.assertEqual(meta["record_type"], "measurement")
         self.assertEqual(meta["cursor_after"], "page-005")
@@ -175,6 +180,12 @@ class IntegrationEventBatchTests(unittest.TestCase):
                       cursor_metadata=cursors)
         self.assertEqual(run.call_args_list[0].args[4:], ("page-004", None))
         self.assertEqual(run.call_args_list[1].args[4:], (None, "page-005"))
+
+    def test_cursor_guard_is_omitted_without_cursor_advance(self):
+        sql, _ = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()),
+                                    cursor_before="page-004")
+        self.assertNotIn("pg_advisory_xact_lock", sql)
+        self.assertNotIn("integration_cursor_conflict", sql)
 
     def test_batch_metadata_rejects_secret_shaped_cursor(self):
         with tempfile.TemporaryDirectory() as tmp:

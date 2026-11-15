@@ -1,5 +1,8 @@
 # TERMUX MONOREPO
 
+> **Latest public update:** [Releases are dropping soon. Find your place(s).](https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML) · [Browse the LoggedOut Timer video & demo library](https://timerloggedout-spec.github.io/videos.html).
+
+
 <img src="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/profile-registry/assets/builder-avatar-1337.webp" />
 
 ```

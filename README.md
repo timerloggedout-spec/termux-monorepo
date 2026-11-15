@@ -1,5 +1,10 @@
 # TERMUX MONOREPO
 
+<p align="center"><a href="https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML"><img src="https://i.ytimg.com/vi/i0FusuYuRUs/maxres2.jpg?sqp=-oaymwEoCIAKENAF8quKqQMcGADwAQH4Ac4FgAKACooCDAgAEAEYOCAiKH8wDw==&rs=AOn4CLAek2rVb4PaZqjPVT7-jRwQu2XKXQ" alt="Watch the latest LoggedOut Timer YouTube Short: Releases dropping soon — find your place(s)." width="480"></a></p>
+
+<p align="center"><strong>📺 LATEST PUBLIC SHORT · NOV 14, 2026</strong><br><a href="https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML">Releases are dropping soon — find your place(s). Watch now →</a></p>
+
+
 <img src="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/profile-registry/assets/builder-avatar-1337.webp" />
 
 ```

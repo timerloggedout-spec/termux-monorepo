@@ -38,7 +38,8 @@ function harness(initialEnvelope = canonical) {
     getElementById: get,
     addEventListener(type, callback) { documentHandlers.set(type, callback); }
   };
-  const window = { location: { search: "" }, setInterval() { return 1; } };
+  const opened = [];
+  const window = { location: { search: "" }, setInterval() { return 1; }, open(...args) { opened.push(args); } };
   const fetch = async url => {
     if (failFetch) return { ok: false, status: 503, json: async () => ({}) };
     if (url === "./version-manifest.json") return { ok: true, json: async () => clone(manifest) };
@@ -52,6 +53,7 @@ function harness(initialEnvelope = canonical) {
   }, { filename: "owner-records.html" });
   return {
     get,
+    opened,
     async ready() { await tick(); await tick(); },
     setEnvelope(value) { currentEnvelope = clone(value); },
     setFetchFailure(value) { failFetch = value; },
@@ -90,6 +92,25 @@ test("searches and combines class and state filters, then clears them", async ()
   assert.match(app.get("results-count").textContent, /across 1 class/);
   app.get("clear-filters").dispatch("click");
   assert.match(app.get("results-count").textContent, /of \d+ records across 5 classes/);
+});
+
+
+test("opens validated relative source links in a separate safe context", async () => {
+  const app = harness();
+  await app.ready();
+  const cls = canonical.classes.find(item => item.records.length > 0);
+  const record = cls.records[0];
+  let prevented = false;
+  const link = { getAttribute(name) { return name === "data-source-path" ? record.source.path : null; } };
+  app.get("classes").dispatch("click", {
+    target: { closest(selector) { return selector === 'a[data-source-path]' ? link : null; } },
+    preventDefault() { prevented = true; }
+  });
+  assert.equal(prevented, true);
+  assert.equal(app.opened.length, 1);
+  assert.match(app.opened[0][0], /^https:\/\/github\.com\/timerloggedout-spec\/termux-monorepo\/blob\/master\//);
+  assert.equal(app.opened[0][1], "_blank");
+  assert.equal(app.opened[0][2], "noopener,noreferrer");
 });
 
 test("rejects an invalid initial envelope without rendering unvalidated data", async () => {

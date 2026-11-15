@@ -68,3 +68,30 @@ Useful upstream references:
 5. Record provider/model terms, dataset terms and attribution requirements.
 6. Keep AGPL-derived work outside the monorepo until the legal/architecture review explicitly authorizes a path.
 7. Treat marketing scale claims as hypotheses; benchmark the target workload and resource envelope directly.
+
+## G. Repository-local reconciliation (2026-11-14)
+
+This section is decisive: upstream alternatives are not treated as blank-slate integrations where the repository already has work.
+
+| Candidate | Existing repository evidence | SIP disposition |
+|---|---|---|
+| Mesa | `docs/ops/DOE-FAMILY.md` explicitly places Mesa ABM in the control seat for pre-screening and observation, never live evidence. | Keep that authority unchanged. Add to comparison queue as a reference baseline only; any live-engine claim requires a new design and proof. |
+| NetLogo | NetLogo appears in the SFI ABM equivalency rehearsal / findings register alongside the Mesa corpus. | Treat as an existing research corpus/reference, not an installed or validated runtime adapter. |
+| LangGraph | PR #5045 provisions BIUDL orchestration; #5062 and #5085 are successor autonomous-escalation/recovery work; #5194 includes LangGraph in agentic logistics/control-plane research. | Reuse existing orchestration contracts. Compare LangGraph as orchestration, not as a social simulation engine. No duplicate integration proposal. |
+| Temporal | Existing self-host and Temporal-LangSmith adapter; Delphi-cycle workflow and kill/resume evidence; prior durable-execution RFP #1885 has a recorded Oracle pass with five generated candidates. | Reuse the prior RFP and implementation. Do not open a duplicate Temporal RFP. Evaluate only the SIP-specific lifecycle gap that remains after mapping to QUE/WFC and the existing Temporal capability. |
+| Delphic / repository graph | Existing graph and decision-analysis substrate, including DoE candidate-packet work. | Reuse as graph/decision-analysis layer; not a social simulator. |
+
+The exact prior Temporal pass is recorded in `docs/proposals/passes/temporal-durable-execution/pass.json` with `status: recorded`. It already ranked and dispositioned five candidates. A fresh Temporal procurement cycle would duplicate existing work.
+
+## H. Expanded candidate slate
+
+The canonical queue is `candidate-queue.json` (`sip.candidate-queue.v1`). It separates role classes so that unlike systems are not ranked in one undifferentiated contest:
+
+- **Workbench/reference:** MiroFish.
+- **Social simulation:** CAMEL-AI OASIS.
+- **ABM engines:** Mesa, Repast, NetLogo.
+- **Offline control:** deterministic in-repository fake engine.
+- **Orchestration:** LangGraph, AutoGen, CrewAI, OpenAI Agents SDK.
+- **Durable execution:** Temporal (existing capability and prior RFP, not a new procurement item).
+
+Every candidate remains research-only. The queue is not an adoption order, runtime claim, DoE admission, or authority to install software. Source/license/version pins and repository-state reconciliation are required before any executable comparison.

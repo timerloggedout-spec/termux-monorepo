@@ -9,6 +9,10 @@ on:
       - 'scripts/ops/auto_quota_cadence.py'
       - 'scripts/ops/dispatch_executor.py'
       - 'scripts/ops/provider_validation_stamp.py'
+      - 'llm_api_hub/server/research_providers.py'
+      - 'tests/test_research_provider_hub.py'
+      - 'docs/ops/PROVIDER-HITL.md'
+      - 'docs/ops/PROVIDER-FREE-INFERENCE.md'
       - 'tests/test_provider_validation_stamp.py'
       - 'tests/test_provider_invoke_free_only.py'
       - '.github/workflows/provider-inference-validation.yml'
@@ -48,4 +52,5 @@ jobs:
             tests/test_dispatch_executor.py \
             tests/test_dispatch_executor_workflow.py \
             tests/test_provider_validation_stamp.py \
+            tests/test_research_provider_hub.py \
             tests/test_provider_model_catalog.py

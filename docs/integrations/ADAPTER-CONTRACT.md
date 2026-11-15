@@ -25,7 +25,7 @@ These states are independent of provider marketing claims and session-local conn
 
 ## 3. Event envelope
 
-All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). Minimum requirements:
+All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). New adapters use v1.1.0; existing v1.0.0 events remain valid during migration. Numerical observations use the child [integration-measurement.schema.json](schemas/integration-measurement.schema.json), and every ingestion transaction emits an [integration-batch.schema.json](schemas/integration-batch.schema.json) receipt. Minimum requirements:
 
 - stable event and idempotency keys;
 - repository, commit, PR, and workflow references when applicable;
@@ -69,10 +69,10 @@ Before promotion:
 1. Unit-test adapter mapping, redaction, pagination, retries, idempotency, and failure states.
 2. Run contract tests against sanitized fixtures.
 3. Verify provider access and least-privilege scopes in the intended runtime.
-4. Compare event output against the JSON Schema.
+4. Compare event and measurement output against their JSON Schemas; preserve v1.0.0 compatibility.
 5. Verify no secrets or raw sensitive content in logs/artifacts.
 6. Run repository gates on the same immutable commit SHA.
-7. Record current workflow/run/job/artifact references.
+7. Record current workflow/run/job/artifact references and per-batch accepted/duplicate/rejected counts.
 8. Re-fetch the final repository and provider state before declaring validated.
 
 ## 7. Failure semantics

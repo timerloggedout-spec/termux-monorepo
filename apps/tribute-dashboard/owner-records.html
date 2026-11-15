@@ -84,6 +84,11 @@
   const $ = id => document.getElementById(id);
   const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
   const CLASS_ORDER = ["authorizations", "gates", "clearances", "bets", "decisions"];
+  const ALLOWED_ENVELOPE_FIELDS = ["schema", "generated_at", "seeded_from", "keys", "cautions", "classes"];
+  const ALLOWED_CLASS_FIELDS = ["class", "state", "key_class", "note", "source_refs", "records"];
+  const ALLOWED_RECORD_FIELDS = ["id", "class", "title", "state", "holder", "since", "source", "key_class", "body_status", "body_file"];
+  const ALLOWED_SOURCE_FIELDS = ["path", "section"];
+  const KEY_CLASSES = ["gates", "decisions", "authorizations", "clearances"];
   const FORBIDDEN_BODY_FIELDS = ["gate", "whats_needed", "resolution", "body", "text", "note", "description"];
   const state = { envelope: null, query: "", className: "", recordState: "" };
   let loading = false;
@@ -96,6 +101,7 @@
     const errors = [];
     if (!env || typeof env !== "object" || Array.isArray(env)) return ["Envelope is not an object."];
     if (env.schema !== "owner-records/v1") errors.push("Unsupported envelope schema.");
+    if (Object.keys(env).some(key => !ALLOWED_ENVELOPE_FIELDS.includes(key))) errors.push("Envelope contains an unknown field.");
     if (!Array.isArray(env.classes)) errors.push("Envelope classes must be an array.");
     if (errors.length) return errors;
     const names = env.classes.map(c => c && c.class);
@@ -105,10 +111,13 @@
     const ids = new Set();
     env.classes.forEach(cls => {
       if (!cls || typeof cls !== "object") { errors.push("Malformed class entry."); return; }
+      if (Object.keys(cls).some(key => !ALLOWED_CLASS_FIELDS.includes(key))) errors.push("Class contains an unknown field: " + String(cls.class) + ".");
       if (!["established", "not_established"].includes(cls.state)) errors.push("Invalid state for class " + String(cls.class) + ".");
+      if (cls.key_class != null && !KEY_CLASSES.includes(cls.key_class)) errors.push("Invalid key class for " + String(cls.class) + ".");
       if (!Array.isArray(cls.records)) { errors.push("Records must be an array for class " + String(cls.class) + "."); return; }
       cls.records.forEach(record => {
         if (!record || typeof record !== "object" || Array.isArray(record)) { errors.push("Malformed record in " + String(cls.class) + "."); return; }
+        if (Object.keys(record).some(key => !ALLOWED_RECORD_FIELDS.includes(key))) errors.push("Record contains an unknown field: " + String(record.id || "unknown") + ".");
         const id = record.id;
         if (typeof id !== "string" || !id.trim()) errors.push("Record is missing an ID.");
         else if (ids.has(id)) errors.push("Duplicate record ID: " + id + ".");
@@ -118,9 +127,12 @@
         if (typeof record.state !== "string" || !record.state.trim()) errors.push("Record state missing for " + String(id || "unknown") + ".");
         if (!record.source || typeof record.source !== "object" || typeof record.source.path !== "string" || !record.source.path.trim()) {
           errors.push("Record source missing for " + String(id || "unknown") + ".");
+        } else if (Object.keys(record.source).some(key => !ALLOWED_SOURCE_FIELDS.includes(key))) {
+          errors.push("Record source contains an unknown field for " + String(id || "unknown") + ".");
         }
+        if (record.key_class != null && !KEY_CLASSES.includes(record.key_class)) errors.push("Invalid record key class for " + String(id || "unknown") + ".");
         if (!["pending-keys", "encrypted", "none"].includes(record.body_status)) errors.push("Invalid body status for " + String(id || "unknown") + ".");
-        if (record.body_status === "encrypted" && (typeof record.body_file !== "string" || !record.body_file.trim())) errors.push("Encrypted body path missing for " + String(id || "unknown") + ".");
+        if (record.body_status === "encrypted" && (typeof record.body_file !== "string" || !record.body_file.startsWith("bodies/") || record.body_file.split("/").some(part => !part || part === "." || part === ".."))) errors.push("Encrypted body path invalid for " + String(id || "unknown") + ".");
         if (record.body_status !== "encrypted" && record.body_file) errors.push("Unexpected body path for " + String(id || "unknown") + ".");
         FORBIDDEN_BODY_FIELDS.forEach(field => {
           if (Object.prototype.hasOwnProperty.call(record, field)) errors.push("L1 record contains forbidden body field: " + field + ".");

@@ -8,6 +8,7 @@ import yaml
 
 from scripts import provider_model_catalog
 from scripts.ops import provider_invoke as invoke
+from scripts.ops.provider_population_census import build_census
 from llm_api_hub.server import research_providers
 
 
@@ -177,6 +178,10 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     matrix_step = next(step for step in discover["steps"] if "provider_population_census.py" in step.get("run", ""))
     assert "native_provider_ids" in (root / "scripts/ops/provider_population_census.py").read_text()
     assert "GITHUB_OUTPUT" in matrix_step["run"]
+    census = build_census(root)
+    native_ids = set(census["adapter_population"]["native_provider_ids"])
+    assert native_ids == set(research_providers.ENDPOINTS)
+    assert "ollama" in native_ids and "felo" not in native_ids and "omni" not in native_ids
     assert batch["jobs"]["validate"]["needs"] == ["discover"]
     assert batch["jobs"]["validate"]["strategy"]["matrix"]["provider"] == "${{ fromJson(needs.discover.outputs.providers) }}"
     assert batch["jobs"]["validate"]["strategy"]["max-parallel"] == 2

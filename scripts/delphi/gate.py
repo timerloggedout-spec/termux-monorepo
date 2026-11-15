@@ -922,7 +922,11 @@ def _run(args) -> int:
     session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
     os.environ["DELPHI_REASON"] = args.reason
     summary, board = [], []
-    cursor_issue = board_sweep_cursor(gh)
+    try:
+        cursor_issue = board_sweep_cursor(gh)
+    except RateLimited as exc:
+        print(f"::warning::delphi sweep cursor read deferred on GitHub rate limit: {exc}")
+        return 0
     last_visited_issue = cursor_issue
     ordered_issues = rotate_rfp_issues(issues, cursor_issue, review_target)
     try:

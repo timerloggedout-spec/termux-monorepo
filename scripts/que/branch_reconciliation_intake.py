@@ -25,6 +25,7 @@ def branch_reconciliation_groups(path):
         ])
         rows.append({
             "name": branch, "path": "refs/heads/" + branch,
+            "failures": 1, "total": 1, "window_h": 0,
             "key": f"branch:{branch}:{sha[:12]}:{state}",
             "sig": sha[:12], "class": "branch-reconciliation",
             "step": "branch-reconciliation", "priority": 3 if state == "diverged" else 2,

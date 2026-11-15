@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-15T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -680,7 +680,12 @@ proposals:
       - id: Cue
         role: author+executor
         status: executing
-    related_prs: []
+    related_issues:
+      - 5454
+      - 5459
+      - 5468
+    related_prs:
+      - 5459
     related_branches: []
     gates_required:
       - repo-gate

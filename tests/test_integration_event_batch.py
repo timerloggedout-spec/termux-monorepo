@@ -91,6 +91,11 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "must have null value"):
             ie.validate_measurement(record)
 
+    def test_measured_measurement_requires_a_value(self):
+        record = dict(MEASUREMENT, measurement_status="measured", value=None)
+        with self.assertRaisesRegex(ValueError, "require a numeric value"):
+            ie.validate_measurement(record)
+
     def test_non_finite_measurement_is_rejected(self):
         record = dict(MEASUREMENT, value=float("nan"))
         with self.assertRaisesRegex(ValueError, "finite number"):
@@ -146,6 +151,10 @@ class IntegrationEventBatchTests(unittest.TestCase):
             self.assertIn(f"CREATE TABLE IF NOT EXISTS {table}", ddl)
             self.assertIn(f"ON {table}", ddl)
         self.assertIn("BEFORE UPDATE OR DELETE", ddl)
+        self.assertIn("BEFORE TRUNCATE", ddl)
+        self.assertIn("FOREIGN KEY (event_id, integration_id)", ddl)
+        self.assertIn("DEFERRABLE INITIALLY DEFERRED", ddl)
+        self.assertIn("value NOT IN", ddl)
         self.assertIn("USING brin", ddl)
         self.assertIn("jsonb_path_ops", ddl)
 

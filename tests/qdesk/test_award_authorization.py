@@ -100,8 +100,6 @@ class TestQDeskAwardAuthorization(unittest.TestCase):
                 require_work_packet_authorization(**args)
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
     def test_qdesk_uses_the_delphi_gate_canonical_comment_resolver(self):
@@ -137,3 +135,7 @@ if __name__ == "__main__":
         args["ledger_lookup"] = lambda ref: gate.lookup_delphi_ledger_record(fake, ref)
         self.assertEqual(authorize_work_packet(**args)["disposition"], "AUTHORIZED")
         self.assertEqual(fake.asserted, ("GET", "/issues/comments/8123"))
+
+
+if __name__ == "__main__":
+    unittest.main()

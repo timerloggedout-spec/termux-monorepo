@@ -23,7 +23,7 @@ gates_required: [repo-gate, termux-smoke]
 
 Establish a repository-native Integration Intelligence foundation and make the Superpowers engineering methodology discoverable and usable by repository collaborators. The foundation defines a canonical integration registry, evidence/event contract, adapter boundaries, capability truth labels, and a phased adoption plan for Superpowers, API Impact Mapper, Domino Data Lab, EmpirioLabs AI, tldraw, Cache Stats, Alloy, and Klaviyo.
 
-This is a documentation-and-contract foundation. It does not claim that external providers are authenticated, that adapters are implemented, or that any provider is a source of truth.
+The foundation now includes canonical event/measurement/batch contracts, append-only ingestion tables in the existing Neon project, and an offline-validated bounded batch writer. Source-specific provider adapters, live Neon migration, historical backfill and multi-surface runtime wiring remain separately gated work.
 
 ## Operator amendment — 2026-11-14
 
@@ -45,13 +45,18 @@ The operator explicitly directed consolidation of the repository's many dashboar
 - Disposition: accepted
 - Notes: Operator directive "Do your plan" authorizes the scoped foundation and phased implementation plan.
 
+### 2026-11-14 — timerloggedout-spec
+
+- Disposition: accepted (amendment)
+- Notes: Operator directive authorizes IIS-002 through IIS-005. IIS-002 is the current bounded implementation slice; IIS-003–IIS-005 remain queued until their own source mapping and validation evidence are available.
+
 ## Checklist
 
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [ ] PR cites `Implements: IIS-001`
-- [ ] repo-gate and termux-smoke green on the same head
+- [ ] PR cites `Implements: IIS-001`\n- [ ] IIS-002 PR cites `Implements: IIS-002` and links `docs/superpowers/plans/2026-11-14-unified-feed-ingestion.md`
+- [ ] repo-gate and termux-smoke green on the same head for IIS-001\n- [ ] IIS-002 focused tests and dual gates green on one immutable head
 - [ ] Non-author review and current check disposition recorded
 - [ ] Close and move to `closed/` only when all gates are terminal
 
@@ -59,4 +64,4 @@ The operator explicitly directed consolidation of the repository's many dashboar
 
 - ITEMS: ./ITEMS.md
 - Design: ../../../superpowers/specs/2026-11-02-integration-intelligence-design.md
-- Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md
+- Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md\n- Unified feed plan: ../../../superpowers/plans/2026-11-14-unified-feed-ingestion.md

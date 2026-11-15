@@ -34,7 +34,7 @@ propagations recorded as design events in the campaign record.
 
 ## Simulation Intelligence Plane — proposed comparison lane (2026-11-14)
 
-**State: proposal / not admitted.** SIP-001 maintains a role-separated candidate queue at `docs/rfps/simulation-intelligence-plane/candidate-queue.json`. Its population includes MiroFish (workbench reference), CAMEL-AI OASIS (social simulation), Mesa/Repast/NetLogo (ABM engines), deterministic fake engine (offline oracle), LangGraph/AutoGen/CrewAI/OpenAI Agents SDK (orchestration), and Temporal (durable execution substrate).
+**State: proposal / not admitted.** SIP-001 maintains a role-separated candidate queue at `docs/rfps/simulation-intelligence-plane/candidate-queue.json` and a pre-registration design proposal at `experiments/doe/sip-001-engine-comparison/DESIGN.md`. Its population includes MiroFish (workbench reference), CAMEL-AI OASIS (social simulation), Mesa/Repast/NetLogo (ABM engines), deterministic fake engine (offline oracle), LangGraph/AutoGen/CrewAI/OpenAI Agents SDK (orchestration), and Temporal (durable execution substrate).
 
 This is a proposed comparison programme, not a DoE family member yet. Under the family intake rule, it cannot join as a campaign until it has a committed design record AND EXPERIMENT-conforming run evidence. A queue record, RFP issue, generated proposal, or adapter contract alone is insufficient.
 

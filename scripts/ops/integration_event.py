@@ -469,12 +469,12 @@ END
 $cursor_guard$;
 """
     sql = (
-        "SET standard_conforming_strings = on;\\n"
-        "BEGIN;\\n"
+        "SET standard_conforming_strings = on;\n"
+        "BEGIN;\n"
         + cursor_guard
-        + "CREATE TEMP TABLE _integration_batch_docs (doc jsonb NOT NULL) ON COMMIT DROP;\\n"
-        + "INSERT INTO _integration_batch_docs(doc) VALUES\\n" + values + ";\\n"
-        + insert + receipt + "COMMIT;\\n"
+        + "CREATE TEMP TABLE _integration_batch_docs (doc jsonb NOT NULL) ON COMMIT DROP;\n"
+        + "INSERT INTO _integration_batch_docs(doc) VALUES\n" + values + ";\n"
+        + insert + receipt + "COMMIT;\n"
     )
     meta = {
         "batch_id": batch_id, "integration_id": integration_id,

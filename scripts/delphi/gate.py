@@ -448,6 +448,23 @@ def authenticated_reviewer_for_issue(issue: dict, env=None) -> str | None:
         return None
     if command != "/delphi approve":
         return None
+    # Bind the approval event to the exact package fields visible when the
+    # reviewer commented. A later issue edit must not substitute a new package
+    # while the workflow is waiting to fetch and score the RFP.
+    event_body = env.get("DELPHI_REVIEW_ISSUE_BODY")
+    if not isinstance(event_body, str):
+        return None
+    binding_fields = (
+        "proposal_source_ref", "proposal_manifest_ref",
+        "proposal_manifest_path", "expected_package_digest",
+    )
+    event_fields = parse_form(event_body)
+    current_fields = parse_form(issue.get("body", ""))
+    for field in binding_fields:
+        event_value = (event_fields.get(field) or "").strip()
+        current_value = (current_fields.get(field) or "").strip()
+        if not event_value or event_value != current_value:
+            return None
     if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
         return None
     return login
@@ -472,7 +489,11 @@ def lookup_delphi_ledger_record(gh: "GH", ledger_ref: str) -> dict | None:
     if user.get("type") != "Bot" or user.get("login") != "github-actions[bot]":
         return None
     issue_url = comment.get("issue_url") or ""
-    if not issue_url.startswith(f"https://api.github.com/repos/{gh.repo}/issues/"):
+    issue_prefix = f"https://api.github.com/repos/{gh.repo}/issues/"
+    if not issue_url.startswith(issue_prefix):
+        return None
+    issue_number_text = issue_url[len(issue_prefix):]
+    if not re.fullmatch(r"[1-9][0-9]*", issue_number_text):
         return None
     body = comment.get("body") or ""
     if not body.startswith(LEDGER_MARK):
@@ -486,6 +507,13 @@ def lookup_delphi_ledger_record(gh: "GH", ledger_ref: str) -> dict | None:
         return None
     award = record.get("award") if isinstance(record, dict) else None
     if not isinstance(award, dict) or award.get("ledger_ref") != ledger_ref:
+        return None
+    # An exact historical comment is not sufficient: authorization must point
+    # at the newest canonical award for this RFP, otherwise superseded approval
+    # comments remain replayable.
+    latest = last_ledger(gh, int(issue_number_text))
+    latest_award = latest.get("award", {}) if isinstance(latest, dict) else {}
+    if not isinstance(latest_award, dict) or latest_award.get("ledger_ref") != ledger_ref:
         return None
     return {
         "ledger_ref": ledger_ref,
@@ -774,6 +802,12 @@ def _run(args) -> int:
     _, roles = weights_issue(gh, panel)
     panel = dict(panel, roles=roles)
     issues = open_rfp_issues(gh)
+    review_target = 0
+    if (os.environ.get("DELPHI_REVIEW_COMMENT_BODY", "").strip() == "/delphi approve"):
+        try:
+            review_target = int(os.environ.get("DELPHI_REVIEW_ISSUE", ""))
+        except (TypeError, ValueError):
+            review_target = 0
     package_bound = any(
         any((parse_form(issue.get("body", "")).get(field) or "").strip()
             for field in ("proposal_source_ref", "proposal_manifest_ref", "proposal_manifest_path", "expected_package_digest"))
@@ -793,7 +827,7 @@ def _run(args) -> int:
     os.environ["DELPHI_REASON"] = args.reason
     summary, board = [], []
     try:
-        for issue in sorted(issues, key=lambda i: i["number"]):
+        for issue in sorted(issues, key=lambda i: (i["number"] != review_target, i["number"])):
             s = surface_from_issue(issue, catalog)
             if done >= plan["max_rfps_per_run"]:
                 pending += 1

@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-14",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,34 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "mirofish",
+      "name": "MiroFish",
+      "category": "knowledge-graph-to-agent-simulation-workbench",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Upstream repository and refactoring fork identified for architecture research; no repository adapter, authenticated runtime or successful run verified in this proposal slice.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "scenario-preparation-and-simulation-analysis-reference",
+      "write_boundary": "Read-only evidence ingestion by default. No public social-platform actions, no automatic graph merge, no model spend or code reuse from AGPL sources before license review.",
+      "next_step": "Pin upstream/fork SHAs and licenses; implement a clean protocol adapter and offline fixtures before considering an isolated service.",
+      "sensitivity": "research-evidence-and-synthetic-agent-data"
+    },
+    {
+      "id": "camel-ai-oasis",
+      "name": "CAMEL-AI OASIS",
+      "category": "multi-agent-social-simulation-engine",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "OASIS repository and documentation identified as primary execution candidate; no package install, credentials, live simulation or CI runtime verified.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "sandboxed-simulation-execution-only",
+      "write_boundary": "Sandbox only; no real social-platform writes. Require pinned version, explicit agent/step/token/cost/time ceilings and lifecycle recovery tests before any live provider use.",
+      "next_step": "Pin release/API/license; implement fake-engine contract tests and bounded OASIS adapter conformance.",
+      "sensitivity": "synthetic-agent-actions-and-model-usage-metadata"
     }
   ]
 }

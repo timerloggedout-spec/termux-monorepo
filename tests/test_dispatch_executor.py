@@ -425,6 +425,8 @@ def test_dispatch_fires_daily_pool_arm_without_provider_quota_headroom():
         run_id="daily-pool-test", max_conversions=1,
         workflow_ref="dispatch-executor.yml", workflow_sha="aa" * 20,
         script_sha="bb" * 20,
+        cadence={"schema": "pool-cadence/v1", "generated_at": "2026-11-12T14:59:00Z",
+                 "pool": {"eligible": ["daily-pool-arm"]}},
     )
     assert len(decision["decisions"]) == 1
     fired = decision["decisions"][0]
@@ -439,3 +441,28 @@ def test_dispatch_rejects_credit_funded_daily_pool_arm():
     headroom, hold = ex.quota_headroom(arm, _daily_pool_usage(), NOW, "primary")
     assert headroom is None
     assert hold == "pool_paid_budget_forbidden"
+
+def test_executor_holds_when_cadence_excludes_registry_arm():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "pool-cadence/v1", "generated_at": "2026-11-12T14:59:00Z",
+               "pool": {"eligible": []}}
+    decision = ex.decide([_filing(5455)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-hold", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_no_eligible_arms"
+
+
+def test_executor_holds_on_stale_cadence_feed():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {"generated_at": "2026-11-12T14:00:00Z",
+              "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed"}]}
+    cadence = {"schema": "pool-cadence/v1", "generated_at": "2026-11-12T13:00:00Z",
+               "pool": {"eligible": ["daily-pool-arm"]}}
+    decision = ex.decide([_filing(5456)], registry, census, _daily_pool_usage(), NOW,
+                         run_id="cadence-stale", cadence=cadence)
+    assert decision["decisions"][0]["action"] == "hold"
+    assert decision["decisions"][0]["hold_reason"] == "cadence_stale"

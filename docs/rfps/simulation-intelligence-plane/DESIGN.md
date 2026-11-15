@@ -41,6 +41,9 @@ The simulation lane is a workload and domain adapter, not an authority plane. Th
 | Graph analytics | Delphic / existing graph tools | Reuse projections; do not duplicate algorithms |
 | Visualization | SHE / Tribute / Observatory | Project sanitized feeds; no dashboard-owned truth |
 | Long-running execution | QUE-selected existing execution surface | Adapter supports recoverable process semantics; Temporal only if justified by DoE |
+| Agent orchestration | Existing LangGraph integration and escalation contracts | Reuse existing implementation; compare orchestration alternatives only if a concrete gap remains |
+| ABM research references | DoE family / SFI ABM corpus | Mesa remains pre-screen-only; NetLogo corpus presence is not runtime proof; Repast remains research-only |
+| Prior durable-execution evaluation | Temporal RFP #1885 and recorded pass | Reuse existing Temporal implementation/evidence; no duplicate RFP |
 
 ## 3. Component boundaries
 

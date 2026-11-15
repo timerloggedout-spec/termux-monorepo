@@ -180,6 +180,8 @@ jobs:
               'run_id': os.environ.get('GITHUB_RUN_ID'),
               'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
               'latency_ms': verdict.get('latency_ms'),
+              'input_tokens': verdict.get('input_tokens'),
+              'output_tokens': verdict.get('output_tokens'),
               'source_ref': os.environ.get('GITHUB_SERVER_URL', '') + '/' + os.environ.get('GITHUB_REPOSITORY', '') + '/actions/runs/' + os.environ.get('GITHUB_RUN_ID', ''),
           }
           json.dump(receipt, open('/tmp/receipt.json', 'w', encoding='utf-8'), indent=2, sort_keys=True)

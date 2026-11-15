@@ -12,16 +12,17 @@ Inputs
 - ``ops/quota/registry.json`` (``quota.registry.v2``): entitlement/observation
   evidence per service record.
 - ``--snapshot`` (optional, ``ledger-snapshot/v1``): a *published* ledger
-  snapshot carrying per-arm draws + coverage + budgets incl. explicit
-  ``{reset_window, reset_tz}``. See ``docs/ops/LEDGER-SNAPSHOT-CONTRACT.md``.
+  snapshot carrying per-arm draws + budgets and shared daily-pool observations.
+- ``--allocations`` (optional): canonical ``ops/quota/allocations.json`` pool/focus allocations.
+  See ``docs/ops/LEDGER-SNAPSHOT-CONTRACT.md``.
 
 Gap 1 (Cadence review c.6802642639, QDesk addendum c.6802661589): the #5152
 ledger read contract {store, fields, freshness} is UNPUBLISHED until #5113
 T2 publishes it. Until then the snapshot input is ABSENT by definition and
-this derivation treats ledger reads as UNAVAILABLE: every arm defers on
-``quota_unknown`` and the pool is empty with named reasons. The derivation
-never invents a metering leg in Actions -- unknown/stale quota means defer
-(clause 4), never a zero or a guess.
+this derivation treats ledger reads as UNAVAILABLE: provider-quota-backed
+arms defer on ``quota_unknown``; daily-pool/no-provider-quota arms defer on
+``pool_unknown``. The derivation never invents a metering leg in Actions --
+unknown/stale quota or pool state means defer, never zero or a guess.
 
 Gap 2 (same review): budget records carry reset only as prose today. This
 derivation reads ``{reset_window, reset_tz}`` ONLY from a published snapshot's
@@ -35,17 +36,20 @@ Outputs
 - ``--out``: ``pool-cadence/v1`` feed (``ops/que/feeds/pool-cadence.json``):
   per-arm eligibility + cadence decisions + rotation order + source SHAs.
 - ``--usage-out``: the executor's ``--usage`` record shape
-  (``{arms: {arm_id: {date: {draws}}}, coverage: {...}, budgets: {...}}``),
-  populated ONLY from a published snapshot; empty + coverage-incomplete
-  when the snapshot is absent/stale. The dispatch executor
+  (``{arms, coverage, budgets, pools, pool_eligibility}``),
+  populated ONLY from a published snapshot plus explicit allocation inputs;
+  empty + coverage-incomplete when the snapshot is absent/stale. The dispatch executor
   (``scripts/ops/dispatch_executor.py``) consumes it verbatim.
 
 Per-arm gate (clause 3) -- an arm is dispatchable only when ALL hold:
 exact invoke route; current census pass from the relevant environment;
-entitlement record in the quota registry; usable quota headroom with source
-+ observation time + reset window/tz; no duplicate route_id. Anything else
-defers with a named reason; a listing, a ``/v1/models`` hit, a sandbox-only
-success, or a bare 429 never proves entitlement/headroom.
+entitlement record in the quota registry; then either (a) usable provider-quota
+headroom with source + observation time + reset window/tz, or (b) an explicit
+``daily_pool_no_provider_quota`` class with matching pool/focus allocation,
+fresh pool status, reset evidence, and experiment label. No provider quota
+counter is required for (b). Anything else defers with a named reason; a
+listing, a ``/v1/models`` hit, a sandbox-only success, or a bare 429 never
+proves entitlement/headroom.
 
 Gemini participates on the SAME gate as every other arm (clause 5): no
 fallback-of-record, no precedence, no hard dependency. The pool generation
@@ -168,8 +172,9 @@ def derive(
             "reason": "ledger_snapshot_absent",
             "note": "Read contract unpublished until #5113 T2 publishes "
             "{store, fields, freshness} (Cadence c.6802642639 gap 1); "
-            "ledger reads treated as UNAVAILABLE, arms defer on "
-            "quota_unknown. No metering invented in Actions.",
+            "ledger reads treated as UNAVAILABLE; quota-backed arms defer on "
+            "quota_unknown and daily-pool/no-provider-quota arms on pool_unknown. "
+            "No metering invented in Actions.",
         }
         snapshot_fresh = False
     else:

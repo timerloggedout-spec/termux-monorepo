@@ -495,3 +495,21 @@ def test_missing_cadence_holds_even_when_registry_and_census_pass():
     row = decision["decisions"][0]
     assert row["action"] == "hold"
     assert row["hold_reason"] == "cadence_missing"
+
+
+def test_quota_unknown_candidate_remains_probe_only_when_cadence_has_no_dispatch_arms():
+    cadence = {
+        "schema": "pool-cadence/v1",
+        "generated_at": NOW.isoformat(),
+        "pool": {"eligible": [], "deferred": ["gemini-cli"],
+                 "probe_candidates": ["gemini-cli"]},
+    }
+    decision = ex.decide(
+        [_filing(5489)], _registry(), _census(), usage=None, now=NOW,
+        run_id="probe-only", cadence=cadence,
+    )
+    row = decision["decisions"][0]
+    assert row["action"] == "hold"
+    assert row["probe"]["arm"] == "gemini-cli"
+    assert row["probe"]["max_requests"] == 3
+    assert "arm" not in row  # a probe never authorizes dispatch

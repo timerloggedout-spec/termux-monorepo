@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-15T06:18:37Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-15T08:24:11Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-15T06:18:36Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`58355` read_at=`2026-11-15T06:18:36Z`
+Sources: PR feed read_at=`2026-11-15T08:24:10Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`59779` read_at=`2026-11-15T08:24:10Z`
 
 Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown=8
 
@@ -26,7 +26,7 @@ Rows: 22 · by_state: active=3 · closed=1 · in-flight=9 · landed=1 · unknown
 | providers | `providers` | Provider registry / catalog / availability | in-flight | #5020 `a07d479c493f` 2026-11-06T01:54:38Z | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5069 `a60dd2b068f5` 2026-11-07T19:30:33Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5435 — test(dispatch): align quota tree contract with coalescing policy |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5441 — test(quota): align dispatcher cancellation contract |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #5337 — Trigger Pages deployment after merged dashboard-source PRs |

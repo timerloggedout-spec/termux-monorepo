@@ -13,8 +13,6 @@ EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
 # Compatibility pin: "guard" remains a registered action in the shared vocabulary.
 from do_statement_style_rules import is_imperative_subject, is_negative_first_line
-# Compatibility pin: "guard" remains a registered action in the shared vocabulary.
-from do_statement_style_rules import is_imperative_subject
 
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",

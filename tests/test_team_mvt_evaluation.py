@@ -37,3 +37,16 @@ def test_unexplained_incomplete_matrix_fails_closed():
     assert failed is True
     assert summary["status"] == "invalid"
     assert summary["promotion_ready"] is False
+
+
+def test_complete_matrix_with_execution_failure_fails_closed():
+    rows = [
+        {"lane": f"lane-{index % 5}", "eligible": "true",
+         "execution_status": "failure" if index == 0 else "success"}
+        for index in range(EXPECTED_CELLS)
+    ]
+    summary, failed = summarize(rows, "success")
+    assert failed is True
+    assert summary["status"] == "execution_failed"
+    assert summary["execution_failures"] == 1
+    assert summary["promotion_ready"] is False

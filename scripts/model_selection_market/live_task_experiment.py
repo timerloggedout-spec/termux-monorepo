@@ -441,10 +441,15 @@ def run(args):
                 try:
                     result.update(execute_pilot(tasks, model, key, private, output, plan, run_id))
                 finally:
-                    metrics = reservation_metrics(private)
-                    result['inference_requests_dispatched'] = metrics['sent']
-                    result['request_reservation_states'] = metrics['states']
-                    result['unsettled_sent_requests'] = metrics['unsettled_sent_requests']
+                    try:
+                        metrics = reservation_metrics(private)
+                    except Exception:
+                        result['reservation_metrics_status'] = 'unavailable'
+                    else:
+                        result['inference_requests_dispatched'] = metrics['sent']
+                        result['request_reservation_states'] = metrics['states']
+                        result['unsettled_sent_requests'] = metrics['unsettled_sent_requests']
+                        result['reservation_metrics_status'] = 'captured'
             result['status'] = ('SCREENING_COMPLETE' if all(item['outcome'] in {'PASS', 'FAIL'} for item in result['attempts']) else 'SCREENING_INCOMPLETE')
             result['statistics'] = plan.analyze(look=args.pairs_per_context)
     except LiveBlocked as exc:

@@ -194,7 +194,9 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
         pools = (usage or {}).get("pools") or {}
         pool = pools.get(pool_id) if pool_id else None
         coverage = (usage or {}).get("coverage") or {}
-        if not pool_id or not eligibility or not pool:
+        if not isinstance(eligibility, dict) or not isinstance(pool, dict):
+            return None, "pool_unknown"
+        if not pool_id:
             return None, "pool_unknown"
         if not coverage.get("complete"):
             return None, "pool_coverage_incomplete"
@@ -220,8 +222,8 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
             return None, "pool_evidence_incomplete"
         observed_at = eligibility.get("observed_at") or pool.get("observed_at")
         try:
-            age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
-        except ValueError:
+            age = (now - _parse_ts(observed_at)).total_seconds() if isinstance(observed_at, str) else None
+        except (ValueError, TypeError, AttributeError):
             age = None
         if age is None or age < 0:
             return None, "pool_unstamped"
@@ -306,7 +308,7 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
         pool_id = budget.get("pool_id")
         eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
         pool = ((usage or {}).get("pools") or {}).get(pool_id) if pool_id else None
-        if not pool_id or not eligibility or not pool:
+        if not isinstance(eligibility, dict) or not isinstance(pool, dict) or not pool_id:
             return None, "pool_unknown"
         if not (usage or {}).get("coverage", {}).get("complete"):
             return None, "pool_coverage_incomplete"

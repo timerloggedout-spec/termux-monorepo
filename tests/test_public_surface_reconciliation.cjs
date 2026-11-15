@@ -19,6 +19,11 @@ assert.equal(api.classifyComparison({ ahead_by: 4, behind_by: 0 }), "AHEAD");
 assert.equal(api.classifyComparison({ ahead_by: 2, behind_by: 3 }), "DIVERGED");
 assert.equal(api.classifyComparison({ ahead_by: 0, behind_by: 7 }), "BEHIND");
 assert.equal(api.classifyComparison({}), "UNKNOWN");
+assert.equal(api.classifyPagesSource({ ahead_by: 0, behind_by: 0 }), "ALIGNED");
+assert.equal(api.classifyPagesSource({ ahead_by: 10, behind_by: 0 }), "FAST_FORWARD_AVAILABLE");
+assert.equal(api.classifyPagesSource({ ahead_by: 2, behind_by: 3 }), "DIVERGED");
+assert.equal(api.classifyPagesSource({ ahead_by: 0, behind_by: 2 }), "SOURCE_AHEAD");
+assert.equal(api.classifyPagesSource({}), "UNKNOWN");
 
 const branches = [
   { name: "main", commit: { sha: "mainsha" } },

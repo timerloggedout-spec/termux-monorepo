@@ -30,6 +30,7 @@ IMPERATIVE = {
     "allow", "prevent", "accept", "remove", "add", "keep", "create", "build", "check",
     "account",
     "include",
+    "make",
     "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse", "bound", "recognize",
 }
 STYLE_PATHS = [

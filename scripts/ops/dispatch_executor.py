@@ -194,10 +194,10 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
         pools = (usage or {}).get("pools") or {}
         pool = pools.get(pool_id) if pool_id else None
         coverage = (usage or {}).get("coverage") or {}
-        if not coverage.get("complete"):
-            return None, "pool_coverage_incomplete"
         if not pool_id or not eligibility or not pool:
             return None, "pool_unknown"
+        if not coverage.get("complete"):
+            return None, "pool_coverage_incomplete"
         if eligibility.get("pool_id") != pool_id:
             return None, "pool_mismatch"
         if eligibility.get("experiment_label") != budget.get("experiment_label"):
@@ -306,10 +306,10 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
         pool_id = budget.get("pool_id")
         eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
         pool = ((usage or {}).get("pools") or {}).get(pool_id) if pool_id else None
-        if not (usage or {}).get("coverage", {}).get("complete"):
-            return None, "pool_coverage_incomplete"
         if not pool_id or not eligibility or not pool:
             return None, "pool_unknown"
+        if not (usage or {}).get("coverage", {}).get("complete"):
+            return None, "pool_coverage_incomplete"
         if eligibility.get("status") != "eligible":
             return None, eligibility.get("hold_reason") or "pool_unavailable"
         if eligibility.get("experiment_label") != budget.get("experiment_label"):

@@ -96,6 +96,10 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "secret-shaped"):
             ie.validate_event(event)
 
+    def test_measurement_allows_tokenizer_and_token_count_dimensions(self):
+        record = dict(MEASUREMENT, dimensions={"tokenizer": "o200k_base", "input_tokens": 128})
+        self.assertEqual(ie.validate_measurement(record)["dimensions"]["input_tokens"], 128)
+
     def test_measurement_rejects_provider_token_dimension(self):
         record = dict(MEASUREMENT, dimensions={"provider_token": "opaque-value"})
         with self.assertRaisesRegex(ValueError, "sensitive field rejected"):

@@ -101,9 +101,10 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertEqual(ie.validate_measurement(record)["dimensions"]["input_tokens"], 128)
 
     def test_measurement_rejects_provider_token_dimension(self):
-        record = dict(MEASUREMENT, dimensions={"provider_token": "opaque-value"})
-        with self.assertRaisesRegex(ValueError, "sensitive field rejected"):
-            ie.validate_measurement(record)
+        for key in ("provider_token", "aws_secret_access_key"):
+            record = dict(MEASUREMENT, dimensions={key: "opaque-value"})
+            with self.assertRaisesRegex(ValueError, "sensitive field rejected"):
+                ie.validate_measurement(record)
 
     def test_sql_literal_handles_null_cursor(self):
         self.assertEqual(ie.sql_literal(None), "NULL")
@@ -258,12 +259,14 @@ class IntegrationEventBatchTests(unittest.TestCase):
         with patch.dict(os.environ, {"NEON_API_KEY": "dummy"}, clear=True):
             with patch.object(ie.lane_event, "_neon", side_effect=[
                 {"projects": [{"id": "project-1", "name": ie.lane_event.NEON_PROJECT}]},
-                {"branches": [{"id": "branch-1", "default": True}]},
+                {"branches": [{"id": "branch-other", "default": False}], "pagination": {"next": "next-page"}},
+                {"branches": [{"id": "branch-1", "default": True}], "pagination": {"next": None}},
                 {"roles": [{"name": "neondb_owner"}, {"name": "integration_ingest"}]},
                 {"uri": "postgresql://dedicated-writer"},
             ]) as neon:
                 self.assertEqual(ie.resolve_writer_url(), "postgresql://dedicated-writer")
-                self.assertIn("role_name=integration_ingest", neon.call_args_list[3].args[1])
+                self.assertIn("role_name=integration_ingest", neon.call_args_list[4].args[1])
+                self.assertIn("cursor=next-page", neon.call_args_list[2].args[1])
 
     def test_owner_role_is_not_used_as_writer_fallback(self):
         with patch.dict(os.environ, {"NEON_API_KEY": "dummy"}, clear=True):
@@ -316,6 +319,8 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("DEFERRABLE INITIALLY DEFERRED", ddl)
         self.assertIn("value NOT IN", ddl)
         self.assertIn("CREATE OR REPLACE VIEW integration_latest_cursors", ddl)
+        self.assertIn("UNIQUE (integration_id, idempotency_key)", ddl)
+        self.assertNotIn("idempotency_key      text NOT NULL UNIQUE", ddl)
         self.assertIn("integration_ingest_batches_cursor_latest_ix", ddl)
         self.assertIn("USING brin", ddl)
         self.assertIn("jsonb_path_ops", ddl)

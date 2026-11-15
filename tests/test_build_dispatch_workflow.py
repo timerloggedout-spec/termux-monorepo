@@ -30,6 +30,7 @@ def test_do_statement_style_ignores_synthetic_merge_commit_metadata():
     assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%s"]' in checker
     assert '["git", "log", "--no-merges", f"{base}..{head}", "--format=%b"]' in checker
     assert '"guard"' in checker
+    assert '"export"' in checker
 
 
 def test_verify_completion_evidence_handles_slash_branches_and_closes_heredoc():

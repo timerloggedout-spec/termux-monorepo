@@ -149,7 +149,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate Publishing dashboard JavaScript syntax
         run: node --check apps/tribute-dashboard/publishing.js
-      - name: Test public-surface reconciliation classifier
+      - name: Verify Publishing dashboard evidence panels
+        run: |
+          grep -q 'id="publishing-pages-source"' apps/tribute-dashboard/publishing.html
+          grep -q 'id="publishing-deployments"' apps/tribute-dashboard/publishing.html
+      - name: Test branch and Pages-source reconciliation contract
         run: node tests/test_public_surface_reconciliation.cjs
       - name: Refresh offline provider quota coverage
         run: python3 scripts/provider_quota_coverage.py --output apps/tribute-dashboard/data/provider-quota-coverage.json

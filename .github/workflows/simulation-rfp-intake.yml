@@ -1,0 +1,104 @@
+name: simulation-rfp-intake
+
+# Runs only after the existing swarm-admission workflow. It consumes the
+# admission artifact and refuses to process unmatched/deferred filings.
+# It freezes an intake receipt only; it does not call Delphi generation,
+# run a simulator, invoke a provider, or admit a DoE campaign.
+
+on:
+  workflow_run:
+    workflows: ["swarm-admission"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: simulation-rfp-intake-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download QUE admission handoff
+        uses: actions/download-artifact@v4
+        with:
+          name: issue-admission
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: ${{ runner.temp }}/admission
+
+      - name: Verify exact template and ADMITTED decision
+        id: handoff
+        run: |
+          python3 - <<'PY'
+          import json, os
+          path = os.path.join(os.environ["RUNNER_TEMP"], "admission", "admission.json")
+          record = json.load(open(path, encoding="utf-8"))
+          ok = (record.get("matched") is True
+                and record.get("template") == "simulation-rfp.yml"
+                and record.get("decision") == "ADMITTED"
+                and bool(record.get("issue_number")))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"dispatch={'true' if ok else 'false'}\n")
+              out.write(f"issue_number={record.get('issue_number', '')}\n")
+          print("SIP RFP admitted" if ok else "No admitted SIP RFP in this handoff")
+          PY
+
+      - name: Fetch admitted issue body
+        if: steps.handoff.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq .body > "${RUNNER_TEMP}/issue-body.md"
+
+      - name: Build deterministic G0 intake receipt
+        if: steps.handoff.outputs.dispatch == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          python3 scripts/simulation_intelligence/rfp_intake.py \
+            --body-file "${RUNNER_TEMP}/issue-body.md" \
+            --queue-file docs/rfps/simulation-intelligence-plane/candidate-queue.json \
+            --issue-number "${ISSUE_NUMBER}" \
+            --output "${RUNNER_TEMP}/sip-rfp-intake.json"
+
+      - name: Comment and label the admitted intake
+        if: steps.handoff.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          gh label create simulation:rfp-intake-ready --force --color 0E8A16 \
+            --description "SIP RFP G0 intake validated and queued for brief freeze" || true
+          gh issue comment "${ISSUE_NUMBER}" --body-file <(python3 - <<'PY'
+          import json, os
+          r=json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "sip-rfp-intake.json")))
+          print("## SIP RFP intake receipt")
+          print(f"- Intake: `{r['intake_id']}`")
+          print(f"- Candidates: {', '.join(r['candidate_ids'])}")
+          print(f"- State: `{r['intake_state']}`")
+          print("- Next: freeze G0 brief + evidence set, then explicitly dispatch existing `delphi-generate.yml`.")
+          print("- No Delphi generation, model/provider call, simulator execution, or DoE admission was performed.")
+          print(f"<!-- sip-rfp-intake:{r['body_sha256']} -->")
+          PY
+          )
+          gh issue edit "${ISSUE_NUMBER}" --add-label simulation:rfp-intake-ready
+
+      - name: Upload G0 intake receipt
+        if: steps.handoff.outputs.dispatch == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sip-rfp-intake-${{ github.event.workflow_run.id }}
+          path: ${{ runner.temp }}/sip-rfp-intake.json
+          retention-days: 14
+          if-no-files-found: error

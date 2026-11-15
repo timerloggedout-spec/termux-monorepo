@@ -31,10 +31,11 @@ def gh_pages(endpoint: str) -> list[dict[str, Any]]:
 
 
 def git_count(base: str, head: str) -> tuple[int, int] | None:
-    if run(["git", "cat-file", "-e", f"{base}^{{commit}}"], check=False) == "":
-        return None
-    if run(["git", "cat-file", "-e", f"{head}^{{commit}}"], check=False) == "":
-        return None
+    # `git cat-file -e` succeeds with empty stdout; inspect its exit code.
+    for ref in (base, head):
+        probe = subprocess.run(["git", "cat-file", "-e", f"{ref}^{{commit}}"], text=True, capture_output=True)
+        if probe.returncode != 0:
+            return None
     merge_base = run(["git", "merge-base", base, head], check=False)
     if not merge_base:
         return None
@@ -72,7 +73,8 @@ def main() -> int:
     for pr in pulls:
         head = pr.get("head") or {}
         ref = head.get("ref")
-        if ref:
+        head_repo = (head.get("repo") or {}).get("full_name")
+        if ref and head_repo == args.repo:
             prs_by_head.setdefault(ref, []).append(pr)
 
     records: list[dict[str, Any]] = []
@@ -94,6 +96,7 @@ def main() -> int:
             "base_ref": (p.get("base") or {}).get("ref"),
             "base_sha": (p.get("base") or {}).get("sha"),
             "head_sha": (p.get("head") or {}).get("sha"),
+            "head_repo": ((p.get("head") or {}).get("repo") or {}).get("full_name"),
             "url": p.get("html_url"),
         } for p in linked_prs]
         if not local_sha or local_sha != commit:

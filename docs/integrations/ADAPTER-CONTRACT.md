@@ -25,7 +25,7 @@ These states are independent of provider marketing claims and session-local conn
 
 ## 3. Event envelope
 
-All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). New adapters use v1.1.0; existing v1.0.0 events remain valid during migration. Numerical observations use the child [integration-measurement.schema.json](schemas/integration-measurement.schema.json), and every ingestion transaction emits an [integration-batch.schema.json](schemas/integration-batch.schema.json) receipt. Minimum requirements:
+All adapters emit the normalized event described by [integration-event.schema.json](schemas/integration-event.schema.json). New adapters use v1.1.0; existing v1.0.0 events remain valid during migration. Numerical observations use [integration-measurement.schema.json](schemas/integration-measurement.schema.json), and every ingestion transaction emits an [integration-batch.schema.json](schemas/integration-batch.schema.json) receipt. Minimum requirements:
 
 - stable event and idempotency keys;
 - repository, commit, PR, and workflow references when applicable;
@@ -34,7 +34,8 @@ All adapters emit the normalized event described by [integration-event.schema.js
 - evidence artifact references;
 - validation status;
 - provider/capture attribution;
-- privacy classification.
+- privacy classification;
+- separate event_at, observed_at and database recorded_at semantics where available.
 
 Do not emit raw prompts, completions, cookies, tokens, credentials, session transcripts, or unredacted private data. Keep detailed provider artifacts in the approved source system or restricted artifact store and reference them by opaque ID/URI.
 

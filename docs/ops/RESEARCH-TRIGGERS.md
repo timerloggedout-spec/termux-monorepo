@@ -71,7 +71,7 @@ The Simulation Intelligence Plane uses the existing QUE admission contract for R
 | Surface | Trigger | Input | Output / next stage |
 |---|---|---|---|
 | Simulation candidate queue | Committed `docs/rfps/simulation-intelligence-plane/candidate-queue.json` | Role-separated candidate IDs, upstream refs, existing repo evidence, license/runtime gaps | Research-only candidate inventory; no adoption inference |
-| Simulation RFP form | `.github/ISSUE_TEMPLATE/simulation-rfp.yml`, label `simulation:rfp`, `issues.opened/reopened` | Candidate IDs, objective, research question, comparison dimensions, constraints, evidence | First goes through `swarm-admission` / QUE; tier-2 route only after exact ADMITTED receipt |
+| Simulation RFP form | `.github/ISSUE_TEMPLATE/simulation-rfp.yml`, title prefix `[simulation:rfp]`, `issues.opened/reopened` | Candidate IDs, objective, research question, comparison dimensions, constraints, evidence | First goes through `swarm-admission` / QUE; tier-2 route only after exact ADMITTED receipt |
 | SIP RFP intake route | `.github/workflows/simulation-rfp-intake.yml` after `swarm-admission` completes | One-run `issue-admission` artifact + issue body | Deterministic G0 intake receipt artifact + issue comment; invalid or deferred filings do not progress |
 | Delphi generation | Existing `delphi-generate.yml` explicit `workflow_dispatch` | Frozen `brief.json` + evidence-set JSON + candidate variant declarations | Generated proposal artifacts and Oracle cycle; separate from RFP intake |
 | DoE admission | Existing DoE family rule | Committed design record + EXPERIMENT-conforming run evidence | Only then becomes a DoE family campaign |

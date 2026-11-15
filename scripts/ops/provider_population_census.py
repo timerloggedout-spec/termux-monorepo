@@ -49,7 +49,7 @@ def _timestamp(value: Any) -> dt.datetime | None:
     if parsed.tzinfo is None:
         # The canonical endpoint census records a date plus prose; use only
         # that explicit date, never infer a time-of-day.
-        match = re.match(r"^(\\d{4}-\\d{2}-\\d{2})", value)
+        match = re.match(r"^(\d{4}-\d{2}-\d{2})", value)
         if not match:
             return None
         parsed = dt.datetime.fromisoformat(match.group(1)).replace(tzinfo=dt.timezone.utc)

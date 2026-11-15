@@ -373,6 +373,16 @@ def derive(
         )
 
     eligible = [r for r in arm_rows if r["status"] == "eligible"]
+    # Unknown provider quota is not dispatch eligibility, but it can be
+    # measured by the executor's separately bounded probe. Only candidates
+    # whose non-quota gates passed may enter this list.
+    probe_blockers = {"quota_unknown", "reset_window_unknown", "reset_tz_unknown"}
+    probe_candidates = [
+        r["arm_id"] for r in arm_rows
+        if r.get("quota_class") == "provider_quota_backed"
+        and "quota_unknown" in r.get("defer_reasons", [])
+        and set(r.get("defer_reasons", [])).issubset(probe_blockers)
+    ]
 
     # Rotation: registry order, free-tier before credit-funded; avoid a
     # consecutive same-arm selection when the previous feed names one.
@@ -416,6 +426,7 @@ def derive(
         "pool": {
             "eligible": order,
             "deferred": [r["arm_id"] for r in arm_rows if r["status"] == "deferred"],
+            "probe_candidates": probe_candidates,
             "eligible_count": len(order),
         },
         "rotation": {

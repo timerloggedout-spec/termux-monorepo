@@ -159,6 +159,8 @@ def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
     wired = wiring.get("wired_invoke") or {}
     not_wired = wiring.get("not_wired") or {}
     endpoint_census = provider_catalog.get("endpoint_census") or {}
+    availability_registry = provider_catalog.get("inference_availability") or {}
+    availability_summary = availability_registry.get("summary") or {}
 
     g4f_catalog = docs["g4f_catalog"] or {}
     g4f_universe = docs["g4f_universe"] or {}
@@ -217,6 +219,12 @@ def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
             "all_lane_distinct_providers": registry.get("distinct_providers_all_lanes"),
             "model_lane_records": registry.get("model_records"),
             "model_lane_distinct_providers": registry.get("model_distinct_providers"),
+            "inference_availability_records": availability_summary.get("records"),
+            "inference_availability_by_class": availability_summary.get("by_class"),
+            "availability_covered_records": availability_summary.get("availability_covered"),
+            "availability_secret_only_records": availability_summary.get("availability_secret_only"),
+            "availability_not_covered_records": availability_summary.get("availability_not_covered"),
+            "batch_endpoint_wired_records": availability_summary.get("batch_endpoint_wired"),
             "invoke_wiring_records": wiring_count,
             "invoke_wiring_record_denominator": wiring_total,
             "invoke_wiring_unwired_records": unwired_count,

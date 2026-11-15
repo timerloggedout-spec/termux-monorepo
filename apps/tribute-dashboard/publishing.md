@@ -24,6 +24,8 @@ Read-only live view for public website branches and open pull requests.
 The browser reads the public GitHub API without credentials. It lists up to 100 branches and 100 open PRs, compares up to 20 PR heads per refresh, and performs targeted comparisons for branches whose names contain ai-elves. The PR table shows base ref/SHA, merge-base SHA, and head SHA. Other unlinked branches are listed without full history comparison.
 
 
+The live dashboard compares `main-landing-studysprint-link` (the legacy Pages source) directly with the website repository's default branch and shows whether it is aligned, fast-forwardable, diverged, or ahead.
+
 The live dashboard also reads the latest `tribute-dashboard-deploy.yml` runs from the monorepo and the latest GitHub Pages deployment runs from the public website repository. Each row exposes workflow status, conclusion, source SHA, event, timestamp, and a link to the run. A queued run is not a deployment receipt; a successful run still requires a fresh live-URL check.
 
 The cross-repository publisher is serialized under the `tribute-dashboard-publish` concurrency group. An active publish is allowed to finish; newer pending snapshots replace older pending snapshots so publication order converges on the latest source.

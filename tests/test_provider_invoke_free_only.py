@@ -131,7 +131,7 @@ def test_policy_evidence_incomplete_defers_without_inference(tmp_path, monkeypat
     monkeypatch.setattr(research_providers, "admission_entry", lambda provider, model: policy_entry(model=model, no_cost_verified=False))
     monkeypatch.setattr(provider_model_catalog, "poll", lambda provider, token: ([row("free/chat", pricing_classification="free_zero_price")], {}))
     monkeypatch.setattr(research_providers, "complete", lambda *a, **k: (_ for _ in ()).throw(AssertionError("inference must not run")))
-    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--free-only"])
+    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--out", str(tmp_path / "completion.txt"), "--free-only"])
     assert invoke.main() == 0
     verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
     assert verdict["ok"] is False and verdict["diagnosis"] == "policy_no_cost_not_verified"
@@ -162,7 +162,7 @@ def test_non_free_only_invocation_fails_closed(tmp_path, monkeypatch, capsys):
     prompt.write_text("Do not execute.")
     monkeypatch.setenv("GROQ_API_KEY", "fixture-secret")
     monkeypatch.setattr(research_providers, "admitted_models", lambda: (_ for _ in ()).throw(AssertionError("policy should not be read")))
-    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt)])
+    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--out", str(tmp_path / "completion.txt")])
     assert invoke.main() == 0
     verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
     assert verdict["diagnosis"] == "free_only_required"

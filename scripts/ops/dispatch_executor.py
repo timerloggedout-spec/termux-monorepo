@@ -193,6 +193,9 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
         eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
         pools = (usage or {}).get("pools") or {}
         pool = pools.get(pool_id) if pool_id else None
+        coverage = (usage or {}).get("coverage") or {}
+        if not coverage.get("complete"):
+            return None, "pool_coverage_incomplete"
         if not pool_id or not eligibility or not pool:
             return None, "pool_unknown"
         if eligibility.get("pool_id") != pool_id:
@@ -211,6 +214,10 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
             return None, "pool_exhausted"
         if pool.get("status") != "available":
             return None, "pool_unavailable"
+        if pool.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        if not pool.get("source_ref") or not pool.get("reset_window") or not pool.get("reset_tz"):
+            return None, "pool_evidence_incomplete"
         observed_at = eligibility.get("observed_at") or pool.get("observed_at")
         try:
             age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
@@ -299,12 +306,16 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
         pool_id = budget.get("pool_id")
         eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
         pool = ((usage or {}).get("pools") or {}).get(pool_id) if pool_id else None
+        if not (usage or {}).get("coverage", {}).get("complete"):
+            return None, "pool_coverage_incomplete"
         if not pool_id or not eligibility or not pool:
             return None, "pool_unknown"
         if eligibility.get("status") != "eligible":
             return None, eligibility.get("hold_reason") or "pool_unavailable"
         if eligibility.get("experiment_label") != budget.get("experiment_label"):
             return None, "pool_experiment_label_mismatch"
+        if pool.get("status") != "available" or pool.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_unavailable"
         return {
             "bucket": pool_id,
             "source": "daily-pool-snapshot",
@@ -314,6 +325,10 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
             "reset_window": pool.get("reset_window") or "unknown",
             "reset_tz": pool.get("reset_tz") or "unknown",
             "experiment_label": eligibility.get("experiment_label"),
+            "quota_evidence_ref": budget.get("quota_evidence_ref"),
+            "focus": eligibility.get("focus"),
+            "allocation_mode": eligibility.get("allocation_mode"),
+            "allocation_pct": eligibility.get("allocation_pct"),
             "source_ref": pool.get("source_ref"),
         }, None
     if measured_record is not None:
@@ -418,6 +433,7 @@ def build_stamp(filing: dict, arm: dict, quota_class: str,
         "provider_quota_class": (arm.get("budget") or {}).get("quota_class") or "provider_quota_backed",
         "pool_id": (arm.get("budget") or {}).get("pool_id"),
         "experiment_label": (arm.get("budget") or {}).get("experiment_label"),
+        "quota_evidence_ref": (arm.get("budget") or {}).get("quota_evidence_ref"),
         "preflight": preflight_read,
     }
     return stamp

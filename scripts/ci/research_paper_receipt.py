@@ -35,6 +35,9 @@ def receipt(root: Path, artifacts: list[Path], evidence_kind: str = "fake-fixtur
         path = root / name
         if name.startswith(patterns) and path.is_file() and not path.is_symlink():
             sources[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+    dirty_status = git("status", "--porcelain", "--untracked-files=all")
+    if dirty_status:
+        raise ValueError("working tree must be clean before emitting a HEAD-attributed receipt")
     evidence = {}
     for path in artifacts:
         if not path.is_file() or path.is_symlink():
@@ -51,7 +54,8 @@ def receipt(root: Path, artifacts: list[Path], evidence_kind: str = "fake-fixtur
         "inference": "deterministic fake only",
         "task_outcome": "UNKNOWN",
         "merged_or_deployed": False,
-        "dirty_tracked_files": bool(git("diff", "HEAD", "--name-only")),
+        "dirty_tracked_files": False,
+        "dirty_worktree": False,
         "source_sha256": dict(sorted(sources.items())),
         "artifact_sha256": dict(sorted(evidence.items())),
     }

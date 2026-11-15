@@ -64,6 +64,26 @@ The repository already owns the key surfaces:
 
 **Precondition:** each implementation slice must re-fetch these owners at its target SHA and check for newer superseding proposals before editing implementation.
 
+### 3.1 Existing implementation assets discovered during RECON
+
+The current graph implementation is already more advanced than a generic node/edge index. The project-local graph skill documents:
+
+- Python/schema-owned graph compilation and query under `archwiz/context_relationships/`;
+- optional Rust hot path under `archwiz/context_relationships/rust_accel/`, with a safe Python adapter and `CRG_RUST_ACCEL=auto|required` modes;
+- canonical BLAKE3-256 fingerprints and normalized JSONL boundaries;
+- an L1 current relationship corpus plus L2 immutable temporal snapshots, structural deltas and append-only lineage;
+- existing query, temporal query, publisher, bounded reconciler and explicit page-backfill workflows;
+- the Historical Corpus Explorer as a deterministic projection, not a source of truth.
+
+The queue implementation also has meaningful prior work: `ops/quota/dispatch-tiers.json` uses `queue.dispatch-tiers/v2` with class-level `after` edges and declared chains; `scripts/ops/swarm_admission.py` evaluates admission and dependency readiness. The existing P1 device pull queue is a separate D1-backed task/receipt contract whose device poller and Actions producer phases have distinct implementation status. IIE must not conflate it with GitHub Actions scheduling or the swarm dispatch queue.
+
+Therefore the first implementation task is not to invent these features. It is to **measure, reconcile and connect** their existing implementations. In particular:
+- semantic candidate generation must plug into the current graph's candidate-edge path and schema;
+- new graph analytics must consume L1/L2 and preserve temporal lineage;
+- dependency-aware admission must extend the current v2 tiers and admission evaluator;
+- incremental source processing must use the current publisher/reconciler/backfill split;
+- no second Rust accelerator, temporal store, graph explorer, queue, or task receipt format is permitted.
+
 ## 4. System architecture
 
 ### 4.1 Logical architecture

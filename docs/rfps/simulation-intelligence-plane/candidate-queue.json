@@ -34,6 +34,22 @@
       "comparison": "graph ingestion fidelity, ontology/provenance, persona traceability, adapter separation, workflow recoverability"
     },
     {
+      "id": "mirofish-refactor-fork",
+      "name": "mj3b/MiroFish refactoring fork",
+      "class": "workbench-architecture-reference",
+      "role": "architectural refactor reference: workbench core, resource adapters, composable tools and thin API shells",
+      "status": "discovered_reference",
+      "priority": "P1",
+      "upstream": "https://github.com/mj3b/MiroFish",
+      "license": "AGPL-3.0 per current fork README; verify exact pinned commit",
+      "in_repo_evidence": [
+        "SIP-001 source register",
+        "PR #5439"
+      ],
+      "existing_work": "Architecture reference only; no fork runtime verified and no source code reuse authorized",
+      "comparison": "separation of concerns, adapter boundaries, storage abstraction, composable tools, API shell thinness, license delta"
+    },
+    {
       "id": "camel-ai-oasis",
       "name": "CAMEL-AI OASIS",
       "class": "social-simulation-engine",

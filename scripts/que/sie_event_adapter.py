@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from typing import Any
 
 
@@ -35,6 +36,8 @@ def queue_stall_groups(feed: dict) -> list[dict]:
             age_min = float(row.get("age_min") or 0)
         except (TypeError, ValueError) as exc:
             raise ValueError("dispatch age_min must be numeric") from exc
+        if not math.isfinite(age_min):
+            raise ValueError("dispatch age_min must be finite")
         if not isinstance(issue, int) or isinstance(issue, bool) or state == "claimed" or row.get("claim"):
             continue
         if state != "escalated" and not events:

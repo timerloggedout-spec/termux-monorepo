@@ -55,6 +55,7 @@ on:
           - friendli
           - baseten
           - deepseek
+          - ollama
       experiment_label:
         description: "Required audit label"
         required: true
@@ -127,6 +128,7 @@ jobs:
           IFLYTEK_SPARK_API_PASSWORD: ${{ secrets.IFLYTEK_SPARK_API_PASSWORD }}
           SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
           COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          OLLAMA_API_KEY: ${{ secrets.OLLAMA_API_KEY }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FELO_AI_API: ${{ secrets.FELO_AI_API }}

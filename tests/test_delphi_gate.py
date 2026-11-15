@@ -217,7 +217,7 @@ def test_run_defers_single_issue_on_rate_limit_and_still_updates_board(monkeypat
                 return [{"number": 1474, "body": ""}]
             if method == "GET" and "/labels?per_page=100" in path:
                 return [{"name": n} for n in gate.LABELS]
-            if method == "GET" and path.startswith("/issues/11/comments"):
+            if method == "GET" and path.startswith("/issues/") and "/comments?" in path:
                 return []
             if method == "POST" and path == "/issues/11/comments":
                 raise gate.RateLimited("429 remaining=0 test")
@@ -635,6 +635,26 @@ def test_delphi_ledger_lookup_rejects_superseded_award():
             raise AssertionError(f"unexpected GitHub request: {path}")
 
     assert gate.lookup_delphi_ledger_record(FakeGH(), old_ref) is None
+
+
+def test_comments_newest_reverses_default_api_order_across_pages():
+    class FakeGH:
+        def __init__(self):
+            self.paths = []
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            self.paths.append(path)
+            if path.endswith("page=1"):
+                return [{"id": i} for i in range(1, 101)]
+            if path.endswith("page=2"):
+                return [{"id": 101}]
+            raise AssertionError(f"unexpected GitHub request: {path}")
+
+    gh = FakeGH()
+    comments = gate.comments_newest(gh, 5156, max_pages=2)
+    assert [item["id"] for item in comments[:3]] == [101, 100, 99]
+    assert [item["id"] for item in comments[-3:]] == [3, 2, 1]
+    assert all("sort=" not in path and "direction=" not in path for path in gh.paths)
 
 
 def test_last_ledger_ignores_human_forged_marker_comments():

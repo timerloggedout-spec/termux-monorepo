@@ -104,7 +104,21 @@ generic and needs no change:
 A template without a block is simply not a dispatch: filings under
 it get no stamp and no route (unchanged behavior).
 
-## Game Development route (ATF-16)\n\n`.github/ISSUE_TEMPLATE/game-development-task.yml` declares `issue-dispatch/v1` with lane `game-development`, tier 3 and route `game-development-dispatch.yml`. The dedicated route is triggered by the completed `swarm-admission` workflow and consumes its one-run `issue-admission` artifact. It parses and queues only when the artifact identifies this template and records `decision: admitted`; deferred, unmatched or failed admission runs never queue. A deferred or missing admission decision never becomes an executable task. The form supplies the canonical `Entry`, `Task / spec`, `Scope`, and `Done-evidence` headings consumed by `scripts/dispatch/project_task.py`; it does not select a provider.\n\nThe existing Target Brief / Web Adapter Foundry route and the Reverse Engineering APK/taxonomy intake families remain separate.\n\n## Proof (2026-11-03)
+## Game Development route (ATF-16)\n\n`.github/ISSUE_TEMPLATE/game-development-task.yml` declares `issue-dispatch/v1` with lane `game-development`, tier 3 and route `game-development-dispatch.yml`. The dedicated route is triggered by the completed `swarm-admission` workflow and consumes its one-run `issue-admission` artifact. It parses and queues only when the artifact identifies this template and records `decision: admitted`; deferred, unmatched or failed admission runs never queue. A deferred or missing admission decision never becomes an executable task. The form supplies the canonical `Entry`, `Task / spec`, `Scope`, and `Done-evidence` headings consumed by `scripts/dispatch/project_task.py`; it does not select a provider.\n\nThe existing Target Brief / Web Adapter Foundry route and the Reverse Engineering APK/taxonomy intake families remain separate.\n\n## Simulation RFP route (SIP-001, 2026-11-14)
+
+`.github/ISSUE_TEMPLATE/simulation-rfp.yml` declares `issue-dispatch/v1`:
+- lane: `simulation-intelligence-plane`
+- tier: `2` (never flow-deferred by queue-depth thresholds; still subject to after/chain guards)
+- payload: `simulation-rfp-research-intake`
+- route: `simulation-rfp-intake.yml`
+
+The route is invoked only by a successful `swarm-admission` workflow completion and consumes that run's `issue-admission` artifact. It requires `matched=true`, exact template `simulation-rfp.yml`, `decision=ADMITTED`, and a valid issue number. It then runs the stdlib-only `scripts/simulation_intelligence/rfp_intake.py`, which checks candidate IDs against the committed SIP candidate queue, refuses secret-like values, hashes the form body, and emits a G0 intake receipt.
+
+This route only creates a research intake receipt. It does not run Delphi generation, call a model/provider, install a package, launch a simulation, or admit a DoE campaign. The frozen G0 brief and evidence set must be committed before the existing `delphi-generate.yml` is explicitly dispatched. A DoE campaign still requires its design record plus EXPERIMENT-conforming run evidence.
+
+It intentionally does not use `delphi:rfp`: the Delphi Oracle RFP gate is calibrated for free-tier provider surfaces, quota evidence and shadow-lane awards, not generic simulation-engine procurement. It also does not label the filing `research:service`, which would wake the general research intake outside this QUE-admitted route.
+
+## Proof (2026-11-03)
 
 `project-task.yml` converted end-to-end: block added, evaluator
 tests 6/6 (local, disclosed interim), admission workflow live on

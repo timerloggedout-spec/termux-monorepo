@@ -30,6 +30,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+# Script execution sets sys.path[0] to scripts/que; add the repository root for the shared intake module.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.que.branch_reconciliation_intake import branch_reconciliation_groups
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "timerloggedout-spec/termux-monorepo")

@@ -23,7 +23,7 @@ IMPERATIVE = {
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
-    "admit", "assert", "avoid", "block", "calculate", "cap", "carry", "census", "centralize", "clarify",
+    "lead", "admit", "assert", "avoid", "block", "calculate", "cap", "carry", "census", "centralize", "clarify",
     "classify", "correct", "cover", "default", "defer", "describe", "dispatch", "distinguish", "ensure",
     "exclude", "expose", "fail", "fan", "hash", "hold", "honor", "import", "ingest", "limit", "load",
     "make", "normalize", "parse", "pass", "pin", "plan", "prevent", "prohibit", "prove", "redact",

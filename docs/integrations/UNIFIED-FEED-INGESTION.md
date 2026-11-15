@@ -243,7 +243,7 @@ python3 scripts/ops/integration_event.py record \
 
 python3 scripts/ops/integration_event.py schema
 python3 scripts/ops/integration_event.py count
-python3 -m unittest tests.test_integration_event_batch -v
+python3 -m unittest discover -s tests -p 'test_integration_event_batch.py' -v
 ```
 
 The dry run validates records and prints bounded batch plans without resolving credentials or contacting Neon. The schema command applies only to the already-existing `lane-events` Neon project/database; this adapter explicitly refuses project auto-creation. The record command requires `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY` and uses the existing project identity.

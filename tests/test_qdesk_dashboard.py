@@ -22,3 +22,9 @@ def test_frontend_has_no_write_authority():
     assert "dispatch:false" in j and "admitted:false" in j
 def test_reduced_motion():
     assert "prefers-reduced-motion:reduce" in (ROOT/"apps/tribute-dashboard/qdesk.css").read_text()
+def test_render_initializes_consumption_projection_before_use():
+    j=(ROOT/"apps/tribute-dashboard/qdesk.js").read_text()
+    declaration=j.index("const cp=consumptionProjection(d.consumption||{}),gap=cp.gap;")
+    first_use=j.index("gap?Math.round((gap.usage_stamped")
+    assert declaration < first_use
+    assert j.count("const cp=consumptionProjection(d.consumption||{}),gap=cp.gap;")==1

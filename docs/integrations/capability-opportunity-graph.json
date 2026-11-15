@@ -844,7 +844,7 @@
       ]
     },
     {
-      "id": "sip-deterministic-fake",
+      "id": "deterministic-fake",
       "kind": "internal_component",
       "name": "SIP deterministic fake engine",
       "lifecycle_state": "discovered",
@@ -1558,7 +1558,7 @@
       ]
     },
     {
-      "from": "sip-deterministic-fake",
+      "from": "deterministic-fake",
       "to": "camel-ai-oasis",
       "relationship": "measures",
       "status": "hypothesis",
@@ -1567,7 +1567,7 @@
       ]
     },
     {
-      "from": "sip-deterministic-fake",
+      "from": "deterministic-fake",
       "to": "mesa",
       "relationship": "measures",
       "status": "hypothesis",
@@ -1576,7 +1576,7 @@
       ]
     },
     {
-      "from": "sip-deterministic-fake",
+      "from": "deterministic-fake",
       "to": "repast",
       "relationship": "measures",
       "status": "hypothesis",
@@ -1585,7 +1585,7 @@
       ]
     },
     {
-      "from": "sip-deterministic-fake",
+      "from": "deterministic-fake",
       "to": "netlogo",
       "relationship": "measures",
       "status": "hypothesis",

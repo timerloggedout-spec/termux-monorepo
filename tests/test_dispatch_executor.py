@@ -329,3 +329,77 @@ def test_probe_result_shape_for_record_probe():
     assert result["probe"]["request_count"] == 3
     assert result["probe"]["token_draw"] == 1  # the proven invoke draw
     assert result["coverage_scope"] == "exact-bucket"
+
+
+# --- daily pool with no provider quota counter ---
+
+def _daily_pool_arm():
+    return {
+        "arm_id": "daily-pool-arm",
+        "model": "free-model",
+        "harness": "generic-agent-loop",
+        "endpoint": {"provider": "example", "route_id": "example::free-model"},
+        "budget": {
+            "class": "free-tier",
+            "quota_class": "daily_pool_no_provider_quota",
+            "pool_id": "daily-free-inference",
+            "experiment_label": "QUE-5454",
+        },
+    }
+
+
+def _daily_pool_usage(status="eligible", experiment_label="QUE-5454"):
+    return {
+        "pools": {"daily-free-inference": {
+            "status": "available",
+            "observed_at": "2026-11-12T14:59:00Z",
+            "reset_window": "daily",
+            "reset_tz": "UTC",
+            "source_ref": "https://provider.example/terms/free-pool",
+        }},
+        "pool_eligibility": {"daily-pool-arm": {
+            "status": status,
+            "pool_id": "daily-free-inference",
+            "experiment_label": experiment_label,
+            "observed_at": "2026-11-12T14:59:00Z",
+            "reset_window": "daily",
+            "reset_tz": "UTC",
+        }},
+    }
+
+
+def test_daily_pool_no_provider_quota_bypasses_provider_counter_but_requires_pool_evidence():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage()
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold is None
+    read, hold = ex.preflight(arm, usage, NOW, headroom)
+    assert hold is None
+    assert read["bucket"] == "daily-free-inference"
+    assert read["source"] == "daily-pool-snapshot"
+    assert read["headroom"] is None
+    assert read["headroom_kind"] == "not_applicable"
+
+
+def test_daily_pool_missing_pool_evidence_holds():
+    arm = _daily_pool_arm()
+    headroom, hold = ex.quota_headroom(arm, None, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_unknown"
+
+
+def test_daily_pool_exhaustion_holds():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage(status="pool_exhausted")
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_exhausted"
+
+
+def test_daily_pool_experiment_label_must_match_arm():
+    arm = _daily_pool_arm()
+    usage = _daily_pool_usage(experiment_label="OTHER-EXPERIMENT")
+    headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
+    assert headroom is None
+    assert hold == "pool_experiment_label_mismatch"

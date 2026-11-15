@@ -25,6 +25,8 @@ def receipt(status="inference_validated", no_cost=True):
         "run_id": "12345",
         "run_attempt": "1",
         "latency_ms": 420,
+        "input_tokens": 4,
+        "output_tokens": 2,
     }
 
 
@@ -37,6 +39,9 @@ def test_build_stamp_maps_passed_no_cost_validation_to_completed_free_tier():
     assert result["outcome"]["confirmed"] is True
     assert result["quota"]["cost_class"] == "free-tier"
     assert result["usage"]["latency_ms"] == 420
+    assert result["usage"]["status"] == "observed"
+    assert result["usage"]["value"] == 2 and result["usage"]["unit"] == "tokens"
+    assert result["usage"]["input_tokens"] == 4
 
 
 def test_build_stamp_keeps_deferred_quota_class_unestablished():

@@ -11,7 +11,15 @@ Subcommands
 """
 from __future__ import annotations
 
-import argparse, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.request, urllib.error
+import argparse, base64, datetime as dt, hashlib, json, os, re, statistics, sys, urllib.parse, urllib.request, urllib.error
+
+try:
+    from .proposal_package import validate_manifest
+except ImportError:  # direct script execution keeps the sibling-module path
+    from proposal_package import validate_manifest
+
+MAX_PACKAGE_FILES = 25
+MAX_LEDGER_COMMENT_PAGES = 20
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SURFACES = os.path.join(ROOT, "ops", "delphi", "surfaces.json")
@@ -253,14 +261,14 @@ def feedback(roles: dict, final_votes: list[dict], outcome: str, panel: dict) ->
 
 # ---------------------------------------------------------------- adaptive cadence
 def cadence(registry: dict, readings: dict, pending: int, depth: int, max_depth: int = 3,
-            api_remaining: int | None = None) -> dict:
+            api_remaining: int | None = None, per_rfp_calls: int = 6) -> dict:
     """Quota-aware: accelerate when free quota sits unused before its reset, defer near caps.
     Bounded by the GitHub API budget in the registry, the LIVE x-ratelimit-remaining of the
     repo-wide GITHUB_TOKEN (shared with every workflow), and a chain-depth cap."""
     reg = {s["id"]: s for s in registry.get("services", [])}
     api = reg.get("github.api.github_token", {})
     cap = int((api.get("limit") or 1000) * (api.get("planned_use", {}).get("safety", 0.8)))
-    per_rfp_calls = 6
+    per_rfp_calls = max(6, int(per_rfp_calls))
     max_rfps = max(1, cap // per_rfp_calls // 4)  # never spend more than a quarter of the hourly budget per run
     reserve = max(100, cap // 10)  # leave headroom for the repo's other workflows
     if api_remaining is not None:
@@ -311,6 +319,26 @@ class GH:
                                   f"retry-after={h.get('retry-after')} on {method} {path.split('?')[0]}") from None
             raise
 
+class ReservedGH:
+    """Proxy that refuses API calls which would consume the shared-token reserve."""
+
+    def __init__(self, gh: GH, remaining: int | None, reserve: int):
+        self._gh, self.remaining, self.reserve = gh, remaining, reserve
+
+    @property
+    def repo(self):
+        return self._gh.repo
+
+    @property
+    def calls(self):
+        return self._gh.calls
+
+    def req(self, method: str, path: str, body=None):
+        if (self.remaining is not None
+                and self.remaining - self._gh.calls - self.reserve < 1):
+            raise RateLimited("shared GITHUB_TOKEN reserve protected before API request")
+        return self._gh.req(method, path, body)
+
 
 def api_remaining(gh: "GH") -> int | None:
     """GET /rate_limit does not count against the limit. None = unreadable (stay neutral)."""
@@ -320,6 +348,18 @@ def api_remaining(gh: "GH") -> int | None:
         return int(core["remaining"])
     except Exception:  # noqa: BLE001 - unreadable budget is neutral, never fatal
         return None
+
+def package_verification_budget_available(
+        remaining: int | None, calls_used: int, reserve: int,
+        max_calls: int = 5 + MAX_PACKAGE_FILES) -> bool:
+    """Protect the shared-token reserve before an immutable package read.
+
+    An unreadable live budget is handled by cadence's static per-run cap;
+    otherwise account for every API call already spent in this run.
+    """
+    if remaining is None:
+        return True
+    return remaining - calls_used - reserve >= max_calls
 
 
 def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight_path: str = FORESIGHT) -> list[dict]:
@@ -352,11 +392,40 @@ def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight
     return sorted(out, key=lambda c: (c["origin"], c["id"]))
 
 
-def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
+def rotate_rfp_issues(issues: list[dict], after_issue: int = 0,
+                      priority_issue: int = 0) -> list[dict]:
+    """Rotate the stable issue-number order after the last persisted sweep cursor."""
+    ordered = sorted(issues, key=lambda issue: issue["number"])
+    if not ordered:
+        return []
+    offset = next((index for index, issue in enumerate(ordered)
+                   if issue["number"] > after_issue), 0)
+    rotated = ordered[offset:] + ordered[:offset]
+    priority = next((issue for issue in rotated
+                     if issue["number"] == priority_issue), None)
+    if priority is not None:
+        rotated = [priority] + [issue for issue in rotated
+                                if issue["number"] != priority_issue]
+    return rotated
+
+
+def board_sweep_cursor(gh: "GH") -> int:
+    """Read the last admitted RFP number from the persistent results-board marker."""
+    found = gh.req("GET", "/issues?state=open&labels=delphi:board&per_page=5")
+    number = pick_ledger_issue(found, BOARD_TITLE)
+    issue = next((item for item in found if item.get("number") == number), None)
+    match = re.search(r"<!-- delphi-sweep-cursor:(\\d+) -->",
+                      (issue or {}).get("body") or "")
+    return int(match.group(1)) if match else 0
+
+
+def board_md(rows: list[dict], at: str, radar: list[dict] | None = None,
+             sweep_cursor: int = 0) -> str:
     """Results board: one row per open RFP, newest ledger state. Regenerated, never hand-edited."""
     order = {"shadow": 0, "parked": 1, "pending": 2}
     rows = sorted(rows, key=lambda r: (order.get(r["decision"], 3), -(r["effective"] or 0), r["number"]))
-    lines = [BOARD_MARK, f"Generated by delphi-gate at {at}. Ledger of record: the newest `{LEDGER_MARK}` comment on each RFP.", "",
+    lines = [BOARD_MARK, f"<!-- delphi-sweep-cursor:{sweep_cursor} -->",
+             f"Generated by delphi-gate at {at}. Ledger of record: the newest `{LEDGER_MARK}` comment on each RFP.", "",
              "| RFP | Surface | Effective /25 | Award | Band | Recheck |", "|---|---|---|---|---|---|"]
     for r in rows:
         lines.append(f"| #{r['number']} | `{r['surface']}` | {r['effective'] if r['effective'] is not None else '-'} | "
@@ -376,9 +445,11 @@ def board_md(rows: list[dict], at: str, radar: list[dict] | None = None) -> str:
     return "\n".join(lines)
 
 
-def update_board(gh: "GH", rows: list[dict], radar: list[dict] | None = None) -> int | None:
+def update_board(gh: "GH", rows: list[dict], radar: list[dict] | None = None,
+                 sweep_cursor: int = 0) -> int | None:
     found = gh.req("GET", "/issues?state=open&labels=delphi:board&per_page=5")
-    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"), radar)
+    body = board_md(rows, now().strftime("%Y-%m-%d %H:%M UTC"), radar,
+                    sweep_cursor=sweep_cursor)
     if not found:
         return gh.req("POST", "/issues", {"title": BOARD_TITLE, "labels": ["delphi:board"], "body": body}).get("number")
     n = pick_ledger_issue(found, BOARD_TITLE)
@@ -421,6 +492,218 @@ def surface_from_issue(issue: dict, catalog: dict) -> dict:
             "card_required": "card" in (f.get("free_quota", "") + f.get("failure_modes", "")).lower(), "overage_autobill": False}
 
 
+def authenticated_reviewer_for_issue(issue: dict, env=None) -> str | None:
+    """Accept only an explicit approval comment from a trusted repository collaborator.
+
+    The workflow passes raw GitHub event fields; this function independently
+    checks issue binding, association, exact command and distinct identity.
+    """
+    env = os.environ if env is None else env
+    try:
+        target_issue = int(env.get("DELPHI_REVIEW_ISSUE", ""))
+    except (TypeError, ValueError):
+        return None
+    login = (env.get("DELPHI_REVIEWER_LOGIN") or "").strip()
+    association = (env.get("DELPHI_REVIEWER_ASSOCIATION") or "").upper()
+    command = (env.get("DELPHI_REVIEW_COMMENT_BODY") or "").strip()
+    if target_issue != issue.get("number"):
+        return None
+    if association not in {"OWNER", "MEMBER", "COLLABORATOR"}:
+        return None
+    if command != "/delphi approve":
+        return None
+    # Bind the approval event to the exact package fields visible when the
+    # reviewer commented. A later issue edit must not substitute a new package
+    # while the workflow is waiting to fetch and score the RFP.
+    event_body = env.get("DELPHI_REVIEW_ISSUE_BODY")
+    if not isinstance(event_body, str):
+        return None
+    event_title = env.get("DELPHI_REVIEW_ISSUE_TITLE")
+    if not isinstance(event_title, str) or event_title != issue.get("title"):
+        return None
+    # Bind every field consumed by surface_from_issue, not only package identity.
+    # A queued approval must not survive edits to any scoring input.
+    binding_fields = (
+        "surface_id", "lane", "free_quota", "reset_and_zone",
+        "auth_from_actions", "lock_in", "failure_modes",
+        "proposal_source_ref", "proposal_manifest_ref",
+        "proposal_manifest_path", "expected_package_digest",
+    )
+    event_fields = parse_form(event_body)
+    current_fields = parse_form(issue.get("body", ""))
+    for field in binding_fields:
+        event_value = (event_fields.get(field) or "").strip()
+        current_value = (current_fields.get(field) or "").strip()
+        if event_value != current_value:
+            return None
+    for field in ("proposal_source_ref", "proposal_manifest_ref",
+                  "proposal_manifest_path", "expected_package_digest"):
+        if not (current_fields.get(field) or "").strip():
+            return None
+    if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", login):
+        return None
+    return login
+
+
+def delphi_ledger_ref(comment_id: int) -> str:
+    if not isinstance(comment_id, int) or isinstance(comment_id, bool) or comment_id <= 0:
+        raise ValueError("GitHub ledger comment ID must be a positive integer")
+    return f"github:issue-comment:{comment_id}"
+
+
+def lookup_delphi_ledger_record(gh: "GH", ledger_ref: str) -> dict | None:
+    """Resolve an award only from the exact bot-authored canonical RFP comment."""
+    match = re.fullmatch(r"github:issue-comment:([1-9][0-9]*)", ledger_ref or "")
+    if not match:
+        return None
+    comment_id = int(match.group(1))
+    comment = gh.req("GET", f"/issues/comments/{comment_id}")
+    if not isinstance(comment, dict) or comment.get("id") != comment_id:
+        return None
+    user = comment.get("user") or {}
+    if user.get("type") != "Bot" or user.get("login") != "github-actions[bot]":
+        return None
+    issue_url = comment.get("issue_url") or ""
+    issue_prefix = f"https://api.github.com/repos/{gh.repo}/issues/"
+    if not issue_url.startswith(issue_prefix):
+        return None
+    issue_number_text = issue_url[len(issue_prefix):]
+    if not re.fullmatch(r"[1-9][0-9]*", issue_number_text):
+        return None
+    body = comment.get("body") or ""
+    if not body.startswith(LEDGER_MARK):
+        return None
+    payload = re.search(r"```json\n(.*?)\n```", body, re.S)
+    if not payload:
+        return None
+    try:
+        record = json.loads(payload.group(1))
+    except ValueError:
+        return None
+    award = record.get("award") if isinstance(record, dict) else None
+    if not isinstance(award, dict) or award.get("ledger_ref") != ledger_ref:
+        return None
+    # An exact historical comment is not sufficient: authorization must point
+    # at the newest canonical award for this RFP, otherwise superseded approval
+    # comments remain replayable.
+    latest = last_ledger(gh, int(issue_number_text))
+    latest_award = latest.get("award", {}) if isinstance(latest, dict) else {}
+    if not isinstance(latest_award, dict) or latest_award.get("ledger_ref") != ledger_ref:
+        return None
+    return {
+        "ledger_ref": ledger_ref,
+        "package_digest": award.get("package_digest"),
+        "decision": award.get("decision"),
+        "reviewer_login": award.get("reviewer_login"),
+    }
+
+
+def _github_file_bytes(gh: "GH", path: str, source_ref: str) -> bytes:
+    """Read one regular file from an immutable Git commit through the authenticated API."""
+    if (not isinstance(path, str) or not path or path.startswith("/") or "\\" in path
+            or any(part in ("", ".", "..") for part in path.split("/"))):
+        raise ValueError(f"unsafe repository content path: {path!r}")
+    response = gh.req("GET", f"/contents/{urllib.parse.quote(path, safe='/')}?ref={source_ref}")
+    if not isinstance(response, dict) or response.get("type") != "file" or response.get("encoding") != "base64":
+        raise ValueError(f"package input is not a regular base64 file: {path}")
+    encoded_content = response.get("content")
+    if not isinstance(encoded_content, str):
+        raise ValueError(f"package input has no base64 content: {path}")
+    encoded = re.sub(r"\s+", "", encoded_content)
+    try:
+        return base64.b64decode(encoded, validate=True)
+    except (ValueError, TypeError) as exc:
+        raise ValueError(f"package input has invalid base64 content: {path}") from exc
+
+
+def _github_regular_blob_paths(gh: "GH", ref: str) -> dict[str, dict]:
+    """Return a complete immutable Git tree; reject truncation and non-regular blobs."""
+    commit = gh.req("GET", f"/git/commits/{ref}")
+    tree_sha = commit.get("tree", {}).get("sha") if isinstance(commit, dict) else None
+    if (not isinstance(commit, dict) or commit.get("sha") != ref
+            or not isinstance(tree_sha, str) or not re.fullmatch(r"[0-9a-f]{40,64}", tree_sha)):
+        raise ValueError(f"Git commit/tree metadata for {ref} is unavailable or malformed")
+    tree = gh.req("GET", f"/git/trees/{tree_sha}?recursive=1")
+    if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
+        raise ValueError(f"Git tree for {ref} is unavailable or truncated")
+    entries = {}
+    for entry in tree["tree"]:
+        if not isinstance(entry, dict) or not isinstance(entry.get("path"), str):
+            raise ValueError(f"Git tree for {ref} contains a malformed entry")
+        entries[entry["path"]] = entry
+    return entries
+
+
+def _require_regular_blob(entries: dict[str, dict], path: str, ref: str) -> None:
+    entry = entries.get(path)
+    if not isinstance(entry, dict) or entry.get("type") != "blob" or entry.get("mode") != "100644":
+        raise ValueError(f"package input is missing, executable, a symlink or not a regular file at {ref}: {path}")
+
+
+def verify_issue_package_binding(gh: "GH", issue: dict) -> dict | None:
+    """Verify optional QD-039 issue fields against the exact immutable GitHub contents."""
+    fields = parse_form(issue.get("body", ""))
+    source_ref = (fields.get("proposal_source_ref") or "").strip()
+    manifest_ref = (fields.get("proposal_manifest_ref") or "").strip()
+    manifest_path = (fields.get("proposal_manifest_path") or "").strip()
+    expected_digest = (fields.get("expected_package_digest") or "").strip()
+    supplied = [bool(source_ref), bool(manifest_ref), bool(manifest_path), bool(expected_digest)]
+    if not any(supplied):
+        return None  # legacy RFPs retain their existing path
+    if not all(supplied):
+        raise ValueError("proposal source ref, manifest ref, manifest path and expected package digest are all required")
+    sha_pattern = r"(?:[0-9a-f]{40}|[0-9a-f]{64})"
+    if not re.fullmatch(sha_pattern, source_ref):
+        raise ValueError("proposal source ref must be an immutable Git commit SHA")
+    if not re.fullmatch(sha_pattern, manifest_ref):
+        raise ValueError("proposal manifest ref must be an immutable Git commit SHA")
+    if manifest_ref == source_ref:
+        raise ValueError("proposal manifest ref must differ from its source ref")
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_digest):
+        raise ValueError("expected package digest must be a lowercase SHA-256")
+    # The manifest is committed after its source snapshot, so it cannot live at
+    # the source SHA that it records. Pin and type-check both immutable Git trees.
+    manifest_tree = _github_regular_blob_paths(gh, manifest_ref)
+    _require_regular_blob(manifest_tree, manifest_path, manifest_ref)
+    raw_manifest = _github_file_bytes(gh, manifest_path, manifest_ref)
+    try:
+        manifest = json.loads(raw_manifest.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise ValueError("proposal package manifest is not valid UTF-8 JSON") from exc
+    errors = validate_manifest(manifest)
+    if errors:
+        raise ValueError("proposal package manifest held: " + "; ".join(errors))
+    if manifest["source_ref"] != source_ref:
+        raise ValueError("proposal manifest source ref does not match the issue binding")
+    if manifest["package_digest"] != expected_digest:
+        raise ValueError("proposal package digest does not match the expected digest")
+    if len(manifest["files"]) > MAX_PACKAGE_FILES:
+        raise ValueError(f"proposal package exceeds the {MAX_PACKAGE_FILES}-file verification bound")
+    source_tree = _github_regular_blob_paths(gh, source_ref)
+    package_prefix = manifest["package_path"].rstrip("/") + "/"
+    verified_files = []
+    for entry in manifest["files"]:
+        path = entry["path"]
+        if not path.startswith(package_prefix):
+            raise ValueError(f"inventory path is outside package_path: {path}")
+        _require_regular_blob(source_tree, path, source_ref)
+        content = _github_file_bytes(gh, path, source_ref)
+        actual = hashlib.sha256(content).hexdigest()
+        if actual != entry["sha256"]:
+            raise ValueError(f"proposal file hash mismatch: {path}")
+        verified_files.append(path)
+    return {
+        "source_ref": source_ref,
+        "manifest_ref": manifest_ref,
+        "manifest_path": manifest_path,
+        "package_id": manifest["package_id"],
+        "package_path": manifest["package_path"],
+        "package_author": manifest["package_author"],
+        "package_digest": manifest["package_digest"],
+        "file_count": len(verified_files),
+    }
+
+
 def quantize_roles(roles: dict) -> dict:
     """Weights enter the input hash quantized (gpr to 0.1, Elo to 25) so a stream of small graded
     outcomes (tribute-outcome) re-scores the queue only when a weight moves materially."""
@@ -428,9 +711,10 @@ def quantize_roles(roles: dict) -> dict:
                 "elo": int(round(float(v.get("elo", 1500)) / 25.0) * 25)} for k, v in roles.items()}
 
 
-def input_hash(s: dict, roles: dict, registry: dict, readings: dict) -> str:
+def input_hash(s: dict, roles: dict, registry: dict, readings: dict,
+               package_binding: dict | None = None) -> str:
     reg = {x["id"]: x for x in registry.get("services", [])}.get(s.get("registry_id") or "", {})
-    blob = json.dumps([s, quantize_roles(roles), reg, readings], sort_keys=True)
+    blob = json.dumps([s, quantize_roles(roles), reg, readings, package_binding], sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:12]
 
 
@@ -446,7 +730,8 @@ def comment_md(out: dict, ih: str, reason: str) -> str:
     o = out["records"]["oracle"]["documented"]
     lines += ["", f"Oracle: {o['metric']} = {o['limit']} {o['unit']}, reset {o['reset']} {o['zone']} ([source]({o['source']}))", "",
               "<details><summary>Signed votes + HindSight/ForeSight/3l0.moneyball.v1 records</summary>", "", "```json",
-              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"], "award": a,
+              json.dumps({"input_hash": ih, "effective_score": r["effective_score"], "final_votes": r["rounds"][-1]["votes"],
+                          "award": a, "proposal_package": out.get("proposal_package"),
                           "records": {k: v for k, v in out["records"].items() if k != "oracle"}}, indent=1), "```", "</details>"]
     return "\n".join(lines)
 
@@ -467,27 +752,74 @@ def pick_ledger_issue(found: list[dict], title: str) -> int | None:
     return found[0]["number"] if found else None
 
 
-def comments_newest(gh: GH, number: int, max_pages: int = 20) -> list[dict]:
-    """Issue comments newest-first, paged from the END of the list.
+def comments_newest(gh: GH, number: int, max_pages: int = MAX_LEDGER_COMMENT_PAGES) -> list[dict]:
+    """Return canonical issue comments newest-first with a fail-closed page cap.
 
-    The ledgers are append-only and read for their LATEST entries; a
-    plain per_page=100 read returns the OLDEST page, so readers went
-    stale once a ledger passed 100 comments (issue #1533). Pages are
-    fetched until a short page; the result is newest-first."""
+    The per-issue GitHub endpoint supports pagination but not sort/direction
+    parameters. Its documented default is ascending comment ID, so collect the
+    complete bounded sequence and reverse it locally before selecting the
+    canonical ledger head. If the cap is exhausted on a full page, the latest
+    record is not established and callers must hold rather than trust stale data.
+    """
     all_comments: list[dict] = []
     for page in range(1, max_pages + 1):
-        batch = gh.req("GET", f"/issues/{number}/comments?per_page=100&page={page}")
+        batch = gh.req(
+            "GET",
+            f"/issues/{number}/comments?per_page=100&page={page}",
+        )
+        if not isinstance(batch, list):
+            raise RuntimeError("Delphi issue comment page is not a list; latest ledger is unverified")
         if not batch:
-            break
+            return list(reversed(all_comments))
         all_comments.extend(batch)
         if len(batch) < 100:
-            break
-    return list(reversed(all_comments))
+            return list(reversed(all_comments))
+    raise RuntimeError(
+        f"Delphi issue comment pagination cap ({max_pages} pages) reached; latest ledger is unverified"
+    )
+
+
+def open_rfp_issues(gh: GH, per_page: int = 100, max_pages: int = 100) -> list[dict]:
+    """Return a complete, de-duplicated census of open Delphi RFP issues.
+
+    GitHub's Issues API is paginated and also returns pull requests. Never
+    silently treat the first 100 results as the whole queue. If the safety
+    cap is reached while the final page is full, fail closed.
+    """
+    if not 1 <= per_page <= 100:
+        raise ValueError("per_page must be between 1 and 100")
+    if max_pages < 1:
+        raise ValueError("max_pages must be positive")
+    by_number: dict[int, dict] = {}
+    for page in range(1, max_pages + 1):
+        batch = gh.req(
+            "GET",
+            f"/issues?state=open&labels=delphi:rfp&per_page={per_page}&page={page}",
+        )
+        if not isinstance(batch, list):
+            raise RuntimeError(f"Delphi RFP page {page} was not a list; census is incomplete")
+        for issue in batch:
+            if not isinstance(issue, dict) or "pull_request" in issue:
+                continue
+            number = issue.get("number")
+            if isinstance(number, int) and not isinstance(number, bool) and number > 0:
+                by_number.setdefault(number, issue)
+        if len(batch) < per_page:
+            return [by_number[number] for number in sorted(by_number)]
+    raise RuntimeError(
+        f"Delphi RFP issue pagination cap ({max_pages} pages) reached with a full final page; "
+        "refusing to process an incomplete census"
+    )
 
 
 def last_ledger(gh: GH, number: int) -> dict | None:
     comments = comments_newest(gh, number)
     for c in comments:
+        # Human-authored issue comments can contain arbitrary text, including
+        # forged ledger markers. Only the repository's Actions bot is a writer.
+        user = c.get("user") or {}
+        if user.get("type") != "Bot" or user.get("login") != "github-actions[bot]":
+            continue
         if c.get("body", "").startswith(LEDGER_MARK):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:
@@ -498,6 +830,14 @@ def last_ledger(gh: GH, number: int) -> dict | None:
                 if "effective_score" not in j:  # ledgers written before the board existed
                     e = re.search(r"\*\*effective_score\*\* ([\d.]+)", c["body"])
                     j["effective_score"] = float(e.group(1)) if e else None
+                award = j.get("award", {})
+                # A package-bound POST whose follow-up PATCH failed is only a
+                # provisional comment. Never let it satisfy idempotency.
+                if award.get("package_digest") and not award.get("ledger_ref"):
+                    # A newer package-bound write that failed its self-reference
+                    # PATCH invalidates older approvals. Falling back to an older
+                    # canonical award would make a superseded decision replayable.
+                    return None
                 return j
     return None
 
@@ -538,37 +878,122 @@ def _run(args) -> int:
     panel, registry, readings = load(PANEL), load(REGISTRY), load_readings()
     catalog = {s["id"]: s for s in load(SURFACES)["surfaces"]}
     remaining = api_remaining(gh)
+    api_cfg = next((item for item in registry.get("services", [])
+                    if item.get("id") == "github.api.github_token"), {})
+    api_cap = int((api_cfg.get("limit") or 1000)
+                  * (api_cfg.get("planned_use", {}).get("safety", 0.8)))
+    api_reserve = max(100, api_cap // 10)
+    gh = ReservedGH(gh, remaining, api_reserve)
     early = cadence(registry, readings, 1, args.depth, api_remaining=remaining)
     if early["mode"] == "defer_api":
         print(f"::warning::delphi deferred: shared GITHUB_TOKEN remaining={remaining} is inside the reserve; next event or heartbeat resumes")
         return 0
-    have = {l["name"] for l in gh.req("GET", "/labels?per_page=100")}
-    for name, (color, desc) in LABELS.items():
-        if name not in have:
-            gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
-    _, roles = weights_issue(gh, panel)
-    panel = dict(panel, roles=roles)
-    issues = [i for i in gh.req("GET", "/issues?state=open&labels=delphi:rfp&per_page=100") if "pull_request" not in i]
-    plan = cadence(registry, readings, len(issues), args.depth, api_remaining=remaining)
+    try:
+        have = {l["name"] for l in gh.req("GET", "/labels?per_page=100")}
+        for name, (color, desc) in LABELS.items():
+            if name not in have:
+                gh.req("POST", "/labels", {"name": name, "color": color, "description": desc})
+        _, roles = weights_issue(gh, panel)
+        panel = dict(panel, roles=roles)
+        issues = open_rfp_issues(gh)
+    except RateLimited as exc:
+        print(f"::warning::delphi census deferred before scoring on GitHub rate limit: {exc}")
+        return 0
+    review_target = 0
+    if (os.environ.get("DELPHI_REVIEW_COMMENT_BODY", "").strip() == "/delphi approve"):
+        try:
+            review_target = int(os.environ.get("DELPHI_REVIEW_ISSUE", ""))
+        except (TypeError, ValueError):
+            review_target = 0
+    package_bound = any(
+        any((parse_form(issue.get("body", "")).get(field) or "").strip()
+            for field in ("proposal_source_ref", "proposal_manifest_ref", "proposal_manifest_path", "expected_package_digest"))
+        for issue in issues
+    )
+    census_calls = max(1, (len(issues) // 100) + 1)
+    estimated_calls_per_rfp = (7 + census_calls + MAX_LEDGER_COMMENT_PAGES
+                               + (5 + MAX_PACKAGE_FILES if package_bound else 0))
+    plan = cadence(registry, readings, len(issues), args.depth,
+                   api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)
     print(f"::notice::delphi cadence mode={plan['mode']} pace={plan['pace']} open_rfps={len(issues)} "
           f"cap={plan['max_rfps_per_run']} api_remaining={remaining}")
     if plan["mode"] == "defer" and args.reason not in ("issues", "issue_comment", "workflow_dispatch"):
         print("::notice::delphi deferred: free quotas near cap; waiting for reset or an explicit event")
         return 0
     budget, done, pending = {"llm": int(os.environ.get("DELPHI_LLM_MAX", "30"))}, 0, 0
+    verification_attempts = 0
+    package_verify_call_bound = 5 + MAX_PACKAGE_FILES
     session = f"run-{os.environ.get('GITHUB_RUN_ID', 'local')}"
     os.environ["DELPHI_REASON"] = args.reason
     summary, board = [], []
     try:
-        for issue in sorted(issues, key=lambda i: i["number"]):
+        cursor_issue = board_sweep_cursor(gh)
+    except RateLimited as exc:
+        print(f"::warning::delphi sweep cursor read deferred on GitHub rate limit: {exc}")
+        return 0
+    last_visited_issue = cursor_issue
+    ordered_issues = rotate_rfp_issues(issues, cursor_issue, review_target)
+    try:
+        for issue in ordered_issues:
             s = surface_from_issue(issue, catalog)
-            if done >= plan["max_rfps_per_run"]:
+            # Count every admitted verification attempt, including unchanged and held
+            # packages. The scoring counter below advances only when a new award is
+            # written and therefore cannot safely enforce the API verification budget.
+            if verification_attempts >= plan["max_rfps_per_run"]:
                 pending += 1
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 continue
+            fields = parse_form(issue.get("body", ""))
+            issue_package_bound = any(
+                (fields.get(field) or "").strip()
+                for field in ("proposal_source_ref", "proposal_manifest_ref",
+                              "proposal_manifest_path", "expected_package_digest")
+            )
+            if (issue_package_bound and not package_verification_budget_available(
+                    remaining, gh.calls, api_reserve, package_verify_call_bound)):
+                pending += 1
+                board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
+                print(f"::warning::Delphi package verification deferred for #{issue['number']}: shared API reserve protected")
+                continue
+            verification_attempts += 1
+            last_visited_issue = issue["number"]
             try:
-                ih = input_hash(s, roles, registry, readings)
-                prev = last_ledger(gh, issue["number"])
+                try:
+                    package_binding = verify_issue_package_binding(gh, issue)
+                except (ValueError, TypeError, KeyError, urllib.error.HTTPError) as exc:
+                    pending += 1
+                    summary.append(f"#{issue['number']} {s['id']}: HELD package binding")
+                    board.append({"number": issue["number"], "surface": s["id"],
+                                  "effective": None, "decision": "pending"})
+                    print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
+                    continue
+                base_ih = input_hash(s, roles, registry, readings, package_binding)
+                try:
+                    prev = last_ledger(gh, issue["number"])
+                except RuntimeError as exc:
+                    # An incomplete comment census makes the ledger head unknown.
+                    # Hold this issue only; preserve the rest of the sweep.
+                    pending += 1
+                    summary.append(f"#{issue['number']} {s['id']}: HELD ledger pagination")
+                    board.append({"number": issue["number"], "surface": s["id"],
+                                  "effective": None, "decision": "pending"})
+                    print(f"::warning::Delphi ledger HELD for #{issue['number']}: {exc}")
+                    continue
+                reviewer = authenticated_reviewer_for_issue(issue) if package_binding is not None else None
+                if package_binding is not None:
+                    package_author = package_binding.get("package_author", "")
+                    if reviewer and reviewer.casefold() == package_author.casefold():
+                        reviewer = None
+                    previous_award = (prev or {}).get("award", {})
+                    # Retain an approval only while the exact scored inputs and
+                    # immutable package digest remain unchanged.
+                    if (not reviewer and previous_award.get("reviewed_input_hash") == base_ih
+                            and previous_award.get("package_digest") == package_binding["package_digest"]):
+                        reviewer = previous_award.get("reviewer_login")
+                    ih = input_hash(s, roles, registry, readings,
+                                    {"package_binding": package_binding, "reviewer_login": reviewer})
+                else:
+                    ih = base_ih
                 due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
                 if prev and prev.get("input_hash") == ih and not due:
                     summary.append(f"#{issue['number']} {s['id']}: unchanged")
@@ -577,7 +1002,25 @@ def _run(args) -> int:
                                   "decision": a.get("decision", "pending"), "band": a.get("band"), "recheck": a.get("recheck_after")})
                     continue
                 out = score_surface(s, panel, registry, readings, f"#{issue['number']}", session, budget)
-                gh.req("POST", f"/issues/{issue['number']}/comments", {"body": comment_md(out, ih, args.reason)})
+                if package_binding is not None:
+                    out["proposal_package"] = package_binding
+                    out["award"]["package_digest"] = package_binding["package_digest"]
+                    out["records"]["moneyball"]["proposal_package_digest"] = package_binding["package_digest"]
+                    if reviewer:
+                        out["award"]["reviewer_login"] = reviewer
+                        out["award"]["reviewed_input_hash"] = base_ih
+                # Create first to obtain GitHub's immutable comment ID, then bind
+                # that ID into the final ledger payload. If the PATCH fails, no
+                # canonical self-referencing award exists and QDesk must hold it.
+                created = gh.req("POST", f"/issues/{issue['number']}/comments",
+                                 {"body": comment_md(out, ih, args.reason)})
+                if package_binding is not None:
+                    comment_id = created.get("id") if isinstance(created, dict) else None
+                    if not isinstance(comment_id, int) or isinstance(comment_id, bool) or comment_id <= 0:
+                        raise ValueError("GitHub did not return a canonical Delphi ledger comment ID")
+                    out["award"]["ledger_ref"] = delphi_ledger_ref(comment_id)
+                    gh.req("PATCH", f"/issues/comments/{comment_id}",
+                           {"body": comment_md(out, ih, args.reason)})
                 labels = {l["name"] for l in issue.get("labels", [])} - {"delphi:shadow", "delphi:parked", "delphi:converged", "delphi:needs-access"}
                 labels.add("delphi:" + out["award"]["decision"])
                 if out["result"]["converged"]:
@@ -605,7 +1048,7 @@ def _run(args) -> int:
         if board:
             try:
                 radar = radar_candidates(catalog, registry, {r["surface"] for r in board})
-                print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar)}")
+                print(f"::notice::delphi radar uncovered={len(radar)} results board #{update_board(gh, board, radar, last_visited_issue)}")
             except RateLimited as e:
                 print(f"::warning::delphi board update deferred on GitHub rate limit: {e}")
     print(f"::notice::delphi processed={done} pending={pending} api_calls={gh.calls}")

@@ -123,6 +123,14 @@ jobs:
         env:
           REASON: ${{ inputs.reason || github.event.action || github.event_name }}
           DEPTH: ${{ inputs.depth || '0' }}
+          # A human reviewer is recognized only for an explicit slash-command
+          # approval on this exact issue; the Python gate checks association too.
+          DELPHI_REVIEW_ISSUE: ${{ github.event.issue.number }}
+          DELPHI_REVIEWER_LOGIN: ${{ github.event.comment.user.login }}
+          DELPHI_REVIEWER_ASSOCIATION: ${{ github.event.comment.author_association }}
+          DELPHI_REVIEW_COMMENT_BODY: ${{ github.event.comment.body }}
+          DELPHI_REVIEW_ISSUE_BODY: ${{ github.event.issue.body }}
+          DELPHI_REVIEW_ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
           set -euo pipefail
           case "$DEPTH" in ''|*[!0-9]*) DEPTH=0;; esac

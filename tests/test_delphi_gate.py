@@ -1,5 +1,9 @@
 """Delphi Oracle RFP gate: offline, stdlib-only tests (no network, no secrets)."""
-import json, os
+import base64, json, os, tempfile
+import pytest
+from pathlib import Path
+
+from scripts.delphi.proposal_package import build_manifest
 
 from scripts.delphi import gate
 
@@ -213,7 +217,7 @@ def test_run_defers_single_issue_on_rate_limit_and_still_updates_board(monkeypat
                 return [{"number": 1474, "body": ""}]
             if method == "GET" and "/labels?per_page=100" in path:
                 return [{"name": n} for n in gate.LABELS]
-            if method == "GET" and path.startswith("/issues/11/comments"):
+            if method == "GET" and path.startswith("/issues/") and "/comments?" in path:
                 return []
             if method == "POST" and path == "/issues/11/comments":
                 raise gate.RateLimited("429 remaining=0 test")
@@ -306,3 +310,473 @@ def test_research_silo_parked_recheck_is_short():
     aw2 = gate.award({"effective_score": 6.69, "veto": False}, dict(surf, id="turso.free"), panel)
     ra2 = _dt.datetime.strptime(aw2["recheck_after"], "%Y-%m-%dT%H:%MZ")
     assert (ra2 - _dt.datetime.utcnow()).days >= 20
+
+def test_package_binding_reads_manifest_and_inventory_from_distinct_immutable_refs():
+    source_ref = "a" * 40
+    manifest_ref = "b" * 40
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        package = root / "proposal"
+        package.mkdir()
+        artifact = package / "RFP.md"
+        artifact.write_text("# Frozen proposal\n", encoding="utf-8")
+        manifest = build_manifest(
+            source_ref=source_ref, package_id="proposal-1",
+            package_path="proposal", root=root,
+            files=["proposal/RFP.md"], package_author="builder",
+        )
+        manifest_bytes = json.dumps(manifest).encode("utf-8")
+        artifact_bytes = artifact.read_bytes()
+
+        class PackageGH:
+            def __init__(self, source_mode="100644"):
+                self.refs = []
+                self.source_mode = source_mode
+            def req(self, method, path, body=None):
+                assert method == "GET"
+                if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if tree_sha == "c" * 40 else
+                            [{"path": "proposal/RFP.md", "type": "blob", "mode": self.source_mode}])
+                    return {"truncated": False, "tree": rows}
+                ref = path.rsplit("?ref=", 1)[1]
+                self.refs.append((path.split("?", 1)[0], ref))
+                payload = manifest_bytes if path.startswith("/contents/proposal/package.json") else artifact_bytes
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(payload).decode("ascii")}
+
+        gh = PackageGH()
+        body = (
+            f"### Proposal source ref\n\n{source_ref}\n\n"
+            f"### Proposal manifest ref\n\n{manifest_ref}\n\n"
+            "### Proposal manifest path\n\nproposal/package.json\n\n"
+            f"### Expected package digest\n\n{manifest['package_digest']}\n"
+        )
+        binding = gate.verify_issue_package_binding(gh, {"body": body})
+        assert binding["source_ref"] == source_ref
+        assert binding["manifest_ref"] == manifest_ref
+        assert binding["package_digest"] == manifest["package_digest"]
+        assert gh.refs == [
+            ("/contents/proposal/package.json", manifest_ref),
+            ("/contents/proposal/RFP.md", source_ref),
+        ]
+        with pytest.raises(ValueError, match="symlink"):
+            gate.verify_issue_package_binding(PackageGH(source_mode="120000"), {"body": body})
+
+
+def test_open_rfp_issue_census_paginates_and_deduplicates():
+    class PagedGH:
+        def __init__(self):
+            self.paths = []
+
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            self.paths.append(path)
+            page = int(path.rsplit("page=", 1)[1])
+            if page == 1:
+                return [{"number": number, "title": f"RFP {number}"}
+                        for number in range(1, 101)]
+            if page == 2:
+                return (
+                    [{"number": 100, "title": "duplicate from page boundary"}]
+                    + [{"number": number, "title": f"RFP {number}"}
+                       for number in range(101, 107)]
+                    + [{"number": 107, "title": "PR-shaped result",
+                        "pull_request": {"url": "https://example.invalid/pr/107"}}]
+                )
+            return []
+
+    gh = PagedGH()
+    issues = gate.open_rfp_issues(gh)
+    assert len(issues) == 106
+    assert [issue["number"] for issue in issues] == list(range(1, 107))
+    assert all("pull_request" not in issue for issue in issues)
+    assert len(gh.paths) == 2
+    assert "page=1" in gh.paths[0] and "page=2" in gh.paths[1]
+
+
+def test_open_rfp_issue_census_fails_closed_when_page_cap_reached():
+    class FullPagesGH:
+        def req(self, method, path, body=None):
+            page = int(path.rsplit("page=", 1)[1])
+            return [{"number": (page - 1) * 100 + number}
+                    for number in range(1, 101)]
+
+    try:
+        gate.open_rfp_issues(FullPagesGH(), max_pages=2)
+    except RuntimeError as exc:
+        assert "pagination cap" in str(exc)
+    else:
+        raise AssertionError("a full final page must not be treated as a complete census")
+
+
+def test_gate_keeps_active_sweep_and_hourly_post_burst_backstop():
+    workflow_path = os.path.join(ROOT, ".github", "workflows", "delphi-gate.yml")
+    with open(workflow_path, encoding="utf-8") as handle:
+        workflow = handle.read()
+    assert "cancel-in-progress: false" in workflow
+    assert 'cron: "23 * * * *"' in workflow
+    assert "post-burst sweep guarantee" in workflow
+
+
+
+
+def test_package_binding_rejects_inventory_outside_declared_package_path():
+    with tempfile.TemporaryDirectory() as temp:
+        root = Path(temp)
+        (root / "proposal").mkdir()
+        (root / "proposal" / "RFP.md").write_text("# proposal\n")
+        outside = root / "outside.md"
+        outside.write_text("# outside\n")
+        source_ref, manifest_ref = "a" * 40, "b" * 40
+        manifest = build_manifest(
+            source_ref=source_ref, package_id="proposal-2",
+            package_path="proposal", root=root,
+            files=["outside.md"], package_author="builder",
+        )
+        raw = json.dumps(manifest).encode("utf-8")
+        contents = {
+            "/contents/proposal/package.json": raw,
+            "/contents/outside.md": outside.read_bytes(),
+        }
+
+        class FakeGH:
+            def req(self, method, path, body=None):
+                if path.startswith("/git/commits/"):
+                    ref = path.rsplit("/", 1)[1]
+                    return {"sha": ref, "tree": {"sha": "c" * 40 if ref == manifest_ref else "d" * 40}}
+                if path.startswith("/git/trees/"):
+                    tree_sha = path.split("/git/trees/", 1)[1].split("?", 1)[0]
+                    rows = ([{"path": "proposal/package.json", "type": "blob", "mode": "100644"}]
+                            if tree_sha == "c" * 40 else
+                            [{"path": "outside.md", "type": "blob", "mode": "100644"}])
+                    return {"truncated": False, "tree": rows}
+                payload = contents[path.split("?", 1)[0]]
+                return {"type": "file", "encoding": "base64",
+                        "content": base64.b64encode(payload).decode("ascii")}
+
+        body = (
+            f"### Proposal source ref\n{source_ref}\n"
+            f"### Proposal manifest ref\n{manifest_ref}\n"
+            "### Proposal manifest path\nproposal/package.json\n"
+            f"### Expected package digest\n{manifest['package_digest']}\n"
+        )
+        with pytest.raises(ValueError, match="outside package_path"):
+            gate.verify_issue_package_binding(FakeGH(), {"body": body})
+
+def test_package_binding_rejects_non_regular_and_invalid_base64_content():
+    class FakeGH:
+        def __init__(self, response):
+            self.response = response
+        def req(self, method, path, body=None):
+            return self.response
+
+    for response, message in (
+        ({"type": "symlink", "encoding": "base64", "content": "eA=="}, "regular"),
+        ({"type": "file", "encoding": "utf-8", "content": "x"}, "regular"),
+        ({"type": "file", "encoding": "base64", "content": "%%%"},
+         "invalid base64"),
+    ):
+        with __import__("pytest").raises(ValueError, match=message):
+            gate._github_file_bytes(FakeGH(response), "proposal/RFP.md", "a" * 40)
+
+
+def test_verified_package_digest_changes_delphi_idempotency_hash():
+    panel, registry, catalog = _load()
+    surface = catalog["turso.free"]
+    baseline = gate.input_hash(surface, panel["roles"], registry, {})
+    package_a = {"package_digest": "a" * 64, "source_ref": "b" * 40}
+    package_b = {"package_digest": "c" * 64, "source_ref": "b" * 40}
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != baseline
+    assert gate.input_hash(surface, panel["roles"], registry, {}, package_a) != gate.input_hash(
+        surface, panel["roles"], registry, {}, package_b
+    )
+
+
+def test_package_binding_rejects_self_reference_and_truncated_git_tree():
+    source_ref = "a" * 40
+    digest = "b" * 64
+    same_ref_body = (
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{source_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
+    )
+    with pytest.raises(ValueError, match="must differ"):
+        gate.verify_issue_package_binding(object(), {"body": same_ref_body})
+
+    class TruncatedGH:
+        def req(self, method, path, body=None):
+            if path.startswith("/git/commits/"):
+                ref = path.rsplit("/", 1)[1]
+                return {"sha": ref, "tree": {"sha": "c" * 40}}
+            return {"truncated": True, "tree": []}
+
+    manifest_ref = "d" * 40
+    body = (
+        f"### Proposal source ref\n{source_ref}\n"
+        f"### Proposal manifest ref\n{manifest_ref}\n"
+        "### Proposal manifest path\nproposal/package.json\n"
+        f"### Expected package digest\n{digest}\n"
+    )
+    with pytest.raises(ValueError, match="truncated"):
+        gate.verify_issue_package_binding(TruncatedGH(), {"body": body})
+
+
+def test_human_award_reviewer_requires_exact_authenticated_issue_comment():
+    issue_body = "### Surface id\ncustom.surface\n### Lane\ndata\n### Free quota\n100 requests/day\n### Reset and zone\n00:00 UTC daily\n### Auth from Actions\nAPI_TOKEN\n### Lock-in\n2\n### Failure modes\nquota exhaustion\n### Proposal source ref\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n### Proposal manifest ref\nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n### Proposal manifest path\nproposal/package.json\n### Expected package digest\ncccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n"
+    issue = {"number": 5156, "title": "[delphi:rfp] custom.surface", "body": issue_body}
+    trusted = {
+        "DELPHI_REVIEW_ISSUE": "5156",
+        "DELPHI_REVIEWER_LOGIN": "reviewer-1",
+        "DELPHI_REVIEWER_ASSOCIATION": "MEMBER",
+        "DELPHI_REVIEW_COMMENT_BODY": "/delphi approve",
+        "DELPHI_REVIEW_ISSUE_BODY": issue_body,
+        "DELPHI_REVIEW_ISSUE_TITLE": issue["title"],
+    }
+    assert gate.authenticated_reviewer_for_issue(issue, trusted) == "reviewer-1"
+    changed_failure_modes = dict(issue, body=issue_body.replace("quota exhaustion", "automatic overage billing"))
+    assert gate.authenticated_reviewer_for_issue(changed_failure_modes, trusted) is None
+    assert gate.authenticated_reviewer_for_issue(
+        issue, dict(trusted, DELPHI_REVIEW_ISSUE_BODY=issue_body.replace("proposal/package.json", "proposal/other.json"))
+    ) is None
+    for key, value in (
+        ("DELPHI_REVIEW_ISSUE", "5157"),
+        ("DELPHI_REVIEWER_ASSOCIATION", "CONTRIBUTOR"),
+        ("DELPHI_REVIEW_COMMENT_BODY", "/delphi approve please"),
+        ("DELPHI_REVIEWER_LOGIN", "not a login"),
+    ):
+        altered = dict(trusted, **{key: value})
+        assert gate.authenticated_reviewer_for_issue(issue, altered) is None
+
+
+def test_delphi_ledger_lookup_resolves_only_exact_bot_authored_record():
+    ledger_ref = gate.delphi_ledger_ref(8123)
+    assert ledger_ref == "github:issue-comment:8123"
+    record = {
+        "input_hash": "abc123",
+        "award": {
+            "ledger_ref": ledger_ref,
+            "package_digest": "a" * 64,
+            "decision": "shadow",
+            "reviewer_login": "reviewer-1",
+        },
+    }
+    fence = chr(96) * 3
+    body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(record) + "\n" + fence
+
+    class FakeGH:
+        repo = "timerloggedout-spec/termux-monorepo"
+        def __init__(self, comment):
+            self.comment = comment
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            if path == "/issues/comments/8123":
+                return self.comment
+            if path.startswith("/issues/5156/comments?"):
+                return [self.comment]
+            raise AssertionError(f"unexpected GitHub request: {path}")
+
+    valid = {
+        "id": 8123,
+        "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body,
+    }
+    assert gate.lookup_delphi_ledger_record(FakeGH(valid), ledger_ref) == {
+        "ledger_ref": ledger_ref,
+        "package_digest": "a" * 64,
+        "decision": "shadow",
+        "reviewer_login": "reviewer-1",
+    }
+    for mutate in (
+        lambda c: dict(c, id=8124),
+        lambda c: dict(c, user={"type": "User", "login": "reviewer-1"}),
+        lambda c: dict(c, issue_url="https://api.github.com/repos/other/repo/issues/5156"),
+        lambda c: dict(c, body="not a Delphi ledger"),
+    ):
+        assert gate.lookup_delphi_ledger_record(FakeGH(mutate(valid)), ledger_ref) is None
+    assert gate.lookup_delphi_ledger_record(FakeGH(valid), "issue:5156") is None
+
+
+def test_delphi_ledger_ref_rejects_non_positive_or_non_integer_ids():
+    for value in (0, -1, True, "8123"):
+        with pytest.raises(ValueError):
+            gate.delphi_ledger_ref(value)
+
+
+def test_delphi_ledger_lookup_rejects_superseded_award():
+    old_ref = gate.delphi_ledger_ref(8123)
+    new_ref = gate.delphi_ledger_ref(8124)
+    def ledger_comment(comment_id, ledger_ref):
+        record = {"input_hash": "abc123", "award": {
+            "ledger_ref": ledger_ref, "package_digest": "a" * 64,
+            "decision": "shadow", "reviewer_login": "reviewer-1",
+        }}
+        fence = chr(96) * 3
+        return {
+            "id": comment_id,
+            "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+            "user": {"type": "Bot", "login": "github-actions[bot]"},
+            "body": gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(record) + "\n" + fence,
+        }
+    old_comment = ledger_comment(8123, old_ref)
+    current_comment = ledger_comment(8124, new_ref)
+
+    class FakeGH:
+        repo = "timerloggedout-spec/termux-monorepo"
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            if path == "/issues/comments/8123":
+                return old_comment
+            if path == "/issues/5156/comments?per_page=100&page=1":
+                return [current_comment]
+            raise AssertionError(f"unexpected GitHub request: {path}")
+
+    assert gate.lookup_delphi_ledger_record(FakeGH(), old_ref) is None
+
+
+def test_comments_newest_reverses_default_api_order_across_pages():
+    class FakeGH:
+        def __init__(self):
+            self.paths = []
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            self.paths.append(path)
+            if path.endswith("page=1"):
+                return [{"id": i} for i in range(1, 101)]
+            if path.endswith("page=2"):
+                return [{"id": 101}]
+            raise AssertionError(f"unexpected GitHub request: {path}")
+
+    gh = FakeGH()
+    comments = gate.comments_newest(gh, 5156, max_pages=2)
+    assert [item["id"] for item in comments[:3]] == [101, 100, 99]
+    assert [item["id"] for item in comments[-3:]] == [3, 2, 1]
+    assert all("sort=" not in path and "direction=" not in path for path in gh.paths)
+
+
+def test_last_ledger_ignores_human_forged_marker_comments():
+    payload = {
+        "input_hash": "abc123",
+        "award": {"decision": "shadow", "package_digest": "a" * 64,
+                  "ledger_ref": "github:issue-comment:8123"},
+        "effective_score": None,
+    }
+    fence = chr(96) * 3
+    ledger_body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
+
+    class FakeGH:
+        def req(self, method, path, request_body=None):
+            assert method == "GET"
+            if path.endswith("page=1"):
+                return [
+                    {"body": ledger_body, "user": {"type": "User", "login": "attacker"}},
+                    {"body": ledger_body, "user": {"type": "Bot", "login": "github-actions[bot]"}},
+                ]
+            return []
+
+    # The bot entry is the only trusted ledger record; the forged user entry
+    # must not become authoritative even if it appears later in API order.
+    assert gate.last_ledger(FakeGH(), 5156) == {
+        "input_hash": "abc123",
+        "award": {"decision": "shadow", "package_digest": "a" * 64,
+                  "ledger_ref": "github:issue-comment:8123"},
+        "effective_score": None,
+    }
+
+
+def test_last_ledger_fails_closed_on_newer_provisional_package_award():
+    fence = chr(96) * 3
+    def body(award):
+        payload = {"input_hash": "abc123", "award": award, "effective_score": 10}
+        return gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
+
+    old = {
+        "id": 8123,
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body({
+            "ledger_ref": "github:issue-comment:8123",
+            "package_digest": "a" * 64,
+            "decision": "shadow",
+            "reviewer_login": "reviewer-1",
+        }),
+    }
+    provisional = {
+        "id": 8124,
+        "user": {"type": "Bot", "login": "github-actions[bot]"},
+        "body": body({
+            "package_digest": "b" * 64,
+            "decision": "parked",
+        }),
+    }
+
+    class FakeGH:
+        def req(self, method, path, request_body=None):
+            assert method == "GET"
+            if path.endswith("page=1"):
+                return [old, provisional]  # API's default ascending ID order
+            return []
+
+    assert gate.last_ledger(FakeGH(), 5156) is None
+
+
+def test_review_approval_context_is_part_of_package_input_hash():
+    panel, registry, catalog = _load()
+    surface = catalog["turso.free"]
+    package = {"package_digest": "a" * 64, "source_ref": "b" * 40}
+    without = gate.input_hash(surface, panel["roles"], registry, {}, {
+        "package_binding": package, "reviewer_login": None
+    })
+    with_review = gate.input_hash(surface, panel["roles"], registry, {}, {
+        "package_binding": package, "reviewer_login": "reviewer-1"
+    })
+    assert without != with_review
+
+
+def test_package_verification_budget_preserves_shared_token_reserve():
+    available = gate.package_verification_budget_available
+    assert available(500, 100, 100, 30)
+    assert not available(220, 100, 100, 30)
+    # Unknown live budget relies on the bounded per-run admission cap.
+    assert available(None, 10_000, 100, 30)
+
+
+def test_comment_pagination_cap_fails_closed():
+    class FullPageGH:
+        def req(self, method, path, body=None):
+            return [{"id": index} for index in range(100)]
+
+    with pytest.raises(RuntimeError, match="pagination cap"):
+        gate.comments_newest(FullPageGH(), 5156, max_pages=1)
+
+
+def test_delphi_rfp_sweep_rotation_eventually_admits_later_issues():
+    issues = [{"number": number} for number in range(1, 36)]
+    first = gate.rotate_rfp_issues(issues, after_issue=0)
+    second = gate.rotate_rfp_issues(issues, after_issue=28)
+    assert [item["number"] for item in first[:28]] == list(range(1, 29))
+    assert [item["number"] for item in second[:7]] == list(range(29, 36))
+    assert 29 in [item["number"] for item in second[:28]]
+    prioritized = gate.rotate_rfp_issues(issues, after_issue=28, priority_issue=34)
+    assert prioritized[0]["number"] == 34
+    assert len({item["number"] for item in prioritized}) == len(issues)
+
+
+def test_delphi_board_persists_last_admitted_sweep_cursor():
+    class BoardGH:
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            return [{
+                "number": 9001,
+                "title": gate.BOARD_TITLE,
+                "body": "<!-- delphi-board v1 -->\\n<!-- delphi-sweep-cursor:28 -->",
+            }]
+
+    assert gate.board_sweep_cursor(BoardGH()) == 28
+    rendered = gate.board_md([], "2026-11-15 00:00 UTC", sweep_cursor=29)
+    assert "<!-- delphi-sweep-cursor:29 -->" in rendered

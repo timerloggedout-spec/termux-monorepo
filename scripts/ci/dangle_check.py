@@ -166,7 +166,10 @@ def check_workflows(root, old_ids=None):
                 findings.append(finding("dangling-run-script", rp, line,
                                         val, surface))
             if surface == "paths" and old_ids is None:
-                # path filters pointing at nothing are advisory in census
+                # Negative pathspecs are exclusions, not required source files.
+                if val.startswith("!"):
+                    continue
+                # Glob patterns describe a set and cannot be resolved as one path.
                 pat = val.rstrip("/")
                 if pat and "*" not in pat and not (root / pat).exists():
                     findings.append(finding("dangling-path-filter", rp, line,
@@ -232,6 +235,12 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
+            # HTML attributes in dashboard renderers often contain JavaScript
+            # expressions rather than literal filesystem paths. The static
+            # census cannot evaluate those values; leave them to runtime tests.
+            if ("${" in refv or re.search(r"""[\'"]\s*\+|\+\s*[\'"]""", refv)
+                    or re.search(r"\b(?:esc|safeHref)\s*\(", refv)):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
@@ -300,6 +309,11 @@ def check_feeds(root):
             if cand in seen:
                 continue
             seen.add(cand)
+            # Feed descriptions sometimes list multiple evidence files as
+            # prose ("a.md + b.py") or publish a wildcard family. Neither is
+            # a single path reference that this exact-file census can resolve.
+            if " + " in cand or "*" in cand:
+                continue
             if (cand.startswith(FEED_PREFIXES) and "/" in cand
                     and re.search(r"\.[\w]{1,6}$", cand)
                     and not (root / cand).exists()):

@@ -32,3 +32,19 @@ MTTR per failure class · self-merge rate · regression rate · HITL rate ⇒ 0 
 - Changes are additive only. Commit messages end `[skip render]`. ¬ merge #1249 ∨ others' PRs without Owner approval.
 - The Fleet Swarm App installation 177357774 is suspended ⇒ writes go through PAT routes only.
 - The not-established marker is for chat only, never a data value.
+
+## Lifecycle contract integration (QUE task #5389)
+
+The staged lifecycle is now specified in the companion proposal
+`docs/proposals/active/que-sie-pipeline-integration/PROPOSAL.md`:
+
+`OBSERVE → TRIAGE → RESEARCH → RFP → DELPHI → DESIGN → CLAIM → IMPLEMENT → VERIFY → PROMOTE → LEARN`.
+
+The first implementation slice adds:
+- `docs/schemas/que-sie-stage-v1.schema.json` — typed stage receipt;
+- `scripts/que/sie_pipeline.py` — deterministic event identity, item identity and forward-only transition validation;
+- `tests/que/test_sie_pipeline.py` — transition and idempotency regression tests;
+- an intake receipt in each SIE-created QUE item;
+- contract validation in the existing `qdesk-self-repair.yml` workflow.
+
+This extends the existing self-repair loop and stall-gap feed. Research packet generation, Oracle Method dispatch, Delphi package-digest verification, DoE design registration and stage-aware claim orchestration remain separately tracked as QSI-002–QSI-010.

@@ -7,8 +7,11 @@ body:
     attributes:
       value: |
         Filing this issue wakes the gate (event trigger, no cron). The oracle attaches documented limits with source URLs,
-        live quota readings and HindSight/ForeSight evidence; a blind 5-role panel scores it; the result lands as a signed
-        ledger comment. Never paste secret values: name the Actions secret only.
+        live quota readings and HindSight/ForeSight evidence; a blind 5-role panel scores it; the result lands as a bot-authored
+        ledger comment. For a package-bound RFP, a distinct OWNER, MEMBER or
+        COLLABORATOR must add the exact comment /delphi approve before QDesk
+        can authorize work. Rubric role signatures are not human approvals.
+        Never paste secret values: name the Actions secret only.
   - type: input
     id: surface_id
     attributes:
@@ -71,3 +74,23 @@ body:
     attributes:
       label: Evidence links
       description: HindSight/ForeSight records, run URLs, prior evaluations.
+  - type: input
+    id: proposal_source_ref
+    attributes:
+      label: Proposal source ref
+      description: Immutable commit SHA containing the inventoried proposal files; pair with manifest ref, manifest path and expected package digest.
+  - type: input
+    id: proposal_manifest_ref
+    attributes:
+      label: Proposal manifest ref
+      description: Immutable commit SHA containing the manifest file. This differs from the source ref recorded inside the manifest.
+  - type: input
+    id: proposal_manifest_path
+    attributes:
+      label: Proposal manifest path
+      description: Repository-relative path to the delphi-proposal-package/v1 JSON manifest at the manifest ref.
+  - type: input
+    id: expected_package_digest
+    attributes:
+      label: Expected package digest
+      description: Lowercase SHA-256 digest from the versioned proposal package manifest.

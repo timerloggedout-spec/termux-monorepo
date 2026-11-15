@@ -5,13 +5,13 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 ## Canonical files
 
 - [Integration portfolio](INTEGRATION-PORTFOLIO.md) — dated readiness audit, evidence, blockers, and adoption roadmap.
-
 - [Integration registry](INTEGRATION-REGISTRY.md) — human-readable capabilities, priorities, and adoption states.
 - [Machine-readable registry](registry.json) — structured inventory for automation and cockpit consumers.
 - [Adapter contract](ADAPTER-CONTRACT.md) — read/write boundaries, event normalization, provenance, and validation.
 - [Event JSON Schema](schemas/integration-event.schema.json) — canonical normalized event envelope.
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 - [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
+- [Incremental Intelligence / queue integration RFP](../superpowers/specs/2026-11-15-incremental-intelligence-queue-integration-rfp.md), [parallel implementation plan](../superpowers/plans/2026-11-15-incremental-intelligence-implementation-plan.md), and [technology evaluation matrix](../ops/IIE-TECHNOLOGY-EVALUATION-MATRIX.md).
 
 ## Authority model
 

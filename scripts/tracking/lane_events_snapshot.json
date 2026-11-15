@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-15T09:26:36Z",
+ "read_at": "2026-11-15T09:28:03Z",
  "status": "ok",
- "count": 60176,
+ "count": 60177,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "30bb1cb124ea7057ff2cee21b8d8cf3aa64d2835",
+   "occurred_at": "2026-11-15 09:27:10+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -262,7 +271,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "67cebb04c0108c75ca2e31317205c854ad03067a",
+   "head_sha": "e668d889562201cb9c98e1c760415526fe3702aa",
    "occurred_at": "2026-11-15 09:24:55+00"
   },
   {
@@ -271,7 +280,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "e668d889562201cb9c98e1c760415526fe3702aa",
+   "head_sha": "67cebb04c0108c75ca2e31317205c854ad03067a",
    "occurred_at": "2026-11-15 09:24:55+00"
   },
   {
@@ -523,7 +532,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "44563a36ba66f4a938178db1be0d864d82034708",
+   "head_sha": "8782e38593e506f2d5b81e22730d7dba57bdaa78",
    "occurred_at": "2026-11-15 09:21:33+00"
   },
   {
@@ -532,7 +541,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "8782e38593e506f2d5b81e22730d7dba57bdaa78",
+   "head_sha": "44563a36ba66f4a938178db1be0d864d82034708",
    "occurred_at": "2026-11-15 09:21:33+00"
   },
   {
@@ -1785,15 +1794,6 @@
    "subject_url": null,
    "head_sha": "02e90d37c6dd10fbba9f32f69b27fa17dc7cf347",
    "occurred_at": "2026-11-15 09:00:09+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "02e90d37c6dd10fbba9f32f69b27fa17dc7cf347",
-   "occurred_at": "2026-11-15 09:00:08+00"
   },
   {
    "lane": "she",

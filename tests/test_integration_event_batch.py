@@ -143,13 +143,47 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("ON CONFLICT (idempotency_key) DO NOTHING", sql)
         self.assertEqual(meta["records_received"], 1)
 
-    def test_batch_sql_records_receipt_in_same_transaction(self):
-        sql, meta = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()))
+    def test_batch_sql_records_receipt_and_cursors_in_same_transaction(self):
+        sql, meta = ie.build_batch_sql(
+            [dict(MEASUREMENT)], "measurement", str(uuid.uuid4()),
+            cursor_before="page-004", cursor_after="page-005",
+        )
         self.assertTrue(sql.startswith("SET standard_conforming_strings = on;\nBEGIN;"))
         self.assertIn("INSERT INTO integration_measurements", sql)
         self.assertIn("INSERT INTO integration_ingest_batches", sql)
+        self.assertIn("'page-004'", sql)
+        self.assertIn("'page-005'", sql)
         self.assertIn("COMMIT;", sql)
         self.assertEqual(meta["record_type"], "measurement")
+        self.assertEqual(meta["cursor_after"], "page-005")
+
+    def test_cursor_metadata_advances_only_on_final_batch(self):
+        records = [
+            dict(MEASUREMENT, measurement_id=f"m-{i}", idempotency_key=f"key-{i}")
+            for i in range(3)
+        ]
+        cursors = {"github-actions": {"cursor_before": "page-004", "cursor_after": "page-005"}}
+        batches = ie.plan(records, 2, ie.HARD_MAX_BYTES, cursors)[0]["batches"]
+        self.assertEqual(batches[0]["cursor_before"], "page-004")
+        self.assertNotIn("cursor_after", batches[0])
+        self.assertNotIn("cursor_before", batches[1])
+        self.assertEqual(batches[1]["cursor_after"], "page-005")
+        with patch.object(ie, "run_batch", side_effect=lambda *args: {
+            "cursor_before": args[4], "cursor_after": args[5]
+        }) as run:
+            ie.ingest("postgresql://writer", records, "measurement", 2, ie.HARD_MAX_BYTES,
+                      cursor_metadata=cursors)
+        self.assertEqual(run.call_args_list[0].args[4:], ("page-004", None))
+        self.assertEqual(run.call_args_list[1].args[4:], (None, "page-005"))
+
+    def test_batch_metadata_rejects_secret_shaped_cursor(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = pathlib.Path(tmp) / "batch.json"
+            path.write_text(json.dumps({
+                "event": {"github-actions": {"cursor_after": "ghp_abcdefghijklmnopqrstuvwxyz123456"}}
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "secret-shaped"):
+                ie.load_batch_metadata(str(path))
 
     def test_dry_run_never_resolves_database_credentials(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -171,6 +205,8 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("'failed'", failure_sql)
         self.assertIn("'RuntimeError'", failure_sql)
         self.assertNotIn("connection detail", failure_sql)
+        self.assertIn("cursor_after", failure_sql)
+        self.assertIn("NULL", failure_sql)
 
     def test_legacy_database_url_is_never_used_as_writer_credential(self):
         with patch.dict(os.environ, {"LANE_EVENTS_DATABASE_URL": "postgresql://legacy-owner"}, clear=True):
@@ -229,6 +265,8 @@ class IntegrationEventBatchTests(unittest.TestCase):
         self.assertIn("FOREIGN KEY (event_id, integration_id)", ddl)
         self.assertIn("DEFERRABLE INITIALLY DEFERRED", ddl)
         self.assertIn("value NOT IN", ddl)
+        self.assertIn("CREATE OR REPLACE VIEW integration_latest_cursors", ddl)
+        self.assertIn("integration_ingest_batches_cursor_latest_ix", ddl)
         self.assertIn("USING brin", ddl)
         self.assertIn("jsonb_path_ops", ddl)
 

@@ -166,16 +166,38 @@ jobs:
           fi
           compare_args=()
           if [ "$COMPARE_ONLY" = true ]; then compare_args+=(--compare-only); fi
-          python scripts/doe/experiment_record.py \
-            --schema docs/ops/corpus/EXPERIMENT.schema.json \
-            --experiment-id "$EXPERIMENT_ID" \
-            --baseline-sha "$BASELINE_SHA" --candidate-sha "$CANDIDATE_SHA" \
-            --merge-base-sha "$MERGE_BASE" --suite "$SUITE" \
-            --baseline-exit "${BASELINE_EXIT:--1}" --candidate-exit "${CANDIDATE_EXIT:--1}" \
-            --repository "$REPOSITORY" --run-id "$RUN_ID" --run-attempt "$RUN_ATTEMPT" \
-            --failed-stage "$failed_stage" --failure-reason "$reason" \
-            --candidate-ref "$CANDIDATE_REF" --baseline-ref "$BASELINE_REF" \
-            "${compare_args[@]}"
+          if [ -f scripts/doe/experiment_record.py ]; then
+            python scripts/doe/experiment_record.py \
+              --schema docs/ops/corpus/EXPERIMENT.schema.json \
+              --experiment-id "$EXPERIMENT_ID" \
+              --baseline-sha "$BASELINE_SHA" --candidate-sha "$CANDIDATE_SHA" \
+              --merge-base-sha "$MERGE_BASE" --suite "$SUITE" \
+              --baseline-exit "${BASELINE_EXIT:--1}" --candidate-exit "${CANDIDATE_EXIT:--1}" \
+              --repository "$REPOSITORY" --run-id "$RUN_ID" --run-attempt "$RUN_ATTEMPT" \
+              --failed-stage "$failed_stage" --failure-reason "$reason" \
+              --candidate-ref "$CANDIDATE_REF" --baseline-ref "$BASELINE_REF" \
+              "${compare_args[@]}"
+          else
+            python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          payload = {
+              "evidence_type": "mvt-precanonical-failure/v1",
+              "experiment_id": os.environ["EXPERIMENT_ID"],
+              "status": "blocked",
+              "failed_stage": "checkout-or-record-builder-unavailable",
+              "reason": "Candidate checkout did not provide the canonical record builder; no commit identity was fabricated.",
+              "candidate_ref": os.environ["CANDIDATE_REF"],
+              "baseline_ref": os.environ["BASELINE_REF"],
+              "run_id": os.environ["RUN_ID"],
+              "observed_at": datetime.now(timezone.utc).isoformat(),
+              "canonical_record_emitted": False
+          }
+          with open("mvt-failure.json", "w", encoding="utf-8") as fh:
+              json.dump(payload, fh, indent=2, sort_keys=True)
+              fh.write("\\n")
+          PY
+          fi
           if [ -f mvt-failure.json ]; then cat mvt-failure.json >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Upload experiment evidence (including failures)

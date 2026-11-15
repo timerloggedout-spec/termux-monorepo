@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-14T13:31:08Z` UTC  
+**Generated:** `2026-11-15T14:04:13Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 277 docs-lane branch(es)
+**Count:** 280 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -34,8 +34,10 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/agents-md-provenance-update`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agents-md-provenance-update) | `df6bd232a7e9` | — | — | orphan lane |
 | [`docs/agy-mvt-doe-v0-20261023`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/agy-mvt-doe-v0-20261023) | `ea16165266f7` | [#1569](https://github.com/timerloggedout-spec/termux-monorepo/pull/1569)→`master-staging` | — | PR without registry link |
 | [`docs/ai-elves-readme-and-experiments-20261112`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ai-elves-readme-and-experiments-20261112) | `d5004805a139` | — | — | orphan lane |
-| [`docs/amd-rocm-associate-runbook-20261114`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/amd-rocm-associate-runbook-20261114) | `8e9ae6906fb2` | [#5405](https://github.com/timerloggedout-spec/termux-monorepo/pull/5405)→`fix/dispatch-style-gates-current-master-v2-20261114` (draft) | — | PR without registry link |
+| [`docs/amd-rocm-associate-runbook-20261114`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/amd-rocm-associate-runbook-20261114) | `8e9ae6906fb2` | — | — | orphan lane |
+| [`docs/amd-rocm-associate-runbook-current-head-20261114`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/amd-rocm-associate-runbook-current-head-20261114) | `1d7827ebf5ff` | [#5428](https://github.com/timerloggedout-spec/termux-monorepo/pull/5428)→`feat/que-execution-provenance-current-head-20261114` (draft) | — | PR without registry link |
 | [`docs/apk-signing`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/apk-signing) | `ab8f46a19100` | — | — | orphan lane |
+| [`docs/approxination-skill-competition-20261115`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/approxination-skill-competition-20261115) | `b03936910ddc` | [#5445](https://github.com/timerloggedout-spec/termux-monorepo/pull/5445)→`master` | — | PR without registry link |
 | [`docs/ar08-issue175-status-alignment`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ar08-issue175-status-alignment) | `7048b361fd1d` | — | — | orphan lane |
 | [`docs/architecture-index`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/architecture-index) | `e11826295242` | — | — | orphan lane |
 | [`docs/architecture-index-cmdb-landed`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/architecture-index-cmdb-landed) | `17f110b31329` | — | — | orphan lane |
@@ -213,6 +215,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/provider-batch-current-state-reconciliation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-batch-current-state-reconciliation) | `9bdb107ee58e` | — | — | orphan lane |
 | [`docs/provider-contributor-roster-expansion`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-contributor-roster-expansion) | `34cc0be9fb0e` | — | — | orphan lane |
 | [`docs/provider-production-receipt-1307`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/provider-production-receipt-1307) | `1c4bd647593f` | — | — | orphan lane |
+| [`docs/public-surface-publishing-reconciliation-2026-11-15`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/public-surface-publishing-reconciliation-2026-11-15) | `3512867a1f2e` | — | — | orphan lane |
 | [`docs/q-provider-production-evidence`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q-provider-production-evidence) | `2a4442976745` | — | — | orphan lane |
 | [`docs/q2-app-token-v3`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q2-app-token-v3) | `d1dfbeb58b10` | — | — | orphan lane |
 | [`docs/quota-selector-activation-2026-10-20`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/quota-selector-activation-2026-10-20) | `d4110b928f4d` | — | — | orphan lane |

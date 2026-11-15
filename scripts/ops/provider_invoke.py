@@ -174,6 +174,8 @@ def main() -> int:
         "entitlement_verified": "policy_asserted",
         "quota_class": entry.get("quota_class", "unclassified"),
         "pool_id": entry.get("pool_id"),
+        "capabilities_declared": entry.get("capabilities", []),
+        "capability_source": entry.get("capability_source"),
         "model_pricing_classification": selected_row.get("pricing_classification"),
         "model_access_classification": selected_row.get("access_classification"),
     })
@@ -200,6 +202,7 @@ def main() -> int:
             return finish()
         Path(args.out).write_text(content, encoding="utf-8")
         verdict["ok"] = True
+        verdict["capabilities_verified"] = ["chat_completion"]
         verdict["diagnosis"] = "inference_ok"
         verdict["completion_chars"] = len(content)
         usage = response.get("usage") or {}

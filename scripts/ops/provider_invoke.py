@@ -122,6 +122,7 @@ def main() -> int:
                "terms_accepted": "not_verified", "entitlement_verified": "not_verified",
                "dispatch_eligible": False, "validation_scope": "policy_gated_no_cost_inference_smoke",
                "quota_class": "unclassified", "pool_id": None,
+               "capabilities_declared": [], "capabilities_verified": [], "capability_source": None,
                "model_pricing_classification": None, "model_access_classification": None,
                "latency_ms": None, "diagnosis": None}
     def finish():

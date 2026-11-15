@@ -121,3 +121,33 @@ A workflow YAML update is deliberately excluded from this agent-owned slice. The
 - Source identity or historical coverage ambiguous: HOLD for reconciliation.
 - Repeated cycles without measurable progress: STAGNATED.
 - All acceptance criteria proven on one immutable SHA: SUCCESS; promotion follows repository gates and review policy.
+
+
+## Workflow, context and stewardship controls
+
+### Bounded feedback loop
+
+`OBSERVE → CHOOSE → ACT → VERIFY → RECORD → REPEAT or STOP`.
+
+- Observe fresh GitHub branch/base state, workflow runs, jobs, steps, artifacts and current source coverage.
+- Choose one highest-value bounded action from the accepted IIS work items.
+- Act once, preserving the exact commit and batch identity.
+- Verify the same acceptance criteria under recorded conditions.
+- Record SHA, run/attempt, batch receipt, hashes, result, failure class and remaining work.
+- Repeat only when new evidence can change the next action.
+
+Terminal states: `success`, `clean_noop`, `blocked`, `approval_required`, `exhausted`, `stagnated`.
+
+### Workflow research and repository facts
+
+- The supplied Jules Actions research recommends `google-labs-code/jules-action@v1`, test-driven-development, scoped subagents, and VM setup scripts.
+- Repository fact: `.github/workflows/agent-pr-jules-handoff.yml` posts a `DISPATCHED` receipt for trusted `@jules` comments and observes later head mutation; it does not invoke Jules. Do not report Jules execution from that receipt alone.
+- Existing root `setup.sh` and `.devcontainer/devcontainer.json` provide the base agent environment. An ephemeral Postgres integration-test fixture is still required for real DDL execution.
+- `.github/workflows/**` is operator-owned. This implementation does not change workflow YAML; the focused test invocation requires a separately authorized workflow update.
+- No Termux MCP device-control tool is connected in this session, so device health/resource snapshots were unavailable. GitHub repository work used the GitHub connector.
+- The repository `LOOPS.md` file was absent. The loop is recorded here; no project-wide loop library was created.
+
+### Context graph freshness
+
+The canonical `workspace/llm_map/context_relationships/manifest.json` is a historical snapshot generated 2026-10-26, marked `PARTIAL`, with `next_start_page = 2`. It is stale for this 2026-11-14 change and was not treated as current graph truth. Current source files and GitHub metadata were inspected directly. Refresh the graph only through its trusted publisher/bounded reconciler; do not edit generated index artifacts directly.
+

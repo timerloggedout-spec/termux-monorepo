@@ -207,7 +207,29 @@ Every adapter implements the same logical stages:
 
 The adapter never owns source truth, scheduling, authorization, dashboard rendering, or merge decisions.
 
-## 9. Historical method reconciliation
+## 9. Workflow orchestration and bounded feedback
+
+Reuse the repository's existing `repo-gate`, `termux-smoke`, `integration-portfolio`, `proposal-lifecycle` and `Agent PR Jules Handoff` surfaces; avoid creating a parallel workflow system.
+
+The current `Agent PR Jules Handoff` workflow is a **handoff receipt and mutation observer**, not a Jules execution adapter: its `@jules` comment path posts a `DISPATCHED` receipt, while its synchronize path records a later PR-head mutation. It does not invoke `google-labs-code/jules-action@v1`. The attached Jules workflow research recommends the official action, test-driven-development, scoped subagents, and reproducible VM setup. Treat those as design inputs, not evidence that Jules ran.
+
+The repository already has root `setup.sh` and `.devcontainer/devcontainer.json` for Python 3.12, Node 20, Rust and GitHub CLI. A disposable Postgres service/test fixture is still a follow-up. Keep production Neon credentials out of Jules/Codespaces jobs; use an ephemeral test database for SQL integration tests.
+
+Workflow ownership is explicit: `.github/workflows/**` is operator-owned under `docs/proposals/AGENTIC-PERMISSIONS.md`. This PR adds no workflow YAML. The focused batch test is authored but not yet wired into an operator-owned CI lane. A provider quota limit, missing review, or pending review is `review_blocked`, never a pass.
+
+Use test-first execution for follow-on source adapters. Delegate only disjoint adapters with explicit file ownership; keep shared schemas, registry, database migrations and projections under one integration owner. A reviewer gate should hold on unresolved medium/high findings; no automatic merge.
+
+**Bounded loop:** `OBSERVE → CHOOSE → ACT → VERIFY → RECORD → REPEAT or STOP`.
+
+- Re-fetch the exact branch/base SHA and fresh run/job/step/artifact state before consequential actions.
+- Choose one bounded, reversible unit with a measurable acceptance check.
+- Verify under the same recorded conditions; distinguish queued, executed, validated and promoted.
+- Record the receipt, hashes, outcome, failure class and remaining work.
+- Repeat only when new evidence can change the next action.
+
+Terminal states: `success`, `clean_noop`, `blocked`, `approval_required`, `exhausted`, `stagnated`. Never turn a failed run, exhausted budget or unavailable reviewer into success.
+
+## 10. Historical method reconciliation
 
 | Existing path | Classification | Migration treatment |
 |---|---|---|
@@ -223,7 +245,7 @@ The adapter never owns source truth, scheduling, authorization, dashboard render
 
 Each compatibility adapter needs a dated census, source schema/version, owner, freshness, idempotency mapping, backfill cursor, coverage receipt and deprecation decision before any historical migration.
 
-## 10. Presentation surfaces
+## 11. Presentation surfaces
 
 ### Web dashboards
 
@@ -245,7 +267,7 @@ Taria is an optional semantic accessibility/agent-control adapter above Ratatui,
 
 Use `ratatui::backend::TestBackend` for deterministic renderer integration tests. Cover normal snapshots, missing/stale values, long labels, empty states, error states, resize and bounded-history rendering. Keep pure model tests separate from renderer tests.
 
-## 11. Rollout sequence
+## 12. Rollout sequence
 
 | Phase | Work | Gate |
 |---|---|---|
@@ -258,7 +280,7 @@ Use `ratatui::backend::TestBackend` for deterministic renderer integration tests
 
 Promotion requires same-SHA repository gates, independent review and actual runtime receipts. No workflow is marked operational because a schema or PR exists.
 
-## 12. Current implementation entry points
+## 13. Current implementation entry points
 
 The first foundation slice provides:
 
@@ -298,7 +320,7 @@ The dry run validates records and prints bounded batch plans without resolving c
 
 The initial writer is an adapter primitive, not yet wired to every source or scheduled workflow. Source adapters, dashboard projection wiring and the Termux socket client remain IIS-003 through IIS-005.
 
-## 13. Acceptance and stop conditions
+## 14. Acceptance and stop conditions
 
 Success requires:
 - one canonical event contract and one linked measurement contract;
@@ -312,7 +334,7 @@ Success requires:
 
 Stop as `blocked` if the existing Neon project cannot be verified, schema migration permissions are absent, source identity cannot be mapped safely, or privacy validation cannot be established. Stop as `stagnated` if repeated iterations yield no measurable improvement. Do not create another database or scheduler to bypass a blocker.
 
-## 14. References
+## 15. References
 
 - [Integration Adapter Contract](ADAPTER-CONTRACT.md)
 - [Integration Event Schema](schemas/integration-event.schema.json)

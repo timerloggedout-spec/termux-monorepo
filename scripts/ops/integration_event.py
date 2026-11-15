@@ -49,7 +49,8 @@ SECRET_KEY_NAMES = {
     "prompt", "completion", "api_key", "authorization", "cookie",
     "password", "secret", "access_token", "refresh_token", "credential",
     "raw_request_body", "raw_response_body", "session_transcript",
-    "private_context", "token",
+    "private_context", "token", "provider_token", "api_token", "auth_token",
+    "id_token", "bearer_token", "personal_access_token", "github_token",
 }
 SECRET_VALUE_RE = re.compile(
     r"(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|"
@@ -91,7 +92,7 @@ def _reject_sensitive(value: object, path: str = "$") -> None:
     if isinstance(value, dict):
         for key, child in value.items():
             normalized = str(key).lower().replace("-", "_")
-            if normalized in SECRET_KEY_NAMES or normalized.endswith("_token") or "token" in normalized:
+            if normalized in SECRET_KEY_NAMES:
                 raise ValueError(f"sensitive field rejected at {path}.{key}")
             _reject_sensitive(child, f"{path}.{key}")
     elif isinstance(value, list):

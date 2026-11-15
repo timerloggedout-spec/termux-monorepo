@@ -2,7 +2,7 @@ name: simulation-rfp-intake
 
 # Runs only after the existing swarm-admission workflow. It consumes the
 # admission artifact and refuses to process unmatched/deferred filings.
-# It freezes an intake receipt only; it does not call Delphi generation,
+# It emits a validated intake receipt only; it does not call Delphi generation,
 # run a simulator, invoke a provider, or admit a DoE campaign.
 
 on:

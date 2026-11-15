@@ -335,8 +335,12 @@ def derive(
             if snap_budget:
                 reset_window = snap_budget.get("reset_window")
                 reset_tz = snap_budget.get("reset_tz")
-            total = _budget_total(budget, quota_class)
-            if total is None:
+            primary_total = _budget_total(budget, "primary")
+            escalation_total = _budget_total(budget, "escalation")
+            headroom_by_quota_class: dict[str, int | None] = {
+                "primary": None, "escalation": None,
+            }
+            if primary_total is None and escalation_total is None:
                 reasons.append("quota_unbudgeted")
             elif not snapshot_fresh:
                 reasons.append("quota_unknown")
@@ -345,8 +349,19 @@ def derive(
                 if day is None:
                     reasons.append("quota_unknown")
                 else:
-                    headroom = total - int(day.get("draws", 0))
-                    if headroom < 1:
+                    draws = int(day.get("draws", 0))
+                    if primary_total is not None:
+                        headroom_by_quota_class["primary"] = primary_total - draws
+                    if escalation_total is not None:
+                        headroom_by_quota_class["escalation"] = escalation_total - draws
+                    headroom = headroom_by_quota_class["primary"]
+                    # An arm remains in the shared eligible union when either
+                    # quota class has capacity. dispatch_executor independently
+                    # checks the filing's exact quota class before firing.
+                    if not any(
+                        value is not None and value >= 1
+                        for value in headroom_by_quota_class.values()
+                    ):
                         reasons.append("quota_exhausted")
             if reset_window is None:
                 reasons.append("reset_window_unknown")
@@ -359,6 +374,10 @@ def derive(
                 "status": status,
                 "defer_reasons": reasons,
                 "headroom": headroom,
+                "headroom_by_quota_class": (
+                    headroom_by_quota_class
+                    if quota_class != "daily_pool_no_provider_quota" else None
+                ),
                 "reset_window": reset_window or "unknown",
                 "reset_tz": reset_tz or "unknown",
                 "availability_env": availability_env,

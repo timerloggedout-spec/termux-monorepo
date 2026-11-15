@@ -2,6 +2,8 @@
 discovery rules, build provenance and the validated envelope explorer."""
 import json
 import re
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -75,11 +77,35 @@ class OwnerRecordsPageTests(unittest.TestCase):
         self.assertNotIn("decrypt(", html)
         self.assertNotIn('fetch("ops/owner-records/bodies', html)
 
+    def test_canonical_envelope_passes_store_validator(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts/owner_records.py"),
+             "validate", "--root", str(ROOT)],
+            cwd=ROOT, capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("envelope valid: 5 classes", result.stdout)
+
+    def test_vercel_stages_build_pinned_envelope_before_raw_fallback(self):
+        workflow = (ROOT / ".github/workflows/owner-records-vercel.yml").read_text()
+        self.assertIn(
+            'cp "$GITHUB_WORKSPACE/ops/owner-records/index.json" "$W/owner-records.json"',
+            workflow)
+        html = PAGE.read_text()
+        local_copy = html.index('"./owner-records.json?t="')
+        public_fallback = html.index(
+            '"https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t="')
+        self.assertLess(local_copy, public_fallback)
+
+    def test_owner_records_contract_runs_in_repo_gate(self):
+        workflow = (ROOT / ".github/workflows/repo-gate.yml").read_text()
+        self.assertIn("test_owner_records_page.py", workflow)
+
     def test_refresh_is_non_overlapping_and_visibility_aware(self):
         html = PAGE.read_text()
         self.assertIn('if (loading || document.visibilityState === "hidden") return;', html)
         self.assertIn('document.addEventListener("visibilitychange"', html)
         self.assertIn("window.setInterval(loadEnvelope, 60000)", html)
+        self.assertIn("showing last validated envelope", html)
 
 
 if __name__ == "__main__":

@@ -262,7 +262,8 @@ def main() -> int:
     verdict["model"] = model
 
     prompt = open(args.prompt_file).read()
-    attempts = [m for m in dict.fromkeys([model] + candidates[:2]) if m] or ["default"]
+    attempts = ([model] if args.free_only else
+                ([m for m in dict.fromkeys([model] + candidates[:2]) if m] or ["default"]))
     status, body = None, {}
     for attempt_model in attempts:
         verdict["model"] = attempt_model

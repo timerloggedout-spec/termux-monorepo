@@ -1,6 +1,6 @@
 # Skill Discovery Matrix — adaptive wait + evidence-led repo ops
 
-**Discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus the session-scoped `.skill` attachments and supplied skill/loop references.
+**Discovery basis:** historical recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus session-scoped skill attachments and supplied skill/loop references. Counts and path membership are not a current tree census. See [SKILL-CREATION-SOURCE-REGISTER.md](SKILL-CREATION-SOURCE-REGISTER.md) for refreshed source provenance and reading bundles.
 
 ## Repository-native related skills
 
@@ -21,6 +21,9 @@
 | Evaluation | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` | current-SHA evidence quality |
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
 | Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
+| Competition | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` | sourced candidates, mandatory approximation competition, execution feedback |
+| Evaluation | blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` | opaque treatment IDs, correctness-first blind judging |
+| Experiment design | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` | controlled factors, blocking, randomization, replication |
 
 ## Other repository-native skill files
 
@@ -74,3 +77,8 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
 External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+
+
+## Current skill-authoring route
+
+For substantive skill creation/upgrades, start with root `CLAUDE.md`, use `docs/ops/SKILL-CREATION-SOURCE-REGISTER.md`, and compose `approxination-lane` + `multivariate-doe` + `blind-agent-evaluation`. Keep Approxination A/B/C/D tool-surface arms distinct from candidate skill versions. Preserve the incumbent unless a sourced and independently designed alternative demonstrates replicated, correctness-first improvement.

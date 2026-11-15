@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-15T06:56:48Z)
+# Lane matrix status (2026-11-15T06:58:17Z)
 
-- Master: `04ff05c64289f3b57a6c3e498176d636ea44fbe7`
+- Master: `f0563a0838e4e4e9b2b26cef6383ac55b3866348`
 - Open PRs: **408**
 - Oldest: #47 (101.63d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -36,14 +36,14 @@
 | #684 | 55.52 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 52.97 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 44.88 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 44.01 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #990 | 44.02 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 42.75 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 26.9 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
-| #1441 | 24.96 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
-| #1469 | 24.74 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1441 | 24.97 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 24.75 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 24.74 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 24.19 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 23.94 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 23.95 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 23.94 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 23.94 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 23.93 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |

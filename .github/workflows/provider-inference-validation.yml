@@ -135,7 +135,7 @@ jobs:
           if verdict.get('ok') and verdict.get('no_cost_verified'):
               status = 'inference_validated'
               inference_status = 'passed'
-          elif not verdict.get('policy_admitted') or any(token in diagnosis for token in ('not_admitted', 'policy_', 'no_verified_no_cost', 'no_canonical_model_catalog', 'missing_secret', 'free_catalog_unavailable', 'provider_unconfigured')):
+          elif not verdict.get('policy_admitted') or any(token in diagnosis for token in ('not_admitted', 'policy_', 'no_verified_no_cost', 'no_canonical_model_catalog', 'missing_secret', 'free_catalog_unavailable', 'catalog_unavailable', 'provider_unconfigured')):
               status = 'deferred'
               inference_status = 'not_attempted'
           else:

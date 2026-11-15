@@ -20,6 +20,11 @@ on:
         required: false
         default: "working"
         type: string
+      offset:
+        description: "Zero-based offset into the selected population"
+        required: false
+        default: "0"
+        type: string
       timeout_s:
         description: "Per-call timeout seconds"
         required: false
@@ -28,7 +33,7 @@ on:
       workers:
         description: "Concurrent probes"
         required: false
-        default: "16"
+        default: "6"
         type: string
       deadline_s:
         description: "Global deadline seconds (receipt writes regardless)"
@@ -46,14 +51,14 @@ permissions:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
       - name: Install g4f
-        run: pip install --quiet g4f aiohttp_socks
+        run: pip install --quiet g4f aiohttp_socks PyYAML==6.0.3
       - name: Bounded smoke over catalog working entries
         run: >
           python3 scripts/ops/g4f_free_smoke.py
@@ -63,9 +68,20 @@ jobs:
           --timeout "${{ inputs.timeout_s }}"
           --workers "${{ inputs.workers }}"
           --deadline "${{ inputs.deadline_s }}"
+      - name: Build provider population census with current g4f receipt
+        if: always() && hashFiles('g4f-inference-smoke.json') != ''
+        run: python3 scripts/ops/provider_population_census.py --g4f-receipt g4f-inference-smoke.json --out provider-population-census.json
+      - name: Upload provider population census
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provider-population-census
+          path: provider-population-census.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Upload sanitized receipt
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: g4f-inference-smoke
           path: g4f-inference-smoke.json

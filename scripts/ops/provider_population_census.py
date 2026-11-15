@@ -137,14 +137,30 @@ def _load_availability(path: Path | None) -> dict[str, Any]:
 
 def _load_g4f_receipt(path: Path | None, now: dt.datetime) -> dict[str, Any]:
     value = _read_json(path) if path else None
-    if value is None or value.get("schema") != "g4f-inference-smoke/v1":
+    if not isinstance(value, dict) or value.get("schema") != "g4f-inference-smoke/v1":
         return {"supplied": False, "attempted": None, "inference_ok": None,
                 "providers_ok": None, "observed_at": None, "age_hours": None,
                 "dispatch_eligible": 0, "quota_class": "unclassified"}
     rows = value.get("results") if isinstance(value.get("results"), list) else []
     errors = Counter(str(x.get("error") or "none") for x in rows if isinstance(x, dict))
-    attempted = value.get("attempted", len(rows))
-    inference_ok = value.get("inference_ok", sum(x.get("inference_ok") is True for x in rows if isinstance(x, dict)))
+    attempted_raw = value.get("attempted", len(rows))
+    inference_ok_raw = value.get("inference_ok", sum(x.get("inference_ok") is True for x in rows if isinstance(x, dict)))
+    selected_raw = value.get("selected_count", len(rows))
+    attempted = attempted_raw if type(attempted_raw) is int and attempted_raw >= 0 else None
+    inference_ok = inference_ok_raw if type(inference_ok_raw) is int and inference_ok_raw >= 0 else None
+    selected_count = selected_raw if type(selected_raw) is int and selected_raw >= 0 else None
+    not_started_raw = value.get("not_started")
+    not_started = (
+        not_started_raw if type(not_started_raw) is int and not_started_raw >= 0
+        else max(0, selected_count - attempted)
+        if not_started_raw is None and selected_count is not None and attempted is not None
+        else None
+    )
+    counts_consistent = (
+        selected_count is not None and attempted is not None and not_started is not None
+        and attempted + not_started == selected_count
+        and inference_ok is not None and inference_ok <= attempted
+    )
     providers_ok = value.get("providers_ok") if isinstance(value.get("providers_ok"), list) else []
     return {
         "supplied": True,
@@ -153,15 +169,12 @@ def _load_g4f_receipt(path: Path | None, now: dt.datetime) -> dict[str, Any]:
         "offset": value.get("offset"),
         "limit": value.get("limit"),
         "source_population_total": value.get("source_population_total"),
-        "selected_count": value.get("selected_count", len(rows)),
+        "selected_count": selected_count,
         "attempted": attempted,
-        "not_started": value.get(
-            "not_started",
-            max(0, int(value.get("selected_count", len(rows))) - attempted)
-            if isinstance(attempted, int) else None,
-        ),
+        "not_started": not_started,
+        "counts_consistent": counts_consistent,
         "inference_ok": inference_ok,
-        "success_rate": round(inference_ok / attempted, 4) if isinstance(attempted, int) and attempted > 0 and isinstance(inference_ok, int) else None,
+        "success_rate": round(inference_ok / attempted, 4) if counts_consistent and attempted > 0 else None,
         "providers_ok_count": len(providers_ok),
         "error_classes": dict(errors),
         "observed_at": value.get("observed_at"),

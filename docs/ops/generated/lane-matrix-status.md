@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-15T06:55:28Z)
+# Lane matrix status (2026-11-15T06:56:00Z)
 
-- Master: `dc4e27d554f702bf3d0d20e6e59d52df3e9a6492`
+- Master: `ff88101b94c90b343bfc4bd1e5b265eff8f638a1`
 - Open PRs: **408**
 - Oldest: #47 (101.63d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,7 +27,7 @@
 | #4069 | 12.11 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 11.42 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 10.76 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 8.66 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 8.67 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 101.63 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 99.38 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 98.25 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |

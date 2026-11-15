@@ -18,7 +18,7 @@ import uuid
 from collections import OrderedDict
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 import lane_event
 
@@ -198,6 +198,8 @@ def validate_event(event: dict) -> dict:
 
     if "event_at" in event:
         parse_timestamp(event["event_at"], "event.event_at", nullable=True)
+    if event.get("supersedes") is not None:
+        _nonempty(event["supersedes"], "event.supersedes", 200)
     if "privacy" in event:
         privacy = event["privacy"]
         _keys(privacy, {"classification", "contains_raw_prompt", "contains_secret", "redaction_applied"}, "event.privacy")
@@ -217,8 +219,9 @@ def validate_measurement(record: dict) -> dict:
     _required(record, MEASUREMENT_REQUIRED, "measurement")
     if record["schema_version"] != "1.0.0":
         raise ValueError("measurement.schema_version must be 1.0.0")
-    for field in ("measurement_id", "event_id", "idempotency_key"):
-        _nonempty(record[field], f"measurement.{field}", 256)
+    _nonempty(record["measurement_id"], "measurement.measurement_id", 200)
+    _nonempty(record["event_id"], "measurement.event_id", 200)
+    _nonempty(record["idempotency_key"], "measurement.idempotency_key", 256)
     if not isinstance(record["integration_id"], str) or not INTEGRATION_RE.fullmatch(record["integration_id"]):
         raise ValueError("measurement.integration_id is invalid")
     if not isinstance(record["metric_name"], str) or not re.fullmatch(r"^[a-z][a-z0-9_.-]{0,127}$", record["metric_name"]):
@@ -232,10 +235,12 @@ def validate_measurement(record: dict) -> dict:
     value = record["value"]
     if value is not None and (not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value)):
         raise ValueError("measurement.value must be a finite number or null")
+    if record["measurement_status"] in {"measured", "estimated"} and value is None:
+        raise ValueError("measured/estimated measurements require a numeric value")
     if record["measurement_status"] in {"activity_only", "not_established"} and value is not None:
         raise ValueError("activity_only/not_established measurements must have null value")
-    if record["unit"] is not None and (not isinstance(record["unit"], str) or len(record["unit"]) > 64):
-        raise ValueError("measurement.unit must be a string <= 64 characters or null")
+    if record["unit"] is not None and (not isinstance(record["unit"], str) or not record["unit"] or len(record["unit"]) > 64):
+        raise ValueError("measurement.unit must be a non-empty string <= 64 characters or null")
     parse_timestamp(record["observed_at"], "measurement.observed_at")
     if "event_at" in record:
         parse_timestamp(record["event_at"], "measurement.event_at", nullable=True)
@@ -254,8 +259,16 @@ def validate_measurement(record: dict) -> dict:
     _nonempty(provenance["capture_method"], "measurement.provenance.capture_method", 200)
     if provenance["attribution"] not in ATTRIBUTION:
         raise ValueError("measurement.provenance.attribution is invalid")
+    if record.get("evidence_ref") is not None:
+        ref = record["evidence_ref"]
+        if not isinstance(ref, str) or len(ref) > 1000 or not urlsplit(ref).scheme:
+            raise ValueError("measurement.evidence_ref must be a URI or null")
     if record.get("confidence") is not None and record["confidence"] not in CONFIDENCE:
         raise ValueError("measurement.confidence is invalid")
+    if record.get("supersedes") is not None:
+        _nonempty(record["supersedes"], "measurement.supersedes", 200)
+    if provenance.get("adapter_version") is not None:
+        _nonempty(provenance["adapter_version"], "measurement.provenance.adapter_version", 100)
     _reject_sensitive(record)
     return record
 

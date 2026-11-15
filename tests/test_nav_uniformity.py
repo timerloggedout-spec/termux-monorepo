@@ -105,4 +105,7 @@ def test_site_nav_family_link():
     js = (APP / "site-nav.js").read_text(encoding="utf-8")
     assert '"tracking.html"' in js and '"family.html"' in js
     assert js.index('"tracking.html"') < js.index('"family.html"')
+    assert '"surfaces-map.html"' in js
+    fallback = (APP / "versioning.js").read_text(encoding="utf-8")
+    assert '"id":"surfaces-map","file":"surfaces-map.html"' in fallback
     assert "./site-nav.js" in (APP / "matrix.html").read_text(encoding="utf-8")

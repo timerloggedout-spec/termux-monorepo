@@ -6,7 +6,7 @@ import os
 import re
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -160,8 +160,12 @@ def validate_activation_entry(entry: dict[str, Any]) -> str | None:
             parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
         except ValueError:
             return f"policy_{key}_invalid"
-        if parsed.tzinfo is None or parsed > datetime.now(timezone.utc):
+        now = datetime.now(timezone.utc)
+        if parsed.tzinfo is None or parsed > now:
             return f"policy_{key}_invalid"
+        max_age_days = {"pricing_verified_at": 30, "terms_verified_at": 365, "capability_verified_at": 90}[key]
+        if parsed < now - timedelta(days=max_age_days):
+            return f"policy_{key}_stale"
     quota_class = entry.get("quota_class")
     allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
     if quota_class not in allowed:

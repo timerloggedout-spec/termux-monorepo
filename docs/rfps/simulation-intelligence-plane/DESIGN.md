@@ -28,6 +28,8 @@ flowchart LR
 
 The simulation lane is a workload and domain adapter, not an authority plane. The arrows into QUE indicate admission; QUE remains outside the simulation runtime and owns dispatch.
 
+**Termux / GitHub boundary:** Termux is the local, offline-capable operator controller for GitHub surfaces; it is not the simulation host or an always-on service. It may prepare and queue local intents, synchronize against current remote SHAs, dispatch authorized GitHub operations, poll Actions, and collect evidence. GitHub Actions and separately provisioned workers execute remote workloads. See [TERMUX-GITHUB-CONTROL-BOUNDARY.md](TERMUX-GITHUB-CONTROL-BOUNDARY.md) for offline/sync states, replay safety, provenance and acceptance requirements.
+
 ## 2. Existing substrate reuse
 
 | Concern | Canonical existing system | SIP responsibility |

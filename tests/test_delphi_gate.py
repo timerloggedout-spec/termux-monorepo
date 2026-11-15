@@ -574,7 +574,7 @@ def test_delphi_ledger_lookup_resolves_only_exact_bot_authored_record():
             assert method == "GET"
             if path == "/issues/comments/8123":
                 return self.comment
-            if path == "/issues/5156/comments?per_page=100&page=1":
+            if path.startswith("/issues/5156/comments?"):
                 return [self.comment]
             raise AssertionError(f"unexpected GitHub request: {path}")
 

@@ -13,6 +13,8 @@ def receipt(**overrides):
         "repository": "example/repo",
         "ref": "main",
         "source_sha": "a" * 40,
+        "nodes_sha256": "b" * 64,
+        "edges_sha256": "c" * 64,
         "node_count": 10,
         "edge_count": 20,
         "verified_edge_count": 15,
@@ -41,9 +43,9 @@ def test_comparison_requires_deterministic_parity():
 
 
 def test_comparison_rejects_coverage_or_graph_drift():
-    result = MODULE.compare(receipt(), receipt(edge_count=19, coverage="PARTIAL"))
+    result = MODULE.compare(receipt(), receipt(edge_count=19, coverage="PARTIAL", edges_sha256="d" * 64))
     assert result["status"] == "PARITY_FAILED"
-    assert set(result["parity_mismatches"]) == {"edge_count", "coverage"}
+    assert set(result["parity_mismatches"]) == {"edge_count", "coverage", "edges_sha256"}
 
 
 def test_ratio_handles_missing_and_zero_values():

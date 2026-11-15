@@ -283,3 +283,52 @@ def test_no_builder_output_references_memory_guard():
     # step's outputs in any expression.
     text = workflow_text()
     assert "steps.builder.outputs" not in text
+
+
+def test_generated_backup_relay_export_subject_passes_commit_checker(tmp_path):
+    """Exercise the actual commit-subject checker, not just its verb registry."""
+    import os
+    import subprocess
+
+    checker = ROOT / "scripts" / "ci" / "check_do_statement_style.py"
+    repo = tmp_path / "subject-fixture"
+    repo.mkdir()
+
+    def git(*args):
+        return subprocess.run(
+            ["git", *args], cwd=repo, check=True, capture_output=True, text=True
+        ).stdout.strip()
+
+    git("init", "-q")
+    git("config", "user.name", "CI Test")
+    git("config", "user.email", "ci-test@example.invalid")
+    (repo / "README.md").write_text("baseline\\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "test: create baseline")
+    before = git("rev-parse", "HEAD")
+
+    (repo / "README.md").write_text("generated export\\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "backup relay: export exp-20261115T162848Z-a2f472")
+    after = git("rev-parse", "HEAD")
+
+    event_path = tmp_path / "push-event.json"
+    event_path.write_text(
+        json.dumps({"before": before, "after": after}), encoding="utf-8"
+    )
+    env = os.environ.copy()
+    env.update({
+        "GITHUB_EVENT_NAME": "push",
+        "GITHUB_EVENT_PATH": str(event_path),
+        "GITHUB_BASE_REF": "",
+    })
+    result = subprocess.run(
+        ["python3", str(checker)],
+        cwd=repo,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "DO-statement style: PASS" in result.stdout

@@ -106,7 +106,7 @@ it get no stamp and no route (unchanged behavior).
 
 ## Game Development route (ATF-16)\n\n`.github/ISSUE_TEMPLATE/game-development-task.yml` declares `issue-dispatch/v1` with lane `game-development`, tier 3 and route `game-development-dispatch.yml`. The dedicated route is triggered by the completed `swarm-admission` workflow and consumes its one-run `issue-admission` artifact. It parses and queues only when the artifact identifies this template and records `decision: admitted`; deferred, unmatched or failed admission runs never queue. A deferred or missing admission decision never becomes an executable task. The form supplies the canonical `Entry`, `Task / spec`, `Scope`, and `Done-evidence` headings consumed by `scripts/dispatch/project_task.py`; it does not select a provider.\n\nThe existing Target Brief / Web Adapter Foundry route and the Reverse Engineering APK/taxonomy intake families remain separate.\n\n## Simulation RFP route (SIP-001, 2026-11-14)
 
-`.github/ISSUE_TEMPLATE/simulation-rfp.yml` declares `issue-dispatch/v1`:
+`.github/ISSUE_TEMPLATE/simulation-rfp.yml` declares `issue-dispatch/v1` and is matched by its `[simulation:rfp]` title prefix (no new label prerequisite):
 - lane: `simulation-intelligence-plane`
 - tier: `2` (never flow-deferred by queue-depth thresholds; still subject to after/chain guards)
 - payload: `simulation-rfp-research-intake`

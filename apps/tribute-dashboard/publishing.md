@@ -26,4 +26,6 @@ The browser reads the public GitHub API without credentials. It lists up to 100 
 
 The live dashboard also reads the latest `tribute-dashboard-deploy.yml` runs from the monorepo and the latest GitHub Pages deployment runs from the public website repository. Each row exposes workflow status, conclusion, source SHA, event, timestamp, and a link to the run. A queued run is not a deployment receipt; a successful run still requires a fresh live-URL check.
 
+The cross-repository publisher is serialized under the `tribute-dashboard-publish` concurrency group. An active publish is allowed to finish; newer pending snapshots replace older pending snapshots so publication order converges on the latest source.
+
 Deployment and publication remain separate evidence steps. This view never approves, merges, deletes branches or claims that a live URL serves a particular SHA.

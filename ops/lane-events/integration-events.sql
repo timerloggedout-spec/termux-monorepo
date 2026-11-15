@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS integration_events (
   evidence              jsonb NOT NULL,
   provenance            jsonb NOT NULL,
   privacy               jsonb NOT NULL DEFAULT '{}'::jsonb,
-  idempotency_key       text NOT NULL UNIQUE,
+  idempotency_key       text NOT NULL,
   event_at              timestamptz,
   observed_at           timestamptz NOT NULL,
   recorded_at           timestamptz NOT NULL DEFAULT now(),
@@ -98,6 +98,14 @@ CREATE TABLE IF NOT EXISTS integration_events (
   CONSTRAINT integration_events_commit_ck
     CHECK (commit_sha IS NULL OR commit_sha ~ '^[0-9a-f]{7,64}$')
 );
+
+-- Provider idempotency keys are scoped to their integration namespace.
+-- Drop the original single-column constraints when upgrading an already-created table.
+ALTER TABLE integration_events
+  DROP CONSTRAINT IF EXISTS integration_events_idempotency_key_key;
+ALTER TABLE integration_events
+  ADD CONSTRAINT integration_events_integration_idempotency_uk
+  UNIQUE (integration_id, idempotency_key);
 
 CREATE INDEX IF NOT EXISTS integration_events_integration_event_time_ix
   ON integration_events (integration_id, event_at DESC NULLS LAST);
@@ -126,7 +134,7 @@ CREATE TABLE IF NOT EXISTS integration_measurements (
   provenance           jsonb NOT NULL,
   evidence_ref         text,
   confidence           text,
-  idempotency_key      text NOT NULL UNIQUE,
+  idempotency_key      text NOT NULL,
   supersedes           text,
   recorded_at          timestamptz NOT NULL DEFAULT now(),
   batch_id             uuid REFERENCES integration_ingest_batches(batch_id)
@@ -156,6 +164,12 @@ CREATE TABLE IF NOT EXISTS integration_measurements (
   CONSTRAINT integration_measurements_dimensions_ck
     CHECK (jsonb_typeof(dimensions) = 'object')
 );
+
+ALTER TABLE integration_measurements
+  DROP CONSTRAINT IF EXISTS integration_measurements_idempotency_key_key;
+ALTER TABLE integration_measurements
+  ADD CONSTRAINT integration_measurements_integration_idempotency_uk
+  UNIQUE (integration_id, idempotency_key);
 
 CREATE INDEX IF NOT EXISTS integration_measurements_series_ix
   ON integration_measurements (integration_id, metric_name, observed_at DESC);

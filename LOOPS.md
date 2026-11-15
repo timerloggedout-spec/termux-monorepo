@@ -43,21 +43,21 @@ Treat quota as a separate dimension from validation:
 
 - `provider_quota_backed`: use authoritative provider/account quota evidence and current remaining/reset snapshot where required.
 - `daily_pool_no_provider_quota`: do not require or fabricate a provider quota counter. Require a stable `pool_id`, source evidence, current shared-pool allocation/usage snapshot, reset metadata, and complete pool coverage.
-- `quota_unknown`: may be catalogued or smoke-tested only if the no-cost and policy gates pass; it is never dispatch-eligible.
+- `quota_unknown`: may be catalogued or receive a separately bounded, explicitly authorized metering probe only if the exact no-cost, policy, terms and capability gates pass; it is never dispatch-eligible.
 - `quota_not_applicable`: require evidence that neither a provider quota nor shared pool applies.
 
 A daily-pool arm is dispatch-eligible only when the shared pool snapshot and cadence are current and show allocation available. Absence of a provider quota counter is not evidence of exhaustion and is not evidence of unlimited capacity.
 
 ### Bounded execution rules
 
-- Use `.github/workflows/provider-inference-validation.yml` for the dynamic matrix of all native provider adapters.
+- Use `.github/workflows/provider-inference-validation.yml` for the dynamic matrix of all native provider adapters. With `N` discovered adapters, a default run consumes `N + 2` jobs (discover + N validate + census); enabling stamps adds one stamp job and can fan out up to N additional workflow runs. Include those executions in the shared Actions budget; stamping remains opt-in.
 - Use `.github/workflows/g4f-inference-smoke.yml` for explicit no-auth g4f batches. Default to the historical `working` source; for `universe`, require an explicit source/offset/limit selection and keep concurrency/timeout bounded. A g4f smoke receipt is health evidence only; it has `quota_class=unclassified` and `dispatch_eligible=false` until pool policy and allocation are independently established.
 - The matrix is policy-gated. If `LLM_API_HUB_PROVIDER_POLICY_JSON` is absent or has no exact admitted entry, no catalog or inference request is made for that provider.
 - At most one exact admitted model per provider per run; maximum parallelism 2; health prompt only; maximum output 16 tokens; one attempt; no paid fallback; no model fallback; no retries.
 - Catalog-only observations must remain `inference_status=not_attempted`.
 - Scoring-plane stamp fan-out is opt-in and defaults off. Never turn it on implicitly.
 - Never accept provider terms, create accounts, change credentials, spend money, harvest browser credentials, bypass provider controls, or change production routing weights automatically.
-- No live inference call without a current exact policy entry and source-backed no-cost, terms, capability, and quota/pool evidence.
+- No live inference call without a current exact policy entry and source-backed no-cost, terms and capability evidence. A `quota_unknown` arm may receive only the separately bounded probe described above; it remains non-dispatchable until current quota/pool evidence exists.
 - If Termux device preflight is unavailable, mark device validation blocked. Do not claim device smoke passed.
 
 ### Loop steps
@@ -92,7 +92,7 @@ Stop the current run when any of the following occurs:
 
 - Exact policy entry, owner terms assertion, source evidence, or required credential is missing or expired.
 - The provider is paid-only, pricing is ambiguous, or the no-cost condition cannot be proven.
-- Quota/pool classification is unknown, pool allocation evidence is missing, or the snapshot is stale/incomplete.
+- Quota/pool classification is unknown, pool allocation evidence is missing, or the snapshot is stale/incomplete for dispatch/activation. A separately bounded quota-measurement probe may proceed only under the exact policy/no-cost/terms/capability gates and never converts the current filing into a dispatch.
 - Protocol adapter is missing, endpoint is unhealthy, or capability/data policy fails.
 - CI fails, the Termux preflight is unavailable for a required device-side check, or any secret exposure is suspected.
 - Further action would require provider signup, terms acceptance, credential mutation, paid spend, production routing-weight changes, or another explicit owner approval.

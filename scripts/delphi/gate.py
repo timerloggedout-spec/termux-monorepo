@@ -759,7 +759,10 @@ def last_ledger(gh: GH, number: int) -> dict | None:
                 # A package-bound POST whose follow-up PATCH failed is only a
                 # provisional comment. Never let it satisfy idempotency.
                 if award.get("package_digest") and not award.get("ledger_ref"):
-                    continue
+                    # A newer package-bound write that failed its self-reference
+                    # PATCH invalidates older approvals. Falling back to an older
+                    # canonical award would make a superseded decision replayable.
+                    return None
                 return j
     return None
 

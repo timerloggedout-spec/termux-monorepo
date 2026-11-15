@@ -7,7 +7,7 @@ scope = all). Data lives here; presentation never carries plaintext bodies.
 
 ## Layout
 
-- `index.json` — the envelope (`owner-records/v1`). L1 metadata only:
+- `index.json` — the canonical envelope (`owner-records/v1`). L1 metadata only:
   per record {id, class, title, state, holder, since?, source{path,
   section}, key_class, body_status, body_file}. **Never body text.**
   D3: L1 by default; a record may opt into L2 (stricter metadata
@@ -24,6 +24,10 @@ scope = all). Data lives here; presentation never carries plaintext bodies.
 
 ## Surface and decryption boundary
 
+- The Vercel deploy stages a same-origin `owner-records.json` copy from
+  the exact checked-out `index.json`; the page prefers this build-pinned
+  copy before falling back to the public `master` raw URL on GitHub Pages.
+  The staged copy is L1 metadata only, not ciphertext or plaintext.
 - The GitHub Pages `owner-records.html` route is a **public L1 metadata
   projection**. It may fetch the validated envelope only; it must not
   fetch ciphertext, accept an age identity, or render record bodies.

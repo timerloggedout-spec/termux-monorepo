@@ -64,7 +64,7 @@ Acceptance:
 
 Tests:
 - `python3 -m py_compile scripts/ops/integration_event.py`
-- `python3 -m unittest tests.test_integration_event_batch -v`
+- `python3 -m unittest discover -s tests -p 'test_integration_event_batch.py' -v`
 - Inspect generated SQL for both record types and failure receipts.
 - Execute against an ephemeral Postgres test database only after the repository has an approved test-database fixture; production Neon is out of scope for this PR.
 

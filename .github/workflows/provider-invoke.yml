@@ -156,7 +156,7 @@ jobs:
           diagnosis = str(verdict.get('diagnosis') or '')
           if not catalog_only and verdict.get('ok') and verdict.get('no_cost_verified'):
               status, inference = 'inference_validated', 'passed'
-          elif catalog_only or not verdict.get('policy_admitted') or any(x in diagnosis for x in ('not_admitted', 'policy_', 'missing_secret', 'no_verified_no_cost', 'admitted_model_not_verified_no_cost', 'no_canonical_model_catalog')):
+          elif catalog_only or not verdict.get('policy_admitted') or any(x in diagnosis for x in ('not_admitted', 'policy_', 'missing_secret', 'no_verified_no_cost', 'admitted_model_not_verified_no_cost', 'no_canonical_model_catalog', 'catalog_unavailable', 'provider_unconfigured')):
               status, inference = 'deferred', 'not_attempted'
           else:
               status, inference = 'failed', ('failed' if verdict.get('no_cost_verified') else 'not_attempted')

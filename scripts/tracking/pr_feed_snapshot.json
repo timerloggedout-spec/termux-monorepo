@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-15T15:04:10Z",
+ "read_at": "2026-11-15T15:07:24Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,29 +1956,42 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "number": 5472,
+   "title": "feat(ops): add programmatic branch reconciliation registry",
    "merged_at": null,
-   "updated_at": "2026-11-15T15:03:53Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "d3eb34c79254668a2de826820e36e8f520e56392",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
+   "updated_at": "2026-11-15T15:07:11Z",
+   "created_at": "2026-11-15T15:06:35Z",
+   "merge_commit_sha": "2640d67b19f7382a49cfc02149183d21e00b3026",
+   "head_ref": "feat/branch-reconciliation-registry-2026-11-15",
+   "author": "timerloggedout-spec",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5472",
    "merged": false
   },
   {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-15T15:02:16Z",
+   "updated_at": "2026-11-15T15:06:30Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "95d0bf67b86f00c0fac90de1ea8a409feaaff3a9",
+   "merge_commit_sha": "d89a2957228a88a6e310c3be61490f8bd8ded6b2",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-15T15:06:15Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "cdb4037396a59d3127e31401a83b85bc7be88e8d",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -2801,7 +2814,7 @@
    "merged_at": null,
    "updated_at": "2026-11-13T14:05:09Z",
    "created_at": "2026-11-13T13:57:06Z",
-   "merge_commit_sha": "f5816e99942d36c7860b0d98793e6ca2df2754a3",
+   "merge_commit_sha": "6d3c75cb8be40fa14d5f2f7bf9564d13b425f96f",
    "head_ref": "fix/pages-deploy-on-pr-close",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -4548,19 +4561,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4634",
-   "merged": false
-  },
-  {
-   "number": 4631,
-   "title": "chore(ops): refresh computed countdown lines",
-   "merged_at": null,
-   "updated_at": "2026-11-03T22:01:21Z",
-   "created_at": "2026-11-03T21:31:46Z",
-   "merge_commit_sha": "69f7557098f2ab5db1e78bb6f49f727744ef23fb",
-   "head_ref": "chore/countdowns-refresh-202611032131",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4631",
    "merged": false
   }
  ],

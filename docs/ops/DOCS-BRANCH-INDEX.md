@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-15T14:04:13Z` UTC  
+**Generated:** `2026-11-15T18:46:19Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 280 docs-lane branch(es)
+**Count:** 283 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -143,6 +143,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/infrastructure-registry-design-1654`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/infrastructure-registry-design-1654) | `b773c13a967b` | — | — | orphan lane |
 | [`docs/intake-backfill-doctrine`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/intake-backfill-doctrine) | `2ffd15fcd93e` | — | — | orphan lane |
 | [`docs/intake-rule9-attribution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/intake-rule9-attribution) | `9fc806cf2598` | — | — | orphan lane |
+| [`docs/integration-connector-refresh-2026-11-15`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-connector-refresh-2026-11-15) | `ee048e9792d8` | [#5471](https://github.com/timerloggedout-spec/termux-monorepo/pull/5471)→`master` (draft) | — | PR without registry link |
 | [`docs/integration-graph-matrix-tensor`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-graph-matrix-tensor) | `f243ed561efd` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-poll-refresh-2026-10-22`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-poll-refresh-2026-10-22) | `851d029b1571` | — | — | orphan lane |
 | [`docs/integration-mesh-matrix-refresh-2026-10-23`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/integration-mesh-matrix-refresh-2026-10-23) | `bffa965f9f14` | — | — | orphan lane |
@@ -218,6 +219,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/public-surface-publishing-reconciliation-2026-11-15`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/public-surface-publishing-reconciliation-2026-11-15) | `3512867a1f2e` | — | — | orphan lane |
 | [`docs/q-provider-production-evidence`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q-provider-production-evidence) | `2a4442976745` | — | — | orphan lane |
 | [`docs/q2-app-token-v3`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q2-app-token-v3) | `d1dfbeb58b10` | — | — | orphan lane |
+| [`docs/que-multiprotocol-build-arm-projection`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/que-multiprotocol-build-arm-projection) | `9daf2e7df32c` | [#5479](https://github.com/timerloggedout-spec/termux-monorepo/pull/5479)→`master` (draft) | — | PR without registry link |
 | [`docs/quota-selector-activation-2026-10-20`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/quota-selector-activation-2026-10-20) | `d4110b928f4d` | — | — | orphan lane |
 | [`docs/ratatui-dashboard-collaborator`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ratatui-dashboard-collaborator) | `543dd4f99c9b` | — | `ChatGPT` | registered; no open PR |
 | [`docs/rate-limit-cadence-boundaries`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/rate-limit-cadence-boundaries) | `0c2ad6c6ada6` | — | — | orphan lane |
@@ -293,6 +295,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/wiki-devin-dependency-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/wiki-devin-dependency-record) | `082545343d0a` | — | — | orphan lane |
 | [`docs/wiki-refresh-2026-11`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/wiki-refresh-2026-11) | `f9b6da9a948f` | — | — | orphan lane |
 | [`docs/wiki-two-surface-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/wiki-two-surface-record) | `da39d6e52886` | — | — | orphan lane |
+| [`docs/workflow-self-repair-hardening`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/workflow-self-repair-hardening) | `8e2d29346db4` | [#5480](https://github.com/timerloggedout-spec/termux-monorepo/pull/5480)→`master` (draft) | — | PR without registry link |
 
 <!-- END:docs-branch-index -->
 

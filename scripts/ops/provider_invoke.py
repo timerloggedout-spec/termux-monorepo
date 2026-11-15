@@ -175,7 +175,7 @@ def main() -> int:
                     catalog_verdict["catalog_ok"] = bool(models)
                     catalog_verdict["diagnosis"] = "catalog_ok" if models else "empty_catalog"
                 except Exception as exc:
-                    catalog_verdict["diagnosis"] = "catalog_unavailable_" + type(exc).__name__
+                    catalog_verdict["diagnosis"] = "catalog_unavailable"
         print("CATALOG_VERDICT", json.dumps(catalog_verdict, sort_keys=True))
         return 0
     verdict = {"provider": provider, "model": args.model, "ok": False,

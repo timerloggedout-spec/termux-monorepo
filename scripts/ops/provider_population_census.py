@@ -153,7 +153,13 @@ def _load_g4f_receipt(path: Path | None, now: dt.datetime) -> dict[str, Any]:
         "offset": value.get("offset"),
         "limit": value.get("limit"),
         "source_population_total": value.get("source_population_total"),
+        "selected_count": value.get("selected_count", len(rows)),
         "attempted": attempted,
+        "not_started": value.get(
+            "not_started",
+            max(0, int(value.get("selected_count", len(rows))) - attempted)
+            if isinstance(attempted, int) else None,
+        ),
         "inference_ok": inference_ok,
         "success_rate": round(inference_ok / attempted, 4) if isinstance(attempted, int) and attempted > 0 and isinstance(inference_ok, int) else None,
         "providers_ok_count": len(providers_ok),

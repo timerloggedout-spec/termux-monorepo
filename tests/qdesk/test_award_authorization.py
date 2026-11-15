@@ -120,21 +120,34 @@ class TestQDeskAwardAuthorization(unittest.TestCase):
 
         class FakeGH:
             repo = "timerloggedout-spec/termux-monorepo"
+            def __init__(self):
+                self.calls = []
             def req(self, method, path, body=None):
-                self.asserted = (method, path)
-                return {
-                    "id": 8123,
-                    "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
-                    "user": {"type": "Bot", "login": "github-actions[bot]"},
-                    "body": body_text,
-                }
+                self.calls.append((method, path))
+                if path == "/issues/comments/8123":
+                    return {
+                        "id": 8123,
+                        "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+                        "user": {"type": "Bot", "login": "github-actions[bot]"},
+                        "body": body_text,
+                    }
+                if path == "/issues/5156/comments?per_page=100&page=1":
+                    return [{
+                        "id": 8123,
+                        "user": {"type": "Bot", "login": "github-actions[bot]"},
+                        "body": body_text,
+                    }]
+                raise AssertionError(f"unexpected GitHub request: {path}")
 
         body_text = body
         fake = FakeGH()
         args = self.kwargs()
         args["ledger_lookup"] = lambda ref: gate.lookup_delphi_ledger_record(fake, ref)
         self.assertEqual(authorize_work_packet(**args)["disposition"], "AUTHORIZED")
-        self.assertEqual(fake.asserted, ("GET", "/issues/comments/8123"))
+        self.assertEqual(fake.calls, [
+            ("GET", "/issues/comments/8123"),
+            ("GET", "/issues/5156/comments?per_page=100&page=1"),
+        ])
 
 
 if __name__ == "__main__":

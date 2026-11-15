@@ -619,7 +619,7 @@ def test_delphi_ledger_lookup_rejects_superseded_award():
             "id": comment_id,
             "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
             "user": {"type": "Bot", "login": "github-actions[bot]"},
-            "body": gate.LEDGER_MARK + "\\n" + fence + "json\\n" + json.dumps(record) + "\\n" + fence,
+            "body": gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(record) + "\n" + fence,
         }
     old_comment = ledger_comment(8123, old_ref)
     current_comment = ledger_comment(8124, new_ref)

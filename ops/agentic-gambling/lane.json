@@ -90,10 +90,11 @@
    "status": "partial — per-provider balance/quota management landed as manager contracts + quota pools; a market-side per-provider/model wallet construct by that name = not found"
   },
   {
-   "home": null,
+   "home": "scripts/model_selection_market/royalty_ledger.py (proposed independent journal; PR #5355)",
    "id": "residuals-royalties",
    "rule": "code->legacy: optimized 'steals'/'splits' carry a percentage residual/royalty back to origin as code passes through upgrades (cherry-picked slices/splits owe % to origin)",
-   "status": "open — absent after WIDENED search 2026-11-01 (docs/proposals/** royalty=0; residual hits all unrelated senses: graph blocked-nodes, ANOVA residual variation, residual billable resources in exports); rule registered, mechanism = build item"
+   "status": "implementation pending integration — cull preserves accrued origin claims and routes future residuals to the registered origin beneficiary; royalty liabilities remain outside wallet-to-pool transfer",
+   "cull_rule": "Cull settles neither accrued royalties nor origin rights into the pool. Accrued unpaid claims remain payable to the immutable origin beneficiary; future eligible derivative contributions continue to accrue to that beneficiary under the active policy. Culled participant's own wallet balance alone transfers to pooled-buckets."
   },
   {
    "home": "docs/ops/AGENT-TEAM-ROSTER.md + docs/proposals/active/agent-team-formation/",

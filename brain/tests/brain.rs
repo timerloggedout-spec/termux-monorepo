@@ -184,6 +184,16 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
             classification: ContextClassification::Secret, evidence: EvidenceStatus::Unknown,
         },
         ContextItem {
+            id: "restricted".into(), source_ref: "d".into(), content: "restricted".into(),
+            relevance_bps: 8_000, estimated_tokens: 1,
+            classification: ContextClassification::Restricted, evidence: EvidenceStatus::Candidate,
+        },
+        ContextItem {
+            id: "unknown".into(), source_ref: "e".into(), content: "unknown".into(),
+            relevance_bps: 7_000, estimated_tokens: 1,
+            classification: ContextClassification::Unknown, evidence: EvidenceStatus::Unknown,
+        },
+        ContextItem {
             id: "higher".into(), source_ref: "c".into(), content: "higher".into(),
             relevance_bps: 9_000, estimated_tokens: 4,
             classification: ContextClassification::Internal, evidence: EvidenceStatus::Verified,
@@ -195,7 +205,9 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
         BrainConfig { max_context_tokens: 5, max_plan_steps: 10 },
     ).run(request).unwrap();
     assert_eq!(result.context.selected_ids, vec!["higher".to_string()]);
-    assert_eq!(result.context.excluded_by_classification, vec!["secret".to_string()]);
+    assert_eq!(result.context.excluded_by_classification, vec![
+        "secret".to_string(), "restricted".to_string(), "unknown".to_string()
+    ]);
     assert_eq!(result.context.omitted_by_budget, vec!["lower".to_string()]);
 }
 
@@ -249,6 +261,41 @@ fn wrong_stage_output_fails_closed() {
     let mut map = outputs();
     map.insert(BrainStage::Strategy, execution(StageOutput::Intent(IntentAnalysis {
         intent: "wrong stage".into(), complexity: Complexity::Simple, confidence_bps: 8_000,
+    })));
+    let result = run(map, None, BrainMode::Standard, DecisionStatus::Ready);
+    assert_eq!(result.decision.status, DecisionStatus::NeedsReview);
+}
+
+
+#[test]
+fn failed_individual_validation_check_blocks_handoff_even_if_summary_says_passed() {
+    let mut map = outputs();
+    map.insert(BrainStage::Validation, execution(StageOutput::Validation(ValidationReport {
+        passed: true,
+        checks: vec![ValidationCheck { id: "tests".into(), passed: false, evidence_refs: vec!["test:failed".into()] }],
+        blocking_issues: vec![],
+        evidence_refs: vec!["test:failed".into()],
+    })));
+    let result = run(map, None, BrainMode::Standard, DecisionStatus::Ready);
+    assert_eq!(result.decision.status, DecisionStatus::NeedsReview);
+}
+
+#[test]
+fn invalid_plan_cannot_be_overridden_by_policy_allow() {
+    let mut map = outputs();
+    map.insert(BrainStage::ExecutionDesign, execution(StageOutput::ExecutionDesign(ExecutionDesign {
+        plan: ExecutionPlan { steps: vec![
+            PlanStep {
+                id: "a".into(), title: "A".into(), description: "".into(), depends_on: vec!["b".into()],
+                agent_role: None, tool_ids: vec![], expected_output: "".into(), verification: vec![],
+                risk: RiskLevel::Low, has_side_effects: false,
+            },
+            PlanStep {
+                id: "b".into(), title: "B".into(), description: "".into(), depends_on: vec!["a".into()],
+                agent_role: None, tool_ids: vec![], expected_output: "".into(), verification: vec![],
+                risk: RiskLevel::Low, has_side_effects: false,
+            },
+        ]},
     })));
     let result = run(map, None, BrainMode::Standard, DecisionStatus::Ready);
     assert_eq!(result.decision.status, DecisionStatus::NeedsReview);

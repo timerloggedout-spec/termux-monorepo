@@ -47,7 +47,7 @@ def load_receipt(path: Path) -> dict[str, Any]:
 def ratio(baseline: Any, treatment: Any) -> float | None:
     if not isinstance(baseline, (int, float)) or not isinstance(treatment, (int, float)):
         return None
-    if baseline <= 0 or treatment < 0:
+    if baseline <= 0 or treatment <= 0:
         return None
     return round(float(baseline) / float(treatment), 6)
 

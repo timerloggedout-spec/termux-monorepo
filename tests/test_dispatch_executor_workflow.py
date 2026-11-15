@@ -82,6 +82,7 @@ def test_derive_step_runs_before_decide_and_feeds_usage():
     run = derive["run"]
     assert "scripts/ops/auto_quota_cadence.py" in run
     assert "ops/quota/registry.json" in run
+    assert "--allocations ops/quota/allocations.json" in run
     assert "--usage-out pool-usage.json" in run
     assert "ledger-snapshot.json" in run  # only when the file exists
     receipt = _step("Publish receipt artifact")

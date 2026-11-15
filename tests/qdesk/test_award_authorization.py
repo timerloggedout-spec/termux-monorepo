@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "delphi"))
 sys.path.insert(0, str(ROOT / "scripts" / "qdesk"))
 
 from proposal_package import build_manifest
+from scripts.delphi import gate
 from award_authorization import (
     WorkPacketHeld, authorize_work_packet, require_work_packet_authorization,
 )
@@ -100,3 +101,38 @@ class TestQDeskAwardAuthorization(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+    def test_qdesk_uses_the_delphi_gate_canonical_comment_resolver(self):
+        ledger_ref = gate.delphi_ledger_ref(8123)
+        self.award["ledger_ref"] = ledger_ref
+        self.ledger = {
+            "ledger_ref": ledger_ref,
+            "package_digest": self.manifest["package_digest"],
+            "decision": "shadow",
+            "reviewer_login": "reviewer",
+        }
+        record = {
+            "input_hash": "abc123",
+            "award": dict(self.ledger),
+        }
+        fence = chr(96) * 3
+        body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(record) + "\n" + fence
+
+        class FakeGH:
+            repo = "timerloggedout-spec/termux-monorepo"
+            def req(self, method, path, body=None):
+                self.asserted = (method, path)
+                return {
+                    "id": 8123,
+                    "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+                    "user": {"type": "Bot", "login": "github-actions[bot]"},
+                    "body": body_text,
+                }
+
+        body_text = body
+        fake = FakeGH()
+        args = self.kwargs()
+        args["ledger_lookup"] = lambda ref: gate.lookup_delphi_ledger_record(fake, ref)
+        self.assertEqual(authorize_work_packet(**args)["disposition"], "AUTHORIZED")
+        self.assertEqual(fake.asserted, ("GET", "/issues/comments/8123"))

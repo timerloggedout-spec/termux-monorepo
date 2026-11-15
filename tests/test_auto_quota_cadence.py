@@ -491,3 +491,39 @@ def test_escalation_budget_uses_reserved_capacity_when_primary_is_exhausted():
     budget = {"spendable_primary": 0, "reserved_escalation": 4}
     assert _budget_total(budget, "primary") == 0
     assert _budget_total(budget, "escalation") == 4
+
+
+def test_escalation_reserved_headroom_keeps_arm_cadence_eligible():
+    arm = _arm("alpha", budget={
+        "class": "free-tier", "quota_class": "provider_quota_backed",
+        "spendable_primary": 0, "reserved_escalation": 4,
+        "quota_metric_source": "AUTO QUOTA LEDGER (#5152); ops/quota/registry.json record example.api",
+    })
+    snap = _snapshot(
+        arms={"alpha": {DAY: {"draws": 0}}},
+        budgets={"alpha": {"spendable_primary": 0, "reserved_escalation": 4,
+                           "reset_window": "midnight PT", "reset_tz": "America/Los_Angeles"}},
+    )
+    feed = _derive(_registry([arm]), _census(["alpha"]),
+                   _quota_registry(["example.api"]), snap)
+    row = _row(feed, "alpha")
+    assert row["status"] == "eligible"
+    assert row["headroom_by_quota_class"] == {"primary": 0, "escalation": 4}
+    assert feed["pool"]["eligible"] == ["alpha"]
+
+
+def test_arm_deferred_when_primary_and_escalation_budgets_are_exhausted():
+    arm = _arm("alpha", budget={
+        "class": "free-tier", "quota_class": "provider_quota_backed",
+        "spendable_primary": 0, "reserved_escalation": 4,
+        "quota_metric_source": "AUTO QUOTA LEDGER (#5152); ops/quota/registry.json record example.api",
+    })
+    snap = _snapshot(
+        arms={"alpha": {DAY: {"draws": 4}}},
+        budgets={"alpha": {"spendable_primary": 0, "reserved_escalation": 4,
+                           "reset_window": "midnight PT", "reset_tz": "America/Los_Angeles"}},
+    )
+    feed = _derive(_registry([arm]), _census(["alpha"]),
+                   _quota_registry(["example.api"]), snap)
+    assert "quota_exhausted" in _row(feed, "alpha")["defer_reasons"]
+    assert feed["pool"]["eligible"] == []

@@ -35,9 +35,9 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
     no_cost = receipt.get("no_cost_verified") is True
     if status == "inference_validated" and not no_cost:
         raise ValueError("success_without_no_cost_evidence")
-    if receipt.get("validation_scope") != "no_cost_inference_smoke_only":
+    if receipt.get("validation_scope") != "policy_gated_no_cost_inference_smoke":
         raise ValueError("receipt_validation_scope_invalid")
-    if receipt.get("terms_accepted") != "not_verified" or receipt.get("entitlement_verified") != "not_verified":
+    if receipt.get("terms_accepted") not in {"policy_asserted", "not_verified"} or receipt.get("entitlement_verified") not in {"policy_asserted", "not_verified"}:
         raise ValueError("receipt_policy_scope_invalid")
     if receipt.get("dispatch_eligible") is not False:
         raise ValueError("smoke_receipt_cannot_assert_dispatch_eligibility")
@@ -54,13 +54,13 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
         "model": model,
         "role": "validator",
         "moniker": "optimizations-assurance",
-        "context": f"QUE #5454 no-cost inference smoke; terms/entitlement and dispatch eligibility not established; experiment={experiment_label}",
+        "context": f"QUE #5454 policy-gated no-cost inference smoke; terms/entitlement are operator assertions, dispatch eligibility pending cadence; experiment={experiment_label}",
         "run": {"workflow": "provider-inference-validation.yml", "run_id": run_id, "session_id": None},
         "outcome": {
             "status": outcome_status,
             "summary": f"{status}; inference={receipt.get('inference_status')}; diagnosis={diagnosis}",
             "artifact": run_url,
-            "gate_call": "catalog-verified-free-only" if no_cost else "no-cost-not-established",
+            "gate_call": "policy-gated-catalog-verified-free-only" if no_cost else "no-cost-not-established",
             "confirmed": confirmed,
         },
         "quota": {"pool": receipt.get("pool_id") or provider,
@@ -70,7 +70,7 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
         "arm_state": "live" if status == "inference_validated" else ("degraded" if status == "failed" else "unknown"),
         "selection": {"scout": "provider-inference-validation", "manager": "QUE",
                       "request": "5454", "arm": provider,
-                      "basis": "current Actions no-cost inference smoke; policy/entitlement pending",
+                      "basis": "current Actions policy-gated no-cost inference smoke; cadence gate pending",
                       "talent_class": "native-provider", "exploration": False},
         "origin": "live",
     }

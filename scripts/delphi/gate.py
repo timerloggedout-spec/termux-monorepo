@@ -700,6 +700,11 @@ def open_rfp_issues(gh: GH, per_page: int = 100, max_pages: int = 100) -> list[d
 def last_ledger(gh: GH, number: int) -> dict | None:
     comments = comments_newest(gh, number)
     for c in comments:
+        # Human-authored issue comments can contain arbitrary text, including
+        # forged ledger markers. Only the repository's Actions bot is a writer.
+        user = c.get("user") or {}
+        if user.get("type") != "Bot" or user.get("login") != "github-actions[bot]":
+            continue
         if c.get("body", "").startswith(LEDGER_MARK):
             m = re.search(r"```json\n(.*?)\n```", c["body"], re.S)
             if m:

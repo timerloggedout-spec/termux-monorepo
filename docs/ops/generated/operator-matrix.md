@@ -1,11 +1,11 @@
 # Operator Matrix (generated)
 
-Schema `operator-matrix/v1` · generated 2026-11-15T13:47:25Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
+Schema `operator-matrix/v1` · generated 2026-11-15T14:05:21Z · derived from the live inventory by `scripts/issue_lifecycle/operator_matrix.py`.
 Method: docs/ops/ISSUE-LIFECYCLE.md (Operator Matrix method). Vocabulary: issue #175 (EXTRACT | CANDIDATE | NEED_EVIDENCE | SUPERSEDE).
 
-**Master functional gate:** NOT ESTABLISHED on `eab622dfa8` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
+**Master functional gate:** NOT ESTABLISHED on `030392388b` (hygiene: not_reported, smoke: not_reported). A tip is evidence for itself only; promotion rules live on #175.
 
-**Open inventory:** 657 issues, 419 PRs. PR classes: EXTRACT 13 / CANDIDATE 216 / NEED_EVIDENCE 190 / SUPERSEDE 0.
+**Open inventory:** 658 issues, 419 PRs. PR classes: EXTRACT 14 / CANDIDATE 216 / NEED_EVIDENCE 189 / SUPERSEDE 0.
 
 _SUPERSEDE is never auto-emitted: supersession is an operator judgment about duplicate or stale work, not a signal the API carries._
 
@@ -26,6 +26,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5339 | EXTRACT | unlabelled | `284461105d` | success | success | unstable | docs: enforce DO-first communication law across repository |
 | #5381 | EXTRACT | unlabelled | `c2f20cf815` | success | success | unstable | feat(msm): add paired policy comparisons to economy backtests |
 | #5447 | EXTRACT | unlabelled | `628667e37d` | success | success | unstable | feat(msm): add origin-attributed residual royalty journal |
+| #5465 | EXTRACT | unlabelled | `4d753275d1` | success | success | unstable | Fix DoE/MVT evidence integrity and comparison bottlenecks |
 | #286 | CANDIDATE | unlabelled | `ec9fc82c61` | success | success | dirty | feat(ops): evidence-gated autonomous staging progression |
 | #386 | CANDIDATE | other | `3c2511dbab` | success | success | unknown | feat(ops): DeepSeek/OX Alpha evidence-first canary on current master |
 | #407 | CANDIDATE | unlabelled | `53b1319d97` | success | success | unknown | ⚡ Bolt: optimize Bellman-Ford graph search in arbitrage engine |
@@ -280,8 +281,8 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #2190 | NEED_EVIDENCE | unlabelled | `be30d8c241` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2235 | NEED_EVIDENCE | unlabelled | `8864eb037d` | not_reported | not_reported | unknown | chore(osint): refresh coverage + page snapshots |
 | #2252 | NEED_EVIDENCE | unlabelled | `77f6526342` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
-| #2263 | NEED_EVIDENCE | unlabelled | `efcbf7afd8` | queued | queued | unstable | chore(delphi): refresh delphi-ledger-feed.json |
-| #2310 | NEED_EVIDENCE | unlabelled | `1683228799` | queued | queued | unstable | chore(delphi): refresh delphi-rfp-feed.json |
+| #2263 | NEED_EVIDENCE | unlabelled | `e7d4af4696` | queued | queued | unknown | chore(delphi): refresh delphi-ledger-feed.json |
+| #2310 | NEED_EVIDENCE | unlabelled | `1bc46fd387` | queued | queued | unknown | chore(delphi): refresh delphi-rfp-feed.json |
 | #2348 | NEED_EVIDENCE | unlabelled | `1007521382` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2349 | NEED_EVIDENCE | unlabelled | `a09b5f22a6` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #2377 | NEED_EVIDENCE | unlabelled | `529ec2dc60` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
@@ -328,7 +329,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #3501 | NEED_EVIDENCE | unlabelled | `b5b3e980c5` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3502 | NEED_EVIDENCE | unlabelled | `0b7cf2ad96` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #3890 | NEED_EVIDENCE | unlabelled | `ab8f07afee` | not_reported | not_reported | unknown | chore(telemetry): refresh HindSight+Provenance ingest |
-| #3916 | NEED_EVIDENCE | unlabelled | `b76eb78b87` | not_reported | not_reported | unknown | chore(reviewer-metrics): regenerate provider x context map |
+| #3916 | NEED_EVIDENCE | unlabelled | `709657783a` | queued | queued | unstable | chore(reviewer-metrics): regenerate provider x context map |
 | #3991 | NEED_EVIDENCE | unlabelled | `8294936e68` | not_reported | not_reported | unknown | chore(recon): refresh pinned free-provider research |
 | #4005 | NEED_EVIDENCE | unlabelled | `896275319a` | not_reported | not_reported | unknown | chore(ops): refresh computed countdown lines |
 | #4016 | NEED_EVIDENCE | unlabelled | `2ae19e9721` | not_reported | not_reported | unknown | security(issues): gate advisory triage through deterministic intake firewall |
@@ -430,8 +431,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | #5439 | NEED_EVIDENCE | unlabelled | `c10e0206f0` | not_reported | not_reported | unknown | feat(sip): propose MiroFish × OASIS Simulation Intelligence Plane |
 | #5442 | NEED_EVIDENCE | unlabelled | `ad6b053304` | not_reported | not_reported | unknown | [WIP] feat(qdesk): parallel read-only queue operations console |
 | #5458 | NEED_EVIDENCE | unlabelled | `2c281f4277` | not_reported | not_reported | unknown | research(re): CredKellar + ddkellar01 ecosystem RFP and QUE intake |
-| #5459 | NEED_EVIDENCE | unlabelled | `5f87c23c00` | queued | queued | unstable | feat(que): validate free inference arms without quota-counter dependency |
-| #5460 | NEED_EVIDENCE | unlabelled | `16282e0e99` | queued | queued | unknown | Fix DoE/MVT evidence integrity and comparison bottlenecks |
+| #5459 | NEED_EVIDENCE | unlabelled | `4246cd612d` | not_reported | not_reported | unknown | feat(que): validate free inference arms without quota-counter dependency |
 
 ## Families (open)
 
@@ -440,7 +440,7 @@ _SUPERSEDE is never auto-emitted: supersession is an operator judgment about dup
 | ci | 12 | 0 |
 | delphi | 100 | 0 |
 | mesh | 7 | 0 |
-| other | 402 | 5 |
+| other | 403 | 5 |
 | proposal | 34 | 1 |
 | providers | 13 | 0 |
 | quota | 1 | 0 |

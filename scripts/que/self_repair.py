@@ -99,7 +99,7 @@ def item_body(item: dict) -> str:
     detail = item.get("detail", "")
     detail_section = f"\n## Branch reconciliation\n{detail}\n" if detail else ""
     return f"""{MARK.format(key=item['key'])}
-class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
+class: `{item.get('class', 'self-repair')}` · workflow: `{item['path']}` · signature: `{item['sig']}` · priority: {item['priority']}
 
 ## Observe
 - failures: {item['failures']} / {item['total']} runs on master in {item['window_h']}h
@@ -286,7 +286,7 @@ def file_items(gh: GH, groups: list[dict], dry: bool, cap: int) -> list[str]:
         if dry:
             log.append(f"would-open {g['key']} p={g['priority']}")
         else:
-            it = gh.req("POST", f"/repos/{REPO}/issues", {"title": title, "body": item_body(g), "labels": [LABEL, f"class:{g.get('class', 'self-repair')}"]})
+            it = gh.req("POST", f"/repos/{REPO}/issues", {"title": title, "body": item_body(g), "labels": [LABEL, "class:self-repair"]})
             log.append(f"open #{it['number']} {g['key']} p={g['priority']}")
     return log
 

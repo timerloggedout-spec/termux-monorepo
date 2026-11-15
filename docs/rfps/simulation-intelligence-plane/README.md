@@ -16,6 +16,10 @@ It is deliberately parallel to the existing QUE/RFP/Delphi/DoE pipelines. It doe
 - [ACCEPTANCE](ACCEPTANCE.md) — measurable phase gates and adversarial acceptance tests.
 - [STATUS-AND-FINDINGS](STATUS-AND-FINDINGS.md) — evidence, assumptions, decisions and open questions.
 - [SOURCES-AND-ALTERNATIVES](SOURCES-AND-ALTERNATIVES.md) — upstream references, alternatives, license and dependency compatibility findings.
+- [candidate-queue.json](candidate-queue.json) — canonical role-separated candidate queue, repository-local status and comparison dimensions.
+
+**RFP intake trigger:** `.github/ISSUE_TEMPLATE/simulation-rfp.yml` → QUE `swarm-admission` → `.github/workflows/simulation-rfp-intake.yml` → frozen G0 intake receipt. Delphi generation is a separate explicit dispatch after brief/evidence freeze.
+
 
 ## One-sentence concept
 

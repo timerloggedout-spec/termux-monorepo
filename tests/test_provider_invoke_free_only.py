@@ -161,3 +161,33 @@ def test_native_provider_validation_matrix_covers_every_manual_provider_with_fre
     upload = next(s for s in batch["jobs"]["validate"]["steps"] if "upload-artifact" in s.get("uses", ""))
     assert upload["with"]["path"] == "/tmp/receipt.json"
     assert "completion.txt" not in upload["with"]["path"]
+
+def test_free_only_does_not_fallback_to_second_free_model_after_404(tmp_path, monkeypatch, capsys):
+    import json
+    import sys
+    from scripts import provider_model_catalog
+
+    prompt = tmp_path / "prompt.txt"
+    prompt.write_text("Return a one-word health acknowledgement.")
+    monkeypatch.setenv("GROQ_API_KEY", "fixture-secret")
+    monkeypatch.delenv("INVOKE_MODEL", raising=False)
+    monkeypatch.setattr(provider_model_catalog, "poll", lambda provider, token: ([
+        row("free/chat-a", pricing_classification="free_zero_price"),
+        row("free/chat-b", pricing_classification="free_zero_price"),
+    ], {}))
+    calls = []
+
+    def fake_http(method, url, token, payload=None, timeout=90):
+        calls.append(payload)
+        return 404, {"error": "not served"}
+
+    monkeypatch.setattr(invoke, "http_json", fake_http)
+    monkeypatch.setattr(sys, "argv", [
+        "provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--free-only",
+    ])
+    assert invoke.main() == 0
+    verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
+    assert verdict["ok"] is False
+    assert verdict["model"] == "free/chat-a"
+    assert len(calls) == 1
+    assert calls[0]["model"] == "free/chat-a"

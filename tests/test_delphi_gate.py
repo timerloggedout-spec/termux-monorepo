@@ -602,7 +602,8 @@ def test_delphi_ledger_ref_rejects_non_positive_or_non_integer_ids():
 def test_last_ledger_ignores_human_forged_marker_comments():
     payload = {
         "input_hash": "abc123",
-        "award": {"decision": "shadow", "package_digest": "a" * 64},
+        "award": {"decision": "shadow", "package_digest": "a" * 64,
+                  "ledger_ref": "github:issue-comment:8123"},
     }
     fence = chr(96) * 3
     body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence

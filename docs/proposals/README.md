@@ -19,6 +19,7 @@
 | context-relationship-graph | P1 | executing | [active/context-relationship-graph/](active/context-relationship-graph/) — includes proposed CRG-15 Historical Corpus Explorer |
 | provider-family-doe-observatory | P1 | executing | [active/provider-family-doe-observatory/](active/provider-family-doe-observatory/) |
 | continuous-capability-evolution-lab | P1 | executing | [active/continuous-capability-evolution-lab/](active/continuous-capability-evolution-lab/) — event-driven FOSS discovery and DoE combination evaluation |
+| que-device-validation | P1 | executing | [active/que-device-validation/](active/que-device-validation/) — module-per-lane device validation and RECON tool registry |
 
 ## Large sources / debate branches
 

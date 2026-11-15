@@ -1,0 +1,362 @@
+{
+  "schema_version": "1.0.0",
+  "registry_id": "termux-monorepo.device-validation",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "updated_at": "2026-11-14",
+  "inventory": {
+    "coverage": "partial",
+    "recon_scope": "Initial source-backed reconnaissance of Android AVD, Termux runtime smoke, Game Player machine-profile contract and device-pull-queue design. Not a complete repository-wide module census.",
+    "last_reconciled_at": "2026-11-14",
+    "known_candidate_count": 4
+  },
+  "tool_profiles": [
+    {
+      "tool_profile_id": "android-avd-study-sprint",
+      "name": "Android Studio AVD / Android Emulator — StudySprint smoke profile",
+      "family": "android_avd",
+      "registration_state": "registered",
+      "implementation_state": "implemented",
+      "discovery_state": "discovered",
+      "verification_state": "verified",
+      "availability_state": "unknown",
+      "adapter_contract": "apps/studysprint/android/emulator-smoke.sh; .github/workflows/studysprint-apk-smoke.yml",
+      "host_requirements": {
+        "os": ["ubuntu-latest"],
+        "architectures": ["x86_64"],
+        "privileges": ["KVM when available; emulator software acceleration fallback"],
+        "android_api_levels": [34],
+        "termux_versions": []
+      },
+      "capabilities": ["android.apk.install", "android.activity.launch", "android.webview.render", "android.api.level.34", "android.abi.x86_64"],
+      "exclusions": ["OEM-specific behavior", "physical sensors", "USB", "Bluetooth", "battery and thermal behavior", "radio/modem behavior", "physical-device background limits"],
+      "provenance": {
+        "upstream_url": "https://developer.android.com/studio/run/emulator",
+        "revision": "Repository harness uses Android SDK emulator and API 34 x86_64 system image; exact SDK package versions are in the workflow",
+        "license": "Android SDK license; review current terms before provisioning",
+        "retrieved_at": "2026-11-14"
+      },
+      "security": {
+        "isolation": "Ephemeral GitHub-hosted runner; AVD instance scoped to workflow job",
+        "network_egress": "Workflow downloads Android SDK components; test egress should be restricted separately",
+        "secret_policy": "No secret values in registry or artifacts; test identities must be synthetic",
+        "data_retention": "Workflow artifacts contain smoke evidence; redact screenshots/UI dumps before publishing if test data is sensitive"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": null,
+        "cost_basis": "GitHub Actions runner consumption; measure per run, do not assume zero cost"
+      },
+      "evidence": [
+        {"kind": "repository_file", "ref": "apps/studysprint/android/emulator-smoke.sh", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Headless AVD install/launch/UI state smoke harness exists."},
+        {"kind": "workflow", "ref": ".github/workflows/studysprint-apk-smoke.yml", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Workflow provisions Android API 34 x86_64 AVD and invokes the harness."}
+      ],
+      "owner": "StudySprint Android module lane",
+      "next_recon": "Fetch latest successful workflow run and artifact; record exact runner image, emulator build, startup latency, flake rate and artifact redaction result."
+    },
+    {
+      "tool_profile_id": "termux-runtime-smoke",
+      "name": "Termux runtime-surface smoke",
+      "family": "termux_native",
+      "registration_state": "registered",
+      "implementation_state": "implemented",
+      "discovery_state": "discovered",
+      "verification_state": "verified",
+      "availability_state": "unknown",
+      "adapter_contract": "scripts/ci/termux_smoke.py; docs/TERMUX-SMOKE.md",
+      "host_requirements": {
+        "os": ["Termux Android", "Linux CI"],
+        "architectures": ["aarch64", "x86_64"],
+        "privileges": ["unprivileged user"],
+        "android_api_levels": [],
+        "termux_versions": ["not pinned by current smoke contract"]
+      },
+      "capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.runtime.detect"],
+      "exclusions": ["Android framework and permission parity", "OEM lifecycle behavior", "physical hardware APIs", "termux-api availability is optional probe only"],
+      "provenance": {
+        "upstream_url": null,
+        "revision": "Repository implementation at scripts/ci/termux_smoke.py",
+        "license": null,
+        "retrieved_at": "2026-11-14"
+      },
+      "security": {
+        "isolation": "Runs in current CI/device environment; no mutation beyond temporary TMPDIR probe",
+        "network_egress": "Default required path is offline",
+        "secret_policy": "No credentials are required or serialized",
+        "data_retention": "JSON/human summary only; avoid including personal device details"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": null,
+        "cost_basis": "CI runner or device execution time; collect measured values"
+      },
+      "evidence": [
+        {"kind": "repository_file", "ref": "scripts/ci/termux_smoke.py", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Stdlib-only core checks runtime and repository surface."},
+        {"kind": "repository_file", "ref": "docs/TERMUX-SMOKE.md", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Documents the gate and its limited scope."}
+      ],
+      "owner": "Termux runtime lane",
+      "next_recon": "Run on a real supported Termux device and compare the JSON environment fingerprint against Linux CI."
+    },
+    {
+      "tool_profile_id": "termux-docker-candidate",
+      "name": "Termux Docker sandbox",
+      "family": "termux_container",
+      "registration_state": "proposed",
+      "implementation_state": "absent",
+      "discovery_state": "not_checked",
+      "verification_state": "unverified",
+      "availability_state": "unknown",
+      "adapter_contract": "Candidate reference only; no repository adapter is claimed.",
+      "host_requirements": {
+        "os": ["Linux host or supported Android/Termux arrangement"],
+        "architectures": ["aarch64", "x86_64"],
+        "privileges": ["Container runtime privileges vary by host"],
+        "android_api_levels": [],
+        "termux_versions": []
+      },
+      "capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.package.environment"],
+      "exclusions": ["Android framework", "Termux app sandbox and Android lifecycle unless separately bridged and tested"],
+      "provenance": {
+        "upstream_url": "https://github.com/termux/termux-docker",
+        "revision": null,
+        "license": null,
+        "retrieved_at": "2026-11-14"
+      },
+      "security": {
+        "isolation": "Unknown until host/runtime model is inspected",
+        "network_egress": "Unknown; default deny until verified",
+        "secret_policy": "No secrets mounted by default",
+        "data_retention": "Unknown; establish image and volume disposal policy before use"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": null,
+        "cost_basis": "Not measured"
+      },
+      "evidence": [
+        {"kind": "issue", "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/55", "classification": "candidate", "observed_at": null, "notes": "Issue identifies Termux Docker as a candidate sandbox; no runtime proof."}
+      ],
+      "owner": "Device Validation RECON",
+      "next_recon": "Inspect upstream license/revision, host compatibility, image provenance, installation path, isolation, reset and a representative Termux shell workload."
+    },
+    {
+      "tool_profile_id": "qemu-system-candidate",
+      "name": "QEMU system/user emulation",
+      "family": "qemu",
+      "registration_state": "proposed",
+      "implementation_state": "absent",
+      "discovery_state": "not_checked",
+      "verification_state": "unverified",
+      "availability_state": "unknown",
+      "adapter_contract": "Candidate reference only; no repository adapter or installed host is claimed.",
+      "host_requirements": {
+        "os": ["Linux", "macOS", "Windows"],
+        "architectures": ["x86_64", "aarch64"],
+        "privileges": ["Depends on acceleration and guest configuration"],
+        "android_api_levels": [],
+        "termux_versions": []
+      },
+      "capabilities": ["cpu.arch.x86_64", "cpu.arch.aarch64", "kernel.boot"],
+      "exclusions": ["Android UI/API fidelity without a separately validated Android guest image", "physical device behavior"],
+      "provenance": {
+        "upstream_url": "https://www.qemu.org/",
+        "revision": null,
+        "license": "GPL-2.0-or-later (verify exact component/build distribution)",
+        "retrieved_at": "2026-11-14"
+      },
+      "security": {
+        "isolation": "Guest isolation must be reviewed; QEMU process is not a complete security boundary by itself",
+        "network_egress": "Default deny; explicitly configure virtual network",
+        "secret_policy": "Do not pass host secrets to guest",
+        "data_retention": "Disposable disk images; snapshot sanitization required"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": null,
+        "cost_basis": "Not measured"
+      },
+      "evidence": [
+        {"kind": "issue", "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/55", "classification": "candidate", "observed_at": null, "notes": "QEMU identified as architecture-emulation candidate; no configured runtime established."}
+      ],
+      "owner": "Device Validation RECON",
+      "next_recon": "Choose one architecture-specific workload and compare QEMU user/system mode, native cross-compilation and Android AVD where appropriate."
+    },
+    {
+      "tool_profile_id": "waydroid-candidate",
+      "name": "Waydroid Android userspace",
+      "family": "waydroid",
+      "registration_state": "proposed",
+      "implementation_state": "absent",
+      "discovery_state": "not_checked",
+      "verification_state": "unverified",
+      "availability_state": "unknown",
+      "adapter_contract": "Candidate reference only; no repository adapter or supported runner is claimed.",
+      "host_requirements": {
+        "os": ["Linux"],
+        "architectures": ["x86_64", "aarch64"],
+        "privileges": ["Kernel namespaces and host integration; exact requirements require RECON"],
+        "android_api_levels": [],
+        "termux_versions": []
+      },
+      "capabilities": ["android.activity.launch"],
+      "exclusions": ["Physical Android hardware and OEM behavior", "Availability on GitHub-hosted runners is not established"],
+      "provenance": {
+        "upstream_url": "https://waydro.id/",
+        "revision": null,
+        "license": "Verify component licenses from upstream source",
+        "retrieved_at": "2026-11-14"
+      },
+      "security": {
+        "isolation": "Host kernel sharing; review namespace and privilege boundaries",
+        "network_egress": "Default deny until measured and configured",
+        "secret_policy": "No host secrets mounted into guest",
+        "data_retention": "Disposable images and user data; sanitize snapshots"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": null,
+        "cost_basis": "Not measured"
+      },
+      "evidence": [
+        {"kind": "issue", "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/55", "classification": "candidate", "observed_at": null, "notes": "Waydroid named as candidate; no installed host or runtime proof."}
+      ],
+      "owner": "Device Validation RECON",
+      "next_recon": "Verify supported Linux host/kernel, image source, Android version, app compatibility, CI feasibility and isolation."
+    },
+    {
+      "tool_profile_id": "physical-android-device-candidate",
+      "name": "Physical Android / Termux device",
+      "family": "physical_device",
+      "registration_state": "proposed",
+      "implementation_state": "planned",
+      "discovery_state": "not_checked",
+      "verification_state": "unverified",
+      "availability_state": "unknown",
+      "adapter_contract": "Hardware acceptance profile; requires explicit lab enrollment, named device profile and approved device bridge.",
+      "host_requirements": {
+        "os": ["Android"],
+        "architectures": ["aarch64", "armv7"],
+        "privileges": ["User-authorized ADB/Termux permissions; root is not assumed"],
+        "android_api_levels": [],
+        "termux_versions": []
+      },
+      "capabilities": ["physical.android.device", "android.lifecycle.background", "usb.device", "bluetooth.device", "sensor.*", "battery.thermal", "radio.modem", "oem.power-management"],
+      "exclusions": ["No device identity or current connectivity is established by this record"],
+      "provenance": {
+        "upstream_url": null,
+        "revision": null,
+        "license": null,
+        "retrieved_at": null
+      },
+      "security": {
+        "isolation": "Dedicated test profile, explicit user consent and device-lab policy required",
+        "network_egress": "Per-test allowlist; no public shell",
+        "secret_policy": "No personal profile export, MFA bypass or secret serialization",
+        "data_retention": "Redact device identifiers and personal data; preserve only approved test evidence"
+      },
+      "resource_profile": {
+        "cpu": null,
+        "memory_mb": null,
+        "disk_mb": null,
+        "startup_seconds": null,
+        "concurrency": 1,
+        "cost_basis": "Device/lab ownership and operator time; not measured"
+      },
+      "evidence": [
+        {"kind": "repository_file", "ref": "docs/icm/objects/platform/termux-agentic-hub.md", "classification": "stale", "observed_at": "2026-11-14T00:00:00Z", "notes": "Historical architecture is explicitly stale and does not establish live device or MCP availability."}
+      ],
+      "owner": "Device Validation RECON",
+      "next_recon": "Only enroll a device after explicit owner approval, current device info, authorized bridge verification, safety/privacy review and reset procedure."
+    }
+  ],
+  "module_lanes": [
+    {
+      "module_lane_id": "device-lane:apps.studysprint.android",
+      "module_path": "apps/studysprint",
+      "module_name": "StudySprint Android APK",
+      "lane_state": "active",
+      "inventory_classification": "verified_device_component",
+      "target_platforms": ["android"],
+      "required_capabilities": ["android.apk.install", "android.activity.launch", "android.webview.render"],
+      "hardware_requirements": {"required": false, "capabilities": []},
+      "validation_profiles": ["android-avd-study-sprint"],
+      "test_suites": ["apps/studysprint/android/emulator-smoke.sh"],
+      "evidence_policy": "Capture APK hash, source SHA, AVD image/API/ABI, workflow run, verdict, screenshots/UI dump/recording where safe, and reset status.",
+      "reset_contract": "Destroy the per-job AVD after evidence upload; never reuse a profile containing user data.",
+      "owner": "StudySprint Android",
+      "evidence": [
+        {"kind": "repository_file", "ref": "apps/studysprint/android/emulator-smoke.sh", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Concrete Android emulator smoke harness."},
+        {"kind": "workflow", "ref": ".github/workflows/studysprint-apk-smoke.yml", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Concrete Android AVD workflow."}
+      ]
+    },
+    {
+      "module_lane_id": "device-lane:termux.runtime",
+      "module_path": "scripts/ci/termux_smoke.py",
+      "module_name": "Termux runtime-surface validation",
+      "lane_state": "active",
+      "inventory_classification": "verified_device_component",
+      "target_platforms": ["termux", "linux-ci"],
+      "required_capabilities": ["linux.shell", "linux.filesystem.permissions", "termux.runtime.detect"],
+      "hardware_requirements": {"required": false, "capabilities": []},
+      "validation_profiles": ["termux-runtime-smoke"],
+      "test_suites": ["python3 scripts/ci/termux_smoke.py", "python3 scripts/ci/termux_smoke.py --with-optional"],
+      "evidence_policy": "Capture JSON environment fingerprint, required/optional check results, source SHA and whether execution occurred on real Termux or Linux CI.",
+      "reset_contract": "The smoke is non-mutating except for a temporary writable-TMPDIR probe that is removed.",
+      "owner": "Termux runtime",
+      "evidence": [
+        {"kind": "repository_file", "ref": "scripts/ci/termux_smoke.py", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Termux-aware runtime detector and smoke suite."},
+        {"kind": "repository_file", "ref": "docs/TERMUX-SMOKE.md", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Documents runtime smoke scope and gate position."}
+      ]
+    },
+    {
+      "module_lane_id": "device-lane:termux.device-queue-poller",
+      "module_path": "scripts/termux/devices/queue-poll.sh",
+      "module_name": "Termux device pull-queue poller",
+      "lane_state": "planned",
+      "inventory_classification": "planned_device_component",
+      "target_platforms": ["termux"],
+      "required_capabilities": ["termux.package.environment", "linux.shell"],
+      "hardware_requirements": {"required": false, "capabilities": []},
+      "validation_profiles": ["termux-runtime-smoke", "termux-docker-candidate"],
+      "test_suites": ["planned: queue-poller contract and receipt tests"],
+      "evidence_policy": "No implementation is asserted. When built, capture queue task schema, allowlisted task kind, lease/claim identity, receipt and device runtime fingerprint.",
+      "reset_contract": "No device task or poller is currently asserted; future implementation must stop polling and clear only its disposable test state.",
+      "owner": "Device Pull-Queue",
+      "evidence": [
+        {"kind": "repository_file", "ref": "docs/ops/P1-PULL-QUEUE-SPEC.md", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Spec says Phase 2 device poller is not yet built; path is proposed."}
+      ]
+    },
+    {
+      "module_lane_id": "device-lane:game-player-machines",
+      "module_path": "docs/recon/team-formation/GAME_PLAYER_FLEET.md",
+      "module_name": "Game Player Machine Profiles",
+      "lane_state": "planned",
+      "inventory_classification": "candidate_device_component",
+      "target_platforms": ["android", "desktop-vm"],
+      "required_capabilities": ["android.activity.launch"],
+      "hardware_requirements": {"required": false, "capabilities": []},
+      "validation_profiles": ["android-avd-study-sprint"],
+      "test_suites": ["planned: game catalog scenario and reset verification"],
+      "evidence_policy": "Profile contract is documented; no general game-player emulator fleet is established.",
+      "reset_contract": "Per-profile reset procedure must be implemented and verified before session execution.",
+      "owner": "Game Player Fleet",
+      "evidence": [
+        {"kind": "repository_file", "ref": "docs/recon/team-formation/GAME_PLAYER_FLEET.md", "classification": "verified", "observed_at": "2026-11-14T00:00:00Z", "notes": "Defines machine-profile contract and staged fleet delivery."}
+      ]
+    }
+  ]
+}

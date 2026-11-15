@@ -34,8 +34,17 @@ const pulls = [{
     sha: "promosha",
     repo: { full_name: "timerloggedout-spec/timerloggedout-spec.github.io" }
   }
+}, {
+  number: 52,
+  title: "Fork-only branch",
+  html_url: "https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pull/52",
+  base: { ref: "main" },
+  head: { ref: "fork-only", sha: "forksha", repo: { full_name: "contributor/fork" } }
 }];
-const comparisons = { 51: { ahead_by: 4, behind_by: 0, status: "ahead" } };
+const comparisons = {
+  51: { ahead_by: 4, behind_by: 0, status: "ahead" },
+  52: { ahead_by: 2, behind_by: 3, status: "diverged" }
+};
 const auditedComparisons = {
   "brand/ai-elves-site-identity": { ahead_by: 0, behind_by: 2031, status: "behind" }
 };
@@ -58,12 +67,12 @@ const legacy = rows.find(row => row.name === "legacy-unlinked");
 assert.equal(legacy.state, "UNLINKED");
 assert.equal(legacy.comparisonState, "UNKNOWN");
 
-const summary = api.summarize(rows, pulls);
+const summary = api.summarize(rows, pulls, comparisons);
 assert.equal(summary.branchCount, 4);
-assert.equal(summary.openPrCount, 1);
+assert.equal(summary.openPrCount, 2);
 assert.equal(summary.linkedBranchCount, 1);
 assert.equal(summary.unlinkedBranchCount, 2);
-assert.equal(summary.divergedCount, 0);
+assert.equal(summary.divergedCount, 1);
 assert.equal(summary.behindCount, 1);
 
 console.log("public surface reconciliation contract: PASS");

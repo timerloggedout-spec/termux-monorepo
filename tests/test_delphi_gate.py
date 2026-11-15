@@ -624,6 +624,7 @@ def test_last_ledger_ignores_human_forged_marker_comments():
         "input_hash": "abc123",
         "award": {"decision": "shadow", "package_digest": "a" * 64,
                   "ledger_ref": "github:issue-comment:8123"},
+        "effective_score": None,
     }
 
 

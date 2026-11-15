@@ -606,15 +606,15 @@ def test_last_ledger_ignores_human_forged_marker_comments():
                   "ledger_ref": "github:issue-comment:8123"},
     }
     fence = chr(96) * 3
-    body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
+    ledger_body = gate.LEDGER_MARK + "\n" + fence + "json\n" + json.dumps(payload) + "\n" + fence
 
     class FakeGH:
-        def req(self, method, path, body=None):
+        def req(self, method, path, request_body=None):
             assert method == "GET"
             if path.endswith("page=1"):
                 return [
-                    {"body": body, "user": {"type": "User", "login": "attacker"}},
-                    {"body": body, "user": {"type": "Bot", "login": "github-actions[bot]"}},
+                    {"body": ledger_body, "user": {"type": "User", "login": "attacker"}},
+                    {"body": ledger_body, "user": {"type": "Bot", "login": "github-actions[bot]"}},
                 ]
             return []
 
@@ -622,7 +622,8 @@ def test_last_ledger_ignores_human_forged_marker_comments():
     # must not become authoritative even if it appears later in API order.
     assert gate.last_ledger(FakeGH(), 5156) == {
         "input_hash": "abc123",
-        "award": {"decision": "shadow", "package_digest": "a" * 64},
+        "award": {"decision": "shadow", "package_digest": "a" * 64,
+                  "ledger_ref": "github:issue-comment:8123"},
     }
 
 

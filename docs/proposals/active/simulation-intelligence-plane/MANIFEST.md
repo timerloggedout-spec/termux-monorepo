@@ -11,7 +11,7 @@
 - **Status:** `docs/rfps/simulation-intelligence-plane/STATUS-AND-FINDINGS.md`
 
 ## Purpose
-Create a reproducible scenario laboratory for evidence-grounded synthetic multi-agent simulations, with MiroFish-inspired graph/persona preparation and CAMEL-AI OASIS as the first execution candidate.
+Create a reproducible scenario laboratory for evidence-grounded synthetic multi-agent simulations, with MiroFish-inspired graph/persona preparation, CAMEL-AI OASIS as the first execution candidate, and a role-separated 12-candidate comparison cohort spanning ABM, orchestration and durable execution.
 
 ## Authority and dependencies
 QUE retains admission/dispatch. Workflow Contract owns workflow declaration. DoE owns experiment design. ATES owns deterministic benchmark evaluation. Integration Intelligence/CEEL owns provider registry and normalized events. Delphic and existing graph tools remain graph-analysis authorities. No factual graph mutation or production routing changes.

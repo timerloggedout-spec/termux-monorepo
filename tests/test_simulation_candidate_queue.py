@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 QUEUE = ROOT / "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
 TEMPLATE = ROOT / ".github/ISSUE_TEMPLATE/simulation-rfp.yml"
 GRAPH = ROOT / "docs/integrations/capability-opportunity-graph.json"
+FOSS = ROOT / "docs/ops/FOSS-FORESIGHT-PROCUREMENT-REGISTRY.json"
 
 
 class SimulationCandidateQueueTests(unittest.TestCase):
@@ -42,6 +43,12 @@ class SimulationCandidateQueueTests(unittest.TestCase):
         self.assertEqual(by_id["langgraph"]["class"], "agent-orchestration-framework")
         self.assertEqual(by_id["temporal"]["class"], "durable-workflow-runtime")
         self.assertEqual(by_id["mirofish"]["class"], "graph-to-simulation-workbench-reference")
+
+    def test_all_queue_candidates_are_in_foss_procurement_registry(self):
+        registry = json.loads(FOSS.read_text(encoding="utf-8"))
+        queue_ids = {item["id"] for item in self.queue["candidates"]}
+        procurement_ids = {item["id"] for item in registry["resources"]}
+        self.assertTrue(queue_ids.issubset(procurement_ids))
 
     def test_candidate_queue_is_projected_into_ceel_graph(self):
         graph = json.loads(GRAPH.read_text(encoding="utf-8"))

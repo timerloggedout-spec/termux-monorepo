@@ -328,6 +328,18 @@ def api_remaining(gh: "GH") -> int | None:
     except Exception:  # noqa: BLE001 - unreadable budget is neutral, never fatal
         return None
 
+def package_verification_budget_available(
+        remaining: int | None, calls_used: int, reserve: int,
+        max_calls: int = 5 + MAX_PACKAGE_FILES) -> bool:
+    """Protect the shared-token reserve before an immutable package read.
+
+    An unreadable live budget is handled by cadence's static per-run cap;
+    otherwise account for every API call already spent in this run.
+    """
+    if remaining is None:
+        return True
+    return remaining - calls_used - reserve >= max_calls
+
 
 def radar_candidates(catalog: dict, registry: dict, rfp_surfaces: set, foresight_path: str = FORESIGHT) -> list[dict]:
     """New-surface alert: quota-registry services and ForeSight records that no RFP covers yet.
@@ -872,8 +884,8 @@ def _run(args) -> int:
                 for field in ("proposal_source_ref", "proposal_manifest_ref",
                               "proposal_manifest_path", "expected_package_digest")
             )
-            if (issue_package_bound and remaining is not None
-                    and remaining - gh.calls - api_reserve < package_verify_call_bound):
+            if (issue_package_bound and not package_verification_budget_available(
+                    remaining, gh.calls, api_reserve, package_verify_call_bound)):
                 pending += 1
                 board.append({"number": issue["number"], "surface": s["id"], "effective": None, "decision": "pending"})
                 print(f"::warning::Delphi package verification deferred for #{issue['number']}: shared API reserve protected")

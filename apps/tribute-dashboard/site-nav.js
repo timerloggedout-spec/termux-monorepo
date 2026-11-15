@@ -43,6 +43,7 @@
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],
+    ["Surfaces Map", tribute + "surfaces-map.html", "surfaces-map"],
     ["Family", tribute + "family.html", "family"],
     ["Version comparison", tribute + "versioning.html", "versioning"],
     ["Sitemap", tribute + "sitemap.xml", "sitemap"],

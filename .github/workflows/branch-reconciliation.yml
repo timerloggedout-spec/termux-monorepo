@@ -9,6 +9,10 @@ on:
       - "scripts/que/self_repair.py"
       - ".github/workflows/qdesk-self-repair.yml"
       - "tests/test_que_branch_reconciliation_intake.py"
+      - "scripts/que/branch_reconciliation_intake.py"
+      - "scripts/que/self_repair.py"
+      - ".github/workflows/qdesk-self-repair.yml"
+      - "tests/test_que_branch_reconciliation_intake.py"
       - ".github/workflows/branch-reconciliation.yml"
   pull_request:
     branches: [master]

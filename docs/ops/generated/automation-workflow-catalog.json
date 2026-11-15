@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "43a7a4c96cb8d855aeb6cb08bd5497f10221a5137732648fe9d6828a669cfff4",
+  "source_fingerprint": "68abc679662469a08f5d406cf0abc9d87c094bb63bbc3bc92eeea03e2c2181e5",
   "workflow_count": 314,
   "workflows": [
     {
@@ -3506,7 +3506,7 @@
       "name": "opportunity-cycle",
       "path": ".github/workflows/opportunity-cycle.yml",
       "schedules": [
-        "17 13 * * *"
+        "17 1,7,13,19 * * *"
       ],
       "triggers": [
         "push",

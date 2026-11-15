@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-15T20:49:01Z",
+ "read_at": "2026-11-15T20:57:38Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 5488,
+   "title": "fix(que): repair registry feed \u2014 aliases, terminal rows, deadline wall, freshness [skip render]",
+   "merged_at": "2026-11-15T20:50:38Z",
+   "updated_at": "2026-11-15T20:55:04Z",
+   "created_at": "2026-11-15T19:05:48Z",
+   "merge_commit_sha": "c7b3e1e36940affaaa1c3d4093043e700935fb09",
+   "head_ref": "hark/que-registry-feed-repair",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5488",
+   "merged": true
+  },
   {
    "number": 5490,
    "title": "chore(ops): regenerate operator matrix",
@@ -1939,42 +1952,16 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5028",
    "merged": true
-  },
-  {
-   "number": 5022,
-   "title": "Prepare the D2 QuarantineBrowserClerk AppID manifest package",
-   "merged_at": "2026-11-05T23:49:57Z",
-   "updated_at": "2026-11-05T23:49:58Z",
-   "created_at": "2026-11-05T23:29:42Z",
-   "merge_commit_sha": "cb48b8d8a0dc81b3ceb92b1537d0726f1547a762",
-   "head_ref": "d2/quarantinebrowserclerk-appid-package",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5022",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-15T20:47:57Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "dea16b840804352aa87d8ba1ca68dc9aadea2430",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-15T20:45:39Z",
+   "updated_at": "2026-11-15T20:57:11Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "ddbd574ce6e08cd13fa2a751c0552b6d7b392a04",
+   "merge_commit_sha": "45956df9414a6ff164ff61c66537e9c3e20600fc",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
@@ -1982,42 +1969,42 @@
    "merged": false
   },
   {
-   "number": 5488,
-   "title": "fix(que): repair registry feed \u2014 aliases, terminal rows, deadline wall, freshness [skip render]",
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-15T19:56:30Z",
-   "created_at": "2026-11-15T19:05:48Z",
-   "merge_commit_sha": "161e79ca9d1edf299c82795084dc2a848bd54562",
-   "head_ref": "hark/que-registry-feed-repair",
-   "author": "timerloggedout-spec",
+   "updated_at": "2026-11-15T20:54:02Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "3e344c04cb26210d9445f86312316a064726dc16",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5488",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-15T20:52:35Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "e1705f063584c9ff42fa794e40fb54d57dd43ef2",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-15T19:54:21Z",
+   "updated_at": "2026-11-15T20:52:35Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "70ebff04d6b202c1b969a72b2ea60c4308911085",
+   "merge_commit_sha": "d4d26b4d488604931044e5d6c68a1ffac2dfdd67",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-15T19:52:57Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "a92cf3bd28c9f50dfe9bfe889d5a4a5d46926d32",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
    "merged": false
   },
   {
@@ -2338,7 +2325,7 @@
    "merged_at": null,
    "updated_at": "2026-11-15T08:57:45Z",
    "created_at": "2026-11-15T06:19:46Z",
-   "merge_commit_sha": "7736b4c01a0459edeb1b56913073666c9ab2ec33",
+   "merge_commit_sha": "583e694e6c620b2f87040ccc55b136a6c64cf049",
    "head_ref": "feat/unified-feed-adapter-20261114",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -4561,6 +4548,19 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4737",
+   "merged": false
+  },
+  {
+   "number": 4690,
+   "title": "feat(ci): add merged branch review audit and quota engine",
+   "merged_at": null,
+   "updated_at": "2026-11-03T23:53:40Z",
+   "created_at": "2026-11-03T23:40:18Z",
+   "merge_commit_sha": null,
+   "head_ref": "feat/merged-branch-audit-459622090442643015",
+   "author": "google-labs-jules[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4690",
    "merged": false
   }
  ],

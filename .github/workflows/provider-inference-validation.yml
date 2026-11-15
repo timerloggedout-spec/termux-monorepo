@@ -155,6 +155,8 @@ jobs:
               'pricing_classification': verdict.get('model_pricing_classification'),
               'access_classification': verdict.get('model_access_classification'),
               'latency_ms': verdict.get('latency_ms'),
+              'input_tokens': verdict.get('input_tokens'),
+              'output_tokens': verdict.get('output_tokens'),
               'quota_class': verdict.get('quota_class', 'unclassified'),
               'pool_id': verdict.get('pool_id'),
               'diagnosis': diagnosis,

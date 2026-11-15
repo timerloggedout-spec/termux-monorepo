@@ -96,8 +96,11 @@ def _reject_sensitive(value: object, path: str = "$") -> None:
     elif isinstance(value, list):
         for index, child in enumerate(value):
             _reject_sensitive(child, f"{path}[{index}]")
-    elif isinstance(value, str) and SECRET_VALUE_RE.search(value):
-        raise ValueError(f"secret-shaped value rejected at {path}")
+    elif isinstance(value, str):
+        if "\\x00" in value:
+            raise ValueError(f"NUL character rejected at {path}")
+        if SECRET_VALUE_RE.search(value):
+            raise ValueError(f"secret-shaped value rejected at {path}")
 
 
 def _keys(value: object, allowed: set[str], field: str) -> None:
@@ -200,6 +203,9 @@ def validate_event(event: dict) -> dict:
         _keys(privacy, {"classification", "contains_raw_prompt", "contains_secret", "redaction_applied"}, "event.privacy")
         if privacy.get("classification") is not None and privacy["classification"] not in {"public", "internal", "confidential", "restricted"}:
             raise ValueError("event.privacy.classification is invalid")
+        for flag in ("contains_raw_prompt", "contains_secret", "redaction_applied"):
+            if flag in privacy and not isinstance(privacy[flag], bool):
+                raise ValueError(f"event.privacy.{flag} must be boolean")
         if privacy.get("contains_raw_prompt") is True or privacy.get("contains_secret") is True:
             raise ValueError("privacy policy rejects raw prompts or secrets")
     _reject_sensitive(event)

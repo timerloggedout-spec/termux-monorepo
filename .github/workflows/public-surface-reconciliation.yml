@@ -1,0 +1,30 @@
+name: Public surface reconciliation tests
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "apps/tribute-dashboard/publishing.js"
+      - "tests/test_public_surface_reconciliation.cjs"
+      - ".github/workflows/public-surface-reconciliation.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/tribute-dashboard/publishing.js"
+      - "tests/test_public_surface_reconciliation.cjs"
+      - ".github/workflows/public-surface-reconciliation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-surface-reconciliation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  classifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test branch and PR disposition rules
+        run: node tests/test_public_surface_reconciliation.cjs

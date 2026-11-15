@@ -132,7 +132,32 @@ The initial migration uses ordinary Postgres indexes. Time partitioning or Times
 
 All three tables reject UPDATE, DELETE and TRUNCATE. Measurements use a composite foreign key so an event ID cannot be associated with a different integration ID. Event/measurement batch references are deferred until transaction commit, allowing the immutable batch receipt and records to be committed atomically. Idempotent re-delivery is handled by unique idempotency keys. Corrections append a new event/measurement and use `supersedes`; history is never silently rewritten.
 
-## 6. Bounded ingestion policy
+## 6. Access and credential separation
+
+The new adapter deliberately separates migration, ingestion and query privileges:
+
+| Credential | Use | Required privilege |
+|---|---|---|
+| `LANE_EVENTS_MIGRATION_DATABASE_URL` | Explicit `schema` command only | Operator-controlled DDL/migration role |
+| `LANE_EVENTS_WRITER_DATABASE_URL` | Event/measurement `record` | Dedicated writer role: SELECT + INSERT on the three tables, TEMP on the database |
+| `LANE_EVENTS_READONLY_DATABASE_URL` | `count` and future projections | SELECT only |
+| `NEON_API_KEY` | Read-only discovery of the existing project and dedicated writer role URI | Project/branch/role metadata access; never creates a project or role |
+
+The writer role must be named `integration_ingest` or `lane_events_writer`. The resolver refuses `neondb_owner` and never falls back to the legacy `LANE_EVENTS_DATABASE_URL` used by the existing lane-event recorder. The `record` command does not apply DDL. The `schema` command requires the separate migration URL. Role creation, credential provisioning and grants remain operator-controlled; no passwords or connection strings enter source.
+
+Expected grants for an already-provisioned writer role:
+
+```sql
+GRANT USAGE ON SCHEMA public TO integration_ingest;
+GRANT SELECT, INSERT ON integration_events TO integration_ingest;
+GRANT SELECT, INSERT ON integration_measurements TO integration_ingest;
+GRANT SELECT, INSERT ON integration_ingest_batches TO integration_ingest;
+GRANT TEMP ON DATABASE neondb TO integration_ingest;
+```
+
+The writer receives no UPDATE, DELETE, TRUNCATE, CREATE or ownership privileges. The read role receives SELECT only. The migration role is not used by runtime adapters.
+
+## 7. Bounded ingestion policy
 
 Initial adapter defaults:
 
@@ -165,7 +190,7 @@ Durable event/measurement ingestion is loss-accounted. Bounded channels apply ba
 
 Measure records/sec, bytes/sec, batch fill, transaction duration, p50/p95/p99 acknowledgement latency, queue depth, duplicate ratio, rejection ratio, cursor lag and projection lag. Do not claim HFT performance until repeatable benchmark evidence exists.
 
-## 7. Adapter interface
+## 8. Adapter interface
 
 Every adapter implements the same logical stages:
 
@@ -180,7 +205,7 @@ Every adapter implements the same logical stages:
 
 The adapter never owns source truth, scheduling, authorization, dashboard rendering, or merge decisions.
 
-## 8. Historical method reconciliation
+## 9. Historical method reconciliation
 
 | Existing path | Classification | Migration treatment |
 |---|---|---|
@@ -196,7 +221,7 @@ The adapter never owns source truth, scheduling, authorization, dashboard render
 
 Each compatibility adapter needs a dated census, source schema/version, owner, freshness, idempotency mapping, backfill cursor, coverage receipt and deprecation decision before any historical migration.
 
-## 9. Presentation surfaces
+## 10. Presentation surfaces
 
 ### Web dashboards
 
@@ -218,7 +243,7 @@ Taria is an optional semantic accessibility/agent-control adapter above Ratatui,
 
 Use `ratatui::backend::TestBackend` for deterministic renderer integration tests. Cover normal snapshots, missing/stale values, long labels, empty states, error states, resize and bounded-history rendering. Keep pure model tests separate from renderer tests.
 
-## 10. Rollout sequence
+## 11. Rollout sequence
 
 | Phase | Work | Gate |
 |---|---|---|
@@ -231,7 +256,7 @@ Use `ratatui::backend::TestBackend` for deterministic renderer integration tests
 
 Promotion requires same-SHA repository gates, independent review and actual runtime receipts. No workflow is marked operational because a schema or PR exists.
 
-## 11. Current implementation entry points
+## 12. Current implementation entry points
 
 The first foundation slice provides:
 
@@ -241,16 +266,19 @@ python3 scripts/ops/integration_event.py record \
   --measurements-file measurements.jsonl \
   --dry-run
 
-python3 scripts/ops/integration_event.py schema
-python3 scripts/ops/integration_event.py count
+LANE_EVENTS_MIGRATION_DATABASE_URL=<operator-provisioned-migration-url> \
+  python3 scripts/ops/integration_event.py schema
+
+LANE_EVENTS_READONLY_DATABASE_URL=<read-only-url> \
+  python3 scripts/ops/integration_event.py count
 python3 -m unittest discover -s tests -p 'test_integration_event_batch.py' -v
 ```
 
-The dry run validates records and prints bounded batch plans without resolving credentials or contacting Neon. The schema command applies only to the already-existing `lane-events` Neon project/database; this adapter explicitly refuses project auto-creation. The record command requires `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY` and uses the existing project identity.
+The dry run validates records and prints bounded batch plans without resolving credentials or contacting Neon. The schema command requires the operator-provisioned `LANE_EVENTS_MIGRATION_DATABASE_URL` and applies only to the already-existing `lane-events` Neon project/database. The record command requires `LANE_EVENTS_WRITER_DATABASE_URL` or `NEON_API_KEY` resolving an existing dedicated `integration_ingest`/`lane_events_writer` role. It never uses the legacy `LANE_EVENTS_DATABASE_URL`, never falls back to `neondb_owner`, and never auto-applies DDL. Count uses a read-only URL or the dedicated writer role with SELECT.
 
 The initial writer is an adapter primitive, not yet wired to every source or scheduled workflow. Source adapters, dashboard projection wiring and the Termux socket client remain IIS-003 through IIS-005.
 
-## 12. Acceptance and stop conditions
+## 13. Acceptance and stop conditions
 
 Success requires:
 - one canonical event contract and one linked measurement contract;
@@ -264,7 +292,7 @@ Success requires:
 
 Stop as `blocked` if the existing Neon project cannot be verified, schema migration permissions are absent, source identity cannot be mapped safely, or privacy validation cannot be established. Stop as `stagnated` if repeated iterations yield no measurable improvement. Do not create another database or scheduler to bypass a blocker.
 
-## 13. References
+## 14. References
 
 - [Integration Adapter Contract](ADAPTER-CONTRACT.md)
 - [Integration Event Schema](schemas/integration-event.schema.json)

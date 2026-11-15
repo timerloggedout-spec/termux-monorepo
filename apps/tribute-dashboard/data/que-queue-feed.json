@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-15T17:36:04Z",
+ "generated_at": "2026-11-15T22:04:34Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,20 +10,23 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 5,
-    "in_progress": 0,
-    "oldest_queued_at": "2026-11-11T20:34:15Z",
+    "queued": 10,
+    "in_progress": 1,
+    "oldest_queued_at": "2026-11-11T20:23:55Z",
     "by_workflow_queued": {
-     "repo gate": 3,
-     "Orchestration Regression Guard": 2
+     "repo gate": 5,
+     "Orchestration Regression Guard": 3,
+     "PR scope guard": 2
     }
    },
    "2": {
     "tier": 2,
-    "queued": 0,
+    "queued": 1,
     "in_progress": 1,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-15T22:04:03Z",
+    "by_workflow_queued": {
+     "pages build and deployment": 1
+    }
    },
    "3": {
     "tier": 3,
@@ -34,30 +37,69 @@
    },
    "4": {
     "tier": 4,
-    "queued": 83,
+    "queued": 62,
     "in_progress": 18,
-    "oldest_queued_at": "2026-11-11T20:34:15Z",
+    "oldest_queued_at": "2026-11-11T20:23:55Z",
     "by_workflow_queued": {
-     "lane events recorder": 30,
-     "Agent Throughput Evidence": 34,
-     "repo-tracking-collect": 2,
-     "Foresight Evidence Spine": 2,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
-     "graph-matrix-probe": 2,
-     "termux smoke": 2,
-     "Quota Dispatch Tree": 2,
-     "hitl-control-plane-verify": 2,
-     "Context Relationship + Lead/Lag Audit": 2,
-     "Sweep Accountability": 2,
-     "doe-nc1-continuous-log": 1
+     "n8n SHE bridge": 1,
+     "DO Statement Style": 1,
+     "repo-tracking-collect": 4,
+     "hitl-control-plane-verify": 3,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 3,
+     "termux smoke": 4,
+     "Foresight Evidence Spine": 3,
+     "graph-matrix-probe": 3,
+     "Quota Dispatch Tree": 4,
+     "RECON INTEL discovery": 3,
+     "Context Relationship + Lead/Lag Audit": 5,
+     "Repository development evaluation": 2,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 2,
+     "Workflow Surface Policy": 2,
+     "Agent PR Jules Handoff": 2,
+     "PR evidence evaluation": 3,
+     "Sweep Accountability": 3,
+     "doe-nc1-continuous-log": 1,
+     "CellCog review": 1,
+     "Lane matrix event-driven inventory": 2,
+     "PR Change Effectiveness Ledger": 2,
+     "Action Effectiveness Ledger": 2,
+     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
+     "Peer review orchestrator": 2,
+     "DeepSeek CI \u2013 Agentic Automation": 1,
+     "PR production ledger": 2
     }
    }
   },
   "totals": {
-   "queued": 88,
-   "in_progress": 19
+   "queued": 73,
+   "in_progress": 20
   },
-  "wedged_ancient": []
+  "wedged_ancient": [
+   {
+    "id": 41422211036,
+    "workflow": "PR scope guard",
+    "created_at": "2026-11-02T09:37:37Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41422211036"
+   },
+   {
+    "id": 37655538554,
+    "workflow": "Merge Promotion Queue",
+    "created_at": "2026-10-07T16:57:32Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
+   },
+   {
+    "id": 36803855107,
+    "workflow": "PR production ledger",
+    "created_at": "2026-10-01T02:01:22Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
+   },
+   {
+    "id": 36803852632,
+    "workflow": "Peer review orchestrator",
+    "created_at": "2026-10-01T02:01:19Z",
+    "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
+   }
+  ]
  },
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",

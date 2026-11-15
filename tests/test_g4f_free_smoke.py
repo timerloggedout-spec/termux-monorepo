@@ -29,7 +29,9 @@ def test_g4f_receipt_is_sanitized_and_never_dispatch_eligible():
         source_population_total=9588, workers=6, timeout_s=45, deadline_s=1500,
         observed_at="2026-11-15T12:00:00Z",
     )
+    assert receipt["selected_count"] == 2
     assert receipt["attempted"] == 2
+    assert receipt["not_started"] == 0
     assert receipt["inference_ok"] == 1
     assert receipt["providers_ok"] == ["ProviderA"]
     assert receipt["offset"] == 200 and receipt["limit"] == 200
@@ -38,3 +40,22 @@ def test_g4f_receipt_is_sanitized_and_never_dispatch_eligible():
     assert receipt["quota_class"] == "unclassified"
     assert "response" not in receipt and "completion" not in receipt
     assert all("content" not in row and "api_key" not in row for row in receipt["results"])
+
+
+
+def test_g4f_receipt_excludes_queued_deadline_cancellations_from_attempts():
+    results = [
+        {"provider": "Started", "model": "m1", "attempted": True,
+         "inference_ok": False, "error": "DeadlineExceeded"},
+        {"provider": "Queued", "model": "m2", "attempted": False,
+         "inference_ok": False, "error": "NotStartedDeadline"},
+    ]
+    receipt = build_receipt(
+        results, source="universe", offset=0, limit=2,
+        source_population_total=9588, workers=1, timeout_s=45,
+        deadline_s=1, observed_at="2026-11-15T12:00:00Z",
+    )
+    assert receipt["selected_count"] == 2
+    assert receipt["attempted"] == 1
+    assert receipt["not_started"] == 1
+    assert receipt["inference_ok"] == 0

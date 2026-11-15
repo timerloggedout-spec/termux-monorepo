@@ -1,0 +1,64 @@
+# SWARM-DISPATCH-BEGIN
+# schema: issue-dispatch/v1
+# lane: simulation-intelligence-plane
+# que_tier: 2
+# payload_class: simulation-rfp-research-intake
+# route: simulation-rfp-intake.yml
+# after:
+# chain:
+# chain_stage:
+# SWARM-DISPATCH-END
+name: Simulation Intelligence — RFP / Candidate Comparison
+description: Request a generation-first comparison of simulation engines and orchestration candidates. Filing is queued through QUE admission.
+title: "[simulation:rfp] <comparison-slug>"
+labels: ["simulation:rfp"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a research/RFP request, not a live execution request.
+        Filing enters the existing QUE admission path. Only an ADMITTED filing
+        is converted into a frozen G0 intake packet. Delphi proposal generation
+        remains a separate, explicit dispatch after the brief and evidence set
+        are committed. No provider calls, package installs, deployments, or
+        DoE admission occur from this form.
+  - type: textarea
+    id: candidate_ids
+    attributes:
+      label: Candidate IDs
+      description: One ID per line from docs/rfps/simulation-intelligence-plane/candidate-queue.json (e.g. camel-ai-oasis, mesa, repast, netlogo, langgraph, temporal).
+    validations: { required: true }
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What decision or capability should the comparison inform?
+    validations: { required: true }
+  - type: textarea
+    id: research_question
+    attributes:
+      label: Research question
+      description: One primary question; separate hypotheses if needed.
+    validations: { required: true }
+  - type: textarea
+    id: comparison_dimensions
+    attributes:
+      label: Comparison dimensions
+      description: One per line; e.g. lifecycle recovery, reproducibility, cost, platform semantics, portability.
+    validations: { required: true }
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and exclusions
+      description: Runtime, license, data, budget, privacy, portability, and safety constraints.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence links
+      description: At least one official upstream URL or repository evidence path, one per line.
+    validations: { required: true }
+  - type: input
+    id: owner_lane
+    attributes:
+      label: Requested owner lane
+      description: Defaults to simulation-intelligence-plane.

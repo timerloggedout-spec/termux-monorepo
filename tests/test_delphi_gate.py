@@ -528,14 +528,19 @@ def test_package_binding_rejects_self_reference_and_truncated_git_tree():
 
 
 def test_human_award_reviewer_requires_exact_authenticated_issue_comment():
-    issue = {"number": 5156}
+    issue_body = "### Proposal source ref\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n### Proposal manifest ref\nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n### Proposal manifest path\nproposal/package.json\n### Expected package digest\ncccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n"
+    issue = {"number": 5156, "body": issue_body}
     trusted = {
         "DELPHI_REVIEW_ISSUE": "5156",
         "DELPHI_REVIEWER_LOGIN": "reviewer-1",
         "DELPHI_REVIEWER_ASSOCIATION": "MEMBER",
         "DELPHI_REVIEW_COMMENT_BODY": "/delphi approve",
+        "DELPHI_REVIEW_ISSUE_BODY": issue_body,
     }
     assert gate.authenticated_reviewer_for_issue(issue, trusted) == "reviewer-1"
+    assert gate.authenticated_reviewer_for_issue(
+        issue, dict(trusted, DELPHI_REVIEW_ISSUE_BODY=issue_body.replace("proposal/package.json", "proposal/other.json"))
+    ) is None
     for key, value in (
         ("DELPHI_REVIEW_ISSUE", "5157"),
         ("DELPHI_REVIEWER_ASSOCIATION", "CONTRIBUTOR"),
@@ -567,8 +572,11 @@ def test_delphi_ledger_lookup_resolves_only_exact_bot_authored_record():
             self.comment = comment
         def req(self, method, path, body=None):
             assert method == "GET"
-            assert path == "/issues/comments/8123"
-            return self.comment
+            if path == "/issues/comments/8123":
+                return self.comment
+            if path == "/issues/5156/comments?per_page=100&page=1":
+                return [self.comment]
+            raise AssertionError(f"unexpected GitHub request: {path}")
 
     valid = {
         "id": 8123,
@@ -596,6 +604,37 @@ def test_delphi_ledger_ref_rejects_non_positive_or_non_integer_ids():
     for value in (0, -1, True, "8123"):
         with pytest.raises(ValueError):
             gate.delphi_ledger_ref(value)
+
+
+def test_delphi_ledger_lookup_rejects_superseded_award():
+    old_ref = gate.delphi_ledger_ref(8123)
+    new_ref = gate.delphi_ledger_ref(8124)
+    def ledger_comment(comment_id, ledger_ref):
+        record = {"input_hash": "abc123", "award": {
+            "ledger_ref": ledger_ref, "package_digest": "a" * 64,
+            "decision": "shadow", "reviewer_login": "reviewer-1",
+        }}
+        fence = chr(96) * 3
+        return {
+            "id": comment_id,
+            "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/5156",
+            "user": {"type": "Bot", "login": "github-actions[bot]"},
+            "body": gate.LEDGER_MARK + "\\n" + fence + "json\\n" + json.dumps(record) + "\\n" + fence,
+        }
+    old_comment = ledger_comment(8123, old_ref)
+    current_comment = ledger_comment(8124, new_ref)
+
+    class FakeGH:
+        repo = "timerloggedout-spec/termux-monorepo"
+        def req(self, method, path, body=None):
+            assert method == "GET"
+            if path == "/issues/comments/8123":
+                return old_comment
+            if path == "/issues/5156/comments?per_page=100&page=1":
+                return [current_comment]
+            raise AssertionError(f"unexpected GitHub request: {path}")
+
+    assert gate.lookup_delphi_ledger_record(FakeGH(), old_ref) is None
 
 
 def test_last_ledger_ignores_human_forged_marker_comments():

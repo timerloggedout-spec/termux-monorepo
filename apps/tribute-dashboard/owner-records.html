@@ -3,53 +3,356 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Owner records: envelope metadata for authorizations, gates, clearances, bets and decisions. Bodies are age ciphertext, decrypted client-side only on the gated project.">
+<meta name="description" content="Owner records: envelope metadata for authorizations, gates, clearances, bets and decisions. Bodies remain age ciphertext; this surface never decrypts them.">
 <title>Owner Records · Ops · Tribute</title>
-<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
-<style>.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}</style>
+<link rel="stylesheet" href="./dashboard.css">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0b0d10">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<script src="./install.js" defer></script>
+<style>
+.chip{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.05rem .5rem;font-size:.78rem;margin-left:.5rem}
+.owner-tools{display:grid;grid-template-columns:minmax(220px,2fr) repeat(2,minmax(150px,1fr)) auto;gap:.75rem;align-items:end}
+.owner-tools label{display:grid;gap:.3rem;font-size:.82rem;color:var(--muted,#9aa8b8)}
+.owner-tools input,.owner-tools select{width:100%;min-height:2.6rem;padding:.55rem .65rem;border:1px solid var(--line,#344454);border-radius:.5rem;background:var(--panel,#111923);color:inherit;font:inherit}
+.owner-tools button{min-height:2.6rem;padding:.5rem .8rem;border:1px solid var(--line,#344454);border-radius:.5rem;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.owner-tools button:focus-visible,.owner-tools input:focus-visible,.owner-tools select:focus-visible{outline:2px solid var(--accent,#8dd5ff);outline-offset:2px}
+.owner-meta{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
+.owner-id{font: .75rem ui-monospace,monospace;color:var(--muted,#9aa8b8)}
+.owner-status{font-weight:650}
+.owner-status[data-state="STALE"],.owner-status[data-state="CLOCK_SKEW"]{color:#ffbd69}
+.owner-status[data-state="ERROR"]{color:#ff8b8b}
+.owner-version{font: .75rem ui-monospace,monospace;color:var(--muted,#9aa8b8)}
+.owner-empty{padding:1rem;border:1px dashed var(--line,#344454);border-radius:.6rem}
+@media(max-width:760px){.owner-tools{grid-template-columns:1fr 1fr}.owner-tools label:first-child{grid-column:1/-1}.owner-tools button{width:100%}}
+@media(max-width:420px){.owner-tools{grid-template-columns:1fr}.owner-tools label:first-child{grid-column:auto}}
+</style>
 </head>
 <body>
-<header><div class="hero"><div><div class="eyebrow">Ops · owner records</div><h1>Owner <span>Records</span></h1><p class="lede">Authorizations, gates, clearances, bets and decisions — one envelope. This page renders L1 metadata only (title, state, holder, source). Record bodies are age ciphertext in the repo store and decrypt client-side, in the owner's browser, on the gated Vercel project — never at build time, never on a server. Classes with no register render NOT_ESTABLISHED; absence is the honest state.</p><div class="links" style="margin-top:1rem"><a class="button" href="./admin.html">Admin</a><a class="button" href="./tracking.html">Tracking</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/index.json">Envelope (index.json)</a><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/README.md">Store doc</a></div></div><div class="fresh" aria-live="polite"><strong id="freshness">Loading…</strong><small id="generated">Fetching envelope.</small></div></div></header>
+<header>
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Ops · owner records</div>
+      <h1>Owner <span>Records</span></h1>
+      <p class="lede">Authorizations, gates, clearances, bets and decisions — one envelope. This surface renders L1 metadata only (title, state, holder, source). Record bodies remain age ciphertext; this page never fetches or decrypts them. Browser-side age decryption is NOT_IMPLEMENTED / NOT_VERIFIED pending a separate security review. Classes with no register render NOT_ESTABLISHED; absence is the honest state.</p>
+      <div class="links" style="margin-top:1rem">
+        <a class="button" href="./admin.html">Admin</a>
+        <a class="button" href="./tracking.html">Tracking</a>
+        <a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/index.json">Envelope (index.json)</a>
+        <a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/README.md">Store doc</a>
+      </div>
+    </div>
+    <div class="fresh" aria-live="polite">
+      <strong id="freshness" class="owner-status" data-state="LOADING">Loading…</strong>
+      <small id="generated">Fetching envelope.</small>
+      <small id="build-identity" class="owner-version">Build identity: verifying manifest…</small>
+    </div>
+  </div>
+</header>
 <main>
-<section aria-labelledby="charts"><div class="head"><h2 id="charts">Records by class</h2><span class="note" id="charts-stamp">—</span></div><div class="card"><div id="chart-classes"></div></div><p class="muted">Counts from the envelope only — bodies stay ciphertext (chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md).</p></section>
-<div id="classes"></div>
-<footer>Owner Records · envelope: ops/owner-records/index.json (owner-records/v1) · bodies: ops/owner-records/bodies/ (age ciphertext, per-class recipients; private halves live only in the owner's vault + offline backup) · XML surface is Vercel-only (staged into the gated project, never served from Pages) · discovery is Admin + Tracking cross-links only — this page is not in the primary nav (D4)</footer>
+  <section aria-labelledby="charts">
+    <div class="head"><h2 id="charts">Records by class</h2><span class="note" id="charts-stamp">—</span></div>
+    <div class="card"><div id="chart-classes"></div></div>
+    <p class="muted">Counts from the validated envelope only — bodies stay ciphertext (chart standard: docs/ops/DASHBOARD-CHART-STANDARD.md).</p>
+  </section>
+  <section aria-labelledby="explorer-title">
+    <div class="head"><h2 id="explorer-title">Find a record</h2><span class="note">Metadata only · no body search</span></div>
+    <div class="card">
+      <div class="owner-tools">
+        <label for="record-search">Search title, ID, holder or source
+          <input id="record-search" type="search" autocomplete="off" placeholder="Search owner-record metadata">
+        </label>
+        <label for="class-filter">Class
+          <select id="class-filter"><option value="">All classes</option></select>
+        </label>
+        <label for="state-filter">Record state
+          <select id="state-filter"><option value="">All states</option></select>
+        </label>
+        <button id="clear-filters" type="button">Clear filters</button>
+      </div>
+      <p id="results-count" class="muted" role="status" aria-live="polite">Waiting for validated envelope…</p>
+    </div>
+  </section>
+  <div id="classes" aria-live="polite"></div>
+  <p id="load-error" class="card empty" role="alert" hidden></p>
+  <footer>Owner Records · envelope: ops/owner-records/index.json (owner-records/v1) · bodies: ops/owner-records/bodies/ (age ciphertext, per-class recipients; private halves live only in the owner's vault + offline backup) · XML surface is Vercel-only (staged into the gated project, never served from Pages) · discovery is Admin + Tracking cross-links only — this page is not in the primary nav (D4)</footer>
 </main>
 <script src="./chartkit.js"></script>
 <script>
-const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
-const GH='https://github.com/timerloggedout-spec/termux-monorepo/blob/master/';
-function bodyLine(r){
-  if(r.body_status==='encrypted')return 'Body: age ciphertext ('+esc(r.body_file||'')+') — decrypts client-side on the gated project.';
-  if(r.body_status==='none')return 'Body: none.';
-  return 'Body: sealed — pending the owner key step.';
-}
-function recordCard(r){
-  return '<div class="card"><div class="label">'+esc(r.title)+'<span class="chip">'+esc(r.state)+'</span></div>'
-    +'<p class="muted">'+(r.holder?('Holder: '+esc(r.holder)+' · '):'')+(r.since?('Since: '+esc(r.since)+' · '):'')+'Source: <a href="'+GH+esc(r.source.path)+'">'+esc(r.source.path)+'</a>'+(r.source.section?(' · '+esc(r.source.section)):'')+'</p>'
-    +'<p class="muted">'+bodyLine(r)+'</p></div>';
-}
-function classSection(c){
-  const head='<section aria-labelledby="cls-'+esc(c.class)+'"><div class="head"><h2 id="cls-'+esc(c.class)+'">'+esc(c.class)+'</h2><span class="note">'+esc(c.state)+' · '+(c.records||[]).length+' record'+((c.records||[]).length===1?'':'s')+' · key: '+esc(c.key_class||'—')+'</span></div>';
-  const note=c.note?'<p class="muted">'+esc(c.note)+'</p>':'';
-  const body=(c.records||[]).length?'<div class="grid grid-2">'+c.records.map(recordCard).join('')+'</div>'
-    :'<div class="card empty">NOT_ESTABLISHED — no register exists for this class yet. Nothing is inferred.</div>';
-  return head+note+body+'</section>';
-}
-async function getJSON(urls){for(const u of urls){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}
-async function load(){
-  const bust=Date.now();
-  const env=await getJSON(['https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t='+bust,'./owner-records.json?t='+bust]);
-  if(!env){$('freshness').textContent='Envelope unavailable';$('generated').textContent='Could not fetch ops/owner-records/index.json.';return}
-  const total=(env.classes||[]).reduce((n,c)=>n+(c.records||[]).length,0);
-  $('freshness').textContent='Envelope loaded';
-  $('generated').textContent='Schema '+(env.schema||'—')+' · generated '+(env.generated_at||'—')+' · '+total+' records · bodies stay ciphertext';
-  $('classes').innerHTML=(env.classes||[]).map(classSection).join('');
-  const cst=CK.stampState(env.generated_at,Date.now(),86400000);
-  $('charts-stamp').textContent='Envelope generated '+(env.generated_at||'—')+(cst==='STALE'?' · STALE':(cst==='unknown'?' · stamp unknown':''));
-  $('chart-classes').innerHTML=CK.bars((env.classes||[]).map(c=>({label:c.class,value:(c.records||[]).length})));
-}
-load();setInterval(load,60000);
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
+  const CLASS_ORDER = ["authorizations", "gates", "clearances", "bets", "decisions"];
+  const ALLOWED_ENVELOPE_FIELDS = ["schema", "generated_at", "seeded_from", "keys", "cautions", "classes"];
+  const ALLOWED_CLASS_FIELDS = ["class", "state", "key_class", "note", "source_refs", "records"];
+  const ALLOWED_RECORD_FIELDS = ["id", "class", "title", "state", "holder", "since", "source", "key_class", "body_status", "body_file"];
+  const ALLOWED_SOURCE_FIELDS = ["path", "section"];
+  const KEY_CLASSES = ["gates", "decisions", "authorizations", "clearances"];
+  const FORBIDDEN_BODY_FIELDS = ["gate", "whats_needed", "resolution", "body", "text", "note", "description"];
+  const state = { envelope: null, query: "", className: "", recordState: "" };
+  let loading = false;
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, c => "&#" + c.charCodeAt(0) + ";");
+  }
+
+  function validateEnvelope(env) {
+    const errors = [];
+    if (!env || typeof env !== "object" || Array.isArray(env)) return ["Envelope is not an object."];
+    if (env.schema !== "owner-records/v1") errors.push("Unsupported envelope schema.");
+    if (Object.keys(env).some(key => !ALLOWED_ENVELOPE_FIELDS.includes(key))) errors.push("Envelope contains an unknown field.");
+    if (!Array.isArray(env.classes)) errors.push("Envelope classes must be an array.");
+    if (errors.length) return errors;
+    const names = env.classes.map(c => c && c.class);
+    if (names.length !== CLASS_ORDER.length || CLASS_ORDER.some((name, i) => names[i] !== name)) {
+      errors.push("Envelope class order or membership does not match owner-records/v1.");
+    }
+    const ids = new Set();
+    env.classes.forEach(cls => {
+      if (!cls || typeof cls !== "object") { errors.push("Malformed class entry."); return; }
+      if (Object.keys(cls).some(key => !ALLOWED_CLASS_FIELDS.includes(key))) errors.push("Class contains an unknown field: " + String(cls.class) + ".");
+      if (!["established", "not_established"].includes(cls.state)) errors.push("Invalid state for class " + String(cls.class) + ".");
+      if (cls.key_class != null && !KEY_CLASSES.includes(cls.key_class)) errors.push("Invalid key class for " + String(cls.class) + ".");
+      if (!Array.isArray(cls.records)) { errors.push("Records must be an array for class " + String(cls.class) + "."); return; }
+      cls.records.forEach(record => {
+        if (!record || typeof record !== "object" || Array.isArray(record)) { errors.push("Malformed record in " + String(cls.class) + "."); return; }
+        if (Object.keys(record).some(key => !ALLOWED_RECORD_FIELDS.includes(key))) errors.push("Record contains an unknown field: " + String(record.id || "unknown") + ".");
+        const id = record.id;
+        if (typeof id !== "string" || !id.trim()) errors.push("Record is missing an ID.");
+        else if (ids.has(id)) errors.push("Duplicate record ID: " + id + ".");
+        else ids.add(id);
+        if (record.class !== cls.class) errors.push("Record class mismatch for " + String(id || "unknown") + ".");
+        if (typeof record.title !== "string" || !record.title.trim()) errors.push("Record title missing for " + String(id || "unknown") + ".");
+        if (typeof record.state !== "string" || !record.state.trim()) errors.push("Record state missing for " + String(id || "unknown") + ".");
+        if (!record.source || typeof record.source !== "object" || typeof record.source.path !== "string" || !record.source.path.trim()) {
+          errors.push("Record source missing for " + String(id || "unknown") + ".");
+        } else if (Object.keys(record.source).some(key => !ALLOWED_SOURCE_FIELDS.includes(key))) {
+          errors.push("Record source contains an unknown field for " + String(id || "unknown") + ".");
+        }
+        if (record.key_class != null && !KEY_CLASSES.includes(record.key_class)) errors.push("Invalid record key class for " + String(id || "unknown") + ".");
+        if (!["pending-keys", "encrypted", "none"].includes(record.body_status)) errors.push("Invalid body status for " + String(id || "unknown") + ".");
+        if (record.body_status === "encrypted" && (typeof record.body_file !== "string" || !record.body_file.startsWith("bodies/") || record.body_file.split("/").some(part => !part || part === "." || part === ".."))) errors.push("Encrypted body path invalid for " + String(id || "unknown") + ".");
+        if (record.body_status !== "encrypted" && record.body_file) errors.push("Unexpected body path for " + String(id || "unknown") + ".");
+        FORBIDDEN_BODY_FIELDS.forEach(field => {
+          if (Object.prototype.hasOwnProperty.call(record, field)) errors.push("L1 record contains forbidden body field: " + field + ".");
+        });
+      });
+    });
+    return errors;
+  }
+
+  function sourceHref(path) {
+    if (typeof path !== "string" || !path.trim() || path.startsWith("/") || path.includes("\\") ||
+        path.split("/").some(part => !part || part === "." || part === "..")) return null;
+    return GH + path.split("/").map(encodeURIComponent).join("/");
+  }
+
+  function bodyLine(record) {
+    if (record.body_status === "encrypted") {
+      return "Body: age ciphertext (" + esc(record.body_file) + ") — browser-side decryption is NOT_IMPLEMENTED / NOT_VERIFIED.";
+    }
+    if (record.body_status === "none") return "Body: none.";
+    return "Body: sealed — pending the owner key step.";
+  }
+
+  function recordCard(record) {
+    const href = sourceHref(record.source.path);
+    const source = href
+      ? '<a href="' + esc(href) + '" rel="noopener noreferrer">' + esc(record.source.path) + "</a>"
+      : esc(record.source.path) + " (source link withheld: invalid relative path)";
+    const holder = record.holder ? "Holder: " + esc(record.holder) + " · " : "";
+    const since = record.since ? "Since: " + esc(record.since) + " · " : "";
+    return '<article class="card" data-record-id="' + esc(record.id) + '">' +
+      '<div class="label">' + esc(record.title) + '<span class="chip">' + esc(record.state) + "</span></div>" +
+      '<p class="owner-id">' + esc(record.id) + "</p>" +
+      '<p class="muted">' + holder + since + "Source: " + source +
+      (record.source.section ? " · " + esc(record.source.section) : "") + "</p>" +
+      '<p class="muted">' + bodyLine(record) + "</p></article>";
+  }
+
+  function classSection(cls, records) {
+    const count = records.length;
+    const head = '<section aria-labelledby="cls-' + esc(cls.class) + '">' +
+      '<div class="head"><h2 id="cls-' + esc(cls.class) + '">' + esc(cls.class) +
+      '</h2><span class="note">' + esc(cls.state) + " · " + count + " matching record" + (count === 1 ? "" : "s") +
+      " · key: " + esc(cls.key_class || "—") + "</span></div>";
+    const note = cls.note ? '<p class="muted">' + esc(cls.note) + "</p>" : "";
+    let body;
+    if (count) body = '<div class="grid grid-2">' + records.map(recordCard).join("") + "</div>";
+    else if (cls.records.length === 0 && cls.state === "not_established") {
+      body = '<div class="card empty">NOT_ESTABLISHED — no register exists for this class yet. Nothing is inferred.</div>';
+    } else if (cls.records.length === 0) {
+      body = '<div class="card empty">No records are currently listed for this established class.</div>';
+    } else body = '<div class="owner-empty muted">No records in this class match the current filters.</div>';
+    return head + note + body + "</section>";
+  }
+
+  function matches(record, cls) {
+    if (state.className && state.className !== cls.class) return false;
+    if (state.recordState && state.recordState !== record.state) return false;
+    if (!state.query) return true;
+    const haystack = [record.id, cls.class, record.title, record.state, record.holder,
+      record.source.path, record.source.section].filter(Boolean).join(" ").toLowerCase();
+    return haystack.includes(state.query);
+  }
+
+  function updateFilterOptions() {
+    const classSelect = $("class-filter");
+    const stateSelect = $("state-filter");
+    const oldClass = state.className;
+    const oldState = state.recordState;
+    classSelect.innerHTML = '<option value="">All classes</option>' +
+      state.envelope.classes.map(c => '<option value="' + esc(c.class) + '">' + esc(c.class) + "</option>").join("");
+    const states = Array.from(new Set(state.envelope.classes.flatMap(c => c.records.map(r => r.state)))).sort();
+    stateSelect.innerHTML = '<option value="">All states</option>' +
+      states.map(value => '<option value="' + esc(value) + '">' + esc(value) + "</option>").join("");
+    state.className = CLASS_ORDER.includes(oldClass) ? oldClass : "";
+    state.recordState = states.includes(oldState) ? oldState : "";
+    classSelect.value = state.className;
+    stateSelect.value = state.recordState;
+  }
+
+  function render() {
+    const env = state.envelope;
+    const shownClasses = env.classes.filter(cls => !state.className || state.className === cls.class);
+    let total = 0;
+    const html = shownClasses.map(cls => {
+      const records = cls.records.filter(record => matches(record, cls));
+      total += records.length;
+      return classSection(cls, records);
+    }).join("");
+    $("classes").innerHTML = html || '<div class="card empty">No matching record classes.</div>';
+    const all = env.classes.reduce((sum, cls) => sum + cls.records.length, 0);
+    $("results-count").textContent = "Showing " + total + " of " + all + " records across " +
+      shownClasses.length + " class" + (shownClasses.length === 1 ? "" : "es") + ". Search covers L1 metadata only.";
+    $("chart-classes").innerHTML = CK.bars(env.classes.map(cls => ({ label: cls.class, value: cls.records.length })));
+  }
+
+  function setFreshness(generatedAt) {
+    const stamp = CK.stampState(generatedAt, Date.now(), 86400000);
+    const time = Date.parse(generatedAt || "");
+    const clockSkew = Number.isFinite(time) && time - Date.now() > 300000;
+    const status = clockSkew ? "CLOCK_SKEW" : stamp === "STALE" ? "STALE" : stamp === "fresh" ? "FRESH" : "UNKNOWN";
+    $("freshness").dataset.state = status;
+    $("freshness").textContent = status === "FRESH" ? "Envelope fresh" :
+      status === "STALE" ? "Envelope stale" :
+      status === "CLOCK_SKEW" ? "Envelope timestamp is in the future" : "Envelope stamp unknown";
+    $("generated").textContent = "Schema owner-records/v1 · generated " + (generatedAt || "—");
+    $("charts-stamp").textContent = "Envelope generated " + (generatedAt || "—") + " · " + status;
+  }
+
+  async function loadEnvelope() {
+    if (loading || document.visibilityState === "hidden") return;
+    loading = true;
+    try {
+      const bust = Date.now();
+      let env = null;
+      const urls = [
+        "./owner-records.json?t=" + bust,
+        "https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/ops/owner-records/index.json?t=" + bust
+      ];
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, { cache: "no-store" });
+          if (response.ok) { env = await response.json(); break; }
+        } catch (_) {}
+      }
+      if (!env) throw new Error("Could not fetch ops/owner-records/index.json or the staged envelope.");
+      const errors = validateEnvelope(env);
+      if (errors.length) throw new Error("Envelope rejected: " + errors.slice(0, 4).join(" "));
+      state.envelope = env;
+      $("load-error").hidden = true;
+      updateFilterOptions();
+      setFreshness(env.generated_at);
+      render();
+    } catch (error) {
+      const message = String(error && error.message ? error.message : error);
+      if (state.envelope) {
+        $("freshness").dataset.state = "STALE";
+        $("freshness").textContent = "Refresh failed · showing last validated envelope";
+        $("generated").textContent = "Last validated " + (state.envelope.generated_at || "at unknown time") + ".";
+        $("load-error").textContent = "Refresh failed: " + message;
+        $("load-error").hidden = false;
+      } else {
+        $("freshness").dataset.state = "ERROR";
+        $("freshness").textContent = "Envelope unavailable";
+        $("generated").textContent = "No unvalidated data was rendered.";
+        $("classes").replaceChildren();
+        $("chart-classes").replaceChildren();
+        $("results-count").textContent = "Record search unavailable.";
+        $("load-error").textContent = message;
+        $("load-error").hidden = false;
+      }
+    } finally {
+      loading = false;
+    }
+  }
+
+  async function loadBuildIdentity() {
+    const target = $("build-identity");
+    try {
+      const response = await fetch("./version-manifest.json", { cache: "no-store" });
+      if (!response.ok) throw new Error("manifest HTTP " + response.status);
+      const manifest = await response.json();
+      const page = Array.isArray(manifest.pages) && manifest.pages.find(p => p.file === "owner-records.html" && p.id === "owner-records");
+      if (!page || !manifest.source_sha || !manifest.version || !manifest.channel) {
+        throw new Error("manifest lacks owner-records page identity or source provenance");
+      }
+      const params = new URLSearchParams(window.location.search);
+      const supplied = {
+        page_unique_id: params.get("page_unique_id"),
+        version: params.get("version"),
+        channel: params.get("channel"),
+        source_sha: params.get("source_sha")
+      };
+      const expected = {
+        page_unique_id: page.id,
+        version: manifest.version,
+        channel: manifest.channel,
+        source_sha: manifest.source_sha
+      };
+      const suppliedKeys = Object.keys(supplied).filter(key => supplied[key] !== null);
+      const mismatch = suppliedKeys.some(key => supplied[key] !== expected[key]);
+      target.textContent = "Verified manifest · " + page.id + "@" + manifest.version +
+        " · " + manifest.channel + " · " + manifest.source_sha.slice(0, 12) +
+        (mismatch ? " · URL parameters differ (manifest wins)" : "");
+      target.dataset.state = mismatch ? "MISMATCH" : "VERIFIED";
+    } catch (error) {
+      target.textContent = "Build identity unverified · " + String(error && error.message ? error.message : error);
+      target.dataset.state = "UNVERIFIED";
+    }
+  }
+
+  $("record-search").addEventListener("input", event => {
+    state.query = event.target.value.trim().toLowerCase();
+    if (state.envelope) render();
+  });
+  $("class-filter").addEventListener("change", event => {
+    state.className = event.target.value;
+    if (state.envelope) render();
+  });
+  $("state-filter").addEventListener("change", event => {
+    state.recordState = event.target.value;
+    if (state.envelope) render();
+  });
+  $("clear-filters").addEventListener("click", () => {
+    state.query = "";
+    state.className = "";
+    state.recordState = "";
+    $("record-search").value = "";
+    $("class-filter").value = "";
+    $("state-filter").value = "";
+    if (state.envelope) render();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") loadEnvelope();
+  });
+  loadBuildIdentity();
+  loadEnvelope();
+  window.setInterval(loadEnvelope, 60000);
+}());
 </script>
 </body>
 </html>

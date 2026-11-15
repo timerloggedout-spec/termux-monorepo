@@ -34,7 +34,7 @@
 <header class="hero">
   <p class="eyebrow">Proposals registry · docs/proposals</p>
   <h1>Proposals</h1>
-  <p class="lede">Every registered proposal pack in the monorepo — the index the registry of record (<code>docs/proposals/registry.yaml</code>) describes, rendered as filed. Each pack links to its tree on GitHub; the Oracle Method pass records are listed below the registry. Filter by status, priority or author — the filter values come from the feed itself.</p>
+  <p class="lede">Every registered proposal pack in the monorepo — the index the registry of record (<code>docs/proposals/registry.yaml</code>) describes, rendered as filed. Each pack links to its tree on GitHub; the Oracle Method pass records are listed below the registry. Filter by proposal type, status, priority or author — the filter values come from the feed itself.</p>
 </header>
 
 <main>
@@ -54,6 +54,7 @@
     <select id="f-status" aria-label="Filter by status"></select>
     <select id="f-priority" aria-label="Filter by priority"></select>
     <select id="f-author" aria-label="Filter by author"></select>
+    <select id="f-type" aria-label="Filter by proposal type"></select>
     <input id="f-text" type="search" placeholder="Filter by title or id…" aria-label="Filter by title or id">
   </div>
   <div id="proposals"><p class="empty">Loading the proposals feed…</p></div>
@@ -86,6 +87,7 @@ function filterProposals(feed,f){
     (!f.status||p.status===f.status)&&
     (!f.priority||p.priority===f.priority)&&
     (!f.author||p.author===f.author)&&
+    (!f.type||p.proposal_type===f.type)&&
     (!f.text||(String(p.title)+' '+String(p.id)).toLowerCase().includes(f.text.toLowerCase())));
 }
 function facetValues(feed,key){
@@ -122,15 +124,15 @@ function statusPill(s){
   return '<span class="'+cls+'">'+esc(s)+'</span>';
 }
 function render(){
-  const f={status:$('f-status').value,priority:$('f-priority').value,author:$('f-author').value,text:$('f-text').value.trim()};
+  const f={status:$('f-status').value,priority:$('f-priority').value,author:$('f-author').value,type:$('f-type').value,text:$('f-text').value.trim()};
   const rows=filterProposals(FEED,f);
   if(!rows.length){$('proposals').innerHTML='<p class="empty">No proposals match the current filters — nothing is shown rather than anything guessed.</p>';return}
-  $('proposals').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Proposal</th><th>Status</th><th>Priority</th><th>Author</th><th>Related</th></tr></thead><tbody>'+
+  $('proposals').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Proposal</th><th>Status</th><th>Type</th><th>Priority</th><th>Author</th><th>Related</th></tr></thead><tbody>'+
     rows.map(p=>{
       const rel=[...(p.issues||[]).map(n=>'<a href="'+GH+'/issues/'+n+'">#'+n+'</a>'),
                  ...(p.prs||[]).map(e=>prLink(e,GH))].join(' · ');
       return '<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.title)+'</strong></a><br><span class="muted">'+esc(p.id)+' · '+esc(p.path)+'</span></td>'+
-        '<td>'+statusPill(p.status)+'</td><td>'+esc(p.priority)+'</td><td>'+esc(p.author)+'</td>'+
+        '<td>'+statusPill(p.status)+'</td><td>'+(p.proposal_type?esc(p.proposal_type):'—')+'</td><td>'+esc(p.priority)+'</td><td>'+esc(p.author)+'</td>'+
         '<td>'+(rel||'—')+'</td></tr>'}).join('')+
     '</tbody></table></div>';
   $('meta').textContent='Showing '+rows.length+' of '+FEED.counts.total+' proposals · feed generated '+FEED.generated_at+' · registry updated '+(FEED.registry_updated_at||'—');
@@ -148,6 +150,7 @@ async function load(){
     fillSelect('f-status',facetValues(FEED,'status'),'Status');
     fillSelect('f-priority',facetValues(FEED,'priority'),'Priority');
     fillSelect('f-author',facetValues(FEED,'author'),'Author');
+    fillSelect('f-type',facetValues(FEED,'proposal_type'),'Type');
     $('f-text').addEventListener('input',render);
     render();
     const p2c = FEED.counts || {};

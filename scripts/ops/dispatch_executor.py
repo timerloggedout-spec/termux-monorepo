@@ -189,6 +189,8 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
     """(headroom, hold reason). Primary reads spendable-primary only."""
     budget = arm.get("budget") or {}
     if budget.get("quota_class") == "daily_pool_no_provider_quota":
+        if budget.get("class") == "credit-funded":
+            return None, "pool_paid_budget_forbidden"
         pool_id = budget.get("pool_id")
         eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
         pools = (usage or {}).get("pools") or {}

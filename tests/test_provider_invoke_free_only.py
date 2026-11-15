@@ -62,3 +62,16 @@ def test_explicit_model_must_match_an_exact_verified_no_cost_chat_model():
     assert invoke.select_free_chat_model(candidates, "free/model") == "free/model"
     assert invoke.select_free_chat_model(candidates, "paid/model") is None
     assert invoke.select_free_chat_model(candidates, "free/mod") is None
+
+
+def test_provider_invoke_workflow_defaults_to_free_only():
+    from pathlib import Path
+    import yaml
+
+    root = Path(__file__).resolve().parents[1]
+    workflow = yaml.safe_load((root / ".github/workflows/provider-invoke.yml").read_text())
+    events = workflow.get("on", workflow.get(True))
+    assert events["workflow_dispatch"]["inputs"]["free_only"]["default"] is True
+    step = next(s for s in workflow["jobs"]["invoke"]["steps"] if s.get("id") == "invoke")
+    assert "--free-only" in step["run"]
+    assert "inputs.free_only" in step["run"]

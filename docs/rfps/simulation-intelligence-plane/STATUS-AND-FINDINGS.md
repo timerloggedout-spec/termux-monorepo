@@ -29,6 +29,15 @@ State: proposal and initial design package in parallel branch; no runtime implem
 
 The resulting boundary is: SIP provides a domain adapter and simulation evidence model. It does not own admission, workflow planning, control-plane read models, provider routing, generic adapter infrastructure, or the canonical repository intelligence graph.
 
+### Existing alternative work — reconciled 2026-11-14
+
+- **Mesa:** `docs/ops/DOE-FAMILY.md` limits Mesa ABM to the control seat for pre-screening/observation, never live evidence. SIP does not change that rule.
+- **NetLogo:** present in the SFI ABM equivalency research corpus; no SIP runtime adapter is verified.
+- **LangGraph:** existing integration/escalation work in PRs #5045, #5062 and #5085, plus #5194. SIP reuses that work; no second LangGraph adapter is proposed.
+- **Temporal:** prior durable-execution RFP #1885 has a recorded Oracle pass in `docs/proposals/passes/temporal-durable-execution/pass.json`; existing self-host, Delphi-cycle and kill/resume artifacts remain the authority. SIP will not open a duplicate Temporal RFP.
+- **Repast, AutoGen, CrewAI and OpenAI Agents SDK:** candidate-queue entries only; no in-repo runtime or successful adapter execution is claimed.
+- **Research and procurement routing:** all SIP candidates are in `candidate-queue.json`, Integration Intelligence registry and FOSS Foresight procurement registry. RFP requests use the new title-prefix template and QUE-admitted G0 intake route; the free-tier-only `delphi:rfp` gate is intentionally not reused.
+
 ### Not yet confirmed
 - No verified MiroFish or OASIS adapter in the default-branch code search performed for this proposal.
 - No verified runtime deployment, credentials, package install, provider access or successful end-to-end run.

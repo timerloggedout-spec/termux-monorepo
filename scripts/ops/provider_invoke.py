@@ -87,26 +87,15 @@ def pick_model(catalog: dict) -> str | None:
 
 
 def is_verified_no_cost_model(model: dict) -> bool:
-    """Return true only for catalog evidence that establishes a no-cost model.
-
-    Quota counters are deliberately not part of this check: a separately
-    verified daily pool may have no provider quota counter at all.
-    """
+    """Require explicit zero-price evidence or a verified free-trial entitlement."""
     if not isinstance(model, dict):
         return False
     pricing = model.get("pricing_classification")
-    if pricing == "paid":
-        return False
     if pricing == "free_zero_price":
         return True
-    if model.get("free_suffix") is True and pricing in (None, "unknown"):
-        return True
-    return (
-        model.get("access_classification") == "free_trial"
-        and model.get("entitlement_verification") == "verified"
-        and pricing in (None, "unknown")
-    )
-
+    return (model.get("access_classification") == "free_trial"
+            and model.get("entitlement_verification") == "verified"
+            and pricing in (None, "unknown"))
 
 def select_free_chat_model(models: list[dict], requested_model: str | None = None) -> str | None:
     """Select an exact, verified no-cost chat model; never fall back to paid/unknown.
@@ -128,6 +117,35 @@ def select_free_chat_model(models: list[dict], requested_model: str | None = Non
     if requested_model is not None:
         return requested_model if requested_model in eligible else None
     return eligible[0] if eligible else None
+
+def _policy_evidence_issue(entry: dict) -> str | None:
+    if entry.get("no_cost_verified") is not True:
+        return "policy_no_cost_not_verified"
+    for key in ("pricing_source", "terms_source", "capability_source"):
+        value = entry.get(key)
+        if not isinstance(value, str) or not value.startswith("https://"):
+            return f"policy_{key}_missing"
+    for key in ("pricing_verified_at", "terms_verified_at", "capability_verified_at"):
+        value = entry.get(key)
+        if not isinstance(value, str):
+            return f"policy_{key}_missing"
+        try:
+            parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return f"policy_{key}_invalid"
+        if parsed.tzinfo is None or parsed > dt.datetime.now(dt.timezone.utc):
+            return f"policy_{key}_invalid"
+    quota_class = entry.get("quota_class")
+    allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
+    if quota_class not in allowed:
+        return "policy_quota_class_missing"
+    if quota_class == "daily_pool_no_provider_quota":
+        if not entry.get("pool_id") or not str(entry.get("pool_evidence_ref", "")).startswith("https://"):
+            return "policy_daily_pool_evidence_missing"
+    if quota_class in {"provider_quota_backed", "quota_not_applicable"}:
+        if not str(entry.get("quota_evidence_ref", "")).startswith("https://"):
+            return "policy_quota_evidence_missing"
+    return None
 
 def main() -> int:
     ap = argparse.ArgumentParser()

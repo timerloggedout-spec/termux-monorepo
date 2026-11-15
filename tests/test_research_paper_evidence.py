@@ -22,8 +22,20 @@ def test_receipt_refuses_dirty_worktree_including_untracked_files(tmp_path):
     tracked.write_text('baseline\\n')
     subprocess.run(['git', '-C', str(root), 'add', 'tracked.txt'], check=True)
     subprocess.run(['git', '-C', str(root), 'commit', '-m', 'fixture'], check=True, capture_output=True)
+    clean_receipt = receipt(root, [])
+    assert clean_receipt['dirty_worktree'] is False
+
+    tracked.write_text('unstaged change\\n')
     with pytest.raises(ValueError, match='working tree must be clean'):
         receipt(root, [])
+
+    tracked.write_text('staged change\\n')
+    subprocess.run(['git', '-C', str(root), 'add', 'tracked.txt'], check=True)
+    with pytest.raises(ValueError, match='working tree must be clean'):
+        receipt(root, [])
+
+    subprocess.run(['git', '-C', str(root), 'reset', '--', 'tracked.txt'], check=True)
+    subprocess.run(['git', '-C', str(root), 'checkout', '--', 'tracked.txt'], check=True)
     (root / 'untracked.txt').write_text('untracked\\n')
     with pytest.raises(ValueError, match='working tree must be clean'):
         receipt(root, [])

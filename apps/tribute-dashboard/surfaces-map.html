@@ -85,6 +85,7 @@ Corrections land as data edits, never prose-only.</p>
 const SUBSTRATE = [
  {id:"monikers", label:"AGENT-MONIKERS SSOT", note:"canonical names · collapse registry · moniker graduations"},
  {id:"feeds", label:"Surface feeds", note:"per-surface data/*.json under DASHBOARD-SURFACE-FEEDS contracts"},
+ {id:"githubApi", label:"GitHub public API", note:"public repository metadata · branch refs · open PRs · compare API (read-only)"},
  {id:"doeSettings", label:"DoE settings register", note:"ops/doe/settings-register.json — versioned method/settings projection with source provenance"},
  {id:"quefeeds", label:"QUE feeds", note:"measurement · governor · queue-by-tier · priority windows"},
  {id:"walletledger", label:"Wallet ledger", note:"ops/agentic-gambling/site/wallet-ledger.jsonl — pools · wallets · folds"},
@@ -147,6 +148,7 @@ const SURFACES = [
  ["lanes-and-scopes.html","tribute","coordination","role",["feeds","monikers"],"termux-monorepo","page · lanes feed · tests","site deploy (Pages per merge) · version-manifest stamp · no per-surface release line"],
  ["matrix.html","tribute","coordination","∅",["feeds"],"termux-monorepo","page · matrix feed · tests","site deploy (Pages per merge) · version-manifest stamp · no per-surface release line"],
  ["owner-records.html","tribute","identity","∅",["feeds"],"termux-monorepo","page · records feed · tests","site deploy (Pages per merge) · version-manifest stamp · no per-surface release line"],
+ ["publishing.html","tribute","web","∅",["githubApi"],"termux-monorepo + timerloggedout-spec.github.io","page · public GitHub REST repository/branch/PR/compare APIs · publishing.js · classifier tests","version-manifest stamp · browser-time snapshot · read-only · no merge/deploy authority"],
  ["versioning.html","tribute","web","∅",["feeds"],"termux-monorepo","page · version-manifest source · versioning.js · tests","site deploy (Pages per merge) · the version-stamp surface itself"],
  ["index.html","tribute","web","∅",["feeds"],"termux-monorepo","shell page · status payload · tests","site deploy (Pages per merge) · the deployment front door"]
 ];

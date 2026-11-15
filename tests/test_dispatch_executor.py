@@ -350,8 +350,10 @@ def _daily_pool_arm():
 
 def _daily_pool_usage(status="eligible", experiment_label="QUE-5454"):
     return {
+        "coverage": {"complete": True, "stamped_at": "2026-11-12T14:59:00Z"},
         "pools": {"daily-free-inference": {
             "status": "available",
+            "experiment_label": "QUE-5454",
             "observed_at": "2026-11-12T14:59:00Z",
             "reset_window": "daily",
             "reset_tz": "UTC",

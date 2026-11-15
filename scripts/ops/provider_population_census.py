@@ -296,6 +296,7 @@ def build_census(repo_root: Path = ROOT, *, policy_path: Path | None = None,
         "cadence": _load_cadence(cadence_path, now),
         "g4f_live_validation": _load_g4f_receipt(g4f_receipt_path, now),
         "sources": {name: {"path": str(path.relative_to(repo_root)), **_digest(path)} for name, path in paths.items()},
+        "g4f_receipt_source": {"supplied": bool(g4f_receipt_path), "path": str(g4f_receipt_path) if g4f_receipt_path else None, **(_digest(g4f_receipt_path) if g4f_receipt_path else {})},
     }
     result["status"] = "complete_inventory" if all(docs.get(k) is not None for k in ("desk_feed", "quota_registry", "g4f_catalog", "g4f_universe", "g4f_working_probe", "build_arms", "arm_census")) else "partial_inventory"
     return result

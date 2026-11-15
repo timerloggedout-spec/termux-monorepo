@@ -86,12 +86,57 @@ def pick_model(catalog: dict) -> str | None:
     return (chat or ids or [None])[0]
 
 
+def is_verified_no_cost_model(model: dict) -> bool:
+    """Return true only for catalog evidence that establishes a no-cost model.
+
+    Quota counters are deliberately not part of this check: a separately
+    verified daily pool may have no provider quota counter at all.
+    """
+    if not isinstance(model, dict):
+        return False
+    pricing = model.get("pricing_classification")
+    if pricing == "paid":
+        return False
+    if pricing == "free_zero_price":
+        return True
+    if model.get("free_suffix") is True and pricing in (None, "unknown"):
+        return True
+    return (
+        model.get("access_classification") == "free_trial"
+        and model.get("entitlement_verification") == "verified"
+        and pricing in (None, "unknown")
+    )
+
+
+def select_free_chat_model(models: list[dict], requested_model: str | None = None) -> str | None:
+    """Select an exact, verified no-cost chat model; never fall back to paid/unknown.
+
+    The selector intentionally does not require provider quota fields. Pool
+    allocation and provider quota are separate admission dimensions.
+    """
+    eligible = []
+    for model in models if isinstance(models, list) else []:
+        if not isinstance(model, dict):
+            continue
+        model_id = model.get("id")
+        if not isinstance(model_id, str) or not model_id.strip():
+            continue
+        if any(hint in model_id.lower() for hint in NON_CHAT_HINTS):
+            continue
+        if is_verified_no_cost_model(model):
+            eligible.append(model_id)
+    if requested_model is not None:
+        return requested_model if requested_model in eligible else None
+    return eligible[0] if eligible else None
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", required=True)
     ap.add_argument("--prompt-file", required=True)
     ap.add_argument("--out", default="/tmp/invoke-completion.md")
     ap.add_argument("--max-tokens", type=int, default=300)
+    ap.add_argument("--free-only", action="store_true",
+                    help="Invoke only a catalog-verified no-cost chat model; never fall back")
     ap.add_argument("--catalog-only", action="store_true",
                     help="Count the provider's live catalog instead of invoking")
     args = ap.parse_args()
@@ -154,7 +199,37 @@ def main() -> int:
         return 0
 
     model = os.environ.get("INVOKE_MODEL") or None
-    if model is None and catalog_url:
+    if args.free_only:
+        try:
+            from scripts import provider_model_catalog
+            if provider not in provider_model_catalog.ENDPOINTS:
+                raise ValueError("no_canonical_model_catalog")
+            free_rows, _free_headers = provider_model_catalog.poll(provider, token)
+        except Exception as exc:
+            verdict["free_only"] = True
+            verdict["diagnosis"] = "free_catalog_unavailable: " + type(exc).__name__
+            print("INVOKE_VERDICT " + json.dumps(verdict))
+            return 0
+        selected = select_free_chat_model(free_rows, model)
+        if selected is None:
+            verdict["free_only"] = True
+            verdict["diagnosis"] = ("requested_model_not_verified_no_cost" if model
+                                    else "no_verified_no_cost_chat_model")
+            print("INVOKE_VERDICT " + json.dumps(verdict))
+            return 0
+        selected_row = next(row for row in free_rows if isinstance(row, dict) and row.get("id") == selected)
+        verdict["free_only"] = True
+        verdict["no_cost_verified"] = True
+        verdict["model_pricing_classification"] = selected_row.get("pricing_classification")
+        verdict["model_access_classification"] = selected_row.get("access_classification")
+        model = selected
+        candidates = [
+            row["id"] for row in free_rows
+            if isinstance(row, dict) and isinstance(row.get("id"), str)
+            and row["id"] != selected and is_verified_no_cost_model(row)
+            and not any(hint in row["id"].lower() for hint in NON_CHAT_HINTS)
+        ] if os.environ.get("INVOKE_MODEL") is None else []
+    if not args.free_only and model is None and catalog_url:
         if provider == "cloudflare":
             status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 50})
         else:
@@ -190,7 +265,8 @@ def main() -> int:
     status, body = None, {}
     for attempt_model in attempts:
         verdict["model"] = attempt_model
-        for budget in (args.max_tokens, 1024):
+        budgets = (args.max_tokens,) if args.free_only else (args.max_tokens, 1024)
+        for budget in budgets:
             payload = {"model": attempt_model, "max_tokens": budget,
                        "messages": [{"role": "user", "content": prompt}]}
             t0 = time.time()

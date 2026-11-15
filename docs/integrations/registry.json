@@ -305,13 +305,13 @@
       "name": "Temporal",
       "category": "durable-workflow-orchestration",
       "priority": "P1",
-      "discovery_state": "skill_installed_in_session",
-      "session_evidence": "Temporal developer skill and reference material are installed in this assistant environment. No Temporal server/account connector was exposed or exercised.",
+      "discovery_state": "existing_repo_work",
+      "session_evidence": "Repository already has self-hosted Temporal documentation/runtime artifacts, Delphi-cycle workflow integration, Temporal-LangSmith adapter, and a completed prior Temporal durable-execution Oracle RFP/pass (#1885; pass record status=recorded).",
       "repo_skill_path": null,
-      "repo_adapter_state": "repo_adapter_planned",
-      "authority": "workflow-execution-engine-candidate",
-      "write_boundary": "Workflow code must obey Temporal determinism and versioning constraints. No claim of a running Temporal cluster or deployed worker.",
-      "next_step": "Reconcile with the existing temporal-langsmith-adapter proposal before creating duplicate work; select a bounded workflow use case.",
+      "repo_adapter_state": "existing_repo_integration_reconcile",
+      "authority": "durable-execution-substrate-only; QUE-retains-admission-and-dispatch",
+      "write_boundary": "Do not create duplicate Temporal RFP or a second queue. Reuse existing self-host and workflow code; any SIP workflow must be a child/workload of the existing QUE/WFC path and pass a separate use-case proof.",
+      "next_step": "Crosswalk SIP lifecycle requirements to existing Temporal/Delphi cycle implementation and prior kill-resume proof before any new work.",
       "sensitivity": "workflow-metadata"
     },
     {
@@ -591,7 +591,7 @@
       "repo_adapter_state": "existing_repo_integration_reconcile",
       "authority": "agent-orchestration-only-not-social-simulation-engine",
       "write_boundary": "Reuse existing orchestration and escalation contracts. Do not create a second LangGraph adapter or let it bypass QUE admission.",
-      "next_step": "Map SIP orchestration needs onto the existing LangGraph integration and evaluate Temporal LangGraph plugin only as an optional execution adapter.",
+      "next_step": "Crosswalk SIP orchestration needs to PRs #5045/#5062/#5085 and existing WFC/QUE before proposing any incremental change.",
       "sensitivity": "workflow-and-agent-run-metadata"
     },
     {

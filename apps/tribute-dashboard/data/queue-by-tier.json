@@ -1,12 +1,12 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-14T23:42:54Z",
+ "generated_at": "2026-11-15T03:10:16Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 8,
-   "in_progress": 0,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-11T20:23:55Z",
    "by_workflow_queued": {
     "repo gate": 4,
@@ -17,7 +17,7 @@
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 3,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -30,16 +30,19 @@
   },
   "4": {
    "tier": 4,
-   "queued": 45,
-   "in_progress": 14,
+   "queued": 51,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-11T20:23:55Z",
    "by_workflow_queued": {
+    "n8n SHE bridge": 1,
+    "termux smoke": 4,
+    "quota-analysis": 1,
+    "graph-matrix-probe": 3,
+    "quota-allocation-planner": 1,
+    "Quota Dispatch Tree": 4,
     "repo-tracking-collect": 3,
     "Foresight Evidence Spine": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
-    "graph-matrix-probe": 2,
-    "termux smoke": 3,
-    "Quota Dispatch Tree": 3,
     "hitl-control-plane-verify": 2,
     "Context Relationship + Lead/Lag Audit": 3,
     "Sweep Accountability": 3,
@@ -62,8 +65,8 @@
   }
  },
  "totals": {
-  "queued": 53,
-  "in_progress": 17
+  "queued": 59,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {

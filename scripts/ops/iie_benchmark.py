@@ -38,9 +38,28 @@ def load_receipt(path: Path) -> dict[str, Any]:
         raise ValueError(f"cannot read receipt {path}: {exc}") from exc
     if not isinstance(value, dict):
         raise ValueError(f"receipt {path} must contain a JSON object")
+    missing = [field for field in (*PARITY_FIELDS, "github_requests") if field not in value]
+    if missing:
+        raise ValueError(f"receipt {path} is missing required fields: {', '.join(missing)}")
+    for field in ("repository", "ref", "source_sha", "coverage"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise ValueError(f"receipt {path} has invalid {field}")
+    for field in ("node_count", "edge_count", "verified_edge_count", "candidate_edge_count", "github_requests"):
+        metric = value[field]
+        if isinstance(metric, bool) or not isinstance(metric, int) or metric < 0:
+            raise ValueError(f"receipt {path} has invalid non-negative integer {field}")
     performance = value.get("performance")
     if not isinstance(performance, dict):
         raise ValueError(f"receipt {path} has no performance object")
+    for field in ("wall_seconds", "process_cpu_seconds"):
+        metric = performance.get(field)
+        if isinstance(metric, bool) or not isinstance(metric, (int, float)) or metric < 0:
+            raise ValueError(f"receipt {path} has invalid performance.{field}")
+    peak_rss = performance.get("peak_rss_bytes")
+    if peak_rss is not None and (
+        isinstance(peak_rss, bool) or not isinstance(peak_rss, int) or peak_rss < 0
+    ):
+        raise ValueError(f"receipt {path} has invalid performance.peak_rss_bytes")
     return value
 
 

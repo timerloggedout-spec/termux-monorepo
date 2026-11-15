@@ -324,6 +324,7 @@ def build_batch_sql(records: list[dict], record_type: str, batch_id: str,
     payload = ("\n".join(lines) + "\n").encode("utf-8")
     payload_sha = hashlib.sha256(payload).hexdigest()
     payload_bytes = len(payload)
+    started_at = now_iso()
     batch_id = str(uuid.UUID(batch_id))
     values = ",\n".join(f"({sql_literal(line)}::jsonb)" for line in lines)
 
@@ -392,7 +393,7 @@ SELECT
   {sql_literal(batch_id)}::uuid, {sql_literal(integration_id)},
   {sql_literal(adapter_version)}, {sql_literal(record_type)}, 'emitted',
   {len(records)}, counts.inserted_count, {len(records)} - counts.inserted_count,
-  0, {payload_bytes}, {sql_literal(payload_sha)}, clock_timestamp(), clock_timestamp()
+  0, {payload_bytes}, {sql_literal(payload_sha)}, {sql_literal(started_at)}::timestamptz, clock_timestamp()
 FROM counts
 RETURNING records_inserted::text || '|' || records_duplicates::text;
 """
@@ -406,8 +407,28 @@ RETURNING records_inserted::text || '|' || records_duplicates::text;
         "batch_id": batch_id, "integration_id": integration_id,
         "record_type": record_type, "records_received": len(records),
         "payload_bytes": payload_bytes, "payload_sha256": payload_sha,
+        "started_at": started_at,
     }
     return sql, meta
+
+
+def record_failed_batch(url: str, meta: dict, adapter_version: str,
+                        error_class: str) -> None:
+    """Persist a failure receipt after the data transaction has rolled back."""
+    sql = f"""
+INSERT INTO integration_ingest_batches (
+  batch_id, integration_id, adapter_version, record_type, status,
+  records_received, records_inserted, records_duplicates, records_rejected,
+  payload_bytes, payload_sha256, started_at, completed_at, error_class
+) VALUES (
+  {sql_literal(meta["batch_id"])}::uuid, {sql_literal(meta["integration_id"])},
+  {sql_literal(adapter_version)}, {sql_literal(meta["record_type"])}, 'failed',
+  {meta["records_received"]}, 0, 0, 0, {meta["payload_bytes"]},
+  {sql_literal(meta["payload_sha256"])}, {sql_literal(meta["started_at"])}::timestamptz,
+  clock_timestamp(), {sql_literal(error_class)}
+) ON CONFLICT (batch_id) DO NOTHING;
+"""
+    lane_event.psql(url, ["-c", sql])
 
 
 def run_batch(url: str, records: list[dict], record_type: str,
@@ -429,6 +450,12 @@ def run_batch(url: str, records: list[dict], record_type: str,
         meta["records_duplicates"] = int(parts[1])
         meta["status"] = "emitted"
         return meta
+    except Exception as exc:
+        try:
+            record_failed_batch(url, meta, adapter_version, type(exc).__name__)
+        except Exception:
+            pass
+        raise
     finally:
         if temp_path:
             try:

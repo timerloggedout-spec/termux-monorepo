@@ -1,0 +1,258 @@
+# Unified Feed Ingestion and Multi-Surface Adapter Architecture
+
+**Proposal:** integration-intelligence-superpowers  
+**Work items:** IIS-002 through IIS-005  
+**Status:** IIS-002 contract/database foundation in progress; later adapters queued  
+**Operator directive:** 2026-11-14
+
+## 1. Decision
+
+Unify the **data plane**, not the source systems, workflow engines, or presentation surfaces.
+
+Use the existing Integration Intelligence event contract and the existing Neon `lane-events` project/database. Extend that database with normalized integration-event, time-series measurement, and append-only ingestion-batch tables. Keep source-specific adapters thin and keep dashboards as rebuildable read-only projections.
+
+This architecture creates no second database, source registry, scheduler, merge authority, or dashboard framework.
+
+## 2. Existing authorities to preserve
+
+| Concern | Existing authority | Treatment |
+|---|---|---|
+| Integration identity | `docs/integrations/registry.json` | Reuse stable integration IDs |
+| Normalized lifecycle event | `schemas/integration-event.schema.json` | Keep canonical; v1.1.0 adds explicit clocks and preserves v1.0.0 |
+| Numeric observations | `schemas/integration-measurement.schema.json` | New child record linked to event ID |
+| Batch accounting | `schemas/integration-batch.schema.json` | New immutable batch receipt |
+| Workflow completion ledger | Neon `lane_events` | Preserve specialized table and recorder |
+| Integration event/measurement storage | Same Neon `lane-events` project/database | Additive tables; no new project |
+| Provenance and retention | `scripts/telemetry_ingest/` | Keep Provenance and HindSight independent |
+| Provider usage/quota | `provider-observation/v1`, quota registry and source APIs | Preserve source-specific evidence and null semantics |
+| Reconciliation evidence | `docs/ops/EVIDENCE-ENVELOPE.schema.json` | Reference evidence; do not duplicate it |
+| Dashboard snapshots | `dashboard-surface-feed/v1` and `scripts/dashboards/surface_feeds.py` | Rebuildable projections |
+| Feed-history series | Existing JSONL series patterns | Reuse; never treat a rendered feed as source truth |
+| Ratatui/Tokio | `integrations/ratatui-tokio-dashboard/` | Separate read-model client |
+| OPS-EVENT replay | Existing SeekLog/HITL proposal | Reuse its event-range and replay identity |
+
+The historical telemetry-viz reconnaissance is a dated snapshot, not a current complete inventory. The compatibility adapter census must re-fetch live source files and workflows before implementation.
+
+## 3. Data path
+
+```text
+GitHub / Actions / provider APIs / webhooks / local agents
+                         |
+                         v
+              source-specific adapters
+                         |
+              allowlist + normalize
+                         |
+              schema + privacy validation
+                         |
+              stable IDs + idempotency
+                         |
+                bounded micro-batches
+                         |
+             one Postgres transaction
+                         |
+           +-------------+-------------+
+           |             |             |
+           v             v             v
+     integration_events  integration_measurements
+           |             |             |
+           +-------------+-------------+
+                         |
+                ingestion receipts
+                         |
+                read-only projections
+                         |
+          +--------------+--------------+
+          |              |              |
+         Web          Ratatui/TUI     CLI / MCP
+                         |
+                 optional Taria bridge
+                   over Unix socket
+```
+
+HindSight and Provenance remain independent sinks fed from sanitized source reads. They are not downstream copies of the new Postgres tables.
+
+## 4. Canonical record types
+
+### 4.1 Integration event
+
+The existing `integration-event.schema.json` remains the lifecycle envelope. New events use schema version `1.1.0`:
+
+- `event_at`: source-reported event time; null when unavailable.
+- `observed_at`: adapter observation time; required in 1.1.0.
+- `recorded_at`: database acceptance time, assigned by Postgres.
+- `supersedes`: optional prior event ID; correction is a new event.
+
+Existing 1.0.0 events remain valid and retain their original envelope. Their database `observed_at` is assigned at ingestion if the source did not provide it. The original event JSON is retained without rewriting it.
+
+### 4.2 Measurement
+
+A measurement is a numeric child observation linked to an event ID. Its identity includes measurement ID and idempotency key. Its series dimensions include integration, metric name, metric type, unit, temporality and bounded scalar dimensions.
+
+Supported metric types: counter, gauge, rate, duration and percentage.
+
+Supported temporalities: instant, delta and cumulative.
+
+Measurement statuses: measured, estimated, activity_only and not_established. For activity_only/not_established, value is null. Missing is never zero.
+
+### 4.3 Batch receipt
+
+One immutable receipt describes each attempted transaction:
+
+- batch ID, integration ID, adapter version and record type;
+- received, inserted, duplicate and rejected counts;
+- serialized payload bytes and SHA-256;
+- start/completion timestamps;
+- optional source cursor before/after;
+- status and bounded error classification.
+
+Receipts contain metadata and hashes, never the original raw batch.
+
+## 5. Database model
+
+The migration `ops/lane-events/integration-events.sql` adds three tables to the existing Neon database:
+
+| Table | Key | Purpose |
+|---|---|---|
+| `integration_events` | event_id; unique idempotency_key | Canonical lifecycle event and source/evidence projections |
+| `integration_measurements` | measurement_id; unique idempotency_key | Append-only numeric time-series points |
+| `integration_ingest_batches` | batch_id | Immutable batch accounting and recovery evidence |
+
+### Index strategy
+
+- B-tree: integration ID + event/observation time.
+- B-tree: repository + workflow run ID.
+- B-tree: integration ID + metric name + observed time.
+- GIN: bounded JSONB dimensions.
+- BRIN: append-correlated event/observation timestamps.
+
+The initial migration uses ordinary Postgres indexes. Time partitioning or TimescaleDB is a measured follow-up, not an assumed dependency. Partitioning is admitted only after table growth, query plans, write amplification, and Neon support are measured.
+
+### Immutability
+
+All three tables reject UPDATE and DELETE. Idempotent re-delivery is handled by unique idempotency keys. Corrections append a new event/measurement and use `supersedes`; history is never silently rewritten.
+
+## 6. Bounded ingestion policy
+
+Initial adapter defaults:
+
+| Control | Default | Hard ceiling |
+|---|---:|---:|
+| Records per transaction | 250 | 500 |
+| Serialized JSON payload | 512 KiB | 1 MiB |
+| Database transaction | One per batch | One per batch |
+| Queue behavior | Bounded; backpressure | No unbounded in-memory growth |
+| Retry | Transient database faults only | No retry on schema/auth/privacy failures |
+
+Adapters may select smaller limits. Limits are configuration, not source-data truncation. A single record larger than the configured batch byte limit is rejected with a visible receipt/error; it is never silently clipped.
+
+The batch writer groups records by integration ID, validates before database submission, hashes canonical serialized records, and inserts a batch plus its records in one transaction. Unique conflicts count as duplicates; primary-key collisions with different idempotency keys fail the transaction.
+
+### Delivery and recovery
+
+- Delivery is assumed at-least-once.
+- Deduplication uses stable provider identity + source version; arrival time is not an idempotency key.
+- Preserve out-of-order arrivals with source event time, observation time and database record time.
+- Persist source cursors only after the corresponding batch transaction is acknowledged.
+- Retry only transient failures with bounded exponential backoff and provider Retry-After when present.
+- Authentication, permission, signature, schema, privacy and source-integrity errors stop the adapter.
+- A failed batch does not block unrelated integrations.
+- Every failure is classified; errors and exhausted retries are not success.
+
+### High-frequency behavior
+
+Durable event/measurement ingestion is loss-accounted. Bounded channels apply backpressure rather than silently dropping accepted observations. UI rendering may coalesce redundant gauge redraws, but it must distinguish display coalescing from durable measurement persistence.
+
+Measure records/sec, bytes/sec, batch fill, transaction duration, p50/p95/p99 acknowledgement latency, queue depth, duplicate ratio, rejection ratio, cursor lag and projection lag. Do not claim HFT performance until repeatable benchmark evidence exists.
+
+## 7. Adapter interface
+
+Every adapter implements the same logical stages:
+
+1. `discover()`: identify source/capability and its supported pagination/webhook behavior.
+2. `fetch(cursor, window)`: bounded source read; preserve source IDs and timestamps.
+3. `normalize(raw)`: map to canonical event/measurement records.
+4. `validate(records)`: schema, privacy, size, identity and provenance checks.
+5. `batch(records)`: group by integration and enforce record/byte ceilings.
+6. `append(batch)`: one database transaction and immutable receipt.
+7. `ack(cursor)`: advance cursor only after durable acknowledgement.
+8. `project(range)`: produce a read-only surface snapshot from canonical records.
+
+The adapter never owns source truth, scheduling, authorization, dashboard rendering, or merge decisions.
+
+## 8. Historical method reconciliation
+
+| Existing path | Classification | Migration treatment |
+|---|---|---|
+| Neon `lane_events` | Specialized operational ledger | Preserve; add read-only adapter into normalized event projection |
+| `integration-event.schema.json` | Canonical event contract | Preserve; version 1.1.0 clocks |
+| `provider-observation/v1` | Provider-specific observation contract | Map known scalar usage/quota fields to measurements; preserve unknown fields only through existing allowlisted provider-metric rules |
+| `ops/telemetry/*.jsonl` | Append-only evidence series | Preserve and reference; adapters do not rewrite source lines |
+| `telemetry-feed-series.jsonl` and PR-lane series | Snapshot history | Keep as projection history, not raw event ledger |
+| `dashboard-surface-feed/v1` JSON | Read-only presentation contract | Rebuild from the read model; retain existing surface-specific shapes |
+| HindSight payloads | Retention sink | Independent delivery, independent failure and billing gates |
+| Provenance ledger | Attribution/evidence sink | Independent append-only evidence authority |
+| Ratatui demo stream | Synthetic UI fixture | Keep test/demo only; never label it production telemetry |
+
+Each compatibility adapter needs a dated census, source schema/version, owner, freshness, idempotency mapping, backfill cursor, coverage receipt and deprecation decision before any historical migration.
+
+## 9. Presentation surfaces
+
+### Web dashboards
+
+Static Pages continue consuming committed, sanitized JSON projections. Browser code receives no Neon credentials and does not query the database directly. A shared projection builder generates the existing per-surface feed contracts from one consistent snapshot/cut.
+
+### Ratatui/Tokio
+
+A normalized read client feeds typed events through bounded Tokio channels into the existing `DashboardState`. Provider parsing and database/network I/O stay outside the UI model. The model remains deterministic and renderer-independent.
+
+### Unix domain socket
+
+A local Termux bridge may expose a versioned, read-only snapshot stream to local consumers. Socket directory permissions, owner-only access, path length, framing, maximum message size, connection lifecycle and peer identity are explicit. It never exposes a database URL or write-capable database client.
+
+### Taria
+
+Taria is an optional semantic accessibility/agent-control adapter above Ratatui, not the event store or ingestion engine. Its published 0.2.0 adapter documents NDJSON snapshots over a Unix socket, acknowledgements, a single bridge client, pre-alpha status, and Rust 1.88+ quick-start requirements. The current TUI crate declares Rust 1.85, so dependency adoption is deferred pending MSRV and security/compatibility review.
+
+### Ratatui TestBackend
+
+Use `ratatui::backend::TestBackend` for deterministic renderer integration tests. Cover normal snapshots, missing/stale values, long labels, empty states, error states, resize and bounded-history rendering. Keep pure model tests separate from renderer tests.
+
+## 10. Rollout sequence
+
+| Phase | Work | Gate |
+|---|---|---|
+| A | Event/measurement/batch schemas + same-Neon append-only DDL + offline batch writer | Schema fixtures, DDL inspection, idempotency/privacy/size tests |
+| B | Compatibility adapters for lane events, provider observations and JSONL histories | Coverage receipts, replay/dedup tests, source authority review |
+| C | Shared projection builder for existing Web surfaces | Per-surface parity, same snapshot cut, freshness and gap tests |
+| D | Ratatui typed read adapter + local UDS protocol | Bounded channel tests, socket permission tests, TestBackend tests |
+| E | Optional Taria experiment and benchmark cohort | Rust MSRV compatibility, protocol/version, single-client limitation, adversarial tests |
+| F | Throughput and recovery benchmark | Reproducible p50/p95/p99, throughput, duplicate, loss and cursor evidence |
+
+Promotion requires same-SHA repository gates, independent review and actual runtime receipts. No workflow is marked operational because a schema or PR exists.
+
+## 11. Acceptance and stop conditions
+
+Success requires:
+- one canonical event contract and one linked measurement contract;
+- one existing Neon project with append-only, idempotent normalized tables;
+- bounded, transactional batch ingestion with durable receipts;
+- explicit mapping for every adopted legacy source;
+- no secret/raw prompt/raw completion ingestion;
+- web/TUI/CLI projections reconcile to the same source range;
+- measured backpressure, recovery and query performance;
+- same-SHA validation and independent review.
+
+Stop as `blocked` if the existing Neon project cannot be verified, schema migration permissions are absent, source identity cannot be mapped safely, or privacy validation cannot be established. Stop as `stagnated` if repeated iterations yield no measurable improvement. Do not create another database or scheduler to bypass a blocker.
+
+## 12. References
+
+- [Integration Adapter Contract](ADAPTER-CONTRACT.md)
+- [Integration Event Schema](schemas/integration-event.schema.json)
+- [Integration Measurement Schema](schemas/integration-measurement.schema.json)
+- [Integration Batch Schema](schemas/integration-batch.schema.json)
+- [Telemetry ingestion](../ops/TELEMETRY-INGEST.md)
+- [Dashboard surface feeds](../ops/DASHBOARD-SURFACE-FEEDS.md)
+- [Ratatui TestBackend](https://docs.rs/ratatui/latest/ratatui/backend/struct.TestBackend.html)
+- [taria-ratatui 0.2.0](https://docs.rs/crate/taria-ratatui/0.2.0)
+- [Tokio UnixListener](https://docs.rs/tokio/latest/tokio/net/struct.UnixListener.html)

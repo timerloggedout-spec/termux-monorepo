@@ -17,7 +17,7 @@ Create a reproducible scenario laboratory for evidence-grounded synthetic multi-
 QUE retains admission/dispatch. Workflow Contract owns workflow declaration. DoE owns experiment design. ATES owns deterministic benchmark evaluation. Integration Intelligence/CEEL owns provider registry and normalized events. Delphic and existing graph tools remain graph-analysis authorities. No factual graph mutation or production routing changes.
 
 ## Scope for this proposal slice
-RFP, architecture, acceptance criteria, research findings and initial schemas. Runtime adapter, CI wiring, live OASIS run and dashboard work are subsequent items requiring their own validation evidence.
+RFP, architecture, acceptance criteria, research findings, 12-candidate queue, procurement/integration registry reconciliation, initial schemas, offline contract tests, and a QUE-admitted simulation RFP intake trigger that emits a deterministic G0 receipt. Runtime adapter, Delphi generation pass, live OASIS run and dashboard work are subsequent items requiring their own validation evidence.
 
 ## Non-authorization
 This manifest does not authorize external API calls, paid inference, package installation, deployment, public social-platform interaction, credential provisioning, autonomous scheduling or production promotion.

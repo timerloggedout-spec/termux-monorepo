@@ -12,8 +12,9 @@ UNPUBLISHED until #5113 T2 publishes it (Cadence review c.6802642639
 gap 1; QDesk addendum c.6802661589). Until then:
 
 - No `ops/que/feeds/ledger-snapshot.json` exists in the repo.
-- The derivation treats ledger reads as UNAVAILABLE and defers every
-  arm on `quota_unknown`.
+- The derivation treats quota-backed ledger reads as UNAVAILABLE and defers
+  those arms on `quota_unknown`. Daily-pool/no-provider-quota arms defer
+  on `pool_unknown` until a fresh shared-pool record exists.
 - NOTHING in Actions meters, polls, or re-derives draws. The snapshot
   is the ledger's published output, consumed read-only.
 
@@ -76,3 +77,23 @@ Field rules:
   carry references, not copies, of ledger evidence.
 - GitHub-independence held: the ledger leg stays local (owner
   constraint); the repo side reads published snapshots only.
+
+
+## Daily pool with no provider quota counter
+
+A provider can have no provider-specific quota counter and still be eligible through an explicitly governed shared daily pool. This is a distinct quota class, not a conversion of an absent numeric limit into unlimited capacity.
+
+An arm opts into this path only when its build-arm budget contains:
+
+- `quota_class: daily_pool_no_provider_quota`
+- `pool_id` and `focus`, matching a pool/focus allocation in `ops/quota/allocations.json`
+- a non-empty `experiment_label`
+- `quota_evidence_ref` and the normal `quota_metric_source` registry reference
+
+The matching `ops/quota/registry.json` service record must explicitly carry the same `quota_class`. A null `limit`, missing live endpoint, or `unmetered / unknown` prose is NOT sufficient to assign this class.
+
+For this class, `pools[pool_id]` is required and must contain a fresh `status: available` observation, `observed_at`, explicit `reset_window` and `reset_tz`, `source_ref`, and the same `experiment_label`. `status: exhausted` defers as `pool_exhausted`; missing/stale evidence defers as `pool_unknown` / `pool_stale`. A `leftover-only` focus allocation requires `leftover_available: true` in the pool observation.
+
+Provider-specific `arms[arm_id]` draws and `budgets[arm_id]` numeric headroom are not required for this class. The shared pool observation is the admission authority; the executor stamps `provider_quota_class`, `pool_id`, experiment label, and pool evidence. Provider-quota-backed arms retain the existing per-arm headroom gate unchanged.
+
+The cadence feed re-emits `pools` and per-arm `pool_eligibility` in its usage record. No provider is automatically assigned this class from missing quota data; the registry and build-arm record must explicitly establish it.

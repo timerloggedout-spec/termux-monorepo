@@ -8,6 +8,11 @@ on:
         required: true
         default: QUE-5454
         type: string
+      emit_stamps:
+        description: "Emit each provider result through the canonical scoring-plane fan-out"
+        required: true
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -132,6 +137,7 @@ jobs:
               'no_cost_verified': bool(verdict.get('no_cost_verified', False)),
               'pricing_classification': verdict.get('model_pricing_classification'),
               'access_classification': verdict.get('model_access_classification'),
+              'latency_ms': verdict.get('latency_ms'),
               'quota_class': verdict.get('quota_class', 'unclassified'),
               'pool_id': verdict.get('pool_id'),
               'diagnosis': diagnosis,
@@ -156,3 +162,45 @@ jobs:
           path: /tmp/receipt.json
           if-no-files-found: error
           retention-days: 14
+  stamp:
+    needs: [validate]
+    if: always() && inputs.emit_stamps
+    runs-on: ubuntu-latest
+    permissions: {}
+    timeout-minutes: 20
+    steps:
+      - name: Mint Swarm App token for canonical evidence fan-out
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+      - name: Download sanitized per-provider receipts
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: provider-validation-*
+          path: /tmp/provider-validation-receipts
+          if-no-artifact-found: warn
+      - name: Emit per-provider stamps to all scoring planes
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          EXPERIMENT_LABEL: ${{ inputs.experiment_label }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 scripts/ops/provider_validation_stamp.py \
+            --receipts-dir /tmp/provider-validation-receipts \
+            --repository "$REPOSITORY" \
+            --run-id "$RUN_ID" \
+            --run-attempt "$RUN_ATTEMPT" \
+            --run-url "$RUN_URL" \
+            --experiment-label "$EXPERIMENT_LABEL"

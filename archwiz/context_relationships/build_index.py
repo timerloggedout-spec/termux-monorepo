@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -401,6 +402,8 @@ def build_index(
             except FileExistsError:
                 pass
         replace_artifacts(staging_dir, output)
+        summary["nodes_sha256"] = hashlib.sha256((output / "nodes.jsonl").read_bytes()).hexdigest()
+        summary["edges_sha256"] = hashlib.sha256((output / "edges.jsonl").read_bytes()).hexdigest()
         lineage_path = snapshot_root / "lineage.jsonl"
         lineage_path.parent.mkdir(parents=True, exist_ok=True)
         lineage_record = build_lineage(previous_snapshot, temporal_snapshot)

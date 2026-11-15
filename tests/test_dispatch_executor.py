@@ -337,6 +337,10 @@ def _daily_pool_arm():
     return {
         "arm_id": "daily-pool-arm",
         "model": "free-model",
+        "model_version": "free-model-v1",
+        "status": "eligible",
+        "selectable": True,
+        "harness_ref": "scripts/ops/build_arm_harness.py",
         "harness": "generic-agent-loop",
         "endpoint": {"provider": "example", "route_id": "example::free-model"},
         "budget": {
@@ -405,3 +409,26 @@ def test_daily_pool_experiment_label_must_match_arm():
     headroom, hold = ex.quota_headroom(arm, usage, NOW, "primary")
     assert headroom is None
     assert hold == "pool_experiment_label_mismatch"
+
+def test_dispatch_fires_daily_pool_arm_without_provider_quota_headroom():
+    arm = _daily_pool_arm()
+    registry = {"arms": [arm]}
+    census = {
+        "schema": "arm-census/v1",
+        "generated_at": "2026-11-12T14:00:00Z",
+        "run_id": 43045718809,
+        "arms": [{"arm_id": "daily-pool-arm", "verdict": "passed",
+                  "quota_terminal": {"terminal": False}}],
+    }
+    decision = ex.decide(
+        [_filing(5454)], registry, census, _daily_pool_usage(), NOW,
+        run_id="daily-pool-test", max_conversions=1,
+        workflow_ref="dispatch-executor.yml", workflow_sha="aa" * 20,
+        script_sha="bb" * 20,
+    )
+    assert len(decision["decisions"]) == 1
+    fired = decision["decisions"][0]
+    assert fired["action"] == "fire"
+    assert fired["stamp"]["provider_quota_class"] == "daily_pool_no_provider_quota"
+    assert fired["stamp"]["preflight"]["headroom"] is None
+    assert fired["stamp"]["preflight"]["headroom_kind"] == "not_applicable"

@@ -1,9 +1,36 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-15T12:03:14Z",
+ "read_at": "2026-11-15T12:04:28Z",
  "status": "ok",
- "count": 61111,
+ "count": 61115,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "36b9793a83794d7c89ec05598f0a8efc16f05350",
+   "occurred_at": "2026-11-15 12:04:15+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1c24874bb4ae9005d4772f48742d81806c2c8c7a",
+   "occurred_at": "2026-11-15 12:03:49+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "17352ece2440975b047a60ee4887d903399ae67c",
+   "occurred_at": "2026-11-15 12:03:26+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -21,6 +48,15 @@
    "subject_url": null,
    "head_sha": "17352ece2440975b047a60ee4887d903399ae67c",
    "occurred_at": "2026-11-15 12:03:01+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "17352ece2440975b047a60ee4887d903399ae67c",
+   "occurred_at": "2026-11-15 12:02:58+00"
   },
   {
    "lane": "she",
@@ -501,20 +537,20 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "3b1d8f9eaaa1c680e7953d8edf91bb3eb989b96e",
-   "occurred_at": "2026-11-15 11:43:07+00"
-  },
-  {
-   "lane": "she",
    "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
    "head_sha": "08d0d962c8519e5af88c1cdec442aa8fa7714aef",
+   "occurred_at": "2026-11-15 11:43:07+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "3b1d8f9eaaa1c680e7953d8edf91bb3eb989b96e",
    "occurred_at": "2026-11-15 11:43:07+00"
   },
   {
@@ -1648,7 +1684,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "08edd4c8b5cf780d6438b75343ec930d0ab92a78",
+   "head_sha": "f46461c977666eb316676279cea54ed22deb08c6",
    "occurred_at": "2026-11-15 10:59:38+00"
   },
   {
@@ -1657,7 +1693,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "f46461c977666eb316676279cea54ed22deb08c6",
+   "head_sha": "08edd4c8b5cf780d6438b75343ec930d0ab92a78",
    "occurred_at": "2026-11-15 10:59:38+00"
   },
   {
@@ -1767,42 +1803,6 @@
    "subject_url": null,
    "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
    "occurred_at": "2026-11-15 10:58:54+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "54b65c43010aa46610341037d567cd717cf30512",
-   "occurred_at": "2026-11-15 10:58:44+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
-   "occurred_at": "2026-11-15 10:58:41+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "b42ba0bf7c28e34196fd85b8aafdc64cbe9b4b58",
-   "occurred_at": "2026-11-15 10:58:32+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "824538150d1f8c107eb3f6b4c8d0e3787081fc43",
-   "occurred_at": "2026-11-15 10:58:32+00"
   }
  ]
 }

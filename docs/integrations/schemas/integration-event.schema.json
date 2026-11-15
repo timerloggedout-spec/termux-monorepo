@@ -310,6 +310,39 @@
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "1.0.0"
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "event_at"
+              ]
+            },
+            {
+              "required": [
+                "observed_at"
+              ]
+            },
+            {
+              "required": [
+                "supersedes"
+              ]
+            }
+          ]
+        }
+      }
     }
   ]
 }

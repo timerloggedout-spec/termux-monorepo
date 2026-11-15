@@ -154,6 +154,7 @@ GRANT USAGE ON SCHEMA public TO integration_ingest;
 GRANT SELECT, INSERT ON integration_events TO integration_ingest;
 GRANT SELECT, INSERT ON integration_measurements TO integration_ingest;
 GRANT SELECT, INSERT ON integration_ingest_batches TO integration_ingest;
+GRANT SELECT ON integration_latest_cursors TO integration_ingest;
 GRANT TEMP ON DATABASE neondb TO integration_ingest;
 ```
 

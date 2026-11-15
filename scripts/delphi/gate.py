@@ -796,8 +796,23 @@ def _run(args) -> int:
                                   "effective": None, "decision": "pending"})
                     print(f"::error::Delphi package binding HELD for #{issue['number']}: {exc}")
                     continue
-                ih = input_hash(s, roles, registry, readings, package_binding)
+                base_ih = input_hash(s, roles, registry, readings, package_binding)
                 prev = last_ledger(gh, issue["number"])
+                reviewer = authenticated_reviewer_for_issue(issue) if package_binding is not None else None
+                if package_binding is not None:
+                    package_author = package_binding.get("package_author", "")
+                    if reviewer and reviewer.casefold() == package_author.casefold():
+                        reviewer = None
+                    previous_award = (prev or {}).get("award", {})
+                    # Retain an approval only while the exact scored inputs and
+                    # immutable package digest remain unchanged.
+                    if (not reviewer and previous_award.get("reviewed_input_hash") == base_ih
+                            and previous_award.get("package_digest") == package_binding["package_digest"]):
+                        reviewer = previous_award.get("reviewer_login")
+                    ih = input_hash(s, roles, registry, readings,
+                                    {"package_binding": package_binding, "reviewer_login": reviewer})
+                else:
+                    ih = base_ih
                 due = prev and prev.get("award", {}).get("recheck_after") and prev["award"]["recheck_after"] <= now().strftime("%Y-%m-%dT%H:%MZ")
                 if prev and prev.get("input_hash") == ih and not due:
                     summary.append(f"#{issue['number']} {s['id']}: unchanged")
@@ -810,9 +825,9 @@ def _run(args) -> int:
                     out["proposal_package"] = package_binding
                     out["award"]["package_digest"] = package_binding["package_digest"]
                     out["records"]["moneyball"]["proposal_package_digest"] = package_binding["package_digest"]
-                    reviewer = authenticated_reviewer_for_issue(issue)
-                    if reviewer and reviewer.casefold() != package_binding.get("package_author", "").casefold():
+                    if reviewer:
                         out["award"]["reviewer_login"] = reviewer
+                        out["award"]["reviewed_input_hash"] = base_ih
                 # Create first to obtain GitHub's immutable comment ID, then bind
                 # that ID into the final ledger payload. If the PATCH fails, no
                 # canonical self-referencing award exists and QDesk must hold it.

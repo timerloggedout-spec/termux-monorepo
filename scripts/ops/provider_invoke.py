@@ -14,8 +14,6 @@ import json
 import os
 import sys
 import time
-import urllib.request
-import urllib.error
 from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -55,31 +53,6 @@ def resolve_provider(name: str):
             return provider_protocols.cloudflare_chat_url(account), secrets, catalog, ""
         return provider_protocols.CHAT_ENDPOINTS[name], secrets, catalog, ""
     return None, (), None, "no reviewed chat endpoint in repo sources (catalog-only provider)"
-
-
-def http_json(method: str, url: str, token: str, payload=None, timeout=90):
-    data = json.dumps(payload).encode() if payload is not None else None
-    req = urllib.request.Request(url, data=data, method=method)
-    req.add_header("Authorization", f"Bearer {token}")
-    if data is not None:
-        req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.status, json.loads(resp.read().decode("utf-8", "replace"))
-    except urllib.error.HTTPError as e:
-        try:
-            body = json.loads(e.read().decode("utf-8", "replace"))
-        except Exception:
-            body = {}
-        return e.code, body
-    except Exception as e:  # DNS, TLS, egress blocks, timeouts
-        return None, {"transport_error": type(e).__name__}
-
-
-def pick_model(catalog: dict) -> str | None:
-    ids = [m.get("id") for m in catalog.get("data", []) if isinstance(m, dict) and m.get("id")]
-    chat = [i for i in ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
-    return (chat or ids or [None])[0]
 
 
 def is_verified_no_cost_model(model: dict) -> bool:
@@ -180,7 +153,7 @@ def main() -> int:
                "dispatch_eligible": False, "validation_scope": "policy_gated_no_cost_inference_smoke",
                "quota_class": "unclassified", "pool_id": None,
                "model_pricing_classification": None, "model_access_classification": None,
-               "credential_env_resolved": None, "latency_ms": None, "diagnosis": None}
+               "latency_ms": None, "diagnosis": None}
     def finish():
         print("INVOKE_VERDICT", json.dumps(verdict, sort_keys=True))
         return 0
@@ -190,7 +163,6 @@ def main() -> int:
     url, secret_names, _catalog_url, note = resolve_provider(provider)
     token_name = next((name for name in secret_names if os.environ.get(name)), None)
     token = os.environ.get(token_name) if token_name else None
-    verdict["credential_env_resolved"] = token_name
     if not url:
         verdict["diagnosis"] = note or "provider_not_configured"
         return finish()

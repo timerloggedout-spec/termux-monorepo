@@ -77,7 +77,7 @@ def test_provider_invoke_workflow_defaults_to_policy_gated_free_only():
     policy_step = next(step for step in steps if "provider-admission.json" in step.get("run", ""))
     assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
     invoke_step = next(step for step in steps if "scripts/ops/provider_invoke.py" in step.get("run", ""))
-    assert "inference-health-smoke.md" in invoke_step["run"] and "--free-only" in invoke_step["run"]
+    assert "inference-health-smoke.md" in invoke_step["run"] and "--free-only" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "inference-batch-ww3.md" not in invoke_step["run"]
     assert "issues: write" not in (root / ".github/workflows/provider-invoke.yml").read_text()
 
@@ -181,7 +181,7 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     policy_step = next(step for step in batch["jobs"]["validate"]["steps"] if "provider-admission.json" in step.get("run", ""))
     assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
     invoke_step = next(step for step in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in step.get("run", ""))
-    assert "--free-only" in invoke_step["run"] and "inference-health-smoke.md" in invoke_step["run"]
+    assert "--free-only" in invoke_step["run"] and "inference-health-smoke.md" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "'dispatch_eligible': False" in invoke_step["run"]
     stamp_job = batch["jobs"]["stamp"]
     assert stamp_job["needs"] == ["validate"] and "inputs.emit_stamps" in stamp_job["if"]

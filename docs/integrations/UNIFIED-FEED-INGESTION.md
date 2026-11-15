@@ -93,7 +93,7 @@ Supported metric types: counter, gauge, rate, duration and percentage.
 
 Supported temporalities: instant, delta and cumulative.
 
-Measurement statuses: measured, estimated, activity_only and not_established. For activity_only/not_established, value is null. Missing is never zero.
+Measurement statuses: measured, estimated, activity_only and not_established. Measured/estimated require a numeric value; activity_only/not_established require null. Missing is never zero.
 
 ### 4.3 Batch receipt
 
@@ -130,7 +130,7 @@ The initial migration uses ordinary Postgres indexes. Time partitioning or Times
 
 ### Immutability
 
-All three tables reject UPDATE and DELETE. Idempotent re-delivery is handled by unique idempotency keys. Corrections append a new event/measurement and use `supersedes`; history is never silently rewritten.
+All three tables reject UPDATE, DELETE and TRUNCATE. Measurements use a composite foreign key so an event ID cannot be associated with a different integration ID. Event/measurement batch references are deferred until transaction commit, allowing the immutable batch receipt and records to be committed atomically. Idempotent re-delivery is handled by unique idempotency keys. Corrections append a new event/measurement and use `supersedes`; history is never silently rewritten.
 
 ## 6. Bounded ingestion policy
 

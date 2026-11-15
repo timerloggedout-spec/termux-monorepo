@@ -1,4 +1,5 @@
 import csv, io, tempfile, threading, unittest, multiprocessing, subprocess, sys, os, json
+from unittest.mock import patch
 from pathlib import Path
 from scripts.model_selection_market.accounting import PaperMarket, AccountingError, CorruptJournal
 
@@ -42,8 +43,6 @@ class PaperAccountingTests(unittest.TestCase):
   with self.assertRaises(AccountingError): self.m.issue('bad','a',1.2,'x')
   self.m.issue('i','a',1,'fixture'); self.m.reserve('r','z','a',1,'card:1'); self.m.void('v','z')
   with self.assertRaises(AccountingError): self.m.void('v2','z')
-
-if __name__=='__main__': unittest.main()
 
 class IntegratedMarketTests(unittest.TestCase):
  def setUp(self):
@@ -140,4 +139,23 @@ class DurableRecoveryTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    p=str(Path(d)/"j"); code="from scripts.model_selection_market.accounting import PaperMarket; import os; m=PaperMarket(%r);m.issue('issued','x',3,'crash');os._exit(9)"%p
    r=subprocess.run([sys.executable,'-c',code],cwd=os.getcwd());self.assertEqual(r.returncode,9)
-   self.assertEqual(PaperMarket(p).balances()['x']['balance'],3)
+   self.assertEqual(PaperMarket(p).balances()['x']['balance'],3)\n
+ def test_lock_failure_releases_process_lock_for_other_threads(self):
+  import scripts.model_selection_market.accounting as accounting
+  first_done = threading.Event()
+  second_done = threading.Event()
+  def reader(done):
+   try:
+    self.m.balances()
+   except OSError:
+    pass
+   finally:
+    done.set()
+  with patch.object(accounting.fcntl, 'flock', side_effect=OSError('lock unavailable')):
+   first = threading.Thread(target=reader, args=(first_done,), daemon=True)
+   first.start(); self.assertTrue(first_done.wait(2)); first.join(2)
+   second = threading.Thread(target=reader, args=(second_done,), daemon=True)
+   second.start(); self.assertTrue(second_done.wait(2), 'failed lock acquisition leaked the process lock'); second.join(2)
+
+if __name__ == '__main__':
+ unittest.main()

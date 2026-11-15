@@ -204,7 +204,9 @@ class IntegrationEventBatchTests(unittest.TestCase):
             ie.ingest("postgresql://writer", records, "measurement", 2, ie.HARD_MAX_BYTES,
                       cursor_metadata=cursors)
         self.assertEqual(run.call_args_list[0].args[4:], ("page-004", None))
-        self.assertEqual(run.call_args_list[1].args[4:], (None, "page-005"))
+        # The final checkpoint transaction must compare-and-swap against the
+        # original stored cursor, even when earlier chunks have committed.
+        self.assertEqual(run.call_args_list[1].args[4:], ("page-004", "page-005"))
 
     def test_cursor_guard_is_omitted_without_cursor_advance(self):
         sql, _ = ie.build_batch_sql([dict(MEASUREMENT)], "measurement", str(uuid.uuid4()),
@@ -295,7 +297,7 @@ class IntegrationEventBatchTests(unittest.TestCase):
             path.write_text(json.dumps({
                 "event": {"github-actions": {"cursor_after": "page-005"}}
             }), encoding="utf-8")
-            self.assertEqual(ie.main(["record", "--batch-metadata-file", str(path)]), 2)
+            self.assertEqual(ie.main(["record", "--batch-metadata-file", str(path)]), 1)
 
     def test_schema_command_requires_operator_migration_credential(self):
         with patch.dict(os.environ, {}, clear=True), patch.object(ie.lane_event, "psql") as psql:

@@ -1,0 +1,26 @@
+# Publishing reconciliation — Tribute
+
+Read-only live view for public website branches and open pull requests.
+
+- [Open Publishing reconciliation](https://timerloggedout-spec.github.io/tribute/publishing.html)
+- [Website repository branches](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/branches)
+- [Open website pull requests](https://github.com/timerloggedout-spec/timerloggedout-spec.github.io/pulls?q=is%3Apr+is%3Aopen)
+- [Monorepo docs branch index](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOCS-BRANCH-INDEX.md)
+- [Monorepo PR Lanes](https://timerloggedout-spec.github.io/tribute/pr-lanes.html)
+- [Tribute version comparison](https://timerloggedout-spec.github.io/tribute/versioning.html)
+- [Tribute surfaces map](https://timerloggedout-spec.github.io/tribute/surfaces-map.html)
+- [Deployment lanes](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/DEPLOYMENT-LANES.md)
+
+## State vocabulary
+
+- DEFAULT: repository default branch.
+- UNLINKED: branch has no matching open PR; this is not by itself a stale/obsolete judgement.
+- AHEAD: PR head has unique commits and is not behind its base.
+- DIVERGED: both head and base have unique commits; reconcile before promotion.
+- BEHIND: candidate has no unique commits and is behind its base.
+- NO_DELTA: head and base are identical.
+- UNKNOWN: comparison unavailable or incomplete.
+
+The browser reads the public GitHub API without credentials. It compares open PR heads (up to 20 per refresh) and performs a targeted comparison for branches whose names contain ai-elves. Other unlinked branches are listed without full history comparison.
+
+Deployment and publication remain separate evidence steps. This view never approves, merges, deletes branches or claims that a live URL serves a particular SHA.

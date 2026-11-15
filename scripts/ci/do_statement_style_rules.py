@@ -19,7 +19,7 @@ IMPERATIVE = frozenset({
     "export", "fix", "gate", "generate", "guard", "include", "inspect", "keep", "measure",
     "migrate", "move", "open", "preserve", "publish", "recognize", "record", "reject", "reconcile", "refresh",
     "refine", "register", "regenerate", "rebuild", "remove", "rename", "repair", "replace",
-    "require", "restore", "route", "run", "set", "snapshot", "split", "sync", "test",
+    "require", "restore", "retain", "route", "run", "set", "snapshot", "split", "sync", "test",
     "update", "use", "validate", "verify", "wire",
 })
 

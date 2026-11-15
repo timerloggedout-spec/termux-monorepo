@@ -214,15 +214,17 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
         if budget.get("class") == "credit-funded":
             return None, "pool_paid_budget_forbidden"
         pool_id = budget.get("pool_id")
-        eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
-        pools = (usage or {}).get("pools") or {}
-        pool = pools.get(pool_id) if pool_id else None
-        coverage = (usage or {}).get("coverage") or {}
+        usage_data = usage if isinstance(usage, dict) else {}
+        eligibility_map = usage_data.get("pool_eligibility")
+        pools = usage_data.get("pools")
+        coverage = usage_data.get("coverage")
+        if not pool_id or not isinstance(eligibility_map, dict) or not isinstance(pools, dict):
+            return None, "pool_unknown"
+        eligibility = eligibility_map.get(arm["arm_id"])
+        pool = pools.get(pool_id)
         if not isinstance(eligibility, dict) or not isinstance(pool, dict):
             return None, "pool_unknown"
-        if not pool_id:
-            return None, "pool_unknown"
-        if not coverage.get("complete"):
+        if not isinstance(coverage, dict) or not coverage.get("complete"):
             return None, "pool_coverage_incomplete"
         if eligibility.get("pool_id") != pool_id:
             return None, "pool_mismatch"
@@ -330,11 +332,17 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
     budget = arm.get("budget") or {}
     if budget.get("quota_class") == "daily_pool_no_provider_quota":
         pool_id = budget.get("pool_id")
-        eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
-        pool = ((usage or {}).get("pools") or {}).get(pool_id) if pool_id else None
-        if not isinstance(eligibility, dict) or not isinstance(pool, dict) or not pool_id:
+        usage_data = usage if isinstance(usage, dict) else {}
+        eligibility_map = usage_data.get("pool_eligibility")
+        pools = usage_data.get("pools")
+        coverage = usage_data.get("coverage")
+        if not pool_id or not isinstance(eligibility_map, dict) or not isinstance(pools, dict):
             return None, "pool_unknown"
-        if not (usage or {}).get("coverage", {}).get("complete"):
+        eligibility = eligibility_map.get(arm["arm_id"])
+        pool = pools.get(pool_id)
+        if not isinstance(eligibility, dict) or not isinstance(pool, dict):
+            return None, "pool_unknown"
+        if not isinstance(coverage, dict) or not coverage.get("complete"):
             return None, "pool_coverage_incomplete"
         if eligibility.get("status") != "eligible":
             return None, eligibility.get("hold_reason") or "pool_unavailable"

@@ -178,7 +178,7 @@ def main() -> int:
                     catalog_verdict["diagnosis"] = "catalog_unavailable_" + type(exc).__name__
         print("CATALOG_VERDICT", json.dumps(catalog_verdict, sort_keys=True))
         return 0
-    verdict = {"provider": provider, "model": args.model, "ok": False,    verdict = {"provider": provider, "model": args.model, "ok": False,
+    verdict = {"provider": provider, "model": args.model, "ok": False,
                "no_cost_verified": False, "policy_admitted": False,
                "terms_accepted": "not_verified", "entitlement_verified": "not_verified",
                "dispatch_eligible": False, "validation_scope": "policy_gated_no_cost_inference_smoke",

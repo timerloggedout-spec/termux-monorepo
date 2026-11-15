@@ -97,6 +97,7 @@ jobs:
             --arms ops/dispatch/build-arms.json \
             --census ops/que/feeds/arm-census.json \
             --registry ops/quota/registry.json \
+            --allocations ops/quota/allocations.json \
             "${SNAPSHOT_ARGS[@]}" \
             --previous ops/que/feeds/pool-cadence.json \
             --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \

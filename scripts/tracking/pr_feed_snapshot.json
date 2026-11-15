@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-15T10:09:26Z",
+ "read_at": "2026-11-15T10:47:43Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,38 +1956,12 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-15T10:09:13Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "cb4baf8f8f5aa3ea3a9c4b0a8dd5addffc0e9eac",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-15T10:07:25Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "b140b4d5336e25fc03dcff0a3f24e9d47a874329",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-15T10:02:19Z",
+   "updated_at": "2026-11-15T10:46:49Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "632dc25e1ba4720c0e69ad3006c8db0079b54805",
+   "merge_commit_sha": "51bcba15ac1cdcbc12d9ff33190e42a5a5bce50c",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1995,16 +1969,81 @@
    "merged": false
   },
   {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-15T10:46:28Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "5848298e7d11c1986fe18abd6c6c03c44b2a9659",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-15T09:59:40Z",
+   "updated_at": "2026-11-15T10:44:10Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "854ef53740f52c1f189efd45ab85560a0f46988a",
+   "merge_commit_sha": "19f27fb7917d3d8b070f4a9b2c6e503a9cda2774",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 5390,
+   "title": "feat(que): establish SIE lifecycle contract and intake receipts",
+   "merged_at": null,
+   "updated_at": "2026-11-15T10:42:57Z",
+   "created_at": "2026-11-14T04:08:18Z",
+   "merge_commit_sha": "2a742c5ebea2466d4eb4694aa58ffb3555c7c122",
+   "head_ref": "feat/que-sie-pipeline-integration",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5390",
+   "merged": false
+  },
+  {
+   "number": 5448,
+   "title": "feat(tribute): upgrade owner records explorer",
+   "merged_at": null,
+   "updated_at": "2026-11-15T10:27:22Z",
+   "created_at": "2026-11-15T10:21:32Z",
+   "merge_commit_sha": "90e3b4c296213b51ddddce458664c4eec0663fb9",
+   "head_ref": "feat/tribute-owner-records-explorer-rebased-20261115",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5448",
+   "merged": false
+  },
+  {
+   "number": 5447,
+   "title": "feat(msm): add origin-attributed residual royalty journal",
+   "merged_at": null,
+   "updated_at": "2026-11-15T10:21:43Z",
+   "created_at": "2026-11-15T10:17:20Z",
+   "merge_commit_sha": "9b617bda1f610d78994677ffc1afa29d8d6f8dea",
+   "head_ref": "cue/msm025-origin-royalty-journal-v3",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5447",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-15T10:10:46Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "c9a3d6886f96783a28085e833acc5704424d7659",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -2057,32 +2096,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5436",
-   "merged": false
-  },
-  {
-   "number": 5444,
-   "title": "feat(tribute): upgrade owner records explorer",
-   "merged_at": null,
-   "updated_at": "2026-11-15T08:48:59Z",
-   "created_at": "2026-11-15T08:44:25Z",
-   "merge_commit_sha": "9c8e565e3ff9dc545e03afc7cd0a612e63944330",
-   "head_ref": "feat/tribute-owner-records-explorer-current-master-20261115",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5444",
-   "merged": false
-  },
-  {
-   "number": 5390,
-   "title": "feat(que): establish SIE lifecycle contract and intake receipts",
-   "merged_at": null,
-   "updated_at": "2026-11-15T08:15:12Z",
-   "created_at": "2026-11-14T04:08:18Z",
-   "merge_commit_sha": "3b676f52ab77625aacc6a6459a00e9c55143919e",
-   "head_ref": "feat/que-sie-pipeline-integration",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5390",
    "merged": false
   },
   {
@@ -4140,7 +4153,7 @@
    "merged_at": null,
    "updated_at": "2026-11-04T14:44:06Z",
    "created_at": "2026-11-04T14:44:06Z",
-   "merge_commit_sha": "be35fac8ba9c8153fd1d612951e3bf76d9db0825",
+   "merge_commit_sha": "e2ca96158d851ec51e9afcc73bbbdf189ba3333b",
    "head_ref": "chore/countdowns-refresh-202611041444",
    "author": "github-actions[bot]",
    "labels": [],
@@ -4548,19 +4561,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4623",
-   "merged": false
-  },
-  {
-   "number": 4621,
-   "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
-   "merged_at": null,
-   "updated_at": "2026-11-03T21:36:33Z",
-   "created_at": "2026-11-03T20:49:51Z",
-   "merge_commit_sha": "c50171eb9f9b97d89e0bbf43bb78c58bb18a16e5",
-   "head_ref": "feat/queue-state-board",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4621",
    "merged": false
   }
  ],

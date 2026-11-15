@@ -35,7 +35,7 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
     no_cost = receipt.get("no_cost_verified") is True
     confirmed = True if status == "inference_validated" else (False if status == "failed" else None)
     model = receipt.get("model")
-    diagnosis = str(receipt.get("diagnosis") or "").replace("\\n", " ")[:240]
+    diagnosis = " ".join(str(receipt.get("diagnosis") or "").split())[:240]
     return {
         "dispatch_id": f"provider-validation-{run_id}-{run_attempt}-{provider}",
         "ts": receipt.get("observed_at"),

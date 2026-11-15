@@ -199,6 +199,7 @@ def main() -> int:
         return 0
 
     model = os.environ.get("INVOKE_MODEL") or None
+    requested_model = model
     if args.free_only:
         try:
             from scripts import provider_model_catalog
@@ -228,7 +229,7 @@ def main() -> int:
             if isinstance(row, dict) and isinstance(row.get("id"), str)
             and row["id"] != selected and is_verified_no_cost_model(row)
             and not any(hint in row["id"].lower() for hint in NON_CHAT_HINTS)
-        ] if os.environ.get("INVOKE_MODEL") is None else []
+        ] if requested_model is None else []
     if not args.free_only and model is None and catalog_url:
         if provider == "cloudflare":
             status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 50})

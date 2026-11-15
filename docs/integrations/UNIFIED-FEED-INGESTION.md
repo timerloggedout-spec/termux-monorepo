@@ -146,7 +146,7 @@ Initial adapter defaults:
 
 Adapters may select smaller limits. Limits are configuration, not source-data truncation. A single record larger than the configured batch byte limit is rejected with a visible receipt/error; it is never silently clipped.
 
-The batch writer groups records by integration ID, validates before database submission, hashes canonical serialized records, and inserts a batch plus its records in one transaction. Unique conflicts count as duplicates; primary-key collisions with different idempotency keys fail the transaction.
+The writer is `scripts/ops/integration_event.py`. It groups records by integration ID, validates before database submission, hashes canonical serialized records, and inserts a batch plus its records in one transaction. Unique conflicts count as duplicates; primary-key collisions with different idempotency keys fail the transaction. A failed database transaction rolls back its data writes and attempts a separate metadata-only `failed` receipt; if the database is unreachable, the CLI failure remains the execution evidence. Preflight-invalid records fail before a database transaction.
 
 ### Delivery and recovery
 
@@ -154,7 +154,7 @@ The batch writer groups records by integration ID, validates before database sub
 - Deduplication uses stable provider identity + source version; arrival time is not an idempotency key.
 - Preserve out-of-order arrivals with source event time, observation time and database record time.
 - Persist source cursors only after the corresponding batch transaction is acknowledged.
-- Retry only transient failures with bounded exponential backoff and provider Retry-After when present.
+- The batch writer performs one attempt and never retries internally. The owning workflow may retry only classified transient failures with bounded exponential backoff and provider Retry-After when present; every attempt gets a new batch receipt and stable record idempotency keys.
 - Authentication, permission, signature, schema, privacy and source-integrity errors stop the adapter.
 - A failed batch does not block unrelated integrations.
 - Every failure is classified; errors and exhausted retries are not success.
@@ -231,7 +231,26 @@ Use `ratatui::backend::TestBackend` for deterministic renderer integration tests
 
 Promotion requires same-SHA repository gates, independent review and actual runtime receipts. No workflow is marked operational because a schema or PR exists.
 
-## 11. Acceptance and stop conditions
+## 11. Current implementation entry points
+
+The first foundation slice provides:
+
+```sh
+python3 scripts/ops/integration_event.py record \
+  --events-file events.jsonl \
+  --measurements-file measurements.jsonl \
+  --dry-run
+
+python3 scripts/ops/integration_event.py schema
+python3 scripts/ops/integration_event.py count
+python3 -m unittest tests.test_integration_event_batch -v
+```
+
+The dry run validates records and prints bounded batch plans without resolving credentials or contacting Neon. The schema command applies only to the already-existing `lane-events` Neon project/database; this adapter explicitly refuses project auto-creation. The record command requires `LANE_EVENTS_DATABASE_URL` or `NEON_API_KEY` and uses the existing project identity.
+
+The initial writer is an adapter primitive, not yet wired to every source or scheduled workflow. Source adapters, dashboard projection wiring and the Termux socket client remain IIS-003 through IIS-005.
+
+## 12. Acceptance and stop conditions
 
 Success requires:
 - one canonical event contract and one linked measurement contract;
@@ -245,7 +264,7 @@ Success requires:
 
 Stop as `blocked` if the existing Neon project cannot be verified, schema migration permissions are absent, source identity cannot be mapped safely, or privacy validation cannot be established. Stop as `stagnated` if repeated iterations yield no measurable improvement. Do not create another database or scheduler to bypass a blocker.
 
-## 12. References
+## 13. References
 
 - [Integration Adapter Contract](ADAPTER-CONTRACT.md)
 - [Integration Event Schema](schemas/integration-event.schema.json)

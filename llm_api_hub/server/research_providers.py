@@ -139,6 +139,42 @@ def admission_entry(provider: str, model: str) -> dict[str, Any]:
     return dict(matches[0])
 
 
+def validate_activation_entry(entry: dict[str, Any]) -> str | None:
+    """Validate source-backed no-cost and quota/pool assertions for QUE.
+
+    Admission values are owner assertions. This validates their shape and
+    evidence references; it does not independently accept provider terms or
+    verify account entitlement.
+    """
+    if entry.get("no_cost_verified") is not True:
+        return "policy_no_cost_not_verified"
+    for key in ("pricing_source", "terms_source", "capability_source"):
+        value = entry.get(key)
+        if not isinstance(value, str) or not value.startswith("https://"):
+            return f"policy_{key}_missing"
+    for key in ("pricing_verified_at", "terms_verified_at", "capability_verified_at"):
+        value = entry.get(key)
+        if not isinstance(value, str):
+            return f"policy_{key}_missing"
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return f"policy_{key}_invalid"
+        if parsed.tzinfo is None or parsed > datetime.now(timezone.utc):
+            return f"policy_{key}_invalid"
+    quota_class = entry.get("quota_class")
+    allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
+    if quota_class not in allowed:
+        return "policy_quota_class_missing"
+    if quota_class == "daily_pool_no_provider_quota":
+        if not entry.get("pool_id") or not str(entry.get("pool_evidence_ref", "")).startswith("https://"):
+            return "policy_daily_pool_evidence_missing"
+    if quota_class in {"provider_quota_backed", "quota_not_applicable"}:
+        if not str(entry.get("quota_evidence_ref", "")).startswith("https://"):
+            return "policy_quota_evidence_missing"
+    return None
+
+
 def authorize(provider: str, model: str) -> str:
     admission_entry(provider, model)
     key = next((os.environ.get(k) for k in ENDPOINTS[provider][1] if os.environ.get(k)), None)

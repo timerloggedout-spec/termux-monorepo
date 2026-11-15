@@ -1,6 +1,18 @@
 """Shared action-first rules for Git collaboration metadata."""
 from __future__ import annotations
 
+import re
+
+NEGATIVE_FIRST = re.compile(
+    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
+    re.IGNORECASE,
+)
+
+
+def is_negative_first_line(line: str) -> bool:
+    """Detect negative-first prose across plain, list, and heading forms."""
+    return bool(NEGATIVE_FIRST.match(line))
+
 IMPERATIVE = frozenset({
     "accept", "add", "align", "apply", "audit", "build", "bump", "centralize", "check", "close",
     "collect", "compare", "cover", "create", "define", "deploy", "distinguish", "document", "enforce", "expand",

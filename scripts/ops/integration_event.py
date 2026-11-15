@@ -178,6 +178,8 @@ def validate_event(event: dict) -> dict:
         raise ValueError("event.evidence.artifact_refs contains an invalid ref")
     if evidence["validation_status"] not in VALIDATION_STATUS:
         raise ValueError("event.evidence.validation_status is invalid")
+    if evidence.get("validator") is not None:
+        _nonempty(evidence["validator"], "event.evidence.validator", 200)
 
     provenance = event["provenance"]
     _keys(provenance, {"provider", "capture_method", "attribution", "model_id", "adapter_version"}, "event.provenance")
@@ -186,6 +188,10 @@ def validate_event(event: dict) -> dict:
     _nonempty(provenance["capture_method"], "event.provenance.capture_method", 200)
     if provenance["attribution"] not in ATTRIBUTION:
         raise ValueError("event.provenance.attribution is invalid")
+    if provenance.get("model_id") is not None:
+        _nonempty(provenance["model_id"], "event.provenance.model_id", 200)
+    if provenance.get("adapter_version") is not None:
+        _nonempty(provenance["adapter_version"], "event.provenance.adapter_version", 100)
 
     if event["schema_version"] == "1.1.0":
         _required(event, {"observed_at", "privacy"}, "event v1.1.0")
@@ -203,7 +209,7 @@ def validate_event(event: dict) -> dict:
     if "privacy" in event:
         privacy = event["privacy"]
         _keys(privacy, {"classification", "contains_raw_prompt", "contains_secret", "redaction_applied"}, "event.privacy")
-        if privacy.get("classification") is not None and privacy["classification"] not in {"public", "internal", "confidential", "restricted"}:
+        if "classification" in privacy and privacy["classification"] not in {"public", "internal", "confidential", "restricted"}:
             raise ValueError("event.privacy.classification is invalid")
         for flag in ("contains_raw_prompt", "contains_secret", "redaction_applied"):
             if flag in privacy and not isinstance(privacy[flag], bool):

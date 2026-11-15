@@ -17,6 +17,7 @@ It is deliberately parallel to the existing QUE/RFP/Delphi/DoE pipelines. It doe
 - [STATUS-AND-FINDINGS](STATUS-AND-FINDINGS.md) — evidence, assumptions, decisions and open questions.
 - [SOURCES-AND-ALTERNATIVES](SOURCES-AND-ALTERNATIVES.md) — upstream references, alternatives, license and dependency compatibility findings.
 - [candidate-queue.json](candidate-queue.json) — canonical role-separated candidate queue, repository-local status and comparison dimensions.
+- [Termux ↔ GitHub control boundary](TERMUX-GITHUB-CONTROL-BOUNDARY.md) — defines Termux as the offline-capable local controller for GitHub surfaces, with simulation execution on declared remote workers.
 - [DoE design proposal](../../../experiments/doe/sip-001-engine-comparison/DESIGN.md) — staged, role-separated experiment pre-registration; explicitly not admitted or executed.
 
 **RFP intake trigger:** `.github/ISSUE_TEMPLATE/simulation-rfp.yml` (title prefix `[simulation:rfp]`) → QUE `swarm-admission` → `.github/workflows/simulation-rfp-intake.yml` → validated G0 intake receipt queued for brief/evidence freeze. Delphi generation is a separate explicit dispatch after brief/evidence freeze.

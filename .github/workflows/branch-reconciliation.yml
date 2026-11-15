@@ -33,8 +33,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run classification tests
-        run: python -m unittest discover -s tests -p "test_branch_reconciliation_registry.py" -v
+      - name: Run branch and QUE intake tests
+        run: |
+          python -m unittest discover -s tests -p "test_branch_reconciliation_registry.py" -v
+          python -m unittest discover -s tests -p "test_que_branch_reconciliation_intake.py" -v
       - name: Authenticate GitHub CLI
         env:
           GH_TOKEN: ${{ github.token }}

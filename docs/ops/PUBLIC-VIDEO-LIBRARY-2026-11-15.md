@@ -10,7 +10,7 @@ Make the already-published LoggedOut Timer YouTube content discoverable from the
 - Latest update: [Releases are dropping soon. Find your place(s).](https://youtube.com/shorts/i0FusuYuRUs?is=ldjFTRznW8UjLRML)
 - The latest update is an 8-second public Short published 2026-11-14. The upload has no description or caption track in the inspected metadata; copy must not imply unseen content.
 
-## Curated public assets
+## Curated public assets (13 selected videos)
 
 | Group | Video | Duration | Published | Purpose |
 |---|---|---:|---|---|
@@ -23,6 +23,10 @@ Make the already-published LoggedOut Timer YouTube content discoverable from the
 | StudySprint | [0.5.1 current-surface evidence reel](https://www.youtube.com/watch?v=-CNherwZM-o) | 1:44 | 2026-11-04 | Android, web and TUI evidence |
 | Quarantine Browser Clerk | [Browser-agent demo](https://www.youtube.com/watch?v=z-hkwnUFOqM) | 2:23 | 2026-11-04 | Product/security demo |
 | Archive | [StudySprint v0.4.0 demo](https://www.youtube.com/watch?v=WK9LMwpvHUk) | 2:55 | 2026-11-03 | Earlier release; superseded by 0.5.1 demos |
+| Delphi Oracle | [Evidence Over Claims v1.0.0 walkthrough](https://www.youtube.com/watch?v=AZSeqOI5H9M) | 1:48 | 2026-11-03 | Evidence-gate oracle walkthrough |
+| StudySprint | [Strands Agents SDK demo](https://www.youtube.com/watch?v=N3HBRV4LOGQ) | 1:10 | 2026-11-01 | Earlier architecture walkthrough |
+| Archive | [StudySprint v0.3.0 demo](https://www.youtube.com/watch?v=AKCqOCXAFu0) | 2:34 | 2026-11-03 | Earlier release |
+| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-11-01 | Earlier release |
 
 View counts are intentionally omitted because they change and are not needed for discovery.
 

@@ -16,7 +16,7 @@ Keep these populations distinct; never substitute one denominator for another:
 1. `ops/challenge/desk-feed.json → dispatch.provider_catalog`: canonical dispatch provider accounting.
 2. `scripts/provider_model_catalog.py`, `provider_catalog_protocols.py`, `provider_extension_catalogs.py`: catalog adapters and protocol/extension surfaces.
 3. `llm_api_hub/server/research_providers.py`: exact-model native provider admission and protocol-normalized invocation.
-4. `provider-invoke.yml`: current 30-choice native/catalog menu; this is not the complete provider universe.
+4. `provider-invoke.yml`: current 31-choice native/catalog menu; this is not the complete provider universe.
 5. `ops/dispatch/build-arms.json`: current build-arm registry; its current seven-arm shape is not the provider universe.
 6. g4f universe and working-pair datasets: separate population. Historical sandbox success is not current inference validation.
 
@@ -130,6 +130,6 @@ The current `master` desk-feed snapshot distinguishes these counts:
 - g4f: **60** fork-catalog provider rows, **4,242** raw model rows / **4,241** distinct fork pairs; the separate universe enumerates **9,588** pairs across **160** providers. The historical probe attempted 9,588 and recorded **160** inference successes. None of these historical successes is current activation evidence.
 - The current build-arm registry has **7** arms. The single-provider menu has **31** choices; the dynamic validation matrix covers all **29** native admission adapters, while Felo/Omni remain catalog-only. Neither menu nor matrix is the provider universe.
 
-Use `scripts/ops/provider_population_census.py` to regenerate a source-hashed census. The manual validation workflow uploads a `provider-population-census` artifact after the provider receipts are collected. Always preserve the definitions above when reporting counts; never label 7 arms, 30 menu choices, 92 wiring records, or 9,588 enumerated g4f pairs as the full active endpoint population.
+Use `scripts/ops/provider_population_census.py` to regenerate a source-hashed census. The native validation workflow uploads a `provider-population-census` artifact after provider receipts are collected; the g4f workflow uploads a separate census artifact that includes its current bounded-batch receipt. Always preserve the definitions above when reporting counts; never label 7 arms, 31 menu choices, 92 wiring records, or 9,588 enumerated g4f pairs as the full active endpoint population.
 
 - The same desk-feed also contains **95 inference-availability records**: 23 wired-unproven, 2 triggerable, 65 inference-only, and 5 proven. Only 16 are covered by the provider-availability probe, 1 is secret-only, 74 are not covered, and 14 have a batch endpoint wired. These are registry-record classifications, not live success counts.

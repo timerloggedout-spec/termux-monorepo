@@ -10,6 +10,7 @@
     : origin + "/tribute/";
   var links = [
     ["Marketing", origin + "/", "marketing"],
+    ["Videos", origin + "/videos.html", "videos"],
     ["Tribute", tribute, "tribute"],
     ["Lane matrix", origin + "/matrix/", "matrix"],
     ["Quota", tribute + "quota.html", "quota"],

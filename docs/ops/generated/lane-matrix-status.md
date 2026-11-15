@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-15T14:49:41Z)
+# Lane matrix status (2026-11-15T14:51:11Z)
 
-- Master: `84cbd0f443f461f1c6588798c1dad3efa29f65dc`
+- Master: `8401e9c063f24a965d659b6d6786d6e3e63dccf6`
 - Open PRs: **420**
 - Oldest: #47 (101.96d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,7 +27,7 @@
 | #4069 | 12.44 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 11.75 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 11.09 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 8.99 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 9.0 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 101.96 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 99.71 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 98.58 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
@@ -57,9 +57,9 @@
 | #1650 | 21.53 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 19.56 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 19.15 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 19.14 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 19.15 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 18.41 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
-| #2456 | 16.24 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
+| #2456 | 16.25 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
 | #2577 | 15.61 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
 | #2856 | 14.54 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 

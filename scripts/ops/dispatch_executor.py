@@ -136,6 +136,8 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
         return [], "census_unstamped"
     if _age_hours(generated_at, now) > CENSUS_MAX_AGE_HOURS:
         return [], "census_stale"
+    if cadence is None:
+        return [], "cadence_missing"
     cadence_ids = None
     if cadence is not None:
         if not isinstance(cadence, dict) or cadence.get("schema") != "pool-cadence/v1":

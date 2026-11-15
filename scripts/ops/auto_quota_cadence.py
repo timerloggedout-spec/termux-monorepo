@@ -123,6 +123,15 @@ def _budget_total(budget: dict, quota_class: str = "primary") -> int | None:
         total = budget.get("spendable_primary", budget.get("daily_total"))
     return None if total is None else int(total)
 
+def _pool_allocation(allocations_doc: dict | None, pool_id: str, focus: str) -> dict | None:
+    """Find the explicit pool/focus allocation; never infer a pool from a provider name."""
+    if not isinstance(allocations_doc, dict):
+        return None
+    pool = next((p for p in allocations_doc.get("pools", []) if p.get("id") == pool_id), None)
+    if pool is None:
+        return None
+    return next((a for a in pool.get("allocations", []) if a.get("focus") == focus), None)
+
 
 def derive(
     arms_doc: dict,
@@ -131,6 +140,7 @@ def derive(
     snapshot: dict | None,
     previous: dict | None,
     now: datetime,
+    allocations_doc: dict | None = None,
 ) -> dict:
     """Derive the pool + cadence decisions. Pure; no I/O, no inference."""
     arms = arms_doc.get("arms", [])
@@ -173,9 +183,11 @@ def derive(
     snap_arms = (snapshot or {}).get("arms", {}) if snapshot_fresh else {}
     snap_coverage = (snapshot or {}).get("coverage", {}) if snapshot_fresh else {}
     snap_budgets = (snapshot or {}).get("budgets", {}) if snapshot_fresh else {}
+    snap_pools = (snapshot or {}).get("pools", {}) if snapshot_fresh else {}
 
     seen_routes: set[str] = set()
     arm_rows: list[dict] = []
+    pool_eligibility_rows: dict = {}
     for arm in arms:
         arm_id = arm["arm_id"]
         reasons: list[str] = []

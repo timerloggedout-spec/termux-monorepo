@@ -73,6 +73,9 @@ Do not collapse these states into a single `integrated: true` flag:
 - `skill_installed_in_session`: a skill is available in this assistant environment.
 - `not_exposed_in_session`: no matching tool was found in this session; this does not prove the provider lacks an integration.
 - `repo_adapter_planned`: adapter is specified but not implemented.
+- `existing_repo_work`: a capability or proposal already exists and must be reconciled before new work.
+- `existing_research_reference`: the project appears in a research corpus or pre-screening method, not a validated runtime adapter.
+- `candidate_queue_only`: registered for research comparison; no repository runtime or adapter is claimed.
 - `repo_adapter_implemented`: repository code exists; this does not prove successful runtime execution.
 - `validated`: end-to-end evidence confirms behavior on a pinned revision.
 - `promoted`: explicitly accepted into the production lane under repository policy.

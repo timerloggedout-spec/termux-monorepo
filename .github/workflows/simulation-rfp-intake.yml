@@ -94,7 +94,7 @@ jobs:
               f"<!-- sip-rfp-intake:{record['body_sha256']} -->",
           ]
           with open(os.path.join(os.environ["RUNNER_TEMP"], "comment.md"), "w", encoding="utf-8") as out:
-              out.write("\\n".join(lines) + "\\n")
+              out.write("\n".join(lines) + "\n")
           PY
           gh issue comment "${ISSUE_NUMBER}" --body-file "${RUNNER_TEMP}/comment.md"
           gh issue edit "${ISSUE_NUMBER}" --add-label simulation:rfp-intake-ready

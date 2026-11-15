@@ -106,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         temporary = args.output.with_name(args.output.name + ".tmp")
-        temporary.write_text(rendered + "\\n", encoding="utf-8")
+        temporary.write_text(rendered + chr(10), encoding="utf-8")
         temporary.replace(args.output)
     print(rendered)
     return 0 if result["status"] == "PARITY_PASSED" else 1

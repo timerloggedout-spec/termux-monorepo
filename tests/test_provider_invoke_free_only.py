@@ -79,6 +79,7 @@ def test_provider_invoke_workflow_defaults_to_policy_gated_free_only():
     assert "LLM_API_HUB_PROVIDER_POLICY_JSON" in policy_step["env"]
     invoke_step = next(step for step in steps if "scripts/ops/provider_invoke.py" in step.get("run", ""))
     assert "inference-health-smoke.md" in invoke_step["run"] and "--free-only" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
+    assert "OLLAMA_API_KEY" in invoke_step["env"]
     assert "inference-batch-ww3.md" not in invoke_step["run"]
     assert "issues: write" not in (root / ".github/workflows/provider-invoke.yml").read_text()
 
@@ -193,6 +194,7 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     invoke_step = next(step for step in batch["jobs"]["validate"]["steps"] if "scripts/ops/provider_invoke.py" in step.get("run", ""))
     assert "--free-only" in invoke_step["run"] and "inference-health-smoke.md" in invoke_step["run"] and "--max-tokens 16" in invoke_step["run"]
     assert "'dispatch_eligible': False" in invoke_step["run"]
+    assert "OLLAMA_API_KEY" in invoke_step["env"]
     census_job = batch["jobs"]["census"]
     assert census_job["needs"] == ["discover", "validate"]
     assert any("provider-population-census" in step.get("with", {}).get("name", "") for step in census_job["steps"])

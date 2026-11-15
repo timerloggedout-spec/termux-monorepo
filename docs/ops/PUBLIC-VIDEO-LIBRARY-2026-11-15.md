@@ -32,6 +32,7 @@ View counts are intentionally omitted because they change and are not needed for
 - Tribute dashboard: latest Short callout and Videos navigation link.
 - GitHub Pages landing site: featured latest Short, Videos navigation link, and curated gallery.
 - Text retrieval: `videos.md` mirrors the public gallery; the landing page links to `index.md`.
+- Tribute Publishing view: [branch and PR reconciliation](https://timerloggedout-spec.github.io/tribute/publishing.html) links source divergence to the existing version-manifest and deployment-evidence surfaces.
 
 ## Publication and verification boundary
 

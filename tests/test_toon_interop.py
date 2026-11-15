@@ -33,6 +33,14 @@ class ToonInteropTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             toon_interop._strict_json_loads('{"value":NaN}')
 
+    def test_strict_json_rejects_duplicate_keys(self):
+        with self.assertRaisesRegex(ValueError, "duplicate JSON object key"):
+            toon_interop._strict_json_loads('{"value":1,"value":2}')
+
+    def test_strict_json_rejects_float_overflow(self):
+        with self.assertRaisesRegex(ValueError, "finite numeric range"):
+            toon_interop._strict_json_loads('{"value":1e400}')
+
     def test_json_equality_ignores_object_key_order(self):
         self.assertTrue(toon_interop._json_equal(
             {"a": 1, "b": [True, None]}, {"b": [True, None], "a": 1.0}

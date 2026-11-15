@@ -29,6 +29,7 @@ IMPERATIVE = {
     "specify", "give", "exercise", "support", "handle", "ensure", "trigger", "record",
     "allow", "prevent", "accept", "remove", "add", "keep", "create", "build", "check",
     "account",
+    "include",
     "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse", "bound", "recognize",
 }
 STYLE_PATHS = [

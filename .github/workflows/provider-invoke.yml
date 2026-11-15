@@ -16,6 +16,11 @@ on:
         options:
           - invoke
           - catalog
+      free_only:
+        description: "Require a catalog-verified no-cost model; never fall back to paid or unknown pricing"
+        required: false
+        default: true
+        type: boolean
       model:
         description: "Optional exact model id (per-model shard); blank = first catalog chat model"
         required: false
@@ -117,7 +122,7 @@ jobs:
             --provider "${{ inputs.provider }}" \
             --prompt-file docs/ops/tasks/inference-batch-ww3.md \
             --out /tmp/invoke-completion.md \
-            ${{ inputs.mode == 'catalog' && '--catalog-only' || '' }} 2>&1 | tee /tmp/invoke.log
+            ${{ inputs.mode == 'catalog' && '--catalog-only' || '' }} ${{ inputs.mode == 'invoke' && inputs.free_only && '--free-only' || '' }} 2>&1 | tee /tmp/invoke.log
           grep -E '^(INVOKE|CATALOG)_VERDICT ' /tmp/invoke.log | tail -1 | sed -E 's/^(INVOKE|CATALOG)_VERDICT //' > /tmp/verdict.json
           python3 - <<'PYEOF'
           import json

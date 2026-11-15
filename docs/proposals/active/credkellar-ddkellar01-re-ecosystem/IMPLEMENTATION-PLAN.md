@@ -36,19 +36,21 @@
 
 **Files:**
 - Create: `ops/reverse_engineering/candidates/credkellar-ddkellar01.json`
+- Create: `docs/proposals/active/credkellar-ddkellar01-re-ecosystem/DOCKERHUB-PROFILE-PAGE-1.md`
 - Create: `docs/proposals/active/credkellar-ddkellar01-re-ecosystem/PROPOSAL.md`
 
 **Interfaces:**
 - Consumes: public GitHub and Docker Hub metadata, dated observation records.
 - Produces: candidate records with canonical identity, source URLs, evidence labels, status and unresolved questions.
 
-- [ ] Capture all pages of Docker Hub `credkellar` profile and public repository metadata.
-- [ ] Enumerate GitHub public repos for `credkellar` and `ddkellar01`; record exact account/repo identifiers.
+- [x] Capture profile page 1 (30 of 90 entries) with exact names/descriptions in `DOCKERHUB-PROFILE-PAGE-1.md`.
+- [ ] Capture pages 2–3 of Docker Hub `credkellar` profile and public repository metadata.
+- [ ] Enumerate GitHub public repos for `credkellar` and `ddkellar01`; connected GitHub search returned no results for bare queries, which is not proof of absence; use canonical profile/repo URLs and other public evidence to resolve.
 - [ ] Record each observation timestamp, page/cursor, URL and immutable digest or commit SHA where available.
 - [ ] Verify that every discovered item appears once in the normalized inventory; classify duplicate names and mirrors.
 - [ ] Mark census completeness explicitly; do not represent the known 90-profile count as inspected until all pages are captured.
 
-**Verification:** JSON parses; candidate IDs unique; every URL is canonical; every item has evidence label and status.
+**Verification:** JSON parses; 19 candidate IDs are unique; page 1 snapshot contains 30 unique profile entries; every candidate has evidence label and status. Full 90-entry census remains incomplete.
 
 ### Task 2: Resolve priority source provenance
 

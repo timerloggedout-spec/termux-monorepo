@@ -24,7 +24,7 @@ gates_required: [repo-gate, termux-smoke]
 
 Establish a repository-native Integration Intelligence foundation and make the Superpowers engineering methodology discoverable and usable by repository collaborators. The foundation defines a canonical integration registry, evidence/event contract, adapter boundaries, capability truth labels, and a phased adoption plan for Superpowers, API Impact Mapper, Domino Data Lab, EmpirioLabs AI, tldraw, Cache Stats, Alloy, and Klaviyo.
 
-The foundation now includes canonical event/measurement/batch contracts, append-only ingestion tables in the existing Neon project, and an offline-validated bounded batch writer. Source-specific provider adapters, live Neon migration, historical backfill and multi-surface runtime wiring remain separately gated work.
+The foundation now includes canonical event/measurement/batch contracts, append-only ingestion tables in the existing Neon project, and a bounded batch writer with focused offline test coverage authored. Source-specific provider adapters, live Neon migration, historical backfill and multi-surface runtime wiring remain separately gated work.
 
 ## Operator amendment — 2026-11-14
 
@@ -57,7 +57,7 @@ The operator explicitly directed consolidation of the repository's many dashboar
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
 - [ ] PR cites `Implements: IIS-001`
-- [ ] IIS-002 PR cites `Implements: IIS-002` and links `docs/superpowers/plans/2026-11-14-unified-feed-ingestion.md`
+- [x] IIS-002 PR #5436 cites `Implements: IIS-002` and links `docs/superpowers/plans/2026-11-14-unified-feed-ingestion.md`
 - [ ] repo-gate and termux-smoke green on the same head for IIS-001
 - [ ] IIS-002 focused tests and dual gates green on one immutable head
 - [ ] Non-author review and current check disposition recorded

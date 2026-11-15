@@ -255,6 +255,7 @@ pub struct PolicyInput<'a> {
     pub goal: &'a str,
     pub plan: Option<&'a ExecutionPlan>,
     pub plan_validation: Option<&'a PlanValidationReport>,
+    pub context: &'a [ContextItem],
     pub validation: &'a ValidationReport,
 }
 
@@ -387,7 +388,7 @@ impl<B: StageBackend, P: PolicyGate> Brain<B, P> {
             PolicyDecision { status: DecisionStatus::NeedsReview, reason: "the proposed plan failed structural validation".into(), evidence_refs: vec![] }
         } else if validation.is_none() {
             PolicyDecision { status: DecisionStatus::NeedEvidence, reason: "a validation report is required before handoff".into(), evidence_refs: vec![] }
-        } else if validation.as_ref().is_some_and(|report| !report.passed || !report.blocking_issues.is_empty()) {
+        } else if validation.as_ref().is_some_and(|report| !report.passed || !report.blocking_issues.is_empty() || report.checks.iter().any(|check| !check.passed)) {
             PolicyDecision {
                 status: DecisionStatus::NeedsReview,
                 reason: "validation reported a failure or blocking issue".into(),
@@ -399,7 +400,7 @@ impl<B: StageBackend, P: PolicyGate> Brain<B, P> {
             let validation = validation.as_ref().expect("validation presence checked above");
             self.policy.evaluate(&PolicyInput {
                 identity: &input.identity, goal: &input.goal, plan: plan.as_ref(),
-                plan_validation: plan_validation.as_ref(), validation,
+                plan_validation: plan_validation.as_ref(), context: &selected_context, validation,
             })
         };
 

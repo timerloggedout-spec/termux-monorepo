@@ -75,7 +75,16 @@ A source's existence does not establish adoption. A successful benchmark run doe
 | R32 | [GitHub Jules changelog — Turndown](https://jules.google/docs/changelog/2026-10-29) | HISTORICAL / STALE for execution; checked 2026-11-15 | Export/migration and historical skill/workflow patterns | Jules became read-only after 2026-11-11 and is scheduled to wind down 2026-12-31; not an active execution treatment now |
 | R33 | [Jules Actions repository](https://github.com/google-labs-code/jules-action) | HISTORICAL / STALE for execution; README retrieved 2026-11-15 | Historical GitHub Action contract and migration inventory | Do not design new live dependencies on Jules without fresh official lifecycle confirmation |
 
-## 6. Reading bundles by skill
+## 6. Additional legacy entrypoint references
+
+| ID | Source | Evidence / revision | Finding | Treatment |
+|---|---|---|---|---|
+| R34 | [Codex local baseline](../../.codex/AGENTS.md) | CURRENT-REPO; updated in this branch | Previously claimed to supplement a missing root AGENTS.md | Updated to route through root CLAUDE.md |
+| R35 | [ICM routing resource](../icm/routing.md) | CURRENT-REPO; updated in this branch | Previously called CLAUDE.md and AGENTS.md byte-identical aliases | Updated: CLAUDE.md is canonical; root AGENTS.md is deprecated |
+| R36 | [CLAUDE human compatibility copy](../../CLAUDE.hum.md) | CURRENT-REPO; updated in this branch | Historical Linguist/CedrLang copy contains old branch rules and inventory statistics | Marked compatibility-only; not current authority |
+| R37 | [GitHub project management reference](../../.github/PROJECT_MANAGEMENT.md) | CURRENT-REPO; updated in this branch | Previously named AGENTS.md as workflow integration surface | Updated to route governance to CLAUDE.md |
+
+## 7. Reading bundles by skill
 
 | Skill / workstream | Required bundle | Optional / conditional |
 |---|---|---|
@@ -87,7 +96,7 @@ A source's existence does not establish adoption. A successful benchmark run doe
 | GitHub Actions orchestration | R01, R05–R07, R25–R27, R31 | R32–R33 only for Jules migration/history |
 | QUE performance | R07, R16, R25, R27, R31 | First identify whether QUE means application queue, provider quota queue, or Actions concurrency |
 
-## 7. Mandatory source reconciliation before authoring
+## 8. Mandatory source reconciliation before authoring
 
 For each proposed skill change:
 
@@ -99,7 +108,7 @@ For each proposed skill change:
 6. Resolve policy conflicts by the owning SSOT and current evidence. Do not silently pick the most convenient document.
 7. Never convert a search result, README claim, PR proposal, or historical commit into a claim of current runtime behavior.
 
-## 8. Approximation competition contract
+## 9. Approximation competition contract
 
 Substantive skill creation or upgrade must compete alternatives before adoption:
 
@@ -118,7 +127,7 @@ Substantive skill creation or upgrade must compete alternatives before adoption:
 
 Approxination competition is a required evaluation method for substantive skill changes, not a blanket requirement to dispatch paid benchmark jobs for every documentation edit. If live Approxination access is unavailable, perform a documented offline candidate comparison and mark formal competition **NOT RUN** rather than claiming it occurred.
 
-## 9. Non-duplication boundaries
+## 10. Non-duplication boundaries
 
 - CEEL owns continuous capability discovery and routes opportunities into existing DoE/Integration Intelligence/proposal mechanisms.
 - Approxination provides candidate search/generation and reference competition; it does not own repository promotion.

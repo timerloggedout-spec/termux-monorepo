@@ -14,4 +14,4 @@ Each candidate remains a draft pending exact-head validation, independent review
 
 ## Safety invariants
 
-No CI false-green, no conversion of missing data to zero/success, no API quota bypass, no paid provider fallback, no credential mutation, no production dispatch expansion, and no auto-merge.
+Preserve these invariants: CI must never be falsely green; missing data remains unknown rather than zero/success; API quota is never bypassed; paid fallback, credential mutation, production dispatch expansion and auto-merge remain prohibited.

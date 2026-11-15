@@ -46,6 +46,11 @@ The final summary is written through a temporary file and atomic replacement.
 Example:
 
 ```bash
+# SEED must be a frozen copy of a valid prior corpus, including manifest,
+# nodes.jsonl, edges.jsonl, temporal-current.json and checkpoint.json.
+cp -a "$IIE_SEED" /tmp/iie-baseline
+cp -a "$IIE_SEED" /tmp/iie-treatment
+
 python3 archwiz/context_relationships/build_index.py \
   --owner "$GITHUB_REPOSITORY_OWNER" --repo "$GITHUB_REPOSITORY_NAME" \
   --ref "$GITHUB_REF_NAME" --full-refresh --output /tmp/iie-baseline
@@ -60,7 +65,7 @@ python3 scripts/ops/iie_benchmark.py \
   --output /tmp/iie-comparison.json
 ```
 
-For a valid controlled experiment, both runs must use the same commit/source SHA, same config and limits, equivalent starting corpus/checkpoint state, and the same source snapshot. Repeat the cohort and report medians and spread. The commands above are a template; the environment and checkpoint seeding must be made explicit in the run receipt.
+For a valid controlled experiment, both runs must start from byte-identical frozen seed directories, use the same commit/source SHA, config, limits and source snapshot, and run in isolated output directories. The seed must include a valid prior checkpoint; otherwise the treatment bootstraps and is not an incremental treatment. Repeat the cohort and report medians and spread. Do not run both treatments against a moving live source and call the result a controlled benchmark.
 
 ## Validation added to CI
 

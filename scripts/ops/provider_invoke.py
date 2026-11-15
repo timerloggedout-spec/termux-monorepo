@@ -148,189 +148,112 @@ def _policy_evidence_issue(entry: dict) -> str | None:
     return None
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--provider", required=True)
-    ap.add_argument("--prompt-file", required=True)
-    ap.add_argument("--out", default="/tmp/invoke-completion.md")
-    ap.add_argument("--max-tokens", type=int, default=300)
-    ap.add_argument("--free-only", action="store_true",
-                    help="Invoke only a catalog-verified no-cost chat model; never fall back")
-    ap.add_argument("--catalog-only", action="store_true",
-                    help="Count the provider's live catalog instead of invoking")
-    args = ap.parse_args()
-
-    provider = args.provider
-    verdict = {"provider": provider, "ok": False, "diagnosis": "", "model": None,
-               "http": None, "latency_ms": None, "catalog_http": None}
-    url, secret_names, catalog_url, note = resolve_provider(provider)
-    if url is None:
-        verdict["diagnosis"] = note or "unresolved provider"
-        print("INVOKE_VERDICT " + json.dumps(verdict))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--provider", required=True)
+    parser.add_argument("--model")
+    parser.add_argument("--prompt-file", required=True)
+    parser.add_argument("--out", required=True)
+    parser.add_argument("--max-tokens", type=int, default=300)
+    parser.add_argument("--free-only", action="store_true")
+    args = parser.parse_args()
+    provider = args.provider.lower()
+    verdict = {"provider": provider, "model": args.model, "ok": False,
+               "no_cost_verified": False, "policy_admitted": False,
+               "terms_accepted": "not_verified", "entitlement_verified": "not_verified",
+               "dispatch_eligible": False, "validation_scope": "policy_gated_no_cost_inference_smoke",
+               "quota_class": "unclassified", "pool_id": None,
+               "model_pricing_classification": None, "model_access_classification": None,
+               "credential_env_resolved": None, "latency_ms": None, "diagnosis": None}
+    def finish():
+        print("INVOKE_VERDICT", json.dumps(verdict, sort_keys=True))
         return 0
-    token, token_name = "", ""
-    for name in secret_names:
-        if os.environ.get(name):
-            token, token_name = os.environ[name], name
-            break
+    if not args.free_only:
+        verdict["diagnosis"] = "free_only_required"
+        return finish()
+    url, secret_names, _catalog_url, note = resolve_provider(provider)
+    token_name = next((name for name in secret_names if os.environ.get(name)), None)
+    token = os.environ.get(token_name) if token_name else None
+    verdict["credential_env_resolved"] = token_name
+    if not url:
+        verdict["diagnosis"] = note or "provider_not_configured"
+        return finish()
     if not token:
-        if args.catalog_only:
-            print("CATALOG_VERDICT " + json.dumps(
-                {"provider": provider, "credential": None, "catalog_http": None, "models": None,
-                 "sample": [], "diagnosis": f"no-credential: none of {list(secret_names)} present in job env"}))
-            return 0
-        verdict["diagnosis"] = f"no-credential: none of {list(secret_names)} present in job env"
-        print("INVOKE_VERDICT " + json.dumps(verdict))
-        return 0
-    verdict["credential"] = token_name
-
-    candidates: list = []
-    if args.catalog_only:
-        cverdict = {"provider": provider, "credential": token_name, "catalog_http": None,
-                    "models": None, "sample": []}
-        if catalog_url is None and provider in provider_catalog_protocols.PROVIDERS:
-            pass  # catalog stays None: counted as not countable from CI
-        if catalog_url:
-            if provider == "cloudflare":
-                status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 100})
-            else:
-                status, cat = http_json("GET", catalog_url, token)
-            cverdict["catalog_http"] = status
-            if status != 200 and provider == "cohere":
-                status2, cat2 = http_json("GET", "https://api.cohere.com/v2/models", token)
-                cverdict["catalog_http_v2"] = status2
-                if status2 == 200:
-                    status, cat = status2, cat2
-            if status == 200:
-                ids = None
-                if provider_catalog_protocols is not None and provider in provider_catalog_protocols.PROVIDERS:
-                    try:
-                        ids = [r["id"] for r in provider_catalog_protocols.normalize_models(provider, cat)]
-                    except Exception:
-                        ids = None
-                if ids is None:
-                    ids = [m.get("id") for m in cat.get("data", []) if isinstance(m, dict) and m.get("id")]
-                    if not ids and isinstance(cat.get("models"), list):
-                        ids = [m.get("id") or m.get("name") for m in cat["models"] if isinstance(m, dict)]
-                cverdict["models"] = len(ids)
-                cverdict["sample"] = ids[:3]
-        print("CATALOG_VERDICT " + json.dumps(cverdict))
-        return 0
-
-    model = os.environ.get("INVOKE_MODEL") or None
-    requested_model = model
-    if args.free_only:
-        try:
-            from scripts import provider_model_catalog
-            if provider not in provider_model_catalog.ENDPOINTS:
-                raise ValueError("no_canonical_model_catalog")
-            free_rows, _free_headers = provider_model_catalog.poll(provider, token)
-        except Exception as exc:
-            verdict["free_only"] = True
-            verdict["diagnosis"] = "free_catalog_unavailable: " + type(exc).__name__
-            print("INVOKE_VERDICT " + json.dumps(verdict))
-            return 0
-        selected = select_free_chat_model(free_rows, model)
-        if selected is None:
-            verdict["free_only"] = True
-            verdict["diagnosis"] = ("requested_model_not_verified_no_cost" if model
-                                    else "no_verified_no_cost_chat_model")
-            print("INVOKE_VERDICT " + json.dumps(verdict))
-            return 0
-        selected_row = next(row for row in free_rows if isinstance(row, dict) and row.get("id") == selected)
-        verdict["free_only"] = True
-        verdict["no_cost_verified"] = True
-        verdict["model_pricing_classification"] = selected_row.get("pricing_classification")
-        verdict["model_access_classification"] = selected_row.get("access_classification")
-        model = selected
-        candidates = [
-            row["id"] for row in free_rows
-            if isinstance(row, dict) and isinstance(row.get("id"), str)
-            and row["id"] != selected and is_verified_no_cost_model(row)
-            and not any(hint in row["id"].lower() for hint in NON_CHAT_HINTS)
-        ] if requested_model is None else []
-    if not args.free_only and model is None and catalog_url:
-        if provider == "cloudflare":
-            status, cat = http_json("POST", catalog_url, token, {"page": 1, "per_page": 50})
-        else:
-            status, cat = http_json("GET", catalog_url, token)
-        verdict["catalog_http"] = status
-        if status != 200 and provider == "cohere":
-            # v1 models catalog refused; the v2 catalog is the same key's other door.
-            status2, cat2 = http_json("GET", "https://api.cohere.com/v2/models", token)
-            verdict["catalog_http_v2"] = status2
-            if status2 == 200:
-                status, cat = status2, cat2
-        if status == 200:
-            if provider_catalog_protocols is not None and provider in provider_catalog_protocols.PROVIDERS:
-                try:
-                    ids = [r["id"] for r in provider_catalog_protocols.normalize_models(provider, cat)]
-                    chat = [i for i in ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
-                    candidates = chat or ids
-                    model = (candidates or [None])[0]
-                except Exception:
-                    model = None
-            else:
-                data_ids = [m.get("id") for m in cat.get("data", []) if isinstance(m, dict) and m.get("id")]
-                chat = [i for i in data_ids if not any(h in i.lower() for h in NON_CHAT_HINTS)]
-                candidates = chat or data_ids
-                model = (candidates or [None])[0]
-    if model is None:
-        model = "default"
-        verdict["model_note"] = "catalog unresolved; provider default attempted"
-    verdict["model"] = model
-
-    prompt = open(args.prompt_file).read()
-    attempts = ([model] if args.free_only else
-                ([m for m in dict.fromkeys([model] + candidates[:2]) if m] or ["default"]))
-    status, body = None, {}
-    for attempt_model in attempts:
-        verdict["model"] = attempt_model
-        budgets = (args.max_tokens,) if args.free_only else (args.max_tokens, 1024)
-        for budget in budgets:
-            payload = {"model": attempt_model, "max_tokens": budget,
-                       "messages": [{"role": "user", "content": prompt}]}
-            t0 = time.time()
-            status, body = http_json("POST", url, token, payload)
-            verdict["latency_ms"] = int((time.time() - t0) * 1000)
-            verdict["http"] = status
-            if status != 200:
-                break
-            text = ""
-            try:
-                text = body["choices"][0]["message"]["content"]
-            except Exception:
-                pass
-            if not text:
-                # Cohere v2/chat shape: message.content = [{type: text, text: ...}]
-                try:
-                    parts = body["message"]["content"]
-                    text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
-                except Exception:
-                    text = ""
-            if text:
-                verdict["ok"] = True
-                verdict["diagnosis"] = "invoke succeeded"
-                with open(args.out, "w") as f:
-                    f.write(text)
-                break
-            # empty content (e.g. reasoning budget consumed it): retry once, bigger budget
-        if verdict["ok"]:
-            break
-        if status is None:
-            verdict["diagnosis"] = "transport_error"
-            break
-        if status == 404 and attempt_model != attempts[-1]:
-            continue  # catalog/serving skew: fall over to the next catalog model
-        if status == 200:
-            verdict["diagnosis"] = f"http 200 but no completion text (response shape {sorted(body.keys())})"
-        else:
-            verdict["diagnosis"] = f"http {status}"
-        break
-    else:
-        verdict["diagnosis"] = f"http {status}"
-    print("INVOKE_VERDICT " + json.dumps(verdict))
-    return 0
-
+        verdict["diagnosis"] = "missing_secret"
+        return finish()
+    try:
+        admitted = set(research_providers.admitted_models())
+    except research_providers.ProviderAdmissionError as exc:
+        verdict["diagnosis"] = getattr(exc, "code", "provider_policy_unavailable")
+        return finish()
+    admitted_ids = {item.split("/", 1)[1] for item in admitted if isinstance(item, str) and item.startswith(provider + "/") and "/" in item}
+    if not admitted_ids:
+        verdict["diagnosis"] = "provider_model_not_admitted"
+        return finish()
+    try:
+        models, _headers = provider_model_catalog.poll(provider, token)
+    except Exception as exc:
+        verdict["diagnosis"] = "catalog_unavailable_" + type(exc).__name__
+        return finish()
+    admitted_free_rows = [row for row in models if isinstance(row, dict) and row.get("id") in admitted_ids and is_verified_no_cost_model(row)]
+    if not admitted_free_rows:
+        verdict["diagnosis"] = "admitted_model_not_verified_no_cost"
+        return finish()
+    selected = select_free_chat_model(admitted_free_rows, args.model)
+    if not selected:
+        verdict["diagnosis"] = "no_verified_no_cost_chat_model"
+        return finish()
+    selected_row = next(row for row in admitted_free_rows if row.get("id") == selected)
+    try:
+        entry = research_providers.admission_entry(provider, selected)
+    except research_providers.ProviderAdmissionError as exc:
+        verdict["diagnosis"] = getattr(exc, "code", "provider_not_admitted")
+        return finish()
+    verdict.update({
+        "model": selected,
+        "policy_admitted": True,
+        "terms_accepted": "policy_asserted",
+        "entitlement_verified": "policy_asserted",
+        "quota_class": entry.get("quota_class", "unclassified"),
+        "pool_id": entry.get("pool_id"),
+        "model_pricing_classification": selected_row.get("pricing_classification"),
+        "model_access_classification": selected_row.get("access_classification"),
+    })
+    policy_issue = _policy_evidence_issue(entry)
+    if policy_issue:
+        verdict["diagnosis"] = policy_issue
+        return finish()
+    verdict["no_cost_verified"] = True
+    try:
+        prompt = Path(args.prompt_file).read_text(encoding="utf-8")
+    except OSError:
+        verdict["diagnosis"] = "prompt_file_unavailable"
+        return finish()
+    payload = {"model": selected, "messages": [{"role": "user", "content": prompt}],
+               "max_tokens": args.max_tokens, "temperature": 0}
+    started = time.monotonic()
+    try:
+        response = research_providers.complete(provider, selected, payload, timeout=90)
+        verdict["latency_ms"] = int((time.monotonic() - started) * 1000)
+        message = (response.get("choices") or [{}])[0].get("message") or {}
+        content = message.get("content")
+        if not isinstance(content, str) or not content.strip():
+            verdict["diagnosis"] = "empty_inference_response"
+            return finish()
+        Path(args.out).write_text(content, encoding="utf-8")
+        verdict["ok"] = True
+        verdict["diagnosis"] = "inference_ok"
+        verdict["completion_chars"] = len(content)
+        usage = response.get("usage") or {}
+        verdict["input_tokens"] = usage.get("prompt_tokens")
+        verdict["output_tokens"] = usage.get("completion_tokens")
+    except research_providers.ProviderAdmissionError as exc:
+        verdict["latency_ms"] = int((time.monotonic() - started) * 1000)
+        verdict["diagnosis"] = getattr(exc, "code", "provider_inference_failed")
+        verdict["http_status"] = getattr(exc, "status", None)
+    except Exception as exc:
+        verdict["latency_ms"] = int((time.monotonic() - started) * 1000)
+        verdict["diagnosis"] = type(exc).__name__
+    return finish()
 
 if __name__ == "__main__":
     raise SystemExit(main())

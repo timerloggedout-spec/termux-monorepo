@@ -1,6 +1,5 @@
-"""Owner-records page contract (D1-D5): envelope render, D4 discovery
-rules (no primary nav, no sitemap loc - Admin + Tracking cross-links
-only), and the versioning registry entries."""
+"""Owner-records page contract (D1-D5): metadata-only rendering, D4
+discovery rules, build provenance and the validated envelope explorer."""
 import json
 import re
 from pathlib import Path
@@ -29,8 +28,7 @@ def test_d4_no_primary_nav_no_sitemap():
     # Not linked from any shell page's primary nav either.
     nav_pages = [p for p in APP.glob("*.html") if p != PAGE]
     for p in nav_pages:
-        m = re.search(r'<nav aria-label="Primary">([\s\S]*?)</nav>',
-                      p.read_text())
+        m = re.search(r'<nav aria-label="Primary">([\\s\\S]*?)</nav>', p.read_text())
         if m:
             assert "owner-records" not in m.group(1), p.name
 
@@ -50,3 +48,44 @@ def test_versioning_registry_entries():
     assert files == sorted(files)
     vjs = (APP / "versioning.js").read_text()
     assert '"file":"owner-records.html"' in vjs.replace(" ", "")
+
+
+def test_metadata_explorer_controls_are_accessible():
+    html = PAGE.read_text()
+    for control in ('id="record-search"', 'id="class-filter"', 'id="state-filter"',
+                    'id="clear-filters"', 'id="results-count"'):
+        assert control in html
+    assert 'role="status" aria-live="polite"' in html
+    assert "Search covers L1 metadata only." in html
+    assert "No body search" in html
+
+
+def test_build_identity_uses_manifest_without_adding_primary_navigation():
+    html = PAGE.read_text()
+    assert 'fetch("./version-manifest.json"' in html
+    assert "manifest.source_sha" in html
+    assert "URL parameters differ (manifest wins)" in html
+    # versioning.js injects the shared primary nav / all-pages discovery;
+    # D4 intentionally keeps this page discoverable from Admin + Tracking only.
+    assert 'src="./versioning.js"' not in html
+    assert "site-nav.js" not in html
+    assert 'aria-label="Primary"' not in html
+
+
+def test_envelope_validation_fails_closed_and_keeps_bodies_out_of_page():
+    html = PAGE.read_text()
+    for marker in ("validateEnvelope", "FORBIDDEN_BODY_FIELDS", "owner-records/v1",
+                   "No unvalidated data was rendered.", "Envelope rejected:"):
+        assert marker in html
+    # This public projection must not request an age identity or call a
+    # browser decryption API. Ciphertext transport remains Vercel-only.
+    assert 'type="password"' not in html
+    assert "decrypt(" not in html
+    assert "fetch(\"ops/owner-records/bodies" not in html
+
+
+def test_refresh_is_non_overlapping_and_visibility_aware():
+    html = PAGE.read_text()
+    assert "if (loading || document.visibilityState === \"hidden\") return;" in html
+    assert 'document.addEventListener("visibilitychange"' in html
+    assert "window.setInterval(loadEnvelope, 60000)" in html

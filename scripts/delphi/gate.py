@@ -715,6 +715,11 @@ def last_ledger(gh: GH, number: int) -> dict | None:
                 if "effective_score" not in j:  # ledgers written before the board existed
                     e = re.search(r"\*\*effective_score\*\* ([\d.]+)", c["body"])
                     j["effective_score"] = float(e.group(1)) if e else None
+                award = j.get("award", {})
+                # A package-bound POST whose follow-up PATCH failed is only a
+                # provisional comment. Never let it satisfy idempotency.
+                if award.get("package_digest") and not award.get("ledger_ref"):
+                    continue
                 return j
     return None
 

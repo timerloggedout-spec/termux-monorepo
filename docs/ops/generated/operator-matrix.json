@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 657,
+    "open_issues": 658,
     "open_prs": 419,
     "pr_classes": {
       "CANDIDATE": 216,
-      "EXTRACT": 13,
-      "NEED_EVIDENCE": 190,
+      "EXTRACT": 14,
+      "NEED_EVIDENCE": 189,
       "SUPERSEDE": 0
     }
   },
@@ -23,7 +23,7 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 402,
+      "issues": 403,
       "prs": 5,
       "unlabelled_numbers": []
     },
@@ -120,7 +120,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-15T13:47:25Z",
+  "generated_at": "2026-11-15T14:05:21Z",
   "issues_unlabelled": [
     308,
     388,
@@ -190,7 +190,7 @@
       "hygiene": "not_reported",
       "smoke": "not_reported"
     },
-    "sha": "eab622dfa8"
+    "sha": "030392388b"
   },
   "prs": [
     {
@@ -374,6 +374,20 @@
       "number": 5447,
       "title": "feat(msm): add origin-attributed residual royalty journal",
       "updated_at": "2026-11-15T10:21:43Z"
+    },
+    {
+      "class": "EXTRACT",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4d753275d1",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5465,
+      "title": "Fix DoE/MVT evidence integrity and comparison bottlenecks",
+      "updated_at": "2026-11-15T14:04:43Z"
     },
     {
       "class": "CANDIDATE",
@@ -3951,12 +3965,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "efcbf7afd8",
+      "head_sha": "e7d4af4696",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-15T13:45:09Z"
+      "updated_at": "2026-11-15T14:02:48Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -3965,12 +3979,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "1683228799",
+      "head_sha": "1bc46fd387",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-15T13:43:30Z"
+      "updated_at": "2026-11-15T14:00:00Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4620,15 +4634,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "b76eb78b87",
+      "head_sha": "709657783a",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-15T13:42:35Z"
+      "updated_at": "2026-11-15T13:55:42Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -6048,29 +6062,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
       },
-      "head_sha": "5f87c23c00",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5459,
-      "title": "feat(que): validate free inference arms without quota-counter dependency",
-      "updated_at": "2026-11-15T13:47:19Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "16282e0e99",
+      "head_sha": "4246cd612d",
       "labels": [],
       "mergeable_state": "unknown",
-      "number": 5460,
-      "title": "Fix DoE/MVT evidence integrity and comparison bottlenecks",
-      "updated_at": "2026-11-15T13:46:29Z"
+      "number": 5459,
+      "title": "feat(que): validate free inference arms without quota-counter dependency",
+      "updated_at": "2026-11-15T14:04:58Z"
     }
   ],
   "schema": "operator-matrix/v1",

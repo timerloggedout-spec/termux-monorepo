@@ -14,6 +14,39 @@ from pathlib import Path
 
 PROMPT = "Reply with exactly: OK"
 
+
+def select_entries(entries, offset, limit):
+    if offset < 0:
+        raise ValueError("offset_must_be_nonnegative")
+    if limit < 0:
+        raise ValueError("limit_must_be_nonnegative")
+    return entries[offset : offset + limit]
+
+
+def build_receipt(results, *, source, offset, limit, source_population_total,
+                  workers, timeout_s, deadline_s, observed_at=None):
+    attempted = len(results)
+    inference_ok = sum(1 for row in results if row.get("inference_ok") is True)
+    return {
+        "schema": "g4f-inference-smoke/v1",
+        "observed_at": observed_at or dt.datetime.now(dt.timezone.utc).isoformat(),
+        "source": source,
+        "offset": offset,
+        "limit": limit,
+        "source_population_total": source_population_total,
+        "workers": workers,
+        "timeout_s": timeout_s,
+        "deadline_s": deadline_s,
+        "attempted": attempted,
+        "inference_ok": inference_ok,
+        "providers_ok": sorted({row["provider"] for row in results if row.get("inference_ok") is True}),
+        "results": results,
+        "production_admission_changed": False,
+        "paid_fallback_allowed": False,
+        "dispatch_eligible": False,
+        "quota_class": "unclassified",
+    }
+
 def probe(entry):
     import g4f
     from g4f.client import Client
@@ -74,7 +107,7 @@ def main():
             for wm in p.get("working_models", []):
                 entries.append((p["id"], wm["model"]))
     total_entries = len(entries)
-    entries = entries[args.offset : args.offset + args.limit]
+    entries = select_entries(entries, args.offset, args.limit)
 
     results = []
     ex = concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
@@ -94,23 +127,11 @@ def main():
         fut.cancel()
     ex.shutdown(wait=False, cancel_futures=True)
     results.sort(key=lambda r: (r["provider"], r["model"]))
-    receipt = {
-        "schema": "g4f-inference-smoke/v1",
-        "observed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "source": args.source,
-        "offset": args.offset,
-        "limit": args.limit,
-        "source_population_total": total_entries,
-        "workers": args.workers,
-        "timeout_s": args.timeout,
-        "deadline_s": args.deadline,
-        "attempted": len(results),
-        "inference_ok": sum(1 for r in results if r["inference_ok"]),
-        "providers_ok": sorted({r["provider"] for r in results if r["inference_ok"]}),
-        "results": results,
-        "production_admission_changed": False,
-        "paid_fallback_allowed": False,
-    }
+    receipt = build_receipt(
+        results, source=args.source, offset=args.offset, limit=args.limit,
+        source_population_total=total_entries, workers=args.workers,
+        timeout_s=args.timeout, deadline_s=args.deadline,
+    )
     Path(args.output).write_text(json.dumps(receipt, indent=1) + "\n")
     print(json.dumps({k: receipt[k] for k in ("attempted", "inference_ok", "providers_ok")}, indent=1), flush=True)
     # Probe threads are non-daemon and some providers ignore timeouts entirely;

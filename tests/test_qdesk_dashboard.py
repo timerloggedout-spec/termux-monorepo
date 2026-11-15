@@ -13,6 +13,7 @@ def test_qdesk_page_has_required_surfaces():
     assert "last_point_at" in j
     assert "kind" in j and "consumption" in j
     assert "intake-scope" in h and "intake-budget" in h
+    assert "allocation-list" in h and "wager-publication" in h
 def test_frontend_has_no_write_authority():
     j=(ROOT/"apps/tribute-dashboard/qdesk.js").read_text()
     assert j.count("fetch(")==1

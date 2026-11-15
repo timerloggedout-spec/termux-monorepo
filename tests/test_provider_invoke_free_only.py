@@ -174,6 +174,7 @@ def test_native_provider_validation_matrix_is_policy_gated_and_bounded():
     single_events = single.get("on", single.get(True))
     batch_events = batch.get("on", batch.get(True))
     assert len(single_events["workflow_dispatch"]["inputs"]["provider"]["options"]) == 31
+    assert {"ollama", "felo", "omni"} <= set(single_events["workflow_dispatch"]["inputs"]["provider"]["options"])
     discover = batch["jobs"]["discover"]
     assert discover["outputs"]["providers"] == "${{ steps.matrix.outputs.providers }}"
     matrix_step = next(step for step in discover["steps"] if "provider_population_census.py" in step.get("run", ""))

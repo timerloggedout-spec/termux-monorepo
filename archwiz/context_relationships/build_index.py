@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,20 @@ except ImportError:  # Supports direct script use.
     from temporal import TemporalError, build_lineage, build_snapshot, compare_snapshots, write_snapshot
 
 BUILDER_ID = "archwiz.context_relationships.build_index@1.0"
+
+
+def process_resource_metrics() -> dict[str, Any]:
+    """Return portable best-effort process resource measurements."""
+    metrics: dict[str, Any] = {"peak_rss_bytes": None}
+    try:
+        import resource
+
+        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        # Linux (including Android/Termux) reports KiB; macOS reports bytes.
+        metrics["peak_rss_bytes"] = int(peak if sys.platform == "darwin" else peak * 1024)
+    except (ImportError, OSError, AttributeError, ValueError):
+        pass
+    return metrics
 
 
 def advance_history_coverage(
@@ -227,6 +242,9 @@ def build_index(
     history_start_page: int = 1,
 ) -> dict[str, Any]:
     """Build a complete index, replacing canonical artifacts only after validation."""
+    wall_started = time.perf_counter()
+    cpu_started = time.process_time()
+    collection_started = time.perf_counter()
     checkpoint_path = output / "checkpoint.json"
     since = None if full_refresh else load_checkpoint(checkpoint_path, owner, repo, ref)
     historical_seed = load_canonical_history(output, owner, repo, ref)
@@ -259,6 +277,8 @@ def build_index(
         history_start_page=history_start_page,
     )
     github_report["retry_count"] = client.retry_count
+    collection_seconds = time.perf_counter() - collection_started
+    compile_started = time.perf_counter()
     history_window = github_report.get(
         "history_window",
         {"start_page": history_start_page, "coverage": "not_reported_by_collector"},
@@ -300,6 +320,8 @@ def build_index(
         )
     except TemporalError as exc:
         raise CompilationError(f"temporal evidence build failed: {exc}") from exc
+    compile_seconds = time.perf_counter() - compile_started
+    publish_started = time.perf_counter()
     manifest.update(
         {
             "builder": BUILDER_ID,
@@ -331,6 +353,14 @@ def build_index(
             write_checkpoint(staging_dir / "checkpoint.json", github_report["collected_at"], owner, repo, ref)
         summary = {
             "builder": BUILDER_ID,
+            "performance": {
+                "collection_seconds": round(collection_seconds, 6),
+                "compile_seconds": round(compile_seconds, 6),
+                "publish_seconds": None,
+                "wall_seconds": None,
+                "process_cpu_seconds": None,
+                **process_resource_metrics(),
+            },
             "repository": f"{owner}/{repo}",
             "ref": ref,
             "source_sha": source_sha,
@@ -382,6 +412,12 @@ def build_index(
         if temporal_snapshot["snapshot_id"] not in seen_ids:
             with lineage_path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(lineage_record, sort_keys=True) + "\n")
+    publish_seconds = time.perf_counter() - publish_started
+    summary["performance"]["publish_seconds"] = round(publish_seconds, 6)
+    summary["performance"]["wall_seconds"] = round(time.perf_counter() - wall_started, 6)
+    summary["performance"]["process_cpu_seconds"] = round(time.process_time() - cpu_started, 6)
+    # Rewrite the summary artifact with final publication and end-to-end timings.
+    write_json(output / "build-summary.json", summary)
     return summary
 
 

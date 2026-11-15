@@ -13,9 +13,10 @@ reviewers:
     role: author+executor
     status: executing
 related_issues: [966]
-related_prs: [967]
+related_prs: [967, 5415, 5416]
 related_branches:
   - experiment/archwiz-markov-trellis-lab
+  - feat/delphic-versioned-graph-suite-20261114
 gates_required: [repo-gate, termux-smoke]
 ---
 

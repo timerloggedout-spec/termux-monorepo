@@ -33,3 +33,10 @@ Use this workflow as the standard for static dashboard or microsite releases in 
 ## Current Tribute release
 
 The next candidate release prefix is `1.0.1`; version values are `1.0.1+<12-character-source-SHA>`. The earlier `1.0.0+551655fa6bca` preview remains a historical candidate and is not overwritten by this change.
+
+
+## Declared runtime assets
+
+Pages that depend on local modules or registry data declare them with a meta tag such as `<meta name="version-assets" content="markov-engine.mjs,algorithm-labs.json">`. The manifest builder validates each path stays inside the dashboard root and records a SHA-256 for every declared asset in the top-level `assets` list. The version comparison view compares those hashes independently of HTML page hashes.
+
+The manual preview workflow intentionally uses the trusted builder from master. Before this builder enhancement is merged, a preview can render the nested experiment menu and UI pages but may not include the new runtime-asset hash list. Do not claim asset-level preview parity until the trusted preview builder includes the same contract. The production builder will emit asset hashes after the enhancement lands on master.

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {
+  ALGORITHM_VERSION,
   assertClose,
   compareGrowth,
   layerProbability,
@@ -18,6 +19,7 @@ const transitions = {
 };
 const initial = { Idle: 1, Scan: 0, Process: 0, Sync: 0 };
 
+assert.equal(ALGORITHM_VERSION, "markov-trellis/v1");
 assert.equal(validateChain(states, transitions), true);
 
 const tree = strictTree({ states, transitions, initial, horizon: 4 });

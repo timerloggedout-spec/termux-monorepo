@@ -1,3 +1,4 @@
+export const ALGORITHM_VERSION = "markov-trellis/v1";
 export const EPSILON = 1e-9;
 
 export function assertClose(actual, expected, epsilon = EPSILON) {

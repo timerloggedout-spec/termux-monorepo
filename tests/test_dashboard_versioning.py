@@ -1,5 +1,6 @@
 """Regression contracts for stable page identities and comparable dashboard builds."""
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -25,6 +26,11 @@ def test_versioning_header_is_injected_for_all_pages_by_build_step(tmp_path):
     (tmp_path / "index.html").write_text("<html><head><title>Test</title></head><body>ok</body></html>")
     (tmp_path / "versioning.html").write_text("<html><head></head><body>compare</body></html>")
     (tmp_path / "versioning.js").write_text("/* test */")
+    (tmp_path / "markov-engine.mjs").write_text("export const model = true;")
+    (tmp_path / "algorithm-labs.json").write_text("{}")
+    (tmp_path / "index.html").write_text(
+        '<html><head><meta name="version-assets" content="markov-engine.mjs,algorithm-labs.json"></head><body>ok</body></html>'
+    )
     subprocess.run([
         sys.executable, str(BUILDER), "--root", str(tmp_path), "--channel", "preview",
         "--source-ref", "refs/pull/1/head", "--source-sha", "0123456789abcdef",
@@ -36,6 +42,9 @@ def test_versioning_header_is_injected_for_all_pages_by_build_step(tmp_path):
     assert manifest["version"] == "1.0.1+0123456789ab"
     assert len(manifest["pages"]) == 2
     assert all(len(p["content_sha256"]) == 64 for p in manifest["pages"])
+    assets = {item["file"]: item["content_sha256"] for item in manifest["assets"]}
+    assert set(assets) == {"markov-engine.mjs", "algorithm-labs.json"}
+    assert all(len(value) == 64 for value in assets.values())
 
 
 def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
@@ -46,14 +55,16 @@ def test_builder_fails_closed_when_page_cannot_be_versioned(tmp_path):
     ], capture_output=True, text=True)
     assert result.returncode != 0
 
-def test_preview_workflow_isolated_and_preserves_existing_site():
+def test_preview_workflow_publishes_atomic_production_and_isolated_preview():
     workflow = (ROOT / ".github" / "workflows" / "tribute-dashboard-preview.yml").read_text()
     assert "workflow_dispatch:" in workflow
     assert "source_ref:" in workflow and "preview_key:" in workflow
-    assert "publish_dir: _preview" in workflow
-    assert "destination_dir: previews/${{ inputs.preview_key }}/help-wanted" in workflow
-    assert "keep_files: false" in workflow
+    assert "mkdir -p _production _preview _user_site" in workflow
+    assert "cp -a _preview/. \"_user_site/previews/$PREVIEW_KEY/tribute/\"" in workflow
+    assert "publish_dir: _user_site" in workflow
+    assert "keep_files: true" in workflow
     assert "force_orphan: true" not in workflow
+    assert "Publish production and preview atomically" in workflow
 
 
 def test_production_deployment_stamps_the_artifact():
@@ -118,5 +129,75 @@ def test_builder_preserves_canonical_home_and_comparison_titles(tmp_path):
     ], check=True, capture_output=True, text=True)
     manifest = json.loads((tmp_path / "version-manifest.json").read_text())
     titles = {page["file"]: page["title"] for page in manifest["pages"]}
-    assert titles["index.html"] == "Help-Wanted Home"
+    assert titles["index.html"] == "Tribute Home"
     assert titles["versioning.html"] == "Version Comparison"
+
+
+def test_nested_algorithm_lab_navigation_and_runtime_asset_comparison_are_present():
+    js = (APP / "versioning.js").read_text()
+    assert "Experiment lanes" in js
+    assert "Canonical utilities" in js
+    assert "Open versioned UI" in js
+    assert "Runtime assets" in js
+    registry = json.loads((APP / "algorithm-labs.json").read_text())
+    assert {lab["id"] for lab in registry["experiment_labs"]} == {
+        "archwiz-markov-lane", "delphic-observatory-lab"
+    }
+    assert {item["id"] for item in registry["canonical_components"]} == {
+        "kahn.dag", "bayesian.routing", "gantt.dependency-phases"
+    }
+
+
+def test_graph_suite_pages_are_in_the_fallback_version_registry():
+    js = (APP / "versioning.js").read_text()
+    for filename in ("algorithm-suite.html", "markov-trellis.html", "delphic-graph.html"):
+        assert '"file":"' + filename + '"' in js
+
+
+def test_published_markov_runtime_asset_matches_canonical_experiment_engine():
+    canonical = ROOT / "experiments" / "archwiz-markov-lane" / "src" / "markov-engine.mjs"
+    published = APP / "markov-engine.mjs"
+    assert published.read_bytes() == canonical.read_bytes()
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    asset_files = {asset["file"] for asset in manifest.get("assets", [])}
+    assert {"algorithm-labs.json", "markov-engine.mjs"}.issubset(asset_files)
+
+
+def test_surface_map_covers_manifest_pages_and_counts_substrates():
+    page = (APP / "surfaces-map.html").read_text()
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    block = page.split("const SURFACES = [", 1)[1].split("\n ];", 1)[0]
+    rows = re.findall(r'^\\s*\\["([^"]+)"', block, flags=re.MULTILINE)
+    dashboard_pages = {item["file"] for item in manifest["pages"]}
+    assert dashboard_pages.issubset(set(rows))
+    assert len(rows) == 51
+
+    substrate_block = page.split("const SUBSTRATE = [", 1)[1].split("\n];", 1)[0]
+    substrate_ids = re.findall(r'\\{id:"([^"]+)"', substrate_block)
+    used_ids = set()
+    for match in re.finditer(
+        r'^\\s*\\["[^"]+","[^"]+","[^"]+","[^"]+",\\[([^\\]]*)\\]',
+        block,
+        flags=re.MULTILINE,
+    ):
+        used_ids.update(re.findall(r'"([^"]+)"', match.group(1)))
+    assert len(substrate_ids) == 9
+    assert len(used_ids) == 8
+    assert "naminggate" not in used_ids
+
+
+def test_script_verifier_accepts_script_end_tag_attributes():
+    from scripts.ci.verify_tribute_js import SCRIPT_RE
+    html = '<script>const answer = 42;</script\t\n data-check="1">'
+    assert SCRIPT_RE.findall(html) == [("", "const answer = 42;")]
+
+
+def test_dashboard_pages_reference_only_present_local_scripts():
+    manifest = json.loads((APP / "version-manifest.json").read_text())
+    for item in manifest["pages"]:
+        page = APP / item["file"]
+        html = page.read_text()
+        for source in re.findall(r"""<script[^>]+src=["'](\./[^"']+)["']""", html):
+            asset_path = source[2:].split("?", 1)[0].split("#", 1)[0]
+            asset = APP / asset_path
+            assert asset.is_file(), f"{item['file']} references missing local script {source}"

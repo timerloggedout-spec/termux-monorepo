@@ -1,0 +1,14 @@
+{
+  "schema": "versioned-experiment-lab/v1",
+  "id": "delphic-observatory-lab",
+  "title": "Delphic Graph Observatory",
+  "version": "0.2.0",
+  "channel": "research-preview",
+  "released_at": "2026-11-12",
+  "entrypoint": "index.html",
+  "graph_views": "graph-views.html",
+  "engine": "scripts/delphic_graph_lab.py",
+  "tests": "tests/test_delphic_graph_lab.py",
+  "model_contract": "AST containment, dependency DAG, Markov state transitions and temporal lineage remain distinct graph families.",
+  "authority": "read-only-research-projection"
+}

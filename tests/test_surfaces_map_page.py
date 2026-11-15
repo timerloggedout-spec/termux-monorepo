@@ -2,7 +2,7 @@
 
 The map is data-driven: these tests pin the data invariants -
 every surface has a known plane + at least one substrate draw,
-every substrate element has at least one consumer, the §12 Web3
+every drawn substrate element has at least one consumer (the naming gate is provenance-wide, not a direct edge), the §12 Web3
 surfaces and the desk's QUE/governor draws are present.
 """
 import json
@@ -50,7 +50,7 @@ def test_page_shape():
 def test_map_invariants(tmp_path):
     res = _sim(tmp_path)
     assert res["planes"] == 8
-    assert res["substrateUsed"] == 6 and res["substrateTotal"] == 7  # 6 draws + naming gate (provenance, not a draw)
-    assert res["surfaces"] >= 44  # rows: 42 surfaces + 2 classified classes
+    assert res["substrateUsed"] == 8 and res["substrateTotal"] == 9  # 8 drawn substrates + provenance-wide naming gate
+    assert res["surfaces"] == 51  # 43 dashboard pages + 6 MoneyBall pages + 2 classified classes
     assert res["deskQue"] is True
     assert res["poolsBoth"] >= 2

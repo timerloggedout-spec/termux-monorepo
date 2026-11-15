@@ -138,3 +138,32 @@ class BaselineRatchet(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+class DynamicReferenceFixture(unittest.TestCase):
+    def test_runtime_built_html_links_are_not_static_path_claims(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, "apps/site/index.html", """
+<a href="./'+esc(item.ui_file)+'?version='+encodeURIComponent(version)">dynamic</a>
+<a href="\${GH}\${esc(doc.path)}">template</a>
+<a href="missing.html">static broken</a>
+<a href="missing.html?q=a+b">static query broken</a>
+""")
+            got = dc.check_links(root)
+            self.assertEqual(
+                [(item["kind"], item["ref"]) for item in got],
+                [("dangling-link", "missing.html"), ("dangling-link", "missing.html?q=a+b")],
+            )
+
+    def test_feed_descriptions_and_globs_are_not_literal_file_references(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            write(root, "apps/site/data/feed.json", json.dumps({
+                "sources": "docs/a.md + scripts/b.py",
+                "corpus": "docs/ops/generated/actions-performance-*.json",
+                "literal": "scripts/missing.py",
+            }))
+            got = dc.check_feeds(root)
+            self.assertEqual([item["ref"] for item in got], ["scripts/missing.py"])

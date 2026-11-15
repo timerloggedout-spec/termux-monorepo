@@ -1,0 +1,14 @@
+{
+  "schema": "versioned-experiment-lab/v1",
+  "id": "archwiz-markov-lane",
+  "title": "ArchWiz Markov Trellis",
+  "version": "0.1.0",
+  "channel": "research-lab",
+  "released_at": "2026-10-01",
+  "entrypoint": "index.html",
+  "engine": "src/markov-engine.mjs",
+  "tests": "src/markov-engine.test.mjs",
+  "model_contract": "Transition matrix is the source of truth; strict tree preserves path occurrences; recombining trellis sums incoming path probabilities; particle sampling uses the same transition matrix.",
+  "authority": "read-only-research-projection",
+  "algorithm_version": "markov-trellis/v1"
+}

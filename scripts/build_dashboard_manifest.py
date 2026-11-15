@@ -12,10 +12,16 @@ from pathlib import Path
 ID_OVERRIDES = {
     "index.html": "tribute-home",
     "versioning.html": "version-comparison",
+    "algorithm-suite.html": "algorithm-suite",
+    "markov-trellis.html": "markov-trellis",
+    "delphic-graph.html": "delphic-graph",
 }
 TITLE_OVERRIDES = {
     "index.html": "Tribute Home",
     "versioning.html": "Version Comparison",
+    "algorithm-suite.html": "Graph & Algorithm Suite",
+    "markov-trellis.html": "ArchWiz Markov Trellis",
+    "delphic-graph.html": "Delphic Graph Observatory",
     "3l0.html": "3L0",
     "ates.html": "ATES",
     "doe.html": "DoE",
@@ -57,6 +63,23 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
                 raise ValueError(f"{page.name}: missing </head>; cannot inject version header")
             html = re.sub(r"</head>", ' <script src="./versioning.js" defer></script>\n</head>', html, count=1, flags=re.I)
             page.write_text(html, encoding="utf-8")
+    # Explicit page-declared local assets are part of the versioned artifact.
+    asset_names: set[str] = set()
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        for declared in re.findall(r'name="version-assets"\s+content="([^"]+)"', html):
+            for raw_name in declared.split(","):
+                name = raw_name.strip()
+                if not name:
+                    continue
+                relative = Path(name)
+                if relative.is_absolute() or ".." in relative.parts:
+                    raise ValueError(f"{page.name}: unsafe version asset path: {name}")
+                asset = (root / relative).resolve()
+                if not asset.is_relative_to(root) or not asset.is_file():
+                    raise ValueError(f"{page.name}: declared version asset is missing: {name}")
+                asset_names.add(relative.as_posix())
+
     short_sha = source_sha[:12] if source_sha else "unverified"
     manifest = {
         "schema_version": 1,
@@ -70,6 +93,7 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
             "repository": "https://github.com/timerloggedout-spec/termux-monorepo",
         },
         "pages": [],
+        "assets": [],
     }
     for page in pages:
         manifest["pages"].append({
@@ -78,6 +102,10 @@ def build(root: Path, channel: str, source_ref: str, source_sha: str, version_pr
             "title": page_title(page.name),
             "content_sha256": sha256(page),
         })
+    manifest["assets"] = [
+        {"file": name, "content_sha256": sha256(root / name)}
+        for name in sorted(asset_names)
+    ]
     (root / "version-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 

@@ -77,6 +77,7 @@ class DoStatementStyleRulesTests(unittest.TestCase):
             "fix(siglary): bound negative-first keyword matches",
             "test(siglary): reject positive-prefix false positives",
             "fix(siglary): recognize reject as an action verb",
+            "fix(siglary): register consolidate as an action verb",
             "test(siglary): cover reject action subject",
         )
         for subject in subjects:

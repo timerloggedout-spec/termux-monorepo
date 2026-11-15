@@ -881,7 +881,7 @@ def _run(args) -> int:
         for issue in issues
     )
     census_calls = max(1, (len(issues) // 100) + 1)
-    estimated_calls_per_rfp = (6 + census_calls + MAX_LEDGER_COMMENT_PAGES
+    estimated_calls_per_rfp = (7 + census_calls + MAX_LEDGER_COMMENT_PAGES
                                + (5 + MAX_PACKAGE_FILES if package_bound else 0))
     plan = cadence(registry, readings, len(issues), args.depth,
                    api_remaining=remaining, per_rfp_calls=estimated_calls_per_rfp)

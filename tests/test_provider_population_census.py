@@ -19,6 +19,7 @@ def fixture_repo(tmp_path: Path) -> Path:
             "inference_wiring": {"wired_invoke": {"count": 92, "of": 93},
                                  "not_wired": {"count": 0}},
             "endpoint_census": {"verified_floor": 7341, "counted_at": "2026-11-01 (Actions census)"},
+            "inference_availability": {"summary": {"records": 95, "by_class": {"wired-unproven": 23, "triggerable": 2, "inference-only": 65, "proven": 5}, "availability_covered": 16, "availability_secret_only": 1, "availability_not_covered": 74, "batch_endpoint_wired": 14}},
         }}
     })
     write_json(tmp_path, "ops/quota/registry.json", {"services": []})
@@ -55,6 +56,9 @@ def test_population_census_keeps_all_denominators_separate(tmp_path):
     assert canonical["invoke_wiring_record_denominator"] == 93
     assert canonical["invoke_wiring_excluded_by_kind_records"] == 1
     assert canonical["endpoint_verified_floor"] == 7341
+    assert canonical["inference_availability_records"] == 95
+    assert canonical["availability_covered_records"] == 16
+    assert canonical["availability_not_covered_records"] == 74
     assert report["adapter_population"]["workflow_menu_choices"] == 30
     assert report["adapter_population"]["menu_supported_by_native_adapter"] == 28
     assert report["g4f_population"]["catalog_fork_pairs_distinct"] == 4

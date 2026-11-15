@@ -15,18 +15,19 @@ unknown):
      `dispatch-claimed` absent. `dispatch-escalated` does NOT exclude:
      escalation means "unclaimed too long" and the executor IS the
      remedy. The claim (comment + label) is the exactly-once mutex.
-  2. arm selection — #5151 registry + census feed: eligible arms in
-     registry order, free-tier before credit-funded; quota-terminal
-     arms skipped for the arm-day. #5160 clause 5: no arm is a fallback
+  2. arm selection — #5151 registry + census + fresh pool-cadence feed:
+     only arms in the cadence feed's eligible set may dispatch. Registry
+     order and free-tier-before-credit-funded preference remain. #5160
+     clause 5: no arm is a fallback
      of record -- Gemini competes on the same gate; when it is the sole
      eligible arm the fire is stamped `constrained-arm` (never a
      preference).
-  3. quota gate — per-arm budgets read from the registry's Cadence
-     LEDGER (#5152) mirror + the census feed's quota_terminal flags.
-     Draws come from the usage record when present; an absent or
-     stale usage record means `quota_unknown` -> HOLD (the #5160
-     addendum: until #5113 T2 publishes the ledger read contract,
-     ledger reads are unavailable; do not invent a metering leg).
+  3. quota gate — provider-quota-backed arms require per-arm budgets,
+     draws, and reset evidence. Explicit `daily_pool_no_provider_quota`
+     arms instead require a matching pool/focus allocation, fresh shared
+     pool snapshot, reset evidence, and experiment label; no provider
+     quota counter is required. Missing pool evidence means `pool_unknown`,
+     not `quota_unknown`. Unknown quota is never treated as no quota.
      Probe amendment (fold c.6842923762): a quota_unknown outcome
      earns one bounded validation probe per run, and a still-valid
      quota_probe measurement in the #5230 headroom feed converts
@@ -40,10 +41,11 @@ unknown):
      the pre-flight of record is fleet-draw coverage + last
      quota_terminal + reset window, COVERAGE-STAMPED, UPPER-BOUND
      only (QDesk #5152 c.6825931792): unstamped coverage -> HOLD,
-     upper-bound headroom < 1 -> HOLD. A discovered 429 is a
-     pre-flight defect datum, NOT a probe verdict.
-  5. census freshness — a census older than CENSUS_MAX_AGE_HOURS
-     makes eligibility unknown -> HOLD `census_stale`.
+     upper-bound headroom < 1 -> HOLD. No-provider-quota pool stamps carry
+     the pool snapshot and explicitly mark numeric headroom not applicable.
+     A discovered 429 is a pre-flight defect datum, NOT a probe verdict.
+  5. freshness — a census older than CENSUS_MAX_AGE_HOURS or cadence feed
+     older than CADENCE_MAX_AGE_SECONDS makes eligibility unknown -> HOLD.
 
 One conversion per run by default (max_conversions=1): minimal blast
 radius, one auditable stamp set per run. The workflow raises
@@ -125,10 +127,9 @@ def census_eligible_arms(registry: dict, census: dict, now: datetime,
     """Return (eligible arms, hold reason or None).
 
     Eligible = registry status eligible AND census verdict passed AND
-    not quota-terminal for the arm-day. When supplied, the fresh
-    pool-cadence/v1 feed is an additional required intersection: an arm
-    absent from cadence.pool.eligible cannot dispatch. This makes the
-    cadence route/entitlement/quota-or-pool decision authoritative.
+    not quota-terminal for the arm-day AND membership in the fresh
+    pool-cadence/v1 feed's pool.eligible set. This makes the cadence
+    route/entitlement/quota-or-pool decision authoritative.
     """
     generated_at = census.get("generated_at")
     if not generated_at:

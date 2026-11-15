@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T03:25:48Z",
+  "generated_at": "2026-11-15T04:08:21Z",
   "lane": "help-wanted",
   "project": "help-wanted-with-tribute",
   "receipts": 3962,
@@ -42460,7 +42460,7 @@
   },
   "control_surface": {
     "schema_version": "help-wanted.control-surface.v2",
-    "source_sha": "0d41a3b0a6d856172dece60ee1b16d8e72c64b32",
+    "source_sha": "cd3a463999abe76009126d431f6bb855a0a6fe25",
     "source_ref": "master",
     "history_complete": false,
     "history_coverage": "lane-local-complete; repository-wide historical accountability requires sweep-accountability backfill",
@@ -42494,12 +42494,12 @@
   },
   "evolution": [
     {
-      "sha": "0d41a3b0a6d856172dece60ee1b16d8e72c64b32",
-      "short_sha": "0d41a3b0a6d8",
-      "date": "2026-11-15T03:25:12Z",
-      "author": "repo-tracking-collect",
-      "subject": "ops(tracking): refresh repo tracking surface (auto-derived)",
-      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/0d41a3b0a6d856172dece60ee1b16d8e72c64b32"
+      "sha": "cd3a463999abe76009126d431f6bb855a0a6fe25",
+      "short_sha": "cd3a463999ab",
+      "date": "2026-11-15T04:06:56Z",
+      "author": "termux-monorepo sweep",
+      "subject": "chore(ops): record sweep accountability receipt",
+      "url": "https://github.com/timerloggedout-spec/termux-monorepo/commit/cd3a463999abe76009126d431f6bb855a0a6fe25"
     }
   ],
   "pipeline": [
@@ -42513,45 +42513,44 @@
   ],
   "tribute_audit": {
     "schema_version": "help-wanted.tribute-audit.v1",
-    "generated_at": "2026-11-15T03:26:13.801142+00:00",
-    "source_status_generated_at": "2026-11-15T03:25:48Z",
+    "generated_at": "2026-11-15T04:08:46.568888+00:00",
+    "source_status_generated_at": "2026-11-15T04:08:21Z",
     "source_tribute_count": 132,
     "unique_pr_count": 132,
     "audited_pr_count": 130,
-    "audited_this_run_count": 25,
+    "audited_this_run_count": 24,
     "attempted_this_run_count": 25,
     "deferred_this_run_count": 0,
     "unknown_this_run_count": 0,
-    "partial_this_run_count": 0,
+    "partial_this_run_count": 1,
     "audited_this_run_pr_urls": [
-      "https://github.com/StellarCanary/Protocol-Canary/pull/345",
-      "https://github.com/arsova-mx/OpenPoker/pull/69",
-      "https://github.com/Agora-Events/agora/pull/1518",
-      "https://github.com/tarantool/tarantool/pull/13285",
-      "https://github.com/inferstep/ATLAS/pull/278",
-      "https://github.com/bmad-code-org/bmad-loop/pull/819",
-      "https://github.com/Hugelidus/Pointcast/pull/48",
-      "https://github.com/mergepay/mergepay-web/pull/552",
-      "https://github.com/olcf/olcf-test-harness/pull/280",
-      "https://github.com/umn-adc/ATLAS/pull/42",
-      "https://github.com/lonestill/scope-launcher/pull/45",
-      "https://github.com/lonestill/onyx-launcher/pull/45",
-      "https://github.com/UnityChainxx/StellarHunts/pull/599",
-      "https://github.com/Stellar-songifi/Lyricsflip_server/pull/212",
-      "https://github.com/C-Address-Onboarding-Bridge/C-Address-Onboarding-Bridge-Backend/pull/587",
-      "https://github.com/vavallee/bindery/pull/2770",
-      "https://github.com/ApexChainx/ApexChainx-Contracts/pull/689",
-      "https://github.com/infagent/merl/pull/43",
-      "https://github.com/limelit-co/open/pull/32",
-      "https://github.com/sorotrail/SoroTrail/pull/943",
-      "https://github.com/DeltaV-Station/Delta-v/pull/6534",
-      "https://github.com/ussyalfaks/ahjoorxmr-contract/pull/872",
-      "https://github.com/FasterThanAi/ai-lead-generation-mvp/pull/34",
-      "https://github.com/ennouaimi/invoicr/pull/8",
-      "https://github.com/shadcn-labs/ogimagecn/pull/34"
+      "https://github.com/pyrite-wiki/pyrite/pull/198",
+      "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
+      "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
+      "https://github.com/Research-Astute/manus-ui-research-hub/pull/3",
+      "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
+      "https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1",
+      "https://github.com/search-astute-ly/manus-public-ui-research/pull/1",
+      "https://github.com/E-Timileyin/Sail-CLI/pull/23",
+      "https://github.com/Kilo-Org/agentic-path/pull/26",
+      "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
+      "https://github.com/w1977-0/open-stream-saver/pull/3",
+      "https://github.com/Vasudev-ai/Focusflow/pull/15",
+      "https://github.com/OrionStarAI/EasyCode/pull/53",
+      "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
+      "https://github.com/MergeFi/contracts/pull/374",
+      "https://github.com/EF-CHAIN/SendAm/pull/492",
+      "https://github.com/EF-CHAIN/SendAm/pull/607",
+      "https://github.com/SO4-Markets/so4-oracle/pull/1143",
+      "https://github.com/StellarLock/StellarLock/pull/865",
+      "https://github.com/KayStcx/KayStcx/pull/104",
+      "https://github.com/TrusTrove/TrusTrove-contract/pull/860",
+      "https://github.com/laugh-tales/starpass-contracts/pull/59",
+      "https://github.com/Saidur-droid/MergeEarn/pull/76",
+      "https://github.com/fsr5-fhaachen/portals/pull/948"
     ],
     "not_audited_count": 2,
-    "audit_window_start": 99,
+    "audit_window_start": 124,
     "audit_window_size": 25,
     "stages": {
       "implementation_unproven": 7,
@@ -42575,7 +42574,7 @@
     "items": [
       {
         "pr_url": "https://github.com/E-Timileyin/Sail-CLI/pull/23",
-        "audited_at": "2026-11-14T23:24:52.414212+00:00",
+        "audited_at": "2026-11-15T04:08:28.801179+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42606,7 +42605,7 @@
       },
       {
         "pr_url": "https://github.com/Kilo-Org/agentic-path/pull/26",
-        "audited_at": "2026-11-14T23:24:53.632470+00:00",
+        "audited_at": "2026-11-15T04:08:30.265009+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42637,7 +42636,7 @@
       },
       {
         "pr_url": "https://github.com/mangiapanejohn-dev/MOBIUS-Searcher/pull/7",
-        "audited_at": "2026-11-14T23:24:54.685077+00:00",
+        "audited_at": "2026-11-15T04:08:31.308176+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42668,7 +42667,7 @@
       },
       {
         "pr_url": "https://github.com/w1977-0/open-stream-saver/pull/3",
-        "audited_at": "2026-11-14T23:24:55.552103+00:00",
+        "audited_at": "2026-11-15T04:08:32.274237+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42699,7 +42698,7 @@
       },
       {
         "pr_url": "https://github.com/Vasudev-ai/Focusflow/pull/15",
-        "audited_at": "2026-11-14T23:24:56.493059+00:00",
+        "audited_at": "2026-11-15T04:08:33.360562+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42730,7 +42729,7 @@
       },
       {
         "pr_url": "https://github.com/OrionStarAI/EasyCode/pull/53",
-        "audited_at": "2026-11-14T23:24:57.429815+00:00",
+        "audited_at": "2026-11-15T04:08:34.311117+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42761,7 +42760,7 @@
       },
       {
         "pr_url": "https://github.com/ThinkLikeAFounder/pulsartrack/pull/898",
-        "audited_at": "2026-11-14T23:24:58.519656+00:00",
+        "audited_at": "2026-11-15T04:08:35.331100+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42792,7 +42791,7 @@
       },
       {
         "pr_url": "https://github.com/MergeFi/contracts/pull/374",
-        "audited_at": "2026-11-14T23:24:59.680354+00:00",
+        "audited_at": "2026-11-15T04:08:36.583830+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42823,7 +42822,7 @@
       },
       {
         "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/492",
-        "audited_at": "2026-11-14T23:25:00.620339+00:00",
+        "audited_at": "2026-11-15T04:08:37.515703+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42854,7 +42853,7 @@
       },
       {
         "pr_url": "https://github.com/EF-CHAIN/SendAm/pull/607",
-        "audited_at": "2026-11-14T23:25:01.583782+00:00",
+        "audited_at": "2026-11-15T04:08:38.329221+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42885,7 +42884,7 @@
       },
       {
         "pr_url": "https://github.com/SO4-Markets/so4-oracle/pull/1143",
-        "audited_at": "2026-11-14T23:25:02.511886+00:00",
+        "audited_at": "2026-11-15T04:08:39.094262+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42916,7 +42915,7 @@
       },
       {
         "pr_url": "https://github.com/StellarLock/StellarLock/pull/865",
-        "audited_at": "2026-11-14T23:25:03.457405+00:00",
+        "audited_at": "2026-11-15T04:08:40.044095+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42947,7 +42946,7 @@
       },
       {
         "pr_url": "https://github.com/KayStcx/KayStcx/pull/104",
-        "audited_at": "2026-11-14T23:25:04.471119+00:00",
+        "audited_at": "2026-11-15T04:08:40.829558+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -42978,7 +42977,7 @@
       },
       {
         "pr_url": "https://github.com/TrusTrove/TrusTrove-contract/pull/860",
-        "audited_at": "2026-11-14T23:25:05.357665+00:00",
+        "audited_at": "2026-11-15T04:08:41.753341+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -43008,7 +43007,7 @@
       },
       {
         "pr_url": "https://github.com/laugh-tales/starpass-contracts/pull/59",
-        "audited_at": "2026-11-14T23:25:06.271170+00:00",
+        "audited_at": "2026-11-15T04:08:42.629783+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -43039,7 +43038,7 @@
       },
       {
         "pr_url": "https://github.com/Saidur-droid/MergeEarn/pull/76",
-        "audited_at": "2026-11-14T23:25:07.246456+00:00",
+        "audited_at": "2026-11-15T04:08:43.704920+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -43070,7 +43069,7 @@
       },
       {
         "pr_url": "https://github.com/fsr5-fhaachen/portals/pull/948",
-        "audited_at": "2026-11-14T23:25:08.269575+00:00",
+        "audited_at": "2026-11-15T04:08:45.370485+00:00",
         "stage": "implementation_unproven",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46435,7 +46434,7 @@
       },
       {
         "pr_url": "https://github.com/pyrite-wiki/pyrite/pull/198",
-        "audited_at": "2026-11-14T22:23:26.132700+00:00",
+        "audited_at": "2026-11-15T04:08:21.474615+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46466,7 +46465,7 @@
       },
       {
         "pr_url": "https://github.com/vigneshv1cky/alphadesk-terminal/pull/12",
-        "audited_at": "2026-11-14T22:23:26.812517+00:00",
+        "audited_at": "2026-11-15T04:08:22.246764+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46496,7 +46495,7 @@
       },
       {
         "pr_url": "https://github.com/DioNanos/codex-termux/pull/27",
-        "audited_at": "2026-11-14T22:23:27.480617+00:00",
+        "audited_at": "2026-11-15T04:08:23.192438+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "files_truncated",
@@ -46528,7 +46527,7 @@
       },
       {
         "pr_url": "https://github.com/chahe-dridi/vscode-agent-bell/pull/225",
-        "audited_at": "2026-11-14T22:23:28.367448+00:00",
+        "audited_at": "2026-11-15T04:08:24.248271+00:00",
         "stage": "closed_unmerged",
         "evidence_gaps": [
           "solution_proof_missing",
@@ -46559,7 +46558,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-research-hub/pull/3",
-        "audited_at": "2026-11-14T22:23:29.187275+00:00",
+        "audited_at": "2026-11-15T04:08:25.808355+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46589,7 +46588,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-research-hub/pull/1",
-        "audited_at": "2026-11-14T22:23:29.816915+00:00",
+        "audited_at": "2026-11-15T04:08:26.534067+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46619,7 +46618,7 @@
       },
       {
         "pr_url": "https://github.com/Research-Astute/manus-ui-adapter-lab/pull/1",
-        "audited_at": "2026-11-14T22:23:30.498871+00:00",
+        "audited_at": "2026-11-15T04:08:27.303735+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46649,7 +46648,7 @@
       },
       {
         "pr_url": "https://github.com/search-astute-ly/manus-public-ui-research/pull/1",
-        "audited_at": "2026-11-14T23:24:51.499182+00:00",
+        "audited_at": "2026-11-15T04:08:28.059458+00:00",
         "stage": "accepted",
         "evidence_gaps": [
           "solution_proof_missing"
@@ -46681,7 +46680,7 @@
   },
   "outcome_slo": {
     "schema": "tribute-outcomes/v1",
-    "generated_at": "2026-11-15T03:26:14Z",
+    "generated_at": "2026-11-15T04:08:47Z",
     "source": "live:search-api",
     "author": "timerloggedout-spec",
     "query": "is:pr author:timerloggedout-spec -user:timerloggedout-spec (merged | closed-unmerged | open)",
@@ -46815,6 +46814,6 @@
       "patch_deadline_days": 14
     },
     "pool_size": 136,
-    "generated_at": "2026-11-15T03:26:30Z"
+    "generated_at": "2026-11-15T04:09:02Z"
   }
 }

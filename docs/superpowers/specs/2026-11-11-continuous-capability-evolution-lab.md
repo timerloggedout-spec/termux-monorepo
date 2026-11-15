@@ -187,7 +187,7 @@ Track discovery-to-classification lead time, fraction of candidates with immutab
 A candidate may be novel but low-value, high-risk, unmaintained, incompatible or duplicative. Keep its disposition and evidence so it can be reconsidered when internal demand or external maturity changes. Rejected/deferred candidates are not erased; supersession and reconsideration are append-only state transitions.
 
 
-## 11. SIP-001 candidate cohort linkage (2026-11-14)
+## 15. SIP-001 candidate cohort linkage (2026-11-14)
 
 The Simulation Intelligence Plane candidate cohort is registered in `docs/rfps/simulation-intelligence-plane/candidate-queue.json` and cross-indexed in Integration Intelligence and the FOSS Foresight procurement registry. CEEL consumes that queue; it does not create a second copy of the candidate ledger.
 

@@ -16,6 +16,7 @@ on:
       - 'tests/test_paper_accounting*'
       - 'tests/test_research_paper_workflow.py'
       - 'scripts/ci/research_paper_receipt.py'
+      - 'scripts/telemetry/research_evidence.py'
       - '.github/workflows/research-paper-validation.yml'
       - '.github/workflows/continuous-evaluation.yml'
   push:
@@ -54,7 +55,7 @@ jobs:
       - name: Repository gate on candidate
         run: python3 scripts/ci/repo_gate.py --base d2778bcc25966533ccd2f5bc1991aab672fb9cbe > /tmp/research-paper-evidence/repo-gate.txt 2>&1
       - name: Require clean tracked candidate after tests
-        run: git diff --exit-code HEAD --
+        run: test -z "$(git status --porcelain --untracked-files=all)" || { git status --short --untracked-files=all; exit 1; }
       - name: Termux smoke on candidate (Linux only)
         run: python3 scripts/ci/termux_smoke.py --json > /tmp/research-paper-evidence/termux-smoke.json
       - name: Bind receipt to candidate, workflow and artifact hashes
@@ -97,7 +98,7 @@ jobs:
           SWARMS_RS_TEST_BINARY: ${{ github.workspace }}/integrations/swarms/rust/target/debug/termux-swarms-rs-worker
         run: python -m pytest -q tests/test_swarms_rust_hub.py --junitxml=/tmp/research-paper-rust/rust-hub-tests.xml
       - name: Require clean tracked candidate after Rust tests
-        run: git diff --exit-code HEAD --
+        run: test -z "$(git status --porcelain --untracked-files=all)" || { git status --short --untracked-files=all; exit 1; }
       - name: Bind Rust receipt to candidate and artifacts
         if: always()
         run: python3 scripts/ci/research_paper_receipt.py --output /tmp/research-paper-rust/receipt.json $(find /tmp/research-paper-rust -maxdepth 1 -type f ! -name receipt.json -printf ' --artifact %p')

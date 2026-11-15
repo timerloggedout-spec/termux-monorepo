@@ -494,10 +494,20 @@ def chat_completions(request: ChatCompletionRequest, raw_request: Request) -> An
         admission.mark_sent(reservation)
         sent = True
         response = dispatch()
-        usage = response.get("usage") or {}
-        actual_tokens = usage.get("total_tokens")
-        if actual_tokens is None and "input_tokens" in usage and "output_tokens" in usage:
-            actual_tokens = usage["input_tokens"] + usage["output_tokens"]
+        usage = response.get("usage") if isinstance(response, dict) else None
+        actual_tokens = None
+        if isinstance(usage, dict):
+            reported_total = usage.get("total_tokens")
+            if reported_total is not None:
+                if type(reported_total) is int and 0 <= reported_total <= 2**31 - 1:
+                    actual_tokens = reported_total
+            elif "input_tokens" in usage and "output_tokens" in usage:
+                input_tokens = usage["input_tokens"]
+                output_tokens = usage["output_tokens"]
+                if (type(input_tokens) is int and type(output_tokens) is int
+                        and input_tokens >= 0 and output_tokens >= 0
+                        and input_tokens + output_tokens <= 2**31 - 1):
+                    actual_tokens = input_tokens + output_tokens
         admission.reconcile(reservation, actual=1, actual_tokens=actual_tokens)
     except BaseException as exc:
         status = getattr(exc, "status", getattr(exc, "status_code", None))

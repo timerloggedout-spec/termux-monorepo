@@ -75,6 +75,21 @@ class HubServerTests(unittest.TestCase):
             {"role": "assistant", "content": "deepseek:ok"},
         )
 
+    def test_malformed_provider_usage_does_not_discard_successful_completion(self):
+        module = load_app()
+        module.runtime.complete_wrapper = lambda provider, request: 'usage-shape-fixture'
+        module.completion_response = lambda model, content: {
+            'id': 'usage-fixture', 'object': 'chat.completion', 'model': model,
+            'choices': [{'message': {'role': 'assistant', 'content': content}}],
+            'usage': {'total_tokens': 'not-an-integer', 'input_tokens': 2, 'output_tokens': 3},
+        }
+        response = self.client(module).post(
+            '/v1/chat/completions',
+            json={'model': 'wrapper/deepseek', 'messages': [{'role': 'user', 'content': 'hello'}]},
+        )
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()['choices'][0]['message']['content'], 'usage-shape-fixture')
+
     def test_stream_request_emits_terminal_done_event(self):
         module = load_app()
         module.runtime.complete_wrapper = lambda provider, request: "streamed"

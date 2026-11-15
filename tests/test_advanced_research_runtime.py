@@ -85,7 +85,8 @@ def test_genuine_source_director_workers_use_stable_distinct_ids(tmp_path):
     assert "corr-runtime-request-1" in ids and "corr-runtime-request-2" in ids
     assert all(row[0] == "wrapper/deepseek" for row in inference_rows)
     assert marker.exists() and Path(marker.read_text()) != Path.cwd()
-    assert Path(marker.read_text()).is_relative_to(Path("/tmp"))
+    import tempfile
+    assert Path(marker.read_text()).is_relative_to(Path(tempfile.gettempdir()).resolve())
     assert result["search_calls"] == 2
 
 

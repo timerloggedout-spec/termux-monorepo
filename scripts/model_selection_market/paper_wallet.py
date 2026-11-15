@@ -88,6 +88,8 @@ def project_snapshot(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
                              "offer_to": trade.get("to", ""), "offer_at": trade.get("at", ""),
                              "note": "Offer is observational; no transfer or settlement"})
     accounting = snapshot.get("accounting", {})
+    if not isinstance(accounting, dict):
+        raise ValueError("invalid authoritative accounting snapshot")
     if accounting:
         if type(accounting.get("schema_version")) is not int or accounting.get("schema_version") != 1 or not isinstance(accounting.get("accounts"), dict):
             raise ValueError("invalid authoritative accounting snapshot")
@@ -119,8 +121,15 @@ def project_snapshot(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
             row["reservation_ref"] = ','.join(sorted(rid for rid, r in reservations.items() if reference and r['market_ref'] == reference))
             for event in events:
                 wrapper = event.get('record', {})
-                record = wrapper.get('record', {}) if isinstance(wrapper, dict) else {}
-                if (row['record_type'] == 'stake' and event.get('type') == 'market_bet' and record.get('entry_id') == row.get('entry_id')) or (row['record_type'] == 'card' and event.get('type') == 'market_card' and record.get('card_id') == row.get('card_id')) or (row['record_type'] == 'offer' and event.get('type') == 'market_offer' and record.get('card_id') == row.get('card_id') and wrapper.get('offer', {}).get('at') == row.get('offer_at')):
+                if not isinstance(wrapper, dict):
+                    raise ValueError('invalid authoritative journal event record')
+                record = wrapper.get('record', {})
+                if not isinstance(record, dict):
+                    raise ValueError('invalid authoritative market record')
+                offer = wrapper.get('offer', {})
+                if not isinstance(offer, dict):
+                    raise ValueError('invalid authoritative offer record')
+                if (row['record_type'] == 'stake' and event.get('type') == 'market_bet' and record.get('entry_id') == row.get('entry_id')) or (row['record_type'] == 'card' and event.get('type') == 'market_card' and record.get('card_id') == row.get('card_id')) or (row['record_type'] == 'offer' and event.get('type') == 'market_offer' and record.get('card_id') == row.get('card_id') and offer.get('at') == row.get('offer_at')):
                     row['event_ref'] = event['hash']
     for row in rows:
         row["paper_only"] = PAPER_ONLY_NOTE

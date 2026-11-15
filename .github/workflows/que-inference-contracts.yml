@@ -8,6 +8,8 @@ on:
       - 'scripts/provider_availability_probe.py'
       - 'scripts/ops/auto_quota_cadence.py'
       - 'scripts/ops/dispatch_executor.py'
+      - 'scripts/ops/provider_validation_stamp.py'
+      - 'tests/test_provider_validation_stamp.py'
       - 'tests/test_provider_invoke_free_only.py'
       - '.github/workflows/provider-inference-validation.yml'
       - 'docs/ops/tasks/inference-health-smoke.md'
@@ -45,4 +47,5 @@ jobs:
             tests/test_auto_quota_cadence.py \
             tests/test_dispatch_executor.py \
             tests/test_dispatch_executor_workflow.py \
+            tests/test_provider_validation_stamp.py \
             tests/test_provider_model_catalog.py

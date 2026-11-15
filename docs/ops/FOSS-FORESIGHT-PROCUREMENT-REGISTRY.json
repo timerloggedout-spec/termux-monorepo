@@ -1006,6 +1006,37 @@
         "not-yet-verified"
       ],
       "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
+    },
+    {
+      "id": "mirofish-refactor-fork",
+      "name": "mj3b/MiroFish refactoring fork",
+      "category": "graph-to-agent-workbench-architecture",
+      "horizon": "H1",
+      "evidence_status": "ATTRIBUTED",
+      "license": "AGPL-3.0 — verify pinned commit and fork delta",
+      "canonical_sources": [
+        "https://github.com/mj3b/MiroFish"
+      ],
+      "capabilities": [
+        "workbench-core-separation",
+        "resource-adapters",
+        "composable-tools",
+        "thin-api-shells",
+        "graph-storage-abstraction"
+      ],
+      "lock_in_risk": "MEDIUM",
+      "egress_risk": "MEDIUM",
+      "reproducibility": "MEDIUM",
+      "procurement_action": "ARCHITECTURE_REFERENCE_ONLY_LICENSE_REVIEW_REQUIRED",
+      "unresolved": "Fork commit, exact license state, dependency delta, storage behavior and API stability require pinned verification; no source reuse authorized.",
+      "agent_interoperability": [],
+      "deployment": [
+        "research-only"
+      ],
+      "platforms": [
+        "not-yet-verified"
+      ],
+      "repository_evidence": "docs/rfps/simulation-intelligence-plane/candidate-queue.json"
     }
   ]
 }

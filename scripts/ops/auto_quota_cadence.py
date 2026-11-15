@@ -335,7 +335,7 @@ def derive(
             if snap_budget:
                 reset_window = snap_budget.get("reset_window")
                 reset_tz = snap_budget.get("reset_tz")
-            total = _budget_total(budget)
+            total = _budget_total(budget, quota_class)
             if total is None:
                 reasons.append("quota_unbudgeted")
             elif not snapshot_fresh:

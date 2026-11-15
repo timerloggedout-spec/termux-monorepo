@@ -148,6 +148,8 @@ The writer role must be named `integration_ingest` or `lane_events_writer`. The 
 Expected grants for an already-provisioned writer role:
 
 ```sql
+REVOKE ALL PRIVILEGES ON integration_events, integration_measurements, integration_ingest_batches FROM integration_ingest;
+REVOKE CREATE ON SCHEMA public FROM integration_ingest;
 GRANT USAGE ON SCHEMA public TO integration_ingest;
 GRANT SELECT, INSERT ON integration_events TO integration_ingest;
 GRANT SELECT, INSERT ON integration_measurements TO integration_ingest;
@@ -155,7 +157,7 @@ GRANT SELECT, INSERT ON integration_ingest_batches TO integration_ingest;
 GRANT TEMP ON DATABASE neondb TO integration_ingest;
 ```
 
-The writer receives no UPDATE, DELETE, TRUNCATE, CREATE or ownership privileges. The read role receives SELECT only. The migration role is not used by runtime adapters.
+The writer role must not own these tables/schema and must not inherit `neondb_owner` or a migration role. It receives no UPDATE, DELETE, TRUNCATE or CREATE privileges. The read role receives SELECT only. The migration role is not used by runtime adapters.
 
 ## 7. Bounded ingestion policy
 
@@ -295,7 +297,7 @@ LANE_EVENTS_MIGRATION_DATABASE_URL=<operator-provisioned-migration-url> \
 
 LANE_EVENTS_WRITER_DATABASE_URL=<dedicated-writer-url> \
   python3 scripts/ops/integration_event.py record \
-  --events-file events.jsonl --measurements-file measurements.jsonl \\
+  --events-file events.jsonl --measurements-file measurements.jsonl \
   --batch-metadata-file batch-cursors.json
 
 LANE_EVENTS_READONLY_DATABASE_URL=<read-only-url> \

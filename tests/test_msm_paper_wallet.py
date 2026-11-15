@@ -81,6 +81,24 @@ class TestPaperWallet(unittest.TestCase):
             self.assertEqual(raised.exception.code, 2)
             self.assertEqual(destination.read_text(), "previous CSV remains intact")
 
+    def test_invalid_authoritative_accounting_and_offer_shapes_are_rejected(self):
+        snapshot = self.snapshot()
+        snapshot['accounting'] = []
+        with self.assertRaises(ValueError):
+            project_snapshot(snapshot)
+
+        snapshot = self.snapshot()
+        event_hash = 'a' * 64
+        snapshot['accounting'] = {
+            'schema_version': 1,
+            'accounts': {},
+            'reservations': {},
+            'events': [{'version': 1, 'hash': event_hash, 'record': {'offer': []}}],
+            'head': event_hash,
+        }
+        with self.assertRaises(ValueError):
+            project_snapshot(snapshot)
+
     def test_invalid_stakes_rejected_without_mutating_market(self):
         for value in (0, -1, float('nan'), float('inf'), True, '1'):
             graph = MarketGraph()

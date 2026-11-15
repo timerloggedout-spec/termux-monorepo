@@ -70,8 +70,12 @@ def build_stamp(receipt: dict, *, run_id: str, run_attempt: str, run_url: str, e
         "arm_state": "live" if status == "inference_validated" else ("degraded" if status == "failed" else "unknown"),
         "selection": {"scout": "provider-inference-validation", "manager": "QUE",
                       "request": "5454", "arm": provider,
-                      "basis": "current Actions policy-gated no-cost inference smoke; cadence gate pending",
-                      "talent_class": "native-provider", "exploration": False},
+                      "basis": "policy-gated no-cost inference smoke; policy assertions are not provider verification; cadence gate pending",
+                      "talent_class": "native-provider", "exploration": False,
+                      "dispatch_eligible": False,
+                      "terms_accepted": receipt.get("terms_accepted"),
+                      "entitlement_verified": receipt.get("entitlement_verified"),
+                      "quota_class": receipt.get("quota_class"), "pool_id": receipt.get("pool_id")},
         "origin": "live",
     }
 

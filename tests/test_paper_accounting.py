@@ -139,7 +139,8 @@ class DurableRecoveryTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    p=str(Path(d)/"j"); code="from scripts.model_selection_market.accounting import PaperMarket; import os; m=PaperMarket(%r);m.issue('issued','x',3,'crash');os._exit(9)"%p
    r=subprocess.run([sys.executable,'-c',code],cwd=os.getcwd());self.assertEqual(r.returncode,9)
-   self.assertEqual(PaperMarket(p).balances()['x']['balance'],3)\n
+   self.assertEqual(PaperMarket(p).balances()['x']['balance'],3)
+
  def test_lock_failure_releases_process_lock_for_other_threads(self):
   import scripts.model_selection_market.accounting as accounting
   first_done = threading.Event()

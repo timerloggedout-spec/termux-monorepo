@@ -58,7 +58,20 @@ The following public Docker Hub results surfaced during discovery. These are **c
 - `credkellar/reflashx-exploit-bomb` — source attribution surfaced under a different GitHub owner (`kimanicollier44-cmyk`); record as a provenance anomaly, not as a CredKellar-owned source.
 - Other surfaced names include `commit`, `intuition`, `ultra-compiler`, `deconstruction`, `connectionx`, `kellar-ecosystem`, `guardrailx`, `cve-re`, `netx`, `sysadmin-footprint-mask`, `quantum-brutal-force`, and `lte-6g`. Confirm exact current names and metadata during the complete profile census.
 
-The linked Docker Hub profile advertised 90 repositories over three pages at the time of inspection. This proposal does **not** claim that all 90 were inspected. Complete all pages, preserve pagination/census evidence, and distinguish owned, starred, mirrored, and merely published/linked objects where the platform exposes those distinctions.
+The linked Docker Hub profile advertises 90 repositories over three pages. Page 1 (30 entries) is now captured; pages 2–3 are not yet inspected. Complete all pages, preserve pagination/census evidence, and distinguish owned, starred, mirrored, and merely published/linked objects where the platform exposes those distinctions.
+
+
+### 3.3 Docker Hub profile page 1 — expanded evidence
+
+A fresh profile-page read shows **1–30 of 90 repositories** and identifies the Docker Hub community user as Credkellar-boop / Darion Kellar, with a linked GitHub URL for `ddkellar01`. The exact 30 visible repository names and publisher descriptions are preserved in `DOCKERHUB-PROFILE-PAGE-1.md`. This is a page-1 observation only; pages 2 and 3 remain outstanding.
+
+The first page expands the ecosystem beyond the two initial RE tools. Notable candidate clusters include:
+- **OmniStream:** 14 related service images (ingest, transcoding, streaming, metadata, auth, API gateway, analytics and social adapters); treat as one platform family until service boundaries and source are mapped.
+- **Security / RE adjacent:** `llm-brutalforce-10k`, `terms-x-conditions`, `neurobypass`, `rhea-max-payout`, `mon-ultra-matrix`, `monad-ultra-infinite-matrix`.
+- **Sensitive-data / privacy review:** `facevoiceid` (biometric claims), `prism-vortex` (identity/geospatial/telemetry claims), `ommihear-ai` (audio/health-adjacent context).
+- **Large orchestration claims:** `agents-xcorps` and `llm-brutalforce-10k`; resource, concurrency and action permissions require inspection.
+
+The candidate JSON now contains 19 prioritized candidate records plus a 30-name page-1 profile snapshot. It is intentionally not a 90-repository complete inventory. The connected GitHub repository search returned zero results for the bare `ddkellar01` and `credkellar` queries; this is recorded as a search limitation, not proof that the accounts or repositories do not exist.
 
 ## 4. Why this belongs in the existing RE taxonomy
 

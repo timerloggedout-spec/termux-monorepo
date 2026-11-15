@@ -153,7 +153,9 @@ test('quota dispatcher has demand wakes and schedule-only phase windows', () => 
   assert.match(workflow, /complete-force-request:/);
   assert.doesNotMatch(workflow, /workflow_dispatch:/);
   assert.doesNotMatch(workflow, /force_lane/);
-  assert.match(workflow, /cancel-in-progress: false/);
+  // The tree is an idempotent re-evaluation: cancel stale in-flight cycles.
+  // The 30-minute schedule is the backstop for any cancelled cadence work.
+  assert.match(workflow, /cancel-in-progress: true/);
   assert.match(workflow, /issue_comment' && !force/);
 });
 

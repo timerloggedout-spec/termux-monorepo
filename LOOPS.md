@@ -7,7 +7,7 @@ Reusable, bounded agent workflows for `termux-monorepo`. Follow the loop's scope
 - **Loop ID:** `QUE-PROVIDER-ACTIVATION`
 - **Purpose:** Reconcile the complete inference-provider population, validate every configured inference arm, classify quota versus daily-pool access correctly, project eligible arms into QUE, and verify end-to-end dispatch.
 - **Trigger:** Explicit owner request such as `/continue`, `BIUDL`, or a manually initiated run.
-- **Finite run boundary:** One pass over the current canonical provider catalogs, provider protocol/extension registries, exact admission-policy entries, configured build arms, and the separately identified g4f model-pair population. Each exact policy-admitted provider/model receives at most one bounded health invocation in a run. Stop when every discovered/configured entry has an explicit disposition or a stop condition is reached.
+- **Finite run boundary:** One pass over the current canonical provider catalogs, provider protocol/extension registries, exact admission-policy entries, configured build arms, and the separately identified g4f model-pair population. Each exact policy-admitted native provider/model receives at most one bounded health invocation in a run. The g4f population is processed only in explicit offset batches; never sweep all 9,588 pairs automatically. Stop when every discovered/configured entry has an explicit disposition or a stop condition is reached.
 
 ### Population boundaries
 
@@ -50,7 +50,8 @@ A daily-pool arm is dispatch-eligible only when the shared pool snapshot and cad
 
 ### Bounded execution rules
 
-- Use `.github/workflows/provider-inference-validation.yml` for the native-provider matrix.
+- Use `.github/workflows/provider-inference-validation.yml` for the dynamic matrix of all native provider adapters.
+- Use `.github/workflows/g4f-inference-smoke.yml` for explicit no-auth g4f batches. Default to the historical `working` source; for `universe`, require an explicit source/offset/limit selection and keep concurrency/timeout bounded. A g4f smoke receipt is health evidence only; it has `quota_class=unclassified` and `dispatch_eligible=false` until pool policy and allocation are independently established.
 - The matrix is policy-gated. If `LLM_API_HUB_PROVIDER_POLICY_JSON` is absent or has no exact admitted entry, no catalog or inference request is made for that provider.
 - At most one exact admitted model per provider per run; maximum parallelism 2; health prompt only; maximum output 16 tokens; one attempt; no paid fallback; no model fallback; no retries.
 - Catalog-only observations must remain `inference_status=not_attempted`.
@@ -64,7 +65,7 @@ A daily-pool arm is dispatch-eligible only when the shared pool snapshot and cad
 1. **Observe:** Capture base/head revision, workflow/check state, provider catalogs, availability receipts, admission policy, quota registry, pool allocations/snapshot, arm census, cadence feed, queue claims, and QDesk feed.
 2. **Inventory:** Build the deduplicated population with explicit source and denominator. Separate native providers, catalog-only entries, protocol extensions, aggregators, and g4f pairs.
 3. **Admit:** For each exact provider/model, validate policy fields and source evidence. Missing/expired policy, terms, credentials, capability, or no-cost evidence becomes `approval_required` or `deferred`; do not invoke.
-4. **Validate:** Run the bounded catalog/inference smoke only for admitted pairs. Record sanitized receipts; never persist completion text or secrets.
+4. **Validate:** Run the bounded catalog/inference smoke only for admitted native pairs. When explicitly requested, run one bounded g4f offset batch and record its sanitized receipt. Never persist completion text or secrets.
 5. **Classify:** Resolve provider quota versus daily-pool/no-provider-quota versus unknown/not-applicable. Check current snapshot freshness, allocation, reset, and coverage.
 6. **Project:** Reconcile validated exact models into the canonical build-arm projection. Reuse `research_providers.complete` adapters; do not create a parallel provider registry or auth/protocol implementation.
 7. **Gate:** Intersect provider policy, inference receipt freshness, capability, arm census, and `pool-cadence/v1`. Only the intersection may become dispatch-eligible.
@@ -110,6 +111,7 @@ A successful inference smoke alone is never terminal success for QUE activation.
 
 - [#5454 — Full inference-arm validation and activation](https://github.com/timerloggedout-spec/termux-monorepo/issues/5454)
 - [#5459 — Policy-gated inference smoke and daily-pool cadence](https://github.com/timerloggedout-spec/termux-monorepo/pull/5459)
+- [#5470 — g4f bounded offset-batch validation](https://github.com/timerloggedout-spec/termux-monorepo/issues/5470)
 - [#5468 — Full multi-protocol build-arm projection](https://github.com/timerloggedout-spec/termux-monorepo/issues/5468)
 - [#5151 — Multi-arm build routing](https://github.com/timerloggedout-spec/termux-monorepo/issues/5151)
 - [#5160 / #5152 — Free inference pool and per-arm quota ledger](https://github.com/timerloggedout-spec/termux-monorepo/issues/5160)

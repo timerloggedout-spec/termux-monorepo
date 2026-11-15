@@ -38,6 +38,16 @@ gap 1; QDesk addendum c.6802661589). Until then:
       "reset_tz": "America/Los_Angeles"
     }
   },
+  "pools": {
+    "daily-free-inference": {
+      "status": "available",
+      "observed_at": "2026-11-12T15:29:00Z",
+      "reset_window": "daily",
+      "reset_tz": "UTC",
+      "source_ref": "https://provider.example/terms/free-pool",
+      "experiment_label": "QUE-5454"
+    }
+  },
   "coverage": {
     "complete": true,
     "stamped_at": "2026-11-12T15:30:00Z",

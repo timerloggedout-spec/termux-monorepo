@@ -64,6 +64,24 @@ trusted default-branch checkout; body treated as data, never executed.
 Labels `research:provider` + `research:service` were created on the repo with
 this expansion (the umbrella `research` label pre-existed).
 
+## Expansion 3 — simulation candidate / RFP intake (SIP-001)
+
+The Simulation Intelligence Plane uses the existing QUE admission contract for RFP requests. It does **not** route through the provider-only `delphi:rfp` free-tier gate: that gate's oracle, quota facts, 5-role cost veto and shadow-lane award are specific to free-tier provider surfaces and are not a valid scoring model for simulation engines or orchestration frameworks.
+
+| Surface | Trigger | Input | Output / next stage |
+|---|---|---|---|
+| Simulation candidate queue | Committed `docs/rfps/simulation-intelligence-plane/candidate-queue.json` | Role-separated candidate IDs, upstream refs, existing repo evidence, license/runtime gaps | Research-only candidate inventory; no adoption inference |
+| Simulation RFP form | `.github/ISSUE_TEMPLATE/simulation-rfp.yml`, label `simulation:rfp`, `issues.opened/reopened` | Candidate IDs, objective, research question, comparison dimensions, constraints, evidence | First goes through `swarm-admission` / QUE; tier-2 route only after exact ADMITTED receipt |
+| SIP RFP intake route | `.github/workflows/simulation-rfp-intake.yml` after `swarm-admission` completes | One-run `issue-admission` artifact + issue body | Deterministic G0 intake receipt artifact + issue comment; invalid or deferred filings do not progress |
+| Delphi generation | Existing `delphi-generate.yml` explicit `workflow_dispatch` | Frozen `brief.json` + evidence-set JSON + candidate variant declarations | Generated proposal artifacts and Oracle cycle; separate from RFP intake |
+| DoE admission | Existing DoE family rule | Committed design record + EXPERIMENT-conforming run evidence | Only then becomes a DoE family campaign |
+
+The SIP intake parser validates candidate IDs against the committed candidate queue, refuses secret-like values, stamps a content hash, and explicitly records `external_calls=false`, `provider_calls=false`, and `doe_admission=not_admitted_until_design_record_and_run_evidence`. It does not invoke models or generate proposals automatically.
+
+The form's dispatch block is mandatory: `lane=simulation-intelligence-plane`, `que_tier=2`, `payload_class=simulation-rfp-research-intake`, `route=simulation-rfp-intake.yml`. The downstream route verifies the admission artifact's exact template filename and `decision=ADMITTED`; deferred, unmatched, missing or failed handoffs are ignored. No parallel queue or scheduler is introduced.
+
+Temporal and LangGraph are not new candidate integrations: their prior repository work is reconciled in the SIP candidate queue. Temporal's earlier RFP pass is recorded; do not duplicate it. Mesa and NetLogo remain existing research references with their current authority limitations.
+
 ## Expansion 2 — issue templates (`.github/ISSUE_TEMPLATE/`)
 
 | Template | Labels applied | Fields → pipeline inputs |

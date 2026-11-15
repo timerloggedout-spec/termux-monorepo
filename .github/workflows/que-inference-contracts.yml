@@ -9,6 +9,8 @@ on:
       - 'scripts/ops/auto_quota_cadence.py'
       - 'scripts/ops/dispatch_executor.py'
       - 'tests/test_provider_invoke_free_only.py'
+      - '.github/workflows/provider-inference-validation.yml'
+      - 'docs/ops/tasks/inference-health-smoke.md'
       - 'tests/test_provider_availability_probe.py'
       - 'tests/test_auto_quota_cadence.py'
       - 'tests/test_dispatch_executor.py'

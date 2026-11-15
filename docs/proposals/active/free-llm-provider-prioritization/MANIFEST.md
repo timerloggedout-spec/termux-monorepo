@@ -10,7 +10,8 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_prs: []
+related_issues: [5454, 5459, 5468]
+related_prs: [5459]
 related_branches: []
 gates_required: [repo-gate, termux-smoke]
 ---

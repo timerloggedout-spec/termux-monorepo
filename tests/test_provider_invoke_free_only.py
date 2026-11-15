@@ -150,7 +150,7 @@ def test_free_only_does_not_fallback_to_second_free_model_after_failure(tmp_path
         calls.append(model)
         raise research_providers.ProviderAdmissionError(404, "not served", "upstream_error")
     monkeypatch.setattr(research_providers, "complete", fail_once)
-    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--free-only"])
+    monkeypatch.setattr(sys, "argv", ["provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--out", str(tmp_path / "completion.txt"), "--free-only"])
     assert invoke.main() == 0
     verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
     assert verdict["ok"] is False and verdict["model"] == "free/chat-a"

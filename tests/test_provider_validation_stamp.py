@@ -14,6 +14,7 @@ def receipt(status="inference_validated", no_cost=True):
         "validation_status": status,
         "inference_status": "passed" if status == "inference_validated" else "not_attempted",
         "no_cost_verified": no_cost,
+        "policy_admitted": True,
         "validation_scope": "policy_gated_no_cost_inference_smoke",
         "terms_accepted": "policy_asserted",
         "entitlement_verified": "policy_asserted",
@@ -107,6 +108,14 @@ def test_smoke_receipt_cannot_claim_dispatch_eligibility():
     value = receipt()
     value["dispatch_eligible"] = True
     with pytest.raises(ValueError, match="smoke_receipt_cannot_assert_dispatch_eligibility"):
+        stamp.build_stamp(value, run_id="12345", run_attempt="1",
+                          run_url="https://github.com/org/repo/actions/runs/12345",
+                          experiment_label="QUE-5454")
+
+def test_success_stamp_requires_current_policy_admission():
+    value = receipt()
+    value["policy_admitted"] = False
+    with pytest.raises(ValueError, match="success_without_provider_policy_admission"):
         stamp.build_stamp(value, run_id="12345", run_attempt="1",
                           run_url="https://github.com/org/repo/actions/runs/12345",
                           experiment_label="QUE-5454")

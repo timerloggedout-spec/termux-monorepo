@@ -28,7 +28,7 @@ The foundation now includes canonical event/measurement/batch contracts, append-
 
 ## Operator amendment — 2026-11-14
 
-The operator explicitly directed consolidation of the repository's many dashboard feeds around one adapter and database contract, with high-throughput ingestion discipline and multiple presentation lanes. This amendment adds IIS-002 through IIS-005. The first implementation slice is restricted to the existing Neon `lane-events` project and its existing credentials; it does not create a second database, scheduler, source registry, or merge authority. Existing source ledgers remain authoritative and feed surfaces remain projections.
+The operator explicitly directed consolidation of the repository's many dashboard feeds around one adapter and database contract, with high-throughput ingestion discipline and multiple presentation lanes. This amendment adds IIS-002 through IIS-005. The first implementation slice is restricted to the existing Neon `lane-events` project and operator-provisioned least-privilege roles; it does not create a second database, scheduler, source registry, or merge authority. Existing source ledgers remain authoritative and feed surfaces remain projections.
 
 ## Boundaries
 

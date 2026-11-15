@@ -51,6 +51,9 @@ The repository has mature orchestration, provider adapters, graph/decision-analy
 
 ## 5. Candidate source and engine set
 
+The complete candidate population and repository-local disposition is maintained in [`candidate-queue.json`](candidate-queue.json). The candidate queue is authoritative for this RFP's alternatives; this RFP text explains roles and comparison logic. Candidates are not ranked across unlike categories.
+
+
 ### Primary reference workflow: MiroFish
 MiroFish is a reference for document/evidence ingestion, ontology and graph preparation, entity filtering, persona construction, OASIS-backed multi-agent simulation, graph-memory updates, report generation and post-run interaction. Its upstream implementation is evidence of a working integration pattern, not proof of compatibility with this repository.
 

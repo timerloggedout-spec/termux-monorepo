@@ -433,6 +433,7 @@ WITH inserted AS (
     doc->>'evidence_ref', doc->>'confidence', doc->>'idempotency_key',
     doc->>'supersedes', {sql_literal(batch_id)}::uuid, doc
   FROM _integration_batch_docs
+  WHERE true
   ON CONFLICT (idempotency_key) DO NOTHING
   RETURNING measurement_id
 )

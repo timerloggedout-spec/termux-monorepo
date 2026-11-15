@@ -261,10 +261,7 @@
         "redaction_applied": {
           "type": "boolean"
         }
-      },
-      "required": [
-        "classification"
-      ]
+      }
     },
     "event_at": {
       "type": [
@@ -304,7 +301,14 @@
         "required": [
           "observed_at",
           "privacy"
-        ]
+        ],
+        "properties": {
+          "privacy": {
+            "required": [
+              "classification"
+            ]
+          }
+        }
       }
     }
   ]

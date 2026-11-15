@@ -1305,3 +1305,35 @@ proposals:
       - proposal-lifecycle
       - repo-gate
       - termux-smoke
+
+  - id: qdesk-self-repair
+    title: "QDesk self-repair loop (SIE to Desk QUE)"
+    author: timerloggedout-spec
+    status: posted
+    priority: P1
+    path: active/qdesk-self-repair/
+    reviewers: []
+    related_branches:
+      - doe/sie-intake-note
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+
+  - id: tribute-owner-records-explorer
+    title: "Tribute Owner Records metadata explorer and D4-safe build surface"
+    author: ChatGPT
+    status: accepted
+    priority: P1
+    path: active/tribute-owner-records-explorer/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_prs:
+      - 5448
+    related_branches:
+      - feat/tribute-owner-records-explorer-final-20261115
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

@@ -2,6 +2,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def test_qdesk_page_has_required_surfaces():
     h=(ROOT/"apps/tribute-dashboard/qdesk.html").read_text()
+    desk=(ROOT/"apps/tribute-dashboard/desk.html").read_text()
+    assert "tribute/qdesk.html" in desk
     j=(ROOT/"apps/tribute-dashboard/qdesk.js").read_text()
     for s in ("Overview","Priority","Workers","Routing","Quota consumption","AgenticGantt","GitHub Projects","WagerTome","QDesk"):
         assert s in h

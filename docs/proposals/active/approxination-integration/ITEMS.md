@@ -9,3 +9,4 @@
 | APPROX-005 | Optional gitlink under refTemplates/smods/ | backlog | Prefer thin refs; gates never init |
 | APPROX-006 | First formal A/B/C/D smoke (dispatch, budgeted) | backlog | Evidence artifact for MoneyBall |
 | APPROX-007 | Wire CPPH / help-wanted optional boost from skill-rank signals | backlog | After APPROX-006 |
+| APPROX-008 | Reconcile skill authority/source freshness and require Approxination-backed approximation competition for substantive skill creation/upgrades | **executing** | Source register, skill contracts, CLAUDE/PROCESS/GATE consistency; no paid benchmark dispatch in this item |

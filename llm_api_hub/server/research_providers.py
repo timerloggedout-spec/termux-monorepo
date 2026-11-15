@@ -139,7 +139,7 @@ def admission_entry(provider: str, model: str) -> dict[str, Any]:
     return dict(matches[0])
 
 
-def validate_activation_entry(entry: dict[str, Any]) -> str | None:
+def validate_activation_entry(entry: dict[str, Any], required_capabilities: tuple[str, ...] = ("chat_completion",)) -> str | None:
     """Validate source-backed no-cost and quota/pool assertions for QUE.
 
     Admission values are owner assertions. This validates their shape and
@@ -166,6 +166,12 @@ def validate_activation_entry(entry: dict[str, Any]) -> str | None:
         max_age_days = {"pricing_verified_at": 30, "terms_verified_at": 365, "capability_verified_at": 90}[key]
         if parsed < now - timedelta(days=max_age_days):
             return f"policy_{key}_stale"
+    capabilities = entry.get("capabilities")
+    if not isinstance(capabilities, list) or any(not isinstance(x, str) for x in capabilities):
+        return "policy_capabilities_missing"
+    missing_capabilities = set(required_capabilities) - set(capabilities)
+    if missing_capabilities:
+        return "policy_capability_missing:" + ",".join(sorted(missing_capabilities))
     quota_class = entry.get("quota_class")
     allowed = {"provider_quota_backed", "daily_pool_no_provider_quota", "quota_unknown", "quota_not_applicable"}
     if quota_class not in allowed:

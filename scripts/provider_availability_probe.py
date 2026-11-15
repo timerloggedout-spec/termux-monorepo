@@ -45,7 +45,7 @@ def result(provider):
     return {"provider": provider, "credential_present": False, "auth_mode": "unconfigured",
             "credential_env_resolved": None, "credential_env_expected": None,
             "catalog_probe_required": False, "catalog_ok": False, "inference_ok": False,
-            "model": None, "observed_at": now(), "error_class": None}
+            "inference_status": "not_attempted", "model": None, "observed_at": now(), "error_class": None}
 
 
 
@@ -125,7 +125,12 @@ def openrouter_inference(row, token):
         except ImportError:
             from ops import provider_free_smoke
         observation = provider_free_smoke.observe(token, execute=False)
+        attempted = bool(observation.get("inference_attempted", False))
         row["inference_ok"] = bool(observation.get("inference_ok", False))
+        row["inference_status"] = (
+            "passed" if attempted and row["inference_ok"]
+            else "failed" if attempted else "not_attempted"
+        )
         reason = observation.get("reason")
         if reason and reason != "explicit_smoke_not_requested":
             row["error_class"] = reason
@@ -201,7 +206,8 @@ def main():
                               "credential_env_expected": "canonical expected environment-variable name when a credential is missing",
                               "catalog_probe_required": "true for configured providers and explicitly public catalogs",
                               "catalog_ok": "provider catalog endpoint responded with usable model metadata",
-                              "inference_ok": "false for scheduled probes; explicit smoke workflow may run separately"}, "providers": rows}
+                              "inference_ok": "backward-compatible boolean; false does not mean scheduled inference was attempted",
+                              "inference_status": "not_attempted, passed, or failed; scheduled catalog probes remain not_attempted"}, "providers": rows}
     out_target = os.environ.get("OUTPUT", "/tmp/provider-availability.json")
     out_path = Path(out_target)
     if ".." in out_path.parts:
@@ -223,7 +229,7 @@ def main():
         except Exception:
             pass
     for row in rows:
-        print(f"{row['provider']}: auth={row['auth_mode']} credential={row['credential_present']} catalog={row['catalog_ok']} inference={row['inference_ok']} model={row.get('model') or '-'} error={row.get('error_class') or '-'}")
+        print(f"{row['provider']}: auth={row['auth_mode']} credential={row['credential_present']} catalog={row['catalog_ok']} inference={row['inference_status']} model={row.get('model') or '-'} error={row.get('error_class') or '-'}")
 
 
 if __name__ == "__main__":

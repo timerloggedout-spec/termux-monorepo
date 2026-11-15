@@ -188,6 +188,39 @@ def quota_headroom(arm: dict, usage: dict | None, now: datetime,
                    quota_class: str) -> tuple[int | None, str | None]:
     """(headroom, hold reason). Primary reads spendable-primary only."""
     budget = arm.get("budget") or {}
+    if budget.get("quota_class") == "daily_pool_no_provider_quota":
+        pool_id = budget.get("pool_id")
+        eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
+        pools = (usage or {}).get("pools") or {}
+        pool = pools.get(pool_id) if pool_id else None
+        if not pool_id or not eligibility or not pool:
+            return None, "pool_unknown"
+        if eligibility.get("pool_id") != pool_id:
+            return None, "pool_mismatch"
+        if eligibility.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        if eligibility.get("status") != "eligible":
+            return None, eligibility.get("hold_reason") or (
+                eligibility.get("status") if eligibility.get("status") in {
+                    "pool_unknown", "pool_unstamped", "pool_stale", "pool_exhausted",
+                    "pool_unavailable", "pool_reset_window_unknown", "pool_reset_tz_unknown",
+                    "pool_allocation_unknown", "pool_allocation_zero", "pool_leftover_unverified",
+                } else "pool_unavailable"
+            )
+        if pool.get("status") == "exhausted":
+            return None, "pool_exhausted"
+        if pool.get("status") != "available":
+            return None, "pool_unavailable"
+        observed_at = eligibility.get("observed_at") or pool.get("observed_at")
+        try:
+            age = (now - _parse_ts(observed_at)).total_seconds() if observed_at else None
+        except ValueError:
+            age = None
+        if age is None or age < 0:
+            return None, "pool_unstamped"
+        if age > 3600:
+            return None, "pool_stale"
+        return None, None
     if quota_class == "escalation":
         total = budget.get("reserved_escalation")
     else:
@@ -246,7 +279,7 @@ def measured_headroom(arm: dict, measured: dict | None,
 
 
 def preflight(arm: dict, usage: dict | None, now: datetime,
-              headroom: int,
+              headroom: int | None,
               measured_record: dict | None = None) -> tuple[dict | None, str | None]:
     """Live bucket-total headroom read for the stamp, or a HOLD reason.
 
@@ -261,6 +294,28 @@ def preflight(arm: dict, usage: dict | None, now: datetime,
     pre-flight read (its results are the attempt-2 gate's coverage
     evidence; the gate itself is unchanged).
     """
+    budget = arm.get("budget") or {}
+    if budget.get("quota_class") == "daily_pool_no_provider_quota":
+        pool_id = budget.get("pool_id")
+        eligibility = ((usage or {}).get("pool_eligibility") or {}).get(arm["arm_id"])
+        pool = ((usage or {}).get("pools") or {}).get(pool_id) if pool_id else None
+        if not pool_id or not eligibility or not pool:
+            return None, "pool_unknown"
+        if eligibility.get("status") != "eligible":
+            return None, eligibility.get("hold_reason") or "pool_unavailable"
+        if eligibility.get("experiment_label") != budget.get("experiment_label"):
+            return None, "pool_experiment_label_mismatch"
+        return {
+            "bucket": pool_id,
+            "source": "daily-pool-snapshot",
+            "ts": eligibility.get("observed_at") or pool.get("observed_at"),
+            "headroom": None,
+            "headroom_kind": "not_applicable",
+            "reset_window": pool.get("reset_window") or "unknown",
+            "reset_tz": pool.get("reset_tz") or "unknown",
+            "experiment_label": eligibility.get("experiment_label"),
+            "source_ref": pool.get("source_ref"),
+        }, None
     if measured_record is not None:
         return {
             "bucket": bucket_id_for(arm),
@@ -360,6 +415,9 @@ def build_stamp(filing: dict, arm: dict, quota_class: str,
         "usage": {"quota_class": quota_class},
         "route_id": (arm.get("endpoint") or {}).get("route_id"),
         "quota_class": quota_class,
+        "provider_quota_class": (arm.get("budget") or {}).get("quota_class") or "provider_quota_backed",
+        "pool_id": (arm.get("budget") or {}).get("pool_id"),
+        "experiment_label": (arm.get("budget") or {}).get("experiment_label"),
         "preflight": preflight_read,
     }
     return stamp

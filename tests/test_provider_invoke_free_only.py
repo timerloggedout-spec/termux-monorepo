@@ -75,3 +75,66 @@ def test_provider_invoke_workflow_defaults_to_free_only():
     step = next(s for s in workflow["jobs"]["invoke"]["steps"] if s.get("id") == "invoke")
     assert "--free-only" in step["run"]
     assert "inputs.free_only" in step["run"]
+
+
+def test_free_only_invokes_exactly_one_verified_no_cost_model(tmp_path, monkeypatch, capsys):
+    import json
+    import sys
+    from scripts import provider_model_catalog
+
+    prompt = tmp_path / "prompt.txt"
+    prompt.write_text("Return a one-word health acknowledgement.")
+    output = tmp_path / "completion.txt"
+    monkeypatch.setenv("GROQ_API_KEY", "fixture-secret")
+    monkeypatch.delenv("INVOKE_MODEL", raising=False)
+    monkeypatch.setattr(provider_model_catalog, "poll", lambda provider, token: ([
+        row("free/chat", pricing_classification="free_zero_price"),
+        row("paid/chat", pricing_classification="paid"),
+    ], {}))
+    calls = []
+
+    def fake_http(method, url, token, payload=None, timeout=90):
+        calls.append(payload)
+        return 200, {"choices": [{"message": {"content": "OK"}}]}
+
+    monkeypatch.setattr(invoke, "http_json", fake_http)
+    monkeypatch.setattr(sys, "argv", [
+        "provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt),
+        "--out", str(output), "--free-only",
+    ])
+    assert invoke.main() == 0
+    verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
+    assert verdict["ok"] is True
+    assert verdict["no_cost_verified"] is True
+    assert verdict["model"] == "free/chat"
+    assert len(calls) == 1
+    assert calls[0]["model"] == "free/chat"
+    assert calls[0]["max_tokens"] == 300
+    assert output.read_text() == "OK"
+
+
+def test_free_only_refuses_when_catalog_has_no_verified_no_cost_model(tmp_path, monkeypatch, capsys):
+    import json
+    import sys
+    from scripts import provider_model_catalog
+
+    prompt = tmp_path / "prompt.txt"
+    prompt.write_text("Do not execute.")
+    monkeypatch.setenv("GROQ_API_KEY", "fixture-secret")
+    monkeypatch.delenv("INVOKE_MODEL", raising=False)
+    monkeypatch.setattr(provider_model_catalog, "poll", lambda provider, token: ([
+        row("paid/chat", pricing_classification="paid"),
+        row("unknown/chat"),
+    ], {}))
+
+    def forbidden_http(*args, **kwargs):
+        raise AssertionError("free-only must not invoke when no no-cost model is verified")
+
+    monkeypatch.setattr(invoke, "http_json", forbidden_http)
+    monkeypatch.setattr(sys, "argv", [
+        "provider_invoke.py", "--provider", "groq", "--prompt-file", str(prompt), "--free-only",
+    ])
+    assert invoke.main() == 0
+    verdict = json.loads(capsys.readouterr().out.removeprefix("INVOKE_VERDICT "))
+    assert verdict["ok"] is False
+    assert verdict["diagnosis"] == "no_verified_no_cost_chat_model"

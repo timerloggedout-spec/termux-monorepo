@@ -24,6 +24,10 @@ IMPERATIVE = {
     "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
     "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
     "resolve", "cover", "retain", "separate", "distinguish", "assert", "reject", "bind",
+    "read", "tolerate", "fetch", "encode", "pass", "expect", "import", "model", "pin",
+    "explain", "count", "capture", "return", "ignore", "place", "correct", "persist",
+    "specify", "give", "exercise", "support", "handle", "ensure", "trigger", "record",
+    "allow", "prevent", "accept", "remove", "add", "keep", "create", "build", "check",
     "label", "carry", "stabilize", "scope", "guard", "expose", "normalize", "parse", "bound", "recognize",
 }
 STYLE_PATHS = [

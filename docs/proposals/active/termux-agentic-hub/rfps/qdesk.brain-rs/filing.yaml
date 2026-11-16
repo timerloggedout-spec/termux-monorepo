@@ -96,25 +96,25 @@ proposal:
     - Assume all execution occurs on Android
     - Claim scientific reproduction without independent evidence
   research_transfer:
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L18
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L42
       adopted_pattern: Brain/body separation in embodied-agent architecture
       adaptation: Brain emits typed plans; existing Harness/Hands execute authorized work.
       limitations:
         - Repository and hardware contracts must be verified independently.
         - Example project behavior is not automatically portable.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L19
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L43
       adopted_pattern: Memory facade separated from reasoning and model access
       adaptation: Brain uses read adapters and emits learning candidates; existing stores own persistence.
       limitations:
         - Do not import a second memory database.
         - Source behavior and license require pinning.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L33
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L57
       adopted_pattern: Research algorithm / log parsing as a specialized subsystem
       adaptation: Treat log and event understanding as a domain perception adapter.
       limitations:
         - Not an LLM agent architecture.
         - Research claims and code revision require independent verification.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L39
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L63
       adopted_pattern: Externalized reasoning and engineering proof obligations
       adaptation: Bind decisions to requirements, tests and immutable evidence references.
       limitations:

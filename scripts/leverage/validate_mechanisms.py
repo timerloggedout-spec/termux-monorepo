@@ -125,11 +125,11 @@ def validate(data: object) -> list[str]:
         refs = item["evidence_refs"]
         if isinstance(refs, list):
             for ref_index, ref in enumerate(refs):
-                if not isinstance(ref, dict) or ref.get("kind") not in EVIDENCE_KINDS or not isinstance(ref.get("ref"), str) or not ref["ref"]:
+                if not isinstance(ref, dict) or not isinstance(ref.get("kind"), str) or ref.get("kind") not in EVIDENCE_KINDS or not isinstance(ref.get("ref"), str) or not ref["ref"]:
                     errors.append(f"{prefix}.evidence_refs[{ref_index}] is malformed")
                 elif "sha" in ref and (not isinstance(ref["sha"], str) or not SHA_RE.fullmatch(ref["sha"])):
                     errors.append(f"{prefix}.evidence_refs[{ref_index}].sha must be a 40-character lowercase SHA")
-        if item["lifecycle_state"] in {"validated", "promoted", "monitored"}:
+        if isinstance(item["lifecycle_state"], str) and item["lifecycle_state"] in {"validated", "promoted", "monitored"}:
             if not isinstance(refs, list) or not refs:
                 errors.append(f"{prefix} cannot be {item['lifecycle_state']} without evidence_refs")
             if not isinstance(item.get("experiment_id"), str) or not item["experiment_id"].strip():

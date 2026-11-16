@@ -87,6 +87,10 @@ jobs:
               echo "New-branch push has no prior range; the pull-request gate owns prospective validation."
               exit 0
             fi
+            if ! git diff --name-only "$BASE_SHA...HEAD" | grep -Eq '^(skills/|\.agents/skills/|\.github/skills/|\.github/ISSUE_TEMPLATE/|\.github/PULL_REQUEST_TEMPLATE\.md$|templates/|docs/icm/|([^/]+/)*CLAUDE\.md$|ops/doe/|ops/que/dispatch/|ops/que/feeds/|ops/challenge/|docs/ops/doe/|docs/proposals/active/notation-sets/(SIGLARY-STANDARD|CAVEMAN-MICRO-DENSE-V2)\.md$|scripts/siglary/|tests/test_siglary_validate\.py$)'; then
+              echo "No Siglary-enforced surface changed; skip the surface census."
+              exit 0
+            fi
             args+=(--changed-from "$BASE_SHA")
           else
             args+=(--event-only)

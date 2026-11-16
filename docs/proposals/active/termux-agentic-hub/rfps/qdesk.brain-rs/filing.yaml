@@ -1,0 +1,341 @@
+schema_version: "0.1.0"
+kind: delphi.rfp.filing
+
+rfp:
+  key: qdesk.brain-rs
+  title: "Rust Brain: repository-wide cognitive coordination for the Termux monorepo"
+  revision: 1
+  status: submitted
+  requested_disposition: evaluate_fit_and_readiness
+  deduplication_key: qdesk.brain-rs
+  related_records:
+    - github:issue:5501
+    - github:pull:5492
+    - github:pull:5503
+    - proposal:termux-agentic-hub/THUB-012
+
+origin:
+  repository: https://github.com/timerloggedout-spec/termux-monorepo
+  submitter_ref: github:timerloggedout-spec
+  owner_directive_refs:
+    - conversation:owner-directive:brain-is-monorepo-consciousness
+    - conversation:owner-directive:expand-subsystems-and-submit-delphi-rfp
+  source_snapshot:
+    status: pinned
+    commit: 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6
+
+architecture:
+  controller_origin: Termux
+  hub_execution_station: GitHub and configured execution infrastructure
+  owner_interface: Android mobile / Termux / ArchWiz / QDesk
+  integration_home: QUE / QDesk and existing monorepo orchestration
+  implementation_language: Rust core with existing-language adapters
+  existing_surfaces:
+    - Root Rust kernel PR #5492
+    - ICM and Context Relationship Graph
+    - QUE / QDesk intake, admission and task lifecycle
+    - hub_mcp capability and policy boundaries
+    - Existing dispatch, claim, GitHub Actions and execution adapters
+    - Provider routing / 3L0
+    - Existing memory and evidence stores
+    - refTemplates / 17_Papers research index
+    - Delphi / DoE / ForeSight / HindSight
+    - Adaptive-wait and SHE
+    - ArchWiz / Tribute owner projections
+  contracts_to_verify:
+    - Exact QUE and QDesk ownership and intake contract
+    - Genome component semantics and versioned Brain interface
+    - Identity, authority, pause and revocation contract
+    - Dispatch, claim, execution receipt and verification contract
+    - ICM, CRG and memory read/persist adapter contracts
+    - Rust package placement and JSONL bridge contract
+    - Current Delphi method revision and evaluation configuration
+
+proposal:
+  summary: >-
+    Establish a provider-neutral Rust Brain as the monorepo-wide cognitive
+    coordination layer, composing existing subsystem owners through typed,
+    evidence-grounded and authority-preserving adapters.
+  problem: >-
+    Cognitive context, research, capability discovery, planning, policy,
+    execution observation and feedback are distributed across specialized
+    systems. No shared layer consistently connects repository-wide intent
+    to evidence-backed decisions without duplicating ownership.
+  hypotheses:
+    - Typed shared contracts reduce duplicated reasoning and inconsistent handoffs.
+    - Provenance-aware context reduces stale, irrelevant, sensitive and unsupported inputs.
+    - A repository capability and ownership graph reduces duplicate tools and registries.
+    - Brain / Harness / Hands separation improves authority traceability.
+    - Decision-to-evidence links improve review, debugging and attribution.
+    - Learning candidates tied to verified outcomes improve adaptation without self-awarded success.
+    - Rust core and versioned JSONL adapters support cross-language integration without forcing Python migration.
+  capabilities:
+    - Repository-wide perception and event normalization
+    - Identity- and intent-aware request interpretation
+    - Provenance, freshness, sensitivity and budget-aware context assembly
+    - Read adapters over ICM, CRG, memory and refTemplates
+    - Repository ontology for components, ownership, dependencies and supersession
+    - Research discovery, citation management and evidence grading
+    - Capability discovery across tools, providers, MCP servers, workflows, agents and skills
+    - Typed reasoning, decomposition, strategy and bounded plan DAG generation
+    - Scenario evaluation through existing prediction and DoE engines
+    - Delegation to existing policy and authority gates
+    - QUE/QDesk admission and handoff integration
+    - Execution observation through existing Harness/Hands
+    - Evidence correlation, verification and task-outcome classification
+    - Observability, explainability and resource accounting
+    - Reflection candidates through existing Delphi/DoE feedback loops
+    - Resilience, security, swarm and domain-specific reasoning adapters
+  non_goals:
+    - Replace QUE, QDesk, scheduler, dispatcher, claim/lease or workflow engine
+    - Replace identity, capability, provider, policy or completion registries
+    - Create a second persistent memory, relationship graph or evidence ledger
+    - Execute tools or devices directly from the Brain kernel
+    - Clone or execute refTemplates upstream installers by default
+    - Automatically merge, deploy, promote or expand permissions
+    - Assume all execution occurs on Android
+    - Claim scientific reproduction without independent evidence
+  research_transfer:
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L18
+      adopted_pattern: Brain/body separation in embodied-agent architecture
+      adaptation: Brain emits typed plans; existing Harness/Hands execute authorized work.
+      limitations:
+        - Repository and hardware contracts must be verified independently.
+        - Example project behavior is not automatically portable.
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L19
+      adopted_pattern: Memory facade separated from reasoning and model access
+      adaptation: Brain uses read adapters and emits learning candidates; existing stores own persistence.
+      limitations:
+        - Do not import a second memory database.
+        - Source behavior and license require pinning.
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L33
+      adopted_pattern: Research algorithm / log parsing as a specialized subsystem
+      adaptation: Treat log and event understanding as a domain perception adapter.
+      limitations:
+        - Not an LLM agent architecture.
+        - Research claims and code revision require independent verification.
+    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L39
+      adopted_pattern: Externalized reasoning and engineering proof obligations
+      adaptation: Bind decisions to requirements, tests and immutable evidence references.
+      limitations:
+        - Illustrative paper paths are not proof of a released runtime.
+        - Paper methodology must be reviewed before adoption.
+
+integration:
+  reuse:
+    - ICM and Context Relationship Graph
+    - Existing QUE/QDesk admission and task lifecycle
+    - hub_mcp capability and policy interfaces
+    - Existing provider routing and quota authorities
+    - Existing dispatch, claim, Actions and execution adapters
+    - Existing memory and evidence stores
+    - Delphi, DoE, ForeSight and HindSight
+    - Existing ArchWiz and Tribute projections
+  proposed_changes:
+    - Expand root Brain kernel through typed subsystem modules when contracts are justified
+    - Add read-only context, ontology, research and capability adapters
+    - Add a shadow QUE/QDesk handoff and decision correlation contract
+    - Add evidence/verification and telemetry projections
+    - Add measured reflection and learning-candidate flow
+  prohibited_duplication:
+    - Queue, scheduler, dispatch controller or claim/lease engine
+    - Identity, provider, capability or policy registry
+    - Persistent memory database or relationship graph
+    - Authoritative evidence, outcome or telemetry ledger
+    - Delphi panel, score aggregation or award engine
+  dependencies:
+    - Verified ownership and current source contracts
+    - Rust CI format/check/test/clippy green
+    - Existing authority revalidation at execution boundary
+    - Baseline cohort and deterministic verification fixtures
+  first_vertical_slice: >-
+    Existing task/request → Brain context assembly → typed reasoning/plan →
+    existing QUE admission → existing dispatch/claim → configured execution →
+    authoritative verification → owner-visible feedback.
+
+evidence:
+  - id: owner:brain-scope
+    kind: owner_directive
+    locator: conversation:owner-directive:brain-is-monorepo-consciousness
+    verification: owner_supplied
+    supports:
+      - Brain is the entire Termux monorepo consciousness.
+      - Subsystems must be expanded beyond the initial Rust reasoning kernel.
+    limitations:
+      - Exact owner interfaces remain to be verified in repository source.
+  - id: owner:delphi-submission
+    kind: owner_directive
+    locator: conversation:owner-directive:expand-subsystems-and-submit-delphi-rfp
+    verification: owner_supplied
+    supports:
+      - Prepare and file the qdesk.brain-rs RFP.
+      - Preserve and link the research references in refTemplates.
+    limitations: []
+  - id: repo:brain-kernel
+    kind: repository_source
+    locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/2532f3cd4372fecbbbf71c06b4fa7005f53c23d6/brain.rs
+    revision: 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6
+    verification: source_inspected
+    supports:
+      - Typed reasoning kernel and seven stages.
+      - Adapter-driven policy handoff and bounded plan validation.
+    limitations:
+      - Does not implement all target subsystems.
+      - Existing CI currently reports a Clippy issue and formatting drift.
+  - id: repo:orchestration-contracts
+    kind: repository_documentation
+    locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/2532f3cd4372fecbbbf71c06b4fa7005f53c23d6/docs/ops/ORCHESTRATION-CONTRACTS.md
+    revision: 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6
+    verification: source_inspected
+    supports:
+      - Four-layer orchestration contract.
+      - Brain is inside orchestration, not a fifth control plane.
+    limitations:
+      - Additional adapter contracts still need inspection.
+  - id: repo:delphi-rfp
+    kind: repository_issue
+    locator: https://github.com/timerloggedout-spec/termux-monorepo/issues/5501
+    verification: source_inspected
+    supports:
+      - RFP filed through the existing delphi:rfp intake.
+      - Evaluation request explicitly does not authorize runtime behavior.
+    limitations:
+      - Delphi gate parked the synthetic unsourced surface at 6.69/25; this is admission classification, not technical architecture merit.
+      - Technical architecture evaluation and runtime authorization remain ungranted.
+  - id: research:brain-survey
+    kind: research_code
+    locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/2532f3cd4372fecbbbf71c06b4fa7005f53c23d6/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md
+    revision: 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6
+    verification: indexed_only
+    supports:
+      - Distinct Brain filename lineages and candidate architecture patterns.
+      - Research-source classification and transfer limitations.
+    limitations:
+      - Some supplied upstream links remain unpinned or unverified.
+      - No scientific results are claimed as reproduced.
+
+evaluation:
+  panel_questions:
+    - Which existing component owns the first QDesk/QUE integration interface?
+    - What is the exact versioned contract of the genome component?
+    - Which existing JSONL/polyglot boundary should Brain use?
+    - Which Delphi method revision governs this filing?
+    - Which existing authority and revocation contracts must be bound at dispatch?
+    - Which first vertical slice yields measurable value without a second control plane?
+  baseline: Existing QUE/QDesk and current orchestrator behavior on a comparable pinned task cohort.
+  metrics:
+    - Verified task completion rate
+    - Time to verified completion
+    - Duplicate and invalid handoff attempts
+    - Stale-context and unsupported-claim rate
+    - Evidence coverage and decision trace completeness
+    - Owner intervention and revocation latency
+    - Fallback/degraded rate
+    - Resource use per verified outcome
+    - Rollback and stop-condition effectiveness
+    - Citation completeness and source freshness
+  acceptance_criteria:
+    - Reuse canonical identity, policy, queue, dispatch, memory and evidence owners.
+    - Preserve source, freshness, sensitivity and evidence state for context.
+    - Give every plan step stable identity, dependencies and verification criteria.
+    - Revalidate authority at the existing execution boundary.
+    - Separate workflow success from TASK_PASS and PROMOTABLE.
+    - Fail closed or escalate on stale, missing, conflicting or unsupported evidence.
+    - Correlate duplicate triggers and late results idempotently.
+    - Test the first vertical slice against baseline and record receipts.
+    - Roll back the Brain adapter without corrupting canonical state.
+    - Assume no provider inference quota or paid API entitlement.
+  failure_scenarios:
+    - Duplicate trigger
+    - Authority revoked between planning and dispatch
+    - Participant becomes ineligible
+    - Quota changes after planning
+    - Workflow succeeds but acceptance fails
+    - Controller disconnects
+    - Stale context or missing evidence
+    - Late result arrives after a newer attempt
+    - Policy unavailable
+    - Provider fallback
+    - Prompt injection or secret contamination
+    - Partial execution or rollback failure
+  method_binding:
+    status: unverified
+    note: Bind the applicable current Delphi method revision before scoring; do not invent panel scores, consensus or award.
+
+delivery:
+  phases:
+    - id: P0
+      deliverable: Source and ownership reconciliation
+      exit_criteria:
+        - Pin current integration and authority contracts.
+        - Complete duplicate capability census.
+    - id: P1
+      deliverable: Rust kernel hardening
+      exit_criteria:
+        - Format, check, test and Clippy gates pass.
+    - id: P2
+      deliverable: Read-only knowledge adapters
+      exit_criteria:
+        - ICM, CRG, refTemplates and evidence provenance verified.
+    - id: P3
+      deliverable: Capability and ontology map
+      exit_criteria:
+        - Existing registries reused and unknowns remain explicit.
+    - id: P4
+      deliverable: Shadow QUE/QDesk handoff
+      exit_criteria:
+        - No execution and idempotent decision receipts.
+    - id: P5
+      deliverable: Authorized end-to-end vertical slice
+      exit_criteria:
+        - Existing admission, dispatch, execution and verification owners only.
+    - id: P6
+      deliverable: Delphi/DoE learning loop
+      exit_criteria:
+        - Preregistered metrics and held-out evidence; no self-grading.
+    - id: P7
+      deliverable: Owner cockpit integration
+      exit_criteria:
+        - Inspect, pause, revoke and explain controls verified.
+    - id: P8
+      deliverable: Controlled bounded-autonomy evaluation
+      exit_criteria:
+        - Separate authorization, budgets, rollback and stop tests.
+  rollback:
+    - Disable the Brain adapter or route selection to the existing orchestrator.
+    - Preserve canonical task, dispatch, execution and verification records.
+    - Do not rewrite queue state or historical evidence.
+  stop_conditions:
+    - Existing capability already satisfies the use case.
+    - Integration requires bypassing identity, policy or QUE admission.
+    - Duplicate execution cannot be bounded.
+    - Provenance or sensitivity cannot be preserved.
+    - A parallel control plane is required.
+    - Evaluation does not show useful improvement.
+    - Research evidence is insufficient for the claimed transfer.
+
+authority:
+  filing_grants_execution: false
+  intended_operating_mode: bounded_autonomous
+  authority_contract_status: unverified
+  required_controls:
+    - Canonical participant identity
+    - Existing admission and claim checks
+    - Execution-boundary authority revalidation
+    - Bounded retries and resource use
+    - Owner pause and revocation handling
+    - Explicit escalation and no secrets in receipts
+  escalation_triggers:
+    - Scope expansion
+    - Missing or conflicting authority
+    - Budget increase
+    - New privileged execution path
+    - Verification-policy change
+
+open_questions:
+  - Which exact QDesk/QUE owner interface governs the first vertical slice?
+  - What does the genome component mean, and what is its versioned Brain interface?
+  - Which Rust package and JSONL bridge convention should be canonical?
+  - Which Delphi method revision governs this filing?
+  - Which owner-facing cockpit projection is authoritative?
+  - Which source owns participant identity and runtime revocation?

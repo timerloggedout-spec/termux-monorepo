@@ -9,6 +9,8 @@
 | [Optional Visual Review](operations/optional-visual-review.md) | operations | live | initiated | reviewing the file-backed CCTV cards, proposing a mirror, or defining a human checkpoint |
 | [Challenge and Certifications Program](operations/challenge-program.md) | operations | live | initiated | routing a challenge entry, deadline, or certification question to the program records |
 | [Self-Healing Engine (SHE)](operations/self-healing-engine.md) | operations | live | initiated | tracing how a CI/gate failure becomes an incident, recovery action, or repair PR |
+| [Monorepo Brain Kernel](operations/brain-kernel.md) | operations | live | initiated | changing shared reasoning stages, context selection, plan validation, or policy handoff |
+| [Monorepo Brain Architecture](operations/monorepo-brain.md) | operations | live | initiated | changing repository-wide cognitive subsystems, knowledge adapters, research intelligence, or Brain integration phases |
 | [Navigation and Indexes](knowledge/navigation-and-indexes.md) | knowledge | live | verified | changing root orientation, generated-map use, or index routing |
 | [Context Relationship Index](knowledge/context-relationship-index.md) | knowledge | live | verified | reconstructing bounded source/GitHub context, querying evidence, or maintaining its canonical generated index |
 | [Graph Matrix](knowledge/graph-matrix.md) | knowledge | live | initiated | checking issue/PR/branch linkage, orphans, or stale and anomalously unclosed items |
@@ -22,3 +24,5 @@
 | [DeepWiki.com Index (Public Repo Wiki)](knowledge/deepwiki-index.md) | knowledge | live | initiated | consulting the generated public wiki for this repo, its coverage, or its harvest record |
 | [Agents Skills Estate](knowledge/agents-skills-estate.md) | knowledge | live | initiated | choosing, invoking, adding, or retiring a fleet skill under `.agents/skills/` |
 | [Change Control](governance/change-control.md) | governance | live | verified | changing tracked source/docs, proposal state, branch flow, or validation requirements |
+
+

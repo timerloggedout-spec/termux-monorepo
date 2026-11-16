@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/schemas/delphi-rfp-filing.schema.json",
+  "title": "Delphi RFP Filing",
+  "description": "Proposed extended filing contract for qdesk.brain-rs. Does not replace the existing Delphi issue form or grant authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "rfp", "origin", "architecture", "proposal", "integration", "evidence", "evaluation", "delivery", "authority", "open_questions"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "kind": { "const": "delphi.rfp.filing" },
+    "rfp": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "title", "revision", "status", "requested_disposition", "deduplication_key"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)+$" },
+        "title": { "$ref": "#/$defs/nonempty" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "status": { "enum": ["draft", "submitted"] },
+        "requested_disposition": { "enum": ["evaluate_fit_and_readiness", "reevaluate_revised_proposal"] },
+        "deduplication_key": { "$ref": "#/$defs/nonempty" },
+        "supersedes": { "$ref": "#/$defs/nonempty" },
+        "related_records": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "origin": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository", "submitter_ref", "owner_directive_refs", "source_snapshot"],
+      "properties": {
+        "repository": { "type": "string", "format": "uri" },
+        "submitter_ref": { "$ref": "#/$defs/nonempty" },
+        "owner_directive_refs": { "$ref": "#/$defs/nonemptyStringList" },
+        "source_snapshot": {
+          "oneOf": [
+            { "type": "object", "additionalProperties": false, "required": ["status", "commit"], "properties": { "status": { "const": "pinned" }, "commit": { "type": "string", "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$" } } },
+            { "type": "object", "additionalProperties": false, "required": ["status", "reason"], "properties": { "status": { "const": "unverified" }, "reason": { "$ref": "#/$defs/nonempty" } } }
+          ]
+        }
+      }
+    },
+    "architecture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["controller_origin", "hub_execution_station", "owner_interface", "integration_home", "implementation_language", "existing_surfaces", "contracts_to_verify"],
+      "properties": {
+        "controller_origin": { "$ref": "#/$defs/nonempty" },
+        "hub_execution_station": { "$ref": "#/$defs/nonempty" },
+        "owner_interface": { "$ref": "#/$defs/nonempty" },
+        "integration_home": { "$ref": "#/$defs/nonempty" },
+        "implementation_language": { "$ref": "#/$defs/nonempty" },
+        "existing_surfaces": { "$ref": "#/$defs/nonemptyStringList" },
+        "contracts_to_verify": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "proposal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary", "problem", "hypotheses", "capabilities", "non_goals", "research_transfer"],
+      "properties": {
+        "summary": { "$ref": "#/$defs/nonempty" },
+        "problem": { "$ref": "#/$defs/nonempty" },
+        "hypotheses": { "$ref": "#/$defs/nonemptyStringList" },
+        "capabilities": { "$ref": "#/$defs/nonemptyStringList" },
+        "non_goals": { "$ref": "#/$defs/nonemptyStringList" },
+        "research_transfer": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["source_ref", "adopted_pattern", "adaptation", "limitations"],
+            "properties": {
+              "source_ref": { "$ref": "#/$defs/nonempty" },
+              "adopted_pattern": { "$ref": "#/$defs/nonempty" },
+              "adaptation": { "$ref": "#/$defs/nonempty" },
+              "limitations": { "$ref": "#/$defs/nonemptyStringList" }
+            }
+          }
+        }
+      }
+    },
+    "integration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reuse", "proposed_changes", "prohibited_duplication", "dependencies", "first_vertical_slice"],
+      "properties": {
+        "reuse": { "$ref": "#/$defs/nonemptyStringList" },
+        "proposed_changes": { "$ref": "#/$defs/nonemptyStringList" },
+        "prohibited_duplication": { "$ref": "#/$defs/nonemptyStringList" },
+        "dependencies": { "$ref": "#/$defs/stringList" },
+        "first_vertical_slice": { "$ref": "#/$defs/nonempty" }
+      }
+    },
+    "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+    "evaluation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["panel_questions", "baseline", "metrics", "acceptance_criteria", "failure_scenarios", "method_binding"],
+      "properties": {
+        "panel_questions": { "$ref": "#/$defs/nonemptyStringList" },
+        "baseline": { "$ref": "#/$defs/nonempty" },
+        "metrics": { "$ref": "#/$defs/nonemptyStringList" },
+        "acceptance_criteria": { "$ref": "#/$defs/nonemptyStringList" },
+        "failure_scenarios": { "$ref": "#/$defs/nonemptyStringList" },
+        "method_binding": {
+          "type": "object", "additionalProperties": false, "required": ["status", "note"],
+          "properties": { "status": { "enum": ["unverified", "verified"] }, "method_ref": { "$ref": "#/$defs/nonempty" }, "note": { "$ref": "#/$defs/nonempty" } },
+          "allOf": [{ "if": { "properties": { "status": { "const": "verified" } } }, "then": { "required": ["method_ref"] } }]
+        }
+      }
+    },
+    "delivery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["phases", "rollback", "stop_conditions"],
+      "properties": {
+        "phases": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "deliverable", "exit_criteria"],
+            "properties": { "id": { "$ref": "#/$defs/nonempty" }, "deliverable": { "$ref": "#/$defs/nonempty" }, "exit_criteria": { "$ref": "#/$defs/nonemptyStringList" } }
+          }
+        },
+        "rollback": { "$ref": "#/$defs/nonemptyStringList" },
+        "stop_conditions": { "$ref": "#/$defs/nonemptyStringList" }
+      }
+    },
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["filing_grants_execution", "intended_operating_mode", "authority_contract_status", "required_controls", "escalation_triggers"],
+      "properties": {
+        "filing_grants_execution": { "const": false },
+        "intended_operating_mode": { "enum": ["advisory", "supervised", "bounded_autonomous"] },
+        "authority_contract_status": { "enum": ["unverified", "verified"] },
+        "authority_contract_ref": { "$ref": "#/$defs/nonempty" },
+        "required_controls": { "$ref": "#/$defs/nonemptyStringList" },
+        "escalation_triggers": { "$ref": "#/$defs/nonemptyStringList" }
+      },
+      "allOf": [{ "if": { "properties": { "authority_contract_status": { "const": "verified" } } }, "then": { "required": ["authority_contract_ref"] } }]
+    },
+    "open_questions": { "$ref": "#/$defs/stringList" }
+  },
+  "$defs": {
+    "nonempty": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "stringList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/nonempty" } },
+    "nonemptyStringList": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonempty" } },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "locator", "verification", "supports", "limitations"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonempty" },
+        "kind": { "enum": ["owner_directive", "repository_source", "repository_issue", "repository_documentation", "execution_record", "research_paper", "research_code"] },
+        "locator": { "$ref": "#/$defs/nonempty" },
+        "revision": { "$ref": "#/$defs/nonempty" },
+        "verification": { "enum": ["owner_supplied", "source_inspected", "indexed_only", "unverified"] },
+        "supports": { "$ref": "#/$defs/nonemptyStringList" },
+        "limitations": { "$ref": "#/$defs/stringList" }
+      }
+    }
+  }
+}

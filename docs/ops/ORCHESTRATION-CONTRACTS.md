@@ -7,7 +7,7 @@ The repository already has evidence, relationship, wait, review, and workflow co
 ## Four layers
 
 1. Surfaces: TUI, CLI, GitHub UI, Devin, MCP, and agent entry points.
-2. Orchestration: routers, supervisors, managers, planners, mutators, and review/cycle controllers.
+2. Orchestration: routers, supervisors, managers, planners, mutators, review/cycle controllers, and the provider-neutral Brain kernel.
 3. Evidence/state: SHA, run/job/step/artifact IDs, receipts, relationship observations, and outcomes.
 4. SSOT/schemas: ICM, proposal governance, registries, JSON schemas, policy, and lane contracts.
 
@@ -82,3 +82,24 @@ This composition layer references, rather than duplicates:
 - adaptive-wait for terminal-state collection;
 - workflow-orchestration for modular Actions;
 - evidence-led-monorepo-ops for mutation and promotion discipline.
+
+
+## Brain kernel boundary
+
+The repository-root brain.rs is a shared cognitive kernel inside the existing orchestration layer, not a fifth layer or a second control plane.
+
+- Brain coordinates typed Intent, Decomposition, Strategy, ExecutionDesign, Validation, Optimization and Reflection stages.
+- StageBackend supplies model or deterministic reasoning. The kernel does not own provider credentials, model routing, network clients or prompt catalogs.
+- PolicyGate delegates to existing capability, decision and completion policy. The kernel has no allow-all default and cannot override an authoritative policy result.
+- Context is caller-supplied with provenance, evidence status, sensitivity classification, relevance and token estimate. Restricted, Secret and Unknown material is excluded by default.
+- Execution plans are bounded DAGs. The kernel validates structure and emits parallel groups; it never invokes tool handlers.
+- Reflection emits learning candidates only. Existing memory, CRG and receipt systems own persistence.
+- Brain/Harness/Hands remains the boundary: Brain decides, the existing harness governs, and existing hands execute authorized work.
+
+A run status of COMPLETED means required reasoning stages completed. A decision of READY means ready for handoff only. Neither is TASK_PASS, PROMOTABLE, or proof of execution.
+
+## Monorepo-wide Brain architecture
+
+The kernel boundary above is the first implementation slice, not the full Brain. The target subsystem taxonomy, capability map, refTemplates research linkage, phased adapters and acceptance criteria are maintained in [TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md](../architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md). The formal evaluation request is [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501).
+
+Brain composes the existing owners across identity/intent, perception, context, knowledge, repository ontology, research, capability discovery, reasoning, planning, simulation, policy, QUE handoff, execution observation, verification, telemetry, adaptation, resilience, security, swarm and owner experience. This taxonomy does not grant those responsibilities to the kernel: each adapter must bind to the current canonical owner and preserve its authority.

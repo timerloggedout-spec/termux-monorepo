@@ -36,3 +36,11 @@ See root `.gitmodules`:
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+
+## Brain architecture / academic research
+
+| Slot / dossier | Preferred sources | Brain subsystems |
+|---|---|---|
+| [Brain filename and agent-architecture dossier](../17_Papers/citations/brain-file-and-agent-architecture-survey.md) | GitHub implementations, author repositories, arXiv/DOI and secondary analyses listed in the dossier; frontmatter records linked_slots across 01–17 | cognition, memory, perception, planning, safeguards, embodied/domain modules, swarm and research intelligence |
+
+Evidence classes and verification limits are recorded per reference. A linked source is not an admitted runtime dependency.

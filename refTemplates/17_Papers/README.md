@@ -11,3 +11,11 @@ Not a full library — a grounded link surface for arXiv, GitXiv, ORCID, GRID.ac
 | Linked from | `docs/ops/REFTEMPLATES-CONTINUOUS-EVAL.md` L5 |
 
 Each citation should list `linked_slots[]` when it informs a template under `15_*` or category design.
+
+## Brain architecture survey
+
+- [Brain filename and agent-architecture dossier](citations/brain-file-and-agent-architecture-survey.md) — consolidated references from the owner-supplied Perplexity surveys, mapped to Brain subsystems with provenance and limitations.
+- [Monorepo Brain subsystem map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
+- [qdesk.brain-rs Delphi RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
+
+Each citation dossier must preserve source class, verification status, linked_slots and limitations.

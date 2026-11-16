@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,10 +34,19 @@ def validate(data: object) -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
         return ["catalog must be a JSON object"]
+    top_level_allowed = {"schema_version", "updated_at", "mechanisms"}
+    extra_top_level = sorted(data.keys() - top_level_allowed)
+    if extra_top_level:
+        errors.append(f"catalog contains unsupported fields: {', '.join(extra_top_level)}")
     if data.get("schema_version") != "1.0":
         errors.append("schema_version must be '1.0'")
     if not isinstance(data.get("updated_at"), str) or not data["updated_at"]:
         errors.append("updated_at must be a non-empty timestamp string")
+    else:
+        try:
+            datetime.fromisoformat(data["updated_at"].replace("Z", "+00:00"))
+        except ValueError:
+            errors.append("updated_at must be an ISO 8601 timestamp")
     mechanisms = data.get("mechanisms")
     if not isinstance(mechanisms, list):
         return errors + ["mechanisms must be an array"]
@@ -78,24 +88,40 @@ def validate(data: object) -> list[str]:
         secondary = item.get("secondary_classes", [])
         if not isinstance(secondary, list) or any(not isinstance(value, str) or value not in CLASSES for value in secondary):
             errors.append(f"{prefix}.secondary_classes is invalid")
-        for field in ("name", "hypothesis", "trigger", "intervention", "owner"):
-            if not isinstance(item[field], str) or not item[field].strip():
-                errors.append(f"{prefix}.{field} must be a non-empty string")
+        elif len(secondary) != len(set(secondary)):
+            errors.append(f"{prefix}.secondary_classes contains duplicates")
+        minimum_lengths = {"name": 3, "hypothesis": 12, "trigger": 3, "intervention": 3, "owner": 2}
+        for field, minimum in minimum_lengths.items():
+            if not isinstance(item[field], str) or len(item[field].strip()) < minimum:
+                errors.append(f"{prefix}.{field} must contain at least {minimum} characters")
         for field in ("target_outcomes", "guardrails", "resource_dimensions", "evidence_refs"):
             if not isinstance(item[field], list):
                 errors.append(f"{prefix}.{field} must be an array")
         for field in ("target_outcomes", "guardrails"):
             values = item[field]
-            if isinstance(values, list) and (not values or any(not isinstance(value, str) or not value.strip() for value in values)):
-                errors.append(f"{prefix}.{field} must contain non-empty strings")
+            if isinstance(values, list) and (not values or any(not isinstance(value, str) or len(value.strip()) < 3 for value in values)):
+                errors.append(f"{prefix}.{field} must contain strings of at least 3 characters")
         if isinstance(item["resource_dimensions"], list):
             dimensions = item["resource_dimensions"]
             invalid = {value for value in dimensions if not isinstance(value, str) or value not in RESOURCES}
             if not dimensions or invalid:
                 errors.append(f"{prefix}.resource_dimensions contains invalid or empty values: {sorted(map(str, invalid))}")
+            if len(dimensions) != len(set(dimensions)):
+                errors.append(f"{prefix}.resource_dimensions contains duplicates")
         confidence = item["confidence"]
         if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
             errors.append(f"{prefix}.confidence must be between 0 and 1")
+        for field in ("related_capability_ids", "related_integration_ids"):
+            values = item.get(field, [])
+            if not isinstance(values, list) or any(not isinstance(value, str) or not value.strip() for value in values):
+                errors.append(f"{prefix}.{field} must be an array of non-empty strings")
+            elif len(values) != len(set(values)):
+                errors.append(f"{prefix}.{field} contains duplicates")
+        if "experiment_id" in item and (not isinstance(item["experiment_id"], str) or not item["experiment_id"].strip()):
+            errors.append(f"{prefix}.experiment_id must be a non-empty string")
+        if "notes" in item and not isinstance(item["notes"], str):
+            errors.append(f"{prefix}.notes must be a string")
+
         refs = item["evidence_refs"]
         if isinstance(refs, list):
             for ref_index, ref in enumerate(refs):

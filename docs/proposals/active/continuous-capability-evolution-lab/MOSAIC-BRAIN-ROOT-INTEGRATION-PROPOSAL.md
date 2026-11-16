@@ -12,16 +12,16 @@
 
 ## 1. Executive decision
 
-**Keep MOSAIC in \`archwiz/mosaic_brain/\`. Do not relocate its implementation into \`brain/\`, do not put it inside the Context Relationship Graph Rust accelerator, and do not make root Brain depend directly on the MOSAIC crate.**
+**Keep MOSAIC in `archwiz/mosaic_brain/`. Do not relocate its implementation into `brain/`, do not put it inside the Context Relationship Graph Rust accelerator, and do not make root Brain depend directly on the MOSAIC crate.**
 
-Connect it through a small, domain-neutral extension contract exported by the existing \`termux-brain\` crate. MOSAIC depends on that contract and implements it. The existing host/orchestration surface that owns the call site composes the two packages and routes a methodology-intelligence request to MOSAIC. The root kernel remains provider-neutral and domain-neutral.
+Connect it through a small, domain-neutral extension contract exported by the existing `termux-brain` crate. MOSAIC depends on that contract and implements it. The existing host/orchestration surface that owns the call site composes the two packages and routes a methodology-intelligence request to MOSAIC. The root kernel remains provider-neutral and domain-neutral.
 
 This is a **dependency pointer**, not a source-file pointer:
 
 - MOSAIC's Cargo package depends on the root Brain facade by a local Cargo path dependency.
-- The host/composition owner depends on both \`termux-brain\` and \`mosaic-brain\`.
-- The root Brain package does not depend on \`mosaic-brain\`.
-- No \`#[path]\` inclusion, symlink, Git submodule, copied source, or second root kernel is needed.
+- The host/composition owner depends on both `termux-brain` and `mosaic-brain`.
+- The root Brain package does not depend on `mosaic-brain`.
+- No `#[path]` inclusion, symlink, Git submodule, copied source, or second root kernel is needed.
 - The actual host crate and serialization bridge remain an explicit recon item until their current owner contract is verified.
 
 The existing MOSAIC design's location is retained. The root Brain's current seven reasoning stages are retained. MOSAIC is an optional specialist extension, not an eighth mandatory reasoning stage and not a new orchestration plane.
@@ -30,7 +30,7 @@ The existing MOSAIC design's location is retained. The root Brain's current seve
 
 | Question | Decision | Reason |
 |---|---|---|
-| Relocate MOSAIC into \`brain/\`? | **No** | It is a DoE/CEEL-owned methodology specialist, not generic kernel logic. |
+| Relocate MOSAIC into `brain/`? | **No** | It is a DoE/CEEL-owned methodology specialist, not generic kernel logic. |
 | Keep a pointer to MOSAIC from root Brain? | **Yes, via a typed contract and host composition** | A stable contract avoids source coupling and circular dependencies. |
 | Root Brain Cargo-depends on MOSAIC? | **No** | It inverts ownership and makes the shared kernel depend on one domain. |
 | MOSAIC Cargo-depends on root Brain? | **Yes** | The specialist implements the shared extension contract. |
@@ -45,22 +45,22 @@ The existing MOSAIC design's location is retained. The root Brain's current seve
 
 ### 2.1 Verified repository facts
 
-1. Root Brain PR [#5492](https://github.com/timerloggedout-spec/termux-monorepo/pull/5492) is an open feature branch based on \`master\`, with head \`8c6e5526d4f523fdb7ff9459049df528f80b228b\` at the inspected snapshot.
-2. That branch contains root \`brain.rs\`, the standalone \`brain/\` Cargo facade, a README, tests and a Rust workflow. \`brain/src/lib.rs\` currently imports the root source with \`#[path = "../../brain.rs"]\` and re-exports it. The facade is intentionally not a root Cargo workspace.
-3. The kernel defines seven stages: Intent, Decomposition, Strategy, ExecutionDesign, Validation, Optimization and Reflection. It has injected \`StageBackend\` and \`PolicyGate\` interfaces. It reasons and returns typed plans/decisions; it does not execute tools, persist memory, own policy or call a provider itself.
-4. The current root \`brain.rs\` is a single large source module. The 21 subsystem families in the subsystem map are a target taxonomy, not proof that 21 Rust modules or adapters already exist.
+1. Root Brain PR [#5492](https://github.com/timerloggedout-spec/termux-monorepo/pull/5492) is an open feature branch based on `master`, with head `8c6e5526d4f523fdb7ff9459049df528f80b228b` at the inspected snapshot.
+2. That branch contains root `brain.rs`, the standalone `brain/` Cargo facade, a README, tests and a Rust workflow. `brain/src/lib.rs` currently imports the root source with `#[path = "../../brain.rs"]` and re-exports it. The facade is intentionally not a root Cargo workspace.
+3. The kernel defines seven stages: Intent, Decomposition, Strategy, ExecutionDesign, Validation, Optimization and Reflection. It has injected `StageBackend` and `PolicyGate` interfaces. It reasons and returns typed plans/decisions; it does not execute tools, persist memory, own policy or call a provider itself.
+4. The current root `brain.rs` is a single large source module. The 21 subsystem families in the subsystem map are a target taxonomy, not proof that 21 Rust modules or adapters already exist.
 5. The root Brain ownership map explicitly assigns canonical authority to existing owners including ICM, CRG, QUE, dispatch/claim, hub_mcp policy, provider routing, memory, evidence, Delphi/DoE, adaptive-wait, SHE and owner-facing projections. It prohibits replacement queues, schedulers, registries, memory stores, relationship graphs and evidence ledgers.
-6. MOSAIC PR [#5502](https://github.com/timerloggedout-spec/termux-monorepo/pull/5502) is a separate open documentation branch based on \`master\`. Its head at the inspected snapshot is \`c68566462bfa786f4679c0bcc47e0b9a0dc907d0\`.
-7. MOSAIC's existing RFP and design specify \`archwiz/mosaic_brain/\`, crate \`mosaic-brain\`, source \`archwiz/mosaic_brain/src/brain.rs\`, domain \`methodology_intelligence\`, CRG scope ID \`mosaic-brain\`, and advisory-only output.
+6. MOSAIC PR [#5502](https://github.com/timerloggedout-spec/termux-monorepo/pull/5502) is a separate open documentation branch based on `master`. Its head at the inspected snapshot is `c68566462bfa786f4679c0bcc47e0b9a0dc907d0`.
+7. MOSAIC's existing RFP and design specify `archwiz/mosaic_brain/`, crate `mosaic-brain`, source `archwiz/mosaic_brain/src/brain.rs`, domain `methodology_intelligence`, CRG scope ID `mosaic-brain`, and advisory-only output.
 8. MOSAIC's existing plan explicitly keeps its Rust core pure, deterministic and free of network/filesystem side effects. It consumes references to canonical DoE records and metadata-only CRG relationships. The CRG Python compiler remains authoritative; its Rust accelerator is limited to fragment fingerprinting and pointer-cost analysis.
-9. MOSAIC's recommendation vocabulary is \`PromotionCandidate\`, \`Hold\` and \`Revise\`. \`Cull\`, state transitions, merge and promotion remain outside MOSAIC.
-10. The CEEL \`ITEMS.md\` already contains MOS-001 through MOS-006. MOS-007 is the missing work item for root-kernel contract and composition integration.
-11. The scope registry inspected on the root Brain branch did not yet contain a \`mosaic-brain\` scope. The MOSAIC plan requests adding it through the existing registry and publisher; generated graph artifacts must not be hand-edited.
+9. MOSAIC's recommendation vocabulary is `PromotionCandidate`, `Hold` and `Revise`. `Cull`, state transitions, merge and promotion remain outside MOSAIC.
+10. The CEEL `ITEMS.md` already contains MOS-001 through MOS-006. MOS-007 is the missing work item for root-kernel contract and composition integration.
+11. The scope registry inspected on the root Brain branch did not yet contain a `mosaic-brain` scope. The MOSAIC plan requests adding it through the existing registry and publisher; generated graph artifacts must not be hand-edited.
 12. The current Brain RFP #5501 describes QUE/QDesk integration as a request for evaluation and records that filing does not grant execution authority. Its admission result is not a technical integration test.
 
 ### 2.2 Not verified; must not be represented as fact
 
-- Whether the current \`master\` contains either feature branch's complete changes.
+- Whether the current `master` contains either feature branch's complete changes.
 - Whether PR #5492's current Rust workflow matrix has passed on its exact current head.
 - A production-ready QDesk/QUE Rust host crate or a current versioned JSONL bridge contract.
 - The final ownership of the Rust composition call site (ArchWiz, QDesk, another existing host, or a small separately admitted bridge).
@@ -75,7 +75,7 @@ The two feature branches must be reconciled against live master and one another 
 
 ### 3.1 Dependency graph
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
   subgraph Shared["Shared cognitive contract"]
     TB["termux-brain crate"]
@@ -109,17 +109,17 @@ flowchart TB
   DOE --> MOS
   DELPHI --> MOS
   MOS -->|"PromotionCandidate / Hold / Revise"| PROP
-\`\`\`
+```
 
 **Important:** the diagram describes the intended dependency and data flow, not current runtime wiring. The host is deliberately a placeholder for the existing owner that recon identifies. No new host crate is authorized by this proposal by default.
 
 ### 3.2 Contract location
 
-Add the generic extension contract as a sibling module in the existing \`brain/\` crate facade:
+Add the generic extension contract as a sibling module in the existing `brain/` crate facade:
 
-- \`brain/src/extensions.rs\`
-- export it from \`brain/src/lib.rs\`
-- keep the existing \`brain.rs\` kernel source as the source of truth during the first integration slice
+- `brain/src/extensions.rs`
+- export it from `brain/src/lib.rs`
+- keep the existing `brain.rs` kernel source as the source of truth during the first integration slice
 - do not extract all seven stages or create empty placeholder modules as part of MOS-007
 
 The contract should be small and stable. It should contain only concepts that are genuinely shared by independent domain extensions:
@@ -136,7 +136,7 @@ Two viable shapes require a focused design choice during MOS-007 implementation:
 
 **Preferred initial shape — compile-time typed extension**
 
-\`\`\`rust
+```rust
 pub trait BrainExtension {
     type Request;
     type Response;
@@ -148,26 +148,26 @@ pub trait BrainExtension {
         request: &Self::Request,
     ) -> Result<Self::Response, ExtensionError>;
 }
-\`\`\`
+```
 
-This keeps the core standard-library-only, avoids inventing a universal serialization format, and lets \`mosaic-brain\` return its native strongly typed \`Recommendation\`. The composition host owns the concrete request and response types.
+This keeps the core standard-library-only, avoids inventing a universal serialization format, and lets `mosaic-brain` return its native strongly typed `Recommendation`. The composition host owns the concrete request and response types.
 
 **Alternative — object-safe envelope**
 
-Use a domain-neutral \`ExtensionRequest\` / \`ExtensionResponse\` only if the existing host needs runtime-loaded heterogeneous extensions. This would require a serialization contract and compatibility policy. Do not introduce \`serde\`, dynamic loading or a plugin manager solely for MOSAIC. If the actual host is Python, verify its established JSONL schema before selecting this alternative.
+Use a domain-neutral `ExtensionRequest` / `ExtensionResponse` only if the existing host needs runtime-loaded heterogeneous extensions. This would require a serialization contract and compatibility policy. Do not introduce `serde`, dynamic loading or a plugin manager solely for MOSAIC. If the actual host is Python, verify its established JSONL schema before selecting this alternative.
 
 ### 3.3 MOSAIC implementation
 
-The MOSAIC crate implements the shared trait and keeps its methodology domain types private to, or publicly namespaced under, \`mosaic_brain\`:
+The MOSAIC crate implements the shared trait and keeps its methodology domain types private to, or publicly namespaced under, `mosaic_brain`:
 
-- \`MethodIdentity\`
-- \`EvidenceRef\`
-- \`ReviewVerdict\`
-- \`EvaluationSnapshot\`
-- \`Recommendation\`
-- \`ValidationError\`
-- \`validate_identity\`
-- \`recommend\`
+- `MethodIdentity`
+- `EvidenceRef`
+- `ReviewVerdict`
+- `EvaluationSnapshot`
+- `Recommendation`
+- `ValidationError`
+- `validate_identity`
+- `recommend`
 
 The implementation should not force MOSAIC's domain types into the root kernel. The host receives the typed response and renders or forwards it through existing proposal and review workflows.
 
@@ -179,18 +179,18 @@ Do not create a second extension registry.
 - Use static construction in the existing host if there is one configured specialist.
 - If dynamic discovery is later required, extend the canonical capability registry through its owner and schema; do not create a Brain-only registry.
 - A registration record is descriptive metadata, not proof that a callable adapter is integrated or operational.
-- Route only requests explicitly classified as \`methodology_intelligence\`; do not broadcast every user task to MOSAIC.
+- Route only requests explicitly classified as `methodology_intelligence`; do not broadcast every user task to MOSAIC.
 
 ### 3.5 Why not relocate or use a raw pointer?
 
 | Option | Assessment |
 |---|---|
-| Move \`archwiz/mosaic_brain/src/brain.rs\` under \`brain/src/\` | Rejected: merges domain ownership into the generic kernel and makes the taxonomy misleading. |
-| Use Rust \`#[path]\` from root Brain into MOSAIC | Rejected: source-level coupling, fragile relative paths, bypasses package boundaries and encourages a second compilation view. |
+| Move `archwiz/mosaic_brain/src/brain.rs` under `brain/src/` | Rejected: merges domain ownership into the generic kernel and makes the taxonomy misleading. |
+| Use Rust `#[path]` from root Brain into MOSAIC | Rejected: source-level coupling, fragile relative paths, bypasses package boundaries and encourages a second compilation view. |
 | Use a symlink | Rejected: weak cross-platform packaging and unclear ownership. |
 | Add MOSAIC as a Git submodule | Rejected: same-repository source does not need a submodule; submodules are for reviewed external pinned dependencies. |
-| Root kernel depends on \`mosaic-brain\` | Rejected: dependency inversion and domain lock-in. |
-| MOSAIC depends on \`termux-brain\`; host depends on both | **Accepted**: acyclic dependency graph, clear ownership, testable contract. |
+| Root kernel depends on `mosaic-brain` | Rejected: dependency inversion and domain lock-in. |
+| MOSAIC depends on `termux-brain`; host depends on both | **Accepted**: acyclic dependency graph, clear ownership, testable contract. |
 | JSONL bridge | Conditional: use only if the actual owning host is cross-language and a current schema is verified. |
 
 ---
@@ -199,7 +199,7 @@ Do not create a second extension registry.
 
 ### 4.1 Near-term tree — MOS-007
 
-\`\`\`text
+```text
 brain.rs                              # existing shared kernel source; compatibility retained
 brain/
   Cargo.toml                          # existing termux-brain package
@@ -241,15 +241,15 @@ docs/
 config/
   context_relationships/
     scope_registry.json                # MOS-003; canonical scope declaration
-\`\`\`
+```
 
-The per-file split under \`archwiz/mosaic_brain/src/\` is a target organization, not a requirement to create empty files. MOS-001 may begin with fewer source files if the pure API is still small; split only when a module owns a real contract and tests.
+The per-file split under `archwiz/mosaic_brain/src/` is a target organization, not a requirement to create empty files. MOS-001 may begin with fewer source files if the pure API is still small; split only when a module owns a real contract and tests.
 
 ### 4.2 Root Brain evolution tree — later, separate work packages
 
 The shared kernel should evolve from the single source module into cohesive, contract-backed modules, without creating empty placeholders or duplicating owner systems:
 
-\`\`\`text
+```text
 brain/
   src/
     lib.rs
@@ -283,18 +283,18 @@ brain/
     tests/
       ...
 brain.rs                              # compatibility re-export during migration
-\`\`\`
+```
 
-This is an incremental destination, not one large refactor. Keep the existing facade and all downstream consumers working while each extraction is independently tested. Do not create \`brain/src/registry.rs\` as a competing capability registry. Do not create generic adapters for owners whose APIs have not been inspected.
+This is an incremental destination, not one large refactor. Keep the existing facade and all downstream consumers working while each extraction is independently tested. Do not create `brain/src/registry.rs` as a competing capability registry. Do not create generic adapters for owners whose APIs have not been inspected.
 
 ### 4.3 Directory placement rules
 
-1. \`brain/\` contains generic cognition contracts and shared kernel behavior only.
-2. \`archwiz/mosaic_brain/\` contains methodology-specific models and recommendation logic.
-3. \`archwiz/context_relationships/\` remains the canonical graph builder/query/temporal owner; MOSAIC only consumes graph references.
-4. \`docs/proposals/active/continuous-capability-evolution-lab/\` owns MOSAIC program scope, RFP, work ledger and integration proposal.
-5. \`docs/icm/objects/operations/\` owns navigation cards, not implementation.
-6. \`.github/workflows/\` owns focused CI, with least privilege and path filters.
+1. `brain/` contains generic cognition contracts and shared kernel behavior only.
+2. `archwiz/mosaic_brain/` contains methodology-specific models and recommendation logic.
+3. `archwiz/context_relationships/` remains the canonical graph builder/query/temporal owner; MOSAIC only consumes graph references.
+4. `docs/proposals/active/continuous-capability-evolution-lab/` owns MOSAIC program scope, RFP, work ledger and integration proposal.
+5. `docs/icm/objects/operations/` owns navigation cards, not implementation.
+6. `.github/workflows/` owns focused CI, with least privilege and path filters.
 7. Generated CRG indexes are produced only by the existing publisher.
 8. Do not add a root Cargo workspace solely for MOSAIC. Add one only if a separate repository-wide Rust packaging decision is justified and evaluated across all consumers.
 
@@ -306,26 +306,26 @@ The 21 families in the subsystem taxonomy remain the full cognitive architecture
 
 | # | Family | Proposed Rust boundary | Integration posture | Initial priority |
 |---:|---|---|---|---|
-| 00 | Identity & intent | \`contracts/identity.rs\`, \`stages/intent.rs\` | Consume canonical intake identity; preserve actor/scope provenance | P0 |
-| 01 | Perception & ingestion | \`adapters/\` observation envelopes | Normalize source observations; source systems retain event ownership | P2 |
-| 02 | Context assembly | \`context/\` | Read ICM/CRG and existing context cache; freshness/sensitivity/budget tests | P1 |
-| 03 | Knowledge & memory | \`adapters/icm.rs\`, \`adapters/crg.rs\` | Retrieval/read-only first; memory owner retains persistence | P1 |
-| 04 | Repository ontology | \`ontology/\` only when justified | Query ICM/CRG/capability metadata; no second graph | P2 |
-| 05 | Research intelligence | \`research/\` | Evidence dossier adapter; cite and qualify sources | P2 |
-| 06 | Capability discovery | \`contracts/capability.rs\` | Project existing catalog records; no new registry or routing authority | P1 |
-| 07 | Reasoning & synthesis | \`kernel.rs\`, \`stages/\` | Existing seven typed stages | P0 |
-| 08 | Decomposition & planning | \`planning/\` | Existing DAG validation and plan types; no scheduler | P0 |
-| 09 | Simulation & prediction | \`simulation/\` adapter | Reuse DoE/ForeSight/decision engines; never fabricate forecasts | P2 |
-| 10 | Policy, safety & authority | \`contracts/policy.rs\` | Inject existing hub_mcp/owner policy; fail closed | P0 |
-| 11 | Orchestration coordination | \`adapters/qdesk.rs\` or host seam | Shadow handoff; QUE owns admission and lifecycle | P1 |
+| 00 | Identity & intent | `contracts/identity.rs`, `stages/intent.rs` | Consume canonical intake identity; preserve actor/scope provenance | P0 |
+| 01 | Perception & ingestion | `adapters/` observation envelopes | Normalize source observations; source systems retain event ownership | P2 |
+| 02 | Context assembly | `context/` | Read ICM/CRG and existing context cache; freshness/sensitivity/budget tests | P1 |
+| 03 | Knowledge & memory | `adapters/icm.rs`, `adapters/crg.rs` | Retrieval/read-only first; memory owner retains persistence | P1 |
+| 04 | Repository ontology | `ontology/` only when justified | Query ICM/CRG/capability metadata; no second graph | P2 |
+| 05 | Research intelligence | `research/` | Evidence dossier adapter; cite and qualify sources | P2 |
+| 06 | Capability discovery | `contracts/capability.rs` | Project existing catalog records; no new registry or routing authority | P1 |
+| 07 | Reasoning & synthesis | `kernel.rs`, `stages/` | Existing seven typed stages | P0 |
+| 08 | Decomposition & planning | `planning/` | Existing DAG validation and plan types; no scheduler | P0 |
+| 09 | Simulation & prediction | `simulation/` adapter | Reuse DoE/ForeSight/decision engines; never fabricate forecasts | P2 |
+| 10 | Policy, safety & authority | `contracts/policy.rs` | Inject existing hub_mcp/owner policy; fail closed | P0 |
+| 11 | Orchestration coordination | `adapters/qdesk.rs` or host seam | Shadow handoff; QUE owns admission and lifecycle | P1 |
 | 12 | Execution interface | No executor in kernel | Existing Harness/Hands/Actions execute; Brain requests handoff only | P2 |
-| 13 | Verification & evidence | \`contracts/evidence.rs\` | Link authoritative receipts and validators; distinguish task from workflow success | P1 |
+| 13 | Verification & evidence | `contracts/evidence.rs` | Link authoritative receipts and validators; distinguish task from workflow success | P1 |
 | 14 | Observability & explainability | trace projection | Reuse receipts/telemetry; no new telemetry ledger | P2 |
 | 15 | Adaptation & learning | learning-candidate contract | Reuse Delphi/DoE/memory owner; no self-promotion | P2 |
 | 16 | Resilience & resources | degraded-state contract | Reuse adaptive-wait, SHE, quota and recovery owners | P2 |
 | 17 | Security & adversarial defense | security signal adapter | Reuse security/sandbox/policy owners; no new authority | P0 |
 | 18 | Multi-agent / swarm cognition | swarm adapter | Reuse admission, participant identity and Delphi | P3 |
-| 19 | Domain cognition | \`extensions.rs\` contract; MOSAIC is first specialist | Host composes domain packages; no monolithic root dependency | P1 |
+| 19 | Domain cognition | `extensions.rs` contract; MOSAIC is first specialist | Host composes domain packages; no monolithic root dependency | P1 |
 | 20 | Owner experience | projection contract | ArchWiz/QDesk/Termux show state; do not own it | P3 |
 
 **Priority meanings:** P0 = kernel contract/safety prerequisites; P1 = minimum useful read-only or shadow integration; P2 = evidence-backed follow-on; P3 = later specialization after prerequisites. Priority is sequencing, not a claim of implementation status.
@@ -346,18 +346,18 @@ QDesk/QUE remains the intake, admission, queue, claim and orchestration owner. I
 
 A descriptor should include:
 
-- \`extension_id\`: stable reverse-domain or repository-scoped identifier, e.g. \`org.termux.mosaic.methodology\`;
-- \`contract_version\`: semver or the existing repository contract-version convention;
-- \`display_name\`;
-- \`owner\`: canonical owning project/team;
-- \`domain_id\`: \`methodology_intelligence\`;
-- \`capability_ids\`: references to existing capability IDs, not new local IDs unless admitted by the canonical registry;
-- \`status\`: proposed maturity state, not an assertion of operational readiness.
+- `extension_id`: stable reverse-domain or repository-scoped identifier, e.g. `org.termux.mosaic.methodology`;
+- `contract_version`: semver or the existing repository contract-version convention;
+- `display_name`;
+- `owner`: canonical owning project/team;
+- `domain_id`: `methodology_intelligence`;
+- `capability_ids`: references to existing capability IDs, not new local IDs unless admitted by the canonical registry;
+- `status`: proposed maturity state, not an assertion of operational readiness.
 
 ### 6.2 Extension request
 
 The host supplies:
-- the existing \`RunIdentity\` (orchestration, cycle, attempt);
+- the existing `RunIdentity` (orchestration, cycle, attempt);
 - an explicit domain and requested operation;
 - immutable method identity and the evidence-reference set required by MOSAIC;
 - source freshness/coverage metadata;
@@ -371,7 +371,7 @@ Do not pass secrets, raw credentials, full PR/issue/review bodies, raw prompts, 
 The result must preserve:
 - extension ID and contract version;
 - the same run/correlation identity;
-- recommendation enum: \`PromotionCandidate\`, \`Hold\`, \`Revise\`;
+- recommendation enum: `PromotionCandidate`, `Hold`, `Revise`;
 - stable reason codes plus human-readable rationale;
 - evidence references and freshness/coverage metadata;
 - explicit unknown/missing fields;
@@ -396,19 +396,19 @@ The repository's existing capability status values (LIVE, ADAPTER, REFERENCE, PR
 
 | Delivery state | Definition | Minimum evidence | What it does **not** mean |
 |---|---|---|---|
-| \`PROPOSED\` | Scope and design accepted into the work ledger | RFP/spec, owner, acceptance criteria | No code or working link |
-| \`IMPLEMENTED\` | Source exists and compiles in its owning package | Pinned commit, build result | Not yet contract-compatible |
-| \`CONTRACT_TESTED\` | Producer and consumer pass shared contract fixtures | Tests on same immutable SHA | Not yet wired into host |
-| \`INTEGRATED_SHADOW\` | Host invokes the extension in non-mutating mode | Correlated shadow receipt; zero canonical state mutation | Not production operational |
-| \`OPERATIONAL\` | Authorized bounded production route is enabled | Owner authorization, gates, end-to-end receipts, stop/rollback proof | Not autonomous promotion authority |
-| \`DEGRADED\` | Integration is present but dependency, freshness, contract or health is impaired | Observable reason, fallback/hold behavior | Not successful completion |
-| \`RETIRED\` | Integration is disabled and superseded/removed under migration plan | Deprecation link, consumer migration, no active references | Not silent deletion |
+| `PROPOSED` | Scope and design accepted into the work ledger | RFP/spec, owner, acceptance criteria | No code or working link |
+| `IMPLEMENTED` | Source exists and compiles in its owning package | Pinned commit, build result | Not yet contract-compatible |
+| `CONTRACT_TESTED` | Producer and consumer pass shared contract fixtures | Tests on same immutable SHA | Not yet wired into host |
+| `INTEGRATED_SHADOW` | Host invokes the extension in non-mutating mode | Correlated shadow receipt; zero canonical state mutation | Not production operational |
+| `OPERATIONAL` | Authorized bounded production route is enabled | Owner authorization, gates, end-to-end receipts, stop/rollback proof | Not autonomous promotion authority |
+| `DEGRADED` | Integration is present but dependency, freshness, contract or health is impaired | Observable reason, fallback/hold behavior | Not successful completion |
+| `RETIRED` | Integration is disabled and superseded/removed under migration plan | Deprecation link, consumer migration, no active references | Not silent deletion |
 
 Each adapter also records the existing capability maturity status and a separate validation status (PASS, FAIL, PENDING, NOT_RUN, NOT_APPLICABLE) with exact commit SHA.
 
 **Completion is a vector, not one boolean.** At minimum report source implementation, contract conformance, host integration, authorization, operational health, evidence freshness and rollback readiness separately.
 
-A Brain reasoning run marked \`Completed\` is not a completed task. A root Brain decision marked \`Ready\` is not an execution receipt. A MOSAIC \`PromotionCandidate\` is not a promotion.
+A Brain reasoning run marked `Completed` is not a completed task. A root Brain decision marked `Ready` is not an execution receipt. A MOSAIC `PromotionCandidate` is not a promotion.
 
 ---
 
@@ -421,8 +421,8 @@ The sequence below extends the existing MOS-001–MOS-006 plan. It does not repl
 **Files:** proposal and ownership records only.
 
 1. Re-fetch PR #5492 and PR #5502 metadata, branch heads and changed files.
-2. Reconcile both branches against live \`master\`; identify overlapping paths and merge dependencies.
-3. Inspect the latest root \`brain.rs\`, \`brain/Cargo.toml\`, facade, tests and CI.
+2. Reconcile both branches against live `master`; identify overlapping paths and merge dependencies.
+3. Inspect the latest root `brain.rs`, `brain/Cargo.toml`, facade, tests and CI.
 4. Inspect current ArchWiz/QDesk/QUE Cargo packages, Python host APIs, JSONL schemas and owner routes; do not infer host location from directory names.
 5. Verify the capability registry and integration-event schema that should describe MOSAIC.
 6. Verify CRG scope registry, publisher freshness and current graph manifest.
@@ -433,13 +433,13 @@ The sequence below extends the existing MOS-001–MOS-006 plan. It does not repl
 
 ### MOS-007B — Define and add the generic extension seam (P0)
 
-**Files:** \`brain/src/extensions.rs\`, \`brain/src/lib.rs\`, \`brain/tests/extensions.rs\`, possibly \`brain.rs\` only if re-export is required.
+**Files:** `brain/src/extensions.rs`, `brain/src/lib.rs`, `brain/tests/extensions.rs`, possibly `brain.rs` only if re-export is required.
 
 1. Agree the smallest generic trait and descriptor contract.
-2. Reuse \`RunIdentity\`; do not define a second orchestration/cycle/attempt identity.
+2. Reuse `RunIdentity`; do not define a second orchestration/cycle/attempt identity.
 3. Define error and status behavior, including unsupported contract version and extension failure.
 4. Ensure no dynamic plugin loader, network, file access, provider client, scheduler or policy implementation enters the kernel.
-5. Export the contract from the existing \`termux-brain\` crate.
+5. Export the contract from the existing `termux-brain` crate.
 6. Add tests for stable IDs, contract version, missing identity, unsupported version, deterministic response handling and extension failure.
 7. Run fmt, check, tests and Clippy on the exact branch SHA.
 
@@ -447,25 +447,25 @@ The sequence below extends the existing MOS-001–MOS-006 plan. It does not repl
 
 ### MOS-007C — Implement MOSAIC against the root contract (P0/P1)
 
-**Files:** \`archwiz/mosaic_brain/Cargo.toml\`, \`src/lib.rs\`, \`src/adapter.rs\`, domain modules and tests.
+**Files:** `archwiz/mosaic_brain/Cargo.toml`, `src/lib.rs`, `src/adapter.rs`, domain modules and tests.
 
-1. Add a path dependency on the verified \`termux-brain\` package.
-2. Implement the extension trait in \`adapter.rs\`.
-3. Keep \`MethodIdentity\`, \`EvidenceRef\`, \`EvaluationSnapshot\` and \`Recommendation\` in MOSAIC's domain namespace.
-4. Preserve the existing pure \`validate_identity\` and \`recommend\` behavior.
+1. Add a path dependency on the verified `termux-brain` package.
+2. Implement the extension trait in `adapter.rs`.
+3. Keep `MethodIdentity`, `EvidenceRef`, `EvaluationSnapshot` and `Recommendation` in MOSAIC's domain namespace.
+4. Preserve the existing pure `validate_identity` and `recommend` behavior.
 5. Keep all evidence as canonical references; do not persist copied bodies.
 6. Test that MOSAIC can be called through the root contract and returns its domain-specific result without root importing MOSAIC types.
 7. Test missing/unknown evidence, same-owner review, refutation, critical regression, incomplete gates, rollback readiness and all-positive promotion-candidate conditions.
 8. Test no side effects and deterministic repeatability for identical inputs.
 
-**Acceptance:** \`cargo test --manifest-path archwiz/mosaic_brain/Cargo.toml\` passes; the crate compiles against the root contract; no cyclic dependency; no new authority.
+**Acceptance:** `cargo test --manifest-path archwiz/mosaic_brain/Cargo.toml` passes; the crate compiles against the root contract; no cyclic dependency; no new authority.
 
 ### MOS-007D — Compose through the verified host (P1)
 
 1. Name the actual owner and source path for the composition call site.
 2. If the host is Rust, add path dependencies on both crates to that host package.
 3. If the host is Python or another language, use only the already-owned bridge convention after its schema and lifecycle are verified. If no such contract exists, submit a separate bridge proposal; do not invent one inside MOS-007.
-4. Route only explicit \`methodology_intelligence\` operations to MOSAIC.
+4. Route only explicit `methodology_intelligence` operations to MOSAIC.
 5. Pass only bounded, provenance-bearing evidence references and the stable RunIdentity.
 6. Keep the host's canonical policy and authorization checks outside MOSAIC.
 7. Record one shadow invocation and response with correlation IDs.
@@ -477,7 +477,7 @@ The sequence below extends the existing MOS-001–MOS-006 plan. It does not repl
 
 Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 
-1. Add \`mosaic-brain\` to \`config/context_relationships/scope_registry.json\` with source globs for implementation and design records.
+1. Add `mosaic-brain` to `config/context_relationships/scope_registry.json` with source globs for implementation and design records.
 2. Add the MOSAIC ICM route card and index entry.
 3. Link the root Brain kernel card to the generic extension contract and MOSAIC specialist.
 4. Keep the CRG Python compiler and publisher authoritative.
@@ -491,7 +491,7 @@ Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 
 1. Add focused Rust workflow for the specialist crate and extension contract, or extend an existing workflow only if its ownership is appropriate.
 2. Use read-only workflow permissions and narrow path filters.
-3. Run Rust formatting, \`cargo check --all-targets\`, tests and Clippy with warnings denied for both crates.
+3. Run Rust formatting, `cargo check --all-targets`, tests and Clippy with warnings denied for both crates.
 4. Test package builds from clean checkout using the committed path dependency.
 5. Run the existing CRG scope tests, proposal lifecycle validator, repo-gate and Termux smoke.
 6. Re-fetch all workflow runs and logs until terminal.
@@ -516,8 +516,8 @@ Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 | Test layer | Required cases | Evidence |
 |---|---|---|
 | Root kernel regression | Existing seven-stage behavior, plan DAG, policy injection, context filtering, degraded/failure visibility | Existing root Brain test suite |
-| Extension contract | Descriptor validity, version mismatch, identity continuity, extension errors, stable response envelope | \`brain/tests/extensions.rs\` |
-| MOSAIC domain unit | Method identity, SHA/commit validation, evidence refs, independent reviewer, review verdict precedence | \`archwiz/mosaic_brain/tests/brain_contract.rs\` |
+| Extension contract | Descriptor validity, version mismatch, identity continuity, extension errors, stable response envelope | `brain/tests/extensions.rs` |
+| MOSAIC domain unit | Method identity, SHA/commit validation, evidence refs, independent reviewer, review verdict precedence | `archwiz/mosaic_brain/tests/brain_contract.rs` |
 | Cross-crate contract | MOSAIC implements trait; root package remains domain-agnostic; no circular dependency | clean Cargo build/test |
 | Host integration | explicit domain routing, stable correlation, no implicit invocation, no duplicate trigger | host adapter integration test |
 | Shadow non-mutation | queue, claims, dispatch, experiment records, graph, proposal and promotion state unchanged | before/after state assertions |
@@ -529,13 +529,13 @@ Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 
 ### 9.1 Required deterministic fixtures
 
-- Valid independent review with complete evidence, practical gain, no critical regression, passing gates and rollback readiness → \`PromotionCandidate\`.
-- Same reviewer and method owner → \`Hold\`.
-- Missing, malformed, stale or unknown evidence → \`Hold\`.
-- Pending or failed required gates → \`Hold\`.
-- Critical regression or refuted independent review → \`Revise\`.
-- Unsupported extension contract version → explicit compatibility error / \`Hold\`, never permissive fallback.
-- Extension timeout or host disconnect → \`DEGRADED\`; no state mutation.
+- Valid independent review with complete evidence, practical gain, no critical regression, passing gates and rollback readiness → `PromotionCandidate`.
+- Same reviewer and method owner → `Hold`.
+- Missing, malformed, stale or unknown evidence → `Hold`.
+- Pending or failed required gates → `Hold`.
+- Critical regression or refuted independent review → `Revise`.
+- Unsupported extension contract version → explicit compatibility error / `Hold`, never permissive fallback.
+- Extension timeout or host disconnect → `DEGRADED`; no state mutation.
 - Duplicate request with same correlation identity → idempotent host behavior; no duplicate experiment or proposal write.
 - Late result for an older attempt → correlate to the older attempt; never overwrite a newer attempt.
 - Identical immutable inputs and versions → identical recommendation and reason codes.
@@ -546,7 +546,7 @@ Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 
 1. **Cognition is not authority.** Root Brain and MOSAIC can explain and recommend; existing owners decide admission, execution, policy and state transitions.
 2. **No direct execution.** Neither root Brain nor MOSAIC may call tools, dispatch workflows, claim tasks, modify device state or perform external writes through this interface.
-3. **No self-promotion.** MOSAIC cannot turn \`PromotionCandidate\` into an accepted proposal, merge, release or production route.
+3. **No self-promotion.** MOSAIC cannot turn `PromotionCandidate` into an accepted proposal, merge, release or production route.
 4. **No duplicate source of truth.** No second queue, scheduler, identity registry, capability registry, provider router, policy engine, memory DB, graph, experiment schema, telemetry ledger or evidence ledger.
 5. **Evidence stays linked.** Use source IDs/URIs and immutable SHAs; do not copy PR/issue/review bodies, prompts, completions, credentials, private traces or restricted user data into receipts or source control.
 6. **Unknown stays unknown.** Missing, stale, conflicting or unsupported evidence cannot become success by default.
@@ -600,7 +600,7 @@ It is **operational** only when:
 - health, freshness, stop and rollback tests pass;
 - the host can disable the extension without data loss.
 
-It is **not** operational merely because the crate compiles, the dependency resolves, a registry entry exists, CI passes, a PR is open, or a recommendation says \`PromotionCandidate\`.
+It is **not** operational merely because the crate compiles, the dependency resolves, a registry entry exists, CI passes, a PR is open, or a recommendation says `PromotionCandidate`.
 
 ---
 

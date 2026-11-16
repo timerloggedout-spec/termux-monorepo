@@ -1,0 +1,41 @@
+{
+  "baseline_sha": "b3b59b4e828f8d0059d7f6b300fda7f3dfa793d0",
+  "candidate_sha": "b3b59b4e828f8d0059d7f6b300fda7f3dfa793d0",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "included-minutes",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "certifications-project"
+  },
+  "observed_at": "2026-11-02T02:37:56Z",
+  "origin": "live",
+  "outcome": "build.sql applied, all CodeRoad stories verified in-run, pg_dump -cC --inserts, dump round-trip re-verified; universe.sql committed to monorepo certifications/solutions/025-celestial-bodies-database/",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "github-actions",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "postgres-16 fleet build (cert-project.yml; SQL authored in-repo)",
+    "provider": "github-actions"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

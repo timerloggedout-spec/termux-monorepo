@@ -1,0 +1,115 @@
+name: admin-desk-vercel
+
+# [MUSEai]@{role:{vercel-specialist}} Admin Desk gated Vercel project
+# (web-design seam GO 2026-11-04, role option (a)). Serves the dashboard
+# static build incl. admin.html behind Vercel Authentication SSO
+# scope=all on a DEDICATED project `admin-desk`: admin.html never serves
+# on public Pages; here it exists only inside the gated deployment, and
+# the staged copy is rebuilt from master at every dispatch (current
+# admin.html by construction).
+#
+# Role feed (option (a), single-owner team): SSO-pass = owner-class.
+# A staging-only function api/role.js returns
+#   {"authenticated":true,"via":"vercel-sso","role":"owner"}
+# The assertion is sound ONLY because ssoProtection=all (or the
+# automation bypass) gates every path incl. /api/*; endpoint-side
+# role checks remain the real authorization for actuation.
+#
+# Sequence: ensure project -> page gate (fail-closed) -> stage + role
+# function -> deploy -> verify -> bypass mint -> SSO flip -> verify
+# signed-out challenged AND bypass passes /api/role (fail-closed).
+# Dispatch-only; public projects untouched.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-desk-vercel
+  cancel-in-progress: false
+
+jobs:
+  admin-desk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: ${{ secrets.VERCEL_ORG_ID || 'team_jKHy7m9xZrvrGP5cAlIMPs3S' }}
+      PROJECT: admin-desk
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure project, gate, deploy, protect, verify bypass
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "$VERCEL_TOKEN" ] || { echo "::error::VERCEL_TOKEN secret is not set"; exit 1; }
+          API="https://api.vercel.com"
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+          if curl -fsS -H "$AUTH" "$API/v9/projects/$PROJECT?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json" 2>/dev/null; then
+            echo "::notice::$PROJECT already exists"
+          else
+            curl -fsS -X POST -H "$AUTH" -H "Content-Type: application/json" -d "{\"name\":\"$PROJECT\"}" "$API/v10/projects?teamId=$SCOPE" > "$RUNNER_TEMP/proj.json"
+            echo "::notice::$PROJECT created"
+          fi
+          PID=$(jq -r '.id' "$RUNNER_TEMP/proj.json")
+          if [ ! -f apps/tribute-dashboard/admin.html ]; then
+            echo "::warning::admin.html not on master yet - project ensured ($PID), deploy + SSO flip held."
+            { echo "## admin-desk-vercel"; echo "- project: `$PROJECT` ($PID) ensured, undeployed"; echo "- state: HELD at page gate (admin.html absent)"; } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          npm i -g vercel@latest >/dev/null 2>&1
+          W="$RUNNER_TEMP/deploy-$PROJECT"; rm -rf "$W"; mkdir -p "$W"; cd "$W"
+          vercel link --yes --project "$PROJECT" --scope "$SCOPE" --token "$VERCEL_TOKEN" >/dev/null
+          cp -a "$GITHUB_WORKSPACE/apps/tribute-dashboard/." "$W/"
+          mkdir -p "$W/data" "$W/api"
+          G="$GITHUB_WORKSPACE/docs/ops/generated"
+          [ -f "$G/tribute-status.json" ] && cp "$G/tribute-status.json" "$W/data/status.json" || true
+          [ -f "$G/lane-matrix-status.json" ] && cp "$G/lane-matrix-status.json" "$W/data/lane-matrix-status.json" || true
+          printf '{"source_sha":"%s","short_sha":"%s","ref":"%s","run":"%s/%s/actions/runs/%s"}\n' "$GITHUB_SHA" "${GITHUB_SHA:0:7}" "$GITHUB_REF_NAME" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID" > "$W/data/build.json"
+          python3 "$GITHUB_WORKSPACE/scripts/build_dashboard_manifest.py" --root "$W" --channel production --source-ref "$GITHUB_REF_NAME" --source-sha "$GITHUB_SHA" --version-prefix "1.0.1"
+          cat > "$W/api/role.js" <<'EOF'
+          // [MUSEai]@{role:{vercel-specialist}} admin-desk role feed, option (a):
+          // reachable only post-SSO-pass or via automation bypass (project is
+          // ssoProtection=all), so presence here = owner-class on this team.
+          module.exports = (req, res) => {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Cache-Control', 'no-store');
+            res.status(200).json({ authenticated: true, via: 'vercel-sso', role: 'owner' });
+          };
+          EOF
+          test -s "$W/admin.html"
+          URL=$(vercel deploy --prod --yes --token "$VERCEL_TOKEN" --scope "$SCOPE")
+          echo "::notice::deployed $PROJECT -> $URL"
+          LIVE="https://$PROJECT.vercel.app"
+          ok=""
+          for i in 1 2 3 4 5 6; do
+            c1=$(curl -s -o /dev/null -w '%{http_code}' "$LIVE/admin")
+            r1=$(curl -s "$LIVE/api/role" | jq -r '.role // empty' 2>/dev/null || true)
+            echo "pre-flip probe: /admin=$c1 /api/role.role=$r1"
+            if [ "$c1" = "200" ] && [ "$r1" = "owner" ]; then ok=1; break; fi
+            sleep 10
+          done
+          [ -n "$ok" ] || { echo "::error::pre-flip verify failed (admin page or role function)"; exit 1; }
+          SECRET=$(curl -fsS -X PATCH -H "$AUTH" -H "Content-Type: application/json" -d '{"generate":{"note":"admin-desk-vercel workflow"}}' "$API/v1/projects/$PID/protection-bypass?teamId=$SCOPE" | jq -r '.protectionBypass | to_entries[0].key // empty')
+          if [ -n "$SECRET" ]; then echo "::notice::automation bypass secret created"; else echo "::notice::automation bypass secret already exists (value unrecoverable; in-job bypass verify skipped)"; fi
+          curl -fsS -X PATCH -H "$AUTH" -H "Content-Type: application/json" -d '{"ssoProtection":{"deploymentType":"all"}}' "$API/v9/projects/$PID?teamId=$SCOPE" | jq -e '.ssoProtection.deploymentType == "all"' >/dev/null
+          echo "::notice::ssoProtection=all applied + read-back asserted"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$LIVE/admin")
+          echo "signed-out /admin = $code (expect 302 SSO challenge)"
+          [ "$code" = "302" ] || { echo "::error::signed-out request not challenged (got $code)"; exit 1; }
+          if [ -n "$SECRET" ]; then
+            role=$(curl -fsS -H "x-vercel-protection-bypass: $SECRET" "$LIVE/api/role" | jq -r '.role // empty')
+            echo "bypass /api/role role = $role"
+            [ "$role" = "owner" ] || { echo "::error::bypass pass-through FAILED"; exit 1; }
+            echo "::notice::bypass pass-through VERIFIED (role=owner)"
+          fi
+          {
+            echo "## admin-desk-vercel"
+            echo "- project: `$PROJECT` ($PID) -> $LIVE"
+            echo "- deployment: $URL"
+            echo "- protection: ssoProtection=all (read-back asserted); signed-out /admin = 302"
+            echo "- role feed: GET /api/role -> {authenticated, via: vercel-sso, role: owner}"
+            echo "- bypass: $( [ -n "$SECRET" ] && echo 'minted + pass-through verified' || echo 'pre-existing (verify skipped)' )"
+          } >> "$GITHUB_STEP_SUMMARY"

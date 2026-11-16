@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!-- FIXTURE-LEAK-MARKER: offline test fixture, never answer content -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Harborview Public Library — Home</title>
+  <link rel="next" href="https://library.example.test/catalog">
+  <script>var junk = "SCRIPTJUNK should never be extracted";</script>
+  <style>.junk { content: "STYLEJUNK"; }</style>
+</head>
+<body data-fixture="site_a_home">
+  <h1>Harborview Public Library</h1>
+  <p>The Harborview Public Library is open Monday to Friday from 9 AM to 8 PM,
+     and Saturday from 10 AM to 5 PM. It is closed on Sundays.</p>
+  <p>Our address is 214 Seabird Lane, Harborview, next to the ferry terminal.</p>
+  <p>Membership is free for all Harborview residents; bring one photo ID to sign up.</p>
+  <nav>
+    <a href="https://library.example.test/catalog">Browse the catalog</a>
+    <a rel="next" href="https://library.example.test/catalog">Next</a>
+  </nav>
+</body>
+</html>

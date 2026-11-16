@@ -1,0 +1,89 @@
+{
+  "collected_at": "2026-10-04T09:43:43.859634+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37190545146,
+    "endpoint": ".../runs/37190545146/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 111401609474,
+        "run_id": 37190545146,
+        "workflow_name": "termux smoke",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37190545146",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZ8A2pAg",
+        "head_sha": "ba1efd460881f3b4950b8e9aff4dabdfea100a27",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111401609474",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37190545146/job/111401609474",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "created_at": "2026-10-04T08:56:39Z",
+        "started_at": "2026-10-04T08:56:44Z",
+        "completed_at": "2026-10-04T08:56:52Z",
+        "name": "agentic termux smoke",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-04T08:56:45Z",
+            "completed_at": "2026-10-04T08:56:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "cancelled",
+            "number": 2,
+            "started_at": "2026-10-04T08:56:46Z",
+            "completed_at": "2026-10-04T08:56:51Z"
+          },
+          {
+            "name": "Core smoke (required)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-04T08:56:51Z",
+            "completed_at": "2026-10-04T08:56:51Z"
+          },
+          {
+            "name": "Optional agent-surface probes",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-04T08:56:51Z",
+            "completed_at": "2026-10-04T08:56:51Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-04T08:56:51Z",
+            "completed_at": "2026-10-04T08:56:51Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-04T08:56:51Z",
+            "completed_at": "2026-10-04T08:56:51Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111401609474",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000205147,
+        "runner_name": "GitHub Actions 1000205147",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

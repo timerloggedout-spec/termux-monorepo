@@ -1,0 +1,16 @@
+#!/bin/bash
+cat << 'EOF'
+╔══════════════════════════════════════════════╗
+║  4_51GH7 ForeSight — Command Quick Reference  ║
+╚══════════════════════════════════════════════╝
+
+Research a file's history   archaeo <file>
+Check impact before change  oracle <file>
+Make a change               dispatch-queue   (recommended, 1 at a time)
+                            dispatch-parallel (2+ TMUX windows, use sparingly)
+                            task-watch        (background polling)
+Validate & promote           validate_promotion.py → promote
+Rebuild indices              map-build && map-func && fore
+List pending tasks           task-list
+Show this reference          workflow
+EOF

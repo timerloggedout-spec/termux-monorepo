@@ -1,0 +1,113 @@
+{
+  "collected_at": "2026-10-27T08:55:44.210236+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40476872901,
+    "endpoint": ".../runs/40476872901/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 122097199850,
+        "run_id": 40476872901,
+        "workflow_name": "Audit Cycle \u2014 Single PR Feed-Forward",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40476872901",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcbY9q6g",
+        "head_sha": "5923a31a086b7408fc352da5e08c17e70b13b2ea",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122097199850",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40476872901/job/122097199850",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-27T08:55:06Z",
+        "started_at": "2026-10-27T08:55:09Z",
+        "completed_at": "2026-10-27T08:55:32Z",
+        "name": "audit",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-27T08:55:10Z",
+            "completed_at": "2026-10-27T08:55:11Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-27T08:55:11Z",
+            "completed_at": "2026-10-27T08:55:26Z"
+          },
+          {
+            "name": "Resolve audited PR and event identity",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-27T08:55:26Z",
+            "completed_at": "2026-10-27T08:55:27Z"
+          },
+          {
+            "name": "Capture repository audit receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-27T08:55:27Z",
+            "completed_at": "2026-10-27T08:55:27Z"
+          },
+          {
+            "name": "Static correctness gates",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-27T08:55:27Z",
+            "completed_at": "2026-10-27T08:55:27Z"
+          },
+          {
+            "name": "Upload append-only audit receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-27T08:55:27Z",
+            "completed_at": "2026-10-27T08:55:29Z"
+          },
+          {
+            "name": "Feed-forward audit receipt to PR",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-27T08:55:29Z",
+            "completed_at": "2026-10-27T08:55:29Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-27T08:55:29Z",
+            "completed_at": "2026-10-27T08:55:30Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-27T08:55:30Z",
+            "completed_at": "2026-10-27T08:55:30Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122097199850",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000379695,
+        "runner_name": "GitHub Actions 1000379695",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

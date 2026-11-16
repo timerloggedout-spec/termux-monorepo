@@ -1,0 +1,63 @@
+$ python3 main.py --plan --route ssh_to_android_termux
+PLAN  route=ssh_to_android_termux
+Phone steps:
+  1. On the ANDROID device: open Termux (install it from F-Droid / Play Store first)
+  2. In Termux, run the Android-side commands below (setup-termux.sh does them all)
+  3. When Termux asks for storage permission, tap Allow
+  4. Note the username (whoami) and the IP (ip addr) Termux prints
+  5. On the iPHONE: open iSH (or Blink / Termius)
+  6. Run the ssh command below in iSH — you are now inside REAL Termux
+  7. Same LAN works out of the box; across networks, put both devices on Tailscale
+Commands:
+  $ pkg update
+  $ pkg install openssh
+  $ termux-setup-storage
+  $ passwd
+  $ sshd
+  $ whoami
+  $ ip addr
+  $ ssh -p 8022 u0_a123@192.168.1.50
+--- setup-termux.sh ---
+#!/data/data/com.termux/files/usr/bin/bash
+# iOS2Termux — one-time setup INSIDE real Termux on the Android device
+set -e
+pkg update
+pkg install openssh
+termux-setup-storage
+passwd
+sshd
+whoami
+ip addr
+echo "Termux sshd is up on port 8022 — ssh in from the iPhone"
+--- ssh_config ---
+# iOS2Termux — ssh config snippet (iSH / Blink: ~/.ssh/config)
+Host termux
+    HostName 192.168.1.50
+    Port 8022
+    User u0_a123
+--- translate-cheat-sheet.md ---
+# iOS2Termux — Translate Cheat-Sheet
+
+Termux (Android) <-> iSH (iOS, Alpine). Empty iOS cell = no equivalent.
+
+| Termux | iOS (iSH) | Note |
+|---|---|---|
+| `pkg install {pkg}` | `apk add {pkg}` | install a package: Termux pkg wraps apt; iSH uses Alpine apk |
+| `pkg update` | `apk update` | refresh the package index |
+| `apt update` | `apk update` | Termux also ships apt; on iSH the index refresh is apk update |
+| `pkg uninstall {pkg}` | `apk del {pkg}` | remove a package |
+| `termux-open {file}` | `open {file}` | open a file with the default app |
+| `termux-clipboard-set` | `pbcopy` | copy stdin to the clipboard |
+| `termux-clipboard-get` | `pbpaste` | print the clipboard contents |
+| `termux-tts-speak {text}` | `say {text}` | text to speech |
+| `termux-setup-storage` | `— (none)` | NO iOS equivalent: storage permission is a Termux/Android concept; iOS grants file access per app in Files |
+| `termux-wake-lock` | `— (none)` | NO iOS equivalent: keep the iPhone awake from Settings or by keeping the shell app in front |
+| `sshd` | `ssh` | Termux can HOST sshd (port 8022); iOS shells are ssh CLIENTS only — there is no sshd server on iOS |
+| `termux-info` | `uname -a` | system info (closest equivalent, not identical output) |
+| `termux-battery-status` | `— (none)` | NO iOS shell equivalent: battery APIs are Android-only |
+| `termux-toast {text}` | `echo {text}` | closest equivalent: print the text (no toast UI on iOS) |
+| `termux-share {file}` | `open {file}` | share-sheet maps closest to opening the file |
+| `termux-wake-unlock` | `— (none)` | NO iOS equivalent (pairs with termux-wake-lock) |
+
+Paths: `~/storage/downloads` <-> iOS Files `On My iPhone/Downloads` (shared). `~/downloads` is Termux PRIVATE — never use it for shared files. Extract archives before running them.
+VERDICT: PROCEED

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+  "title": "Agent Throughput Event",
+  "type": "object",
+  "required": ["timestamp", "event"],
+  "properties": {
+    "timestamp": {"type": "string", "format": "date-time"},
+    "event": {"enum": ["task_started", "task_completed", "tool_call", "tool_retry", "handoff", "active_window"]},
+    "agent_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "tool": {"type": "string", "minLength": 1},
+    "status": {"enum": ["success", "failed", "error", "skipped"]},
+    "duration_ms": {"type": "number", "minimum": 0},
+    "latency_ms": {"type": "number", "minimum": 0},
+    "active_seconds": {"type": "number", "minimum": 0},
+    "inference_seconds": {"type": "number", "minimum": 0},
+    "tokens_in": {"type": "number", "minimum": 0},
+    "tokens_out": {"type": "number", "minimum": 0},
+    "complexity_score": {"type": "number", "minimum": 0},
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "additions": {"type": "number", "minimum": 0},
+        "deletions": {"type": "number", "minimum": 0},
+        "files_changed": {"type": "number", "minimum": 0},
+        "complexity_score": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "gha_run_id": {"type": "integer", "minimum": 1},
+    "gha_run_attempt": {"type": "integer", "minimum": 1},
+    "source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+  },
+  "additionalProperties": false
+}

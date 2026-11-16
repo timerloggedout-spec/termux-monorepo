@@ -1,0 +1,68 @@
+# CodeRoad completion image: freeCodeCamp rdb-alpha environment plus a
+# headless VS Code carrying the CodeRoad extension and the fleet driver.
+# Build order (workflow): build rdb-alpha from its own Dockerfile as
+# rdb-alpha:local first, then build this file stage by stage
+# (libs -> vscode -> full) so a failure names its stage in the run's
+# step list — Actions job logs are not readable from the fleet's API
+# seat, step granularity is the diagnostic surface.
+#
+# VS Code ships as a TARBALL, not the .deb: on the Actions runner disk
+# class, dpkg unpacks crawl (~12 s/package observed across pilots 5-6,
+# layer timeouts at 40 and 80 min) while a tar stream extracts in one
+# pass. The only dpkg work left is the small Electron library set.
+FROM rdb-alpha:local AS libs
+
+# Library set = the VS Code .deb's Depends list, hand-carried: the
+# tarball resolves no dependencies itself (stage-2 `code --version`
+# failed on the short list in run 41436947278 — libs stage passed,
+# vscode stage failed).
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      xvfb libgtk-3-0 libnotify4 libnss3 libnspr4 libxss1 libxtst6 xdg-utils \
+      libatspi2.0-0 libuuid1 libsecret-1-0 libasound2 fonts-liberation \
+      libatk1.0-0 libatk-bridge2.0-0 libcairo2 libpango-1.0-0 libdbus-1-3 \
+      libdrm2 libgbm1 libxcomposite1 libxdamage1 libxfixes3 libxkbcommon0 \
+      libxkbfile1 libxrandr2 libexpat1 libatomic1 libxshmfence1 dbus-x11 \
+    && rm -rf /var/lib/apt/lists/*
+
+FROM libs AS fetch
+
+# VS Code current stable 1.144.0 (route-A probe, Cert Mgr call
+# 2026-11-02): 1.97.2 was pinned during the --version-gate era; the
+# workbench under it never reaches exthost in-container (~3-min GPU-
+# spinning lifetime, pilots 10-16). This bump tests the newer Electron
+# against that signature. If the signature repeats, the container-
+# Electron route closes and the leg moves host-side.
+USER root
+RUN curl -fsSL -o /tmp/code.tgz \
+      "https://update.code.visualstudio.com/1.144.0/linux-x64/stable" \
+    && ls -la /tmp/code.tgz
+
+FROM fetch AS extract
+
+USER root
+RUN mkdir -p /opt/vscode \
+    && tar -xzf /tmp/code.tgz -C /opt/vscode \
+    && ln -s /opt/vscode/VSCode-linux-x64/bin/code /usr/local/bin/code \
+    && ls /opt/vscode/VSCode-linux-x64/bin
+
+FROM extract AS probe-ldd
+
+USER root
+RUN ldd /opt/vscode/VSCode-linux-x64/code > /tmp/ldd.txt 2>&1; \
+    ! grep -q "not found" /tmp/ldd.txt
+
+FROM extract AS vscode
+
+USER root
+RUN code --no-sandbox --user-data-dir /tmp/vscode-ud --version
+
+FROM vscode AS full
+
+USER root
+RUN mkdir -p /opt/vscode-extensions \
+    && curl --compressed -fsSL -o /tmp/coderoad.vsix \
+      "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/coderoad/vsextensions/coderoad/latest/vspackage" \
+    && code --no-sandbox --user-data-dir /tmp/vscode-ud --extensions-dir /opt/vscode-extensions --install-extension /tmp/coderoad.vsix \
+    && rm -f /tmp/coderoad.vsix
+COPY driver /opt/vscode-extensions/coderoad-driver

@@ -1,0 +1,111 @@
+# Tribute claim auction (docs/ops/TRIBUTE-AUCTION.md). Additive file.
+# - test:       offline unit tests (no network, no LLM).
+# - shadow:     after each tribute-status-refresh (or on dispatch), scout the
+#               top open help-wanted issues READ-ONLY (search + comments, System 1
+#               preflight) and run the ante+bid auction on them. Shadow only:
+#               no receipt, no claim, nothing posted anywhere.
+# - delphi-emit: settled auction outcomes that are new since the last committed
+#               ledger -> ./.github/workflows/delphi-signal.yml (tribute-outcome),
+#               so Delphi reweights endpoints by real merges vs forfeits.
+# The live auction (ante locked, receipt written) runs inside tribute-execute.yml.
+name: tribute-auction
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/tribute-auction.yml"
+      - ".github/workflows/tribute-execute.yml"
+      - "scripts/ci/tribute_auction.py"
+      - "tests/test_tribute_auction.py"
+      - "tests/fixtures/tribute_auction/**"
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/tribute-auction.yml"
+      - "scripts/ci/tribute_auction.py"
+      - "tests/test_tribute_auction.py"
+      - "tests/fixtures/tribute_auction/**"
+  workflow_run:
+    workflows: ["tribute-status-refresh"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tribute-auction-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m py_compile scripts/ci/tribute_auction.py
+      - run: python -m unittest -v tests.test_tribute_auction
+
+  shadow:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: master }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Scout (read-only) + shadow auction
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/tribute_scout.py --max 10 --label "good first issue" --out /tmp/catalog.json || echo '{"items":[]}' > /tmp/catalog.json
+          receipts=/tmp/receipts.jsonl; : > "$receipts"
+          if git ls-remote --exit-code origin refs/heads/tribute-auction/receipts >/dev/null 2>&1; then
+            git fetch -q --depth 1 origin tribute-auction/receipts && git show FETCH_HEAD:receipts.jsonl > "$receipts" 2>/dev/null || true
+          fi
+          python3 scripts/ci/tribute_auction.py auction --catalog /tmp/catalog.json --max-issues 3 --enrich \
+            --ledger "$receipts" --census docs/ops/generated/tribute-outcomes.json --out /tmp/shadow.jsonl
+          {
+            echo "## Shadow claim auction (no claim posted)"
+            echo
+            echo "| issue | result | winner | EV | p(real merge) | bids |"; echo "|---|---|---|---|---|---|"
+            jq -r '"| \(.issue) | \(.result) | \(.winner // "-") | \(.ev // "-") | \(.p_real_merge // "-") | \(.bids|length) |"' /tmp/shadow.jsonl
+          } >> "$GITHUB_STEP_SUMMARY"
+          jq -r '"::notice title=tribute-auction shadow::\(.issue) \(.result) winner=\(.winner // "-") ev=\(.ev // "-")"' /tmp/shadow.jsonl | head -5
+      - uses: actions/upload-artifact@v4
+        with: { name: tribute-auction-shadow, path: /tmp/shadow.jsonl, retention-days: 14, if-no-files-found: ignore }
+
+  signals:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      signal: ${{ steps.read.outputs.signal }}
+      count: ${{ steps.read.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: master, sparse-checkout: docs/ops/generated }
+      - id: read
+        run: |
+          f=docs/ops/generated/tribute-auction-new-signals.json
+          if [ -f "$f" ] && jq -e 'type=="array"' "$f" >/dev/null 2>&1; then
+            echo "count=$(jq 'length' "$f")" >> "$GITHUB_OUTPUT"
+            echo "signal=$(jq -c '.[:200]' "$f")" >> "$GITHUB_OUTPUT"
+          else
+            echo "count=0" >> "$GITHUB_OUTPUT"
+          fi
+
+  delphi-emit:
+    needs: signals
+    if: needs.signals.outputs.count != '' && needs.signals.outputs.count != '0'
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions:
+      actions: write
+    with:
+      event: tribute-outcome
+      signal: ${{ needs.signals.outputs.signal }}

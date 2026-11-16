@@ -1,0 +1,347 @@
+"""Pins for the quota-usage page (burn-down + replenishment stamps).
+
+The page renders ONLY data/quota-usage.json (schema quota-usage/v1),
+the pack built from the quota-specialist data pack (owner order
+2026-10-29). Integrity rules pinned here: no observation values are
+hardcoded in the page; every series-1 point and series-2 snapshot
+carries provenance; the 155-row snapshot's landed flag flipped to True
+only when convergence PR #2362 landed and viz verified the pair blob
+on master; g4f has NO
+replenishment stamp (established=False, cadence=None) and must never
+gain one silently; series-3 daily deltas must equal the increments of
+the in-repo reconstructed corpus they are derived from.
+"""
+import json
+import re
+import subprocess
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+APP = ROOT / "apps" / "tribute-dashboard"
+PAGE = APP / "quota-usage.html"
+PACK = APP / "data" / "quota-usage.json"
+SOURCE = ROOT / "ops" / "quota" / "quota-usage.json"
+CORPUS = ROOT / "docs" / "ops" / "generated"
+
+STATES = {"ok", "watch", "exhausted", "cap_tripped", "unknown"}
+
+
+def _html():
+    return PAGE.read_text(encoding="utf-8")
+
+
+def _pack():
+    return json.loads(PACK.read_text())
+
+
+def test_mirror_is_byte_identical_to_source():
+    # Web Design consumes the same file in quota.html — one series, no fork:
+    # the dashboard copy is a byte-identical mirror of ops/quota/quota-usage.json.
+    assert PACK.read_bytes() == SOURCE.read_bytes()
+
+
+def test_page_consumes_only_the_pack():
+    html = _html()
+    fetches = re.findall(r"fetch\(([^)]*)\)", html)
+    assert fetches == ['"./data/quota-usage.json"'], fetches
+    for el in ["meta", "burndown", "states", "actions", "stamps", "origins"]:
+        assert f'id="{el}"' in html
+
+
+def test_no_hardcoded_observations():
+    html = _html()
+    # the observed remaining values from the pack must live in the pack only
+    assert "2950" not in html and "2945" not in html
+    assert not re.search(r"remaining\s*[:=]\s*\d", html)
+
+
+def test_series1_points_carry_provenance_and_walls():
+    s1 = _pack()["series1_api_core"]
+    pts = s1["points"]
+    assert pts == sorted(pts, key=lambda p: p["at"])
+    assert all(p["provenance"] for p in pts)
+    walls = [p for p in pts if p["kind"] == "wall"]
+    assert len(walls) == 5 and all(p["remaining"] == 0 for p in walls)
+    assert s1["limit"] == 5000 and s1["next_reset_observed"]
+    # burn shape is a sustained ramp, not a spike (convergence correction):
+    # the new window's first reads drain 4999 -> 4645 -> 3230
+    by_at = {p["at"]: p["remaining"] for p in pts}
+    assert by_at["2026-10-30T01:43:00Z"] == 4999
+    assert by_at["2026-10-30T01:45:00Z"] == 4645
+    assert by_at["2026-10-30T01:54:00Z"] == 3230
+    assert "30–40 min ramp" in s1["note"]
+
+
+def test_buckets_kept_separate_and_storm_fix_recorded():
+    pack = _pack()
+    buckets = {b["name"]: b for b in pack["buckets"]}
+    # cadence graph note: buckets are never merged into one burn line
+    assert buckets["github.api.user_token (PAT user bucket)"]["limit"] == 5000
+    assert buckets["github.api.github_token (installation, per-repo)"]["limit"] == 1000
+    assert buckets["GitHub GraphQL (user token)"]["limit"] == 5000
+    spike = pack["series3_actions"]["spike"]
+    assert "2341" in spike["outcome"] and "97938a583f50" in spike["outcome"]
+    wall_anno = [a for a in pack["annotations"] if a["id"] == "origin-pat-wall"][0]
+    assert "NOT ESTABLISHED" in wall_anno["text"]
+
+
+def test_flow_line_model():
+    # Owner principle (via cadence lane): the target line is the
+    # replenishment flow line, phased to reset epochs — not a ceiling.
+    s1 = _pack()["series1_api_core"]
+    m = s1["model"]
+    assert m["window_ms"] == 3600000 and "NOT a survival ceiling" in m["principle"]
+    assert set(m["faults"]) == {"below_line", "above_line"}
+    anchor = 1793324529000  # 2026-10-30T01:42:09Z in ms
+    assert m["anchor_reset"] == "2026-10-30T01:42:09Z"
+    for w in m["worked"]:
+        t = __import__("datetime").datetime.fromisoformat(w["at"].replace("Z", "+00:00"))
+        ms = int(t.timestamp() * 1000)
+        ideal = 5000 * (((anchor - ms) % 3600000) / 3600000)
+        assert abs(ideal - w["ideal_remaining"]) <= 3, (w, ideal)
+
+
+def test_node_sim_flow_line(tmp_path):
+    html = _html()
+    logic = html.split("// ==== pure logic (node-sim tested) ====")[1].split("// ==== end pure logic ====")[0]
+    harness = tmp_path / "harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "run.cjs"
+    out.write_text("""
+const {idealRemaining, parseT} = require("./harness.cjs");
+const A = parseT("2026-10-30T01:42:09Z"), W = 3600000;
+const res = {
+  at_reset: idealRemaining(A, 5000, A, W),
+  half_window: idealRemaining(A - 1800000, 5000, A, W),
+  just_after_reset: Math.round(idealRemaining(A + 60000, 5000, A, W)),
+  prev_window_same_phase: idealRemaining(A - W - 1800000, 5000, A, W),
+};
+console.log(JSON.stringify(res));
+""")
+    r = subprocess.run(["node", str(out)], cwd=tmp_path, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    assert res["at_reset"] == 0 and res["half_window"] == 2500
+    # one minute into a fresh window the ideal is nearly the full bucket
+    assert res["just_after_reset"] == 4917
+    assert res["prev_window_same_phase"] == 2500
+
+
+def test_gearbox_concept_block():
+    gb = _pack()["gearbox"]
+    assert gb["doc"] == "docs/ops/QUOTA-GEARBOX-CONCEPT.md"
+    assert "INTERNAL" in gb["admin_designation"]
+    assert [g["focus"] for g in gb["gears"]] == [
+        "winning", "repo-development", "research", "boinc-donations"]
+    # the mock is flagged as a mock, and the honesty flags are explicit
+    assert gb["mock"]["flag"].startswith("MOCK")
+    assert any("NOT ESTABLISHED" in h for h in gb["honesty"])
+    assert gb["shift_log_type"]["shape"]["cites"] == "#1884"
+    # no fake shift events leak into the real annotation stream
+    assert all(a.get("type") != "shift" for a in _pack()["annotations"])
+    # owner refinement: sliders + presets, checkbox subsets, extended audit
+    ui = gb["admin_ui"]
+    assert [p["name"] for p in ui["sliders"]["presets"]] == [
+        "Winning 100", "leftover-only", "excluded / reserve-100", "equal-split"]
+    assert {"issue", "rfp"} <= set(ui["subset_selection"]["tags"])
+    shape = gb["shift_log_type"]["shape"]
+    assert "subset_filter" in shape and "input_source" in shape
+    assert ui["guardrail_ruling"]["over_100"].startswith("BLOCK")
+
+
+def test_series2_snapshots_provenance_and_landing_flags():
+    s2 = _pack()["series2_snapshots"]
+    snaps = s2["snapshots"]
+    assert len(snaps) >= 3
+    assert [sn["landed"] for sn in snaps[:3]] == [True, True, True]
+    assert [sn["rows"] for sn in snaps[:3]] == [3, 8, 155]
+    for sn in snaps:
+        assert sn["provenance"]
+        states = sn.get("states") or {}
+        assert isinstance(states, dict)
+        for svc, state in states.items():
+            assert svc in s2["services"] and state in STATES
+    # snapshot 3 is the recovery: github token exhausted -> watch
+    assert snaps[1]["states"]["github.api.github_token"] == "exhausted"
+    assert snaps[2]["states"]["github.api.github_token"] == "watch"
+    # landed 155-row truth (PR #2362, pair blob 5d5238c9): minutes unknown
+    assert snaps[2]["states"]["github.actions.minutes"] == "unknown"
+    assert "2362" in snaps[2]["provenance"]
+
+
+
+def test_missing_snapshot_states_render_as_no_reading(tmp_path):
+    # Recent status-only snapshots can omit the optional states map.
+    # The renderer must preserve absence rather than throwing or zero-filling.
+    html = _html()
+    start = html.index("function renderStates(){")
+    end = html.index("function renderActions(){", start)
+    render = html[start:end]
+    harness = tmp_path / "render-states.cjs"
+    harness.write_text("""
+const PACK = {series2_snapshots: {
+  services: ["github.api.github_token"],
+  snapshots: [
+    {at: "2026-11-04T01:59:43Z", rows: 171, landed: true, provenance: "fixture"},
+    {at: "2026-11-05T01:59:43Z", rows: 171, landed: true, provenance: "fixture", states: null}
+  ]
+}};
+const node = {innerHTML: ""};
+function $(id) { return node; }
+function esc(value) { return String(value); }
+function stateClass(value) { return String(value).replace(/[^a-z_]/g, ""); }
+""" + render + """
+renderStates();
+if (!node.innerHTML.includes("no reading")) process.exit(1);
+console.log(node.innerHTML);
+""")
+    result = subprocess.run(["node", str(harness)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.count("no reading") == 2
+
+
+def test_g4f_has_no_stamp():
+    stamps = _pack()["stamps"]
+    g4f = [s for s in stamps if s["pool"].startswith("g4f (")]
+    assert len(g4f) == 1
+    assert g4f[0]["established"] is False and g4f[0]["cadence"] is None
+    # the only other unstamped group: registry records whose window is unknown
+    unstamped = [s for s in stamps if not s["established"]]
+    assert {s["pool"] for s in unstamped} == {"g4f (43 records)", "48 of 155 registry records"}
+    others = [s for s in stamps if s["established"]]
+    assert others and all(s["cadence"] for s in others)
+
+
+def test_stamp_cadence_precision():
+    # convergence-lane corrections vs the registry, pinned so they cannot regress
+    stamps = {s["pool"]: s for s in _pack()["stamps"]}
+    assert "UTC midnight" in stamps["openrouter.free_models"]["detail"]
+    assert "NOT pinned" in stamps["daily free tiers (groq, cerebras, airforce, g4f.established)"]["detail"]
+    assert stamps["render.pipeline_minutes"]["cadence"] == "monthly — calendar"
+    assert stamps["neon.compute (CU-hours)"]["cadence"] == "monthly — billing"
+    assert "x-ratelimit-reset" in stamps["github.api (PAT core)"]["detail"]
+    assert "2032" in stamps["g4f.elevenlabs (10,000 credits)"]["detail"]
+
+
+def test_series3_deltas_match_corpus():
+    pack_days = {d["date"]: d for d in _pack()["series3_actions"]["days"]}
+    files = sorted(CORPUS.glob("actions-performance-reconstructed-2026-10-*.json"))
+    prev = None
+    checked = 0
+    for f in files:
+        cur = json.loads(f.read_text())
+        date = f.name[-15:-5]
+        if prev is not None:
+            assert date in pack_days, date
+            assert pack_days[date]["runs_delta"] == cur["run_count"] - prev["run_count"]
+            assert pack_days[date]["jobs_delta"] == cur["total_jobs"] - prev["total_jobs"]
+            checked += 1
+        prev = cur
+    # The pack retains historical observations from August/September and
+    # the November 1 boundary. This reconstructed corpus fixture is specifically
+    # the October daily series: compare its full date set, then its N-1 deltas.
+    corpus_dates = {
+        f.name[-15:-5]
+        for f in files
+    }
+    october_pack_dates = {
+        date for date in pack_days
+        if date.startswith("2026-10-")
+    }
+    assert corpus_dates == october_pack_dates
+    assert checked == len(corpus_dates) - 1 == 29
+    spike = _pack()["series3_actions"]["spike"]
+    assert spike["runs"] == 143 and spike["workflow"] == "delphi-gate"
+
+
+def test_full_script_parses(tmp_path):
+    # Regression pin: PR #2360 shipped a missing ')' in renderBurn that
+    # made the whole <script> unparseable (page stuck on "Loading pack")
+    # while every pure-logic test stayed green. Parse the full script.
+    script = _html().split("<script>")[1].split("</script>")[0]
+    f = tmp_path / "page.js"
+    f.write_text(script)
+    r = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+
+
+def test_node_sim_logic(tmp_path):
+    html = _html()
+    logic = html.split("// ==== pure logic (node-sim tested) ====")[1].split("// ==== end pure logic ====")[0]
+    harness = tmp_path / "harness.cjs"
+    harness.write_text(logic)
+    out = tmp_path / "run.cjs"
+    out.write_text("""
+const {burnGeom, stepPath, stateClass, barGeom, stampText, yTicks, labelPlace, wallLabels, barScale} = require("./harness.cjs");
+const pts = [
+  {at: "2026-10-28T23:41:00Z", remaining: 0, kind: "wall"},
+  {at: "2026-10-29T00:37:00Z", remaining: 2500, kind: "observed"},
+  {at: "2026-10-30T01:36:00Z", remaining: 0, kind: "wall"},
+];
+const g = burnGeom(pts, 5000, 920, 300, 44);
+const bars = barGeom([{date: "a", runs_delta: 40}, {date: "b", runs_delta: 0}, {date: "c", runs_delta: 20}], 920, 260, 40);
+const res = {
+  wall_y: g.pts[0].y, half_y: g.pts[1].y, xs_sorted: g.pts[0].x < g.pts[1].x && g.pts[1].x < g.pts[2].x,
+  path_head: stepPath(g.pts).slice(0, 1),
+  state_ok: stateClass("cap_tripped"), state_none: stateClass(null),
+  bar_max_h: Math.max(...bars.map(b => b.h)), bar_zero_h: bars[1].h,
+  stamp_ok: stampText({established: true, cadence: "daily"}),
+  stamp_none: stampText({established: false, cadence: null}),
+  yticks: yTicks(5000),
+  place_right: labelPlace(900, "3230 · 2026-10-30T01:54:00Z", 920, 44).anchor,
+  place_left: labelPlace(100, "2500 · 2026-10-29T00:37:00Z", 920, 44).anchor,
+  wall_ys: wallLabels([{x: 800, y: 256, at: "2026-10-30T01:54:00Z"}, {x: 830, y: 256, at: "2026-10-30T01:56:00Z"}], 920, 44).map(w => w.y),
+  scale: barScale([{runs_delta: 40}, {runs_delta: 0}, {runs_delta: 20}]),
+};
+console.log(JSON.stringify(res));
+""")
+    r = subprocess.run(["node", str(out)], cwd=tmp_path, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    res = json.loads(r.stdout.strip())
+    # remaining 0 sits on the axis (pad + inner height = 44 + 212), half bucket mid-way
+    assert res["wall_y"] == 256 and abs(res["half_y"] - 150) < 1
+    assert res["xs_sorted"] and res["path_head"] == "M"
+    assert res["state_ok"] == "cap_tripped" and res["state_none"] == "none"
+    assert res["bar_max_h"] == 180 and res["bar_zero_h"] == 0
+    assert res["stamp_ok"] == "↻ DAILY" and res["stamp_none"].startswith("NO STAMP")
+    # V1 axis legibility: intermediate ticks, bounded labels, wall stagger, bar scale
+    assert res["yticks"] == [0, 1250, 2500, 3750, 5000]
+    assert res["place_right"] == "end" and res["place_left"] == "start"
+    assert len(set(res["wall_ys"])) == 2
+    assert res["scale"] == {"max": 40, "ticks": [0, 20, 40]}
+
+
+def test_quota_page_links_usage_graphs_and_sitemap():
+    # web-design chrome wiring: the usage page is a quota sub-page, so the
+    # parent panel links it and the sitemap lists it; it is not a shell page.
+    quota = (APP / "quota.html").read_text()
+    assert 'href="./quota-usage.html"' in quota
+    sitemap = (APP / "sitemap.xml").read_text()
+    assert "https://timerloggedout-spec.github.io/tribute/quota-usage.html" in sitemap
+
+
+def test_gearbox_consumer_controls_present_and_admin_only():
+    # owner 2026-10-29 19:49 PT: STOP/PAUSE per consumer + throttle slider,
+    # audited like shifts; diagnosis dependency stated, never faked.
+    g = _pack()["gearbox"]
+    cc = g["admin_ui"]["consumer_controls"]
+    assert cc["stop"]["action"] == "stop"
+    assert cc["pause"]["action"] == "pause"
+    assert "calls/min" in cc["throttle"]["control"]
+    ev = cc["audit_event"]
+    assert ev["cites"] == "#1884" and "consumer" in ev["fields"]
+    assert "NOT ESTABLISHED" in cc["diagnose_dependency"]
+    assert any("DESIGN-ONLY" in h for h in g["honesty"])
+    # moderation controls are Admin-internal schema — the public page
+    # never renders them
+    html = _html()
+    assert "consumer_controls" not in html
+    assert "diagnose_dependency" not in html
+
+
+def test_axis_hooks_present():
+    # HYBRID E (B-lite) hooks: tick/label classes exist as DOM text hooks.
+    html = _html()
+    for hook in ['class="ytick"', 'class="ptlabel"', 'class="walllabel"',
+                 'class="axisname"', "yTicks(", "labelPlace(", "wallLabels(", "barScale("]:
+        assert hook in html, hook

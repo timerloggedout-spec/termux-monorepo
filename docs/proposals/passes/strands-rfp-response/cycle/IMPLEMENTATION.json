@@ -1,0 +1,68 @@
+{
+  "strands-rfp-response-kernel-first": {
+    "suites": [
+      {
+        "name": "e05_adversarial_firewall",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "e01_evidence_gate_delta",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "e03_counterfactual_replay",
+        "passed": 1,
+        "failed": 0
+      }
+    ],
+    "passed": 3,
+    "failed": 0,
+    "pass_rate": 1.0
+  },
+  "strands-rfp-response-collection-first": {
+    "suites": [
+      {
+        "name": "collector_intake_validation",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "collector_dedupe",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "e06_receipt_completeness",
+        "passed": 1,
+        "failed": 0
+      }
+    ],
+    "passed": 3,
+    "failed": 0,
+    "pass_rate": 1.0
+  },
+  "strands-rfp-response-packaging-first": {
+    "suites": [
+      {
+        "name": "handler_conformance",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "e08_budget_breaker",
+        "passed": 1,
+        "failed": 0
+      },
+      {
+        "name": "no_deploy_claim",
+        "passed": 1,
+        "failed": 0
+      }
+    ],
+    "passed": 3,
+    "failed": 0,
+    "pass_rate": 1.0
+  }
+}

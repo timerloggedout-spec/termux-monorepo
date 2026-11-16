@@ -1,0 +1,45 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: docs/ops/DOE-ROLES-EPOCH-2026-11-03.md
+%%   @master (role register of the epoch, 2026-11-03).
+%% Export: 2026-11-03. Fidelity: role names = Registry SSOT
+%%   canonical set, verbatim; workstream membership LOSSLESS
+%%   as listed in the register (7 sections incl. the wiring).
+%% NAMED LOSSES: one-line duties + exercise receipts dropped
+%%   (the register carries them); custodian→steward practice
+%%   mapping shown as a note only; the Lean kernel is NOT a
+%%   role-holder (register's own ruling) — drawn as a note,
+%%   never as a role node.
+%% ============================================================
+flowchart LR
+    subgraph ROLES["canonical roles (SSOT)"]
+        B["builder"]
+        OP["operator"]
+        ST["steward"]
+        OB["observer"]
+        RV["reviewer"]
+        SC["scout"]
+        GA["gambler"]
+        PA["participant"]
+    end
+    subgraph STREAMS["workstreams of the epoch"]
+        POOL["Pool program"]
+        CENSUS["Census / validation"]
+        METH["Methods + Lean formalization"]
+        QUE["QUE / dispatch"]
+        TRIB["Tribute diagnostics"]
+        D1["D1 slate / freeze assembly"]
+    end
+    B --> POOL & METH & QUE & D1
+    ST --> POOL & CENSUS & METH & TRIB
+    GA --> POOL
+    PA --> POOL & QUE
+    OB --> CENSUS & QUE & TRIB & D1
+    RV --> CENSUS & METH & TRIB & D1
+    OP --> QUE & D1
+    SC --> D1
+    QUE -.->|"wiring: operator reads the pool of record at dispatch"| POOL
+    ABS["RESERVED-ABSENT: bookmaker · 11th man (no stream required them)"]
+    NOTE["forecast = OUTPUT class, not a role · the Lean kernel holds no role: its verdict is an artifact the reviewer reads"]
+    ABS -.-> STREAMS
+    NOTE -.-> ROLES

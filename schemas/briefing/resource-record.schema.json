@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/schemas/briefing/resource-record.schema.json",
+  "title": "Briefing Resource Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resource_id","canonical_url","title","source_type","observed_at","evidence_status","horizon","confidence","claims"],
+  "properties": {
+    "resource_id": {"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"},
+    "canonical_url": {"type":"string","format":"uri"},
+    "title": {"type":"string","minLength":1},
+    "publisher": {"type":"string"},
+    "source_type": {"enum":["official_project_repository","official_release","technical_documentation","peer_reviewed_paper","preprint","standards_body","official_security_advisory","official_provider_catalog","government_or_public_research","reproducible_benchmark","secondary_context"]},
+    "published_at": {"type":["string","null"]},
+    "updated_at": {"type":["string","null"]},
+    "observed_at": {"type":"string"},
+    "version_or_commit": {"type":["string","null"]},
+    "license": {"type":["string","null"]},
+    "evidence_status": {"enum":["confirmed","research","attributed","signal","speculative","disputed"]},
+    "horizon": {"enum":["H0","H1","H2","H3"]},
+    "confidence": {"enum":["high","medium","low"]},
+    "claims": {"type":"array","items":{"type":"string"}},
+    "unresolved_questions": {"type":"array","items":{"type":"string"}},
+    "related_lanes": {"type":"array","items":{"type":"string"}},
+    "related_projects": {"type":"array","items":{"type":"string"}},
+    "provenance_notes": {"type":"array","items":{"type":"string"}}
+  }
+}

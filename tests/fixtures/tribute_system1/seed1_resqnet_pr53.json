@@ -1,0 +1,180 @@
+{
+ "case_id": "seed-1-resqnet-pr53",
+ "source": "Gmail label GitHub/Priority/Direct (2026-10-20); hydrated from the public GitHub API 2026-10-21",
+ "self_login": "timerloggedout-spec",
+ "subject": {
+  "repo": "Gautam-aman/ResQNet",
+  "number": 53,
+  "kind": "pull_request",
+  "url": "https://github.com/Gautam-aman/ResQNet/pull/53",
+  "title": "help-wanted: stake + contribute for #50",
+  "state": "closed",
+  "state_reason": null,
+  "author": "timerloggedout-spec",
+  "assignees": [],
+  "labels": [],
+  "body": "## Help-wanted lane contribution (stake)\n\nOpens a reviewable upstream PR for #50.\n\n- PRIMARY: upstream PR into author repo\n- This commit is a **stake** (`.github/help-wanted-lane-stake.md`) — not the final fix\n- Fork: https://github.com/timerloggedout-spec/ResQNet\n- Related: https://github.com/Gautam-aman/ResQNet/issues/50\n\nMaintainers: request changes or wait for a real patch commit on this branch.\n",
+  "created_at": "2026-10-21T05:19:38Z",
+  "closed_at": "2026-10-21T06:33:30Z",
+  "merged": false,
+  "closed_by": "Gautam-aman"
+ },
+ "files": [
+  {
+   "filename": ".github/help-wanted-lane-stake.md",
+   "status": "added",
+   "additions": 8,
+   "deletions": 0,
+   "patch": "@@ -0,0 +1,8 @@\n+# Help-wanted lane stake\n+\n+- Issue: https://github.com/Gautam-aman/ResQNet/issues/50\n+- Actor: timerloggedout-spec (help-wanted execute)\n+- Delivery: upstream PR (PRIMARY) — stake only until real fix lands\n+- Fork: https://github.com/timerloggedout-spec/ResQNet\n+\n+Replace this file with a real fix; do not merge stake-only as complete."
+  }
+ ],
+ "linked_issue": {
+  "repo": "Gautam-aman/ResQNet",
+  "number": 50,
+  "kind": "issue",
+  "url": "https://github.com/Gautam-aman/ResQNet/issues/50",
+  "title": "Web: restore focus after the create-incident dialog closes",
+  "state": "open",
+  "state_reason": null,
+  "author": "Gautam-aman",
+  "assignees": [
+   "nishu91020"
+  ],
+  "labels": [
+   "accessibility",
+   "help wanted",
+   "good first issue",
+   "testing",
+   "area: frontend",
+   "priority: low"
+  ],
+  "body": "## Problem\n\nThe create-incident dialog moves keyboard focus to its first field when it opens. When a user closes it, focus does not reliably return to the control that opened the dialog. This makes keyboard navigation harder to resume.\n\nThis is separate from the open issue about adding automated accessibility checks to the whole web test suite: it fixes one concrete dialog behavior.\n\n## Expected behavior\n\nOpening the dialog focuses its first field. Closing with Cancel or Escape returns focus to the opener if that element is still in the document. A removed opener must not be focused.\n\n## Where to start\n\n- `apps/web/src/components/command/CreateIncidentDialog.tsx` — opening effect, Cancel button and Escape handler\n- `apps/web/src/pages/CommandPage.tsx` — control that opens the dialog\n- `apps/web/src/test/setup.ts` and `apps/web/src/App.test.tsx` — examples of the existing Vitest/Testing Library setup\n\nOne approach is to remember the active element before moving focus into the dialog, then restore it when the dialog closes. Add a focused component test; there is no need to change other modals.\n\n## Acceptance criteria\n\n- [ ] Opening places focus on the first input.\n- [ ] Cancel returns focus to the opener.\n- [ ] Escape returns focus to the opener.\n- [ ] Closing does not try to focus an opener that has been removed.\n- [ ] Automated tests cover these cases.\n\n## Testing\n\n```bash\ncd apps/web\nnpm run test\nnpm run typecheck\n```\n\n**Difficulty:** Beginner · **Estimated effort:** about 2",
+  "created_at": "2026-10-21T04:13:46Z",
+  "closed_at": null,
+  "comments": [
+   {
+    "id": 6308645069,
+    "author": "nishu91020",
+    "author_type": "User",
+    "association": "NONE",
+    "created_at": "2026-10-21T05:16:23Z",
+    "body": "Hi @Gautam-aman I would want to work on this issue. Can you please assign this to me"
+   },
+   {
+    "id": 6308646797,
+    "author": "github-actions[bot]",
+    "author_type": "Bot",
+    "association": "NONE",
+    "created_at": "2026-10-21T05:16:31Z",
+    "body": "<!-- resqnet-contributor-bot:interest:nishu91020 -->\nHey @nishu91020! Thanks for your interest in ResQNet! 🚀\n\nFeel free to take this up. Comment `/assign` to claim the issue. Our [setup and contribution guide](https://github.com/Gautam-aman/ResQNet/blob/main/CONTRIBUTING.md) can help you get started. Looking forward to your PR!"
+   },
+   {
+    "id": 6308682366,
+    "author": "timerloggedout-spec",
+    "author_type": "User",
+    "association": "NONE",
+    "created_at": "2026-10-21T05:19:15Z",
+    "body": "### Claim — termux-monorepo help-wanted lane\n\nTaking a look at this issue as part of our external evaluation + contribution lane.\n\n- Lane: help-wanted / CPPH ranked\n- Actor: timerloggedout-spec (agentic)\n- Will open a focused PR if a clean fix is in scope\n\nIf someone is already actively working this, say so and we will yield.\n"
+   }
+  ],
+  "events": [
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:47Z"
+   },
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:48Z"
+   },
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:48Z"
+   },
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:48Z"
+   },
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:48Z"
+   },
+   {
+    "event": "labeled",
+    "actor": "Gautam-aman",
+    "assignee": null,
+    "created_at": "2026-10-21T04:13:48Z"
+   },
+   {
+    "event": "assigned",
+    "actor": "Gautam-aman",
+    "assignee": "Gautam-aman",
+    "created_at": "2026-10-21T06:31:21Z"
+   },
+   {
+    "event": "unassigned",
+    "actor": "Gautam-aman",
+    "assignee": "Gautam-aman",
+    "created_at": "2026-10-21T06:31:35Z"
+   },
+   {
+    "event": "assigned",
+    "actor": "nishu91020",
+    "assignee": "nishu91020",
+    "created_at": "2026-10-21T06:31:35Z"
+   }
+  ]
+ },
+ "comments": [
+  {
+   "id": 6308688275,
+   "author": "vercel[bot]",
+   "author_type": "Bot",
+   "association": "NONE",
+   "created_at": "2026-10-21T05:19:44Z",
+   "body": "@github-actions[bot] is attempting to deploy a commit to the **Aman's projects** Team on [Vercel](https://vercel.com).\n\nA member of the Team first needs to [authorize it](https://vercel.com/git/authorize?team=Aman's%20projects&slug=amans-projects-208a613a&teamId=team_d9Ak2iuuIup5RZt4OWAoylv0&type=github&job=%7B%22headInfo%22%3A%7B%22sha%22%3A%22ee311e7388e4270b5bc70e73fd64491b4c233e2a%22%7D%2C%22id%22%3A%22QmTEteZEASDveVFt6gQrw2g6w5XQNCtK2QzTTwsvK6nrVg%22%2C%22org%22%3A%22Gautam-aman%22%2C%22prId%22%3A53%2C%22repo%22%3A%22ResQNet%22%7D).\n\n"
+  },
+  {
+   "id": 6309688148,
+   "author": "Gautam-aman",
+   "author_type": "User",
+   "association": "OWNER",
+   "created_at": "2026-10-21T06:33:30Z",
+   "body": "Hey @timerloggedout-spec, thanks for your interest in contributing to ResQNet!\r\n\r\nI'm closing this PR because issue #50 is already assigned to another contributor. Also, the current PR contains a placeholder rather than the actual implementation.\r\n\r\nTo avoid duplicate work, please check the issue's assignment status before opening a PR. You're welcome to pick up another unassigned issue, and we'd be happy to review your contribution.\r\n\r\nThanks for understanding!"
+  }
+ ],
+ "events": [
+  {
+   "event": "closed",
+   "actor": "Gautam-aman",
+   "assignee": null,
+   "created_at": "2026-10-21T06:33:30Z"
+  }
+ ],
+ "expected": {
+  "labels": [
+   "closed_already_assigned",
+   "low_effort_placeholder",
+   "claimed_by_other"
+  ],
+  "primary": "closed_already_assigned",
+  "action": "retire_lane",
+  "escalate": false,
+  "prefilter_rules": [
+   "require_unassigned_issue",
+   "block_placeholder_pr"
+  ],
+  "note": "claimed_by_other is secondary: nishu91020 claimed #50 three minutes before our claim and holds the assignment",
+  "reengage_allowed": false,
+  "rung": "system1"
+ }
+}

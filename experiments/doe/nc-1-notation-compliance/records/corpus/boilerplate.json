@@ -1,0 +1,10 @@
+{
+  "schema": "nc-1 boilerplate set v1 (Linguist R7, c.6552176904; github amendment c.6552214238)",
+  "rule": "A unit whose primary content matches the committed template/bot scaffolding patterns below is labeled boilerplate (diagnostic class), NOT drift. Labeler judgment alone never assigns this class.",
+  "patterns": [
+    {"id": "pr-template-body", "description": "GitHub PR template scaffolding: unfilled Description/Changes/Testing/Checklist sections with placeholder text and empty checkboxes as the primary content"},
+    {"id": "bot-audit-boilerplate", "description": "Bot-generated audit/review scaffolding text repeated verbatim across PRs (generated headers, standard recommendation blocks) as the primary content"},
+    {"id": "ci-status-scaffold", "description": "CI/status template blocks (generated tables/banners) as the primary content"}
+  ],
+  "gold_corpus_v1_assignment": "0 units — the 16 github gold units are authored prose or dense records; several contain incidental template fragments (checklists, headings) but none are primarily scaffolding. Assignment disclosed for Linguist re-review."
+}

@@ -1,0 +1,81 @@
+{
+  "collected_at": "2026-10-05T10:21:18.610947+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37288601064,
+    "endpoint": ".../runs/37288601064/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 111693402913,
+        "run_id": 37288601064,
+        "workflow_name": "Actions Run Watcher \u2014 incident notification",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288601064",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAXITIQ",
+        "head_sha": "e0cb724154146bf5d142a97fb1b049d654f5f337",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111693402913",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288601064/job/111693402913",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:13:21Z",
+        "started_at": "2026-10-05T09:13:23Z",
+        "completed_at": "2026-10-05T09:13:25Z",
+        "name": "observe-completion",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:13:23Z",
+            "completed_at": "2026-10-05T09:13:24Z"
+          },
+          {
+            "name": "Record non-incident completion",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:13:24Z",
+            "completed_at": "2026-10-05T09:13:24Z"
+          },
+          {
+            "name": "Create or update incident notification",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-05T09:13:24Z",
+            "completed_at": "2026-10-05T09:13:24Z"
+          },
+          {
+            "name": "Emit structured incident receipt",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-05T09:13:24Z",
+            "completed_at": "2026-10-05T09:13:24Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-05T09:13:24Z",
+            "completed_at": "2026-10-05T09:13:24Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111693402913",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000210674,
+        "runner_name": "GitHub Actions 1000210674",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-11-10T11:05:37.702700+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42804261754,
+    "endpoint": ".../runs/42804261754/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 129789287305,
+        "run_id": 42804261754,
+        "workflow_name": "termux smoke",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42804261754",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeOAtbiQ",
+        "head_sha": "4cce34f9e5df6533eb2764a860934ac4ed0ae8c6",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129789287305",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42804261754/job/129789287305",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T11:03:17Z",
+        "started_at": "2026-11-10T11:03:20Z",
+        "completed_at": "2026-11-10T11:03:36Z",
+        "name": "agentic termux smoke",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T11:03:21Z",
+            "completed_at": "2026-11-10T11:03:22Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-10T11:03:22Z",
+            "completed_at": "2026-11-10T11:03:31Z"
+          },
+          {
+            "name": "Smoke gate regression tests",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T11:03:31Z",
+            "completed_at": "2026-11-10T11:03:32Z"
+          },
+          {
+            "name": "Core smoke (required)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-10T11:03:32Z",
+            "completed_at": "2026-11-10T11:03:33Z"
+          },
+          {
+            "name": "Optional agent-surface probes",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-10T11:03:33Z",
+            "completed_at": "2026-11-10T11:03:33Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-10T11:03:33Z",
+            "completed_at": "2026-11-10T11:03:34Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-10T11:03:34Z",
+            "completed_at": "2026-11-10T11:03:34Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129789287305",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897189,
+        "runner_name": "GitHub Actions 1000897189",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

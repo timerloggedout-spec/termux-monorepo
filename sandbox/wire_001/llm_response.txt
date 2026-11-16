@@ -1,0 +1,64 @@
+```python
+# ~[35m/[0msandbox[35m/[0m[95mw[0mire_[1;36m001[0m[35m/[0mrun.py
+
+import json
+import sys
+from pathlib import Path
+
+def load_task_from_master[1m([0m[1m)[0m:
+    master_tasks_path = Path[1m([0m"master_tasks.json"[1m)[0m
+    
+    if not master_tasks_path.exists[1m([0m[1m)[0m:
+        print[1m([0mf"Error: [1m{[0mmaster_tasks_path[1m}[0m not found", file=sys.stderr[1m)[0m
+        sys.exit[1m([0m[1;36m1[0m[1m)[0m
+    
+    try:
+        with open[1m([0mmaster_tasks_path, 'r'[1m)[0m as f:
+            tasks = json.load[1m([0mf[1m)[0m
+        
+        if not tasks:
+            print[1m([0m"Error: No tasks found in master_tasks.json", file=sys.stderr[1m)[0m
+            sys.exit[1m([0m[1;36m1[0m[1m)[0m
+        
+        # Return the first task by default, or you can specify which task to run
+        # via command line argument
+        if len[1m([0msys.argv[1m)[0m > [1;36m1[0m:
+            task_id = sys.argv[1m[[0m[1;36m1[0m[1m][0m
+            if task_id in tasks:
+                return tasks[1m[[0mtask_id[1m][0m
+            else:
+                print[1m([0mf"Error: Task '[1m{[0mtask_id[1m}[0m' not found in master_tasks.json", file=sys.stderr[1m)[0m
+                sys.exit[1m([0m[1;36m1[0m[1m)[0m
+        else:
+            # Return first task if no specific task requested
+            first_task_id = next[1m([0miter[1m([0mtasks[1m)[0m[1m)[0m
+            return tasks[1m[[0mfirst_task_id[1m][0m
+            
+    except json.JSONDecodeError as e:
+        print[1m([0mf"Error: Invalid JSON in master_tasks.json: [1m{[0me[1m}[0m", file=sys.stderr[1m)[0m
+        sys.exit[1m([0m[1;36m1[0m[1m)[0m
+    except Exception as e:
+        print[1m([0mf"Error reading master_tasks.json: [1m{[0me[1m}[0m", file=sys.stderr[1m)[0m
+        sys.exit[1m([0m[1;36m1[0m[1m)[0m
+
+def main[1m([0m[1m)[0m:
+    task = load_task_from_master[1m([0m[1m)[0m
+    
+    # Example task structure - adapt based on your actual task format
+    print[1m([0mf"Executing task: [1m{[0mtask.get[1m([0m'name', 'Unnamed task'[1m)[0m[1m}[0m"[1m)[0m
+    print[1m([0mf"Task data: [1m{[0mjson.dumps[1m([0mtask, indent=[1;36m2[0m[1m)[0m[1m}[0m"[1m)[0m
+    
+    # Your task execution logic here
+    # Example:
+    if 'command' in task:
+        import subprocess
+        result = subprocess.run[1m([0mtask[1m[[0m'command'[1m][0m, shell=[3;92mTrue[0m, capture_output=[3;92mTrue[0m, text=[3;92mTrue[0m[1m)[0m
+        print[1m([0mf"Command output: [1m{[0mresult.stdout[1m}[0m"[1m)[0m
+        if result.stderr:
+            print[1m([0mf"Command errors: [1m{[0mresult.stderr[1m}[0m", file=sys.stderr[1m)[0m
+    
+    print[1m([0m"Task completed"[1m)[0m
+
+if __name__ == "__main__":
+    main[1m([0m[1m)[0m
+```Patch run.py to read tasks from master_tasks.json

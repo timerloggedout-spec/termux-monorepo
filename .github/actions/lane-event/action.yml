@@ -1,0 +1,48 @@
+name: lane-event
+description: >-
+  Append one event (or a JSONL file of events) to the Neon lane_events ledger.
+  No-op when neither LANE_EVENTS_DATABASE_URL nor NEON_API_KEY is provided.
+  Never fails the calling job. Requires the repo to be checked out.
+inputs:
+  lane: {description: "lane name (help-wanted, she, ...)", required: true}
+  workflow: {description: "producing workflow name", required: true}
+  event-type: {description: "event type", required: false, default: run_completed}
+  run-id: {required: false, default: ""}
+  run-attempt: {required: false, default: ""}
+  subject-url: {required: false, default: ""}
+  phase-id: {required: false, default: ""}
+  conclusion: {required: false, default: ""}
+  head-sha: {required: false, default: ""}
+  occurred-at: {required: false, default: ""}
+  payload: {description: "JSON object", required: false, default: "{}"}
+  events-file: {description: "optional JSONL of extra events", required: false, default: ""}
+  command: {description: "record | count | schema", required: false, default: record}
+  database-url: {description: "pass secrets.LANE_EVENTS_DATABASE_URL", required: false, default: ""}
+  neon-api-key: {description: "pass secrets.NEON_API_KEY", required: false, default: ""}
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        LANE_EVENTS_DATABASE_URL: ${{ inputs.database-url }}
+        NEON_API_KEY: ${{ inputs.neon-api-key }}
+        IN_LANE: ${{ inputs.lane }}
+        IN_WORKFLOW: ${{ inputs.workflow }}
+        IN_TYPE: ${{ inputs.event-type }}
+        IN_RUN_ID: ${{ inputs.run-id }}
+        IN_RUN_ATTEMPT: ${{ inputs.run-attempt }}
+        IN_SUBJECT: ${{ inputs.subject-url }}
+        IN_PHASE: ${{ inputs.phase-id }}
+        IN_CONCLUSION: ${{ inputs.conclusion }}
+        IN_SHA: ${{ inputs.head-sha }}
+        IN_AT: ${{ inputs.occurred-at }}
+        IN_PAYLOAD: ${{ inputs.payload }}
+        IN_FILE: ${{ inputs.events-file }}
+        IN_CMD: ${{ inputs.command }}
+      run: |
+        command -v psql >/dev/null 2>&1 || { sudo apt-get install -y -qq postgresql-client >/dev/null 2>&1 || true; }
+        python3 "$GITHUB_WORKSPACE/scripts/ops/lane_event.py" "$IN_CMD" \
+          --lane "$IN_LANE" --workflow "$IN_WORKFLOW" --event-type "$IN_TYPE" --repo "$GITHUB_REPOSITORY" \
+          --run-id "$IN_RUN_ID" --run-attempt "$IN_RUN_ATTEMPT" --subject-url "$IN_SUBJECT" \
+          --phase-id "$IN_PHASE" --conclusion "$IN_CONCLUSION" --head-sha "$IN_SHA" \
+          --occurred-at "$IN_AT" --payload "$IN_PAYLOAD" --events-file "$IN_FILE" || true

@@ -1,0 +1,53 @@
+{
+  "baseline_sha": "8315cc0666ec97d52787081ae86ccfd188321050",
+  "candidate_sha": "8315cc0666ec97d52787081ae86ccfd188321050",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": null,
+    "quota_cost_class": null,
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": null
+  },
+  "observed_at": "2026-11-02T11:21:00Z",
+  "origin": "live",
+  "outcome": null,
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": {
+    "arm": "gemini-cli",
+    "basis": "capacity restored (fleet-free key resealed 2026-11-02T09:53:48Z) + monorepo probe leg 41425582650 completed success + pin fixed (repo-story PR #5)",
+    "exploration": false,
+    "manager": "repo-story-manager",
+    "request": "repo-story-issue-2-rejoin",
+    "scout": "swarm",
+    "talent_class": "promising"
+  },
+  "session_id": null,
+  "status": "observed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "gemini-cli",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "gemini-3.5-flash-lite",
+    "provider": "gemini-cli"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

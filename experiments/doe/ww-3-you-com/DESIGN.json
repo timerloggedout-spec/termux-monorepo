@@ -1,0 +1,63 @@
+{
+  "campaign_id": "ww-3-you-com",
+  "family": "doe",
+  "member_kind": "campaign",
+  "surface": "doe",
+  "suite_type": "live",
+  "status": "admitted_design_only",
+  "moniker": "optimizations-assurance",
+  "owner_order": "Owner via main 2026-10-31: the 13 [target] webWrapper issues execute via quota system + swarm dispatch, execution lead = optimizations-assurance, under DoE separation with per-target environment availability assessed before dispatch; availability gates order, not standing.",
+  "subject": "webWrapper build for target you-com (brief issue #1798): api-extraction wrapper to the deepCLI spec over the public You.com search surface, completing the DDG/Brave/You.com zero-token-search set (docs/proposals/active/arrhythmic-zero-token-search/).",
+  "availability_class": "cloud-only (public surface; no account, no session, no device). Assessed firsthand from brief #1798 (venue remote-service; authorization basis = public surface, read-only extraction recon). Third and final dispatch of the cloud-only wave.",
+  "hypothesis": "A cloud build route can deliver a deepCLI-spec api-extraction wrapper for a public no-session target within the brief probe budget (24), with observed evidence sufficient for an independent evaluator (different provider) to score it against the verdict layers; no production route before verdict.",
+  "selection_provenance": {
+    "basis": "Scout-roster rationale (discovery/proposal layer per docs/ops/SCOUT-ROSTER.md: catalog -> evidence -> population; proposes, holds NO routing authority) + fleet delivery history.",
+    "index_evidence": "Provider Index build-arm coverage LANDED (PR #2939): registry carries jules.build_sessions + gemini.build_dispatch + deepseek.build_dispatch \u2014 evaluator state UNHELD for this campaign from the start (contrast ww-2, designed pre-coverage).",
+    "label_note": "The jules label on the brief = trigger mechanics only (agent-jules-on-issues pickup), not a selection act.",
+    "design_seed": "Capability inventory + acceptance criteria drafted as production work by the class-corrected inference batch (provider-invoke, evidence #3141): Cohere c4ai-aya-expanse-32b + SeaLion Llama-SEA-LION-v3-70B-IT completions, folded into this campaign's README as design input."
+  },
+  "treatment": {
+    "route": "jules-issues (agent-jules-on-issues.yml; label + dispatch comment). Route is a treatment variable: changing it mid-campaign = new cohort, never silently folded in.",
+    "builder_instance": {
+      "provider": "jules",
+      "model": "not_exposed_by_provider",
+      "system_prompt": {
+        "ref": "prompt:optimizations-assurance:ww-3-you-com-dispatch",
+        "sha256": "57798f64ad297d554fbba7ecaf2d4ce347b3089ebc9b0dd63a0eda31c50264a9"
+      },
+      "tools": {
+        "ref": ".github/workflows/agent-jules-on-issues.yml",
+        "sha256": "blob:20cbe8d50a92cca77a446893e0b177d814532680"
+      },
+      "role": "builder",
+      "moniker": "optimizations-assurance",
+      "context": "issue #1798 + this DESIGN",
+      "instance_key": "jules|not-exposed|builder|optimizations-assurance|ww-3-you-com"
+    },
+    "evaluator_instance": {
+      "provider": "gemini",
+      "model": "not_exposed_by_provider",
+      "role": "evaluator",
+      "moniker": "optimizations-assurance",
+      "note": "Evaluator != builder provider (separation spec); consumes ONLY committed evidence. Dispatch on builder PR landing."
+    }
+  },
+  "probe_budget": {
+    "cap": 24,
+    "unit": "probes against target surface, per brief #1798",
+    "overrun_rule": "exceeding the cap = design amendment / new cohort, never a silent overrun"
+  },
+  "evidence_expectation": "observed (per brief): status/provenance/confidence in run records say observed; undesigned extra runs record as OBSERVATIONAL.",
+  "verdict_layers": [
+    "execution status",
+    "task outcome",
+    "correctness",
+    "integration",
+    "regression",
+    "resource cost"
+  ],
+  "thresholds": "descriptive (no pre-registered numeric pass bar in the brief beyond probe budget + observed evidence); verdict judges the layers above against this DESIGN.",
+  "quota_funding": "Quota slice mechanics (b18fae96): authoring under Swarm App principal 5560920 where app-authored; collectors QAC-008 (10-min freshness gate, single-flight, batched). Slice assertions are quota mechanics, NOT a selection reference (see selection_provenance).",
+  "session_boundary": "No session exists for this target. Standing rule for the slate: session/cookie material stays in the origin-device seam; records carry account_ref only.",
+  "baseline_sha": "6a2f143726c8fa05aaa2e244b568ec43c8cecf9c"
+}

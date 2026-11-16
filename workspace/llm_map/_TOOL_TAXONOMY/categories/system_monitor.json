@@ -1,0 +1,294 @@
+{
+  "category": "system_monitor",
+  "tools": [
+    {
+      "name": "ps",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/ps",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "pgrep",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pgrep",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "vmstat",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/vmstat",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "pstree",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/pstree",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^psmisc$|^psmisc-",
+      "category": "system_monitor",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "sysctl",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/sysctl",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "pwait",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pwait",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "tload",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/tload",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "peekfd",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/peekfd",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^psmisc$|^psmisc-",
+      "category": "system_monitor",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "top",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/top",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "pwdx",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pwdx",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "watch",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/watch",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "free",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/free",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "pmap",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pmap",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "htop",
+      "package": "htop",
+      "path": "/data/data/com.termux/files/usr/bin/htop",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Interactive process viewer for Linux"
+    },
+    {
+      "name": "pslog",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/pslog",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^psmisc$|^psmisc-",
+      "category": "system_monitor",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "pidof",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pidof",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "procs",
+      "package": "procs",
+      "path": "/data/data/com.termux/files/usr/bin/procs",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "A modern replacement for ps"
+    },
+    {
+      "name": "uptime",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/uptime",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "lsof",
+      "package": "lsof",
+      "path": "/data/data/com.termux/files/usr/bin/lsof",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Lists open files for running Unix processes"
+    },
+    {
+      "name": "fuser",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/fuser",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^psmisc$|^psmisc-",
+      "category": "system_monitor",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "prtstat",
+      "package": "psmisc",
+      "path": "/data/data/com.termux/files/usr/bin/prtstat",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^psmisc$|^psmisc-",
+      "category": "system_monitor",
+      "description": "Some small useful utilities that use the proc filesystem"
+    },
+    {
+      "name": "pkill",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/pkill",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "auto_tag_source": "auto:^procps$|^procps-",
+      "category": "system_monitor",
+      "description": "Utilities that give information about processes using the /proc filesystem"
+    },
+    {
+      "name": "dmesg",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/dmesg",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Miscellaneous system utilities"
+    },
+    {
+      "name": "strace",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strace",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Package unknown"
+    },
+    {
+      "name": "kill",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/kill",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Package unknown"
+    }
+  ]
+}

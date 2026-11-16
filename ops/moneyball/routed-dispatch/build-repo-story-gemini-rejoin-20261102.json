@@ -1,0 +1,83 @@
+{
+  "axes": [
+    {
+      "axis": "relevance",
+      "evidence_refs": [
+        "NOT_ESTABLISHED"
+      ],
+      "evidence_strength": "limited",
+      "value": 5
+    },
+    {
+      "axis": "evidence_maturity",
+      "evidence_refs": [
+        "NOT_ESTABLISHED"
+      ],
+      "evidence_strength": "unverified",
+      "value": 2
+    },
+    {
+      "axis": "survivability",
+      "evidence_refs": [
+        "NOT_ESTABLISHED"
+      ],
+      "evidence_strength": "unverified",
+      "value": 5
+    },
+    {
+      "axis": "adoption_cost_inverse",
+      "evidence_refs": [
+        "NOT_ESTABLISHED"
+      ],
+      "evidence_strength": "unverified",
+      "value": 5
+    },
+    {
+      "axis": "composability",
+      "evidence_refs": [
+        "NOT_ESTABLISHED"
+      ],
+      "evidence_strength": "limited",
+      "value": 5
+    }
+  ],
+  "ballot": {
+    "aggregate": null,
+    "relation": "beside_never_merged"
+  },
+  "baseline_id": "desk-feed-only-routing/v1",
+  "composite": 4.25,
+  "opportunity": {
+    "action": "route-dispatch",
+    "context": ": repo-story build-dispatch rejoin leg (issue #2): capability class build-dispatch; arm rejoins rotation on a completed leg (s25.5)",
+    "decision_time": "2026-11-02T11:21:00Z",
+    "entity_id": "gemini-cli::gemini-3.5-flash-lite"
+  },
+  "pass_id": "swarm-routing/v2",
+  "point_in_time": {
+    "event_time": "2026-11-02T11:21:00Z",
+    "ingested_at": "2026-11-02T11:21:00Z",
+    "published_at": "2026-11-02T11:21:00Z"
+  },
+  "quantities": {
+    "capability": null,
+    "forecast": null,
+    "incremental_effect": null,
+    "portfolio_marginal_contribution": null,
+    "surplus": null,
+    "value": null
+  },
+  "record_id": "mb-build-repo-story-gemini-rejoin-20261102",
+  "rubric": "scripts/dispatch/stamp_fanout.py (declared tables; quantities null = unidentified)",
+  "schema": "moneyball-plane/v2",
+  "weights": {
+    "axes": {
+      "adoption_cost_inverse": 0.15,
+      "composability": 0.1,
+      "evidence_maturity": 0.25,
+      "relevance": 0.3,
+      "survivability": 0.2
+    },
+    "fixed_at": "swarm-routing/v2 intake 2026-11-01 (owner routing update)"
+  }
+}

@@ -1,0 +1,49 @@
+# AppID control plane — read-model load over the lane-events Neon store.
+# [MUSEai]@{role:{appid-migration-plan}} · dispatch-only (no schedule until a
+# refresh cadence is decided on evidence). Applies schema.sql (appid_cp_*
+# only), loads the filed dry-run inventory, verifies counts + drift, and
+# uploads a G4-shaped receipt artifact. lane_events is never written.
+name: appid-control-plane-inventory
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build data.sql from filed inventory
+        run: |
+          python3 ops/github-apps/control-plane/build_data_sql.py \
+            docs/proposals/active/master-splinter/inventory/inventory-2026-11-03.json > /tmp/data.sql
+      - name: Apply schema + load (Neon, lane-events store)
+        env:
+          DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f ops/github-apps/control-plane/schema.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f /tmp/data.sql
+      - name: Verify + receipt
+        env:
+          DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+        run: |
+          APPS=$(psql "$DATABASE_URL" -Atc "select count(*) from appid_cp_apps")
+          SNAPS=$(psql "$DATABASE_URL" -Atc "select count(*) from appid_cp_permission_snapshots")
+          DRIFT=$(psql "$DATABASE_URL" -Atc "select count(*) from appid_cp_permission_snapshots where drift is not null")
+          WAVES=$(psql "$DATABASE_URL" -Atc "select count(*) from appid_cp_migration_waves")
+          RUNS=$(psql "$DATABASE_URL" -Atc "select count(*) from appid_cp_replay_runs")
+          python3 - "$APPS" "$SNAPS" "$DRIFT" "$WAVES" "$RUNS" <<'PY'
+          import json, os, sys
+          receipt = {"token_source": "LANE_EVENTS_DATABASE_URL (Actions secret, name only)",
+                     "run_id": os.environ.get("GITHUB_RUN_ID"), "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+                     "head_sha": os.environ.get("GITHUB_SHA"), "apps": int(sys.argv[1]),
+                     "permission_snapshots": int(sys.argv[2]), "drift_rows": int(sys.argv[3]),
+                     "migration_waves": int(sys.argv[4]), "replay_runs": int(sys.argv[5]),
+                     "classification": "MATCH" if sys.argv[3] == "0" else "DRIFT"}
+          json.dump(receipt, open("receipt.json", "w"), indent=1)
+          print(json.dumps(receipt))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appid-control-plane-receipt-${{ github.run_id }}
+          path: receipt.json

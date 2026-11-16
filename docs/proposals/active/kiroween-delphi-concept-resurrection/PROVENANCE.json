@@ -1,0 +1,38 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "proposal_id": "kiroween-delphi-concept-resurrection",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "21ab2f46f17d2991da1475404a58aa8374c1bcac4cc1f0fc1b7db4ef3aa239ad",
+      "items": 13,
+      "assembled_at": "2026-10-30T23:43:55Z"
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "8fe4be749ee6c72f75119116535d621f066cbf27cd612060e679158e69ad549a",
+    "ITEMS.md": "f68648aa2201e7de9c6ab6a4ee5ac3007af8ebe1b560ca1c1e253e35e976593c",
+    "RFP.md": "7f73a6f6fdec5e0eca0c9b982a268d17f4d535c988e5e0733caa124584fc321c"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "kiroween-delphi-concept",
+  "concept": "Resurrection \u2014 bring a dormant public spec back from the dead: pick a stalled, publicly documented fleet spec (candidates sit in the repo's ops docs and proposal registry) and rebuild it fresh as a working Kiro project, created in-window, with the original spec as the requirements baseline and a resurrection report showing what the dead version never shipped.",
+  "eligibility_gate": {
+    "enforcement": [
+      "The D4 brief/intake REFUSES any build start before window_open: no project creation, no building (owner ruling 2026-10-27 \u2014 eligibility enforced mechanically, per entry, per producing lane).",
+      "At project creation, the creation timestamp is captured into packet D4 as eligibility evidence; a timestamp before window_open voids the entry.",
+      "The generated concept proposal is not the competition project and does not trip this gate."
+    ],
+    "owner_confirmation": "2026-10-27: D4's build waits for its window.",
+    "rule": "New Projects Only (Official Rules s.4, kiroween.devpost.com/rules, read 2026-10-30): Projects must be newly created by the Entrant after the start of the Hackathon Submission Period (Oct 30, 2026, 9:00 AM PT). Standard development resources (frameworks, libraries, starter templates) may be used; any other pre-existing code or work incorporated must be disclosed. The work described and submitted must have been built during the Submission Period.",
+    "window_close": "2026-12-04T14:00:00-08:00",
+    "window_open": "2026-10-30T09:00:00-07:00"
+  },
+  "siblings": [
+    "kiroween-delphi-concept-skeleton-crew",
+    "kiroween-delphi-concept-frankenstein"
+  ]
+}

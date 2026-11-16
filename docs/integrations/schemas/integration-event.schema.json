@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/integrations/schemas/integration-event.schema.json",
+  "title": "Termux Monorepo Integration Event",
+  "description": "Privacy-conscious normalized event envelope for attributed integration observations and operations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "integration_id", "event_type", "source", "execution", "outcome", "evidence", "provenance", "idempotency_key"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "event_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "integration_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"},
+    "event_type": {"type": "string", "minLength": 1, "maxLength": 120},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "commit_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{7,64}$"},
+        "pull_request": {"type": ["integer", "null"], "minimum": 1},
+        "workflow_run_id": {"type": ["integer", "null"], "minimum": 1},
+        "provider_request_id": {"type": ["string", "null"], "maxLength": 256}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "started_at", "completed_at"],
+      "properties": {
+        "status": {"enum": ["queued", "running", "succeeded", "failed", "cancelled", "blocked", "unknown"]},
+        "started_at": {"type": ["string", "null"], "format": "date-time"},
+        "completed_at": {"type": ["string", "null"], "format": "date-time"},
+        "duration_ms": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "summary"],
+      "properties": {
+        "state": {"enum": ["observed", "executed", "validated", "promoted", "failed", "unknown"]},
+        "summary": {"type": "string", "maxLength": 1000},
+        "confidence": {"enum": ["confirmed", "high", "medium", "low", "unknown"]}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_refs", "validation_status"],
+      "properties": {
+        "artifact_refs": {"type": "array", "items": {"type": "string", "maxLength": 1000}, "maxItems": 50},
+        "validation_status": {"enum": ["not_run", "pending", "passed", "failed", "not_applicable"]},
+        "validator": {"type": ["string", "null"], "maxLength": 200}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "capture_method", "attribution"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1, "maxLength": 200},
+        "capture_method": {"type": "string", "minLength": 1, "maxLength": 200},
+        "attribution": {"enum": ["direct", "provider_reported", "derived", "unknown"]},
+        "model_id": {"type": ["string", "null"], "maxLength": 200},
+        "adapter_version": {"type": ["string", "null"], "maxLength": 100}
+      }
+    },
+    "idempotency_key": {"type": "string", "minLength": 1, "maxLength": 256},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "classification": {"enum": ["public", "internal", "confidential", "restricted"]},
+        "contains_raw_prompt": {"type": "boolean", "const": false},
+        "contains_secret": {"type": "boolean", "const": false},
+        "redaction_applied": {"type": "boolean"}
+      }
+    }
+  }
+}

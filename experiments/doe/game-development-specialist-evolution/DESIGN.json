@@ -1,0 +1,111 @@
+{
+  "campaign_id": "game-development-specialist-evolution",
+  "family": "doe",
+  "member_kind": "campaign",
+  "status": "proposed_not_admitted",
+  "moniker": "doe-mgr-game-development",
+  "oversight": "doe-expert",
+  "records_home": "experiments/doe/game-development-specialist-evolution/records/",
+  "registration": {
+    "preregistered_in_repo": true,
+    "recorded": "2026-11-07",
+    "note": "Design proposal only. No designed dispatches or run records exist. DoE oversight must review/admit and lock campaign-specific decision thresholds before cohort creation or execution."
+  },
+  "hypothesis": {
+    "statement": "For bounded game-development tasks, a specialist instance with context-matched engine/tool profiles and build-linked runtime verification will improve verified requirement satisfaction and reduce regression/rework versus a generic build-only baseline.",
+    "null": "Context/tool specialization and runtime verification do not improve verified outcomes after task family, engine and difficulty are blocked.",
+    "limits": "This is a proposed hypothesis, not an observed result."
+  },
+  "design": {
+    "type": "Taguchi L9 screening design (DoE-supported generator; proposed)",
+    "suite_type": "live",
+    "blocks": [
+      "project_kind",
+      "engine_family",
+      "difficulty_stratum"
+    ],
+    "factors": {
+      "specialist_profile": [
+        "generalist_baseline",
+        "domain_specialist",
+        "domain_plus_engine_context"
+      ],
+      "tool_profile": [
+        "minimal_verified",
+        "engine_native",
+        "engine_native_plus_external_pipeline"
+      ],
+      "topology": [
+        "single_specialist",
+        "bounded_parallel",
+        "nested_specialist_with_integrator"
+      ],
+      "verifier": [
+        "static_and_unit",
+        "engine_build_and_tests",
+        "runtime_visual_and_playtest"
+      ]
+    },
+    "assignment": "Randomized treatment assignment within predeclared task-family blocks. Record exclusions, deviations and unexecuted assignments; do not relabel observational work as designed.",
+    "unit_of_observation": "One executed task under one fully stamped configured specialist instance = one EXPERIMENT record.",
+    "eligibility": [
+      "Project-owned, open-source or explicitly authorized game-development tasks with stable build identity and acceptance criteria.",
+      "A task can be executed safely with the registered tool profiles and available runner.",
+      "Tasks requiring urgent incident response, unapproved targets, unavailable licenses or human-only decisions are excluded with a recorded reason."
+    ],
+    "held_fixed": [
+      "Same task specification, target SHA/build, acceptance contract and independent review standard across compared arms.",
+      "Game-player and QA score events remain separate from development-specialist outcomes.",
+      "No provider/model is preselected; candidate selection follows current capability, health, quota and policy admission.",
+      "No candidate inherits score, authorization, reviewer status or credentials from a parent."
+    ],
+    "execution_gate": "DoE reviewer approves the design, task suite, factor levels, sample plan, selection margin, confidence method and stopping rule before the first designed dispatch.",
+    "status": "design_only"
+  },
+  "outcomes": {
+    "primary": "Verified requirement satisfaction rate: accepted requirement IDs / applicable requirement IDs, with all critical requirements passing.",
+    "secondary": [
+      "build and test pass rate",
+      "runtime/visual/playtest verification pass rate",
+      "independently reproduced defect count and severity",
+      "regression rate after integration",
+      "review rework and steering interventions",
+      "elapsed time and resource/quota cost",
+      "scope excursions and integration conflicts"
+    ],
+    "failure_attribution": "Separate agent/model failure, tool/environment failure, task-specification failure, integration failure and verifier failure. Infrastructure failure is not scored as specialist incompetence."
+  },
+  "decision_rule": {
+    "selection_fraction": "NOT_ESTABLISHED — DoE must set before execution.",
+    "minimum_sample": "NOT_ESTABLISHED — DoE must set before execution.",
+    "significance_and_confidence": "Use the applicable standing DoE gate and record any campaign-specific threshold before the first run.",
+    "promotion": "Promote only after the pre-registered primary outcome passes, critical requirements pass, independent review is complete and no disqualifying regression is found.",
+    "no_selection": "If evidence is insufficient, contradictory, underpowered or fails the gate, retain the baseline and continue observation; do not force a winner."
+  },
+  "generations": {
+    "generation_zero": "Baseline cohort with stable candidate IDs and exact prompt/tool/configuration hashes.",
+    "next_generation": "New candidate IDs with explicit parent_candidate_refs; only reviewed prompt/tool/workflow slices are cherry-picked into the new version.",
+    "culling": "Reversible deactivation only; preserve all records and lineage. Protected QA, security and governance functions are not eligible for autonomous culling.",
+    "monitoring": "Compare generations on common task strata; monitor quality, correctness, integration, regression, resource cost, saturation and drift.",
+    "promotion_authority": "DoE oversight plus required independent reviewer and Operator policy where permissions or protected roles are implicated."
+  },
+  "instance_stamps": {
+    "required": "EXPERIMENT.schema.json treatment.instance with provider, model@version, exact system_prompt ref+sha256, tools ref+sha256, role, moniker, context and instance_key.",
+    "missing_fields": "If provider/model/prompt/tools are not established, record null where schema permits and retain NOT_ESTABLISHED; never fabricate an instance_key.",
+    "record_rule": "One record per executed observation in records/; no summary or cohort result may replace raw records."
+  },
+  "constraints": [
+    "No dispatch, pool mutation, provider invocation or candidate promotion occurs by committing this design file.",
+    "Campaign does not join the active DoE family until design plus run evidence satisfy DOE-FAMILY admission rules.",
+    "Experiment rows are append-only and retained.",
+    "No unapproved external target, DRM/anti-cheat bypass, cracking, warez, third-party exploitation or real-money wagering.",
+    "No secret values, private user data or unlicensed assets in records."
+  ],
+  "references": [
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+    "docs/recon/team-formation/GAME_DEVELOPMENT_LANES.md"
+  ]
+}

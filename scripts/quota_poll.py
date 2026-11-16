@@ -1,0 +1,495 @@
+#!/usr/bin/env python3
+"""Quota poller: registry + live readings -> ForeSight records, HindSight retains, 3L0 weights.
+
+Stdlib only. Reads ops/quota/registry.json; polls a live source only when its
+credential env var is present; never prints or stores secret values.
+Outputs (to --out dir): quota-records.jsonl, hindsight-retain.jsonl,
+routing-weights.json, and one QUOTA line per live reading on stdout.
+"""
+from __future__ import annotations
+
+import argparse, contextlib, hashlib, json, os, re, sys, time, urllib.request, urllib.parse
+from datetime import datetime, timezone
+
+UA = {"User-Agent": "termux-monorepo-quota-poll"}
+
+
+def _get(url, headers=None, timeout=20):
+    req = urllib.request.Request(url, headers={**UA, **(headers or {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.load(r)
+
+
+def _get_with_headers(url, headers=None, timeout=20):
+    req = urllib.request.Request(url, headers={**UA, **(headers or {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.load(r), r.headers
+
+
+def month_elapsed(now):
+    start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    nxt = (start.replace(year=start.year + 1, month=1) if start.month == 12 else start.replace(month=start.month + 1))
+    return (now - start) / (nxt - start)
+
+
+# ---- live readers: each returns dict(used, limit?, elapsed?, reset?, extra) or None ----
+
+def gh_rate(now):
+    tok = os.environ.get("GITHUB_TOKEN")
+    if not tok:
+        return None
+    d = _get("https://api.github.com/rate_limit", {"Authorization": "Bearer " + tok})["resources"]["core"]
+    left = max(d["reset"] - time.time(), 0)
+    return {"used": d["used"], "limit": d["limit"], "elapsed": 1 - left / 3600,
+            "reset": datetime.fromtimestamp(d["reset"], timezone.utc).isoformat()}
+
+
+def gh_cache(now):
+    tok, repo = os.environ.get("GITHUB_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
+    if not (tok and repo):
+        return None
+    d = _get(f"https://api.github.com/repos/{repo}/actions/cache/usage", {"Authorization": "Bearer " + tok})
+    return {"used": round(d.get("active_caches_size_in_bytes", 0) / 1e9, 3), "elapsed": None,
+            "extra": {"active_caches_count": d.get("active_caches_count")}}
+
+
+def vercel_deploys(now):
+    tok = os.environ.get("VERCEL_TOKEN")
+    if not tok:
+        return None
+    nowms = int(time.time() * 1000); since = nowms - 86400000
+    team = os.environ.get("VERCEL_ORG_ID") or ""
+    stamps, until = [], None
+    for _ in range(10):
+        q = {"limit": "100", "since": str(since)}
+        if team: q["teamId"] = team
+        if until: q["until"] = str(until)
+        d = _get("https://api.vercel.com/v6/deployments?" + urllib.parse.urlencode(q), {"Authorization": "Bearer " + tok})
+        stamps += [x.get("createdAt") or x.get("created") for x in d.get("deployments", [])]
+        until = (d.get("pagination") or {}).get("next")
+        if not until: break
+    stamps = sorted(s for s in stamps if s and s >= since)
+    n = len(stamps)
+    iso = lambda ms: datetime.fromtimestamp(ms / 1000, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    free_at = iso(stamps[n - 100] + 86400000) if n >= 100 else iso(nowms)
+    # legacy line consumed by the slot-timed deploy task
+    print(f"QUOTA count24h={n} limit=100 next_free_at={free_at} oldest={iso(stamps[0]) if n else 'none'}")
+    return {"used": n, "elapsed": None, "reset": free_at, "extra": {"note": "rolling window; listing undercounts enforcement"}}
+
+
+def render_reader(now):
+    key, srv = os.environ.get("RENDER_API_KEY"), os.environ.get("RENDER_SERVICE_ID", "srv-d9pq9pajnfac73a73sh0")
+    if not key:
+        return None
+    h = {"Authorization": "Bearer " + key, "Accept": "application/json"}
+    start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ")
+    bw = _get(f"https://api.render.com/v1/metrics/bandwidth?resource={srv}&startTime={start}&resolutionSeconds=3600", h)
+    mb = sum(v["value"] for s in bw for v in s.get("values", []))
+    deps, cur = [], None
+    for _ in range(30):
+        r = _get(f"https://api.render.com/v1/services/{srv}/deploys?limit=100&createdAfter={start}" + (f"&cursor={cur}" if cur else ""), h)
+        if not r: break
+        deps += [x["deploy"] for x in r]; cur = r[-1]["cursor"]
+        if len(r) < 100: break
+    f = lambda s: datetime.fromisoformat(s.replace("Z", "+00:00"))
+    wall = sum((f(x["finishedAt"]) - f(x["createdAt"])).total_seconds() for x in deps if x.get("finishedAt")) / 60
+    return {"render.bandwidth": {"used": round(mb / 1024, 4), "elapsed": month_elapsed(now)},
+            "render.pipeline_minutes": {"used": round(wall, 1), "elapsed": month_elapsed(now),
+                                        "extra": {"estimate": "deploy wall-clock upper bound; billing page is authoritative",
+                                                  "deploys_mtd": len(deps)}}}
+
+
+def neon_reader(now):
+    key = os.environ.get("NEON_API_KEY")
+    if not key:
+        return None
+    d = _get("https://console.neon.tech/api/v2/projects?limit=100", {"Authorization": "Bearer " + key})
+    ps = d.get("projects", [])
+    cu = max((p.get("compute_time_seconds") or 0) for p in ps) / 3600 if ps else 0
+    st = max((p.get("synthetic_storage_size") or 0) for p in ps) / 1e9 if ps else 0
+    return {"neon.compute": {"used": round(cu, 2), "elapsed": month_elapsed(now), "extra": {"projects": len(ps), "basis": "busiest project"}},
+            "neon.storage": {"used": round(st, 3), "elapsed": None}}
+
+
+def openrouter_reader(now):
+    key = os.environ.get("OPENROUTER_API_KEY")
+    if not key:
+        return None
+    payload = _get("https://openrouter.ai/api/v1/key", {"Authorization": "Bearer " + key})
+    data = payload.get("data") if isinstance(payload, dict) else None
+    fm = data.get("free_model_daily_requests") if isinstance(data, dict) else None
+    if not isinstance(fm, dict):
+        return None
+    # The documented counter is an integer triplet. Do not treat credit/budget
+    # fields, response metadata, booleans, or malformed numeric values as quota.
+    values = (fm.get("used"), fm.get("limit"), fm.get("remaining"))
+    if any(type(v) is not int or v < 0 for v in values):
+        return None
+    used, limit, remaining = values
+    if used > limit or remaining > limit or used + remaining != limit:
+        return None
+    # Docs define the daily counter as UTC-day and say it resets at UTC midnight;
+    # the endpoint does not return a per-counter reset timestamp.
+    return {"used": used, "limit": limit, "elapsed": None, "reset": "UTC midnight"}
+
+
+HF_TOKEN_ENVS = ("HUGGINGFACE_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HF_API_TOKEN", "HF_TOKEN")
+
+
+def hf_hub_reader(now):
+    # Hub API quota only: the documented RateLimit response header on a
+    # whoami call (no inference sent). This is NOT Inference Providers /
+    # router quota (provider-quota-managers rule); it feeds the separate
+    # huggingface.hub_api registry record. Same r/t grammar as the passive
+    # adapter in scripts/provider_quota_managers.py.
+    key = next((os.environ.get(n) for n in HF_TOKEN_ENVS if os.environ.get(n)), None)
+    if not key:
+        return None
+    _payload, headers = _get_with_headers("https://huggingface.co/api/whoami-v2",
+                                          {"Authorization": "Bearer " + key})
+    raw = headers.get("RateLimit")
+    if not raw or len(raw) > 512:
+        return None
+    m = re.search(r'"api"\s*;\s*r=(\d+)\s*;\s*t=(\d+)', raw) or \
+        re.search(r"(?:^|;)\s*r=(\d+)\s*;\s*t=(\d+)", raw)
+    if not m:
+        return None
+    remaining, reset_s = int(m.group(1)), int(m.group(2))
+    return {"used": None, "elapsed": None,
+            "reset": f"RateLimit header: {reset_s}s to window reset",
+            "extra": {"ratelimit_remaining": remaining,
+                      "ratelimit_reset_after_seconds": reset_s,
+                      "basis": "Hub api category RateLimit header; not Inference Providers quota"}}
+
+
+_KEY_SERVICE = None
+
+
+def _load_key_service():
+    """Load the private quota-service module by file path, so the import
+    works under the probe's sparse checkout and from a repo-root sys.path
+    alike. The service module inserts the repo root itself before importing
+    its transport, exactly as when run as a CLI."""
+    global _KEY_SERVICE
+    if _KEY_SERVICE is None:
+        import importlib.util
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "provider_quota_service.py")
+        spec = importlib.util.spec_from_file_location("quota_poll_key_service", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _KEY_SERVICE = (mod.observe_service, mod.public_status)
+    return _KEY_SERVICE
+
+
+def openrouter_key_reader(now):
+    # openrouter.key: the opt-in private current-key observation
+    # (scripts/provider_quota_service.py), registered live status-only by
+    # owner decision 2026-10-28. The observation stays private and
+    # in-memory; only the service's public_status() allowlist projection
+    # (status + request_quota enum) crosses into the poller, and no
+    # used/limit is ever exported, so the public snapshot derives
+    # "unknown" for the row (observed but unclassifiable, like
+    # huggingface.hub_api). Gated on OPENROUTER_KEY_OBSERVE=1 so private
+    # CLI consumers keep the original opt-in behaviour; the
+    # vercel-quota-probe workflow sets it.
+    if os.environ.get("OPENROUTER_KEY_OBSERVE") != "1":
+        return None
+    key = os.environ.get("OPENROUTER_API_KEY")
+    if not key:
+        return None
+    observe_service, public_status = _load_key_service()
+    projection = public_status(observe_service("openrouter.key", key, scope="key:primary"))
+    if projection.get("status") != "observed":
+        return None
+    return {"used": None, "elapsed": None,
+            "extra": {"request_quota": projection.get("request_quota", "unknown"),
+                      "basis": "status-only public_status projection of the private current-key observation; monetary values never exported"}}
+
+
+LIVE = {"github.api.github_token": gh_rate, "github.actions.cache": gh_cache,
+        "vercel.deployments": vercel_deploys, "openrouter.free_models": openrouter_reader,
+        "huggingface.hub_api": hf_hub_reader, "openrouter.key": openrouter_key_reader}
+MULTI = [render_reader, neon_reader]
+
+
+def multiplier(limit, used, elapsed, safety):
+    """>1 underspending (boost), <1 overspending (throttle), 0 exhausted, 1 unknown."""
+    if limit in (None, 0) or used is None:
+        return 1.0
+    budget = safety * limit
+    rem = (budget - used) / budget
+    if rem <= 0:
+        return 0.0
+    if elapsed is None:  # point-in-time or rolling: plain headroom
+        return round(min(rem / 0.5, 2.0), 3) if rem < 0.5 else 1.0
+    return round(min(rem / max(1 - elapsed, 1e-3), 2.0), 3)
+
+
+def record(svc, reading, now):
+    live = reading is not None
+    rec = {
+        "resource_id": f"quota:{svc['id']}",
+        "item_id": f"quota:{svc['id']}:{now.strftime('%Y%m%dT%H')}",
+        "lane_id": f"quota-{svc['lane']}",
+        "category": "quota",
+        "canonical_source": svc["source"],
+        "source": {"url": svc["source"], "live_endpoint": svc.get("live")},
+        # observed_at is the read time for live reads only. An unobserved
+        # registry projection is not an observation (quota-evidence.js:
+        # "snapshot generation is not an observation"), so it carries null
+        # and downstream consumers classify it unknown instead of fresh.
+        "observed_at": now.isoformat() if live else None,
+        "horizon": "H0" if live else "H1",
+        "evidence_status": "confirmed" if live else ("attributed_claim" if svc["source"].startswith("http") else "early_signal"),
+        "provider": svc["provider"], "metric": svc["metric"], "unit": svc["unit"],
+        "limit": (reading or {}).get("limit", svc.get("limit")),
+        "used": (reading or {}).get("used"),
+        "window": svc["window"], "reset": (reading or {}).get("reset", svc["reset"]), "reset_zone": svc["zone"],
+        "planned_use": svc.get("planned_use", {}),
+        "extra": (reading or {}).get("extra", {}),
+    }
+    rec["routing_multiplier"] = multiplier(rec["limit"] if isinstance(rec["limit"], (int, float)) else None,
+                                           rec["used"], (reading or {}).get("elapsed"),
+                                           svc.get("planned_use", {}).get("safety", 0.9))
+    body = json.dumps(rec, sort_keys=True, separators=(",", ":"))
+    rec["evidence_hash"] = hashlib.sha256(body.encode()).hexdigest()
+    return rec
+
+
+def collect_readings(now):
+    """Private collection; callers decide whether reader stdout may be exposed."""
+    readings = {}
+    for sid, fn in LIVE.items():
+        try:
+            r = fn(now)
+            if r: readings[sid] = r
+        except Exception as e:
+            print(f"QUOTA {sid} error={type(e).__name__}")
+    for fn in MULTI:
+        try:
+            readings.update(fn(now) or {})
+        except Exception as e:
+            print(f"QUOTA {fn.__name__} error={type(e).__name__}")
+    return readings
+
+
+def _public_status(svc, reading):
+    """Coarse panel status derived from a live reading, in the dashboard
+    contract's own vocabulary (quota-evidence.js STATUS: ok / watch /
+    exhausted / cap_tripped). Derived in-memory only: the reading's used /
+    limit / reset values are never exported. A live reading whose usage
+    cannot be compared with a documented limit is observed but
+    unclassifiable, so it stays "unknown" rather than inventing "ok".
+    Exhaustion is claimed only at the documented limit itself; pressure
+    inside the registry safety factor is "watch" (the multiplier's own
+    throttle zone), never a vendor cap claim."""
+    if svc.get("lane") == "model":
+        return "private_preflight"
+    used, limit = reading.get("used"), reading.get("limit", svc.get("limit"))
+    if isinstance(used, bool) or isinstance(limit, bool):
+        return "unknown"
+    if not isinstance(used, (int, float)) or not isinstance(limit, (int, float)) or limit <= 0:
+        return "unknown"
+    if used >= limit:
+        return "cap_tripped" if svc["id"] == "vercel.deployments" else "exhausted"
+    safety = svc.get("planned_use", {}).get("safety", 0.9)
+    if multiplier(limit, used, reading.get("elapsed"), safety) < 1:
+        return "watch"
+    return "ok"
+
+
+def public_snapshot(services, readings, now):
+    """Allowlist status metadata only; never export values or hashes of private data.
+
+    Rows carry the dashboard readings contract shape (observed_at / horizon /
+    evidence_status, quota-evidence.js) so a publisher can feed the panel
+    without a hand-seeded file: a live read is an H0 confirmed observation
+    stamped at poll time; an unobserved service carries observed_at null /
+    H1, exactly as record() stamps private records. Statuses are the coarse
+    derived states from _public_status, never the underlying values."""
+    rows = []
+    for svc in services:
+        reading = readings.get(svc["id"])
+        if reading is None:
+            rows.append({"resource_id": svc["id"], "provider": svc["provider"],
+                         "status": "unknown", "observed_at": None, "horizon": "H1",
+                         "evidence_status": "attributed_claim" if svc["source"].startswith("http") else "early_signal"})
+        else:
+            rows.append({"resource_id": svc["id"], "provider": svc["provider"],
+                         "status": _public_status(svc, reading),
+                         "observed_at": now.isoformat(), "horizon": "H0",
+                         "evidence_status": "confirmed"})
+    return {"schema": "quota-public-status/v2", "generated_at": now.isoformat(),
+            "policy": "Private values withheld; coarse derived status + evidence shape only; status is not remaining quota or admission.",
+            "readings": rows}
+
+
+DISPLAY_STATUSES = {"ok", "watch", "exhausted", "cap_tripped"}
+
+
+def readings_snapshot(public, services):
+    """Convert a quota-public-status/v1|v2 projection into the dashboard
+    readings contract (quota.readings.v2).
+
+    This is the publisher step of the generated-file path: a human/agent
+    downloads the probe workflow's artifact, runs this conversion, reviews
+    the result and lands it as docs/ops/generated/quota-status.json ==
+    apps/tribute-dashboard/data/quota.json through a PR. The poller
+    itself still never commits anything.
+
+    Honesty rules: the projection exports no account values, so every
+    converted row carries used null and reset null (no inferred reset,
+    ever). Documented limit/unit come from the public registry —
+    entitlements, not balances. A coarse display status is carried only
+    when the projection row carries it on genuine live evidence
+    (H0 + confirmed + an observation time) — exactly what the consumers'
+    fail-closed gate would require anyway; private_preflight and unknown
+    rows stay unknown (the panel derives "private" from the model lane
+    itself). horizon/evidence_status/observed_at are copied from the
+    projection, never upgraded; v1 artifacts that predate the evidence
+    fields are re-derived by record()'s own rule from the row's status
+    and observation time.
+
+    Completeness: the snapshot carries one row per registry record.
+    Records the artifact predates are synthesized as unobserved rows by
+    the completeness guard (disclosed in the row note + a stderr warning)
+    rather than silently under-covering the registry.
+    """
+    if not isinstance(public, dict) or public.get("schema") not in ("quota-public-status/v1", "quota-public-status/v2"):
+        raise ValueError("expected a quota-public-status/v1 or quota-public-status/v2 projection")
+    by_id = {svc["id"]: svc for svc in services}
+    rows = []
+    for row in public.get("readings") or []:
+        svc = by_id.get(row.get("resource_id"), {})
+        horizon, evidence_status = row.get("horizon"), row.get("evidence_status")
+        if horizon is None or evidence_status is None:
+            observed = row.get("status") not in (None, "unknown") and row.get("observed_at") is not None
+            horizon, evidence_status = ("H0", "confirmed") if observed else (
+                "H1", "attributed_claim" if str(svc.get("source", "")).startswith("http") else "early_signal")
+        status = row.get("status")
+        if status not in DISPLAY_STATUSES or horizon != "H0" or evidence_status != "confirmed" \
+                or row.get("observed_at") is None:
+            status = "unknown"
+        rows.append({
+            "resource_id": row.get("resource_id"),
+            "status": status,
+            "used": None,
+            "limit": svc.get("limit"),
+            "unit": svc.get("unit"),
+            "reset": None,
+            "note": ("Probe-derived status from a private live read; account values are withheld "
+                     "from the public projection. Converted through the generated-file path."
+                     if status != "unknown" else
+                     "Probe run observed this service privately (private_preflight); account values "
+                     "and the real status are withheld from the public projection, so the public "
+                     "row is unknown. Private authoritative preflight required."
+                     if row.get("status") == "private_preflight" else
+                     "Probe run did not observe this service; no account state is published."),
+            "evidence_status": evidence_status,
+            "horizon": horizon,
+            "observed_at": row.get("observed_at"),
+        })
+    # Completeness guard: a converted snapshot is complete — one row per
+    # registry record (convergence procedure, docs/ops/
+    # QUOTA-PROJECTION-CONVERGENCE-2026-10-27.md). The registry can grow
+    # between the probe run and the conversion, and an artifact that
+    # predates a record otherwise under-covers silently. Synthesize the
+    # missing rows as unobserved (the same shape an unobserved artifact
+    # row converts to), disclose the synthesis in the row note, and warn
+    # on stderr so the publisher sees exactly which records had no probe
+    # observation behind them.
+    seen = {r["resource_id"] for r in rows}
+    missing = [svc for svc in services if svc["id"] not in seen]
+    for svc in missing:
+        rows.append({
+            "resource_id": svc["id"],
+            "status": "unknown",
+            "used": None,
+            "limit": svc.get("limit"),
+            "unit": svc.get("unit"),
+            "reset": None,
+            "note": ("Registry record absent from the probe artifact; converter completeness "
+                     "guard synthesized this unobserved row — no probe observation exists "
+                     "for it. No account state is published."),
+            "evidence_status": ("attributed_claim" if str(svc.get("source", "")).startswith("http")
+                                else "early_signal"),
+            "horizon": "H1",
+            "observed_at": None,
+        })
+    if missing:
+        print(f"QUOTA converter completeness guard: synthesized unobserved rows for "
+              f"{len(missing)} registry record(s) absent from the artifact: "
+              f"{', '.join(s['id'] for s in missing)}", file=sys.stderr)
+    return {"schema": "quota.readings.v2", "generated_at": public.get("generated_at"),
+            "source": ("Converted from the quota probe's status-only public projection "
+                       "(quota-public-status) through the generated-file path; not a live quota "
+                       "feed. The projection withholds account values by design, so every "
+                       "converted row carries used null and reset null."),
+            "readings": rows}
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--registry", default="ops/quota/registry.json")
+    ap.add_argument("--out", default="quota-out")
+    ap.add_argument("--offline", action="store_true", help="skip all network reads")
+    ap.add_argument("--public", action="store_true", help="publish status metadata only; suppress private reader logs and artifacts")
+    ap.add_argument("--from-public", metavar="PATH", help="convert a quota-public-status.json artifact into a readings-contract quota-status.json under --out; no network reads, nothing is committed")
+    a = ap.parse_args(argv)
+    if a.public and a.from_public:
+        ap.error("--public and --from-public are separate modes")
+    if a.public and os.path.exists(a.out) and os.listdir(a.out):
+        ap.error("--public requires a new or empty output directory")
+    reg = json.load(open(a.registry))
+    if a.from_public:
+        with open(a.from_public) as f:
+            public = json.load(f)
+        try:
+            snap = readings_snapshot(public, reg["services"])
+        except ValueError as e:
+            ap.error(str(e))
+        os.makedirs(a.out, exist_ok=True)
+        with open(os.path.join(a.out, "quota-status.json"), "w") as f:
+            json.dump(snap, f, indent=2)
+            f.write("\n")
+        print(f"QUOTA readings snapshot written from public projection; {len(snap['readings'])} rows (values withheld by design)")
+        return 0
+    now = datetime.now(timezone.utc)
+    readings = {}
+    if not a.offline:
+        if a.public:
+            with open(os.devnull, "w") as sink, contextlib.redirect_stdout(sink), contextlib.redirect_stderr(sink):
+                readings = collect_readings(now)
+        else:
+            readings = collect_readings(now)
+    os.makedirs(a.out, exist_ok=True)
+    if a.public:
+        with open(os.path.join(a.out, "quota-public-status.json"), "w") as f:
+            json.dump(public_snapshot(reg["services"], readings, now), f, indent=2)
+            f.write("\n")
+        print("QUOTA public status projection written; private readings and routing weights withheld")
+        return 0
+    recs = [record(s, readings.get(s["id"]), now) for s in reg["services"]]
+    with open(os.path.join(a.out, "quota-records.jsonl"), "w") as f:
+        for r in recs: f.write(json.dumps(r, sort_keys=True) + "\n")
+    with open(os.path.join(a.out, "hindsight-retain.jsonl"), "w") as f:
+        for r in recs:
+            if r["used"] is not None:
+                f.write(json.dumps({"op": "retain", "bank_id": "deepagent::termux-monorepo",
+                                    "content": f"{now.date()} quota {r['resource_id']}: used {r['used']} of {r['limit']} {r['unit']}; reset {r['reset']} ({r['reset_zone']}); multiplier {r['routing_multiplier']}",
+                                    "evidence_hash": r["evidence_hash"]}) + "\n")
+    prov = {}
+    for r in recs:
+        if r["lane_id"] in ("quota-model", "quota-deploy", "quota-data"):
+            prov[r["provider"]] = min(prov.get(r["provider"], 2.0), r["routing_multiplier"])
+    json.dump({"schema": "3l0.quota-weights.v1", "generated_at": now.isoformat(), "multipliers": prov},
+              open(os.path.join(a.out, "routing-weights.json"), "w"), indent=2)
+    for r in recs:
+        if r["used"] is not None:
+            print(f"QUOTA {r['resource_id']} used={r['used']} limit={r['limit']} mult={r['routing_multiplier']} reset={r['reset']}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

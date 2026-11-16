@@ -1,0 +1,61 @@
+name: facade smoke
+
+# Dispatch-only smoke for the Foundry HTTP/SSE facade (no schedule, no PR
+# triggers — trigger budget law). Starts the facade against the example
+# registry, exercises /health, /invoke and the /events SSE fan-out, then
+# runs the facade test module. Never commits.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: facade-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Exercise the facade live
+        run: |
+          set -euo pipefail
+          python3 -m ops.web_adapter_foundry.facade --port 8787 \
+            --registry ops/web_adapter_foundry/examples/example.registry.json \
+            >/tmp/facade.log 2>&1 &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8787/health >/tmp/health.json && break || sleep 0.5
+          done
+          cat /tmp/health.json
+          grep -q '"ok": true' /tmp/health.json
+          curl -sf -X POST http://127.0.0.1:8787/invoke \
+            -H 'Content-Type: application/json' \
+            -d '{"id":"smoke-1","operation":"foundry.ping","input":{}}' >/tmp/invoke.json
+          grep -q '"pong": true' /tmp/invoke.json
+          (curl -s -N --max-time 5 http://127.0.0.1:8787/events >/tmp/sse.out 2>/dev/null &)
+          sleep 1
+          curl -sf -X POST http://127.0.0.1:8787/invoke \
+            -H 'Content-Type: application/json' \
+            -d '{"id":"smoke-2","operation":"foundry.ping","input":{}}' >/dev/null
+          sleep 5.5
+          grep -q 'event: invoke' /tmp/sse.out
+          grep -q 'smoke-2' /tmp/sse.out
+          echo "SSE fan-out verified"
+          {
+            echo "## Facade smoke"
+            echo "- health: $(cat /tmp/health.json)"
+            echo "- invoke: $(cat /tmp/invoke.json)"
+            echo "- SSE frame received for smoke-2: yes"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run the facade tests
+        run: |
+          python3 -m pip install --quiet pytest
+          python3 -m pytest tests/test_web_adapter_foundry_facade.py tests/test_web_adapter_foundry.py -q

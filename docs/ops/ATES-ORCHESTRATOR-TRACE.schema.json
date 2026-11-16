@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ATES-ORCHESTRATOR-TRACE.schema.json",
+  "title": "ATES Orchestrator Benchmark Trace",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "trace_id",
+    "benchmark_case_id",
+    "outcome",
+    "spans"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ates.orchestrator.trace.v1"
+    },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "benchmark_case_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "cohort_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "task_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "task_contract_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "outcome": {
+      "enum": [
+        "PASS",
+        "FAIL_DETERMINISTIC",
+        "INCONCLUSIVE",
+        "BLOCKED"
+      ]
+    },
+    "deterministic_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "judge_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "judge_weight": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 0.3
+    },
+    "net_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "wrong_commit_penalty": {
+      "type": "number",
+      "minimum": 0
+    },
+    "spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "span_id",
+          "kind",
+          "started_at",
+          "ended_at"
+        ],
+        "properties": {
+          "span_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "parent_span_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{32}$"
+          },
+          "kind": {
+            "enum": [
+              "orchestrator",
+              "retrieval",
+              "spawn",
+              "tool",
+              "actor",
+              "critic",
+              "validator",
+              "ates"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ended_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "spawn_mode": {
+            "enum": [
+              "SPAWN",
+              "INHERITED",
+              "NONE"
+            ]
+          },
+          "inherit_parent_context": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "context_fingerprint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "input_fingerprint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "output_fingerprint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "deterministic": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

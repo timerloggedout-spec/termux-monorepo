@@ -1,0 +1,33 @@
+name: Agent Readability Source Contract
+
+on:
+  pull_request:
+    paths:
+      - "apps/tribute-dashboard/**"
+      - "apps/project-pages-hub/**"
+      - "scripts/ci/verify_agent_readability_surfaces.py"
+      - ".github/workflows/tribute-dashboard-deploy.yml"
+      - ".github/workflows/agent-readability-source-contract.yml"
+  push:
+    branches: [master]
+    paths:
+      - "apps/tribute-dashboard/**"
+      - "apps/project-pages-hub/**"
+      - "scripts/ci/verify_agent_readability_surfaces.py"
+      - ".github/workflows/tribute-dashboard-deploy.yml"
+      - ".github/workflows/agent-readability-source-contract.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Validate published HTML and Markdown sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate HTML, Markdown, and deployment copy contracts
+        run: python3 scripts/ci/verify_agent_readability_surfaces.py

@@ -1,0 +1,49 @@
+{
+  "schema": "delphi-cross-vote/v1",
+  "round": 2,
+  "evidence_set_sha256": "8d67dc0326925dac8ea739891d12d707cd92cb07ceb6d95f56c8cbda9291fd76",
+  "ballots_by_class": {
+    "HUMAN_COLLABORATOR": 0,
+    "MODEL_PROVIDER": 0,
+    "LOCAL_BASELINE": 5
+  },
+  "per_class": {
+    "HUMAN_COLLABORATOR": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "MODEL_PROVIDER": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "LOCAL_BASELINE": {
+      "ballots": 5,
+      "scores": {
+        "temporal-durable-execution-pi-core-resume": 25.0,
+        "temporal-durable-execution-cookbook-agent-loop": 25.0,
+        "temporal-durable-execution-versioned-autoscale": 11.615,
+        "temporal-durable-execution-contract-first": 25.0,
+        "temporal-durable-execution-serverless-skill": 25.0
+      },
+      "ranking": [
+        "temporal-durable-execution-contract-first",
+        "temporal-durable-execution-cookbook-agent-loop",
+        "temporal-durable-execution-pi-core-resume",
+        "temporal-durable-execution-serverless-skill",
+        "temporal-durable-execution-versioned-autoscale"
+      ]
+    }
+  },
+  "classes_present": [
+    "LOCAL_BASELINE"
+  ],
+  "ranked_outcome": [
+    "temporal-durable-execution-contract-first",
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-serverless-skill",
+    "temporal-durable-execution-versioned-autoscale"
+  ]
+}

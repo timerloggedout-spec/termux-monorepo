@@ -1,0 +1,75 @@
+# Webhook Connectors Configuration
+# SCAFFOLD: receiver not deployed in this PR. Signature policy is declarative only.
+# validate_signature is enforced only when a receiver calls ConnectorManager.verify_webhook_signature.
+
+webhooks:
+  github:
+    base_url: "${WEBHOOK_RECEIVER_BASE_URL:-}"  # set when receiver is deployed
+    secret_env: "GITHUB_WEBHOOK_SECRET"
+    endpoints:
+      - name: "agent-review-auto-jules"
+        path: "/github/webhook/agent-review-auto-jules"
+        events:
+          - "pull_request_review"
+          - "pull_request_review_comment"
+          - "issue_comment"
+        active: false  # inactive until receiver deployed
+        content_type: "application/json"
+      - name: "agent-jules-on-issues"
+        path: "/github/webhook/agent-jules-on-issues"
+        events:
+          - "issues"
+          - "issue_comment"
+        active: false
+        content_type: "application/json"
+      - name: "agent-feedback-linear-sync"
+        path: "/github/webhook/agent-feedback-linear-sync"
+        events:
+          - "issues"
+          - "pull_request"
+        active: false
+        content_type: "application/json"
+      - name: "gemini-dispatch"
+        path: "/github/webhook/gemini-dispatch"
+        events:
+          - "push"
+          - "pull_request"
+        active: false
+        content_type: "application/json"
+      - name: "gemini-invoke"
+        path: "/github/webhook/gemini-invoke"
+        events:
+          - "push"
+        active: false
+        content_type: "application/json"
+      - name: "gemini-review"
+        path: "/github/webhook/gemini-review"
+        events:
+          - "pull_request_review"
+          - "pull_request_review_comment"
+        active: false
+        content_type: "application/json"
+      - name: "gemini-triage"
+        path: "/github/webhook/gemini-triage"
+        events:
+          - "issues"
+          - "pull_request"
+        active: false
+        content_type: "application/json"
+      - name: "publish-wiki"
+        path: "/github/webhook/publish-wiki"
+        events:
+          - "push"
+        active: false
+        content_type: "application/json"
+        paths:
+          - "wiki/**"
+
+  agents: {}
+
+  security:
+    # Declarative policy only until HTTP receiver is deployed.
+    validate_signature: true
+    scaffold: true
+    note: "Enforcement requires a receiver that calls ConnectorManager.verify_webhook_signature on raw body + X-Hub-Signature-256"
+    secret_env: "GITHUB_WEBHOOK_SECRET"

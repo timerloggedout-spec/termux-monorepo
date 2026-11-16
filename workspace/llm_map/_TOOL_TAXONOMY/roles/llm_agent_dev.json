@@ -1,0 +1,385 @@
+{
+  "description": "LLM Agent Toolchain Dev",
+  "tools": [
+    {
+      "name": "account-activity",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/account-activity",
+      "tags": [
+        "harmony_hub"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "aether",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/archwiz/aether.py",
+      "tags": [
+        "archwiz",
+        "llm_orchestration"
+      ],
+      "category": "archwiz"
+    },
+    {
+      "name": "agent-shell",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/agent_shell.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "archaeo",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/archaeologist.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "deepcli",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/deepcli_send.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dep",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/depgraph.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "depmenu",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/depmenu.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dispatch",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/dispatch_task.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dispatch-adaptive",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/dispatch_adaptive.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "dispatch-parallel",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/dispatch_parallel.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "fore",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/foresight_collect.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "forensic-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: $HOME/harmony_hub/utility_belt/forensic-query",
+      "tags": [
+        "forensics",
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "fts-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/fts-query",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "logged",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/tool_logger.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "\u2500\u2500 Recovered ArchWiz aliases (from archaeologist recovery) \u2500\u2500",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-build",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: cd ~/workspace/llm_map && python3 build_final_all_profile.py && ./generate_system_map.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-func",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/func_indexer.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-graph",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/graph_fzf.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/map-query.sh 2>/dev/null || echo \"map-query not yet built",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "map-set",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: export LLM_PROFILE=$1 && echo \"Profile set to $LLM_PROFILE",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mdot",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py graph-dot",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mfull",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py full-scan",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mkprofile",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py profile-create",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mmap",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py generate-map",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mtree",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py graph-tree",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "mupdate",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/llm_mapper_pro.py update",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "oracle",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/impact_oracle.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "promote",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/promote.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "task-list",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/agent_shell.py list",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "task-watch",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/task_watcher.sh",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "truth-report",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/generate_diff_report.py",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "tui",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Aliases",
+      "tags": [
+        "llm_orchestration"
+      ],
+      "category": "llm_orchestration"
+    },
+    {
+      "name": "workflow",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/workflow",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "workspace-check",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/workspace-check",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    }
+  ]
+}

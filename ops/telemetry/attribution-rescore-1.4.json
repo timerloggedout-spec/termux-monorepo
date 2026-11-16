@@ -1,0 +1,19 @@
+{
+ "schema": "telemetry-attribution-rescore/v1",
+ "generated_at": "2026-11-01T17:45:00Z",
+ "from_version": "attribution/1.3",
+ "to_version": "attribution/1.4",
+ "ruling": "Owner (direct) 2026-11-01: some signings are FALSE — marks != proof; Provenance gates scores. Single-leg attribution = UNCORROBORATED until cross-checked; suspected false-signed records flagged disputed, never silently scored at face value.",
+ "representation_before": "extract_actor returned only the winning leg (actor + actor_evidence{method}); all other legs' signals were discarded. No corroboration or disputed state existed in density artifacts, per-actor tables, HindSight payloads, session-history records, or audits. The token-attribution correlation existed only as a separate aggregate artifact (PR #3399), never joined per-record.",
+ "representation_now": "Every record carries corroboration{state, legs{leg: actor}, agreeing[], conflicts[], publisher}: state in {corroborated (>=2 authorship legs agree, no conflict), disputed (authorship legs conflict — suspected false signing), single-leg (uncorroborated), unattributed}. app_bot is a transport/publisher leg: corroborates on match, mismatch vs authorship legs is the normal fleet publish pattern (recorded as publisher), not a conflict. Density stats: per-artifact corroboration, per-actor state counts, attribution.disputed_artifacts list, scoring_rule stated. Session-history: corroboration passes through on artifact-derived records.",
+ "window_rescore": {
+  "prs": 599,
+  "states": {"single-leg": 547, "unattributed": 52, "corroborated": 0, "disputed": 0},
+  "reading": "The window stratum carries exactly one authorship leg per PR by construction (stamp or app identity); NO record is corroborated yet and none is disputed in-window. The disputed machinery is test-proven on the canonical false-signing shape (trailer names A, git-author names B). Corroboration capacity now exists; population of second legs (per-PR token-history join, commit-trailer duplication) is the remaining gap — until then ALL scoring on this stratum is single-leg/uncorroborated and must be labeled as such."
+ },
+ "gap_remaining": [
+  "per-PR token-history leg: Actions/App action history joined per PR (today aggregate-only) would give most stamp-leg records a second, independent leg",
+  "historical Agent-Identity tranche (~430 PRs): trailer + git-author legs both present there — first stratum where corroborated/disputed states will populate at scale",
+  "plane consumers (3L0/DoE) should weight corroborated > single-leg and exclude disputed from face-value scoring — representation shipped here; consumer adoption is the planes' fold update"
+ ]
+}

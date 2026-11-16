@@ -1,0 +1,29 @@
+{
+  "category": "hashing",
+  "tools": [
+    {
+      "name": "xxhsum",
+      "package": "xxhash",
+      "path": "/data/data/com.termux/files/usr/bin/xxhsum",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^xxhash$|^xxhash-",
+      "category": "hashing",
+      "description": "Extremely fast non-cryptographic hash algorithm"
+    },
+    {
+      "name": "rhash",
+      "package": "rhash",
+      "path": "/data/data/com.termux/files/usr/bin/rhash",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^rhash$|^rhash-",
+      "category": "hashing",
+      "description": "Console utility for calculation and verification of magnet links and a wide range of hash sums"
+    }
+  ]
+}

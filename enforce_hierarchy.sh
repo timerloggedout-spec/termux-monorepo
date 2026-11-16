@@ -1,0 +1,1 @@
+/data/data/com.termux/files/home/workspace/scripts/enforce_workspace_hierarchy.sh

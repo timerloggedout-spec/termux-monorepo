@@ -1,0 +1,128 @@
+name: dispatch-watchdog
+
+# The unclaimed-aging sweep for the project-task dispatch queue.
+# Finds issues sitting `dispatch-queued` with no producer claim,
+# flags them at >30 min unclaimed and escalates at >60 min
+# (comment + `dispatch-escalated` label). Every run prints the full
+# queued set with states to the log + step summary.
+# Mechanism: scripts/dispatch/{claim_task,dispatch_watchdog}.py
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      flag_min:
+        description: "Flag threshold (minutes unclaimed)"
+        required: false
+        default: "30"
+      escalate_min:
+        description: "Escalate threshold (minutes unclaimed)"
+        required: false
+        default: "60"
+      dry_run:
+        description: "Classify only, post nothing"
+        required: false
+        default: "false"
+
+permissions:
+  issues: write
+  contents: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint Termux Fleet Swarm token (own rate bucket)
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: termux-monorepo
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.swarm.outputs.token }}
+      - name: Sweep the dispatch queue
+        env:
+          GITHUB_TOKEN: ${{ steps.swarm.outputs.token }}
+          WATCHDOG_FLAG_MIN: ${{ inputs.flag_min || '30' }}
+          WATCHDOG_ESCALATE_MIN: ${{ inputs.escalate_min || '60' }}
+        run: |
+          set +e
+          python3 scripts/dispatch/dispatch_watchdog.py ${{ inputs.dry_run == 'true' && '--dry-run' || '' }} 2>&1 | tee /tmp/sweep.log
+          ec=${PIPESTATUS[0]}
+          echo "sweep exit: $ec" | tee -a /tmp/sweep.log
+          test "$ec" = "0"
+      - name: Commit the dispatch-state feed (only on change)
+        if: success() && inputs.dry_run != 'true'
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          # Preserve the sweep's stamp bytes, then rebase the commit
+          # onto the CURRENT master per attempt: a bare push from a
+          # minutes-old checkout is rejected non-fast-forward on a
+          # master that merges mid-run (run 41657075002 lost its
+          # corrected stamp exactly that way — sweep green, push dead).
+          cp ops/challenge/dispatch-state-feed.json /tmp/feed-canon.json
+          cp apps/tribute-dashboard/data/dispatch-state-feed.json /tmp/feed-mirror.json
+          cp ops/que/feeds/stall-gap-feed.json /tmp/stall-gap.json
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git reset -q --hard origin/master
+            if python3 -c "
+          import json, sys
+          ours = json.load(open('/tmp/feed-canon.json'))['generated_at']
+          theirs = json.load(open('ops/challenge/dispatch-state-feed.json'))['generated_at']
+          try:
+              ours_g = json.load(open('/tmp/stall-gap.json'))['generated_at']
+              theirs_g = json.load(open('ops/que/feeds/stall-gap-feed.json'))['generated_at']
+          except Exception:
+              ours_g, theirs_g = '', ''
+          sys.exit(0 if (theirs >= ours and theirs_g >= ours_g) else 1)
+          "; then
+              echo "a newer feed stamp already landed — superseded, no commit"
+              exit 0
+            fi
+            cp /tmp/feed-canon.json ops/challenge/dispatch-state-feed.json
+            cp /tmp/feed-mirror.json apps/tribute-dashboard/data/dispatch-state-feed.json
+            cp /tmp/stall-gap.json ops/que/feeds/stall-gap-feed.json
+            git add ops/challenge/dispatch-state-feed.json apps/tribute-dashboard/data/dispatch-state-feed.json ops/que/feeds/stall-gap-feed.json
+            if git diff --cached --quiet; then
+              echo "dispatch-state feed unchanged — no commit"
+              exit 0
+            fi
+            git commit -m "dispatch-state feed: watchdog stamp [skip ci]"
+            if git push origin HEAD:master; then
+              echo "feed stamp pushed (attempt $attempt)"
+              exit 0
+            fi
+            echo "push raced (attempt $attempt) — retrying on latest master"
+          done
+          echo "feed stamp push failed after 3 attempts" >&2
+          exit 1
+      - name: Diagnose on failure
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          try:
+              log = open("/tmp/sweep.log").read()[-3000:]
+          except OSError:
+              log = "(sweep log absent — the failure happened before or outside the sweep step)"
+          body = ("[MUSEai]@{role:{dispatch-watchdog}} SWEEP FAILURE "
+                  "DIAGNOSTIC (self-report from the workflow run):\n\n```\n"
+                  + log + "\n```")
+          req = urllib.request.Request(
+              "https://api.github.com/repos/" +
+              os.environ["GITHUB_REPOSITORY"] +
+              "/issues/4164/comments",
+              data=json.dumps({"body": body}).encode(), method="POST")
+          req.add_header("Authorization",
+                         "Bearer " + os.environ["GITHUB_TOKEN"])
+          req.add_header("Content-Type", "application/json")
+          urllib.request.urlopen(req)
+          print("diagnostic posted to #4164")
+          PY

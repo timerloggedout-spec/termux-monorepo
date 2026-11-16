@@ -1,0 +1,38 @@
+{
+  "schema": "oracle-method-expectations/v1",
+  "recorded_before": "implementation",
+  "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded",
+  "expectations": {
+    "LOCAL_BASELINE": {
+      "strands-rfp-response-collection-first": {
+        "expected_rank": 1,
+        "expected_score": 23.269,
+        "tolerance": 2.0
+      },
+      "strands-rfp-response-kernel-first": {
+        "expected_rank": 2,
+        "expected_score": 23.269,
+        "tolerance": 2.0
+      },
+      "strands-rfp-response-packaging-first": {
+        "expected_rank": 3,
+        "expected_score": 23.269,
+        "tolerance": 2.0
+      }
+    },
+    "BRIEF:delphi-lane": {
+      "strands-rfp-response-collection-first": {
+        "expected_rank": 2,
+        "expected_score": 16
+      },
+      "strands-rfp-response-kernel-first": {
+        "expected_rank": 1,
+        "expected_score": 19
+      },
+      "strands-rfp-response-packaging-first": {
+        "expected_rank": 3,
+        "expected_score": 13
+      }
+    }
+  }
+}

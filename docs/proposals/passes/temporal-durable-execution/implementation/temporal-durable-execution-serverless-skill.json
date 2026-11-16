@@ -1,0 +1,18 @@
+{
+ "suites": [
+  {
+   "name": "skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons",
+   "passed": 1,
+   "failed": 0,
+   "receipt": {
+    "command": "python3 scripts/temporal/skill_dry_walk.py --address localhost:7233 --workdir <scratch>/v5",
+    "exit_code": 0,
+    "output_sha256": "4c697636e2d7ecc6c9ba65fd7940a8df965e69802887bc6635f88669a5e2c9da",
+    "code_paths": [
+     "scripts/temporal/skill_dry_walk.py",
+     "scripts/temporal/kill_resume_harness.py"
+    ]
+   }
+  }
+ ]
+}

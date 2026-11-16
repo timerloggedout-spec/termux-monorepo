@@ -1,0 +1,89 @@
+{
+  "collected_at": "2026-11-07T10:00:31.588251+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362058425,
+    "endpoint": ".../runs/42362058425/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 128372334196,
+        "run_id": 42362058425,
+        "workflow_name": "CellCog review",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058425",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45ZedA",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372334196",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058425/job/128372334196",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-07T10:00:14Z",
+        "started_at": "2026-11-07T10:00:19Z",
+        "completed_at": null,
+        "name": "cellcog-review",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-07T10:00:20Z",
+            "completed_at": "2026-11-07T10:00:20Z"
+          },
+          {
+            "name": "Guard - CELLCOG_API_KEY present",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-07T10:00:20Z",
+            "completed_at": "2026-11-07T10:00:21Z"
+          },
+          {
+            "name": "Setup Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-07T10:00:21Z",
+            "completed_at": "2026-11-07T10:00:21Z"
+          },
+          {
+            "name": "Install CellCog SDK",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-07T10:00:21Z",
+            "completed_at": "2026-11-07T10:00:26Z"
+          },
+          {
+            "name": "Run CellCog reviewer",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 5,
+            "started_at": "2026-11-07T10:00:26Z",
+            "completed_at": null
+          },
+          {
+            "name": "Post Setup Python",
+            "status": "pending",
+            "conclusion": null,
+            "number": 10,
+            "started_at": null,
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372334196",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000744769,
+        "runner_name": "GitHub Actions 1000744769",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

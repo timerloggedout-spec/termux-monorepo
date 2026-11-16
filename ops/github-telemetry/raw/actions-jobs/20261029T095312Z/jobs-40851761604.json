@@ -1,0 +1,185 @@
+{
+  "collected_at": "2026-10-29T09:53:16.001711+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40851761604,
+    "endpoint": ".../runs/40851761604/jobs"
+  },
+  "data": {
+    "total_count": 3,
+    "jobs": [
+      {
+        "id": 123372720624,
+        "run_id": 40851761604,
+        "workflow_name": "pages build and deployment",
+        "head_branch": "gh-pages",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40851761604",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuZZR8A",
+        "head_sha": "3355e96d10fc8717b997b88c56624176b4fc3314",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123372720624",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40851761604/job/123372720624",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-29T09:42:39Z",
+        "started_at": "2026-10-29T09:42:42Z",
+        "completed_at": "2026-10-29T09:42:48Z",
+        "name": "build",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:42:43Z",
+            "completed_at": "2026-10-29T09:42:44Z"
+          },
+          {
+            "name": "Checkout",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:42:44Z",
+            "completed_at": "2026-10-29T09:42:45Z"
+          },
+          {
+            "name": "Upload artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-29T09:42:45Z",
+            "completed_at": "2026-10-29T09:42:46Z"
+          },
+          {
+            "name": "Post Checkout",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-29T09:42:46Z",
+            "completed_at": "2026-10-29T09:42:46Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-29T09:42:46Z",
+            "completed_at": "2026-10-29T09:42:46Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123372720624",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425372,
+        "runner_name": "GitHub Actions 1000425372",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 123372785662,
+        "run_id": 40851761604,
+        "workflow_name": "pages build and deployment",
+        "head_branch": "gh-pages",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40851761604",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuZdP_g",
+        "head_sha": "3355e96d10fc8717b997b88c56624176b4fc3314",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123372785662",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40851761604/job/123372785662",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-29T09:42:48Z",
+        "started_at": "2026-10-29T09:42:53Z",
+        "completed_at": "2026-10-29T09:43:02Z",
+        "name": "deploy",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:42:53Z",
+            "completed_at": "2026-10-29T09:42:54Z"
+          },
+          {
+            "name": "Deploy to GitHub Pages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:42:54Z",
+            "completed_at": "2026-10-29T09:43:00Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-29T09:43:00Z",
+            "completed_at": "2026-10-29T09:43:00Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123372785662",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425374,
+        "runner_name": "GitHub Actions 1000425374",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 123372785715,
+        "run_id": 40851761604,
+        "workflow_name": "pages build and deployment",
+        "head_branch": "gh-pages",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40851761604",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuZdQMw",
+        "head_sha": "3355e96d10fc8717b997b88c56624176b4fc3314",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123372785715",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40851761604/job/123372785715",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-29T09:42:48Z",
+        "started_at": "2026-10-29T09:42:52Z",
+        "completed_at": "2026-10-29T09:42:57Z",
+        "name": "report-build-status",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:42:52Z",
+            "completed_at": "2026-10-29T09:42:53Z"
+          },
+          {
+            "name": "Report Build Status",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:42:53Z",
+            "completed_at": "2026-10-29T09:42:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-29T09:42:54Z",
+            "completed_at": "2026-10-29T09:42:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123372785715",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425373,
+        "runner_name": "GitHub Actions 1000425373",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

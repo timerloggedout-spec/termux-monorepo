@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "task_id": "deepagent-ci-continuation-001",
+  "title": "Operationalize DeepAgent continuous task execution",
+  "assigned_role": "engineer",
+  "objective": "Verify that deepcli/deepagent.py and deepcli/agent.py can accept a dispatched engineering task, execute bounded useful work, persist/resume state, and finish only after evidence-backed verification.",
+  "acceptance": [
+    "role-aware system prompt is active in both agent entrypoints",
+    "task identity and role are visible in execution state",
+    "a bounded smoke task reaches finish with verification evidence",
+    "blocked transport is classified as admission/routing failure rather than task success",
+    "continuous/resume path preserves task state without duplicate tool calls"
+  ],
+  "suggested_task": "Inspect the DeepCLI agent execution path. Verify prompt/role loading, task identity, checkpoint/resume behavior, and the smallest safe end-to-end smoke. Do not modify unrelated files. Finish only with concrete verification evidence.",
+  "transport_policy": "auto: prefer authenticated Cloudflare Access when a valid manifest exists; otherwise use active Pinggy TCP bridge. Never use an unauthenticated quick tunnel for administration.",
+  "status": "assigned"
+}

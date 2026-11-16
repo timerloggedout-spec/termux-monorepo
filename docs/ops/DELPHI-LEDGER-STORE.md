@@ -1,0 +1,212 @@
+# Delphi continuous ledgers as a database problem — DELPHI-LEDGER-STORE
+
+[MUSEai]@{role:{database-specialist}} — design + first slice, 2026-10-28.
+Mission (owner, via Delphi lane): continuous-ledger **web availability**
+as a database problem — not a single-ledger fix.
+
+> **OWNER CORRECTION (2026-10-28): retire the "mirror" framing.**
+> Neon is the **working database** — the primary queryable store for
+> lane events, ledgers and telemetry — not a mirror of the real store.
+> Pipelines COMPUTE against it (SQL: derivations, beliefs, joins,
+> aggregations), they do not re-derive state from issue comments or
+> feed files downstream. Issue comments remain the gate's human-visible
+> write surface and provenance record; the feed JSON is an EXPORT of
+> database state for static rendering, not the query path. Everywhere
+> this doc (and PR #2035) said "mirror", read "working database".
+> Provisioning of the Neon route is owned by the neon-fix lane;
+> schema/design semantics stay with the database-specialist lane.
+
+## Problem
+
+Delphi's continuous ledgers live as append-only issue comments —
+outcomes #1487, weights #1489 — plus living records whose issue body is
+edited in place (#2028 Temporal self-host status). Current state is
+buried per-comment: each snapshot comment carries a full JSON state,
+the newest one wins, and nothing renders on the web or answers a query.
+
+## Semantics of record (from `scripts/delphi/gate.py`, firsthand)
+
+| Rule | Where | Value |
+|---|---|---|
+| Snapshot marker | comment prefix | `<!-- delphi-outcomes v1 -->`, `<!-- delphi-weights v1 -->` |
+| Current state | `latest_json()` | newest comment starting with the marker, its ```json block verbatim |
+| Signal idempotency | `signal_digest()` / `dedupe_signals()` | `sha256(key\|outcome)[:16]`, per surface, newest 2000 kept; same key + changed outcome digests differently and is recorded as a new signal |
+| Outcomes EWMA | `apply_outcomes()` | alpha 0.2 (`ops/delphi/panel.json` `flywheel.ewma_alpha`), **damped**: one step per batch at the batch mean (#1533), per surface and per repo |
+| Weights flywheel | `feedback_graded()` | `gate_pass_rate` EWMA with step `alpha*|weight|`; Elo `+= k * reward`, k = 16 (`flywheel.elo_k`); hits/misses tallied |
+| Corrections | convention on #1487 | append-only: a correction is a new signed comment, never an edit (the 2026-10-28 recheck migration on #1487 is the disclosed exception) |
+| Living records | #2028 body | edited in place by the keepalive job; the body carries its own `Snapshot <ts>` stamp |
+
+Registry of ledgers: `ops/delphi/ledgers.json` (`delphi-ledgers/v1`).
+
+## Recon — candidate stores
+
+| Candidate | Queryability | Web render path | Append-only integrity | Cost / card | Writers → readers | Verdict |
+|---|---|---|---|---|---|---|
+| **Neon Postgres** (fleet precedent: `ops/lane-events/`) | full SQL, jsonb | none direct (static dashboard cannot hold creds) — needs an export | trigger-enforced (proven in `lane_events`) | free tier; secret NAMES of record `LANE_EVENTS_DATABASE_URL` / `NEON_API_KEY` — verified 2026-10-28 NOT yet provisioned in repo Actions secrets (53 names checked); provisioning owned by the neon-fix lane | gate workflows via psql writer pattern → export job | **ADOPT as the working database (primary queryable store)** |
+| Supabase Postgres | full SQL | same export problem | buildable | free; key provisioned by name, but no ledger precedent + Jules route contested | new surface for no gain over Neon | reject (duplicate of Neon) |
+| Pinecone (provisioned 2026-10-28) | vector similarity only — no folds, no EWMA, no exact current-state query | none | none (upsert overwrites) | Starter free | HindSight recall only | reject — wrong shape entirely |
+| **Repo-native feed** (`delphi-rfp-feed` precedent, PR #1949/#1952) | jq / DuckDB `read_json` over one file; no SQL server | **proven**: `apps/tribute-dashboard/data/*.json` → static Pages/Vercel render | git history + collector honesty rules; source comments stay append-only | zero, no card | collector workflow (dispatch + weekly + `workflow_run` on delphi-gate) → Web Design pages | **ADOPT as web-availability layer (this slice)** |
+| SQLite / DuckDB file in repo | full SQL locally | none (binary, no static render) | file is mutable; git-diff hostile, multi-writer unsafe | zero | — | reject as store; DuckDB-over-JSON remains the ad-hoc query route |
+
+## Design — two layers, one source of truth
+
+1. **System of record (unchanged):** the issue comments + living
+   bodies. The gate keeps writing exactly as today; no writer changes,
+   no semantics move.
+2. **Web availability (this slice):** `scripts/delphi/ledger_fetch.py`
+   → cache; `scripts/delphi/ledger_feed.py` (pure transform, stdlib)
+   → `apps/tribute-dashboard/data/delphi-ledger-feed.json`
+   (`delphi-ledger-feed/v1`): per ledger an `events[]` stream
+   (`event_key = sha256(ledger_id|comment_id)`, payload verbatim when
+   carried, signed `[MUSEai]@` appends included, third-party noise
+   counted and excluded) + `current{}` folded by the gate's own
+   `latest_json` rule; per living record the current body +
+   `version_key = sha256(body)` + parsed snapshot stamp. The collector
+   **refuses a partial cache**, recomputes nothing, and is idempotent
+   (same cache → same feed; a re-delivered comment yields one event).
+   Refresh: `.github/workflows/delphi-ledger-feed-collect.yml`
+   (dispatch + weekly + on delphi-gate completion; refresh PRs only).
+3. **Working database (schema landed slice 1, writer landed slice 2):**
+   `ops/delphi-ledger/schema.sql` — `delphi_ledger_events` +
+   `delphi_living_records` on the existing lane-events Neon route,
+   same `event_key`, append-only trigger, and a
+   `delphi_ledger_current` view expressing `latest_json` in SQL.
+   Writer: `scripts/delphi/ledger_event.py` (lane_event.py pattern —
+   never fails its caller, no-op without `LANE_EVENTS_DATABASE_URL` /
+   `NEON_API_KEY`, guest in the `lane-events` Neon project, never
+   creates it). It flattens the collector cache through
+   `ledger_feed.collect`, so database rows carry the feed's keys (same
+   partition, same event_keys); inserts are `ON CONFLICT DO NOTHING`
+   (`ops/delphi-ledger/insert-event.sql` / `insert-living.sql`), so a
+   re-sync inserts zero new rows. Wired as a step in
+   `delphi-ledger-feed-collect.yml` after the feed collect. Delphi lane
+   sign-off on the semantics (2026-10-28): confirmed point-for-point,
+   no corrections; the writer's event_key/idempotency wiring is theirs
+   to review on the slice-2 PR.
+
+Compute lives in the database: current weights =
+`SELECT payload FROM delphi_ledger_current WHERE ledger_id='weights'`;
+derived weights = the `delphi_weights_current` view (SQL applies the
+derivation); outcome history for one surface = payload path queries
+over `delphi_ledger_events WHERE ledger_id='outcomes'` ordered by
+`occurred_at`. New pipeline consumers query Neon directly; the feed
+file is the render export, not a compute input.
+
+## Semantics amendments (Delphi lane review, 2026-10-28)
+
+Delivered after slice 1 landed; diffed against the build and folded in
+here + registry + schema (amendment PR follows this doc):
+
+- **Weights derivation (was missing):** `w_i = base_i × (0.5 +
+  gate_pass_rate_i) × (elo_i / 1500)` (DELPHI-WEIGHTING.md:43). Weights
+  are DERIVED from events — the database therefore stores events + the
+  derivation (`delphi_weights_current` view applies it to the current
+  payload); the feed carries `derivation` on the weights ledger and
+  payloads verbatim. Snapshots alone are never the record.
+- **Invariants as contract** (registry `invariants`, carried into the
+  feed verbatim): append-only with corrections as new superseding
+  events; idempotency keys on every ingest; source classes
+  HUMAN_COLLABORATOR / MODEL_PROVIDER / LOCAL_BASELINE never collapsed
+  (DRIVER_SYNTHESIS is not a ballot); honest negatives
+  (`none_validated_yet`, `none_yet`) are data, never nulls; ledger
+  resolution by exact title (PR #1833), numbers pinned in the registry.
+- **Batch cap:** tribute ingestion ≤ 200 records/batch (PR #1824),
+  added to the outcomes semantics.
+- **Per-RFP gate ledgers** are the `delphi-rfp-feed` domain (status =
+  latest award comment; `delphi:converged` is a rounds property) —
+  already web-available; this store covers the continuous ledgers and
+  cross-references that feed rather than duplicating it.
+- **Living-record discrepancy, stated:** the Delphi lane describes
+  living records as periodic snapshot comments; #2028 firsthand is the
+  opposite — its comments are third-party vendor posts and the record
+  itself is the issue BODY, edited in place by the keepalive job with
+  a `Snapshot` stamp in the body. The registry therefore supports both
+  kinds; #2028 is registered `living-body`. If a snapshot-comment
+  living record is named, it registers as `snapshot-comments` with no
+  collector change.
+
+## Exact-semantics addendum (Delphi lane, 2026-10-28, second pass)
+
+Verified against gate.py/panel.json on master; folded into registry,
+collector and feed (amendment 2):
+
+- **Envelope:** every machine ledger comment = HTML marker + prose +
+  fenced ```json carrying the FULL derived state (snapshot-carried,
+  never deltas). Current state = newest marked comment's JSON verbatim
+  — explicitly **not** a fold/replay; cold start = `panel.json`. A
+  once-consumed graded step stays consumed.
+- **Event classes (new in the feed):** each event now carries
+  `class` — `machine-state` (marked envelope) vs `record` (unmarked
+  signed lane/owner prose on #1487: comparisons, axes, corrections).
+  Only `machine-state` payloads can be a ledger's `current`.
+- **Weights update, exact:** hit = (role's final vote ≥ `shadow_min`
+  15.0) == (outcome == `confirmed`); `gate_pass_rate ← round(0.8·gpr +
+  0.2·(1|0), 4)`; `elo ← round(elo ± 16, 1)`; hits/misses++;
+  aggregation `effective = Σw·s / Σw`. Roles + bases + seeds are in the
+  registry's weights `derivation` block.
+- **Board ledger (was missing — found):** #1474 "Delphi results board",
+  marker `<!-- delphi-board v1 -->`, carried in the issue BODY,
+  regenerated by the gate (generated-at stamp in body). It is a
+  DERIVED render — ledger of record = newest `delphi-ledger v1`
+  comment per RFP — registered as `living-body` so the feed carries it
+  without ever treating it as a source.
+- **Living-record marker assigned:** per the Delphi lane's
+  recommendation, `<!-- delphi-living v1 -->` is assigned for future
+  snapshot comments on living-record issues (recorded on the #2028
+  registry entry; its writer adopts it, the body pattern is unchanged
+  until then). This resolves the earlier discrepancy: body-carried
+  records (#2028, board #1474) and comment-carried ledgers are both
+  first-class kinds.
+- **Writers/readers of record:** writers = delphi-gate (issue events,
+  `repository_dispatch` delphi-tick, hourly schedule, dispatch;
+  `defer_api` at shared-token remaining ≲126), delphi-tribute-ingest
+  (dispatch-only, gate executes), lanes+owner (unmarked records).
+  Readers = the gate (read-modify-write on newest marked JSON),
+  `rfp_flood_feed.py`, `bayesian_routing.py` (beliefs over #1487),
+  `oracle_panel_feed.py`, this collector, humans.
+
+## Render handoff
+
+Web Design lane (f2acba6f): render `delphi-ledger-feed.json` like the
+RFP feed — `current.payload` verbatim per ledger (no re-folding, no
+recomputed EWMA/Elo), events stream below it, `excluded_noise` named,
+living records by `version_key` + `snapshot_at`. Page itself is theirs;
+this slice is the store + feed contract.
+
+**Provisioning of record (neon-fix lane, 2026-10-28):** Neon project
+`lane-events` (writers' default; `LANE_EVENTS_NEON_PROJECT` unset),
+region aws-us-east-2, default branch, database `neondb`. Repo Actions
+secrets, names of record (no rename — writers/workflows already use
+them): `NEON_API_KEY` (runtime resolution + project ops) and
+`LANE_EVENTS_DATABASE_URL` (direct psql path, resolved from that
+project at provisioning time). Writers stay as-is. Landing + proof
+run owned by the neon-fix lane; until their proof lands, writers
+remain in the verified no-op state.
+
+## Neon Realtime — evaluation (2026-10-28, owner handoff via neon-fix lane)
+
+Source: neon.com/docs/realtime/overview (read firsthand 2026-10-28).
+Realtime (Beta) makes any deterministic read-only SQL query live:
+sealed live queries defined by a backend holding
+`NEON_REALTIME_SECRET`, clients subscribe through the Live SQL API;
+joins/aggregates/window functions supported; enabled per
+project+branch (`neon realtime enable`); our region aws-us-east-2 is
+in the beta set; free during beta (DB compute + egress still billed);
+requires logical replication; cost shifts to incremental-on-write on
+a replica (zero primary write impact per docs). NOT yet: RLS,
+stable transport protocol, performance guarantees.
+
+**Verdict: DO NOT ADOPT for the lane-events store / read path now.**
+Every current consumer is batch — Actions writers/readers on psql,
+the collect-cadence DB export (ledger_db_export.py), ad-hoc agent SQL
+— and the only rendered surface is a static dashboard that cannot
+hold the sealing secret or run the backend Realtime requires; the VM
+rule also bars standing one up locally. There is no live subscriber
+to serve. **Designated candidate when one exists:** the store's
+currents/podium views (`delphi_ledger_current`,
+`delphi_weights_current`, `participants_current`, `event_podium`)
+are deterministic SELECTs — directly sealable as live queries for a
+future hosted app/agent surface on an owner account. Revisit trigger:
+a live consumer lands, or Realtime reaches GA with RLS. (The owner's
+noted Neon-login banner was not verified firsthand from this lane;
+in context it is consistent with the Realtime beta announcement.)

@@ -1,0 +1,29 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-28T02:09:47Z",
+  "proposal_id": "temporal-durable-execution-versioned-autoscale",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+      "items": 10,
+      "assembled_at": null
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "d298e89d93c1725ee5719f844743ba42154f22c46ef87cbdb1ffac74f179862a",
+    "ITEMS.md": "0824596164c8a42d679838550926600d7a1a5568a6ad5c22b8ad49d302e5c2b6",
+    "RFP.md": "a14dde37c1b86c278138c30e14778d6adfd62dc08291b39ffeaf23c1f5360ccb"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "temporal-durable-execution",
+  "concept": "Worker Versioning + backlog-driven autoscaling (WCI) as the actuation layer for MoneyBall/quota routing decisions; K8s actuation itself specified_not_run (no cluster), the versioning/autoscale model and omes load evidence are the claims.",
+  "siblings": [
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-contract-first",
+    "temporal-durable-execution-serverless-skill"
+  ]
+}

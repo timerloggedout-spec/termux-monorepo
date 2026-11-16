@@ -1,0 +1,86 @@
+name: Mesh Installations Probe (names-only)
+
+# Probe: which stored GitHub tokens can read the installations surface?
+# Triggered by push to its own branch. Results (app slugs, account logins,
+# permission KEYS only) are posted as a comment on Issue #184.
+# Token values are never printed; each token is used only via env.
+
+on:
+  push:
+    branches: ["mesh/installations-probe-2026-10-21"]
+    paths: [".github/workflows/mesh-installations-probe.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe installations with each stored token
+        env:
+          TOK_OPERATOR: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          TOK_ARCHWIZ: ${{ secrets.ARCHWIZ_GITHUB_TOKEN }}
+          TOK_OPERATOR_TOKEN: ${{ secrets.OPERATOR_TOKEN }}
+          TOK_RECON: ${{ secrets.RECON_INTEL_GITHUB_WRITE_TOKEN }}
+          TOK_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -u
+          OUT=probe-results.md
+          echo "## Installations probe — $(date -u +%FT%TZ)" > "$OUT"
+          echo "" >> "$OUT"
+          probe() {
+            local label="$1" tok="$2"
+            echo "### Token: $label" >> "$OUT"
+            if [ -z "$tok" ]; then echo "- secret not set / empty" >> "$OUT"; return; fi
+            # identity + scopes header
+            hdr=$(mktemp); body=$(mktemp)
+            code=$(curl -s -o "$body" -D "$hdr" -w "%{http_code}" -H "Authorization: Bearer $tok" -H "Accept: application/vnd.github+json" https://api.github.com/user || echo "curl_failed")
+            login=$(jq -r '.login // "?"' "$body" 2>/dev/null || echo "?")
+            scopes=$(grep -i '^x-oauth-scopes:' "$hdr" | tr -d '\r' | cut -d' ' -f2- || true)
+            client=$(grep -i '^x-oauth-client-id:' "$hdr" | tr -d '\r' | awk '{print $2}' || true)
+            echo "- GET /user -> $code login=$login scopes=[$scopes] oauth_client_id=${client:-none}" >> "$OUT"
+            # user installations
+            code=$(curl -s -o "$body" -w "%{http_code}" -H "Authorization: Bearer $tok" -H "Accept: application/vnd.github+json" "https://api.github.com/user/installations?per_page=100" || echo "curl_failed")
+            echo "- GET /user/installations -> $code" >> "$OUT"
+            if [ "$code" = "200" ]; then
+              jq -r '"  total_count=" + (.total_count|tostring), (.installations[]? | "  - id=\(.id) app_slug=\(.app_slug) app_id=\(.app_id) account=\(.account.login) repo_selection=\(.repository_selection) suspended=\(.suspended_at // "no") perms=\((.permissions // {}) | keys | join(","))")' "$body" >> "$OUT" 2>/dev/null || echo "  (payload unparsable)" >> "$OUT"
+            else
+              jq -r '.message // "no message"' "$body" 2>/dev/null | sed 's/^/  message: /' >> "$OUT" || true
+            fi
+            # org installations (both orgs)
+            for org in Research-Astute search-astute-ly; do
+              code=$(curl -s -o "$body" -w "%{http_code}" -H "Authorization: Bearer $tok" -H "Accept: application/vnd.github+json" "https://api.github.com/orgs/$org/installations?per_page=100" || echo "curl_failed")
+              echo "- GET /orgs/$org/installations -> $code" >> "$OUT"
+              if [ "$code" = "200" ]; then
+                jq -r '(.installations[]? | "  - id=\(.id) app_slug=\(.app_slug) account=\(.account.login) repo_selection=\(.repository_selection)")' "$body" >> "$OUT" 2>/dev/null || true
+              fi
+            done
+            rm -f "$hdr" "$body"
+            echo "" >> "$OUT"
+          }
+          probe "OPERATOR_GITHUB_TOKEN" "$TOK_OPERATOR"
+          probe "ARCHWIZ_GITHUB_TOKEN" "$TOK_ARCHWIZ"
+          probe "OPERATOR_TOKEN" "$TOK_OPERATOR_TOKEN"
+          probe "RECON_INTEL_GITHUB_WRITE_TOKEN" "$TOK_RECON"
+          probe "GITHUB_TOKEN (workflow control)" "$TOK_GITHUB"
+          echo "Probe source: mesh-installations-probe workflow, names/metadata only." >> "$OUT"
+          cp "$OUT" probe-results.txt
+      - name: Post results to Issue 184
+        env:
+          TOK_OPERATOR: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          TOK_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -u
+          TOK="$TOK_OPERATOR"; [ -z "$TOK" ] && TOK="$TOK_GITHUB"
+          jq -Rs '{body: .}' probe-results.txt > payload.json
+          curl -s -X POST -H "Authorization: Bearer $TOK" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/184/comments \
+            -d @payload.json | jq -r '"posted: \(.html_url // .message)"'
+      - name: Upload results artifact (backup channel)
+        uses: actions/upload-artifact@v4
+        with:
+          name: installations-probe-results
+          path: probe-results.txt
+          retention-days: 7

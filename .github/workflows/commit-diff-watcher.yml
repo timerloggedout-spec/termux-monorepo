@@ -1,0 +1,83 @@
+name: '🛡️ Direct Master Empty-Commit Watcher'
+
+# PR history/diff measurement lives in pr-change-effectiveness-ledger.yml.
+# This workflow is deliberately narrow: it catches empty automated commits
+# pushed directly to protected branches. It does not duplicate PR analysis.
+on:
+  push:
+    branches:
+      - 'master'
+      - 'master-staging'
+
+concurrency:
+  group: direct-master-empty-commit-${{ github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    name: 'Check direct pushes for empty automated commits'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout trusted repository history
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Analyze pushed commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RANGE_BEFORE: ${{ github.event.before }}
+          RANGE_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          empty=()
+          # Zero SHA means a new branch or a missing before; do not interpolate
+          # event SHAs into the script text (run 36934415564 exit 027).
+          if [[ -z "${RANGE_BEFORE}" || "${RANGE_BEFORE}" == 0000000000000000000000000000000000000000 ]]; then
+            echo "No comparable before SHA; skipping empty-commit range."
+            exit 0
+          fi
+          while read -r sha; do
+            [[ -z "$sha" ]] && continue
+            parent="$(git rev-parse "${sha}^" 2>/dev/null || true)"
+            files=0
+            if [[ -n "$parent" ]]; then
+              files="$(git diff --name-only "$parent" "$sha" | wc -l | tr -d ' ')"
+            else
+              files="$(git diff-tree --root --no-commit-id --name-only -r "$sha" | wc -l | tr -d ' ')"
+            fi
+            if [[ "$files" -eq 0 ]]; then
+              author="$(git show -s --format='%an <%ae>' "$sha")"
+              empty+=("${sha}|${author}")
+            fi
+          done < <(git rev-list --reverse "${RANGE_BEFORE}..${RANGE_SHA}")
+
+          if [[ "${#empty[@]}" -eq 0 ]]; then
+            echo "No empty direct-push commits observed."
+            exit 0
+          fi
+
+          # Do not wrap SHAs in backticks. Run 36934415564 treated the SHA as a
+          # command (exit 027) because \\` inside the double-quoted body became
+          # command substitution after Actions wrote the runner script.
+          printf '%s\n' '<!-- direct-master-empty-commit-watcher:v3 -->'
+          printf '%s\n' '## Empty direct-push commit detected'
+          printf '%s\n' ''
+          printf '%s\n' 'The pushed range contains commit(s) with no file-tree delta:'
+          printf '%s\n' ''
+          for item in "${empty[@]}"; do
+            sha="${item%%|*}"
+            author="${item#*|}"
+            printf -- '- %s — %s\n' "$sha" "$author"
+          done
+          printf '%s\n' ''
+          printf '%s\n' 'PR commit effectiveness is measured by pr-change-effectiveness-ledger.yml; this watcher only covers direct pushes to protected branches.'
+          # Issue #1 is intentionally not targeted: direct-push telemetry is
+          # logged in the workflow run rather than generating noisy PR comments.
+          exit 0

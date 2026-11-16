@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-10-06T10:12:58.548683+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37439745903,
+    "endpoint": ".../runs/37439745903/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 112190281649,
+        "run_id": 37439745903,
+        "workflow_name": "help-wanted-status-refresh",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37439745903",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaHw_XsQ",
+        "head_sha": "7160a76d4c4ee48e01b398c6ef08f05ce4355772",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112190281649",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37439745903/job/112190281649",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-06T08:58:35Z",
+        "started_at": "2026-10-06T08:58:37Z",
+        "completed_at": "2026-10-06T08:58:52Z",
+        "name": "refresh",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-06T08:58:38Z",
+            "completed_at": "2026-10-06T08:58:39Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-06T08:58:39Z",
+            "completed_at": "2026-10-06T08:58:43Z"
+          },
+          {
+            "name": "Rebuild status \u2192 dashboard data",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-06T08:58:43Z",
+            "completed_at": "2026-10-06T08:58:46Z"
+          },
+          {
+            "name": "Commit if changed",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-06T08:58:46Z",
+            "completed_at": "2026-10-06T08:58:48Z"
+          },
+          {
+            "name": "Deploy dashboard mirror",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-06T08:58:48Z",
+            "completed_at": "2026-10-06T08:58:50Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-06T08:58:50Z",
+            "completed_at": "2026-10-06T08:58:51Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-06T08:58:51Z",
+            "completed_at": "2026-10-06T08:58:51Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112190281649",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000217215,
+        "runner_name": "GitHub Actions 1000217215",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

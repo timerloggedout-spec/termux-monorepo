@@ -1,0 +1,239 @@
+{
+  "schema": "lead-lag-cadence/v1",
+  "observed_at": "2026-10-23T13:21:18.961605Z",
+  "sample_size": 1000,
+  "counts": {
+    "lead_in_flight": 1,
+    "lag_success_badge": 120,
+    "lag_operational": 879
+  },
+  "rates": {
+    "failure": 0.0,
+    "operational_skip_cancel": 0.879,
+    "success_badge": 0.12
+  },
+  "policy": {
+    "correctness_gt_green_badges": true,
+    "skipped_route_not_model_failure": true,
+    "latency_is_diagnostic": true,
+    "incident_on": [
+      "action_required",
+      "failure",
+      "timed_out"
+    ],
+    "observation_only": [
+      "cancelled",
+      "neutral",
+      "skipped",
+      "startup_failure"
+    ]
+  },
+  "dual_gate_runs": [],
+  "failures": [],
+  "operational_sample": [
+    {
+      "id": 39960047378,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960047378",
+      "dual_gate": false
+    },
+    {
+      "id": 39960042240,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960042240",
+      "dual_gate": false
+    },
+    {
+      "id": 39960037698,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960037698",
+      "dual_gate": false
+    },
+    {
+      "id": 39960037679,
+      "name": "Fix-on-Failure Agent",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960037679",
+      "dual_gate": false
+    },
+    {
+      "id": 39960029751,
+      "name": "delphi-signal-bridge",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960029751",
+      "dual_gate": false
+    },
+    {
+      "id": 39960026608,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960026608",
+      "dual_gate": false
+    },
+    {
+      "id": 39960026726,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960026726",
+      "dual_gate": false
+    },
+    {
+      "id": 39960026434,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960026434",
+      "dual_gate": false
+    },
+    {
+      "id": 39960025123,
+      "name": "lane events recorder",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960025123",
+      "dual_gate": false
+    },
+    {
+      "id": 39960018133,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960018133",
+      "dual_gate": false
+    },
+    {
+      "id": 39960017772,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960017772",
+      "dual_gate": false
+    },
+    {
+      "id": 39960018731,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960018731",
+      "dual_gate": false
+    },
+    {
+      "id": 39960018055,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960018055",
+      "dual_gate": false
+    },
+    {
+      "id": 39960018445,
+      "name": "Agent Throughput Evidence",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960018445",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010771,
+      "name": "Agent PR Jules Handoff",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010771",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010873,
+      "name": "Peer review orchestrator",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010873",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010302,
+      "name": "DeepSeek CI \u2013 Agentic Automation",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010302",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010440,
+      "name": "\ud83d\udd00 Gemini Dispatch (free-tier agentic)",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010440",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010605,
+      "name": "Jules on Issues (label / @jules)",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010605",
+      "dual_gate": false
+    },
+    {
+      "id": 39960010691,
+      "name": "CellCog review",
+      "conclusion": "skipped",
+      "status": "completed",
+      "head_sha": "29026edd9f8b",
+      "class": "lag_operational",
+      "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39960010691",
+      "dual_gate": false
+    }
+  ],
+  "verdict": "PASS_BADGE_PLANE",
+  "note": "Badge plane is not promote authority. Dual-gate + task outcome required to promote.",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "branch": "master"
+}

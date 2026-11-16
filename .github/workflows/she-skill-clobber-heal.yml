@@ -1,0 +1,147 @@
+name: SHE skill clobber heal
+
+# Self-Healing Engine known repair (L1, bounded mutation) for SKILL.md files
+# overwritten with a stub instead of appended to. Detect on every master push
+# that touches a SKILL.md, open a repair PR that restores the last good body
+# plus any genuinely new lines, and let the normal PR gates verify it.
+# Incident: docs/ops/incidents/2026-10-18-skill-clobber.md
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**/SKILL.md'
+  pull_request:
+    paths:
+      - '**/SKILL.md'
+      - 'scripts/ci/skill_clobber.py'
+      - 'scripts/ci/validate_operational_skills.py'
+      - 'tests/test_skill_clobber.py'
+      - 'tests/fixtures/skill_clobber/**'
+      - '.github/workflows/she-skill-clobber-heal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: she-skill-clobber-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    name: detect clobbered skills
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      clobbered: ${{ steps.check.outputs.clobbered }}
+      paths: ${{ steps.check.outputs.paths }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Unit tests (real clobber corpus)
+        run: python3 -m unittest discover -s tests -p 'test_skill_clobber.py' -v
+      - name: Check every tracked SKILL.md against its reference
+        id: check
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'HEAD~1' }}
+        run: |
+          set +e
+          python3 scripts/ci/skill_clobber.py check --base "$BASE" --json clobbers.json
+          rc=$?
+          set -e
+          paths=$(python3 -c 'import json;print(" ".join(v["path"] for v in json.load(open("clobbers.json"))))')
+          echo "paths=${paths}" >> "$GITHUB_OUTPUT"
+          if [ "$rc" -ne 0 ]; then echo "clobbered=true" >> "$GITHUB_OUTPUT"; else echo "clobbered=false" >> "$GITHUB_OUTPUT"; fi
+      - name: Upload detection receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-clobber-detect-${{ github.run_id }}
+          path: clobbers.json
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Fail pull requests that clobber a skill
+        if: github.event_name == 'pull_request' && steps.check.outputs.clobbered == 'true'
+        run: |
+          echo "::error::A SKILL.md in this PR is a stub or lost >50% of its content. Append instead of rewriting, or put [allow-skill-shrink] in the commit message."
+          exit 1
+
+  heal:
+    name: open repair PR
+    needs: detect
+    if: github.event_name != 'pull_request' && needs.detect.outputs.clobbered == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+          # A PAT lets the repair PR trigger the normal PR gates; GITHUB_TOKEN PRs do not.
+          token: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
+      - name: Repair and record SHE incident
+        id: repair
+        env:
+          PATHS: ${{ needs.detect.outputs.paths }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          # shellcheck disable=SC2086
+          python3 scripts/ci/skill_clobber.py repair --write $PATHS | tee repair.log
+          python3 - <<'PY'
+          import json, os
+          from she.incident import Incident
+          inc = Incident.create(
+              source="github-actions",
+              event_provenance="push",
+              repository=os.environ["REPO"],
+              ref="refs/heads/master",
+              sha=os.environ["SHA"],
+              severity="medium",
+              classification="skill-clobber",
+              evidence_refs=[os.environ["RUN_URL"]],
+              authority_scope=["L1-known-repair"],
+              allowed_actions=["restore_last_good_skill_body", "open_repair_pr"],
+              fingerprint="skill-clobber:" + ",".join(sorted(os.environ["PATHS"].split())) + ":" + os.environ["SHA"][:12],
+              metadata={"repair_log": open("repair.log").read()},
+          )
+          json.dump(inc.to_mapping(), open("she-incident.json", "w"), indent=2, default=str)
+          PY
+      - name: Open repair PR
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || github.token }}
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          branch="she/heal-skill-clobber-${SHA:0:12}"
+          git config user.name "SHE skill heal"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -- '*SKILL.md'
+          git commit -m "fix(skills): SHE restore clobbered skill body from last good version (${SHA:0:12})"
+          git push origin "$branch"
+          body=$(printf 'SHE known repair (L1) for a clobbered SKILL.md on `%s`.\n\nRun: %s\n\n```\n%s\n```\n\nRestores the last good body and appends any genuinely new lines. Verify with the normal PR gates, then merge.' "$SHA" "$RUN_URL" "$(cat repair.log)")
+          if ! gh pr create --base master --head "$branch" --title "fix(skills): SHE heal clobbered skill (${SHA:0:12})" --body "$body"; then
+            gh issue create --title "[SHE] skill clobber on ${SHA:0:12}: repair branch ready" \
+              --body "$body"$'\n\n'"Could not open a PR from Actions; open one from branch \`$branch\`."
+          fi
+      - name: Upload SHE incident
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: she-incident-skill-clobber-${{ github.run_id }}
+          path: |
+            she-incident.json
+            repair.log
+          if-no-files-found: ignore
+          retention-days: 90

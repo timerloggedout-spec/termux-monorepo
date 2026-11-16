@@ -1,0 +1,478 @@
+{
+ "executive_request": "Generate n=5 candidate architectures for a durable-execution substrate that lets lane work survive worker/VM death, drafted from the Temporal ecosystem as seeds through the repo's existing starter templates, and run the full Oracle Method cycle: cross-vote round 1 with the recorded expectations, an implementation round gated on the kill-and-resume proof (RFP \u00a76), a DoE 2^4 factorial slice, and round 2 on an equalized evidence base with calibration deltas to the weighting/outcome ledgers.",
+ "expectations": {
+  "expected_order": [
+   "V1-pi-core-resume",
+   "V2-cookbook-agent-loop",
+   "V4-contract-first",
+   "V3-versioned-autoscale",
+   "V5-serverless-skill"
+  ],
+  "rationale": "V1 alone answers the fleet loss mode head-on with a runnable no-key starter; V2 rides in-repo integrations; V4 cheap/composable but adds no durability itself; V3 actuation is K8s-gated; V5 execution is owner-gated, only its form scores.",
+  "recorded_by": "temporal-recon lane at G0 intake, pre-implementation"
+ },
+ "id": "temporal-durable-execution",
+ "item_prefix": "TD",
+ "items": [
+  {
+   "id": "TD-001",
+   "text": "Generate 5 candidate packs (MANIFEST/ITEMS) under docs/proposals/active/, one per variant, each declaring its seed combination and plan."
+  },
+  {
+   "id": "TD-002",
+   "text": "Cross-vote round 1 across all 5 variants, source classes separate, against the input expectations recorded in INTAKE.md."
+  },
+  {
+   "id": "TD-003",
+   "text": "Implementation round: extend scripts/temporal/hello_workflow.py into the RFP \u00a76 kill-and-resume harness (self-host dev server, remote/Codespace); per-variant test suites require run receipts or score zero."
+  },
+  {
+   "id": "TD-004",
+   "text": "DoE slice: 2^4 factorial (substrate x attestation x placement x routing) with fixed contract hash, env fingerprint, benchmark version and deterministic scorer; publish canonical rows (cohort x task x arm x repetition, workflow/run IDs as trace identity)."
+  },
+  {
+   "id": "TD-005",
+   "text": "Round 2 on the equalized evidence bundle (sha256-stamped), re-vote, calibration deltas to ledgers #1489/#1487."
+  },
+  {
+   "id": "TD-006",
+   "text": "Add research-seed records: Temporal set + getDX (evidence-pending) under docs/repositories/research-seeds/, Gravitee precedent."
+  },
+  {
+   "id": "TD-007",
+   "text": "G6 disposition record: adopt/pilot/reference-only/reject per variant and per seed repo, naming the best piece taken, what was learned, and which N1-N7 inventions (RFP \u00a77) survive."
+  }
+ ],
+ "kind": "rfp",
+ "priority": "P1",
+ "related": {
+  "docs": [
+   "docs/rfps/temporal-durable-execution/RFP.md",
+   "docs/rfps/temporal-durable-execution/RECON.md",
+   "docs/rfps/temporal-durable-execution/INTAKE.md"
+  ],
+  "issues": [
+   1885
+  ],
+  "prs": [
+   1867
+  ]
+ },
+ "require_plan": true,
+ "summary_points": [
+  {
+   "text": "All 19 supplied Temporal links validated live 2026-10-27: 17 repos, none archived, 15 of 17 pushed the same day.",
+   "evidence_refs": [
+    "docs/rfps/temporal-durable-execution/RECON.md"
+   ]
+  },
+  {
+   "text": "In-repo Temporal footprint is P1 smoke only (hello workflow + LangSmith adapter); no production workflow and no kill-resume evidence exists yet.",
+   "evidence_refs": [
+    "docs/ops/TEMPORAL-LANGSMITH-ADAPTER.md",
+    "scripts/temporal/hello_workflow.py",
+    "docs/proposals/active/temporal-langsmith-adapter/MANIFEST.md"
+   ]
+  },
+  {
+   "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+   "evidence_refs": [
+    "docs/rfps/temporal-durable-execution/RECON.md",
+    "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+    "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+    "config/agent_stack_integrations.json"
+   ]
+  },
+  {
+   "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+   "evidence_refs": [
+    "docs/rfps/temporal-durable-execution/INTAKE.md",
+    "ml/pipelines/moneyball/explain.py"
+   ]
+  },
+  {
+   "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+   "evidence_refs": [
+    "docs/rfps/temporal-durable-execution/RFP.md"
+   ]
+  }
+ ],
+ "surface": "delphi-oracle-method",
+ "title": "Durable execution substrate for the lane fleet (Temporal four-plane RFP)",
+ "variants": [
+  {
+   "suffix": "pi-core-resume",
+   "concept": "Agent-agnostic durable core: session-file state, worker death mid-turn resumed by another worker, started-but-unrecorded side effects surfaced as unknown outcome and never blindly retried.",
+   "variant_id": "V1-pi-core-resume",
+   "seeds": [
+    "temporalio/pi-temporal",
+    "temporalio/temporal",
+    "temporalio/cli"
+   ],
+   "test_suites": [
+    "kill-resume harness (RFP \u00a76) on the echo-style starter: complete with exactly one receipt after a mid-activity worker kill"
+   ],
+   "plan": {
+    "steps": [
+     "Extend scripts/temporal/hello_workflow.py into the RFP \u00a76 kill-and-resume harness on the self-host dev server (the pass's shared gate asset)",
+     "Model the pi-temporal pattern: session-file state, worker death mid-turn resumed by a second worker on the same task queue",
+     "Surface started-but-unrecorded side effects as unknown outcomes via started-marker reconciliation against the idempotency key \u2014 never blindly retried",
+     "Export the full workflow history and land its digest in the evidence-envelope record (N1 Witness arm, names-only)",
+     "Run the \u00a76 prove as this variant's suite: exactly one receipt after a mid-activity SIGKILL"
+    ],
+    "risks": [
+     "Dev-server persistence semantics differ from a production cluster; the proof bounds itself to the dev-server claim",
+     "Activity retry windows can mask a missing idempotency key \u2014 the receipt count is the assertion, not the retry count"
+    ],
+    "alternatives": [
+     "Temporal Cloud execution \u2014 owner-gated under the card rule, not taken",
+     "Hand-rolled checkpoint files without Temporal history \u2014 no replay or audit surface, rejected at RECON"
+    ]
+   },
+   "summary_points": [
+    {
+     "text": "Agent-agnostic durable core: session-file state, worker death mid-turn resumed by another worker, started-but-unrecorded side effects surfaced as unknown outcome and never blindly retried.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md",
+      "docs/rfps/temporal-durable-execution/RECON.md"
+     ]
+    },
+    {
+     "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RECON.md",
+      "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+      "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+      "config/agent_stack_integrations.json"
+     ]
+    },
+    {
+     "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/INTAKE.md",
+      "ml/pipelines/moneyball/explain.py"
+     ]
+    },
+    {
+     "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "item": "Declare the seed combination (temporalio/pi-temporal, temporalio/temporal, temporalio/cli) and the plan in this pack",
+     "evidence": "MANIFEST + PROVENANCE of this pack"
+    },
+    {
+     "item": "Suite: kill-resume harness (RFP \u00a76) on the echo-style starter: complete with exactly one receipt after a mid-activity worker kill",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+     "evidence": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+    }
+   ]
+  },
+  {
+   "suffix": "cookbook-agent-loop",
+   "concept": "Cookbook recipes as starters (agentic loop, HITL approval pause, deep-research, durable MCP) with plugin-per-framework packaging; LangSmith bridge already in-repo.",
+   "variant_id": "V2-cookbook-agent-loop",
+   "seeds": [
+    "temporalio/ai-cookbook",
+    "temporalio/ai-integrations",
+    "temporalio/temporal"
+   ],
+   "test_suites": [
+    "HITL approval workflow: pause on signal, resume, complete",
+    "kill-resume harness (RFP \u00a76)"
+   ],
+   "plan": {
+    "steps": [
+     "Adopt ai-cookbook recipes as starters: agentic loop, HITL approval pause, deep-research, durable MCP",
+     "Package per framework following ai-integrations patterns; keep the in-repo LangSmith bridge as the observability arm",
+     "Implement the HITL approval workflow (pause on signal, resume, complete) against the dev server as suite 1",
+     "Run the shared \u00a76 kill-and-resume harness as suite 2"
+    ],
+    "risks": [
+     "Cookbook breadth over depth: recipes drift against the pinned SDK version",
+     "Per-framework packaging multiplies maintenance surface"
+    ],
+    "alternatives": [
+     "Bespoke workflows per recipe \u2014 slower, loses upstream maintenance",
+     "pi-core only (V1) \u2014 no recipe leverage"
+    ]
+   },
+   "summary_points": [
+    {
+     "text": "Cookbook recipes as starters (agentic loop, HITL approval pause, deep-research, durable MCP) with plugin-per-framework packaging; LangSmith bridge already in-repo.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md",
+      "docs/rfps/temporal-durable-execution/RECON.md"
+     ]
+    },
+    {
+     "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RECON.md",
+      "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+      "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+      "config/agent_stack_integrations.json"
+     ]
+    },
+    {
+     "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/INTAKE.md",
+      "ml/pipelines/moneyball/explain.py"
+     ]
+    },
+    {
+     "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "item": "Declare the seed combination (temporalio/ai-cookbook, temporalio/ai-integrations, temporalio/temporal) and the plan in this pack",
+     "evidence": "MANIFEST + PROVENANCE of this pack"
+    },
+    {
+     "item": "Suite: HITL approval workflow: pause on signal, resume, complete",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "Suite: kill-resume harness (RFP \u00a76)",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+     "evidence": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+    }
+   ]
+  },
+  {
+   "suffix": "versioned-autoscale",
+   "concept": "Worker Versioning + backlog-driven autoscaling (WCI) as the actuation layer for MoneyBall/quota routing decisions; K8s actuation itself specified_not_run (no cluster), the versioning/autoscale model and omes load evidence are the claims.",
+   "variant_id": "V3-versioned-autoscale",
+   "seeds": [
+    "temporalio/temporal-worker-controller",
+    "temporalio/temporal-auto-scaled-workers",
+    "temporalio/omes"
+   ],
+   "test_suites": [
+    "omes load scenario against the self-host dev server with published scenario receipts"
+   ],
+   "plan": {
+    "steps": [
+     "Model Worker Versioning (build-id routing) as the actuation layer for MoneyBall/quota routing decisions (N3)",
+     "Model backlog-driven autoscaling (WCI) as a deterministic policy over queue metrics \u2014 the model is the claim",
+     "Run the omes load scenario against the self-host dev server with published scenario receipts (declared suite)",
+     "Record K8s actuation itself as specified_not_run wherever no cluster exists"
+    ],
+    "risks": [
+     "Actuation unproven without a cluster \u2014 the variant can win the model and still not move a worker",
+     "omes is a heavy harness; scenario receipts may not be producible in every environment"
+    ],
+    "alternatives": [
+     "Static worker pools \u2014 no routing actuation at all",
+     "Cloud autoscaling paths \u2014 owner-gated, not taken"
+    ]
+   },
+   "summary_points": [
+    {
+     "text": "Worker Versioning + backlog-driven autoscaling (WCI) as the actuation layer for MoneyBall/quota routing decisions; K8s actuation itself specified_not_run (no cluster), the versioning/autoscale model and omes load evidence are the claims.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md",
+      "docs/rfps/temporal-durable-execution/RECON.md"
+     ]
+    },
+    {
+     "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RECON.md",
+      "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+      "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+      "config/agent_stack_integrations.json"
+     ]
+    },
+    {
+     "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/INTAKE.md",
+      "ml/pipelines/moneyball/explain.py"
+     ]
+    },
+    {
+     "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "item": "Declare the seed combination (temporalio/temporal-worker-controller, temporalio/temporal-auto-scaled-workers, temporalio/omes) and the plan in this pack",
+     "evidence": "MANIFEST + PROVENANCE of this pack"
+    },
+    {
+     "item": "Suite: omes load scenario against the self-host dev server with published scenario receipts",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+     "evidence": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+    }
+   ]
+  },
+  {
+   "suffix": "contract-first",
+   "concept": "Proto/schema-first lane contracts with nexgen-style generated typed models + shared validators, and workflow history treated as the projection/audit surface.",
+   "variant_id": "V4-contract-first",
+   "seeds": [
+    "temporalio/api",
+    "temporalio/nexgen",
+    "temporalio/ui"
+   ],
+   "test_suites": [
+    "contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations"
+   ],
+   "plan": {
+    "steps": [
+     "Fix the evidence-envelope schema as the lane contract (proto/schema-first, nexgen-style generated typed models)",
+     "Generate validators from the one schema in 2 languages; invalid payloads rejected with aggregated violations (declared suite)",
+     "Treat workflow history as the projection/audit surface (ui seed) \u2014 read models derive from history, never from side state",
+     "Version the contract with a fixed hash so DoE arms share one contract identity"
+    ],
+    "risks": [
+     "Generated validators can diverge across languages \u2014 the fixture must cross-check both against the same payload set",
+     "Schema governance overhead on every lane contract change"
+    ],
+    "alternatives": [
+     "Hand-written validators per language \u2014 divergence by default",
+     "Protobuf-first toolchain \u2014 heavier than this repo's current surfaces"
+    ]
+   },
+   "summary_points": [
+    {
+     "text": "Proto/schema-first lane contracts with nexgen-style generated typed models + shared validators, and workflow history treated as the projection/audit surface.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md",
+      "docs/rfps/temporal-durable-execution/RECON.md"
+     ]
+    },
+    {
+     "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RECON.md",
+      "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+      "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+      "config/agent_stack_integrations.json"
+     ]
+    },
+    {
+     "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/INTAKE.md",
+      "ml/pipelines/moneyball/explain.py"
+     ]
+    },
+    {
+     "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "item": "Declare the seed combination (temporalio/api, temporalio/nexgen, temporalio/ui) and the plan in this pack",
+     "evidence": "MANIFEST + PROVENANCE of this pack"
+    },
+    {
+     "item": "Suite: contract generation fixture: evidence-envelope schema -> validators in 2 languages, invalid payloads rejected with aggregated violations",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+     "evidence": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+    }
+   ]
+  },
+  {
+   "suffix": "serverless-skill",
+   "concept": "The agent skill as the deployment starter (scope -> access checks -> packaging -> registration -> verification -> rollback); all Cloud execution paths specified_not_run under the card rule.",
+   "variant_id": "V5-serverless-skill",
+   "seeds": [
+    "temporalio/skill-temporal-serverless",
+    "temporalio/temporal-auto-scaled-workers"
+   ],
+   "test_suites": [
+    "skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons"
+   ],
+   "plan": {
+    "steps": [
+     "Execute the skill dry-walk against the self-host dev server only: scope -> access checks -> packaging -> registration -> verification -> rollback (declared suite)",
+     "Record every Cloud execution step as specified_not_run with the card-rule reason, step by step",
+     "Score the skill FORM (the starter's shape) \u2014 execution paths are not claimed"
+    ],
+    "risks": [
+     "While gated, the claim reduces to form; a high score here must not be read as execution readiness",
+     "Skill surface drift upstream changes the walk"
+    ],
+    "alternatives": [
+     "Cookbook packaging (V2) as the starter form",
+     "CLI starters (V1) as the onboarding path"
+    ]
+   },
+   "summary_points": [
+    {
+     "text": "The agent skill as the deployment starter (scope -> access checks -> packaging -> registration -> verification -> rollback); all Cloud execution paths specified_not_run under the card rule.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md",
+      "docs/rfps/temporal-durable-execution/RECON.md"
+     ]
+    },
+    {
+     "text": "Four-plane composition: Bifrost = request plane (proposal + partial slice), Gravitee = publication plane (research seed only), Temporal = time plane, getDX = measurement plane with zero in-repo presence (seed before any claim), Witness attests across planes with the evidence envelope canonical.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RECON.md",
+      "docs/proposals/active/bifrost-gateway-integration/RECON.md",
+      "docs/repositories/GRAVITEE-RESEARCH-SEED.md",
+      "config/agent_stack_integrations.json"
+     ]
+    },
+    {
+     "text": "MoneyBall weights fixed at G0 intake: relevance 0.30, evidence maturity 0.25, survivability proof 0.20, adoption cost inverse 0.15, composability 0.10; scores must be explained per candidate.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/INTAKE.md",
+      "ml/pipelines/moneyball/explain.py"
+     ]
+    },
+    {
+     "text": "Owner gates: no Temporal Cloud/AWS/GCP account or payment instrument (serverless execution paths specified_not_run), no vendoring, remote-first, credentials names-only.",
+     "evidence_refs": [
+      "docs/rfps/temporal-durable-execution/RFP.md"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "item": "Declare the seed combination (temporalio/skill-temporal-serverless, temporalio/temporal-auto-scaled-workers) and the plan in this pack",
+     "evidence": "MANIFEST + PROVENANCE of this pack"
+    },
+    {
+     "item": "Suite: skill dry-walk against the self-host dev server only; Cloud steps recorded specified_not_run with reasons",
+     "evidence": "run receipt required (command, exit code, output sha256, code paths); unreceipted scores zero"
+    },
+    {
+     "item": "G6 disposition recorded in the pass record (adopt / pilot / reference-only / reject)",
+     "evidence": "docs/proposals/passes/temporal-durable-execution/PASS.md"
+    }
+   ]
+  }
+ ]
+}

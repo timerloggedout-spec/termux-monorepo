@@ -1,0 +1,271 @@
+{
+ "schema": "studysprint-agent-receipt/v1",
+ "agent_version": "0.5.0",
+ "request_id": "golden-1",
+ "action": "plan",
+ "decision_on_asserted_evidence": "ABSTAIN",
+ "decision_final": "ALLOW_RECOMMENDATION",
+ "decision_accessible": "[\u2713 ALLOW] Approved \u2014 verified from evidence",
+ "plain_language_explanation": "I checked your syllabus for BIO 101 \u2014 Intro Biology (sample, synthetic) and confirmed all dates and topics.",
+ "trust_receipt": {
+  "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+  "weeks_count": 3,
+  "due_dates": [
+   "quiz 1",
+   "lab 1",
+   "midterm"
+  ],
+  "items_verified": 8,
+  "content_hash_short": "1991c70a2d85",
+  "trust_statement": "Planned from your verified BIO 101 \u2014 Intro Biology (sample, synthetic) syllabus: 3 weeks, 3 scheduled deadline(s), evidence hash 1991c70a2d85.",
+  "verified_at": "2026-11-03T18:24:48Z",
+  "source_path": "examples/syllabus.json"
+ },
+ "evidence_set": {
+  "schema": "studysprint-evidence-set/v1",
+  "artifact": {
+   "kind": "syllabus",
+   "ref": "examples/syllabus.json"
+  },
+  "assembled_at": "2026-11-03T18:24:48Z",
+  "fresh_until": "2026-11-03T18:39:48Z",
+  "items": [
+   {
+    "claim": "syllabus.course",
+    "value": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "da171ec35ebfa07e4a2cf1a1e22e9be1b009b79fa04f5990659b7e6e5ba39fad"
+   },
+   {
+    "claim": "syllabus.weeks",
+    "value": 3,
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "0e8ca5c02283afab21c1e59940c6307d13ab91fd66c15354652a05f40360a756"
+   },
+   {
+    "claim": "syllabus.week.1.topics",
+    "value": [
+     "cell structure",
+     "membranes"
+    ],
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "a9e10313a6ddf019e44f03f79f17381336c84e21e44f53f343e4640a2e0e8045"
+   },
+   {
+    "claim": "syllabus.week.1.due",
+    "value": "quiz 1",
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "1251ebd726491c6b312396a4757b0bdcce70a2b3d43b51ff386b3fca479473b3"
+   },
+   {
+    "claim": "syllabus.week.2.topics",
+    "value": [
+     "photosynthesis",
+     "respiration"
+    ],
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "497670e8a6b78a61b51f535ede4409775ae931f3e3956bfefcb87e0659f1e835"
+   },
+   {
+    "claim": "syllabus.week.2.due",
+    "value": "lab 1",
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "81f4f9c814dd8a1f70fbd00d212a35dcfefb0681ef198a3c0c9dc11bc5441120"
+   },
+   {
+    "claim": "syllabus.week.3.topics",
+    "value": [
+     "DNA replication",
+     "mitosis"
+    ],
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "78abca5399478c1a205b1636ef8f45997fadf72d730363f61368f1579f4a00d9"
+   },
+   {
+    "claim": "syllabus.week.3.due",
+    "value": "midterm",
+    "provenance": {
+     "source": "local-file",
+     "path": "examples/syllabus.json",
+     "observed_at": "2026-11-03T18:24:48Z"
+    },
+    "fresh_until": "2026-11-03T18:39:48Z",
+    "sha256": "42f294ce2d4d3090cfa70c1bf357e00ed1db47c33b4b8590afa33373ff7c81d2"
+   }
+  ],
+  "material": true
+ },
+ "plan": {
+  "course": "BIO 101 \u2014 Intro Biology (sample, synthetic)",
+  "weeks": [
+   {
+    "week": 1,
+    "due": "quiz 1",
+    "sessions": [
+     {
+      "topic": "cell structure",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "cell structure",
+      "kind": "retrieve",
+      "minutes": 15
+     },
+     {
+      "topic": "membranes",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "membranes",
+      "kind": "retrieve",
+      "minutes": 15
+     }
+    ]
+   },
+   {
+    "week": 2,
+    "due": "lab 1",
+    "sessions": [
+     {
+      "topic": "photosynthesis",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "photosynthesis",
+      "kind": "retrieve",
+      "minutes": 15
+     },
+     {
+      "topic": "respiration",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "respiration",
+      "kind": "retrieve",
+      "minutes": 15
+     }
+    ]
+   },
+   {
+    "week": 3,
+    "due": "midterm",
+    "sessions": [
+     {
+      "topic": "DNA replication",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "DNA replication",
+      "kind": "retrieve",
+      "minutes": 15
+     },
+     {
+      "topic": "mitosis",
+      "kind": "learn",
+      "minutes": 45
+     },
+     {
+      "topic": "mitosis",
+      "kind": "retrieve",
+      "minutes": 15
+     }
+    ]
+   }
+  ],
+  "total_sessions": 12
+ },
+ "today_view": {
+  "card_title": "Today's Sprint (60 min)",
+  "day_index": 0,
+  "estimated_minutes": 60,
+  "sessions": [
+   {
+    "week": 1,
+    "topic": "cell structure",
+    "kind": "learn",
+    "minutes": 45
+   },
+   {
+    "week": 1,
+    "topic": "cell structure",
+    "kind": "retrieve",
+    "minutes": 15
+   }
+  ],
+  "actions": [
+   {
+    "action": "start_session",
+    "label": "Start Today's Sprint",
+    "style": "primary"
+   },
+   {
+    "action": "mark_missed",
+    "label": "I missed this",
+    "style": "subtle_no_guilt"
+   }
+  ],
+  "no_guilt_hint": "Life happened? Tap 'I missed this' to seamlessly shift this block without guilt."
+ },
+ "quiz": {
+  "week": 1,
+  "questions": [
+   {
+    "topic": "cell structure",
+    "prompt": "Explain 'cell structure' from memory, then check your notes: what did you miss?"
+   },
+   {
+    "topic": "membranes",
+    "prompt": "Explain 'membranes' from memory, then check your notes: what did you miss?"
+   }
+  ]
+ },
+ "replan": null,
+ "privacy": "Your syllabus stays on your device. No account is required to build a study plan. All evidence and session records are stored locally and can be deleted at any time.",
+ "tool_calls": {
+  "fetch_study_evidence": 1
+ },
+ "strands_agent_available": false,
+ "deployment": false,
+ "generated_at": "2026-11-03T18:24:48Z",
+ "receipt_sha256": "04b608be986e6cd60b46ee8fe6d9bfef586a3fff7b91844f1f6bec5a2eeb29e7"
+}

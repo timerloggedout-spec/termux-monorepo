@@ -1,0 +1,71 @@
+# Receiver Mesh — Actions processor leg. Design: docs/ops/RECEIVER-MESH.md
+# Consumes repository_dispatch envelopes from the Cloudflare/Vercel legs,
+# validates shape, records to the Neon ledger, and routes to owning lanes.
+# Heavy logic stays in the owning workflows; this is a router + ledger.
+name: receiver-process
+
+on:
+  repository_dispatch:
+    types: [receiver-event]
+  workflow_dispatch:
+    inputs:
+      envelope_json:
+        description: "Envelope JSON to replay (reconcile/manual)"
+        required: true
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: receiver-process
+  cancel-in-progress: false
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract + validate envelope
+        id: env
+        env:
+          DISPATCH_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          INPUT_ENVELOPE: ${{ inputs.envelope_json }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, "ops/receiver-mesh/processor")
+          from envelope import validate_envelope
+          raw = os.environ.get("INPUT_ENVELOPE") or ""
+          if raw:
+              envelope = json.loads(raw)
+          else:
+              envelope = (json.loads(os.environ["DISPATCH_PAYLOAD"]) or {}).get("envelope", {})
+          faults = validate_envelope(envelope)
+          if faults:
+              print(f"::error::invalid envelope: {faults}")
+              raise SystemExit(1)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write("envelope=" + json.dumps(envelope) + "\n")
+          print(f"receiver-event source={envelope['source']} event={envelope['event']} delivery={envelope['delivery_id']}")
+          PY
+
+      - name: Record to Neon ledger (skip if unprovisioned)
+        env:
+          LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+          ENVELOPE: ${{ steps.env.outputs.envelope }}
+        run: |
+          if [ -z "$LANE_EVENTS_DATABASE_URL" ]; then
+            echo "::warning::LANE_EVENTS_DATABASE_URL not set — ledger write skipped (prototype)"
+            exit 0
+          fi
+          python3 - <<'PY'
+          import json, os
+          # Ledger write is intentionally a stub in the prototype: the
+          # receiver_events DDL (ops/receiver-mesh/processor/receiver_events.sql)
+          # is applied by the DB lane at provisioning time. Until then the
+          # envelope is carried in the run log + artifacts for replay.
+          env = json.loads(os.environ["ENVELOPE"])
+          print(f"ledger-pending delivery={env['delivery_id']} source={env['source']}")
+          PY

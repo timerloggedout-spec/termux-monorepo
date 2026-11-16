@@ -1,0 +1,37 @@
+# challenge-participant-mirror (contract: docs/ops/CHALLENGE-PARTICIPANT-MIRROR.md).
+# Mirrors ops/challenge/coordinator.json events[].participants[] into the
+# Neon participant mirror whenever the source changes; never fails the
+# push (writer is no-op without ledger secrets).
+name: challenge-participant-mirror
+
+on:
+  push:
+    paths:
+      - ops/challenge/coordinator.json
+  workflow_dispatch:
+
+concurrency:
+  group: challenge-participant-mirror
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror participants to Neon
+        run: |
+          set -euo pipefail
+          python3 -B scripts/challenge/participant_event.py sync \
+            --source ops/challenge/coordinator.json
+      - name: Count readout
+        run: |
+          set -euo pipefail
+          python3 -B scripts/challenge/participant_event.py count

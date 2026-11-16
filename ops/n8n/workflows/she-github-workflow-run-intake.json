@@ -1,0 +1,85 @@
+{
+  "name": "SHE — GitHub Workflow Run Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "she-github-workflow-run",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n8n-webhook-she",
+      "name": "SHE Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        0
+      ],
+      "webhookId": "she-github-workflow-run"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? $json;\nconst repository = body.repository?.full_name ?? body.repository?.name ?? null;\nconst workflow = body.workflow_run ?? body;\nconst result = {\n  schema_version: 'n8n-she-github-workflow-run.v1',\n  observed_at: new Date().toISOString(),\n  source: 'n8n',\n  event: 'workflow_run',\n  repository,\n  workflow: workflow.name ?? null,\n  run_id: workflow.id ?? null,\n  run_number: workflow.run_number ?? null,\n  status: workflow.status ?? null,\n  conclusion: workflow.conclusion ?? null,\n  sha: workflow.head_sha ?? null,\n  branch: workflow.head_branch ?? null,\n  actor: workflow.actor?.login ?? null,\n  html_url: workflow.html_url ?? null,\n};\nreturn [{ json: result }];"
+      },
+      "id": "n8n-normalize-she",
+      "name": "Normalize Evidence",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "n8n-respond-she",
+      "name": "Return Receipt",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        40,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "SHE Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Evidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Evidence": {
+      "main": [
+        [
+          {
+            "node": "Return Receipt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-0000-0000-000000000001",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

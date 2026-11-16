@@ -1,0 +1,1 @@
+echo "🚀 Self‑sufficient pipeline confirmed at $(date)"

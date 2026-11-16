@@ -1,0 +1,138 @@
+name: Hindsight Deploy (Koyeb)
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'deploy | destroy | status'
+        required: false
+        default: 'deploy'
+  push:
+    paths:
+      - 'deploy/koyeb/**'
+      - '.github/workflows/koyeb-hindsight-deploy.yml'
+    branches: [master]
+
+concurrency:
+  group: hindsight-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: hindsight-prod
+    env:
+      KOYEB_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+      APP_NAME: hindsight-deepagent
+      REGION: was
+      IMAGE: ghcr.io/vectorize-io/hindsight:0.5.1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Whoami
+        run: |
+          curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            https://app.koyeb.com/v1/account | jq -r '.user.email // .organization.name'
+
+      - name: Check if app exists
+        id: check
+        run: |
+          exists=$(curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            "https://app.koyeb.com/v1/apps?name=$APP_NAME" | jq -r '.apps | length')
+          echo "exists=$exists" >> $GITHUB_OUTPUT
+
+      - name: Delete stale app (for clean slate)
+        if: steps.check.outputs.exists != '0'
+        run: |
+          echo "  app already exists — deleting for clean redeploy"
+          curl -sf -X DELETE "https://app.koyeb.com/v1/apps/$APP_NAME" \
+            -H "Authorization: Bearer $KOYEB_TOKEN" || true
+          for i in $(seq 1 20); do
+            n=$(curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+              "https://app.koyeb.com/v1/apps/$APP_NAME" 2>/dev/null | jq -r '.app.name // empty')
+            [ -z "$n" ] && { echo "  ✓ deleted"; break; }
+            sleep 3
+          done
+
+      - name: Create app + service
+        run: |
+          cat > /tmp/payload.json <<'JSON'
+          {
+            "app": {
+              "name": "hindsight-deepagent"
+            },
+            "service": {
+              "name": "api",
+              "type": "WEB",
+              "regions": ["was"],
+              "instance_types": [{"type": "free"}],
+              "ports": [{"port": 8888, "protocol": "http"}],
+              "routes": [{"path": "/", "port": 8888}],
+              "health_checks": [{"path": "/health", "port": 8888, "grace_period": 60}],
+              "docker": {"image": "ghcr.io/vectorize-io/hindsight:0.5.1"},
+              "env": [
+                {"key": "HINDSIGHT_API_PORT", "value": "8888"},
+                {"key": "HINDSIGHT_API_HOST", "value": "0.0.0.0"},
+                {"key": "HINDSIGHT_API_LLM_PROVIDER", "value": "openrouter"},
+                {"key": "HINDSIGHT_API_LLM_MODEL", "value": "meta-llama/llama-3.1-8b-instruct:free"},
+                {"key": "HINDSIGHT_API_LLM_API_KEY", "value": "${{ secrets.OPENROUTER_API_KEY }}"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_PROVIDER", "value": "google"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_MODEL", "value": "gemini-embedding-001"},
+                {"key": "HINDSIGHT_API_EMBEDDINGS_GOOGLE_API_KEY", "value": "${{ secrets.GEMINI_API_KEY }}"},
+                {"key": "HINDSIGHT_API_RERANKER_PROVIDER", "value": "rrf"}
+              ]
+            }
+          }
+          JSON
+          curl -sf -X POST "https://app.koyeb.com/v1/apps" \
+            -H "Authorization: Bearer $KOYEB_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/payload.json | jq -r '.app.name, .service.name'
+
+      - name: Get service URL
+        id: url
+        run: |
+          url=$(curl -sf -H "Authorization: Bearer $KOYEB_TOKEN" \
+            "https://app.koyeb.com/v1/apps/$APP_NAME" | \
+            jq -r '.app.domains[0].name // empty')
+          if [ -z "$url" ]; then
+            url="$APP_NAME.koyeb.app"
+          fi
+          echo "url=https://$url" >> $GITHUB_OUTPUT
+
+      - name: Wait for health
+        run: |
+          URL="${{ steps.url.outputs.url }}/health"
+          echo "  polling $URL"
+          last_code=""
+          last_body=""
+          for i in $(seq 1 50); do
+            code=$(curl -s -o /tmp/health_body -w "%{http_code}" --max-time 6 "$URL" 2>/dev/null || echo "000")
+            body=$(head -c 200 /tmp/health_body 2>/dev/null | tr -d '\n')
+            if [ "$code" = "200" ]; then
+              echo "✓ healthy: $URL (after ${i} polls)"
+              echo "  body: $body"
+              exit 0
+            fi
+            if [ "$code" != "$last_code" ] || [ "$body" != "$last_body" ]; then
+              echo "  [$i/50] code=$code body=$body"
+              last_code="$code"; last_body="$body"
+            fi
+            sleep 6
+          done
+          echo "✗ health check never passed after 300s"
+          echo "── last response ──"
+          echo "  code=$last_code"
+          echo "  body=$last_body"
+          exit 1
+
+      - name: Report
+        run: |
+          echo "## Hindsight deployed on Koyeb" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ steps.url.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Region: $REGION" >> $GITHUB_STEP_SUMMARY
+          echo "- Image: $IMAGE" >> $GITHUB_STEP_SUMMARY

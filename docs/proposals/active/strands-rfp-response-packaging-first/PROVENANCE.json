@@ -1,0 +1,27 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-27T08:51:57Z",
+  "proposal_id": "strands-rfp-response-packaging-first",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "33b2e7ebbe746cbf788e9741eb4ef8b8debefc9fadc7ff3107774a660e0a3156",
+      "items": 123,
+      "assembled_at": "2026-10-27T08:51:39Z"
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "0934f1e861255d10d4b6d09b2ce8102638006651b9f6ec72817e41a5afd8f36e",
+    "ITEMS.md": "264949d0cf40e1c013f9ba679f1391e09a031daa2367a056ef45592ba0b57a49",
+    "RFP.md": "56ed68f05b9be4191d11c97af9a04391a5d4c6000058b553fee33471a4a47fb5"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "strands-rfp-response",
+  "concept": "Generalize the D0 Lambda packaging as the deployment shape, up to the account gate",
+  "siblings": [
+    "strands-rfp-response-kernel-first",
+    "strands-rfp-response-collection-first"
+  ]
+}

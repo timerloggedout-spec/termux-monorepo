@@ -1,0 +1,132 @@
+{
+  "master_sha": "a3423d9760dd372967a765d16696db7cc67ca300",
+  "session": "2026-09-25T21:10:00Z",
+  "issue": 175,
+  "prs": [
+    {
+      "number": 48,
+      "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
+      "base": {
+        "ref": "master-staging"
+      },
+      "draft": false,
+      "mergeable_state": "dirty",
+      "changed_files": 180,
+      "age_days": 51.02,
+      "why": "wrong-base:master-staging",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {}
+    },
+    {
+      "number": 682,
+      "title": "feat(ml): keep-alive pipeline DAG + operator skills (Issue #175)",
+      "base": {
+        "ref": "master"
+      },
+      "keep_alive": true,
+      "wholesale": false,
+      "changed_files": 120,
+      "age_days": 4.99,
+      "why": "ml-keep-alive-rebase-required",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {}
+    },
+    {
+      "number": 630,
+      "title": "fix(termux-multi-agent): add fallback rich UI classes in dashboard.py",
+      "base": {
+        "ref": "master"
+      },
+      "changed_files": 55,
+      "age_days": 6.38,
+      "why": "bot-observe, minesweeper-title",
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "gates": {}
+    },
+    {
+      "number": 838,
+      "title": "feat(foresight): establish portable evidence spine",
+      "base": {
+        "ref": "master"
+      },
+      "changed_files": 22,
+      "age_days": 0.1,
+      "has_tests": true,
+      "why": "stale-base vs a3423d97",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {
+        "repo-gate": "success"
+      }
+    },
+    {
+      "number": 817,
+      "title": "feat(ml): keep-alive DAG re-extract onto 03ffb33b (#175)",
+      "base": {
+        "ref": "master"
+      },
+      "keep_alive": true,
+      "changed_files": 80,
+      "age_days": 0.9,
+      "why": "ml-keep-alive-rebase-required",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {}
+    },
+    {
+      "number": 788,
+      "title": "test(archwiz): Linear client/sync coverage + Triage backlog reconciliation (TER-15)",
+      "base": {
+        "ref": "master-staging"
+      },
+      "changed_files": 12,
+      "age_days": 1.83,
+      "why": "wrong-base:master-staging",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {}
+    },
+    {
+      "number": 836,
+      "title": "feat(ops): retire HOLD/WAIT/OBSERVE parking from lane sweep",
+      "base": {
+        "ref": "master"
+      },
+      "changed_files": 4,
+      "age_days": 0.08,
+      "has_tests": true,
+      "merged": true,
+      "why": "promoted",
+      "user": {
+        "login": "timerloggedout-spec"
+      },
+      "gates": {
+        "repo-gate": "success",
+        "termux-smoke": "success"
+      }
+    },
+    {
+      "number": 140,
+      "title": "Palette: Stateful & Reactive PWA UX with Manual Vault Refresh",
+      "base": {
+        "ref": "master"
+      },
+      "changed_files": 90,
+      "age_days": 46.41,
+      "why": "bot-observe",
+      "user": {
+        "login": "google-labs-jules[bot]"
+      },
+      "gates": {}
+    }
+  ]
+}

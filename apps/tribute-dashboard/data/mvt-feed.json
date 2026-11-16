@@ -1,0 +1,110 @@
+{
+ "schema": "dashboard-surface-feed/v1",
+ "surface": "mvt",
+ "generated_at": "2026-11-02T14:23:13Z",
+ "sources": [
+  "docs/ops/corpus/EXPERIMENT.schema.json",
+  ".github/workflows/agent-mvt-experiment.yml + .github/workflows/team-mvt.yml",
+  "scripts/dashboards/workflow_observations.json (Actions API read)",
+  "experiments/doe/*/records/*.json (committed EXPERIMENT records, scanned)"
+ ],
+ "honesty_rules": [
+  "Show only what the record holds; a value the record does not hold renders as absent, never synthesized.",
+  "Defined-but-not-run experiments render as exactly that.",
+  "Weights and scores are read from the code and records at collection time, never transcribed from prose claims.",
+  "Workflow run counts are API observations stamped with their read time, not live claims."
+ ],
+ "data": {
+  "method": "Multivariate testing as practiced: simultaneous provider lanes over a live target (Team MVT), and schema-conforming loop experiments comparing a candidate ref against a baseline ref (the experiment loop). Arm designs come from the DoE library and arms execute under the ATES invariants \u2014 both cited below, owned by their surfaces.",
+  "experiment_record_schema": {
+   "file": "docs/ops/corpus/EXPERIMENT.schema.json",
+   "required": [
+    "schema_version",
+    "experiment_id",
+    "observed_at",
+    "baseline_sha",
+    "candidate_sha",
+    "suite",
+    "treatment",
+    "status",
+    "provenance",
+    "confidence"
+   ],
+   "status_enum": [
+    "observed",
+    "running",
+    "passed",
+    "failed",
+    "skipped",
+    "blocked",
+    "superseded"
+   ],
+   "identity": "canonical row identity is cohort x task x arm x repetition; each row retains task fingerprint, environment fingerprint, benchmark version, arm-factor hash, trace id, deterministic verdict, ATES metrics, and optional judge score"
+  },
+  "experiment_loop": {
+   "file": ".github/workflows/agent-mvt-experiment.yml",
+   "mode": "workflow_dispatch only; candidate and baseline refs are checked out independently, measured and recorded; it NEVER mutates refs",
+   "inputs": [
+    "candidate_ref",
+    "baseline_ref",
+    "experiment_id",
+    "suite",
+    "compare_only"
+   ],
+   "observed_runs": {
+    "total_runs": 0,
+    "latest": []
+   },
+   "state": "defined_not_run"
+  },
+  "team_mvt": {
+   "file": ".github/workflows/team-mvt.yml",
+   "mode": "simultaneous provider lanes over an issue/PR target; dispatched, issue-edited and master-push triggered; cadence owned by quota-dispatch-tree.yml (issue #1573)",
+   "observed_runs": {
+    "total_runs": 528,
+    "latest": [
+     {
+      "created_at": "2026-10-26T17:15:46Z",
+      "conclusion": "failure",
+      "event": "issues"
+     },
+     {
+      "created_at": "2026-10-25T02:27:13Z",
+      "conclusion": "failure",
+      "event": "issues"
+     },
+     {
+      "created_at": "2026-10-23T16:44:31Z",
+      "conclusion": "success",
+      "event": "push"
+     }
+    ]
+   }
+  },
+  "citations": [
+   {
+    "surface": "ates",
+    "record": "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md + apps/tribute-dashboard/data/ates-feed.json",
+    "label": "ATES harness \u2014 the seven hard invariants",
+    "note": "The invariants gate every arm MVT runs; they are ATES property, cited here, not copied."
+   },
+   {
+    "surface": "doe",
+    "record": "deepcli/deepcli/observatory/doe.py + apps/tribute-dashboard/data/doe-feed.json",
+    "label": "DoE design library",
+    "note": "full_factorial / taguchi_l9 / mvt_shuffle generate the arm designs MVT campaigns consume (doe.py: 'DoE helpers for MVT campaigns')."
+   }
+  ],
+  "experiment_records": {
+   "committed_records": 87,
+   "routed_dispatch_records": 27,
+   "routed_terminal": 27,
+   "ates_scored": 3,
+   "instance_stamped": 7,
+   "note": "Population per docs/ops/MVT-ATES-SCORING-INTAKE.md: scoring reads committed records only; a record with no ates_outcome renders unscored on ATES metrics, never synthesized."
+  }
+ },
+ "gaps": [
+  "The experiment loop has never been dispatched (0 runs observed) \u2014 defined-but-not-run renders as exactly that. Committed EXPERIMENT records do exist (87 under experiments/doe/*/records/, incl. the first live routed-dispatch record, terminal), but MVT/ATES scoring population is partial: ates_outcome is set in 3 records and 7 records carry a configured-instance stamp, so ATES scoring renders unscored until routed dispatch emits the intake scoring keys (docs/ops/MVT-ATES-SCORING-INTAKE.md)."
+ ]
+}

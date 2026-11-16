@@ -1,0 +1,6264 @@
+{
+ "schema": "delphi-rfp-feed/v1",
+ "generated_at": "2026-10-29T03:57:33Z",
+ "source": "open GitHub issues labeled delphi:rfp + their gate ledger comments (live census at generation)",
+ "summary": {
+  "total_open": 28,
+  "by_status": {
+   "parked": 26,
+   "shadow": 2
+  },
+  "by_group": {
+   "surface": 18,
+   "synthetic": 10
+  }
+ },
+ "criteria": {
+  "scale": "effective_score / 25, from up to 3 panel rounds (median/IQR convergence)",
+  "shadow_bar": 15.0,
+  "award_bands": "shadow at/above the bar; parked below it with a recheck; promoted/converged per the gate ledger labels",
+  "roles": {
+   "OPERATOR": {
+    "base_weight_role": "OPERATOR"
+   },
+   "builder": {
+    "base_weight_role": "builder"
+   },
+   "reviewer": {
+    "base_weight_role": "reviewer"
+   },
+   "Scout": {
+    "base_weight_role": "Scout"
+   },
+   "cost_auditor": {
+    "base_weight_role": "cost_auditor"
+   }
+  },
+  "roles_note": "5-role blind panel (OPERATOR, builder, reviewer, Scout, cost_auditor); live weights are the #1489 ledger's, panel.json carries cold-start defaults",
+  "money_veto": "cost_auditor vetoes surfaces whose filing requires a payment instrument or auto-bills overages (score capped at 4)",
+  "questions_source": ".github/ISSUE_TEMPLATE/delphi-rfp.yml \u2014 the 10 form questions every RFP answers; per-RFP responses are in each entry's questions[]",
+  "research_axes_note": "research.* RFPs: the gate score is an admission rubric only (synthetic surfaces); the comparison axes (produced outputs validated / feature extractions / consensus implementation) are post-hoc records, shown per RFP as comparison_axes",
+  "items": [
+   {
+    "id": "scale",
+    "text": "effective_score / 25 decides the award"
+   },
+   {
+    "id": "rounds",
+    "text": "up to 3 blind panel rounds; rounds report median + IQR until convergence"
+   },
+   {
+    "id": "shadow_bar",
+    "text": "shadow award at effective_score >= 15.0; below it the RFP parks with a recheck date"
+   },
+   {
+    "id": "roles",
+    "text": "5-role blind panel: OPERATOR, builder, reviewer, Scout, cost_auditor; live weights are the #1489 ledger's"
+   },
+   {
+    "id": "money_veto",
+    "text": "cost_auditor vetoes filings requiring a payment instrument or auto-billing overages (score capped at 4)"
+   },
+   {
+    "id": "research_axes",
+    "text": "research.* RFPs only: validated outputs / feature extractions / consensus implementation are the real criteria, recorded post-hoc \u2014 the gate score is admission only"
+   }
+  ]
+ },
+ "honesty_rules": [
+  "Status comes from the gate's labels and its latest ledger comment; an RFP with neither is 'unscored' with the gap named \u2014 never inferred.",
+  "Responses are the panel's signed votes verbatim from the ledger comment (role, score, reason, sign-off); nothing is paraphrased into a new score.",
+  "A form field absent from a filing is an explicit gap entry, not an empty string.",
+  "Research-silo comparison axes read 'pending' until a post-hoc record exists \u2014 never zero, never a gate score.",
+  "Counts in summary are derived from the entries in this file at generation time.",
+  "Segments roll up members and states only \u2014 no score is averaged across a segment, and research comparison stays within its silo segment."
+ ],
+ "rfps": [
+  {
+   "number": 1415,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] neon.realtime \u2014 Neon Realtime (beta)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1415",
+   "created_at": "2026-10-21T05:56:32Z",
+   "surface_id": "neon.realtime",
+   "lane": "data",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "neon.realtime"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "Realtime subscriptions (beta): (no fetched page states a number) free during beta (unverified) \u2014 source https://neon.com/docs/realtime/overview"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a UTC (n/a)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "NEON_API_KEY (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "3"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- beta terms can change\n- compute auto-suspend adds cold-start latency\n- no NEON_API_KEY repo secret yet (lane_events recorder no-ops)"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `neon.realtime`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:20Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 7.15 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:20Z"
+    },
+    "effective_score": 7.15,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 4.0,
+      "iqr": 4.0,
+      "effective": 7.15
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "1e84250a2241",
+    "comment_id": 6457235333,
+    "created_at": "2026-10-28T00:20:50Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 8,
+      "impact": 4,
+      "importance": 2,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1415#r1"
+     },
+     {
+      "role": "builder",
+      "score": 4,
+      "impact": 4,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1415#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 4,
+      "impact": 4,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1415#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 20,
+      "impact": 5,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1415#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1415#r1"
+     }
+    ],
+    "oracle": "Realtime subscriptions (beta) = None free during beta (unverified), reset n/a UTC ([source](https://neon.com/docs/realtime/overview))",
+    "records": {
+     "foresight": {
+      "resource_id": "neon.realtime",
+      "item_id": "delphi:#1415",
+      "lane_id": "delphi-oracle",
+      "title": "Neon Realtime (beta)",
+      "category": "data",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 7.15 (Backlog)",
+      "source": {
+       "url": "https://neon.com/docs/realtime/overview"
+      },
+      "canonical_source": "https://neon.com/docs/realtime/overview",
+      "observed_at": "2026-10-28T00:20:50Z",
+      "confidence": 0.29,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] neon.realtime -> parked eff=7.15 band=Backlog rfp=#1415 forecast=fail ts=2026-10-28T00:20:50Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1415",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:50Z",
+      "ended_at": "2026-10-28T00:20:50Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1416,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] neon.data_api \u2014 Neon Data API (HTTP/PostgREST-style)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1416",
+   "created_at": "2026-10-21T05:56:33Z",
+   "surface_id": "neon.data_api",
+   "lane": "data",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "neon.data_api"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "compute shared with project: 100 CU-hours/project/month \u2014 source https://neon.com/docs/introduction/plans"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "billing month UTC (monthly)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "NEON_API_KEY (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- shares the 100 CU-hour compute budget\n- no NEON_API_KEY repo secret yet"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `neon.compute`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:20Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 12.92 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:20Z"
+    },
+    "effective_score": 12.92,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 4.0,
+      "effective": 12.92
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "0c3917451bbb",
+    "comment_id": 6457235788,
+    "created_at": "2026-10-28T00:20:52Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1416#r1"
+     },
+     {
+      "role": "builder",
+      "score": 4,
+      "impact": 4,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1416#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1416#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1416#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1416#r1"
+     }
+    ],
+    "oracle": "compute shared with project = 100 CU-hours/project/month, reset billing month UTC ([source](https://neon.com/docs/introduction/plans))",
+    "records": {
+     "foresight": {
+      "resource_id": "neon.data_api",
+      "item_id": "delphi:#1416",
+      "lane_id": "delphi-oracle",
+      "title": "Neon Data API (HTTP/PostgREST-style)",
+      "category": "data",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 12.92 (Medium)",
+      "source": {
+       "url": "https://neon.com/docs/introduction/plans"
+      },
+      "canonical_source": "https://neon.com/docs/introduction/plans",
+      "observed_at": "2026-10-28T00:20:51Z",
+      "confidence": 0.52,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] neon.data_api -> parked eff=12.92 band=Medium rfp=#1416 forecast=fail ts=2026-10-28T00:20:51Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1416",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:51Z",
+      "ended_at": "2026-10-28T00:20:51Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1417,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] platform201.solo \u2014 Platform201 Solo (visual GCP backend deployer)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1417",
+   "created_at": "2026-10-21T05:56:34Z",
+   "surface_id": "platform201.solo",
+   "lane": "deploy",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "platform201.solo"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "deploy"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "Solo plan allowance: (no fetched page states a number) unpublished \u2014 source https://app.platform201.com/sign-in"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "unknown UTC (unknown)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "4"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- no public pricing page fetched\n- no API token for Actions\n- vendor-specific blueprints"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `None`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:05Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:05Z"
+    },
+    "effective_score": 6.69,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "253cc7617a4e",
+    "comment_id": 6462905199,
+    "created_at": "2026-10-28T07:05:35Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1417#r1"
+     },
+     {
+      "role": "builder",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1417#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1417#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1417#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1417#r1"
+     }
+    ],
+    "oracle": "Solo projects = 3 projects, reset n/a UTC ([source](https://www.platform201.com/))",
+    "records": {
+     "foresight": {
+      "resource_id": "platform201.solo",
+      "item_id": "delphi:#1417",
+      "lane_id": "delphi-oracle",
+      "title": "Platform201 Solo (visual GCP backend deployer)",
+      "category": "deploy",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://www.platform201.com/"
+      },
+      "canonical_source": "https://www.platform201.com/",
+      "observed_at": "2026-10-28T07:05:34Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:05Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] platform201.solo -> parked eff=6.69 band=Backlog rfp=#1417 forecast=fail ts=2026-10-28T07:05:34Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1417",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T07:05:34Z",
+      "ended_at": "2026-10-28T07:05:34Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1418,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] render.free \u2014 Render free (web service + Postgres + Key Value)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1418",
+   "created_at": "2026-10-21T05:56:35Z",
+   "surface_id": "render.free",
+   "lane": "deploy",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "render.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "deploy"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "deploy-quota"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "free instance hours: 750 hours/month \u2014 source https://render.com/docs/free"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "1st of month (assumed) UTC (calendar month)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "RENDER_API_KEY (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- 500 pipeline minutes/month exhausted (500/500 observed 2026-10-19)\n- 15-minute spin-down cold starts\n- free Postgres expires 30 days after creation"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `render.instance_hours`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:20Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 8.77 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:20Z"
+    },
+    "effective_score": 8.77,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 4.0,
+      "effective": 8.77
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "f1f21969bc9c",
+    "comment_id": 6457236619,
+    "created_at": "2026-10-28T00:20:55Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1418#r1"
+     },
+     {
+      "role": "builder",
+      "score": 6,
+      "impact": 2,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1418#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 6,
+      "impact": 3,
+      "importance": 2,
+      "veto": false,
+      "reason": "3 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1418#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1418#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 10,
+      "impact": 2,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1418#r1"
+     }
+    ],
+    "oracle": "free instance hours = 750 hours/month, reset 1st of month (assumed) UTC ([source](https://render.com/docs/free))",
+    "records": {
+     "foresight": {
+      "resource_id": "render.free",
+      "item_id": "delphi:#1418",
+      "lane_id": "delphi-oracle",
+      "title": "Render free (web service + Postgres + Key Value)",
+      "category": "deploy",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 8.77 (Backlog)",
+      "source": {
+       "url": "https://render.com/docs/free"
+      },
+      "canonical_source": "https://render.com/docs/free",
+      "observed_at": "2026-10-28T00:20:54Z",
+      "confidence": 0.35,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] render.free -> parked eff=8.77 band=Backlog rfp=#1418 forecast=fail ts=2026-10-28T00:20:54Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1418",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:54Z",
+      "ended_at": "2026-10-28T00:20:54Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1419,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] vercel.hobby \u2014 Vercel Hobby",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1419",
+   "created_at": "2026-10-21T05:56:36Z",
+   "surface_id": "vercel.hobby",
+   "lane": "deploy",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "vercel.hobby"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "deploy"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "deploy-quota"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "deployments created: 100 deployments/day \u2014 source https://vercel.com/docs/limits"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "rolling UTC (rolling 24h)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "VERCEL_TOKEN (present: True)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- api-deployments-free-per-day hit 2026-10-18 and 2026-10-19\n- preview builds on bot commits burn the daily cap"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `vercel.deployments`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:20Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 10.81 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:20Z"
+    },
+    "effective_score": 10.81,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 10.0,
+      "iqr": 1.0,
+      "effective": 10.81
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "4decd8551a77",
+    "comment_id": 6457237002,
+    "created_at": "2026-10-28T00:20:56Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 15,
+      "impact": 3,
+      "importance": 5,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1419#r1"
+     },
+     {
+      "role": "builder",
+      "score": 10,
+      "impact": 2,
+      "importance": 5,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1419#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1419#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1419#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 10,
+      "impact": 2,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1419#r1"
+     }
+    ],
+    "oracle": "deployments created = 100 deployments/day, reset rolling UTC ([source](https://vercel.com/docs/limits))",
+    "records": {
+     "foresight": {
+      "resource_id": "vercel.hobby",
+      "item_id": "delphi:#1419",
+      "lane_id": "delphi-oracle",
+      "title": "Vercel Hobby",
+      "category": "deploy",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 10.81 (Medium)",
+      "source": {
+       "url": "https://vercel.com/docs/limits"
+      },
+      "canonical_source": "https://vercel.com/docs/limits",
+      "observed_at": "2026-10-28T00:20:56Z",
+      "confidence": 0.43,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] vercel.hobby -> parked eff=10.81 band=Medium rfp=#1419 forecast=fail ts=2026-10-28T00:20:56Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1419",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:56Z",
+      "ended_at": "2026-10-28T00:20:56Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1420,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] supabase.free \u2014 Supabase Free",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1420",
+   "created_at": "2026-10-21T05:56:37Z",
+   "surface_id": "supabase.free",
+   "lane": "data",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "supabase.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "database size / egress / realtime messages: 500 MB database (+5 GB egress, 2M realtime msgs/month, 200 peak realtime connections, 500K edge invocations) \u2014 source https://supabase.com/pricing"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "billing month UTC (monthly)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "SUPABASE_ACCESS_TOKEN (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- free projects pause after 1 week of inactivity\n- limit of 2 active projects\n- no automatic backups on free"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `supabase.free`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:20Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 14.62 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:20Z"
+    },
+    "effective_score": 14.62,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 16.0,
+      "iqr": 4.0,
+      "effective": 14.62
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "a61a6f064303",
+    "comment_id": 6457237395,
+    "created_at": "2026-10-28T00:20:58Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1420#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1420#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 8,
+      "impact": 4,
+      "importance": 2,
+      "veto": false,
+      "reason": "3 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1420#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1420#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1420#r1"
+     }
+    ],
+    "oracle": "database size / egress / realtime messages = 500 MB database (+5 GB egress, 2M realtime msgs/month, 200 peak realtime connections, 500K edge invocations), reset billing month UTC ([source](https://supabase.com/pricing))",
+    "records": {
+     "foresight": {
+      "resource_id": "supabase.free",
+      "item_id": "delphi:#1420",
+      "lane_id": "delphi-oracle",
+      "title": "Supabase Free",
+      "category": "data",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 14.62 (Medium)",
+      "source": {
+       "url": "https://supabase.com/pricing"
+      },
+      "canonical_source": "https://supabase.com/pricing",
+      "observed_at": "2026-10-28T00:20:57Z",
+      "confidence": 0.58,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] supabase.free -> parked eff=14.62 band=Medium rfp=#1420 forecast=fail ts=2026-10-28T00:20:57Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1420",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:57Z",
+      "ended_at": "2026-10-28T00:20:57Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1421,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] cloudflare.d1_queues \u2014 Cloudflare D1 + Queues (Workers Free)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1421",
+   "created_at": "2026-10-21T05:56:38Z",
+   "surface_id": "cloudflare.d1_queues",
+   "lane": "data",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "cloudflare.d1_queues"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "D1 rows read/written; Queues operations: 100000 D1 rows written/day (+5M rows read/day, 5 GB storage; Queues 10,000 ops/day, 24h retention) \u2014 source https://developers.cloudflare.com/d1/platform/pricing/"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "00:00 UTC (daily)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "CLOUDFLARE_API_TOKEN (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "3"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- hard stop with errors at the daily cap\n- Queues retention fixed at 24h on free\n- needs a Worker in front (Workers runtime lock-in)"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `cloudflare.d1_queues`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:20Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 14.62 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:20Z"
+    },
+    "effective_score": 14.62,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 16.0,
+      "iqr": 4.0,
+      "effective": 14.62
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "c9899a12a906",
+    "comment_id": 6457237772,
+    "created_at": "2026-10-28T00:20:59Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1421#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1421#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 8,
+      "impact": 4,
+      "importance": 2,
+      "veto": false,
+      "reason": "3 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1421#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1421#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1421#r1"
+     }
+    ],
+    "oracle": "D1 rows read/written; Queues operations = 100000 D1 rows written/day (+5M rows read/day, 5 GB storage; Queues 10,000 ops/day, 24h retention), reset 00:00 UTC ([source](https://developers.cloudflare.com/d1/platform/pricing/))",
+    "records": {
+     "foresight": {
+      "resource_id": "cloudflare.d1_queues",
+      "item_id": "delphi:#1421",
+      "lane_id": "delphi-oracle",
+      "title": "Cloudflare D1 + Queues (Workers Free)",
+      "category": "data",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 14.62 (Medium)",
+      "source": {
+       "url": "https://developers.cloudflare.com/d1/platform/pricing/"
+      },
+      "canonical_source": "https://developers.cloudflare.com/d1/platform/pricing/",
+      "observed_at": "2026-10-28T00:20:59Z",
+      "confidence": 0.58,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:20Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] cloudflare.d1_queues -> parked eff=14.62 band=Medium rfp=#1421 forecast=fail ts=2026-10-28T00:20:59Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1421",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:20:59Z",
+      "ended_at": "2026-10-28T00:20:59Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1422,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] upstash.free \u2014 Upstash Redis Free",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1422",
+   "created_at": "2026-10-21T05:56:39Z",
+   "surface_id": "upstash.free",
+   "lane": "queue",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "upstash.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "queue"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "commands: 500000 commands/month (+250 MB data, 10 GB bandwidth, 1 free DB) \u2014 source https://upstash.com/pricing/redis"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "billing period UTC (monthly)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "UPSTASH_REDIS_REST_TOKEN (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- 500K commands/month is tight for a polling queue\n- rate limited at cap"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `upstash.free`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 11.54 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 11.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 3.0,
+      "effective": 11.54
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "35a14e59aaf8",
+    "comment_id": 6457238231,
+    "created_at": "2026-10-28T00:21:01Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1422#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1422#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1422#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1422#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 15,
+      "impact": 3,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1422#r1"
+     }
+    ],
+    "oracle": "commands = 500000 commands/month (+250 MB data, 10 GB bandwidth, 1 free DB), reset billing period UTC ([source](https://upstash.com/pricing/redis))",
+    "records": {
+     "foresight": {
+      "resource_id": "upstash.free",
+      "item_id": "delphi:#1422",
+      "lane_id": "delphi-oracle",
+      "title": "Upstash Redis Free",
+      "category": "queue",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 11.54 (Medium)",
+      "source": {
+       "url": "https://upstash.com/pricing/redis"
+      },
+      "canonical_source": "https://upstash.com/pricing/redis",
+      "observed_at": "2026-10-28T00:21:00Z",
+      "confidence": 0.46,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] upstash.free -> parked eff=11.54 band=Medium rfp=#1422 forecast=fail ts=2026-10-28T00:21:00Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1422",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:00Z",
+      "ended_at": "2026-10-28T00:21:00Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1423,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] turso.free \u2014 Turso Free (libSQL)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1423",
+   "created_at": "2026-10-21T05:56:40Z",
+   "surface_id": "turso.free",
+   "lane": "data",
+   "group": "surface",
+   "status": "shadow",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:shadow"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "turso.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "rows written: 10000000 rows written/month (+500M rows read, 5 GB, 100 DBs, 3 GB syncs) \u2014 source https://turso.tech/pricing"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "billing month UTC (monthly)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "TURSO_AUTH_TOKEN (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- vendor announced it is joining Supabase (plan terms may change)\n- SQLite dialect differs from Postgres ledger code"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `turso.free`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "shadow at 5% traffic share. Band High.",
+    "award": {
+     "decision": "shadow",
+     "traffic_share": 0.05,
+     "promote_after_confirmed_runs": 3,
+     "why": "effective 16.54 >= 15.0",
+     "band": "High"
+    },
+    "effective_score": 16.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 16.0,
+      "iqr": 4.0,
+      "effective": 16.54
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "679a9dcd0389",
+    "comment_id": 6457238685,
+    "created_at": "2026-10-28T00:21:02Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1423#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1423#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1423#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1423#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 25,
+      "impact": 5,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1423#r1"
+     }
+    ],
+    "oracle": "rows written = 10000000 rows written/month (+500M rows read, 5 GB, 100 DBs, 3 GB syncs), reset billing month UTC ([source](https://turso.tech/pricing))",
+    "records": {
+     "foresight": {
+      "resource_id": "turso.free",
+      "item_id": "delphi:#1423",
+      "lane_id": "delphi-oracle",
+      "title": "Turso Free (libSQL)",
+      "category": "data",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi shadow at effective 16.54 (High)",
+      "source": {
+       "url": "https://turso.tech/pricing"
+      },
+      "canonical_source": "https://turso.tech/pricing",
+      "observed_at": "2026-10-28T00:21:02Z",
+      "confidence": 0.66,
+      "procurement": {
+       "decision": "shadow",
+       "recheck_after": null
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] turso.free -> shadow eff=16.54 band=High rfp=#1423 forecast=pass ts=2026-10-28T00:21:02Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1423",
+      "agent_id": "delphi-panel",
+      "terminal_state": "shadow",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:02Z",
+      "ended_at": "2026-10-28T00:21:02Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1424,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] github.native_ledger \u2014 GitHub-native ledger (issues + comments + Actions)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1424",
+   "created_at": "2026-10-21T05:56:41Z",
+   "surface_id": "github.native_ledger",
+   "lane": "data",
+   "group": "surface",
+   "status": "shadow",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:shadow",
+    "delphi:promoted"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "github.native_ledger"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "data"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "planning-queue"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "REST requests via GITHUB_TOKEN: 1000 requests/hour/repo \u2014 source https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "x-ratelimit-reset header UTC (hourly)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "GITHUB_TOKEN (present: True)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- hourly API rate limit\n- not queryable like SQL\n- public repo: never store secrets or private data"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `github.api.github_token`, Planning Queue backing-store evaluation (store candidate)"
+    }
+   ],
+   "outcome": {
+    "award_line": "shadow at 5% traffic share. Band High.",
+    "award": {
+     "decision": "shadow",
+     "traffic_share": 0.05,
+     "promote_after_confirmed_runs": 3,
+     "why": "effective 18.55 >= 15.0",
+     "band": "High"
+    },
+    "effective_score": 18.55,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 20.0,
+      "iqr": 5.0,
+      "effective": 18.46
+     },
+     {
+      "round": 2,
+      "median": 20.0,
+      "iqr": 5.0,
+      "effective": 18.85
+     },
+     {
+      "round": 3,
+      "median": 20.0,
+      "iqr": 5.0,
+      "effective": 18.55
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "647b6266e2e1",
+    "comment_id": 6457239069,
+    "created_at": "2026-10-28T00:21:04Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 21.2,
+      "impact": 5,
+      "importance": 5,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1424#r3"
+     },
+     {
+      "role": "builder",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1424#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 15.0,
+      "impact": 5,
+      "importance": 2,
+      "veto": false,
+      "reason": "3 failure modes; sourced limits (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1424#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 3,
+      "importance": 5,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1424#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1424#r3"
+     }
+    ],
+    "oracle": "REST requests via GITHUB_TOKEN = 1000 requests/hour/repo, reset x-ratelimit-reset header UTC ([source](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api))",
+    "records": {
+     "foresight": {
+      "resource_id": "github.native_ledger",
+      "item_id": "delphi:#1424",
+      "lane_id": "delphi-oracle",
+      "title": "GitHub-native ledger (issues + comments + Actions)",
+      "category": "data",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi shadow at effective 18.55 (High)",
+      "source": {
+       "url": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+      },
+      "canonical_source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "observed_at": "2026-10-28T00:21:03Z",
+      "confidence": 0.74,
+      "procurement": {
+       "decision": "shadow",
+       "recheck_after": null
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] github.native_ledger -> shadow eff=18.55 band=High rfp=#1424 forecast=pass ts=2026-10-28T00:21:03Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1424",
+      "agent_id": "delphi-panel",
+      "terminal_state": "shadow",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T00:21:03Z",
+      "ended_at": "2026-10-28T00:21:03Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1425,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] gemini.free \u2014 Gemini API free tier",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1425",
+   "created_at": "2026-10-21T05:56:41Z",
+   "surface_id": "gemini.free",
+   "lane": "model",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "gemini.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "model"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "RPM/TPM/RPD per model: (no fetched page states a number) per-model \u2014 source https://ai.google.dev/gemini-api/docs/rate-limits"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "midnight America/Los_Angeles (daily (RPD))"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "GEMINI_API_KEY (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- 429 at RPD cap\n- per-model limits change without notice"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `gemini.api_free`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T01:17Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 12.23 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T01:17Z"
+    },
+    "effective_score": 12.23,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 0.0,
+      "effective": 12.23
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "e50b086593be",
+    "comment_id": 6458048203,
+    "created_at": "2026-10-28T01:17:30Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40614109694 / #1425#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40614109694 / #1425#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40614109694 / #1425#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40614109694 / #1425#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40614109694 / #1425#r1"
+     }
+    ],
+    "oracle": "RPM/TPM/RPD per model = None per-model, reset midnight America/Los_Angeles ([source](https://ai.google.dev/gemini-api/docs/rate-limits))",
+    "records": {
+     "foresight": {
+      "resource_id": "gemini.free",
+      "item_id": "delphi:#1425",
+      "lane_id": "delphi-oracle",
+      "title": "Gemini API free tier",
+      "category": "model",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 12.23 (Medium)",
+      "source": {
+       "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+      },
+      "canonical_source": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "observed_at": "2026-10-28T01:17:29Z",
+      "confidence": 0.49,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T01:17Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] gemini.free -> parked eff=12.23 band=Medium rfp=#1425 forecast=fail ts=2026-10-28T01:17:29Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1425",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T01:17:29Z",
+      "ended_at": "2026-10-28T01:17:29Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1426,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] openrouter.free \u2014 OpenRouter :free models",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1426",
+   "created_at": "2026-10-21T05:56:42Z",
+   "surface_id": "openrouter.free",
+   "lane": "model",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "openrouter.free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "model"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": ":free model requests: (no fetched page states a number) requests/day (tiered by credits purchased) \u2014 source https://openrouter.ai/docs/api-reference/limits"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "per GET /api/v1/key UTC (daily)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "OPENROUTER_API_KEY (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- daily cap depends on credits ever purchased\n- free model list rotates"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `openrouter.free_models`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 12.23 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 12.23,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 0.0,
+      "effective": 12.23
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "6fb2f7195a82",
+    "comment_id": 6457239867,
+    "created_at": "2026-10-28T00:21:06Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 16,
+      "impact": 4,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1426#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1426#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "2 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1426#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "horizon H0: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1426#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1426#r1"
+     }
+    ],
+    "oracle": ":free model requests = None requests/day (tiered by credits purchased), reset per GET /api/v1/key UTC ([source](https://openrouter.ai/docs/api-reference/limits))",
+    "records": {
+     "foresight": {
+      "resource_id": "openrouter.free",
+      "item_id": "delphi:#1426",
+      "lane_id": "delphi-oracle",
+      "title": "OpenRouter :free models",
+      "category": "model",
+      "horizon": "H0",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 12.23 (Medium)",
+      "source": {
+       "url": "https://openrouter.ai/docs/api-reference/limits"
+      },
+      "canonical_source": "https://openrouter.ai/docs/api-reference/limits",
+      "observed_at": "2026-10-28T00:21:06Z",
+      "confidence": 0.49,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] openrouter.free -> parked eff=12.23 band=Medium rfp=#1426 forecast=fail ts=2026-10-28T00:21:06Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1426",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:06Z",
+      "ended_at": "2026-10-28T00:21:06Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1427,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] g4f.vendors \u2014 g4f / gpt4free-templated providers (multi-ai-cli/vendors)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1427",
+   "created_at": "2026-10-21T05:56:43Z",
+   "surface_id": "g4f.vendors",
+   "lane": "model",
+   "group": "surface",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "g4f.vendors"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "model"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "web-wrapped endpoints: (no fetched page states a number) unmetered / unknown \u2014 source https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "unknown UTC (unknown)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none (present: True)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- undocumented limits\n- upstream breakage / terms risk\n- experiment label required by FREE-QUOTA-WINDOWS router rule"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `g4f.vendors`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T14:43Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.23 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T14:43Z"
+    },
+    "effective_score": 9.23,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 12.0,
+      "effective": 9.23
+     },
+     {
+      "round": 2,
+      "median": 12.0,
+      "iqr": 12.0,
+      "effective": 9.23
+     },
+     {
+      "round": 3,
+      "median": 12.0,
+      "iqr": 12.0,
+      "effective": 9.23
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "880b5c1fe5d4",
+    "comment_id": 6472059689,
+    "created_at": "2026-10-28T14:43:04Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40708631255 / #1427#r3"
+     },
+     {
+      "role": "builder",
+      "score": 15,
+      "impact": 3,
+      "importance": 5,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40708631255 / #1427#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40708631255 / #1427#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40708631255 / #1427#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40708631255 / #1427#r3"
+     }
+    ],
+    "oracle": "web-wrapped endpoints = None unmetered / unknown, reset unknown UTC ([source](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md))",
+    "records": {
+     "foresight": {
+      "resource_id": "g4f.vendors",
+      "item_id": "delphi:#1427",
+      "lane_id": "delphi-oracle",
+      "title": "g4f / gpt4free-templated providers (multi-ai-cli/vendors)",
+      "category": "model",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.23 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/multi-ai-cli/vendors/README.md",
+      "observed_at": "2026-10-28T14:43:03Z",
+      "confidence": 0.37,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T14:43Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] g4f.vendors -> parked eff=9.23 band=Medium rfp=#1427 forecast=fail ts=2026-10-28T14:43:03Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1427",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T14:43:03Z",
+      "ended_at": "2026-10-28T14:43:03Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1428,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] grafana.cloud_free \u2014 Grafana Cloud Free",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1428",
+   "created_at": "2026-10-21T05:56:44Z",
+   "surface_id": "grafana.cloud_free",
+   "lane": "observability",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "grafana.cloud_free"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "observability"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "ingestion rate per series: 10000 samples/s \u2014 source https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "n/a UTC (instant)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "GRAFANA_CLOUD_TOKEN (present: None)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- monthly series/log/trace allowances not verified on a fetched page"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `grafana.cloud_free`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 12.0 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 12.0,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 0.0,
+      "effective": 12.0
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "63f442d761f2",
+    "comment_id": 6457240747,
+    "created_at": "2026-10-28T00:21:10Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1428#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1428#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "1 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1428#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1428#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1428#r1"
+     }
+    ],
+    "oracle": "ingestion rate per series = 10000 samples/s, reset n/a UTC ([source](https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/))",
+    "records": {
+     "foresight": {
+      "resource_id": "grafana.cloud_free",
+      "item_id": "delphi:#1428",
+      "lane_id": "delphi-oracle",
+      "title": "Grafana Cloud Free",
+      "category": "observability",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 12.0 (Medium)",
+      "source": {
+       "url": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/"
+      },
+      "canonical_source": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/understand-your-invoice/usage-limits/",
+      "observed_at": "2026-10-28T00:21:09Z",
+      "confidence": 0.48,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] grafana.cloud_free -> parked eff=12.0 band=Medium rfp=#1428 forecast=fail ts=2026-10-28T00:21:09Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1428",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:09Z",
+      "ended_at": "2026-10-28T00:21:09Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1429,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] cellcog.credits \u2014 CellCog referral credits",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1429",
+   "created_at": "2026-10-21T05:56:45Z",
+   "surface_id": "cellcog.credits",
+   "lane": "partner",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "cellcog.credits"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "partner"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "bonus credits: 500 one-time credits on first purchase \u2014 source https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "none UTC (one-time)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "3"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- bonus requires a first purchase (money)\n- one-time, no reset\n- needs a card / first purchase"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `partners.credits`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:21Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "cost auditor veto: needs money or a card",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:21Z"
+    },
+    "effective_score": 4.31,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 4.0,
+      "iqr": 1.0,
+      "effective": 4.31
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "7be5bb5ee3c2",
+    "comment_id": 6457241160,
+    "created_at": "2026-10-28T00:21:11Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 4,
+      "impact": 2,
+      "importance": 2,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1429#r1"
+     },
+     {
+      "role": "builder",
+      "score": 2,
+      "impact": 2,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1429#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 4,
+      "impact": 2,
+      "importance": 2,
+      "veto": false,
+      "reason": "2 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1429#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 10,
+      "impact": 5,
+      "importance": 2,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1429#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 1,
+      "importance": 3,
+      "veto": true,
+      "reason": "free headroom and a documented reset; VETO: needs money/card",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1429#r1"
+     }
+    ],
+    "oracle": "bonus credits = 500 one-time credits on first purchase, reset none UTC ([source](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md))",
+    "records": {
+     "foresight": {
+      "resource_id": "cellcog.credits",
+      "item_id": "delphi:#1429",
+      "lane_id": "delphi-oracle",
+      "title": "CellCog referral credits",
+      "category": "partner",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 4.31 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md",
+      "observed_at": "2026-10-28T00:21:11Z",
+      "confidence": 0.17,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] cellcog.credits -> parked eff=4.31 band=Backlog rfp=#1429 forecast=fail ts=2026-10-28T00:21:11Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1429",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:11Z",
+      "ended_at": "2026-10-28T00:21:11Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1430,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] manus.credits \u2014 Manus invitation credits",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1430",
+   "created_at": "2026-10-21T05:56:46Z",
+   "surface_id": "manus.credits",
+   "lane": "partner",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "manus.credits"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "partner"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "invitation credits: (no fetched page states a number) unspecified \u2014 source https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "none UTC (one-time)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "3"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- credit amount not stated\n- no Actions API path\n- one-time"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `partners.credits`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:21Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 4.62 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:21Z"
+    },
+    "effective_score": 4.62,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 4.0,
+      "iqr": 4.0,
+      "effective": 4.62
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "022f14e46977",
+    "comment_id": 6457241529,
+    "created_at": "2026-10-28T00:21:12Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 4,
+      "impact": 2,
+      "importance": 2,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1430#r1"
+     },
+     {
+      "role": "builder",
+      "score": 2,
+      "impact": 2,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1430#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 2,
+      "impact": 2,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1430#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 10,
+      "impact": 5,
+      "importance": 2,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1430#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 6,
+      "impact": 2,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1430#r1"
+     }
+    ],
+    "oracle": "invitation credits = None unspecified, reset none UTC ([source](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md))",
+    "records": {
+     "foresight": {
+      "resource_id": "manus.credits",
+      "item_id": "delphi:#1430",
+      "lane_id": "delphi-oracle",
+      "title": "Manus invitation credits",
+      "category": "partner",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 4.62 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md",
+      "observed_at": "2026-10-28T00:21:12Z",
+      "confidence": 0.18,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] manus.credits -> parked eff=4.62 band=Backlog rfp=#1430 forecast=fail ts=2026-10-28T00:21:12Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1430",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:12Z",
+      "ended_at": "2026-10-28T00:21:12Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1431,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] polsia.credits \u2014 Polsia referral credits",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1431",
+   "created_at": "2026-10-21T05:56:47Z",
+   "surface_id": "polsia.credits",
+   "lane": "partner",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "polsia.credits"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "partner"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "extra credits: 500 one-time credits (per #574, verify on signup) \u2014 source https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "none UTC (one-time)"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none (present: False)"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "3"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- amount unverified\n- no Actions API path\n- one-time"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "ops/delphi/surfaces.json (oracle catalog), ops/quota/registry.json entry `partners.credits`"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:21Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 4.62 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:21Z"
+    },
+    "effective_score": 4.62,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 4.0,
+      "iqr": 4.0,
+      "effective": 4.62
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "29c432e1db50",
+    "comment_id": 6457241903,
+    "created_at": "2026-10-28T00:21:14Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 4,
+      "impact": 2,
+      "importance": 2,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1431#r1"
+     },
+     {
+      "role": "builder",
+      "score": 2,
+      "impact": 2,
+      "importance": 1,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1431#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 2,
+      "impact": 2,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1431#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 10,
+      "impact": 5,
+      "importance": 2,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1431#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 6,
+      "impact": 2,
+      "importance": 3,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1431#r1"
+     }
+    ],
+    "oracle": "extra credits = 500 one-time credits (per #574, verify on signup), reset none UTC ([source](https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md))",
+    "records": {
+     "foresight": {
+      "resource_id": "polsia.credits",
+      "item_id": "delphi:#1431",
+      "lane_id": "delphi-oracle",
+      "title": "Polsia referral credits",
+      "category": "partner",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 4.62 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/PARTNERS.md",
+      "observed_at": "2026-10-28T00:21:13Z",
+      "confidence": 0.18,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] polsia.credits -> parked eff=4.62 band=Backlog rfp=#1431 forecast=fail ts=2026-10-28T00:21:13Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1431",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:13Z",
+      "ended_at": "2026-10-28T00:21:13Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1488,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] tribute-lane \u2014 Tribute lane (System 1 routed upstream contributions)",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1488",
+   "created_at": "2026-10-21T16:38:07Z",
+   "surface_id": "tribute-lane",
+   "lane": "other",
+   "group": "surface",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "sourced surface (ops/delphi/surfaces.json)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "tribute-lane"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "REST requests via user/OAuth token: 5000 requests/hour \u2014 source https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "hourly, x-ratelimit-reset UTC"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 12.69 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 12.69,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 12.0,
+      "iqr": 0.0,
+      "effective": 12.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "b21bdc09a141",
+    "comment_id": 6457242264,
+    "created_at": "2026-10-28T00:21:15Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1488#r1"
+     },
+     {
+      "role": "builder",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1488#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 6,
+      "impact": 3,
+      "importance": 2,
+      "veto": false,
+      "reason": "3 failure modes; sourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1488#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 12,
+      "impact": 4,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H1: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1488#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 20,
+      "impact": 4,
+      "importance": 5,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1488#r1"
+     }
+    ],
+    "oracle": "REST requests via user/OAuth token = 5000 requests/hour, reset x-ratelimit-reset header UTC ([source](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api))",
+    "records": {
+     "foresight": {
+      "resource_id": "tribute-lane",
+      "item_id": "delphi:#1488",
+      "lane_id": "delphi-oracle",
+      "title": "Tribute lane (System 1 routed upstream contributions)",
+      "category": "outreach",
+      "horizon": "H1",
+      "evidence_status": "confirmed",
+      "summary": "Delphi parked at effective 12.69 (Medium)",
+      "source": {
+       "url": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api"
+      },
+      "canonical_source": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "observed_at": "2026-10-28T00:21:15Z",
+      "confidence": 0.51,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] tribute-lane -> parked eff=12.69 band=Medium rfp=#1488 forecast=fail ts=2026-10-28T00:21:15Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1488",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:15Z",
+      "ended_at": "2026-10-28T00:21:15Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1567,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] MVT-DoE/TLM: validate Antigravity provisioning with siloed trials",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1567",
+   "created_at": "2026-10-23T07:24:13Z",
+   "surface_id": null,
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "documentation",
+    "enhancement",
+    "priority",
+    "production",
+    "Search'n'Re-Search",
+    "Reverse_Engineering",
+    "H@\u00d7 & C\u03c0@\u00a2k$ && W4\u03c03z && 3\u00d79\u00a3017$",
+    "`gh`ActionsWorkflows",
+    "ToDo-2-Ta'D\u00e3!n!!\ud83e\ude84",
+    "ML Pipelines",
+    "Roster:Teams:Games:Players",
+    "high-priority",
+    "P0",
+    "agentic-workflows",
+    "Web",
+    "MoneyBall",
+    "Performance Optimization",
+    "BIUDL",
+    "implementation",
+    "High Value",
+    "ops",
+    "Visuals",
+    "ci",
+    "proposal",
+    "research",
+    "recon",
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked",
+    "delphi:promoted",
+    "delphi:weights",
+    "delphi:board",
+    "delphi:outcomes"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "7f796ab5be6d",
+    "comment_id": 6457242647,
+    "created_at": "2026-10-28T00:21:17Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1567#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1567#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1567#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1567#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1567#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1567))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-1567",
+      "item_id": "delphi:#1567",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] MVT-DoE/TLM: validate Antigravity provisioning with siloed trials",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1567"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1567",
+      "observed_at": "2026-10-28T00:21:16Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-1567 -> parked eff=9.12 band=Medium rfp=#1567 forecast=fail ts=2026-10-28T00:21:16Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1567",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:16Z",
+      "ended_at": "2026-10-28T00:21:16Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ],
+   "segment": "mvt-doe-tlm"
+  },
+  {
+   "number": 1571,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] web.visualization_layers \u2014 evaluate visualization layers for existing deployments",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1571",
+   "created_at": "2026-10-23T08:09:14Z",
+   "surface_id": "web.visualization_layers",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "105f315cd93e",
+    "comment_id": 6457243137,
+    "created_at": "2026-10-28T00:21:18Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1571#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1571#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1571#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1571#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1571#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1571))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-1571",
+      "item_id": "delphi:#1571",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] web.visualization_layers \u2014 evaluate visualization layers for existing deployments",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1571"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1571",
+      "observed_at": "2026-10-28T00:21:18Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-1571 -> parked eff=9.12 band=Medium rfp=#1571 forecast=fail ts=2026-10-28T00:21:18Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1571",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:18Z",
+      "ended_at": "2026-10-28T00:21:18Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ],
+   "segment": "web.visualization_layers"
+  },
+  {
+   "number": 1572,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] delphi.conversational_intake \u2014 turn ideas and comments into finished RFPs",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1572",
+   "created_at": "2026-10-23T08:09:37Z",
+   "surface_id": "delphi.conversational_intake",
+   "lane": null,
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "priority",
+    "high-priority",
+    "P0",
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": null
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": null
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": null
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": null
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": null
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": null
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": null
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": null
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": null
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": null
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-11T00:21Z. Band Medium.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 9.12 below shadow bar 15.0",
+     "band": "Medium",
+     "recheck_after": "2026-11-11T00:21Z"
+    },
+    "effective_score": 9.12,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 3.0,
+      "effective": 9.12
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "9c3c00e1ff29",
+    "comment_id": 6457243562,
+    "created_at": "2026-10-28T00:21:20Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1572#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1572#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 12,
+      "impact": 3,
+      "importance": 4,
+      "veto": false,
+      "reason": "0 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1572#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1572#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1572#r1"
+     }
+    ],
+    "oracle": "= None , reset   ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1572))",
+    "records": {
+     "foresight": {
+      "resource_id": "issue-1572",
+      "item_id": "delphi:#1572",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] delphi.conversational_intake \u2014 turn ideas and comments into finished RFPs",
+      "category": "unknown",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 9.12 (Medium)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1572"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1572",
+      "observed_at": "2026-10-28T00:21:20Z",
+      "confidence": 0.36,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-11T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] issue-1572 -> parked eff=9.12 band=Medium rfp=#1572 forecast=fail ts=2026-10-28T00:21:20Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1572",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:20Z",
+      "ended_at": "2026-10-28T00:21:20Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [
+    "form field 'surface_id' absent from the filing",
+    "form field 'lane' absent from the filing",
+    "form field 'filed_by_collaboration_lane' absent from the filing",
+    "form field 'gantt_plan' absent from the filing",
+    "form field 'free_quota' absent from the filing",
+    "form field 'reset_and_zone' absent from the filing",
+    "form field 'auth_from_actions' absent from the filing",
+    "form field 'lock_in' absent from the filing",
+    "form field 'failure_modes' absent from the filing",
+    "form field 'evidence_links' absent from the filing"
+   ],
+   "segment": "delphi.conversational_intake"
+  },
+  {
+   "number": 1591,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 1,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] fly.free_tier",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1591",
+   "created_at": "2026-10-23T20:37:42Z",
+   "surface_id": "fly.free_tier",
+   "lane": "deploy",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": true,
+   "labels": [
+    "delphi:rfp",
+    "delphi:converged",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "fly.free_tier"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "deploy"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "oracle facts | T0 | T0 | -\npanel rounds | T0 | T0 | oracle facts\nshadow lane (5% traffic) | T0+1d | T0+7d | panel rounds\npromote or park | T0+7d | T0+7d | shadow lane"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "free allowances as documented on the vendor pricing page https://fly.io/docs/about/pricing/ \u2014 oracle to attach the authoritative metric/limit/unit rows from surfaces.json and quota-registry"
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "as documented by vendor; unknown at filing time"
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "FLY_IO_ORG_TOKEN"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "2"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "card requirement and auto-billing policy to be verified by the cost auditor"
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "none supplied"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T00:21Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "cost auditor veto: needs money or a card",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T00:21Z"
+    },
+    "effective_score": 8.54,
+    "converged": true,
+    "rounds_count": 1,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 0.0,
+      "effective": 8.54
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "2e0d3cf0cab0",
+    "comment_id": 6457244038,
+    "created_at": "2026-10-28T00:21:22Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40608145469 / #1591#r1"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40608145469 / #1591#r1"
+     },
+     {
+      "role": "reviewer",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "1 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40608145469 / #1591#r1"
+     },
+     {
+      "role": "Scout",
+      "score": 15,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40608145469 / #1591#r1"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": true,
+      "reason": "free headroom and a documented reset; VETO: needs money/card",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40608145469 / #1591#r1"
+     }
+    ],
+    "oracle": "free allowances as documented on the vendor pricing page https://fly.io/docs/about/pricing/ \u2014 oracle to attach the authoritative metric/limit/unit rows from surfaces.json and quota-registry = None , reset as documented by vendor; unknown at filing time  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1591))",
+    "records": {
+     "foresight": {
+      "resource_id": "fly.free_tier",
+      "item_id": "delphi:#1591",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] fly.free_tier",
+      "category": "deploy",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 8.54 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1591"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1591",
+      "observed_at": "2026-10-28T00:21:21Z",
+      "confidence": 0.34,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T00:21Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] fly.free_tier -> parked eff=8.54 band=Backlog rfp=#1591 forecast=fail ts=2026-10-28T00:21:21Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1591",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "converged",
+      "started_at": "2026-10-28T00:21:21Z",
+      "ended_at": "2026-10-28T00:21:21Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "quota-surfaces"
+  },
+  {
+   "number": 1959,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] doe.criteria-loop",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959",
+   "created_at": "2026-10-28T04:12:00Z",
+   "surface_id": "doe.criteria-loop",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "doe.criteria-loop"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "criteria census (this filing) | T0 | T0 | -\npanel rounds on the criteria set | T0 | T0 | criteria census\nfindings -> revision PRs or no-change record | T0+1d | T0+7d | panel rounds\nre-score under revised criteria | T0+7d | T0+7d | revision PRs\nloop repeats per gate cycle | T0+7d | - | re-score"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The loop runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no payment instrument, no overage billing."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; criteria revision cycle weekly."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Loop files but never revises (criteria ossify) \u2014 each cycle must end in a revision PR or an explicit no-change record on this issue.\n- Wording games the rubric instead of improving criteria \u2014 score is an admission signal only; revisions are decided on run evidence, per criterion 1.\n- Loop spend crowds out RFP scoring \u2014 cadence governor defers non-explicit triggers near caps; this RFP yields to the flood queue.\n- Criteria revisions break landed records' conformance \u2014 revisions are additive or versioned; existing EXPERIMENT records stay valid under their schema version."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- docs/ops/DOE-FAMILY.md + docs/ops/DOE-TAXONOMY.md (criteria set of record)\n- PR #1871 (family restructure), PR #1873 (pilot 1 executed, 32 records), PR #1874 (taxonomy mining), PR #1954 (segmentation layer)\n- Issue #1865 (family work item), issue #1487 (outcomes ledger)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T04:38Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T04:38Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "f825d99d66e1",
+    "comment_id": 6460802663,
+    "created_at": "2026-10-28T04:38:42Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40633418169 / #1959#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40633418169 / #1959#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The loop runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no payment instrument, no overage billing. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; criteria revision cycle weekly.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1959))",
+    "records": {
+     "foresight": {
+      "resource_id": "doe.criteria-loop",
+      "item_id": "delphi:#1959",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] doe.criteria-loop",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1959",
+      "observed_at": "2026-10-28T04:38:42Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T04:38Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] doe.criteria-loop -> parked eff=6.69 band=Backlog rfp=#1959 forecast=fail ts=2026-10-28T04:38:42Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1959",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T04:38:42Z",
+      "ended_at": "2026-10-28T04:38:42Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "doe-criteria-loop"
+  },
+  {
+   "number": 1963,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] delphi.method-self-application",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963",
+   "created_at": "2026-10-28T04:36:05Z",
+   "surface_id": "delphi.method-self-application",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "delphi.method-self-application"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "other"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "brief census (this filing, priors locked) | T0 | T0 | -\npanel rounds on the Method surface | T0 | T0 | brief census\nreplay suites: Strands + Temporal records x 3 variants | T0+1d | T0+7d | panel rounds\npass record + panel.json self_application flip | T0+7d | T0+7d | replay suites\nsecond cycle on equalized evidence | T0+7d | - | pass record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. Replays are deterministic and offline, run against pass records already in the repo; gate cycles run under the existing cadence governor. No paid tier, no payment instrument, no overage billing."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); replay suites run on demand per cycle; no vendor reset applies."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Self-grading bias (the Method judging itself) \u2014 source classes stay separate in cross-votes; priors are pre-registered in this filing by the Method's owner lane; replay inputs are the recorded live passes, not fresh self-authored evidence.\n- Arms tuned mid-run until the tie breaks \u2014 forbidden by the brief; a persistent tie is a result, and any variant change is a new cycle with new priors.\n- Replay drift from the live record \u2014 suites are receipted (command / exit / output sha); a replay that cannot reproduce the control tie invalidates the suite, not the record.\n- Loop spend crowds out RFP scoring \u2014 cadence governor defers near caps; this RFP yields to the flood queue."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- Brief `delphi-method-self-application-1` (Delphi lane, relayed 2026-10-27; this body amended to it verbatim in substance)\n- docs/proposals/passes/strands-rfp-response/ + docs/proposals/passes/temporal-durable-execution/ (replay inputs)\n- PR #1713 (self-application design), PR #1776 (cycle v2), PR #1870 (governance)\n- Issue #1487 (outcomes ledger), issue #1489 (panel weights ledger)\n- Companion loop: issue #1959 (doe.criteria-loop \u2014 the DoE criteria set under the same loop discipline)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T04:38Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T04:38Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "created",
+    "input_hash": "e6bd2aefc766",
+    "comment_id": 6460803064,
+    "created_at": "2026-10-28T04:38:44Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "4 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40633418169 / #1963#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40633418169 / #1963#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. Replays are deterministic and offline, run against pass records already in the repo; gate cycles run under the existing cadence governor. No paid tier, no payment instrument, no overage billing. = None , reset Gate heartbeat hourly (UTC); replay suites run on demand per cycle; no vendor reset applies.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1963))",
+    "records": {
+     "foresight": {
+      "resource_id": "delphi.method-self-application",
+      "item_id": "delphi:#1963",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] delphi.method-self-application",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1963",
+      "observed_at": "2026-10-28T04:38:44Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T04:38Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] delphi.method-self-application -> parked eff=6.69 band=Backlog rfp=#1963 forecast=fail ts=2026-10-28T04:38:44Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1963",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T04:38:44Z",
+      "ended_at": "2026-10-28T04:38:44Z",
+      "trigger": "created"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "delphi-method-self-application"
+  },
+  {
+   "number": 1975,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] markov.trellis-lab",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975",
+   "created_at": "2026-10-28T06:50:16Z",
+   "surface_id": "markov.trellis-lab",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "markov.trellis-lab"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "component census (registry entry) | T0 | T0 | -\npanel rounds on the component | T0 | T0 | component census (registry entry)\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Lab artifact mistaken for a wired surface \u2014 registry status stays 'lab' until a consumer lands by PR.\n- Trellis model fit asserted without transition data \u2014 claims need run records, per the DoE intake rule.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- experiments/archwiz-markov-lane/ (the lab)\n- docs/proposals/active/archwiz-markov-trellis-lab/ (proposal pack + REVIEW.md)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "960eebe8c1a5",
+    "comment_id": 6462912625,
+    "created_at": "2026-10-28T07:06:02Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1975#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1975#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1975))",
+    "records": {
+     "foresight": {
+      "resource_id": "markov.trellis-lab",
+      "item_id": "delphi:#1975",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] markov.trellis-lab",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1975",
+      "observed_at": "2026-10-28T07:06:02Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] markov.trellis-lab -> parked eff=6.69 band=Backlog rfp=#1975 forecast=fail ts=2026-10-28T07:06:02Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1975",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:02Z",
+      "ended_at": "2026-10-28T07:06:02Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "markov-trellis-lab"
+  },
+  {
+   "number": 1976,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] bayesian.routing",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976",
+   "created_at": "2026-10-28T06:50:17Z",
+   "surface_id": "bayesian.routing",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "bayesian.routing"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "belief calibration census vs ledger | T0 | T0 | -\npanel rounds on the component | T0 | T0 | belief calibration census vs ledger\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Beliefs drift from ledger outcomes (no calibration check) \u2014 census step compares posteriors to #1487 records each cycle.\n- Layer silently overrides MoneyBall decisions \u2014 routing stays advisory-over-ledger by design (BAYESIAN-ROUTING.md).\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/ops/BAYESIAN-ROUTING.md + docs/schemas/bayesian-routing.yaml (design + schema)\n- scripts/bayesian_routing.py (implementation)\n- Issue #1487 (outcome ledger \u2014 the evidence the beliefs update on)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "4774e34b4f82",
+    "comment_id": 6462913139,
+    "created_at": "2026-10-28T07:06:04Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1976#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1976#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1976))",
+    "records": {
+     "foresight": {
+      "resource_id": "bayesian.routing",
+      "item_id": "delphi:#1976",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] bayesian.routing",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1976",
+      "observed_at": "2026-10-28T07:06:03Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] bayesian.routing -> parked eff=6.69 band=Backlog rfp=#1976 forecast=fail ts=2026-10-28T07:06:03Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1976",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:03Z",
+      "ended_at": "2026-10-28T07:06:03Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "bayesian-routing"
+  },
+  {
+   "number": 1977,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] kahn.dag",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977",
+   "created_at": "2026-10-28T06:50:18Z",
+   "surface_id": "kahn.dag",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "kahn.dag"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "consumer + test census | T0 | T0 | -\npanel rounds on the component | T0 | T0 | consumer + test census\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Parallel topo-sort re-implementations creep back \u2014 census greps for new ones each cycle.\n- Planner semantics drift from its property tests \u2014 tests are the contract; a red test blocks revision merges.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- she/orchestration/dag.py + docs/architecture/DETERMINISTIC-DAG-ORCHESTRATION.md\n- tests/test_dag_execution.py + tests/test_dag_properties.py (the contract)\n- scripts/temporal/gantt_compile.py (newest consumer, Temporal closeout PR)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "3926de75ff51",
+    "comment_id": 6462913649,
+    "created_at": "2026-10-28T07:06:06Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1977#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1977#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1977))",
+    "records": {
+     "foresight": {
+      "resource_id": "kahn.dag",
+      "item_id": "delphi:#1977",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] kahn.dag",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1977",
+      "observed_at": "2026-10-28T07:06:05Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] kahn.dag -> parked eff=6.69 band=Backlog rfp=#1977 forecast=fail ts=2026-10-28T07:06:05Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1977",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:05Z",
+      "ended_at": "2026-10-28T07:06:05Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "kahn-dag"
+  },
+  {
+   "number": 1978,
+   "progress": {
+    "stage": "gate-scored",
+    "rounds_run": 3,
+    "rounds_max": 3,
+    "votes_cast": 5,
+    "votes_expected": 5
+   },
+   "title": "[delphi:rfp] gantt.dependency-phases",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978",
+   "created_at": "2026-10-28T06:50:19Z",
+   "surface_id": "gantt.dependency-phases",
+   "lane": "other",
+   "group": "synthetic",
+   "status": "parked",
+   "converged": false,
+   "labels": [
+    "delphi:rfp",
+    "delphi:parked"
+   ],
+   "scoring_inputs": "synthetic unsourced surface \u2014 rubric scores from the form only (fit 3, headroom 3, horizon H2)",
+   "questions": [
+    {
+     "field": "surface_id",
+     "question": "Surface id",
+     "response": "gantt.dependency-phases"
+    },
+    {
+     "field": "lane",
+     "question": "Lane",
+     "response": "other"
+    },
+    {
+     "field": "filed_by_collaboration_lane",
+     "question": "Filed by (collaboration lane)",
+     "response": "delphi"
+    },
+    {
+     "field": "gantt_plan",
+     "question": "Gantt plan",
+     "response": "gantt history + compile census | T0 | T0 | -\npanel rounds on the component | T0 | T0 | gantt history + compile census\nfindings to revision PRs or no-change record | T0+1d | T0+7d | panel rounds on the component\nre-score under revisions | T0+7d | T0+7d | findings to revision PRs or no-change record"
+    },
+    {
+     "field": "free_quota",
+     "question": "Free quota",
+     "response": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage."
+    },
+    {
+     "field": "reset_and_zone",
+     "question": "Reset and zone",
+     "response": "Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings."
+    },
+    {
+     "field": "auth_from_actions",
+     "question": "Auth from Actions",
+     "response": "none needed"
+    },
+    {
+     "field": "lock_in",
+     "question": "Lock-in",
+     "response": "1 (portable)"
+    },
+    {
+     "field": "failure_modes",
+     "question": "Failure modes",
+     "response": "- Derived Gantt views treated as authority \u2014 the canonical plan JSON is the only source (design rule, GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md).\n- Filed plans keep shipping the dangling dep \u2014 template fix is this loop's first expected revision.\n- Loop files but never revises \u2014 each cycle ends in a revision PR or a no-change record."
+    },
+    {
+     "field": "evidence_links",
+     "question": "Evidence links",
+     "response": "- ops/doe/component-registry.json + docs/ops/DOE-COMPONENT-REGISTRY.md (component of record)\n- docs/agentic/dependency-phases.json (canonical plan) + docs/agentic/DEPENDENCY_PHASES.md (generated status/history view) + the plan's git history (phase history of record)\n- scripts/agentic/dependency_phase_engine.py + scripts/agentic/gantt_projection.py (engine + projection)\n- scripts/temporal/gantt_compile.py + docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-27.json (N4 compile evidence)"
+    }
+   ],
+   "outcome": {
+    "award_line": "parked, recheck after 2026-11-27T07:06Z. Band Backlog.",
+    "award": {
+     "decision": "parked",
+     "why": "effective 6.69 below shadow bar 15.0",
+     "band": "Backlog",
+     "recheck_after": "2026-11-27T07:06Z"
+    },
+    "effective_score": 6.69,
+    "converged": false,
+    "rounds_count": 3,
+    "rounds": [
+     {
+      "round": 1,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 7.38
+     },
+     {
+      "round": 2,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.92
+     },
+     {
+      "round": 3,
+      "median": 9.0,
+      "iqr": 6.0,
+      "effective": 6.69
+     }
+    ],
+    "trigger": "push",
+    "input_hash": "610e2d304ffa",
+    "comment_id": 6462914175,
+    "created_at": "2026-10-28T07:06:08Z"
+   },
+   "responses": {
+    "votes": [
+     {
+      "role": "OPERATOR",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "policy fit: sourced limits, Actions auth, low lock-in",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-OPERATOR (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "builder",
+      "score": 9,
+      "impact": 3,
+      "importance": 3,
+      "veto": false,
+      "reason": "integration: credential reachable from Actions, room to build",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-builder (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "reviewer",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "3 failure modes; unsourced limits",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-reviewer (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "Scout",
+      "score": 10.5,
+      "impact": 5,
+      "importance": 3,
+      "veto": false,
+      "reason": "horizon H2: novelty vs fit (moved toward median) (moved toward median)",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-Scout (OPERATOR) run-40647839093 / #1978#r3"
+     },
+     {
+      "role": "cost_auditor",
+      "score": 3,
+      "impact": 3,
+      "importance": 1,
+      "veto": false,
+      "reason": "free headroom and a documented reset",
+      "via": "rubric",
+      "signed": "Signed-off-by: Delphi-cost_auditor (OPERATOR) run-40647839093 / #1978#r3"
+     }
+    ],
+    "oracle": "No vendor quota consumed. The evaluation runs on the repo's existing GitHub Issues + Actions surface under the gate's cadence governor; panel cycles are the only spend, bounded by the existing registry caps. No paid tier, no overage. = None , reset Gate heartbeat hourly (UTC); panel weights ledger continuous; component revision cycle per gate findings.  ([source](https://github.com/timerloggedout-spec/termux-monorepo/issues/1978))",
+    "records": {
+     "foresight": {
+      "resource_id": "gantt.dependency-phases",
+      "item_id": "delphi:#1978",
+      "lane_id": "delphi-oracle",
+      "title": "[delphi:rfp] gantt.dependency-phases",
+      "category": "other",
+      "horizon": "H2",
+      "evidence_status": "attributed_claim",
+      "summary": "Delphi parked at effective 6.69 (Backlog)",
+      "source": {
+       "url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978"
+      },
+      "canonical_source": "https://github.com/timerloggedout-spec/termux-monorepo/issues/1978",
+      "observed_at": "2026-10-28T07:06:07Z",
+      "confidence": 0.27,
+      "procurement": {
+       "decision": "parked",
+       "recheck_after": "2026-11-27T07:06Z"
+      }
+     },
+     "hindsight": {
+      "bank_id": "deepagent::termux-monorepo",
+      "content": "[delphi] gantt.dependency-phases -> parked eff=6.69 band=Backlog rfp=#1978 forecast=fail ts=2026-10-28T07:06:07Z"
+     },
+     "moneyball": {
+      "contract_version": "3l0.moneyball.v1",
+      "task_id": "delphi:#1978",
+      "agent_id": "delphi-panel",
+      "terminal_state": "parked",
+      "status": "max_rounds",
+      "started_at": "2026-10-28T07:06:07Z",
+      "ended_at": "2026-10-28T07:06:07Z",
+      "trigger": "push"
+     }
+    }
+   },
+   "gaps": [],
+   "segment": "gantt-dependency-phases"
+  }
+ ],
+ "segments": {
+  "config": "ops/delphi/rfp-segments.json",
+  "doctrine": "docs/ops/DELPHI-RFP-SEGMENTATION.md",
+  "classes": {
+   "meta-process": {
+    "description": "RFPs about the method/process itself (intake, visualization, MVT-DoE validation). Segmented individually; each is its own context.",
+    "criteria": [
+     "The RFP's own stated improvement criteria (per-issue)",
+     "Method-level evidence: the targeted process changes and the change is measured, not asserted"
+    ],
+    "questions": [
+     "Does this RFP improve the method it targets, per its own stated criteria?",
+     "What evidence would distinguish the improved method from the current one?"
+    ],
+    "cycle": [
+     "RFP filed",
+     "panel/gate admission",
+     "method comparison on the process's own evidence",
+     "outcome recorded on delphi:outcomes"
+    ]
+   },
+   "quota-surfaces": {
+    "description": "Free-tier quota surfaces from ops/delphi/surfaces.json plus fly.free_tier. The Delphi lane's home segmentation: gate-scored, flywheel-fed. Untouched by the research segmentation.",
+    "criteria": [
+     "Gate admission rubric (panel.json roles, DECISION-MATRIX 1-25: Impact x Importance)",
+     "Flywheel confirmed/miss outcomes on delphi:outcomes (#1487) reweight the panel (#1489)"
+    ],
+    "questions": [
+     "Is the surface's quota real, sourced, and still current?",
+     "What did the last flywheel outcome change about its weight?"
+    ],
+    "cycle": [
+     "RFP filed",
+     "gate scoring (sourced surfaces: real fit/headroom/horizon)",
+     "award shadow|parked",
+     "flywheel outcome -> reweight"
+    ]
+   },
+   "research-silos": {
+    "description": "The 12 research silos are Delphi process PARTICIPANTS (owner reclassification 2026-10-28, PR #2039, ops/delphi/research-participants.json) \u2014 no longer RFP applicants. Each participant is one segment; its four filings are arms (baseline + rnd/selected/control). The gate does not score participants; participation runs through the comparison-axes cycles (ops/delphi/research-axes.json). Comparison stays WITHIN a segment: arms are compared on the three axes as post-hoc records, and no score, rank, or verdict ever crosses segment lines.",
+    "criteria": [
+     "produced_output_results_validated",
+     "feature_extractions",
+     "consensus_implementation"
+    ],
+    "questions": [
+     "Does the variant's produced output validate against the silo's own contract, where the baseline's did or did not?",
+     "Which features does each variant extract that the baseline does not (and vice versa)?",
+     "Where do baseline and variants converge on one consensus implementation, and where do they irreconcilably differ?"
+    ],
+    "cycle": "Per participant, per cycle: axes records land in ops/delphi/research-axes.json (+ the outcomes ledger #1487) as the arms produce validated outputs, feature extractions, and \u2014 at stage 6 \u2014 consensus implementation. First-cycle gate scores (parked 6.69) stand on the filings as history of the admission-rubric artifact, superseded as a status by the participant registration."
+   },
+   "doe-components": {
+    "description": "The DoE family's four algorithmic components, registered separately (ops/doe/component-registry.json, PR #1974) and evaluated individually: each component is its own segment and context, scored on its own evidence feeds. Findings loop back as revision PRs or explicit no-change records, same discipline as the criteria loop (#1959). Any component is available as a DoE factorial factor under the generator+tests admission rule.",
+    "criteria": [
+     "role fitness \u2014 the component does the one job its registry role states, nothing adjacent",
+     "evidence feeds live \u2014 the feeds named in the registry entry resolve and carry current data",
+     "separation clean \u2014 no cross-component state bleed; shared cores are deduplicated references, not copies"
+    ],
+    "questions": [
+     "does the component still do exactly its registered role?",
+     "are its registered evidence feeds live and current?",
+     "what did this cycle's findings change \u2014 revision PR, or no-change record?"
+    ],
+    "cycle": "Each component's RFP is scored by the gate cycle on its own segment; findings become revision PRs against the component or an explicit no-change record on its RFP. Cross-component comparison is descriptive only \u2014 no aggregate component score."
+   }
+  },
+  "segments": [
+   {
+    "segment_id": "bayesian-routing",
+    "class": "doe-components",
+    "members": [
+     1976
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "delphi-method-self-application",
+    "class": "meta-process",
+    "members": [
+     1963
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "delphi.conversational_intake",
+    "class": "meta-process",
+    "members": [
+     1572
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "doe-criteria-loop",
+    "class": "meta-process",
+    "members": [
+     1959
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "gantt-dependency-phases",
+    "class": "doe-components",
+    "members": [
+     1978
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "kahn-dag",
+    "class": "doe-components",
+    "members": [
+     1977
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "markov-trellis-lab",
+    "class": "doe-components",
+    "members": [
+     1975
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "mvt-doe-tlm",
+    "class": "meta-process",
+    "members": [
+     1567
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   },
+   {
+    "segment_id": "quota-surfaces",
+    "class": "quota-surfaces",
+    "members": [
+     1415,
+     1416,
+     1417,
+     1418,
+     1419,
+     1420,
+     1421,
+     1422,
+     1423,
+     1424,
+     1425,
+     1426,
+     1427,
+     1428,
+     1429,
+     1430,
+     1431,
+     1488,
+     1591
+    ],
+    "by_status": {
+     "parked": 17,
+     "shadow": 2
+    },
+    "gate_scored": 19
+   },
+   {
+    "segment_id": "research.3rdcore-research-project-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1905,
+     1934,
+     1935,
+     1936
+    ],
+    "arms": [
+     {
+      "number": 1905,
+      "arm": "baseline"
+     },
+     {
+      "number": 1934,
+      "arm": "rnd"
+     },
+     {
+      "number": 1935,
+      "arm": "selected"
+     },
+     {
+      "number": 1936,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.buoyancy99-research-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1900,
+     1919,
+     1920,
+     1921
+    ],
+    "arms": [
+     {
+      "number": 1900,
+      "arm": "baseline"
+     },
+     {
+      "number": 1919,
+      "arm": "rnd"
+     },
+     {
+      "number": 1920,
+      "arm": "selected"
+     },
+     {
+      "number": 1921,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.cactus-needle",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1908,
+     1943,
+     1944,
+     1945
+    ],
+    "arms": [
+     {
+      "number": 1908,
+      "arm": "baseline"
+     },
+     {
+      "number": 1943,
+      "arm": "rnd"
+     },
+     {
+      "number": 1944,
+      "arm": "selected"
+     },
+     {
+      "number": 1945,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.dicklesworthstone-agentic-flywheel",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1906,
+     1937,
+     1938,
+     1939
+    ],
+    "arms": [
+     {
+      "number": 1906,
+      "arm": "baseline"
+     },
+     {
+      "number": 1937,
+      "arm": "rnd"
+     },
+     {
+      "number": 1938,
+      "arm": "selected"
+     },
+     {
+      "number": 1939,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.docxology-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1898,
+     1913,
+     1914,
+     1915
+    ],
+    "arms": [
+     {
+      "number": 1898,
+      "arm": "baseline"
+     },
+     {
+      "number": 1913,
+      "arm": "rnd"
+     },
+     {
+      "number": 1914,
+      "arm": "selected"
+     },
+     {
+      "number": 1915,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.irudik-repo-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1903,
+     1928,
+     1929,
+     1930
+    ],
+    "arms": [
+     {
+      "number": 1903,
+      "arm": "baseline"
+     },
+     {
+      "number": 1928,
+      "arm": "rnd"
+     },
+     {
+      "number": 1929,
+      "arm": "selected"
+     },
+     {
+      "number": 1930,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.jdingel-projecttemplate",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1904,
+     1931,
+     1932,
+     1933
+    ],
+    "arms": [
+     {
+      "number": 1904,
+      "arm": "baseline"
+     },
+     {
+      "number": 1931,
+      "arm": "rnd"
+     },
+     {
+      "number": 1932,
+      "arm": "selected"
+     },
+     {
+      "number": 1933,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.jogyo-research-lab",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1897,
+     1910,
+     1911,
+     1912
+    ],
+    "arms": [
+     {
+      "number": 1897,
+      "arm": "baseline"
+     },
+     {
+      "number": 1910,
+      "arm": "rnd"
+     },
+     {
+      "number": 1911,
+      "arm": "selected"
+     },
+     {
+      "number": 1912,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.opencode-research-papers",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1907,
+     1940,
+     1941,
+     1942
+    ],
+    "arms": [
+     {
+      "number": 1907,
+      "arm": "baseline"
+     },
+     {
+      "number": 1940,
+      "arm": "rnd"
+     },
+     {
+      "number": 1941,
+      "arm": "selected"
+     },
+     {
+      "number": 1942,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.seunghyukoh-research-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1902,
+     1925,
+     1926,
+     1927
+    ],
+    "arms": [
+     {
+      "number": 1902,
+      "arm": "baseline"
+     },
+     {
+      "number": 1925,
+      "arm": "rnd"
+     },
+     {
+      "number": 1926,
+      "arm": "selected"
+     },
+     {
+      "number": 1927,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.yp-edu-research-project-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1901,
+     1922,
+     1923,
+     1924
+    ],
+    "arms": [
+     {
+      "number": 1901,
+      "arm": "baseline"
+     },
+     {
+      "number": 1922,
+      "arm": "rnd"
+     },
+     {
+      "number": 1923,
+      "arm": "selected"
+     },
+     {
+      "number": 1924,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "research.yy-project-template",
+    "class": "research-silos",
+    "kind": "participant",
+    "members": [
+     1899,
+     1916,
+     1917,
+     1918
+    ],
+    "arms": [
+     {
+      "number": 1899,
+      "arm": "baseline"
+     },
+     {
+      "number": 1916,
+      "arm": "rnd"
+     },
+     {
+      "number": 1917,
+      "arm": "selected"
+     },
+     {
+      "number": 1918,
+      "arm": "control"
+     }
+    ],
+    "by_status": {
+     "participant": 4
+    },
+    "gate_scored": 0,
+    "axes_recorded": 3,
+    "axes_total": 3
+   },
+   {
+    "segment_id": "web.visualization_layers",
+    "class": "meta-process",
+    "members": [
+     1571
+    ],
+    "by_status": {
+     "parked": 1
+    },
+    "gate_scored": 1
+   }
+  ],
+  "unassigned": []
+ }
+}

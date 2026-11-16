@@ -1,0 +1,169 @@
+{
+  "collected_at": "2026-11-13T10:54:00.757706+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 43412591849,
+    "endpoint": ".../runs/43412591849/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 131842429989,
+        "run_id": 43412591849,
+        "workflow_name": "Agent Throughput Evidence",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/43412591849",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAesmvUJQ",
+        "head_sha": "b8103392c6d92246f6844792781f89f4461a2500",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/131842429989",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43412591849/job/131842429989",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-13T10:53:21Z",
+        "started_at": "2026-11-13T10:53:24Z",
+        "completed_at": "2026-11-13T10:53:41Z",
+        "name": "emit",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-13T10:53:24Z",
+            "completed_at": "2026-11-13T10:53:26Z"
+          },
+          {
+            "name": "Mint Termux Fleet Swarm token (own rate bucket)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-13T10:53:26Z",
+            "completed_at": "2026-11-13T10:53:26Z"
+          },
+          {
+            "name": "Checkout observer implementation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-13T10:53:26Z",
+            "completed_at": "2026-11-13T10:53:36Z"
+          },
+          {
+            "name": "Download ATES task-boundary evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-13T10:53:36Z",
+            "completed_at": "2026-11-13T10:53:36Z"
+          },
+          {
+            "name": "Collect trusted workflow metadata",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-13T10:53:36Z",
+            "completed_at": "2026-11-13T10:53:37Z"
+          },
+          {
+            "name": "Emit explicit ATES outcome receipt",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-11-13T10:53:37Z",
+            "completed_at": "2026-11-13T10:53:37Z"
+          },
+          {
+            "name": "Upload ATES outcome receipt",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-11-13T10:53:37Z",
+            "completed_at": "2026-11-13T10:53:37Z"
+          },
+          {
+            "name": "Move metadata into workspace",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-13T10:53:37Z",
+            "completed_at": "2026-11-13T10:53:37Z"
+          },
+          {
+            "name": "Emit sanitized ATES JSONL",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-13T10:53:37Z",
+            "completed_at": "2026-11-13T10:53:37Z"
+          },
+          {
+            "name": "Validate provenance and citation curation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-13T10:53:37Z",
+            "completed_at": "2026-11-13T10:53:38Z"
+          },
+          {
+            "name": "Reduce observed ATES metrics",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-13T10:53:38Z",
+            "completed_at": "2026-11-13T10:53:38Z"
+          },
+          {
+            "name": "Build evidence receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-11-13T10:53:38Z",
+            "completed_at": "2026-11-13T10:53:38Z"
+          },
+          {
+            "name": "Upload ATES evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-11-13T10:53:38Z",
+            "completed_at": "2026-11-13T10:53:39Z"
+          },
+          {
+            "name": "Post Checkout observer implementation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-11-13T10:53:39Z",
+            "completed_at": "2026-11-13T10:53:39Z"
+          },
+          {
+            "name": "Post Mint Termux Fleet Swarm token (own rate bucket)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 26,
+            "started_at": "2026-11-13T10:53:39Z",
+            "completed_at": "2026-11-13T10:53:39Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27,
+            "started_at": "2026-11-13T10:53:39Z",
+            "completed_at": "2026-11-13T10:53:39Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/131842429989",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1001350045,
+        "runner_name": "GitHub Actions 1001350045",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

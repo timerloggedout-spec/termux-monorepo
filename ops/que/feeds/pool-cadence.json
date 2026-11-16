@@ -1,0 +1,175 @@
+{
+ "arms": [
+  {
+   "arm_id": "mistral-codestral",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "census_not_passed",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "mistral.free_mode",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "mistral::codestral-2508",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "sealion-llama",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "census_not_passed",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "sealion.api",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "sealion::aisingapore/Llama-SEA-LION-v3-70B-IT",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "cohere-command-a",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "census_not_passed",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "cohere.trial_calls",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "cohere::command-a-03-2025",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "baseten-gpt-oss",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "census_not_passed",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "baseten.api",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "baseten::openai/gpt-oss-120b",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "gemini-cli",
+   "availability_env": "actions",
+   "census_verdict": "eligible",
+   "defer_reasons": [
+    "quota_unknown",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "gemini.api_free",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "google::gemini-3.5-flash-lite",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "jules",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "route_dead",
+    "census_not_passed",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": "jules.build_sessions",
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": "google::jules",
+   "status": "deferred"
+  },
+  {
+   "arm_id": "webwrapper-class",
+   "availability_env": "actions",
+   "census_verdict": "failed",
+   "defer_reasons": [
+    "route_dead",
+    "census_not_passed",
+    "entitlement_unknown",
+    "quota_unbudgeted",
+    "reset_window_unknown",
+    "reset_tz_unknown"
+   ],
+   "headroom": null,
+   "registry_record": null,
+   "reset_tz": "unknown",
+   "reset_window": "unknown",
+   "route_id": null,
+   "status": "deferred"
+  }
+ ],
+ "census": {
+  "availability_env": "actions",
+  "fresh": true,
+  "generated_at": "2026-11-11T15:19:11Z",
+  "max_age_hours": 48
+ },
+ "generated_at": "2026-11-12T15:47:46Z",
+ "ledger_read": {
+  "contract": "ledger-snapshot/v1",
+  "note": "Read contract unpublished until #5113 T2 publishes {store, fields, freshness} (Cadence c.6802642639 gap 1); ledger reads treated as UNAVAILABLE, arms defer on quota_unknown. No metering invented in Actions.",
+  "reason": "ledger_snapshot_absent",
+  "status": "unavailable"
+ },
+ "pool": {
+  "deferred": [
+   "mistral-codestral",
+   "sealion-llama",
+   "cohere-command-a",
+   "baseten-gpt-oss",
+   "gemini-cli",
+   "jules",
+   "webwrapper-class"
+  ],
+  "eligible": [],
+  "eligible_count": 0
+ },
+ "rotation": {
+  "last_selected_arm": null,
+  "order": []
+ },
+ "schema": "pool-cadence/v1",
+ "sources": {
+  "arms": "ops/dispatch/build-arms.json",
+  "arms_sha256": "d7930f9929858fcaf6d9f9d10d8dc88bae7bc2b1483e6344b0d00dcb54344d1d",
+  "census": "ops/que/feeds/arm-census.json",
+  "census_sha256": "5cdf887b70a117b445a60ed3b4425fb8916b6b80be81276cea2f83db38da9df3",
+  "registry": "ops/quota/registry.json",
+  "registry_sha256": "457b2b9fce67497b17de006a8bda5b40c0f85af5c3b6a863b6d28ff10d532f1c",
+  "snapshot": null,
+  "snapshot_sha256": null
+ },
+ "usage_record": {
+  "arms": {},
+  "budgets": {},
+  "coverage": {
+   "complete": false,
+   "last_quota_terminal": null,
+   "stamped_at": null
+  }
+ }
+}

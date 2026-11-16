@@ -1,0 +1,163 @@
+{
+ "fetch_syllabus_evidence": {
+  "name": "fetch_syllabus_evidence",
+  "description": "Fetch a stamped evidence set for a syllabus file.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "ref": {
+      "description": "Parameter ref",
+      "type": "string"
+     }
+    },
+    "required": [
+     "ref"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "make_plan": {
+  "name": "make_plan",
+  "description": "Build a week-by-week study plan from a syllabus document.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "course_json": {
+      "description": "Parameter course_json",
+      "type": "string"
+     }
+    },
+    "required": [
+     "course_json"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "make_quiz": {
+  "name": "make_quiz",
+  "description": "Generate recall questions for one syllabus week.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "course_json": {
+      "description": "Parameter course_json",
+      "type": "string"
+     },
+     "week": {
+      "description": "Parameter week",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "course_json",
+     "week"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "replan": {
+  "name": "replan",
+  "description": "Fold a missed week's sessions into the next week.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "plan_json": {
+      "description": "Parameter plan_json",
+      "type": "string"
+     },
+     "missed_week": {
+      "description": "Parameter missed_week",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "plan_json",
+     "missed_week"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "get_today_view": {
+  "name": "get_today_view",
+  "description": "Render the single today-view card for daily study loop.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "plan_json": {
+      "description": "Parameter plan_json",
+      "type": "string"
+     },
+     "day_index": {
+      "default": 0,
+      "description": "Parameter day_index",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "plan_json"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "adjust_time_budget": {
+  "name": "adjust_time_budget",
+  "description": "Re-flow study plan sessions around available daily time budget.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "plan_json": {
+      "description": "Parameter plan_json",
+      "type": "string"
+     },
+     "minutes_per_day": {
+      "description": "Parameter minutes_per_day",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "plan_json",
+     "minutes_per_day"
+    ],
+    "type": "object"
+   }
+  }
+ },
+ "checkin_session": {
+  "name": "checkin_session",
+  "description": "Log a daily check-in (done/partial/missed) tracking recovered weeks.",
+  "inputSchema": {
+   "json": {
+    "properties": {
+     "log_json": {
+      "description": "Parameter log_json",
+      "type": "string"
+     },
+     "week": {
+      "description": "Parameter week",
+      "type": "integer"
+     },
+     "session_index": {
+      "description": "Parameter session_index",
+      "type": "integer"
+     },
+     "status": {
+      "description": "Parameter status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "log_json",
+     "week",
+     "session_index",
+     "status"
+    ],
+    "type": "object"
+   }
+  }
+ }
+}

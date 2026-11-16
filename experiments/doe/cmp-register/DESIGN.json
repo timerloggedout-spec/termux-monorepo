@@ -1,0 +1,163 @@
+{
+ "campaign_id": "cmp-register",
+ "family": "doe",
+ "member_kind": "register",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "open_register",
+ "moniker": "doe-expert",
+ "owner_order": "Owner 2026-11-01: comparison examples to evaluate over time; this register is their home. Entries are evaluated on accrued evidence, never on preference; a verdict requires the entry's review point + data, else the entry stays open.",
+ "method": "Observational over time with pre-named responses per entry. Fleet work generates the evidence as it runs (each skill authored/loaded, each competition routed). Designed sub-studies may be spun out per entry by amendment when observation is too slow. Verdicts use the family rule: winner is cherry-picked into the default; no_selection stays a lawful outcome.",
+ "entries": [
+  {
+   "id": "CMP-1",
+   "opened": "2026-11-01",
+   "question": "Skill packaging format: directory + SKILL.md vs single-file *.skill \u2014 which serves the fleet better over time?",
+   "arms": {
+    "skill_md": "Directory-canonical format (SKILL.md + sibling assets). Incumbent: 41 in termux-monorepo .agents/skills/*, registry docs/ops/SKILLS-INVENTORY.md; /opt/muse/skills + ~/workspace/custom-skills run on it; Agent Skills standard (Anthropic -> Linux Foundation) is this shape.",
+    "dot_skill": "Single-file *.skill package. Challenger: no fleet usage yet; appears in external ecosystems/imports."
+   },
+   "responses": [
+    "discovery/load success + failure modes",
+    "authoring + revision cost (incl. partial edits)",
+    "collision/clobber incidents (evidence: the stepie-stepwise-ops salvage, 2026-10-20 \u2014 a 101-line SKILL.md extract nearly clobbered the 478-line canonical; format-shaped risk, logged for skill_md)",
+    "cross-surface portability (which agent surfaces can consume each shape unchanged)",
+    "asset carriage (multi-file needs: scripts, fixtures, references)"
+   ],
+   "evidence_sources": [
+    "docs/ops/SKILLS-INVENTORY.md",
+    "skill-quality lane outcomes",
+    "fleet skill authoring/loading incidents as they occur",
+    "external *.skill artifacts when imported or evaluated"
+   ],
+   "review_point": "first 10 scored observations across arms, or a *.skill adoption proposal \u2014 whichever first",
+   "status": "open_ongoing_test",
+   "owner_note": "Owner 2026-11-01: CMP-1 is an ONGOING TEST, and it was his illustrative example of a KIND \u2014 rival formats/approaches evaluated continuously on live evidence. This register is that kind's home; CMP-3.. open the next instances. CMP-1 evidence = monthly census (adoption curve) + incident log (clobber/load/portability events) + any designed sub-study spun out by amendment."
+  },
+  {
+   "id": "CMP-2",
+   "opened": "2026-11-01",
+   "question": "New-competition routing: dedicated side chat via a Competitions Opportunity manager channel vs folding the opportunity into the existing Challenge Management oversight (9cb1c873) \u2014 which routes opportunities to action better over time?",
+   "arms": {
+    "dedicated_channel": "New Competitions Opportunity manager chat (created 2026-11-01) takes intake/evaluation; graduates entries to Challenge Management oversight.",
+    "fold_in": "Opportunity handled inside the existing oversight chat (the D-slate baseline pattern)."
+   },
+   "first_instance": ".approxination (owner, as-given 2026-11-01: 'We're competing in .approxination') \u2014 routed via the dedicated_channel arm; the D-slate history is the fold_in comparison record.",
+   "responses": [
+    "time from opportunity-named to first action",
+    "coordination overhead (seats touched per opportunity)",
+    "missed-deadline / dropped-opportunity incidents",
+    "evaluation quality (compete/skip calls vs outcomes)"
+   ],
+   "review_point": "after 3 opportunities routed via dedicated_channel, or the .approxination outcome \u2014 whichever first",
+   "status": "open",
+   "first_instance_outcome": "CORRECTED establishment (2026-11-01, supersedes the same-day initial report): .approxination is REAL \u2014 APPROXINATION-org arena platform; fleet integrated since 2026-09 (forks Approxination-Benchmark_fork + Inverse-Arena_fork; monorepo APPROXINATION-LANE.md LIVE; PR #614; APPROX-001..004 done, APPROX-006 backlog); pre-owned by the Approxination/Oversight lane. Verdict: PRE-OWNED \u2014 no new entry, no duplicate repo/AppID, no graduation; the channel monitors/routes only. The initial NOT_A_COMPETITION/SKIP verdict was a web-only search that missed the fleet-internal record and is RETRACTED; the 'placeholder / null-item' characterization is likewise retracted. Establishment rule adopted: internal-first, web second.",
+   "responses_observed": {
+    "time_to_first_action": "same turn (approx 0)",
+    "coordination_overhead": "2 relays",
+    "dropped_opportunity_incidents": "1 NEAR-MISS (the initial web-only skip; self-caught by internal grep in <2 min, corrected in the open) \u2014 logged against the dedicated arm, not hidden",
+    "compete_skip_quality": "initial skip WRONG (absence claimed from web-only evidence); corrected verdict pre-owned/no-build on fleet-internal evidence"
+   },
+   "second_instance": "C12 UGREEN Hackathon 2026 (2026-11-03): routed via dedicated_channel; verified internal-first (coordinator C12 at master; $46k cash pool Devpost-firsthand; R1 Nov 15 23:45 PT; gates all clear); verdict GRADUATE - COMPETE; handed to Challenge Management (9cb1c873) for slate assignment; record PR #4255 merged 87fb53a0e2da. Responses: time-to-evaluation same-turn; dropped incidents 0 new (cumulative 1 near-miss, instance 1).",
+   "review_2026_11_03": "INTERIM REVIEW (doe-expert, on the .approxination-outcome clause of the review point; 3-routed clause stands at 2). Dedicated arm: time-to-action ~0 on both instances; overhead low; its single incident (instance-1 web-only skip) was self-caught in <2 min, corrected in the open, and generalized into the internal-first establishment rule - a process improvement attributable to the arm. Compete/skip quality: instance 1 wrong-then-corrected; instance 2 graduate/compete on firsthand-verified gates. NOT ESTABLISHED: n=2 routed, single-arm in-window (fold_in evidence is the historical D-slate pattern, not a concurrent control) - observations are observational color under the dispatch principle; the ESTABLISHED gate is nowhere near. Entry stays OPEN. Next review: at 3 routed, or on any dropped-opportunity incident, whichever first.",
+   "third_instance": "C13 (2026-11-03, sweep intake PR #4313): routed via dedicated_channel - GRADUATE-CONDITIONAL (strong fit); owner flags named by the channel itself (18-month capacity + full-eligibility read owed). Same-turn, internal-first verified, 0 new incidents. This is routed #3 - the 3-routed review clause fires.",
+   "fourth_intake": "C14 (2026-11-03, same intake): evaluated via dedicated_channel, NOT graduated - HOLD (weak standing on call criteria + unresolved grant-receipt legal gate, reversible). A decline on stated grounds; counts toward evaluation-quality evidence.",
+   "review_at_3_routed": "FULL REVIEW (doe-expert, 2026-11-03, on the 3-routed clause). Evidence across 4 intakes (3 routed graduates + 1 hold): time-to-action same-turn throughout; coordination overhead low; dropped-opportunity incidents 0 new since the instance-1 near-miss (which was self-caught in <2 min, corrected in the open, and generalized into the internal-first establishment rule). Compete/skip quality trajectory: instance 1 wrong-then-corrected; C12 clean graduate; C13 graduate-conditional with its own flags named (the channel surfacing conditions is quality behavior); C14 a grounded, reversible HOLD. VERDICT: the interim review point is DISCHARGED. The dedicated channel stands as the WORKING DEFAULT for new-competition intake - on an observational basis, stated as such: CMP-2 is NOT ESTABLISHED (n=4 intakes, single-arm in-window; fold_in evidence remains the historical D-slate pattern, no concurrent control; the ESTABLISHED gate n>=30/minority>=10/p<.05 is not approached). Entry stays OPEN. New review point: at 6 routed, OR the first missed-deadline/dropped incident attributable to routing, OR any concurrent fold_in instance (which would change the evidence class), whichever first."
+  },
+  {
+   "id": "CMP-3",
+   "opened": "2026-11-01",
+   "question": "Dispatch surface shape: issue-comment dispatch vs workflow_dispatch vs CI-embedded (fixed-prompt) \u2014 which surface administers treatments and yields observable responses best?",
+   "arms": {
+    "issue_comment": "prompt carried in a comment on an issue/PR (gemini-dispatch shape)",
+    "workflow_dispatch": "inputs at dispatch time (deepseek-termux shape)",
+    "ci_embedded": "fixed internal prompt, event-triggered (deepseek-ci ci_mode shape)"
+   },
+   "responses": [
+    "treatment administrability (can the designed prompt actually be delivered?)",
+    "observable-response rate (does a harvestable response exist?)",
+    "silent-skip incidents (green run, model never invoked \u2014 live-3's wound)"
+   ],
+   "evidence_sources": [
+    "live-3 ALT-route record (PR #2854): ci_embedded scored administrability=0, observability=0 on its first designed use",
+    "live-1/cb-1 dispatch outcomes as surfaces are used"
+   ],
+   "review_point": "10 scored dispatches per surface or 2026-12-31",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-4",
+   "opened": "2026-11-01",
+   "question": "Prompt/record representation: symbol-dense compressed vs explicit prose \u2014 effect on task accuracy and token cost, measured continuously on live work?",
+   "arms": {
+    "compressed": "CedrLang-style symbol-dense representation",
+    "explicit": "plain explicit prose"
+   },
+   "responses": [
+    "task accuracy delta (pilot-1 seed: lossy compression path scored 0.31 vs 0.94 explicit \u2014 seed datum, not the ongoing verdict)",
+    "tokens per task",
+    "misread/repair incidents"
+   ],
+   "evidence_sources": [
+    "pilot-1 (PR #1873)",
+    "live-3 phrase cells (established leet cells only, A3-bound)",
+    "nc-1 density corpus as the measurement instrument"
+   ],
+   "review_point": "each contributing campaign's verdict folds in; register review at 30 scored live units",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-5",
+   "opened": "2026-11-01",
+   "question": "Lane-state reads: projected feeds (desk-feed style) vs raw API reads \u2014 which loses fewer fields that downstream work depends on?",
+   "arms": {
+    "projected_feed": "curated JSON projections (desk-feed, pr-lane-feed)",
+    "raw_api": "direct API reads at point of use"
+   },
+   "responses": [
+    "field-loss incidents (seed: live-2 phase-0 \u2014 projection dropped base.ref, 28/793 residual, PR #2794/#2796)",
+    "staleness at read time",
+    "read cost (calls/tokens per state question)"
+   ],
+   "evidence_sources": [
+    "live-2 phase records",
+    "util-1 auditor first contact (feed-shape mismatch caught by proof run, PR #3152)"
+   ],
+   "review_point": "5 scored incidents or 2026-12-31",
+   "status": "open_ongoing_test"
+  },
+  {
+   "id": "CMP-6",
+   "opened": "2026-11-01",
+   "question": "Record/index shape: compact delta-JSONL index vs per-object full records \u2014 storage, token cost, and query sufficiency over time?",
+   "arms": {
+    "delta_jsonl": "deltas vs first parent, single-writer JSONL (commit-replay gindex shape; seed: x2522 smaller than full-tree records, PR #2983)",
+    "per_object_records": "one full record per object/run (EXPERIMENT records shape)"
+   },
+   "responses": [
+    "bytes per 1k units",
+    "LLM tokens to answer a state question from the store",
+    "reconstruction/query failures attributable to shape"
+   ],
+   "evidence_sources": [
+    "commit-replay P1 (PR #2974/#2983)",
+    "DoE records/ growth across campaigns"
+   ],
+   "review_point": "2026-12-31 or when either store passes 10k units",
+   "status": "open_ongoing_test"
+  }
+ ],
+ "registration": {
+  "preregistered_in_repo": true,
+  "recorded": "2026-11-01"
+ },
+ "automation": {
+  "cmp1_census": {
+   "runner": "experiments/doe/cmp-register/scripts/cmp1_census.py",
+   "workflow": ".github/workflows/doe-cmp1-census.yml",
+   "cadence": "monthly + workflow_dispatch",
+   "emits": "records/cmp1-census.jsonl (SKILL.md vs *.skill counts over time)"
+  },
+  "cmp2_routing_log": "manual, chat-side (low-n chat events; logged in this DESIGN's entries on each routed opportunity)"
+ }
+}

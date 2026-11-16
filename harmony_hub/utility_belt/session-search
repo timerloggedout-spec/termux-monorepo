@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import json, sys
+from pathlib import Path
+
+store = Path.home() / '.deepcli/session_store'
+args = sys.argv[1:]
+snippets = '--snippets' in args or '-s' in args
+term = ' '.join(a for a in args if not a.startswith('-'))
+
+for c in sorted(store.glob('*.json'), key=lambda p: -p.stat().st_mtime):
+    data = json.loads(c.read_text())
+    msgs = data if isinstance(data, list) else data.get('data',{}).get('messages',[])
+    for m in msgs:
+        content = (m.get('content') or '') + (m.get('thinking_content') or '')
+        if term and term.lower() not in content.lower():
+            continue
+        if m.get('role') == 'assistant' and len(content) > 50:
+            print(f'\n=== {c.stem} ===')
+            print(content[:2000] if snippets else content[:500])
+            break

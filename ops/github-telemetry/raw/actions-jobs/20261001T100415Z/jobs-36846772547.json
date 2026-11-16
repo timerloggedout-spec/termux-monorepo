@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-01T10:04:23.199066+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36846772547,
+    "endpoint": ".../runs/36846772547/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 110318733755,
+        "run_id": 36846772547,
+        "workflow_name": "PR production ledger",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36846772547",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZr4JJuw",
+        "head_sha": "97250d8ca52ad11a7087011d887d19ada9e8fc29",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110318733755",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36846772547/job/110318733755",
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-10-01T10:04:18Z",
+        "started_at": "2026-10-01T10:04:18Z",
+        "completed_at": null,
+        "name": "ledger",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110318733755",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

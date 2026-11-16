@@ -1,0 +1,196 @@
+{
+ "schema": "appid-control-plane/inventory-1",
+ "generated_at": "2026-11-03T21:58Z",
+ "method": "dry-run: per-App custody helper app+installations probes (JWT identity), zero writes",
+ "apps": [
+  {
+   "app_id": 5535733,
+   "slug": "termux-fleet-collector",
+   "role": "collector",
+   "installation_id": 176747357,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-collector",
+   "sec03_pair_present": true,
+   "declared": {
+    "actions": "read",
+    "checks": "read",
+    "contents": "read",
+    "issues": "read",
+    "metadata": "read",
+    "pull_requests": "read"
+   },
+   "observed": {
+    "checks": "read",
+    "issues": "read",
+    "actions": "read",
+    "contents": "read",
+    "metadata": "read",
+    "pull_requests": "read"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5537873,
+   "slug": "termux-fleet-publisher",
+   "role": "publisher",
+   "installation_id": 176799777,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-publisher",
+   "sec03_pair_present": false,
+   "declared": {
+    "checks": "read",
+    "contents": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "observed": {
+    "checks": "read",
+    "contents": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5539430,
+   "slug": "termux-fleet-reviewer",
+   "role": "reviewer",
+   "installation_id": 176838378,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-reviewer",
+   "sec03_pair_present": false,
+   "declared": {
+    "checks": "read",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "observed": {
+    "checks": "read",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5539499,
+   "slug": "termux-fleet-gate",
+   "role": "gate",
+   "installation_id": 176839926,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-gate",
+   "sec03_pair_present": false,
+   "declared": {
+    "checks": "write",
+    "metadata": "read"
+   },
+   "observed": {
+    "checks": "write",
+    "metadata": "read"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5539639,
+   "slug": "termux-fleet-lifecycle",
+   "role": "lifecycle",
+   "installation_id": 176843209,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-lifecycle",
+   "sec03_pair_present": false,
+   "declared": {
+    "issues": "write",
+    "metadata": "read"
+   },
+   "observed": {
+    "issues": "write",
+    "metadata": "read"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5560920,
+   "slug": "termux-fleet-swarm",
+   "role": "swarm",
+   "installation_id": 177357774,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-swarm",
+   "sec03_pair_present": true,
+   "declared": {
+    "actions": "write",
+    "checks": "write",
+    "contents": "write",
+    "issues": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "observed": {
+    "checks": "write",
+    "issues": "write",
+    "actions": "write",
+    "contents": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5564430,
+   "slug": "termux-fleet-crossreference",
+   "role": "crossreference",
+   "installation_id": 177439462,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-crossreference",
+   "sec03_pair_present": true,
+   "declared": {
+    "contents": "read",
+    "issues": "write",
+    "metadata": "read"
+   },
+   "observed": {
+    "issues": "write",
+    "contents": "read",
+    "metadata": "read"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  },
+  {
+   "app_id": 5565297,
+   "slug": "termux-fleet-repostory",
+   "role": "repostory",
+   "installation_id": 177463385,
+   "account": "timerloggedout-spec",
+   "repository_selection": "selected",
+   "custody_ref": "custom.github-app-repostory",
+   "sec03_pair_present": "other-repo (repo-story)",
+   "declared": {
+    "contents": "write",
+    "issues": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "observed": {
+    "issues": "write",
+    "contents": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+   },
+   "drift": null,
+   "observed_at": "2026-11-03T21:58Z"
+  }
+ ],
+ "fleet_drift": "none"
+}

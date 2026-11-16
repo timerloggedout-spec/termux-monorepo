@@ -1,0 +1,40 @@
+I'll build you a powerful map-query utility belt that analyzes codebases with AST-level precision. This is next-level code intelligence.
+```bash
+#![35m/[0musr[35m/[0m[95mbin[0m[35m/[0m[95menv[0m bash
+# map-query.sh - AST-powered codebase intelligence utility belt
+# DeepSeek v[1;36m4[0m-Pro: [1;36m133[0m[1;36m7[0m coder edition
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# Colors for [1;36m133[0m[1;36m7[0m output
+readonly RED='\[1;36m033[0m[1m[[0m[1;36m0[0m;[1;36m31[0mm'
+readonly GREEN='\[1;36m033[0m[1m[[0m[1;36m0[0m;[1;36m32[0mm'
+readonly YELLOW='\[1;36m033[0m[1m[[0m[1;36m1[0m;[1;36m33[0mm'
+readonly BLUE='\[1;36m033[0m[1m[[0m[1;36m0[0m;[1;36m34[0mm'
+readonly PURPLE='\[1;36m033[0m[1m[[0m[1;36m0[0m;[1;36m35[0mm'
+readonly CYAN='\[1;36m033[0m[1m[[0m[1;36m0[0m;[1;36m36[0mm'
+readonly BOLD='\[1;36m033[0m[1m[[0m[1;36m1[0mm'
+readonly NC='\[1;36m033[0m[1m[[0m[1;36m0[0mm'
+
+# Config
+readonly SCRIPT_DIR="$[1m([0mcd "$[1m([0mdirname "$[1m{[0mBASH_SOURCE[1m[[0m[1;36m0[0m[1m][0m[1m}[0m"[1m)[0m" && pwd[1m)[0m"
+readonly CACHE_DIR="$[1m{[0mHOME[1m}[0m[35m/[0m.cache[35m/[0m[95mm[0map-query"
+readonly AST_TOOLS=[1m([0m"jq" "tree-sitter" "rg" "fd"[1m)[0m
+
+# Initialize
+mkdir -p "$CACHE_DIR"
+
+# [1;36m133[0m[1;36m7[0m banner
+banner_[1;36m133[0m[1;36m7[0m[1m([0m[1m)[0m [1m{[0m
+    echo -e "$[1m{[0mCYAN[1m}[0m$[1m{[0mBOLD[1m}[0m"
+    cat << "EOF"
+╔══════════════════════════════════════════════════════════╗
+║  ███╗   ███╗ █████╗ ██████╗     ██████╗ ██╗   ██╗███████╗ ║
+║  ████╗ ████║██╔══██╗██╔══██╗    ██╔══██╗██║   ██║██╔════╝ ║
+║  ██╔████╔██║███████║██████╔╝    ██████╔╝██║   ██║█████╗   ║
+║  ██║╚██╔╝██║██╔══██║██╔═══╝     ██╔═══╝ ██║   ██║██╔══╝   ║
+║  ██║ ╚═╝ ██║██║  ██║██║         ██║     ╚██████╔╝███████╗ ║
+║  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝         ╚═╝      ╚═════╝ ╚══════╝ ║
+║                    UTILITY BELT v[1;36m4[0m-Pro                    ║
+╚══════════════════════════════

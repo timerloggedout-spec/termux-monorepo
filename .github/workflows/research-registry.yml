@@ -1,0 +1,27 @@
+name: research-registry
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/**"
+      - "config/foresight_digest_sources.json"
+      - "scripts/briefing/validate_research_registry.py"
+  push:
+    branches: [master]
+    paths:
+      - "docs/research/**"
+      - "config/foresight_digest_sources.json"
+      - "scripts/briefing/validate_research_registry.py"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate research registry example
+        run: python3 scripts/briefing/validate_research_registry.py docs/research/resource-registry.example.json
+      - name: Validate standing digest source registry
+        run: python3 -m json.tool config/foresight_digest_sources.json >/dev/null

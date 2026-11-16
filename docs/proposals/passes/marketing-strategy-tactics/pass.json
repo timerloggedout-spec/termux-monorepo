@@ -1,0 +1,92 @@
+{
+  "schema": "oracle-method-pass/v1",
+  "pass_id": "marketing-strategy-tactics",
+  "generated_at": "2026-11-01T08:04:44Z",
+  "n": 3,
+  "candidates": [
+    {
+      "id": "marketing-strategy-tactics-strict-separation",
+      "concept": "Strict separation: fleet surfaces state ONLY the merge/receipt-verified fleet record, in fleet voice. Partner claims appear nowhere in fleet copy \u2014 partners are named as participants (link live = the assertable fact) with offers stated only as the registry verifies them; unverified offers are dropped, not footnoted. Tactics survive only with measured signal against a pre-set decision rule; unmeasured tactics are killed or instrumented before further spend.",
+      "profile": {
+        "candidate": "marketing-strategy-tactics-strict-separation",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "cb1199becef7fe366aeb780be52a7cbf537e15f860a5d9068b6414ba2c9ba401"
+      }
+    },
+    {
+      "id": "marketing-strategy-tactics-attributed-tiered",
+      "concept": "Attributed tiering: fleet voice states the verified record; partner claims MAY appear on fleet surfaces outside hero/brand \u2014 only as labeled, attributed partner content (the grid-card pattern generalized), with unverified offers carrying explicit NOT ESTABLISHED markers. Participation stays broad; tactics keep running while instrumented, and die at their decision rules rather than by doctrine.",
+      "profile": {
+        "candidate": "marketing-strategy-tactics-attributed-tiered",
+        "points": 3,
+        "evidenced": 3,
+        "unverified": 0,
+        "evidenced_ratio": 1.0,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "c1efb87a4b7597cc7227a78c3a3bd9a53c92ba545863a47594bdc6a4fdf20dbe"
+      }
+    },
+    {
+      "id": "marketing-strategy-tactics-partner-forward-blend",
+      "concept": "Partner-forward blend (status quo): the anchor partner\u2019s positioning may headline the landing in fleet voice; benchmarks and capability claims borrow the partner\u2019s framing under a footer disclosure; programme breadth is itself the growth surface and restriction is treated as loss. This is the doctrine the surfaces currently practice, stated plainly so the panel can judge it.",
+      "profile": {
+        "candidate": "marketing-strategy-tactics-partner-forward-blend",
+        "points": 3,
+        "evidenced": 2,
+        "unverified": 1,
+        "evidenced_ratio": 0.6666666666666666,
+        "items": 3,
+        "evidence_sources": 8,
+        "dependency_items": 0,
+        "money_veto": false,
+        "docs_sha256": "dbdbe24d7e994d9f53905a5a7a53d6c763d86b18f136a9015c63738d1dd9dec3"
+      }
+    }
+  ],
+  "status": "round_1_recorded",
+  "cycle": {
+    "record": "cycle/CYCLE.json",
+    "ran": [
+      "generate",
+      "cross_vote_round_1",
+      "expectations_recorded",
+      "facilitator_feedback"
+    ],
+    "specified_not_run": [
+      "debate_revision",
+      "implementation",
+      "evidence_equalization",
+      "cross_vote_round_2",
+      "calibration"
+    ],
+    "round_1": {
+      "ballots_by_class": {
+        "HUMAN_COLLABORATOR": 0,
+        "MODEL_PROVIDER": 0,
+        "LOCAL_BASELINE": 5
+      },
+      "scores": {
+        "marketing-strategy-tactics-strict-separation": 23.269,
+        "marketing-strategy-tactics-attributed-tiered": 23.269,
+        "marketing-strategy-tactics-partner-forward-blend": 16.462
+      },
+      "ranking_basis": "TIE at top: strict-separation = attributed-tiered = 23.269 (identical profiles; order = rank() tie-break, not a preference); partner-forward-blend 16.462 (evidenced 2/3 \u2014 borrowed benchmark claim unresolved)",
+      "artifact_note": "first run scored tiered 18.423 via a money-veto substring false positive (\"cards\" in \"labeled cards/sections\"); wording corrected, pass regenerated, cycle re-run \u2014 see EVALUATION.md"
+    },
+    "evaluation": "EVALUATION.md",
+    "ledger": {
+      "outcome_ledger_issue": 1487,
+      "appends": "round-1 ballot record (delphi-generation-ballot v1) at run time"
+    }
+  }
+}

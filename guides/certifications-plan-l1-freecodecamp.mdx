@@ -1,0 +1,78 @@
+---
+title: "Role Requirements Plan 001 — L1 FreeCodeCamp (Relational Database)"
+description: "First Role Requirements Plan under the Certifications & Roles roadmap (#506): target role, honest rung audit, evidence map, and the L1 track pick — Relational Database over JavaScript Algorithms, justified."
+---
+
+## Status
+
+- Plan 001 under [Certifications & Roles Roadmap](/guides/certifications-roadmap) ∧ umbrella issue #506 [evidence: PR #512 merged e138937dd321 ⇒ roadmap @master sha 3a8a305f5f36]
+- Method rule (roadmap): plan BEFORE spend ∨ enrolment ⇒ **enrolment ∅ until this plan is merged**
+- Cost so far: $0 ∘ time so far: planning only
+
+## Target Role
+
+**Security-leaning software operator (agent-systems builder)** — the role this fleet actually performs daily: building ∧ operating agent tooling, automation, and data stores in `timerloggedout-spec/termux-monorepo`, with a verifiable — not claimed — skill trail that sequences toward L2 CTF practice and L3 CompTIA.
+
+The certification is picked for that role, not for its title: the role needs third-party-checkable evidence in the data/backend layer it runs on (SQL, PostgreSQL, Bash, Git), because that layer is both its production surface and the entry surface for L2 web-exploitation work.
+
+## Current Rung Audit (honest)
+
+Current rung: **L1 — not cleared.** No FreeCodeCamp certificate exists on record.
+
+- Repo code-search for FreeCodeCamp evidence (2026-10-30, PAT API): 2 hits total — the roadmap itself ∧ `docs/ops/SCOUT-MISSIONS.md`. No certificate, no completion trail.
+- Working fluency ≠ rung cleared: Bash, Git, and SQL are used daily in fleet operations, but none of that use is packaged as a checkable credential. The audit therefore records L1 as open, with uneven starting fluency (strong in Bash/Git, working in SQL/PostgreSQL, beginner in formal database design).
+
+## Evidence on Record
+
+What already exists and counts as prior evidence for this plan:
+
+- **Neon Postgres in production** — lane-events store provisioned end-to-end (Actions secrets set 2026-10-28; SQL-over-HTTP reads verified against live rows) [evidence: PR #2222 merged 66dbe1d019]
+- **Schema work merged** — participant/event schema fixes ∧ read-mode export over the Neon store [evidence: PR #2227 merged a3d172e231 ∘ PR #2230 merged e589136a37 ∘ PR #2231 merged 5f9243a5b0]
+- **Bash/Git as the daily operating layer** — the fleet's tooling, publishing, and coordination all run through terminal + Git workflows on this repo (the plan's own publishing route included)
+- **FreeCodeCamp certificates: none** — see audit above; this is the gap the plan closes
+
+## Target Rung ∧ Track Pick
+
+Target rung: **L1 FreeCodeCamp**. Track pick: **Relational Database** — over the alternative candidate, JavaScript Algorithms and Data Structures.
+
+Both tracks (FreeCodeCamp's own curriculum descriptions): free, self-paced, ~300 hours at beginner pace, 5 required projects, verifiable certificate on completion.
+
+| | Relational Database (PICK) | JavaScript Algorithms (deferred) |
+|---|---|---|
+| Covers | Bash, SQL, PostgreSQL, Git, database design/normalization | JavaScript, ES6, regex, data structures, OOP/functional algorithms |
+| Projects | Celestial Bodies Database, World Cup Database, Salon Appointment Scheduler, Periodic Table Database, Number Guessing Game | Palindrome Checker, Roman Numeral Converter, Caesars Cipher, Telephone Number Validator, Cash Register |
+| Evidence produced | SQL dumps ∧ Bash scripts ∧ database designs — artifacts that live naturally as public repos | Standalone algorithm exercises |
+
+Justification, in order of weight:
+
+1. **Gap, not duplication.** The evidence map already demonstrates JavaScript fluency extensively — the fleet's tooling and this repo's history are the proof. A JS Algorithms certificate would re-certify the best-evidenced skill on record. No equivalent evidence exists for the database layer: it is operated daily but never credentialed. L1 should close the largest evidence gap first.
+2. **Role fit.** The target role's production data surface is PostgreSQL (Neon lane-events ∧ participant stores, above). Relational Database is the only L1 track that certifies the exact stack the role runs.
+3. **Ladder sequencing.** L2 CTF web exploitation presupposes SQL and database structure (injection, auth data, schema reasoning). Relational Database is a direct prerequisite build for L2; JS Algorithms is not on that path.
+4. **Starting-fluency match.** Bash ∧ Git — two of the track's four topics — are the operator's daily environment, so the beginner-pace estimate (~300h) overstates this track more than any other L1 option ⇒ highest completion probability, which is what a first plan should optimize for.
+
+Disposition of the alternative: JavaScript Algorithms is **sequenced second** among L1 tracks (candidate for Plan 002), not rejected — its value rises once the database gap is closed and a second, non-duplicative evidence line is wanted.
+
+## Gap Between Current and Target
+
+- Formal database design (normalization, schema reasoning) — operated intuitively, never studied formally
+- Structured SQL beyond operational queries (joins/aggregation at curriculum depth)
+- The 5 required projects, none started
+- Execution environment for the track's interactive lessons (terminal/dev-container based) — NOT_ESTABLISHED from public pages; confirm at enrolment, after this plan merges
+
+## Cost / Time Budget
+
+- Cost: **$0** (FreeCodeCamp is free; no exam fee)
+- Time: ~300h is FreeCodeCamp's *beginner* estimate. This plan does not adopt it as the forecast. Instead: **checkpoint pacing** — Phase 1 ends with a velocity measurement (below), and the completion window is set from measured pace at that checkpoint, not guessed here.
+
+## Phases ∧ Next Action
+
+1. **Phase 1 — foundations + velocity checkpoint:** the Bash/Git/SQL learning blocks (starting: *Learn Bash by Building a Boilerplate*, *Learn Relational Databases by Building a Mario Database*). On the first completed project, log elapsed time ⇒ re-estimate total from actual velocity ∧ set the completion window.
+2. **Phase 2 — the 5 required projects**, each pushed as a public repo as it is completed (the projects are the evidence; the certificate indexes them).
+3. **Phase 3 — claim + log:** on completion, log certificate ID, date, and verification link into the evidence index under #506 (certifications lane = ledger) ∧ mark L1 cleared in the roadmap's next plan.
+
+**Concrete next action (only after this plan merges):** enrol in the Relational Database track ∧ complete the first learning block; report the Phase 1 velocity checkpoint to the certifications lane.
+
+## Open Questions
+
+- Track environment specifics (dev-container/Codespaces-style runner vs local) — resolve at enrolment, ∅ blocker to the pick
+- FreeCodeCamp curriculum revisions may rename/restructure tracks — if the track name differs at enrolment, log the delta on #506 rather than silently substituting

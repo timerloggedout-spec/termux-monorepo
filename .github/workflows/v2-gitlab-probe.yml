@@ -1,0 +1,33 @@
+name: v2-gitlab-probe
+# Status-only probe: which existing Actions secret can READ the GitLab
+# V2 validator project (gitlab.com/a-group2180532/termux-monorepo)?
+# Prints/posts HTTP status codes ONLY. Token values never leave the
+# runner env; GitLab response bodies are discarded.
+on: workflow_dispatch
+permissions:
+  issues: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Probe candidates (status only)
+        env:
+          T1: ${{ secrets.GITLAB_TOKEN }}
+          T2: ${{ secrets.GITLAB_ADMIN_TOKEN }}
+          T3: ${{ secrets.OPERATOR_GITLAB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          URL="https://gitlab.com/api/v4/projects/a-group2180532%2Ftermux-monorepo"
+          probe() {
+            if [ -z "$2" ]; then echo "$1 status=UNSET"; return; fi
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 -H "PRIVATE-TOKEN: $2" "$URL" || echo "ERR")
+            echo "$1 status=$code"
+          }
+          {
+            echo "V2 GitLab probe $(date -u +%FT%TZ) run $GITHUB_RUN_ID"
+            probe GITLAB_TOKEN "$T1"
+            probe GITLAB_ADMIN_TOKEN "$T2"
+            probe OPERATOR_GITLAB_TOKEN "$T3"
+          } | tee probe.txt
+          gh issue comment 184 --repo "$GITHUB_REPOSITORY" --body-file probe.txt

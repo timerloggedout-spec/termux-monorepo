@@ -1,0 +1,38 @@
+{
+  "schema": "oracle-method-expectations/v1",
+  "recorded_before": "implementation",
+  "basis": "round-1 cross-vote per class, plus brief-supplied priors where recorded",
+  "expectations": {
+    "LOCAL_BASELINE": {
+      "marketing-strategy-tactics-attributed-tiered": {
+        "expected_rank": 1,
+        "expected_score": 23.269,
+        "tolerance": 2.0
+      },
+      "marketing-strategy-tactics-strict-separation": {
+        "expected_rank": 2,
+        "expected_score": 23.269,
+        "tolerance": 2.0
+      },
+      "marketing-strategy-tactics-partner-forward-blend": {
+        "expected_rank": 3,
+        "expected_score": 16.462,
+        "tolerance": 2.0
+      }
+    },
+    "BRIEF:delphi-lane (brief author)": {
+      "marketing-strategy-tactics-strict-separation": {
+        "expected_rank": 1,
+        "expected_score": 18
+      },
+      "marketing-strategy-tactics-attributed-tiered": {
+        "expected_rank": 2,
+        "expected_score": 17
+      },
+      "marketing-strategy-tactics-partner-forward-blend": {
+        "expected_rank": 3,
+        "expected_score": 7
+      }
+    }
+  }
+}

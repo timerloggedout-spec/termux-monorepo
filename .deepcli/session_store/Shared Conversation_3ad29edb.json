@@ -1,0 +1,69 @@
+[
+  {
+    "message_id": 1,
+    "parent_id": null,
+    "model": "",
+    "role": "USER",
+    "thinking_enabled": false,
+    "ban_edit": false,
+    "ban_regenerate": false,
+    "status": "FINISHED",
+    "incomplete_message": null,
+    "accumulated_token_usage": 80,
+    "files": [
+      {
+        "id": "file-a4a378f4-a4ad-48e9-92cd-0edc6ce076d2",
+        "status": "SUCCESS",
+        "file_name": "test.txt",
+        "previewable": false,
+        "file_size": 16,
+        "token_usage": 3,
+        "error_code": null,
+        "inserted_at": 1779591109.472,
+        "updated_at": 1779591109.472
+      },
+      {
+        "id": "file-7f2a9a0f-2c3e-449a-9f5a-03ad63cac373",
+        "status": "SUCCESS",
+        "file_name": "test.txt",
+        "previewable": false,
+        "file_size": 34,
+        "token_usage": 5,
+        "error_code": null,
+        "inserted_at": 1779591109.472,
+        "updated_at": 1779591109.472
+      }
+    ],
+    "feedback": null,
+    "inserted_at": 1779591109.4689999,
+    "search_enabled": false,
+    "content": "Analyze these files",
+    "thinking_content": null,
+    "thinking_elapsed_secs": null,
+    "search_status": null,
+    "search_results": null,
+    "tips": []
+  },
+  {
+    "message_id": 2,
+    "parent_id": 1,
+    "model": "",
+    "role": "ASSISTANT",
+    "thinking_enabled": false,
+    "ban_edit": false,
+    "ban_regenerate": false,
+    "status": "FINISHED",
+    "incomplete_message": null,
+    "accumulated_token_usage": 330,
+    "files": [],
+    "feedback": null,
+    "inserted_at": 1779591109.4689999,
+    "search_enabled": false,
+    "content": "I see you've provided two versions of a file named `test.txt`:\n\n**First version:**\n```\nHello from file\n```\n\n**Second version:**\n```\nTesting Upload Attachment\nConfirm\n```\n\nThese appear to be two separate text snippets or two different states of the same file. The content is completely different between them.\n\n**Analysis:**\n\n1. **First file** – Simple greeting/test message: \"Hello from file\"\n2. **Second file** – Two lines: \"Testing Upload Attachment\" and \"Confirm\" — this looks like a test of an upload/attachment feature, possibly from a user interface or API test.\n\n**Possible interpretations:**\n- These could be two separate test uploads to see how a system handles file attachments.\n- They might represent before/after states (e.g., file was overwritten).\n- You may be asking me to compare, validate, or process them in some way.\n\n**Could you clarify what you'd like me to do with these files?** For example:\n- Compare them?\n- Confirm they were received correctly?\n- Extract or transform the content?\n- Analyze for a specific purpose (e.g., testing, logging, validation)?\n\nLet me know, and I'll be happy to help further.",
+    "thinking_content": null,
+    "thinking_elapsed_secs": null,
+    "search_status": null,
+    "search_results": null,
+    "tips": []
+  }
+]

@@ -1,0 +1,40 @@
+# Platform201 support-response check — daily in-repo nudge (docs/ops/PLATFORM201-MCP-ISSUE-LOG-2026-10-28.md).
+# Replaces the VM cron of the same name (owner order 2026-10-28: VM = sandbox
+# only, always-on work lives in GitHub Workflows). This workflow does NOT check
+# Discord itself — it maintains one tracking issue so the check stays visible
+# to lanes; the Connector Specialist lane performs the actual Discord check
+# when it works the issue.
+name: platform201-support-response-check
+
+on:
+  schedule:
+    - cron: "17 13 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+concurrency:
+  group: platform201-support-response-check
+  cancel-in-progress: false
+
+jobs:
+  nudge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open or ping the tracking issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: "[platform201] support response check — Discord inquiry 2026-10-28"
+        run: |
+          set -euo pipefail
+          num=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number // empty')
+          if [ -z "$num" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "[MUSEai]@{role:{inventory}} Tracking issue for the Platform201 support inquiry sent by the owner via Discord on 2026-10-28 (full log: docs/ops/PLATFORM201-MCP-ISSUE-LOG-2026-10-28.md).
+
+          Ask: (1) allowlist https://agent.meta.ai/api/hatch/oauth/callback for the MCP OAuth server at api.platform201.com (unblocks custom.platform201), (2) credit-intake questions (referral/invite/coupon sources).
+
+          Lane duty: when Platform201 support replies in Discord, record the substance here (names/status only, no credential values) and notify the Connector Specialist lane. Close this issue when the reply is recorded or the inquiry is superseded."
+          else
+            gh issue comment "$num" --repo "$GITHUB_REPOSITORY" --body "[MUSEai]@{role:{inventory}} Daily check $(date -u +%F): still open — has Platform201 support replied in Discord? If yes, record the substance here and close; if the allowlist landed, the Connector Specialist lane retries the custom.platform201 OAuth setup."
+          fi

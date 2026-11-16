@@ -1,0 +1,64 @@
+# AI Studio Delphi trigger - Actions leg of the ai-studio mesh.
+# Design: ops/ai-studio-mesh/README.md + docs/ops/RECEIVER-MESH.md
+# Owner ruling (2026-10-30): "Both is actual mesh" - this Actions
+# quota-gate leg AND the VM bounded execution leg together.
+# Consumes repository_dispatch [ai-studio-delphi-round] envelopes
+# from the Receiver Mesh Cloudflare leg, checks the model's verified
+# free-tier budget against the committed run ledger, and releases
+# (ALLOW) or holds (DEFER, fail-soft) the round for the VM leg.
+name: ai-studio-delphi-trigger
+
+on:
+  repository_dispatch:
+    types: [ai-studio-delphi-round]
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Model id for the panel run"
+        required: true
+        default: "gemini-3.8-flash"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-studio-delphi-trigger
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract envelope model
+        id: env
+        env:
+          DISPATCH_MODEL: ${{ github.event.client_payload.model }}
+          INPUT_MODEL: ${{ inputs.model }}
+        run: |
+          MODEL="${INPUT_MODEL:-$DISPATCH_MODEL}"
+          if [ -z "$MODEL" ]; then
+            echo "no model in envelope" >&2; exit 1
+          fi
+          echo "model=$MODEL" >> "$GITHUB_OUTPUT"
+
+      - name: Quota gate
+        id: gate
+        run: |
+          set +e
+          python3 ops/ai-studio-mesh/quota_gate.py check \
+            "${{ steps.env.outputs.model }}" \
+            ops/ai-studio-mesh/ledger.jsonl | tee decision.json
+          echo "exit_code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Decision summary
+        run: |
+          echo "### ai-studio-delphi-round gate" >> "$GITHUB_STEP_SUMMARY"
+          cat decision.json >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.gate.outputs.exit_code }}" = "0" ]; then
+            echo "ALLOW - released to the VM bounded leg." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "DEFER - held in the mesh Queue/D1; drains after the daily budget replenishes. Fail-soft by design, not a failure." >> "$GITHUB_STEP_SUMMARY"
+          fi

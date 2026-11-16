@@ -1,0 +1,1179 @@
+{
+ "axes": {
+  "architecture": [
+   "x86",
+   "x64",
+   "ARM",
+   "ARM64",
+   "MIPS",
+   "RISC-V",
+   "other"
+  ],
+  "environment": [
+   "linux",
+   "windows",
+   "macos",
+   "android",
+   "ios",
+   "embedded",
+   "ci-remote",
+   "b160v-thin"
+  ],
+  "evidence": [
+   "observed",
+   "inferred",
+   "reproduced",
+   "contradicted",
+   "unknown"
+  ],
+  "format": [
+   "PE",
+   "ELF",
+   "Mach-O",
+   "DEX",
+   "JAR",
+   "CLR",
+   "raw-image",
+   "filesystem-image",
+   "APK",
+   "JS-bundle",
+   "WASM"
+  ],
+  "method": [
+   "static",
+   "dynamic",
+   "hybrid",
+   "comparative",
+   "emulated",
+   "automated"
+  ],
+  "objective": [
+   "understanding",
+   "interoperability",
+   "malware-analysis",
+   "vulnerability-research",
+   "patch-analysis",
+   "cross-validation",
+   "ctf",
+   "incident-support"
+  ],
+  "target": [
+   "native",
+   "bytecode",
+   "script",
+   "firmware",
+   "protocol",
+   "hardware",
+   "mobile",
+   "web-client",
+   "data-format"
+  ],
+  "tool_role": [
+   "disassembler",
+   "decompiler",
+   "debugger",
+   "instrumentation",
+   "extractor",
+   "emulator",
+   "workspace",
+   "cross-validator",
+   "capture",
+   "deobfuscator",
+   "adapter-factory"
+  ]
+ },
+ "example_record": {
+  "name": "Android native-library analysis",
+  "outputs": [
+   "annotated-functions",
+   "managed-native-call-map",
+   "runtime-observations",
+   "unresolved-hypotheses"
+  ],
+  "parents": [
+   "mobile-android",
+   "target-native"
+  ],
+  "tags": {
+   "architecture": [
+    "ARM64"
+   ],
+   "format": [
+    "ELF"
+   ],
+   "method": [
+    "hybrid"
+   ],
+   "objective": [
+    "understanding"
+   ],
+   "target": [
+    "native"
+   ]
+  },
+  "toolchain": {
+   "cross-validation": "apk-xref",
+   "managed-code-context": "jadx",
+   "native-code-analysis": "ghidra",
+   "package-inspection": "apktool",
+   "runtime-instrumentation": "frida"
+  }
+ },
+ "name": "reverse-engineering",
+ "nodes": [
+  {
+   "description": "The discipline root of this registry: understand how an artifact works, from the artifact. Polyhierarchy \u2014 a node has as many parents as are true; primary placement is recorded once, overlaps live in parents/tags, never in duplicated nodes.",
+   "id": "reverse-engineering",
+   "kind": "category",
+   "name": "Reverse engineering",
+   "parents": [],
+   "tags": {}
+  },
+  {
+   "description": "",
+   "id": "target-native",
+   "kind": "category",
+   "name": "Native compiled software",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "native"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "native-windows",
+   "kind": "category",
+   "name": "Windows PE / DLL / drivers",
+   "parents": [
+    "target-native"
+   ],
+   "tags": {
+    "environment": [
+     "windows"
+    ],
+    "format": [
+     "PE"
+    ],
+    "target": [
+     "native"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "native-linux",
+   "kind": "category",
+   "name": "Linux / Unix ELF",
+   "parents": [
+    "target-native"
+   ],
+   "tags": {
+    "environment": [
+     "linux"
+    ],
+    "format": [
+     "ELF"
+    ],
+    "target": [
+     "native"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "native-macos",
+   "kind": "category",
+   "name": "macOS / iOS Mach-O",
+   "parents": [
+    "target-native"
+   ],
+   "tags": {
+    "environment": [
+     "macos",
+     "ios"
+    ],
+    "format": [
+     "Mach-O"
+    ],
+    "target": [
+     "native"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "target-bytecode",
+   "kind": "category",
+   "name": "Managed code / VM bytecode",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "bytecode"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "bytecode-jvm",
+   "kind": "category",
+   "name": "Java / JVM",
+   "parents": [
+    "target-bytecode"
+   ],
+   "tags": {
+    "format": [
+     "JAR"
+    ],
+    "target": [
+     "bytecode"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "bytecode-android-dex",
+   "kind": "category",
+   "name": "Android DEX",
+   "parents": [
+    "target-bytecode",
+    "mobile-android"
+   ],
+   "tags": {
+    "environment": [
+     "android"
+    ],
+    "format": [
+     "DEX",
+     "APK"
+    ],
+    "target": [
+     "bytecode",
+     "mobile"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "bytecode-dotnet",
+   "kind": "category",
+   "name": ".NET / CLR",
+   "parents": [
+    "target-bytecode"
+   ],
+   "tags": {
+    "format": [
+     "CLR"
+    ],
+    "target": [
+     "bytecode"
+    ]
+   }
+  },
+  {
+   "description": "JavaScript / PowerShell / shell / Python packages, obfuscated logic, embedded interpreters.",
+   "id": "target-scripts",
+   "kind": "category",
+   "name": "Scripts / packaged applications",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "script"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "target-firmware",
+   "kind": "category",
+   "name": "Firmware / embedded software",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "environment": [
+     "embedded"
+    ],
+    "target": [
+     "firmware"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "firmware-embedded-linux",
+   "kind": "category",
+   "name": "Embedded Linux firmware",
+   "parents": [
+    "target-firmware"
+   ],
+   "tags": {
+    "environment": [
+     "embedded",
+     "linux"
+    ],
+    "format": [
+     "filesystem-image"
+    ],
+    "target": [
+     "firmware"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "firmware-bare-metal",
+   "kind": "category",
+   "name": "Bare-metal / RTOS images",
+   "parents": [
+    "target-firmware"
+   ],
+   "tags": {
+    "environment": [
+     "embedded"
+    ],
+    "format": [
+     "raw-image"
+    ],
+    "target": [
+     "firmware"
+    ]
+   }
+  },
+  {
+   "description": "Network messages + state machines, IPC/device interfaces, containers and proprietary formats.",
+   "id": "target-protocols-formats",
+   "kind": "category",
+   "name": "Protocols / file formats",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "protocol",
+     "data-format"
+    ]
+   }
+  },
+  {
+   "description": "Debug interfaces, serial/peripheral buses, device behaviour and signal capture.",
+   "id": "target-hardware",
+   "kind": "category",
+   "name": "Hardware-assisted targets",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "hardware"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "target-mobile",
+   "kind": "category",
+   "name": "Mobile applications",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "target": [
+     "mobile"
+    ]
+   }
+  },
+  {
+   "description": "An APK is not homogeneous: manifest/resources, DEX bytecode and native .so libraries are three layers, analysed by different tools and correlated at runtime.",
+   "id": "mobile-android",
+   "kind": "category",
+   "name": "Android applications (APK)",
+   "parents": [
+    "target-mobile"
+   ],
+   "tags": {
+    "environment": [
+     "android"
+    ],
+    "format": [
+     "APK"
+    ],
+    "target": [
+     "mobile"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "mobile-ios",
+   "kind": "category",
+   "name": "iOS applications",
+   "parents": [
+    "target-mobile",
+    "native-macos"
+   ],
+   "tags": {
+    "environment": [
+     "ios"
+    ],
+    "format": [
+     "Mach-O"
+    ],
+    "target": [
+     "mobile"
+    ]
+   }
+  },
+  {
+   "description": "The Foundry's home ground: request->DOM attribution, bundle recovery, adapter synthesis. Full sub-registry: ops/web_adapter_foundry/taxonomy.json (web-reverse-engineering).",
+   "id": "target-web-client",
+   "kind": "category",
+   "name": "Web clients / web applications",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "format": [
+     "JS-bundle",
+     "WASM"
+    ],
+    "target": [
+     "web-client"
+    ]
+   }
+  },
+  {
+   "description": "A work family, not a target: preserved sample, contained workspace, static hypotheses correlated with controlled runtime observation.",
+   "id": "work-malware",
+   "kind": "category",
+   "name": "Malware analysis (work family)",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "method": [
+     "hybrid"
+    ],
+    "objective": [
+     "malware-analysis",
+     "incident-support"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "work-ctf-reversing",
+   "kind": "category",
+   "name": "CTF reversing (work family)",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "objective": [
+     "ctf",
+     "understanding"
+    ]
+   }
+  },
+  {
+   "description": "NSA framework: multi-architecture disassembly/decompilation, graphing, scripting.",
+   "id": "ghidra",
+   "kind": "tool",
+   "name": "Ghidra",
+   "parents": [
+    "target-native",
+    "firmware-bare-metal"
+   ],
+   "tags": {
+    "environment": [
+     "linux",
+     "windows",
+     "macos"
+    ],
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "disassembler",
+     "decompiler"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "rizin-cutter",
+   "kind": "tool",
+   "name": "Rizin / Cutter (radare2 family)",
+   "parents": [
+    "target-native"
+   ],
+   "tags": {
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "disassembler"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "gdb",
+   "kind": "tool",
+   "name": "GDB (+ GEF)",
+   "parents": [
+    "native-linux",
+    "firmware-embedded-linux"
+   ],
+   "tags": {
+    "environment": [
+     "linux"
+    ],
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "debugger"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "platform-debuggers",
+   "kind": "tool",
+   "name": "LLDB / WinDbg / x64dbg",
+   "parents": [
+    "native-macos",
+    "native-windows"
+   ],
+   "tags": {
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "debugger"
+    ]
+   }
+  },
+  {
+   "description": "Runtime instrumentation bridge between static structure and observed behaviour.",
+   "id": "frida",
+   "kind": "tool",
+   "name": "Frida",
+   "parents": [
+    "bytecode-android-dex",
+    "target-native",
+    "mobile-android"
+   ],
+   "tags": {
+    "environment": [
+     "android",
+     "ios",
+     "linux",
+     "windows",
+     "macos"
+    ],
+    "method": [
+     "dynamic",
+     "hybrid"
+    ],
+    "tool_role": [
+     "instrumentation"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "jadx",
+   "kind": "tool",
+   "name": "JADX",
+   "parents": [
+    "bytecode-android-dex",
+    "bytecode-jvm"
+   ],
+   "tags": {
+    "format": [
+     "DEX",
+     "APK",
+     "JAR"
+    ],
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "decompiler"
+    ]
+   }
+  },
+  {
+   "description": "APK resources/manifest decode. Fleet note: the apk-xref belt's stdlib AXML parser is the portable floor; apktool corroborates in CI.",
+   "id": "apktool",
+   "kind": "tool",
+   "name": "Apktool",
+   "parents": [
+    "mobile-android"
+   ],
+   "tags": {
+    "format": [
+     "APK"
+    ],
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "extractor"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "dex2jar-jd",
+   "kind": "tool",
+   "name": "dex2jar / JD-GUI / Bytecode Viewer",
+   "parents": [
+    "bytecode-jvm",
+    "bytecode-android-dex"
+   ],
+   "tags": {
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "decompiler"
+    ]
+   }
+  },
+  {
+   "description": "Identifies/extracts embedded objects; does not replace a decompiler.",
+   "id": "binwalk",
+   "kind": "tool",
+   "name": "Binwalk",
+   "parents": [
+    "target-firmware"
+   ],
+   "tags": {
+    "format": [
+     "filesystem-image",
+     "raw-image"
+    ],
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "extractor"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "qemu",
+   "kind": "tool",
+   "name": "QEMU",
+   "parents": [
+    "firmware-embedded-linux",
+    "firmware-bare-metal"
+   ],
+   "tags": {
+    "method": [
+     "emulated",
+     "dynamic"
+    ],
+    "tool_role": [
+     "emulator"
+    ]
+   }
+  },
+  {
+   "description": "Windows RE VM installer scripts \u2014 an environment, not a containment boundary; VM + snapshots + host-only networking required.",
+   "id": "flare-vm",
+   "kind": "tool",
+   "name": "FLARE-VM",
+   "parents": [
+    "work-malware"
+   ],
+   "tags": {
+    "environment": [
+     "windows"
+    ],
+    "tool_role": [
+     "workspace"
+    ]
+   }
+  },
+  {
+   "description": "Fleet-registered agentic RE environment (campaign doc, 2026-10-26): offload/container only, never on the B160V. A platform/workspace \u2014 not a discipline, methodology or credential.",
+   "id": "kali-linux",
+   "kind": "tool",
+   "name": "Kali Linux",
+   "parents": [
+    "reverse-engineering"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote"
+    ],
+    "tool_role": [
+     "workspace"
+    ]
+   }
+  },
+  {
+   "description": "ops/web_adapter_foundry/apk_xref.py (PR #2143): acquire/extract/classify/cross-validate a published APK against its repo, both directions; findings in the apk-xref/v1 template shape.",
+   "id": "apk-xref",
+   "kind": "tool",
+   "name": "apk_xref (fleet belt)",
+   "parents": [
+    "mobile-android",
+    "bytecode-android-dex"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote",
+     "linux",
+     "b160v-thin"
+    ],
+    "format": [
+     "APK"
+    ],
+    "method": [
+     "static",
+     "comparative"
+    ],
+    "objective": [
+     "cross-validation",
+     "interoperability"
+    ],
+    "tool_role": [
+     "cross-validator",
+     "extractor"
+    ]
+   }
+  },
+  {
+   "description": "ops/web_adapter_foundry/waf.py: registry/probe/promotion core; probing = finding the DOMs from the request.",
+   "id": "web-adapter-foundry",
+   "kind": "tool",
+   "name": "Web Adapter Foundry (waf)",
+   "parents": [
+    "target-web-client"
+   ],
+   "tags": {
+    "environment": [
+     "ci-remote",
+     "b160v-thin"
+    ],
+    "method": [
+     "static",
+     "dynamic",
+     "comparative"
+    ],
+    "objective": [
+     "interoperability",
+     "cross-validation"
+    ],
+    "tool_role": [
+     "adapter-factory",
+     "cross-validator"
+    ]
+   }
+  },
+  {
+   "description": "",
+   "id": "webcrack",
+   "kind": "tool",
+   "name": "webcrack",
+   "parents": [
+    "target-scripts",
+    "target-web-client"
+   ],
+   "tags": {
+    "format": [
+     "JS-bundle"
+    ],
+    "method": [
+     "static"
+    ],
+    "tool_role": [
+     "deobfuscator"
+    ]
+   }
+  },
+  {
+   "description": "Traffic capture; mitmproxy2swagger sits in the Foundry sub-registry (capture -> draft OpenAPI).",
+   "id": "mitmproxy",
+   "kind": "tool",
+   "name": "mitmproxy (family)",
+   "parents": [
+    "target-protocols-formats",
+    "target-web-client"
+   ],
+   "tags": {
+    "method": [
+     "dynamic"
+    ],
+    "tool_role": [
+     "capture"
+    ]
+   }
+  }
+ ],
+ "overlap_matrix": {
+  "methods": [
+   "static",
+   "debugging",
+   "instrumentation",
+   "extraction",
+   "emulation"
+  ],
+  "rows": {
+   "firmware-embedded-linux": {
+    "debugging": "supporting",
+    "emulation": "central",
+    "extraction": "central",
+    "instrumentation": "supporting",
+    "static": "central"
+   },
+   "mobile-android": {
+    "debugging": "supporting",
+    "emulation": "supporting",
+    "extraction": "central",
+    "instrumentation": "central",
+    "static": "central"
+   },
+   "native-linux": {
+    "debugging": "central",
+    "emulation": "supporting",
+    "extraction": "supporting",
+    "instrumentation": "supporting",
+    "static": "central"
+   },
+   "target-protocols-formats": {
+    "debugging": "peripheral",
+    "emulation": "peripheral",
+    "extraction": "supporting",
+    "instrumentation": "central",
+    "static": "supporting"
+   },
+   "work-ctf-reversing": {
+    "debugging": "central",
+    "emulation": "peripheral",
+    "extraction": "supporting",
+    "instrumentation": "supporting",
+    "static": "central"
+   },
+   "work-malware": {
+    "debugging": "central",
+    "emulation": "supporting",
+    "extraction": "supporting",
+    "instrumentation": "central",
+    "static": "central"
+   }
+  },
+  "values": [
+   "central",
+   "supporting",
+   "peripheral"
+  ]
+ },
+ "placement_rules": [
+  "One node, placed once, by primary kind; overlap is expressed as extra parents + tags, never duplicate nodes.",
+  "Kinds stay distinct: category != tool != platform != credential != format. A workspace (Kali, FLARE-VM) is not a discipline.",
+  "Every claim carries the Foundry evidence vocabulary: observed | inferred | reproduced | contradicted | unknown.",
+  "Toolchains are handoffs between stages, not shopping lists: a chain names the stage's tool(s) and the output that passes on."
+ ],
+ "schema": "re-taxonomy/v1",
+ "source_example": "Adapted from a collaborator's Perplexity taxonomy export (owner-supplied 2026-10-28): cybersecurity polyhierarchy + RE category/toolchain map. Fleet version: machine-readable, validated, fleet assets placed; improvement research filed separately.",
+ "toolchains": [
+  {
+   "category": "mobile-android",
+   "stages": [
+    {
+     "output": "published artifact + provenance (source, version, build, sha256)",
+     "stage": "acquire",
+     "tools": [
+      "apk-xref"
+     ]
+    },
+    {
+     "output": "manifest, permissions, resources, DEX + native split",
+     "stage": "extract",
+     "tools": [
+      "apktool",
+      "apk-xref"
+     ]
+    },
+    {
+     "output": "reconstructed logic per layer (DEX vs .so)",
+     "stage": "analyze-static",
+     "tools": [
+      "jadx",
+      "ghidra"
+     ]
+    },
+    {
+     "output": "runtime calls correlated across managed/native layers",
+     "stage": "observe-dynamic",
+     "tools": [
+      "frida"
+     ]
+    },
+    {
+     "output": "repo<->APK divergences both directions, apk-xref/v1 findings",
+     "stage": "validate",
+     "tools": [
+      "apk-xref"
+     ]
+    },
+    {
+     "output": "architecture notes + validated findings",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "native-linux",
+   "stages": [
+    {
+     "output": "format/architecture confirmation (ELF)",
+     "stage": "identify",
+     "tools": []
+    },
+    {
+     "output": "functions, strings, xrefs, control flow",
+     "stage": "analyze-static",
+     "tools": [
+      "ghidra",
+      "rizin-cutter"
+     ]
+    },
+    {
+     "output": "breakpoint/trace validation of selected paths",
+     "stage": "observe-dynamic",
+     "tools": [
+      "gdb",
+      "frida"
+     ]
+    },
+    {
+     "output": "annotated functions + behaviour notes",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "native-windows",
+   "stages": [
+    {
+     "output": "reconstructed PE/DLL logic",
+     "stage": "analyze-static",
+     "tools": [
+      "ghidra"
+     ]
+    },
+    {
+     "output": "observed execution",
+     "stage": "observe-dynamic",
+     "tools": [
+      "platform-debuggers",
+      "frida"
+     ]
+    },
+    {
+     "output": "documented behaviour (FLARE-VM as workspace when malware-adjacent)",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "firmware-embedded-linux",
+   "stages": [
+    {
+     "output": "component inventory: filesystems, scripts, configs, binaries",
+     "stage": "extract",
+     "tools": [
+      "binwalk"
+     ]
+    },
+    {
+     "output": "selected service binaries analysed",
+     "stage": "analyze-static",
+     "tools": [
+      "ghidra"
+     ]
+    },
+    {
+     "output": "emulated execution where the environment reproduces",
+     "stage": "observe-dynamic",
+     "tools": [
+      "qemu",
+      "gdb"
+     ]
+    },
+    {
+     "output": "component map + verified behaviour",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "firmware-bare-metal",
+   "stages": [
+    {
+     "output": "processor + memory layout established before code claims",
+     "stage": "identify",
+     "tools": [
+      "ghidra"
+     ]
+    },
+    {
+     "output": "hardware debugging or emulation evidence",
+     "stage": "observe-dynamic",
+     "tools": [
+      "qemu"
+     ]
+    },
+    {
+     "output": "code/data map + execution evidence",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "work-malware",
+   "stages": [
+    {
+     "output": "preserved sample, hash recorded, contained workspace (FLARE-VM)",
+     "stage": "acquire",
+     "tools": []
+    },
+    {
+     "output": "static triage -> focused code hypotheses",
+     "stage": "analyze-static",
+     "tools": [
+      "ghidra"
+     ]
+    },
+    {
+     "output": "controlled runtime observation",
+     "stage": "observe-dynamic",
+     "tools": [
+      "platform-debuggers",
+      "frida"
+     ]
+    },
+    {
+     "output": "behaviour report / incident-support findings",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "target-web-client",
+   "stages": [
+    {
+     "output": "request inventory -> DOM attribution -> DOM data sources",
+     "stage": "analyze-static",
+     "tools": [
+      "web-adapter-foundry",
+      "webcrack"
+     ]
+    },
+    {
+     "output": "captured traffic / replay",
+     "stage": "observe-dynamic",
+     "tools": [
+      "mitmproxy"
+     ]
+    },
+    {
+     "output": "promotion pipeline: discovered -> captured -> modeled -> reproduced -> verified",
+     "stage": "validate",
+     "tools": [
+      "web-adapter-foundry"
+     ]
+    },
+    {
+     "output": "adapter registry entry in the Foundry sub-registry",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  },
+  {
+   "category": "target-protocols-formats",
+   "stages": [
+    {
+     "output": "captured messages / state machine samples",
+     "stage": "extract",
+     "tools": [
+      "mitmproxy"
+     ]
+    },
+    {
+     "output": "format model + field selection",
+     "stage": "analyze-static",
+     "tools": [
+      "web-adapter-foundry"
+     ]
+    },
+    {
+     "output": "differential probes against live/recorded traffic",
+     "stage": "validate",
+     "tools": []
+    },
+    {
+     "output": "interoperability notes / draft contract",
+     "stage": "document",
+     "tools": []
+    }
+   ]
+  }
+ ],
+ "umbrella": {
+  "external_axes": {
+   "hats": [
+    "white (authorized)",
+    "black (unauthorized/malicious)",
+    "gray (authorization unclear) \u2014 record actual permission, not the label"
+   ],
+   "teams": [
+    "red (offense)",
+    "blue (defense)",
+    "purple (offense+defense feedback)"
+   ],
+   "visibility": [
+    "black-box",
+    "gray-box",
+    "white-box"
+   ]
+  },
+  "name": "cybersecurity / information security (polyhierarchy)",
+  "note": "This registry is the RE family of the wider field taxonomy. Entity types stay distinct up there too: Kali is a platform, OWASP a foundation/ecosystem, pentest an activity, CISSP a credential, CompTIA a provider, OverTheWire a lab, CTF a format. Conduct axes (hats), function axes (red/blue/purple teams) and visibility axes (black/gray/white-box) belong to that umbrella, not to this registry \u2014 here they appear only as method/objective tags when they describe RE work.",
+  "sibling_registries": [
+   "ops/web_adapter_foundry/taxonomy.json (web-reverse-engineering sub-registry)",
+   "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md (Kali registered environment)"
+  ]
+ },
+ "workflow_stages": [
+  "acquire",
+  "identify",
+  "extract",
+  "analyze-static",
+  "observe-dynamic",
+  "validate",
+  "document"
+ ]
+}

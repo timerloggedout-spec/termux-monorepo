@@ -1,0 +1,92 @@
+{
+  "collected_at": "2026-11-07T10:00:36.190332+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362058301,
+    "endpoint": ".../runs/42362058301/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 128372333525,
+        "run_id": 42362058301,
+        "workflow_name": "Agent PR Jules Handoff",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058301",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45Zb1Q",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372333525",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058301/job/128372333525",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-07T10:00:14Z",
+        "started_at": "2026-11-07T10:00:17Z",
+        "completed_at": "2026-11-07T10:00:30Z",
+        "name": "mutation",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-07T10:00:18Z",
+            "completed_at": "2026-11-07T10:00:19Z"
+          },
+          {
+            "name": "Run actions/github-script@v7",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-07T10:00:19Z",
+            "completed_at": "2026-11-07T10:00:29Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-07T10:00:29Z",
+            "completed_at": "2026-11-07T10:00:29Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372333525",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000744761,
+        "runner_name": "GitHub Actions 1000744761",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 128372334560,
+        "run_id": 42362058301,
+        "workflow_name": "Agent PR Jules Handoff",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058301",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45Zf4A",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372334560",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058301/job/128372334560",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-07T10:00:15Z",
+        "started_at": "2026-11-07T10:00:15Z",
+        "completed_at": "2026-11-07T10:00:14Z",
+        "name": "handoff",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372334560",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

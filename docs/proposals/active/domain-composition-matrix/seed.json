@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "domains": [
+    {
+      "domain_id": "category_theory",
+      "name": "Category Theory",
+      "description": "Objects, morphisms, functors, and composition.",
+      "status": "candidate",
+      "version": 1
+    },
+    {
+      "domain_id": "lean",
+      "name": "Lean",
+      "description": "Lean-specific composition conventions.",
+      "status": "candidate",
+      "version": 1
+    },
+    {
+      "domain_id": "haskell",
+      "name": "Haskell",
+      "description": "Haskell-specific bind and composition conventions.",
+      "status": "candidate",
+      "version": 1
+    }
+  ],
+  "operations": [
+    {
+      "operation_id": "morphism_composition",
+      "canonical_name": "compose",
+      "semantic_family": "composition",
+      "description": "Composition of compatible morphisms/functions."
+    },
+    {
+      "operation_id": "monadic_bind",
+      "canonical_name": "bind",
+      "semantic_family": "effectful_composition",
+      "description": "Composition through monadic bind."
+    }
+  ],
+  "notations": [
+    {
+      "notation_id": "generic-compose-semicolon",
+      "operation_id": "morphism_composition",
+      "domain_id": "category_theory",
+      "language": null,
+      "surface": "f ; g",
+      "canonical_form": "compose(f,g)",
+      "description": "Generic composition surface.",
+      "status": "candidate",
+      "version": 1
+    },
+    {
+      "notation_id": "lean-compose",
+      "operation_id": "morphism_composition",
+      "domain_id": "lean",
+      "language": "Lean",
+      "surface": "f ≫ g",
+      "canonical_form": "compose(f,g)",
+      "description": "Lean-specific composition notation.",
+      "status": "candidate",
+      "version": 1
+    },
+    {
+      "notation_id": "haskell-bind",
+      "operation_id": "monadic_bind",
+      "domain_id": "haskell",
+      "language": "Haskell",
+      "surface": "m >>= f",
+      "canonical_form": "bind(m,f)",
+      "description": "Haskell-specific bind notation.",
+      "status": "candidate",
+      "version": 1
+    }
+  ],
+  "composition_rules": [
+    {
+      "rule_id": "cat-morphism-compose-001",
+      "domain_id": "category_theory",
+      "source_entity_type_id": "morphism",
+      "operation_id": "morphism_composition",
+      "target_entity_type_id": "morphism",
+      "result_entity_type_id": "morphism",
+      "notation_id": "generic-compose-semicolon",
+      "associative": 1,
+      "identity_required": 1,
+      "valid": 1,
+      "status": "candidate",
+      "confidence": 0.7
+    },
+    {
+      "rule_id": "lean-compose-001",
+      "domain_id": "lean",
+      "source_entity_type_id": "lean_morphism",
+      "operation_id": "morphism_composition",
+      "target_entity_type_id": "lean_morphism",
+      "result_entity_type_id": "lean_morphism",
+      "notation_id": "lean-compose",
+      "associative": 1,
+      "identity_required": 1,
+      "valid": 1,
+      "status": "candidate",
+      "confidence": 0.7
+    },
+    {
+      "rule_id": "haskell-bind-001",
+      "domain_id": "haskell",
+      "source_entity_type_id": "monadic_value",
+      "operation_id": "monadic_bind",
+      "target_entity_type_id": "monadic_function",
+      "result_entity_type_id": "monadic_value",
+      "notation_id": "haskell-bind",
+      "associative": null,
+      "identity_required": 1,
+      "valid": 1,
+      "status": "candidate",
+      "confidence": 0.7
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "nse-domain-composition-001",
+      "rule_id": "cat-morphism-compose-001",
+      "source_ref": "#390",
+      "source_kind": "repository_review",
+      "locator": "notation-set domain/composition reconciliation",
+      "claim": "Generic composition must remain distinct from domain-specific Lean and Haskell notation.",
+      "confidence": 0.95
+    }
+  ],
+  "entity_types": [
+    {
+      "entity_type_id": "morphism",
+      "domain_id": "category_theory",
+      "name": "Morphism",
+      "kind": "typed_arrow",
+      "description": "A morphism between compatible objects.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "lean_morphism",
+      "domain_id": "lean",
+      "name": "Morphism",
+      "kind": "typed_arrow",
+      "description": "A Lean/Mathlib morphism participating in composition.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "monadic_value",
+      "domain_id": "haskell",
+      "name": "Monadic Value",
+      "kind": "effectful_value",
+      "description": "A value in a monadic context.",
+      "version": 1
+    },
+    {
+      "entity_type_id": "monadic_function",
+      "domain_id": "haskell",
+      "name": "Monadic Function",
+      "kind": "effectful_function",
+      "description": "A function returning a value in the same monadic context.",
+      "version": 1
+    }
+  ]
+}

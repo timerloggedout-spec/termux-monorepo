@@ -1,0 +1,43 @@
+{
+  "schema": "delphi-cross-vote/v1",
+  "round": 2,
+  "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48",
+  "ballots_by_class": {
+    "HUMAN_COLLABORATOR": 0,
+    "MODEL_PROVIDER": 0,
+    "LOCAL_BASELINE": 5
+  },
+  "per_class": {
+    "HUMAN_COLLABORATOR": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "MODEL_PROVIDER": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "LOCAL_BASELINE": {
+      "ballots": 5,
+      "scores": {
+        "strands-rfp-response-kernel-first": 25.0,
+        "strands-rfp-response-collection-first": 25.0,
+        "strands-rfp-response-packaging-first": 25.0
+      },
+      "ranking": [
+        "strands-rfp-response-collection-first",
+        "strands-rfp-response-kernel-first",
+        "strands-rfp-response-packaging-first"
+      ]
+    }
+  },
+  "classes_present": [
+    "LOCAL_BASELINE"
+  ],
+  "ranked_outcome": [
+    "strands-rfp-response-collection-first",
+    "strands-rfp-response-kernel-first",
+    "strands-rfp-response-packaging-first"
+  ]
+}

@@ -1,0 +1,166 @@
+name: repo-tracking-collect
+
+# Repo-org tracking surface (contract: docs/ops/REPO-TRACKING.md).
+# SINGLE-WRITER for ops/tracking/tracking.{json,md} +
+# apps/tribute-dashboard/data/tracking-feed.json. No other lane
+# hand-edits those outputs; lanes change inputs (records of record,
+# ops/tracking/projects.json seed) by normal PR.
+# Pattern: lane-matrix sweep (direct commit of generated artifacts to
+# master, observer-only) x surface-feeds (stamped observation snapshots;
+# the generator never calls the network).
+# VM = sandbox law: this workflow is the standing mechanism; no VM cron.
+
+on:
+  # PR-feed state is refreshed by the event that changes it, not by waiting
+  # for the daily anti-entropy pass.
+  # #5219 RE-FIX: `edited`/`converted_to_draft`/`ready_for_review`
+  # created runs that re-ran the same projection refresh with no
+  # PR-feed state change.
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
+  # Refresh the cross-domain projection after the append-only lane-events
+  # recorder has finished writing its Neon batch.
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  # Low-frequency anti-entropy remains only for external backup-repository
+  # metadata, which has no verified cross-repository webhook into this repo.
+  schedule:
+    - cron: '23 7 * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/tracking/repo_tracking.py'
+      - 'scripts/tracking/nested_family.py'
+      - 'scripts/tracking/backup_state.py'
+      - 'ops/tracking/backup-relays.jsonl'
+      - 'scripts/tracking/fetch_snapshots.py'
+      - 'ops/tracking/projects.json'
+      - 'ops/challenge/coordinator.json'
+      - 'ops/challenge/desk-feed.json'
+      - 'ops/quota/registry.json'
+      - 'experiments/doe/*/DESIGN.json'
+      - 'experiments/doe/*/PLAN*.json'
+      - 'experiments/doe/*/records/**'
+      - 'experiments/doe/*/dispatch/**'
+      - 'experiments/doe/routed-dispatch/stamps/**'
+      - 'experiments/doe/routed-dispatch/records/**'
+      - 'experiments/doe/*/records/**'
+      - 'ops/3l0/intake.jsonl'
+
+concurrency:
+  group: repo-tracking-collect
+  # #5219 leg (b): every run re-derives the full projection from source
+  # state, so a stale in-flight refresh is worthless once a newer event
+  # lands — cancel it instead of letting refresh runs queue up behind
+  # the comment/event flurry. Pushes are atomic; the surviving run
+  # re-derives and publishes the freshest projection.
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  collect:
+    if: >-
+      github.event_name != 'pull_request_target' ||
+      (
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+    steps:
+      # Reads + commit run on a Swarm app token (own 5000/h bucket), NOT
+      # the shared GITHUB_TOKEN bucket (1000/h/repo): the 2026-11-01T04:11Z
+      # generation degraded on HTTP 403 from that bucket during a
+      # merge-triggered workflow storm (fail-soft recorded it; the feed
+      # lost last-merge/open state for that run). SEC-03 minting, F1
+      # pattern (mint BEFORE checkout; checkout persists the credential).
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Self-check (generator unit tests)
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/tracking/repo_tracking.py scripts/tracking/fetch_snapshots.py scripts/tracking/nested_family.py scripts/tracking/backup_state.py
+          python3 -m pytest tests/test_repo_tracking.py tests/test_nested_family.py tests/test_backup_state.py -q || { python3 tests/test_repo_tracking.py && python3 tests/test_nested_family.py && python3 tests/test_backup_state.py; }
+      - name: Refresh observation snapshots (PR feed + Neon lane-events)
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.swarm-token.outputs.token }}
+        run: python3 -B scripts/tracking/fetch_snapshots.py
+      - name: Generate the tracking surface
+        run: |
+          set -euo pipefail
+          python3 -B scripts/tracking/repo_tracking.py
+          python3 -B scripts/tracking/nested_family.py
+          python3 -B scripts/tracking/backup_state.py
+          {
+            echo '## Repo tracking'
+            head -n 30 ops/tracking/tracking.md
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit generated artifacts to master (single-writer)
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          git add ops/tracking/tracking.json ops/tracking/tracking.md \
+            apps/tribute-dashboard/data/tracking-feed.json \
+            ops/tracking/nested-family.json \
+            apps/tribute-dashboard/data/nested-family-feed.json \
+            ops/tracking/backup-state.json \
+            apps/tribute-dashboard/data/backup-state-feed.json \
+            ops/tracking/backup-events.jsonl \
+            apps/tribute-dashboard/data/backup-events-feed.jsonl \
+            scripts/tracking/backup_snapshot.json \
+            scripts/tracking/pr_feed_snapshot.json scripts/tracking/lane_events_snapshot.json
+          if git diff --cached --quiet; then
+            echo 'tracking unchanged; no commit'
+            exit 0
+          fi
+          git config user.name 'repo-tracking-collect'
+          git config user.email 'actions@github.com'
+          git commit -m 'ops(tracking): refresh repo tracking surface (auto-derived)'
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master || { git rebase --abort || true; exit 1; }
+            if git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin HEAD:master; then
+              exit 0
+            fi
+            if [[ "$attempt" -lt 3 ]]; then
+              echo "Push rejected during concurrent master update; retrying ($attempt/3)."
+              sleep "$attempt"
+            fi
+          done
+          echo 'Unable to publish repo-tracking snapshot after 3 attempts.' >&2
+          exit 1
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-tracking-${{ github.run_id }}
+          path: |
+            ops/tracking/tracking.json
+            ops/tracking/tracking.md
+            ops/tracking/nested-family.json
+            ops/tracking/backup-state.json
+          if-no-files-found: ignore
+          retention-days: 30

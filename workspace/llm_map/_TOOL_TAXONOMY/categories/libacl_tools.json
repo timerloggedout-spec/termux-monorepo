@@ -1,0 +1,41 @@
+{
+  "category": "libacl_tools",
+  "tools": [
+    {
+      "name": "chacl",
+      "package": "libacl",
+      "path": "/data/data/com.termux/files/usr/bin/chacl",
+      "source": "apt",
+      "tags": [
+        "libacl_tools"
+      ],
+      "auto_tag_source": "auto:^libacl$|^libacl-",
+      "category": "libacl_tools",
+      "description": "Access control list shared library"
+    },
+    {
+      "name": "setfacl",
+      "package": "libacl",
+      "path": "/data/data/com.termux/files/usr/bin/setfacl",
+      "source": "apt",
+      "tags": [
+        "libacl_tools"
+      ],
+      "auto_tag_source": "auto:^libacl$|^libacl-",
+      "category": "libacl_tools",
+      "description": "Access control list shared library"
+    },
+    {
+      "name": "getfacl",
+      "package": "libacl",
+      "path": "/data/data/com.termux/files/usr/bin/getfacl",
+      "source": "apt",
+      "tags": [
+        "libacl_tools"
+      ],
+      "auto_tag_source": "auto:^libacl$|^libacl-",
+      "category": "libacl_tools",
+      "description": "Access control list shared library"
+    }
+  ]
+}

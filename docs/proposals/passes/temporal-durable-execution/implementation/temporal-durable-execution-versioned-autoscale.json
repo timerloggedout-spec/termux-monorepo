@@ -1,0 +1,17 @@
+{
+ "suites": [
+  {
+   "name": "omes load scenario against the self-host dev server with published scenario receipts",
+   "passed": 0,
+   "failed": 1,
+   "receipt": {
+    "command": "probe: which omes (omes load harness, Go tool)",
+    "exit_code": 1,
+    "output_sha256": "0ce9c4c0b0046fd865afaff61ff0b9d9876492d739a1f79141df5ff7212c149e",
+    "code_paths": [
+     "scripts/temporal/versioning_model.py"
+    ]
+   }
+  }
+ ]
+}

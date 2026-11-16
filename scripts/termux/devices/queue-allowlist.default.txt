@@ -1,0 +1,10 @@
+# tmx-device queue allowlist — copy to ~/.config/tmx-device/queue-allowlist.txt
+# and edit there (owner-editable; the repo copy is only the shipped default).
+# One task kind per line. Lines starting with cmd: are the ONLY shell commands
+# a shell-allowlisted task may run, matched exactly, executed from this file's
+# own text (never from the task payload). No cmd: lines ship by default.
+deepagent-run
+git-commit-push
+git-sync
+shell-allowlisted
+heartbeat-only

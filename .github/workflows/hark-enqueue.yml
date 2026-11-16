@@ -1,0 +1,117 @@
+# Hark queue bridge: open (or append to) a `hark:queue` issue that Hark's
+# scheduled poller picks up. Hark has no inbound webhook/API, so the issue IS
+# the job. Contract: docs/hark-bridge.md. Additive file; touches nothing else.
+name: hark-enqueue
+
+on:
+  workflow_call:
+    inputs:
+      title:     { description: "Job title (what Hark should do)", required: true, type: string }
+      key:       { description: "Dedup key; same key = append to the open issue", required: true, type: string }
+      project:   { description: "Hark project slug (see docs/hark-bridge.md)", required: false, type: string, default: "hark-bridge" }
+      priority:  { description: "P0 | P1 | P2", required: false, type: string, default: "P1" }
+      inputs:    { description: "YAML mapping of job inputs (indented as-is)", required: false, type: string, default: "{}" }
+      done_when: { description: "Completion criterion Hark checks before hark:done", required: false, type: string, default: "Hark comments with evidence" }
+    outputs:
+      issue_number: { description: "Queue issue number", value: "${{ jobs.enqueue.outputs.issue_number }}" }
+      action:       { description: "created | appended", value: "${{ jobs.enqueue.outputs.action }}" }
+  workflow_dispatch:
+    inputs:
+      title:     { description: "Job title", required: true, type: string }
+      key:       { description: "Dedup key", required: true, type: string }
+      project:   { description: "Hark project slug", required: false, type: string, default: "hark-bridge" }
+      priority:
+        description: "Priority"
+        required: false
+        type: choice
+        options: [P0, P1, P2]
+        default: P1
+      inputs:    { description: "YAML mapping of job inputs", required: false, type: string, default: "{}" }
+      done_when: { description: "Completion criterion", required: false, type: string, default: "Hark comments with evidence" }
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: hark-enqueue-${{ inputs.key }}
+  cancel-in-progress: false
+
+jobs:
+  enqueue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      issue_number: ${{ steps.q.outputs.issue_number }}
+      action: ${{ steps.q.outputs.action }}
+    steps:
+      - name: Open or append hark:queue issue
+        id: q
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          J_TITLE: ${{ inputs.title }}
+          J_KEY: ${{ inputs.key }}
+          J_PROJECT: ${{ inputs.project }}
+          J_PRIORITY: ${{ inputs.priority }}
+          J_INPUTS: ${{ inputs.inputs }}
+          J_DONE: ${{ inputs.done_when }}
+          J_SOURCE: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          J_WORKFLOW: ${{ github.workflow }}
+        run: |
+          set -euo pipefail
+          case "$J_PRIORITY" in P0|P1|P2) ;; *) echo "::error::priority must be P0, P1 or P2 (got '$J_PRIORITY')"; exit 1;; esac
+          if ! printf '%s' "$J_KEY" | grep -Eq '^[A-Za-z0-9._:/-]{1,120}$'; then
+            echo "::error::key must match [A-Za-z0-9._:/-]{1,120}"; exit 1
+          fi
+
+          # Labels (idempotent; --force only refreshes colour/description).
+          gh label create "hark:queue"   -R "$REPO" --color 5319e7 --description "Job for Hark's poller (docs/hark-bridge.md)" --force >/dev/null
+          gh label create "hark:done"    -R "$REPO" --color 0e8a16 --description "Hark finished this job" --force >/dev/null
+          gh label create "hark:deferred" -R "$REPO" --color fbca04 --description "Hark deferred this job to the post-reset batch" --force >/dev/null
+
+          marker="<!-- hark-key: ${J_KEY} -->"
+          indent_inputs="$(printf '%s\n' "$J_INPUTS" | sed 's/^/  /')"
+          now="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          # Dedup: exact marker match among OPEN hark:queue issues.
+          existing="$(gh issue list -R "$REPO" --label "hark:queue" --state open --limit 500 --json number,body \
+            | jq -r --arg m "$marker" '[.[] | select(.body | contains($m))][0].number // empty')"
+
+          if [ -n "$existing" ]; then
+            {
+              echo "Re-enqueued by \`$J_WORKFLOW\` at $now ([run]($J_SOURCE))."
+              echo
+              echo '```yaml'
+              echo "priority: $J_PRIORITY"
+              echo "inputs:"
+              echo "$indent_inputs"
+              echo '```'
+            } > comment.md
+            gh issue comment "$existing" -R "$REPO" --body-file comment.md >/dev/null
+            echo "issue_number=$existing" >> "$GITHUB_OUTPUT"
+            echo "action=appended" >> "$GITHUB_OUTPUT"
+            echo "::notice title=hark-enqueue::appended to #$existing (key $J_KEY)"
+          else
+            {
+              echo "$marker"
+              echo '```yaml'
+              echo "key: $J_KEY"
+              echo "project: $J_PROJECT"
+              echo "priority: $J_PRIORITY"
+              echo "inputs:"
+              echo "$indent_inputs"
+              echo "done_when: |"
+              printf '%s\n' "$J_DONE" | sed 's/^/  /'
+              echo "source: $J_SOURCE"
+              echo "enqueued_at: $now"
+              echo '```'
+              echo
+              echo "_Queued for Hark via \`hark-enqueue.yml\`. Hark's poller comments with evidence and relabels to \`hark:done\` or \`hark:blocked:<class>\`._"
+            } > body.md
+            url="$(gh issue create -R "$REPO" --title "$J_TITLE" --label "hark:queue" --body-file body.md)"
+            num="${url##*/}"
+            echo "issue_number=$num" >> "$GITHUB_OUTPUT"
+            echo "action=created" >> "$GITHUB_OUTPUT"
+            echo "::notice title=hark-enqueue::created #$num (key $J_KEY, $J_PRIORITY)"
+          fi

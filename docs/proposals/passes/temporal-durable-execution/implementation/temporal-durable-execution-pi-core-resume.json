@@ -1,0 +1,17 @@
+{
+ "suites": [
+  {
+   "name": "kill-resume harness (RFP \u00a76): exactly one receipt after a mid-activity worker kill",
+   "passed": 1,
+   "failed": 0,
+   "receipt": {
+    "command": "python3 scripts/temporal/kill_resume_harness.py prove --address localhost:7233 --workdir <scratch>/v1",
+    "exit_code": 0,
+    "output_sha256": "ab99c70e0d35e691b0482719724f0da17dd3cadf3849f6fd3ed62378cb392bb5",
+    "code_paths": [
+     "scripts/temporal/kill_resume_harness.py"
+    ]
+   }
+  }
+ ]
+}

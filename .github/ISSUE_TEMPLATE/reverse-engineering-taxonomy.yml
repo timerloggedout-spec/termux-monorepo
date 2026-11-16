@@ -1,0 +1,117 @@
+name: Reverse Engineering — Taxonomy / Toolkit
+description: Register or propose a reverse-engineering category, tool, or toolchain in the re-taxonomy/v1 registry. Filing this issue IS the trigger - the intake workflow parses it into a re-taxonomy-intake/v1 record carrying exactly the fields taxonomy.py validate() consumes.
+title: "[re-taxonomy] "
+labels: ["re-taxonomy"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Placement rules (re-taxonomy/v1): a node is placed ONCE by its primary
+        kind; overlap is expressed as extra parents + tags, never as duplicate
+        nodes. Kinds stay distinct - a platform is not a discipline is not a
+        credential is not a format. Tool nodes REQUIRE tool role tags.
+        Vocabulary is ops/reverse_engineering/taxonomy.json; values outside it
+        fail intake validation.
+  - type: input
+    id: item_name
+    attributes:
+      label: Item name
+      description: Display name of the category, tool, or toolchain node.
+      placeholder: Android native-library analysis
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      description: Node kind in the taxonomy.
+      options:
+        - category
+        - tool
+    validations:
+      required: true
+  - type: input
+    id: parents
+    attributes:
+      label: Parent node IDs
+      description: Comma-separated taxonomy node ids (polyhierarchy, at least one; every node descends from reverse-engineering). Example uses existing ids.
+      placeholder: mobile-android, target-native
+    validations:
+      required: true
+  - type: textarea
+    id: tags_target
+    attributes:
+      label: Tags - target
+      description: "Comma-separated, from the axis vocabulary: native, bytecode, script, firmware, protocol, hardware, mobile, web-client, data-format"
+  - type: textarea
+    id: tags_format
+    attributes:
+      label: Tags - format
+      description: "Comma-separated: PE, ELF, Mach-O, DEX, JAR, CLR, raw-image, filesystem-image, APK, JS-bundle, WASM"
+  - type: textarea
+    id: tags_architecture
+    attributes:
+      label: Tags - architecture
+      description: "Comma-separated: x86, x64, ARM, ARM64, MIPS, RISC-V, other"
+  - type: textarea
+    id: tags_method
+    attributes:
+      label: Tags - method
+      description: "Comma-separated: static, dynamic, hybrid, comparative, emulated, automated"
+  - type: textarea
+    id: tags_objective
+    attributes:
+      label: Tags - objective
+      description: "Comma-separated: understanding, interoperability, malware-analysis, vulnerability-research, patch-analysis, cross-validation, ctf, incident-support"
+  - type: textarea
+    id: tags_tool_role
+    attributes:
+      label: Tags - tool role
+      description: "Comma-separated: disassembler, decompiler, debugger, instrumentation, extractor, emulator, workspace, cross-validator, capture, deobfuscator, adapter-factory. REQUIRED for tool nodes."
+  - type: textarea
+    id: tags_environment
+    attributes:
+      label: Tags - environment
+      description: "Comma-separated: linux, windows, macos, android, ios, embedded, ci-remote, b160v-thin"
+  - type: textarea
+    id: toolchain
+    attributes:
+      label: Toolchain stages
+      description: "One line per stage, in workflow order (acquire, identify, extract, analyze-static, observe-dynamic, validate, document): stage: tool-id, tool-id -> output. Tool ids must be tool nodes in taxonomy.json."
+      placeholder: |
+        acquire: apk-xref -> published artifact + provenance
+        extract: apktool, apk-xref -> manifest, permissions, DEX + native split
+        analyze-static: jadx, ghidra -> reconstructed logic per layer
+  - type: textarea
+    id: outputs
+    attributes:
+      label: Outputs
+      description: Comma-separated output slugs this node or toolchain produces.
+      placeholder: annotated-functions, managed-native-call-map, runtime-observations
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What this node is, in the registry's terms. No credentials - names only, never values.
+    validations:
+      required: true
+  - type: input
+    id: evidence_expectation
+    attributes:
+      label: Evidence expectation
+      description: What evidence would validate this placement (observed / inferred / reproduced standard).
+    validations:
+      required: true
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      description: "Coordination identity of the filer, e.g. ResearchTriggers{research-triggers}."
+      placeholder: Role{moniker}
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Overlap notes, candidate parents not yet in the taxonomy, anything the validator should know.

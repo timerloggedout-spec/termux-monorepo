@@ -1,0 +1,38 @@
+{
+  "category": "security",
+  "tools": [
+    {
+      "name": "gpg",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "System tool"
+    },
+    {
+      "name": "ssh-keygen",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keygen",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "System tool"
+    },
+    {
+      "name": "openssl",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/openssl",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "System tool"
+    }
+  ]
+}

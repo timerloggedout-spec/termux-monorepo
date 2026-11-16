@@ -1,0 +1,65 @@
+---
+title: "Security Boundaries and Credential Management"
+sidebarTitle: "Security"
+description: "Learn the Termux Monorepo security rules: credential rotation, banned artifact classes, the ARCHW1Z gate, and the security remediation process."
+---
+
+The Termux Monorepo enforces strict security boundaries to protect credentials, session data, and the integrity of the build. This page covers the rules you must follow when handling secrets, committing files, and passing gates.
+
+## Credential rotation
+
+Rotating credentials, API keys, or tokens requires explicit authorization from a human operator. Autonomous agents may detect expiration or exposure, but they must not perform the rotation without human approval. Document the rotation request in `docs/proposals/active/<id>/ITEMS.md` and obtain consensus before proceeding.
+
+## Banned artifact classes
+
+Do not commit the following Class 3 and Class 4 artifacts to git:
+
+| Class | Examples |
+| --- | --- |
+| Class 3 | Session stores, browser profiles, local databases |
+| Class 4 | API tokens, private keys, password files, `.env` files with secrets |
+
+If you find these files in your working tree, add them to `.gitignore` and remove them from history before opening a PR.
+
+## ARCHW1Z gate
+
+Every merge to `master` must pass the ARCHW1Z gate. The gate consists of two mandatory scripts:
+
+```bash
+python3 scripts/ci/repo_gate.py
+python3 scripts/ci/termux_smoke.py
+```
+
+Both must return exit code `0`. If either fails, the merge is blocked. See the [CI gates reference](/reference/gates) for full details.
+
+## Security remediation process
+
+When a security issue is found, follow the process in `docs/SECURITY-REMEDIATION.md`:
+
+<Steps>
+  <Step title="Report">
+    Open a private proposal or alert the human operator. Do not post secrets in public chat.
+  </Step>
+  <Step title="Assess">
+    Classify the severity and identify affected files, credentials, or agents.
+  </Step>
+  <Step title="Remediate">
+    Rotate exposed credentials, remove artifacts from git history, and patch the vulnerability.
+  </Step>
+  <Step title="Verify">
+    Run both CI gates and confirm no residual exposure remains.
+  </Step>
+</Steps>
+
+## Tracked findings
+
+Confirmed credential exposure findings are recorded in `docs/CREDENTIAL-EXPOSURE.md`. Review this file before proposing changes to secret handling or authentication flows.
+
+<Warning>
+  If you discover a credential exposure, stop immediately. Do not commit, push, or merge until the exposure is contained and the remediation process is complete.
+</Warning>
+
+## Next steps
+
+- Read the [CI gates reference](/reference/gates) for the full gate checklist
+- Follow the [Proposal process](/governance/proposals) to request credential rotation

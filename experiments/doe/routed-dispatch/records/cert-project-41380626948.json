@@ -1,0 +1,41 @@
+{
+  "baseline_sha": "b399f7955c01d2b6509703c38fa3702c342339a8",
+  "candidate_sha": "b399f7955c01d2b6509703c38fa3702c342339a8",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41380626948"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "included-minutes",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "certifications-project"
+  },
+  "observed_at": "2026-11-02T03:04:15Z",
+  "origin": "live",
+  "outcome": "periodic_table.sql final state verified in-run (all Part-1 fix stories: renames, constraints, types table + mapping, capitalization, trimmed masses, F/Ne added, 1000 deleted); element.sh exact-output flows pass (no-arg, H by number/symbol/name, F, Ne, not-found); fileset committed to monorepo",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "github-actions",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "postgres-16 fleet build (cert-project.yml fileset mode; sources authored in-repo)",
+    "provider": "github-actions"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

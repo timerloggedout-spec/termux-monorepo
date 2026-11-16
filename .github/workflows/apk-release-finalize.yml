@@ -1,0 +1,50 @@
+name: apk-release-finalize
+
+# [MUSEai]@{role:{apk-release}} :: finalize a PAT-created draft release: rebuild at ref → upload assets → undraft.
+# Exists because in-runner tokens (github.token ∧ OPERATOR_GITHUB_TOKEN) return HTTP 403
+# 'Resource not accessible by integration' on POST /releases for non-master targets (runs
+# 41422144649 / 41422211229 / 41571022224), while operator PAT creates the release via API.
+# This workflow probes/performs the upload leg only; if upload hits the same wall, the draft
+# stays PAT-authored and finalization waits for the Termux Fleet ApkRelease AppID migration.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "branch/ref to build (arm PR branch)"
+        required: true
+        type: string
+      version:
+        description: "semver (tag = apk-v<version>)"
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+
+      - name: Build + sign + verify + checksum
+        env:
+          VERSION: ${{ inputs.version }}
+        run: bash scripts/apk/build_apk.sh "$VERSION"
+
+      - name: Upload assets to existing draft + publish
+        env:
+          GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+          TAG: apk-v${{ inputs.version }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" "dist/fleet-$VERSION.apk" dist/SHA256SUMS --clobber
+          gh release edit "$TAG" --draft=false
+          gh release view "$TAG" --json url,tagName,isDraft,isPrerelease,assets --jq '{url,tagName,isDraft,isPrerelease,assets:[.assets[].name]}'

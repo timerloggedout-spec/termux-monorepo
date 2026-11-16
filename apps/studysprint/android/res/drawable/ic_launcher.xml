@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- StudySprint launcher icon (#4222): the brand mark the PWA
+     ships, drawn as shapes — a deep-green rounded square (the
+     app theme color) with a white study card and its two text
+     lines. Referenced from AndroidManifest.xml. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="18dp" />
+            <solid android:color="#14532D" />
+        </shape>
+    </item>
+    <item
+        android:left="26dp"
+        android:top="22dp"
+        android:right="26dp"
+        android:bottom="22dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="6dp" />
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    <item
+        android:left="36dp"
+        android:top="38dp"
+        android:right="36dp"
+        android:bottom="62dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#14532D" />
+        </shape>
+    </item>
+    <item
+        android:left="36dp"
+        android:top="50dp"
+        android:right="48dp"
+        android:bottom="70dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#14532D" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,149 @@
+name: bucket-headroom-watch
+# QUE #5230: bucket-headroom alerting. Scheduled /rate_limit reads
+# (PAT core - per-repo GITHUB_TOKEN class - Swarm mint path - every
+# fleet AppID installation readable from Actions), thresholds DERIVED
+# from the live reads (Cadence ruling #5219 c.6823803635: page on
+# projected exhaustion before reset, never a hardcoded count), one
+# standing issue as the page surface, and the record of record on the
+# ledger side: que-governor-event/v1 kind=headroom_alert rows appended
+# to ops/que/events/governor-events-<date>.jsonl (collector folds).
+# Poll interval 10m: inside the Cadence 5-minute floor and on the
+# fleet cadence norm (que-feed-collect shape).
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Evaluate only: no page, no commit"
+        type: boolean
+        default: false
+      drill:
+        description: "Inject a stamped synthetic crossing (page-path drill)"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: bucket-headroom-watch
+  cancel-in-progress: false
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint Swarm App token
+        id: app
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Mint Collector App token
+        id: collector
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_COLLECTOR_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_COLLECTOR_PRIVATE_KEY }}
+      - name: Mint CrossReference App token
+        id: crossreference
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_CROSSREFERENCE_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY }}
+      - name: Collect bucket reads (/rate_limit)
+        env:
+          HEADROOM_PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          HEADROOM_GITHUB_TOKEN: ${{ github.token }}
+          HEADROOM_SWARM_TOKEN: ${{ steps.app.outputs.token }}
+          HEADROOM_COLLECTOR_TOKEN: ${{ steps.collector.outputs.token }}
+          HEADROOM_CROSSREFERENCE_TOKEN: ${{ steps.crossreference.outputs.token }}
+        run: python3 scripts/ops/bucket_headroom.py collect --out headroom-reads.json
+      - name: "Evaluate headroom (derived thresholds) — QUE #5230"
+        env:
+          DRILL: ${{ inputs.drill }}
+        run: |
+          args=(--reads headroom-reads.json
+                --process ops/github-apps/PROCESS.json
+                --previous ops/que/feeds/bucket-headroom.json
+                --feed-out bucket-headroom-feed.json
+                --events-out headroom-events.jsonl
+                --page-out headroom-page.json
+                --events-dir ops/que/events
+                --session "${{ github.run_id }}")
+          if [ "$DRILL" = "true" ]; then args+=(--drill); fi
+          python3 scripts/ops/bucket_headroom.py evaluate "${args[@]}"
+          cp bucket-headroom-feed.json ops/que/feeds/bucket-headroom.json
+      - name: Page standing issue (transitions only)
+        if: ${{ inputs.dry_run != true }}
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          action=$(jq -r .action headroom-page.json)
+          if [ "$action" = "none" ]; then
+            echo "no state transition: no page"
+            exit 0
+          fi
+          gh label create bucket-headroom-alert --force --description "Bucket headroom alert (standing)" --color B60205
+          {
+            echo "<!-- bucket-headroom-alert:v1 -->"
+            echo "## Bucket headroom — state transition"
+            echo
+            echo "Raised: $(jq -c .raised headroom-page.json) - Cleared: $(jq -c .cleared headroom-page.json) - Synthetic drill: $(jq -r .synthetic headroom-page.json)"
+            echo "Alerting now: $(jq -c .alerting bucket-headroom-feed.json)"
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "Record: que-governor-event/v1 kind=headroom_alert in ops/que/events (ledger side)."
+          } > page-body.md
+          existing=$(gh issue list --label bucket-headroom-alert --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file page-body.md
+            echo "updated standing issue #$existing"
+          else
+            gh issue create --title "[standing] bucket headroom alert" --label bucket-headroom-alert --body-file page-body.md
+            echo "created standing issue"
+          fi
+      - name: Commit feed + governor events (only on change)
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git add ops/que/feeds/bucket-headroom.json ops/que/events
+          if git diff --cached --quiet; then
+            echo "no headroom change this cycle"
+          else
+            git commit -m "ops(quota): bucket-headroom cycle $(date -u +%Y-%m-%dT%H:%MZ)"
+            for attempt in 1 2 3; do
+              if git push; then break; fi
+              git pull --rebase
+            done
+          fi
+      - name: Upload headroom receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bucket-headroom-receipt
+          path: |
+            headroom-reads.json
+            bucket-headroom-feed.json
+            headroom-events.jsonl
+            headroom-page.json
+          retention-days: 30
+      - name: "Stamp watcher failure on QUE #5230"
+        if: failure()
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          gh issue comment 5230 --body "<!-- bucket-headroom-watcher-error:v1 --> bucket-headroom-watch run ${{ github.run_id }} FAILED: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## bucket-headroom-watch"
+            jq -c '{generated_at, alerting}' bucket-headroom-feed.json || echo "no feed produced"
+            jq -c . headroom-page.json || echo "no page plan produced"
+          } >> "$GITHUB_STEP_SUMMARY"

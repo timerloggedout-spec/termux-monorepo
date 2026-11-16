@@ -1,0 +1,51 @@
+name: challenge-countdowns-refresh
+
+# VM rule (owner, 2026-10-28): continuous work lives in repo automation,
+# not VM agent-crons. This workflow replaces the retired weekly VM cron
+# `challenge-entries-sweep` for the mechanical part: recomputing the
+# challenge log's countdown lines. The section-5 discovery sweep is
+# dispatch-driven lane work, not a standing mechanism.
+
+on:
+  schedule:
+    - cron: "6 16 * * 1" # Mondays ~09:06 PT (16:06 UTC)
+  workflow_dispatch:
+  push:
+    paths:
+      - docs/ops/CHALLENGE-ENTRIES-LOG.md
+      - scripts/challenge_entries/countdowns.py
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refresh computed countdown lines
+        run: |
+          python3 scripts/challenge_entries/countdowns.py docs/ops/CHALLENGE-ENTRIES-LOG.md --write
+          python3 scripts/challenge_entries/countdowns.py docs/ops/CHALLENGE-ENTRIES-LOG.md --block >> "$GITHUB_STEP_SUMMARY"
+      - name: Open refresh PR if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- docs/ops/CHALLENGE-ENTRIES-LOG.md; then
+            echo "countdown lines already current" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          BR="chore/countdowns-refresh-$(date -u +%Y%m%d%H%M)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BR"
+          git add docs/ops/CHALLENGE-ENTRIES-LOG.md
+          git commit -m "chore(ops): refresh computed countdown lines"
+          git push origin "$BR"
+          gh pr create --title "chore(ops): refresh computed countdown lines" \
+            --body "Automated countdown refresh (challenge-countdowns-refresh workflow). Computed lines only; no packet facts changed." \
+            --head "$BR" --base master

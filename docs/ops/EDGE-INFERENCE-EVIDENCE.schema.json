@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://github.com/timerloggedout-spec/termux-monorepo/docs/ops/EDGE-INFERENCE-EVIDENCE.schema.json",
+  "title":"Edge / ARM / Android Inference Evidence","type":"object","additionalProperties":false,
+  "required":["schema_version","experiment_id","device_abi","model_hash","runtime","backend","observed_at","provenance"],
+  "properties":{
+    "schema_version":{"const":"edge.inference.v1"},"experiment_id":{"type":"string"},"device_abi":{"type":"string"},
+    "device_model":{"type":["string","null"]},"os_version":{"type":["string","null"]},"model_hash":{"type":"string"},
+    "model_family":{"type":["string","null"]},"quantization":{"type":["string","null"]},"runtime":{"type":"string"},
+    "runtime_version":{"type":["string","null"]},"backend":{"type":"string"},
+    "tokens_per_second":{"type":["number","null"],"minimum":0},"latency_p50_ms":{"type":["number","null"],"minimum":0},
+    "latency_p95_ms":{"type":["number","null"],"minimum":0},"peak_memory_mb":{"type":["number","null"],"minimum":0},
+    "thermal_state":{"type":["string","null"]},"energy_proxy":{"type":["number","null"],"minimum":0},
+    "offline":{"type":"boolean"},"fallback_path":{"type":["string","null"]},"observed_at":{"type":"string"},
+    "provenance":{"type":"object","additionalProperties":false,"required":["repository_sha","environment_fingerprint"],
+      "properties":{"repository_sha":{"type":"string"},"environment_fingerprint":{"type":"string"},
+      "runtime_source":{"type":["string","null"],"format":"uri"},"model_source":{"type":["string","null"],"format":"uri"}}}
+  }
+}

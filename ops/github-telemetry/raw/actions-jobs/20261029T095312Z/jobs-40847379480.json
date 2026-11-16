@@ -1,0 +1,113 @@
+{
+  "collected_at": "2026-10-29T09:53:20.963887+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40847379480,
+    "endpoint": ".../runs/40847379480/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 123358878928,
+        "run_id": 40847379480,
+        "workflow_name": "delphi-ledger-feed-collect",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40847379480",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcuMMc0A",
+        "head_sha": "4287d4dd28e46c47f843719a7fa9adcc43fa8fec",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/123358878928",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40847379480/job/123358878928",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-29T09:10:55Z",
+        "started_at": "2026-10-29T09:10:58Z",
+        "completed_at": "2026-10-29T09:13:29Z",
+        "name": "collect",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-29T09:10:59Z",
+            "completed_at": "2026-10-29T09:10:59Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-29T09:10:59Z",
+            "completed_at": "2026-10-29T09:11:07Z"
+          },
+          {
+            "name": "Fetch the ledger cache",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-29T09:11:07Z",
+            "completed_at": "2026-10-29T09:13:27Z"
+          },
+          {
+            "name": "Collect the feed",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-29T09:13:27Z",
+            "completed_at": "2026-10-29T09:13:27Z"
+          },
+          {
+            "name": "Mirror to Neon (slice 2; no-op without ledger secrets)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-29T09:13:27Z",
+            "completed_at": "2026-10-29T09:13:27Z"
+          },
+          {
+            "name": "Export the feed from Neon (read mode; no-op without ledger secrets)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-29T09:13:27Z",
+            "completed_at": "2026-10-29T09:13:27Z"
+          },
+          {
+            "name": "Propose the refresh as a PR",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-29T09:13:27Z",
+            "completed_at": "2026-10-29T09:13:27Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-29T09:13:27Z",
+            "completed_at": "2026-10-29T09:13:28Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-29T09:13:28Z",
+            "completed_at": "2026-10-29T09:13:28Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/123358878928",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000425327,
+        "runner_name": "GitHub Actions 1000425327",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-08-24T23:45:46.020891+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 32789913148,
+    "endpoint": ".../runs/32789913148/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 97629263375,
+        "run_id": 32789913148,
+        "workflow_name": "Model live canary",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/32789913148",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAWuyhWDw",
+        "head_sha": "ff2a3af3343e37d260dc414c85021dbc8bcfc997",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/97629263375",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/32789913148/job/97629263375",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-08-24T23:34:03Z",
+        "started_at": "2026-08-24T23:34:03Z",
+        "completed_at": "2026-08-24T23:34:03Z",
+        "name": "canary",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/97629263375",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

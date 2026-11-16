@@ -1,0 +1,11 @@
+[
+  {
+    "source": "forensic_toolchain",
+    "search_term": "send_message",
+    "index": 0,
+    "timestamp": 1779488055.806,
+    "session": "ea90d423-8ebb-456f-a44f-8c85464fa722",
+    "code": "def send_message(token, session_id, prompt, parent_message_id=None, files=None):\n    headers = get_headers(token)\n    headers[\"Content-Type\"] = \"application/json\"\n\n    payload = {\n        \"prompt\": prompt,\n        \"chat_session_id\": session_id,\n        \"parent_message_id\": parent_message_id,\n        \"model\": \"deepseek-chat\",\n        \"stream\": True,\n        \"thinking_enabled\": False, # Set to True for \"Deep Think\" (R1)\n        \"search_enabled\": False    # Set to True for web search\n    }\n\n    if files:\n        # `files` would be a list of file_ids obtained after upload\n        payload[\"ref_file_ids\"] = files\n\n    # The actual request function in a robust client would also handle the\n    # proof-of-work challenge and x-ds-pow-response header.\n    # For the sake of this snippet, we assume it's a solved requirement.\n    \n    response = requests.post(\n        f\"{BASE_URL}/api/v0/chat/completion\",\n        headers=headers,\n        json=payload,\n        stream=True\n    )\n\n    # Process the Server-Sent Events stream\n    for line in response.iter_lines(decode_unicode=True):\n        if line:\n            # In a real client, parse the JSON 'data' field from each line\n            print(line) # Simplified for example\n    return response",
+    "hash": "a621e0f4d9567fce19390b2766109214d28f4f87b15626033c0f7f5bff7d5ebc"
+  }
+]

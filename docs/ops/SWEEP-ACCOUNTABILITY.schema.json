@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/sweep-accountability.v1.json",
+  "title": "Sweep Accountability Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","sweep_id","sweep_version","iteration","mode","scope","started_at","status","coverage","provenance","findings","actions","effects"],
+  "properties": {
+    "schema_version": {"const":"sweep.accountability.v1"},
+    "sweep_id": {"type":"string","minLength":1},
+    "parent_sweep_id": {"type":["string","null"]},
+    "sweep_version": {"type":"string","minLength":1},
+    "iteration": {"type":"integer","minimum":0},
+    "mode": {"enum":["HISTORICAL","CONTINUOUS","RECONCILIATION","CORRECTION"]},
+    "scope": {
+      "type":"object","additionalProperties":false,"required":["repository","sources"],
+      "properties":{
+        "repository":{"type":"string","minLength":1},
+        "ref":{"type":["string","null"]},
+        "from":{"type":["string","null"]},
+        "to":{"type":["string","null"]},
+        "query":{"type":["string","null"]},
+        "cursor":{"type":["string","null"]},
+        "sources":{"type":"array","items":{"type":"string"}}
+      }
+    },
+    "started_at":{"type":"string","format":"date-time"},
+    "completed_at":{"type":["string","null"],"format":"date-time"},
+    "status":{"enum":["RUNNING","SUCCESS","PARTIAL","FAILED","CANCELLED","NOOP"]},
+    "coverage":{
+      "type":"object","additionalProperties":false,"required":["state"],
+      "properties":{
+        "state":{"enum":["COMPLETE","PARTIAL","UNKNOWN"]},
+        "observed":{"type":"integer","minimum":0},
+        "expected":{"type":["integer","null"],"minimum":0},
+        "next_cursor":{"type":["string","null"]},
+        "reason":{"type":["string","null"]}
+      }
+    },
+    "provenance":{
+      "type":"object","additionalProperties":false,"required":["actor_type","actor","source_refs"],
+      "properties":{
+        "actor_type":{"enum":["human","agent","workflow","system","unknown"]},
+        "actor":{"type":"string","minLength":1},
+        "tool":{"type":["string","null"]},
+        "workflow":{"type":["string","null"]},
+        "run_id":{"type":["string","null"]},
+        "job_id":{"type":["string","null"]},
+        "event":{"type":["string","null"]},
+        "source_refs":{"type":"array","items":{"type":"string"}},
+        "source_shas":{"type":"array","items":{"type":"string"}},
+        "input_sha256":{"type":["string","null"]},
+        "artifact_refs":{"type":"array","items":{"type":"string"}}
+      }
+    },
+    "findings":{
+      "type":"array","items":{
+        "type":"object","additionalProperties":false,"required":["id","classification","statement"],
+        "properties":{
+          "id":{"type":"string"},
+          "classification":{"enum":["OBSERVED","INFERRED","UNKNOWN","CONTRADICTED"]},
+          "statement":{"type":"string"},
+          "evidence_refs":{"type":"array","items":{"type":"string"}},
+          "confidence":{"type":["number","null"],"minimum":0,"maximum":1}
+        }
+      }
+    },
+    "actions":{
+      "type":"array","items":{
+        "type":"object","additionalProperties":false,"required":["id","type","status"],
+        "properties":{
+          "id":{"type":"string"},"type":{"type":"string"},
+          "status":{"enum":["ATTEMPTED","SUCCEEDED","FAILED","SKIPPED","CANCELLED","NOOP"]},
+          "actor":{"type":["string","null"]},"tool":{"type":["string","null"]},
+          "target":{"type":["string","null"]},"reason":{"type":["string","null"]}
+        }
+      }
+    },
+    "effects":{
+      "type":"array","items":{
+        "type":"object","additionalProperties":false,"required":["id","type"],
+        "properties":{
+          "id":{"type":"string"},"type":{"type":"string"},"before":{},"after":{},
+          "evidence_refs":{"type":"array","items":{"type":"string"}}
+        }
+      }
+    },
+    "errors":{"type":"array","items":{"type":"string"}},
+    "next":{
+      "type":"object","additionalProperties":false,
+      "properties":{
+        "sweep_version":{"type":"string"},
+        "iteration":{"type":"integer","minimum":0},
+        "cursor":{"type":["string","null"]},
+        "start":{"type":["string","null"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+ "schema": "vm-webhook-routes/v1",
+ "note": "Source -> chat routing for the VM webhook leg (owner order 2026-10-31). chat_id values verified against the live chat list at wiring time (2026-10-31); roles are the receiving seats' fleet roles. Carried by the provider profile fleet.vm_webhooks (ops/quota/registry.json) and loaded by vm_webhook_receiver.py (routes.json next to the script, or VM_WEBHOOK_ROUTES=<path>). Unknown source => intake log only + route_status=unrouted_flagged, never silently dropped.",
+ "routes": {
+  "github": {"chat_id": "6920a2f6-fb87-4ec7-ae19-ca6afc3bf230", "role": "connectors"},
+  "vm-proof": {"chat_id": "6920a2f6-fb87-4ec7-ae19-ca6afc3bf230", "role": "connectors"},
+  "meta": {"chat_id": "628089aa-a83a-47b1-9367-9be5997a3811", "role": "social-connectors"},
+  "whatsapp": {"chat_id": "628089aa-a83a-47b1-9367-9be5997a3811", "role": "social-connectors"},
+  "desk-dispatch": {"chat_id": "a440bcb2-f95a-41c5-81b4-9e1728e5fd6c", "role": "contribution-desk"},
+  "quota": {"chat_id": "b18fae96-44d8-4944-9e68-eeb8e5e86a88", "role": "quota-specialist"},
+  "main": {"chat_id": "9a88e77a-c58d-43f4-bdd3-848a7d0420db", "role": "main"}
+ }
+}

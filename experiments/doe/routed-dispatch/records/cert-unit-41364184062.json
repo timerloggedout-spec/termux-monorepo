@@ -1,0 +1,40 @@
+{
+  "baseline_sha": "1d835c050d412e3ac75393a37103319bf55548e3",
+  "candidate_sha": "1d835c050d412e3ac75393a37103319bf55548e3",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41364184062"
+  ],
+  "experiment_id": "routed-dispatch",
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": "rotation: cert-unit default invoke arm (pre-rotation cycle 1)",
+    "set_index": null,
+    "task_class": "certifications-unit"
+  },
+  "observed_at": "2026-11-01T23:52:00Z",
+  "outcome": "cert unit 058 (CI/CD) verdict ok=true",
+  "provenance": "github",
+  "schema_version": "1.0",
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "treatment": {
+    "arm": "cohere",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "c4ai-aya-expanse-32b",
+    "provider": "cohere"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

@@ -1,0 +1,52 @@
+{
+  "_about": "GitHub App manifest template (AppID lane). Substitute the <ANGLE> placeholders, extract the .manifest object, and feed it to the lane manifest tool (form mode). The manifest is non-secret; ALL credential material is created by the conversion call and written directly to 0600 custody files by the tool (docs/ops/GITHUB-APP-PROCESS.md section 1A). Omit hook_attributes entirely: GitHub rejects {active: false} without a webhook URL.",
+  "_permission_variants": {
+    "collector_read_only": {
+      "actions": "read",
+      "checks": "read",
+      "contents": "read",
+      "issues": "read",
+      "pull_requests": "read",
+      "metadata": "read"
+    },
+    "publisher": {
+      "contents": "write",
+      "pull_requests": "write",
+      "checks": "read",
+      "metadata": "read"
+    },
+    "reviewer": {
+      "pull_requests": "write",
+      "checks": "read",
+      "metadata": "read"
+    },
+    "gate": {
+      "checks": "write",
+      "metadata": "read"
+    },
+    "lifecycle": {
+      "issues": "write",
+      "metadata": "read"
+    },
+    "specialist_default_below": {
+      "contents": "write",
+      "pull_requests": "write",
+      "issues": "write",
+      "metadata": "read"
+    }
+  },
+  "manifest": {
+    "name": "Termux Fleet <Function>",
+    "url": "https://github.com/timerloggedout-spec/<home-repo>",
+    "description": "<one-line function statement> - fleet Collaborator actor (GitHub App) with its own 5000/h installation bucket.",
+    "redirect_url": "https://example.com/appid-<function>-callback",
+    "public": true,
+    "default_events": [],
+    "default_permissions": {
+      "contents": "write",
+      "pull_requests": "write",
+      "issues": "write",
+      "metadata": "read"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "collected_at": "2026-10-06T10:12:56.996755+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37447744171,
+    "endpoint": ".../runs/37447744171/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 112216541452,
+        "run_id": 37447744171,
+        "workflow_name": "Agent Runtime Stall Watch",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37447744171",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaIKCJDA",
+        "head_sha": "bb6511345e840c3a5ce858e16294b3e8096d631a",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/112216541452",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37447744171/job/112216541452",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-06T10:08:08Z",
+        "started_at": "2026-10-06T10:08:10Z",
+        "completed_at": "2026-10-06T10:08:18Z",
+        "name": "detect stalled runtime states",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-06T10:08:11Z",
+            "completed_at": "2026-10-06T10:08:12Z"
+          },
+          {
+            "name": "Collect runtime observations",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-06T10:08:12Z",
+            "completed_at": "2026-10-06T10:08:15Z"
+          },
+          {
+            "name": "Publish stall observation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-06T10:08:15Z",
+            "completed_at": "2026-10-06T10:08:16Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-06T10:08:16Z",
+            "completed_at": "2026-10-06T10:08:16Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/112216541452",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000217263,
+        "runner_name": "GitHub Actions 1000217263",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

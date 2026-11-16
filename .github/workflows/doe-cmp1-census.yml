@@ -1,0 +1,20 @@
+name: doe-cmp1-census
+on:
+  schedule: [{cron: "41 5 1 * *"}]
+  workflow_dispatch: {}
+permissions: {contents: write}
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python3 experiments/doe/cmp-register/scripts/cmp1_census.py
+      - name: commit records
+        run: |
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "swarm@timerloggedout-spec"
+          git add experiments/doe/cmp-register/records/
+          git diff --cached --quiet || git commit -m "doe: cmp-1 census record"
+          git push || true

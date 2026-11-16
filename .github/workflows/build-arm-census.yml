@@ -1,0 +1,177 @@
+name: '🧭 Build Arm Census (#5151)'
+
+# Arm eligibility census for multi-arm build routing (issue #5151):
+# {free - invocable from Actions - drives an agent loop (tool-calling
+# round-trip in a full checkout)}. Bounded smokes on the
+# provider_free_smoke pattern: exact model identity from the registry,
+# at most 3 completion requests per arm, and a smoke never enables
+# production routing by itself — verdicts land in the arm-census feed,
+# which the seat folds from the artifact into the PR.
+# Budget: each HTTP arm consumes at most 3 completions per census run
+# (invoke + tool-call + final). PR opened/synchronize events intentionally
+# refresh evidence; superseded in-flight runs are cancelled to bound duplicate
+# provider and shared Actions spend. Use workflow_dispatch --arm for a targeted rerun.
+#
+# The live-build job is the done-evidence leg: one real build carried
+# end-to-end on a NON-Gemini arm. It fires only when this PR carries the
+# `arm-live-build` label, runs the generic harness in a full checkout,
+# and opens its own proof PR (do not merge) from the arm's work.
+
+on:
+  workflow_dispatch:
+    inputs:
+      arm:
+        description: 'Census one arm only (blank = all registry arms)'
+        required: false
+        default: ''
+  pull_request:
+    types: [opened, synchronize, labeled]
+    paths:
+      - '.github/workflows/build-arm-census.yml'
+      - 'scripts/ops/build_arm_census.py'
+      - 'scripts/ops/build_arm_harness.py'
+      - 'ops/dispatch/build-arms.json'
+
+permissions: {}
+
+concurrency:
+  group: build-arm-census-${{ github.event.pull_request.number || github.run_id }}
+  # Superseding PR revisions cancel stale in-flight census runs to limit repeat provider spend.
+  cancel-in-progress: true
+
+jobs:
+  census:
+    if: github.event.action != 'labeled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+      - name: Run arm census (bounded smokes, verdicts in the feed)
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+          ARM_INPUT: ${{ inputs.arm }}
+        run: |
+          exec python3 scripts/ops/build_arm_census.py \
+            --registry ops/dispatch/build-arms.json \
+            --output arm-census.json \
+            --arm "$ARM_INPUT"
+      - name: Append census feed to step summary
+        if: always()
+        run: cat arm-census.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload census feed artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arm-census
+          path: arm-census.json
+          retention-days: 30
+
+  live-build:
+    if: >-
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'arm-live-build'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout PR head (read-only token; no persisted credentials)
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Run census fresh (live-build rides census verdicts)
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+        run: |
+          exec python3 scripts/ops/build_arm_census.py \
+            --registry ops/dispatch/build-arms.json \
+            --output ops/que/feeds/arm-census.json
+      - name: Prepare the live-build task
+        run: |
+          cat > /tmp/live-build-task.md <<'EOF'
+          Task (live-build proof for issue #5151, multi-arm build routing):
+
+          Create the file `ops/que/feeds/arm-census.md`: a human-readable
+          summary of the arm census. Read `ops/dispatch/build-arms.json`
+          and `ops/que/feeds/arm-census.json` with your tools and write a
+          markdown document that contains: a title line mentioning
+          "arm census", one markdown table row per registry arm with its
+          arm_id, provider, model and budget class, the census verdict
+          for each arm from the census feed, and a closing line stating
+          that verdicts come from the arm-census feed. Do not modify any
+          other file.
+          EOF
+      - name: Run the generic agent-loop harness (non-Gemini arm, auto-selected)
+        id: harness
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          SEALION_API_KEY: ${{ secrets.SEALION_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          BASETEN_API_KEY: ${{ secrets.BASETEN_API_KEY }}
+        run: |
+          exec python3 scripts/ops/build_arm_harness.py \
+            --registry ops/dispatch/build-arms.json \
+            --census ops/que/feeds/arm-census.json \
+            --arm auto --task-file /tmp/live-build-task.md \
+            --issue 5151 --trigger pull_request_label \
+            --stamp-out /tmp/build-dispatch-stamp.json \
+            --result-out /tmp/build-arm-result.json
+      - name: Report live-build harness failure (no commit attempted)
+        if: always() && steps.harness.outcome != 'success'
+        run: |
+          echo "Live-build harness did not succeed; no proof commit was attempted." >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/build-arm-result.json >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+      - name: Mint narrowly-scoped Swarm App token after model execution (SEC-03)
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Commit, push and open the proof PR
+        if: steps.harness.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -uo pipefail
+          BRANCH="build/arm-live-proof-${{ github.run_id }}"
+          if [ -z "$(git status --porcelain -- ops/que/feeds/arm-census.md)" ]; then
+            echo "arm produced no census summary file — live build FAILED honestly"
+            cat /tmp/build-arm-result.json >> "$GITHUB_STEP_SUMMARY" || true
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add -- ops/que/feeds/arm-census.md
+          git commit -m "Live-build proof: arm-census summary authored by a non-Gemini build arm (#5151)"
+          AUTH_HEADER="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c http.extraheader="$AUTH_HEADER" push origin "HEAD:refs/heads/$BRANCH"
+          gh pr create --head "$BRANCH" --base master \
+            --title "Live-build proof: arm-census summary (non-Gemini arm, #5151)" \
+            --body "Proof PR for issue #5151 done-evidence: one live build carried end-to-end on a NON-Gemini arm via the generic agent-loop harness. The arm authored \`ops/que/feeds/arm-census.md\` in a full checkout; the run's census feed + DoE stamp ride the census workflow run ${{ github.run_id }}. DO NOT MERGE from the arm — Desk/seat disposition."
+          echo "proof branch: $BRANCH" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload live-build receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arm-live-build
+          path: |
+            /tmp/build-dispatch-stamp.json
+            /tmp/build-arm-result.json
+            ops/que/feeds/arm-census.json
+          if-no-files-found: warn
+          retention-days: 30

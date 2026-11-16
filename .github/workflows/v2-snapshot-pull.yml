@@ -1,0 +1,96 @@
+name: v2-snapshot-pull
+# Repo Replay V2 (pack v3, git-objects shape): pull the GitLab validator
+# copy (auth-gated; token lives HERE as GITLAB_TOKEN) for ALL branches
+# and ship the shallow .git object store itself (blobs dedupe across the
+# 242 branch tips) to timerloggedout-spec/repo-replay-data/v2-snapshot/
+# via OPERATOR_GITHUB_TOKEN. NO tree extraction anywhere: consumers index
+# via git ls-tree and read blobs on demand (git show). Pack v2's full-tree
+# shape failed on scale (242 branches x ~3.5k files = 858,963 files).
+# Fetch pattern copied from gitlab-governed-reconciliation.yml (oauth2
+# Basic extraheader; token never in a URL, never printed).
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Fetch GitLab (all branches, shallow) + pack .git
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GITLAB_TOKEN:-}" ]; then echo "::error::GITLAB_TOKEN unset"; exit 1; fi
+          df -h / | tail -1
+          mkdir work && cd work && git init -q
+          auth="$(printf 'oauth2:%s' "$GITLAB_TOKEN" | base64 -w 0)"
+          git -c http.extraheader="Authorization: Basic $auth" fetch --no-tags --depth 1 \
+            "https://gitlab.com/a-group2180532/termux-monorepo.git" \
+            "+refs/heads/*:refs/remotes/gitlab/*"
+          echo "fetch done"; df -h / | tail -1
+          : > ../branches.tsv
+          for ref in $(git for-each-ref --format='%(refname)' refs/remotes/gitlab); do
+            br="${ref#refs/remotes/gitlab/}"
+            sha="$(git rev-parse "$ref")"
+            n="$(git ls-tree -r --name-only "$ref" | wc -l)"
+            printf '%s\t%s\t%s\n' "$br" "$sha" "$n" >> ../branches.tsv
+          done
+          wc -l ../branches.tsv
+          cd ..
+          FILES="$(awk -F'\t' '{s+=$3} END {print s}' branches.tsv)"
+          echo "files=$FILES" >> "$GITHUB_ENV"
+          MAIN_SHA="$(awk -F'\t' '$1=="master"{print $2}' branches.tsv)"
+          echo "gitlab_sha=${MAIN_SHA:-unknown}" >> "$GITHUB_ENV"
+          tar -czf v2.tar.gz -C work .
+          sha256sum v2.tar.gz | awk '{print $1}' > tar.sha
+          BYTES="$(stat -c%s v2.tar.gz)"
+          echo "bytes=$BYTES" >> "$GITHUB_ENV"
+          echo "pack bytes=$BYTES"; df -h / | tail -1
+          mkdir chunks && split -b 40M v2.tar.gz chunks/part-
+          ls -la chunks/
+      - name: Diagnostics artifact (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-pull-diagnostics
+          path: branches.tsv
+          if-no-files-found: warn
+      - name: Push pack to repo-replay-data
+        env:
+          OP_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${OP_TOKEN:-}" ]; then echo "::error::OPERATOR_GITHUB_TOKEN unset"; exit 1; fi
+          git clone -q "https://x-access-token:${OP_TOKEN}@github.com/timerloggedout-spec/repo-replay-data.git" data
+          rm -rf data/v2-snapshot && mkdir -p data/v2-snapshot
+          cp chunks/part-* data/v2-snapshot/
+          python3 - << 'PY'
+          import json, hashlib, os, datetime
+          branches = {}
+          for line in open('branches.tsv'):
+              br, sha, n = line.rstrip('\n').split('\t')
+              branches[br] = {'head_sha': sha, 'files': int(n)}
+          chunks = sorted(f for f in os.listdir('data/v2-snapshot') if f.startswith('part-'))
+          man = {
+            'pack_version': 3,
+            'kind': 'git-objects',
+            'source': 'gitlab.com/a-group2180532/termux-monorepo',
+            'branches': branches,
+            'head_sha': os.environ['gitlab_sha'],
+            'files': int(os.environ['files']),
+            'tar_sha256': open('tar.sha').read().strip(),
+            'tar_bytes': int(os.environ['bytes']),
+            'packed_at': datetime.datetime.utcnow().isoformat() + 'Z',
+            'chunks': [{'name': c, 'sha256': hashlib.sha256(open(f'data/v2-snapshot/{c}','rb').read()).hexdigest()} for c in chunks],
+          }
+          json.dump(man, open('data/v2-snapshot/MANIFEST.json','w'), indent=1)
+          print(man['head_sha'], man['files'], man['tar_bytes'], len(chunks), len(branches))
+          PY
+          cd data
+          git config user.name "repo-replay snapshot pull"
+          git config user.email "actions@users.noreply.github.com"
+          git add v2-snapshot
+          git commit -q -m "v2-snapshot: GitLab validator pack v3 git-objects, all branches (master ${gitlab_sha}) [skip ci]"
+          git push -q origin main
+          echo "pushed"

@@ -1,0 +1,101 @@
+{
+ "case_id": "seed-3-selenium-boot-issue180",
+ "source": "Gmail label GitHub/Priority/Direct (2026-10-20); hydrated from the public GitHub API 2026-10-21",
+ "self_login": "timerloggedout-spec",
+ "subject": {
+  "repo": "seleniumboot/selenium-boot",
+  "number": 180,
+  "kind": "issue",
+  "url": "https://github.com/seleniumboot/selenium-boot/issues/180",
+  "title": "Add the Maven wrapper (mvnw) to this repo for contributors",
+  "state": "open",
+  "state_reason": null,
+  "author": "shossain786",
+  "assignees": [],
+  "labels": [
+   "enhancement",
+   "good first issue",
+   "help wanted"
+  ],
+  "body": "New contributors who use IntelliJ without a system Maven install have to set Maven up locally before they can build.\n\n**Acceptance criteria**\n- `mvnw`, `mvnw.cmd` and `.mvn/wrapper/` are committed.\n- `./mvnw test` passes on a clean checkout with only JDK 17.\n- CONTRIBUTING / README build steps mention `./mvnw`. Plain `mvn` keeps working, and CI is unchanged.\n\nSuggested by @PUSHPAK-JAISWAL.",
+  "created_at": "2026-10-20T03:51:20Z",
+  "closed_at": null
+ },
+ "comments": [
+  {
+   "id": 6283951293,
+   "author": "aryantawade123-sys",
+   "author_type": "User",
+   "association": "NONE",
+   "created_at": "2026-10-20T05:15:54Z",
+   "body": "Hello  I’d like to work on this. Do maintainers want the Maven wrapper added?   I’ll follow the acceptance criteria and keep CI unchanged"
+  },
+  {
+   "id": 6283974181,
+   "author": "timerloggedout-spec",
+   "author_type": "User",
+   "association": "NONE",
+   "created_at": "2026-10-20T05:17:39Z",
+   "body": "### Claim — termux-monorepo help-wanted lane\n\nTaking a look at this issue as part of our external evaluation + contribution lane.\n\n- Lane: help-wanted / CPPH ranked\n- Actor: timerloggedout-spec (agentic)\n- Will open a focused PR if a clean fix is in scope\n\nIf someone is already actively working this, say so and we will yield.\n"
+  },
+  {
+   "id": 6284195441,
+   "author": "aryantawade123-sys",
+   "author_type": "User",
+   "association": "NONE",
+   "created_at": "2026-10-20T05:35:36Z",
+   "body": "Yes, I'm actively working on this — I claimed it 2 minutes before you. Please yield. Thanks "
+  },
+  {
+   "id": 6284583112,
+   "author": "PUSHPAK-JAISWAL",
+   "author_type": "User",
+   "association": "CONTRIBUTOR",
+   "created_at": "2026-10-20T06:06:40Z",
+   "body": "@aryantawade123-sys yes the issue is to add maven warrapers also @timerloggedout-spec seems to be a bot so don't mind it and please work on the issue. "
+  },
+  {
+   "id": 6285679496,
+   "author": "aryantawade123-sys",
+   "author_type": "User",
+   "association": "NONE",
+   "created_at": "2026-10-20T07:24:19Z",
+   "body": "Hi @PUSHPAK-JAISWAL, I've completed the changes to add the Maven Wrapper. I've pushed the updates for review. Please let me know if any further changes are needed. Thanks!"
+  }
+ ],
+ "events": [
+  {
+   "event": "labeled",
+   "actor": "shossain786",
+   "assignee": null,
+   "created_at": "2026-10-20T03:51:21Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "shossain786",
+   "assignee": null,
+   "created_at": "2026-10-20T03:51:21Z"
+  },
+  {
+   "event": "labeled",
+   "actor": "shossain786",
+   "assignee": null,
+   "created_at": "2026-10-20T03:51:21Z"
+  }
+ ],
+ "expected": {
+  "labels": [
+   "claimed_by_other"
+  ],
+  "primary": "claimed_by_other",
+  "claimant": "aryantawade123-sys",
+  "action": "yield_lane",
+  "escalate": false,
+  "prefilter_rules": [
+   "yield_to_prior_claim"
+  ],
+  "note": "PUSHPAK-JAISWAL (CONTRIBUTOR) called the lane a bot; that is a low-confidence hostile_spam_flag, informational only",
+  "reengage_allowed": false,
+  "rung": "system1"
+ }
+}

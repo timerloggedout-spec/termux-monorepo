@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.0",
+ "seed_id": "research-seed:getdx",
+ "canonical_upstream": "UNVERIFIED \u2014 no upstream repository evidenced yet",
+ "provenance": [
+  "named as the measurement plane in the Temporal four-plane RFP (PR #1867); zero in-repo presence at RECON (0 hits)"
+ ],
+ "classification": {
+  "domains": [
+   "developer-experience",
+   "measurement"
+  ],
+  "research_value": "unassessed \u2014 evidence-pending",
+  "integration_mode": "seed-before-claims",
+  "adoption": "research-only"
+ },
+ "observed_facts": {
+  "in_repo_presence": "none (0 hits at RECON, 2026-10-27)",
+  "scoped_question": "which DX signals (flow, friction, delivery) can be derived from data the fleet already emits (Actions telemetry, PR cycle times, lane interventions) before any external DX platform is evaluated (RFP \u00a78)"
+ },
+ "capability_signals": [],
+ "integration_constraints": [
+  "evidence-pending: no DX metric may be reported from a platform that has not been seeded and evidenced",
+  "do-not-vendor-source",
+  "preserve-upstream-provenance"
+ ]
+}

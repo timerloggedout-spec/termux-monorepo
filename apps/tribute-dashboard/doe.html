@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DoE — Design of Experiments Surface</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .meta{color:var(--muted);font-size:.8rem}
+  .gap{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
+  .notrun{border:1px dashed var(--line);border-radius:.6rem;padding:.7rem .8rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+  table.rank{width:100%;border-collapse:collapse}
+  table.rank td,table.rank th{padding:.35rem .5rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+</style>
+ <script src="./versioning.js" defer></script>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
+<a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/pools.html">Pools</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html" aria-current="page">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a>
+<a href="https://timerloggedout-spec.github.io/tribute/results-index.html">Results Index</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/d2-proposals.html">D2 Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/referrals.html">Referrals</a>
+<a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">DoE · Design of Experiments</p>
+<h1>Design-of-experiments surface</h1>
+<p class="sub">DoE is a family — MVT is one member, not the whole (issue #1865, spec <code>docs/ops/DOE-FAMILY.md</code>). The family members, the shared experiment-record schema, the methods library, the experiment-design rules, and which campaigns have actually executed — defined-but-not-run renders as exactly that. This page consumes <code>data/doe-feed.json</code> (collector <code>scripts/dashboards/surface_feeds.py</code>, contract <code>docs/ops/DASHBOARD-SURFACE-FEEDS.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>Feed</h2>
+<ul class="feed-list">
+<li><span>Feed (<code>data/doe-feed.json</code>, generated, served with this page)</span><span class="pill gold" id="feed-state">…</span></li>
+<li><span>Generated</span><span id="feed-generated">—</span></li>
+</ul>
+<div id="feed-error" class="gap" hidden>The feed could not be loaded, so nothing is shown rather than anything guessed.</div>
+</section>
+<div id="content"></div>
+<section class="card" id="gaps-card" hidden>
+<h2>What the record does not hold</h2>
+<div id="gaps"></div>
+</section>
+<section class="card">
+<h2>Sources</h2>
+<ul id="sources" class="feed-list"></ul>
+</section>
+</main>
+<script src="./chartkit.js"></script>
+<script>
+const GH = "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/";
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+  let f;
+  try{
+    const r = await fetch("./data/doe-feed.json");
+    if(!r.ok) throw new Error(r.status);
+    f = await r.json();
+  }catch(e){
+    document.getElementById("feed-state").textContent = "unavailable";
+    document.getElementById("feed-error").hidden = false;
+    return;
+  }
+  document.getElementById("feed-state").textContent = "live · " + f.schema;
+  document.getElementById("feed-generated").textContent = f.generated_at;
+  const d = f.data, out = [];
+  const p2camps = d.campaigns || [];
+  if(p2camps.length){
+    const p2byState = {};
+    for(const c of p2camps) p2byState[c.state] = (p2byState[c.state] || 0) + 1;
+    const p2state = Object.entries(p2byState).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+    const p2runs = p2camps.filter(c => (c.runs || 0) > 0).map(c => ({label: c.campaign_id, value: c.runs})).sort((a, b) => b.value - a.value);
+    out.push(`<section class="card"><h2>Charts</h2>
+    <p class="meta">Feed generated ${esc(f.generated_at)}${CK.stampState(f.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : ''} · rendered from this page's feed only.</p>
+    <h3>Campaigns by state</h3>${CK.bars(p2state)}
+    ${p2runs.length ? `<h3>Runs per campaign</h3>${CK.bars(p2runs)}` : '<p class="muted">No campaign run records yet.</p>'}</section>`);
+  }
+  const fam = d.family;
+  if(fam){
+    const mrows = fam.members.map(m => {
+      const id = m.member_id || m.campaign_id;
+      const runs = (m.runs !== undefined) ? `${esc(m.runs)} runs` : "";
+      const note = m.note || m.design_type || "";
+      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(m.state)}</span></td><td>${runs}</td><td>${esc(note)}</td></tr>`;
+    }).join("");
+    out.push(`<section class="card"><h2>The DoE family</h2>
+    <p>${esc(fam.statement)} Spec: <a href="${GH}${esc(fam.spec)}">${esc(fam.spec)}</a> · issue #${esc(fam.issue)}</p>
+    <table class="rank"><tr><th>Member</th><th>Kind</th><th>State</th><th>Runs</th><th>Note / design</th></tr>${mrows}</table>
+    <p>Shared experiment record schema: <code>${esc(fam.shared.experiment_record_schema)}</code></p>
+    <p>Intake rule: ${esc(fam.shared.intake_rule)}</p>
+    <p>Evaluation doctrine: ${esc(fam.shared.evaluation_doctrine)}</p></section>`);
+  }
+  for(const c of (d.campaigns || [])){
+    if(c.state === "executed" && c.results){
+      const arows = Object.entries(c.results.arms || {}).map(([arm, a]) =>
+        `<tr><td><code>${esc(arm)}</code></td><td>${esc(a.runs)}</td><td>${esc(a.mean_accuracy)}</td><td>${esc(a.mean_input_tokens)}</td><td>${esc(a.mean_elapsed_ms)}</td><td>${esc(a.total_rework)}</td></tr>`).join("");
+      const eff = c.results.effects_accuracy || {};
+      out.push(`<section class="card"><h2>Campaign results — ${esc(c.campaign_id)} (DoE's own)</h2>
+      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a> · ${esc(c.runs)} run records, one per run, conforming to the family EXPERIMENT schema. These are DoE family results — not the Delphi record below.</p>
+      <table class="rank"><tr><th>Arm (routing × representation)</th><th>Runs</th><th>Mean accuracy</th><th>Mean input tokens</th><th>Mean elapsed ms</th><th>Rework</th></tr>${arows}</table>
+      <p>Factorial effects on accuracy — routing main effect: ${esc(eff.routing_main_effect)} · representation main effect: ${esc(eff.representation_main_effect)} · interaction: ${esc(eff.interaction)}</p>
+      <p>Verdict vs predeclared threshold: <strong>${esc(c.results.verdict)}</strong></p></section>`);
+    } else {
+      out.push(`<section class="card"><h2>Campaign — ${esc(c.campaign_id)}</h2>
+      <div class="notrun"><strong>Admitted — design record committed, not run yet.</strong> ${esc(c.design_type || "")}</div>
+      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a></p></section>`);
+    }
+  }
+  const fns = d.methods_library.functions.map(fn =>
+    `<tr><td><code>${esc(fn.signature)}</code></td><td>${esc(fn.doc)}</td></tr>`).join("");
+  out.push(`<section class="card"><h2>Methods library — <code>${esc(d.methods_library.file.split(" — ")[0])}</code></h2>
+  <table class="rank"><tr><th>Function</th><th>What it does (docstring, from the code)</th></tr>${fns}</table></section>`);
+  out.push(`<section class="card"><h2>Design discipline — the multivariate-doe skill</h2>
+  <p class="meta">${esc(d.skill.file)}</p>
+  <p>Default factor space: <code>${esc(d.skill.factor_space.split(" (default")[0])}</code></p>
+  <ol>${d.skill.design_rules.map(r => `<li>${esc(r)}</li>`).join("")}</ol></section>`);
+  const fs = d.first_factorial_slice;
+  const frows = Object.entries(fs.factors).map(([k, v]) =>
+    `<tr><td><code>${esc(k)}</code></td><td>${v.map(x => `<span class="pill">${esc(x)}</span>`).join(" ")}</td></tr>`).join("");
+  out.push(`<section class="card"><h2>First factorial slice</h2><p class="meta">${esc(fs.source)}</p>
+  <table class="rank"><tr><th>Factor</th><th>Levels</th></tr>${frows}</table>
+  <p>Primary outcomes:</p><div class="chips">${fs.primary_outcomes.map(x => `<span class="pill">${esc(x)}</span>`).join("")}</div>
+  <p>Secondary outcomes:</p><div class="chips">${fs.secondary_outcomes.map(x => `<span class="pill">${esc(x)}</span>`).join("")}</div></section>`);
+  const dl = d.dspy_lane;
+  out.push(`<section class="card"><h2>DSPy optimizer lane</h2>
+  <div class="notrun"><strong>Design only — not run.</strong> ${esc(dl.note)}</div>
+  <p class="meta">${esc(dl.file)}</p></section>`);
+  const ec = d.executed_comparisons;
+  if(ec){
+    const crows = Object.entries(ec.candidates || {}).map(([cid, v]) =>
+      `<tr><td><code>${esc(cid)}</code></td><td>${(v.suites || []).map(s => `<code>${esc(s)}</code>`).join(", ")}</td><td>${esc(v.passed)} passed / ${esc(v.failed)} failed · pass rate ${esc(v.pass_rate)}</td></tr>`).join("");
+    out.push(`<section class="card"><h2>Executed comparisons — a Delphi record</h2>
+    <p><span class="pill gold">owner surface: ${esc(ec.owner_surface)}</span></p>
+    <p>No DoE campaign has run, and DoE claims no results of its own. The repo's one executed per-candidate comparison is this Delphi record, required on this surface with its full payload:</p>
+    <table class="rank"><tr><th>Candidate</th><th>Suites</th><th>Result</th></tr>${crows}</table>
+    <p>${esc(ec.note)}</p>
+    <p class="meta">Record: <a href="${GH}${esc((ec.record || "").split(" — ")[0])}">${esc(ec.record)}</a> · also rendered on the <a href="./oracle.html">Oracle Panel</a></p></section>`);
+  }
+  document.getElementById("content").innerHTML = out.join("");
+  if((f.gaps || []).length){
+    document.getElementById("gaps-card").hidden = false;
+    document.getElementById("gaps").innerHTML = f.gaps.map(g => `<div class="gap">${esc(g)}</div>`).join("");
+  }
+  document.getElementById("sources").innerHTML = f.sources.map(s => `<li><span>${esc(s)}</span></li>`).join("");
+}
+load();
+</script>
+</body>
+</html>

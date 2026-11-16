@@ -1,0 +1,63 @@
+name: Research — Service / Repository
+description: Research a service or repository into the research-seeds pipeline (Repository Observatory signals). Filing IS the trigger — research-intake posts the {seed}{starter} record back.
+title: "[research:service] <service-id>"
+labels: ["research", "research:service"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One service/repository, one research run. Intake (`.github/workflows/research-intake.yml`,
+        `scripts/research/research_intake.py`) maps these fields to a seed in the exact schema of
+        `docs/repositories/research-seeds/*.json` and comments it back. Observatory signals
+        (starred/forked/watched) are research signals, never adoption orders; adoption stays
+        `research-only` until a separate evaluation promotes it. Never paste secret values.
+  - type: input
+    id: service_id
+    attributes:
+      label: Service ID
+      description: Short slug, e.g. gravitee-api-management.
+    validations: { required: true }
+  - type: input
+    id: service_name
+    attributes:
+      label: Service Name
+      description: Display name, e.g. Gravitee API Management.
+    validations: { required: true }
+  - type: input
+    id: upstream
+    attributes:
+      label: Upstream repository
+      description: Canonical upstream as owner/repo, e.g. gravitee-io/gravitee-api-management. Leave blank if none is evidenced yet (seed-before-claims).
+  - type: input
+    id: url
+    attributes:
+      label: Service URL
+      description: Canonical site/docs URL.
+  - type: dropdown
+    id: signal
+    attributes:
+      label: Observatory signal
+      description: How this entered the Observatory — a signal, not an adoption order.
+      options: [starred, forked, watched, owned, none]
+    validations: { required: true }
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options: [api-management, gateway, platform, durable-execution, measurement, developer-experience, other]
+    validations: { required: true }
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Capability signals
+      description: One per line or comma-separated.
+  - type: textarea
+    id: question
+    attributes:
+      label: Scoped question
+      description: The one question this research run should answer.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and sources
+      description: Links or pointers the research should start from, one per line.

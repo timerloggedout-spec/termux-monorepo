@@ -1,0 +1,16 @@
+schema_version: 1
+plan_id: fixture-unknown-dependency
+base_branch: master
+phases:
+  - phase_id: UNK-00
+    title: Phase with invalid prerequisite
+    proposal: fixture
+    items: [UNK-00-01]
+    depends_on: [MISSING-99]
+    required_gates: [repo-gate, termux-smoke]
+    approval: { required: false }
+    execution: { mode: agent, preferred_agent: jules }
+    completion:
+      require_merged_pr: true
+      require_all_items_terminal: true
+      evidence: [linked_pr_to_master_staging, required_checks_green]

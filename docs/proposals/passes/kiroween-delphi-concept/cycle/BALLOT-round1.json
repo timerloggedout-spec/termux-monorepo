@@ -1,0 +1,188 @@
+{
+  "schema": "delphi-cross-vote/v1",
+  "generated_at": "2026-10-30T23:44:05Z",
+  "candidates": [
+    "kiroween-delphi-concept-skeleton-crew",
+    "kiroween-delphi-concept-frankenstein",
+    "kiroween-delphi-concept-resurrection"
+  ],
+  "profiles": [
+    {
+      "candidate": "kiroween-delphi-concept-skeleton-crew",
+      "points": 3,
+      "evidenced": 3,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 2,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "87900eaec6e29ad07ec731b8a9c443208d32e259164d1d49cc8ee3f41a69ca19"
+    },
+    {
+      "candidate": "kiroween-delphi-concept-frankenstein",
+      "points": 2,
+      "evidenced": 2,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 2,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "d84d32ba5da3eb4f250b6903c8be7522cfa7878525bf34b6c0c6173205c4926e"
+    },
+    {
+      "candidate": "kiroween-delphi-concept-resurrection",
+      "points": 2,
+      "evidenced": 2,
+      "unverified": 0,
+      "evidenced_ratio": 1.0,
+      "items": 3,
+      "evidence_sources": 2,
+      "dependency_items": 0,
+      "money_veto": false,
+      "docs_sha256": "9bccf6f421afa094522070aee55762828ad2a9682e9c3844fbb9d3c419963177"
+    }
+  ],
+  "weights": {
+    "source": "ledger weights file weights.json",
+    "role_weights": {
+      "OPERATOR": 1.4462,
+      "builder": 1.2052,
+      "reviewer": 1.2052,
+      "Scout": 0.9641,
+      "cost_auditor": 1.4462
+    }
+  },
+  "ballots": [
+    {
+      "voter": "rubric:OPERATOR",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 25,
+        "kiroween-delphi-concept-frankenstein": 25,
+        "kiroween-delphi-concept-resurrection": 25
+      },
+      "rationale": {
+        "kiroween-delphi-concept-skeleton-crew": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-frankenstein": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-resurrection": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:builder",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 16,
+        "kiroween-delphi-concept-frankenstein": 16,
+        "kiroween-delphi-concept-resurrection": 16
+      },
+      "rationale": {
+        "kiroween-delphi-concept-skeleton-crew": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-frankenstein": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-resurrection": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:reviewer",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 25,
+        "kiroween-delphi-concept-frankenstein": 25,
+        "kiroween-delphi-concept-resurrection": 25
+      },
+      "rationale": {
+        "kiroween-delphi-concept-skeleton-crew": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-frankenstein": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-resurrection": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:Scout",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 25,
+        "kiroween-delphi-concept-frankenstein": 25,
+        "kiroween-delphi-concept-resurrection": 25
+      },
+      "rationale": {
+        "kiroween-delphi-concept-skeleton-crew": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-frankenstein": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-resurrection": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    },
+    {
+      "voter": "rubric:cost_auditor",
+      "source_class": "LOCAL_BASELINE",
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 25,
+        "kiroween-delphi-concept-frankenstein": 25,
+        "kiroween-delphi-concept-resurrection": 25
+      },
+      "rationale": {
+        "kiroween-delphi-concept-skeleton-crew": "evidenced_ratio 1.0 (3/3 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-frankenstein": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0",
+        "kiroween-delphi-concept-resurrection": "evidenced_ratio 1.0 (2/2 points evidenced); unverified 0; items 3; evidence_sources 2; dependency_items 0"
+      },
+      "evidence_refs": [
+        "generation profiles derived from each candidate's PROVENANCE evidence sets"
+      ]
+    }
+  ],
+  "ballots_by_class": {
+    "HUMAN_COLLABORATOR": 0,
+    "MODEL_PROVIDER": 0,
+    "LOCAL_BASELINE": 5
+  },
+  "per_class": {
+    "HUMAN_COLLABORATOR": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "MODEL_PROVIDER": {
+      "ballots": 0,
+      "scores": {},
+      "ranking": []
+    },
+    "LOCAL_BASELINE": {
+      "ballots": 5,
+      "scores": {
+        "kiroween-delphi-concept-skeleton-crew": 23.269,
+        "kiroween-delphi-concept-frankenstein": 23.269,
+        "kiroween-delphi-concept-resurrection": 23.269
+      },
+      "ranking": [
+        "kiroween-delphi-concept-frankenstein",
+        "kiroween-delphi-concept-resurrection",
+        "kiroween-delphi-concept-skeleton-crew"
+      ]
+    }
+  },
+  "classes_present": [
+    "LOCAL_BASELINE"
+  ],
+  "classes_absent": [
+    "HUMAN_COLLABORATOR",
+    "MODEL_PROVIDER"
+  ],
+  "combined_ranking": null,
+  "ranked_outcome": [
+    "kiroween-delphi-concept-frankenstein",
+    "kiroween-delphi-concept-resurrection",
+    "kiroween-delphi-concept-skeleton-crew"
+  ],
+  "class_rule": "Source classes tallied and reported separately, never merged (DEBATE protocol). DRIVER_SYNTHESIS is not a ballot."
+}

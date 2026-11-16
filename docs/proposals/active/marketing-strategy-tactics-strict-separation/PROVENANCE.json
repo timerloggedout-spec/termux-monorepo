@@ -1,0 +1,27 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-11-01T08:04:44Z",
+  "proposal_id": "marketing-strategy-tactics-strict-separation",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "3ff18ab592ca313895fd67d90dfe81a49d99245ccd2b27d41c5ba1cecc205ac2",
+      "items": 15,
+      "assembled_at": "2026-11-01T08:03:40Z"
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "91d1d3fe1be753133a3b152be375ef43226cadef1b2b7dc60679c89a8c16fd8e",
+    "ITEMS.md": "f189f95aa838e4b513b073fcfa6f22a75515426519baa87f401e30526b413c54",
+    "RFP.md": "a8bc5b6ac59f78957989ae5bf54bc49a67e1f6d9592720c614d7e731437c215b"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "marketing-strategy-tactics",
+  "concept": "Strict separation: fleet surfaces state ONLY the merge/receipt-verified fleet record, in fleet voice. Partner claims appear nowhere in fleet copy \u2014 partners are named as participants (link live = the assertable fact) with offers stated only as the registry verifies them; unverified offers are dropped, not footnoted. Tactics survive only with measured signal against a pre-set decision rule; unmeasured tactics are killed or instrumented before further spend.",
+  "siblings": [
+    "marketing-strategy-tactics-attributed-tiered",
+    "marketing-strategy-tactics-partner-forward-blend"
+  ]
+}

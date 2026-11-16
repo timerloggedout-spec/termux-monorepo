@@ -1,0 +1,125 @@
+name: Reverse Engineering — Taxonomy / Toolkit Record
+description: File the validated placement + evidence record for an RE taxonomy node or toolchain - the record-side companion to the Taxonomy / Toolkit filing form. Carries the Item ID and validator result so the intake record is mechanically checkable against taxonomy.json.
+title: "[re-taxonomy-record] "
+labels: ["re-taxonomy"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Record the placement AS VALIDATED (taxonomy.py validate(): unique id,
+        parents resolve, acyclic, root reachable, axis vocabulary, tool_role
+        present for tools, toolchain stage order + real tool refs). Extension
+        detail rides in Notes, never as renamed fields.
+  - type: input
+    id: item_id
+    attributes:
+      label: Item ID
+      description: The node slug as it lands (or landed) in taxonomy.json.
+      placeholder: android-native-library-analysis
+    validations:
+      required: true
+  - type: input
+    id: item_name
+    attributes:
+      label: Item name
+      description: Display name of the node.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - category
+        - tool
+    validations:
+      required: true
+  - type: input
+    id: parents
+    attributes:
+      label: Parent node IDs
+      description: Comma-separated taxonomy node ids, as validated.
+    validations:
+      required: true
+  - type: textarea
+    id: tags_target
+    attributes:
+      label: Tags - target
+      description: "Comma-separated, axis vocabulary only: native, bytecode, script, firmware, protocol, hardware, mobile, web-client, data-format"
+  - type: textarea
+    id: tags_format
+    attributes:
+      label: Tags - format
+      description: "Comma-separated: PE, ELF, Mach-O, DEX, JAR, CLR, raw-image, filesystem-image, APK, JS-bundle, WASM"
+  - type: textarea
+    id: tags_architecture
+    attributes:
+      label: Tags - architecture
+      description: "Comma-separated: x86, x64, ARM, ARM64, MIPS, RISC-V, other"
+  - type: textarea
+    id: tags_method
+    attributes:
+      label: Tags - method
+      description: "Comma-separated: static, dynamic, hybrid, comparative, emulated, automated"
+  - type: textarea
+    id: tags_objective
+    attributes:
+      label: Tags - objective
+      description: "Comma-separated: understanding, interoperability, malware-analysis, vulnerability-research, patch-analysis, cross-validation, ctf, incident-support"
+  - type: textarea
+    id: tags_tool_role
+    attributes:
+      label: Tags - tool role
+      description: "Comma-separated: disassembler, decompiler, debugger, instrumentation, extractor, emulator, workspace, cross-validator, capture, deobfuscator, adapter-factory"
+  - type: textarea
+    id: tags_environment
+    attributes:
+      label: Tags - environment
+      description: "Comma-separated: linux, windows, macos, android, ios, embedded, ci-remote, b160v-thin"
+  - type: textarea
+    id: toolchain
+    attributes:
+      label: Toolchain stages
+      description: "One line per stage, workflow order: stage: tool-id, tool-id -> output"
+  - type: textarea
+    id: outputs
+    attributes:
+      label: Outputs
+      description: Comma-separated output slugs.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Node description as validated. Names only, never credential values.
+  - type: dropdown
+    id: evidence_level
+    attributes:
+      label: Evidence level
+      description: Evidence standard behind this placement.
+      options:
+        - observed
+        - inferred
+        - reproduced
+        - contradicted
+        - unknown
+    validations:
+      required: true
+  - type: input
+    id: validator_result
+    attributes:
+      label: Validator result
+      description: "Outcome of taxonomy.py validate() / CLI on the merged taxonomy, e.g. pass (0 errors) or the first error verbatim."
+    validations:
+      required: true
+  - type: input
+    id: submitter
+    attributes:
+      label: Submitter Role{Moniker}
+      placeholder: Role{moniker}
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Extension detail (full placement rationale, overlap-matrix values) under this heading only.

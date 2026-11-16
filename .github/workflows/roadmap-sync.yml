@@ -1,0 +1,160 @@
+name: Sync Developer Roadmap
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday at midnight UTC
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force full sync (not shallow)'
+        required: false
+        default: 'false'
+      branch:
+        description: 'Upstream branch to sync'
+        required: false
+        default: 'master'
+
+jobs:
+  sync:
+    name: Sync Roadmap Content
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install pnpm
+        run: npm install -g pnpm
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install jq
+      
+      - name: Make sync script executable
+        run: chmod +x roadmaps/sync/sync-roadmaps.sh
+      
+      - name: Run sync
+        id: sync
+        run: |
+          cd roadmaps
+          ./sync/sync-roadmaps.sh \
+            --branch ${{ inputs.branch || 'master' }} \
+            ${{ inputs.force == 'true' && '--force' || '' }}
+        continue-on-error: true
+      
+      - name: Update metadata
+        if: steps.sync.outcome == 'success'
+        run: |
+          cd roadmaps
+          node ../scripts/roadmap/update-metadata.js
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          git add roadmaps/
+          if git diff --cached --quiet; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit changes
+        if: steps.changes.outputs.no_changes == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: sync developer-roadmap content [skip ci]"
+          git push
+      
+      - name: Create sync report
+        if: always()
+        run: |
+          SYNC_STATUS=${{ steps.sync.outcome }}
+          echo "## Sync Report" > /tmp/sync-report.md
+          echo "" >> /tmp/sync-report.md
+          echo "**Status:** ${SYNC_STATUS}" >> /tmp/sync-report.md
+          echo "**Timestamp:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> /tmp/sync-report.md
+          echo "**Branch:** ${{ inputs.branch || 'master' }}" >> /tmp/sync-report.md
+          echo "**Force:** ${{ inputs.force || 'false' }}" >> /tmp/sync-report.md
+          echo "" >> /tmp/sync-report.md
+          
+          if [ "$SYNC_STATUS" = "success" ]; then
+            echo "✅ Sync completed successfully" >> /tmp/sync-report.md
+            if [ "${{ steps.changes.outputs.no_changes }}" = "false" ]; then
+              echo "📝 Changes committed" >> /tmp/sync-report.md
+            else
+              echo "📭 No changes to commit" >> /tmp/sync-report.md
+            fi
+          else
+            echo "❌ Sync failed" >> /tmp/sync-report.md
+          fi
+          
+          # Get last sync info
+          if [ -f roadmaps/sync/sync-log.json ]; then
+            LAST_SYNC=$(jq -r '.syncs[-1]' roadmaps/sync/sync-log.json 2>/dev/null || echo "No syncs yet")
+            echo "" >> /tmp/sync-report.md
+            echo "### Last Sync Details" >> /tmp/sync-report.md
+            echo "\`\`\`json" >> /tmp/sync-report.md
+            echo "$LAST_SYNC" >> /tmp/sync-report.md
+            echo "\`\`\`" >> /tmp/sync-report.md
+          fi
+          
+          # Post report as comment if triggered by workflow_dispatch
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            gh pr comment ${{ github.event.pull_request.number }} --body-file /tmp/sync-report.md || true
+          fi
+      
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-log
+          path: roadmaps/sync/sync-log.json
+          retention-days: 7
+
+  notify:
+    name: Send Notifications
+    needs: sync
+    runs-on: ubuntu-latest
+    if: always() && needs.sync.result != 'skipped'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Get sync status
+        id: status
+        run: |
+          STATUS=${{ needs.sync.result }}
+          if [ "$STATUS" = "success" ]; then
+            echo "status=✅ Sync succeeded" >> $GITHUB_OUTPUT
+            echo "color=good" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Sync failed" >> $GITHUB_OUTPUT
+            echo "color=danger" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"${{ steps.status.outputs.status }} (Developer Roadmap Sync)","color":"${{ steps.status.outputs.color }}"}' \
+            $SLACK_WEBHOOK_URL || true

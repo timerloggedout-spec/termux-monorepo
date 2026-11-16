@@ -1,0 +1,84 @@
+# Delphi cycle on Temporal (N5) — CI + acceptance proof.
+#
+# Owner order 2026-10-28: the VM is a sandbox only; nothing runs
+# forever there. The Delphi cycle worker is therefore NOT a VM
+# service: this workflow is its always-on home. A dispatch spins up
+# an EPHEMERAL Temporal dev server inside the job, runs the offline
+# tests, then the brief §5 acceptance (client.py prove: fixture
+# cycle, SIGKILL mid-implementation, second worker completes,
+# hash-gated round 2, exactly-once emission in record_only mode —
+# CI posts nothing to the ledgers) and the dual-run parity check,
+# and uploads the receipts as artifacts.
+#
+# The fleet self-host (owner exception, 2026-10-27) remains the
+# substrate for live cycles; a live cycle's workers run bounded,
+# per engagement (worker.py in the foreground for the cycle's
+# duration), never as a VM daemon.
+name: delphi-cycle
+
+on:
+  workflow_dispatch:
+    inputs:
+      prove:
+        description: "Run the §5 live acceptance + parity (record_only emission)"
+        required: false
+        default: true
+        type: boolean
+  pull_request:
+    paths:
+      - "scripts/temporal/delphi_cycle/**"
+      - "scripts/delphi/**"
+      - "tests/test_delphi_cycle.py"
+      - ".github/workflows/delphi-cycle.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  delphi-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        run: pip install temporalio pytest
+      - name: Offline tests
+        run: >
+          python -m pytest tests/test_delphi_cycle.py
+          tests/test_delphi_method_cycle.py tests/test_delphi_cross_vote.py
+          -q
+      - name: Install Temporal CLI + start ephemeral dev server
+        if: ${{ inputs.prove }}
+        run: |
+          curl -sSfL https://temporal.download/cli.sh | sh
+          echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
+          nohup "$HOME/.temporalio/bin/temporal" server start-dev \
+            --port 7233 --ui-port 8233 --log-level warn \
+            > temporal-server.log 2>&1 &
+          for i in $(seq 1 30); do
+            (exec 3<>/dev/tcp/127.0.0.1/7233) 2>/dev/null && exit 0
+            sleep 2
+          done
+          echo "dev server did not bind :7233"; cat temporal-server.log; exit 1
+      - name: "§5 acceptance (prove, record_only) + parity"
+        if: ${{ inputs.prove }}
+        run: |
+          cd scripts/temporal/delphi_cycle
+          python client.py --address localhost:7233 prove \
+            --workdir "$RUNNER_TEMP/n5-prove" --ledger-mode record_only \
+            | tee "$RUNNER_TEMP/prove-envelope.json"
+          python client.py parity --workdir "$RUNNER_TEMP/n5-prove" \
+            | tee "$RUNNER_TEMP/parity.json"
+      - name: Upload receipts
+        if: ${{ always() && inputs.prove }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: delphi-cycle-prove-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/prove-envelope.json
+            ${{ runner.temp }}/parity.json
+            ${{ runner.temp }}/n5-prove/rehearsal/cycle/
+          if-no-files-found: warn

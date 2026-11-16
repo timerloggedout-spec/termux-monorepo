@@ -1,0 +1,571 @@
+{
+ "campaign": {
+  "campaign_doc": "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md",
+  "design_ssot": "docs/ops/WEB-ADAPTER-FOUNDRY.md",
+  "name": "web-reverse-engineering",
+  "placement_rules": [
+   "Design + campaign docs: docs/ops/ \u2014 runtime code + machine registries: ops/web_adapter_foundry/ \u2014 loadable skills: .agents/skills/ \u2014 tests: tests/ \u2014 account-signal matrices: docs/repositories/ (Observatory).",
+   "Every candidate is placed exactly once by primary category; cross-cutting membership is recorded in sources/facets, never by duplicating files.",
+   "A candidate enters as a research signal (star/import in docs/repositories/browser-lane-imports.json); it is adopted only after the Foundry promotion pipeline verifies it."
+  ]
+ },
+ "categories": {
+  "adapter-systems": "Website->CLI/API adapter frameworks and existing-client discovery.",
+  "agent-layers": "LLM agent layers over engines (offload-only on this fleet).",
+  "capture-and-recon": "Traffic/script capture and reverse-engineering workbenches.",
+  "code-recovery": "Deobfuscation and bundle recovery.",
+  "contract-synthesis": "Capture -> OpenAPI / client code generation.",
+  "drivers-and-clients": "CDP drivers, stealth drivers, agent CLIs that operate an engine.",
+  "engines": "Headless/browser engines \u2014 tiered by B160V survivability in each entry's b160v_tier.",
+  "extraction-and-discovery": "The 'reverse-SEO' end: site discovery, crawl, structured extraction.",
+  "substrate": "Termux/Android delivery substrate and handset browsers.",
+  "verification": "Contract-driven independent verification."
+ },
+ "nodes": [
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "adapter-systems",
+    "existing-client-discovery"
+   ],
+   "foundry_role": "existing-client discovery",
+   "license": "MIT",
+   "pushed_at": "2026-10-22T20:45:46Z",
+   "repo": "alexgaoth/awesome-reverse-engineered",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "contract-synthesis",
+    "capture-to-openapi"
+   ],
+   "foundry_role": "capture -> draft OpenAPI",
+   "license": null,
+   "pushed_at": "2026-10-19T18:45:50Z",
+   "repo": "alufers/mitmproxy2swagger",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "offload-only (browser mode); HTTP mode is device-safe",
+   "category_path": [
+    "web-reverse-engineering",
+    "extraction-and-discovery",
+    "crawler-frameworks"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-22",
+   "repo": "apify/crawlee",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 26224,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "offload-only (agent layer)",
+   "category_path": [
+    "web-reverse-engineering",
+    "agent-layers",
+    "llm-agents"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "MIT",
+   "pushed_at": "2026-10-22",
+   "repo": "browser-use/browser-use",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 118884,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "b160v_tier": "offload-only (agent layer)",
+   "category_path": [
+    "web-reverse-engineering",
+    "agent-layers",
+    "hybrid-act-extract"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "MIT",
+   "pushed_at": "2026-10-22",
+   "repo": "browserbase/stagehand",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 25785,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "offload-only (fleet/deployment layer)",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "fleet-infrastructure"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "NOASSERTION (free for non-commercial per project description \u2014 check before distribution)",
+   "pushed_at": "2026-10-22",
+   "repo": "browserless/browserless",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 13845,
+   "streaming": "WebSocket endpoints"
+  },
+  {
+   "b160v_tier": "offload-only (headless Firefox inside)",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "firefox-class"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "LGPL-2.1",
+   "pushed_at": "2025-07-11",
+   "repo": "browsh-org/browsh",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 19097,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "on-device-thin (driver only)",
+   "category_path": [
+    "web-reverse-engineering",
+    "drivers-and-clients",
+    "cdp-drivers"
+   ],
+   "import_status": "starred-2026-10-22",
+   "license": "MIT",
+   "pushed_at": "2026-10-11",
+   "repo": "chromedp/chromedp",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 13330,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "contract-synthesis",
+    "request-to-code"
+   ],
+   "foundry_role": "captured request -> code seed",
+   "license": "MIT",
+   "pushed_at": "2026-03-10T05:06:56Z",
+   "repo": "curlconverter/curlconverter",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "offload-only (Chromium inside)",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "chromium-class"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "BSD-3-Clause",
+   "pushed_at": "2024-07-01",
+   "repo": "fathyb/carbonyl",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 19598,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "offload-only (hosted/self-host API)",
+   "category_path": [
+    "web-reverse-engineering",
+    "extraction-and-discovery",
+    "web-data-apis"
+   ],
+   "import_status": "already-starred",
+   "license": "AGPL-3.0",
+   "pushed_at": "2026-10-22",
+   "repo": "firecrawl/firecrawl",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 194271,
+   "streaming": "HTTP API (+ streaming modes)"
+  },
+  {
+   "b160v_tier": "adjacent (foundry core)",
+   "category_path": [
+    "web-reverse-engineering",
+    "capture-and-recon",
+    "cdp-workbenches"
+   ],
+   "foundry_role": "capture-investigate-export",
+   "import_status": "starred-2026-10-22",
+   "license": "MIT",
+   "pushed_at": "2026-10-21",
+   "repo": "greekr4/rever-browser",
+   "sources": [
+    "browser-lane",
+    "foundry-catalog"
+   ],
+   "stars_at_eval": 44,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "b160v_tier": "on-device-thin",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "thin-from-scratch"
+   ],
+   "import_status": "already-starred+watching",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-21",
+   "repo": "h4ckf0r0day/obscura",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 29158,
+   "streaming": "CDP over WebSocket; MCP"
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "code-recovery",
+    "javascript-deobfuscation"
+   ],
+   "foundry_role": "JavaScript recovery",
+   "license": "MIT",
+   "pushed_at": "2026-07-26T22:22:19Z",
+   "repo": "j4k0xb/webcrack",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "thin client over logged-in browser",
+   "category_path": [
+    "web-reverse-engineering",
+    "adapter-systems",
+    "website-to-cli"
+   ],
+   "foundry_role": "browser-backed reusable CLI",
+   "import_status": "already-starred",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-20",
+   "repo": "jackwener/OpenCLI",
+   "sources": [
+    "browser-lane",
+    "foundry-catalog"
+   ],
+   "stars_at_eval": 30548,
+   "streaming": "browser bridge"
+  },
+  {
+   "b160v_tier": "adjacent watchlist",
+   "category_path": [
+    "web-reverse-engineering",
+    "extraction-and-discovery",
+    "url-to-markdown"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-05-22",
+   "repo": "jina-ai/reader",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 12185,
+   "streaming": "HTTP"
+  },
+  {
+   "b160v_tier": "offload-only (Playwright/Chromium)",
+   "category_path": [
+    "web-reverse-engineering",
+    "drivers-and-clients",
+    "stealth-drivers"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-20",
+   "repo": "Kaliiiiiiiiii-Vinyzu/patchright",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 4948,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "b160v_tier": "adjacent (foundry peer)",
+   "category_path": [
+    "web-reverse-engineering",
+    "contract-synthesis",
+    "har-to-client"
+   ],
+   "import_status": "already-starred",
+   "license": "MIT",
+   "pushed_at": "2026-09-23",
+   "repo": "kalil0321/reverse-api-engineer",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 1775,
+   "streaming": "n/a"
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "adapter-systems",
+    "desktop-electron"
+   ],
+   "foundry_role": "desktop/Electron CLI recovery",
+   "license": "MIT",
+   "pushed_at": "2026-10-16T06:29:51Z",
+   "repo": "leileqiTHU/reverse-cli-anything",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "on-device-thin",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "thin-from-scratch"
+   ],
+   "import_status": "starred-2026-10-22",
+   "license": "AGPL-3.0",
+   "pushed_at": "2026-10-22",
+   "repo": "lightpanda-io/browser",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 36868,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "adapter-systems",
+    "website-to-cli"
+   ],
+   "foundry_role": "OpenCLI fork",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-04-04T19:20:54Z",
+   "repo": "linxule/opencli",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "capture-and-recon",
+    "browser-facades"
+   ],
+   "foundry_role": "agent-accessible browser interaction",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-22T17:43:26Z",
+   "repo": "microsoft/playwright-mcp",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "capture-and-recon",
+    "broad-substrates"
+   ],
+   "foundry_role": "broad inspection substrate",
+   "license": "MIT",
+   "pushed_at": "2026-10-22T21:28:42Z",
+   "repo": "morluto/rea",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "watchlist (young: 35 stars at eval)",
+   "category_path": [
+    "web-reverse-engineering",
+    "engines",
+    "thin-from-scratch"
+   ],
+   "import_status": "starred-2026-10-22",
+   "license": "MIT",
+   "pushed_at": "2026-10-18",
+   "repo": "project-oxi/oxibrowser",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 35,
+   "streaming": "CDP over WebSocket; JSON CLI (stdin-shaped)"
+  },
+  {
+   "category_path": [
+    "web-reverse-engineering",
+    "verification",
+    "contract-driven"
+   ],
+   "foundry_role": "contract-driven verification",
+   "license": "MIT",
+   "pushed_at": "2026-10-22T21:08:13Z",
+   "repo": "schemathesis/schemathesis",
+   "sources": [
+    "foundry-catalog"
+   ]
+  },
+  {
+   "b160v_tier": "substrate",
+   "category_path": [
+    "web-reverse-engineering",
+    "substrate",
+    "termux-delivery"
+   ],
+   "import_status": "starred-2026-10-22",
+   "license": null,
+   "pushed_at": "2026-10-22",
+   "repo": "termux/termux-packages",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 17212,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "substrate",
+   "category_path": [
+    "web-reverse-engineering",
+    "substrate",
+    "termux-delivery"
+   ],
+   "import_status": "starred-2026-10-22",
+   "license": "GPL-3.0",
+   "pushed_at": "2026-10-22",
+   "repo": "termux/termux-x11",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 4993,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "handset-gui",
+   "category_path": [
+    "web-reverse-engineering",
+    "substrate",
+    "handset-browsers"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "GPL-3.0",
+   "pushed_at": "2026-10-22",
+   "repo": "uazo/cromite",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 8402,
+   "streaming": "n/a"
+  },
+  {
+   "b160v_tier": "offload-only (direct CDP to Chrome-class engine)",
+   "category_path": [
+    "web-reverse-engineering",
+    "drivers-and-clients",
+    "cdp-drivers"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "AGPL-3.0",
+   "pushed_at": "2026-10-08",
+   "repo": "ultrafunkamsterdam/nodriver",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 4883,
+   "streaming": "CDP over WebSocket"
+  },
+  {
+   "b160v_tier": "offload-only (browser-backed extraction)",
+   "category_path": [
+    "web-reverse-engineering",
+    "extraction-and-discovery",
+    "llm-ready-crawlers"
+   ],
+   "import_status": "candidate-not-imported",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-22",
+   "repo": "unclecode/crawl4ai",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 86049,
+   "streaming": "HTTP"
+  },
+  {
+   "b160v_tier": "thin client (CLI) over an engine",
+   "category_path": [
+    "web-reverse-engineering",
+    "drivers-and-clients",
+    "agent-clis"
+   ],
+   "import_status": "already-starred",
+   "license": "Apache-2.0",
+   "pushed_at": "2026-10-22",
+   "repo": "vercel-labs/agent-browser",
+   "sources": [
+    "browser-lane"
+   ],
+   "stars_at_eval": 44440,
+   "streaming": "CDP"
+  }
+ ],
+ "schema": "web-re-taxonomy/1",
+ "transports": {
+  "cdp-websocket": {
+   "shape": "browser control + event streaming",
+   "status": "native to Tier-1 engines/drivers"
+  },
+  "cli": {
+   "shape": "arguments over the same handle_request",
+   "status": "implemented (waf)"
+  },
+  "http": {
+   "shape": "POST /invoke over handle_request",
+   "status": "designed"
+  },
+  "mcp": {
+   "shape": "tool facade; obscura ships one natively",
+   "status": "designed (own protocol implementation)"
+  },
+  "sse": {
+   "shape": "one-way result/event streams for poller/queue patterns",
+   "status": "implemented primitives (waf sse_encode + EventBus); HTTP facade next"
+  },
+  "stdin-jsonl": {
+   "shape": "one envelope per line, protocol-only stdout",
+   "status": "implemented (waf serve)"
+  },
+  "websocket": {
+   "shape": "bidirectional control facade over handle_request",
+   "status": "designed"
+  }
+ },
+ "umbrella": {
+  "name": "connectors-tooling-abilities",
+  "note": "Parent lane (all surfaces). This campaign is one nested scope under it.",
+  "sibling_scopes": [
+   "integration-mesh-matrix",
+   "device-pull-queue",
+   "quota-and-registry",
+   "repository-observatory (stars|forks|watch)"
+  ]
+ }
+}

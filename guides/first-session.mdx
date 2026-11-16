@@ -1,0 +1,143 @@
+---
+title: "Run Your First DeepCLI Session in Termux"
+sidebarTitle: "First Session"
+description: "Learn how to create a DeepCLI session, send prompts, use thinking mode, view history, export chats, and fork conversation branches in Termux."
+---
+
+DeepCLI is the Termux Monorepo's command-line interface for the DeepSeek API. This guide walks you through a complete session lifecycle: creating a session, sending messages, enabling thinking mode, reviewing history, exporting your conversation, and branching it with a fork.
+
+<Steps>
+  <Step title="Create a new session">
+    Start by initializing a fresh conversation context with the `new` command.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py new
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    Session created: sess_7f3a9b2e
+    ```
+  </Step>
+  <Step title="Send a message">
+    Pass your prompt directly to the `send` command. DeepCLI forwards it to the DeepSeek API and prints the response.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py send "Explain how Termux handles package management"
+    ```
+
+    </CodeGroup>
+
+    Expected output (truncated):
+
+    ```text
+    [DeepSeek] Termux uses apt and pkg as its package managers...
+    ```
+  </Step>
+  <Step title="Enable thinking mode">
+    Add the `--thinking` flag when you want the model to show its reasoning chain before the final answer.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py send "Refactor this loop for readability" --thinking
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [Thinking] 1. Identify loop type: for-range over slice
+    [Thinking] 2. Check for index-only usage
+    [Thinking] 3. Replace with range over values
+    [DeepSeek] for _, v := range items { ... }
+    ```
+  </Step>
+  <Step title="List active sessions">
+    View all stored sessions so you can pick one to resume.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py list
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    sess_7f3a9b2e  2025-01-14 09:23  4 messages
+    sess_a1e4c8d0  2025-01-13 18:41  12 messages
+    ```
+  </Step>
+  <Step title="View session history">
+    Use the `history` command with a session ID to inspect the full message log.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py history --session sess_7f3a9b2e
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [user] Explain how Termux handles package management
+    [assistant] Termux uses apt and pkg as its package managers...
+    [user] Refactor this loop for readability
+    [assistant] [Thinking] ...
+    ```
+  </Step>
+  <Step title="Export the session">
+    Export a conversation to a JSON file for backup, sharing, or further processing.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py export --format json --output chat.json
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    Exported 4 messages to chat.json
+    ```
+  </Step>
+  <Step title="Fork a conversation branch">
+    Create a new session branched from a specific message. This is useful when you want to explore an alternate reply without losing the original thread.
+
+    <CodeGroup>
+
+    ```bash
+    python3 deepcli/deepcli.py fork --session sess_7f3a9b2e --message-id msg_3
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    Forked session: sess_9d2e4f1a
+    Parent: sess_7f3a9b2e @ msg_3
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+  You can chain commands in scripts. For example, run `deepcli.py new && deepcli.py send "Summarize README" --thinking` inside a CI step to generate automated release notes.
+</Tip>
+
+Next, learn how to run [autonomous tasks with ArchWiz](/guides/autonomous-tasks) or explore the [command reference](/reference/commands) for the full DeepCLI surface.

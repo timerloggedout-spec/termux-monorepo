@@ -1,0 +1,53 @@
+{
+  "category": "gnome_tools",
+  "tools": [
+    {
+      "name": "gcr-viewer",
+      "package": "gcr",
+      "path": "/data/data/com.termux/files/usr/bin/gcr-viewer",
+      "source": "apt",
+      "tags": [
+        "gnome_tools"
+      ],
+      "auto_tag_source": "auto:^gcr$|^gcr-",
+      "category": "gnome_tools",
+      "description": "A library for displaying certificates and crypto UI, accessing key stores"
+    },
+    {
+      "name": "gnome-keyring-3",
+      "package": "gnome-keyring",
+      "path": "/data/data/com.termux/files/usr/bin/gnome-keyring-3",
+      "source": "apt",
+      "tags": [
+        "gnome_tools"
+      ],
+      "auto_tag_source": "auto:^gnome$|^gnome-",
+      "category": "gnome_tools",
+      "description": "a collection of components in GNOME that store secrets, passwords, keys, certificates and make them available to applications"
+    },
+    {
+      "name": "gnome-keyring-daemon",
+      "package": "gnome-keyring",
+      "path": "/data/data/com.termux/files/usr/bin/gnome-keyring-daemon",
+      "source": "apt",
+      "tags": [
+        "gnome_tools"
+      ],
+      "auto_tag_source": "auto:^gnome$|^gnome-",
+      "category": "gnome_tools",
+      "description": "a collection of components in GNOME that store secrets, passwords, keys, certificates and make them available to applications"
+    },
+    {
+      "name": "dconf",
+      "package": "dconf",
+      "path": "/data/data/com.termux/files/usr/bin/dconf",
+      "source": "apt",
+      "tags": [
+        "gnome_tools"
+      ],
+      "auto_tag_source": "auto:^dconf$|^dconf-",
+      "category": "gnome_tools",
+      "description": "dconf is a simple key/value storage system that is heavily optimised for reading"
+    }
+  ]
+}

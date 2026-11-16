@@ -1,0 +1,45 @@
+name: Actions Run Watcher — incident notification
+
+# workflow_run trigger removed 2026-10-20: platform always lists a run record
+# before job if: evaluates, producing skip-spam in Actions tab and notifications.
+# Incidents for failure/timed_out are now emitted by cadence-lead-lag.yml
+# (Lead/Lag moneyball plane) which samples recent runs on schedule */4.
+# This workflow retained as dispatch-only for manual incident replay / audit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Workflow run ID to inspect (optional)
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: actions-run-watcher-manual
+  cancel-in-progress: false
+
+jobs:
+  observe-completion:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Manual incident replay (dispatch only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${RUN_ID:-}" ]; then
+            echo "No run_id provided; no-op."
+            exit 0
+          fi
+          echo "Manual dispatch for run ${RUN_ID} — fetch and classify via cadence script preferred."
+          # Placeholder: full logic absorbed into cadence Lead/Lag poller.
+          echo "See docs/ops/ACTIONS-WORKFLOWS-MATRIX.md for audit rules."

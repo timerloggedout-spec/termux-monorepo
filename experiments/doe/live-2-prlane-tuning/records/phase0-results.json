@@ -1,0 +1,354 @@
+{
+ "campaign": "live-2-prlane-tuning",
+ "phase": 0,
+ "check": "replay_determinism",
+ "snapshots": [
+  {
+   "snapshot": "feed-2026-10-28T230234Z.json",
+   "generated_at": "2026-10-28T23:02:34Z",
+   "open_prs": 102,
+   "recorded_counts": {
+    "CANDIDATE": 23,
+    "EXTRACT": 23,
+    "NEED_EVIDENCE": 46,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 27,
+    "EXTRACT": 23,
+    "NEED_EVIDENCE": 42,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-28T231701Z.json",
+   "generated_at": "2026-10-28T23:17:01Z",
+   "open_prs": 102,
+   "recorded_counts": {
+    "CANDIDATE": 23,
+    "EXTRACT": 23,
+    "NEED_EVIDENCE": 46,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 27,
+    "EXTRACT": 23,
+    "NEED_EVIDENCE": 42,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-28T233736Z.json",
+   "generated_at": "2026-10-28T23:37:36Z",
+   "open_prs": 104,
+   "recorded_counts": {
+    "CANDIDATE": 23,
+    "EXTRACT": 24,
+    "NEED_EVIDENCE": 47,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 27,
+    "EXTRACT": 24,
+    "NEED_EVIDENCE": 43,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-29T005615Z.json",
+   "generated_at": "2026-10-29T00:56:15Z",
+   "open_prs": 103,
+   "recorded_counts": {
+    "CANDIDATE": 23,
+    "EXTRACT": 24,
+    "NEED_EVIDENCE": 46,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 27,
+    "EXTRACT": 24,
+    "NEED_EVIDENCE": 42,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-29T114228Z.json",
+   "generated_at": "2026-10-29T11:42:28Z",
+   "open_prs": 106,
+   "recorded_counts": {
+    "CANDIDATE": 24,
+    "EXTRACT": 25,
+    "NEED_EVIDENCE": 47,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 28,
+    "EXTRACT": 25,
+    "NEED_EVIDENCE": 43,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-30T113448Z.json",
+   "generated_at": "2026-10-30T11:34:48Z",
+   "open_prs": 124,
+   "recorded_counts": {
+    "CANDIDATE": 28,
+    "EXTRACT": 28,
+    "NEED_EVIDENCE": 58,
+    "SUPERSEDE": 10
+   },
+   "replay_counts": {
+    "CANDIDATE": 32,
+    "EXTRACT": 28,
+    "NEED_EVIDENCE": 54,
+    "SUPERSEDE": 10
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  },
+  {
+   "snapshot": "feed-2026-10-31T111001Z.json",
+   "generated_at": "2026-10-31T11:10:01Z",
+   "open_prs": 152,
+   "recorded_counts": {
+    "CANDIDATE": 30,
+    "EXTRACT": 28,
+    "NEED_EVIDENCE": 83,
+    "SUPERSEDE": 11
+   },
+   "replay_counts": {
+    "CANDIDATE": 34,
+    "EXTRACT": 28,
+    "NEED_EVIDENCE": 79,
+    "SUPERSEDE": 11
+   },
+   "distribution_exact": false,
+   "per_pr_exact": false,
+   "mismatches": [
+    {
+     "number": 1498,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1514,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1540,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    },
+    {
+     "number": 1569,
+     "recorded": "NEED_EVIDENCE",
+     "replay": "CANDIDATE",
+     "explainable_by_dropped_fields": true,
+     "note": "recorded NE can come from mergeable_state=dirty or base.ref != master, both dropped by the feed"
+    }
+   ]
+  }
+ ],
+ "verdict": {
+  "distribution_level": "FAIL",
+  "per_pr_level": "PASS_WITH_RECORDED_GAP"
+ }
+}

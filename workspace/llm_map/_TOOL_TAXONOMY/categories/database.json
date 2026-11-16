@@ -1,0 +1,52 @@
+{
+  "category": "database",
+  "tools": [
+    {
+      "name": "sqlite3",
+      "package": "sqlite",
+      "path": "/data/data/com.termux/files/usr/bin/sqlite3",
+      "source": "apt",
+      "tags": [
+        "database"
+      ],
+      "category": "database",
+      "description": "Command line shell for SQLite"
+    },
+    {
+      "name": "gdbm_load",
+      "package": "gdbm",
+      "path": "/data/data/com.termux/files/usr/bin/gdbm_load",
+      "source": "apt",
+      "tags": [
+        "database"
+      ],
+      "auto_tag_source": "auto:^gdbm$|^gdbm-",
+      "category": "database",
+      "description": "Library of database functions that use extensible hashing"
+    },
+    {
+      "name": "gdbmtool",
+      "package": "gdbm",
+      "path": "/data/data/com.termux/files/usr/bin/gdbmtool",
+      "source": "apt",
+      "tags": [
+        "database"
+      ],
+      "auto_tag_source": "auto:^gdbm$|^gdbm-",
+      "category": "database",
+      "description": "Library of database functions that use extensible hashing"
+    },
+    {
+      "name": "gdbm_dump",
+      "package": "gdbm",
+      "path": "/data/data/com.termux/files/usr/bin/gdbm_dump",
+      "source": "apt",
+      "tags": [
+        "database"
+      ],
+      "auto_tag_source": "auto:^gdbm$|^gdbm-",
+      "category": "database",
+      "description": "Library of database functions that use extensible hashing"
+    }
+  ]
+}

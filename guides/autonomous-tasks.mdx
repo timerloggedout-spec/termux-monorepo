@@ -1,0 +1,125 @@
+---
+title: "Run Autonomous Tasks with ArchWiz"
+sidebarTitle: "Autonomous Tasks"
+description: "Learn how to set task environment variables, run autonomous workflows with ArchWiz, dispatch sandboxed tasks, monitor agents, and auto-repair failures."
+---
+
+ArchWiz provides the autonomous execution layer of the Termux Monorepo. This guide shows you how to configure task variables, launch an autonomous runner, dispatch sandboxed tasks, monitor live execution, and recover from failures automatically.
+
+<Steps>
+  <Step title="Set task environment variables">
+    Before starting any autonomous work, export the required variables so the runner knows what to target.
+
+    <CodeGroup>
+
+    ```bash
+    export TASK_ID="refactor-auth-42"
+    export REFACTOR_GOAL="Decouple auth middleware from the user store"
+    export TARGET_FILE="src/auth/middleware.py"
+    export TASK_WORKSPACE="~/workspace/llm_map"
+    ```
+
+    </CodeGroup>
+
+    <Note>
+      The runner reads tasks from `~/workspace/llm_map/master_tasks.json`. Ensure your task entry exists there before you begin.
+    </Note>
+  </Step>
+  <Step title="Start the autonomous runner">
+    Launch the main loop that picks tasks from the registry and drives them to completion.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/autonomous_runner.py
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [autonomous_runner] Loaded 3 pending tasks
+    [autonomous_runner] Starting TASK_ID=refactor-auth-42
+    ```
+  </Step>
+  <Step title="Dispatch a sandboxed task">
+    Use `dispatch_task.py` to execute a single unit of work in isolation. This is the preferred way to run changes that need rollback protection.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/dispatch_task.py --task-id refactor-auth-42 --dry-run
+    python3 archwiz/dispatch_task.py --task-id refactor-auth-42
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [dispatch] Dry-run complete: 2 files would change
+    [dispatch] Executed: 2 files modified, 0 errors
+    ```
+  </Step>
+  <Step title="Monitor with mirror">
+    Open a live mirror of the runner state to watch progress, logs, and agent heartbeats in real time.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/mirror.py --follow
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [mirror] Connected to runner bus
+    [mirror] TASK refactor-auth-42: step 4/7 — running tests
+    ```
+  </Step>
+  <Step title="Auto-repair failures">
+    If a task fails, invoke `auto_repair.py` to retry with adjusted parameters or fallback strategies.
+
+    <CodeGroup>
+
+    ```bash
+    python3 archwiz/auto_repair.py --task-id refactor-auth-42 --max-retries 3
+    ```
+
+    </CodeGroup>
+
+    Expected output:
+
+    ```text
+    [auto_repair] Detected failure in step 4
+    [auto_repair] Retrying with reduced context window
+    [auto_repair] Step 4 passed on retry 2
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Tasks must exist in `docs/proposals/active/<id>/ITEMS.md` before work begins. The runner validates this file at startup and refuses to proceed if the task is not registered.
+</Warning>
+
+### Preferred execution loop
+
+Follow this sequence to keep the monorepo stable and auditable:
+
+1. **Registry**: Add or update the task in `docs/proposals/registry.yaml`
+2. **Pick item**: Select the next open item from `docs/proposals/active/<id>/ITEMS.md`
+3. **Branch**: Create a feature branch for the change
+4. **Implement**: Run `dispatch_task.py` or `autonomous_runner.py` to apply the change
+5. **PR**: Open a pull request with the branch
+6. **Gates green**: Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`
+7. **Merge**: Merge only after both gates pass
+8. **Update ITEMS.md**: Mark the item complete in the active proposal file
+
+<Tip>
+  Run `python3 archwiz/archwiz.py` to open the cockpit dashboard and see all pending tasks, gate status, and agent health in one view.
+</Tip>
+
+For background on how proposals feed into this loop, see [Proposals governance](/governance/proposals). To inspect what changed after a task runs, read the [Forensics guide](/guides/forensics).

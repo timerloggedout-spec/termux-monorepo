@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "seed_id": "github:research-seed:gravitee-io/gravitee-api-management",
+  "canonical_upstream": "gravitee-io/gravitee-api-management",
+  "local_fork": "timerloggedout-spec/gravitee-api-management_fork",
+  "provenance": [
+    "forked",
+    "user-reported-starred",
+    "user-reported-followed"
+  ],
+  "classification": {
+    "domains": [
+      "api-management",
+      "gateway",
+      "platform",
+      "kubernetes",
+      "developer-portal"
+    ],
+    "research_value": "high",
+    "integration_mode": "upstream-comparison",
+    "adoption": "research-only"
+  },
+  "observed_facts": {
+    "upstream_default_branch": "master",
+    "upstream_license": "Apache-2.0",
+    "fork_parent": "gravitee-io/gravitee-api-management"
+  },
+  "capability_signals": [
+    "api-lifecycle-management",
+    "api-gateway",
+    "policy-and-flow-governance",
+    "developer-portal",
+    "analytics",
+    "application-registration",
+    "secured-plans",
+    "docker-deployment",
+    "kubernetes-helm-deployment",
+    "plugin-boundaries",
+    "mcp-related-dependencies"
+  ],
+  "integration_constraints": [
+    "do-not-vendor-source",
+    "do-not-auto-submodule",
+    "preserve-upstream-provenance",
+    "compare-before-extracting-patterns"
+  ]
+}

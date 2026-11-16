@@ -1,0 +1,65 @@
+{
+  "collected_at": "2026-09-01T08:36:20.645840+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 33487279532,
+    "endpoint": ".../runs/33487279532/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 99790205661,
+        "run_id": 33487279532,
+        "workflow_name": "PR production ledger",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/33487279532",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAXO_Wy3Q",
+        "head_sha": "165a451913af8045176108f690517ddcd4230ece",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/99790205661",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/33487279532/job/99790205661",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-09-01T08:29:21Z",
+        "started_at": "2026-09-01T08:29:26Z",
+        "completed_at": "2026-09-01T08:29:29Z",
+        "name": "ledger",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-09-01T08:29:27Z",
+            "completed_at": "2026-09-01T08:29:28Z"
+          },
+          {
+            "name": "Build SHA-bound production ledger",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 2,
+            "started_at": "2026-09-01T08:29:28Z",
+            "completed_at": "2026-09-01T08:29:28Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-09-01T08:29:28Z",
+            "completed_at": "2026-09-01T08:29:28Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/99790205661",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000053784,
+        "runner_name": "GitHub Actions 1000053784",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

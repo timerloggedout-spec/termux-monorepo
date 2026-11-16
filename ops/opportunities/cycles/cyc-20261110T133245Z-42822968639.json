@@ -1,0 +1,1401 @@
+{
+  "schema": "opportunity-cycle/v1",
+  "cycle_id": "cyc-20261110T133245Z-42822968639",
+  "run_id": "42822968639",
+  "started_at": "2026-11-10T13:32:45Z",
+  "finished_at": "2026-11-10T13:33:21Z",
+  "ingest": [
+    {
+      "id": "D1",
+      "kind": "event",
+      "name": "Strands SDK: Workshop to Ship",
+      "state": "submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "4a2a5d1e0119a020365c6a358ca02de7081f7e5d7b0ab5be2e164e341a95031e",
+      "ingested_at": "2026-11-10T13:32:46Z",
+      "slug": "d1-studysprint",
+      "osint_snapshot": {
+        "fetched_at": "2026-10-28",
+        "sha256": "930abbe684fd727407a98ca5847a478443c5d0b6cbaba1557c669327feddd539"
+      },
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "D2",
+      "kind": "event",
+      "name": "Vultr: Agent Rush Hackathon",
+      "state": "registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "df9c890f6c7547ae06ef61aadaadd57bf1b9b7e7e2360734b1ac3d65cd9bfd8d",
+      "ingested_at": "2026-11-10T13:32:47Z",
+      "slug": "d2",
+      "osint_snapshot": {
+        "fetched_at": "2026-10-28",
+        "sha256": "30a39c474c3603e8593fd198b911ec13095b0770ba8b4a0af1815074866dedf9"
+      },
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "D3",
+      "kind": "event",
+      "name": "Agent-Native Hackathon",
+      "state": "active",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "3ef16fc7a0c5a8f13ad7c6aac4144436476f8f35e11da5aeb24ac8785db96e66",
+      "ingested_at": "2026-11-10T13:32:48Z",
+      "slug": "d3",
+      "osint_snapshot": {
+        "fetched_at": "2026-10-28",
+        "sha256": "bf12075064ee96afeb7bdb74892aeff1ea52a04e63443dcef970d86e9b0c283b"
+      },
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "D5",
+      "kind": "event",
+      "name": "AI Builder Day Hackathon - November 2026",
+      "state": "registering",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "42dd4dfffea06bb7f318811c6b47be1ad464563ba3e1f38759c90a03524a5a84",
+      "ingested_at": "2026-11-10T13:32:50Z",
+      "slug": "d5",
+      "osint_snapshot": {
+        "fetched_at": "2026-10-28",
+        "sha256": "54ce96d7b24f892582f2cafb9d04e630e7e674b45078ac847660fe5488a5fe8c"
+      },
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "C14",
+      "kind": "candidate",
+      "name": "Mozilla Human-Scale AI Incubator \u2014 2027 cohort (call for proposals)",
+      "state": "HOLD / parked (watch) per opportunity evaluation via Manager 2026-11-03 \u2014 no action; revisit only on an evaluation change",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "bcf8918a6352a0269f80755de6012fd9e55a281da8239f13dc7108de0557cf43",
+      "ingested_at": "2026-11-10T13:32:55Z",
+      "slug": "c14",
+      "osint_snapshot": "NOT_ESTABLISHED",
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "C13",
+      "kind": "candidate",
+      "name": "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
+      "state": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "477478241bbef12326f7b72d9fafde06791f8c28d24eb77baa79198c72738911",
+      "ingested_at": "2026-11-10T13:32:54Z",
+      "slug": "c13",
+      "osint_snapshot": "NOT_ESTABLISHED",
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "C12",
+      "kind": "event",
+      "name": "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
+      "state": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "95eb827bfe765428197fb36df859bd1f0d0114f253cd4be183ed4d92afa3268e",
+      "ingested_at": "2026-11-10T13:32:52Z",
+      "slug": "c12-receipts-vault",
+      "osint_snapshot": "NOT_ESTABLISHED",
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "C11",
+      "kind": "event",
+      "name": "AMD AI League",
+      "state": "active",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "194c693dbff5f442a052a4d6491483823dd46d62b3b275d370a226bcd7eae8a6",
+      "ingested_at": "2026-11-10T13:32:51Z",
+      "slug": "c11",
+      "osint_snapshot": "NOT_ESTABLISHED",
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "D4",
+      "kind": "event",
+      "name": "Kiroween 2026",
+      "state": "registering",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "5ab5eccbf541e1c0803b40371a8598794c3bdc2a8670d0b7d40ad6cd6e724126",
+      "ingested_at": "2026-11-10T13:32:49Z",
+      "slug": "d4",
+      "osint_snapshot": {
+        "fetched_at": "2026-10-28",
+        "sha256": "a60a70f346c5065b7ea4635cbd7dbc64f47c90ae729df41d91f66f133c722fdf"
+      },
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    },
+    {
+      "id": "DOMINO",
+      "kind": "candidate",
+      "name": "Domino pursuit (opportunity row)",
+      "state": "watch",
+      "source": "ops/challenge/coordinator.json",
+      "source_sha256": "1849065c829b51b8f35a22ec70cb449c802e1bb7feeb688f99621a0751133ea2",
+      "ingested_at": "2026-11-10T13:32:53Z",
+      "slug": "domino",
+      "osint_snapshot": "NOT_ESTABLISHED",
+      "podium_dataset": {
+        "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+        "version": "2026-11-03.v3"
+      }
+    }
+  ],
+  "priority_feed_ref": "/home/runner/work/termux-monorepo/termux-monorepo/ops/que/feeds/opportunity-priority.json",
+  "opportunities": [
+    {
+      "id": "D1",
+      "slug": "d1-studysprint",
+      "priority_stamp": {
+        "rank": 1,
+        "tier": 2,
+        "score": 105.0,
+        "basis": [
+          "next_gate 2026-11-05T07:59:00Z via dates.deadline -> gate_term 1.0",
+          "prep complete -> prep_term 0.05",
+          "tier 2 (dispatch-tiers chain entry)"
+        ],
+        "next_gate": "2026-11-05T07:59:00Z",
+        "next_gate_source": "dates.deadline",
+        "days_to_gate": -5.23,
+        "priority_timebox": {
+          "wall": "2026-11-05T07:59:00Z",
+          "landing": "2026-11-04T07:59:00Z",
+          "cushion": "2026-11-03T17:00:00Z",
+          "escalation": "2026-11-05T03:59:00Z",
+          "final": "2026-11-05T07:29:00Z",
+          "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+          "verbatim": {
+            "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
+            "wall": "2026-11-04T23:59:00-08:00",
+            "tiers": [
+              {
+                "tier": 0,
+                "name": "BASE",
+                "from": "window open",
+                "effect": "in-window development line active (continuous-development mandate); routine admission"
+              },
+              {
+                "tier": 1,
+                "name": "CUSHION",
+                "at": "2026-11-03T09:00:00-08:00",
+                "reminder": "deadline-d1-cushion-2026-11-03",
+                "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
+              },
+              {
+                "tier": 2,
+                "name": "WALL-DAY",
+                "at": "2026-11-04T00:00:00-08:00",
+                "reminder": "calendar scheme C (wall-day)",
+                "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
+              },
+              {
+                "tier": 3,
+                "name": "ESCALATION",
+                "at": "2026-11-04T19:59:00-08:00",
+                "reminder": "deadline-d1-escalation-2026-11-04",
+                "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
+              },
+              {
+                "tier": 4,
+                "name": "FINAL",
+                "at": "2026-11-04T23:29:00-08:00",
+                "reminder": "deadline-d1-final-2026-11-04",
+                "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+              }
+            ],
+            "step_down_cushion": [
+              {
+                "at": "wall+24h",
+                "tier": 1
+              },
+              {
+                "at": "wall+48h",
+                "tier": 0
+              }
+            ],
+            "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
+          }
+        },
+        "stamped_at": "2026-11-10T13:33:07Z"
+      },
+      "prep_gate": {
+        "state": "PASS",
+        "evaluated_at": "2026-11-10T13:32:56Z",
+        "verified_at": "2026-11-10T13:32:57Z",
+        "stages": {
+          "0": {
+            "state": "RECEIPTED",
+            "artifact": "entries/d1-studysprint/OPPORTUNITY-SPEC.md",
+            "sha256": "a2344e5bd117cd90a483befaeec2e1cf6cbbf2cbe5441a560110165edd52f536",
+            "size": 14406,
+            "receipt_ref": "OPPORTUNITY-SPEC of record; submission confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+            "ledger_rows": [
+              "OC-003",
+              "OC-006"
+            ],
+            "coordinator_registered": true
+          },
+          "1": {
+            "state": "RECEIPTED",
+            "artifact": "ops/challenge/osint/coverage.json",
+            "sha256": "0e357b875b3cdc58560dafe9313826488ff1b6079a537daa25725ac6275a19f8",
+            "size": 8353,
+            "receipt_ref": "challenge OSINT watch coverage matrix (D1 row), ops/challenge/osint/snapshots.json carries the fetched-page snapshots"
+          },
+          "2": {
+            "state": "RECEIPTED",
+            "artifact": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+            "sha256": "f317dbf47a3636fea02e8acc1feddac41674a0c9596ddd5f632bf1b4030805fc",
+            "size": 9984,
+            "receipt_ref": "podium dataset of record, version 2026-11-03.v3 (PR #4592)"
+          },
+          "3": {
+            "state": "RECEIPTED",
+            "artifact": "docs/ops/COMPETITION-IMPORT-D1-FIELD-2026-11-03.md",
+            "sha256": "7137a5622af31d5df419258708baabdae3b575827ff1b36efbb84113a88769a5",
+            "size": 29934,
+            "receipt_ref": "competition import \u2014 D1 field / TAK tracks (PR #4550)"
+          },
+          "4": {
+            "state": "RECEIPTED",
+            "artifact": "docs/ops/D1-FIELD-SWOT-2026-11-03.md",
+            "sha256": "8a28b1ac14c1d0fbde02a7aa028f6a40c3e77bb01b41470ff9e16f4e42916256",
+            "size": 6214,
+            "receipt_ref": "D1 field SWOT, dual-valence, 2026-11-03"
+          }
+        },
+        "census": {
+          "state": "PASS",
+          "violations": []
+        },
+        "gaps": []
+      },
+      "selection": {
+        "method": "rubric-panel (delphi-gate pattern)",
+        "candidates": [
+          "tournament-update",
+          "moneyball-update",
+          "osint-refresh"
+        ],
+        "scores": {
+          "tournament-update": {
+            "evidence_recency": 4,
+            "gate_proximity": 5,
+            "completeness": 5,
+            "completeness_inputs": [
+              true,
+              true,
+              true
+            ],
+            "execution": "specified_not_run",
+            "execution_reason": "cycle stamps selection only; execution rides the entry's own lane \u2014 no external writes or inference in-cycle",
+            "total": 14
+          },
+          "moneyball-update": {
+            "evidence_recency": 4,
+            "gate_proximity": 5,
+            "completeness": 5,
+            "completeness_inputs": [
+              true,
+              true,
+              true
+            ],
+            "execution": "specified_not_run",
+            "execution_reason": "cycle stamps selection only; execution rides the entry's own lane \u2014 no external writes or inference in-cycle",
+            "total": 14
+          },
+          "osint-refresh": {
+            "evidence_recency": 4,
+            "gate_proximity": 5,
+            "completeness": 5,
+            "completeness_inputs": [
+              true,
+              true,
+              true
+            ],
+            "execution": "specified_not_run",
+            "execution_reason": "cycle stamps selection only; execution rides the entry's own lane \u2014 no external writes or inference in-cycle",
+            "total": 14
+          }
+        },
+        "selected": "tournament-update"
+      },
+      "stages": {
+        "5": {
+          "state": "RECEIPTED",
+          "dataset_pin": {
+            "path": "ops/challenge-recruitment/podium-dataset--2026-11-03.v3.json",
+            "version": "2026-11-03.v3",
+            "sha256": "f317dbf47a3636fea02e8acc1feddac41674a0c9596ddd5f632bf1b4030805fc"
+          },
+          "book_subjects": [
+            {
+              "id": "D1-1-submission-landed",
+              "subject": "Submission landed by wall {Y/N}",
+              "knowable": "2026-11-04",
+              "settle": {
+                "field": "place earned / official outcome",
+                "source": "entries confirmation_ref + coordinator record",
+                "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint"
+              },
+              "expectation_record": {
+                "evidence": [
+                  {
+                    "ref": "coordinator record of record @master (PR #4658 merged aea6201d87ed)",
+                    "note": "settlement of record: submission SUBMITTED - PUBLISHED 2026-11-03T10:01:00-08:00, confirmation_ref as in settle.value; realized outcome Y."
+                  }
+                ],
+                "posterior": {
+                  "value": 1.0,
+                  "range": [
+                    1,
+                    1
+                  ],
+                  "n_evidence": 1
+                },
+                "prior": {
+                  "basis": null,
+                  "value": null
+                },
+                "quantity": "P(subject resolves Y)"
+              }
+            },
+            {
+              "id": "D1-2-placement-winner",
+              "subject": "Placement = winner (top-3) {Y/N}",
+              "knowable": "NOT_ESTABLISHED (judging date unpublished)",
+              "settle": {
+                "field": "place earned / official outcome",
+                "source": "Builder Center official results",
+                "value": null
+              },
+              "expectation_record": {
+                "evidence": [],
+                "posterior": {
+                  "n_evidence": 0,
+                  "range": null,
+                  "value": null
+                },
+                "prior": {
+                  "basis": null,
+                  "value": null
+                },
+                "quantity": "P(subject resolves Y)"
+              }
+            }
+          ],
+          "book_settlements": [
+            {
+              "subject_id": "D1-1-submission-landed",
+              "outcome": "Y",
+              "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+              "settled_at": "2026-11-03",
+              "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
+              "positions_affected": "none open on this subject"
+            }
+          ],
+          "opportunity_ledger_rows": [
+            "OC-003",
+            "OC-006"
+          ]
+        },
+        "6": {
+          "state": "RECEIPTED",
+          "file": "experiments/doe/panel-judge-mirror/forecasts/2026-11-03-d1-studysprint-L5.json",
+          "forecast_id": "pjm-2026-11-03-d1-studysprint-L5",
+          "filed_at": "2026-11-03",
+          "stamp": {
+            "evidence_basis": [
+              "Desk landing line 2026-11-03: v1.0.0 CUT \u2014 release id 433398093, https://github.com/timerloggedout-spec/studysprint/releases/tag/v1.0.0, tag on the parity-verified tree (166/166), release body carries the [1.0.0] notes + full parity table, read back firsthand",
+              "L4/L3/L2/baseline evidence sets"
+            ],
+            "gap_flags": [
+              "PANEL_UNPUBLISHED (venue class of GAP-J1)"
+            ],
+            "grade": "venue-archetype",
+            "model": "panel-judge-mirror v0 \u2014 mirror output is a MODEL read, not the real panel's view"
+          },
+          "expected_panel_score": 71.7,
+          "outcome_probabilities": {
+            "finalist_or_honorable": 0.42,
+            "no_recognition": 0.2,
+            "podium": 0.38
+          },
+          "re_run": {
+            "state": "specified_not_run",
+            "reason": "cycle runs no inference; re-runs ride the Panel Judge Mirror lane"
+          }
+        },
+        "7": {
+          "state": "PENDING",
+          "outcome_receipts": [
+            {
+              "subject_id": "D1-1-submission-landed",
+              "outcome": "Y",
+              "value": "Y \u2014 SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 \u00b7 confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
+              "settled_at": "2026-11-03"
+            }
+          ],
+          "blocker": "placement outcome not yet knowable \u2014 book subject D1-2-placement-winner knowable: NOT_ESTABLISHED (judging date unpublished)"
+        }
+      },
+      "tier_actions": [
+        {
+          "action": "delphi_selection",
+          "ts": "2026-11-10T13:33:17Z"
+        },
+        {
+          "action": "stage5_fold",
+          "ts": "2026-11-10T13:33:18Z"
+        },
+        {
+          "action": "stage6_read",
+          "ts": "2026-11-10T13:33:19Z"
+        },
+        {
+          "action": "stage7_stamp",
+          "ts": "2026-11-10T13:33:20Z"
+        }
+      ],
+      "verdict": "COMPLETE"
+    },
+    {
+      "id": "D2",
+      "slug": "d2",
+      "priority_stamp": {
+        "rank": 2,
+        "tier": 3,
+        "score": 120.0,
+        "basis": [
+          "next_gate 2026-11-08T23:00:00Z via dates.deadline -> gate_term 1.0",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-11-08T23:00:00Z",
+        "next_gate_source": "dates.deadline",
+        "days_to_gate": -1.61,
+        "priority_timebox": {
+          "wall": "2026-11-08T23:00:00Z",
+          "landing": "2026-11-07T23:00:00Z",
+          "cushion": "2026-11-07T17:00:00Z",
+          "escalation": "2026-11-08T19:00:00Z",
+          "final": "2026-11-08T22:30:00Z",
+          "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+          "verbatim": {
+            "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+            "wall": "2026-11-08T15:00:00-08:00",
+            "tiers": [
+              {
+                "tier": 0,
+                "name": "BASE",
+                "at": "2026-11-03T15:00:00Z",
+                "reminder": "kickoff (window opens)",
+                "effect": "in-window development line active from kickoff; production-target pick still owner-held at timebox authoring",
+                "from": "kickoff"
+              },
+              {
+                "tier": 1,
+                "name": "CUSHION",
+                "at": "2026-11-07T09:00:00-08:00",
+                "reminder": "deadline-d2-cushion-amd-c1-final-2026-11-07",
+                "effect": "HIGH \u2014 D2 admits ahead of routine slate work; landing driven to close"
+              },
+              {
+                "tier": 2,
+                "name": "WALL-DAY",
+                "at": "2026-11-08T00:00:00-08:00",
+                "reminder": "calendar scheme C (wall-day)",
+                "effect": "CRITICAL \u2014 D2 preempts non-critical dispatches"
+              },
+              {
+                "tier": 3,
+                "name": "ESCALATION",
+                "at": "2026-11-08T11:00:00-08:00",
+                "reminder": "deadline-d2-escalation-2026-11-08",
+                "effect": "MAX \u2014 submission mechanics only; all other D2 streams frozen"
+              },
+              {
+                "tier": 4,
+                "name": "FINAL",
+                "at": "2026-11-08T14:30:00-08:00",
+                "reminder": "deadline-d2-final-2026-11-08",
+                "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+              }
+            ],
+            "step_down_cushion": [
+              {
+                "at": "wall+24h",
+                "tier": 1
+              },
+              {
+                "at": "wall+48h",
+                "tier": 0
+              }
+            ],
+            "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+          }
+        },
+        "stamped_at": "2026-11-10T13:33:08Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:32:58Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d2/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d2/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d2/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d2/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d2/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/d2/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D3",
+      "slug": "d3",
+      "priority_stamp": {
+        "rank": 3,
+        "tier": 3,
+        "score": 110.0,
+        "basis": [
+          "next_gate 2026-11-13T00:00:00Z via dates.winners_at -> gate_term 0.9",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-11-13T00:00:00Z",
+        "next_gate_source": "dates.winners_at",
+        "days_to_gate": 2.44,
+        "priority_timebox": {
+          "wall": "2026-11-10T07:59:00Z",
+          "landing": "2026-11-09T07:59:00Z",
+          "cushion": "2026-11-08T17:00:00Z",
+          "escalation": "2026-11-10T03:59:00Z",
+          "final": "2026-11-10T07:29:00Z",
+          "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+          "verbatim": {
+            "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+            "wall": "2026-11-09T23:59:00-08:00",
+            "tiers": [
+              {
+                "tier": 0,
+                "name": "BASE",
+                "at": "window open",
+                "reminder": null,
+                "effect": "in-window development line active (build landed = checkpoint; public Clips demo + submission remain)",
+                "from": "window open"
+              },
+              {
+                "tier": 1,
+                "name": "CUSHION",
+                "at": "2026-11-08T09:00:00-08:00",
+                "reminder": "deadline-d3-cushion-2026-11-08",
+                "effect": "HIGH \u2014 D3 admits ahead of routine slate work; landing driven to close"
+              },
+              {
+                "tier": 2,
+                "name": "WALL-DAY",
+                "at": "2026-11-09T00:00:00-08:00",
+                "reminder": "calendar scheme C (wall-day)",
+                "effect": "CRITICAL \u2014 D3 preempts non-critical dispatches"
+              },
+              {
+                "tier": 3,
+                "name": "ESCALATION",
+                "at": "2026-11-09T19:59:00-08:00",
+                "reminder": "deadline-d3-escalation-2026-11-09",
+                "effect": "MAX \u2014 submission mechanics only; all other D3 streams frozen"
+              },
+              {
+                "tier": 4,
+                "name": "FINAL",
+                "at": "2026-11-09T23:29:00-08:00",
+                "reminder": "deadline-d3-final-2026-11-09",
+                "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+              }
+            ],
+            "step_down_cushion": [
+              {
+                "at": "wall+24h",
+                "tier": 1
+              },
+              {
+                "at": "wall+48h",
+                "tier": 0
+              }
+            ],
+            "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+          }
+        },
+        "stamped_at": "2026-11-10T13:33:09Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:32:59Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d3/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d3/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d3/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d3/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d3/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/d3/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D5",
+      "slug": "d5",
+      "priority_stamp": {
+        "rank": 4,
+        "tier": 3,
+        "score": 80.0,
+        "basis": [
+          "next_gate 2026-11-20T19:30:00Z via dates.winners_at -> gate_term 0.6",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-11-20T19:30:00Z",
+        "next_gate_source": "dates.winners_at",
+        "days_to_gate": 10.25,
+        "priority_timebox": {
+          "wall": "2026-11-20T19:30:00Z",
+          "landing": "2026-11-19T19:30:00Z",
+          "cushion": "2026-11-17T19:30:00Z",
+          "escalation": "2026-11-20T07:30:00Z",
+          "final": "2026-11-20T19:00:00Z",
+          "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+          "verbatim": null
+        },
+        "stamped_at": "2026-11-10T13:33:10Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:01Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d5/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d5/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d5/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d5/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d5/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/d5/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C14",
+      "slug": "c14",
+      "priority_stamp": {
+        "rank": 5,
+        "tier": 3,
+        "score": 80.0,
+        "basis": [
+          "next_gate 2026-11-21T07:59:00Z via dates.initial_proposal_due -> gate_term 0.6",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-11-21T07:59:00Z",
+        "next_gate_source": "dates.initial_proposal_due",
+        "days_to_gate": 10.77,
+        "priority_timebox": {
+          "wall": "2026-11-21T07:59:00Z",
+          "landing": "2026-11-20T07:59:00Z",
+          "cushion": "2026-11-18T07:59:00Z",
+          "escalation": "2026-11-20T19:59:00Z",
+          "final": "2026-11-21T07:29:00Z",
+          "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+          "verbatim": null
+        },
+        "stamped_at": "2026-11-10T13:33:11Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:06Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c14/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c14/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c14/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c14/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c14/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/c14/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C13",
+      "slug": "c13",
+      "priority_stamp": {
+        "rank": 6,
+        "tier": 3,
+        "score": 80.0,
+        "basis": [
+          "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.6",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-11-21T11:59:00Z",
+        "next_gate_source": "dates.proposal_due",
+        "days_to_gate": 10.93,
+        "priority_timebox": {
+          "wall": "2026-11-21T11:59:00Z",
+          "landing": "2026-11-20T11:59:00Z",
+          "cushion": "2026-11-18T11:59:00Z",
+          "escalation": "2026-11-20T23:59:00Z",
+          "final": "2026-11-21T11:29:00Z",
+          "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+          "verbatim": null
+        },
+        "stamped_at": "2026-11-10T13:33:12Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:05Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c13/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c13/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c13/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c13/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c13/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/c13/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C12",
+      "slug": "c12-receipts-vault",
+      "priority_stamp": {
+        "rank": 7,
+        "tier": 3,
+        "score": 65.0,
+        "basis": [
+          "next_gate 2026-12-01T07:45:00Z via dates.final_due -> gate_term 0.45",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-12-01T07:45:00Z",
+        "next_gate_source": "dates.final_due",
+        "days_to_gate": 20.76,
+        "priority_timebox": {
+          "wall": "2026-11-16T07:45:00Z",
+          "landing": "2026-11-14T00:00:00Z",
+          "cushion": "2026-11-14T17:00:00Z",
+          "escalation": "2026-11-16T03:45:00Z",
+          "final": "2026-11-16T07:15:00Z",
+          "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+          "verbatim": {
+            "wall": "2026-11-15T23:45:00-08:00",
+            "landing": "2026-11-14",
+            "tiers": [
+              {
+                "tier": 0,
+                "name": "BASE",
+                "from": "now"
+              },
+              {
+                "tier": 1,
+                "name": "CUSHION",
+                "from": "2026-11-14T09:00:00-08:00"
+              },
+              {
+                "tier": 2,
+                "name": "WALL-DAY",
+                "from": "2026-11-15T00:00:00-08:00"
+              },
+              {
+                "tier": 3,
+                "name": "ESCALATION",
+                "from": "2026-11-15T19:45:00-08:00"
+              },
+              {
+                "tier": 4,
+                "name": "FINAL",
+                "from": "2026-11-15T23:15:00-08:00"
+              }
+            ],
+            "step_down": "wall+24h \u21d2 tier 1 \u00b7 wall+48h \u21d2 tier 0"
+          }
+        },
+        "stamped_at": "2026-11-10T13:33:13Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:03Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/c12-receipts-vault/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "C11",
+      "slug": "c11",
+      "priority_stamp": {
+        "rank": 8,
+        "tier": 3,
+        "score": 65.0,
+        "basis": [
+          "next_gate 2026-12-01T19:00:00Z via deadline -> gate_term 0.45",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2026-12-01T19:00:00Z",
+        "next_gate_source": "deadline",
+        "days_to_gate": 21.23,
+        "priority_timebox": {
+          "wall": "2026-12-01T19:00:00Z",
+          "landing": "2026-11-30T19:00:00Z",
+          "cushion": "2026-11-28T19:00:00Z",
+          "escalation": "2026-12-01T07:00:00Z",
+          "final": "2026-12-01T18:30:00Z",
+          "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+          "verbatim": null
+        },
+        "stamped_at": "2026-11-10T13:33:14Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:02Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c11/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c11/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c11/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c11/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/c11/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/c11/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "D4",
+      "slug": "d4",
+      "priority_stamp": {
+        "rank": 9,
+        "tier": 3,
+        "score": 35.0,
+        "basis": [
+          "next_gate 2027-01-29T21:00:00Z via dates.judging_end -> gate_term 0.15",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "2027-01-29T21:00:00Z",
+        "next_gate_source": "dates.judging_end",
+        "days_to_gate": 80.31,
+        "priority_timebox": {
+          "wall": "2026-12-04T22:00:00Z",
+          "landing": "2026-12-03T22:00:00Z",
+          "cushion": "2026-12-02T17:00:00Z",
+          "escalation": "2026-12-04T18:00:00Z",
+          "final": "2026-12-04T21:30:00Z",
+          "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+          "verbatim": {
+            "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+            "wall": "2026-12-04T14:00:00-08:00",
+            "tiers": [
+              {
+                "tier": 0,
+                "name": "BASE",
+                "at": "pre-window",
+                "reminder": null,
+                "effect": "pre-window line live (spec pack); build window opens after Nov 8",
+                "from": "pre-window"
+              },
+              {
+                "tier": 1,
+                "name": "GATE \u2014 Kiro credit form",
+                "at": "2026-12-01T12:00:00-08:00",
+                "reminder": "deadline-d4-credit-form-cushion-2026-11-30 + deadline-d4-credit-form-final-2026-12-01",
+                "effect": "inner deadline: credit form landing Nov 30, wall Dec 1 12:00 PT \u2014 the form gates the build's credits",
+                "inner_wall": "2026-12-01T12:00:00-08:00"
+              },
+              {
+                "tier": 2,
+                "name": "CUSHION",
+                "at": "2026-12-02T09:00:00-08:00",
+                "reminder": "deadline-d4-cushion-2026-12-02",
+                "effect": "HIGH \u2014 D4 admits ahead of routine slate work; landing driven to close"
+              },
+              {
+                "tier": 3,
+                "name": "WALL-DAY",
+                "at": "2026-12-04T00:00:00-08:00",
+                "reminder": "calendar scheme C (wall-day)",
+                "effect": "CRITICAL \u2014 D4 preempts non-critical dispatches"
+              },
+              {
+                "tier": 4,
+                "name": "ESCALATION",
+                "at": "2026-12-04T10:00:00-08:00",
+                "reminder": "deadline-d4-escalation-2026-12-04",
+                "effect": "MAX \u2014 submission mechanics only; all other D4 streams frozen"
+              },
+              {
+                "tier": 5,
+                "name": "FINAL",
+                "at": "2026-12-04T13:30:00-08:00",
+                "reminder": "deadline-d4-final-2026-12-04",
+                "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+              }
+            ],
+            "step_down_cushion": [
+              {
+                "at": "wall+24h",
+                "tier": 1
+              },
+              {
+                "at": "wall+48h",
+                "tier": 0
+              }
+            ],
+            "note": "Two-deadline entry: the credit-form gate rides as its own tier inside the submission timebox. Priority decays through the cushion tiers after the wall."
+          }
+        },
+        "stamped_at": "2026-11-10T13:33:15Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:00Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d4/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d4/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d4/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d4/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/d4/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/d4/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    },
+    {
+      "id": "DOMINO",
+      "slug": "domino",
+      "priority_stamp": {
+        "rank": 10,
+        "tier": 3,
+        "score": 20.0,
+        "basis": [
+          "next_gate NOT_ESTABLISHED via none -> gate_term 0.0",
+          "prep incomplete -> prep_term 0.2",
+          "tier 3 (default build class)"
+        ],
+        "next_gate": "NOT_ESTABLISHED",
+        "next_gate_source": null,
+        "days_to_gate": null,
+        "priority_timebox": "NOT_ESTABLISHED",
+        "stamped_at": "2026-11-10T13:33:16Z"
+      },
+      "prep_gate": {
+        "state": "PREP_INCOMPLETE",
+        "evaluated_at": "2026-11-10T13:33:04Z",
+        "verified_at": null,
+        "stages": {
+          "0": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/domino/prep-manifest.json"
+          },
+          "1": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/domino/prep-manifest.json"
+          },
+          "2": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/domino/prep-manifest.json"
+          },
+          "3": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/domino/prep-manifest.json"
+          },
+          "4": {
+            "state": "NOT_ESTABLISHED",
+            "gap": "prep-manifest missing at entries/domino/prep-manifest.json"
+          }
+        },
+        "census": {
+          "state": "MISSING",
+          "violations": [
+            "census missing: submission-requirements.json"
+          ]
+        },
+        "gaps": [
+          "prep-manifest missing at entries/domino/prep-manifest.json"
+        ]
+      },
+      "selection": {
+        "state": "blocked_prep_incomplete"
+      },
+      "stages": {
+        "5": {
+          "state": "blocked_prep_incomplete"
+        },
+        "6": {
+          "state": "blocked_prep_incomplete"
+        },
+        "7": {
+          "state": "blocked_prep_incomplete"
+        }
+      },
+      "tier_actions": [],
+      "verdict": "PREP_INCOMPLETE"
+    }
+  ],
+  "doe_stamp": {
+    "task_class": "opportunities-cycle",
+    "arm": "repo-machinery",
+    "provider": "github-actions",
+    "model": null,
+    "run_id": "42822968639",
+    "outcome": "success",
+    "cost_class": "actions-free"
+  }
+}

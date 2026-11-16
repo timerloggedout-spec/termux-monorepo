@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Forensic Query – ask questions of the custom versioning system."""
+import json, sys
+
+def load_chunked_fallback(file_path, chunks_dir, key):
+    """Try chunked gzip, fall back to json.load."""
+    import gzip, json
+    from pathlib import Path
+    chunk_path = Path(chunks_dir) / f"{key}.json.gz"
+    if chunk_path.exists():
+        with gzip.open(chunk_path, 'rt') as cf:
+            return json.load(cf)
+    with open(file_path) as f:
+        data = json.load(f)
+    return data.get(key, {}) if isinstance(data, dict) else data
+
+def load_json_chunked(file_path, chunks_dir):
+    """Load entire chunked file or fallback."""
+    import json, sys, gzip
+    from pathlib import Path
+    chunks_dir = Path(chunks_dir)
+    idx = chunks_dir / 'chunks.idx.json'
+    if idx.exists():
+        with open(idx) as f:
+            keys = json.load(f)
+        result = {}
+        for key in keys:
+            chunk_path = chunks_dir / f"{key}.json.gz"
+            if chunk_path.exists():
+                with gzip.open(chunk_path, 'rt') as cf:
+                    result[key] = json.load(cf)
+        return result
+    with open(file_path) as f:
+        return json.load(f)
+from pathlib import Path
+
+HOME = Path.home()
+VERSIONS = HOME / 'cli-synthegration/workspace/provenance/true_versions.json'
+CORR = HOME / 'cli-synthegration/workspace/correlation/correlation_index.json'
+TEMPORAL = HOME / 'cli-synthegration/workspace/provenance/temporal_provenance.json'
+
+def usage():
+    print("Usage: forensic-query <subcommand> [args]")
+    print("  versions <pattern>  – promotion history for matching files")
+    print("  session <prefix>    – resolve truncated session ID to full UUID")
+    print("  history <file>      – full timeline for a file")
+    sys.exit(1)
+
+if len(sys.argv) < 2:
+    usage()
+
+cmd = sys.argv[1]
+
+if cmd == 'versions':
+    pattern = sys.argv[2] if len(sys.argv) > 2 else '.*'
+    versions = json.loads(VERSIONS.read_text()) if VERSIONS.exists() else {}
+    for k, v in versions.items():
+        if pattern.lower() in k.lower():
+            print(f"{k}")
+            for entry in (v if isinstance(v, list) else [v]):
+                print(f"  session: {entry.get('session','?')}  at {entry.get('timestamp_utc','?')}")
+
+elif cmd == 'session':
+    prefix = sys.argv[2] if len(sys.argv) > 2 else ''
+    corr = load_chunked_fallback(CORR, CORR_CHUNKS, 'correlations') if CORR.exists() else {}
+    for k, v in corr.items():
+        for s in (v if isinstance(v, list) else [v]):
+            if isinstance(s, str) and s.startswith(prefix):
+                print(f"{prefix}… → {s}  (via {k})")
+                break
+
+elif cmd == 'history':
+    file_path = sys.argv[2] if len(sys.argv) > 2 else ''
+    if not file_path:
+        usage()
+    versions = json.loads(VERSIONS.read_text()) if VERSIONS.exists() else {}
+    temporal = json.loads(TEMPORAL.read_text()) if TEMPORAL.exists() else {}
+    corr = load_chunked_fallback(CORR, CORR_CHUNKS, 'correlations') if CORR.exists() else {}
+    
+    print(f"# Timeline for {file_path}\n")
+    for k, v in versions.items():
+        if file_path in k:
+            for entry in (v if isinstance(v, list) else [v]):
+                print(f"**Promotion** — {entry.get('session','?')[:12]}… at {entry.get('timestamp_utc','?')}")
+    
+    file_sessions = corr.get(file_path, [])
+    for blob, info in temporal.items():
+        if info.get('session') in file_sessions:
+            print(f"**Temporal** — {info.get('session','?')[:12]}… at {info.get('timestamp_utc','?')}")
+
+else:
+    usage()

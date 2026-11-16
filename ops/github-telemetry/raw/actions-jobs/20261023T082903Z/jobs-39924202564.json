@@ -1,0 +1,131 @@
+{
+  "collected_at": "2026-10-23T08:29:06.322421+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 39924202564,
+    "endpoint": ".../runs/39924202564/jobs"
+  },
+  "data": {
+    "total_count": 3,
+    "jobs": [
+      {
+        "id": 120316482618,
+        "run_id": 39924202564,
+        "workflow_name": "delphi-signal-bridge",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39924202564",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcA2vUOg",
+        "head_sha": "227993f7212145ae4f49c07e293779fc5a990a3c",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/120316482618",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39924202564/job/120316482618",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-23T08:22:42Z",
+        "started_at": "2026-10-23T08:22:45Z",
+        "completed_at": "2026-10-23T08:22:50Z",
+        "name": "outcome",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-23T08:22:45Z",
+            "completed_at": "2026-10-23T08:22:46Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-23T08:22:46Z",
+            "completed_at": "2026-10-23T08:22:47Z"
+          },
+          {
+            "name": "Run python3 -m scripts.delphi.signals shadow-outcome --workflow \"$WF_NAME\" --workflow-id \"$WF_ID\"",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-23T08:22:47Z",
+            "completed_at": "2026-10-23T08:22:48Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-23T08:22:48Z",
+            "completed_at": "2026-10-23T08:22:48Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-23T08:22:48Z",
+            "completed_at": "2026-10-23T08:22:48Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/120316482618",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000347978,
+        "runner_name": "GitHub Actions 1000347978",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 120316484354,
+        "run_id": 39924202564,
+        "workflow_name": "delphi-signal-bridge",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39924202564",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcA2vbAg",
+        "head_sha": "227993f7212145ae4f49c07e293779fc5a990a3c",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/120316484354",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39924202564/job/120316484354",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-23T08:22:42Z",
+        "started_at": "2026-10-23T08:22:42Z",
+        "completed_at": "2026-10-23T08:22:42Z",
+        "name": "radar",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/120316484354",
+        "labels": [],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 120316536643,
+        "run_id": 39924202564,
+        "workflow_name": "delphi-signal-bridge",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39924202564",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAcA2ynQw",
+        "head_sha": "227993f7212145ae4f49c07e293779fc5a990a3c",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/120316536643",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39924202564/job/120316536643",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-23T08:22:50Z",
+        "started_at": "2026-10-23T08:22:50Z",
+        "completed_at": "2026-10-23T08:22:50Z",
+        "name": "emit",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/120316536643",
+        "labels": [],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

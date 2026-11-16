@@ -1,0 +1,25 @@
+# Diagnostic vehicle for the vscode stage: replays its commands with
+# every exit swallowed and the transcript written to /diag.txt, so the
+# build succeeds by construction and the workflow can extract the file
+# with docker create + docker cp (pure filesystem ops — no entrypoint,
+# user, or run semantics involved). Built only by the image workflow's
+# failure path.
+FROM coderoad-stage:libs
+
+USER root
+RUN set +e; { \
+      echo "== id =="; id; \
+      echo "== env =="; echo "HOME=$HOME"; echo "USER=$USER"; \
+      echo "== curl pinned 1.97.2 =="; curl -fsSL "https://update.code.visualstudio.com/1.97.2/linux-x64/stable" -o /tmp/code.tgz; echo "curl exit: $?"; \
+      ls -la /tmp/code.tgz; \
+      echo "== tar =="; mkdir -p /opt/vscode; tar -xzf /tmp/code.tgz -C /opt/vscode; echo "tar exit: $?"; \
+      ls /opt/vscode/VSCode-linux-x64/bin; \
+      ln -s /opt/vscode/VSCode-linux-x64/bin/code /usr/local/bin/code; \
+      echo "== bin/code script head =="; head -20 /opt/vscode/VSCode-linux-x64/bin/code; \
+      echo "== code --version (script, no flags) =="; code --version; echo "exit: $?"; \
+      echo "== code --no-sandbox --version =="; code --no-sandbox --version; echo "exit: $?"; \
+      echo "== direct binary --version =="; /opt/vscode/VSCode-linux-x64/code --version; echo "exit: $?"; \
+      echo "== direct binary --no-sandbox --version =="; /opt/vscode/VSCode-linux-x64/code --no-sandbox --version; echo "exit: $?"; \
+      echo "== ELECTRON_DISABLE_SANDBOX=1 code --version =="; ELECTRON_DISABLE_SANDBOX=1 code --version; echo "exit: $?"; \
+      echo "== done =="; \
+    } > /diag.txt 2>&1; true

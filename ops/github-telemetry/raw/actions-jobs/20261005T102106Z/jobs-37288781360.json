@@ -1,0 +1,1081 @@
+{
+  "collected_at": "2026-10-05T10:21:12.283535+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 37288781360,
+    "endpoint": ".../runs/37288781360/jobs"
+  },
+  "data": {
+    "total_count": 5,
+    "jobs": [
+      {
+        "id": 111693993344,
+        "run_id": 37288781360,
+        "workflow_name": "Read-Only Repository Operations Report",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288781360",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAXsVgA",
+        "head_sha": "91a1075333030a24546ee81ef33cbe9c26e88a08",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111693993344",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288781360/job/111693993344",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:15:01Z",
+        "started_at": "2026-10-05T09:15:06Z",
+        "completed_at": "2026-10-05T09:15:41Z",
+        "name": "activation",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:15:09Z",
+            "completed_at": "2026-10-05T09:15:13Z"
+          },
+          {
+            "name": "Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:15:13Z",
+            "completed_at": "2026-10-05T09:15:18Z"
+          },
+          {
+            "name": "Generate agentic run info",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:15:18Z",
+            "completed_at": "2026-10-05T09:15:19Z"
+          },
+          {
+            "name": "Restore daily AIC usage cache",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-05T09:15:19Z",
+            "completed_at": "2026-10-05T09:15:20Z"
+          },
+          {
+            "name": "Restore daily AIC usage cache (artifact fallback)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-05T09:15:20Z",
+            "completed_at": "2026-10-05T09:15:20Z"
+          },
+          {
+            "name": "Check daily workflow token guardrail",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-05T09:15:20Z",
+            "completed_at": "2026-10-05T09:15:23Z"
+          },
+          {
+            "name": "Check for OAuth tokens",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-05T09:15:23Z",
+            "completed_at": "2026-10-05T09:15:23Z"
+          },
+          {
+            "name": "Checkout .github and .agents folders",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-05T09:15:23Z",
+            "completed_at": "2026-10-05T09:15:31Z"
+          },
+          {
+            "name": "Save agent config folders for base branch restoration",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-05T09:15:31Z",
+            "completed_at": "2026-10-05T09:15:31Z"
+          },
+          {
+            "name": "Check workflow lock file",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-05T09:15:31Z",
+            "completed_at": "2026-10-05T09:15:32Z"
+          },
+          {
+            "name": "Check compile-agentic version",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-05T09:15:32Z",
+            "completed_at": "2026-10-05T09:15:33Z"
+          },
+          {
+            "name": "Log runtime features",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 12,
+            "started_at": "2026-10-05T09:15:33Z",
+            "completed_at": "2026-10-05T09:15:33Z"
+          },
+          {
+            "name": "Create prompt with built-in context",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-05T09:15:33Z",
+            "completed_at": "2026-10-05T09:15:33Z"
+          },
+          {
+            "name": "Interpolate variables and render templates",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-05T09:15:33Z",
+            "completed_at": "2026-10-05T09:15:34Z"
+          },
+          {
+            "name": "Substitute placeholders",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-05T09:15:34Z",
+            "completed_at": "2026-10-05T09:15:34Z"
+          },
+          {
+            "name": "Validate prompt placeholders",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-05T09:15:34Z",
+            "completed_at": "2026-10-05T09:15:34Z"
+          },
+          {
+            "name": "Print prompt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-10-05T09:15:34Z",
+            "completed_at": "2026-10-05T09:15:34Z"
+          },
+          {
+            "name": "Stage prompt files for artifact upload",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18,
+            "started_at": "2026-10-05T09:15:34Z",
+            "completed_at": "2026-10-05T09:15:34Z"
+          },
+          {
+            "name": "Upload activation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19,
+            "started_at": "2026-10-05T09:15:34Z",
+            "completed_at": "2026-10-05T09:15:38Z"
+          },
+          {
+            "name": "Post Checkout .github and .agents folders",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 37,
+            "started_at": "2026-10-05T09:15:38Z",
+            "completed_at": "2026-10-05T09:15:39Z"
+          },
+          {
+            "name": "Post Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 38,
+            "started_at": "2026-10-05T09:15:39Z",
+            "completed_at": "2026-10-05T09:15:39Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 39,
+            "started_at": "2026-10-05T09:15:39Z",
+            "completed_at": "2026-10-05T09:15:39Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111693993344",
+        "labels": [
+          "ubuntu-slim"
+        ],
+        "runner_id": 1000210689,
+        "runner_name": "GitHub Actions 1000210689",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 111694236461,
+        "run_id": 37288781360,
+        "workflow_name": "Read-Only Repository Operations Report",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288781360",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAX7LLQ",
+        "head_sha": "91a1075333030a24546ee81ef33cbe9c26e88a08",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111694236461",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288781360/job/111694236461",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-05T09:15:41Z",
+        "started_at": "2026-10-05T09:15:44Z",
+        "completed_at": "2026-10-05T09:17:18Z",
+        "name": "agent",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:15:45Z",
+            "completed_at": "2026-10-05T09:15:48Z"
+          },
+          {
+            "name": "Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:15:48Z",
+            "completed_at": "2026-10-05T09:15:50Z"
+          },
+          {
+            "name": "Set runtime paths",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:15:50Z",
+            "completed_at": "2026-10-05T09:15:50Z"
+          },
+          {
+            "name": "Checkout repository",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-05T09:15:50Z",
+            "completed_at": "2026-10-05T09:15:56Z"
+          },
+          {
+            "name": "Create gh-aw temp directory",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-05T09:15:56Z",
+            "completed_at": "2026-10-05T09:15:56Z"
+          },
+          {
+            "name": "Configure gh CLI for GitHub Enterprise",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-05T09:15:56Z",
+            "completed_at": "2026-10-05T09:15:56Z"
+          },
+          {
+            "name": "Download activation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-05T09:15:56Z",
+            "completed_at": "2026-10-05T09:15:57Z"
+          },
+          {
+            "name": "Configure Git credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-05T09:15:57Z",
+            "completed_at": "2026-10-05T09:15:57Z"
+          },
+          {
+            "name": "Checkout PR branch",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-05T09:15:57Z",
+            "completed_at": "2026-10-05T09:15:57Z"
+          },
+          {
+            "name": "Install ripgrep",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-05T09:15:57Z",
+            "completed_at": "2026-10-05T09:16:10Z"
+          },
+          {
+            "name": "Install GitHub Copilot CLI",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-05T09:16:10Z",
+            "completed_at": "2026-10-05T09:16:18Z"
+          },
+          {
+            "name": "Install AWF binary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-05T09:16:18Z",
+            "completed_at": "2026-10-05T09:16:19Z"
+          },
+          {
+            "name": "Determine automatic lockdown mode for GitHub MCP Server",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-05T09:16:19Z",
+            "completed_at": "2026-10-05T09:16:19Z"
+          },
+          {
+            "name": "Restore agent config folders from base branch",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 14,
+            "started_at": "2026-10-05T09:16:19Z",
+            "completed_at": "2026-10-05T09:16:19Z"
+          },
+          {
+            "name": "Restore inline sub-agents from activation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-05T09:16:19Z",
+            "completed_at": "2026-10-05T09:16:19Z"
+          },
+          {
+            "name": "Restore inline skills from activation artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-05T09:16:19Z",
+            "completed_at": "2026-10-05T09:16:19Z"
+          },
+          {
+            "name": "Download container images",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 17,
+            "started_at": "2026-10-05T09:16:19Z",
+            "completed_at": "2026-10-05T09:16:40Z"
+          },
+          {
+            "name": "Generate Safe Outputs Config",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 18,
+            "started_at": "2026-10-05T09:16:40Z",
+            "completed_at": "2026-10-05T09:16:40Z"
+          },
+          {
+            "name": "Generate Safe Outputs Tools",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 19,
+            "started_at": "2026-10-05T09:16:40Z",
+            "completed_at": "2026-10-05T09:16:40Z"
+          },
+          {
+            "name": "Start MCP Gateway",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20,
+            "started_at": "2026-10-05T09:16:40Z",
+            "completed_at": "2026-10-05T09:16:45Z"
+          },
+          {
+            "name": "Mount MCP servers as CLIs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21,
+            "started_at": "2026-10-05T09:16:45Z",
+            "completed_at": "2026-10-05T09:16:45Z"
+          },
+          {
+            "name": "Clean credentials",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-05T09:16:45Z",
+            "completed_at": "2026-10-05T09:16:45Z"
+          },
+          {
+            "name": "Audit pre-agent workspace",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 23,
+            "started_at": "2026-10-05T09:16:45Z",
+            "completed_at": "2026-10-05T09:16:45Z"
+          },
+          {
+            "name": "Execute GitHub Copilot CLI",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 24,
+            "started_at": "2026-10-05T09:16:45Z",
+            "completed_at": "2026-10-05T09:17:08Z"
+          },
+          {
+            "name": "Detect agent errors",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 25,
+            "started_at": "2026-10-05T09:17:08Z",
+            "completed_at": "2026-10-05T09:17:08Z"
+          },
+          {
+            "name": "Configure Git credentials",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 26,
+            "started_at": "2026-10-05T09:17:08Z",
+            "completed_at": "2026-10-05T09:17:08Z"
+          },
+          {
+            "name": "Copy Copilot session state files to logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 27,
+            "started_at": "2026-10-05T09:17:08Z",
+            "completed_at": "2026-10-05T09:17:08Z"
+          },
+          {
+            "name": "Stop MCP Gateway",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 28,
+            "started_at": "2026-10-05T09:17:08Z",
+            "completed_at": "2026-10-05T09:17:09Z"
+          },
+          {
+            "name": "Redact secrets in logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 29,
+            "started_at": "2026-10-05T09:17:09Z",
+            "completed_at": "2026-10-05T09:17:09Z"
+          },
+          {
+            "name": "Append agent step summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 30,
+            "started_at": "2026-10-05T09:17:09Z",
+            "completed_at": "2026-10-05T09:17:09Z"
+          },
+          {
+            "name": "Copy Safe Outputs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 31,
+            "started_at": "2026-10-05T09:17:09Z",
+            "completed_at": "2026-10-05T09:17:09Z"
+          },
+          {
+            "name": "Ingest agent output",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 32,
+            "started_at": "2026-10-05T09:17:09Z",
+            "completed_at": "2026-10-05T09:17:10Z"
+          },
+          {
+            "name": "Parse agent logs for step summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 33,
+            "started_at": "2026-10-05T09:17:10Z",
+            "completed_at": "2026-10-05T09:17:10Z"
+          },
+          {
+            "name": "Parse MCP Gateway logs for step summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 34,
+            "started_at": "2026-10-05T09:17:10Z",
+            "completed_at": "2026-10-05T09:17:10Z"
+          },
+          {
+            "name": "Print firewall logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 35,
+            "started_at": "2026-10-05T09:17:10Z",
+            "completed_at": "2026-10-05T09:17:10Z"
+          },
+          {
+            "name": "Parse token usage for step summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 36,
+            "started_at": "2026-10-05T09:17:10Z",
+            "completed_at": "2026-10-05T09:17:10Z"
+          },
+          {
+            "name": "Print AWF reflect summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 37,
+            "started_at": "2026-10-05T09:17:10Z",
+            "completed_at": "2026-10-05T09:17:11Z"
+          },
+          {
+            "name": "Write agent output placeholder if missing",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 38,
+            "started_at": "2026-10-05T09:17:11Z",
+            "completed_at": "2026-10-05T09:17:11Z"
+          },
+          {
+            "name": "Upload agent artifacts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 39,
+            "started_at": "2026-10-05T09:17:11Z",
+            "completed_at": "2026-10-05T09:17:12Z"
+          },
+          {
+            "name": "Post Checkout repository",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 77,
+            "started_at": "2026-10-05T09:17:12Z",
+            "completed_at": "2026-10-05T09:17:12Z"
+          },
+          {
+            "name": "Post Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 78,
+            "started_at": "2026-10-05T09:17:12Z",
+            "completed_at": "2026-10-05T09:17:12Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 79,
+            "started_at": "2026-10-05T09:17:12Z",
+            "completed_at": "2026-10-05T09:17:12Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111694236461",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000210691,
+        "runner_name": "GitHub Actions 1000210691",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 111694819737,
+        "run_id": 37288781360,
+        "workflow_name": "Read-Only Repository Operations Report",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288781360",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAYexmQ",
+        "head_sha": "91a1075333030a24546ee81ef33cbe9c26e88a08",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111694819737",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288781360/job/111694819737",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:17:19Z",
+        "started_at": "2026-10-05T09:17:22Z",
+        "completed_at": "2026-10-05T09:18:01Z",
+        "name": "detection",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:17:23Z",
+            "completed_at": "2026-10-05T09:17:26Z"
+          },
+          {
+            "name": "Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:17:26Z",
+            "completed_at": "2026-10-05T09:17:28Z"
+          },
+          {
+            "name": "Download agent output artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:17:28Z",
+            "completed_at": "2026-10-05T09:17:29Z"
+          },
+          {
+            "name": "Setup agent output environment variable",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-05T09:17:29Z",
+            "completed_at": "2026-10-05T09:17:29Z"
+          },
+          {
+            "name": "Checkout repository for patch context",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-05T09:17:29Z",
+            "completed_at": "2026-10-05T09:17:29Z"
+          },
+          {
+            "name": "Clean stale firewall files from agent artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-05T09:17:29Z",
+            "completed_at": "2026-10-05T09:17:29Z"
+          },
+          {
+            "name": "Download container images",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-05T09:17:29Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Check if detection needed",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Clear MCP Config for detection",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Prepare threat detection files",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 10,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Setup threat detection",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 11,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Ensure threat-detection directory and log",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 12,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:37Z"
+          },
+          {
+            "name": "Setup Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-05T09:17:37Z",
+            "completed_at": "2026-10-05T09:17:38Z"
+          },
+          {
+            "name": "Install ripgrep",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-05T09:17:38Z",
+            "completed_at": "2026-10-05T09:17:47Z"
+          },
+          {
+            "name": "Install GitHub Copilot CLI",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-05T09:17:47Z",
+            "completed_at": "2026-10-05T09:17:57Z"
+          },
+          {
+            "name": "Install AWF binary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-05T09:17:57Z",
+            "completed_at": "2026-10-05T09:17:57Z"
+          },
+          {
+            "name": "Execute GitHub Copilot CLI",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 17,
+            "started_at": "2026-10-05T09:17:57Z",
+            "completed_at": "2026-10-05T09:17:57Z"
+          },
+          {
+            "name": "Echo detection step summary",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 18,
+            "started_at": "2026-10-05T09:17:57Z",
+            "completed_at": "2026-10-05T09:17:57Z"
+          },
+          {
+            "name": "Render detection log",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 19,
+            "started_at": "2026-10-05T09:17:57Z",
+            "completed_at": "2026-10-05T09:17:57Z"
+          },
+          {
+            "name": "Parse threat detection token usage for step summary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20,
+            "started_at": "2026-10-05T09:17:57Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          },
+          {
+            "name": "Upload threat detection log",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 21,
+            "started_at": "2026-10-05T09:17:58Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          },
+          {
+            "name": "Parse and conclude threat detection",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 22,
+            "started_at": "2026-10-05T09:17:58Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          },
+          {
+            "name": "Post Setup Node.js",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 43,
+            "started_at": "2026-10-05T09:17:58Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          },
+          {
+            "name": "Post Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 44,
+            "started_at": "2026-10-05T09:17:58Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 45,
+            "started_at": "2026-10-05T09:17:58Z",
+            "completed_at": "2026-10-05T09:17:58Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111694819737",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000210696,
+        "runner_name": "GitHub Actions 1000210696",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 111695071010,
+        "run_id": 37288781360,
+        "workflow_name": "Read-Only Repository Operations Report",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288781360",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAYuHIg",
+        "head_sha": "91a1075333030a24546ee81ef33cbe9c26e88a08",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111695071010",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288781360/job/111695071010",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:18:02Z",
+        "started_at": "2026-10-05T09:18:05Z",
+        "completed_at": "2026-10-05T09:18:13Z",
+        "name": "safe_outputs",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:18:06Z",
+            "completed_at": "2026-10-05T09:18:08Z"
+          },
+          {
+            "name": "Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:18:08Z",
+            "completed_at": "2026-10-05T09:18:10Z"
+          },
+          {
+            "name": "Download agent output artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:18:10Z",
+            "completed_at": "2026-10-05T09:18:10Z"
+          },
+          {
+            "name": "Setup agent output environment variable",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-05T09:18:10Z",
+            "completed_at": "2026-10-05T09:18:10Z"
+          },
+          {
+            "name": "Configure GH_HOST for enterprise compatibility",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-05T09:18:10Z",
+            "completed_at": "2026-10-05T09:18:10Z"
+          },
+          {
+            "name": "Process Safe Outputs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-05T09:18:10Z",
+            "completed_at": "2026-10-05T09:18:11Z"
+          },
+          {
+            "name": "Upload Safe Outputs Items",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-05T09:18:11Z",
+            "completed_at": "2026-10-05T09:18:11Z"
+          },
+          {
+            "name": "Post Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-05T09:18:11Z",
+            "completed_at": "2026-10-05T09:18:11Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-05T09:18:11Z",
+            "completed_at": "2026-10-05T09:18:11Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111695071010",
+        "labels": [
+          "ubuntu-slim"
+        ],
+        "runner_id": 1000210699,
+        "runner_name": "GitHub Actions 1000210699",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 111695142112,
+        "run_id": 37288781360,
+        "workflow_name": "Read-Only Repository Operations Report",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/37288781360",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAaAYyc4A",
+        "head_sha": "91a1075333030a24546ee81ef33cbe9c26e88a08",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/111695142112",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37288781360/job/111695142112",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-05T09:18:14Z",
+        "started_at": "2026-10-05T09:18:17Z",
+        "completed_at": "2026-10-05T09:18:36Z",
+        "name": "conclusion",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-05T09:18:19Z",
+            "completed_at": "2026-10-05T09:18:22Z"
+          },
+          {
+            "name": "Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-05T09:18:22Z",
+            "completed_at": "2026-10-05T09:18:25Z"
+          },
+          {
+            "name": "Download agent output artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-05T09:18:25Z",
+            "completed_at": "2026-10-05T09:18:26Z"
+          },
+          {
+            "name": "Setup agent output environment variable",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-05T09:18:26Z",
+            "completed_at": "2026-10-05T09:18:26Z"
+          },
+          {
+            "name": "Download Safe Outputs Items Manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-05T09:18:26Z",
+            "completed_at": "2026-10-05T09:18:27Z"
+          },
+          {
+            "name": "Collect usage artifact files",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-05T09:18:27Z",
+            "completed_at": "2026-10-05T09:18:27Z"
+          },
+          {
+            "name": "Upload usage artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-05T09:18:27Z",
+            "completed_at": "2026-10-05T09:18:28Z"
+          },
+          {
+            "name": "Restore daily AIC usage cache",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-05T09:18:28Z",
+            "completed_at": "2026-10-05T09:18:29Z"
+          },
+          {
+            "name": "Write daily AIC usage cache entry",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-05T09:18:29Z",
+            "completed_at": "2026-10-05T09:18:29Z"
+          },
+          {
+            "name": "Save daily AIC usage cache",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-05T09:18:29Z",
+            "completed_at": "2026-10-05T09:18:30Z"
+          },
+          {
+            "name": "Upload daily AIC usage cache artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-05T09:18:30Z",
+            "completed_at": "2026-10-05T09:18:31Z"
+          },
+          {
+            "name": "Process no-op messages",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-05T09:18:31Z",
+            "completed_at": "2026-10-05T09:18:31Z"
+          },
+          {
+            "name": "Log detection run",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-05T09:18:31Z",
+            "completed_at": "2026-10-05T09:18:31Z"
+          },
+          {
+            "name": "Record missing tool",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-10-05T09:18:31Z",
+            "completed_at": "2026-10-05T09:18:31Z"
+          },
+          {
+            "name": "Record incomplete",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-10-05T09:18:31Z",
+            "completed_at": "2026-10-05T09:18:32Z"
+          },
+          {
+            "name": "Handle agent failure",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 16,
+            "started_at": "2026-10-05T09:18:32Z",
+            "completed_at": "2026-10-05T09:18:32Z"
+          },
+          {
+            "name": "Post Setup Scripts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 32,
+            "started_at": "2026-10-05T09:18:32Z",
+            "completed_at": "2026-10-05T09:18:32Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 33,
+            "started_at": "2026-10-05T09:18:32Z",
+            "completed_at": "2026-10-05T09:18:32Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/111695142112",
+        "labels": [
+          "ubuntu-slim"
+        ],
+        "runner_id": 1000210700,
+        "runner_name": "GitHub Actions 1000210700",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

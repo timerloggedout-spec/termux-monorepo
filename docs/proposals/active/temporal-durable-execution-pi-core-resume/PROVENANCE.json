@@ -1,0 +1,29 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-28T02:09:47Z",
+  "proposal_id": "temporal-durable-execution-pi-core-resume",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+      "items": 10,
+      "assembled_at": null
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "48d2ff23522b3a05479c4249b8fb5bc63227769ca9aecc9d4dbdda195a454957",
+    "ITEMS.md": "7cc59de2b39467e06fef553bed10abb6311cec3c2294d246d339dd845c97d7ad",
+    "RFP.md": "e5beba6ccc69fc171bd40e3d968250e2fd06b872556cad1e29c087134735ad1a"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "temporal-durable-execution",
+  "concept": "Agent-agnostic durable core: session-file state, worker death mid-turn resumed by another worker, started-but-unrecorded side effects surfaced as unknown outcome and never blindly retried.",
+  "siblings": [
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-versioned-autoscale",
+    "temporal-durable-execution-contract-first",
+    "temporal-durable-execution-serverless-skill"
+  ]
+}

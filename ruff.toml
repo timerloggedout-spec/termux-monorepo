@@ -1,0 +1,18 @@
+# Ruff configuration — termux-monorepo
+#
+# Deliberately narrow starter scope (2026-10-24 Lint & Format setup):
+# catch syntax errors and real defects before commit, keep imports ordered.
+# Broader style rules are intentionally NOT enabled yet; widen in follow-ups.
+#
+#   E9 — syntax errors (pycodestyle error subset)
+#   F  — Pyflakes (undefined names, unused imports, redefinitions)
+#   I  — import sorting (isort-compatible)
+#
+# line-length is a formatter setting here (E501 is not selected, so it
+# does not flag long lines as lint errors); 120 matches the repo's
+# existing code better than Ruff's 88 default. Tune in follow-ups.
+
+line-length = 120
+
+[lint]
+select = ["E9", "F", "I"]

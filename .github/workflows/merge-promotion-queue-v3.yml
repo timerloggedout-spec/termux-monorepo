@@ -1,0 +1,40 @@
+name: Merge Promotion Queue v3
+
+on:
+  # Cadence owned by quota-dispatch-tree.yml (Tier 3 tranche, issue #1573).
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["RECON INTEL discovery", "tribute execute", "Production Reconciliation Engine", "Engineering health (script)", "Tunnel Canary", "hygiene-sweep", "Continuous CI Sweep", "continuous-improve", "Continuous agent ops"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+concurrency:
+  group: merge-promotion-queue-v3
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'schedule' &&
+       github.event.workflow_run.head_branch == 'master')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory open master PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: bash ops/queue-v3-inventory.sh
+      - name: Publish queue artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: merge-promotion-queue-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/merge-queue/merge-promotion-queue.json
+          if-no-files-found: error
+          retention-days: 14

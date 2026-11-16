@@ -1,0 +1,29 @@
+{
+ "schema_version": "1.0",
+ "experiment_id": "doe-pilot-1-bounded-search-compressed-t2",
+ "observed_at": "2026-10-28T00:04:27Z",
+ "baseline_sha": "5ce1a9c233ef56b958c60099b94467273326f1c1",
+ "candidate_sha": "5ce1a9c233ef56b958c60099b94467273326f1c1",
+ "merge_base_sha": null,
+ "suite": "doe-family:pilot-1-context-routing-x-compression",
+ "cohort": "separation/hard",
+ "treatment": {
+  "manager_policy_id": "doe-expert/pilot-1-runner/v1",
+  "provider": null,
+  "model": null,
+  "arm": "bounded-search/compressed"
+ },
+ "status": "observed",
+ "outcome": "accuracy=0.000 task=t2 retrieved=docs/ops/LINGUIST-PANEL.md target=docs/ops/DASHBOARD-SURFACE-FEEDS.md",
+ "metrics": {
+  "accuracy": 0.0,
+  "input_tokens": 515,
+  "elapsed_ms": 119.611,
+  "rework": 1
+ },
+ "provenance": "manual",
+ "confidence": "high",
+ "evidence_refs": [
+  "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/experiments/doe/pilot-1-context-routing-x-compression/DESIGN.json"
+ ]
+}

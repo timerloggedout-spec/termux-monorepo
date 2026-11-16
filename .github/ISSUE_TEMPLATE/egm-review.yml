@@ -1,0 +1,55 @@
+name: EGM Review (Elephant-Goldfish)
+description: Fire a decision-triggered Elephant-Goldfish evaluation — filing IS the trigger; findings enter as claims and are verified by the DoE leg before anything converts to a scored RFP.
+title: "[egm] "
+labels: ["egm-review"]
+body:
+  - type: dropdown
+    id: trigger-class
+    attributes:
+      label: Trigger class
+      description: The decision event firing this evaluation (see docs/ops/EGM-TEMPLATE-TRIGGER.md for the stakes bar).
+      options:
+        - design-decision
+        - new-surface-build
+        - spec-design-draft
+    validations:
+      required: true
+  - type: textarea
+    id: subject
+    attributes:
+      label: Subject under review
+      description: The decision, surface build, or spec/design draft being evaluated, with links to the record (issue/PR/doc).
+    validations:
+      required: true
+  - type: input
+    id: elephant-seat
+    attributes:
+      label: Elephant seat
+      description: The owning seat (role/moniker) that holds the context and posts the ELEPHANT PACKET (artifacts of record + referenced sources).
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Artifacts of record
+      description: The elephant — shipped artifacts the claims are checked against, each with its merged SHA or served URL.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Referenced sources
+      description: Sources the goldfish may consult in addition to the artifacts (specs, docs, standards). Leave empty for artifacts-only.
+  - type: textarea
+    id: stakes
+    attributes:
+      label: Stakes
+      description: What is at risk if this decision/surface/draft is wrong — why it clears the stakes bar in the trigger spec.
+    validations:
+      required: true
+  - type: input
+    id: claim-window
+    attributes:
+      label: Claim window (hours)
+      description: Hours after the ELEPHANT PACKET for goldfish claims to arrive. If fewer than 2 fresh-context reviewer seats attest inside the window, the review leg FAILS CLOSED and does not run.
+      value: "24"

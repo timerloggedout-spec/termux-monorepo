@@ -1,0 +1,28 @@
+{
+  "category": "lua",
+  "tools": [
+    {
+      "name": "luarocks",
+      "package": "luarocks",
+      "path": "/data/data/com.termux/files/usr/bin/luarocks",
+      "source": "apt",
+      "tags": [
+        "lua"
+      ],
+      "category": "lua",
+      "description": "Deployment and management system for Lua modules"
+    },
+    {
+      "name": "luarocks-admin",
+      "package": "luarocks",
+      "path": "/data/data/com.termux/files/usr/bin/luarocks-admin",
+      "source": "apt",
+      "tags": [
+        "lua"
+      ],
+      "auto_tag_source": "auto:^luarocks$|^luarocks-",
+      "category": "lua",
+      "description": "Deployment and management system for Lua modules"
+    }
+  ]
+}

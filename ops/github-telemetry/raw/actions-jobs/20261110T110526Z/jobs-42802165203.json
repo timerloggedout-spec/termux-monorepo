@@ -1,0 +1,89 @@
+{
+  "collected_at": "2026-11-10T11:05:47.485891+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42802165203,
+    "endpoint": ".../runs/42802165203/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 129782176652,
+        "run_id": 42802165203,
+        "workflow_name": "hitl-control-plane-verify",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165203",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN57bjA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782176652",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165203/job/129782176652",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:47:56Z",
+        "started_at": "2026-11-10T10:47:58Z",
+        "completed_at": "2026-11-10T10:48:11Z",
+        "name": "contract",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:47:58Z",
+            "completed_at": "2026-11-10T10:47:59Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-10T10:47:59Z",
+            "completed_at": "2026-11-10T10:48:08Z"
+          },
+          {
+            "name": "Validate JSON and Python",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:08Z",
+            "completed_at": "2026-11-10T10:48:09Z"
+          },
+          {
+            "name": "Validate surface contract",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-10T10:48:09Z",
+            "completed_at": "2026-11-10T10:48:09Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-10T10:48:09Z",
+            "completed_at": "2026-11-10T10:48:09Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-10T10:48:09Z",
+            "completed_at": "2026-11-10T10:48:09Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782176652",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897080,
+        "runner_name": "GitHub Actions 1000897080",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

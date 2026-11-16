@@ -1,0 +1,81 @@
+# More provider and research-service integrations
+
+The direct provider layer now covers all **117 exact pinned directory claims across 16 families**. Additional integrations below are tracked separately so adding another service does not inflate that model count. All model inference still requires verified account entitlement and exact-model admission; no credentials or independent votes are fabricated.
+
+## Continued discovery: 35 registrations were being skipped
+
+Gemini, Groq and OpenRouter were already implemented. The discovery gap was the collector: it recognized only no-argument `register(new XProvider())` calls. It silently skipped all literal `OpenAICompatProvider({...})` registrations and the Google/Zhipu constructors with options. The bounded static parser now includes these without evaluating TypeScript, importing endpoints, reading keys or changing routing.
+
+Reprocessing the **same source commits and SHA-256-verified files** changes the pinned FreeLLMAPI inventory from **37 to 72 static references**, and the combined inventory from **160 to 195 records**. These are not 72 free inference providers: one is a custom-endpoint configuration placeholder, some are search/media services, and others may be paid, promotional, verification-dependent or unavailable. The 117 exact model claims and their directory denominator are unchanged.
+
+The repaired source-scoped mapping now recognizes **23 direct chat-transport families** in the FreeLLMAPI source: the 16 previously integrated families plus Typhoon, UnoRouter, Routeway, Requesty, xKiro, xfyun Spark Lite and SEA-LION. Its 72 references comprise 23 transport mappings, one fixed-source Firecrawl research adapter, one custom placeholder and **47 unmapped service references**. These are service mappings, not new exact-model claims or live quota evidence. Zhipu's domestic-console identity is not mapped to the global Z.ai credential namespace.
+
+The 35 newly surfaced identities are: Agnes, AINative, Aion, AnyAPI, B.AI, BazaarLink, Cerebras, custom, Google, Groq, Hugging Face, Kilo, LLM7, LongCat, Mistral, Nara, Navy, NVIDIA, Ollama, OpenCode, OpenRouter, OrcaRouter, OVH, Qianfan, Radeon, Reka, Requesty, Routeway, SeaLion, SiliconFlow, UnoRouter, Volcengine, iFlytek, xKiro and Zhipu. [Pinned registration evidence](https://github.com/tashfeenahmed/freellmapi/blob/19eb7e1c3bd5e7421ee72c3878a099f511ea4275/server/src/providers/index.ts). None is automatically admitted, and no upstream free-credit claim becomes a remaining balance.
+
+### Operational adapter batch: MSM-024
+
+The native hub registers **seven additional transports** in one batch: [Typhoon](https://docs.opentyphoon.ai/en/api-reference/), [UnoRouter](https://unorouter.com/en/docs/integrations/open-webui), [Routeway](https://docs.routeway.ai/getting-started/introduction), [Requesty](https://docs.requesty.ai/quickstart), [xKiro](https://docs.xkiro.com/), [xfyun Spark Lite](https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html) and [SEA-LION](https://docs.sea-lion.ai/guides/inferencing/api). Existing Gemini, Groq, OpenRouter and Felo integrations are not counted again or replaced. Fixed endpoints and credential aliases are in `llm_api_hub/server/provider_extensions.py`; all additions use the existing exact-model, verified-free/public-data admission gate. Development is enabled; credentials and a valid runtime admission remain necessary for live requests.
+
+Five providers have verified model catalogs: UnoRouter, Routeway, Requesty, xKiro and SEA-LION. The latter is a trial-key service, not a promised permanent free tier. Typhoon and xfyun have no invented catalog. Routeway, Requesty and xKiro document anonymous model discovery: the local readiness check successfully read all three; no prompt was sent. Requesty's documented pricing is a tier array, so all tiers and cache-price fields must be nonnegative explicit zeroes before zero-price classification. A `:free` suffix or xKiro free-tier eligibility never establishes account balance or admission.
+
+```bash
+python3 scripts/ops/provider_operational_check.py
+python3 scripts/ops/provider_operational_check.py --catalogs
+```
+
+The master-only manual workflow option `check_operational_providers` passes only these seven providers' existing key names to a read-only readiness command. It sends no completions, publishes no account/balance data or artifacts, and never mutates production policy. Missing credentials are reported as setup blockers, not provider failures. No signup, key creation or new external terms acceptance was performed. No repository/user prompts were sent. All upstream extension requests are text-only, with no identifier/tool/image fields, redirects, retries or paid fallback.
+
+Typhoon now has a real bounded HTTP transport using the existing pure protocol builder and strict normalizer; its obsolete offline-only discovery hold has been removed. See the [implemented interface and runtime instructions](TYPHOON-FREE-API-CONTRACT.md). Spark Lite's documented code-zero response is normalized without incorrectly requiring an upstream model echo; only the exact `lite` model is allowed. UnoRouter and Routeway require `:free` IDs, and Requesty managed-routing aliases are rejected.
+
+The compatible Gemini lane is folded into the same batch as `scripts/ops/gemini_free_smoke.py` and fixture tests. It remains default-off: a live read must bind the in-process key to an active, unbilled project, verify the exact pinned model and unexpired reviewed zero-price evidence, and recheck immediately before at most one fixed synthetic request. No Gemini execution occurred; existing project-read authorization/key-resource binding is unavailable here. There is no new login, key, account, paid fallback or production admission.
+
+**LongCat is not integrated as free.** Its [current PAYG setup](https://longcat.chat/platform/docs/api-pay-as-you-go) requires paid balance and rejects requests at zero/below; [model pricing](https://longcat.chat/platform/docs/pricing/longcat-2.5) is metered. [Platform terms](https://longcat.chat/platform/private/) merely allow discretionary test credits, not a guaranteed recurring free quota. Official identity-verification instructions conflict and no numeric free quota/reset is established. The [API reference](https://longcat.chat/platform/docs/api-docs) and [model-list contract](https://longcat.chat/platform/docs/api/models) establish protocol documentation, not free entitlement. No signup, key, paid top-up or inference was attempted.
+
+For wider developer-resource discovery, [cheahjs/free-llm-api-resources](https://github.com/cheahjs/free-llm-api-resources) and [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev) are additional leads, not automatically imported or trusted contracts. The former explicitly separates recurring free tiers from trial credits but still lists retired GitHub Models; that is a concrete reason to verify each official source before integration. Neither list justifies bypassing terms, borrowing keys or running a third-party proxy.
+
+## Implemented in the continued batch
+
+**SambaNova** adds a separate native chat transport at `https://api.sambanova.ai/v1/chat/completions` and catalog at `https://api.sambanova.ai/v1/models`, using only `SAMBANOVA_API_KEY`. [Official API keys/URLs](https://docs.sambanova.ai/docs/en/get-started/api-keys-urls), [OpenAI compatibility](https://docs.sambanova.ai/docs/en/features/openai-compatibility), and the provider's [OpenAPI specification](https://raw.githubusercontent.com/sambanova/sambanova-inference-api-spec/refs/heads/main/openapi.documented.json) establish endpoint, bearer auth and model-list schema. Its [current limits](https://docs.sambanova.ai/docs/en/models/rate-limits) distinguish free accounts with no payment method from Developer accounts. The listed production free-tier models are `DeepSeek-V3.1`, `Meta-Llama-3.3-70B-Instruct` and `gpt-oss-120b`, with 20 requests/minute, 20/day and 200,000 tokens/day listed per model. These are public plan claims, not this user's remaining balance. Preview models are explicitly not production models. No usable SambaNova key/account is established here.
+
+**OVHcloud public discovery** uses `https://catalog.endpoints.ai.ovh.net/rest/v1/models_v2`, a separate, unauthenticated full-array API. The [official catalog documentation](https://docs.ovhcloud.com/en/guides/public-cloud/ai-machine-learning/ai-endpoints-catalog-api) explicitly says no key, no parameters and one whole-catalog response. The implementation never forwards the inference key to this catalog host, preserves exact IDs and `available:false`, and ignores metadata-provided URLs for routing. A live public read returned 22 catalog entries, 20 marked available; this includes more than just text models. Discovery is not free inference entitlement.
+
+**ModelScope public discovery** uses `https://api-inference.modelscope.ai/v1/models`. A direct provider-host request returned HTTP 200, 35 model entries in an OpenAI-shaped `object:list/data` response, no auth and no pagination fields/Link header. This route is recorded as a **provider runtime observation**, not falsely attributed to a published catalog specification. The [official inference introduction](https://www.modelscope.ai/docs/model-service/API-Inference/intro) still requires account binding/real-name verification for inference. The adapter neither performs that verification nor sends a credential to public discovery.
+
+Those two catalog additions raise pinned-directory catalog adapter coverage to **15/16 families**: 14 with published catalog contracts, plus runtime-observed ModelScope. Z.ai's 3 exact claims retain `catalog_adapter_not_implemented`; an unauthenticated `/models` returning 401 does not prove its schema or support. The [Z.ai introduction](https://docs.z.ai/api-reference/introduction) documents the inference base and bearer auth, not a verified list-models route.
+
+**GitHub proposal feedback** now has a diagnosed and tested API path, distinct from model access. See [the exact failed request, token context, rate headers, working administrator-capable connector and repair](GITHUB-FEEDBACK-API-DIAGNOSTICS.md). Full access does not turn discussion comments into authenticated ballots.
+
+## Expanded provider continuity and evidence semantics
+
+The six-hour [provider availability workflow](../../.github/workflows/provider-availability.yml) now enumerates the canonical provider catalog adapter registry instead of hard-coding only Gemini, OpenRouter, Felo and Hugging Face. Configured provider credentials trigger bounded catalog GETs; explicitly public catalog sources (LLM7, OVHcloud, ModelScope, Routeway, Requesty and xKiro) are observed without a credential. Unconfigured credentialed providers are not contacted. Cloudflare discovery requires its configured account identifier and token.
+
+Only the existing OpenRouter and Gemini lanes issue minimal inference probes. Newly expanded native providers are **catalog-only** in this workflow; this does not add them to evaluation cohorts, enable native routing, or spend inference quota. Strict mode checks configured providers' required probes and the explicitly public catalogs. The evidence distinguishes `credential_present`, `auth_mode`, `catalog_probe_required`, `catalog_ok`, and `inference_ok`; public discovery does not imply account entitlement, and an unconfigured secret is not a provider failure.
+
+The workflow uses the canonical `provider_model_catalog.poll()` adapter so catalog pagination and provider-specific response normalization stay aligned with the batch/catalog implementation. It emits only normalized model IDs/counts, safe error classes, timestamps and boolean state; it never serializes credential values, authorization headers or upstream response bodies. The expanded offline tests mock catalog requests and assert that unconfigured providers cause no request and newly added providers never trigger inference.
+
+The health receipt also records `credential_env_resolved` (the exact environment-variable name that resolved) or `credential_env_expected` (the canonical expected name when absent). These are names-only diagnostics: secret values never enter the receipt. Hugging Face aliases are mapped independently in Actions so an `HF_TOKEN` observation is not mislabeled as `HUGGINGFACE_TOKEN` merely because the workflow copied the value into a fallback variable.
+
+## Public research service
+
+**Firecrawl keyless scrape is working in the merged trusted-production workflow.** [Run 39396483576](https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39396483576), on merged commit `9ce48a5c5d80da703cef6f7fe7c4f473ebcd0fe3`, returned `status: observed`, `reason: ok`, `authentication: none` and **78,335 Markdown characters** from the fixed public awesome-free-llm-apis repository source. The earlier Sandbox request returned HTTP 403; that remains a local failure, not a diagnosed quota error or a universal outage. No account, key, signup or paid fallback was used in the successful production request. Its [official introduction](https://docs.firecrawl.dev/introduction) explicitly demonstrates the keyless `POST https://api.firecrawl.dev/v2/scrape`, and [billing documentation](https://docs.firecrawl.dev/billing) distinguishes per-IP/day keyless limits from account plans. The adapter only accepts the two fixed public upstream URLs, requests one Markdown page, blocks redirects and never reads/sends credentials. The trusted-manual workflow's `observe_public_research` option remains default-off, and actual service outcomes are preserved separately from catalog success.
+
+```bash
+python3 scripts/services/firecrawl_public_research.py \
+  --source awesome-free-llm-apis --output /tmp/public-research.json
+```
+
+The separate account Free plan currently advertises 1,000 monthly credits and HTTP 402 at exhaustion, with no pay-as-you-go on Free. That claim is not assigned to keyless mode and is not reported as an existing account balance. Higher-rate account signup remains a human-input edge only if an appropriate Agent-owned contact and verification are missing.
+
+## Next candidates, not yet integrated
+
+| Candidate | Official evidence and useful next step | Remaining condition |
+|---|---|---|
+| Linkup | [Quickstart/auth](https://docs.linkup.so/pages/documentation/get-started/quickstart), [pricing](https://docs.linkup.so/pages/documentation/platform/pricing): bearer-auth `https://api.linkup.so/v1/search`, prepaid balance, exhaustion returns 429 | Professional-email eligibility governs $20 monthly replenishment. Verify eligibility and contact before claiming a permanent free account. |
+| Exa | [Pricing](https://exa.ai/docs/admin/pricing), [billing](https://exa.ai/docs/admin/billing): recurring $10 monthly for the first team, no-card Free, exhaustion 402 | Verify first-team eligibility, API-key budget and auto-recharge disabled. One-time onboarding bonus is not recurring quota. |
+| Tavily | [Credits/pricing](https://docs.tavily.com/documentation/api-credits), [Search API](https://docs.tavily.com/api-reference/endpoint/search): 1,000 free monthly credits and bearer-auth search | Verify the actual account's paid-overflow configuration; no hard no-spend assertion is made from incomplete documentation. |
+
+## Rejected rather than implemented
+
+**GitHub Models is retired.** The [current official notice](https://docs.github.com/en/github-models) says playground, catalog, inference and BYOK were fully retired July 30, 2026. Old posts advertising free model access are stale; no dead GitHub Models adapter or reuse of an administrator token for inference is added.
+
+The upstream FreeLLMAPI proxy and cookie-backed/browser-wrapped services are not executed. Its repaired 72 static references are service/configuration leads, not extracted exact model IDs or proof of usable APIs. The 23 source-mapped chat families remain direct official integrations, separate from adopting that proxy's implementation. The historical 37-reference/three-mapping figures describe the earlier incomplete collector, not current coverage.

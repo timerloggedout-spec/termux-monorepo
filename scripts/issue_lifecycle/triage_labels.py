@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""Deterministic label application for unlabelled open issues.
+
+The issue-lifecycle map (docs/ops/ISSUE-LIFECYCLE.md, G1/G2) records that
+the LLM triage chain (gemini-dispatch -> gemini-triage) posts advisory
+comments but never applies labels, and that its provider route is
+fragile (HTTP 429 "incomplete" comments; some issues get no comment).
+This script is the provider-independent floor: it labels ONLY issues
+that currently have no labels at all, ONLY from title-prefix rules that
+map to labels which already exist in the repo taxonomy, and it never
+removes or changes an existing label.
+
+Usage (offline / tests):
+    propose_labels(title, existing_labels) -> list[str]
+
+Usage (Actions / lane pass):
+    python3 scripts/issue_lifecycle/triage_labels.py --report
+    python3 scripts/issue_lifecycle/triage_labels.py --apply
+
+API access uses GITHUB_TOKEN (Actions) or GH_TOKEN from the
+environment and the stdlib only; the repo defaults to
+timerloggedout-spec/termux-monorepo and can be overridden with
+GITHUB_REPOSITORY.
+"""
+
+import argparse
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+
+API = "https://api.github.com"
+DEFAULT_REPO = "timerloggedout-spec/termux-monorepo"
+USER_AGENT = "termux-monorepo-issue-lifecycle-triage"
+
+# Labels this pass may apply. Every entry must already exist in the
+# repo label taxonomy (docs/ops/ISSUE-LIFECYCLE.md section 2); the
+# point of the pass is applying the taxonomy, never inventing it.
+KNOWN_LABELS = {
+    "proposal", "research", "target-brief", "delphi:rfp", "bug",
+    "ci", "enhancement", "automation", "agent", "ops",
+}
+
+
+def propose_labels(title, existing_labels):
+    """Return the deterministic labels for one issue.
+
+    Conservative by construction: an issue that already has any label
+    is out of scope ([]), and a title that matches no rule gets [].
+    """
+    if existing_labels:
+        return []
+    t = (title or "").strip()
+    low = t.lower()
+    labels = []
+    if low.startswith("[actions incident]"):
+        # Fleet incident filings: "[Actions Incident] <workflow>: failure".
+        labels = ["bug", "ci"]
+    elif low.startswith("[dph-"):
+        # DPH programme phases (cf. #246, labelled by hand in pass 2;
+        # the prefix is the programme's own filing convention).
+        labels = ["enhancement", "automation"]
+    elif low.startswith("deepagent task:"):
+        labels = ["agent"]
+    elif low.startswith("fix(") or low.startswith("fix:"):
+        labels = ["bug"]
+    elif low.startswith("ops:") or low.startswith("ops("):
+        labels = ["ops"]
+    elif low.startswith("feat:") or low.startswith("feat("):
+        labels = ["enhancement"]
+    elif low.startswith("[target]") or low.startswith("[target "):
+        labels = ["target-brief"]
+    elif low.startswith("[delphi:rfp]") or low.startswith("delphi:rfp"):
+        labels = ["delphi:rfp"]
+    elif low.startswith("proposal:") or low.startswith("[proposal]"):
+        labels = ["proposal"]
+        if "investigate" in low:
+            labels.append("research")
+    elif low.startswith("bug:") or low.startswith("[bug]"):
+        labels = ["bug"]
+    return [label for label in labels if label in KNOWN_LABELS]
+
+
+def _request(method, path, token, repo, body=None):
+    url = f"{API}/repos/{repo}{path}"
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(url, data=data, method=method)
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    req.add_header("User-Agent", USER_AGENT)
+    if token:
+        req.add_header("Authorization", f"Bearer {token}")
+    if data:
+        req.add_header("Content-Type", "application/json")
+    # Rate-limit responses (403/429 naming a rate limit) are retried with
+    # backoff: the shared Actions installation token is drained by repo
+    # traffic in hot hours (the pass-2 proof run, 2026-10-28, hit exactly
+    # this on its first call), and a weekly pass should ride out a hot
+    # window instead of dying on page 1. Any other HTTP error fails
+    # loudly at once, with the API's own reason printed — the first
+    # version of this script died on an unprinted 403 while the workflow
+    # step still reported success (tee masked the exit code); an
+    # automation that cannot say why it failed has not run.
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                raw = resp.read()
+                return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode(errors="replace")[:500]
+            if e.code in (403, 429) and "rate limit" in detail.lower() and attempt < 4:
+                wait = e.headers.get("Retry-After")
+                delay = int(wait) if wait and wait.isdigit() else min(5 * 2**attempt, 60)
+                print(
+                    f"GitHub API rate limit on {method} {path} (HTTP {e.code}); "
+                    f"retry {attempt + 1}/4 in {delay}s",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+                continue
+            print(f"GitHub API error: {method} {path} -> HTTP {e.code}: {detail}", file=sys.stderr)
+            raise SystemExit(1)
+    raise SystemExit(1)  # pragma: no cover - loop always returns or exits
+
+
+def list_open_items(repo, token):
+    items, page = [], 1
+    while True:
+        batch = _request(
+            "GET",
+            f"/issues?state=open&sort=created&direction=desc&per_page=100&page={page}",
+            token,
+            repo,
+        )
+        if not isinstance(batch, list):
+            return items
+        items.extend(batch)
+        if len(batch) < 100:
+            return items
+        page += 1
+
+
+def run(mode, repo, token, out=sys.stdout):
+    items = list_open_items(repo, token)
+    issues = [i for i in items if "pull_request" not in i]
+    unlabelled = [i for i in issues if not i.get("labels")]
+    print(
+        f"open issues: {len(issues)}; unlabelled: {len(unlabelled)}",
+        file=out,
+    )
+    applied = 0
+    for issue in unlabelled:
+        labels = propose_labels(
+            issue.get("title", ""),
+            [label.get("name") for label in issue.get("labels", [])],
+        )
+        if not labels:
+            print(f"#{issue['number']}: no rule matches - lane pass decides", file=out)
+            continue
+        if mode == "apply":
+            _request(
+                "POST",
+                f"/issues/{issue['number']}/labels",
+                token,
+                repo,
+                {"labels": labels},
+            )
+            applied += 1
+            print(f"#{issue['number']}: applied {labels}", file=out)
+        else:
+            print(f"#{issue['number']}: would apply {labels}", file=out)
+    print(f"mode={mode}; labelled this run: {applied if mode == 'apply' else 0}", file=out)
+    return 0
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--report", action="store_true", help="list proposals only")
+    group.add_argument("--apply", action="store_true", help="apply proposed labels")
+    args = parser.parse_args(argv)
+    repo = os.environ.get("GITHUB_REPOSITORY") or DEFAULT_REPO
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or ""
+    return run("apply" if args.apply else "report", repo, token)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

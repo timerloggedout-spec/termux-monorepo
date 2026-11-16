@@ -1,0 +1,31 @@
+{
+  "context": "FCC L1 unit what-is-normalization-in-sql (M5 theory batch, provider rotation cohere->sealion)",
+  "dispatch_id": "cert-unit-41367410806",
+  "endpoint": "sealion::Llama-SEA-LION-v3-70B-IT",
+  "entry": "506",
+  "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+  "moniker": "optimizations-assurance",
+  "outcome": {
+    "artifact": "issue-506 verdict",
+    "confirmed": null,
+    "gate_call": null,
+    "status": "completed",
+    "summary": "cert unit verdict ok:true (run 41367410806); stamp re-emitted by routing after the wired self-emit was lost to a fan-out push race (fixed PR #3443)"
+  },
+  "provider": "sealion",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "sealion",
+    "slice": null
+  },
+  "role": "builder",
+  "run": {
+    "run_id": 41367410806,
+    "session_id": null,
+    "workflow": "cert-unit.yml"
+  },
+  "suite": "routed-dispatch/v1",
+  "task_class": "certifications-unit",
+  "trigger": "FCC L1 queue (mgr-ordered M5 T-batch, sealion rotation)",
+  "ts": "2026-11-02T01:17:47Z"
+}

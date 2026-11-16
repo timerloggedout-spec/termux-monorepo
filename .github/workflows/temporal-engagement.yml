@@ -1,0 +1,75 @@
+# Temporal engagement home (migration stage 1–2, owner correction
+# 2026-10-28: no VM exception — Temporal's continuous execution
+# homes on GitHub-reachable surfaces, i.e. here).
+#
+# A dispatch is one engagement: an ephemeral Temporal dev server
+# starts inside the job, the RFP §6 kill-resume proof runs against
+# it (scripts/temporal/kill_resume_harness.py — worker SIGKILLed
+# mid-activity, second worker resumes, receipt count exactly 1,
+# unknown outcome reconciled), and the evidence envelope is
+# uploaded as an artifact. Nothing runs forever; nothing touches
+# the VM. The fleet self-host instance stays up until this proof
+# passes here (migration hard gate, docs/ops/TEMPORAL-MIGRATION.md).
+name: temporal-engagement
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_delphi_prove:
+        description: "Also run the N5 §5 acceptance (delphi-cycle prove, record_only)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  engagement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python deps
+        run: pip install temporalio pytest
+      - name: Install Temporal CLI + start ephemeral dev server
+        run: |
+          curl -sSfL https://temporal.download/cli.sh | sh
+          echo "$HOME/.temporalio/bin" >> "$GITHUB_PATH"
+          nohup "$HOME/.temporalio/bin/temporal" server start-dev \
+            --port 7233 --ui-port 8233 --log-level warn \
+            > temporal-server.log 2>&1 &
+          for i in $(seq 1 30); do
+            (exec 3<>/dev/tcp/127.0.0.1/7233) 2>/dev/null && exit 0
+            sleep 2
+          done
+          echo "dev server did not bind :7233"; cat temporal-server.log; exit 1
+      - name: "§6 kill-resume proof (replacement-home gate)"
+        run: |
+          python scripts/temporal/kill_resume_harness.py prove \
+            --address localhost:7233 \
+            --workdir "$RUNNER_TEMP/kill-resume" \
+            | tee "$RUNNER_TEMP/kill-resume-verdict.json"
+      - name: "N5 §5 acceptance (optional)"
+        if: ${{ inputs.run_delphi_prove }}
+        run: |
+          cd scripts/temporal/delphi_cycle
+          python client.py --address localhost:7233 prove \
+            --workdir "$RUNNER_TEMP/n5-prove" --ledger-mode record_only \
+            | tee "$RUNNER_TEMP/prove-envelope.json"
+          python client.py parity --workdir "$RUNNER_TEMP/n5-prove" \
+            | tee "$RUNNER_TEMP/parity.json"
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: temporal-engagement-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/kill-resume-verdict.json
+            ${{ runner.temp }}/kill-resume/
+            ${{ runner.temp }}/prove-envelope.json
+            ${{ runner.temp }}/parity.json
+          if-no-files-found: warn

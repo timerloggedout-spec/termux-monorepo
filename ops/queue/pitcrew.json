@@ -1,0 +1,6 @@
+{
+  "_doc": "Queue pit crew policy. supersede: idempotent read-only/state-recomputing workflows where only the newest queued run per (workflow,event,branch) matters. Add a workflow only when a newer run fully recomputes what an older one would.",
+  "supersede": ["Quota Dispatch Tree"],
+  "amplifier_threshold": 50,
+  "max_cancels_per_pass": 400
+}

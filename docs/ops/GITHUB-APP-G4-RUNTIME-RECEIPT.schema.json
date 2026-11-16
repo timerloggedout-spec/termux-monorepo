@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/GITHUB-APP-G4-RUNTIME-RECEIPT.schema.json",
+  "title": "GitHub App G4 Runtime Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_type",
+    "app_slug",
+    "mint_outcome",
+    "rate_limit_before",
+    "rate_limit_after",
+    "api_calls_by_status",
+    "repositories_inspected",
+    "workflow",
+    "duration_seconds",
+    "conclusion",
+    "observed_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "receipt_type": {
+      "const": "github_app_g4_runtime_receipt"
+    },
+    "app_slug": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mint_outcome": {
+      "enum": [
+        "success",
+        "failure"
+      ]
+    },
+    "rate_limit_before": {
+      "$ref": "#/$defs/rateLimit"
+    },
+    "rate_limit_after": {
+      "$ref": "#/$defs/rateLimit"
+    },
+    "api_calls_by_status": {
+      "type": "object",
+      "patternProperties": {
+        "^[1-5][0-9]{2}$": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "repositories_inspected": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "attempt",
+        "head_sha"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "head_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "duration_seconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "conclusion": {
+      "enum": [
+        "success",
+        "failure",
+        "cancelled",
+        "timed_out",
+        "action_required",
+        "neutral",
+        "skipped",
+        "stale",
+        "startup_failure"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "rateLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "limit",
+        "remaining",
+        "reset"
+      ],
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "remaining": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reset": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

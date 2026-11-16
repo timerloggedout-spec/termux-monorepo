@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · Control Panel — Help-Wanted Oversight</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .stage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+  @media(max-width:850px){.stage-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:640px){.stage-grid{grid-template-columns:1fr}.table{min-width:560px}}
+  .stage{border:1px solid var(--line);border-radius:.6rem;padding:.7rem .8rem;background:var(--panel)}
+  .stage b{color:var(--gold)}
+  .sys-table td a{white-space:nowrap}
+  .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0 1rem}
+  .filter-bar input{flex:1;min-width:180px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:.5rem;padding:.5rem .7rem}
+  .admin-note{border-left:3px solid var(--gold);padding:.4rem .8rem;background:var(--panel)}
+</style>
+ <script src="./versioning.js" defer></script>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html" aria-current="page">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
+<a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/pools.html">Pools</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a>
+<a href="https://timerloggedout-spec.github.io/tribute/results-index.html">Results Index</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/d2-proposals.html">D2 Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/referrals.html">Referrals</a>
+<a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Admin · Control Panel</p>
+<h1>Systems, inventory &amp; review queue</h1>
+<p class="sub">One panel over the whole web inventory: the Delphic Oracle Method, quota &amp; Moneyball, the collaborator orchestrator entry points, every published surface, and the work waiting for review. Live-fed from the same sources as the other panels — never a static snapshot.</p>
+</div>
+</header>
+<main>
+<section class="card admin-note">
+<strong>Control contract.</strong> This panel is a read-only projection, like the rest of the dashboard: it embeds no credentials and mutates nothing from browser JavaScript. Interacting means navigating — every action button opens the owning admin surface (a workflow dispatch page, a ledger issue, a Vercel project, a settings page) where the platform itself enforces who may act.
+</section>
+
+<section class="card">
+<h2>Feed health</h2>
+<ul class="feed-list" id="feeds">
+<li><span>Delphi panel config (<code>ops/delphi/panel.json</code>, live from master)</span><span class="pill gold" data-feed="delphi">…</span></li>
+<li><span>Control surface (<code>data/status.json</code>)</span><span class="pill gold" data-feed="status">…</span></li>
+<li><span>Quota readings (<code>data/quota.json</code>)</span><span class="pill gold" data-feed="quota">…</span></li>
+<li><span>Provider quota coverage (<code>data/provider-quota-coverage.json</code>)</span><span class="pill gold" data-feed="coverage">…</span></li>
+<li><span>Lane matrix sweep (<code>docs/ops/generated/lane-matrix-status.json</code>, live from master)</span><span class="pill gold" data-feed="matrix">…</span></li>
+<li><span>Review queue (public GitHub API)</span><span class="pill gold" data-feed="queue">…</span></li>
+<li><span>Challenge internal metrics (<code>data/challenge-admin-metrics.json</code>) — ADMIN PANEL ONLY</span><span class="pill gold" data-feed="challenge">…</span></li>
+<li><span>Quota gearbox — consumer controls (<code>data/quota-usage.json</code>) — ADMIN PANEL ONLY</span><span class="pill gold" data-feed="gearbox">…</span></li>
+</ul>
+<p><button id="refresh" type="button" class="button">Refresh feeds now</button> <span id="refreshed" class="muted"></span></p>
+</section>
+
+<section class="card">
+<h2>Challenge — internal metrics <span class="pill gold">INTERNAL</span></h2>
+<p class="admin-note"><strong>Internal only.</strong> Win probability (internal metric, method as recorded in the feed) renders on this admin panel alone — never on public pages, public feeds, logs, briefs, or the opportunity ledger (contract: <code>docs/ops/ADMIN-INTERNAL-METRICS.md</code>). Values arrive verbatim from the coordinator record via the admin feed; this panel computes nothing and offers no export.</p>
+<div id="challenge-metrics"><p class="muted">Loading the internal metrics feed…</p></div>
+<p class="muted" id="challenge-metrics-meta"></p>
+</section>
+
+<section class="card">
+<h2>Quota gearbox — consumer controls <span class="pill gold">INTERNAL</span></h2>
+<p class="admin-note"><strong>Internal only — design schema.</strong> The quota gearbox (concept: <code>docs/ops/QUOTA-GEARBOX-CONCEPT.md</code>) renders on this admin panel alone, following the internal-metrics precedent; the public Quota Usage page never renders it. Everything below arrives verbatim from the <code>gearbox</code> block of <code>data/quota-usage.json</code>; the controls are design-only and inert — this panel mutates nothing, and per-consumer metering is flagged in the pack itself where it is not established.</p>
+<div id="gearbox-controls"><p class="muted">Loading the quota usage pack…</p></div>
+<p class="muted" id="gearbox-meta"></p>
+</section>
+
+<section>
+<h2>Delphic Oracle Method</h2>
+<p class="muted" id="delphi-summary">Loading the live panel configuration from master…</p>
+<div class="stage-grid" id="delphi-cycle">
+<div class="stage"><b>1 · Generate n</b><p>Each pass generates <span data-cfg="n">n</span> proposals from a fetched, provenance-stamped evidence set.</p></div>
+<div class="stage"><b>2 · Cross-vote, round 1</b><p>Comparative ballots across all n; source classes stay separate; input vote expectations are recorded before implementation.</p></div>
+<div class="stage"><b>3 · Implementation comparisons</b><p>Parallel per-proposal implementations; tests run per proposal.</p></div>
+<div class="stage"><b>4 · Evidence equalization</b><p>Round 2 starts every voter from the identical per-proposal test-results bundle (sha256-stamped).</p></div>
+<div class="stage"><b>5 · Re-vote, round 2</b><p>Second Delphi cycle on the equalized evidence base.</p></div>
+<div class="stage"><b>6 · Calibration</b><p>Round-2 votes vs round-1 expectations; deltas feed the weights and outcome ledgers.</p></div>
+</div>
+<div class="grid-3">
+<div class="card"><h3>Operate</h3><ul>
+<li><a href="https://timerloggedout-spec.github.io/help-wanted/oracle.html">Oracle Panel — proposal results</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-generate.yml">Dispatch a generation pass</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-gate.yml">Delphi gate runs</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-oracle-mvp.yml">Oracle MVP runs</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-intake.yml">Delphi intake runs</a></li>
+</ul></div>
+<div class="card"><h3>Ledgers &amp; evidence</h3><ul>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1489">Weights ledger (#1489)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1487">Outcome ledger (#1487)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1533">Ingestion build (#1533)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DELPHI-STATUS-AND-CROSSOVER.md">Status &amp; crossover record</a></li>
+</ul></div>
+<div class="card"><h3>Sources of record</h3><ul>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/panel.json">panel.json (live config)</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/surfaces.json">surfaces.json</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/delphi/shadow-lanes.json">shadow-lanes.json</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/apps/weekend-challenge-delphi-oracle">Offline Oracle MVP app</a></li>
+<li><a href="https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/delphi-desk-builder-io">First generated proposal (#42, Delphi Desk)</a></li>
+</ul></div>
+</div>
+</section>
+
+<section>
+<h2>Systems inventory</h2>
+<div class="filter-bar"><input id="sys-filter" type="search" placeholder="Filter systems, surfaces, owners…" aria-label="Filter inventory"></div>
+<div class="table-wrap"><table class="table sys-table"><thead><tr><th>System / surface</th><th>What it is</th><th>Open</th><th>Admin</th></tr><tr><td>Classifiers</td><td>The Tier-1 classifier estate: every unit with group, state, convergence and outputs, the observatory quartet, and the %-breakdown record (shares, not confidences); page: <a href="./classifiers.html">classifiers.html</a> · data: ops/classifiers/classifiers-feed.json (classifiers-feed/v1, steward single-writer).</td><td><a href="./classifiers.html">Classifiers page</a></td><td><a href="./delphi-ledger.html">Delphi Ledgers</a></td></tr></thead>
+<tbody id="sys-rows">
+<tr><td>Quota &amp; Moneyball</td><td>64-record entitlement registry (23 providers / 27 families), coverage artifact, 3L0 weights; panel readings are evidence-stated, never invented balances.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/quota.html">Quota panel</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/vercel-quota-probe.yml">Quota probe dispatch</a></td></tr><tr><td>Wagering Book</td><td>The challenge wagering book as a Gantt: 23 subjects with calendar anchors and forecast settle ticks, rendered from the wagering-book feed; the book expectation record is deliberately excluded from feed and page. Page: <a href="./wagering-book.html">wagering-book.html</a> · data: ops/moneyball/wagering-book.json.</td><td><a href="./wagering-book.html">Wagering Book page</a></td><td><a href="./moneyball.html">MoneyBall</a></td></tr>
+<tr><td>Pools</td><td>MoneyBall pool-population census: class × depth matrix of pools of record, fold-proven from the wallet ledger (paper/test pools); cells the feed names NOT_ESTABLISHED render NE, never 0. Page: <a href="./pools.html">pools.html</a> · data: data/pools-feed.json (moneyball-pools-feed/v1, mirrored byte-identical).</td><td><a href="./pools.html">Pools page</a></td><td><a href="./moneyball.html">MoneyBall</a></td></tr>
+<tr><td>Free-Tier Use Value Board</td><td>As-if-paid value derived from free-tier usage — live: <a href="./free-tier-value.html">free-tier-value.html</a> · data: <a href="./data/free-tier-value.json">free-tier-value.json</a>.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1589">PR #1589</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/1683">Dispatch #1683</a></td></tr>
+<tr><td>Peer review orchestrator</td><td><code>peerGate</code> — SHA-bound peer cycles (CodeRabbit, Devin, Gemini second pass), JIT reviewer settings.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/peer-review-orchestrator.yml">Runs</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/.github/workflows/peer-review-orchestrator.yml">Workflow source</a></td></tr>
+<tr><td>Jules handoff lanes</td><td><code>@jules</code> PR handoff (receipt permissions fixed by #1681, <code>af1ed160</code>) + Jules-on-issues; session creation currently falls back to the GitHub App ping — see #1683.</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/agent-pr-jules-handoff.yml">Handoff runs</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/agent-jules-on-issues.yml">Issue lane runs</a></td></tr>
+<tr><td>Target intake (T.A.K.)</td><td>Target Briefs from issue form / CLI / JSONL / chat / HTTP facade converge on one taxonomy-mapped dispatch plan (#1597, template #1714).</td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/new/choose">New brief</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/target-intake.yml">Intake runs</a></td></tr>
+<tr><td>Help-Wanted Tribute</td><td>The control surface this panel extends: lane evolution, publication lanes, evidence.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/">Live dashboard</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/help-wanted-dashboard-deploy.yml">Deploy dispatch</a></td></tr>
+<tr><td>Lane matrix</td><td>Open-PR sweep by lane (CANDIDATE / SUPERSEDE / NEED_EVIDENCE / EXTRACT), refreshed by the ops lane-matrix sweep; the live count rides in Feed health above.</td><td><a href="https://timerloggedout-spec.github.io/matrix/">Live matrix</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ops-lane-matrix-sweep.yml">Sweep runs</a></td></tr>
+<tr><td>Quota Dispatch Tree</td><td>Cadence &amp; admission state of the quota dispatch tree — Node A guard, 32 lanes, firing history; page: <a href="./dispatch-tree.html">dispatch-tree.html</a> · data: <a href="./data/dispatch-tree-feed.json">dispatch-tree-feed.json</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/dispatch-tree.html">Dispatch Tree page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/quota-dispatch-tree.yml">Dispatch tree runs</a></td></tr>
+<tr><td>Challenge Countdowns</td><td>Hackathon deadline countdowns computed live in the browser from the instants recorded in the challenge entries log; page: <a href="./countdowns.html">countdowns.html</a> · data: <a href="./data/challenge-countdowns-feed.json">challenge-countdowns-feed.json</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/countdowns.html">Countdowns page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/challenge-countdowns-feed-collect.yml">Feed refresh runs</a></td></tr>
+<tr><td>D2 Proposals</td><td>D2 (Vultr Agent Rush) proposal delineation: the 6-candidate slate, per-proposal delineation with the ranking marked advisory-only and the pick owner-held. Page: <a href="./d2-proposals.html">d2-proposals.html</a> · source: D2 exercise record (proposal-delineation.html).</td><td><a href="./d2-proposals.html">D2 Proposals page</a></td><td><a href="./countdowns.html">Countdowns</a></td></tr>
+<tr><td>Linguist Panel</td><td>Canonical mapping families with the admin layers switch — transforms, in-text threading, full mapping search; page: <a href="./linguist.html">linguist.html</a> · data: <a href="./data/linguist-panel-feed.json">linguist-panel-feed.json</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/linguist.html">Linguist page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/linguist-panel-feed-collect.yml">Feed refresh runs</a></td></tr>
+<tr><td>Delphi RFP</td><td>The Delphi RFP flood — progress &amp; status, criteria, questions as filed, outcomes and the panel's signed votes verbatim from the gate ledger; page: <a href="./delphi-rfp.html">delphi-rfp.html</a> · data: <a href="./data/delphi-rfp-feed.json">delphi-rfp-feed.json</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-rfp.html">Delphi RFP page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-rfp-feed-collect.yml">Feed refresh runs</a></td></tr>
+<tr><td>Delphi Ledgers</td><td>The Delphi continuous ledgers — outcome and weights currents verbatim, the generation event stream, living records by version key; page: <a href="./delphi-ledger.html">delphi-ledger.html</a> · data: <a href="./data/delphi-ledger-feed.json">delphi-ledger-feed.json</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/delphi-ledger.html">Delphi Ledgers page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/delphi-ledger-feed-collect.yml">Feed refresh runs</a></td></tr>
+<tr><td>PR Lanes</td><td>The tier-1 classifier disposition of every open PR — lane distribution and per-lane tables (CANDIDATE / EXTRACT / NEED_EVIDENCE / SUPERSEDE); page: <a href="./pr-lanes.html">pr-lanes.html</a> · data: <a href="./data/pr-lane-feed.json">pr-lane-feed.json</a> (mirror of ops/ml/pr-lane-feed.json).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/pr-lanes.html">PR Lanes page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/ml-pr-lane-classify.yml">Classifier runs</a></td></tr>
+<tr><td>Proposals</td><td>The proposal registry index — every registered pack (status, priority, author, related issues/PRs) linked to its tree, plus the Oracle Method pass records; page: <a href="./proposals.html">proposals.html</a> · data: <a href="./data/proposals-feed.json">proposals-feed.json</a> (from docs/proposals/registry.yaml).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/proposals.html">Proposals page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/proposals-feed-collect.yml">Feed refresh runs</a></td></tr><tr><td>Referrals</td><td>The referral programme board — every programme's state (live / pending / not-established / exhausted), access codes and links, code-pool health and rotation record as the referral registry feed states them; page: <a href="./referrals.html">referrals.html</a> · data: <a href="./data/referral-feed.json">referral-feed.json</a> (built by scripts/referral/build_feed.py from config/referral_programs.json).</td><td><a href="https://timerloggedout-spec.github.io/tribute/referrals.html">Referrals page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/referral/build_feed.py">Feed builder</a></td></tr>
+<tr><td>Marketing Gantt</td><td>Affiliate maintenance on one timeline — accounts by bucket and cadence, the token constraint band, and programme milestones, as the marketing-gantt feed states them; page: <a href="./marketing-gantt.html">marketing-gantt.html</a> · data: <a href="./data/marketing-gantt.json">marketing-gantt.json</a> (affiliate lane census; registry is the SSOT).</td><td><a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt page</a></td><td>tribute</td></tr>
+<tr><td>Quota Usage</td><td>Quota usage graphs — the shared PAT bucket burn-down with wall markers, the per-service state timeline from the readings snapshots, Actions volume and the replenishment stamp for every pool; page: <a href="./quota-usage.html">quota-usage.html</a> · data: <a href="./data/quota-usage.json">quota-usage.json</a> (quota-usage/v1, mirror of ops/quota/quota-usage.json).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/quota-usage.html">Quota Usage page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/quota-usage.json">Pack source (ops/quota)</a></td></tr>
+<tr><td>Quota Graphs</td><td>Usage graphs per provider, model and service from the usage-series pack — measured, activity-proxy, reconstructed and estimated series kept apart and labeled, gaps stay gaps; page: <a href="./quota-graphs.html">quota-graphs.html</a> · data: <a href="./data/usage-series.json">usage-series.json</a> (quota.usage-series/v1, mirror of ops/quota/usage-series.json).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/quota-graphs.html">Quota Graphs page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/quota/usage-series.json">Pack source (ops/quota)</a></td></tr>
+<tr><td>Telemetry</td><td>Fleet telemetry — golden signals, workflow executions, outcome funnels, and quota readings, rendered as the record holds them (absence never zero); page: <a href="./telemetry.html">telemetry.html</a> · data: <a href="./data/telemetry-feed.json">telemetry-feed.json</a> (telemetry-viz-feed/v1, from scripts/dashboards/telemetry_feed.py).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/telemetry.html">Telemetry page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/dashboards/telemetry_feed.py">Collector source</a></td></tr><tr><td>Results Index</td><td>The ALL-4 results index (ATES · 3L0 · Temporal · HindSight) rendered verbatim from Telemetry's results-index feed: per-system record-of-record blocks with the feed's honesty notes, zeros rendered as 0. Page: <a href="./results-index.html">results-index.html</a> · data: data/results-index-feed.json (results-index-feed/v1).</td><td><a href="./results-index.html">Results Index page</a></td><td><a href="./telemetry.html">Telemetry</a></td></tr>
+<tr><td>Admin Interaction Graph</td><td>Canonical-model admin UI — fleet interaction graph (65 nodes / 81 edges) reconciled to docs/DEPLOYMENT-LANES.md; in-screen editor, groups/focus, Proposal Dispatch console (payloads prepared, not sent); page: <a href="./admin-graph.html">admin-graph.html</a>.</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/admin-graph.html">Admin Graph page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/actions/workflows/help-wanted-dashboard-deploy.yml">Dashboard deploy runs</a></td></tr>
+<tr><td>Contribution Desk</td><td>The Desk interface — traversal board (queue by lane/state) + dispatch intake, rendered from the desk feed; provenance carried verbatim (builder authorship corrected on the board). Page: <a href="./desk.html">desk.html</a> · data: <a href="./data/desk-feed.json">desk-feed.json</a> (desk-feed/v1, ops/challenge pack + mirror).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/desk.html">Desk page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/challenge/desk-feed.json">Feed source</a></td></tr>
+<tr><td>Tracking</td><td>Repo tracking board — lane × project × state × last merge × next across 11 domains from the repo-tracking feed; page: <a href="./tracking.html">tracking.html</a> · data: <a href="./data/tracking-feed.json">tracking-feed.json</a> (repo-tracking/v1, single-writer repo-tracking-collect workflow).</td><td><a href="https://timerloggedout-spec.github.io/help-wanted/tracking.html">Tracking page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/REPO-TRACKING.md">Contract (docs/ops/REPO-TRACKING.md)</a></td></tr><tr><td>Owner Records</td><td>Owner-specific records (gates, decisions, and the classes not yet established) - envelope metadata only; bodies are age ciphertext and decrypt client-side on the gated Vercel project; page: <a href="./owner-records.html">owner-records.html</a> · data: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/index.json">index.json</a> (owner-records/v1, ops/owner-records/).</td><td><a href="./owner-records.html">Owner Records page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/owner-records/README.md">Store doc</a></td></tr><tr><td>Nested Family</td><td>Provider, model, role and task tree from the nested-family/v1 record - every task dispatch-linked to its run record; page: <a href="./family.html">family.html</a> · data: <a href="./data/nested-family-feed.json">nested-family-feed.json</a> (nested-family/v1, twin of ops/tracking/nested-family.json).</td><td><a href="./family.html">Nested Family page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/NESTED-FAMILY.md">Contract</a></td></tr><tr><td>Swarm Quota</td><td>The DoE participant population (provider endpoints), distinct from the quota registry: registry/surface/live-verified layers, per-family records, the 403 events series and the nested-family task view; page: <a href="./quota-swarm.html">quota-swarm.html</a> · data: <a href="./data/swarm-feed.json">swarm-feed.json</a> (quota.swarm-feed/v1, twin of ops/quota/swarm-feed.json).</td><td><a href="./quota-swarm.html">Swarm Quota page</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/PROVIDER-DISPATCH-CAPABILITY.md">Capability spec</a></td></tr><tr><td>Event Audits</td><td>The rate-limit register audited into improvements: findings with cause, improvement, owner and state, plus coverage state against the register; page: <a href="./quota-event-audits.html">quota-event-audits.html</a> · data: <a href="./data/rate-limit-event-audits.json">rate-limit-event-audits.json</a> (quota.rate-limit-event-audits/v1, twin of ops/quota/rate-limit-event-audits.json).</td><td><a href="./quota-event-audits.html">Event Audits page</a></td><td><a href="./quota-graphs.html">Events graph</a></td></tr>
+<tr><td>Vercel lanes</td><td>Projects <code>help-wanted-oversight</code>, <code>help-wanted-dash</code>, <code>termux-monorepo</code> (showcase), <code>mcp-hub</code> (bearer-gated, no public hostname) — team <code>timerloggedout-5184s-projects</code>. Login required.</td><td><a href="https://help-wanted-oversight.vercel.app/">Oversight alias</a> · <a href="https://termux-monorepo.vercel.app/">Showcase</a></td><td><a href="https://vercel.com/timerloggedout-5184s-projects">Vercel team dashboard</a></td></tr>
+<tr><td>GitHub Pages</td><td>User site (landing + /help-wanted/ + /matrix/) and project site (hub + matrix only), both status <em>built</em>.</td><td><a href="https://timerloggedout-spec.github.io/">User site</a> · <a href="https://timerloggedout-spec.github.io/termux-monorepo/">Project hub</a></td><td><a href="https://github.com/timerloggedout-spec/termux-monorepo/settings/pages">Pages settings</a></td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h2>Review queue — prior &amp; continuing work</h2>
+<p class="muted">Open items are fetched live from the public GitHub API at view time; anything that cannot be fetched shows UNVERIFIED rather than a guessed state. Landed items are the review record, with merge SHAs established by master-history scan.</p>
+<h3>Waiting on review / dispatch</h3>
+<ul class="feed-list" id="queue-open"><li><span>Loading…</span><span class="pill gold">…</span></li></ul>
+<h3>Landed (review record)</h3>
+<ul class="feed-list">
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1682">#1682</a> Quota count integrity — “64 registry records”</span><span class="pill ok">merged 8696160d</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1681">#1681</a> Jules handoff <code>pull-requests: write</code> fix</span><span class="pill ok">merged af1ed160</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1512">#1512</a> Quota phone tables + 60s refetch</span><span class="pill ok">merged 6f3a4563</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1509">#1509</a> Quota reading <code>observed_at</code> (P0-1)</span><span class="pill ok">merged 64211266</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1506">#1506</a> Quota.txt ↔ registry drift guard</span><span class="pill ok">merged fa9a2173</span></li>
+<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/pull/1503">#1503</a> Shared <code>dashboard.css</code> + unified nav + sitemap</span><span class="pill ok">merged af523a8d</span></li>
+</ul>
+<p class="muted">Still on the backlog, not yet published: served-SHA stamps for the Pages mirrors (P1-5), splitting the index page’s ~1.3&nbsp;MB status payload (P1-6), publish-or-mark decisions for the orphan pages (P2-8), and the programmatic briefing page (scope pending in main chat).</p>
+</section>
+<section>
+<h2>Feed freshness</h2>
+<div id="p2-charts"><p class="muted">Loading feeds…</p></div>
+</section>
+<section>
+<h2>Backup state</h2>
+<div id="p2-backup"><p class="muted">Loading backup-state feed…</p></div>
+</section>
+<section>
+<h2>Admin Desk — controls</h2>
+<p class="dim">Actuation layer on the desk surfaces (inventory v0; Cadence S1 seam). Every control runs the governed pipeline: admission → gate, where its class requires one → execute → receipt. Receipts are hash-chained actuation events in the governor stream.</p>
+<p><strong>Tranche-0 — controls inert.</strong> <span class="dim">This surface serves on public Pages; actuation arms only on a gated host with verified owner-auth (owner probe 2026-11-04 01:15 PT). Until both land, every control below renders read-only: state visible, no actuation. Role at S1 is an authenticated fact, never a client claim.</span></p>
+<div id="adsets"></div>
+<h3>Gauges — allocation snapshots</h3>
+<p class="dim">Am6 discipline: an allocation % exists only as stamped snapshots {at · method · bounds}; the slider renders the latest stamped snapshot, never an unstamped intermediate. The desk's only write path is preset-apply: slider edits a draft → preset-create (snapshot) → validate → preset-apply. Reserve is derived (100 − Σ focus %), never a slider.</p>
+<div id="adgauges"><p class="dim">Loading the allocations feed…</p></div>
+<h3>Plane 6 — DoE pool participation oversight</h3>
+<p class="dim">Claims ceiling, printed on the surface itself: <strong>existence ≠ participation ≠ standing</strong>; a pool row asserts provisioning only. Participation is never inferred from existence; where no participation events exist the panel reads NOT_ESTABLISHED in words. Unresolved DoE findings render here when the oversight feed lands.</p>
+<div id="adpool6">
+<p class="dim" id="adpool6stamp">Oversight read model not yet published — roster/state render from the steward's ledger fold when the seam lands (175 pool:doe:* pools at census close).</p>
+<div id="adpool6roster"></div>
+<h4>Participation in fact</h4>
+<div id="adpool6fact"><p class="dim">NOT_ESTABLISHED — no receipted participation events (ante draws or dispatch consumptions) are of record; participation is never inferred from provisioning. The countersign path (pool.doe.participation.set) is EXERCISABLE — vocabulary landed (moneyball PR #60 · monorepo PR #4853), DoE re-check PASS; no countersign has issued.</p></div>
+<h4>Unresolved findings</h4>
+<div id="adpool6findings"><p class="dim">No findings feed published yet — DoE findings render here on issue and close only on DoE re-check PASS.</p></div>
+</div>
+<h3>Receipts this session</h3>
+<div id="adreceipts"><p class="dim">No actuations — controls inert under tranche-0.</p></div>
+</section>
+</main>
+<footer><p class="muted">Admin panel · Help-Wanted Oversight · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></p></footer>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function feed(name,ok,label){const el=document.querySelector('[data-feed="'+name+'"]');if(el){el.textContent=label;el.className='pill '+(ok?'ok':'bad')}}
+async function jget(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+const RAW='https://raw.githubusercontent.com/timerloggedout-spec/termux-monorepo/master/';
+const API='https://api.github.com/repos/timerloggedout-spec/termux-monorepo';
+const QUEUE=[['pull',1589,'Free-Tier Use Value Board'],['issue',1588,'Basksweep session wiring → Value Board'],['issue',1592,'Value Board × EPS / Moneyball / receipts'],['issue',1593,'Value Board × dynamic quota usage'],['pull',1495,'Quota full mappings + publication visibility'],['issue',1683,'Dispatch: the 64 + @Jules regression']];
+async function loadDelphi(){
+  try{
+    const p=await jget(RAW+'ops/delphi/panel.json');
+    const g=p.generation||{},c=g.cycle||{};
+    document.querySelector('[data-cfg="n"]').textContent=g.proposals_per_pass!=null?g.proposals_per_pass:'n';
+    $('delphi-summary').innerHTML='Live from master <code>ops/delphi/panel.json</code> (schema '+esc(p.schema||'?')+'): <strong>'+esc(g.proposals_per_pass!=null?g.proposals_per_pass:'?')+' proposals per pass</strong> · '+esc(c.rounds!=null?c.rounds:'?')+' cycle rounds · expectation tolerance '+esc(c.expectation_tolerance!=null?c.expectation_tolerance:'?')+' · '+(Array.isArray(p.roles)?p.roles.length+' panel roles':'')+(Array.isArray(c.stage_gates)?' · '+c.stage_gates.length+' stage gates':'')+'. Weights live in ledger #1489, outcomes in #1487.';
+    feed('delphi',true,'LIVE');
+  }catch(e){feed('delphi',false,'UNVERIFIED');$('delphi-summary').textContent='Panel configuration could not be fetched from master — showing the method as documented in the lane contract; treat values as UNVERIFIED.'}
+}
+async function loadStatus(){
+  try{const s=await jget('./data/status.json');const cs=s.control_surface||{};
+    feed('status',true,'LIVE · sha '+(cs.source_sha?String(cs.source_sha).slice(0,8):'?'));
+  }catch(e){feed('status',false,'UNVERIFIED')}
+  try{const q=await jget('./data/quota.json');const r=q.readings||[];
+    feed('quota',true,'LIVE · '+r.length+' readings');
+  }catch(e){feed('quota',false,'UNVERIFIED')}
+  try{const cv=await jget('./data/provider-quota-coverage.json');const cc=cv.coverage_counts||{};
+    feed('coverage',true,'LIVE · '+(cc.provider_families!=null?cc.provider_families:'?')+' families');
+  }catch(e){feed('coverage',false,'UNVERIFIED')}
+}
+async function loadMatrix(){
+  try{const lm=await jget(RAW+'docs/ops/generated/lane-matrix-status.json');const n=(lm.counts&&lm.counts.open_prs!=null)?lm.counts.open_prs:(lm.prs||[]).length;
+    feed('matrix',true,'LIVE · '+n+' open PRs · '+String(lm.observed_at||'').slice(0,10));
+  }catch(e){feed('matrix',false,'UNVERIFIED')}
+}
+async function loadQueue(){
+  const out=[];
+  let okCount=0;
+  for(const [kind,num,label] of QUEUE){
+    try{
+      const d=await jget(API+(kind==='pull'?'/pulls/':'/issues/')+num);
+      okCount++;
+      const state=kind==='pull'?(d.merged_at?'merged':d.state):d.state;
+      out.push('<li><span><a href="'+esc(d.html_url)+'">#'+num+'</a> '+esc(d.title||label)+'</span><span class="pill '+(state==='open'?'gold':'ok')+'">'+esc(state)+' · upd '+esc(String(d.updated_at||'').slice(0,10))+'</span></li>');
+    }catch(e){
+      out.push('<li><span><a href="https://github.com/timerloggedout-spec/termux-monorepo/'+(kind==='pull'?'pull':'issues')+'/'+num+'">#'+num+'</a> '+esc(label)+'</span><span class="pill bad">UNVERIFIED</span></li>');
+    }
+  }
+  $('queue-open').innerHTML=out.join('');
+  feed('queue',okCount>0,okCount===QUEUE.length?'LIVE':('PARTIAL '+okCount+'/'+QUEUE.length));
+}
+async function loadChallenge(){
+  try{
+    const f=await jget('./data/challenge-admin-metrics.json');
+    const ev=f.events||{};
+    const ids=Object.keys(ev);
+    const cell=v=>v==null?'—':esc(v);
+    const pct=v=>String(parseFloat((v*100).toPrecision(10)))+'%';
+    $('challenge-metrics').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Event</th><th>Win probability</th><th>Confidence</th><th>Method / basis</th><th>Field size</th><th>Record detail</th><th>Computed</th></tr></thead><tbody>'+
+    ids.map(id=>{const e=ev[id],w=e.win_probability||{},fs=e.field_size||{},pr=w.prior||{},st=w.standing||{},ft=w.fit||{},un=w.unknowns||{};
+      const realized=w.estimate===0&&Array.isArray(w.range)&&w.range[0]===0&&w.range[1]===0&&w.confidence==='high';
+      const est=w.estimate==null?'not established':realized?'0% — realized':pct(w.estimate)+(Array.isArray(w.range)?' (range '+pct(w.range[0])+'–'+pct(w.range[1])+')':'');
+      const conf=w.confidence||'';
+      const confHtml=conf?'<span class="pill '+(conf==='high'?'ok':conf==='none'?'bad':'gold')+'">'+esc(conf)+'</span>':'—';
+      const fstat=e.field_size_status||'';
+      const fsize=fstat==='open_task'?'OPEN TASK':fstat==='partial'?('participants '+cell(fs.participants)+' · projects '+(fs.projects==null?'not established':esc(fs.projects))+' <span class="pill gold">PARTIAL</span>'):('participants '+cell(fs.participants)+' · projects '+cell(fs.projects));
+      const detail='prior '+cell(pr.base_rate)+(pr.denominator!=null?' ('+cell(pr.denominator_kind)+' '+cell(pr.denominator)+')':'')+' · ours '+cell(st.our_composite)+' · pctile '+cell(st.our_percentile)+' · field mean '+cell(st.field_mean)+' · scored '+cell(st.scored_count)+' · fit '+cell(ft.criteria_fit)+' · judges '+(ft.judges_known==null?'—':ft.judges_known?'known':'unknown')+' · unknowns u '+cell(un.unscored_share)+' / v '+cell(un.unverified_axis_weight_share);
+      return '<tr><td><strong>'+esc(id)+'</strong></td><td>'+esc(est)+'</td><td>'+confHtml+'</td><td>'+esc(w.method||'')+(w.basis?' · '+esc(w.basis):'')+'</td><td>'+fsize+'</td><td>'+detail+'</td><td>'+esc(w.computed_at||'')+'</td></tr>'}).join('')+
+    '</tbody></table></div>';
+    $('challenge-metrics-meta').textContent='Feed '+(f.schema||'')+' · generated '+(f.generated_at||'')+' · source '+(f.source||'')+' · '+ids.length+' events.';
+    feed('challenge',true,'LIVE · internal');
+  }catch(e){feed('challenge',false,'UNVERIFIED');$('challenge-metrics').innerHTML='<p class="muted">Internal metrics feed could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
+}
+
+async function loadGearbox(){
+  try{
+    const f=await jget('./data/quota-usage.json');
+    const g=f.gearbox||{},au=g.admin_ui||{},cc=au.consumer_controls||{},mk=g.mock||{};
+    const cell=v=>v==null?'—':esc(v);
+    let h='';
+    h+='<p>'+cell(g.status)+'</p>';
+    h+='<p><span class="pill gold">'+cell(mk.flag||'MOCK')+'</span> <span class="muted">'+cell(g.admin_designation)+'</span></p>';
+    if(cc.diagnose_dependency){h+='<p><span class="pill bad">Diagnose dependency</span> '+esc(cc.diagnose_dependency)+'</p>'}
+    const ctl=(name,inner)=>'<tr><td><strong>'+name+'</strong></td><td>'+inner+'</td></tr>';
+    let rows='';
+    if(cc.stop){rows+=ctl('STOP','<button type="button" disabled>STOP</button> '+esc(cc.stop.effect||'')+(cc.stop.case?'<br><span class="muted">Case: '+esc(cc.stop.case)+'</span>':'') )}
+    if(cc.pause){rows+=ctl('PAUSE','<button type="button" disabled>PAUSE</button> '+esc(cc.pause.effect||'')+((cc.pause.fields||[]).length?'<br><span class="muted">Fields: '+esc(cc.pause.fields.join(', '))+'</span>':''))}
+    if(cc.throttle){rows+=ctl('Throttle','<input type="range" min="0" max="100" value="0" disabled aria-label="Throttle slider (design only)"> '+esc(cc.throttle.control||'')+(cc.throttle.distinct_from?'<br><span class="muted">Distinct from: '+esc(cc.throttle.distinct_from)+'</span>':''))}
+    if(rows){h+='<h3>Per-consumer controls — '+cell(cc.requirement)+'</h3><div class="table-wrap"><table class="table"><thead><tr><th>Control</th><th>Design (inert)</th></tr></thead><tbody>'+rows+'</tbody></table></div>'}
+    const sl=au.sliders||{},ss=au.subset_selection||{},gr=au.guardrail_ruling||{};
+    h+='<h3>Share sliders &amp; subsets</h3><p>'+cell(sl.control)+'</p>';
+    if((sl.presets||[]).length){h+='<ul>'+sl.presets.map(p=>'<li><strong>'+esc(p.name)+'</strong> — '+esc(p.posture)+'</li>').join('')+'</ul>'}
+    if(gr.over_100||gr.auto_balance){h+='<p class="muted">Guardrail — over 100: '+cell(gr.over_100)+'<br>Auto-balance: '+cell(gr.auto_balance)+'</p>'}
+    const checked=(mk.subset_example||{}).checked||[];
+    if((ss.tags||[]).length){h+='<p>'+cell(ss.control)+'</p><p>'+ss.tags.map(t=>'<label><input type="checkbox" disabled'+(checked.includes(t)?' checked':'')+'> '+esc(t)+'</label> ').join('')+'<br><span class="muted">'+cell((mk.subset_example||{}).applies)+'</span></p>'}
+    if((g.gears||[]).length){h+='<h3>Gears — configured allocation state</h3><div class="table-wrap"><table class="table"><thead><tr><th>Gear</th><th>Focus</th><th>Mode</th><th>Eligibility</th></tr></thead><tbody>'+g.gears.map(x=>'<tr><td>'+cell(x.gear)+'</td><td>'+esc(x.focus)+'</td><td>'+esc(x.mode)+'</td><td>'+cell(x.eligibility)+'</td></tr>').join('')+'</tbody></table></div>'}
+    if((mk.settings_example||[]).length){h+='<h3>Settings example (mock)</h3><div class="table-wrap"><table class="table"><thead><tr><th>Pool</th><th>Focus</th><th>Gear</th><th>%</th><th>Mode</th></tr></thead><tbody>'+mk.settings_example.map(x=>'<tr><td>'+esc(x.pool)+'</td><td>'+esc(x.focus)+'</td><td>'+cell(x.gear)+'</td><td>'+cell(x.pct)+'</td><td>'+esc(x.mode)+'</td></tr>').join('')+'</tbody></table></div>'}
+    const ae=cc.audit_event||{};
+    if((ae.fields||[]).length){h+='<p class="muted">Audit event — fields: '+esc(ae.fields.join(', '))+' · cites '+cell(ae.cites)+' · lands as '+cell(ae.lands_as)+'.</p>'}
+    if(g.shift_log_type){h+='<p class="muted">Shift log: '+cell(g.shift_log_type.state)+'</p>'}
+    if((g.honesty||[]).length){h+='<h3>Honesty — read before trusting any needle</h3><ul>'+g.honesty.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'}
+    $('gearbox-controls').innerHTML=h;
+    $('gearbox-meta').textContent='Pack '+(f.schema||'')+' · gearbox block rendered verbatim · source data/quota-usage.json (mirror of ops/quota/quota-usage.json) · concept '+(g.doc||'');
+    feed('gearbox',true,'LIVE · internal');
+  }catch(e){feed('gearbox',false,'UNVERIFIED');$('gearbox-controls').innerHTML='<p class="muted">Quota usage pack could not be fetched — UNVERIFIED; nothing is shown rather than anything guessed.</p>'}
+}
+async function loadP2Fresh(){
+  const P2F=[['status.json','./data/status.json'],['quota.json','./data/quota.json'],['quota-usage.json','./data/quota-usage.json'],['provider-quota-coverage.json','./data/provider-quota-coverage.json'],['challenge-admin-metrics.json','./data/challenge-admin-metrics.json']];
+  const rows=[];
+  for(const [name,url] of P2F){
+    try{ const f=await jget(url); const t=new Date(f.generated_at).getTime(); if(isFinite(t)) rows.push({label:name+' ('+CK.stampState(f.generated_at,Date.now())+')',value:+(((Date.now()-t)/3600000).toFixed(1))}); else rows.push({label:name+' (no generated_at)',value:0}); }
+    catch(e){ rows.push({label:name+' (unreachable)',value:0}); }
+  }
+  rows.sort((a,b)=>b.value-a.value);
+  $('p2-charts').innerHTML='<p class="meta">Age in hours of the feeds this panel consumes, at render time · STALE = older than 24h (chart standard).</p><h3>Feed age (hours)</h3>'+CK.bars(rows);
+}
+async function loadBackup(){
+  try{
+    const f=await jget('./data/backup-state-feed.json');
+    const exs=f.exports||[];
+    const ex=exs.find(e=>f.summary&&e.id===f.summary.last_export_id)||exs[0];
+    const drs=f.drills||[];
+    const dr=drs.find(d=>ex&&d.export_id===ex.id)||drs[0];
+    const cur=ex&&f.marker&&f.marker.state_hash===ex.state_hash;
+    let html='<p class="meta">Feed generated '+esc(f.generated_at)+' · '+(CK.stampState(f.generated_at,Date.now())==='STALE'?'<span class="pill">STALE</span> feed older than 24h':'fresh')+' · schema '+esc(f.schema||'')+'</p>';
+    html+='<p>'+(cur?'<span class="pill ok">CURRENT</span> backup covers the current workspace state':'<span class="pill bad">STALE</span> state has moved past the last export - the backup does not cover the current state')+'</p>';
+    if(ex){
+      html+='<p class="muted">Last export '+esc(ex.id)+' · '+esc(ex.at)+' · publish commit '+esc(String(ex.publish_commit||'').slice(0,10))+' · scrub gates '+(ex.gates_pass?'PASS':'FAIL')+'</p>';
+      const rows=[{label:'T0 content files',value:ex.t0||0},{label:'T1 manifest entries',value:ex.t1||0},{label:'manifest-only files',value:ex.manifest_only||0},{label:'excluded',value:ex.excluded||0}];
+      html+='<h3>Latest export composition</h3>'+CK.bars(rows);
+      html+='<p class="muted">Export size '+esc(ex.bytes)+' bytes</p>';
+    } else html+='<p class="muted">No export on record.</p>';
+    if(dr){
+      html+='<p>Restore drill verdict: <strong>'+esc(dr.verdict)+'</strong> <span class="muted">(export '+esc(dr.export_id)+')</span></p>'
+        +'<p class="muted">T0 leg: '+esc(dr.t0.checked)+' checked, '+esc(dr.t0.mismatched)+' mismatched, exclusions absent: '+esc(dr.t0.excluded_absent)+' · T1 leg: '+esc(dr.t1.checked)+' checked, '+esc(dr.t1.consistent)+' consistent, '+esc(dr.t1.missing)+' missing · restored '+esc(dr.restored_bytes)+' bytes · '+esc(dr.mode)+'</p>';
+    } else html+='<p class="muted">No restore drill on record.</p>';
+    const fa=f.failed_attempts||[];
+    const faLast=fa.reduce((a,b)=>((a&&a.at>b.at)?a:b),null);
+    html+='<p class="muted">Failed export attempts on record: '+fa.length+(faLast?(' · latest '+esc(faLast.at)):'')+'</p>';
+    if((f.gaps||[]).length)html+='<p class="muted">Gaps: '+f.gaps.map(esc).join(' · ')+'</p>';
+    $('p2-backup').innerHTML=html;
+  }catch(e){ $('p2-backup').innerHTML='<p class="muted">Backup-state feed unavailable.</p>'; }
+}
+async function load(){
+  await Promise.allSettled([loadDelphi(),loadStatus(),loadMatrix(),loadQueue(),loadChallenge(),loadGearbox()]);
+  loadBackup();
+  loadP2Fresh();
+  $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
+}
+$('refresh').addEventListener('click',load);
+$('sys-filter').addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase();
+  document.querySelectorAll('#sys-rows tr').forEach(tr=>{tr.style.display=tr.textContent.toLowerCase().includes(q)?'':'none'});
+});
+load();
+setInterval(load,60000);
+</script>
+<script>
+"use strict";
+/* Admin Desk controls (Web Design lane) — inventory v0 registry +
+   S1 seam client. TRANCHE-0: ARMED=false — the panel renders the
+   full registry inert until the gated host + owner-auth land.
+   S1 contract: actuate(control_id, params, role) ->
+   {verdict, gate_id?, receipt_id?}; transport seam-injected as
+   window.ADMIN_ACTUATE; role arrives as an authenticated fact
+   from the gated host (window.ADMIN_ROLE), never a client claim. */
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const ARMED=false;
+  const SETS=[
+    {set:"Plane 1 — QUE", controls:[
+      {id:"que.lane.hold", label:"Hold a dispatch lane/tier", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.lane.release", label:"Release a held lane", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.window.create", label:"Create priority window {chain, until, source}", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.window.extend", label:"Extend window {chain, until}", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.window.close", label:"Close window {chain}", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.window.emergency_close", label:"Emergency window close (no gate wait)", cls:"gate-free (receipt)", roles:"owner only"},
+      {id:"que.sweep.run", label:"Run a sweep class (wedged/ancient)", cls:"gate-required", roles:"desk · owner"},
+      {id:"que.cancel.class", label:"Cancel a queued class", cls:"gate-required", roles:"desk · owner"}]},
+    {set:"Plane 2 — Flows", controls:[
+      {id:"flow.stage.transition", label:"Stage transition on an entry row", cls:"gate-required", roles:"desk · owner"},
+      {id:"flow.decision.flip", label:"Decision flip (carries basis_ref)", cls:"gate-required", roles:"desk · owner"},
+      {id:"flow.next.set", label:"Set an entry row's next action", cls:"gate-free (receipt)", roles:"desk"}]},
+    {set:"Plane 3 — Feeds", controls:[
+      {id:"feed.collector.redispatch", label:"Fire a collector cycle on demand", cls:"gate-free (receipt)", roles:"desk · owner"},
+      {id:"feed.regen", label:"Regenerate a feed pair", cls:"gate-required", roles:"desk · owner"},
+      {id:"feed.republish", label:"Republish mirrors + redeploy surface", cls:"gate-required", roles:"desk · owner"}]},
+    {set:"Plane 4 — Accounts/buckets", controls:[
+      {id:"bucket.gantt.maintain", label:"Gantt maintenance action on an account/bucket", cls:"gate-required", roles:"desk · owner"},
+      {id:"bucket.gantt.note", label:"Annotate a bucket's Gantt row", cls:"gate-free (receipt)", roles:"desk"}]},
+    {set:"Plane 5 — Gauges", controls:[
+      {id:"gauge.start", label:"Start metering/allocation run", cls:"gate-free (receipt)", roles:"desk · owner"},
+      {id:"gauge.stop", label:"Stop (state preserved)", cls:"gate-free (receipt)", roles:"desk · owner"},
+      {id:"gauge.pause", label:"Pause (held at stamped snapshot)", cls:"gate-free (receipt)", roles:"desk · owner"},
+      {id:"gauge.allocation.set", label:"Set allocation share (draft → preset path)", cls:"gate-required", roles:"desk · owner"},
+      {id:"gauge.preset.apply", label:"Apply a named preset profile", cls:"gate-required", roles:"desk · owner"},
+      {id:"gauge.preset.create", label:"Stamp a new preset from current shares", cls:"gate-required", roles:"desk · owner"}]},
+    {set:"Plane 6 — DoE pool oversight", controls:[
+      {id:"pool.doe.participation.set", label:"Admit/suspend a participant (DoE countersign)", cls:"gate-required", roles:"desk (operator) · DoE countersign"},
+      {id:"pool.doe.state.set", label:"Set a pool's participation state", cls:"gate-required", roles:"desk · owner"},
+      {id:"pool.doe.ante.review", label:"Review ante draws (read + flag)", cls:"gate-free (receipt)", roles:"DoE (reviewer) · desk"}]}
+  ];
+  let h="";
+  for(const s of SETS){
+    h+="<h3>"+esc(s.set)+"</h3>";
+    for(const c of s.controls){
+      h+='<div class="card"><p><strong>'+esc(c.label)+'</strong><br><span class="dim">'+esc(c.id)+" · "+esc(c.cls)+" · roles: "+esc(c.roles)+'</span></p>'
+        +'<p><input type="text" placeholder="params (JSON or text)" size="42" disabled> <button disabled>Actuate</button> <span class="dim">inert — tranche-0</span></p></div>';
+    }
+  }
+  $("adsets").innerHTML=h;
+
+  // Gauges read state (inert): stamped allocations from the feed.
+  async function gauges(){
+    let d;
+    try{
+      const r=await fetch("./data/quota-allocations-feed.json",{cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      d=await r.json();
+    }catch(e){
+      $("adgauges").innerHTML='<p class="muted">Allocations feed not reachable from this surface — gauges render nothing rather than stale figures.</p>';
+      return;
+    }
+    const focuses=(d.focuses||[]).map(f=>f.id);
+    const st=(window.CK&&window.CK.stampState)? window.CK.stampState(d.generated_at, Date.now()) : "unknown";
+    let h='<p class="dim">Feed generated '+esc(d.generated_at||"unknown")+(st==="STALE"?" · STALE":"")+" · schema "+esc(d.schema||"")+" · set by "+esc(d.set_by||"")+" · pools "+(d.pools||[]).length+"</p>";
+    h+='<table><thead><tr><th>Pool</th>'+focuses.map(f=>"<th>"+esc(f)+"</th>").join("")+"<th>Reserve (derived)</th><th>Lock</th></tr></thead><tbody>";
+    for(const p of d.pools||[]){
+      const byFocus={}; for(const a of p.allocations||[]) byFocus[a.focus]=a;
+      const limits=(p.services||[]).map(s=>((s.entitlement||{}).limit));
+      const dead = limits.length>0 && limits.every(v=>!v);
+      const lock = (p.pool==="github.codespaces" || (p.services||[]).some(s=>s.service==="github.codespaces"))
+        ? "codespaces — excluded-interim (locked until the exclusion lifts)"
+        : (dead ? "dead-entitlement — backing limits all 0 (slider disabled)" : "—");
+      h+="<tr><td>"+esc(p.pool)+"</td>"
+        + focuses.map(f=>{ const a=byFocus[f]; return "<td>"+(a? esc(a.pct)+"% · "+esc(a.mode) : "—")+"</td>"; }).join("")
+        + "<td>"+esc(p.reserve_pct)+"%</td><td>"+esc(lock)+"</td></tr>";
+    }
+    h+="</tbody></table>";
+    h+='<p class="dim">Snapshot stamps: allocations dated '+esc(((d.pools||[])[0]||{}).allocations ? (((d.pools||[])[0].allocations[0]||{}).date||"") : "")+' (per-row dates ride the feed). Sliders arm on the gated host; commit path = preset-create → validate → preset-apply only.</p>';
+    $("adgauges").innerHTML=h;
+  }
+  gauges();
+
+  // Plane 6 read model (inert): steward fold feed when published.
+  async function pool6(){
+    let d;
+    try{
+      const r=await fetch("./data/doe-oversight-feed.json",{cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      d=await r.json();
+    }catch(e){ return; }
+    $("adpool6stamp").textContent="Feed generated "+(d.generated_at||"unknown")+" · ledger head seq "+(d.ledger_head_seq!=null? d.ledger_head_seq : "NOT_ESTABLISHED")+" · feed as-of seq "+(d.feed_as_of_seq!=null? d.feed_as_of_seq : (d.as_of_seq!=null? d.as_of_seq : "NOT_ESTABLISHED"))+" · schema "+(d.schema||"");
+    const rows=d.rows||d.pools||[];
+    if(rows.length){
+      $("adpool6roster").innerHTML='<table><thead><tr><th>Pool</th><th>Depth</th><th>Wallet</th><th>State (as recorded)</th><th>Provisioning seq</th><th>Members</th><th>Balance + basis</th></tr></thead><tbody>'
+        + rows.map(p=>"<tr><td>"+esc(p.display||p.entity_ref||p.pool)+"</td><td>"+esc(p.depth!=null? p.depth : 1)+"</td><td>"+esc(p.wallet_id)+"</td><td>"+esc(p.state)+((p.state==="HELD"&&(p.finding_ref||p.review_deadline))? " — HELD (oversight): finding "+esc(p.finding_ref||"—")+" · review by "+esc(p.review_deadline||"—") : "")+"</td><td>"+esc(p.provisioned_seq!=null? p.provisioned_seq : p.provisioning_seq)+"</td><td>"+esc(p.members!=null? p.members : "—")+"</td><td>"+esc(p.balance)+" ("+esc(p.balance_basis||((d.reading_rules||{}).balances||"fold-derived"))+")</td></tr>").join("")
+        + "</tbody></table>";
+    }
+    const draws=d.participation_events||rows.flatMap(p=>(p.open_antes||[]).map(a=>({kind:"ante_drawn", pool:p.entity_ref||p.pool, task_ref:a.task_ref||a.ref||"", amount:a.amount, state_vintage_seq:a.state_vintage_seq})));
+    if(draws.length){
+      $("adpool6fact").innerHTML="<ul>"+draws.map(e=>"<li>"+esc(e.kind||"event")+" · pool "+esc(e.pool)+" · task "+esc(e.task_ref||"")+" · amount "+esc(e.amount)+" · vintage seq "+esc(e.state_vintage_seq)+"</li>").join("")+"</ul>";
+    }
+    const finds=d.findings||[];
+    if(finds.length){
+      $("adpool6findings").innerHTML="<ul>"+finds.map(f=>"<li><strong>"+esc(f.check)+"</strong> · "+esc(f.subject)+" · severity "+esc(f.severity)+" · evidence "+esc((f.evidence_refs||[]).join(", "))+"</li>").join("")+"</ul>";
+    } else if(d.findings) {
+      $("adpool6findings").innerHTML='<p class="dim">No unresolved findings in this stamp.</p>';
+    }
+  }
+  pool6();
+  window.ADMIN_DESK_S1 = { armed: ARMED,
+    actuate: async function(control_id, params, role){
+      if(!ARMED) return { verdict: "inert-tranche-0" };
+      if(typeof window.ADMIN_ACTUATE!=="function") return { verdict: "seam-not-wired" };
+      return window.ADMIN_ACTUATE(control_id, params, role);
+    } };
+})();
+</script>
+</body>
+</html>

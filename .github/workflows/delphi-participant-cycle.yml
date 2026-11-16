@@ -1,0 +1,33 @@
+# Delphi participant cycle (docs/ops/RESEARCH-SILO-DELPHI.md §4c).
+# The scheduled check for research PARTICIPANTS. Participants carry no
+# delphi:rfp label, so the delphi-gate label sweep does not see them; this
+# hourly job enumerates ops/delphi/research-participants.json directly and
+# posts due axes-cycle records (participant_cycle.py). It exists because a
+# conversion that strips the label a cron reads must migrate the check —
+# the 2026-10-28 participant conversion initially did not, and this job is
+# the repair. Ledger = signed issue comments (no commits).
+name: delphi-participant-cycle
+
+on:
+  schedule:
+    - cron: "37 * * * *" # hourly; due-checks are cheap, quiet runs post nothing
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: delphi-participant-cycle
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Participant cycle sweep
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: python3 scripts/delphi/participant_cycle.py

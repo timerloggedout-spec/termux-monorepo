@@ -1,0 +1,16 @@
+{
+  "schema": "nc-1 signal weights v1 (pre-registered, Linguist R2, c.6552176904)",
+  "density": "signal_units / tokens (records stratum: records_density element-level variant, keys excluded)",
+  "weights": {
+    "identifier_with_adjacent_state_or_decision": 1.0,
+    "decision_or_verdict": 1.0,
+    "quantity_or_state": 1.0,
+    "evidence_ref (#1734 types: PR#, SHA, issue#, comment-id, file:line, ledger-id)": 1.0,
+    "novel_fact": 1.0,
+    "bare_identifier_without_adjacent_state_or_decision": 0.0,
+    "defined_term_in_definitional_section (docs)": 1.0
+  },
+  "novelty": "novel = first occurrence within the evaluation window; restated signal within the window scores 0 (restatement penalty). v1 corpus units are independent single-unit windows, so no within-unit restatement adjustment applies; disclosed in corpus README.",
+  "operationalization_v1": "reference extractor (scripts/doe/nc1_features.py) approximates weight-1 elements at token granularity; R3 adjacency is applied in minimal form at the label level in v1 and as a full feature in v2 (claim<->ref adjacency, Linguist canonical def c.6552176904).",
+  "diagnostic_only": ["prose_ratio", "symbol_density"]
+}

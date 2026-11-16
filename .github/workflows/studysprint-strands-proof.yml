@@ -1,0 +1,55 @@
+name: studysprint-strands-proof
+
+# Model-access proof, live leg (monorepo issue #4534) --
+# branch (a) R1: strands BedrockModel drives the StudySprint
+# Strands agent on Amazon Bedrock; both syllabus tools asserted
+# called. The receipt artifact is the deliverable; on failure the
+# receipt carries the exact error and the run fails with it.
+#
+# STAGED (code complete, only credentials missing). The harness
+# pre-flight REJECTS the literal placeholder AWS values below
+# and an empty model slot, fail-closed, so this workflow cannot
+# produce a PASS until fired. FIRE STEPS: (1) provision real AWS
+# credentials as Actions secrets (owner), (2) wire the two AWS
+# env values below from those secrets and set STRANDS_MODEL_ID
+# verbatim (Nova-class), (3) dispatch.
+#
+# The GeminiModel leg is RETIRED (defect of record: a Gemini
+# invocation is not AWS proof).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: "placeholder"
+      AWS_SECRET_ACCESS_KEY: "placeholder"
+      AWS_REGION: us-east-1
+      STRANDS_MODEL_ID: ""  # SLOT: filled verbatim at fire time
+      AWS_EC2_METADATA_DISABLED: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the SDK + the agent's core deps
+        run: |
+          pip install strands-agents==1.63.0 google-genai fsrs genanki
+
+      - name: Run the proof harness
+        run: python3 apps/studysprint/tools/strands_proof.py
+
+      - name: Upload the proof receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: strands-proof-receipt
+          path: apps/studysprint/strands-proof-receipt.json
+          if-no-files-found: warn

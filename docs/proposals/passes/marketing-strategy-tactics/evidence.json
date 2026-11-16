@@ -1,0 +1,181 @@
+{
+  "schema": "delphi-evidence-set/v1",
+  "artifact": {
+    "kind": "bundle",
+    "ref": "marketing-strategy-tactics"
+  },
+  "assembled_at": "2026-11-01T08:03:40Z",
+  "fresh_until": "2026-11-01T08:18:40Z",
+  "material": true,
+  "assembly": {
+    "note": "firsthand artifact reads by the Delphi lane 2026-11-01 (landing repo content.js + PR #16; monorepo PARTNERS.md, referral_programs.json, MVT DESIGN + records); marketing-lane records ask outstanding \u2014 additions fold in as evidence v2 if they land",
+    "read_only_api_calls": 9
+  },
+  "items": [
+    {
+      "claim": "landing:hero",
+      "value": "Landing hero (js/content.js @main, landing repo): brand \"Autonomous AI Employees\"; headline \"Deploy 24/7 Autonomous AI Employees for Your Engineering Workflows\"; subhead = a partner product pitch in fleet voice (\"persistent inboxes, cloud browsers, and terminal execution\"). CTA points at #partners.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/contents/js/content.js?ref=main",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "3921f3442f887694d82dab6ee17520344a3bb71390c886c751b40fbf883b2c90"
+    },
+    {
+      "claim": "landing:benefits",
+      "value": "Benefits grid (content.js): \"True Cross-Modal Super-Agents\", \"#1 in Deep Research (July 2026)\", \"Built-in Memory & Multi-Agent Collaboration\" \u2014 partner capability claims + a benchmark superlative in fleet voice, unattributed. The file\u2019s own header comments assert hero/footer were de-centered 2026-10-27; the data contradicts the comment.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/contents/js/content.js?ref=main",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "19609f52c9ffa965f665473047d6ba8b06fa612002b910a27453b9e4fad24076"
+    },
+    {
+      "claim": "landing:partners-grid",
+      "value": "Partners grid (content.js) = 4 cards (CellCog, Polsia, Manus, Grafana) while PARTNERS.md \u00a71 active = 6 link lanes (UnoRouter + Neon absent from the grid) \u2014 grid drifts from the SSOT it claims to mirror. Census 2026-10-27 also found a Runable refer_code link live at README:83 absent from PARTNERS.md and the grid.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/contents/js/content.js?ref=main",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "e5b065f087bee65cb6b4f08e86b9a521993cde099b892dab29fc14bc00f9852c"
+    },
+    {
+      "claim": "landing:cellcog-card",
+      "value": "CellCog grid card attributes its claim: \"Its Max tier ranked #1 overall on the Deep Research Benchmark (July 2026 snapshot)\" + offer \"500 bonus credits on first purchase\" \u2014 the attributed-card pattern; the same benchmark claim appears UNattributed in the benefits grid.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/contents/js/content.js?ref=main",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "e6c3b45a056372e9d5f9c76839355656f3514515d66ef885c1de25ae4e8f5473"
+    },
+    {
+      "claim": "landing:footer-disclosure",
+      "value": "Footer disclosure exists (content.js): partner links may be affiliate/referral; programmes free to join unless stated; each programme\u2019s own terms apply.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/contents/js/content.js?ref=main",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "1179ea609d736b5a328306ee714ee7229d9a3972d4922fb88231a87418373d78"
+    },
+    {
+      "claim": "partners:ssot-active",
+      "value": "docs/PARTNERS.md \u00a71 active lanes: CellCog (anchor), Polsia, Manus AI, UnoRouter, Neon, Grafana + \u00a71b code lanes (Muse, Cue, Migoo). Rule: landing renders the ACTIVE rows; README banner shows every active lane.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/PARTNERS.md?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "5859aa61d0e74c403a57e7921e92f4bb0ee6b9872053f60fd16db4c4e162e8eb"
+    },
+    {
+      "claim": "partners:unverified-offers",
+      "value": "Unverified offers on record: Polsia \"500 extra credits (per #574 \u2014 verify on signup)\"; Neon offer \"NOT ESTABLISHED (verify on signup)\" (PARTNERS.md); referral_programs.json: Manus refer-a-friend amount \"third-party reported\", Cue + Migoo fleet replenishment \"NOT ESTABLISHED\".",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/PARTNERS.md?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "36245c9666cd6b53d775d9990e009d6781d3ef1136605a4436399c4880fc9bb3"
+    },
+    {
+      "claim": "partners:pipeline",
+      "value": "PARTNERS.md \u00a73 pipeline = named candidates with no tracked link (not active); \u00a74 crypto wallets \"addresses not yet published\". Pipeline presence is not an active lane.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/PARTNERS.md?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "82bdfa1e5547fb05cf01b6d5bd6390a75c8820d2ff9ac138a4243f5d32e5659c"
+    },
+    {
+      "claim": "referral:muse-program",
+      "value": "Muse referral programme: terms firsthand (owner in-app screens 2026-10-27): 1B tokens per redemption, code VDP1DW, 30 uses left at record time; redemption detection = owner panel only (no API/webhook, audited) \u2014 counting is manual.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/config/referral_programs.json?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "c4500b2abe366272b78cc8a9082efbe28cc4598491a532ca9a777935312b92eb"
+    },
+    {
+      "claim": "fb:mvt-design",
+      "value": "FB Pages MVT (experiments/marketing/fb-pages-mvt-1/DESIGN.json; DoE-admitted PR #2703): 3 cells (sizzle/steak/mechanic), metric = attributed redemptions; decision rule = winner copy becomes default after 10 attributed redemptions or window close 2026-11-10; fb-c = arm_not_started DEVIATION (verdict on started arms only).",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/experiments/marketing/fb-pages-mvt-1/DESIGN.json?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "5e566bebddb69d0d5932ed8a0ea0343f1e2e24531219c11993510200dcf08ef8"
+    },
+    {
+      "claim": "fb:mvt-snapshot",
+      "value": "MVT records 2026-10-31 (records/snapshot-fb-a/b): fb-a 26 views / 1 link click / 0 redemptions; fb-b 5 views / 0 / 0; rotation_log = []. Decision rule not fired; 0 attributed redemptions to date.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/experiments/marketing/fb-pages-mvt-1/records/snapshot-fb-a-2026-10-31.json?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "01c74939610a793d2b4a30943d66312b3dd7b3481bec87be3df7819995434b6c"
+    },
+    {
+      "claim": "channels:unestablished",
+      "value": "Distribution channels (referral_programs.json channels): X, TikTok, Instagram handles NOT ESTABLISHED (status owner_stated); YouTube = live_post (community post listing lanes); Facebook = Pages experiment. No metrics recorded for X/TikTok/Instagram/YouTube.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/config/referral_programs.json?ref=master",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "49738b350b394345983e15278df9b0e155595861f49761ad5256779d9fc9f451"
+    },
+    {
+      "claim": "fleet:verified-record",
+      "value": "The fleet holds a merge/receipt-verified record it can state in its own voice: landed PRs with merge SHAs (oracle-verified across lanes), reproduced demo receipts (delphi-oracle repo @393e1f4b: ABSTAIN 0 calls / ALLOW 2 calls 103 items / ESCALATE, fresh-run verified 2026-10-30), Delphi pass records, and live help-wanted dashboards/feeds.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/delphi-oracle",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "4e7cd3bff5c32e4f2a0e3e78a962e3f6d13d1ed87754f4e9a6dab5f38ad74016"
+    },
+    {
+      "claim": "d0:claims-gate",
+      "value": "Positive control: the /delphi-oracle/ landing page passed its claims gate (verified 2026-11-01): copy states only the verified record, including the honest negative submissions=0; no borrowed claims. PR #12 merged b37e60f98c72 on the landing repo.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/pulls/12",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "393fcf823ff031a79dc34761c874a3f14196946d58df8b49d372766f9d68b102"
+    },
+    {
+      "claim": "separation:pr16",
+      "value": "Landing PR #16 (OPEN, held for Marketing concurrence): \"fix(landing): hero/benefits = fleet\u2019s own record (de-CellCog)\" \u2014 replaces hero/benefits with live-feed dashboards, merge/receipt verification, challenge builds; CTA \u2192 dashboards; CellCog grid card untouched (its claims stay, attributed). +8/\u22128 js/content.js.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/timerloggedout-spec.github.io/pulls/16",
+        "observed_at": "2026-11-01T08:03:40Z"
+      },
+      "fresh_until": "2026-11-01T08:18:40Z",
+      "sha256": "81ea3305cde42251aca96570e91b914664fad2418952362a167172da29dabbdf"
+    }
+  ]
+}

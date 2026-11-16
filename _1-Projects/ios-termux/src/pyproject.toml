@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ios2termux"
+version = "1.0.0"
+description = "iOS to Termux with Gemini Carbon 4 Extended Thinking — honest routes: SSH into real Termux on Android, Termux-style cloud, translation, shared-storage transfer"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Darion Kellar" }]
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

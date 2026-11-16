@@ -1,0 +1,668 @@
+{
+  "description": "Synthegration Developer",
+  "tools": [
+    {
+      "name": "arp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/arp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "capinfos",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/capinfos",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "captype",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/captype",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "cargo",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-clippy",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-clippy",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-fmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-fmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "clippy-driver",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/clippy-driver",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "curl",
+      "package": "curl",
+      "path": "/data/data/com.termux/files/usr/bin/curl",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Command line tool for transferring data with URL syntax"
+    },
+    {
+      "name": "dnsdomainname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/dnsdomainname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "drill",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/drill",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "dumpcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/dumpcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "editcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/editcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "ftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/ftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "gh",
+      "package": "gh",
+      "path": "/data/data/com.termux/files/usr/bin/gh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "GitHub\u2019s official command line tool"
+    },
+    {
+      "name": "hostname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/hostname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "ifconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ifconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ipmaddr",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ipmaddr",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "iptunnel",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/iptunnel",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ldns-config",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/ldns-config",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "logger",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/logger",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "mergecap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mergecap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "mii-tool",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/mii-tool",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "mmdbresolve",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mmdbresolve",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "nameif",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/nameif",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "netstat",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/netstat",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "plipconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/plipconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "randpkt",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/randpkt",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rarp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/rarp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "rawshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/rawshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rclone",
+      "package": "rclone",
+      "path": "/data/data/com.termux/files/usr/bin/rclone",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "rsync for cloud storage"
+    },
+    {
+      "name": "reordercap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/reordercap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "route",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/route",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "rust-analyzer",
+      "package": "rust-analyzer",
+      "path": "/data/data/com.termux/files/usr/bin/rust-analyzer",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "A Rust compiler front-end for IDEs"
+    },
+    {
+      "name": "rust-gdb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-gdbgui",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdbgui",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-lldb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-lldb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustc",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustdoc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustdoc",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustfmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustfmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "scp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/scp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sftp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sharkd",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/sharkd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "slattach",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/slattach",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ssh",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-add",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-add",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-agent",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-agent",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-copy-id",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-copy-id",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-keyscan",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keyscan",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sshd",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sshd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "synthegration",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/synthegration",
+      "source": "apt",
+      "tags": [
+        "synthegration"
+      ],
+      "category": "synthegration",
+      "description": "Package unknown"
+    },
+    {
+      "name": "telnet",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/telnet",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "text2pcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/text2pcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "tftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/tftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "tshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/tshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "wget",
+      "package": "wget",
+      "path": "/data/data/com.termux/files/usr/bin/wget",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Commandline tool for retrieving files using HTTP, HTTPS and FTP"
+    },
+    {
+      "name": "wireshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/wireshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    }
+  ]
+}

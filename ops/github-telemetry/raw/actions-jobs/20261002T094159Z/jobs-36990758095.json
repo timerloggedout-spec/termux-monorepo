@@ -1,0 +1,297 @@
+{
+  "collected_at": "2026-10-02T09:42:01.434448+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36990758095,
+    "endpoint": ".../runs/36990758095/jobs"
+  },
+  "data": {
+    "total_count": 3,
+    "jobs": [
+      {
+        "id": 110786161620,
+        "run_id": 36990758095,
+        "workflow_name": "secrets-scan",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36990758095",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZy16r1A",
+        "head_sha": "5080361c064506f17e1f6ecf1e1741ba0d0eff39",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110786161620",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36990758095/job/110786161620",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-02T09:36:30Z",
+        "started_at": "2026-10-02T09:36:33Z",
+        "completed_at": "2026-10-02T09:36:44Z",
+        "name": "gitleaks",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-02T09:36:34Z",
+            "completed_at": "2026-10-02T09:36:35Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-02T09:36:35Z",
+            "completed_at": "2026-10-02T09:36:40Z"
+          },
+          {
+            "name": "Cache gitleaks binary",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-02T09:36:40Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Install gitleaks",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Run gitleaks (diff)",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 5,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Upload SARIF",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Post Cache gitleaks binary",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 11,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:42Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-02T09:36:42Z",
+            "completed_at": "2026-10-02T09:36:42Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110786161620",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000183185,
+        "runner_name": "GitHub Actions 1000183185",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 110786161648,
+        "run_id": 36990758095,
+        "workflow_name": "secrets-scan",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36990758095",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZy16r8A",
+        "head_sha": "5080361c064506f17e1f6ecf1e1741ba0d0eff39",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110786161648",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36990758095/job/110786161648",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-02T09:36:30Z",
+        "started_at": "2026-10-02T09:36:33Z",
+        "completed_at": "2026-10-02T09:36:47Z",
+        "name": "cache-warm",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-02T09:36:34Z",
+            "completed_at": "2026-10-02T09:36:35Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-02T09:36:35Z",
+            "completed_at": "2026-10-02T09:36:38Z"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-02T09:36:38Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Cache pre-commit env",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:41Z"
+          },
+          {
+            "name": "Warm pip cache",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-02T09:36:41Z",
+            "completed_at": "2026-10-02T09:36:44Z"
+          },
+          {
+            "name": "Post Cache pre-commit env",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-02T09:36:44Z",
+            "completed_at": "2026-10-02T09:36:44Z"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-02T09:36:44Z",
+            "completed_at": "2026-10-02T09:36:44Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-02T09:36:44Z",
+            "completed_at": "2026-10-02T09:36:44Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-02T09:36:44Z",
+            "completed_at": "2026-10-02T09:36:44Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110786161648",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000183186,
+        "runner_name": "GitHub Actions 1000183186",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 110786161712,
+        "run_id": 36990758095,
+        "workflow_name": "secrets-scan",
+        "head_branch": "feat/dashboard-lanes-v2",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36990758095",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZy16sMA",
+        "head_sha": "5080361c064506f17e1f6ecf1e1741ba0d0eff39",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110786161712",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36990758095/job/110786161712",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-10-02T09:36:30Z",
+        "started_at": "2026-10-02T09:36:32Z",
+        "completed_at": "2026-10-02T09:39:15Z",
+        "name": "entropy",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-02T09:36:33Z",
+            "completed_at": "2026-10-02T09:36:34Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-02T09:36:34Z",
+            "completed_at": "2026-10-02T09:36:37Z"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-02T09:36:37Z",
+            "completed_at": "2026-10-02T09:36:38Z"
+          },
+          {
+            "name": "Entropy scan (staged-equivalent)",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 4,
+            "started_at": "2026-10-02T09:36:38Z",
+            "completed_at": "2026-10-02T09:39:14Z"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-10-02T09:39:14Z",
+            "completed_at": "2026-10-02T09:39:14Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-10-02T09:39:14Z",
+            "completed_at": "2026-10-02T09:39:14Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-10-02T09:39:14Z",
+            "completed_at": "2026-10-02T09:39:14Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110786161712",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000183187,
+        "runner_name": "GitHub Actions 1000183187",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

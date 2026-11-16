@@ -1,0 +1,1605 @@
+{
+  "collected_at": "2026-11-10T11:05:48.777665+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42802165023,
+    "endpoint": ".../runs/42802165023/jobs"
+  },
+  "data": {
+    "total_count": 33,
+    "jobs": [
+      {
+        "id": 129782172520,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN57LaA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782172520",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782172520",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:47:55Z",
+        "started_at": "2026-11-10T10:47:57Z",
+        "completed_at": "2026-11-10T10:48:15Z",
+        "name": "decide",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:47:58Z",
+            "completed_at": "2026-11-10T10:47:59Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-10T10:47:59Z",
+            "completed_at": "2026-11-10T10:48:09Z"
+          },
+          {
+            "name": "Decision tree \u2014 one cheap call per concern",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:09Z",
+            "completed_at": "2026-11-10T10:48:11Z"
+          },
+          {
+            "name": "Persist verdicts to Supabase lane-state (optional)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-10T10:48:11Z",
+            "completed_at": "2026-11-10T10:48:12Z"
+          },
+          {
+            "name": "Upload dispatch admission report",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-10T10:48:12Z",
+            "completed_at": "2026-11-10T10:48:13Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-10T10:48:13Z",
+            "completed_at": "2026-11-10T10:48:13Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-11-10T10:48:13Z",
+            "completed_at": "2026-11-10T10:48:13Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782172520",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897073,
+        "runner_name": "GitHub Actions 1000897073",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322558,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EVfg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322558",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322558",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:21Z",
+        "completed_at": "2026-11-10T10:48:24Z",
+        "name": "dispatch (tailscale-bridge-probe, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:22Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322558",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897086,
+        "runner_name": "GitHub Actions 1000897086",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322590,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EVng",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322590",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322590",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:22Z",
+        "completed_at": "2026-11-10T10:48:26Z",
+        "name": "dispatch (continuous-evaluation, false, false, true)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:24Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:24Z",
+            "completed_at": "2026-11-10T10:48:24Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:24Z",
+            "completed_at": "2026-11-10T10:48:24Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322590",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897087,
+        "runner_name": "GitHub Actions 1000897087",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322608,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EVsA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322608",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322608",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:17Z",
+        "completed_at": "2026-11-10T10:48:19Z",
+        "name": "dispatch (tunnel-canary, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322608",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897083,
+        "runner_name": "GitHub Actions 1000897083",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322632,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EVyA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322632",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322632",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:17Z",
+        "completed_at": "2026-11-10T10:48:20Z",
+        "name": "dispatch (deepcli-agent-bridge, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322632",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897084,
+        "runner_name": "GitHub Actions 1000897084",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322634,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EVyg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322634",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322634",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:29Z",
+        "completed_at": "2026-11-10T10:48:31Z",
+        "name": "dispatch (tribute-followup, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:29Z",
+            "completed_at": "2026-11-10T10:48:30Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:30Z",
+            "completed_at": "2026-11-10T10:48:30Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:30Z",
+            "completed_at": "2026-11-10T10:48:30Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322634",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897094,
+        "runner_name": "GitHub Actions 1000897094",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322642,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EV0g",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322642",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322642",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:31Z",
+        "completed_at": "2026-11-10T10:48:35Z",
+        "name": "dispatch (tribute-scout, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:32Z",
+            "completed_at": "2026-11-10T10:48:33Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:33Z",
+            "completed_at": "2026-11-10T10:48:33Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:33Z",
+            "completed_at": "2026-11-10T10:48:33Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322642",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897095,
+        "runner_name": "GitHub Actions 1000897095",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322665,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EV6Q",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322665",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322665",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:22Z",
+        "completed_at": "2026-11-10T10:48:24Z",
+        "name": "dispatch (team-mvt, false, false, true)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:23Z",
+            "completed_at": "2026-11-10T10:48:23Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322665",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897088,
+        "runner_name": "GitHub Actions 1000897088",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322681,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EV-Q",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322681",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322681",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:17Z",
+        "completed_at": "2026-11-10T10:48:20Z",
+        "name": "dispatch (agent-runtime-stall-watch, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:18Z",
+            "completed_at": "2026-11-10T10:48:18Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322681",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897085,
+        "runner_name": "GitHub Actions 1000897085",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322709,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EWFQ",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322709",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322709",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:37Z",
+        "completed_at": "2026-11-10T10:48:39Z",
+        "name": "dispatch (merge-promotion-queue-v3, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:38Z",
+            "completed_at": "2026-11-10T10:48:38Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:38Z",
+            "completed_at": "2026-11-10T10:48:38Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:38Z",
+            "completed_at": "2026-11-10T10:48:38Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322709",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897100,
+        "runner_name": "GitHub Actions 1000897100",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322713,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EWGQ",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322713",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322713",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:27Z",
+        "completed_at": "2026-11-10T10:48:29Z",
+        "name": "dispatch (tribute-status-refresh, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:27Z",
+            "completed_at": "2026-11-10T10:48:28Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:28Z",
+            "completed_at": "2026-11-10T10:48:28Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:28Z",
+            "completed_at": "2026-11-10T10:48:28Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322713",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897090,
+        "runner_name": "GitHub Actions 1000897090",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322741,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EWNQ",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322741",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322741",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:33Z",
+        "completed_at": "2026-11-10T10:48:37Z",
+        "name": "dispatch (tribute-execute, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:34Z",
+            "completed_at": "2026-11-10T10:48:35Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:35Z",
+            "completed_at": "2026-11-10T10:48:35Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:35Z",
+            "completed_at": "2026-11-10T10:48:35Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322741",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897096,
+        "runner_name": "GitHub Actions 1000897096",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322798,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EWbg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322798",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322798",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:33Z",
+        "completed_at": "2026-11-10T10:48:36Z",
+        "name": "dispatch (tribute-llm-assist, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:34Z",
+            "completed_at": "2026-11-10T10:48:34Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:34Z",
+            "completed_at": "2026-11-10T10:48:34Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:34Z",
+            "completed_at": "2026-11-10T10:48:34Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322798",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897097,
+        "runner_name": "GitHub Actions 1000897097",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782322834,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EWkg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782322834",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782322834",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:27Z",
+        "completed_at": "2026-11-10T10:48:31Z",
+        "name": "dispatch (recon-intel-discovery, false, {\"sweep\":true}, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:28Z",
+            "completed_at": "2026-11-10T10:48:29Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:29Z",
+            "completed_at": "2026-11-10T10:48:29Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:29Z",
+            "completed_at": "2026-11-10T10:48:29Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782322834",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897089,
+        "runner_name": "GitHub Actions 1000897089",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324784,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EeMA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324784",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324784",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:39Z",
+        "completed_at": "2026-11-10T10:48:42Z",
+        "name": "dispatch (cellcog-engineering-health, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:40Z",
+            "completed_at": "2026-11-10T10:48:41Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:41Z",
+            "completed_at": "2026-11-10T10:48:41Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:41Z",
+            "completed_at": "2026-11-10T10:48:41Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324784",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897102,
+        "runner_name": "GitHub Actions 1000897102",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324834,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EeYg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324834",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324834",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:38Z",
+        "completed_at": "2026-11-10T10:48:40Z",
+        "name": "dispatch (agent-continuous-ops, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:39Z",
+            "completed_at": "2026-11-10T10:48:39Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:39Z",
+            "completed_at": "2026-11-10T10:48:39Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:39Z",
+            "completed_at": "2026-11-10T10:48:39Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324834",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897101,
+        "runner_name": "GitHub Actions 1000897101",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324887,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Eelw",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324887",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324887",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:43Z",
+        "completed_at": "2026-11-10T10:48:47Z",
+        "name": "dispatch (reconciliation-engine, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:44Z",
+            "completed_at": "2026-11-10T10:48:45Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:45Z",
+            "completed_at": "2026-11-10T10:48:45Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:45Z",
+            "completed_at": "2026-11-10T10:48:45Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324887",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897106,
+        "runner_name": "GitHub Actions 1000897106",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324892,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EenA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324892",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324892",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:41Z",
+        "completed_at": "2026-11-10T10:48:44Z",
+        "name": "dispatch (issue-observatory, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:42Z",
+            "completed_at": "2026-11-10T10:48:43Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:43Z",
+            "completed_at": "2026-11-10T10:48:43Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:43Z",
+            "completed_at": "2026-11-10T10:48:43Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324892",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897104,
+        "runner_name": "GitHub Actions 1000897104",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324912,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EesA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324912",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324912",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:45Z",
+        "completed_at": "2026-11-10T10:48:48Z",
+        "name": "dispatch (historical-evaluation-correlation, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:45Z",
+            "completed_at": "2026-11-10T10:48:46Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:46Z",
+            "completed_at": "2026-11-10T10:48:46Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:46Z",
+            "completed_at": "2026-11-10T10:48:46Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324912",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897107,
+        "runner_name": "GitHub Actions 1000897107",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324938,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Eeyg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324938",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324938",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:46Z",
+        "completed_at": "2026-11-10T10:48:50Z",
+        "name": "dispatch (vercel-batch-deploy, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:47Z",
+            "completed_at": "2026-11-10T10:48:48Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:48Z",
+            "completed_at": "2026-11-10T10:48:48Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:48Z",
+            "completed_at": "2026-11-10T10:48:48Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324938",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897108,
+        "runner_name": "GitHub Actions 1000897108",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324963,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Ee4w",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324963",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324963",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:51Z",
+        "completed_at": "2026-11-10T10:48:54Z",
+        "name": "dispatch (context-relationship-audit, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:52Z",
+            "completed_at": "2026-11-10T10:48:53Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:53Z",
+            "completed_at": "2026-11-10T10:48:53Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:53Z",
+            "completed_at": "2026-11-10T10:48:53Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324963",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897110,
+        "runner_name": "GitHub Actions 1000897110",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324971,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Ee6w",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324971",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324971",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:49Z",
+        "completed_at": "2026-11-10T10:48:52Z",
+        "name": "dispatch (automation-docs-continuous-refresh, false, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:50Z",
+            "completed_at": "2026-11-10T10:48:50Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:50Z",
+            "completed_at": "2026-11-10T10:48:50Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:50Z",
+            "completed_at": "2026-11-10T10:48:50Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324971",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897109,
+        "runner_name": "GitHub Actions 1000897109",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782324987,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Ee-w",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782324987",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782324987",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:52Z",
+        "completed_at": "2026-11-10T10:48:56Z",
+        "name": "dispatch (context-relationship-backfill, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:53Z",
+            "completed_at": "2026-11-10T10:48:54Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:54Z",
+            "completed_at": "2026-11-10T10:48:54Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:54Z",
+            "completed_at": "2026-11-10T10:48:54Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782324987",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897113,
+        "runner_name": "GitHub Actions 1000897113",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782325011,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EfEw",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782325011",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782325011",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:54Z",
+        "completed_at": "2026-11-10T10:48:57Z",
+        "name": "dispatch (tribute-system1, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:55Z",
+            "completed_at": "2026-11-10T10:48:55Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:55Z",
+            "completed_at": "2026-11-10T10:48:55Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:55Z",
+            "completed_at": "2026-11-10T10:48:55Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782325011",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897114,
+        "runner_name": "GitHub Actions 1000897114",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326575,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6ElLw",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326575",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326575",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:57Z",
+        "completed_at": "2026-11-10T10:49:00Z",
+        "name": "dispatch (cadence-lead-lag, false, {\"per_page\":50}, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:58Z",
+            "completed_at": "2026-11-10T10:48:59Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:59Z",
+            "completed_at": "2026-11-10T10:48:59Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:59Z",
+            "completed_at": "2026-11-10T10:48:59Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326575",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897115,
+        "runner_name": "GitHub Actions 1000897115",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326678,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Ellg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326678",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326678",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:48:58Z",
+        "completed_at": "2026-11-10T10:49:01Z",
+        "name": "dispatch (self-integrate, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:48:59Z",
+            "completed_at": "2026-11-10T10:49:00Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:49:00Z",
+            "completed_at": "2026-11-10T10:49:00Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:49:00Z",
+            "completed_at": "2026-11-10T10:49:00Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326678",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897116,
+        "runner_name": "GitHub Actions 1000897116",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326718,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6Elvg",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326718",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326718",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:49:04Z",
+        "completed_at": "2026-11-10T10:49:07Z",
+        "name": "dispatch (actions-queue-reaper, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:49:05Z",
+            "completed_at": "2026-11-10T10:49:05Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:49:05Z",
+            "completed_at": "2026-11-10T10:49:05Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:49:05Z",
+            "completed_at": "2026-11-10T10:49:06Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326718",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897123,
+        "runner_name": "GitHub Actions 1000897123",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326743,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6El1w",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326743",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326743",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:49:08Z",
+        "completed_at": "2026-11-10T10:49:10Z",
+        "name": "dispatch (gitlab-governed-reconciliation, false, {\"gitlab_ref\":\"master\"}, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:49:08Z",
+            "completed_at": "2026-11-10T10:49:09Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:49:09Z",
+            "completed_at": "2026-11-10T10:49:09Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:49:09Z",
+            "completed_at": "2026-11-10T10:49:09Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326743",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897125,
+        "runner_name": "GitHub Actions 1000897125",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326746,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6El2g",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326746",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326746",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:49:03Z",
+        "completed_at": "2026-11-10T10:49:06Z",
+        "name": "dispatch (provider-availability, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:49:04Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:49:04Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:49:04Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326746",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897122,
+        "runner_name": "GitHub Actions 1000897122",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 129782326792,
+        "run_id": 42802165023,
+        "workflow_name": "Quota Dispatch Tree",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165023",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN6EmCA",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782326792",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165023/job/129782326792",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-10T10:48:15Z",
+        "started_at": "2026-11-10T10:49:03Z",
+        "completed_at": "2026-11-10T10:49:05Z",
+        "name": "dispatch (hygiene-sweep, false, false)",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:49:03Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          },
+          {
+            "name": "Wake lane",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 2,
+            "started_at": "2026-11-10T10:49:04Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:49:04Z",
+            "completed_at": "2026-11-10T10:49:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782326792",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897118,
+        "runner_name": "GitHub Actions 1000897118",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

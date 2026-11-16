@@ -1,0 +1,38 @@
+{
+  "category": "package_management",
+  "tools": [
+    {
+      "name": "dpkg",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "System tool"
+    },
+    {
+      "name": "pkg",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/pkg",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "System tool"
+    },
+    {
+      "name": "apt",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "System tool"
+    }
+  ]
+}

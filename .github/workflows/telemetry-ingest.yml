@@ -1,0 +1,184 @@
+# Telemetry ingest (contract: docs/ops/TELEMETRY-INGEST.md).
+# Regenerates the Provenance ledger + HindSight retain payloads from every
+# telemetry source surface in the repo, POSTs the payloads to HindSight
+# when its secrets are present, and proposes the outputs as a refresh PR
+# -- never commits directly. HindSight and Provenance are SEPARATE sinks:
+# separate files, separate steps, neither feeds the other.
+name: telemetry-ingest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 7 * * 3'
+  push:
+    branches: [master]
+    paths:
+      - 'ops/quota/registry.json'
+      - 'ops/cadence/provider-onboarding.json'
+      - 'config/agent_stack_integrations.json'
+      - 'data/g4f-working/providers.json'
+      - 'docs/ops/generated/reviewer-metrics.json'
+      - 'ops/github-telemetry/config/sources.yaml'
+      - 'agent_telemetry_stream.json'
+      - 'apps/tribute-dashboard/data/**'
+      - 'ops/delphi/ledgers.json'
+      - 'ops/challenge/coordinator.json'
+      - 'ops/moneyball/plane.json'
+      - 'scripts/telemetry_ingest/**'
+
+concurrency:
+  group: telemetry-ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tests
+        run: |
+          pip install pytest
+          python3 -m pytest tests/test_telemetry_ingest.py tests/test_density_stats.py tests/test_attribution.py tests/test_retain_payloads.py tests/test_hindsight_verify.py tests/test_backup_events.py tests/test_session_pointers.py tests/test_results_index.py -q
+      - name: Ingest (Provenance + HindSight payloads, separate sinks)
+        run: |
+          set -euo pipefail
+          python3 -B scripts/telemetry_ingest/ingest.py \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Density association stats (Provenance table + HindSight payloads)
+        run: |
+          set -euo pipefail
+          ok=1
+          for page in 1 2 3 4 5 6; do
+            gh api "repos/${{ github.repository }}/pulls?state=all&per_page=100&page=$page&sort=created&direction=desc" > "prs-page-$page.json" || ok=0
+          done
+          if [ "$ok" -eq 0 ]; then
+            echo "::warning::density PR fetch DEFERRED (Actions installation rate limit); committed density table stands, not zeroed (AUTOMATED-TELEMETRY-AUDIT deferred rule)"
+            exit 0
+          fi
+          python3 - << 'PYEOF'
+          import glob, json
+          prs = []
+          for f in sorted(glob.glob("prs-page-*.json")):
+              prs.extend(json.load(open(f)))
+          seen, out = set(), []
+          for p in prs:
+              if p["number"] not in seen:
+                  seen.add(p["number"]); out.append(p)
+          json.dump(out, open("prs.json", "w"))
+          print(f"prs merged: {len(out)}")
+          PYEOF
+          python3 - << 'PYEOF'
+          import json, sys
+          sys.path.insert(0, "scripts/telemetry_ingest")
+          import attribution
+          prs = json.load(open("prs.json"))
+          nulls = [p["number"] for p in prs if attribution.extract_actor(p)["actor"] is None]
+          open("density-nulls.txt", "w").write("\n".join(str(n) for n in nulls[:80]))
+          print(f"manifest-leg candidates (still-null PRs): {len(nulls)}")
+          PYEOF
+          mkdir -p density-files
+          while read -r n; do
+            [ -n "$n" ] && gh api "repos/${{ github.repository }}/pulls/$n/files?per_page=100" > "density-files/$n.json" || true
+          done < density-nulls.txt
+          python3 -B scripts/telemetry_ingest/density_stats.py \
+            --prs prs.json \
+            --files-dir density-files \
+            --rfp-feed apps/tribute-dashboard/data/delphi-rfp-feed.json \
+            --now "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: All-4 results index (Viz aggregation)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          python3 -B scripts/telemetry_ingest/results_index.py \
+            --root . \
+            --out ops/telemetry/results-index.json \
+            --viz-out apps/tribute-dashboard/data/results-index-feed.json \
+            --mirror-out apps/tribute-dashboard/data/results-index.json
+
+      - name: Session pointers (validation-lane correlation shape)
+        run: |
+          python3 -B scripts/telemetry_ingest/session_pointers.py \
+            --feed ops/telemetry/session-history.jsonl \
+            --out ops/telemetry/session-pointers.jsonl \
+            --receipt ops/telemetry/session-pointers-receipt.json
+
+      - name: Backup events -> measurement records (Tracking feed intake)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          python3 -B scripts/telemetry_ingest/backup_events.py \
+            --relays ops/tracking/backup-events.jsonl \
+            --relays-repo-path ops/tracking/backup-events.jsonl \
+            --passthrough ops/tracking/backup-relays.jsonl \
+            --out ops/telemetry/backup-measurements.jsonl \
+            --receipt ops/telemetry/backup-measurements-receipt.json \
+            --join-out ops/telemetry/backup-measurements-join.json \
+            --mode live
+
+      - name: HindSight retain PROOF (3 units; state-gated, first spend = tested spend)
+        id: hs_proof
+        env:
+          HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/telemetry_ingest/retain_payloads.py \
+            --file ops/telemetry/hindsight-payloads.jsonl \
+            --file ops/telemetry/density-hindsight.jsonl \
+            --max-items 3 --batch 3 \
+            --state ops/telemetry/hindsight-retain-state.json \
+            --receipt-out ops/telemetry/hindsight-retain-proof.json
+          ok=$(python3 -c "import json; print(json.load(open('ops/telemetry/hindsight-retain-proof.json')).get('ok', 0))")
+          echo "proof_ok=$ok" >> "$GITHUB_OUTPUT"
+          if [ "$ok" -eq 0 ]; then echo "::warning::HindSight proof retained 0 units — gate evidence in hindsight-retain-proof.json (e.g. 402 credits); full deploy stays gated"; fi
+      - name: HindSight verify (stats + recall probe; no burn)
+        if: steps.hs_proof.outputs.proof_ok != '0'
+        env:
+          HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
+        run: |
+          sleep 45
+          python3 -B scripts/telemetry_ingest/hindsight_verify.py \
+            --receipt-out ops/telemetry/hindsight-verify.json
+      - name: HindSight FULL populate (gated)
+        if: steps.hs_proof.outputs.proof_ok != '0' && vars.HINDSIGHT_POPULATE_FULL == 'true'
+        env:
+          HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
+        run: |
+          set -euo pipefail
+          python3 -B scripts/telemetry_ingest/retain_payloads.py \
+            --file ops/telemetry/hindsight-payloads.jsonl \
+            --file ops/telemetry/density-hindsight.jsonl \
+            --batch 50 \
+            --max-items 37 \
+            --state ops/telemetry/hindsight-retain-state.json \
+            --receipt-out ops/telemetry/hindsight-retain-full.json
+      - name: Propose the refresh as a PR
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- ops/telemetry; then
+            echo "ingest outputs unchanged; no refresh PR"
+            exit 0
+          fi
+          branch="telemetry-ingest/refresh"
+          git config user.name "telemetry-ingest"
+          git config user.email "actions@github.com"
+          git checkout -B "$branch"
+          git add ops/telemetry
+          git commit -m "chore(telemetry): refresh HindSight+Provenance ingest"
+          git push -f origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "chore(telemetry): refresh HindSight+Provenance ingest" \
+            --body "Automated telemetry ingest refresh (collector: scripts/telemetry_ingest/ingest.py; contract: docs/ops/TELEMETRY-INGEST.md). Counts are derived live from the source surfaces at run time; excluded sources are recorded in ops/telemetry/ingest-receipt.json, never dropped." \
+            || echo "refresh PR already open"

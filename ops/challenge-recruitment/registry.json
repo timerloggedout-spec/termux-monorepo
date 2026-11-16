@@ -1,0 +1,164 @@
+{
+  "schema": "challenge-recruitment/v1",
+  "owner_role": "challenge-recruitment",
+  "manager_role": "challenge-entries-manager",
+  "updated_at": "2026-10-28T16:07:00-07:00",
+  "store": {
+    "primary": "Neon recruitment_current (ops/challenge-participants/schema.sql) \u2014 LANE_EVENTS_DATABASE_URL + NEON_API_KEY provisioned per PR #2222 (2026-10-28); participant_event.py sync carries these rows on next coordinator push/dispatch",
+    "source_of_truth_feed": "ops/challenge/coordinator.json",
+    "queue_note": "Registry JSON remains the recruitment seat's record; Neon mirror sync owned by DB lane pattern."
+  },
+  "pipeline_states": [
+    "identified",
+    "profiled",
+    "engaged",
+    "in_talks",
+    "collaborator",
+    "passed"
+  ],
+  "counts": {
+    "team_events": 7,
+    "team_projects": 9,
+    "observations": 2,
+    "participants_observed": 2,
+    "judges_observed": 0,
+    "github_matched": 1,
+    "github_match_rate": 1.0,
+    "candidates_flagged": 0
+  },
+  "population_schedule": "D4 gallery Oct 30 (first big field), D2 Nov 5, D5 Nov 17, D3 post-Nov 13 winners surface; judges when publicly named (currently 0 all events)",
+  "rules": [
+    "OWNER RULING 2026-10-28 (#2237): recruitment = our team only; externals observation-only, candidate:false + pipeline_state:null always",
+    "public sources only, every fact sourced + fetched_at",
+    "no guessed handles; unmatched = NOT_ESTABLISHED",
+    "weights/threshold fixed at event intake, never adjusted after scores",
+    "4n0n: never link our entrants across platforms; no personal identifiers beyond public professional profiles"
+  ],
+  "scope_ruling": {
+    "ruling": "The OSINT recruit is our team only (owner, direct, 2026-10-28)",
+    "landed": "PR #2237 merged c91c59cab4ae",
+    "effect": "recruitment pipeline tracks OUR team/entrants only; external competitors/judges = observation-only (profiled+scored, never candidates, recruitment{candidate:false, pipeline_state:null} always); standout flag = observation only"
+  },
+  "team": [
+    {
+      "event_id": "STRANDS-DECIDER",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "delphi-oracle-strands (abandoned)"
+      ]
+    },
+    {
+      "event_id": "D0",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "delphi-oracle-weekend-challenge (abandoned)"
+      ]
+    },
+    {
+      "event_id": "D1",
+      "entrant_moniker": "entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]",
+      "projects": [
+        "studysprint (picked_pending_freeze)"
+      ]
+    },
+    {
+      "event_id": "D2",
+      "entrant_moniker": "entrant{entrantLablabAi}[platform:lablab-ai]",
+      "projects": [
+        "web-adapter-foundry (candidate)"
+      ]
+    },
+    {
+      "event_id": "D3",
+      "entrant_moniker": "entrant{entrantBuilderIo}[platform:builder-io]",
+      "projects": [
+        "listinglens (picked_pending_freeze)",
+        "delphi-desk (questioned)"
+      ]
+    },
+    {
+      "event_id": "D4",
+      "entrant_moniker": "entrant{entrantDevpost}[platform:devpost]",
+      "projects": [
+        "kiroween-skeleton-crew (candidate)",
+        "kiroween-frankenstein (candidate)",
+        "kiroween-resurrection (candidate)"
+      ]
+    },
+    {
+      "event_id": "D5",
+      "entrant_moniker": "entrant{n0nAha}[platform:aha-io]",
+      "projects": []
+    }
+  ],
+  "observations": [
+    {
+      "entity_id": "ladder-practice-sets",
+      "event_id": "D1",
+      "kind": "participant",
+      "pipeline_state": null,
+      "candidate_flag": false,
+      "candidate_flag_reason": "Owner ruling 2026-10-28 (PR #2237): externals never candidates; prior MoneyBall flag also refused (2.90<6.0 + track_record unverified).",
+      "github": {
+        "login": "abhinavshukla152005-beep",
+        "url": "https://github.com/abhinavshukla152005-beep",
+        "confidence": "high",
+        "profile_ref": "ops/challenge-recruitment/github-profiles/D1--ladder-practice-sets.json"
+      },
+      "moneyball_evaluations": [
+        "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28.json",
+        "ops/challenge-participants/scores/D1--ladder-practice-sets--evaluate--2026-10-28-recruitment.json"
+      ],
+      "latest_composite": 2.9,
+      "flag_threshold": 6.0,
+      "sources": [
+        {
+          "url": "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+          "fetched_at": "2026-10-28T14:30:00-07:00"
+        },
+        {
+          "url": "https://github.com/abhinavshukla152005-beep",
+          "fetched_at": "2026-10-28T14:30:00-07:00"
+        }
+      ],
+      "scope": "observation_only",
+      "standout_observation_only": true
+    },
+    {
+      "entity_id": "patchpilot",
+      "event_id": "STRANDS-DECIDER",
+      "kind": "participant",
+      "scope": "observation_only",
+      "candidate_flag": false,
+      "pipeline_state": null,
+      "standout_observation_only": true,
+      "project": {
+        "name": "PatchPilot: Decision-Guided Search for Automated Program Repair",
+        "status": "NOT_ESTABLISHED",
+        "summary": "Generates multiple candidate code fixes, ranks them with Strands Decider 2B, tests top-ranked patches first, adaptive LLM judging."
+      },
+      "github": {
+        "login": null,
+        "url": null,
+        "confidence": "NOT_ESTABLISHED",
+        "note": "No repo/demo link in source screenshot; unmatched = NOT_ESTABLISHED, no guessing."
+      },
+      "moneyball_evaluations": [],
+      "latest_composite": null,
+      "field_evidence": {
+        "event_status": "closed 2026-10-23",
+        "field_size_participants": 5917,
+        "field_size_source": "platform page per main relay",
+        "our_status": "NOT_SUBMITTED (verified final 2026-10-26)"
+      },
+      "sources": [
+        {
+          "url": "owner screenshot via main chat (2026-10-28 16:07 PT)",
+          "fetched_at": "2026-10-28T16:07:00-07:00"
+        }
+      ],
+      "notes": "Filed under Decider field evidence for metrics collection (main dispatch). Observation-only per #2237. No winprob change \u2014 method parked (owner, 2026-10-28)."
+    }
+  ],
+  "pipeline_applies_to": "team[] only (our entrants); observations never enter the pipeline"
+}

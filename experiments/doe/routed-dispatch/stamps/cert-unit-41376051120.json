@@ -1,0 +1,44 @@
+{
+  "context": "certifications-unit l1-relational-databases-v9/061",
+  "dispatch_id": "cert-unit-41376051120",
+  "entry": "506",
+  "instance": {
+    "context": "certifications-unit l1-relational-databases-v9/061",
+    "model": "c4ai-aya-expanse-32b",
+    "moniker": "optimizations-assurance",
+    "provider": "cohere",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/certifications/run_unit.py",
+      "sha256": "c34eb7290dfee8acfb9d1fe4d960310d6f8cc50c1282dbec8d97a3a99617dd16"
+    },
+    "tools": {
+      "ref": ".github/workflows/cert-unit.yml",
+      "sha256": "9b82d213505626ca6b8092710d76551309af89c07cecbcfe389a9e0597d23d68"
+    }
+  },
+  "model": "c4ai-aya-expanse-32b",
+  "moniker": "optimizations-assurance",
+  "outcome": {
+    "artifact": "issue 506 verdict comment",
+    "confirmed": null,
+    "gate_call": null,
+    "status": "completed",
+    "summary": "cert unit 061 verdict ok=True"
+  },
+  "provider": "cohere",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "cohere",
+    "slice": null
+  },
+  "role": "builder",
+  "run": {
+    "run_id": "41376051120",
+    "session_id": null,
+    "workflow": "cert-unit.yml"
+  },
+  "task_class": "certifications-unit",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-02T02:10:16Z"
+}

@@ -1,0 +1,92 @@
+'
+    
+    matches = re.findall[1m([0mpattern, response_text, re.DOTALL[1m)[0m
+    
+    # Also handle inline code blocks [1m([0msingle backticks[1m)[0m if no multi-line blocks found
+    if not matches:
+        inline_pattern = r'`[1m([0m[1m[[0m^`[1m][0m+[1m)[0m`'
+        matches = re.findall[1m([0minline_pattern, response_text[1m)[0m
+    
+    return [1m[[0mcode.strip[1m([0m[1m)[0m for code in matches[1m][0m
+
+
+def extract_and_save_blocks[1m([0mresponse_text: str, output_dir: str = [3;35mNone[0m, prefix: str = "code_block"[1m)[0m -> list:
+    [32m""[0m"
+    Extract code blocks and optionally save to files.
+    
+    Args:
+        response_text: LLM response text
+        output_dir: Directory to save files [1m([0m[3;35mNone[0m = don't save[1m)[0m
+        prefix: Filename prefix for saved blocks
+    
+    Returns:
+        List of extracted code blocks
+    [32m""[0m"
+    import os
+    
+    blocks = extract_code_blocks[1m([0mresponse_text[1m)[0m
+    
+    if output_dir and blocks:
+        os.makedirs[1m([0moutput_dir, exist_ok=[3;92mTrue[0m[1m)[0m
+        saved_paths = [1m[[0m[1m][0m
+        
+        for idx, block in enumerate[1m([0mblocks[1m)[0m:
+            ext = detect_extension[1m([0mblock[1m)[0m
+            filename = f"[1m{[0mprefix[1m}[0m_[1m{[0midx+[1;36m1[0m[1m}[0m[1m{[0mext[1m}[0m"
+            filepath = os.path.join[1m([0moutput_dir, filename[1m)[0m
+            
+            with open[1m([0mfilepath, 'w'[1m)[0m as f:
+                f.write[1m([0mblock[1m)[0m
+            saved_paths.append[1m([0mfilepath[1m)[0m
+        
+        return saved_paths
+    
+    return blocks
+
+
+def detect_extension[1m([0mcode_block: str[1m)[0m -> str:
+    [32m""[0m"Guess file extension from code block content.[32m""[0m"
+    import re
+    
+    # Common shebang detection
+    if code_block.startswith[1m([0m'#![35m/[0mbin[35m/[0m[95mbash[0m'[1m)[0m:
+        return '.sh'
+    elif code_block.startswith[1m([0m'#![35m/[0musr[35m/[0m[95mbin[0m[35m/[0m[95menv[0m python'[1m)[0m:
+        return '.py'
+    
+    # Language detection by content
+    if re.search[1m([0mr'^\s*def\s+\w+\s*\[1m([0m', code_block, re.MULTILINE[1m)[0m:
+        return '.py'
+    elif re.search[1m([0mr'^\s*function\s+\w+\s*\[1m([0m', code_block, re.MULTILINE[1m)[0m:
+        return '.js'
+    elif re.search[1m([0mr'^\s*#include\s+<', code_block[1m)[0m:
+        return '.c'
+    elif re.search[1m([0mr'^\s*using\s+System;', code_block[1m)[0m:
+        return '.cs'
+    elif re.search[1m([0mr'^\s*package\s+main', code_block[1m)[0m:
+        return '.go'
+    
+    return '.txt'
+
+
+# --- Integration patch for provision_agent's LLM handler ---
+# Insert after LLM response is received [1m([0maround line ~[1;36m150[0m[1m)[0m:
+
+[32m""[0m"
+# ORIGINAL CODE [1m([0mapproximate[1m)[0m:
+# response = llm.generate[1m([0mprompt[1m)[0m
+# 
+# PATCH: Add extraction:
+response = llm.generate[1m([0mprompt[1m)[0m
+
+# --- PATCH START ---
+code_blocks = extract_code_blocks[1m([0mresponse, language='python'[1m)[0m
+if code_blocks:
+    print[1m([0mf"[1m[[0mExtractor[1m][0m Found [1m{[0mlen[1m([0mcode_blocks[1m)[0m[1m}[0m code blocks"[1m)[0m
+    # Save for execution
+    with open[1m([0m'[35m/[0mtmp[35m/[0m[95mext[0mracted_code.py', 'w'[1m)[0m as f:
+        f.write[1m([0m'\n\n'.join[1m([0mcode_blocks[1m)[0m[1m)[0m
+# --- PATCH END ---
+
+# continue with original response handling[33m...[0m
+[32m""[0m"

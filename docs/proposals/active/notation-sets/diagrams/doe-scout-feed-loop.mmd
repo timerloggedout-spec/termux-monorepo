@@ -1,0 +1,21 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Sources of record: docs/ops/DOE-FAMILY.md @master (Scout /
+%%   selection-experiment blocks) + docs/ops/
+%%   DOE-ROLES-EPOCH-2026-11-03.md ("The new wiring: DoE pool
+%%   x Desk QUE dispatch" + Scout duty under D1 slate).
+%% Export: 2026-11-03. Fidelity: loop topology LOSSLESS as
+%%   described — feed → selection → dispatch → stamps → feed.
+%% NAMED LOSSES: the health gates Scout selects under, the
+%%   talent-frame detail, and the team-stratum rule (a team's
+%%   record is its own, never the sum of members') are prose
+%%   in the sources and are NOT rendered here.
+%% ============================================================
+flowchart LR
+    FEED["pool feed — configured instances / teams of record {roster · posterior · standing}"]
+    SEL["Scout selection — assembles or selects from scouted talent, from LIVE feed state, under health gates (never static reputation)"]
+    STAMP1["selection stamped as a selection experiment"]
+    DISP["Desk QUE dispatch — operator reads the pool of record at dispatch time; three sides, three duties, no overlap"]
+    WORK["dispatched work runs"]
+    STAMP2["dispatch + outcome stamps — records of the run"]
+    FEED --> SEL --> STAMP1 --> DISP --> WORK --> STAMP2 --> FEED

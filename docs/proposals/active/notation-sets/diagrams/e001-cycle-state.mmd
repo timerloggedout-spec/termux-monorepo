@@ -1,0 +1,29 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: research/nse-023/examples/E001.lean
+%%   @master (PR #4729 merged 9655b527a714) — Stage inductive
+%%   (8 constructors) + stageNext (9 true pairs, default false),
+%%   relayed verbatim by DoE (doe-expert) 2026-11-03.
+%% Export: 2026-11-03. Fidelity: transitions LOSSLESS — the
+%%   enumeration is complete against the file (8 states,
+%%   9 allowed moves, close terminal).
+%% NAMED LOSS: stageNext carries NO guards. The practiced
+%%   cycle's move conditions (layer re-enters verify only on a
+%%   material-change trigger; corroborate requires a second
+%%   leg, not merely the previous stage) live in the methods
+%%   doc's prose + validTrace examples, NOT in the relation.
+%%   A reader of this diagram gets the topology exactly and
+%%   the guards not at all.
+%% ============================================================
+stateDiagram-v2
+    [*] --> preregister
+    preregister --> build
+    build --> verify
+    verify --> corroborate
+    corroborate --> verdict
+    verdict --> register
+    register --> layer
+    register --> close
+    layer --> verify
+    layer --> close
+    close --> [*]

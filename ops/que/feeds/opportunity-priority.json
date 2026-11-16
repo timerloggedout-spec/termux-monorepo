@@ -1,0 +1,1365 @@
+{
+  "schema": "que.opportunity-priority/v1",
+  "generated_at": "2026-11-16T08:01:22Z",
+  "stale_after_hours": 12.0,
+  "fresh_until": "2026-11-16T20:01:22Z",
+  "stale": false,
+  "sources": {
+    "coordinator": "ops/challenge/coordinator.json",
+    "terminal_records": "ops/challenge/terminal-records.json",
+    "desk_feed": {
+      "path": "ops/challenge/desk-feed.json",
+      "generated_at": "2026-11-04T10:26:53Z",
+      "age_hours": 285.6,
+      "stale": true,
+      "role": "deprecated: verbatim priority_timebox walls only; live state = this feed"
+    }
+  },
+  "run_id": "43827809644",
+  "rank_method": "que-task-rank/v1",
+  "opportunities": [
+    {
+      "id": "D5",
+      "slug": "d5",
+      "rank": 1,
+      "tier": 3,
+      "score": 95.0,
+      "basis": [
+        "next_gate 2026-11-20T19:30:00Z via dates.winners_at -> gate_term 0.75",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-20T19:30:00Z",
+      "days_to_gate": 4.48,
+      "priority_timebox": {
+        "wall": "2026-11-19T20:00:00Z",
+        "landing": "2026-11-18T20:00:00Z",
+        "cushion": "2026-11-16T20:00:00Z",
+        "escalation": "2026-11-19T08:00:00Z",
+        "final": "2026-11-19T19:30:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null,
+        "wall_source": "dates.deadline"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "AI Builder Day Hackathon - November 2026",
+      "host": "Aha! (Aha.io)",
+      "aliases": [
+        "AI Builder Day Hackathon - November 2026",
+        "Aha! (Aha.io)",
+        "aha-io",
+        "Aha!"
+      ],
+      "search_terms": [
+        "builder",
+        "day",
+        "november",
+        "aha",
+        "aha.io",
+        "aha-io"
+      ],
+      "state": "registering",
+      "nearest_wall_hours": 32.99,
+      "wall_48h": true,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C12",
+      "slug": "c12-receipts-vault",
+      "rank": 2,
+      "tier": 3,
+      "score": 65.0,
+      "basis": [
+        "next_gate 2026-12-01T07:45:00Z via dates.final_due -> gate_term 0.45",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-12-01T07:45:00Z",
+      "days_to_gate": 14.99,
+      "priority_timebox": {
+        "wall": "2026-11-16T07:45:00Z",
+        "landing": "2026-11-14T00:00:00Z",
+        "cushion": "2026-11-14T17:00:00Z",
+        "escalation": "2026-11-16T03:45:00Z",
+        "final": "2026-11-16T07:15:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "wall": "2026-11-15T23:45:00-08:00",
+          "landing": "2026-11-14",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "from": "now"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "from": "2026-11-14T09:00:00-08:00"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "from": "2026-11-15T00:00:00-08:00"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "from": "2026-11-15T19:45:00-08:00"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "from": "2026-11-15T23:15:00-08:00"
+            }
+          ],
+          "step_down": "wall+24h \u21d2 tier 1 \u00b7 wall+48h \u21d2 tier 0"
+        },
+        "wall_source": "verbatim"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
+      "host": "UGREEN",
+      "aliases": [
+        "UGREEN Hackathon 2026: Build AI NAS Skills on UGOS",
+        "UGREEN",
+        "Devpost (ugreenhackathon.devpost.com)"
+      ],
+      "search_terms": [
+        "ugreen",
+        "build",
+        "nas",
+        "skills",
+        "ugos",
+        "devpost",
+        "ugreenhackathon.devpost.com"
+      ],
+      "state": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
+      "nearest_wall_hours": -608.01,
+      "wall_48h": true,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "D4",
+      "slug": "d4",
+      "rank": 3,
+      "tier": 3,
+      "score": 35.0,
+      "basis": [
+        "next_gate 2027-01-29T21:00:00Z via dates.judging_end -> gate_term 0.15",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2027-01-29T21:00:00Z",
+      "days_to_gate": 74.54,
+      "priority_timebox": {
+        "wall": "2026-12-04T22:00:00Z",
+        "landing": "2026-12-03T22:00:00Z",
+        "cushion": "2026-12-02T17:00:00Z",
+        "escalation": "2026-12-04T18:00:00Z",
+        "final": "2026-12-04T21:30:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-12-04T14:00:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "pre-window",
+              "reminder": null,
+              "effect": "pre-window line live (spec pack); build window opens after Nov 8",
+              "from": "pre-window"
+            },
+            {
+              "tier": 1,
+              "name": "GATE \u2014 Kiro credit form",
+              "at": "2026-12-01T12:00:00-08:00",
+              "reminder": "deadline-d4-credit-form-cushion-2026-11-30 + deadline-d4-credit-form-final-2026-12-01",
+              "effect": "inner deadline: credit form landing Nov 30, wall Dec 1 12:00 PT \u2014 the form gates the build's credits",
+              "inner_wall": "2026-12-01T12:00:00-08:00"
+            },
+            {
+              "tier": 2,
+              "name": "CUSHION",
+              "at": "2026-12-02T09:00:00-08:00",
+              "reminder": "deadline-d4-cushion-2026-12-02",
+              "effect": "HIGH \u2014 D4 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 3,
+              "name": "WALL-DAY",
+              "at": "2026-12-04T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D4 preempts non-critical dispatches"
+            },
+            {
+              "tier": 4,
+              "name": "ESCALATION",
+              "at": "2026-12-04T10:00:00-08:00",
+              "reminder": "deadline-d4-escalation-2026-12-04",
+              "effect": "MAX \u2014 submission mechanics only; all other D4 streams frozen"
+            },
+            {
+              "tier": 5,
+              "name": "FINAL",
+              "at": "2026-12-04T13:30:00-08:00",
+              "reminder": "deadline-d4-final-2026-12-04",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Two-deadline entry: the credit-form gate rides as its own tier inside the submission timebox. Priority decays through the cushion tiers after the wall."
+        },
+        "wall_source": "verbatim"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Kiroween 2026",
+      "host": "Devpost (Kiro)",
+      "aliases": [
+        "Kiroween 2026",
+        "Devpost (Kiro)",
+        "devpost",
+        "Kiro",
+        "C4"
+      ],
+      "search_terms": [
+        "kiroween",
+        "devpost",
+        "kiro"
+      ],
+      "state": "registering",
+      "nearest_wall_hours": -808.51,
+      "wall_48h": true,
+      "sub_gates": 8,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C13",
+      "slug": "c13",
+      "rank": 4,
+      "tier": 3,
+      "score": 95.0,
+      "basis": [
+        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.75",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T11:59:00Z",
+      "days_to_gate": 5.17,
+      "priority_timebox": {
+        "wall": "2026-11-21T11:59:00Z",
+        "landing": "2026-11-20T11:59:00Z",
+        "cushion": "2026-11-18T11:59:00Z",
+        "escalation": "2026-11-20T23:59:00Z",
+        "final": "2026-11-21T11:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null,
+        "wall_source": "dates.proposal_due"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
+      "host": "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
+      "aliases": [
+        "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
+        "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
+        "Skipso application form (dp.skipso.com)"
+      ],
+      "search_terms": [
+        "integrating",
+        "digital",
+        "public",
+        "goods",
+        "advance",
+        "ai-enabled",
+        "formative",
+        "assessment",
+        "rfp",
+        "k-12",
+        "infrastructure",
+        "promise",
+        "learning",
+        "data",
+        "insights",
+        "massive",
+        "institute",
+        "georgetown",
+        "drivendata",
+        "catalyst",
+        "penn",
+        "gse",
+        "skipso",
+        "application",
+        "form",
+        "dp.skipso.com"
+      ],
+      "state": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call",
+      "nearest_wall_hours": 123.97,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C14",
+      "slug": "c14",
+      "rank": 5,
+      "tier": 3,
+      "score": 95.0,
+      "basis": [
+        "next_gate 2026-11-21T07:59:00Z via dates.initial_proposal_due -> gate_term 0.75",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T07:59:00Z",
+      "days_to_gate": 5.0,
+      "priority_timebox": {
+        "wall": "2026-11-21T07:59:00Z",
+        "landing": "2026-11-20T07:59:00Z",
+        "cushion": "2026-11-18T07:59:00Z",
+        "escalation": "2026-11-20T19:59:00Z",
+        "final": "2026-11-21T07:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null,
+        "wall_source": "dates.initial_proposal_due"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Mozilla Human-Scale AI Incubator \u2014 2027 cohort (call for proposals)",
+      "host": "Mozilla Foundation",
+      "aliases": [
+        "Mozilla Human-Scale AI Incubator \u2014 2027 cohort (call for proposals)",
+        "Mozilla Foundation",
+        "Mozilla Foundation application form (TFA Forms)"
+      ],
+      "search_terms": [
+        "mozilla",
+        "human-scale",
+        "incubator",
+        "cohort",
+        "foundation",
+        "application",
+        "form",
+        "tfa",
+        "forms"
+      ],
+      "state": "HOLD / parked (watch) per opportunity evaluation via Manager 2026-11-03 \u2014 no action; revisit only on an evaluation change",
+      "nearest_wall_hours": 119.97,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "C11",
+      "slug": "c11",
+      "rank": 6,
+      "tier": 3,
+      "score": 65.0,
+      "basis": [
+        "next_gate 2026-12-01T19:00:00Z via deadline -> gate_term 0.45",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-12-01T19:00:00Z",
+      "days_to_gate": 15.46,
+      "priority_timebox": {
+        "wall": "2026-12-01T19:00:00Z",
+        "landing": "2026-11-30T19:00:00Z",
+        "cushion": "2026-11-28T19:00:00Z",
+        "escalation": "2026-12-01T07:00:00Z",
+        "final": "2026-12-01T18:30:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null,
+        "wall_source": "deadline"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "AMD AI League",
+      "host": "AMD x lablab.ai",
+      "aliases": [
+        "AMD AI League",
+        "AMD x lablab.ai",
+        "lablab.ai"
+      ],
+      "search_terms": [
+        "amd",
+        "league",
+        "lablab.ai"
+      ],
+      "state": "active",
+      "nearest_wall_hours": 370.99,
+      "wall_48h": false,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
+      "id": "DOMINO",
+      "slug": "domino",
+      "rank": 7,
+      "tier": 3,
+      "score": 20.0,
+      "basis": [
+        "next_gate NOT_ESTABLISHED via none -> gate_term 0.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "NOT_ESTABLISHED",
+      "days_to_gate": null,
+      "priority_timebox": "NOT_ESTABLISHED",
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Domino pursuit (opportunity row)",
+      "host": null,
+      "aliases": [
+        "Domino pursuit (opportunity row)"
+      ],
+      "search_terms": [
+        "domino",
+        "pursuit",
+        "opportunity",
+        "row"
+      ],
+      "state": "watch",
+      "nearest_wall_hours": null,
+      "wall_48h": false,
+      "sub_gates": 0,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    }
+  ],
+  "terminal_opportunities": [
+    {
+      "id": "D1",
+      "slug": "d1-studysprint",
+      "rank": null,
+      "tier": 2,
+      "score": 105.0,
+      "basis": [
+        "next_gate 2026-11-05T07:59:00Z via dates.deadline -> gate_term 1.0",
+        "prep complete -> prep_term 0.05",
+        "tier 2 (dispatch-tiers chain entry)"
+      ],
+      "next_gate": "2026-11-05T07:59:00Z",
+      "days_to_gate": -11.0,
+      "priority_timebox": {
+        "wall": "2026-11-05T07:59:00Z",
+        "landing": "2026-11-04T07:59:00Z",
+        "cushion": "2026-11-03T17:00:00Z",
+        "escalation": "2026-11-05T03:59:00Z",
+        "final": "2026-11-05T07:29:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 FIX \u2014 time-boxed priority raise with cushioning tiers, wired to reminders",
+          "wall": "2026-11-04T23:59:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "from": "window open",
+              "effect": "in-window development line active (continuous-development mandate); routine admission"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-03T09:00:00-08:00",
+              "reminder": "deadline-d1-cushion-2026-11-03",
+              "effect": "HIGH \u2014 D1 admits ahead of routine slate work; in-flight surfaces driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-04T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D1 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-04T19:59:00-08:00",
+              "reminder": "deadline-d1-escalation-2026-11-04",
+              "effect": "MAX \u2014 submission mechanics only; all other D1 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-04T23:29:00-08:00",
+              "reminder": "deadline-d1-final-2026-11-04",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers. Allocations basis: focus 'winning' already stands at 100% in ops/quota/allocations.json (owner setting 2026-10-27) \u2014 this timebox governs lane-level admission and attention, not pool share."
+        },
+        "wall_source": "verbatim"
+      },
+      "prep_state": "PASS",
+      "verdict": "COMPLETE",
+      "name": "Strands SDK: Workshop to Ship",
+      "host": "AWS Builder Center",
+      "aliases": [
+        "Strands SDK: Workshop to Ship",
+        "AWS Builder Center",
+        "aws-builder-center",
+        "AWS Builder Center (Amazon Web Services)",
+        "C1"
+      ],
+      "search_terms": [
+        "strands",
+        "sdk",
+        "workshop",
+        "ship",
+        "aws",
+        "builder",
+        "center",
+        "aws-builder-center",
+        "amazon",
+        "web",
+        "services"
+      ],
+      "terminal_record": {
+        "id": "D1",
+        "state": "complete \u2014 submitted (published 2026-11-03); edit-window freeze 2026-11-04T23:59:00-08:00 passed",
+        "terminal_at": "2026-11-04T23:59:00-08:00",
+        "final_state": "submitted",
+        "outcome": "NOT_ESTABLISHED (results not on record)",
+        "evidence": "ops/challenge/coordinator.json events[D1].status; docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a74 D1"
+      },
+      "state": "complete \u2014 submitted (published 2026-11-03); edit-window freeze 2026-11-04T23:59:00-08:00 passed",
+      "nearest_wall_hours": -457.01,
+      "wall_48h": true,
+      "sub_gates": 4,
+      "rank_method": "que-task-rank/v1",
+      "active": false
+    },
+    {
+      "id": "D2",
+      "slug": "d2",
+      "rank": null,
+      "tier": 3,
+      "score": 120.0,
+      "basis": [
+        "next_gate 2026-11-08T23:00:00Z via dates.deadline -> gate_term 1.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-08T23:00:00Z",
+      "days_to_gate": -7.38,
+      "priority_timebox": {
+        "wall": "2026-11-08T23:00:00Z",
+        "landing": "2026-11-07T23:00:00Z",
+        "cushion": "2026-11-07T17:00:00Z",
+        "escalation": "2026-11-08T19:00:00Z",
+        "final": "2026-11-08T22:30:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-11-08T15:00:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "2026-11-03T15:00:00Z",
+              "reminder": "kickoff (window opens)",
+              "effect": "in-window development line active from kickoff; production-target pick still owner-held at timebox authoring",
+              "from": "kickoff"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-07T09:00:00-08:00",
+              "reminder": "deadline-d2-cushion-amd-c1-final-2026-11-07",
+              "effect": "HIGH \u2014 D2 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-08T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D2 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-08T11:00:00-08:00",
+              "reminder": "deadline-d2-escalation-2026-11-08",
+              "effect": "MAX \u2014 submission mechanics only; all other D2 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-08T14:30:00-08:00",
+              "reminder": "deadline-d2-final-2026-11-08",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+        },
+        "wall_source": "verbatim"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Vultr: Agent Rush Hackathon",
+      "host": "lablab.ai (Vultr)",
+      "aliases": [
+        "Vultr: Agent Rush Hackathon",
+        "lablab.ai (Vultr)",
+        "lablab-ai",
+        "lablab.ai",
+        "Vultr",
+        "C2"
+      ],
+      "search_terms": [
+        "vultr",
+        "agent",
+        "rush",
+        "lablab.ai",
+        "lablab-ai"
+      ],
+      "terminal_record": {
+        "id": "D2",
+        "state": "closed \u2014 wall 2026-11-08T15:00:00-08:00 passed",
+        "terminal_at": "2026-11-08T15:00:00-08:00",
+        "final_state": "wall passed; submission NOT_ESTABLISHED (no platform confirmation on record)",
+        "outcome": "NOT_ESTABLISHED",
+        "evidence": "ops/challenge/coordinator.json events[D2] (pick B Quarantine Browser Clerk, build started 2026-11-03); docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a74 D2"
+      },
+      "state": "closed \u2014 wall 2026-11-08T15:00:00-08:00 passed",
+      "nearest_wall_hours": -305.01,
+      "wall_48h": true,
+      "sub_gates": 3,
+      "rank_method": "que-task-rank/v1",
+      "active": false
+    },
+    {
+      "id": "D3",
+      "slug": "d3",
+      "rank": null,
+      "tier": 3,
+      "score": 120.0,
+      "basis": [
+        "next_gate 2026-11-13T00:00:00Z via dates.winners_at -> gate_term 1.0",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-13T00:00:00Z",
+      "days_to_gate": -3.33,
+      "priority_timebox": {
+        "wall": "2026-11-10T07:59:00Z",
+        "landing": "2026-11-09T07:59:00Z",
+        "cushion": "2026-11-08T17:00:00Z",
+        "escalation": "2026-11-10T03:59:00Z",
+        "final": "2026-11-10T07:29:00Z",
+        "source": "ops/challenge/desk-feed.json priority_timebox (verbatim wall/tiers; gaps derived)",
+        "verbatim": {
+          "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126)",
+          "wall": "2026-11-09T23:59:00-08:00",
+          "tiers": [
+            {
+              "tier": 0,
+              "name": "BASE",
+              "at": "window open",
+              "reminder": null,
+              "effect": "in-window development line active (build landed = checkpoint; public Clips demo + submission remain)",
+              "from": "window open"
+            },
+            {
+              "tier": 1,
+              "name": "CUSHION",
+              "at": "2026-11-08T09:00:00-08:00",
+              "reminder": "deadline-d3-cushion-2026-11-08",
+              "effect": "HIGH \u2014 D3 admits ahead of routine slate work; landing driven to close"
+            },
+            {
+              "tier": 2,
+              "name": "WALL-DAY",
+              "at": "2026-11-09T00:00:00-08:00",
+              "reminder": "calendar scheme C (wall-day)",
+              "effect": "CRITICAL \u2014 D3 preempts non-critical dispatches"
+            },
+            {
+              "tier": 3,
+              "name": "ESCALATION",
+              "at": "2026-11-09T19:59:00-08:00",
+              "reminder": "deadline-d3-escalation-2026-11-09",
+              "effect": "MAX \u2014 submission mechanics only; all other D3 streams frozen"
+            },
+            {
+              "tier": 4,
+              "name": "FINAL",
+              "at": "2026-11-09T23:29:00-08:00",
+              "reminder": "deadline-d3-final-2026-11-09",
+              "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+            }
+          ],
+          "step_down_cushion": [
+            {
+              "at": "wall+24h",
+              "tier": 1
+            },
+            {
+              "at": "wall+48h",
+              "tier": 0
+            }
+          ],
+          "note": "Priority never falls off a cliff at the wall; it decays through the cushion tiers."
+        },
+        "wall_source": "verbatim"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Agent-Native Hackathon",
+      "host": "Builder.io",
+      "aliases": [
+        "Agent-Native Hackathon",
+        "Builder.io",
+        "builder-io",
+        "C3"
+      ],
+      "search_terms": [
+        "agent-native",
+        "builder.io",
+        "builder-io"
+      ],
+      "state": "closed - wall 2026-11-09 passed unsubmitted; Clips demo published post-wall 2026-11-12; late-submit rejected by the closed form (terminal record 2026-11-12)",
+      "nearest_wall_hours": -481.01,
+      "wall_48h": true,
+      "sub_gates": 5,
+      "rank_method": "que-task-rank/v1",
+      "active": false
+    },
+    {
+      "id": "STRANDS-DECIDER",
+      "kind": "event",
+      "name": "Agent Experience Hackathon: Strands Decider",
+      "host": "AWS Builder Center",
+      "aliases": [
+        "Agent Experience Hackathon: Strands Decider",
+        "AWS Builder Center",
+        "aws-builder-center",
+        "AWS Builder Center (Amazon Web Services)"
+      ],
+      "search_terms": [
+        "agent",
+        "experience",
+        "strands",
+        "decider",
+        "aws",
+        "builder",
+        "center",
+        "aws-builder-center",
+        "amazon",
+        "web",
+        "services"
+      ],
+      "state": "closed",
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/coordinator.json"
+    },
+    {
+      "id": "D0",
+      "kind": "event",
+      "name": "Weekend Challenge: Give your Agent a Tool",
+      "host": "AWS Builder Center",
+      "aliases": [
+        "Weekend Challenge: Give your Agent a Tool",
+        "AWS Builder Center",
+        "aws-builder-center",
+        "AWS Builder Center (Amazon Web Services)"
+      ],
+      "search_terms": [
+        "weekend",
+        "give",
+        "agent",
+        "tool",
+        "aws",
+        "builder",
+        "center",
+        "aws-builder-center",
+        "amazon",
+        "web",
+        "services"
+      ],
+      "state": "closed",
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/coordinator.json"
+    },
+    {
+      "id": "C15",
+      "kind": "candidate",
+      "name": "AWS Agentic AI Call for Proposals \u2014 Fall 2026 (Amazon Research Awards)",
+      "host": "Amazon Web Services / Amazon Research Awards (ARA)",
+      "aliases": [
+        "AWS Agentic AI Call for Proposals \u2014 Fall 2026 (Amazon Research Awards)",
+        "Amazon Web Services / Amazon Research Awards (ARA)",
+        "ARA proposal submission (amazon.science)"
+      ],
+      "search_terms": [
+        "aws",
+        "agentic",
+        "fall",
+        "amazon",
+        "research",
+        "awards",
+        "web",
+        "services",
+        "ara",
+        "proposal",
+        "submission",
+        "amazon.science"
+      ],
+      "state": "SCREENED OUT this cycle - FAIL eligibility in practice (ARA Rules \u00a7I): Amazon confirmed Model A CAN satisfy \u00a7I in principle (see institution_gap.rescreen_2026_11_10), but route decision still DEFERRED, no fiscal sponsor in place, and standing one up before the Nov 11 23:59 PT close is infeasible. Re-screened 2026-11-10.",
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/coordinator.json"
+    },
+    {
+      "id": "C16",
+      "kind": "candidate",
+      "name": "Amazon Security Fall Grant Program \u2014 Call for Proposals 2026 (Amazon Research Awards)",
+      "host": "Amazon / Amazon Research Awards (ARA)",
+      "aliases": [
+        "Amazon Security Fall Grant Program \u2014 Call for Proposals 2026 (Amazon Research Awards)",
+        "Amazon / Amazon Research Awards (ARA)",
+        "ARA proposal submission (amazon.science)"
+      ],
+      "search_terms": [
+        "amazon",
+        "security",
+        "fall",
+        "grant",
+        "research",
+        "awards",
+        "ara",
+        "proposal",
+        "submission",
+        "amazon.science"
+      ],
+      "state": "SCREENED OUT this cycle \u2014 FAIL eligibility (ARA Rules \u00a7I, read firsthand 2026-11-03) + window closes 2026-11-04; institution-gap entry, re-screen on trigger",
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/coordinator.json"
+    },
+    {
+      "id": "C1",
+      "name": "Strands SDK: Workshop to Ship",
+      "host": "AWS Builder Center",
+      "aliases": [
+        "Strands SDK: Workshop to Ship",
+        "AWS Builder Center",
+        "Strands",
+        "AWS"
+      ],
+      "state": "promoted \u21d2 D1",
+      "promoted_to": "D1",
+      "final_state": "promoted to entry D1 (submitted 2026-11-03)",
+      "outcome": "see D1",
+      "kind": "archived",
+      "search_terms": [
+        "strands",
+        "sdk",
+        "workshop",
+        "ship",
+        "aws",
+        "builder",
+        "center"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C2",
+      "name": "Vultr Agent Rush Hackathon",
+      "host": "Vultr x lablab.ai",
+      "aliases": [
+        "Vultr Agent Rush Hackathon",
+        "Vultr x lablab.ai",
+        "Vultr",
+        "lablab.ai",
+        "Agent Rush"
+      ],
+      "state": "promoted \u21d2 D2",
+      "promoted_to": "D2",
+      "final_state": "promoted to entry D2 (wall 2026-11-08 passed)",
+      "outcome": "see D2",
+      "kind": "archived",
+      "search_terms": [
+        "vultr",
+        "agent",
+        "rush",
+        "lablab.ai"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C3",
+      "name": "Builder.io Agent-Native Hackathon",
+      "host": "Builder.io",
+      "aliases": [
+        "Builder.io Agent-Native Hackathon",
+        "Builder.io",
+        "Agent-Native"
+      ],
+      "state": "promoted \u21d2 D3",
+      "promoted_to": "D3",
+      "final_state": "promoted to entry D3 (closed unsubmitted 2026-11-09)",
+      "outcome": "not submitted",
+      "kind": "archived",
+      "search_terms": [
+        "builder.io",
+        "agent-native"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C4",
+      "name": "Kiroween 2026",
+      "host": "Devpost (Kiro)",
+      "aliases": [
+        "Kiroween 2026",
+        "Devpost (Kiro)",
+        "Kiro",
+        "Kiroween",
+        "AWS"
+      ],
+      "state": "promoted \u21d2 D4",
+      "promoted_to": "D4",
+      "final_state": "promoted to entry D4 (active)",
+      "outcome": "see D4",
+      "kind": "archived",
+      "search_terms": [
+        "kiroween",
+        "devpost",
+        "kiro",
+        "aws"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C5",
+      "name": "PayPal AI Hackathon 2026",
+      "host": "Devpost (PayPal)",
+      "aliases": [
+        "PayPal AI Hackathon 2026",
+        "Devpost (PayPal)",
+        "PayPal"
+      ],
+      "state": "lapsed \u2014 not pursued; deadline 2026-11-12T12:00:00-08:00 passed",
+      "final_state": "not entered",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "paypal",
+        "devpost"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C6",
+      "name": "AWS Builder Center Weekend Challenge (November)",
+      "host": "AWS Builder Center",
+      "aliases": [
+        "AWS Builder Center Weekend Challenge (November)",
+        "AWS Builder Center",
+        "AWS",
+        "Weekend Challenge"
+      ],
+      "state": "archived \u2014 theme never published at check (2026-10-26); unassigned",
+      "final_state": "not entered",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "aws",
+        "builder",
+        "center",
+        "weekend",
+        "november"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C7",
+      "name": "Lexsi AI Safety & Alignment Hackathon",
+      "host": "Lexsi Labs x Cohere Labs",
+      "aliases": [
+        "Lexsi AI Safety & Alignment Hackathon",
+        "Lexsi Labs x Cohere Labs",
+        "Lexsi",
+        "Cohere"
+      ],
+      "state": "archived \u2014 weak fit, unassigned (window Nov 1\u201321 UNVERIFIED)",
+      "final_state": "not entered",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "lexsi",
+        "safety",
+        "alignment",
+        "labs",
+        "cohere"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C8",
+      "name": "Codegeist 2026",
+      "host": "Devpost (Atlassian)",
+      "aliases": [
+        "Codegeist 2026",
+        "Devpost (Atlassian)",
+        "Atlassian",
+        "Forge",
+        "Codegeist"
+      ],
+      "state": "archived \u2014 unassigned candidate (Repo+Story fit I1); window closes 2026-12-22 15:00 ET",
+      "final_state": "not slated",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "codegeist",
+        "devpost",
+        "atlassian",
+        "forge"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C9",
+      "name": "Gemma 4 Developer Agent Competition",
+      "host": "Google DeepMind x Kaggle",
+      "aliases": [
+        "Gemma 4 Developer Agent Competition",
+        "Google DeepMind x Kaggle",
+        "Gemma",
+        "Kaggle",
+        "Google",
+        "DeepMind"
+      ],
+      "state": "archived \u2014 unassigned candidate; entry by 2026-11-25 23:59 UTC",
+      "final_state": "not slated",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "gemma",
+        "developer",
+        "agent",
+        "competition",
+        "google",
+        "deepmind",
+        "kaggle"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    },
+    {
+      "id": "C10",
+      "name": "Agentware",
+      "host": "Hackathon Raptors",
+      "aliases": [
+        "Agentware",
+        "Hackathon Raptors",
+        "Raptors"
+      ],
+      "state": "archived \u2014 unassigned candidate; build 2026-11-27\u201330, close 2026-12-07 18:00 UTC",
+      "final_state": "not slated",
+      "outcome": "none",
+      "kind": "archived",
+      "search_terms": [
+        "agentware",
+        "raptors"
+      ],
+      "rank": null,
+      "active": false,
+      "source": "ops/challenge/terminal-records.json"
+    }
+  ],
+  "gate_rows": [
+    {
+      "id": "D4",
+      "gate": "dates.reg_open",
+      "at": "2026-10-13T15:30:00Z",
+      "hours_to": -808.51,
+      "rank": 1
+    },
+    {
+      "id": "C12",
+      "gate": "dates.register_build",
+      "at": "2026-10-22T00:00:00Z",
+      "hours_to": -608.01,
+      "rank": 2
+    },
+    {
+      "id": "D3",
+      "gate": "dates.build_start",
+      "at": "2026-10-27T07:00:00Z",
+      "hours_to": -481.01,
+      "rank": 3
+    },
+    {
+      "id": "D3",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-27T07:00:00Z",
+      "hours_to": -481.01,
+      "rank": 4
+    },
+    {
+      "id": "D1",
+      "gate": "dates.build_start",
+      "at": "2026-10-28T07:00:00Z",
+      "hours_to": -457.01,
+      "rank": 5
+    },
+    {
+      "id": "D1",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-28T07:00:00Z",
+      "hours_to": -457.01,
+      "rank": 6
+    },
+    {
+      "id": "D4",
+      "gate": "dates.build_start",
+      "at": "2026-10-30T16:00:00Z",
+      "hours_to": -400.01,
+      "rank": 7
+    },
+    {
+      "id": "D4",
+      "gate": "dates.submissions_open",
+      "at": "2026-10-30T16:00:00Z",
+      "hours_to": -400.01,
+      "rank": 8
+    },
+    {
+      "id": "D2",
+      "gate": "dates.build_start",
+      "at": "2026-11-03T15:00:00Z",
+      "hours_to": -305.01,
+      "rank": 9
+    },
+    {
+      "id": "D1",
+      "gate": "dates.build_end",
+      "at": "2026-11-05T07:59:00Z",
+      "hours_to": -264.03,
+      "rank": 10
+    },
+    {
+      "id": "D1",
+      "gate": "dates.deadline",
+      "at": "2026-11-05T07:59:00Z",
+      "hours_to": -264.03,
+      "rank": 11
+    },
+    {
+      "id": "D2",
+      "gate": "dates.build_end",
+      "at": "2026-11-08T22:00:00Z",
+      "hours_to": -178.01,
+      "rank": 12
+    },
+    {
+      "id": "D2",
+      "gate": "dates.deadline",
+      "at": "2026-11-08T23:00:00Z",
+      "hours_to": -177.01,
+      "rank": 13
+    },
+    {
+      "id": "D3",
+      "gate": "dates.build_end",
+      "at": "2026-11-10T07:59:00Z",
+      "hours_to": -144.03,
+      "rank": 14
+    },
+    {
+      "id": "D3",
+      "gate": "dates.deadline",
+      "at": "2026-11-10T07:59:00Z",
+      "hours_to": -144.03,
+      "rank": 15
+    },
+    {
+      "id": "D3",
+      "gate": "dates.winners_at",
+      "at": "2026-11-13T00:00:00Z",
+      "hours_to": -80.01,
+      "rank": 16
+    },
+    {
+      "id": "C12",
+      "gate": "dates.preliminary_due",
+      "at": "2026-11-16T07:45:00Z",
+      "hours_to": -0.26,
+      "rank": 17
+    },
+    {
+      "id": "D5",
+      "gate": "dates.build_start",
+      "at": "2026-11-17T17:00:00Z",
+      "hours_to": 32.99,
+      "rank": 18
+    },
+    {
+      "id": "D5",
+      "gate": "dates.submissions_open",
+      "at": "2026-11-17T17:00:00Z",
+      "hours_to": 32.99,
+      "rank": 19
+    },
+    {
+      "id": "D5",
+      "gate": "dates.build_end",
+      "at": "2026-11-19T20:00:00Z",
+      "hours_to": 83.99,
+      "rank": 20
+    },
+    {
+      "id": "D5",
+      "gate": "dates.deadline",
+      "at": "2026-11-19T20:00:00Z",
+      "hours_to": 83.99,
+      "rank": 21
+    },
+    {
+      "id": "D5",
+      "gate": "dates.winners_at",
+      "at": "2026-11-20T19:30:00Z",
+      "hours_to": 107.49,
+      "rank": 22
+    },
+    {
+      "id": "C12",
+      "gate": "dates.finalists_announced",
+      "at": "2026-11-21T00:00:00Z",
+      "hours_to": 111.99,
+      "rank": 23
+    },
+    {
+      "id": "C14",
+      "gate": "dates.initial_proposal_due",
+      "at": "2026-11-21T07:59:00Z",
+      "hours_to": 119.97,
+      "rank": 24
+    },
+    {
+      "id": "C13",
+      "gate": "dates.proposal_due",
+      "at": "2026-11-21T11:59:00Z",
+      "hours_to": 123.97,
+      "rank": 25
+    },
+    {
+      "id": "C12",
+      "gate": "dates.final_due",
+      "at": "2026-12-01T07:45:00Z",
+      "hours_to": 359.74,
+      "rank": 26
+    },
+    {
+      "id": "C11",
+      "gate": "deadline",
+      "at": "2026-12-01T19:00:00Z",
+      "hours_to": 370.99,
+      "rank": 27
+    },
+    {
+      "id": "D4",
+      "gate": "dates.build_end",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 445.99,
+      "rank": 28
+    },
+    {
+      "id": "D4",
+      "gate": "dates.deadline",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 445.99,
+      "rank": 29
+    },
+    {
+      "id": "D4",
+      "gate": "dates.reg_close",
+      "at": "2026-12-04T22:00:00Z",
+      "hours_to": 445.99,
+      "rank": 30
+    },
+    {
+      "id": "C12",
+      "gate": "dates.winners",
+      "at": "2026-12-06T00:00:00Z",
+      "hours_to": 471.99,
+      "rank": 31
+    },
+    {
+      "id": "D4",
+      "gate": "dates.judging_end",
+      "at": "2027-01-29T21:00:00Z",
+      "hours_to": 1788.99,
+      "rank": 32
+    },
+    {
+      "id": "D4",
+      "gate": "dates.winners_at",
+      "at": "2027-02-03T17:00:00Z",
+      "hours_to": 1904.99,
+      "rank": 33
+    }
+  ]
+}

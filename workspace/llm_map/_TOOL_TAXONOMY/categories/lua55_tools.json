@@ -1,0 +1,29 @@
+{
+  "category": "lua55_tools",
+  "tools": [
+    {
+      "name": "luac5.5",
+      "package": "lua55",
+      "path": "/data/data/com.termux/files/usr/bin/luac5.5",
+      "source": "apt",
+      "tags": [
+        "lua55_tools"
+      ],
+      "auto_tag_source": "auto:^lua55$|^lua55-",
+      "category": "lua55_tools",
+      "description": "Shared library for the Lua interpreter (v5.5.x)"
+    },
+    {
+      "name": "lua5.5",
+      "package": "lua55",
+      "path": "/data/data/com.termux/files/usr/bin/lua5.5",
+      "source": "apt",
+      "tags": [
+        "lua55_tools"
+      ],
+      "auto_tag_source": "auto:^lua55$|^lua55-",
+      "category": "lua55_tools",
+      "description": "Shared library for the Lua interpreter (v5.5.x)"
+    }
+  ]
+}

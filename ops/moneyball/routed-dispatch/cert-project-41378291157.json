@@ -1,0 +1,88 @@
+{
+  "axes": [
+    {
+      "axis": "relevance",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157",
+        "certifications/solutions/025-celestial-bodies-database/universe.sql"
+      ],
+      "evidence_strength": "limited",
+      "value": 5
+    },
+    {
+      "axis": "evidence_maturity",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157",
+        "certifications/solutions/025-celestial-bodies-database/universe.sql"
+      ],
+      "evidence_strength": "evidenced",
+      "value": 9
+    },
+    {
+      "axis": "survivability",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157",
+        "certifications/solutions/025-celestial-bodies-database/universe.sql"
+      ],
+      "evidence_strength": "evidenced",
+      "value": 8
+    },
+    {
+      "axis": "adoption_cost_inverse",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157",
+        "certifications/solutions/025-celestial-bodies-database/universe.sql"
+      ],
+      "evidence_strength": "unverified",
+      "value": 5
+    },
+    {
+      "axis": "composability",
+      "evidence_refs": [
+        "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41378291157",
+        "certifications/solutions/025-celestial-bodies-database/universe.sql"
+      ],
+      "evidence_strength": "limited",
+      "value": 5
+    }
+  ],
+  "ballot": {
+    "aggregate": null,
+    "relation": "beside_never_merged"
+  },
+  "baseline_id": "desk-feed-only-routing/v1",
+  "composite": 6.6,
+  "opportunity": {
+    "action": "route-dispatch",
+    "context": "certifications-project: FCC L1 unit 025 project: Build a Celestial Bodies Database",
+    "decision_time": "2026-11-02T02:37:56Z",
+    "entity_id": "github-actions::postgres-16 fleet build (cert-project.yml; SQL authored in-repo)"
+  },
+  "pass_id": "swarm-routing/v2",
+  "point_in_time": {
+    "event_time": "2026-11-02T02:37:56Z",
+    "ingested_at": "2026-11-02T02:37:56Z",
+    "published_at": "2026-11-02T02:37:56Z"
+  },
+  "quantities": {
+    "capability": null,
+    "forecast": null,
+    "incremental_effect": null,
+    "portfolio_marginal_contribution": null,
+    "surplus": null,
+    "value": null
+  },
+  "record_id": "mb-cert-project-41378291157",
+  "rubric": "scripts/dispatch/stamp_fanout.py (declared tables; quantities null = unidentified)",
+  "schema": "moneyball-plane/v2",
+  "weights": {
+    "axes": {
+      "adoption_cost_inverse": 0.15,
+      "composability": 0.1,
+      "evidence_maturity": 0.25,
+      "relevance": 0.3,
+      "survivability": 0.2
+    },
+    "fixed_at": "swarm-routing/v2 intake 2026-11-01 (owner routing update)"
+  }
+}

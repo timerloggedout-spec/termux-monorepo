@@ -1,0 +1,70 @@
+# Game Development Task Card — game-development-task/v1
+# Copy into the issue/task record; replace every TODO before dispatch.
+
+schema: game-development-task/v1
+task_id: "TODO: issue:<number> or stable task id"
+status: proposed
+parent_issue: "TODO: GitHub issue URL"
+project:
+  kind: TODO # new_game | prototype | feature | bug_fix | port | migration | mod_extension | engine_tooling | research_prototype
+  title: "TODO"
+  dimensions: [TODO] # 2d | 2_5d | 3d | mixed
+  genres: [TODO] # facets, not team identities
+  session_model: TODO # single_player | cooperative | competitive | asynchronous | mixed
+  platforms: [TODO] # web | android | ios | linux | windows | macos | vr_ar | console_authorized
+  engine:
+    family: TODO # godot | unity | unreal | phaser | custom | existing_engine
+    version: TODO
+    selection_rationale: "TODO"
+authority:
+  basis: TODO # owned | internal | open_source | explicit_authorization
+  reference: "TODO: ownership/license/permission evidence"
+  scope: "TODO: approved target and operations"
+target:
+  target_ref: "TODO: registry entity"
+  source_url: "TODO or null"
+  build_or_artifact_sha256: "TODO or null"
+  provenance: "TODO"
+specialist_contexts:
+  - TODO # select from GAME_DEVELOPMENT_LANES.md
+tool_profiles:
+  - profile_ref: "TODO"
+    version: "TODO"
+    availability: not_established
+    license_review: review_required
+work_packages:
+  - package_id: "TODO"
+    specialist_context: "TODO"
+    owner_role: "TODO: one accountable role"
+    scope: ["TODO: exact files/systems"]
+    dependencies: []
+    parallel_safe: false
+    interface_contract: "TODO"
+    deliverables: ["TODO"]
+    verifiers: ["TODO"]
+verification:
+  levels: [V0, V1, V2, V3]
+  acceptance_evidence: ["TODO: build-linked test, runtime trace, visual evidence as applicable"]
+  fixed_seed: "TODO or null"
+  performance_budgets: {}
+review:
+  independent_qa: "TODO: reviewer/team"
+  accessibility: "TODO: required | not_applicable + rationale"
+  release_reviewer: "TODO"
+risk:
+  tier: standard
+  stop_conditions: ["unclear authorization", "scope breach", "unverified tool", "unreproducible build"]
+dispatch:
+  route: game-development-dispatch.yml
+  max_parallel_work_packages: 3
+  retry_budget: "TODO: bounded and justified"
+  provider_selection: "system-selected after admission; do not name a preferred provider"
+doe:
+  campaign_ref: "experiments/doe/game-development-specialist-evolution/DESIGN.json"
+  status: proposed
+  generation: null
+  parent_candidate_refs: []
+  experiment_record_refs: []
+evidence:
+  expected: ["source diff", "test report", "build identity", "runtime evidence", "review verdict"]
+  retention: "repo-relative sanitized evidence references; no secrets or private user data"

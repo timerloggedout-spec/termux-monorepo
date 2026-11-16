@@ -1,0 +1,29 @@
+%% ============================================================
+%% FIDELITY HEADER — rendering layer, NOT the authority.
+%% Source of record: docs/ops/DOE-METHODS-EPOCH-2026-11-03.md
+%%   @master (methods of the epoch, definitions of record).
+%% Export: 2026-11-03. Fidelity: the 8 method NAMES + the
+%%   4-field entry shape are verbatim from the doc's own
+%%   commission line; the epoch cycle backdrop is E001's
+%%   Stage structure (see e001-cycle-state.mmd).
+%% NAMED LOSSES: every method's actual content — what it
+%%   tests, its design, its verdict criteria, its receipts —
+%%   is dropped; only names + shape survive. A method with
+%%   no run is defined by design discipline in the source;
+%%   the diagram cannot show which those are.
+%% ============================================================
+flowchart TB
+    subgraph SHAPE["every method entry has the same 4 fields"]
+        T["1 · what it tests"] --> D["2 · design"] --> V["3 · verdict criteria"] --> I["4 · where implemented (receipts)"]
+    end
+    M1["1 · Replay-audit invariants"]
+    M2["2 · Two-leg corroboration census"]
+    M3["3 · Panel Judge Mirror"]
+    M4["4 · G0 exit test"]
+    M5["5 · Pre-registered campaign design"]
+    M6["6 · MVT (multivariate testing)"]
+    M7["7 · Amendment-6 snapshot method"]
+    M8["8 · QUE-plane experiments"]
+    M1 & M2 & M3 & M4 & M5 & M6 & M7 & M8 -.->|"each is one entry in the shape above"| SHAPE
+    CYCLE["the epoch cycle wraps all 8: preregister → build → verify → corroborate → verdict → register → layer / close"]
+    SHAPE --> CYCLE

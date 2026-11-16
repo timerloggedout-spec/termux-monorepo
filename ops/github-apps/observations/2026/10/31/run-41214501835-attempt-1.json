@@ -1,0 +1,131 @@
+{
+  "apps": [
+    {
+      "app_id": 5535733,
+      "declared_events": [],
+      "declared_permissions": {
+        "actions": "read",
+        "checks": "read",
+        "contents": "read",
+        "issues": "read",
+        "metadata": "read",
+        "pull_requests": "read"
+      },
+      "display_name": "Termux Fleet Collector",
+      "expected_installations": [
+        {
+          "account": "timerloggedout-spec",
+          "installation_id": 176747357,
+          "repositories": [
+            "timerloggedout-spec/termux-monorepo"
+          ]
+        }
+      ],
+      "live_observation": {
+        "evidence": "observed",
+        "observed_at": "2026-10-31T15:22:07.767777+00:00",
+        "rate_limit": {
+          "limit": 5000,
+          "remaining": 4999,
+          "reset": 1793463727
+        },
+        "repository_scope": [
+          "timerloggedout-spec/termux-monorepo"
+        ]
+      },
+      "manifest_path": "ops/github-apps/collector-pilot/manifest.json",
+      "purpose": "Read-only collection and quota census",
+      "role": "collector",
+      "slug": "termux-fleet-collector",
+      "status": "live_provisioned",
+      "telemetry": {
+        "credential_names": [
+          "TERMUX_FLEET_COLLECTOR_PRIVATE_KEY",
+          "TERMUX_FLEET_COLLECTOR_APP_ID"
+        ],
+        "probe": "weekly_live"
+      }
+    },
+    {
+      "app_id": 5537873,
+      "declared_events": [],
+      "declared_permissions": {
+        "checks": "read",
+        "contents": "write",
+        "metadata": "read",
+        "pull_requests": "write"
+      },
+      "display_name": "Termux Fleet Publisher",
+      "expected_installations": [
+        {
+          "account": "timerloggedout-spec",
+          "installation_id": 176799777,
+          "repositories": [
+            "timerloggedout-spec/termux-monorepo"
+          ]
+        }
+      ],
+      "manifest_path": "ops/github-apps/publisher-pilot/manifest.json",
+      "purpose": "Dedicated publish/merge identity; no Collector credential reuse",
+      "role": "publisher",
+      "slug": "termux-fleet-publisher",
+      "status": "live_provisioned_not_yet_census_wired",
+      "telemetry": {
+        "credential_names": [],
+        "probe": "not_yet_wired"
+      }
+    }
+  ],
+  "credential_policy": "short-lived token is never serialized",
+  "g4_runtime_receipt": {
+    "api_calls_by_status": {
+      "200": 3
+    },
+    "app_slug": "termux-fleet-collector",
+    "conclusion": "success",
+    "duration_seconds": 0.638,
+    "mint_outcome": "success",
+    "observed_at": "2026-10-31T15:22:07.767777+00:00",
+    "rate_limit_after": {
+      "limit": 5000,
+      "remaining": 4999,
+      "reset": 1793463727
+    },
+    "rate_limit_before": {
+      "limit": 5000,
+      "remaining": 5000,
+      "reset": 1793463727
+    },
+    "receipt_type": "github_app_g4_runtime_receipt",
+    "repositories_inspected": 1,
+    "schema_version": 1,
+    "workflow": {
+      "attempt": 1,
+      "head_sha": "35fdd4f4e23e136d7cbcaf79ad763ec4b04ba0b3",
+      "run_id": 41214501835
+    }
+  },
+  "observed_at": "2026-10-31T15:22:07.767777+00:00",
+  "planned_roles": [
+    {
+      "role": "reviewer-ops",
+      "slug_candidate": "termux-fleet-reviewer",
+      "source": "ops/github-apps/PROCESS.json",
+      "status": "conference_draft_not_provisioned"
+    },
+    {
+      "role": "gate-ci",
+      "slug_candidate": "termux-fleet-gate",
+      "source": "ops/github-apps/PROCESS.json",
+      "status": "conference_draft_not_provisioned"
+    },
+    {
+      "role": "lifecycle",
+      "slug_candidate": "termux-fleet-lifecycle",
+      "source": "ops/github-apps/PROCESS.json",
+      "status": "conference_draft_not_provisioned"
+    }
+  ],
+  "registry_id": "termux-github-app-fleet",
+  "schema_version": 1
+}

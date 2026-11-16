@@ -1,0 +1,52 @@
+; .container
+  # The MaxUp Language Specification
+  p This document describes the MaxUp language syntax, tokens, and compilation targets.
+  ; .toc
+    p Table of Contents
+    ( 
+      - @ {#lexer} Lexer
+      - @ {#parser} Parser
+      - @ {#emitter} Emitter
+    )
+  ! #lexer
+    # Lexer
+    p MaxUp uses a single-byte ASCII token set for maximum keystroke efficiency.
+    p The most common HTML elements are mapped to single characters:
+    ; .token-table
+      = 
+      ` Token ` Element ` Mnemonic
+      = 
+      ` @     ` a       ` at
+      ` %     ` img     ` percent
+      ` ;     ` div     ` semicolon
+      ` :     ` span    ` colon
+      ` +     ` button  ` positive action
+      ` ?     ` input   ` question
+      ` ?=    ` form    ` form
+      ` p     ` p       ` paragraph
+      ` #     ` h1      ` heading
+      ` (     ` ul      ` group
+      ` -     ` li      ` list item
+      ` ^     ` table   ` caret
+      ` \"`\"     ` td      ` backtick
+      ` =     ` tr      ` equals row
+  ! #parser
+    # Parser
+    p MaxUp uses indentation-based nesting. Children are determined by whitespace indentation levels.
+    p Attributes use key=value syntax. Classes use .classname.
+    ; .example
+      p Example:
+      ; .card
+        p {{ title }}
+        + on:click="handleClick" "Click me"
+  ! #emitter
+    # Emitter
+    p MaxUp compiles to multiple targets:
+    ( 
+      - HTML5 .mu
+      - Leptos RSX/WASM .rs
+      - Python SPRAG .py
+      - MaxUp Bytecode .maxc
+    )
+  $ .sidebar
+    p 🦊🔥 Built with ArchW1z & ArchM@$73π energy.

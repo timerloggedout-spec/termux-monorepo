@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>WAF Tier-1 Proof Fixture</title>
+<script>
+  window.__proof = {items: []};
+  document.addEventListener('DOMContentLoaded', () => {
+    const ul = document.getElementById('items');
+    for (let i = 1; i <= 25; i++) {
+      const li = document.createElement('li');
+      li.textContent = 'proof-item-' + i;
+      li.dataset.price = (i * 1.5).toFixed(2);
+      ul.appendChild(li);
+      window.__proof.items.push(i);
+    }
+    document.getElementById('status').textContent = 'fixture-ready';
+  });
+</script></head>
+<body>
+  <h1>Web Adapter Foundry — Tier-1 proof fixture</h1>
+  <p id="status">loading</p>
+  <ul id="items"></ul>
+  <script type="application/json" id="embedded">
+    {"fixture": "tier1", "records": 25, "kind": "static+js-generated"}
+  </script>
+</body>
+</html>

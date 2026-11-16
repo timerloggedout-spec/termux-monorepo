@@ -1,0 +1,24 @@
+{
+ "campaign": "live-2-prlane-tuning",
+ "phase": 0,
+ "check": "replay_determinism",
+ "verdict": "PASS_WITH_RECORDED_GAP",
+ "evidence": {
+  "snapshots": 7,
+  "rows_total": 793,
+  "rows_reproduced_exactly": 765,
+  "residual_mismatches": 28,
+  "residual_shape": "one class only: the same 4 PRs (1498, 1514, 1540, 1569) in every snapshot, recorded NEED_EVIDENCE vs replay CANDIDATE",
+  "mechanism_confirmed": "live API read 2026-10-31: all 4 PRs have base.ref != master (master-staging x3, cue/swarms-research-remote-20261021 x1); classify_pr maps base != master to NEED_EVIDENCE, and base.ref is one of the two fields the pr-lane-feed/v1 projection drops (with mergeable_state). The replay gap is the feed projection, not the classifier and not the harness.",
+  "extract_supersede_exact": "EXTRACT and SUPERSEDE counts reproduce exactly in all 7 snapshots after the harness fix below."
+ },
+ "harness_finding": {
+  "bug": "First replay run produced 3 false mismatches (PRs 125/143/390, recorded EXTRACT vs replay SUPERSEDE): the reconstruction omitted user={login}, and minesweeper_rules.is_bot_author only falls back to the author field when user is NOT a dict — an empty/absent user silently disables bot detection. All 3 PRs are google-labs-jules[bot] with changed_files > 40 (minesweeper EXTRACT).",
+  "fix": "prlane_replay.reconstruct now sets user={login: author}, mirroring production build_pr_dict. Lesson recorded: replay reconstructions must mirror the producer's dict shape exactly, including nested fields with fallback traps."
+ },
+ "consequences": {
+  "phase_1_unblocked": true,
+  "known_gap_class": "recorded NEED_EVIDENCE + replay CANDIDATE + gates pass + not draft = dropped-field NE (base or mergeable_state); identifiable in every later phase, never counted as a tuning effect.",
+  "ask_to_steward": "pr-lane-feed v1.1: carry base.ref and mergeable_state per row — with those two fields the replay becomes exact and the gap class disappears."
+ }
+}

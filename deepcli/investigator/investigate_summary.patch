@@ -1,0 +1,168 @@
+--- investigate.py.orig	2026-05-23 00:00:00.000000000 +0000
++++ investigate.py	2026-05-23 00:00:00.000000000 +0000
+@@ -1,6 +1,8 @@
+ #!/usr/bin/env python3
+ """investigate.py – DeepSeek v4‑Pro filesystem scout. Pass any mix of files/directories."""
+ 
++import datetime
++from collections import defaultdict
+ import argparse, json, mimetypes, os, stat, sys, time
+ from pathlib import Path
+ 
+@@ -65,7 +67,7 @@
+ 
+ def scan_directory(root_dir, max_depth=None, pattern=None, extensions=None,
+                    preview=0, exclude_dirs=None, max_size=None,
+-                   skip_binary=True, include_hidden=False):
++                   skip_binary=True, include_hidden=False, exclude_paths=None):
+     results = []
+     root = Path(root_dir).resolve()
+     if exclude_dirs is None:
+@@ -86,6 +88,8 @@
+                 ext = Path(fname).suffix.lower()
+                 if ext not in extensions:
+                     continue
++            if exclude_paths and any(full.startswith(ep) for ep in exclude_paths):
++                continue
+             try:
+                 st = os.stat(full)
+             except OSError:
+@@ -135,6 +139,9 @@
+         if kwargs.get('preview', 0) > 0 and is_text:
+             entry['preview'] = file_preview(str(p), kwargs['preview'])
+         return [entry]
++    elif p.is_dir():
++        # directory: pass exclude_paths to scan_directory
++        return scan_directory(str(p), **kwargs)
+     else:
+         return scan_directory(str(p), **kwargs)
+ 
+@@ -155,6 +162,73 @@
+             print(f"    Preview: {e['preview'][:120]}...")
+             print()
+ 
++def analyze_and_print(entries, recent_days=7):
++    """Produce a structured summary grouped by purpose, with recent files highlighted."""
++    now = time.time()
++    cutoff = now - recent_days * 86400
++
++    # Categorise by directory / file name patterns
++    categories = {
++        'CLI Core (deepseek-cli)': [],
++        'TUI (deepcli-tui)': [],
++        'Harvesting (deepseek_harvest_work)': [],
++        'Stored Schemas / Configs': [],
++        'Shell Harmonizer': [],
++        'Top‑Level Utilities': [],
++        'Other': []
++    }
++    for e in entries:
++        p = e['path']
++        if '/deepseek-cli/' in p and '/browser-data/' not in p:
++            categories['CLI Core (deepseek-cli)'].append(e)
++        elif '/deepcli-tui/' in p:
++            categories['TUI (deepcli-tui)'].append(e)
++        elif '/deepseek_harvest_work/' in p and '/code_harvest' not in p:
++            categories['Harvesting (deepseek_harvest_work)'].append(e)
++        elif 'deepseek_harmonizer.sh' in p:
++            categories['Shell Harmonizer'].append(e)
++        elif any(k in p for k in ['serve_schema.py', 'final_runtime_cleanup.py']):
++            categories['Top‑Level Utilities'].append(e)
++        elif e['language'] in ['json', 'yaml', 'config'] or p.endswith(('.json', '.yaml', '.yml', '.conf', '.ini')):
++            categories['Stored Schemas / Configs'].append(e)
++        else:
++            categories['Other'].append(e)
++
++    # Remove empty categories
++    categories = {k: v for k, v in categories.items() if v}
++
++    print("📋 DeepSeek v4‑Pro Investigation Summary")
++    print(f"   {len(entries)} files total, past {recent_days} days highlighted as recent\n")
++
++    for cat, files in categories.items():
++        print(f"▸ {cat} ({len(files)} files)")
++        # Sort by mtime descending
++        files_sorted = sorted(files, key=lambda x: time.strptime(x['mtime'], "%c"), reverse=True)
++        for f in files_sorted:
++            try:
++                mtime_ts = time.mktime(time.strptime(f['mtime'], "%c"))
++            except:
++                mtime_ts = 0
++            recent_marker = '🆕' if mtime_ts >= cutoff else '  '
++            print(f"  {recent_marker} {f['path'][-60:]:60s}  {f['language']:12s}  {f['size']:>8d}  {f['mtime']}")
++            if 'preview' in f and f['preview']:
++                print(f"     └─ {f['preview'][:100]}")
++        print()
++
++    # Focused "Start Here" list
++    print("⚡ Most Recent Files (last {} days) – start your investigation here:".format(recent_days))
++    recent = [e for e in entries if time.strptime(e['mtime'], "%c") >= datetime.datetime.fromtimestamp(cutoff).timetuple()]
++    recent.sort(key=lambda e: time.strptime(e['mtime'], "%c"), reverse=True)
++    for r in recent[:15]:
++        print(f"  🕒 {r['mtime']}  {r['language']:10s}  {r['path']}")
++    print()
++
++    # Actionable stats
++    lang_counts = defaultdict(int)
++    for e in entries:
++        lang_counts[e['language']] += 1
++    print("📊 Language breakdown:", dict(sorted(lang_counts.items(), key=lambda x: x[1], reverse=True)))
++
+ def main():
+     parser = argparse.ArgumentParser(description='Investigate files – DeepSeek toolkit')
+     parser.add_argument('paths', nargs='*', default=['.'],
+@@ -168,6 +242,10 @@
+     parser.add_argument('--include-binary', action='store_true')
+     parser.add_argument('--include-hidden', action='store_true')
+     parser.add_argument('--all', action='store_true')
++    parser.add_argument('--summary', action='store_true', help='Produce a categorized, recent‑first summary')
++    parser.add_argument('--recent-days', type=int, default=7, help='Days to consider "recent" for highlights')
++    parser.add_argument('--exclude-paths', type=str, default='', help='Comma‑separated path prefixes to exclude')
++    parser.add_argument('--include-files', type=str, default='', help='Comma‑separated extra file paths to add')
+     args = parser.parse_args()
+ 
+     exclude_dirs = set()
+@@ -179,6 +257,12 @@
+ 
+     include_hidden = args.include_hidden or args.all
++    exclude_paths = [p.strip() for p in args.exclude_paths.split(',') if p.strip()] if args.exclude_paths else []
++    include_files = [p.strip() for p in args.include_files.split(',') if p.strip()] if args.include_files else []
++
++    # Expand ~ in include_files manually if needed (Termux shell usually does it, but safe)
++    import os.path
++    include_files = [os.path.expanduser(p) for p in include_files]
+     exts = None
+     if args.extensions:
+         exts = [e.strip().lower() if e.startswith('.') else f'.{e.strip().lower()}'
+@@ -193,12 +277,29 @@
+         max_size=args.max_size,
+         skip_binary=not args.include_binary,
+         include_hidden=include_hidden
++        exclude_paths=exclude_paths,
+     )
+ 
+     all_entries = []
+     for path in args.paths:
+         all_entries.extend(investigate_path(path, **kwargs))
+ 
++    # Add manually included files (if they aren't already in the list)
++    for fp in include_files:
++        if not os.path.exists(fp):
++            print(f"⚠️  skipping missing include: {fp}", file=sys.stderr)
++            continue
++        # avoid duplicates
++        if not any(e['path'] == fp for e in all_entries):
++            new_entries = investigate_path(fp, **kwargs)
++            all_entries.extend(new_entries)
++
++    # Remove entries that match exclude_paths (just in case)
++    if exclude_paths:
++        all_entries = [e for e in all_entries if not any(e['path'].startswith(ep) for ep in exclude_paths)]
++
++    if args.summary:
++        analyze_and_print(all_entries, recent_days=args.recent_days)
++        return
++
+     if args.output == 'json':
+         print(json.dumps(all_entries, indent=2, ensure_ascii=False))
+     else:

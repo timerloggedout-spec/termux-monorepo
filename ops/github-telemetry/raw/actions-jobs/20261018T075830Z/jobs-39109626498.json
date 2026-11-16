@@ -1,0 +1,97 @@
+{
+  "collected_at": "2026-10-18T07:58:32.303188+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 39109626498,
+    "endpoint": ".../runs/39109626498/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 117622756118,
+        "run_id": 39109626498,
+        "workflow_name": "Sweep Accountability",
+        "head_branch": "ops/msm-ssot-execute-20261018",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/39109626498",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAbYtzTFg",
+        "head_sha": "e694542790c408003af4f5e857c05fe2909ab153",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/117622756118",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/39109626498/job/117622756118",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-18T07:58:02Z",
+        "started_at": "2026-10-18T07:58:04Z",
+        "completed_at": "2026-10-18T07:58:18Z",
+        "name": "sweep",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-18T07:58:05Z",
+            "completed_at": "2026-10-18T07:58:06Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-18T07:58:06Z",
+            "completed_at": "2026-10-18T07:58:16Z"
+          },
+          {
+            "name": "Validate receipt contract",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-18T07:58:16Z",
+            "completed_at": "2026-10-18T07:58:17Z"
+          },
+          {
+            "name": "Historical source census",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-18T07:58:17Z",
+            "completed_at": "2026-10-18T07:58:17Z"
+          },
+          {
+            "name": "Record sweep observation",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-18T07:58:17Z",
+            "completed_at": "2026-10-18T07:58:17Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-10-18T07:58:17Z",
+            "completed_at": "2026-10-18T07:58:17Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 11,
+            "started_at": "2026-10-18T07:58:17Z",
+            "completed_at": "2026-10-18T07:58:17Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/117622756118",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000252336,
+        "runner_name": "GitHub Actions 1000252336",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

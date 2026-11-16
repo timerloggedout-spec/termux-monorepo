@@ -1,0 +1,63 @@
+name: graph-matrix-probe
+
+# Graph Matrix drift gate (contract: docs/ops/GRAPH-MATRIX.md).
+# State-driven cadence (owner correction 2026-11-01: fixed clock struck):
+# every master push runs ONE cheap GraphQL totals probe (~1 point);
+# the probe fires the census workflow by dispatch only when drift >=
+# threshold AND GraphQL headroom >= floor. Bursts coalesce via
+# cancel-in-progress. This workflow never writes repo content.
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - 'ops/graph-matrix/census.json'
+      - 'scripts/graph_matrix_census.py'
+      - 'scripts/graph_matrix_probe.py'
+      - '.github/workflows/graph-matrix-census.yml'
+      - '.github/workflows/graph-matrix-probe.yml'
+
+concurrency:
+  group: graph-matrix-probe
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  probe:
+    name: drift probe -> dispatch census on FIRE
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Mint Swarm app token (F1)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe drift + headroom
+        id: probe
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/graph_matrix_probe.py | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Dispatch census on FIRE
+        if: steps.probe.outputs.fire == 'true'
+        env:
+          GH_TOKEN: ${{ steps.swarm-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          echo "drift gate FIRE — dispatching graph-matrix-census" >> "$GITHUB_STEP_SUMMARY"
+          gh workflow run graph-matrix-census.yml --ref master

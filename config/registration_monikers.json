@@ -1,0 +1,815 @@
+{
+  "assignment_rule": "v2: 'n0n' stem + platform_id words capitalized and joined, filler words (ai, io, center) dropped in non-first positions; platform_ids processed in sort order; collision appends the smallest integer >= 2 that frees the token. Canonical form: <role>{<moniker>}[platform:<platform_id>], role entrant (challenge platforms) or account (provider accounts).",
+  "entries": [
+    {
+      "handling": {
+        "escalation": [
+          "If a granted spot requires creating an Aha account or profile, any forced personal field is owner-gated (4n0n rule 6); the identity on the submitted form is the fleet identity recorded in the Profile Registry."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Registration was a form submission (no account exists); the organizer's spot decision lands in the owner's Gmail. The owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md (R4 / packet D5) by PR and syncs this registry.",
+        "submission_authority": "The owning lane prepares artifacts under the moniker; submission follows the challenge log's standing boundary: no new account, no payment, no owner-gated step, and the challenge is already entered or owner-approved."
+      },
+      "kind": "platform",
+      "moniker": "n0nAha",
+      "notes": [
+        "Assigned by the registry lane 2026-10-27 on activation (log R4 + packet D5, PR #1969); the packet deliberately carried 'registry process pending' - no moniker was invented on the entries side."
+      ],
+      "platform": "Aha.io",
+      "platform_id": "aha-io",
+      "profile_ref": "Aha.io",
+      "registrations": [
+        {
+          "aspect": "platform",
+          "event": "Aha! AI Builder Day Hackathon",
+          "ref": "R4",
+          "status": "registered 2026-10-27 - spot pending review (form submission; no account created)"
+        },
+        {
+          "aspect": "platform",
+          "event": "Aha! AI Builder Day Hackathon entry (packet D5)",
+          "ref": "D5",
+          "status": "registered - spot pending review; build window Nov 17-19, 2026"
+        }
+      ],
+      "role": "entrant",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "EagerComet73",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "Aion",
+      "platform_id": "aion",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Builder profile completion (avatar + bio) is an owner item and gates D1 entry validity - first blocker surfaced on this platform.",
+          "Workshop completion in-window (Oct 28 - Nov 4) is an owner account step."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Platform confirmations land in the owner's Gmail from notifications@builder.aws.com; the owning lane cites message IDs into docs/ops/CHALLENGE-ENTRIES-LOG.md (sections 1/2) by PR and syncs this registry in the same PR.",
+        "submission_authority": "Submissions happen under the owner's Builder account: the owning lane prepares the packet (article draft, repo, video script) and the owner submits. The moniker fronts all public artifacts (article byline, project pages)."
+      },
+      "kind": "platform",
+      "moniker": "n0nAwsBuilder",
+      "notes": [],
+      "platform": "AWS Builder Center",
+      "platform_id": "aws-builder-center",
+      "profile_ref": "AWS Builder Center",
+      "registrations": [
+        {
+          "aspect": "platform",
+          "event": "Agent Experience Hackathon: Strands Decider",
+          "ref": "R1",
+          "status": "registered - window closed 2026-10-23"
+        },
+        {
+          "aspect": "platform",
+          "event": "Weekend Challenge: Give your Agent a Tool",
+          "ref": "R2",
+          "status": "registered - window closed 2026-10-26"
+        },
+        {
+          "aspect": "platform",
+          "event": "Weekend Challenge completion entry (packet D0 for R2)",
+          "ref": "D0",
+          "status": "completed 2026-10-27 - finished package is the completion record (platform ended; late filing not accepted)"
+        },
+        {
+          "aspect": "platform",
+          "event": "Strands SDK: Workshop to Ship",
+          "ref": "R3",
+          "status": "registered"
+        },
+        {
+          "aspect": "platform",
+          "event": "Workshop to Ship entry (packet D1 for C1)",
+          "ref": "D1",
+          "status": "in-progress"
+        }
+      ],
+      "role": "entrant",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Burn activation: BOINC runs on GitHub Actions quota (leftover-only, owner rule 2026-10-27); the burn workflow needs one owner-provisioned Actions secret holding the project authenticators - until it exists no workflow references it. Codespaces is EXCLUDED by the owner (interim TBD; a past setup error burned a month's allocation in an afternoon). The agent VM cannot substitute: its egress proxy hangs scheduler POSTs (verified 2026-10-27).",
+          "Einstein@Home account creation is web-only by project policy (RPC creation refused); any forced personal field on a future platform is owner-gated, never worked around."
+        ],
+        "owner_lane": "boinc",
+        "receipts_route": "No email receipts for RPC-created accounts; standings are read from project stats and recorded firsthand into docs/ops/BOINC-FLEET-COMPUTE.md by PR. Einstein@Home registration confirmation landed in the owner's Gmail (2026-10-27).",
+        "submission_authority": "Participation management (attach/detach, project mix, preferences, team) is the owning lane's, under the moniker, within the standing account-creation authorization. No challenge submissions exist on this platform."
+      },
+      "kind": "platform",
+      "moniker": "n0nBoinc",
+      "notes": [
+        "Non-challenge platform: this entry extends the registry beyond its challenge-log source under the BOINC lane's brief; registrations is empty because the registry check binds registration refs to the challenge log - per-project accounts are recorded in docs/ops/BOINC-FLEET-COMPUTE.md and the Profile Registry instead.",
+        "Science United not used (its shared anonymous account erases ranking identity); all project accounts are individual under the moniker on one email (one cross-project ID).",
+        "Moniker renamed entrantBoinc -> n0nBoinc under derivation v2 (2026-10-27, owner directive). If any BOINC project account already carries the old name, the BOINC lane records that name in the Profile Registry (account names are profile facts) and flags this lane - the moniker of record going forward is n0nBoinc."
+      ],
+      "platform": "BOINC",
+      "platform_id": "boinc",
+      "profile_ref": "BOINC",
+      "registrations": [],
+      "role": "entrant",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Clips account gate RESOLVED 2026-10-27 - the hosted Clips account exists (owner-approved creation; its state is recorded in the Profile Registry). Demo publishing proceeds under the moniker within the standing boundary; no handle exists on this surface and none is recorded here."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "The hackathon itself needs no registration; submission evidence is recorded into docs/ops/CHALLENGE-ENTRIES-LOG.md section 4 by PR when filed. The Clips account's state lives in the Profile Registry (see profile_ref).",
+        "submission_authority": "Owning lane builds and prepares the entry under the moniker; submission follows the challenge log's standing boundary."
+      },
+      "kind": "platform",
+      "moniker": "n0nBuilder",
+      "notes": [],
+      "platform": "Builder.io",
+      "platform_id": "builder-io",
+      "profile_ref": "Builder.io / Clips",
+      "registrations": [
+        {
+          "aspect": "platform",
+          "event": "Builder.io Agent-Native Hackathon entry (packet D3 for C3)",
+          "ref": "D3",
+          "status": "in-progress"
+        }
+      ],
+      "role": "entrant",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nCodeNotCard",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell C 'mechanic' (urgency/mechanic-first: 48h redeem window, code-not-card; landing param ?ch=fb-c, to be wired by the marketing-channel lane). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Code, Not Card",
+      "platform_id": "code-not-card",
+      "profile_pending": "marketing-channel",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "HappyCanyon42",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch H (live 2026-10-27, Cohere first)) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "Cohere",
+      "platform_id": "cohere",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Profile is complete; no Devpost gate stands. Payment or a forced personal field beyond what the Profile Registry records stays owner-gated (rule 6)."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Account + profile completed by the accounts lane 2026-10-29 (Profile Registry, Devpost block). Kiroween registration confirmations cite into docs/ops/CHALLENGE-ENTRIES-LOG.md (packet D4) by the owning lane.",
+        "submission_authority": "The owning lane may register and submit under the moniker within the standing boundary (challenge already owner-approved)."
+      },
+      "kind": "platform",
+      "moniker": "n0nDevpost",
+      "notes": [
+        "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration.",
+        "Owner gate cleared 2026-10-29: account created + profile completed by the accounts lane (browser-verified). Status synced by the registry lane 2026-10-29."
+      ],
+      "platform": "Devpost",
+      "platform_id": "devpost",
+      "profile_ref": "Devpost",
+      "registrations": [
+        {
+          "aspect": "event-host",
+          "event": "Kiroween 2026 entry (packet D4 for C4)",
+          "ref": "D4",
+          "status": "account + profile complete 2026-10-29; D4 submission window opens Oct 30 13:00 PT"
+        }
+      ],
+      "role": "entrant",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Any card/billing prompt is a hard stop (fleet card rule) - surface to the owner, never enter payment details.",
+          "Any owner-only verification step the agency path cannot complete surfaces to main chat instead of being worked around.",
+          "If Discord rejects the assigned username (taken or invalid), the executing lane surfaces it; the registry assigns the rule-v3 collision variant (suffix bump) - the lane never improvises a different name."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Account facts are recorded in the Profile Registry (Discord block) by the challenge-entries lane, PR #2588; the coordinator connect state is that lane's seam.",
+        "submission_authority": "Manager ruling 2026-10-30 (agency creation by the challenge-entries lane) as superseded by the owner's direct order the same day: the OWNER created the account; the challenge-entries lane records the issued facts and the lablab connect state."
+      },
+      "kind": "provider",
+      "moniker": "wh1msical_sw4n_06136",
+      "moniker_rule": "owner-issued",
+      "notes": [
+        "ISSUED 2026-10-30: username = wh1msical_sw4n_06136 - the owner created the account (owner direct order superseded the agency path) and connected it to lablab the same day (lablab profile 70% per the recording lane). The issued username DIFFERS from the directed codename: it is the platform-suggested value the owner used, not gentleonyx47. Under the owner-issued rule the issued name is the moniker of record. Recorded by the challenge-entries lane in the Profile Registry (Discord block) + coordinator, PR #2588 merged 9b9302740b31.",
+        "Assignment history: rule-v3 codename GentleOnyx47 assigned by the registry lane 2026-10-30 (PR #2556 merged bd6377e88a8a; signup rendering gentleonyx47, display name GentleOnyx47) - never consumed at the form; superseded by the issued name above. Purpose stands: the fleet Discord identity for lablab OAuth (D2 team create/join; AMD AI League Discord-join requirement).",
+        "Persona DOB: the Profile Registry Discord block carries the persona DOB of record 1996-04-17 as directed (fleet builder persona, 25-34 bracket). The as-submitted DOB and the display name are NOT_ESTABLISHED - owner-entered at creation, not observed by the recording lane."
+      ],
+      "platform": "Discord",
+      "platform_id": "discord",
+      "profile_ref": "Discord",
+      "registrations": [],
+      "role": "account",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nDreamInProduction",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell A 'sizzle' (benefit-first copy; landing param ?ch=fb-a). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Dream In Production",
+      "platform_id": "dream-in-production",
+      "profile_pending": "marketing-channel",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "PluckyOasis73",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "iFlytek",
+      "platform_id": "iflytek",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "PluckyOnyx78",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform rendering: Instagram usernames are lowercase (letters/digits/period/underscore, <=30) - signup username = pluckyonyx78; the display name carries the canonical case, PluckyOnyx78.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "Instagram",
+      "platform_id": "instagram",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "RapidHarbor74",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "Kilo",
+      "platform_id": "kilo",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "The blocker is the Kiro user ID surface (Cloudflare + ID-surface blockers; reverse-engineering target brief #1729 in dispatch) - not an owner item: the account itself exists. Substituting an AWS account ID instead is owner-gated."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Account existence verified 2026-10-29 by the accounts lane (Profile Registry, Kiro block). The Kiroween registration receipt lands when the user ID surface clears; the owning lane cites it into the log (packet D4).",
+        "submission_authority": "None; this entry fronts an identity dependency, not a submission surface."
+      },
+      "kind": "identity-provider",
+      "moniker": "n0nKiro",
+      "notes": [
+        "Identity-provider entry: Kiroween registration consumes a Kiro identity; the moniker keeps that dependency inside the same routing/escalation surface as the Devpost entry it pairs with.",
+        "Synced 2026-10-29: account exists (Google route, KIRO FREE; no editable profile fields exist). The earlier 'owner item' framing is retired - the remaining block is the ID surface."
+      ],
+      "platform": "Kiro",
+      "platform_id": "kiro",
+      "profile_ref": "Kiro",
+      "registrations": [
+        {
+          "aspect": "identity-provider",
+          "event": "Kiroween 2026 entry (packet D4 for C4)",
+          "ref": "D4",
+          "status": "account exists 2026-10-29; Kiroween registration blocked on the Kiro user ID surface (not an owner gate)"
+        }
+      ],
+      "role": "entrant",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Any owner-only verification step in lablab.ai registration or the Discord join surfaces to main chat instead of being worked around."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Registration confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the issued handle here (never before it exists).",
+        "submission_authority": "Registration + Discord join are owner-approved (2026-10-26); the owning lane executes them within the standing boundary and surfaces any verification gate it hits."
+      },
+      "kind": "platform",
+      "moniker": "Rap1dZ3nith",
+      "moniker_rule": "owner-issued",
+      "notes": [
+        "ISSUED 2026-10-30: handle = Rap1dZ3nith (https://lablab.ai/u/@Rap1dZ3nith; 30-day change lock runs from issue). Moniker of record updated to the issued name under moniker_rule owner-issued - the owner set this platform's name directly: queue {RapidZenith18 (the v3 derive), latentf0rge, s1gnaldr1ft, qu13tcompile, dr1ftc0de} all protocol-checked; the rnd draw and the owner's tap converged on latentf0rge, then the owner overrode pre-submit to Rap1dZ3nith (leet respell of the v3 derive); latentf0rge was never submitted. Recorded by the executing lane (challenge-entries) in the Profile Registry + coordinator, PR #2504 merged f7e1272bded6.",
+        "Superseded direction (registry lane, 2026-10-29, PR #2388 note): platform-assigned handle timerloggedout63215 -> n0nLablab. Never executed - the owner challenged the n0n stem the same evening (v3 retired it for new assignments, PR #2000) and the change stayed on hold, one-shot unspent, until the issue above."
+      ],
+      "platform": "lablab.ai",
+      "platform_id": "lablab-ai",
+      "profile_ref": "lablab.ai",
+      "registrations": [
+        {
+          "aspect": "event-host",
+          "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
+          "ref": "D2",
+          "status": "registered 2026-10-29 - enrolled, screening submitted; handle issued Rap1dZ3nith 2026-10-30"
+        }
+      ],
+      "role": "entrant",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "WittyWillow78",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "LLM7",
+      "platform_id": "llm7",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "LivelyWillow16",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "ModelScope",
+      "platform_id": "model-scope",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Any card/billing prompt is a hard stop (fleet card rule) - surface to the owner, never enter payment details.",
+          "If the username n0nPlatform201 is taken or invalid at the form, the registry assigns the rule's collision variant - names are never improvised."
+        ],
+        "owner_lane": "platform201-status",
+        "receipts_route": "Account state (space, plan, project handle) is recorded in the Profile Registry under the platform201-status lane's section by that lane's PR; this entry flips to a resolving profile_ref when that block lands.",
+        "submission_authority": "The platform201-status lane operates the account under the moniker within the owner's LIVE directive: free tier only."
+      },
+      "kind": "provider",
+      "moniker": "n0nPlatform201",
+      "notes": [
+        "Assigned 2026-10-27 at owner order via the platform201-status lane (Platform201 LIVE required; formerly Shoal Stack). A live signup attempt is running in that lane using n0nPlatform201 as the username of record; free tier only, no card. Profile pending that lane's Profile Registry entry on resolution.",
+        "Resolved 2026-10-28: account LIVE (platform201-status lane PR #1983, merged 92aab593da). Signup presented NO username field (Google route) - the moniker was not consumed at the form and stands as the account moniker of record. Project handle and space state are profile facts: Profile Registry, platform201-status section (pending that lane)."
+      ],
+      "platform": "Platform201",
+      "platform_id": "platform201",
+      "profile_pending": "platform201-status",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "active"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "If Facebook rejects the assigned Page name, the marketing-channel lane surfaces it; the registry assigns a replacement under the same rule - names are never improvised, and never borrowed from another cell's stem.",
+          "Cross-cell contamination (any link, mention, or shared asset between cells) breaks both 4n0n isolation and test attribution - surface immediately."
+        ],
+        "owner_lane": "marketing-channel",
+        "receipts_route": "Page creation is the owner's step in Facebook. The issued Page handle/URL and state are recorded in the Profile Registry under the marketing-channel section by that lane and cited by PR. Per-cell referral codes and landing params live in config/referral_programs.json (ab_test), wired by the marketing-channel lane.",
+        "submission_authority": "The marketing-channel lane operates the Page under the moniker within the referral test design (config/referral_programs.json ab_test). Page creation itself is owner-in-Facebook; the connector cannot create Pages."
+      },
+      "kind": "page",
+      "moniker": "n0nReceiptsCount",
+      "notes": [
+        "Facebook Page name assigned 2026-10-27 (owner directive via the marketing-channel lane) for referral test cell B 'steak' (numbers-first copy, Value Derived board proof; landing param ?ch=fb-b). Owner creates the Page in Facebook under this exact name; the issued handle/URL is a profile fact for the Profile Registry (marketing-channel section). No shared stems with the other cells (4n0n rule 3, per-cell)."
+      ],
+      "platform": "Receipts Count",
+      "platform_id": "receipts-count",
+      "profile_pending": "marketing-channel",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "UrbanCanyon15",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "Requesty",
+      "platform_id": "requesty",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "LivelyZenith43",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "Routeway",
+      "platform_id": "routeway",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "RapidDune76",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "SeaLion",
+      "platform_id": "sea-lion",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "AmberFalcon96",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "SiliconFlow",
+      "platform_id": "silicon-flow",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "JollyJuniper25",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform linkage: Threads requires an Instagram account and a Threads identity follows the connected IG account. If the fleet Threads presence rides the fleet Instagram account (PluckyOnyx78), the instagram assignment governs the visible handle and this codename is NOT separately consumed - the entry exists so the platform carries a registry identity either way; the social-connectors lane records which path was taken in the Profile Registry.",
+        "Platform rendering (if separately consumed): lowercase - signup username = jollyjuniper25; display name JollyJuniper25.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "Threads",
+      "platform_id": "threads",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "UrbanOnyx67",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "Platform rendering: TikTok usernames are lowercase (letters/digits/underscore/period) - signup username = urbanonyx67; the display name carries the canonical case, UrbanOnyx67.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "TikTok",
+      "platform_id": "tiktok",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "BriskMeadow17",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "UnoRouter",
+      "platform_id": "uno-router",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "The credit card is a BLOCK (owner rule, 2026-10-26): if the Vultr account flow demands a card, it stops and surfaces as an owner item - it is never supplied by a lane."
+        ],
+        "owner_lane": "challenge-entries",
+        "receipts_route": "Sandbox credit confirmation will land in the owner's Gmail; the owning lane cites it into docs/ops/CHALLENGE-ENTRIES-LOG.md by PR and records the account handle here once it exists.",
+        "submission_authority": "Account is for sandbox credits only ($200 participant credit; no card spend to compete online, per the log). The owning lane proceeds on the no-card path only."
+      },
+      "kind": "platform",
+      "moniker": "n0nVultr",
+      "notes": [
+        "Sandbox dependency of packet D2; the event itself is hosted on lablab.ai (separate entry)."
+      ],
+      "platform": "Vultr",
+      "platform_id": "vultr",
+      "profile_ref": "Vultr",
+      "registrations": [
+        {
+          "aspect": "sandbox",
+          "event": "Vultr Agent Rush Hackathon entry (packet D2 for C2)",
+          "ref": "D2",
+          "status": "in-progress"
+        }
+      ],
+      "role": "entrant",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup or API tier is a BLOCK: it stops and surfaces as an owner item.",
+          "Any owner-only verification step (SMS/email code the lane cannot complete) surfaces to main chat instead of being worked around.",
+          "If the platform rejects the assigned username (taken or invalid format), the social-connectors lane surfaces it; the registry assigns the rule's collision variant - the lane never improvises a different name."
+        ],
+        "owner_lane": "social-connectors",
+        "receipts_route": "Issued account facts (handle as issued, display name, connection state) are recorded in the Profile Registry by the social-connectors lane under its own section and cited by PR; this entry flips to a resolving profile_ref and active when that block lands.",
+        "submission_authority": "The social-connectors lane builds and operates this platform's custom API/MCP connector under the owner's AIDE assignment (2026-10-31). The assigned moniker IS the signup username/display of record, pulled from this registry - never invented at a form."
+      },
+      "kind": "provider",
+      "moniker": "OpalVale19",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-31 by the registry lane at the social-connectors lane's recon request (owner AIDE assignment via main, 2026-10-31): identity for that lane's custom API/MCP connector build. Rule-v3 codename - pull via registry.py derive at form time; never improvise a handle.",
+        "WhatsApp identity is bound to a PHONE NUMBER, not a username: the number is a provisioning fact supplied by the owner/that lane at wiring time - never invented, and never recorded in this registry. The moniker is the account's name of record; the WhatsApp profile name carries it verbatim: OpalVale19.",
+        "If a signup form demands demographic data, the fleet builder persona of record applies (persona DOB 1996-04-17; bracket 25-34) - surface-once, never re-rolled per form."
+      ],
+      "platform": "WhatsApp",
+      "platform_id": "whatsapp",
+      "profile_pending": "social-connectors",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "registering"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "OpalOnyx77",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "xKiro",
+      "platform_id": "xkiro",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    },
+    {
+      "handling": {
+        "escalation": [
+          "Card-gated signup is a BLOCK: it stops and surfaces as an owner item.",
+          "If the platform rejects the assigned username (taken or invalid format), the account-creation lane surfaces it; the registry assigns the rule's collision variant (smallest free integer >= 2) - the lane never improvises a different name."
+        ],
+        "owner_lane": "account-creation",
+        "receipts_route": "Creation confirmations land in the owner's Gmail / the provider dashboard; the account-creation lane records the issued account facts in the Profile Registry under its own section and cites them by PR.",
+        "submission_authority": "The account-creation lane creates and manages this provider account under the assigned moniker, within the standing account-creation authorization and the card BLOCK. The moniker IS the signup username of record, pulled from this registry - never invented at the form."
+      },
+      "kind": "provider",
+      "moniker": "JollyVale52",
+      "moniker_rule": "v3",
+      "notes": [
+        "Pre-assigned 2026-10-27 for the account-creation lane (Batch C) under derivation v2. Profile pending: the account-creation lane registers this platform's profile in PROFILE-REGISTRY.md under its own section when the account exists.",
+        "Rotated to rule v3 2026-10-28 (owner standards review): the v2 n0n-stem name was never consumed at a platform form; this v3 codename is the assignment of record - pull it via registry.py derive at form time."
+      ],
+      "platform": "ZAI",
+      "platform_id": "zai",
+      "profile_pending": "account-creation",
+      "profile_ref": null,
+      "registrations": [],
+      "role": "account",
+      "status": "pending"
+    }
+  ],
+  "moniker_ssot": "docs/ops/AGENT-MONIKERS.md",
+  "profile_data_home": "Handles, display names, and profile completeness live ONLY in docs/ops/PROFILE-REGISTRY.md (source of truth for platform identities). Entries here carry a profile_ref pointer and no profile data.",
+  "profile_registry": "docs/ops/PROFILE-REGISTRY.md",
+  "protocol": "docs/ops/4N0N-REGISTRATION-PROTOCOL.md",
+  "schema": "registration-monikers/3",
+  "source_of_registrations": "docs/ops/CHALLENGE-ENTRIES-LOG.md"
+}

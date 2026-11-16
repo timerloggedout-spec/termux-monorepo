@@ -1,0 +1,4435 @@
+{
+ "schema": "quota-allocation-plan/v1",
+ "generated_at": "2026-11-03T19:31:27Z",
+ "issue": 1884,
+ "registry_records": 170,
+ "pools": [
+  {
+   "id": "aion",
+   "class": "A",
+   "services": [
+    "aion.free_tokens"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 13.88888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 13.88888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "aws",
+   "class": "A",
+   "services": [
+    "aws.dynamodb_storage",
+    "aws.lambda_compute",
+    "aws.lambda_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 9.25925925925926,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 9.25925925925926
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "aws.credits",
+   "class": "A",
+   "services": [
+    "aws.account_credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.004629629629629629,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.004629629629629629
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "azure",
+   "class": "A",
+   "services": [
+    "azure.functions_executions"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 23.14814814814815,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 23.14814814814815
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "azure.credit",
+   "class": "A",
+   "services": [
+    "azure.account_credit"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1388888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1388888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "cerebras",
+   "class": "A",
+   "services": [
+    "cerebras.free_tokens"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 694.4444444444445,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 694.4444444444446
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "cloudflare",
+   "class": "A",
+   "services": [
+    "cloudflare.d1_rows_read",
+    "cloudflare.d1_rows_written",
+    "cloudflare.d1_storage",
+    "cloudflare.kv_writes",
+    "cloudflare.queues_ops",
+    "cloudflare.r2_storage",
+    "cloudflare.workers_ai",
+    "cloudflare.workers_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 3472.222222222222,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 3472.2222222222217
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "cohere",
+   "class": "A",
+   "services": [
+    "cohere.trial_calls"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.023148148148148147,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.02314814814814815
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 3,
+     "usage_stamps": 4,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "deno",
+   "class": "A",
+   "services": [
+    "deno.deploy_requests"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 23.14814814814815,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 23.14814814814815
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "digitalocean",
+   "class": "A",
+   "services": [
+    "digitalocean.app_platform_static"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "digitalocean.credit",
+   "class": "A",
+   "services": [
+    "digitalocean.trial_credit"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1388888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1388888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "felo.credits",
+   "class": "A",
+   "services": [
+    "felo.api_credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1388888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1388888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "fly",
+   "class": "A",
+   "services": [
+    "fly.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "g4f-vendors",
+   "class": "A",
+   "services": [
+    "g4f.agenttools",
+    "g4f.airforce",
+    "g4f.antigravity",
+    "g4f.arena",
+    "g4f.bingcreateimages",
+    "g4f.blackboxpro",
+    "g4f.blackforestlabs_flux1dev",
+    "g4f.blackforestlabs_flux1kontextdev",
+    "g4f.bravesearch",
+    "g4f.cachedsearch",
+    "g4f.cerebras",
+    "g4f.chatgpt",
+    "g4f.claude",
+    "g4f.cloudflare",
+    "g4f.cohereforai_c4ai_command",
+    "g4f.copilot",
+    "g4f.copilotapp",
+    "g4f.deepinfra",
+    "g4f.deepseek",
+    "g4f.elevenlabs",
+    "g4f.g4fspace",
+    "g4f.gemini",
+    "g4f.geminicli",
+    "g4f.geminipro",
+    "g4f.githubcopilot",
+    "g4f.glm",
+    "g4f.googleaimode",
+    "g4f.googlesearch",
+    "g4f.grok",
+    "g4f.groq",
+    "g4f.hailuoai",
+    "g4f.huggingchat",
+    "g4f.huggingface",
+    "g4f.huggingfacemedia",
+    "g4f.huggingspace",
+    "g4f.kilocode",
+    "g4f.llm7",
+    "g4f.markitdown",
+    "g4f.metaai",
+    "g4f.metaaiaccount",
+    "g4f.microsoftdesigner",
+    "g4f.nvidia",
+    "g4f.ollama",
+    "g4f.omniroute",
+    "g4f.openaifm",
+    "g4f.openrouterfree",
+    "g4f.operaaria",
+    "g4f.perplexity",
+    "g4f.pi",
+    "g4f.pollinations",
+    "g4f.pollinationsaudio",
+    "g4f.pollinationsimage",
+    "g4f.puter",
+    "g4f.qwen",
+    "g4f.relayrouter",
+    "g4f.stabilityai_sd35large",
+    "g4f.teachanything",
+    "g4f.vendors",
+    "g4f.whiterabbitneo",
+    "g4f.you",
+    "g4f.yqcloud"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1736111111111111,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1736111111111111
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "gcp",
+   "class": "A",
+   "services": [
+    "gcp.cloud_functions_invocations",
+    "gcp.cloud_run_requests",
+    "gcp.compute_e2micro"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 46.2962962962963,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 46.2962962962963
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "github",
+   "class": "A",
+   "services": [
+    "deepseek.build_dispatch",
+    "github.actions.cache",
+    "github.actions.minutes",
+    "github.api.app_collector",
+    "github.api.app_publisher",
+    "github.api.github_token",
+    "github.api.user_token",
+    "github.artifacts.retention",
+    "github.copilot.free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 83.33333333333333,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 83.33333333333331
+    }
+   ],
+   "lane_slices": [
+    {
+     "project": "repo-replay",
+     "primary_services": [
+      "github.api.app_collector",
+      "github.api.app_publisher"
+     ],
+     "fallback_service": "github.api.user_token",
+     "fallback_mode": "fallback-only",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "Owner order 2026-10-30 (cadence + repo-replay lanes): migrations + replays run on the AppID buckets, not the PAT bucket; the PAT service is fallback-only with no routine draw. Executes planner trigger app_slice_assignment:repo-replay (ops/quota/allocation-plan.json, PR #2450 merged 7b182d51), citing #1884."
+    },
+    {
+     "lane": "quota-specialist",
+     "claim": 6520547215,
+     "primary_services": [
+      "github.api.app_publisher",
+      "github.api.app_collector"
+     ],
+     "fallback_service": "github.api.user_token",
+     "fallback_mode": "fallback-only",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520547215 (explicit slice request, repo-replay shape): allocation-planning / plan-refresh / quota publishes on the AppID buckets; priority ask ops-maintenance (below winning-standing, above leftover-only), recorded as claimed; timers: planner workflow Wed 08:47Z + dispatch, bursts ~10-20 calls/publish."
+    },
+    {
+     "lane": "foundry",
+     "claim": 6520528321,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520528321: PAT filings/intake/verification, burst-class event-driven (issues events + dispatch workflows); priority low/routine, focus repo-development; timers none owned (event-rate)."
+    },
+    {
+     "lane": "provisioning",
+     "claim": 6520538214,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520538214: PAT core + Actions, one-shot provisioning passes; timers none owned; priority routine."
+    },
+    {
+     "lane": "delphi-validation",
+     "claim": 6520538778,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520538778: PAT reads + publish/merge, bursty per owner-dispatched validation task; priority leftover-only; timers none owned."
+    },
+    {
+     "lane": "cadence-optimizer",
+     "claim": 6520539563,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520539563: chat-side PAT for quota-dispatch-tree / peer-review-orchestrator / cadence-provider-onboarding / pat-publish-path surfaces; workflow timers Wed 06:23Z + per-PR poll budgets."
+    },
+    {
+     "lane": "quota-convergence",
+     "claim": 6520539793,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520539793: PAT publishes for the readings promotion cycle + allocations execution (probe itself draws 0 PAT, installation token); measured 8 calls/pass, 15-25 per promotion cycle, <=10/day loop budget; timers signal-dispatch + <=1 census/day, diff-gated."
+    },
+    {
+     "lane": "platform201-status",
+     "claim": 6520540242,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520540242: PAT publish/verify, burst-class event-driven; priority low/routine, focus repo-development; timers none (monthly manual Billing+Usage read). Platform201 credit surface enrolled separately in the platform201 pool."
+    },
+    {
+     "lane": "marketing-channel",
+     "claim": 6520540521,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520540521: PAT PRs/issues/comments burst-class + referral workflows (rotation dispatch-only, pool-watch weekly Tue 08:41Z); priority low/routine, focus repo-development."
+    },
+    {
+     "lane": "viz-dispatch-tree",
+     "claim": 6520543760,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520543760: PAT publishes + verification reads for help-wanted-dashboard surfaces, ~11-12 calls/PR, QAC-007 preflight-gated; focus repo-development (leftover-only posture); timers none owned."
+    },
+    {
+     "lane": "account-creation",
+     "claim": 6520553645,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520553645: PAT provisioning PUTs + audit/availability dispatches, event-driven bursts per provider batch; timers none standing."
+    },
+    {
+     "lane": "reverse-engineering-toolkits",
+     "claim": 6520554477,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520554477: PAT helper only, bursty PR-cycle calls; focus repo-development (research secondary); priority below winning, leftover-compatible; timers none owned."
+    },
+    {
+     "lane": "tribute-efficacy-audit",
+     "claim": 6520558757,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520558757: PAT search/reads with in-script caps + tribute-participation workflow (daily 07:23Z + dispatch); priority low/routine, leftover-only claim; focus repo-development."
+    },
+    {
+     "lane": "web-design",
+     "claim": 6520560027,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520560027: PAT publish/merge/verify, burst-class event-driven (~tens of calls/PR) for dashboard surfaces; priority routine, focus repo-development leftover-only; timers none owned."
+    },
+    {
+     "lane": "linguist-admin-panel",
+     "claim": 6520561526,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520561526: PAT verify/acceptance/publish, episodic burst; substrate-owned collector cron Tue 06:53Z runs on Actions; priority low/routine, focus repo-development."
+    },
+    {
+     "lane": "surface-separation",
+     "claim": 6520563164,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520563164: PAT verify/publish/merge episodic bursts for MVT/DoE/ATES surfaces; priority low/routine leftover-only, focus repo-development; lane-owned timers none (surface-feeds weekly Wed 06:41Z)."
+    },
+    {
+     "lane": "gap-finder",
+     "claim": 6520564100,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520564100: PAT sweep reads + verification + ledger publishes, episodic bursts; priority leftover-only, lowest burst class; timers none (interactive sweeps)."
+    },
+    {
+     "lane": "challenge-entries",
+     "claim": 6520567420,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520567420: PAT is this lane's sole routine draw (log/registry/coordinator publishes + reads) for the D0-D5 challenge slate; priority WINNING (owner setting 2026-10-27; draws under the winning focus); timers event-driven (countdowns-refresh Mon 16:06Z + push/dispatch)."
+    },
+    {
+     "lane": "devpost-kiro-accounts",
+     "claim": 6520570396,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520570396: PAT filings/PRs/verification, burst-class event-driven, for D4 Kiroween accounts/profiles; priority Winning (active slate); timers none."
+    },
+    {
+     "lane": "tmpfs-remediation",
+     "claim": 6520570428,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520570428: PAT publish/verify episodic; lane task COMPLETE (incident closed 2026-10-27), standing draw ~0; sole timer = tmp-usage-tripwire hook (VM-self exception, 0 pool draw)."
+    },
+    {
+     "lane": "oracle-hackathon-tests",
+     "claim": 6520571271,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520571271: PAT publish/verify/[MUSEai] comments only, one-shot per briefed task; priority low/routine episodic; record task complete 2026-10-27; timers none."
+    },
+    {
+     "lane": "sofa-search",
+     "claim": 6520571661,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520571661: PAT publish/verify only, episodic bursts <=~15 calls/pass (SOFA MCP surface is unpooled, own OAuth grant); focus research, leftover-only; priority low/routine; timers none."
+    },
+    {
+     "lane": "registration-monikers",
+     "claim": 6520572467,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520572467: PAT registry passes ~9-30 core calls/pass, event-driven; workflow cron Tue 06:41Z runs on the Actions token; class repo-dev/leftover."
+    },
+    {
+     "lane": "witness-lane",
+     "claim": 6520574483,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520574483: PAT helper publishes, ~dozens of calls per wiring pass, bursty, 0 standing; priority low, event-driven; timers none owned."
+    },
+    {
+     "lane": "moneyball-plane",
+     "claim": 6520579926,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520579926: PAT route, small bursts (single-digit calls/op), event-driven only; work-class repo-development serving the Winning consumer (challenge scoring seam); timers none standing."
+    },
+    {
+     "lane": "temporal-integration",
+     "claim": 6520580039,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520580039: PAT PR publish/comments/verification, burst-class event-driven; Actions surfaces dispatch/PR-triggered only; priority low/routine, focus repo-development; timers none (keepalive disabled at migration)."
+    },
+    {
+     "lane": "3l0-weighting-backfill",
+     "claim": 6520582020,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520582020: PAT episodic verify/publish only, burst-class (feed refresh rides gap-finder-fix-g10's surface-feeds workflow, not double-claimed); priority low/routine, focus repo-development leftover-only; timers none own."
+    },
+    {
+     "lane": "cross-plane-graph",
+     "claim": 6520587366,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520587366: PAT episodic publish/verify (~10-20 counted/PR); regeneration runs on the installation token (0 PAT/pass; cron Wed 06:47Z + dispatch + push); focus repo-development; priority low/routine."
+    },
+    {
+     "lane": "rate-limit",
+     "claim": 6520591412,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520591412: PAT episodic ~6-10 counted calls/PR (publish/verify), event-driven only; priority routine, incident-spike; timers none (pat_publish preflight = 1 uncounted /rate_limit read per publish, QAC-007)."
+    },
+    {
+     "lane": "doe-expert",
+     "claim": 6520599229,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520599229: PAT filings/comments/publishes/merges/verification, burst-class event-driven (~tens of calls/PR); co-owned delphi-rfp-feed-collect cron Tue 06:37Z (PAT fetch inside); priority low/routine; focus repo-development + research."
+    },
+    {
+     "lane": "papers-surfaces",
+     "claim": 6520593536,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520593536: PAT episodic recon/verify only (lane recon-only; proposed papers observatory unbuilt; arXiv/HF Papers/OpenAlex surfaces unpooled); focus research, leftover-only fit; timers none current."
+    },
+    {
+     "lane": "explore-reverse-seo",
+     "claim": 6520601251,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520601251: PAT episodic recon (~5 core calls; search bucket 30/min governs proposed passes, unbuilt); focus research, priority low/routine; timers none (adaptive triggers proposed, not landed)."
+    },
+    {
+     "lane": "research-triggers",
+     "claim": 6520531943,
+     "primary_services": [
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520531943: pool named by the claim = GitHub Actions minutes (research-intake / apk-xref-intake / re-taxonomy-intake workflows; issue-event + comment-marker triggers; 5-min timeout cap per run); priority event-driven; timers none (no schedule in any of the 3 workflows)."
+    },
+    {
+     "lane": "issue-lifecycle",
+     "claim": 6520547124,
+     "primary_services": [
+      "github.api.github_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520547124: Actions job GITHUB_TOKEN only (triage ~2-5 REST calls/run; matrix ~5 GraphQL + ~4 calls/run); timers event-rate (issues opened/reopened + Tue 07:17Z floor sweep; PR-merged + daily 06:41Z floor, diff-gated)."
+    },
+    {
+     "lane": "gap-finder-fix-g10",
+     "claim": 6520560215,
+     "primary_services": [
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520560215: GitHub Actions minutes only (surface-feeds-collect: weekly Wed 06:41Z + dispatch + push on source paths; collect job timeout 10m); lane G-10 complete, closed-on-evidence."
+    },
+    {
+     "lane": "linguist-substrate",
+     "claim": 6520573728,
+     "primary_services": [
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520573728: GitHub Actions minutes only \u2014 PAT draw 0 by design (collector runs on GITHUB_TOKEN, 0 API reads); timers cron Tue 06:53Z + dispatch + push on source paths; cost ~1 collector pass + <=1 refresh PR per run."
+    },
+    {
+     "lane": "delphi-lane",
+     "claim": 6520532135,
+     "primary_services": [
+      "github.api.github_token",
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520532135: delphi-gate (cron :23 hourly) + participant-cycle (cron :37 hourly) run on GITHUB_TOKEN with self-defer thresholds; ledger-feed-collect (weekly Tue 06:47Z + workflow_run + dispatch) fetches via PAT; chat PAT episodic verify/publish; priority repo-development/research infrastructure, leftover-only claim."
+    },
+    {
+     "lane": "comment-quality",
+     "claim": 6520549520,
+     "primary_services": [
+      "github.api.github_token",
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520549520: reviewer-metrics-collect + comment-quality-sweep run on github_token (OPERATOR||GITHUB_TOKEN; ~750 + <=160 calls/run, leftover-only speculative-cadence class, freshness-gated <=1 collect/day, weekly backstops); lane PAT work episodic."
+    },
+    {
+     "lane": "observatory",
+     "claim": 6520551280,
+     "primary_services": [
+      "github.api.user_token",
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520551280: OPERATOR-route PAT (collector + intake; the installation token cannot serve /user/subscriptions) + Actions minutes (repository-observatory daily 04:17Z, 1 bounded run/day; intake event-driven); focus research, leftover-only; priority low/steady-state; x-observatory parked, draw ~0."
+    },
+    {
+     "lane": "inventory",
+     "claim": 6520580174,
+     "primary_services": [
+      "github.api.user_token",
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520580174: PAT helper draws (inventory sweeps + connector landings) + Actions minutes (inventory refresh workflows); focus repo-development; timer on record: platform201-support-response-check daily 13:17Z."
+    },
+    {
+     "lane": "google-ai-studio",
+     "claim": 6520849921,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520849921: PAT episodic ~11-13 calls/PR (AI Studio extension + Delphi panel publishes/verifies) + Actions dispatches (mesh trigger workflow = repository_dispatch + workflow_dispatch only, cron none, polling none); focus research + repo-development; priority low/routine; timers current per QAC-008 by construction."
+    },
+    {
+     "lane": "temporal-recon",
+     "claim": 6520939645,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520939645: PAT episodic bursts (~20-40 calls/PR) for the Temporal durable-execution RFP (#1885) recon; focus research + repo-development; priority low/routine; timers none (no cron/dispatch/workflows/polling \u2014 QAC-008 current by construction)."
+    },
+    {
+     "lane": "4n0n-protocol",
+     "claim": 6520947846,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520947846: PAT episodic publish/verify for the 4n0n protocol + branding-perception evaluation (PR #2159); focus repo-development; priority low/routine; timers none (no cron/dispatch/workflow/polling \u2014 QAC-008 current by construction)."
+    },
+    {
+     "lane": "vercel-specialist",
+     "claim": 6520970014,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520970014: PAT episodic + Actions minutes for the Vercel project fleet (help-wanted-oversight/dash, mcp-hub, demo-portal); focus repo-development, priority low/routine; batch deploys dispatch-only via quota-dispatch-tree Tier-3 with a rolling-24h flow regulator; vercel-side draw enrolled in the vercel pool."
+    },
+    {
+     "lane": "telemetry-viz",
+     "claim": 6520968738,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520968738: PAT episodic bursts ~10-20 calls/PR (observer sample 3 counted/run), QAC-007 gated, for fleet telemetry visualization; focus repo-development, priority low/routine leftover-only; lane-owned recurring timers none, periodic draw 0."
+    },
+    {
+     "lane": "burst-fix",
+     "claim": 6520955774,
+     "primary_services": [
+      "github.api.user_token",
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520955774: PAT episodic + Actions minutes (proof dispatches) for feed-collect failure-burst fixes (PR #2341); focus repo-development; priority incident-spike/routine \u2014 mission complete, steady draw 0, incident sessions ~150-250 calls; timers none owned."
+    },
+    {
+     "lane": "scraping-tools",
+     "claim": 6520959920,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520959920: PAT episodic for login-capable free scraping-tools recon; focus research, priority low/routine; vendor free tiers are vendor-side quotas, not github draw; timers none current."
+    },
+    {
+     "lane": "3l0-plane",
+     "claim": 6520955026,
+     "primary_services": [
+      "github.api.user_token"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520955026: PAT episodic ~6-13 calls/PR for the 3L0 scoring plane (sibling of 3l0-weighting-backfill, claim 6520582020 \u2014 separate lane, own slice); Actions minutes ride gap-finder-fix-g10's surface-feeds slice, not double-claimed; discrimination watch <=3 GH API calls/run; focus repo-development, priority low/routine leftover-only."
+    },
+    {
+     "lane": "challenge-entries-manager",
+     "claim": 6520947956,
+     "primary_services": [
+      "github.api.user_token",
+      "github.actions.minutes"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520947956: PAT bursts ~6-15 calls/PR + Actions minutes (challenge-osint-watch.yml, cron Wed 08:17Z + push + dispatch) for challenge-entries management (distinct seat from challenge-entries, claim 6520567420); focus winning; priority low/routine."
+    }
+   ],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 8
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "matched",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": true
+   }
+  },
+  {
+   "id": "github.codespaces",
+   "class": "A",
+   "services": [
+    "github.codespaces.core_hours",
+    "github.codespaces.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.002777777777777778,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 99,
+     "flow_per_min": 0.0
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "google",
+   "class": "B",
+   "services": [
+    "gemini.build_dispatch",
+    "jules.build_sessions",
+    "gemini.api_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [
+    {
+     "lane": "google-ai-studio",
+     "claim": 6520849921,
+     "primary_services": [
+      "gemini.api_free"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520849921: AI Studio / gemini.api_free draw under its own RPD budgets via ops/ai-studio-mesh quota_gate (PR #2489) \u2014 not the github bucket; mesh trigger = both legs (Cloudflare receiver + bounded trigger), quota-gated DEFER on low budget."
+    }
+   ],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
+  },
+  {
+   "id": "grafana",
+   "class": "A",
+   "services": [
+    "grafana.cloud_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "groq",
+   "class": "B",
+   "services": [
+    "groq.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "huggingface",
+   "class": "B",
+   "services": [
+    "huggingface.hub_api",
+    "huggingface.inference_providers"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "kilo",
+   "class": "A",
+   "services": [
+    "kilo.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 3.3333333333333335,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 3.333333333333334
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "koyeb",
+   "class": "A",
+   "services": [
+    "koyeb.free_instance"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "llm7",
+   "class": "A",
+   "services": [
+    "llm7.free_token"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 69.44444444444444,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 69.44444444444444
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "mistral",
+   "class": "B",
+   "services": [
+    "mistral.free_mode"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 2,
+     "usage_stamps": 2,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "modelscope",
+   "class": "A",
+   "services": [
+    "modelscope.api_inference"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 1.3888888888888888,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 1.3888888888888888
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "neon",
+   "class": "A",
+   "services": [
+    "neon.compute",
+    "neon.egress",
+    "neon.realtime",
+    "neon.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.0023148148148148147,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.0023148148148148147
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "netlify.credits",
+   "class": "A",
+   "services": [
+    "netlify.credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.006944444444444444,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.006944444444444444
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "nvidia",
+   "class": "B",
+   "services": [
+    "nvidia.api_catalog"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "ollama",
+   "class": "B",
+   "services": [
+    "ollama.balance"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "omni",
+   "class": "B",
+   "services": [
+    "omni.gateway"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "openrouter",
+   "class": "B",
+   "services": [
+    "openrouter.free_models",
+    "openrouter.key"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "oracle",
+   "class": "A",
+   "services": [
+    "oracle.ampere_gb_hours",
+    "oracle.ampere_ocpu_hours",
+    "oracle.block_storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.20833333333333334,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.20833333333333337
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "ovhcloud",
+   "class": "A",
+   "services": [
+    "ovhcloud.ai_endpoints"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "partners.credits",
+   "class": "C",
+   "services": [
+    "partners.credits"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "render",
+   "class": "A",
+   "services": [
+    "render.bandwidth",
+    "render.instance_hours",
+    "render.keyvalue_free",
+    "render.pipeline_minutes",
+    "render.postgres_free"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.00011574074074074075,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.00011574074074074075
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "requesty",
+   "class": "A",
+   "services": [
+    "requesty.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1388888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1388888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "routeway",
+   "class": "A",
+   "services": [
+    "routeway.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.1388888888888889,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.1388888888888889
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "sambanova",
+   "class": "A",
+   "services": [
+    "sambanova.free_tier"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.013888888888888888,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.013888888888888888
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "sealion",
+   "class": "A",
+   "services": [
+    "sealion.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 4,
+     "usage_stamps": 4,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "siliconflow",
+   "class": "B",
+   "services": [
+    "siliconflow.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "supabase",
+   "class": "A",
+   "services": [
+    "supabase.db_storage",
+    "supabase.edge_functions",
+    "supabase.egress",
+    "supabase.file_storage",
+    "supabase.projects"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 11.574074074074074,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 11.574074074074074
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "turso",
+   "class": "A",
+   "services": [
+    "turso.databases",
+    "turso.rows_read",
+    "turso.rows_written",
+    "turso.storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 11574.074074074075,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 11574.074074074075
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "typhoon",
+   "class": "A",
+   "services": [
+    "typhoon.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "unorouter",
+   "class": "A",
+   "services": [
+    "unorouter.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 1,
+     "usage_stamps": 1,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "upstash",
+   "class": "A",
+   "services": [
+    "upstash.qstash_messages",
+    "upstash.redis_bandwidth",
+    "upstash.redis_commands",
+    "upstash.redis_storage"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 0.6944444444444444,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 0.6944444444444444
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "vercel",
+   "class": "A",
+   "services": [
+    "vercel.build_time",
+    "vercel.deployments"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "ok",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 1.6666666666666667,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 1.666666666666667
+    }
+   ],
+   "lane_slices": [
+    {
+     "lane": "vercel-specialist",
+     "claim": 6520970014,
+     "primary_services": [
+      "vercel.deployments",
+      "vercel.build_time"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520970014: vercel.deployments + vercel.build_time surface; deploys paced by the lane's rolling-24h regulator (budget = 100 - max(API-24h + offset, ledger), reserve 5, cooldown 6h) under the batch-deploy dispatch; ignore-guard cron Tue 04:17Z PATCH-on-drift."
+    }
+   ],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
+  },
+  {
+   "id": "xfyun",
+   "class": "B",
+   "services": [
+    "xfyun.spark"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "xkiro",
+   "class": "A",
+   "services": [
+    "xkiro.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 347.22222222222223,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 347.2222222222223
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "zai",
+   "class": "B",
+   "services": [
+    "zai.free_models"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "platform201",
+   "class": "A",
+   "services": [
+    "platform201.projects"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [
+    {
+     "lane": "platform201-status",
+     "claim": 6520540242,
+     "primary_services": [
+      "platform201.projects"
+     ],
+     "fallback_service": null,
+     "fallback_mode": "none",
+     "routine_draw_on_fallback": false,
+     "date": "2026-10-30",
+     "reason": "ENROLL claim 6520540242: platform201.projects surface (limit 3 + $20 credits per the registry record); draw FROZEN ~0 under the owner $-rule (no deploy until credit intake obtained); github-side PAT draw enrolled in the github pool."
+    }
+   ],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": true
+   }
+  },
+  {
+   "id": "pinecone",
+   "class": "A",
+   "services": [
+    "pinecone.storage",
+    "pinecone.write_units",
+    "pinecone.read_units",
+    "pinecone.indexes",
+    "pinecone.egress"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": 46.2962962962963,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": 0.0
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": 46.2962962962963
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "meta",
+   "class": "B",
+   "services": [
+    "meta.model_api",
+    "meta.muse_code"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "deepinfra",
+   "class": "B",
+   "services": [
+    "deepinfra.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "novita",
+   "class": "B",
+   "services": [
+    "novita.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "friendli",
+   "class": "B",
+   "services": [
+    "friendli.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "baseten",
+   "class": "B",
+   "services": [
+    "baseten.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 1,
+     "usage_stamps": 1,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "deepseek",
+   "class": "B",
+   "services": [
+    "deepseek.api"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 6,
+     "usage_stamps": 7,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "unmatched-activity",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": true,
+    "slice_claimed": false
+   }
+  },
+  {
+   "id": "claude",
+   "class": "B",
+   "services": [
+    "claude.seat_runtime"
+   ],
+   "limit": null,
+   "used": null,
+   "state": "unknown",
+   "pacing_multiplier": 1.0,
+   "target_flow_per_min": null,
+   "slices": [
+    {
+     "focus": "repo-development",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 0,
+     "flow_per_min": null
+    },
+    {
+     "focus": "research",
+     "share_pct": 0,
+     "mode": "leftover-only",
+     "priority": 1,
+     "flow_per_min": null
+    },
+    {
+     "focus": "boinc-donations",
+     "share_pct": 0,
+     "mode": "none",
+     "priority": 2,
+     "flow_per_min": null
+    },
+    {
+     "focus": "winning",
+     "share_pct": 100,
+     "mode": "standing",
+     "priority": 99,
+     "flow_per_min": null
+    }
+   ],
+   "lane_slices": [],
+   "stranded": null,
+   "release_to": null,
+   "self_counts": {
+    "method": "self-count",
+    "source": "ops/quota/self-counts.json",
+    "tallied_at": "2026-11-03T19:30:52Z",
+    "totals": {
+     "dispatches": 0,
+     "usage_stamps": 0,
+     "wall_events": 0
+    }
+   },
+   "matching": {
+    "layer": "heuristic",
+    "flag": "no-data",
+    "rule": "v1: self-counted activity vs lane-slice claims",
+    "activity_observed": false,
+    "slice_claimed": false
+   }
+  }
+ ],
+ "triggers_fired": [
+  {
+   "pool": "github",
+   "trigger": "app_slice_assignment:repo-replay",
+   "project": "repo-replay",
+   "slice": {
+    "project": "repo-replay",
+    "primary_services": [
+     "github.api.app_collector",
+     "github.api.app_publisher"
+    ],
+    "fallback_service": "github.api.user_token",
+    "fallback_mode": "fallback-only",
+    "routine_draw_on_fallback": false
+   },
+   "action": "convergence executes the matching allocations change citing #1884 + this plan record"
+  }
+ ],
+ "self_counts": {
+  "source": "ops/quota/self-counts.json",
+  "generated_at": "2026-11-03T19:30:52Z",
+  "method": "self-count"
+ },
+ "rules": "Pacing/stranded per docs/ops/QUOTA-ALLOCATION-PLANNING.md; stranded null = NOT ESTABLISHED (no numeric reading), never invented. Self-count layer (owner ruling 2026-11-03): counts are tallies of the fleet's own recorded events, stamped method=self-count, and govern where provider readings are null; matching flags are a labeled heuristic layer above the counts."
+}

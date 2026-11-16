@@ -1,0 +1,15 @@
+{
+ "arm": "M", "provider": "claude-muse", "route": "claude-authored-baseline", "version": "0.1.0",
+ "pr": 2946, "pr_merged": true, "merge_sha_master_history": "5e7a33a72db1",
+ "release": {"tag": "apk-v0.1.0", "url": "https://github.com/timerloggedout-spec/termux-monorepo/releases/tag/apk-v0.1.0", "prerelease": true, "published_at": "2026-11-01T04:24:37Z"},
+ "build_proof": {"workflow": "apk-release.yml", "run_id": 41272927031, "conclusion": "success"},
+ "metrics": {
+   "apk_size_bytes": 8619,
+   "sha256sum_check_on_redownload": true,
+   "apksigner_verify_in_runner": true,
+   "signing_mode": "ephemeral-debug",
+   "spec_compliance": {"runtime_version_display": false, "version_file": true, "changelog": false, "out_of_scope_files": 0},
+   "dispatch_to_pr_minutes": null,
+   "note": "Baseline arm per Amendment 1 (owner: Muse authored is a version to compare). Feature-spec items predate the frozen spec — scored absent, not retrofitted."
+ }
+}

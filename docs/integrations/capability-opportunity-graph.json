@@ -1,0 +1,609 @@
+{
+  "schema_version": "1.0.0",
+  "graph_id": "termux-monorepo.ceel.opportunity-graph",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "updated_at": "2026-11-11",
+  "authority": "repository-maintained-capability-index",
+  "nodes": [
+    {
+      "id": "langfuse",
+      "kind": "external_platform",
+      "name": "Langfuse",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://langfuse.com/docs",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "prompt.version.lineage",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.trace.observability",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.experiment.evaluation",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "langfuse-docs-review",
+          "status": "unverified",
+          "reference": "https://langfuse.com/docs",
+          "notes": "Review official docs at a pinned version before promoting capability claims."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "agent-evaluation-lane-registry",
+        "ates"
+      ],
+      "risk_notes": [
+        "Auth, retention, export, pricing and data handling unverified."
+      ],
+      "tags": [
+        "llm-observability",
+        "prompt-lifecycle",
+        "candidate"
+      ]
+    },
+    {
+      "id": "promptlayer",
+      "kind": "external_platform",
+      "name": "PromptLayer",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://docs.promptlayer.com/",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "prompt.version.lineage",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "prompt.registry.lifecycle",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.request.analytics",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "promptlayer-docs-review",
+          "status": "unverified",
+          "reference": "https://docs.promptlayer.com/",
+          "notes": "Official docs and bounded API behavior remain to be verified."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "prompt-assets",
+        "agent-evaluation-lane-registry"
+      ],
+      "risk_notes": [
+        "Auth, export, retention and pricing unverified."
+      ],
+      "tags": [
+        "prompt-management",
+        "candidate"
+      ]
+    },
+    {
+      "id": "posthog",
+      "kind": "external_platform",
+      "name": "PostHog",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://posthog.com/docs",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "experiment.assignment.exposure",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "event.analytics",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "cohort.analysis",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "posthog-docs-review",
+          "status": "unverified",
+          "reference": "https://posthog.com/docs",
+          "notes": "Verify assignment, exposure, feature-flag and event semantics at a pinned version."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "product-experimentation",
+        "agent-evaluation-lane-registry"
+      ],
+      "risk_notes": [
+        "Privacy, retention, export and pricing unverified."
+      ],
+      "tags": [
+        "product-analytics",
+        "experimentation",
+        "candidate"
+      ]
+    },
+    {
+      "id": "braintrust",
+      "kind": "external_platform",
+      "name": "Braintrust",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://www.braintrust.dev/docs",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "llm.eval.dataset",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.eval.scoring",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.experiment.lineage",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "braintrust-docs-review",
+          "status": "unverified",
+          "reference": "https://www.braintrust.dev/docs",
+          "notes": "Verify dataset/version semantics, scorer reproducibility, export, auth and pricing."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "doe-family",
+        "agent-evaluation-lane-registry",
+        "swe-cohorts"
+      ],
+      "risk_notes": [
+        "Data transfer, retention, scopes and pricing unverified."
+      ],
+      "tags": [
+        "llm-evaluation",
+        "candidate"
+      ]
+    },
+    {
+      "id": "phoenix",
+      "kind": "external_platform",
+      "name": "Phoenix (Arize)",
+      "lifecycle_state": "discovered",
+      "source": {
+        "source_type": "official_documentation",
+        "locator": "https://arize.com/docs/phoenix",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "llm.trace.observability",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "llm.experiment.evaluation",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "phoenix-existing-registry",
+          "status": "partial",
+          "reference": "docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md",
+          "notes": "Existing evaluator lane; runtime adapter validation remains separate."
+        }
+      ],
+      "owner": "agent-evaluation",
+      "internal_consumers": [
+        "doe-family",
+        "ates"
+      ],
+      "risk_notes": [
+        "Verify deployed version and current adapter evidence."
+      ],
+      "tags": [
+        "open-source",
+        "observability",
+        "baseline-candidate"
+      ]
+    },
+    {
+      "id": "dspy",
+      "kind": "internal_component",
+      "name": "DSPy-DoE lane",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "prompt.program.optimization",
+          "status": "documented"
+        },
+        {
+          "capability_id": "doe.participant.arm",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "dspy-lane-design",
+          "status": "partial",
+          "reference": "docs/proposals/active/model-selection-market/DSPY-DOE-LANE.md",
+          "notes": "Existing design lane; do not infer production router or executed outcomes."
+        }
+      ],
+      "owner": "model-selection-market",
+      "internal_consumers": [
+        "doe-family",
+        "swe-cohorts"
+      ],
+      "risk_notes": [
+        "Preserve configured-instance identity and run receipts."
+      ],
+      "tags": [
+        "existing",
+        "ml-pipeline",
+        "doe"
+      ]
+    },
+    {
+      "id": "doe-family",
+      "kind": "experiment_family",
+      "name": "DoE Family",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/ops/DOE-FAMILY.md",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "doe.factorial.design",
+          "status": "documented"
+        },
+        {
+          "capability_id": "doe.interaction.analysis",
+          "status": "documented"
+        },
+        {
+          "capability_id": "doe.evolutionary.culling",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "doe-family-owner-definition",
+          "status": "verified",
+          "reference": "docs/ops/DOE-FAMILY.md",
+          "notes": "Canonical family structure and owner definition."
+        }
+      ],
+      "owner": "doe-family",
+      "internal_consumers": [
+        "ceel",
+        "agent-evaluation-lane-registry"
+      ],
+      "risk_notes": [
+        "One run equals one canonical experiment record."
+      ],
+      "tags": [
+        "canonical",
+        "doe"
+      ]
+    },
+    {
+      "id": "integration-intelligence",
+      "kind": "internal_component",
+      "name": "Integration Intelligence",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/integrations/README.md",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "integration.registry",
+          "status": "verified"
+        },
+        {
+          "capability_id": "integration.event.normalization",
+          "status": "documented"
+        },
+        {
+          "capability_id": "integration.adapter.contract",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "integration-intelligence-contract",
+          "status": "verified",
+          "reference": "docs/integrations/ADAPTER-CONTRACT.md",
+          "notes": "Canonical adapter and normalized event boundaries."
+        }
+      ],
+      "owner": "integration-intelligence",
+      "internal_consumers": [
+        "ceel",
+        "doe-family",
+        "delphi"
+      ],
+      "risk_notes": [
+        "External integrations remain observational until validated and promoted."
+      ],
+      "tags": [
+        "canonical",
+        "integration"
+      ]
+    },
+    {
+      "id": "ates",
+      "kind": "internal_component",
+      "name": "ATES execution harness",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "repository_file",
+        "locator": "docs/ops/MVT-DOE-ATES-SEPARATION.md",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "experiment.execution",
+          "status": "documented"
+        },
+        {
+          "capability_id": "run.receipt",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "ates-separation",
+          "status": "verified",
+          "reference": "docs/ops/MVT-DOE-ATES-SEPARATION.md",
+          "notes": "Existing ownership and run-receipt boundaries."
+        }
+      ],
+      "owner": "ates",
+      "internal_consumers": [
+        "doe-family",
+        "ceel"
+      ],
+      "risk_notes": [
+        "Execution status is not outcome correctness."
+      ],
+      "tags": [
+        "canonical",
+        "execution"
+      ]
+    },
+    {
+      "id": "delphi-oracle",
+      "kind": "internal_component",
+      "name": "Delphi Oracle RFP",
+      "lifecycle_state": "mapped",
+      "source": {
+        "source_type": "github_workflow",
+        "locator": ".github/workflows/ai-studio-delphi-trigger.yml",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "proposal.comparison",
+          "status": "documented"
+        },
+        {
+          "capability_id": "proposal.award",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "delphi-trigger",
+          "status": "partial",
+          "reference": ".github/workflows/ai-studio-delphi-trigger.yml",
+          "notes": "Existing route; awards remain advisory to merge authority."
+        }
+      ],
+      "owner": "delphi",
+      "internal_consumers": [
+        "ceel",
+        "proposal-lifecycle"
+      ],
+      "risk_notes": [
+        "Awards do not authorize merge, deployment or routing."
+      ],
+      "tags": [
+        "governance",
+        "proposal"
+      ]
+    },
+    {
+      "id": "foss-template-pool",
+      "kind": "capability",
+      "name": "FOSS template inspiration pool",
+      "lifecycle_state": "proposed",
+      "source": {
+        "source_type": "operator_request",
+        "locator": "docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md",
+        "revision": null,
+        "observed_at": "2026-11-11T00:00:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "foss.template.extraction",
+          "status": "hypothesis"
+        },
+        {
+          "capability_id": "foss.capability.reuse",
+          "status": "hypothesis"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "foss-pool-design",
+          "status": "unverified",
+          "reference": "docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md",
+          "notes": "Governed intake concept; no external source admitted by this seed."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "doe-family",
+        "integration-intelligence"
+      ],
+      "risk_notes": [
+        "License, provenance, supply-chain, security and maintenance review precede adoption."
+      ],
+      "tags": [
+        "foss",
+        "template",
+        "discovery"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "langfuse",
+      "to": "promptlayer",
+      "relationship": "competes_with",
+      "status": "hypothesis"
+    },
+    {
+      "from": "langfuse",
+      "to": "posthog",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "langfuse",
+      "to": "braintrust",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "promptlayer",
+      "to": "posthog",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "promptlayer",
+      "to": "braintrust",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "posthog",
+      "to": "braintrust",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "phoenix",
+      "to": "langfuse",
+      "relationship": "competes_with",
+      "status": "hypothesis"
+    },
+    {
+      "from": "phoenix",
+      "to": "braintrust",
+      "relationship": "complements",
+      "status": "hypothesis"
+    },
+    {
+      "from": "dspy",
+      "to": "doe-family",
+      "relationship": "consumes",
+      "status": "documented"
+    },
+    {
+      "from": "ates",
+      "to": "doe-family",
+      "relationship": "implements",
+      "status": "documented"
+    },
+    {
+      "from": "integration-intelligence",
+      "to": "doe-family",
+      "relationship": "informs",
+      "status": "documented"
+    },
+    {
+      "from": "delphi-oracle",
+      "to": "doe-family",
+      "relationship": "informs",
+      "status": "documented"
+    },
+    {
+      "from": "foss-template-pool",
+      "to": "integration-intelligence",
+      "relationship": "informs",
+      "status": "hypothesis"
+    },
+    {
+      "from": "langfuse",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "promptlayer",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "posthog",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "braintrust",
+      "to": "doe-family",
+      "relationship": "measures",
+      "status": "hypothesis"
+    }
+  ]
+}

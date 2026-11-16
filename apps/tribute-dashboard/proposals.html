@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposals — Registry Index</title>
+<!--
+  Renders ONLY data/proposals-feed.json (schema proposals-feed/v2; v1 entries tolerated,
+  contract docs/ops/PROPOSALS-FEED.md). The feed is collected from the
+  registry of record (docs/proposals/registry.yaml) and the pass
+  records under docs/proposals/passes/ by
+  scripts/proposals/proposals_feed.py; the refresh workflow proposes
+  updates as PRs. Registry values are drawn verbatim — this page
+  filters what the feed carries and computes nothing else.
+-->
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+.pr-chip{font-size:.72em;padding:.08em .55em;border-radius:1em;color:#fff;vertical-align:middle;white-space:nowrap}
+.pr-chip.merged{background:#8250df}
+.pr-chip.open{background:#1a7f37}
+.pr-chip.closed{background:#cf222e}
+</style>
+</head>
+<body>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
+<a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/pools.html">Pools</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a>
+<a href="https://timerloggedout-spec.github.io/tribute/results-index.html">Results Index</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/d2-proposals.html">D2 Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html" aria-current="page">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/referrals.html">Referrals</a>
+<a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+
+<header class="hero">
+  <p class="eyebrow">Proposals registry · docs/proposals</p>
+  <h1>Proposals</h1>
+  <p class="lede">Every registered proposal pack in the monorepo — the index the registry of record (<code>docs/proposals/registry.yaml</code>) describes, rendered as filed. Each pack links to its tree on GitHub; the Oracle Method pass records are listed below the registry. Filter by status, priority or author — the filter values come from the feed itself.</p>
+</header>
+
+<main>
+<section>
+  <div class="head"><h2>Challenge proposals</h2><span class="note">D2 · Vultr Agent Rush</span></div>
+  <div class="card"><p><strong>D2 · Vultr Agent Rush — Proposal Delineation.</strong> The six D2 exercise proposals, delineated side by side: a grouped preview of all six plus a pick-a-proposal view. Advisory only — the pick itself is owner-held.</p><p><a href="https://timerloggedout-spec.github.io/tribute/d2-proposals.html">Open the D2 proposal delineation →</a></p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Charts</h2></div>
+  <div class="card" id="p2-charts"><p class="muted">Loading feed…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Registry</h2><span class="note" id="meta">Loading…</span></div>
+  <div class="toolbar">
+    <select id="f-status" aria-label="Filter by status"></select>
+    <select id="f-priority" aria-label="Filter by priority"></select>
+    <select id="f-author" aria-label="Filter by author"></select>
+    <input id="f-text" type="search" placeholder="Filter by title or id…" aria-label="Filter by title or id">
+  </div>
+  <div id="proposals"><p class="empty">Loading the proposals feed…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>Pass records</h2><span class="note">docs/proposals/passes — Oracle Method cycles</span></div>
+  <div id="passes"><p class="empty">Loading…</p></div>
+</section>
+
+<section>
+  <div class="head"><h2>How this page works</h2></div>
+  <p class="note">This page renders <code>data/proposals-feed.json</code> (schema <code>proposals-feed/v2</code>; v1 bare-number PR entries still render, without state chips), collected from <code>docs/proposals/registry.yaml</code> and <code>docs/proposals/passes/*/pass.json</code> by <code>scripts/proposals/proposals_feed.py</code> (contract: <code>docs/ops/PROPOSALS-FEED.md</code>). The collector runs on every push to <code>docs/proposals/**</code> and proposes the refreshed feed as a PR. Registry values are carried verbatim; where the feed is empty, nothing is shown rather than anything guessed.</p>
+</section>
+</main>
+
+<footer>
+  Proposals index · registry of record: docs/proposals/registry.yaml · feed: proposals-feed/v2 · page renders the feed verbatim.
+</footer>
+
+<script src="./chartkit.js"></script>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const GH='https://github.com/timerloggedout-spec/termux-monorepo';
+// ==== pure logic (node-sim tested) ====
+function filterProposals(feed,f){
+  return (feed.proposals||[]).filter(p=>
+    (!f.status||p.status===f.status)&&
+    (!f.priority||p.priority===f.priority)&&
+    (!f.author||p.author===f.author)&&
+    (!f.text||(String(p.title)+' '+String(p.id)).toLowerCase().includes(f.text.toLowerCase())));
+}
+function facetValues(feed,key){
+  return [...new Set((feed.proposals||[]).map(p=>p[key]).filter(v=>v!=null))].sort();
+}
+function outcomeGroups(outcome){
+  const scores=(outcome&&outcome.scores)||{};
+  const byScore={};
+  Object.keys(scores).forEach(id=>{const s=scores[id];(byScore[s]=byScore[s]||[]).push(id)});
+  return Object.keys(byScore).map(Number).sort((a,b)=>b-a).map(s=>({score:s,candidates:byScore[s].sort()}));
+}
+function shortCandidate(passId,id){return id.startsWith(passId+'-')?id.slice(passId.length+1):id}
+function outcomeCell(pass){
+  const groups=outcomeGroups(pass&&pass.outcome);
+  if(!groups.length)return '—';
+  return groups.map(g=>{
+    const names=g.candidates.map(id=>esc(shortCandidate(pass.id,id))).join(' · ');
+    return g.candidates.length>1?'<strong>'+g.score.toFixed(3)+' — TIED</strong>: '+names:g.score.toFixed(3)+' — '+names;
+  }).join('<br>');
+}
+function prLink(entry,gh){
+  const isObj=entry&&typeof entry==='object';
+  const n=isObj?entry.number:entry;
+  const st=isObj?entry.state:null;
+  const cls=st==='merged'?'pr-chip merged':st==='open'?'pr-chip open':st==='closed-unmerged'?'pr-chip closed':null;
+  let h='<a href="'+gh+'/pull/'+n+'">PR #'+n+'</a>';
+  if(cls){const t=st==='merged'&&entry.merged_at?' title="merged '+esc(entry.merged_at)+'"':'';h+=' <span class="'+cls+'"'+t+'>'+st+'</span>'}
+  return h;
+}
+// ==== end pure logic ==== 
+let FEED=null;
+function statusPill(s){
+  const cls=s==='accepted'?'pill ok':s==='executing'?'pill gold':'pill';
+  return '<span class="'+cls+'">'+esc(s)+'</span>';
+}
+function render(){
+  const f={status:$('f-status').value,priority:$('f-priority').value,author:$('f-author').value,text:$('f-text').value.trim()};
+  const rows=filterProposals(FEED,f);
+  if(!rows.length){$('proposals').innerHTML='<p class="empty">No proposals match the current filters — nothing is shown rather than anything guessed.</p>';return}
+  $('proposals').innerHTML='<div class="table-wrap"><table class="table"><thead><tr><th>Proposal</th><th>Status</th><th>Priority</th><th>Author</th><th>Related</th></tr></thead><tbody>'+
+    rows.map(p=>{
+      const rel=[...(p.issues||[]).map(n=>'<a href="'+GH+'/issues/'+n+'">#'+n+'</a>'),
+                 ...(p.prs||[]).map(e=>prLink(e,GH))].join(' · ');
+      return '<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.title)+'</strong></a><br><span class="muted">'+esc(p.id)+' · '+esc(p.path)+'</span></td>'+
+        '<td>'+statusPill(p.status)+'</td><td>'+esc(p.priority)+'</td><td>'+esc(p.author)+'</td>'+
+        '<td>'+(rel||'—')+'</td></tr>'}).join('')+
+    '</tbody></table></div>';
+  $('meta').textContent='Showing '+rows.length+' of '+FEED.counts.total+' proposals · feed generated '+FEED.generated_at+' · registry updated '+(FEED.registry_updated_at||'—');
+}
+function fillSelect(id,values,label){
+  const el=$(id);
+  el.innerHTML='<option value="">'+label+': all</option>'+values.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+  el.addEventListener('change',render);
+}
+async function load(){
+  try{
+    const r=await fetch('./data/proposals-feed.json');
+    if(!r.ok) throw new Error('feed '+r.status);
+    FEED=await r.json();
+    fillSelect('f-status',facetValues(FEED,'status'),'Status');
+    fillSelect('f-priority',facetValues(FEED,'priority'),'Priority');
+    fillSelect('f-author',facetValues(FEED,'author'),'Author');
+    $('f-text').addEventListener('input',render);
+    render();
+    const p2c = FEED.counts || {};
+    const p2rows = o => Object.entries(o || {}).map(([label, value]) => ({label, value})).sort((a, b) => b.value - a.value);
+    $('p2-charts').innerHTML = '<p class="meta">Feed generated ' + esc(FEED.generated_at) + (CK.stampState(FEED.generated_at, Date.now()) === 'STALE' ? ' · <span class="pill">STALE</span>' : '') + ' · rendered from this page feed only.</p>'
+      + '<h3>Proposals by status</h3>' + CK.bars(p2rows(p2c.by_status))
+      + '<h3>Proposals by priority</h3>' + CK.bars(p2rows(p2c.by_priority));
+    const ps=FEED.passes||[];
+    $('passes').innerHTML=ps.length?'<div class="table-wrap"><table class="table"><thead><tr><th>Pass</th><th>Status</th><th>Schema</th><th>Candidates</th><th>Outcome</th></tr></thead><tbody>'+
+      ps.map(p=>'<tr><td><a href="'+esc(p.url)+'"><strong>'+esc(p.id)+'</strong></a><br><span class="muted">'+esc(p.path)+'</span></td><td>'+esc(p.status||'—')+'</td><td>'+esc(p.schema||'—')+'</td><td>'+(p.candidates==null?'—':p.candidates)+'</td><td>'+outcomeCell(p)+'</td></tr>').join('')+
+      '</tbody></table></div>':'<p class="empty">No pass records in the feed — nothing is shown rather than anything guessed.</p>';
+    if((FEED.gaps||[]).length){$('passes').innerHTML+='<p class="muted">Feed gaps: '+FEED.gaps.map(esc).join('; ')+'</p>'}
+  }catch(e){
+    $('proposals').innerHTML='<p class="empty">The proposals feed could not be fetched — nothing is shown rather than anything guessed.</p>';
+    $('passes').innerHTML='';
+    $('meta').textContent='Feed unavailable.';
+  }
+}
+load();
+</script>
+</body>
+</html>

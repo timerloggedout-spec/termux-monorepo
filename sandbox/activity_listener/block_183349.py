@@ -1,0 +1,2 @@
+# Search for scripts that contain fragment matching logic
+grep -rn 'fragment\|similarity\|SequenceMatcher\|difflib' ~/workspace/llm_map/*.py ~/cli-synthegration/*.py ~/harmony_hub/src/*.py 2>/dev/null | grep -v '__pycache__\|\.pyc' | head -20

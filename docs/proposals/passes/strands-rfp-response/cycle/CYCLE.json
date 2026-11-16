@@ -1,0 +1,151 @@
+{
+  "schema": "oracle-method-cycle/v1",
+  "pass_id": "strands-rfp-response",
+  "generated_at": "2026-10-27T08:51:57Z",
+  "config": {
+    "rounds": 2,
+    "expectation_format": "per-candidate expected rank + expected weighted score per source class, recorded before implementation; brief-supplied human expectations take precedence for their class",
+    "expectation_tolerance": 2.0,
+    "implementation": "parallel per-proposal implementations; tests run per individual proposal; their results are the round-2 evidence base",
+    "evidence_equalization": "the round-2 evidence set is identical for every voter; its sha256 is stamped on the round-2 receipt and required on every round-2 ballot",
+    "calibration": "round-2 outcome vs the recorded input expectations; deltas with the evidence that moved them; the feed for the weights (#1489) and outcome (#1487) ledgers",
+    "stage_gates": [
+      "generation contract",
+      "ballot contract",
+      "evidence-set equality before round 2",
+      "calibration record"
+    ],
+    "not_run_rule": "a stage that cannot execute is recorded specified_not_run in the cycle record - never dropped, never fabricated"
+  },
+  "stages": [
+    {
+      "stage": "generate",
+      "status": "ran",
+      "detail": "n=3 candidates"
+    },
+    {
+      "stage": "cross_vote_round_1",
+      "status": "ran",
+      "detail": "ballots_by_class={'HUMAN_COLLABORATOR': 0, 'MODEL_PROVIDER': 0, 'LOCAL_BASELINE': 5}"
+    },
+    {
+      "stage": "expectations_recorded",
+      "status": "ran",
+      "detail": "priors on record before implementation"
+    },
+    {
+      "stage": "implementation",
+      "status": "ran",
+      "detail": "parallel per-proposal test results recorded"
+    },
+    {
+      "stage": "evidence_equalization",
+      "status": "ran",
+      "detail": "common evidence set sha256=620b67b3eee6\u2026"
+    },
+    {
+      "stage": "cross_vote_round_2",
+      "status": "ran",
+      "detail": "ranked=['strands-rfp-response-collection-first', 'strands-rfp-response-kernel-first', 'strands-rfp-response-packaging-first']"
+    },
+    {
+      "stage": "calibration",
+      "status": "ran",
+      "detail": "round-2 vs round-1 expectations; feed for the weighting/elo ledgers"
+    }
+  ],
+  "artifacts": {
+    "round1": "BALLOT-round1.json",
+    "expectations": "EXPECTATIONS.json",
+    "implementation": "IMPLEMENTATION.json",
+    "round2_evidence": "ROUND2-EVIDENCE.json",
+    "round2": "BALLOT-round2.json",
+    "calibration": "CALIBRATION.json"
+  },
+  "ledger_feed": {
+    "type": "delphi-generation-calibration",
+    "pass_id": "strands-rfp-response",
+    "calibration": {
+      "schema": "oracle-method-calibration/v1",
+      "evidence_set_sha256": "620b67b3eee6a70bb4c290d944a76e1bef2597788fc8c5cdd8d39e9000ba6c48",
+      "candidates": {
+        "LOCAL_BASELINE": {
+          "strands-rfp-response-collection-first": {
+            "expected_rank": 1,
+            "actual_rank": 1,
+            "rank_delta": 0,
+            "expected_score": 23.269,
+            "actual_score": 25.0,
+            "score_delta": 1.731,
+            "within_tolerance": true,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          },
+          "strands-rfp-response-kernel-first": {
+            "expected_rank": 2,
+            "actual_rank": 2,
+            "rank_delta": 0,
+            "expected_score": 23.269,
+            "actual_score": 25.0,
+            "score_delta": 1.731,
+            "within_tolerance": true,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          },
+          "strands-rfp-response-packaging-first": {
+            "expected_rank": 3,
+            "actual_rank": 3,
+            "rank_delta": 0,
+            "expected_score": 23.269,
+            "actual_score": 25.0,
+            "score_delta": 1.731,
+            "within_tolerance": true,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          }
+        },
+        "BRIEF:delphi-lane": {
+          "strands-rfp-response-collection-first": {
+            "expected_rank": 2,
+            "actual_rank": 1,
+            "rank_delta": -1,
+            "expected_score": 16,
+            "actual_score": 25.0,
+            "score_delta": 9.0,
+            "within_tolerance": false,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          },
+          "strands-rfp-response-kernel-first": {
+            "expected_rank": 1,
+            "actual_rank": 2,
+            "rank_delta": 1,
+            "expected_score": 19,
+            "actual_score": 25.0,
+            "score_delta": 6.0,
+            "within_tolerance": false,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          },
+          "strands-rfp-response-packaging-first": {
+            "expected_rank": 3,
+            "actual_rank": 3,
+            "rank_delta": 0,
+            "expected_score": 13,
+            "actual_score": 25.0,
+            "score_delta": 12.0,
+            "within_tolerance": false,
+            "moved_on_evidence": [
+              "full test pass in the implementation round"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

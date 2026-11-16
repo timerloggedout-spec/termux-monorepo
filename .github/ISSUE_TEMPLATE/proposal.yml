@@ -1,0 +1,37 @@
+name: Proposal
+description: Propose an investigation, integration, or build for evaluation. Filing labels it proposal so the lifecycle triage can route it.
+title: "Proposal: "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One proposal, one subject. Say what it is, what to learn or adapt
+        from it, and what evidence the evaluation should produce. Never
+        paste secret values: name Actions secrets only.
+  - type: input
+    id: subject
+    attributes:
+      label: Subject
+      description: The product, project, or idea being proposed, e.g. TanStack AI 1.0.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [investigate, integrate, build, other]
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is proposed, and why it might matter to this repo.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and sources
+      description: Links or pointers the evaluation should start from. Leave blank if none.

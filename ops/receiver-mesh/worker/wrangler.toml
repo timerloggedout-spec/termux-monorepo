@@ -1,0 +1,18 @@
+# Receiver Mesh — Cloudflare leg. Design: docs/ops/RECEIVER-MESH.md
+# Deploy is a provisioning step (needs RECEIVER_* Worker secrets); this
+# file alone deploys nothing. D1 database_id is filled at provision time,
+# following the tmx-device-queue precedent (PR #1547).
+name = "tmx-receiver-mesh"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+RECEIVER_REPO = "timerloggedout-spec/termux-monorepo"
+META_CACHE_SECONDS = "3600"
+
+[[d1_databases]]
+binding = "RECEIVER_D1"
+database_name = "tmx-receiver-mesh"
+database_id = "PROVISION_AT_DEPLOY_TIME"
+
+# DDL lives in schema.sql (device-queue precedent), applied at provision time.

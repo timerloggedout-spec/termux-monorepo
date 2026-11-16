@@ -1,0 +1,113 @@
+{
+  "collected_at": "2026-11-08T10:14:42.315002+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42469730683,
+    "endpoint": ".../runs/42469730683/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 128697458684,
+        "run_id": 42469730683,
+        "workflow_name": "Orchestration Regression Guard",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42469730683",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd9vdf_A",
+        "head_sha": "a141a7c0c02b794b581f311e09c5c27c6fbbd5d7",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128697458684",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42469730683/job/128697458684",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-08T10:02:51Z",
+        "started_at": "2026-11-08T10:02:53Z",
+        "completed_at": "2026-11-08T10:03:06Z",
+        "name": "guard",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T10:02:54Z",
+            "completed_at": "2026-11-08T10:02:54Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T10:02:54Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Assert control-plane files exist",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Detect accidental control-plane deletion or rollback",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Validate catalog script syntax",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Assert CLAUDE.md FA-ADE alignment",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Emit progression receipt",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 14,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 15,
+            "started_at": "2026-11-08T10:03:04Z",
+            "completed_at": "2026-11-08T10:03:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128697458684",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000847024,
+        "runner_name": "GitHub Actions 1000847024",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

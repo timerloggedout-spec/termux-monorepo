@@ -1,0 +1,403 @@
+{
+ "addendum": "N5 \u2014 Delphi cycle as a Temporal workflow (brief \u00a75 acceptance)",
+ "date": "2026-10-28",
+ "lane": "[MUSEai]@{role:{temporal-integration}}",
+ "brief": "docs/rfps/temporal-durable-execution/N5-BUILD-BRIEF.md (PR #2163, merge 0c0c7379)",
+ "substrate": "fleet self-host localhost:7233 / namespace default / task queue delphi-cycle (single node; mesh redundancy NOT established)",
+ "acceptance": {
+  "schema": "n5-acceptance/v1",
+  "started_at": "2026-10-28T19:36:13Z",
+  "workflow_id": "delphi-cycle/rehearsal",
+  "worker1_pid": 10786,
+  "status_mid_cycle": {
+   "ballots_received": {
+    "1": {
+     "HUMAN_COLLABORATOR": 1,
+     "LOCAL_BASELINE": 0,
+     "MODEL_PROVIDER": 0
+    },
+    "2": {
+     "HUMAN_COLLABORATOR": 0,
+     "LOCAL_BASELINE": 0,
+     "MODEL_PROVIDER": 0
+    }
+   },
+   "candidates": [
+    "rehearsal-strong",
+    "rehearsal-weak",
+    "rehearsal-empty"
+   ],
+   "evidence_bundle_sha256": null,
+   "facilitator_actions": [
+    {
+     "action": "close_round_1",
+     "by": "facilitator:prove",
+     "note": ""
+    }
+   ],
+   "pass_id": "rehearsal",
+   "ranked_outcome": null,
+   "rejected_ballots": [],
+   "round1_ranked_outcome": [
+    "rehearsal-strong",
+    "rehearsal-weak",
+    "rehearsal-empty"
+   ],
+   "round2_open": false,
+   "schema": "delphi-cycle-status/v1",
+   "stage": "implementation"
+  },
+  "worker1_killed": {
+   "pid": 10786,
+   "stage_at_kill": "implementation",
+   "signal": "SIGKILL"
+  },
+  "worker2_pid": 10802,
+  "evidence_bundle_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+  "status_round2": {
+   "ballots_received": {
+    "1": {
+     "HUMAN_COLLABORATOR": 1,
+     "LOCAL_BASELINE": 0,
+     "MODEL_PROVIDER": 0
+    },
+    "2": {
+     "HUMAN_COLLABORATOR": 1,
+     "LOCAL_BASELINE": 0,
+     "MODEL_PROVIDER": 0
+    }
+   },
+   "candidates": [
+    "rehearsal-strong",
+    "rehearsal-weak",
+    "rehearsal-empty"
+   ],
+   "evidence_bundle_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+   "facilitator_actions": [
+    {
+     "action": "close_round_1",
+     "by": "facilitator:prove",
+     "note": ""
+    },
+    {
+     "action": "open_round_2",
+     "by": "facilitator:prove",
+     "note": ""
+    }
+   ],
+   "pass_id": "rehearsal",
+   "ranked_outcome": null,
+   "rejected_ballots": [
+    {
+     "reason": "round-2 ballot carries a different evidence bundle sha256 than the equalized set \u2014 rejected",
+     "round": 2,
+     "source_class": "HUMAN_COLLABORATOR",
+     "voter": "registrar:owner"
+    },
+    {
+     "reason": "round-2 ballot does not carry the equalized evidence bundle sha256 \u2014 rejected",
+     "round": 2,
+     "source_class": "HUMAN_COLLABORATOR",
+     "voter": "registrar:owner"
+    }
+   ],
+   "round1_ranked_outcome": [
+    "rehearsal-strong",
+    "rehearsal-weak",
+    "rehearsal-empty"
+   ],
+   "round2_open": true,
+   "schema": "delphi-cycle-status/v1",
+   "stage": "round2_open"
+  },
+  "workflow_result": {
+   "ballots_accepted": {
+    "1": 1,
+    "2": 1
+   },
+   "ballots_rejected": [
+    {
+     "reason": "round-2 ballot carries a different evidence bundle sha256 than the equalized set \u2014 rejected",
+     "round": 2,
+     "source_class": "HUMAN_COLLABORATOR",
+     "voter": "registrar:owner"
+    },
+    {
+     "reason": "round-2 ballot does not carry the equalized evidence bundle sha256 \u2014 rejected",
+     "round": 2,
+     "source_class": "HUMAN_COLLABORATOR",
+     "voter": "registrar:owner"
+    }
+   ],
+   "cycle": {
+    "artifact_sha256": {
+     "calibration": "eccb4e9a9814e71214bde362798b59422af5e806a1a576caa40c6ba8bd56701d",
+     "expectations": "74a0492dbba19de6a03a698871383c8660386dd7f36f54598c1cc521399a4f2e",
+     "implementation": "1dcfe90fbc8dad725d6cf09aaea0d10615001e8d054d144f28ed76b89db26bad",
+     "round1": "0ba0583fe81b7142860b20ff6419c3a1dcb47fc6836f7e3b9a4acb93d36b941b",
+     "round2": "4b21c8fb14891ed526e85969483df05ed6f241824076d452b8db5256c5f94429",
+     "round2_evidence": "5250513befea837368206dae8ac15559a57eb5c5381f449a2b0b8caaa2fa5058",
+     "synthesis": "ba64707d8e6949e150e015ca52ea8183f8f858301f67792c77253086fa12e6f9"
+    },
+    "cycle_file": "/home/hatch/workspace/temporal-selfhost/n5-prove/rehearsal/cycle/CYCLE.json",
+    "ledger_feed": {
+     "calibration": {
+      "candidates": {
+       "HUMAN_COLLABORATOR": {
+        "rehearsal-empty": {
+         "actual_rank": 3,
+         "actual_score": 4.0,
+         "expected_rank": 3,
+         "expected_score": 6.0,
+         "moved_on_evidence": [
+          "2 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -2.0,
+         "within_tolerance": true
+        },
+        "rehearsal-strong": {
+         "actual_rank": 1,
+         "actual_score": 21.0,
+         "expected_rank": 1,
+         "expected_score": 20.0,
+         "moved_on_evidence": [
+          "full test pass in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": 1.0,
+         "within_tolerance": true
+        },
+        "rehearsal-weak": {
+         "actual_rank": 2,
+         "actual_score": 9.0,
+         "expected_rank": 2,
+         "expected_score": 12.0,
+         "moved_on_evidence": [
+          "3 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -3.0,
+         "within_tolerance": false
+        }
+       },
+       "LOCAL_BASELINE": {
+        "rehearsal-empty": {
+         "actual_rank": 3,
+         "actual_score": 1.0,
+         "expected_rank": 3,
+         "expected_score": 4.038,
+         "moved_on_evidence": [
+          "2 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -3.038,
+         "within_tolerance": false
+        },
+        "rehearsal-strong": {
+         "actual_rank": 1,
+         "actual_score": 25.0,
+         "expected_rank": 1,
+         "expected_score": 24.231,
+         "moved_on_evidence": [
+          "full test pass in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": 0.769,
+         "within_tolerance": true
+        },
+        "rehearsal-weak": {
+         "actual_rank": 2,
+         "actual_score": 8.538,
+         "expected_rank": 2,
+         "expected_score": 10.846,
+         "moved_on_evidence": [
+          "3 failing test(s) in the implementation round"
+         ],
+         "rank_delta": 0,
+         "score_delta": -2.308,
+         "within_tolerance": false
+        }
+       }
+      },
+      "evidence_set_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+      "schema": "oracle-method-calibration/v1"
+     },
+     "pass_id": "rehearsal",
+     "type": "delphi-generation-calibration"
+    },
+    "ranked_outcome": [
+     "rehearsal-strong",
+     "rehearsal-weak",
+     "rehearsal-empty"
+    ],
+    "stages": [
+     {
+      "detail": "n=3 candidates",
+      "stage": "generate",
+      "status": "ran"
+     },
+     {
+      "detail": "ballots_by_class={'HUMAN_COLLABORATOR': 1, 'MODEL_PROVIDER': 0, 'LOCAL_BASELINE': 5}",
+      "stage": "cross_vote_round_1",
+      "status": "ran"
+     },
+     {
+      "detail": "priors on record before implementation",
+      "stage": "expectations_recorded",
+      "status": "ran"
+     },
+     {
+      "detail": "synthesis issued from round-1 rationales; arguments unattributed beyond class + role",
+      "stage": "facilitator_feedback",
+      "status": "ran"
+     },
+     {
+      "detail": "no DEBATE / revision ballots supplied against the synthesis; the round is callable, not automatic",
+      "stage": "debate_revision",
+      "status": "specified_not_run"
+     },
+     {
+      "detail": "parallel per-proposal test results recorded; all suites receipt-verified",
+      "stage": "implementation",
+      "status": "ran"
+     },
+     {
+      "detail": "common evidence set sha256=dde5aac5d62b\u2026",
+      "stage": "evidence_equalization",
+      "status": "ran"
+     },
+     {
+      "detail": "ranked=['rehearsal-strong', 'rehearsal-weak', 'rehearsal-empty']",
+      "stage": "cross_vote_round_2",
+      "status": "ran"
+     },
+     {
+      "detail": "round-2 vs round-1 expectations; feed for the weighting/elo ledgers",
+      "stage": "calibration",
+      "status": "ran"
+     }
+    ]
+   },
+   "emission": {
+    "receipts": [
+     {
+      "comment_id": 6478757703,
+      "issue": 1487,
+      "sha256": "b0bff1c0cd7a6dd3858582936f201fbe9bcfaee96ce0c512764eebbb06f65057",
+      "stage": "ballot_round1",
+      "state": "posted"
+     },
+     {
+      "comment_id": 6478758831,
+      "issue": 1487,
+      "sha256": "9a23e190de575e9c4bb8fc2a4619cafb2d5018a2728a406d383e4f540de04c3e",
+      "stage": "ballot_round2",
+      "state": "posted"
+     },
+     {
+      "comment_id": 6478760068,
+      "issue": 1487,
+      "sha256": "b08eeb5d222232867f8d43164299a0690efcdc42020e6863f251dc0f15180812",
+      "stage": "calibration",
+      "state": "posted"
+     },
+     {
+      "comment_id": 6478761141,
+      "issue": 1489,
+      "sha256": "9dd781b33b28c0ade26579d3ac444792e8bf68423803c5070cf8fe99d9eb5d81",
+      "stage": "calibration_feed_weights",
+      "state": "posted"
+     }
+    ],
+    "workflow_id": "delphi-cycle/rehearsal"
+   },
+   "evidence_bundle_sha256": "dde5aac5d62b8e6f6a946564908ee055b3e19cc488c61aeee62015013768d9ac",
+   "pass_id": "rehearsal",
+   "ranked_outcome": [
+    "rehearsal-strong",
+    "rehearsal-weak",
+    "rehearsal-empty"
+   ],
+   "schema": "delphi-cycle-workflow-result/v1",
+   "stage": "complete"
+  },
+  "emission_reinvoke": {
+   "workflow_id": "delphi-cycle/rehearsal",
+   "receipts": [
+    {
+     "stage": "ballot_round1",
+     "state": "already_posted",
+     "issue": 1487,
+     "comment_id": 6478757703,
+     "sha256": "b0bff1c0cd7a6dd3858582936f201fbe9bcfaee96ce0c512764eebbb06f65057"
+    },
+    {
+     "stage": "ballot_round2",
+     "state": "already_posted",
+     "issue": 1487,
+     "comment_id": 6478758831,
+     "sha256": "9a23e190de575e9c4bb8fc2a4619cafb2d5018a2728a406d383e4f540de04c3e"
+    },
+    {
+     "stage": "calibration",
+     "state": "already_posted",
+     "issue": 1487,
+     "comment_id": 6478760068,
+     "sha256": "b08eeb5d222232867f8d43164299a0690efcdc42020e6863f251dc0f15180812"
+    },
+    {
+     "stage": "calibration_feed_weights",
+     "state": "already_posted",
+     "issue": 1489,
+     "comment_id": 6478761141,
+     "sha256": "9dd781b33b28c0ade26579d3ac444792e8bf68423803c5070cf8fe99d9eb5d81"
+    }
+   ]
+  },
+  "history_events": 72,
+  "history_sha256": "32ceb4fa7a3288675461f85480459170428c5f7e0f5715f30c84de07758ea4e3",
+  "verdict": "PASS"
+ },
+ "parity": {
+  "compared": [
+   "calibration",
+   "expectations",
+   "implementation",
+   "round1",
+   "round2",
+   "round2_evidence",
+   "synthesis"
+  ],
+  "diffs": [],
+  "verdict": "PASS",
+  "normalization": "ballot lists sorted by voter \u2014 the payload converter canonically sorts dict keys in transit, so rubric ballot ORDER differs between paths; aggregation is order-insensitive. All fields otherwise identical, including the round2 evidence sha256.",
+  "method": "client.py parity: method_cycle.run_cycle on the same fixture inputs (same generated_at 2026-10-28T00:00:00Z, same accepted ballots, the workflow's raw implementation results) vs the workflow's emitted pass-record artifacts"
+ },
+ "attempts": [
+  {
+   "n": 1,
+   "outcome": "FAIL \u2014 ballot signal lost",
+   "cause": "BallotSignal.rationale typed as `object` failed temporalio payload conversion (worker log TypeError); facilitator signal (plain dataclass) unaffected, cycle ran ballot-less to round2_gate and was terminated",
+   "fix": "rationale: typing.Any + payload round-trip regression test"
+  },
+  {
+   "n": 2,
+   "outcome": "FAIL \u2014 prove wait window expired",
+   "cause": "SIGKILL recovery bounded by the implementation activity's 5-minute heartbeat timeout; retry began after the prove driver's 300s round2_gate wait lapsed",
+   "fix": "heartbeat timeout 60s + activity heartbeats through long suites (Popen poll loop); prove wait 900s"
+  },
+  {
+   "n": 3,
+   "outcome": "FAIL \u2014 all round-2 ballots rejected",
+   "cause": "dedupe key (class, voter, run_id) persisted across rounds, colliding with cycle v2's per-round validation: the round-1 registrar's round-2 ballots were refused as duplicates before the hash gate",
+   "fix": "dedupe keys scoped per round + regression test (same voter, both rounds, admitted)"
+  },
+  {
+   "n": 4,
+   "outcome": "PASS",
+   "detail": "envelope in `acceptance`: SIGKILL mid-implementation (stage_at_kill=implementation), worker 2 resumed + completed, wrong-hash and missing-hash round-2 ballots rejected + recorded, correct-hash accepted, 4 ledger payloads posted (comment IDs in emission receipts) and re-invocation returned already_posted for all 4 \u2014 exactly once"
+  }
+ ],
+ "ledger_emission_note": "Acceptance payloads are the fixture pass's real records (pass_id rehearsal), posted via exact-title resolution to the Delphi outcome ledger issue + the panel weights ledger issue; each carries the registry kind marker + the n5-emit idempotency marker (workflow ID + stage)."
+}

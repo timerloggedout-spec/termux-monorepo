@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "n_runs",
+    "terms",
+    "rank",
+    "residual_df",
+    "pure_error_df",
+    "lack_of_fit_df",
+    "condition_number_scaled",
+    "column_pairs",
+    "warnings",
+    "release_ready"
+  ],
+  "properties": {
+    "n_runs": {
+      "type": "integer"
+    },
+    "terms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rank": {
+      "type": "integer"
+    },
+    "residual_df": {
+      "type": "integer"
+    },
+    "pure_error_df": {
+      "type": "integer"
+    },
+    "lack_of_fit_df": {
+      "type": "integer"
+    },
+    "condition_number_scaled": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "column_pairs": {
+      "type": "array"
+    },
+    "defining_relation": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "release_ready": {
+      "type": "boolean"
+    }
+  }
+}

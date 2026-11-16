@@ -1,0 +1,128 @@
+{
+  "version": "0.5.0",
+  "updated": "2026-10-27T01:10:29Z",
+  "note": "github-remote is the LIVE GitHub-hosted MCP URL for URL-only agents. github-docker is optional self-host only. termux/android stay on Vercel hub — do not mix. bifrost is evaluation gateway (chat+MCP), not a replacement for github-remote.",
+  "hosts": [
+    {
+      "id": "github-remote",
+      "transport": "streamable-http",
+      "endpoints": {
+        "mcp": "https://api.githubcopilot.com/mcp/",
+        "readonly": "https://api.githubcopilot.com/mcp/readonly"
+      },
+      "tools": ["toolsets: default|repos|issues|pull_requests|actions|…"],
+      "status": "live_verified",
+      "auth": "Authorization: Bearer <PAT> or host OAuth",
+      "note": "GitHub-operated. Probe 2026-09-17: POST without Authorization → 401 (server live). PRIMARY path for URL-only / no-desktop agents. See docs/ops/GITHUB-MCP-LIVE-URL.md",
+      "client_config": "mcp-hub/client-configs/github-remote-url-only.json"
+    },
+    {
+      "id": "termux-mcp",
+      "repo": "https://github.com/timerloggedout-spec/termux-mcp",
+      "submodule": "mcp-hub/termux-mcp",
+      "transport": "streamable-http",
+      "endpoints": {
+        "mcp": "/mcp/termux"
+      },
+      "tools": ["termux_status", "termux_run", "termux_pkg"],
+      "status": "on_hold_superseded",
+      "note": "Alternative route to Termux local, placed ON HOLD and SUPERSEDED (owner ruling, 2026-10-26). The fleet device route is the pull-queue lane (docs/ops/DEVICE-PULL-QUEUE.md): the device pulls tasks; no inbound MCP server is the operating path. The standalone endpoint may still respond - responding is not operating. The hub root-directory switch no longer applies to this host."
+    },
+    {
+      "id": "android-mcp",
+      "repo": "https://github.com/timerloggedout-spec/android-mcp",
+      "submodule": "mcp-hub/android-mcp",
+      "transport": "streamable-http",
+      "endpoints": {
+        "mcp": "/mcp/android"
+      },
+      "tools": ["android_status", "android_adb", "android_devices"],
+      "status": "not_deployed_pending_hub_root_directory_switch",
+      "note": "Standalone android-mcp.vercel.app was never deployed (no project on that name). This hub is now the deploy path instead of standing up a second project."
+    },
+    {
+      "id": "github-docker",
+      "repo": "https://github.com/timerloggedout-spec/termux-monorepo",
+      "path": "mcp-docker/github-mcp",
+      "transport": "stdio|streamable-http",
+      "image": "ghcr.io/github/github-mcp-server:latest",
+      "endpoints": {
+        "stdio": "docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-server",
+        "http": "http://localhost:8082 (self-host only; not for phone without public HTTPS)"
+      },
+      "tools": ["toolsets: default|repos|issues|pull_requests|actions|…"],
+      "status": "self_host_optional",
+      "note": "OPTIONAL. Not required when github-remote works. SEPARATED from Vercel hub."
+    },
+    {
+      "id": "gh-aw-mcpg",
+      "repo": "https://github.com/timerloggedout-spec/gh-aw-mcpg_fork",
+      "transport": "gateway",
+      "note": "MCP Gateway fork — fronts multiple servers. Not yet folded into this hub.",
+      "status": "fork_synced"
+    },
+    {
+      "id": "bifrost",
+      "repo": "https://github.com/timerloggedout-spec/bifrost_fork",
+      "upstream": "https://github.com/maximhq/bifrost",
+      "benchmarking_repo": "https://github.com/timerloggedout-spec/bifrost-benchmarking_fork",
+      "transport": "http|mcp",
+      "endpoints": {
+        "openai_compat": "http://localhost:8080/v1/chat/completions",
+        "mcp": "Bifrost native MCP gateway (tool calling / agent loop)",
+        "ui": "http://localhost:8080"
+      },
+      "tools": ["multi-provider chat", "MCP tool calling", "semantic cache", "governance/virtual-keys"],
+      "status": "evaluation",
+      "auth": "Provider keys held by Bifrost; callers use OpenAI-compat or MCP clients",
+      "note": "High-perf AI + MCP gateway candidate. NOT a replacement for github-remote. Measure with bifrost-benchmarking_fork (mocker + benchmark.go) vs OpenRouter/OX Alpha/llm_api_hub before any production promote. See docs/proposals/active/bifrost-gateway-integration/ and docs/ops/ROUTING-ORCHESTRATION-MAP.md."
+    },
+    {
+      "id": "google-data-agent-kit",
+      "repo": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
+      "upstream": "https://github.com/GoogleCloudPlatform/data-agent-kit-plugin",
+      "transport": "stdio proxy (plugin bundle) to Google-hosted streamable-http MCP endpoints (+ 2 local plugin servers)",
+      "endpoints": {
+        "bigquery": "https://bigquery.googleapis.com/mcp",
+        "gcs": "https://storage.googleapis.com/storage/mcp",
+        "knowledge_catalog": "https://dataplex.googleapis.com/mcp",
+        "alloydb": "https://alloydb.googleapis.com/mcp",
+        "cloudsql": "https://sqladmin.googleapis.com/mcp",
+        "spanner": "https://spanner.googleapis.com/mcp",
+        "bigtable_data": "https://bigtable.googleapis.com/mcp",
+        "bigtable_admin": "https://bigtableadmin.googleapis.com/mcp",
+        "spark": "https://dataproc-$GCP_REGION.googleapis.com/mcp",
+        "notebook": "local (plugin mcp/dist/index.js --mode=notebook)",
+        "viz": "local (plugin mcp/dist/index.js --mode=visualization)"
+      },
+      "tools": ["dak-bigquery", "dak-gcs", "dak-kc", "dak-alloydb", "dak-cloudsql", "dak-spanner", "dak-bigtable-data", "dak-bigtable", "dak-spark", "dak-notebook", "dak-viz"],
+      "status": "wired_full_pending_gcp_project",
+      "auth": "ADC with impersonation of the dedicated read-only service account named in ops/data_agent_kit/guardrail-policy.yaml; no service-account keys; agent data work never runs on the owner's user credentials",
+      "client_config": "mcp-hub/client-configs/data-agent-kit.json",
+      "note": "Google Data Agent Kit (GA 2026-09-30, Apache-2.0, plugin v1.1.0). FULL WIRING landed pre-signup per the freemium-prep doctrine (owner, 2026-10-26): all 11 servers configured before any GCP account exists, so signup-day is activation, not setup - the $300/90-day trial clock funds usage, not wiring. Readiness classes: day-one = bigquery/gcs/knowledge-catalog; instance-required = alloydb/cloudsql/spanner/bigtable-data/spark; local = notebook/viz; wired-but-IAM-denied for agents = bigtable admin plane. Enforcement is IAM-tier only (read-only SA + deny policy on non-read-only tools); the kit's 37 skills are advisory. The plugin's telemetry hook ships DISABLED in fleet installs (owner review pending). Exit: delete this entry + client config, uninstall plugin, delete the SA - no fleet pipeline depends on this path. Activation: docs/ops/DATA-AGENT-KIT-ACTIVATION.md."
+    }
+  ],
+  "client_snippets": {
+    "url_only": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "authorization": "Bearer <GITHUB_PAT>"
+    },
+    "cursor": {
+      "mcpServers": {
+        "github": {
+          "type": "http",
+          "url": "https://api.githubcopilot.com/mcp/",
+          "headers": {
+            "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+          }
+        },
+        "termux": { "url": "https://<hub-domain>/mcp/termux" },
+        "android": { "url": "https://<hub-domain>/mcp/android" }
+      }
+    },
+    "bifrost_openai_compat": {
+      "base_url": "http://localhost:8080/v1",
+      "note": "Drop-in OpenAI client; point base_url at Bifrost when self-hosted evaluation is running"
+    }
+  }
+}

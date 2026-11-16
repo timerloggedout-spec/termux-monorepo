@@ -1,0 +1,13 @@
+Looking at your `synthegration` CLI codebase, I'll provide a patch that integrates FTS[1;36m5[0m full-text search. Here's the patch for the relevant Python file [1m([0mlikely `cli.py` or similar[1m)[0m:
+
+```diff
+--- a[35m/[0m[95ms[0mynthegration[35m/[0m[95mcl[0mi.py
++++ b[35m/[0m[95ms[0mynthegration[35m/[0m[95mcl[0mi.py
+@@ -[1;36m1[0m,[1;36m11[0m +[1;36m1[0m,[1;36m13[0m @@
+ import json
+ import os
+ import sys
+ import argparse
+ import glob
+ from pathlib import Path
++i

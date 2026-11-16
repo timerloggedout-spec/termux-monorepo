@@ -1,0 +1,93 @@
+{
+  "schema": "moneyball-plane/v2",
+  "record_id": "mbv2-D1-ladder-practice-sets-evaluate-2026-10-28-recruitment",
+  "pass_id": "challenge-recruitment-2026-10-28",
+  "opportunity": {
+    "entity_id": "ladder-practice-sets",
+    "action": "evaluate",
+    "context": "D1",
+    "decision_time": "2026-10-28T14:30:00-07:00"
+  },
+  "baseline_id": "unobserved-field-baseline",
+  "weights": {
+    "axes": {
+      "track_record": 0.3,
+      "momentum": 0.25,
+      "engagement_surface": 0.2,
+      "composability_fit": 0.15,
+      "inverse_engagement_cost": 0.1
+    },
+    "fixed_at": "D1 event intake - coordinator.json events[D1].moneyball (fixed 2026-10-28, before any score)"
+  },
+  "axes": [
+    {
+      "axis": "track_record",
+      "value": 0,
+      "evidence_strength": "unverified",
+      "uncertainty": 0.9,
+      "evidence_refs": [
+        "https://github.com/abhinavshukla152005-beep",
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust"
+      ]
+    },
+    {
+      "axis": "momentum",
+      "value": 1,
+      "evidence_strength": "limited",
+      "uncertainty": 0.7,
+      "evidence_refs": [
+        "https://api.github.com/users/abhinavshukla152005-beep/events/public",
+        "https://api.github.com/users/abhinavshukla152005-beep/repos?per_page=100"
+      ]
+    },
+    {
+      "axis": "engagement_surface",
+      "value": 5,
+      "evidence_strength": "limited",
+      "uncertainty": 0.5,
+      "evidence_refs": [
+        "https://github.com/abhinavshukla152005-beep",
+        "https://builder.aws.com/project/3LJjkhxhefaoI8OMD5QZW8HkUnp/ladder-practice-sets-a-teacher-can-trust",
+        "https://youtu.be/aoFbngpUhP8"
+      ]
+    },
+    {
+      "axis": "composability_fit",
+      "value": 7,
+      "evidence_strength": "limited",
+      "uncertainty": 0.5,
+      "evidence_refs": [
+        "https://github.com/abhinavshukla152005-beep",
+        "https://github.com/abhinavshukla152005-beep/ladder"
+      ]
+    },
+    {
+      "axis": "inverse_engagement_cost",
+      "value": 6,
+      "evidence_strength": "limited",
+      "uncertainty": 0.5,
+      "evidence_refs": [
+        "https://github.com/abhinavshukla152005-beep"
+      ]
+    }
+  ],
+  "composite": 2.9,
+  "quantities": {
+    "capability": null,
+    "forecast": null,
+    "incremental_effect": null,
+    "value": null,
+    "surplus": null,
+    "portfolio_marginal_contribution": null
+  },
+  "ballot": {
+    "relation": "beside_never_merged",
+    "aggregate": null
+  },
+  "point_in_time": {
+    "event_time": "2026-10-28T13:02:00-07:00",
+    "published_at": "2026-10-28T14:30:00-07:00",
+    "ingested_at": "2026-10-28T14:30:00-07:00"
+  },
+  "notes": "Recruitment-seat re-evaluation superseding evidence (not weights/threshold) of mbv2-D1-ladder-practice-sets-evaluate-2026-10-28 (2.05). GitHub hunt resolved: repo owner abhinavshukla152005-beep (high confidence). track_record stays unverified: no past wins/placements in public profile/repos (17 repos, 0 stars). momentum limited: single snapshot series point + Oct 19-28 push burst, no delta series yet. engagement_surface 4->5 (GitHub+portfolio+Twitter public beside Builder/demo). composability_fit stays 7 (bio/repos: agentic AI, MCP, Python/TS, Strands \u2014 strong D1-theme fit). inverse_engagement_cost 2->6 (public GitHub contact surface now established). FLAG RULE: REFUSED \u2014 composite 2.90 < 6.0 AND track_record unverified. candidate=false stands."
+}

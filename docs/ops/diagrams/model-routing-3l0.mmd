@@ -1,0 +1,46 @@
+flowchart TD
+  classDef state fill:#e8f0fe,stroke:#1a73e8,color:#102a43
+  classDef good fill:#e6f4ea,stroke:#188038,color:#102a43
+  classDef guard fill:#fef7e0,stroke:#b06000,color:#4a2c00
+  classDef external fill:#f3e8fd,stroke:#7b1fa2,color:#2b0c3d
+  classDef stop fill:#f1f3f4,stroke:#5f6368,color:#202124
+
+  task[Bounded role request: triage, review, or invoke]:::state
+  task --> context[Role, prompt-size, free-tier, and secret-availability preflight]:::guard
+  context --> gemini{Gemini enabled and primary candidate under soft budget?}:::guard
+  gemini -->|yes| gemscore[3L0 / ELO × role suitability rank]:::state
+  gemscore --> gemrun[Gemini primary route]:::external
+  gemini -->|no| peer[Consider configured secondary peers]:::guard
+
+  peer --> omni{Omni code path enabled by current operational policy?}:::guard
+  omni -->|yes| omnirun[Omni free peer route]:::external
+  omni -->|temporarily decommissioned| orouter
+  omni -->|no| orouter
+
+  orouter{OpenRouter credential and provider route enabled?}:::guard
+  orouter -->|no| exhausted
+  orouter -->|yes| cache{Fresh 1-hour catalog cache available?}:::guard
+  cache -->|yes| catalog[Use cached free-model catalog]:::state
+  cache -->|no| poll[Poll OpenRouter models endpoint with bounded timeout]:::external
+  poll -->|success| catalog
+  poll -->|failed, stale cache exists| stale[Use stale cached catalog with warning]:::guard
+  poll -->|failed, no cache| legacy[Use proven-only legacy free-model allowlist]:::guard
+
+  catalog --> free{Candidate is :free and in live catalog?}:::guard
+  stale --> free
+  legacy --> free
+  free -->|no| next[Skip unverified or paid candidate]:::stop
+  free -->|yes| rank[Rank provider/model by 3L0 / ELO × role suitability]:::state
+  rank --> budget{Per-model soft budget available?}:::guard
+  budget -->|yes| orrun[OpenRouter secondary route]:::external
+  budget -->|no| exhausted
+  next --> exhausted
+
+  gemrun --> evidence[Normalized non-secret result and usage evidence]:::good
+  omnirun --> evidence
+  orrun --> evidence
+  exhausted[Explicit skip: no eligible free route]:::stop
+  evidence --> outcome{Cooldown, error, or completion?}:::guard
+  outcome -->|completion| done[Visible bounded result / next workflow state]:::good
+  outcome -->|cooldown or rate limit| pending[Visible cooldown; no retry storm]:::guard
+  outcome -->|failure| fallback[Apply declared fallback only; otherwise explicit skip]:::stop

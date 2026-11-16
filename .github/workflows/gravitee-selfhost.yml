@@ -1,0 +1,140 @@
+name: gravitee selfhost
+
+# Gravitee APIM self-host on GitHub-hosted runners (owner ruling 2026-10-28:
+# self-host = surfaces reachable via GitHub Workflows). The fleet VM cannot
+# host APIM (no docker, ~0.5G RAM free); Actions runners boot the full stack
+# from the vendor-derived compose in ops/gravitee/.
+#
+# Design (owner terms):
+# - Fast boot: Console/Portal UIs trimmed; image tarballs persist in the
+#   Actions cache (docker load on hit, pull+save on miss); storage services
+#   healthcheck-gate the API services; ES is single-node with a 512m heap.
+# - Resilient mesh redundancy: TWO gateways sync from the shared Mongo
+#   repository; ci_verify.py requires BOTH to serve the seeded API.
+# - Sync: repo seeds (ops/gravitee/*.json) sync IN on every boot; the API
+#   export syncs OUT to an artifact + the Actions cache (restore-keys), so
+#   ephemeral runs hand state to the next run. Nothing is committed.
+# - Reachable surfaces (in-runner): mAPI :8083, gateways :8082/:8092.
+#   The PAT minted in-run is ephemeral and never leaves the job.
+
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+    inputs:
+      apim_version:
+        description: 'APIM image tag (vendor default: latest)'
+        type: string
+        default: 'latest'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gravitee-selfhost
+  cancel-in-progress: false
+
+jobs:
+  selfhost:
+    name: boot, verify connector + mesh sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      APIM_VERSION: ${{ inputs.apim_version || 'latest' }}
+      COMPOSE_FILE: ops/gravitee/docker-compose.selfhost.yml
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master
+          fetch-depth: 1
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Restore image cache
+        id: imgcache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: /tmp/gio-images.tar
+          key: gio-images-${{ hashFiles('ops/gravitee/docker-compose.selfhost.yml') }}-${{ env.APIM_VERSION }}
+
+      - name: Load cached images or pull
+        working-directory: ops/gravitee
+        run: |
+          set -euo pipefail
+          if [ -f /tmp/gio-images.tar ]; then
+            docker load -i /tmp/gio-images.tar && echo "cache: HIT (docker load)"
+          fi
+          docker compose -f docker-compose.selfhost.yml pull --parallel
+          if [ "${{ steps.imgcache.outputs.cache-hit }}" != "true" ]; then
+            docker save mongo:6.0 docker.elastic.co/elasticsearch/elasticsearch:8.17.2 \
+              graviteeio/apim-management-api:$APIM_VERSION graviteeio/apim-gateway:$APIM_VERSION \
+              nginx:alpine -o /tmp/gio-images.tar
+            echo "cache: saved $(du -h /tmp/gio-images.tar | cut -f1)"
+          fi
+          docker images --digests | grep -E 'graviteeio|mongo|elasticsearch|nginx' || true
+
+      - name: Restore mesh sync state (previous run export)
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: gravitee-state
+          key: gravitee-sync-${{ github.run_id }}
+          restore-keys: |
+            gravitee-sync-
+
+      - name: Boot the stack (fast boot — healthcheck gated)
+        working-directory: ops/gravitee
+        run: |
+          set -euo pipefail
+          sudo sysctl -w vm.max_map_count=262144
+          docker compose -f docker-compose.selfhost.yml up -d
+          docker compose -f docker-compose.selfhost.yml ps
+
+      - name: Wait for Management API
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 72); do
+            if curl -sf -u admin:admin http://localhost:8083/management/organizations/DEFAULT >/dev/null; then
+              echo "mAPI up after ~$((i*10))s"; exit 0
+            fi
+            sleep 10
+          done
+          echo "mAPI never came up"; exit 1
+
+      - name: Verify — PAT, connector helper, seed sync, dual-gateway mesh
+        env:
+          GRAVITEE_STATE_DIR: gravitee-state
+        run: python3 scripts/gravitee/ci_verify.py
+
+      - name: Save mesh sync state
+        if: always()
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: gravitee-state
+          key: gravitee-sync-${{ github.run_id }}
+
+      - name: Upload sync state + logs on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: gravitee-selfhost-diagnostics
+          path: |
+            gravitee-state
+          retention-days: 7
+
+      - name: Diagnostics on GitHub (step summary + stack logs in artifact)
+        if: always()
+        working-directory: ops/gravitee
+        run: |
+          set -uo pipefail
+          mkdir -p ../../gravitee-state
+          docker compose -f docker-compose.selfhost.yml logs --tail 300 > ../../gravitee-state/stack-logs.txt 2>/dev/null || true
+          {
+            echo "## Gravitee selfhost — run ${{ github.run_id }}"
+            echo "- workflow conclusion so far: verify step above; receipt:"
+            echo '```json'
+            cat ../../gravitee-state/receipt.json 2>/dev/null || echo "(no receipt — verify did not start or died before first step)"
+            echo '```'
+            echo "- stack logs: gravitee-state/stack-logs.txt (failure artifact / sync cache)"
+          } >> "$GITHUB_STEP_SUMMARY"

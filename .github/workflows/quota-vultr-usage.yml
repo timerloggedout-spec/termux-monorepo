@@ -1,0 +1,65 @@
+name: quota-vultr-usage
+
+# Vultr usage collector (owner order via D2 seat, 2026-11-03): pulls
+# plan rates from api.vultr.com/v2/plans at read time and rewrites
+# ops/quota/vultr-usage.json. The account legs (instances, serverless,
+# balance) stay explicit gaps until the owner's Vultr API key is
+# provisioned - when it lands, this workflow gains the key env and
+# the legs establish themselves; no secret is referenced before it
+# exists. Committing the collector output to master re-triggers
+# quota-usage-series-refresh, which re-derives the pack + series.
+# Pattern: quota-usage-series-refresh (Swarm app token, single-writer
+# direct commit, state-gated).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "scripts/quota_vultr_usage.py"
+      - ".github/workflows/quota-vultr-usage.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quota-vultr-usage
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Swarm app token (own 5000/h bucket), not the shared
+      # GITHUB_TOKEN bucket. SEC-03 minting, F1 pattern.
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect Vultr usage
+        run: python3 -B scripts/quota_vultr_usage.py --root .
+      - name: Commit collector output to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add ops/quota/vultr-usage.json
+          if git diff --cached --quiet; then
+            echo 'vultr-usage unchanged; no commit'
+            exit 0
+          fi
+          git config user.name 'quota-vultr-usage'
+          git config user.email 'actions@github.com'
+          git commit -m 'ops(quota): refresh vultr usage (auto-collected)'
+          git pull --rebase origin master
+          git push origin HEAD:master

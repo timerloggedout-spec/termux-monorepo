@@ -1,0 +1,52 @@
+{
+  "arm_state": "live",
+  "baseline_sha": "6af762d1e232eaa64827211ea7b6251bcd936233",
+  "candidate_sha": "828113dc46a587e2748c599c8cd03a7904588bf9",
+  "context": "build dispatch set 2/3: wire provider-command-dispatch.yml to the stamp fan-out",
+  "cumulative_n": 2,
+  "dispatch_id": "build-wire-command-dispatch-3428",
+  "endpoint": "Muse::Muse Spark 1.3",
+  "entry": "3428",
+  "instance": {
+    "context": "fan-out wiring completion set (build-class)",
+    "model": "Muse Spark 1.3",
+    "moniker": "optimizations-assurance",
+    "provider": "Muse",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md",
+      "sha256": "7d7481cc3c5249afa836867a40c3736721e1fd7bee05fdf40c8cd1ab818823c1"
+    },
+    "tools": {
+      "ref": "scripts/dispatch/instance/build-tools.json",
+      "sha256": "956d13565c31af2d613e2d2db5b0cce7fa0410ea975004e57c2ec1e37a72a9ba"
+    }
+  },
+  "model": "Muse Spark 1.3",
+  "moniker": "optimizations-assurance",
+  "outcome": {
+    "artifact": "PR #3428",
+    "confirmed": null,
+    "gate_call": null,
+    "status": "completed",
+    "summary": "PR #3428 merged (guard x2 + hygiene success); stamp re-fired under the push-retry fan-out (earlier attempts lost to push races, runs 41369412187/41369817802)"
+  },
+  "provider": "Muse",
+  "quota": {
+    "cost_class": "metered",
+    "pool": "seat-runtime",
+    "slice": null
+  },
+  "role": "builder",
+  "run": {
+    "run_id": null,
+    "session_id": null,
+    "workflow": "seat-dispatch (git-data API)"
+  },
+  "selection_reason": "designed set: complete fan-out wiring across dispatch routes; seat build arm = only live build class (Jules down, Gemini CLI out, DeepSeek tunnel down)",
+  "set_index": 2,
+  "suite": "routed-dispatch/v1",
+  "task_class": "build",
+  "trigger": "routing-update wiring completion set (DoE scoring-grade population)",
+  "ts": "2026-11-02T01:04:53Z"
+}

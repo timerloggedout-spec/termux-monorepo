@@ -1,0 +1,21 @@
+{
+  "include": [
+    "workspace/llm_map",
+    "deepcli",
+    "cli-synthegration",
+    "harmony_hub",
+    "harmonizer-prod_cli",
+    "deepcli-tui",
+    "src",
+    "termux-multi-agent",
+    ".hermes/hermes-agent/hermes_cli",
+    ".hermes/hermes-agent/tui_gateway"
+  ],
+  "exclude": [
+    ".cargo/*",
+    ".hermes/*",
+    ".cargo/*",
+    ".cargo/registry/*",
+    ".cargo/git/*"
+  ]
+}

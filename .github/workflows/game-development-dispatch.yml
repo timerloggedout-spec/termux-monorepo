@@ -1,0 +1,100 @@
+name: game-development-dispatch
+
+# This route is invoked only after swarm-admission completes and publishes
+# its handoff artifact. It queues validated game-development tasks; provider
+# selection and execution remain in the existing claim/dispatch machinery.
+on:
+  workflow_run:
+    workflows: ["swarm-admission"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+concurrency:
+  group: game-development-dispatch-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the admission handoff
+        uses: actions/download-artifact@v4
+        with:
+          name: issue-admission
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          path: ${{ runner.temp }}/admission
+
+      - name: Select admitted Game Development filings only
+        id: handoff
+        run: |
+          python3 - <<'PYEOF'
+          import json, os
+          path = os.path.join(os.environ["RUNNER_TEMP"], "admission", "admission.json")
+          with open(path) as fh:
+              record = json.load(fh)
+          dispatch = (
+              record.get("matched") is True
+              and record.get("template") == "game-development-task.yml"
+              and record.get("decision") == "admitted"
+              and record.get("issue_number")
+          )
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"dispatch={'true' if dispatch else 'false'}\n")
+              fh.write(f"issue_number={record.get('issue_number', '')}\n")
+          print("Game Development dispatch admitted." if dispatch else "No admitted Game Development filing in this admission run.")
+          PYEOF
+
+      - name: Fetch the admitted issue body
+        if: steps.handoff.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" --jq .body > "$RUNNER_TEMP/issue-body.md"
+
+      - name: Parse and validate the project-task contract
+        if: steps.handoff.outputs.dispatch == 'true'
+        id: parse
+        env:
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          python3 scripts/dispatch/project_task.py \
+            --body-file "$RUNNER_TEMP/issue-body.md" \
+            --issue "$ISSUE_NUMBER" \
+            --comment-out "$RUNNER_TEMP/comment.md" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Queue the admitted task
+        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          gh label create game-development --force --color 1D76DB \
+            --description "Game Development & Production task intake" || true
+          gh issue edit "$ISSUE_NUMBER" --add-label game-development
+          gh label create dispatch-queued --force --color 0E8A16 \
+            --description "Project task accepted into the system; selection pending/executing" || true
+          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "$ISSUE_NUMBER" --add-label dispatch-queued
+
+      - name: Diagnose incomplete task intake
+        if: steps.handoff.outputs.dispatch == 'true' && steps.parse.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ steps.handoff.outputs.issue_number }}
+        run: |
+          gh label create intake-incomplete --force --color D93F0B \
+            --description "Game-development task intake is incomplete; see the diagnosis comment" || true
+          gh issue comment "$ISSUE_NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+          gh issue edit "$ISSUE_NUMBER" --add-label intake-incomplete

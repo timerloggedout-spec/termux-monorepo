@@ -1,0 +1,26 @@
+# Demo project catalog (ledger row 8): every asset the demo pipeline
+# names, with its declared kind + format. Nodes never touch a path.
+dataset:
+  kind: dataset
+  format: csv
+fold_models_linear:
+  kind: model
+  format: json
+fold_models_quad:
+  kind: model
+  format: json
+fold_metrics_linear:
+  kind: metrics
+  format: json
+fold_metrics_quad:
+  kind: metrics
+  format: json
+cv_metrics:
+  kind: metrics
+  format: json
+report:
+  kind: report
+  format: text
+legacy_blob:
+  kind: model
+  format: pickle-class

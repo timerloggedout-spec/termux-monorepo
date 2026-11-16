@@ -1,0 +1,201 @@
+name: Delphi conversational intake
+
+# Conversational intake (issue #1572, docs/ops/DELPHI-ORACLE-RFP-GATE.md):
+# turns an ordinary issue comment into a finished Delphi RFP issue, closing
+# the end-to-end gap the panel cited for delphi.conversational_intake.
+# Deterministic parsing only (MSM-018: no model ballots, no LLM calls).
+# Secret VALUES never appear; the auth field carries an Actions secret NAME
+# only (issue #184 credential plane).
+#
+# Comment trigger (marker-gated, operator-wake precedent — Bot comments work):
+#   <!-- request-delphi-intake -->
+#   surface: fly.free_tier
+#   lane: deploy
+#   filed-by: delphi
+#   quota: <metric / limit / vendor URL>
+#   reset: <text>
+#   auth: <Actions secret NAME only, or "none needed">
+#   lock-in: 1..5
+#   failure-mode: <one per line>
+# Any other non-empty line becomes evidence text. Missing optional fields
+# default to unsourced/unknown; the oracle attaches what it can from
+# ops/delphi/surfaces.json. Filing the labeled issue wakes delphi-gate
+# automatically (issues labeled delphi:rfp trigger), so the full loop is:
+# comment -> finished RFP -> blind panel -> award/board — no cron involved.
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      surface_id:
+        description: 'Surface id (ops/delphi/surfaces.json id or a new id)'
+        required: true
+        type: string
+      lane:
+        description: 'Lane'
+        required: true
+        default: 'other'
+        type: choice
+        options: [data, queue, model, deploy, observability, partner, other]
+      quota:
+        description: 'Free quota (metric / limit / vendor URL)'
+        required: false
+        type: string
+      reset:
+        description: 'Reset and zone'
+        required: false
+        type: string
+      auth:
+        description: 'Actions secret NAME only, or "none needed"'
+        required: false
+        type: string
+      lock_in:
+        description: 'Lock-in 1-5'
+        required: false
+        default: '3'
+        type: string
+
+concurrency:
+  group: delphi-intake-${{ github.event.issue.number || github.event.inputs.surface_id || github.run_id }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  intake:
+    if: >-
+      (github.event_name == 'issue_comment' &&
+       contains(github.event.comment.body || '', '<!-- request-delphi-intake -->')) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    env:
+      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number || '' }}
+      COMMENT_ID: ${{ github.event.comment.id || '' }}
+      COMMENT_BODY: ${{ github.event.comment.body || '' }}
+      IN_SURFACE: ${{ github.event.inputs.surface_id || '' }}
+      IN_LANE: ${{ github.event.inputs.lane || '' }}
+      IN_QUOTA: ${{ github.event.inputs.quota || '' }}
+      IN_RESET: ${{ github.event.inputs.reset || '' }}
+      IN_AUTH: ${{ github.event.inputs.auth || '' }}
+      IN_LOCK_IN: ${{ github.event.inputs.lock_in || '' }}
+    steps:
+      - name: Checkout trusted control-plane
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: File finished RFP from the comment
+        id: file
+        run: |
+          set -uo pipefail
+          surface=""
+          lane="other"
+          filed_by="delphi"
+          quota="unsourced — oracle to attach documented limits with source URLs"
+          reset="unknown"
+          auth="none needed"
+          lock_in="3"
+          failure_modes="none stated"
+          if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
+            surface="$IN_SURFACE"
+            [ -n "$IN_LANE" ] && lane="$IN_LANE"
+            [ -n "$IN_QUOTA" ] && quota="$IN_QUOTA"
+            [ -n "$IN_RESET" ] && reset="$IN_RESET"
+            [ -n "$IN_AUTH" ] && auth="$IN_AUTH"
+            [ -n "$IN_LOCK_IN" ] && lock_in="$IN_LOCK_IN"
+          else
+            field() {
+              printf '%s\n' "$COMMENT_BODY" | sed -n "s/^[[:space:]]*$1:[[:space:]]*//p" | head -n1
+            }
+            surface=$(field surface)
+            lane=$(field lane)
+            filed_by=$(field filed-by)
+            quota=$(field quota)
+            reset=$(field reset)
+            auth=$(field auth)
+            lock_in=$(field lock-in)
+            fm=$(printf '%s\n' "$COMMENT_BODY" | sed -n "s/^[[:space:]]*failure-mode:[[:space:]]*//p")
+            if [ -n "$fm" ]; then failure_modes="$fm"; fi
+          fi
+          surface=$(printf '%s' "$surface" | tr -d '[:space:]')
+          if [ -z "$surface" ]; then
+            report="### Delphi conversational intake"
+            report="${report}"$'\n'"- no surface line found (expected 'surface: <id>'); nothing filed"
+            {
+              echo "report<<REPORT_EOF"
+              printf '%s\n' "$report"
+              echo "REPORT_EOF"
+            } >> "$GITHUB_OUTPUT"
+            printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          evidence="none supplied"
+          if [ "${GITHUB_EVENT_NAME:-}" != "workflow_dispatch" ]; then
+            ev=$(printf '%s\n' "$COMMENT_BODY" | grep -vE '^[[:space:]]*(<!--|surface:|lane:|filed-by:|quota:|reset:|auth:|lock-in:|failure-mode:)' | grep -vE '^[[:space:]]*$' || true)
+            if [ -n "$ev" ]; then evidence="$ev"; fi
+          fi
+          source_line="workflow_dispatch run ${GITHUB_RUN_ID}"
+          if [ -n "$ISSUE_NUMBER" ] && [ -n "$COMMENT_ID" ]; then
+            source_line="comment https://github.com/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}#issuecomment-${COMMENT_ID}"
+          fi
+          body_file="$RUNNER_TEMP/rfp-body.md"
+          {
+            echo "Filed by delphi.conversational_intake (issue #1572 end-to-end path). Source: ${source_line}."
+            echo
+            echo '### Surface id'
+            echo "$surface"
+            echo
+            echo '### Lane'
+            echo "$lane"
+            echo
+            echo '### Filed by (collaboration lane)'
+            echo "$filed_by"
+            echo
+            echo '### Gantt plan'
+            echo 'oracle facts | T0 | T0 | -'
+            echo 'panel rounds | T0 | T0 | oracle facts'
+            echo 'shadow lane (5% traffic) | T0+1d | T0+7d | panel rounds'
+            echo 'promote or park | T0+7d | T0+7d | shadow lane'
+            echo
+            echo '### Free quota'
+            echo "$quota"
+            echo
+            echo '### Reset and zone'
+            echo "$reset"
+            echo
+            echo '### Auth from Actions'
+            echo "$auth"
+            echo
+            echo '### Lock-in'
+            echo "$lock_in"
+            echo
+            echo '### Failure modes'
+            echo "$failure_modes"
+            echo
+            echo '### Evidence links'
+            echo "$evidence"
+          } > "$body_file"
+          new_url=$(gh issue create -R "$GITHUB_REPOSITORY" --title "[delphi:rfp] ${surface}" --label "delphi:rfp" --body-file "$body_file")
+          new_number=$(printf '%s' "$new_url" | sed -n 's#.*/issues/\([0-9][0-9]*\)$#\1#p')
+          report="### Delphi conversational intake"
+          report="${report}"$'\n'"- filed #${new_number} ${new_url} (delphi:rfp; gate wakes on the label)"
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post result back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.file.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha delphi-intake run=${GITHUB_RUN_ID} -->"

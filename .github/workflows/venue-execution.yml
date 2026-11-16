@@ -1,0 +1,152 @@
+name: '🏟️ Venue Execution (QUE #5254)'
+
+# Venue-execution machinery: executes the fleet-executable class of
+# an entry's submission-requirements census in Actions — adapter
+# execute -> unauthenticated verify -> receipt stamp on the entry's
+# filing. SUBMIT-ONCE is enforced by the executor's state file
+# (ops/venue-execution/state.json, committed by this workflow): a
+# second fire reads state and re-verifies, never re-sends.
+# Fail-visible: a venue refusal fails the run loudly and the receipt
+# still stamps (named reason, never a silent seat fallback).
+
+on:
+  # The proof-entry run on PRs touching the machinery is the
+  # filing's live end-to-end evidence; SUBMIT-ONCE state makes
+  # repeat fires read-back-only.
+  pull_request:
+    paths:
+      - 'scripts/venues/**'
+      - '.github/workflows/venue-execution.yml'
+      - 'entries/venue-machinery-proof/**'
+  workflow_dispatch:
+    inputs:
+      entry:
+        description: 'Entry slug (entries/<slug>/)'
+        required: true
+      requirement:
+        description: 'Requirement id from the entry census'
+        required: true
+      artifact:
+        description: 'Repo path of the media artifact to upload (blank for read/verify requirements)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Execute + verify but do not commit state'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: venue-execution
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Mint Termux Fleet Swarm token (receipt + state commit)
+        id: swarm
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-issues: write
+
+      - name: Execute venue requirement
+        id: exec
+        env:
+          CLIPS_FLEET_TOKEN: ${{ secrets.CLIPS_FLEET_TOKEN }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
+          ARTIFACT: ${{ inputs.artifact || 'entries/venue-machinery-proof/proof.txt' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_FLAG=""
+          if [ -n "$ARTIFACT" ]; then
+            ARTIFACT_FLAG="--artifact $ARTIFACT"
+          fi
+          DRY_FLAG=""
+          if [ "$DRY_RUN" = "true" ]; then DRY_FLAG="--dry-run"; fi
+          # SUBMIT-ONCE state lives on master; on a PR checkout the
+          # branch copy can lag it — prefetch the live record.
+          git fetch origin master             && git checkout origin/master -- ops/venue-execution/state.json             || echo "no master state yet — seed state stands"
+          python3 scripts/venues/venue_execution.py execute \
+            --entry "$ENTRY" \
+            --requirement "$REQUIREMENT" \
+            $ARTIFACT_FLAG $DRY_FLAG \
+            --run-id "${{ github.run_id }}" \
+            --receipt-out receipt.json | tee receipt.txt
+
+      - name: Stamp receipt on the entry filing
+        if: always()
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
+        run: |
+          set -euo pipefail
+          issue="$(python3 -c "
+          import json, os
+          b = json.load(open('entries/' + os.environ['ENTRY'] + '/venue-execution.json'))
+          print((b.get('bindings') or {}).get(os.environ['REQUIREMENT'], {}).get('filing_issue', ''))")"
+          if [ -z "$issue" ]; then echo "no filing_issue in binding — receipt in artifact only"; exit 0; fi
+          python3 - <<'PY' > receipt-comment.md
+          import json, sys
+          sys.path.insert(0, 'scripts/venues')
+          import venue_execution as ve
+          print(ve.receipt_comment(json.load(open('receipt.json'))))
+          PY
+          gh issue comment "$issue" --body-file receipt-comment.md
+
+      - name: Commit execution state (SUBMIT-ONCE record)
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
+          ENTRY: ${{ inputs.entry || 'venue-machinery-proof' }}
+          REQUIREMENT: ${{ inputs.requirement || 'proof-upload' }}
+        run: |
+          set -euo pipefail
+          git config user.name "termux-fleet-swarm[bot]"
+          git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          # Commit the state file ON TOP of live master (the run's
+          # checkout may be a PR ref — rebasing it is fragile, run
+          # 43367104139). Carry the file across the branch switch.
+          cp ops/venue-execution/state.json /tmp/venue-state.json
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git checkout -f -B venue-state origin/master
+            mkdir -p ops/venue-execution
+            cp /tmp/venue-state.json ops/venue-execution/state.json
+            git add ops/venue-execution/state.json
+            if git diff --cached --quiet; then echo "state unchanged — no commit"; exit 0; fi
+            git commit -m "venue-execution: state for $ENTRY/$REQUIREMENT (run ${{ github.run_id }}) [skip ci]"
+            if git push origin HEAD:master; then echo "state pushed (attempt $attempt)"; exit 0; fi
+          done
+          echo "state push failed after 3 attempts" >&2
+          exit 1
+
+      - name: Publish receipt artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: venue-execution-receipt
+          path: |
+            receipt.json
+            receipt.txt
+          retention-days: 30

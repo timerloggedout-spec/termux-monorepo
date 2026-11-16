@@ -1,0 +1,89 @@
+{
+  "collected_at": "2026-11-08T10:14:38.454247+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42469769444,
+    "endpoint": ".../runs/42469769444/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 128697581029,
+        "run_id": 42469769444,
+        "workflow_name": "lane events recorder",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42469769444",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd9vk95Q",
+        "head_sha": "6a9a10ffeb9d54509cbdb75a391f93d74e96b1a5",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128697581029",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42469769444/job/128697581029",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-08T10:03:22Z",
+        "started_at": "2026-11-08T10:03:24Z",
+        "completed_at": "2026-11-08T10:03:30Z",
+        "name": "record",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-08T10:03:25Z",
+            "completed_at": "2026-11-08T10:03:26Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-08T10:03:26Z",
+            "completed_at": "2026-11-08T10:03:27Z"
+          },
+          {
+            "name": "build events",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-08T10:03:27Z",
+            "completed_at": "2026-11-08T10:03:27Z"
+          },
+          {
+            "name": "write to ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-08T10:03:27Z",
+            "completed_at": "2026-11-08T10:03:28Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 8,
+            "started_at": "2026-11-08T10:03:29Z",
+            "completed_at": "2026-11-08T10:03:29Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 9,
+            "started_at": "2026-11-08T10:03:29Z",
+            "completed_at": "2026-11-08T10:03:29Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128697581029",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000847045,
+        "runner_name": "GitHub Actions 1000847045",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

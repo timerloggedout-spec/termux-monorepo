@@ -1,0 +1,227 @@
+{
+  "description": "Data Scientist / ML",
+  "tools": [
+    {
+      "name": "curl",
+      "package": "curl",
+      "path": "/data/data/com.termux/files/usr/bin/curl",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Command line tool for transferring data with URL syntax"
+    },
+    {
+      "name": "hyperfine",
+      "package": "hyperfine",
+      "path": "/data/data/com.termux/files/usr/bin/hyperfine",
+      "source": "apt",
+      "tags": [
+        "benchmarking"
+      ],
+      "category": "benchmarking",
+      "description": "A command-line benchmarking tool"
+    },
+    {
+      "name": "idle3.13",
+      "package": "python-tkinter",
+      "path": "/data/data/com.termux/files/usr/bin/idle3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tkinter support for Python 3"
+    },
+    {
+      "name": "jq",
+      "package": "jq",
+      "path": "/data/data/com.termux/files/usr/bin/jq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "name": "pip",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "python",
+        "python_toolchain"
+      ],
+      "category": "development",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3.13",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "py3clean",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3clean",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "py3compile",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3compile",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pydoc3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/pydoc3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pytest",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/pytest",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "Package unknown"
+    },
+    {
+      "name": "python3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "python3.13-config",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13-config",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "ruff",
+      "package": "ruff",
+      "path": "/data/data/com.termux/files/usr/bin/ruff",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "An extremely fast Python linter, written in Rust"
+    },
+    {
+      "name": "sqlite3",
+      "package": "sqlite",
+      "path": "/data/data/com.termux/files/usr/bin/sqlite3",
+      "source": "apt",
+      "tags": [
+        "database"
+      ],
+      "category": "database",
+      "description": "Command line shell for SQLite"
+    },
+    {
+      "name": "torchfrtrace",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchfrtrace",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "torchrun",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchrun",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "wget",
+      "package": "wget",
+      "path": "/data/data/com.termux/files/usr/bin/wget",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Commandline tool for retrieving files using HTTP, HTTPS and FTP"
+    },
+    {
+      "name": "yq",
+      "package": "yq",
+      "path": "/data/data/com.termux/files/usr/bin/yq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A lightweight and portable command-line YAML, JSON and XML processor"
+    }
+  ]
+}

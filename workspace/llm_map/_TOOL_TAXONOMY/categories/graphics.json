@@ -1,0 +1,29 @@
+{
+  "category": "graphics",
+  "tools": [
+    {
+      "name": "cllayerinfo",
+      "package": "ocl-icd",
+      "path": "/data/data/com.termux/files/usr/bin/cllayerinfo",
+      "source": "apt",
+      "tags": [
+        "graphics"
+      ],
+      "auto_tag_source": "auto:^ocl$|^ocl-",
+      "category": "graphics",
+      "description": "OpenCL ICD Loader"
+    },
+    {
+      "name": "glslang",
+      "package": "glslang",
+      "path": "/data/data/com.termux/files/usr/bin/glslang",
+      "source": "apt",
+      "tags": [
+        "graphics"
+      ],
+      "auto_tag_source": "auto:^glslang$|^glslang-",
+      "category": "graphics",
+      "description": "OpenGL and OpenGL ES shader front end and validator"
+    }
+  ]
+}

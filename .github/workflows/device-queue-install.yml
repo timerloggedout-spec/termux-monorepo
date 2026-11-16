@@ -1,0 +1,311 @@
+name: Device Queue Install
+
+# P1 remote install (spec: docs/ops/P1-PULL-QUEUE-SPEC.md §8/§12; runbook:
+# docs/ops/DEVICE-PULL-QUEUE.md). Manual dispatch ONLY — no schedule.
+#
+# Ships the Phase 2 poller (scripts/termux/devices/queue-poll.sh, PR #1548) to
+# the origin device over its only remote channel — SSH via the rotating
+# Pinggy endpoint the device publishes in ops/termux-bridge/current.json —
+# writes the device's queue.env, schedules Termux job 43112 via the repo's
+# device-jobs installer, runs the poller once, then proves the install with a
+# live enqueue -> claim -> receipt round-trip against the queue Worker
+# (https://tmx-device-queue.timerloggedout.workers.dev).
+#
+# Freshness gate: the bridge manifest is the device's own liveness claim.
+# If it reads status "stale" or its observed_at is older than ttl_minutes,
+# this workflow REFUSES (clear ::error, nothing else runs). That is the
+# expected behavior whenever the on-device bridge publisher is paused —
+# unpause it on the device, let it publish a fresh manifest, then re-dispatch.
+on:
+  workflow_dispatch:
+    inputs:
+      role:
+        description: "Device role to install (only origin is wired up)"
+        type: choice
+        required: true
+        default: origin
+        options:
+          - origin
+      confirm:
+        description: "Type INSTALL to confirm the remote install"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+# Two installs must never overlap on the same device.
+concurrency:
+  group: device-queue-install
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      IN_ROLE: ${{ inputs.role }}
+      IN_CONFIRM: ${{ inputs.confirm }}
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Confirm gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$IN_CONFIRM" != "INSTALL" ]; then
+            echo "::error::confirm input must be exactly INSTALL (got a different value); refusing to touch the device" >&2
+            exit 1
+          fi
+          echo "install confirmed for role: $IN_ROLE"
+
+      - name: Bridge manifest freshness gate
+        id: bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+          from datetime import datetime, timezone
+
+          path = "ops/termux-bridge/current.json"
+          try:
+              m = json.load(open(path))
+          except Exception as e:
+              print(f"::error::cannot parse {path}: {e}")
+              sys.exit(1)
+
+          status = m.get("status")
+          ttl = m.get("ttl_minutes") or 0
+          observed = m.get("observed_at")
+          age_s = None
+          if observed:
+              try:
+                  obs = datetime.fromisoformat(str(observed).replace("Z", "+00:00"))
+                  age_s = (datetime.now(timezone.utc) - obs).total_seconds()
+              except Exception:
+                  age_s = None
+
+          print(f"bridge manifest: status={status} observed_at={observed} "
+                f"ttl_minutes={ttl} age_seconds={age_s if age_s is None else int(age_s)}")
+
+          fresh = (status != "stale" and age_s is not None
+                   and ttl and age_s <= float(ttl) * 60)
+          if not fresh:
+              print("::error::bridge manifest is not fresh "
+                    f"(status={status}, observed_at={observed}, ttl_minutes={ttl}) — "
+                    "the device bridge publisher is stale or paused on-device. "
+                    "Refusing to install: unpause the publisher on the device, "
+                    "wait for a fresh ops/termux-bridge/current.json on master, "
+                    "then re-dispatch this workflow.")
+              if m.get("stale_reason"):
+                  print(f"manifest stale_reason: {m['stale_reason']}")
+              sys.exit(1)
+
+          out = os.environ["GITHUB_OUTPUT"]
+          with open(out, "a") as fh:
+              fh.write(f"endpoint={m.get('endpoint', '')}\n")
+              fh.write(f"port={m.get('port', '')}\n")
+              fh.write(f"ssh_user={m.get('ssh_user', '')}\n")
+          print(f"bridge fresh: ssh target {m.get('ssh_user')}@{m.get('endpoint')}:{m.get('port')}")
+          PY
+
+      - name: Set up SSH material
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.TERMUX_MCP_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.TERMUX_MCP_KNOWN_HOSTS }}
+          BRIDGE_HOST: ${{ steps.bridge.outputs.endpoint }}
+          BRIDGE_PORT: ${{ steps.bridge.outputs.port }}
+          BRIDGE_USER: ${{ steps.bridge.outputs.ssh_user }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SSH_PRIVATE_KEY" ] || [ -z "$SSH_KNOWN_HOSTS" ]; then
+            echo "::error::TERMUX_MCP_SSH_PRIVATE_KEY / TERMUX_MCP_KNOWN_HOSTS secrets are not available" >&2
+            exit 1
+          fi
+          if [ -z "$BRIDGE_HOST" ] || [ -z "$BRIDGE_PORT" ] || [ -z "$BRIDGE_USER" ]; then
+            echo "::error::bridge manifest did not yield endpoint/port/ssh_user" >&2
+            exit 1
+          fi
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_termux"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_termux" "$HOME/.ssh/known_hosts"
+          echo "ssh material in place for $BRIDGE_USER@$BRIDGE_HOST:$BRIDGE_PORT"
+
+      - name: Install poller on device
+        timeout-minutes: 12
+        shell: bash
+        env:
+          BRIDGE_HOST: ${{ steps.bridge.outputs.endpoint }}
+          BRIDGE_PORT: ${{ steps.bridge.outputs.port }}
+          BRIDGE_USER: ${{ steps.bridge.outputs.ssh_user }}
+          DEVICE_TOKEN: ${{ secrets.DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY }}
+          QUEUE_URL: "https://tmx-device-queue.timerloggedout.workers.dev"
+        run: |
+          set -euo pipefail
+          if [ -z "$DEVICE_TOKEN" ]; then
+            echo "::error::DEVICE_QUEUE_DEVICE_TOKEN_PRIMARY secret is not provisioned" >&2
+            exit 1
+          fi
+          SSH_OPTS=(-i "$HOME/.ssh/id_termux" -p "$BRIDGE_PORT"
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts"
+            -o BatchMode=yes -o ConnectTimeout=25 -o ServerAliveInterval=15)
+          DEST="$BRIDGE_USER@$BRIDGE_HOST"
+
+          # Resolve the on-device checkout root the device's own way:
+          # identity.env first, TERMUX_MONOREPO_ROOT if set, else $HOME
+          # (device checkout is $HOME; never assume ~/termux-monorepo).
+          PROBE="$(ssh "${SSH_OPTS[@]}" "$DEST" \
+            'if [ -r "$HOME/.config/tmx-device/identity.env" ]; then . "$HOME/.config/tmx-device/identity.env"; fi; printf "%s\n%s\n" "$HOME" "${TERMUX_MONOREPO_ROOT:-$HOME}"')"
+          REMOTE_HOME="$(printf '%s\n' "$PROBE" | sed -n '1p')"
+          REMOTE_ROOT="$(printf '%s\n' "$PROBE" | sed -n '2p')"
+          case "$REMOTE_ROOT" in
+            /[A-Za-z0-9_./-]*) : ;;
+            *) echo "::error::unexpected on-device repo root: '$REMOTE_ROOT'" >&2; exit 1 ;;
+          esac
+          case "$REMOTE_HOME" in
+            /[A-Za-z0-9_./-]*) : ;;
+            *) echo "::error::unexpected on-device home: '$REMOTE_HOME'" >&2; exit 1 ;;
+          esac
+          echo "device checkout root: $REMOTE_ROOT"
+
+          ssh "${SSH_OPTS[@]}" "$DEST" \
+            "mkdir -p '$REMOTE_ROOT/scripts/termux/devices' '$REMOTE_HOME/.config/tmx-device'"
+
+          # Ship the poller + the device-jobs installer set from this checkout.
+          scp "${SSH_OPTS[@]}" \
+            scripts/termux/devices/queue-poll.sh \
+            scripts/termux/devices/queue-allowlist.default.txt \
+            scripts/termux/devices/install-device-jobs.sh \
+            scripts/termux/devices/lib.sh \
+            scripts/termux/devices/publish-device-heartbeat.sh \
+            "$DEST:$REMOTE_ROOT/scripts/termux/devices/"
+
+          # queue.env: built in a 0600 runner temp, shredded after upload.
+          ENV_TMP="$(mktemp)"; chmod 600 "$ENV_TMP"
+          trap 'shred -u "$ENV_TMP" 2>/dev/null || rm -f "$ENV_TMP"' EXIT
+          {
+            printf 'DEVICE_QUEUE_URL=%s\n' "$QUEUE_URL"
+            printf 'DEVICE_QUEUE_DEVICE_TOKEN=%s\n' "$DEVICE_TOKEN"
+            printf 'DEVICE_QUEUE_ROLE=engineer\n'
+          } > "$ENV_TMP"
+          scp "${SSH_OPTS[@]}" "$ENV_TMP" "$DEST:$REMOTE_HOME/.config/tmx-device/queue.env"
+          shred -u "$ENV_TMP" 2>/dev/null || rm -f "$ENV_TMP"; trap - EXIT
+
+          # On-device: allowlist (install the shipped default only if the node
+          # has none — an owner-edited allowlist is never overwritten), lock
+          # queue.env down, schedule job 43112, run the poller once.
+          ssh "${SSH_OPTS[@]}" "$DEST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          if [ -r "$HOME/.config/tmx-device/identity.env" ]; then . "$HOME/.config/tmx-device/identity.env"; fi
+          ROOT="${TERMUX_MONOREPO_ROOT:-$HOME}"
+          mkdir -p "$HOME/.config/tmx-device"
+          if [ ! -e "$HOME/.config/tmx-device/queue-allowlist.txt" ]; then
+            cp "$ROOT/scripts/termux/devices/queue-allowlist.default.txt" \
+               "$HOME/.config/tmx-device/queue-allowlist.txt"
+            echo "allowlist installed from shipped default"
+          else
+            echo "existing queue-allowlist.txt kept (not overwritten)"
+          fi
+          chmod 600 "$HOME/.config/tmx-device/queue.env"
+          cd "$ROOT"
+          bash scripts/termux/devices/install-device-jobs.sh --role origin
+          echo "--- first synchronous poller run ---"
+          bash scripts/termux/devices/queue-poll.sh
+          echo "install steps complete"
+          REMOTE
+
+      - name: Verify live round-trip
+        timeout-minutes: 8
+        shell: bash
+        env:
+          BRIDGE_HOST: ${{ steps.bridge.outputs.endpoint }}
+          BRIDGE_PORT: ${{ steps.bridge.outputs.port }}
+          BRIDGE_USER: ${{ steps.bridge.outputs.ssh_user }}
+          PRODUCER_TOKEN: ${{ secrets.DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS }}
+          QUEUE_URL: "https://tmx-device-queue.timerloggedout.workers.dev"
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PRODUCER_TOKEN" ]; then
+            echo "::error::DEVICE_QUEUE_PRODUCER_TOKEN_ACTIONS secret is not provisioned" >&2
+            exit 1
+          fi
+          BODY="$(python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timedelta, timezone
+          print(json.dumps({
+              "kind": "heartbeat-only",
+              "role": "engineer",
+              "payload": {"verify": "device-queue-install", "run_id": os.environ["RUN_ID"]},
+              "dedupe_key": f"install-verify-{os.environ['RUN_ID']}",
+              "expires_at": (datetime.now(timezone.utc) + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+          }))
+          PY
+          )"
+          RESP="$(mktemp)"
+          CODE="$(curl -sS -o "$RESP" -w '%{http_code}' --max-time 30 \
+            -X POST "$QUEUE_URL/tasks" \
+            -H "Authorization: Bearer $PRODUCER_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary "$BODY")"
+          cat "$RESP"; echo
+          if [ "${CODE:0:1}" != "2" ]; then
+            echo "::error::verification enqueue failed with HTTP $CODE" >&2
+            exit 1
+          fi
+          TASK_ID="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("id",""))' "$RESP")"
+          if [ -z "$TASK_ID" ]; then
+            echo "::error::enqueue response carried no task id" >&2
+            exit 1
+          fi
+          echo "verification task: $TASK_ID"
+
+          # Nudge the poller once over the same SSH channel so the task is
+          # claimed now (the scheduled job's cadence is 15 min, longer than
+          # the 5-minute verification window below).
+          SSH_OPTS=(-i "$HOME/.ssh/id_termux" -p "$BRIDGE_PORT"
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts"
+            -o BatchMode=yes -o ConnectTimeout=25 -o ServerAliveInterval=15)
+          ssh "${SSH_OPTS[@]}" "$BRIDGE_USER@$BRIDGE_HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          if [ -r "$HOME/.config/tmx-device/identity.env" ]; then . "$HOME/.config/tmx-device/identity.env"; fi
+          ROOT="${TERMUX_MONOREPO_ROOT:-$HOME}"
+          bash "$ROOT/scripts/termux/devices/queue-poll.sh"
+          REMOTE
+
+          # Poll the task as the producer for up to 5 minutes.
+          DEADLINE=$(( $(date +%s) + 300 ))
+          while :; do
+            CODE="$(curl -sS -o "$RESP" -w '%{http_code}' --max-time 30 \
+              "$QUEUE_URL/tasks/$TASK_ID" \
+              -H "Authorization: Bearer $PRODUCER_TOKEN")"
+            if [ "${CODE:0:1}" != "2" ]; then
+              echo "::error::verification poll failed with HTTP $CODE" >&2
+              cat "$RESP"; echo
+              exit 1
+            fi
+            STATE="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("state",""))' "$RESP")"
+            echo "task $TASK_ID state: $STATE"
+            case "$STATE" in
+              done)
+                echo "round-trip verified: enqueue -> claim -> receipt -> done"
+                exit 0 ;;
+              failed|dead|expired)
+                echo "::error::verification task ended in state '$STATE'" >&2
+                cat "$RESP"; echo
+                exit 1 ;;
+            esac
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              echo "::error::verification task $TASK_ID not done within 5 minutes (last state: $STATE)" >&2
+              cat "$RESP"; echo
+              exit 1
+            fi
+            sleep 15
+          done

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oracle Panel — Delphi Proposal Results</title>
+<link rel="stylesheet" href="./dashboard.css"><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0b0d10"><link rel="apple-touch-icon" href="./icon-192.png"><script src="./install.js" defer></script>
+<style>
+  .feed-list{list-style:none;margin:0;padding:0}
+  .feed-list li{display:flex;justify-content:space-between;gap:1rem;padding:.35rem 0;border-bottom:1px solid var(--line)}
+  .feed-list li:last-child{border-bottom:none}
+  .prop{border:1px solid var(--line);border-radius:.6rem;padding:1rem;margin-bottom:1rem;background:var(--panel)}
+  .prop h3{margin:.2rem 0 .4rem}
+  .meta{color:var(--muted);font-size:.8rem}
+  .rounds{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:640px){.rounds{grid-template-columns:1fr}}
+  .round{border:1px solid var(--line);border-radius:.6rem;padding:.7rem .8rem}
+  .round ol{margin:.4rem 0;padding-left:1.2rem}
+  .round li.self{color:var(--gold);font-weight:600}
+  .unverified{border-left:3px solid var(--bad);padding:.4rem .8rem;margin:.5rem 0}
+  .tie{border:1px dashed var(--gold);border-radius:.6rem;padding:.7rem .8rem;margin:.5rem 0}
+  .notrun{border-left:3px solid var(--gold);padding:.4rem .8rem;margin:.5rem 0}
+  .absent{border:1px dashed var(--line);border-radius:.6rem;padding:.7rem .8rem;color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Primary"><a class="brand" href="https://timerloggedout-spec.github.io/">Autonomous AI Employees</a><a href="https://timerloggedout-spec.github.io/">Marketing</a><a href="https://timerloggedout-spec.github.io/tribute/">Ops · Tribute</a><a href="https://timerloggedout-spec.github.io/matrix/">Lane matrix</a><a href="https://timerloggedout-spec.github.io/tribute/quota.html">Quota</a><a href="https://timerloggedout-spec.github.io/tribute/quota-usage.html">Quota Usage</a><a href="https://timerloggedout-spec.github.io/tribute/quota-graphs.html">Quota Graphs</a>
+<a href="https://timerloggedout-spec.github.io/tribute/quota-swarm.html">Swarm Quota</a><a href="https://timerloggedout-spec.github.io/tribute/admin.html">Admin</a><a href="https://timerloggedout-spec.github.io/tribute/oracle.html" aria-current="page">Oracle</a><a href="https://timerloggedout-spec.github.io/tribute/3l0.html">3L0</a><a href="https://timerloggedout-spec.github.io/tribute/moneyball.html">MoneyBall</a>
+<a href="https://timerloggedout-spec.github.io/tribute/wagering-book.html">Wagering Book</a><a href="https://timerloggedout-spec.github.io/tribute/pools.html">Pools</a><a href="https://timerloggedout-spec.github.io/tribute/mvt.html">MVT</a><a href="https://timerloggedout-spec.github.io/tribute/doe.html">DoE</a><a href="https://timerloggedout-spec.github.io/tribute/ates.html">ATES</a>
+<a href="https://timerloggedout-spec.github.io/tribute/results-index.html">Results Index</a><a href="https://timerloggedout-spec.github.io/tribute/free-tier-value.html">Free-tier value</a><a href="https://timerloggedout-spec.github.io/tribute/dispatch-tree.html">Dispatch Tree</a>
+        <a href="https://timerloggedout-spec.github.io/tribute/admin-graph.html">Admin Graph</a><a href="https://timerloggedout-spec.github.io/tribute/countdowns.html">Countdowns</a><a href="https://timerloggedout-spec.github.io/tribute/d2-proposals.html">D2 Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/linguist.html">Linguist</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-rfp.html">Delphi RFP</a><a href="https://timerloggedout-spec.github.io/tribute/delphi-ledger.html">Delphi Ledgers</a>
+<a href="https://timerloggedout-spec.github.io/tribute/classifiers.html">Classifiers</a><a href="https://timerloggedout-spec.github.io/tribute/pr-lanes.html">PR Lanes</a><a href="https://timerloggedout-spec.github.io/tribute/proposals.html">Proposals</a><a href="https://timerloggedout-spec.github.io/tribute/referrals.html">Referrals</a>
+<a href="https://timerloggedout-spec.github.io/tribute/marketing-gantt.html">Marketing Gantt</a><a href="https://timerloggedout-spec.github.io/tribute/telemetry.html">Telemetry</a><a href="https://timerloggedout-spec.github.io/tribute/desk.html">Desk</a><a href="https://timerloggedout-spec.github.io/tribute/tracking.html">Tracking</a>
+<a href="https://timerloggedout-spec.github.io/tribute/family.html">Family</a><a href="https://Tribute-oversight.vercel.app/">Vercel deployment</a><a href="https://timerloggedout-spec.github.io/tribute/sitemap.xml">Sitemap</a><a href="https://github.com/timerloggedout-spec/termux-monorepo">Monorepo</a></nav>
+<div class="hero">
+<p class="eyebrow">Oracle Panel · Delphic Oracle Method</p>
+<h1>Delphi proposal results</h1>
+<p class="sub">Every proposal the Oracle Method has generated — what it proposes, its evidence basis, what produced each result, its pass, round rankings with their recorded basis (ties stated as ties), what its implementation round did, calibration deltas, and honest statuses. This panel consumes the Delphi lane's feed (<code>data/oracle-panel-feed.json</code>, contract <code>docs/ops/ORACLE-PANEL-FEED.md</code>) and nothing else: a value the record doesn't hold renders as absent, never synthesized.</p>
+</div>
+</header>
+<main>
+<section class="card">
+<h2>Feed</h2>
+<ul class="feed-list">
+<li><span>Feed (<code>data/oracle-panel-feed.json</code>, generated, served with this page)</span><span class="pill gold" id="feed-state">…</span></li>
+<li><span>Registry proposals total</span><span id="feed-total">—</span></li>
+<li><span>Oracle-method proposals</span><span id="feed-oracle">—</span></li>
+<li><span>Outcome ledger (issue #1487) read by this refresh</span><span id="feed-ledger">—</span></li>
+</ul>
+<p><button id="refresh" type="button" class="button">Refresh feed now</button> <span id="refreshed" class="muted"></span></p>
+<h3>Honesty rules (from the feed)</h3>
+<ul id="honesty"><li class="muted">Loading…</li></ul>
+</section>
+
+<section>
+<h2>Charts</h2>
+<div id="p2-charts"><p class="muted">Loading the feed…</p></div>
+</section>
+
+<section>
+<h2>Generated proposals</h2>
+<div id="proposals"><p class="muted">Loading the feed…</p></div>
+</section>
+
+<section>
+<h2>How the panel scores</h2>
+<div id="settings"><p class="muted">Loading…</p></div>
+</section>
+<section>
+<h2>Passes</h2>
+<div id="passes"><p class="muted">Loading…</p></div>
+</section>
+
+<section>
+<h2>Excluded — named, not silent</h2>
+<div id="excluded"><p class="muted">Loading…</p></div>
+</section>
+<section>
+<div class="head"><h2>Delphi RFP flood</h2><span class="badge warn">Live surface</span></div>
+<p>The RFP flood — every open <code>delphi:rfp</code> filing with its progress and status, the scoring criteria, the form questions and responses as filed, the gate's outcomes, and the panel's signed votes rendered verbatim — lives on its own page: <a href="./delphi-rfp.html">Delphi RFP flood</a>. This panel stays the Oracle rounds view; the flood page consumes <code>data/delphi-rfp-feed.json</code>.</p>
+</section>
+</main>
+<footer><p class="muted">Oracle Panel · Help-Wanted Oversight · Data: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/apps/help-wanted-dashboard/data/oracle-panel-feed.json">oracle-panel-feed.json</a> (<span id="foot-stamp">schema oracle-panel-feed/v1</span>) · Contract: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ORACLE-PANEL-FEED.md">ORACLE-PANEL-FEED.md</a> · <a href="https://timerloggedout-spec.github.io/help-wanted/sitemap.xml">Sitemap</a></p></footer>
+<script src="./chartkit.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const GH='https://github.com/timerloggedout-spec/termux-monorepo';
+const FEED='./data/oracle-panel-feed.json';
+async function jget(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+function pill(txt,cls){return '<span class="pill '+(cls||'')+'">'+esc(txt)+'</span>'}
+function ballotsChips(round){
+  const by=round.ballots_by_class||{}, absent=round.classes_absent||[];
+  return '<div class="chips">'+Object.keys(by).sort().map(c=>{
+    const isAbsent=absent.includes(c)||by[c]===0;
+    return pill(c+': '+by[c]+(isAbsent?' · absent — 0 ballots, not participation':''), isAbsent?'bad':'ok');
+  }).join('')+'</div>';
+}
+function rankingList(round,selfId){
+  return '<ol>'+(round.ranking||[]).map(id=>'<li'+(id===selfId?' class="self"':'')+'><code>'+esc(id)+'</code></li>').join('')+'</ol>';
+}
+function roundBlock(label,round,selfId){
+  if(!round) return '<div class="round"><h4>'+esc(label)+'</h4><p class="absent">Absent from the record.</p></div>';
+  let h='<div class="round"><h4>'+esc(label)+' — this proposal ranked #'+esc(round.rank_of_this)+(round.score!=null?' · score '+esc(round.score):'')+'</h4>'+rankingList(round,selfId)+ballotsChips(round);
+  if(round.scores_by_class){h+='<p class="meta">Scores by class: '+Object.keys(round.scores_by_class).sort().map(c=>{const v=round.scores_by_class[c];return esc(c)+': '+(v==null?'no ballots (absent)':esc(v))}).join(' · ')+'</p>';}
+  if(round.evidence_set_sha256) h+='<p class="meta">Equalized evidence set sha256 <code>'+esc(String(round.evidence_set_sha256).slice(0,16))+'…</code></p>';
+  if(round.ranking_basis){
+    const rb=round.ranking_basis;
+    h+='<div class="tie"><strong>The ranking basis, as recorded:</strong> scores tied: '+esc(rb.scores_tied?'yes':'no')+' · score spread: '+esc(rb.score_spread)+'<br>'+esc(rb.decided_by)+'</div>';
+  }
+  if(Array.isArray(round.ballots)){
+    const keys=Object.keys((round.ballots[0]||{}).scores||{});
+    let pre=keys.length?keys[0]:''; for(const k of keys){let i=0; while(i<pre.length&&k[i]===pre[i])i++; pre=pre.slice(0,i);}
+    pre=pre.slice(0,Math.max(pre.lastIndexOf('-'),pre.lastIndexOf('/'))+1);
+    const short=id=>pre&&id.startsWith(pre)?id.slice(pre.length):id;
+    h+='<h5>Recorded ballots</h5><ul class="feed-list">'+round.ballots.map(b=>'<li><span><strong>'+esc(b.voter)+'</strong> <span class="meta">('+esc(b.source_class)+')</span><br><span class="meta">scores: '+Object.keys(b.scores||{}).sort().map(k=>esc(short(k))+': '+esc(b.scores[k])).join(' · ')+'</span></span><span>this: '+esc(b.score_of_this)+'</span></li>').join('')+'</ul>';
+  } else if(round.ballots===null){
+    h+='<p class="meta">Recorded ballots: not in the feed for this round — aggregates only.</p>';
+  }
+  return h+'</div>';
+}
+function renderProposal(p){
+  let h='<article class="prop"><p class="eyebrow">'+esc(p.id)+'</p><h3>'+esc(p.title)+'</h3>';
+  h+='<div class="chips">'+pill('status: '+p.status,'gold')+pill('priority: '+p.priority)+pill(p.kind==='single'?'generated singly':'pass candidate: '+p.pass)+pill(p.live?'live':'not live',p.live?'ok':'bad')+'</div>';
+  h+='<p class="meta">Generated '+esc(p.generated_at)+' · evidence items: '+esc(p.evidence_items)+' · <a href="'+GH+'/tree/master/docs/proposals/'+esc(p.path)+'">proposal record</a></p>';
+  if(Array.isArray(p.description)&&p.description.length){
+    h+='<h4>What it proposes</h4><ul>'+p.description.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p class="meta">Verbatim from the proposal\'s MANIFEST summary — the record\'s own prose, evidence citations intact.</p>';
+  } else {
+    h+='<p class="meta">Description: none in the feed for this proposal.</p>';
+  }
+  if(p.evidence_basis!=null){
+    const eb=p.evidence_basis;
+    h+='<h4>Evidence basis</h4><ul class="feed-list">'+(eb.sets||[]).map(s=>'<li><span>evidence set <code>'+esc((s.sha256||'').slice(0,12))+'…</code> · assembled '+esc(s.assembled_at)+'</span><span>'+esc(s.items)+' items</span></li>').join('')+'</ul>';
+    if(eb.sources!=null){
+      h+='<p class="meta">Sources: '+Object.keys(eb.sources).sort().map(k=>esc(k)+' '+esc(eb.sources[k])).join(' · ')+'</p>';
+    } else {
+      h+='<p class="meta">Source composition: not recorded in the feed — the evidence set\'s contents were not committed for this proposal, so no composition is shown rather than a reconstructed one.</p>';
+    }
+    if(eb.claim_areas!=null){
+      h+='<div class="chips">'+Object.keys(eb.claim_areas).sort().map(k=>pill(k+': '+eb.claim_areas[k])).join('')+'</div>';
+    }
+  }
+  if(p.approach!=null){
+    const a=p.approach;
+    h+='<h4>Approach</h4><p>'+esc(a.executive_request||'')+'</p>';
+    const extra=[['Concept',a.concept],['Planned suites',a.planned_suites],['Surface',a.surface],['Deadline',a.deadline]].filter(x=>x[1]!=null&&x[1]!=='');
+    if(extra.length) h+='<ul class="feed-list">'+extra.map(x=>'<li><span>'+esc(x[0])+'</span><span>'+esc(Array.isArray(x[1])?x[1].join(', '):x[1])+'</span></li>').join('')+'</ul>';
+    if(a.source) h+='<p class="meta">Source: '+esc(a.source)+'</p>';
+  }
+  if(Array.isArray(p.summary_points)&&p.summary_points.length){
+    h+='<h4>Summary points (with the record\'s evidence refs)</h4><ul>'+p.summary_points.map(sp=>'<li>'+esc(sp.text)+(Array.isArray(sp.evidence_refs)&&sp.evidence_refs.length?'<br><span class="meta">evidence: '+sp.evidence_refs.map(r=>'<code>'+esc(r)+'</code>').join(' ')+'</span>':'')+'</li>').join('')+'</ul>';
+  }
+  if(Array.isArray(p.work_items)&&p.work_items.length){
+    h+='<h4>Work items</h4><ul class="feed-list">'+p.work_items.map(w=>'<li><span><code>'+esc(w.id)+'</code> — '+esc(w.item)+'<br><span class="meta">'+esc(w.exit||'')+'</span></span>'+pill(w.state)+'</li>').join('')+'</ul>';
+  }
+  if(p.documents!=null){
+    h+='<h4>Documents</h4><div class="chips">'+Object.keys(p.documents).sort().map(k=>'<a class="pill" href="'+GH+'/blob/master/'+esc(p.documents[k])+'">'+esc(k)+'</a>').join('')+'</div>';
+  }
+  if(Array.isArray(p.unverified_points)&&p.unverified_points.length){
+    h+='<div class="unverified"><strong>UNVERIFIED points (first-class status, from the record):</strong><ul>'+p.unverified_points.map(u=>'<li>'+esc(u)+'</li>').join('')+'</ul></div>';
+  } else {
+    h+='<p class="meta">UNVERIFIED points: none recorded.</p>';
+  }
+  if(p.producers!=null){
+    const pr=p.producers;
+    h+='<h4>What produced this</h4>';
+    if(pr.generation){
+      const g=pr.generation;
+      h+='<p><strong>Generation</strong> — '+esc(g.kind)+': <code>'+esc(g.producer)+'</code> · generated '+esc(g.generated_at)+'</p>';
+    }
+    const rounds=pr.rounds||{};
+    for(const rk of Object.keys(rounds).sort()){
+      h+='<p class="meta"><strong>'+esc(rk.replace('_',' '))+'</strong></p><ul class="feed-list">';
+      for(const ck of Object.keys(rounds[rk]).sort()){
+        const c=rounds[rk][ck];
+        if(c.kind==='none_recorded'){
+          h+='<li><span><strong>'+esc(ck)+'</strong> — none recorded</span></li>';
+          if(c.reason) h+='<li><span class="meta">'+esc(c.reason)+'</span></li>';
+        } else {
+          h+='<li><span><strong>'+esc(ck)+'</strong> — '+esc(c.kind)+'<br><span class="meta">'+esc(c.producer||'')+'</span></span><span>'+esc(c.ballots)+' ballots</span></li>';
+          if(Array.isArray(c.voters)&&c.voters.length) h+='<li><span class="meta">voters: '+c.voters.map(v=>esc(v)).join(', ')+'</span></li>';
+          if(c.weights) h+='<li><span class="meta">weights: '+esc(c.weights.source)+' (ledger #'+esc(c.weights.ledger_issue)+') — '+Object.keys(c.weights.role_weights||{}).sort().map(r=>esc(r)+' '+esc(c.weights.role_weights[r])).join(' · ')+'</span></li>';
+        }
+      }
+      h+='</ul>';
+    }
+  }
+  if(p.evidence_profile!=null){
+    const ep=p.evidence_profile;
+    h+='<h4>Evidence profile (the comparator\'s input, as recorded)</h4><ul class="feed-list">'+[['points',ep.points],['evidenced',ep.evidenced],['unverified',ep.unverified],['evidenced ratio',ep.evidenced_ratio],['items',ep.items],['evidence sources',ep.evidence_sources],['dependency items',ep.dependency_items],['money veto',ep.money_veto]].map(x=>'<li><span>'+esc(x[0])+'</span><span>'+esc(x[1])+'</span></li>').join('')+'<li><span>documents sha256</span><span><code>'+esc((ep.docs_sha256||'').slice(0,12))+'…</code></span></li></ul>';
+  }
+  if(p.rounds==null){
+    h+='<div class="absent"><strong>No cycle ran for this proposal.</strong> Rounds and calibration are absent from the record — shown as absent, not as zero. '+(p.kind==='single'?'It was generated singly, outside a pass.':'')+'</div>';
+  } else {
+    h+='<div class="rounds">'+roundBlock('Round 1 · cross-vote',p.rounds.round_1,p.id)+roundBlock('Round 2 · equalized evidence',p.rounds.round_2,p.id)+'</div>';
+  }
+  if(p.expectations!=null){
+    h+='<h4>Expectations recorded for this proposal</h4><ul class="feed-list">'+Object.keys(p.expectations).sort().map(src=>{const e=p.expectations[src];return '<li><span><strong>'+esc(src)+'</strong> — expected rank '+esc(e.expected_rank)+' · expected score '+esc(e.expected_score)+(e.tolerance!=null?' · tolerance '+esc(e.tolerance):'')+'</span></li>'}).join('')+'</ul>';
+    if('expectations_recorded_before_implementation' in p) h+='<p class="meta">Recorded before implementation (per feed): '+pill(p.expectations_recorded_before_implementation?'yes':'no',p.expectations_recorded_before_implementation?'ok':'gold')+'</p>';
+  }
+  if(p.implementation_summary!=null){
+    const is2=p.implementation_summary;
+    h+='<h4>What the implementation round did</h4><p>Built and exercised the candidate\'s own suites: '+(is2.suites||[]).map(s=>'<code>'+esc(s)+'</code>').join(', ')+'.</p><ul class="feed-list"><li><span>pass rate</span><span>'+esc(is2.pass_rate)+'</span></li><li><span>evidenced ratio</span><span>'+esc(is2.evidenced_ratio)+'</span></li><li><span>all suites passed</span>'+pill(is2.all_suites_passed?'yes':'no',is2.all_suites_passed?'ok':'bad')+'</li></ul>';
+  }
+  if(p.implementation!=null){
+    const im=p.implementation;
+    h+='<h4>Implementation round — per-proposal tests</h4><ul class="feed-list">'+(im.suites||[]).map(s=>'<li><span><code>'+esc(s.suite)+'</code></span>'+pill(s.failed===0?'passed '+s.passed:'passed '+s.passed+' · FAILED '+s.failed,s.failed===0?'ok':'bad')+'</li>').join('')+'</ul><p class="meta">Suites: '+esc(im.suites_passed)+' / '+esc(im.suites_total)+' passed</p>';
+  }
+  if(p.calibration==null){
+    if(p.rounds!=null) h+='<p class="absent">Calibration: absent from the record.</p>';
+  } else {
+    h+='<h4>Calibration (round 2 vs recorded expectations)</h4><ul class="feed-list">'+Object.keys(p.calibration).sort().map(src=>{
+      const c=p.calibration[src];
+      return '<li><span><strong>'+esc(src)+'</strong> — rank Δ '+esc(c.rank_delta)+' · score Δ '+esc(c.score_delta)+'<br><span class="meta">moved on evidence: '+esc((c.moved_on_evidence||[]).join('; ')||'—')+'</span></span>'+pill(c.within_tolerance?'within tolerance':'outside tolerance',c.within_tolerance?'ok':'bad')+'</li>';
+    }).join('')+'</ul>';
+  }
+  if(Array.isArray(p.specified_not_run)&&p.specified_not_run.length){
+    h+='<div class="notrun"><strong>specified_not_run (shown as recorded, never dressed up):</strong><ul>'+p.specified_not_run.map(x=>'<li><code>'+esc(x.item)+'</code> — '+esc(x.reason)+'</li>').join('')+'</ul></div>';
+  }
+  if(p.ledger){
+    h+='<p class="meta">Ledger (issue #1487): <a href="'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.ballot_comment_id)+'">ballot record</a> · <a href="'+GH+'/issues/1487#issuecomment-'+esc(p.ledger.calibration_comment_id)+'">calibration record</a> · '+pill(p.ledger.verified?'ledger verified':'ledger NOT verified',p.ledger.verified?'ok':'bad')+'</p>';
+  } else {
+    h+='<p class="meta">Ledger: no ledger record in the feed for this proposal.</p>';
+  }
+  return h+'</article>';
+}
+async function load(){
+  try{
+    const f=await jget(FEED);
+    $('feed-state').textContent='LIVE · generated '+String(f.generated_at||'').slice(0,10);
+    $('feed-state').className='pill ok';
+    $('feed-total').textContent=f.sources?f.sources.registry_proposals_total:'—';
+    $('feed-oracle').textContent=f.sources?f.sources.oracle_method_proposals:'—';
+    $('feed-ledger').innerHTML=f.sources?(f.sources.ledger_verified?pill('verified','ok'):pill('NOT verified — repo-record values','bad')):'—';
+    $('foot-stamp').textContent='schema '+f.schema+' · generated '+f.generated_at+' · '+f.generator;
+    $('honesty').innerHTML=(f.honesty_rules||[]).map(r=>'<li>'+esc(r)+'</li>').join('');
+    const p2tally={}; for(const pr of (f.proposals||[])) p2tally[pr.status]=(p2tally[pr.status]||0)+1;
+    const p2pass={}; for(const ps of (f.passes||[])) p2pass[ps.status]=(p2pass[ps.status]||0)+1;
+    const p2rows=o=>Object.entries(o).map(([label,value])=>({label,value})).sort((a,b)=>b.value-a.value);
+    $('p2-charts').innerHTML='<p class="meta">Feed generated '+esc(f.generated_at)+(CK.stampState(f.generated_at,Date.now())==='STALE'?' · <span class="pill">STALE</span>':'')+' · rendered from this page feed only.</p>'
+      +'<h3>Proposals by status</h3>'+CK.bars(p2rows(p2tally))
+      +'<h3>Passes by status</h3>'+CK.bars(p2rows(p2pass));
+    $('proposals').innerHTML=(f.proposals||[]).map(renderProposal).join('');
+    if(f.settings){
+      const s=f.settings, g2=s.generation||{};
+      $('settings').innerHTML='<ul class="feed-list">'
+      +'<li><span>Weighting formula</span><span><code>'+esc(s.formula)+'</code></span></li>'
+      +'<li><span>Score scale</span><span>'+esc(s.score_scale)+'</span></li>'
+      +'<li><span>Criteria</span><span>'+esc(s.criteria)+'</span></li>'
+      +'<li><span>Weights source</span><span>'+esc(s.weights_source)+'</span></li>'
+      +'<li><span>Generation</span><span>n = '+esc(g2.proposals_per_pass)+' proposals per pass · '+esc(g2.cycle_rounds)+' cycle rounds · expectation tolerance '+esc(g2.expectation_tolerance)+'</span></li>'
+      +'<li><span>Panel settings</span><span><code>'+esc(s.panel)+'</code></span></li>'
+      +'</ul><p class="meta">'+esc(s.seed_note)+'</p>';
+    }
+    $('passes').innerHTML=(f.passes||[]).map(ps=>{
+      let ph='<article class="prop"><h3><code>'+esc(ps.pass_id)+'</code></h3><div class="chips">'+pill('status: '+(ps.status||'recorded'),ps.status==='recorded'?'ok':'gold')+'</div><p class="meta">n = '+esc(ps.n)+' candidates · <a href="'+GH+'/tree/master/'+esc(ps.record)+'">pass record</a></p>';
+      if(Array.isArray(ps.ranked_outcome)&&ps.ranked_outcome.length){ ph+='<p>Ranked outcome:</p><ol>'+ps.ranked_outcome.map(id=>'<li><code>'+esc(id)+'</code></li>').join('')+'</ol>'; }
+      else { ph+='<p class="meta">No ranked outcome — this pass is stated, not run; nothing here is a result.</p>'; }
+      return ph+'</article>';
+    }).join('')||'<p class="muted">No passes in the feed.</p>';
+    $('excluded').innerHTML=(f.excluded||[]).map(x=>'<div class="notrun"><strong>'+esc(x.what)+'</strong> — labeled <em>'+esc(x.label)+'</em>. '+esc(x.reason)+'</div>').join('')||'<p class="muted">Nothing excluded in the feed.</p>';
+  }catch(e){
+    $('feed-state').textContent='UNVERIFIED — feed could not be fetched';
+    $('feed-state').className='pill bad';
+    $('proposals').innerHTML='<p class="absent">The feed could not be fetched from master. Nothing is shown rather than anything guessed.</p>';
+  }
+  $('refreshed').textContent='Refreshed '+new Date().toLocaleTimeString();
+}
+$('refresh').addEventListener('click',load);
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>

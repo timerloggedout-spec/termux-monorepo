@@ -1,0 +1,19 @@
+version: 1
+updated_at: "2026-08-03T20:00:00Z"
+updated_by: grok-archw1z
+
+home:
+  owner: timerloggedout-spec
+  repo: termux-monorepo
+  role: first_class_runtime
+  branches:
+    integration: master-staging
+    smoke: termux-smoke
+    production: master
+  gates: [repo-gate, termux-smoke]
+
+policy:
+  scavenge: depth-1-sparse-metadata
+  human_only: [credential_rotation, history_rewrite, app_permissions]
+  human_temporary: [termux-smoke_cherry_pick_until_automated]
+  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]

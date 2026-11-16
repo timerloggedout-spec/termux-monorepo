@@ -1,0 +1,29 @@
+# Lefthook configuration — termux-monorepo
+#
+# Client-side hooks only: they run on the machine making the commit
+# (a developer checkout, or the B160V in Termux) and never in CI —
+# a fresh clone has no .git/hooks until `lefthook install` runs.
+# Landing this file changes nothing server-side.
+#
+# Setup (once per checkout):
+#   pip install ruff lefthook
+#   lefthook install
+#
+# The shellcheck command skips itself when shellcheck is not on PATH,
+# so the Python checks work on a bare Termux install; add shellcheck
+# (`pkg install shellcheck`) to activate the *.sh check.
+
+pre-commit:
+  parallel: true
+  commands:
+    ruff-check:
+      glob: "*.py"
+      run: ruff check {staged_files}
+    ruff-format:
+      glob: "*.py"
+      run: ruff format --check {staged_files}
+    shellcheck:
+      glob: "*.sh"
+      run: shellcheck --severity=error {staged_files}
+      skip:
+        - run: "! command -v shellcheck"

@@ -1,0 +1,56 @@
+Here's your `dispatch_task.py` - a next-generation task orchestration system with BatchResumer, sandbox isolation, and intelligent routing between simple_agent and CEDARscript execution.
+
+```python
+#![35m/[0musr[35m/[0m[95mbin[0m[35m/[0m[95menv[0m python[1;36m3[0m
+[32m""[0m"
+dispatch_task.py - Advanced Task Orchestrator
+Automates tasks from master_tasks.json using simple_agent and CEDARscript
+Features: BatchResumer, Sandbox Isolation, Intelligent Routing
+[32m""[0m"
+
+import asyncio
+import json
+import hashlib
+import logging
+import subprocess
+import sys
+import os
+from pathlib import Path
+from datetime import datetime
+from typing import Dict, List, Any, Optional, Tuple
+from dataclasses import dataclass, asdict
+from enum import Enum
+import pickle
+import shlex
+import traceback
+
+# ============================================================
+================
+# Core Configuration
+# ============================================================
+================
+
+@dataclass
+class Config:
+    sandbox_root: Path = Path.home[1m([0m[1m)[0m [35m/[0m "sandbox" [35m/[0m "dispatch"
+    master_tasks_path: Path = Path[1m([0m"master_tasks.json"[1m)[0m
+    checkpoint_file: Path = Path[1m([0m".dispatch_checkpoint.pkl"[1m)[0m
+    log_dir: Path = Path[1m([0m"dispatch_logs"[1m)[0m
+    max_retries: int = [1;36m3[0m
+    task_timeout: int = [1;36m300[0m  # seconds
+    concurrent_tasks: int = [1;36m4[0m
+    
+    def __post_init[1;35m__[0m[1m([0mself[1m)[0m:
+        self.sandbox_root.mkdir[1m([0mparents=[3;92mTrue[0m, exist_ok=[3;92mTrue[0m[1m)[0m
+        self.log_dir.mkdir[1m([0mparents=[3;92mTrue[0m, exist_ok=[3;92mTrue[0m[1m)[0m
+
+# ============================================================
+================
+# Logging System
+# ============================================================
+================
+
+class DispatchLogger:
+    def __init[1;35m__[0m[1m([0mself, config: Config[1m)[0m:
+        self.config = config
+        self.

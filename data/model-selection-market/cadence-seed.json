@@ -1,0 +1,11 @@
+{
+  "tasks": [
+    {"id": "provider-recon", "role": "Scout", "duration_minutes": 10, "task_type": "catalog-research", "dependencies": []},
+    {"id": "capability-policy-review", "role": "Manager", "duration_minutes": 15, "task_type": "eligibility-review", "dependencies": ["provider-recon"]},
+    {"id": "quota-contract-tests", "role": "SWE", "duration_minutes": 20, "task_type": "contract-tests", "dependencies": ["provider-recon"]},
+    {"id": "doe-cohort-design", "role": "ChronoMancer", "duration_minutes": 15, "task_type": "experiment-plan", "dependencies": ["capability-policy-review"]},
+    {"id": "independent-review", "role": "Reviewer", "duration_minutes": 15, "task_type": "review", "dependencies": ["quota-contract-tests", "doe-cohort-design"]},
+    {"id": "gated-integration", "role": "Orchestrator", "duration_minutes": 10, "task_type": "integration", "dependencies": ["independent-review"]}
+  ],
+  "observations": []
+}

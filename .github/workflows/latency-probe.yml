@@ -1,0 +1,127 @@
+# Fleet latency probe — state-gated re-measurement (Actions vantage).
+#
+# CADENCE LAW (owner, 2026-11-01): inter-network latency is a measured fleet
+# quantity, re-measured on EVENTS and state changes — never on a fixed
+# schedule. This workflow is therefore workflow_dispatch ONLY. Do NOT add a
+# schedule trigger: a cron here would recreate exactly the fixed-cadence
+# polling the cadence law abolished, and would spend commits on a metric
+# whose value is comparability at moments that matter.
+#
+# State gate: probe medians are compared with the checked-in baseline
+# (ops/latency/reports/2026-11-01-baseline-vm.json). A new report is
+# committed ONLY when a surface's median total moves >50% AND >300 ms,
+# or a surface errors / changes error state (ops/latency/probe.py --gate,
+# exit 3). Otherwise the run writes only a step summary ("no material
+# delta") and commits nothing.
+#
+# The commit follows the repo's existing workflow-authored-records pattern
+# (repository-observatory.yml): github-actions[bot] identity, signed
+# commit, rebase + push-retry to master.
+
+name: latency-probe
+
+on:
+  workflow_dispatch:
+    inputs:
+      vantage_note:
+        description: "Why this measurement is being taken (event/anomaly context)"
+        required: false
+        type: string
+        default: ""
+      target_set:
+        description: "Which target set to probe"
+        required: true
+        type: choice
+        options:
+          - full
+          - core
+        default: full
+
+permissions:
+  contents: write
+
+concurrency:
+  group: latency-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Run latency probe (Actions vantage)
+        env:
+          VANTAGE_NOTE: ${{ inputs.vantage_note }}
+          TARGET_SET: ${{ inputs.target_set }}
+        run: |
+          set -euo pipefail
+          CORE_FLAG=""
+          if [ "$TARGET_SET" = "core" ]; then CORE_FLAG="--core-only"; fi
+          python3 ops/latency/probe.py --vantage actions $CORE_FLAG \
+            --note "$VANTAGE_NOTE" \
+            --out "$RUNNER_TEMP/latency-report.json"
+          python3 - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json, os
+          path = os.path.join(os.environ["RUNNER_TEMP"], "latency-report.json")
+          d = json.load(open(path))
+          print(f"## Latency probe - Actions vantage - {d['generated_at']}")
+          print("| surface | status | dns | tcp | tls | ttfb | total (median ms) |")
+          print("|---|---|---|---|---|---|---|")
+          for r in d["records"]:
+              m = r["median"]
+              if m:
+                  print(f"| {r['name']} | {r['http_status']} | {m['dns_ms']} | {m['tcp_ms']} | {m['tls_ms']} | {m['ttfb_ms']} | {m['total_ms']} |")
+              else:
+                  print(f"| {r['name']} | ERROR | - | - | - | - | {r.get('error', '')} |")
+          PY
+
+      - name: State gate vs checked-in baseline
+        id: gate
+        run: |
+          set +e
+          python3 ops/latency/probe.py \
+            --gate ops/latency/reports/2026-11-01-baseline-vm.json \
+                   "$RUNNER_TEMP/latency-report.json" >> "$GITHUB_STEP_SUMMARY"
+          echo "gate_exit=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Gate sanity
+        if: steps.gate.outputs.gate_exit != '0' && steps.gate.outputs.gate_exit != '3'
+        run: |
+          echo "::error::state gate exited ${{ steps.gate.outputs.gate_exit }} (expected 0 or 3)"
+          exit 1
+
+      - name: Commit report (material delta only)
+        if: steps.gate.outputs.gate_exit == '3'
+        run: |
+          set -euo pipefail
+          STAMP=$(date -u +%Y-%m-%dT%H%M%SZ)
+          DEST="ops/latency/reports/${STAMP}-actions.json"
+          cp "$RUNNER_TEMP/latency-report.json" "$DEST"
+          git add "$DEST"
+          if git diff --cached --quiet; then
+            echo 'No latency delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(latency): record state-gated probe report' \
+            -m 'Agent-Identity: GitHub Actions Latency Probe' \
+            -m 'Source: ops/latency/probe.py state gate vs 2026-11-01 VM baseline'
+          git fetch origin master
+          git rebase origin/master
+          for attempt in 1 2 3; do
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto origin/master"
+            git pull --rebase origin master
+          done
+          echo '::error::failed to push latency report after retries'
+          exit 1
+
+      - name: No material delta
+        if: steps.gate.outputs.gate_exit == '0'
+        run: echo 'No material delta - nothing committed (state gate).' >> "$GITHUB_STEP_SUMMARY"

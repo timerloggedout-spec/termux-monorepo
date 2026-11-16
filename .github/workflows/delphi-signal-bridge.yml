@@ -1,0 +1,70 @@
+# Wires real signals into the Delphi gate through the reusable delphi-signal.yml emitter
+# (docs/ops/DELPHI-LANE-CONTRACT.md). Event-driven only; no schedule, no model calls,
+# no secrets. Additive file.
+#   - New-surface alert: a push that changes the ForeSight registry -> foresight-radar-hit
+#     (the gate re-scans and lists uncovered surfaces under "Radar" on the results board).
+#   - Shadow outcomes: when a workflow that exercises a shadow lane (ops/delphi/shadow-lanes.json)
+#     finishes, 3 straight successes -> delphi-feedback confirmed (once); a success->failure
+#     transition -> hindsight-forecast-miss. Both re-weight the panel (flywheel).
+name: delphi-signal-bridge
+
+on:
+  push:
+    branches: [master]
+    paths: [data/foresight/resource-registry.jsonl]
+  workflow_run:
+    workflows: [delphi-gate]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: delphi-signal-bridge
+  cancel-in-progress: false
+
+jobs:
+  radar:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions: { actions: write }
+    with:
+      event: foresight-radar-hit
+
+  outcome:
+    if: >-
+      github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'master' &&
+      (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read
+      actions: read
+    outputs:
+      event: ${{ steps.decide.outputs.event }}
+      rfp: ${{ steps.decide.outputs.rfp }}
+      outcome: ${{ steps.decide.outputs.outcome }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/delphi
+            ops/delphi
+          persist-credentials: false
+      - id: decide
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WF_NAME: ${{ github.event.workflow_run.name }}
+          WF_ID: ${{ github.event.workflow_run.workflow_id }}
+        run: python3 -m scripts.delphi.signals shadow-outcome --workflow "$WF_NAME" --workflow-id "$WF_ID"
+
+  emit:
+    needs: outcome
+    if: needs.outcome.outputs.event != ''
+    uses: ./.github/workflows/delphi-signal.yml
+    permissions: { actions: write }
+    with:
+      event: ${{ needs.outcome.outputs.event }}
+      rfp: ${{ needs.outcome.outputs.rfp }}
+      outcome: ${{ needs.outcome.outputs.outcome }}

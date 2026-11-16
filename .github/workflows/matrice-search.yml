@@ -1,0 +1,35 @@
+name: matrice-search
+# Automated search over the Notation Matrice (Linguist lane).
+# Dispatch with a query; results land as a run artifact + step
+# summary. Screen mode checks a candidate entry JSON (passed as
+# text) for exact in-domain collisions before an add is filed.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "search | validate"
+        required: true
+        default: "search"
+      query:
+        description: "search text (search mode)"
+        required: false
+        default: ""
+permissions:
+  contents: read
+jobs:
+  matrice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run matrice machinery
+        run: |
+          if [ "${{ inputs.mode }}" = "validate" ]; then
+            python3 scripts/linguist/matrice_search.py validate | tee matrice-results.txt
+          else
+            python3 scripts/linguist/matrice_search.py search "${{ inputs.query }}" | tee matrice-results.txt
+          fi
+          cat matrice-results.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: matrice-search-results
+          path: matrice-results.txt

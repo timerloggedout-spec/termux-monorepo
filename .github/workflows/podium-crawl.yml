@@ -1,0 +1,65 @@
+name: podium-crawl
+
+# Podium dataset crawl/ingest (design: docs/ops/PODIUM-DATASET.md).
+# Crawls lablab public surfaces, ingests vs the newest snapshot in the
+# repo, uploads the new dataset version as an artifact, and loads Neon
+# when the lane-events secret is provisioned (DEFER otherwise).
+# Snapshot landing in the repo = lane PR from the artifact (v1 flow).
+
+on:
+  workflow_dispatch:
+    inputs:
+      editions:
+        description: "comma-separated edition slugs"
+        required: false
+        default: "vultr-hackathon,alpaca-ai-trading-agents-hackathon,assemblyai-voice-agent-hackathon,ibm-bob-2-hackathon"
+  schedule:
+    - cron: "23 7 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tests gate
+        run: python3 -m unittest discover -s tests -p "test_podium.py"
+      - name: Crawl
+        run: |
+          python3 scripts/podium/podium_crawl.py \
+            --editions "${{ inputs.editions || 'vultr-hackathon,alpaca-ai-trading-agents-hackathon,assemblyai-voice-agent-hackathon,ibm-bob-2-hackathon' }}" \
+            --out snapshot.json
+      - name: Ingest (diff vs newest repo snapshot)
+        run: |
+          PREV=$(ls ops/podium/snapshots/*.json 2>/dev/null | sort | tail -1)
+          VER=$(date -u +%Y-%m-%d).run${{ github.run_number }}
+          if [ -n "$PREV" ]; then
+            python3 scripts/podium/podium_ingest.py --snapshot snapshot.json \
+              --previous "$PREV" --version "$VER" --out "dataset-$VER.json"
+          else
+            python3 scripts/podium/podium_ingest.py --snapshot snapshot.json \
+              --version "$VER" --out "dataset-$VER.json"
+          fi
+          python3 scripts/podium/podium_load.py --dataset "dataset-$VER.json" --out load.sql
+          echo "dataset version: $VER"
+      - name: Load Neon (DEFER without secret)
+        env:
+          LANE_EVENTS_DATABASE_URL: ${{ secrets.LANE_EVENTS_DATABASE_URL }}
+        run: |
+          if [ -z "$LANE_EVENTS_DATABASE_URL" ]; then
+            echo "DEFER: LANE_EVENTS_DATABASE_URL not provisioned; dataset ships as artifact only"
+            exit 0
+          fi
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client >/dev/null
+          psql "$LANE_EVENTS_DATABASE_URL" -v ON_ERROR_STOP=1 -f ops/podium/schema.sql
+          psql "$LANE_EVENTS_DATABASE_URL" -v ON_ERROR_STOP=1 -f load.sql
+      - name: Upload dataset artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: podium-dataset-${{ github.run_number }}
+          path: |
+            snapshot.json
+            dataset-*.json
+            load.sql

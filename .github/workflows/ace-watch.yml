@@ -1,0 +1,47 @@
+name: ace-watch
+
+# Monthly tripwire for Agent Compute Engine availability. ACE is
+# announced-only (preview "in the coming months"); this workflow runs
+# scripts/ace_watch/check.py against Google's own ACE blog pages and
+# opens one `ace-watch` issue when availability language moves. A
+# lane then verifies firsthand and updates
+# docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md by PR.
+# Detection is a tripwire, not evidence.
+
+on:
+  schedule:
+    - cron: "23 7 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ACE availability checker
+        id: check
+        run: |
+          python3 scripts/ace_watch/check.py > /tmp/ace-watch.json || true
+          cat /tmp/ace-watch.json
+          echo "moved=$(python3 -c "import json; print(str(json.load(open('/tmp/ace-watch.json'))['moved']).lower())")" >> "$GITHUB_OUTPUT"
+
+      - name: Open ace-watch issue when availability moved
+        if: steps.check.outputs.moved == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EXISTING=$(gh issue list --label ace-watch --state open --json number --jq 'length')
+          if [ "$EXISTING" = "0" ]; then
+            gh issue create \
+              --title "[ace-watch] Agent Compute Engine availability language changed" \
+              --label ace-watch \
+              --body "The ace-watch checker ($(cat /tmp/ace-watch.json)) found availability signals on Google's ACE pages that differ from the announced state recorded in docs/ops/AGENT-COMPUTE-ENGINE-COMPARISON-2026-10-26.md (preview in the coming months, no pricing). Verify firsthand against Google's primary sources, update the comparison doc by PR, and close this issue with the verified state. [MUSEai]@{role:{ace-watch}}"
+          else
+            echo "an open ace-watch issue already exists; not duplicating"
+          fi

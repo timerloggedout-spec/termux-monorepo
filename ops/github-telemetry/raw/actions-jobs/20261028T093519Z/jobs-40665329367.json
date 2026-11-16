@@ -1,0 +1,200 @@
+{
+  "collected_at": "2026-10-28T09:35:40.864402+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 40665329367,
+    "endpoint": ".../runs/40665329367/jobs"
+  },
+  "data": {
+    "total_count": 6,
+    "jobs": [
+      {
+        "id": 122738315740,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YR3A",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738315740",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738315740",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:55Z",
+        "completed_at": "2026-10-28T09:35:03Z",
+        "name": "acknowledge-ecc-pr",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-28T09:34:55Z",
+            "completed_at": "2026-10-28T09:34:56Z"
+          },
+          {
+            "name": "Lean ack (ECC scope only)",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-28T09:34:56Z",
+            "completed_at": "2026-10-28T09:35:01Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-28T09:35:01Z",
+            "completed_at": "2026-10-28T09:35:01Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738315740",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000396390,
+        "runner_name": "GitHub Actions 1000396390",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 122738317229,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YXrQ",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738317229",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738317229",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:52Z",
+        "completed_at": "2026-10-28T09:34:52Z",
+        "name": "issue-commands",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738317229",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 122738317376,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YYQA",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738317376",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738317376",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:52Z",
+        "completed_at": "2026-10-28T09:34:52Z",
+        "name": "pr-operator-command",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738317376",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 122738317481,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YYqQ",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738317481",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738317481",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:52Z",
+        "completed_at": "2026-10-28T09:34:52Z",
+        "name": "pr-harness-audit",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738317481",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 122738317702,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8YZhg",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738317702",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738317702",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:52Z",
+        "started_at": "2026-10-28T09:34:52Z",
+        "completed_at": "2026-10-28T09:34:52Z",
+        "name": "sweep-prs",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738317702",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 122738363825,
+        "run_id": 40665329367,
+        "workflow_name": "ECC Tools comment-command ops",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/40665329367",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAck8bNsQ",
+        "head_sha": "478596cedd0e03b23725f06e04694e6d9a9ac3e9",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/122738363825",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/40665329367/job/122738363825",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-28T09:34:59Z",
+        "started_at": "2026-10-28T09:34:59Z",
+        "completed_at": "2026-10-28T09:34:52Z",
+        "name": "matrix-cycle",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/122738363825",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

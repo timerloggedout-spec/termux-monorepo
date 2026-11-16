@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://github.com/timerloggedout-spec/termux-monorepo/docs/ops/MCP-ADMISSION-EVIDENCE.schema.json",
+  "title":"MCP Admission Evidence","type":"object","additionalProperties":false,
+  "required":["schema_version","event_id","server_id","server_version","tool_schema_hash","declared_capabilities","authorization_mode","policy_decision","observed_at","provenance"],
+  "properties":{
+    "schema_version":{"const":"mcp.admission.v1"},"event_id":{"type":"string"},"server_id":{"type":"string"},
+    "server_version":{"type":["string","null"]},"tool_schema_hash":{"type":"string"},
+    "declared_capabilities":{"type":"array","items":{"type":"string"}},
+    "authorization_mode":{"enum":["none","oauth2","oidc","api_key","local_process","ssh","other"]},
+    "delegation_depth":{"type":["integer","null"],"minimum":0},"policy_decision":{"enum":["ALLOW","DENY","REVIEW","UNKNOWN"]},
+    "request_hash":{"type":["string","null"]},"response_hash":{"type":["string","null"]},"observed_at":{"type":"string"},
+    "provenance":{"type":"object","additionalProperties":false,"required":["repository_sha","producer","contract_version"],
+      "properties":{"repository_sha":{"type":"string"},"producer":{"type":"string"},"contract_version":{"type":"string"},
+      "source_url":{"type":["string","null"],"format":"uri"},"environment_fingerprint":{"type":["string","null"]}}}
+  }
+}

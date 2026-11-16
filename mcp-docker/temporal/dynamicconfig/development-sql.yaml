@@ -1,0 +1,10 @@
+# Minimal dynamic config for local Temporal auto-setup (dev only).
+limit.blobSize.error:
+  - value: 2097152
+    constraints: {}
+limit.blobSize.warn:
+  - value: 524288
+    constraints: {}
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}

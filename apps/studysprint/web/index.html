@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14532d">
+<title>StudySprint</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>StudySprint</h1>
+  <p id="course-name">Loading your course…</p>
+  <div class="row" id="course-bar">
+    <label>Course
+      <select id="course-switch"></select>
+    </label>
+    <span id="course-countdown"></span>
+    <a id="course-ics" download="studysprint-course.ics">Download .ics</a>
+  </div>
+</header>
+
+<nav id="tabs" role="tablist">
+  <button data-view="today" class="tab active">Today</button>
+  <button data-view="plan" class="tab">Plan / Receipt</button>
+  <button data-view="reader" class="tab">Reader</button>
+  <button data-view="sr" class="tab">SR Review</button>
+  <button data-view="memory" class="tab">Memory</button>
+  <button data-view="calendar" class="tab">Calendar</button>
+  <button data-view="routes" class="tab">Routes</button>
+  <button data-view="ingest" class="tab">Ingest</button>
+  <button data-view="hardening" class="tab">Hardening</button>
+</nav>
+
+<main>
+  <section id="view-today" class="view">
+    <h2>Today</h2>
+    <p id="sample-disclosure" class="hidden" aria-live="polite"></p>
+    <p id="today-summary"></p>
+    <div id="today-sessions"></div>
+    <p id="checkin-status" aria-live="polite"></p>
+  </section>
+
+  <section id="view-plan" class="view hidden">
+    <h2>Plan</h2>
+    <div id="plan-body"></div>
+    <div id="plan-interleaved"></div>
+    <h3>Trust receipt — what was fetched</h3>
+    <pre id="receipt-body"></pre>
+  </section>
+
+  <section id="view-reader" class="view hidden">
+    <h2>Reader</h2>
+    <label>Section
+      <select id="reader-section-select"></select>
+    </label>
+    <div class="row">
+      <button id="reader-prev">Previous section</button>
+      <button id="reader-next">Next section</button>
+    </div>
+    <p id="reader-section"></p>
+    <div id="reader-word" aria-live="polite">Press Start</div>
+    <div class="row">
+      <button id="reader-start">Start</button>
+      <button id="reader-step">Step</button>
+      <button id="reader-play">Play / Pause</button>
+      <button id="reader-rewind">Rewind 10</button>
+    </div>
+    <div id="reader-text" class="hidden" aria-live="polite"></div>
+    <div id="term-panel" class="hidden" aria-live="polite"></div>
+    <div id="annotations"></div>
+  </section>
+
+  <section id="view-sr" class="view hidden">
+    <h2>SR Review</h2>
+    <label>Scheduler
+      <select id="sr-scheduler">
+        <option value="fsrs" selected>FSRS (default)</option>
+        <option value="sm2">SM-2 (baseline)</option>
+        <option value="leitner">Leitner boxes</option>
+      </select>
+    </label>
+    <div id="sr-front" class="card"></div>
+    <div id="sr-back" class="card hidden"></div>
+    <div class="row">
+      <button id="sr-flip">Flip card</button>
+    </div>
+    <div class="row grades" id="sr-grades-row">
+      <button data-grade="1">1 Again</button>
+      <button data-grade="2">2 Hard</button>
+      <button data-grade="3">3 Good</button>
+      <button data-grade="4">4 Easy</button>
+    </div>
+    <div class="row grades hidden" id="sr-leitner-row">
+      <button data-leitner="1">Knew it — up a box</button>
+      <button data-leitner="0">Missed — back to box 1</button>
+    </div>
+    <p id="sr-receipt" aria-live="polite"></p>
+    <div class="row">
+      <button id="sr-export-apkg">Export Anki .apkg</button>
+      <button id="sr-export-obsidian">Export Obsidian vault</button>
+    </div>
+    <p id="sr-export-receipt" aria-live="polite"></p>
+  </section>
+
+  <section id="view-memory" class="view hidden">
+    <h2>Memory</h2>
+    <h3>Memory palace — your route</h3>
+    <div id="palace-body"></div>
+    <div class="row">
+      <button id="walk-start">Walk it from memory</button>
+    </div>
+    <div id="walk-area"></div>
+    <p id="walk-receipt" aria-live="polite"></p>
+    <h3>Explain it back (Feynman)</h3>
+    <label>Topic
+      <select id="feynman-topic"></select>
+    </label>
+    <textarea id="feynman-text" rows="4"
+      placeholder="Explain it in your own words, like you're teaching it…"></textarea>
+    <div class="row">
+      <button id="feynman-grade">Grade my explanation</button>
+    </div>
+    <p id="feynman-result" aria-live="polite"></p>
+    <h3>Retrievability reminders</h3>
+    <div id="retrievability-body"></div>
+    <p id="retrievability-status" aria-live="polite"></p>
+  </section>
+
+  <section id="view-calendar" class="view hidden">
+    <h2>Calendar</h2>
+    <div id="calendar-body"></div>
+  </section>
+
+  <section id="view-routes" class="view hidden">
+    <h2>Routes</h2>
+    <div id="routes-body"></div>
+  </section>
+
+  <section id="view-ingest" class="view hidden">
+    <h2>Ingest</h2>
+    <p>Add a syllabus or textbook file — the same core ingestion
+    path as every surface. A parsed syllabus is placed on the
+    calendar only after you confirm it.</p>
+    <label>Syllabus / textbook file (text)
+      <input type="file" id="ingest-file" accept=".txt,.md,text/plain">
+    </label>
+    <label>Photograph a page (camera)
+      <input type="file" id="ingest-camera" accept="image/*" capture="environment">
+    </label>
+    <div id="ingest-preview" aria-live="polite"></div>
+    <div class="row">
+      <button id="ingest-confirm" class="hidden">Confirm placement</button>
+    </div>
+    <p id="ingest-status" aria-live="polite"></p>
+    <div id="book-receipt"></div>
+    <h3>New course</h3>
+    <p>Create a course from its syllabus document (JSON with a
+    course name, weeks and topics, and an exam_date if it has
+    one). The course joins the switcher above; its plan and
+    countdown follow the same core rules as the bundled courses,
+    and its progress is stored under its own keys — never mixed
+    with another course's.</p>
+    <label>Syllabus document (JSON)
+      <textarea id="new-course-json" rows="6" cols="60"
+        placeholder='{"course": "HIST 201", "exam_date": "2026-12-15", "weeks": [{"week": 1, "topics": ["causes", "timeline"]}]}'></textarea>
+    </label>
+    <div class="row">
+      <button id="new-course-add" class="primary">Create course</button>
+    </div>
+    <p id="new-course-status" aria-live="polite"></p>
+  </section>
+
+  <section id="view-hardening" class="view hidden">
+    <h2>Hardening — state recall + stress inoculation</h2>
+    <div id="hardening-body"></div>
+  </section>
+</main>
+
+<footer>
+  <p>StudySprint webApp — surface version <span id="surface-version"></span>.
+  Works offline after the first load.</p>
+</footer>
+
+<script src="live.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+</body>
+</html>

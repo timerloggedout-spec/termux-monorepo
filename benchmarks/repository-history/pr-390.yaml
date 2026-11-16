@@ -1,0 +1,69 @@
+schema: agent-evaluation/v1
+benchmark_id: repo-history-pr-390
+source:
+  kind: github_pull_request
+  number: 390
+  repository: timerloggedout-spec/termux-monorepo
+  role: candidate-replay-source
+  contamination_policy: source-history-is-context-not-ground-truth
+
+task_family: repository-history-replay
+cohort: notation-sets
+
+treatments:
+  assignment: opaque-treatment-id
+  factors:
+    - provider
+    - model
+    - prompt
+    - manager
+    - sequencing
+    - evaluator
+    - blindness_condition
+
+success_criteria:
+  - reconstruct_bounded_task_context
+  - preserve_source_provenance
+  - implement_requested_notation_changes
+  - add_or_validate_tests
+  - detect_regressions
+  - produce_reviewable_evidence
+
+primary_outcome: correctness
+secondary_metrics:
+  - completeness
+  - regression_rate
+  - warning_rate
+  - severity
+  - evaluator_agreement
+  - latency
+  - retries
+  - resource_usage
+
+anti_contamination:
+  hidden_tests_immutable: true
+  benchmark_definition_outside_worker_control: true
+  evidence_freeze_before_unblind: true
+
+promotion:
+  require_replication: true
+  require_objective_evidence: true
+  require_last_known_good_comparison: true
+
+lineage:
+  required:
+    - source_sha
+    - experiment_id
+    - treatment_id
+    - workflow_run
+    - job
+    - step
+    - logs
+    - artifacts
+    - evaluator
+    - outcome
+
+notes:
+  - The source PR has a large comment/event history; volume is a stress-test factor, not a quality score.
+  - This manifest is a benchmark seed, not a claim that PR-390 itself is objectively correct.
+  - Scout may propose derived tasks from this source only after bounded extraction and provenance capture.

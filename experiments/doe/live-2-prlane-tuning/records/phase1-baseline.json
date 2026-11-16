@@ -1,0 +1,435 @@
+{
+ "campaign": "live-2-prlane-tuning",
+ "phase": 1,
+ "name": "baseline_replay_outcome_join",
+ "as_of": "2026-11-01T01:05-01:13Z",
+ "source": "PAT helper pulls API, one read per distinct PR (154) + check-runs for the 5 merged heads",
+ "snapshots": 8,
+ "rows_total": 945,
+ "distinct_prs": 157,
+ "outcome_census_pr_level": {
+  "still_open": 151,
+  "merged": 6
+ },
+ "resolved_fraction": 0.0382,
+ "lane_x_outcome_pr_level_latest_lane": {
+  "CANDIDATE": {
+   "merged": 1,
+   "closed_unmerged": 0,
+   "still_open": 30
+  },
+  "EXTRACT": {
+   "merged": 0,
+   "closed_unmerged": 0,
+   "still_open": 28
+  },
+  "NEED_EVIDENCE": {
+   "merged": 5,
+   "closed_unmerged": 0,
+   "still_open": 82
+  },
+  "SUPERSEDE": {
+   "merged": 0,
+   "closed_unmerged": 0,
+   "still_open": 11
+  }
+ },
+ "lane_x_outcome_row_level": {
+  "CANDIDATE": {
+   "merged": 3,
+   "closed_unmerged": 0,
+   "still_open": 201
+  },
+  "EXTRACT": {
+   "merged": 0,
+   "closed_unmerged": 0,
+   "still_open": 203
+  },
+  "NEED_EVIDENCE": {
+   "merged": 8,
+   "closed_unmerged": 0,
+   "still_open": 448
+  },
+  "SUPERSEDE": {
+   "merged": 0,
+   "closed_unmerged": 0,
+   "still_open": 82
+  }
+ },
+ "per_snapshot": {
+  "2026-10-28T23:02:34Z": {
+   "rows": 102,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "NEED_EVIDENCE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 45
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-28T23:17:01Z": {
+   "rows": 102,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "NEED_EVIDENCE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 45
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-28T23:37:36Z": {
+   "rows": 104,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 24
+    },
+    "NEED_EVIDENCE": {
+     "merged": 2,
+     "closed_unmerged": 0,
+     "still_open": 45
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-29T00:56:15Z": {
+   "rows": 103,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 24
+    },
+    "NEED_EVIDENCE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 45
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-29T11:42:28Z": {
+   "rows": 106,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 23
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 25
+    },
+    "NEED_EVIDENCE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 47
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-30T11:34:48Z": {
+   "rows": 124,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 27
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 28
+    },
+    "NEED_EVIDENCE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 58
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 10
+    }
+   }
+  },
+  "2026-10-31T11:10:01Z": {
+   "rows": 152,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 29
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 28
+    },
+    "NEED_EVIDENCE": {
+     "merged": 2,
+     "closed_unmerged": 0,
+     "still_open": 81
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 11
+    }
+   }
+  },
+  "2026-11-01T01:02:29Z": {
+   "rows": 152,
+   "lane_x_outcome": {
+    "CANDIDATE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 30
+    },
+    "EXTRACT": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 28
+    },
+    "NEED_EVIDENCE": {
+     "merged": 1,
+     "closed_unmerged": 0,
+     "still_open": 82
+    },
+    "SUPERSEDE": {
+     "merged": 0,
+     "closed_unmerged": 0,
+     "still_open": 11
+    }
+   }
+  }
+ },
+ "covariates_pr_level": {
+  "CANDIDATE": {
+   "n": 31,
+   "age_days_median": 7.0,
+   "changed_files_median": 2,
+   "draft_n": 0,
+   "bot_author_n": 11,
+   "gates_both_pass_n": 31
+  },
+  "EXTRACT": {
+   "n": 28,
+   "age_days_median": 6.9,
+   "changed_files_median": 4.0,
+   "draft_n": 0,
+   "bot_author_n": 28,
+   "gates_both_pass_n": 24
+  },
+  "NEED_EVIDENCE": {
+   "n": 87,
+   "age_days_median": 3.1,
+   "changed_files_median": 2,
+   "draft_n": 16,
+   "bot_author_n": 49,
+   "gates_both_pass_n": 17
+  },
+  "SUPERSEDE": {
+   "n": 11,
+   "age_days_median": 71.3,
+   "changed_files_median": 11,
+   "draft_n": 2,
+   "bot_author_n": 1,
+   "gates_both_pass_n": 5
+  }
+ },
+ "gap_class": {
+  "prs": [
+   1498,
+   1514,
+   1540,
+   1541,
+   1569
+  ],
+  "prs_snapshots_1_7": [
+   1498,
+   1514,
+   1540,
+   1569
+  ],
+  "outcomes": {
+   "1498": "still_open",
+   "1514": "still_open",
+   "1540": "still_open",
+   "1569": "still_open"
+  },
+  "treatment": "snapshots 1-7: excluded from NEED_EVIDENCE rates (dropped-field class, phase 0); snapshot 8: class self-describes in-row via base_ref (members 1498/1514/1540/1541/1569, all recorded NE with base_ref != master); all 5 still_open at as-of, so exclusion changes no rate here"
+ },
+ "feed_v11_status": {
+  "code": "LANDED PR #2796 merged 7529170d5558 (2026-11-01T01:01:48Z): production_classify rows carry base_ref + mergeable_state",
+  "live_feed": "first field-carrying generation LANDED: feed 2026-11-01T01:02:29Z (commit 102db9aa480d4, blob 5b5b2137ec63), 152/152 rows carry both fields; extracted as snapshot 8 in this PR",
+  "snapshot8_replay": "replay with in-row base_ref/mergeable_state = EXACT 152/152 (0 mismatches, counts 30/28/83/11 reproduced), verified locally by this lane with the updated reconstruct"
+ },
+ "merged_detail": [
+  {
+   "number": 2128,
+   "merged_at": "2026-10-29T04:08:50Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "chore(delphi): refresh delphi-rfp-feed.json"
+  },
+  {
+   "number": 2283,
+   "merged_at": "2026-10-28T23:37:39Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "Chrome: wire PR Lanes into nav, sitemap, Admin inventory (republish)"
+  },
+  {
+   "number": 2309,
+   "merged_at": "2026-11-01T00:32:19Z",
+   "latest_lane": "CANDIDATE",
+   "title": "docs(secrets): phantom-secret remediation map + provisioning checklist"
+  },
+  {
+   "number": 2579,
+   "merged_at": "2026-10-31T17:15:53Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "Harden Admin Graph and standardize versioned dashboard releases"
+  },
+  {
+   "number": 2699,
+   "merged_at": "2026-10-31T17:15:45Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "fix(desk): enforce telemetry identity and intake safety"
+  },
+  {
+   "number": 2797,
+   "merged_at": "2026-11-01T01:07:03Z",
+   "latest_lane": "NEED_EVIDENCE",
+   "title": "quota: schema v2 rename \u2014 quota.registry.v2 + quota.readings.v2 (owner order)"
+  }
+ ],
+ "ne_merged_stratification": [
+  {
+   "number": 2128,
+   "merged_at": "2026-10-29T04:08:50Z",
+   "snapshot_gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "snapshot_draft": false,
+   "gates_at_merged_head": {},
+   "classification": "merged_without_named_gate_evidence"
+  },
+  {
+   "number": 2283,
+   "merged_at": "2026-10-28T23:37:39Z",
+   "snapshot_gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "snapshot_draft": false,
+   "gates_at_merged_head": {},
+   "classification": "merged_without_named_gate_evidence"
+  },
+  {
+   "number": 2579,
+   "merged_at": "2026-10-31T17:15:53Z",
+   "snapshot_gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "snapshot_draft": false,
+   "gates_at_merged_head": {
+    "hygiene + portability gate": [
+     "completed",
+     "success"
+    ],
+    "agentic termux smoke": [
+     "completed",
+     "success"
+    ]
+   },
+   "classification": "evidence_arrived_post_snapshot"
+  },
+  {
+   "number": 2699,
+   "merged_at": "2026-10-31T17:15:45Z",
+   "snapshot_gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "snapshot_draft": true,
+   "gates_at_merged_head": {
+    "agentic termux smoke": [
+     "completed",
+     "success"
+    ],
+    "hygiene + portability gate": [
+     "completed",
+     "success"
+    ]
+   },
+   "classification": "evidence_arrived_post_snapshot"
+  },
+  {
+   "number": 2797,
+   "merged_at": "2026-11-01T01:07:03Z",
+   "snapshot_gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "snapshot_draft": false,
+   "gates_at_merged_head": {},
+   "classification": "merged_without_named_gate_evidence"
+  }
+ ]
+}

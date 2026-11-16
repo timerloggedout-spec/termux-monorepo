@@ -1,0 +1,65 @@
+{
+  "AllocationPlan": {
+    "fields": ["id","createdAt","status","topology","constraints","metrics","provenance"]
+  },
+  "AssetAllocation": {
+    "fields": ["symbol","targetWeight","minWeight","maxWeight","slippageBps","venue"]
+  },
+  "VaultState": {
+    "fields": ["id","updatedAt","cash","positions","pnl","risk"]
+  },
+  "Position": {
+    "fields": ["symbol","qty","avgPrice","value"]
+  },
+  "ArbitrageOpportunity": {
+    "fields": ["id","symbol","buyVenue","sellVenue","spread","volume","confidence","detectedAt","expiresAt","fees"]
+  },
+  "Provenance": {
+    "fields": ["parentId","merkleRoot","lineage","ipfsHash","pinned"]
+  },
+  "PeerNode": {
+    "fields": ["nodeId","publicKey","role","lastSeen","capabilities","reputation","seedList"]
+  },
+  "SyncState": {
+    "fields": ["contentId","version","ipfsHash","magnetUri","seeders","verified","replicas"]
+  },
+  "ConsensusProposal": {
+    "fields": ["proposalId","proposer","planId","proposedChanges","votes","quorum","status","expiresAt"]
+  },
+  "UserAccount": {
+    "fields": ["userId","username","email","createdAt","subAccounts","socialGraph","preferences","kycStatus"]
+  },
+  "SubAccount": {
+    "fields": ["subAccountId","exchange","apiKey","permissions","isActive","lastSync"]
+  },
+  "GameSession": {
+    "fields": ["sessionId","userId","gameType","startedAt","endedAt","wagerTotal","payoutTotal","pointsEarned","provablyFairSeed","outcomes"]
+  },
+  "GameOutcome": {
+    "fields": ["roundId","timestamp","wager","payout","result","hash"]
+  },
+  "SocialConnection": {
+    "fields": ["fromUserId","toUserId","type","createdAt","metadata"]
+  },
+  "AuthToken": {
+    "fields": ["keyId","secret","userId","scope","issuedAt","expiresAt","deviceId"]
+  },
+  "RequestSignature": {
+    "fields": ["timestamp","signature","bodyHash","method","path"]
+  },
+  "ReplayProtection": {
+    "fields": ["key","timestamp","signature","firstSeen","expiresAt"]
+  },
+  "Constraints": {
+    "fields": ["maxTurnover","maxPositions","riskBudget","minCash","rules"]
+  },
+  "PlanMetrics": {
+    "fields": ["expectedReturn","expectedVol","sharpe","turnover","trackingError"]
+  },
+  "TimeSeriesData": {
+    "fields": ["symbol","timestamp","open","high","low","close","volume","venue"]
+  },
+  "Event": {
+    "fields": ["type","timestamp","data","id"]
+  }
+}

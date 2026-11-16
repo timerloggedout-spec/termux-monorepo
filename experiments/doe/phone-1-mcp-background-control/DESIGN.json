@@ -1,0 +1,42 @@
+{
+ "campaign_id": "phone-1-mcp-background-control",
+ "family": "doe",
+ "member_kind": "register",
+ "surface": "doe",
+ "suite_type": "live",
+ "status": "population_landed",
+ "moniker": "speculators-build",
+ "owner_order": "Owner order via main -> Desk QUE dispatch 2026-11-04: builder follow-on to the Phone MCP research dossier (~/workspace/research_notes/phone-mcp-background-control-20261104-1337) \u2014 (1) land the findings as DoE data population in-repo; (2) builder follow-on per the report's builder findings {token offload, DoE data population}, scoped per repo machinery, shape reported back. Bounds: repo-side only; no device actuation; no signups.",
+ "method": "Observational register (cmp-register pattern): the population is the surveyed field of MCP phone-control systems, transcribed from the dossier report with per-unit source refs and evidence levels. Entries are evaluated on accrued evidence over time; architecture claims stay as-documented until a device-side exercise exists (none does \u2014 bounds were repo-side only).",
+ "population": {
+  "units_file": "records/population.jsonl",
+  "units": 20,
+  "unit_fields": [
+   "id",
+   "name",
+   "kinds (name_match|survey)",
+   "maker",
+   "type_licence",
+   "pattern",
+   "connects_via",
+   "capabilities{screenshot,ui_tree,tap_swipe_type,app_launch_install,shell,calls_sms}",
+   "background_class (A|B|C|none|n/a)",
+   "governance",
+   "pricing",
+   "source_refs",
+   "evidence_level"
+  ],
+  "source_of_record": "records/report.md (byte-identical copy of the dossier report)",
+  "findings_file": "records/findings.json"
+ },
+ "responses": [
+  "background_class distribution across the field",
+  "governance patterns worth copying vs red flags, as accrued device-side evidence lands",
+  "token cost per observation mode (snapshot vs screenshot) when the fleet bridge exercises them"
+ ],
+ "builder_follow_on": {
+  "token_offload": "Snapshot-first observation for the fleet's on-device bridge: compact snapshot-with-refs serializer + caps + stale-ref protocol; screenshots on doubt only. Evaluation rides the pilot-1 context-routing x compression machinery (observation mode as the compression arm) when a device exercise is commissioned.",
+  "doe_data_population": "This register. New systems/findings append as units by amendment PR; verdicts require accrued evidence, never preference.",
+  "state": "scoped_not_built \u2014 build commission is the owner's call (investment definition: skills/tooling + model role-card picks are the investment items; proposal + estimate compose with the build dispatch)."
+ }
+}

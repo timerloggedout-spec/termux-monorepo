@@ -1,0 +1,49 @@
+{
+  "collected_at": "2026-11-16T11:09:34.255725+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 43855184425,
+    "endpoint": ".../runs/43855184425/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 133257526616,
+        "run_id": 43855184425,
+        "workflow_name": "Gemini review after peers",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/43855184425",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAfBsR9WA",
+        "head_sha": "5fbf6ee0d9e19c8164c1065b65fef7623baf4954",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/133257526616",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/43855184425/job/133257526616",
+        "status": "in_progress",
+        "conclusion": null,
+        "created_at": "2026-11-16T11:09:10Z",
+        "started_at": "2026-11-16T11:09:29Z",
+        "completed_at": null,
+        "name": "second-pass",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "in_progress",
+            "conclusion": null,
+            "number": 1,
+            "started_at": "2026-11-16T11:09:30Z",
+            "completed_at": null
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/133257526616",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1001578219,
+        "runner_name": "GitHub Actions 1001578219",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

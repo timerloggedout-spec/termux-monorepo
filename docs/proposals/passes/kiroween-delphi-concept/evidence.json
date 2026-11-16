@@ -1,0 +1,159 @@
+{
+  "schema": "delphi-evidence-set/v1",
+  "artifact": {
+    "kind": "bundle",
+    "ref": "kiroween-delphi-concept"
+  },
+  "assembled_at": "2026-10-30T23:43:55Z",
+  "fresh_until": "2026-10-30T23:58:55Z",
+  "material": true,
+  "assembly": {
+    "packet_claims": "kiroween:* = official-rules facts read firsthand by the challenge-entries lane 2026-10-30, supplied as packet source claims per the generator contract; d4:* = challenge log packet D4 on master",
+    "read_only_api_calls": 2
+  },
+  "items": [
+    {
+      "claim": "kiroween:window",
+      "value": "Submission Period Oct 30, 2026 9:00 AM PT - Dec 4, 2026 2:00 PM PT (official rules s.1); registration Oct 13 - Dec 4, 2026.",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "4268a385a76852fc70e83f4b10e8ca96b4ad9d099326af67459d2dc5738302b1"
+    },
+    {
+      "claim": "kiroween:deadline",
+      "value": "Dec 4, 2026, 2:00 PM PT (official rules s.1).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "6f04d8909218e66e2f96b5459fb959d671cb52b63d7440d0909ae48ea94e0e43"
+    },
+    {
+      "claim": "kiroween:prize-pool",
+      "value": "Overall $30,000/$20,000/$10,000; Category bests $5,000 x4; Best Startup $10,000; Ghost of Kiroween Past $2,000; Best Kiro Crew App $1,000; Best Demo $1,000; Student 1-yr Kiro Pro Max x4; Blog 2,000 Kiro credits x100; Social Blitz 3-mo Kiro Pro+ x5 (official rules).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "132b67c69ac365ea0de4d61ab695125020728263bbc4b886f76415f4533b1c12"
+    },
+    {
+      "claim": "kiroween:eligibility-new-projects",
+      "value": "New Projects Only: projects newly created after the Submission Period start are eligible; standard resources (frameworks, libraries, starter templates) allowed; any other pre-existing code or work incorporated must be disclosed; the submitted work must have been built during the Submission Period (official rules).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "55747409286d550e97e66972295b4c9cfb51b3a227fa35e10fbc411fbc402612"
+    },
+    {
+      "claim": "kiroween:themes",
+      "value": "Categories: Resurrection / Frankenstein / Skeleton Crew / Costume Contest (official rules).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "01f9409763dcd887cc119cedf5556db69dd7075c1e42eace815cc59f5ce41c2c"
+    },
+    {
+      "claim": "kiroween:registration-id",
+      "value": "Registration requires a Kiro user ID or AWS account ID; Kiro credits = 4,000 one-time allotment via Credit Request Form (Kiro user ID or AWS account ID; requests by Dec 1, 12:00 PM PT; 48 business-hour review) (official rules).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "c362d9354ea0b42d0cc11cc4b1ecc0f8dbaa93763f2169d729bd683dc258e7dd"
+    },
+    {
+      "claim": "kiroween:full-rules",
+      "value": "Official Kiroween rules read firsthand 2026-10-30 (kiroween.devpost.com/rules) by the challenge-entries lane and stamped into the brief: judging Stage 1 pass/fail then Stage 2 five criteria at 20% each; deliverables incl. /.kiro at repo root + license file + public demo video <3 min; teams max 3.",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "afea649ae92683cea05ab655172cfee1daabbd861322101e88a98c352c63eb19"
+    },
+    {
+      "claim": "kiroween:rules-2026-10-30",
+      "value": "kiroween.devpost.com/rules, published rules of record for Kiroween 2026, read 2026-10-30; where the Devpost dates page differs (window open shown as 1:00 PM PT), the rules prevail (9:00 AM PT).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "d9f558a1510af8830dec730ac0500ad659a6d550d137e207f1211ebb47addff4"
+    },
+    {
+      "claim": "kiroween:category-skeleton-crew",
+      "value": "Skeleton Crew category: a foundation plus TWO distinct applications; the project repo must contain 2 separate folders for the 2 apps (official rules).",
+      "provenance": {
+        "source": "official-rules-packet",
+        "path": "https://kiroween.devpost.com/rules",
+        "observed_at": "2026-10-30"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "823dfd34e5d52d8d69af0a090182e2178bbe41482f8f38e106702bcd229115a7"
+    },
+    {
+      "claim": "d4:deadline",
+      "value": "Dec 4, 2026, 2:00 PM PST - challenge log packet D4 (docs/ops/CHALLENGE-ENTRIES-LOG.md s.4), agreeing with the official rules.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/ops/CHALLENGE-ENTRIES-LOG.md?ref=master",
+        "observed_at": "2026-10-30T23:43:55Z"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "b8d1e945bf00e269f3bfbc0723a27b07dcfa439a2ec2c97953e6b8907de50693"
+    },
+    {
+      "claim": "d4:registration-route",
+      "value": "Registration via the dedicated Devpost + Kiro ID creation lane (fleet Google identity); profile facts in docs/ops/PROFILE-REGISTRY.md; entrant monikers in config/registration_monikers.json.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/ops/CHALLENGE-ENTRIES-LOG.md?ref=master",
+        "observed_at": "2026-10-30T23:43:55Z"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "edf1bccdc7cf77842d32bce7fbe58429fa3434ad1bb9679ad55d1e02c847166c"
+    },
+    {
+      "claim": "d4:sequencing",
+      "value": "Owner sequencing (2026-10-26/27): register now; no project creation before the window opens; build after Nov 8, 2026 (D1 Nov 4 + D2 Nov 8 land first); submission deadline Dec 4.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/ops/CHALLENGE-ENTRIES-LOG.md?ref=master",
+        "observed_at": "2026-10-30T23:43:55Z"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "c28ba0c33008f3faff85bab784d7c5d1f3d5dc0148f6b4275219e6ef6ca7f9d6"
+    },
+    {
+      "claim": "d4:concept-inputs",
+      "value": "Concept inputs on master: CMDB design doc (design PR #1655 closed unmerged - cite the doc, not the PR); Delphi Oracle MVP patterns (PR #1620); D0 weekend-challenge package + fetch_evidence (apps/weekend-challenge-delphi-oracle/, PR #1702); candidate corpses in docs/proposals/registry.yaml + ops docs.",
+      "provenance": {
+        "source": "github-api",
+        "path": "/repos/timerloggedout-spec/termux-monorepo/contents/docs/ops/CHALLENGE-ENTRIES-LOG.md?ref=master",
+        "observed_at": "2026-10-30T23:43:55Z"
+      },
+      "fresh_until": "2026-10-30T23:58:55Z",
+      "sha256": "9c565efee85e6957bbcb6b8797ab4037ee13565ff6ddebbcad04fe3f815454d3"
+    }
+  ]
+}

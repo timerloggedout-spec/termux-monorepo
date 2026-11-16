@@ -1,0 +1,65 @@
+{
+  "category": "alias_tools",
+  "tools": [
+    {
+      "name": "funcfind",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: function _ff(){ jq -r \"select(.file | test(\\\"$1\\\")) | \\\"\\(.name) \\t line \\(.line) \\t \\(.sig[:60])\\\"\" ~/workspace/llm_map/func_index.jsonl; }; _ff",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxapply",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxapply.py",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxtool",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxrefactor",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/post_refactor.py",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    },
+    {
+      "name": "taxdiff",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: python3 ~/workspace/llm_map/_TOOL_TAXONOMY/modules/taxdiff.py",
+      "tags": [
+        "alias_tools"
+      ],
+      "auto_tag_source": "auto:^alias$|^alias-",
+      "category": "alias_tools"
+    }
+  ]
+}

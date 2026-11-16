@@ -1,0 +1,17 @@
+# Dependabot remains enabled as a monitor for the repository's GitHub Actions
+# dependencies. Version-update pull requests are deliberately suppressed; any
+# exception is reviewed through the repository's normal agent and operator flow.
+# Security updates continue to use GitHub's Dependabot security-update settings.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0
+
+  # npm /mcp-hub is intentionally absent. Ignore rules did not stop the
+  # dynamic security-update job: run 37423240181 on 489b8d6b exited 1 with
+  # all_versions_ignored (same class as 37393760327 security_update_not_possible).
+  # Lockfile floors cannot resolve the patched ranges. Automated security
+  # fixes are paused at the repo setting; vulnerability alerts stay enabled.

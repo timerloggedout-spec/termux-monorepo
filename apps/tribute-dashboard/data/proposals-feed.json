@@ -1,0 +1,1507 @@
+{
+ "schema": "proposals-feed/v2",
+ "generated_at": "2026-11-13T05:12:54Z",
+ "source": "docs/proposals/registry.yaml",
+ "registry_updated_at": "2026-11-11T00:00:00Z",
+ "registry_updated_by": "ChatGPT",
+ "counts": {
+  "total": 64,
+  "by_status": {
+   "in_review": 19,
+   "posted": 18,
+   "executing": 21,
+   "draft": 2,
+   "accepted": 4
+  },
+  "by_priority": {
+   "P1": 49,
+   "P0": 6,
+   "P2": 9
+  },
+  "by_author": {
+   "ChatGPT": 17,
+   "grok": 7,
+   "timerloggedout-spec": 9,
+   "Manus": 3,
+   "Kimi2.6": 1,
+   "Manus AI": 4,
+   "Claude": 2,
+   "agent-automation": 2,
+   "Hark": 1,
+   "Cue": 1,
+   "gaps-and-opportunities-subagent": 1,
+   "oracle-method": 15,
+   "Perplexity": 1
+  },
+  "passes": 5
+ },
+ "proposals": [
+  {
+   "id": "master-splinter",
+   "title": "Master Splinter \u2014 GitHub App + Replay Control Plane (ADAPT: control plane over the existing 8-AppID family)",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/master-splinter/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/master-splinter/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "agent-contributor-provenance",
+   "title": "Evidence-backed agent contributor attribution and source citation ledger",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/agent-contributor-provenance/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agent-contributor-provenance/",
+   "issues": [
+    1241
+   ],
+   "prs": [
+    {
+     "number": 1244,
+     "state": "merged",
+     "merged_at": "2026-10-18T06:20:26Z"
+    }
+   ]
+  },
+  {
+   "id": "model-selection-market",
+   "title": "Model selection market \u2014 equal-weight bootstrap, 3L0 performance, DSPy-DoE, bets/trading-cards",
+   "author": "grok",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/model-selection-market/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/model-selection-market/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "ratatui-tokio-terminal-dashboard",
+   "title": "Termux-first Ratatui + Tokio responsive terminal dashboard",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/ratatui-tokio-terminal-dashboard/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ratatui-tokio-terminal-dashboard/",
+   "issues": [
+    934
+   ],
+   "prs": [
+    {
+     "number": 935,
+     "state": "merged",
+     "merged_at": "2026-09-30T17:14:55Z"
+    },
+    {
+     "number": 938,
+     "state": "merged",
+     "merged_at": "2026-09-30T18:15:42Z"
+    },
+    {
+     "number": 940,
+     "state": "merged",
+     "merged_at": "2026-09-30T18:20:35Z"
+    },
+    {
+     "number": 955,
+     "state": "merged",
+     "merged_at": "2026-10-01T00:16:45Z"
+    }
+   ]
+  },
+  {
+   "id": "ml-keep-alive",
+   "title": "ML keep-alive DAG extract onto live master (Issue #175)",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/ml-keep-alive/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ml-keep-alive/",
+   "issues": [
+    175,
+    772
+   ],
+   "prs": [
+    {
+     "number": 817,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 787,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 746,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 682,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 432,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "temporal-langsmith-adapter",
+   "title": "Temporal self-host + LangSmith Trajectories adapter (P1 observational)",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/temporal-langsmith-adapter/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-langsmith-adapter/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "approxination-integration",
+   "title": "Approxination skill search/create/contribute + A/B/C/D evaluation cohort",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/approxination-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/approxination-integration/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 614,
+     "state": "merged",
+     "merged_at": "2026-09-18T22:02:25Z"
+    }
+   ]
+  },
+  {
+   "id": "bifrost-gateway-integration",
+   "title": "Bifrost AI gateway + benchmarking forks \u2014 RECON, catalog, provider path",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/bifrost-gateway-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/bifrost-gateway-integration/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 611,
+     "state": "merged",
+     "merged_at": "2026-09-18T21:36:05Z"
+    }
+   ]
+  },
+  {
+   "id": "auditengine-adapt",
+   "title": "RinDig AuditEngine (Ethics Engine) adapt pass",
+   "author": "timerloggedout-spec",
+   "status": "draft",
+   "priority": "P2",
+   "path": "active/auditengine-adapt/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/auditengine-adapt/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "cost-of-remembering-integration",
+   "title": "RinDig cost-of-remembering_fork ICM evidence lane",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/cost-of-remembering-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/cost-of-remembering-integration/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "mcp-hub-risk-split",
+   "title": "mcp-hub / hub_mcp risk split",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/mcp-hub-risk-split/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/mcp-hub-risk-split/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "context-relationship-graph",
+   "title": "GitHub-native context relationship graph and scope index",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/context-relationship-graph/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/context-relationship-graph/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    },
+    {
+     "number": 1286,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "manus-critical-eval",
+   "title": "Manus Critical Evaluation & Novel Work",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/manus-critical-eval/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/manus-critical-eval/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 13,
+     "state": "merged",
+     "merged_at": "2026-08-06T07:07:13Z"
+    }
+   ]
+  },
+  {
+   "id": "rate-limit-rotation",
+   "title": "Rate limits, model rotation, OpenRouter fallback",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/rate-limit-rotation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/rate-limit-rotation/",
+   "issues": [
+    86,
+    87,
+    88,
+    91
+   ],
+   "prs": [
+    {
+     "number": 72,
+     "state": "merged",
+     "merged_at": "2026-08-20T15:24:35Z"
+    },
+    {
+     "number": 81,
+     "state": "open",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "termux-agentic-hub",
+   "title": "Termux-first Agentic Hub and governed fork integration",
+   "author": "Manus",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/termux-agentic-hub/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/termux-agentic-hub/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "chatgpt-critical-eval",
+   "title": "Critical Eval TER0-15 + other branches",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/chatgpt-critical-eval/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-critical-eval/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 2,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 3,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 5,
+     "state": "merged",
+     "merged_at": "2026-08-04T02:46:36Z"
+    },
+    {
+     "number": 6,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 9,
+     "state": "merged",
+     "merged_at": "2026-08-03T07:14:07Z"
+    },
+    {
+     "number": 10,
+     "state": "merged",
+     "merged_at": "2026-08-03T07:12:11Z"
+    },
+    {
+     "number": 11,
+     "state": "merged",
+     "merged_at": "2026-08-02T22:21:43Z"
+    }
+   ]
+  },
+  {
+   "id": "chatgpt-initial",
+   "title": "Initial repository evaluation / cockpit intelligence",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/chatgpt-initial/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-initial/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "chatgpt-droidapp",
+   "title": "droidApp / early branch inventory + plugin architecture",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/chatgpt-droidapp/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/chatgpt-droidapp/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 1,
+     "state": "merged",
+     "merged_at": "2026-08-01T15:38:18Z"
+    },
+    {
+     "number": 2,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "kimi-cloud-offload",
+   "title": "Corrected Cloud Offload & Parallelization Evaluation",
+   "author": "Kimi2.6",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/kimi-cloud-offload/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kimi-cloud-offload/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "icm-architect-integration",
+   "title": "Repository-native ICM integration",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/icm-architect-integration/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/icm-architect-integration/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    }
+   ]
+  },
+  {
+   "id": "actions-refinements",
+   "title": "Issue #192 action-integration refinements",
+   "author": "Manus AI",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/actions-refinements/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/actions-refinements/",
+   "issues": [
+    192,
+    175
+   ],
+   "prs": [
+    {
+     "number": 193,
+     "state": "merged",
+     "merged_at": "2026-08-13T22:23:54Z"
+    },
+    {
+     "number": 81,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 92,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 143,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 72,
+     "state": "merged",
+     "merged_at": "2026-08-20T15:24:35Z"
+    },
+    {
+     "number": 232,
+     "state": "merged",
+     "merged_at": "2026-08-18T00:49:30Z"
+    }
+   ]
+  },
+  {
+   "id": "linguist-machine-parity",
+   "title": "Linguist README machine-parity enhancement",
+   "author": "Manus AI",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/linguist-machine-parity/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/linguist-machine-parity/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "gantt-dependency-phases",
+   "title": "Dependency-phase automation and GitHub Projects integration",
+   "author": "Manus AI",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/gantt-dependency-phases/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/gantt-dependency-phases/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 248,
+     "state": "merged",
+     "merged_at": "2026-08-19T04:01:08Z"
+    }
+   ]
+  },
+  {
+   "id": "notation-sets",
+   "title": "Notation Sets, Living Lexicon, and Cross-Domain Semantic Index",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/notation-sets/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/notation-sets/",
+   "issues": [
+    320,
+    309,
+    182,
+    175,
+    126,
+    304,
+    196,
+    177,
+    208,
+    274
+   ],
+   "prs": [
+    {
+     "number": 322,
+     "state": "merged",
+     "merged_at": "2026-08-22T22:10:22Z"
+    }
+   ]
+  },
+  {
+   "id": "archwiz-ui-protocol",
+   "title": "ArchW1z Termux UI over shared agentic protocols",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/archwiz-ui-protocol/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-ui-protocol/",
+   "issues": [
+    292
+   ],
+   "prs": [
+    {
+     "number": 329,
+     "state": "merged",
+     "merged_at": "2026-08-23T06:10:29Z"
+    }
+   ]
+  },
+  {
+   "id": "vercel-lane-topology",
+   "title": "Vercel deployment lane topology: legacy project fate, mcp-multi-host retirement, lanes registry",
+   "author": "Claude",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/vercel-lane-topology/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/vercel-lane-topology/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 442,
+     "state": "merged",
+     "merged_at": "2026-09-07T09:06:16Z"
+    },
+    {
+     "number": 445,
+     "state": "merged",
+     "merged_at": "2026-09-07T10:29:30Z"
+    },
+    {
+     "number": 446,
+     "state": "merged",
+     "merged_at": "2026-09-07T18:50:16Z"
+    }
+   ]
+  },
+  {
+   "id": "demo-portal",
+   "title": "Demo portal: public showcase of archwiz.py / deepcli-tui via a sandboxed Termux emulator",
+   "author": "Claude",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/demo-portal/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/demo-portal/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 447,
+     "state": "merged",
+     "merged_at": "2026-09-07T18:49:06Z"
+    }
+   ]
+  },
+  {
+   "id": "agentic-scoped-access",
+   "title": "Agentic scoped access: per-agent scoped tokens instead of shared full-scope credentials",
+   "author": "agent-automation",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/agentic-scoped-access/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agentic-scoped-access/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 492,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:09Z"
+    }
+   ]
+  },
+  {
+   "id": "tier4-scope-review",
+   "title": "Tier 4 scope review: pre-authorized allowlist for repeatable Operator-approved actions",
+   "author": "agent-automation",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/tier4-scope-review/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/tier4-scope-review/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 492,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:09Z"
+    }
+   ]
+  },
+  {
+   "id": "rindig-eduba-consolidation",
+   "title": "RinDig ICM + EDUBA repository consolidation",
+   "author": "timerloggedout-spec",
+   "status": "executing",
+   "priority": "P0",
+   "path": "active/rindig-eduba-consolidation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/rindig-eduba-consolidation/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "paper2agent-scientific-factory",
+   "title": "Paper2Agent scientific factory: manifest, claim graph, reproduction, certificate",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/paper2agent-scientific-factory/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/paper2agent-scientific-factory/",
+   "issues": [
+    621
+   ],
+   "prs": [
+    {
+     "number": 695,
+     "state": "merged",
+     "merged_at": "2026-09-22T13:06:22Z"
+    }
+   ]
+  },
+  {
+   "id": "domain-composition-matrix",
+   "title": "Domain composition matrix: versioned research database for composition rules",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/domain-composition-matrix/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/domain-composition-matrix/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "lane-compounding",
+   "title": "Lane compounding: live dashboard data, Bayesian/Markov tribute qualification, ForeSight\u2192HindSight calibration, blind-graded treatments",
+   "author": "Hark",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/lane-compounding/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/lane-compounding/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 1244,
+     "state": "merged",
+     "merged_at": "2026-10-18T06:20:26Z"
+    },
+    {
+     "number": 1274,
+     "state": "open",
+     "merged_at": null
+    },
+    {
+     "number": 1277,
+     "state": "merged",
+     "merged_at": "2026-10-19T09:50:38Z"
+    },
+    {
+     "number": 1278,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1280,
+     "state": "merged",
+     "merged_at": "2026-10-19T10:09:35Z"
+    },
+    {
+     "number": 1447,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "free-llm-provider-prioritization",
+   "title": "Free LLM provider research/RFP feedback prioritization and HITL",
+   "author": "Cue",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/free-llm-provider-prioritization/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/free-llm-provider-prioritization/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "archwiz-markov-trellis-lab",
+   "title": "ArchWiz Markov recombining tree/trellis visualization and evaluation sandbox",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/archwiz-markov-trellis-lab/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-markov-trellis-lab/",
+   "issues": [
+    966
+   ],
+   "prs": [
+    {
+     "number": 967,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "archwiz-hyperforge-gemini-review",
+   "title": "ArchWiz Hyper-Forge \u2014 Gemini plan reconciliation and collaborative development",
+   "author": "ChatGPT",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/archwiz-hyperforge-gemini-review/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/archwiz-hyperforge-gemini-review/",
+   "issues": [
+    943,
+    951,
+    952,
+    944,
+    945,
+    946,
+    947,
+    948,
+    949,
+    950
+   ],
+   "prs": [
+    {
+     "number": 937,
+     "state": "merged",
+     "merged_at": "2026-09-30T19:15:50Z"
+    }
+   ]
+  },
+  {
+   "id": "agent-team-formation",
+   "title": "Role-aware agent teams, game-player fleet, scoring, and controlled research",
+   "author": "Manus AI",
+   "status": "draft",
+   "priority": "P1",
+   "path": "active/agent-team-formation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/agent-team-formation/",
+   "issues": [
+    129,
+    236,
+    243
+   ],
+   "prs": [
+    {
+     "number": 131,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "ops-hitl-control-plane",
+   "title": "OPS-EVENT HITL Control Plane",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/ops-hitl-control-plane/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/ops-hitl-control-plane/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 739,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "arrhythmic-zero-token-search",
+   "title": "Arrhythmic Flow + Matrix Intersections for Zero-Token Web Search Wrappers",
+   "author": "grok",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/arrhythmic-zero-token-search/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/arrhythmic-zero-token-search/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 685,
+     "state": "closed-unmerged",
+     "merged_at": null
+    }
+   ]
+  },
+  {
+   "id": "codespaces-enablement",
+   "title": "Codespaces prebuilds (cost decision) + org-wide standard-piece gaps from the gaps-and-opportunities sweep",
+   "author": "gaps-and-opportunities-subagent",
+   "status": "posted",
+   "priority": "P2",
+   "path": "active/codespaces-enablement/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/codespaces-enablement/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 499,
+     "state": "merged",
+     "merged_at": "2026-09-14T01:17:14Z"
+    },
+    {
+     "number": 530,
+     "state": "merged",
+     "merged_at": "2026-09-15T17:47:39Z"
+    },
+    {
+     "number": 531,
+     "state": "merged",
+     "merged_at": "2026-09-15T17:50:46Z"
+    }
+   ]
+  },
+  {
+   "id": "aws-free-tier-strands-delphi-oracle",
+   "title": "AWS Free Tier integration and Strands Decider Delphi Oracle",
+   "author": "ChatGPT",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/aws-free-tier-strands-delphi-oracle/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/aws-free-tier-strands-delphi-oracle/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    }
+   ]
+  },
+  {
+   "id": "quota-aware-cadence-rfp",
+   "title": "Quota-aware adaptive cadence system \u2014 full-thread evaluation",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/quota-aware-cadence-rfp/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/quota-aware-cadence-rfp/",
+   "issues": [
+    1573
+   ],
+   "prs": [
+    {
+     "number": 1574,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:44:27Z"
+    },
+    {
+     "number": 1575,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:45:02Z"
+    },
+    {
+     "number": 1576,
+     "state": "merged",
+     "merged_at": "2026-10-23T16:45:08Z"
+    }
+   ]
+  },
+  {
+   "id": "delphi-desk-builder-io",
+   "title": "Delphi Desk \u2014 decision-review cockpit for the Builder.io Agent-Native Hackathon",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/delphi-desk-builder-io/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/delphi-desk-builder-io/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1701,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:08:58Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
+   ]
+  },
+  {
+   "id": "strands-rfp-response-kernel-first",
+   "title": "Strands RFP response \u2014 kernel-first: executable E-05/E-01/E-03 on the merged offline kernel",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-kernel-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-kernel-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
+   ]
+  },
+  {
+   "id": "strands-rfp-response-collection-first",
+   "title": "Strands RFP response \u2014 collection-first: build the DEBATE collection plane (ITEMS-003)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-collection-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-collection-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
+   ]
+  },
+  {
+   "id": "strands-rfp-response-packaging-first",
+   "title": "Strands RFP response \u2014 packaging-first: D0 Lambda shape as the deployment shape, to the account gate",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/strands-rfp-response-packaging-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/strands-rfp-response-packaging-first/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1611,
+     "state": "merged",
+     "merged_at": "2026-10-24T01:00:30Z"
+    },
+    {
+     "number": 1620,
+     "state": "merged",
+     "merged_at": "2026-10-27T06:56:04Z"
+    },
+    {
+     "number": 1702,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:14:19Z"
+    }
+   ]
+  },
+  {
+   "id": "system-one-classifier-census",
+   "title": "System One classifier census \u2014 the full decision-model ecosystem as the Tier-1 extension backlog",
+   "author": "Perplexity",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/system-one-classifier-census/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/system-one-classifier-census/",
+   "issues": [],
+   "prs": [
+    {
+     "number": 1754,
+     "state": "merged",
+     "merged_at": "2026-10-27T12:35:11Z"
+    },
+    {
+     "number": 1782,
+     "state": "merged",
+     "merged_at": "2026-10-27T13:06:21Z"
+    },
+    {
+     "number": 1786,
+     "state": "merged",
+     "merged_at": "2026-10-27T13:09:53Z"
+    }
+   ]
+  },
+  {
+   "id": "doe-live-method-competition",
+   "title": "DOE/MVT live method-competition framework \u2014 repo-wide, sandbox-free",
+   "author": "timerloggedout-spec",
+   "status": "posted",
+   "priority": "P1",
+   "path": "active/doe-live-method-competition/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/doe-live-method-competition/",
+   "issues": [
+    1573,
+    1595,
+    1596
+   ],
+   "prs": [
+    {
+     "number": 1848,
+     "state": "merged",
+     "merged_at": "2026-10-27T16:00:55Z"
+    }
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-pi-core-resume",
+   "title": "Temporal durable execution \u2014 pi-core-resume: pi-temporal kill-and-resume core (Oracle Method pass, G6: adopt)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-pi-core-resume/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-pi-core-resume/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-cookbook-agent-loop",
+   "title": "Temporal durable execution \u2014 cookbook-agent-loop: ai-cookbook recipes + HITL approval (Oracle Method pass, G6: pilot)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-cookbook-agent-loop/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-cookbook-agent-loop/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-versioned-autoscale",
+   "title": "Temporal durable execution \u2014 versioned-autoscale: Worker Versioning + backlog autoscaling model (Oracle Method pass, G6: reference-only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-versioned-autoscale/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-versioned-autoscale/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-contract-first",
+   "title": "Temporal durable execution \u2014 contract-first: evidence-envelope schema + generated validators (Oracle Method pass, G6: adopt as contract discipline)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-contract-first/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-contract-first/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
+   ]
+  },
+  {
+   "id": "temporal-durable-execution-serverless-skill",
+   "title": "Temporal durable execution \u2014 serverless-skill: skill-form starter, cloud paths gated (Oracle Method pass, G6: reference-only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/temporal-durable-execution-serverless-skill/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/temporal-durable-execution-serverless-skill/",
+   "issues": [
+    1885,
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1867,
+     "state": "merged",
+     "merged_at": "2026-10-27T23:52:43Z"
+    },
+    {
+     "number": 1886,
+     "state": "merged",
+     "merged_at": "2026-10-28T02:02:36Z"
+    }
+   ]
+  },
+  {
+   "id": "free-tier-value-board",
+   "title": "Public usage value projection and cross-provider cost comparison",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/free-tier-value-board/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/free-tier-value-board/",
+   "issues": [
+    1588,
+    1592,
+    1593,
+    1571
+   ],
+   "prs": [
+    {
+     "number": 1589,
+     "state": "merged",
+     "merged_at": "2026-10-27T12:20:28Z"
+    },
+    {
+     "number": 2409,
+     "state": "merged",
+     "merged_at": "2026-10-30T05:11:30Z"
+    }
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-skeleton-crew",
+   "title": "Kiroween 2026 \u2014 skeleton-crew: CMDB/reconciliation viewer (spec-first minimal crew)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-skeleton-crew/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-skeleton-crew/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-frankenstein",
+   "title": "Kiroween 2026 \u2014 frankenstein: decision agent stitched from proven public patterns",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-frankenstein/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-frankenstein/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
+   ]
+  },
+  {
+   "id": "kiroween-delphi-concept-resurrection",
+   "title": "Kiroween 2026 \u2014 resurrection: dormant public spec rebuilt fresh in Kiro",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/kiroween-delphi-concept-resurrection/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/kiroween-delphi-concept-resurrection/",
+   "issues": [
+    1487,
+    1489
+   ],
+   "prs": [
+    {
+     "number": 1655,
+     "state": "closed-unmerged",
+     "merged_at": null
+    },
+    {
+     "number": 1697,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:00:19Z"
+    },
+    {
+     "number": 1699,
+     "state": "merged",
+     "merged_at": "2026-10-27T07:05:59Z"
+    },
+    {
+     "number": 1707,
+     "state": "merged",
+     "merged_at": "2026-10-27T08:17:43Z"
+    }
+   ]
+  },
+  {
+   "id": "marketing-strategy-tactics-strict-separation",
+   "title": "Marketing doctrine \u2014 strict separation (verified record only)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/marketing-strategy-tactics-strict-separation/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-strict-separation/",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
+  },
+  {
+   "id": "marketing-strategy-tactics-attributed-tiered",
+   "title": "Marketing doctrine \u2014 attributed tiering (labeled partner claims)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/marketing-strategy-tactics-attributed-tiered/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-attributed-tiered/",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
+  },
+  {
+   "id": "marketing-strategy-tactics-partner-forward-blend",
+   "title": "Marketing doctrine \u2014 partner-forward blend (status quo)",
+   "author": "oracle-method",
+   "status": "in_review",
+   "priority": "P1",
+   "path": "active/marketing-strategy-tactics-partner-forward-blend/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/marketing-strategy-tactics-partner-forward-blend/",
+   "issues": [
+    574,
+    1487,
+    1489
+   ],
+   "prs": []
+  },
+  {
+   "id": "continuous-capability-evolution-lab",
+   "title": "Continuous Capability Evolution Laboratory \u2014 event-driven FOSS discovery, DoE comparison, and benefit compounding",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/continuous-capability-evolution-lab/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/continuous-capability-evolution-lab/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "integration-intelligence-superpowers",
+   "title": "Integration Intelligence foundation and Superpowers engineering methodology",
+   "author": "ChatGPT",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/integration-intelligence-superpowers/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/integration-intelligence-superpowers/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "integration-portfolio-expansion",
+   "title": "Integration portfolio expansion and documentation readiness",
+   "author": "ChatGPT",
+   "status": "accepted",
+   "priority": "P1",
+   "path": "active/integration-portfolio-expansion/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/integration-portfolio-expansion/",
+   "issues": [],
+   "prs": []
+  },
+  {
+   "id": "provider-family-doe-observatory",
+   "title": "Provider Family \u00d7 Configured Instance \u00d7 DoE settings observatory",
+   "author": "ChatGPT",
+   "status": "executing",
+   "priority": "P1",
+   "path": "active/provider-family-doe-observatory/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/active/provider-family-doe-observatory/",
+   "issues": [
+    5136
+   ],
+   "prs": [
+    {
+     "number": 5145,
+     "state": "open",
+     "merged_at": null
+    }
+   ]
+  }
+ ],
+ "passes": [
+  {
+   "id": "ai-studio-delphi-panel",
+   "pass_id": null,
+   "schema": null,
+   "status": null,
+   "candidates": null,
+   "outcome": null,
+   "path": "passes/ai-studio-delphi-panel/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/ai-studio-delphi-panel"
+  },
+  {
+   "id": "kiroween-delphi-concept",
+   "pass_id": "kiroween-delphi-concept",
+   "schema": "oracle-method-pass/v1",
+   "status": "debate_recorded",
+   "candidates": 3,
+   "outcome": {
+    "scores": {
+     "kiroween-delphi-concept-skeleton-crew": 23.269,
+     "kiroween-delphi-concept-frankenstein": 23.269,
+     "kiroween-delphi-concept-resurrection": 23.269
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
+   "path": "passes/kiroween-delphi-concept/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/kiroween-delphi-concept"
+  },
+  {
+   "id": "marketing-strategy-tactics",
+   "pass_id": "marketing-strategy-tactics",
+   "schema": "oracle-method-pass/v1",
+   "status": "round_1_recorded",
+   "candidates": 3,
+   "outcome": {
+    "scores": {
+     "marketing-strategy-tactics-strict-separation": 23.269,
+     "marketing-strategy-tactics-attributed-tiered": 23.269,
+     "marketing-strategy-tactics-partner-forward-blend": 16.462
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
+   "path": "passes/marketing-strategy-tactics/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/marketing-strategy-tactics"
+  },
+  {
+   "id": "strands-rfp-response",
+   "pass_id": "strands-rfp-response",
+   "schema": "oracle-method-pass/v1",
+   "status": "recorded",
+   "candidates": 3,
+   "outcome": {
+    "scores": {
+     "strands-rfp-response-kernel-first": 23.269,
+     "strands-rfp-response-collection-first": 23.269,
+     "strands-rfp-response-packaging-first": 23.269
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
+   "path": "passes/strands-rfp-response/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/strands-rfp-response"
+  },
+  {
+   "id": "temporal-durable-execution",
+   "pass_id": "temporal-durable-execution",
+   "schema": "oracle-method-pass/v1",
+   "status": "recorded",
+   "candidates": 5,
+   "outcome": {
+    "scores": {
+     "temporal-durable-execution-pi-core-resume": 23.654,
+     "temporal-durable-execution-cookbook-agent-loop": 23.077,
+     "temporal-durable-execution-versioned-autoscale": 23.654,
+     "temporal-durable-execution-contract-first": 23.654,
+     "temporal-durable-execution-serverless-skill": 23.654
+    },
+    "ballots": 5,
+    "class": "LOCAL_BASELINE",
+    "source": "cycle/BALLOT-round1.json"
+   },
+   "path": "passes/temporal-durable-execution/",
+   "url": "https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/proposals/passes/temporal-durable-execution"
+  }
+ ],
+ "gaps": [
+  "pass ai-studio-delphi-panel: pass.json unreadable (FileNotFoundError)"
+ ]
+}

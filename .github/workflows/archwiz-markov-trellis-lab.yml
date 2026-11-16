@@ -1,0 +1,32 @@
+name: ArchWiz Markov Trellis Lab
+
+on:
+  pull_request:
+    paths:
+      - "experiments/archwiz-markov-lane/**"
+      - "docs/proposals/active/archwiz-markov-trellis-lab/**"
+      - "docs/proposals/registry.yaml"
+  push:
+    branches:
+      - experiment/archwiz-markov-trellis-lab
+    paths:
+      - "experiments/archwiz-markov-lane/**"
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-model:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Node version
+        run: node --version
+
+      - name: Run deterministic Markov fixtures
+        run: node experiments/archwiz-markov-lane/src/markov-engine.test.mjs

@@ -1,0 +1,83 @@
+name: DoE cb-1 acceptance
+
+# Rule-5 automation for experiments/doe/cb-1-chronomancer-emission
+# (WO-C): deterministic acceptance A1-A6 as CI on arm PRs. The
+# checker builds the canonical fixture itself and runs the arm's
+# emitter via the DESIGN contract CLI; the report lands as a PR
+# comment and the job conclusion is the check. Dispatch of the arms
+# stays gated by the campaign DESIGN (D2 underway + shaping
+# re-verification) — this workflow only evaluates arm PRs.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/doe/chronomancer_emitter.py'
+      - 'tests/test_chronomancer_emitter.py'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Arm PR number to evaluate'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || format('refs/pull/{0}/head', inputs.pr_number) }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test deps
+        run: pip install jsonschema pytest
+      - name: List PR files (A6 scope)
+        id: files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          FILES=$(gh pr view "$PR_NUMBER" --json files \
+            --jq '[.files[].path] | join(",")')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          echo "PR files: $FILES"
+      - name: Run acceptance A1-A6
+        run: |
+          python3 scripts/doe/cb1_acceptance.py \
+            --emitter scripts/doe/chronomancer_emitter.py \
+            --arm-tests tests/test_chronomancer_emitter.py \
+            --schema docs/ops/corpus/EXPERIMENT.schema.json \
+            --files "${{ steps.files.outputs.files }}" \
+            --baseline-sha "${{ github.event.pull_request.base.sha || github.sha }}" \
+            --report cb1-acceptance-report.json
+      - name: Post report comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          python3 - <<'EOF'
+          import json, subprocess
+          try:
+              rep = json.load(open("cb1-acceptance-report.json"))
+          except Exception as e:
+              rep = {"verdict": "error", "checks": {},
+                     "detail": {"error": str(e)}}
+          lines = ["[MUSEai]@{role:{doe-mgr-live-builds}} — cb-1 "
+                   "acceptance (rule-5 automation, WO-C)",
+                   f"verdict: **{rep['verdict']}**", ""]
+          for k in sorted(rep.get("checks", {})):
+              lines.append(f"- {k}: {rep['checks'][k]}")
+          for k, v in sorted(rep.get("detail", {}).items()):
+              lines.append(f"- {k}: `{str(v)[:300]}`")
+          open("comment.md", "w").write("\n".join(lines))
+          subprocess.run(["gh", "pr", "comment",
+                          subprocess.os.environ["PR_NUMBER"],
+                          "--body-file", "comment.md"], check=True)
+          EOF

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/ATES-BASELINE-COHORT.schema.json",
+  "title": "ATES Sequential Baseline Cohort",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "task_contract_hash",
+    "environment_fingerprint",
+    "tasks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ates.baseline.v1"
+    },
+    "cohort_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "task_contract_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "task_id",
+          "task_fingerprint",
+          "repetitions_sec"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "task_fingerprint": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "repetitions_sec": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "median_sec": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "measured_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "declared_by": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "declared_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "additionalProperties": false
+}

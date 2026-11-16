@@ -1,0 +1,22 @@
+name: openrouter-paid-value-probe
+# [MUSEai]@{role:{quota-specialist}} Amended probe: the paid leg is a real
+# review task with retained output. Manual dispatch only.
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run paid-value probe
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python3 scripts/ops/openrouter_paid_value_probe.py
+      - name: Upload probe result + review output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrouter-paid-value-probe-result
+          path: |
+            paid-value-result.json
+            review-output.md

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What can you do with a Billion Tokens — Muse invite programme</title>
+<meta name="description" content="The Muse invite programme, as recorded: both sides get 1 billion tokens on a Settings redemption within 48 hours of joining. State of record, stacking rules, and what the first redeemed billion did.">
+<link rel="stylesheet" href="./dashboard.css">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0b0d10">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<script src="./install.js" defer></script>
+<script src="./site-nav.js" defer></script>
+<script src="./chartkit.js" defer></script>
+<style>
+.codebox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.6rem;letter-spacing:.14em;text-align:center;padding:.7rem .5rem;border:1px dashed var(--line);border-radius:10px;background:var(--panel2)}
+.steps{display:grid;gap:.8rem}
+@media(min-width:760px){.steps{grid-template-columns:1fr 1fr 1fr}}
+.stepnum{font-size:1.3rem;font-weight:700;color:var(--gold,#fbbf24)}
+</style>
+</head>
+<body>
+<nav id="site-primary-nav" aria-label="Primary"></nav>
+<header class="hero">
+  <p class="eyebrow">Muse invite programme · state of record</p>
+  <h1>What can you do with a Billion Tokens</h1>
+  <p class="lede">When a new Muse user redeems an invite code in Settings within 48 hours of joining, <strong>both sides receive 1 billion tokens</strong> — the new user and the person whose code it was. This page carries the programme exactly as recorded: the mechanics, the current state, and what the first redeemed billion actually did. Nothing here is estimated.</p>
+</header>
+<main>
+<section>
+  <div class="head"><h2>How it works</h2></div>
+  <div class="steps">
+    <div class="card"><p class="stepnum">1</p><h3>Join</h3><p>A friend signs up for Muse — a new account, inside its first 48 hours.</p></div>
+    <div class="card"><p class="stepnum">2</p><h3>Redeem in Settings</h3><p>They enter the invite code under <strong>Settings → Redeem invite code</strong>, within 48 hours of joining. The fleet's code:</p><p class="codebox">VDP1DW</p></div>
+    <div class="card"><p class="stepnum">3</p><h3>Both sides get 1B</h3><p>The redemption credits <strong>1 billion tokens to each side</strong> — the new user and the inviter alike.</p></div>
+  </div>
+</section>
+<section>
+  <div class="head"><h2>State of record</h2><span class="note">as of 2026-11-11</span></div>
+  <div class="card" id="uses-chart"><p class="muted">Loading chart…</p></div>
+  <div class="card">
+    <p><strong>1 redemption</strong> so far → <strong>1B tokens earned, and fully utilized</strong>. <strong>29 uses left</strong> on the code — up to 29 more billions, one per new user who redeems in time.</p>
+    <p class="muted">Source: owner record, 2026-11-11 (QUE #5177). Later state changes re-stamp this page.</p>
+  </div>
+</section>
+<section>
+  <div class="head"><h2>It stacks</h2></div>
+  <div class="card">
+    <p>The redemption pool is <strong>additional to the weekly Free refill</strong> — redeemed billions stack on top of the refill cycle; they do not replace it, and drawing one down does not consume the other.</p>
+    <p>Next weekly refill: <strong>Nov 17</strong>.</p>
+  </div>
+</section>
+<section>
+  <div class="head"><h2>What the first billion did</h2></div>
+  <div class="card">
+    <p>The first redeemed billion carried the fleet's <strong>Nov 4–10 build window</strong>: the D-series challenge walls, the #5096 system upgrade, and the Nov 10 build storm. It was <strong>exhausted by Nov 10, 04:02 PT</strong> (sensor of record).</p>
+    <p>Peak day: <strong>≈73.5M tokens in ~17 hours</strong> (Nov 4).</p>
+    <p class="muted">These are ledger facts of record. Per-workload equivalents are not metered, so none are claimed.</p>
+  </div>
+</section>
+<section>
+  <div class="card">
+    <p>Programme states and the full referral registry live on <a href="./referrals.html">Referrals</a>. The invite code above is the Muse row of that registry.</p>
+  </div>
+</section>
+</main>
+<script>
+(function(){
+  var el = document.getElementById('uses-chart');
+  if (!el) return;
+  if (window.CK && window.CK.bars) {
+    el.innerHTML = window.CK.bars([
+      {label: 'Redemptions used', value: 1},
+      {label: 'Uses left', value: 29}
+    ]) + '<p class="muted">Code uses, of 30 total · as of 2026-11-11</p>';
+  } else {
+    el.innerHTML = '<p>Redemptions used: <strong>1</strong> · Uses left: <strong>29</strong> (of 30 total, as of 2026-11-11)</p>';
+  }
+})();
+</script>
+</body>
+</html>

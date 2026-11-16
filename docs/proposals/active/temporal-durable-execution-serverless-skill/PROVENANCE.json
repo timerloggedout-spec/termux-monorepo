@@ -1,0 +1,29 @@
+{
+  "schema": "oracle-method-generation/v1",
+  "generator": "scripts/delphi/generate_proposal.py oracle-method-generator/v1",
+  "generated_at": "2026-10-28T02:09:47Z",
+  "proposal_id": "temporal-durable-execution-serverless-skill",
+  "author": "oracle-method",
+  "evidence_sets": [
+    {
+      "sha256": "bb710fdd06c90d837ff0d94819c2873391e95741622e905f54ce2027c4622236",
+      "items": 10,
+      "assembled_at": null
+    }
+  ],
+  "documents": {
+    "MANIFEST.md": "33e641d1910f5074500043af72904442c16c301865cf9827dac7e37958a28ac7",
+    "ITEMS.md": "9d36ed98e5d42b4a2122fee5950ecff27b3968eb63fad2740c07d66c581d77dd",
+    "RFP.md": "7df005d49536b2dcf5dd001426ed480d9403be2ba629b6ecdb1f48e0c17513e0"
+  },
+  "human_ballots_received": 0,
+  "external_calls_by_generator": 0,
+  "pass_id": "temporal-durable-execution",
+  "concept": "The agent skill as the deployment starter (scope -> access checks -> packaging -> registration -> verification -> rollback); all Cloud execution paths specified_not_run under the card rule.",
+  "siblings": [
+    "temporal-durable-execution-pi-core-resume",
+    "temporal-durable-execution-cookbook-agent-loop",
+    "temporal-durable-execution-versioned-autoscale",
+    "temporal-durable-execution-contract-first"
+  ]
+}

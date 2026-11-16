@@ -1,0 +1,111 @@
+name: quota-readings-promote
+
+# Readings promotion productization (fleet diagnostic axis 2, 2026-11-03;
+# lead call: quota-convergence; builder: quota-specialist).
+# The readings pair (docs/ops/generated/quota-status.json ==
+# apps/tribute-dashboard/data/quota.json) used to move only when a lane
+# hand-ran the chain: dispatch vercel-quota-probe -> download the artifact
+# -> quota_poll.py --from-public -> land by PR. The effective readings
+# cache TTL was therefore unbounded (snapshot of record sat 35h+ old at
+# the 2026-11-03 diagnostic; the prior snapshot lived ~3 days).
+# This workflow runs the SAME chain in-job, event/state-driven per the
+# decision-tree doctrine (no cron): push on registry change + dispatch.
+# STATE GATE: the commit step writes only when the converted snapshot
+# differs from the committed pair (generated_at aside); idle ticks and
+# no-change pushes write nothing.
+# SINGLE-WRITER for the readings pair + apps/tribute-dashboard/quota.txt.
+# The pack, usage-series and swarm feed are NOT written here: their
+# single writer (quota-usage-series-refresh) triggers on
+# docs/ops/generated/quota-status.json and regenerates them from the
+# promoted pair as the immediate downstream commit.
+# Writer = Swarm app token (own 5000/h bucket, F1 pattern), never the
+# shared PAT bucket. Converter contract unchanged: quota_poll.py
+# --from-public (used/reset null always, completeness guard synthesizes
+# disclosed unobserved rows, H0 evidence gate untouched). The probe
+# workflow stays as the manual one-shot surface; this workflow polls
+# in-job with the same invocation and env.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'ops/quota/registry.json'
+      - '.github/workflows/quota-readings-promote.yml'
+
+concurrency:
+  group: quota-readings-promote
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Swarm app token (own 5000/h bucket), not the shared GITHUB_TOKEN
+      # bucket. SEC-03 minting, F1 pattern (mint BEFORE checkout; checkout
+      # persists the credential).
+      - name: Mint Swarm app token (F1, issue #2750)
+        id: swarm-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3 release
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 1
+          token: ${{ steps.swarm-token.outputs.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Poll quotas (same invocation as vercel-quota-probe)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_KEY_OBSERVE: "1"
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/quota_poll.py --public --registry ops/quota/registry.json --out quota-out
+      - name: Convert + promote readings pair + quota.txt (state-gated)
+        run: |
+          set -euo pipefail
+          python3 scripts/quota_poll.py --from-public quota-out/quota-public-status.json --registry ops/quota/registry.json --out quota-converted
+          python3 - <<'PYEOF' > quota-gate.txt
+          import json
+          new = json.load(open("quota-converted/quota-status.json"))
+          old = json.load(open("docs/ops/generated/quota-status.json"))
+          strip = lambda d: {k: v for k, v in d.items() if k != "generated_at"}
+          print("unchanged" if strip(new) == strip(old) else "changed")
+          PYEOF
+          if grep -q '^unchanged' quota-gate.txt; then
+            echo 'readings unchanged apart from generated_at (state gate): no promotion writes'
+            exit 0
+          fi
+          echo 'readings changed: promoting'
+          cp quota-converted/quota-status.json docs/ops/generated/quota-status.json
+          cp quota-converted/quota-status.json apps/tribute-dashboard/data/quota.json
+          cmp docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json
+          python3 scripts/quota_tui.py --once --snapshot apps/tribute-dashboard/data/quota.json --registry ops/quota/registry.json > apps/tribute-dashboard/quota.txt
+      - name: Commit promoted readings to master (single-writer)
+        run: |
+          set -euo pipefail
+          git add docs/ops/generated/quota-status.json apps/tribute-dashboard/data/quota.json apps/tribute-dashboard/quota.txt
+          if git diff --cached --quiet; then
+            echo 'readings unchanged (state gate); no commit'
+            exit 0
+          fi
+          git config user.name 'quota-readings-promote'
+          git config user.email 'actions@github.com'
+          git commit -m 'ops(quota): promote readings snapshot + quota.txt (auto-derived)'
+          git pull --rebase origin master
+          git push origin HEAD:master

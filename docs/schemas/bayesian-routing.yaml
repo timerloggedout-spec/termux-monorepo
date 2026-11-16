@@ -1,0 +1,54 @@
+# Bayesian / uncertainty-aware routing evidence
+version: 1
+principle: "Bayesian state informs routing; it never becomes an unquestioned truth source."
+
+posterior_units:
+  binary_outcome:
+    family: beta_bernoulli
+    fields: [successes, failures, alpha_prior, beta_prior, posterior_mean, credible_interval]
+    use: "correctness/acceptance-like binary outcomes"
+  latency_or_cost:
+    family: normal_inverse_gamma
+    fields: [n, mean, sum_squared_error, prior_parameters]
+    use: "continuous operational measures when approximately stable"
+  context:
+    family: hierarchical
+    fields: [global_prior, role_prior, task_family_prior, provider_model_posterior]
+    use: "partial pooling so sparse lanes borrow strength without becoming identical"
+  route:
+    family: model_average
+    fields: [candidate_posteriors, topology_posterior, selection_policy]
+    use: "uncertainty-aware route comparison"
+
+update_rules:
+  - "Only executed, attributed observations update performance posteriors."
+  - "Admission failures update availability/capacity state, not model quality."
+  - "Unknown outcomes remain unknown; they are not failures."
+  - "Historical/public evidence may seed a weak prior but must be labeled prior_source."
+  - "Current repository-local controlled observations dominate stale priors through accumulation."
+  - "Posterior intervals must accompany point estimates."
+  - "Do not collapse correlated observations into independent evidence."
+
+decision_tools:
+  thompson_sampling:
+    purpose: "exploration/exploitation over candidate routes"
+    constraint: "sample only from hard-gate-eligible candidates"
+  probability_of_being_best:
+    purpose: "report posterior mass, never a permanent ranking"
+  expected_value_of_information:
+    purpose: "decide whether another experiment is worth its execution cost"
+  bayesian_model_averaging:
+    purpose: "retain uncertainty across competing routing hypotheses"
+  change_point:
+    purpose: "detect provider/model/policy regime shifts; invalidate or downweight stale evidence"
+
+experiment_identity:
+  required: [run_id, run_attempt, head_sha, manager, policy_version, cohort, task_family, task_instance, topology, provider, model, catalog_hash]
+  treatment: "route topology + candidate set + policy, not merely provider/model"
+
+anti_patterns:
+  - "using posterior mean as a permanent provider ranking"
+  - "treating public leaderboard values as posterior observations"
+  - "updating model quality after an admission failure"
+  - "double-counting repeated retries as independent trials"
+  - "using confidence intervals as permission to bypass hard safety/policy gates"

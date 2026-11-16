@@ -1,0 +1,73 @@
+# GitHub App Fleet — Migration / Maintenance / Upgrade ITEMS
+
+Checklist of record for `docs/ops/GITHUB-APP-MIGRATION-PLAN.md`.
+An item checks only on firsthand evidence (run id, bucket reading, landed
+PR) — never on a lane report alone. Owner lane in brackets.
+
+## State snapshot (2026-10-30)
+
+- [x] Collector proven: bucket split 5000/5000 @ PAT 0 (2026-10-30T02:18Z)
+- [x] Collector recorded: `github.api.app_collector` + #1884 meta-pool slice
+- [x] Collector custody: connector keys/ 0600, fingerprint recorded
+- [x] Collector STANDING 2026-11-02: production `reviewer-metrics-collect` runs succeed on the Collector app token (MIG-02 wiring, PR #2446) — e.g. run 41455502044 (2026-11-02, master): Mint Collector ✓ Collect ✓ receipt ✓ job success; 5 successes in the last 100 master runs at check time (intermittent queue displacement persists — QAC-008 case #1, cadence-owned) [migration-plan]
+
+## MIG — migration waves (plan §1; gates G1–G5 per item)
+
+- [x] MIG-01 DISPOSITIONED 2026-10-30: `repository-observatory` NOT MIGRATABLE as a whole (evidence: app-token public owned 30 vs index 692 — private-account inventory; watching + /user = 403 for installation tokens; plan §1.1 M1 + §1.5). Stays on user token; wave 0 re-picked = MIG-02 [migration-plan]
+- [x] MIG-02 Wave 0 (re-picked) LANDED 2026-10-30: `reviewer-metrics-collect` collection reads → Collector app token (PR #2446 merged 34976ec908fe, oracle-verified; shadow run 41024874583 SUCCESS — mint/collect/receipt OK, artifact validated; production = same code path live on master). Refresh-PR write step stays on its existing token; rollback = vars.REVIEWER_METRICS_TOKEN_SOURCE=pat or automatic fallback on mint failure (G5, retained) [migration-plan]
+- [ ] MIG-RR-01 HELD 2026-10-30 (owner rescope): telemetry-ingest does NOT land in the monorepo — repo-replay is read-only against the monorepo until validated ∧ submoduled; ingest enters repo-replay (own repo) as replay input/evidence. Gate = replay validation proof + submodule step [migration-plan §1.1 RR-1]
+- [x] MIG-RR-02 PROVEN 2026-10-30: Repo Replay publish route = AppID (Publisher) — installation extension landed (bundle record PR #2479: repo-replay extensions verified total=2 per token) ∧ route exercised on repo-replay PR #1 with PAT calls = 0 (repo-replay lane report) [migration-plan §1.1 RR-2]
+- [x] MIG-03 DISPOSITIONED 2026-10-30: Delphi-class feed collectors — ZERO migrations (evidence: 5 collectors on GITHUB_TOKEN/github.token per-repo bucket; proposals script = 0 API calls, token only serves its refresh-PR write → M6 class; traffic-feed app-token probe 403 ×3 endpoints → NOT MIGRATABLE to Collector). Plan §1.1 M3 corrected [migration-plan]
+- [x] MIG-04 DISPOSITIONED 2026-10-30: `provider-availability` has NO GitHub-API probe portion (workflow: no GH token env; probe script: zero GitHub references; all probes on provider keys) — nothing to migrate [migration-plan]
+- [x] MIG-05 DISPOSITIONED 2026-10-30: recon/observer class (7 workflows) — ZERO PAT-bucket reads (7/7 on GITHUB_TOKEN/github.token per-repo bucket, firsthand audit). Collector relief for the shared per-repo bucket remains available, reprioritized below MIG-06/08 [migration-plan]
+- [x] MIG-06 DISPOSITIONED 2026-10-30: workflow-side writes (merge-promotion family, context-relationship-publish, osint refresh writes) — ZERO PAT-class writes (all github.token); self-integrate = external-agent dispatch, no in-workflow GitHub writes. Publisher adoption = optional identity graduation, behind MIG-07/08 [migration-plan]
+- [ ] MIG-07 Wave 2: lane `pat_publish` opt-in to Publisher token — GATE SATISFIED 2026-10-30 (minter lane-usable proven firsthand by migration-plan lane; path proof = the mig07-gate-proof PR published on the Publisher token); rollout = per-lane opt-in declared/scheduled by AppID lane; PAT fallback retained [appid]
+- [x] MIG-08 DISPOSITIONED 2026-10-30: peer-review-orchestrator — polling/evidence step on GITHUB_TOKEN (∅ PAT); OPERATOR steps identity-bound by design (authorized-publisher checks + provider triggers) and STAY. Reviewer relief for evidence step = optional, MIG-05 class [migration-plan]
+- [x] MIG-09 DISPOSITIONED 2026-10-30: repo-gate verdicts = own job check-runs (Actions identity); no PAT, no separate annotation token. Gate-app adoption = optional identity graduation [migration-plan]
+- [x] MIG-10 DISPOSITIONED 2026-10-30: lifecycle triage class on Actions job token (∅ PAT). Lifecycle-app adoption = optional identity graduation [migration-plan]
+- [ ] MIG-11 Per-item calls/run recorded into quota registry at G4 (MEASURE-AT-GATE items: M1, M3, M4, M5) [quota]
+
+## APP — new app graduations (plan §3.4: proven → recorded → planned → standing)
+
+- [x] APP-01 Publisher: naming final set (conference close) [registry] — CLOSED 2026-11-02: FINAL SET issued 2026-10-30 (Publisher `Edict` + full form family), bundle record PR #2401; evidence packet from migration-plan lane 2026-11-02, checked by AppID lane.
+- [x] APP-02 Publisher: manifest package PR + creation + install [appid] — CLOSED 2026-11-02: App 5537873 created 2026-10-29 via manifest flow, installation 176799777 (termux-monorepo; scope since extended to repo-replay family per PROCESS.json).
+- [x] APP-03 Publisher: proven + recorded (#1884 slice) + custody [appid + quota] — CLOSED 2026-11-02: custody connector custom.github-app-publisher live (0600 PEM); quota slice app_publisher registered (PR #2422); fleet record PR #2479 merged 88ecf7d4f40c.
+- [x] APP-04 Publisher: standing (first workflow on token) [appid] — CLOSED 2026-11-02: standing exceeded — publishes + merges routinely on its own token (first proof PR #2472 entirely on Publisher token; 2026-11-02 examples PRs #3913/#3922, zero PAT).
+- [x] APP-05 Reviewer-ops: same four steps (naming / package+install / proven+recorded / standing) [appid + registry + quota] — CLOSED 2026-11-02: `Argus`, App 5539430, installation 176838378, created 2026-10-30; custody custom.github-app-reviewer live; recorded PR #2479; standing = local-mint review operations (Actions adoption = separate track, none referenced).
+- [x] APP-06 Gate/CI: same four steps [appid + registry + quota] — CLOSED 2026-11-02: `Cerberus`, App 5539499, installation 176839926, created 2026-10-30; custody custom.github-app-gate live; recorded PR #2479; standing = local-mint check posts (App-JWT read-back 2026-10-30T09:38Z).
+- [x] APP-07 Lifecycle: same four steps [appid + registry + quota] — CLOSED 2026-11-02: `Janus`, App 5539639, installation 176843209, created 2026-10-30; custody custom.github-app-lifecycle live; recorded PR #2479; standing = local-mint triage operations.
+
+## TEL — telemetry integration (PR #2407 audit, 2026-10-30)
+
+Acceptance rule (audit, adopted): an app is not operationally integrated
+merely because it exists in the registry — identity, effective scope,
+execution and evidence must be independently observable.
+
+- [x] TEL-01 LANDED VIA SUCCESSORS 2026-11-02: #2407 itself closed-unmerged, but its declaration layer is on master — `ops/github-apps/registry.json` (schema v1, manifest = declared-permissions SSOT per its source_of_truth_policy) + telemetry emitter workflow (landed; hardened #2441; adaptive publication #2448) [migration-plan review]
+- [ ] TEL-02 Collector registered in integration-mesh snapshot/diff (mesh 6h poll consumes registry.json; app visible with no check suites) [mesh lane]
+- [x] TEL-03 Emitter scheduled + mint-wired 2026-11-02: `github-app-telemetry.yml` @master cron `17 * * * *` (hourly adaptive) + dispatch, Collector-census job gated to schedule/dispatch-on-master, fresh minted token per run; 57 runs, schedule events succeeding (latest 2026-11-02T20:49Z) — weekly bar exceeded; checked on quota's call, migration-plan co-sign [quota + migration-plan]
+- [ ] TEL-04 Live permission readback on installation token vs manifest declarations (drift leg of MAINT-01); declared ≠ observed kept separate [appid]
+- [ ] TEL-05 Negative-path tests pass: missing credentials, revoked installation, inaccessible repository, permission drift [author + appid]
+- [x] TEL-06 FIRST RUNTIME RECEIPT 2026-11-02: G4 receipt step (token source, run id/attempt/SHA, app-bucket reading) executes on real Collector-token production runs — first on shadow run 41024874583 (2026-10-30), standing on production e.g. 41455502044 (2026-11-02) [migration-plan]
+
+## SEC — provisioning (owner items, names-only)
+
+- [x] SEC-01 RESOLVED as identity separation (2026-10-30): the `APP_PRIVATE_KEY` + `APP_CLIENT_ID` referenced by `github-app-capability-probe.yml` belong to that probe's Checks:write app (PR #800 lineage) — NOT to the Collector. It is not provisioned, and must not be provisioned with the Collector PEM; it stops being a Collector blocker. Its own provisioning waits for the Gate/CI app (APP-06). [migration-plan]
+- [x] SEC-02 Collector Actions pair provisioned (2026-10-30): secret `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY` (sealed-box from custody PEM, value never in chat/files/logs) + variables `TERMUX_FLEET_COLLECTOR_CLIENT_ID` + `TERMUX_FLEET_COLLECTOR_APP_ID` (App ID 5535733; the action takes app-id, not client-id — fix PR #2427), proven by green `github-app-collector-mint-probe` run 41016897632 [migration-plan + owner order 2026-10-29]
+- [x] SEC-03 Per-app Actions secret names for future apps follow the SEC-02 pattern (`TERMUX_FLEET_<ROLE>_*`), provisioned + verified before any workflow references them [owner + appid] — CLOSED 2026-11-02: pattern live — pairs provisioned + read-back verified for Collector/Swarm/CrossReference (termux-monorepo) + RepoStory (repo-story) before their workflows referenced them; 2026-11-02 census (66 secrets / 21 vars) confirms no workflow references an unprovisioned TERMUX_FLEET_* name.
+
+## MAINT — recurring (all as GitHub Workflows; VM hosts none)
+
+- [ ] MAINT-01 Weekly permission-drift audit workflow live (installed perms vs manifest of record; diff → one tracking issue) [appid]
+- [ ] MAINT-02 Weekly bucket census live (per-app `GET /rate_limit` readings → registry via #1884 route; missing = null) [quota] — evidence pointer 2026-11-02: app-side readings flow hourly via github-app-telemetry (see TEL-03 [x]); quota's provider censuses are a separate leg (their readings 170/170 via #3635) [migration-plan note]
+- [ ] MAINT-03 Monthly GitHub API changelog / version review; deprecations become items here with sunset dates [migration-plan] — 2026-11 PASS DONE 2026-11-02 (stateless-token rollout: fleet impact ∅; SBOM-sync removal: ∅ usage; webhook meta ranges noted; next pass 2026-12) [migration-plan]
+- [ ] MAINT-04 Quarterly minter upkeep (pinned action release, JWT claims, token-expiry handling) [appid]
+- [ ] MAINT-05 Collector PEM rotation due by 2027-04-29 (6-month anchor from 2026-10-29 creation); per-app anchors set at each creation [appid]
+- [ ] MAINT-06 Rotation procedure test: zero-downtime dual-key overlap exercised once before first due date [appid]
+
+## UP — upgrades (plan §3)
+
+- [ ] UP-01 First permission expansion executed via PR-reviewed manifest diff + installation consent (template run) [appid]
+- [ ] UP-02 First multi-repo install: own registry record + G3/G4 proof on the new repo [appid + quota]
+- [ ] UP-03 Foreign-install census line added to weekly census (counts only) [quota]
+- [ ] UP-04 PARKED (owner [later]): Marketplace publishing; user-authorization callback + device-flow user tokens — no design until unparked [owner]

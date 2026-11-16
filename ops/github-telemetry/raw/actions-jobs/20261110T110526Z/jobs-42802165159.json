@@ -1,0 +1,137 @@
+{
+  "collected_at": "2026-11-10T11:05:47.843540+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42802165159,
+    "endpoint": ".../runs/42802165159/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 129782177069,
+        "run_id": 42802165159,
+        "workflow_name": "repo gate",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42802165159",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeN57dLQ",
+        "head_sha": "e6595953a2dd105d223197e7bf31d65970d0f96f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129782177069",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42802165159/job/129782177069",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-11-10T10:47:56Z",
+        "started_at": "2026-11-10T10:47:58Z",
+        "completed_at": "2026-11-10T10:48:21Z",
+        "name": "hygiene + portability gate",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-10T10:47:59Z",
+            "completed_at": "2026-11-10T10:48:00Z"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-10T10:48:00Z",
+            "completed_at": "2026-11-10T10:48:16Z"
+          },
+          {
+            "name": "Resolve base ref",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-10T10:48:16Z",
+            "completed_at": "2026-11-10T10:48:16Z"
+          },
+          {
+            "name": "Index-only scope regressions",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-11-10T10:48:16Z",
+            "completed_at": "2026-11-10T10:48:17Z"
+          },
+          {
+            "name": "ATES outcome receipt contracts",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-11-10T10:48:17Z",
+            "completed_at": "2026-11-10T10:48:17Z"
+          },
+          {
+            "name": "Run gate",
+            "status": "completed",
+            "conclusion": "failure",
+            "number": 6,
+            "started_at": "2026-11-10T10:48:17Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "workflow_run contract",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 7,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Native orchestration contracts",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 8,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Briefing and source provenance contracts",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 9,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Upload curated source citation ledger",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 10,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 20,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 21,
+            "started_at": "2026-11-10T10:48:19Z",
+            "completed_at": "2026-11-10T10:48:19Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129782177069",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000897081,
+        "runner_name": "GitHub Actions 1000897081",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

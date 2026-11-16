@@ -1,0 +1,406 @@
+{
+ "schema": "quota.usage-series/v1",
+ "generated_by": "scripts/quota_usage_series.py",
+ "sources": [
+  "ops/quota/quota-usage.json",
+  "ops/challenge/desk-feed.json",
+  "ops/quota/allocation-plan.json"
+ ],
+ "axes": {
+  "provider": [
+   {
+    "key": "github",
+    "title": "GitHub API core - remaining",
+    "unit": "requests/hour",
+    "kind": "measured",
+    "metric": "remaining",
+    "points": [
+     {
+      "t": "2026-10-28T23:41:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T00:32:00Z",
+      "v": 2950
+     },
+     {
+      "t": "2026-10-29T00:37:00Z",
+      "v": 2945
+     },
+     {
+      "t": "2026-10-29T05:50:14Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T11:41:45Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T21:39:53Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:32:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:36:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:43:00Z",
+      "v": 4999
+     },
+     {
+      "t": "2026-10-30T01:45:00Z",
+      "v": 4645
+     },
+     {
+      "t": "2026-10-30T01:54:00Z",
+      "v": 3230
+     }
+    ],
+    "provenance": "ops/quota/quota-usage.json series1_api_core",
+    "context": {
+     "target_flow_per_min": 83.33333333333333,
+     "source": "ops/quota/allocation-plan.json pool github",
+     "note": "plan target flow - context only, not usage; plotted only if units match"
+    }
+   },
+   {
+    "key": "jules",
+    "title": "Jules - sessions",
+    "unit": "sessions",
+    "kind": "activity-proxy",
+    "metric": "sessions",
+    "points": [
+     {
+      "t": "2026-10-31T06:17:14Z",
+      "v": 1
+     }
+    ],
+    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)"
+   },
+   {
+    "key": "jules",
+    "title": "Jules - activities",
+    "unit": "activities",
+    "kind": "activity-proxy",
+    "metric": "activities",
+    "points": [
+     {
+      "t": "2026-10-31T06:17:14Z",
+      "v": 60
+     }
+    ],
+    "provenance": "ops/challenge/desk-feed.json usage{} (session 17326020844735872479)"
+   }
+  ],
+  "service": [
+   {
+    "key": "github.api.user_token",
+    "title": "github.api.user_token (PAT bucket) - API core remaining",
+    "unit": "requests/hour",
+    "kind": "measured",
+    "metric": "remaining",
+    "points": [
+     {
+      "t": "2026-10-28T23:41:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T00:32:00Z",
+      "v": 2950
+     },
+     {
+      "t": "2026-10-29T00:37:00Z",
+      "v": 2945
+     },
+     {
+      "t": "2026-10-29T05:50:14Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T11:41:45Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-29T21:39:53Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:32:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:36:00Z",
+      "v": 0
+     },
+     {
+      "t": "2026-10-30T01:43:00Z",
+      "v": 4999
+     },
+     {
+      "t": "2026-10-30T01:45:00Z",
+      "v": 4645
+     },
+     {
+      "t": "2026-10-30T01:54:00Z",
+      "v": 3230
+     }
+    ],
+    "provenance": "ops/quota/quota-usage.json series1_api_core"
+   },
+   {
+    "key": "github.actions",
+    "title": "GitHub Actions volume - runs_delta",
+    "unit": "runs/day",
+    "kind": "reconstructed",
+    "metric": "runs_delta",
+    "points": [
+     {
+      "t": "2026-10-02",
+      "v": 40
+     },
+     {
+      "t": "2026-10-03",
+      "v": 40
+     },
+     {
+      "t": "2026-10-04",
+      "v": 40
+     },
+     {
+      "t": "2026-10-05",
+      "v": 40
+     },
+     {
+      "t": "2026-10-06",
+      "v": 40
+     },
+     {
+      "t": "2026-10-07",
+      "v": 40
+     },
+     {
+      "t": "2026-10-08",
+      "v": 40
+     },
+     {
+      "t": "2026-10-09",
+      "v": 40
+     },
+     {
+      "t": "2026-10-10",
+      "v": 40
+     },
+     {
+      "t": "2026-10-11",
+      "v": 40
+     },
+     {
+      "t": "2026-10-12",
+      "v": 40
+     },
+     {
+      "t": "2026-10-13",
+      "v": 40
+     },
+     {
+      "t": "2026-10-14",
+      "v": 40
+     },
+     {
+      "t": "2026-10-15",
+      "v": 40
+     },
+     {
+      "t": "2026-10-16",
+      "v": 40
+     },
+     {
+      "t": "2026-10-17",
+      "v": 40
+     },
+     {
+      "t": "2026-10-18",
+      "v": 40
+     },
+     {
+      "t": "2026-10-19",
+      "v": 40
+     },
+     {
+      "t": "2026-10-20",
+      "v": 40
+     },
+     {
+      "t": "2026-10-21",
+      "v": 40
+     },
+     {
+      "t": "2026-10-22",
+      "v": 40
+     },
+     {
+      "t": "2026-10-23",
+      "v": 40
+     },
+     {
+      "t": "2026-10-24",
+      "v": 40
+     },
+     {
+      "t": "2026-10-25",
+      "v": 0
+     },
+     {
+      "t": "2026-10-26",
+      "v": 40
+     },
+     {
+      "t": "2026-10-27",
+      "v": 40
+     },
+     {
+      "t": "2026-10-28",
+      "v": 40
+     },
+     {
+      "t": "2026-10-29",
+      "v": 40
+     }
+    ],
+    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))"
+   },
+   {
+    "key": "github.actions",
+    "title": "GitHub Actions volume - minutes_est",
+    "unit": "minutes/day",
+    "kind": "estimated",
+    "metric": "minutes_est",
+    "points": [
+     {
+      "t": "2026-10-02",
+      "v": 16
+     },
+     {
+      "t": "2026-10-03",
+      "v": 9
+     },
+     {
+      "t": "2026-10-04",
+      "v": 7
+     },
+     {
+      "t": "2026-10-05",
+      "v": 12
+     },
+     {
+      "t": "2026-10-06",
+      "v": 9
+     },
+     {
+      "t": "2026-10-07",
+      "v": 15
+     },
+     {
+      "t": "2026-10-08",
+      "v": 9
+     },
+     {
+      "t": "2026-10-09",
+      "v": 8
+     },
+     {
+      "t": "2026-10-10",
+      "v": 19
+     },
+     {
+      "t": "2026-10-11",
+      "v": 15
+     },
+     {
+      "t": "2026-10-12",
+      "v": 22
+     },
+     {
+      "t": "2026-10-13",
+      "v": 11
+     },
+     {
+      "t": "2026-10-14",
+      "v": 9
+     },
+     {
+      "t": "2026-10-15",
+      "v": 11
+     },
+     {
+      "t": "2026-10-16",
+      "v": 10
+     },
+     {
+      "t": "2026-10-17",
+      "v": 8
+     },
+     {
+      "t": "2026-10-18",
+      "v": 9
+     },
+     {
+      "t": "2026-10-19",
+      "v": 9
+     },
+     {
+      "t": "2026-10-20",
+      "v": 9
+     },
+     {
+      "t": "2026-10-21",
+      "v": 11
+     },
+     {
+      "t": "2026-10-22",
+      "v": 10
+     },
+     {
+      "t": "2026-10-23",
+      "v": 11
+     },
+     {
+      "t": "2026-10-24",
+      "v": 10
+     },
+     {
+      "t": "2026-10-25",
+      "v": 0
+     },
+     {
+      "t": "2026-10-26",
+      "v": 10
+     },
+     {
+      "t": "2026-10-27",
+      "v": 11
+     },
+     {
+      "t": "2026-10-28",
+      "v": 11
+     },
+     {
+      "t": "2026-10-29",
+      "v": 16
+     }
+    ],
+    "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))"
+   }
+  ],
+  "model": []
+ },
+ "notes": {
+  "model": "Per-model series require a stamped model@version AND a usage{} value on the same record. Jules-class rows carry no model@version (NOT ESTABLISHED) and the Muse rows carry no usage value (waived), so the model axis is empty until live-3 dispatch records (EXPERIMENT rev 1.1 usage{}) land. Empty is the honest state - nothing is inferred.",
+  "readings": "The public readings snapshots (docs/ops/generated/quota-status.json) carry no usage values by design (status-only projection); they are not a usage series source.",
+  "gaps": "Points exist only where a source observed a value. Segments spanning >3x the series minimum step and >its median step render dotted (gap signal); no zero-fill, no interpolation."
+ }
+}

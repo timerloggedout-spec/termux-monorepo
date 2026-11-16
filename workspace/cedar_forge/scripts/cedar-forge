@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""
+CedarForge CLI – harness for LLM coding with compressed language.
+"""
+import sys
+import argparse
+from pathlib import Path
+
+# Add project to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from cedar_forge.core.compression import get_compressor
+from cedar_forge.llm.client import LLMClient
+from cedar_forge.capture.recorder import SessionRecorder
+
+def main():
+    parser = argparse.ArgumentParser(description="CedarForge – CLI LLM harness")
+    parser.add_argument("prompt", nargs="*", help="User prompt (compressed automatically)")
+    parser.add_argument("--model", default="codellama:7b", help="Ollama model")
+    parser.add_argument("--raw", action="store_true", help="Disable compression")
+    parser.add_argument("--session", help="Session name")
+    args = parser.parse_args()
+
+    compressor = get_compressor()
+    llm = LLMClient(model=args.model)
+    recorder = SessionRecorder()
+    recorder.start_session(args.session)
+
+    user_input = " ".join(args.prompt) if args.prompt else sys.stdin.read().strip()
+    if not user_input:
+        print("Error: No input", file=sys.stderr)
+        sys.exit(1)
+
+    # Compress user prompt
+    if not args.raw:
+        user_input = compressor.compress_prompt(user_input)
+    recorder.add("user", user_input)
+
+    # Send to LLM
+    response = llm.generate(user_input)
+    recorder.add("assistant", response)
+
+    # Expand pointers for display
+    if not args.raw:
+        response = compressor.expand_response(response)
+
+    print(response)
+
+    # Save session
+    saved = recorder.save()
+    if saved:
+        print(f"\n[Session saved: {saved}]", file=sys.stderr)
+
+if __name__ == "__main__":
+    main()

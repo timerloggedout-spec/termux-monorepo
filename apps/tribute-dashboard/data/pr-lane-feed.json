@@ -1,0 +1,6764 @@
+{
+ "schema": "pr-lane-feed/v1",
+ "generated_at": "2026-11-16T13:58:50Z",
+ "open_prs": 450,
+ "counts": {
+  "CANDIDATE": 137,
+  "EXTRACT": 31,
+  "NEED_EVIDENCE": 259,
+  "SUPERSEDE": 23
+ },
+ "prs": [
+  {
+   "number": 47,
+   "title": "feat(refTemplates): restore metadata-only skeleton (Option B recovery)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 102.9,
+   "changed_files": 100,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 48,
+   "title": "feat(llm-api-hub): OpenAI hub + standalone server + ADE/kai9000 split (TER-71)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "dirty",
+   "age_days": 102.9,
+   "changed_files": 73,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 81,
+   "title": "ci: promote Gemini quota-gate + agent workflows to master (event triggers)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 100.7,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 92,
+   "title": "sec(workflows): harden permissions, pin SHAs, and fix prompt injection",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 100.0,
+   "changed_files": 9,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 103,
+   "title": "feat(comms): CAVEMAN-micro seed + success matrix + dual-file + CLAUDE.md Cheat_Code",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 99.5,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 125,
+   "title": "analyze agentic workflows and peer coordination rules",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 98.6,
+   "changed_files": 4785,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 143,
+   "title": "Integrate MCP Agent Mail Coordination Layer in GitHub Actions",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 97.9,
+   "changed_files": 4790,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 286,
+   "title": "feat(ops): evidence-gated autonomous staging progression",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "dirty",
+   "age_days": 86.8,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 386,
+   "title": "feat(ops): DeepSeek/OX Alpha evidence-first canary on current master",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 80.3,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 390,
+   "title": "docs: formalize category-theoretic notation sets and cross-domain mappings",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 80.3,
+   "changed_files": 120,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 407,
+   "title": "\u26a1 Bolt: optimize Bellman-Ford graph search in arbitrage engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 78.2,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 527,
+   "title": "ops: close admission and pagination stall evidence gaps",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 62.3,
+   "changed_files": 27,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 578,
+   "title": "feat(accounting): spreadsheet-first accounting/bidding schema pilot (real roster + simulated cycle)",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 60.2,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 605,
+   "title": "feat(ar-18): extend dynamic capability spine with Paper2Agent research",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 58.8,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 684,
+   "title": "ops: unify GitHub Actions operations cadence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 56.8,
+   "changed_files": 45,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 740,
+   "title": "feat: operationalize Laya runtime, CADENCE sweeps, and Jev adapter",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 55.0,
+   "changed_files": 37,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 752,
+   "title": "feat(ops): Termux MCP endpoint status workflow + Pinggy reference scripts",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 54.7,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 761,
+   "title": "lane: Desktop Commander fork + Android execution alternatives",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 54.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 762,
+   "title": "ops: map live plugin connector surface and parity skills",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 54.4,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 764,
+   "title": "lane: connect Termux hub over Tailscale + repeatable collaborator bootstrap",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 54.4,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 769,
+   "title": "feat(tagging): cron multi-category GitHub tagging refresh",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 54.3,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 829,
+   "title": "feat(multi-ai-cli): DeepTerm integration with Pinggy bridge support",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 52.5,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 958,
+   "title": "feat(multi-ai-cli): Complete Mistralai Vibe Code webWrapper CLI with Termux Hub",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 46.5,
+   "changed_files": 49,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 969,
+   "title": "feat(experiment): Delphic Bayesian Oracle \u00d7 Observatory lab",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 46.2,
+   "changed_files": 28,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 970,
+   "title": "Add Antigravity integration with CLI, SDK, headless config, tools, and FOSS alternatives",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 46.1,
+   "changed_files": 19,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 990,
+   "title": "feat(foresight): wire agent safety, orchestration, provenance, and gated edge lanes",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 45.3,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 1020,
+   "title": "feat: close provider continuity and executable routing gaps",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 44.0,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "SUPERSEDE"
+  },
+  {
+   "number": 1274,
+   "title": "[draft reference] planning-queue: Platform201 queue backend (not for deploy)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 28.2,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1301,
+   "title": "docs(telemetry): add equation registry and Wolfram verification",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 27.3,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1436,
+   "title": "feat(dashboard): salvage operational Hindsight dashboard onto current master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 26.3,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1441,
+   "title": "feat(triage): reconcile official quota before dispatch",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 26.3,
+   "changed_files": 38,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1469,
+   "title": "test(observatory): restore upstream provenance PR validation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 26.0,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1470,
+   "title": "feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 26.0,
+   "changed_files": 74,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1494,
+   "title": "\ud83d\udcd6 Linguist: conversational steganography cipher & notation matrices",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1495,
+   "title": "feat(quota): full mappings, GitHub safeguards and publication visibility",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.5,
+   "changed_files": 26,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1498,
+   "title": "Antigravity CLI: collaborative use cases, provisioning proposal, offline readiness (#1497)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "unstable",
+   "age_days": 25.3,
+   "changed_files": 14,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1499,
+   "title": "\ud83d\udee1\ufe0f Sentinel: prevent parent symlink hijacking in obsidian server token read",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.3,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1510,
+   "title": "\u26a1 Bolt: optimize workflow catalog generation and fingerprint caching",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1513,
+   "title": "test(observatory): verify Gravitee fork upstream identity",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1514,
+   "title": "feat(antigravity): isolated secondary operational pilot (#1497)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "unstable",
+   "age_days": 25.2,
+   "changed_files": 45,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1515,
+   "title": "feat(ates): correlate Phase C run and event evidence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1516,
+   "title": "feat(orchestration): add deterministic DAG reference primitive",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1531,
+   "title": "docs: propose Research integration and paper-wallet accounting with native tracking",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1537,
+   "title": "docs(ops): direct CLI Termux SSH via self-healing Pinggy tunnel",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1538,
+   "title": "feat(tribute): GitLab-native discovery and bounded integration options",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 25.2,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1541,
+   "title": "feat: implement THUB-017 Research and existing MSM-005 paper accounting",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "cue/swarms-research-remote-20261021",
+   "mergeable_state": "dirty",
+   "age_days": 25.1,
+   "changed_files": 49,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1543,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1553,
+   "title": "Consolidate upgrades for provider quota & PR merge readiness",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.7,
+   "changed_files": 0,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1556,
+   "title": "\ud83d\udcd6 Linguist: implement steganographic cipher lane and token efficiency analysis",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.6,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1557,
+   "title": "ops(actions): hybrid lag-as-notice Tailscale + consolidated matrix upgrade",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.5,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1568,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Harden DeepCLI export target symlink validation",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1569,
+   "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "unstable",
+   "age_days": 24.3,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1570,
+   "title": "\u26a1 Bolt: optimize decision engine selection and provider catalog secret lookup",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 24.2,
+   "changed_files": 0,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1582,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1599,
+   "title": "feat(ci): enforce review justification on dismissed PR reviews",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1607,
+   "title": "\ud83d\udcd6 Linguist: 1337 cipher notation & steganography",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1612,
+   "title": "docs(research): map new free LLM catalogs to telemetry gates",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.5,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1614,
+   "title": "ops(actions): matrix continuation + plan scheduled lane-events aggregator for spam reduction",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1616,
+   "title": "docs(flywheel): add capability overlap audit",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1617,
+   "title": "docs: improve Mintlify agent discoverability and record integration recon",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1626,
+   "title": "docs(rfp): add first source-backed mesh provider evidence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1630,
+   "title": "fix(delphi): gate and deduplicate conversational intake",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1631,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [security improvement] Harden DeepCLI export file permissions and symlink checks",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1632,
+   "title": "\u26a1 Bolt: optimize hex moneyball export stream serialization",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 23.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1640,
+   "title": "ci: enforce explicit justification for dismissed reviews in merge readiness engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 22.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1642,
+   "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 22.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1645,
+   "title": "fix: harden Help-Wanted telemetry and evidence audits",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 22.6,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1650,
+   "title": "phantom-secrets-audit: comment-wake trigger + #184 ledger report",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 22.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1659,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Fix symlink traversal and umask permission exposure in DeepCLI export",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 22.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1671,
+   "title": "\u26a1 Bolt: pre-compile language regexes and priority map in tribute_system1",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 21.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1677,
+   "title": "fix(help-wanted): fail closed on placeholder work and stale eligibility",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1679,
+   "title": "\ud83d\udcd6 Linguist: [performance improvement] conversational steganography 4th lane & BPE token density optimization",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1694,
+   "title": "fix(help-wanted): preserve historical audit coverage on partial refreshes",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.5,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1704,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Harden NexusCLI session export file creation and imports",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.3,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1705,
+   "title": "\ud83c\udfa8 Palette: [UX improvement] Enhance Termux cockpit panel truncation for mobile viewports",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1706,
+   "title": "\u26a1 Bolt: fix actions incident deduplication test assertion",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1734,
+   "title": "feat(notation): add claim-level evidence provenance",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.1,
+   "changed_files": 21,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1735,
+   "title": "docs(ops): refresh maintenance status and evidence gates",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 20.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1760,
+   "title": "ops(tribute): participation refresh",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 20.1,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1852,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1857,
+   "title": "feat(ci): add merged branch review audit and timing quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 1862,
+   "title": "\ud83d\udcd6 Linguist: pre-LLM steganography cipher & Grimoire 1337_$934k cipher mapping",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.6,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1966,
+   "title": "ops(matrix): delphi 403 resilience + live Actions matrix refresh (2026-10-28)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.4,
+   "changed_files": 19,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 1985,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Fix Zip Slip path traversal and symlink checks in export extraction",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.3,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 1988,
+   "title": "\u26a1 Bolt: optimize foreign PR follow-up and recon routines",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 19.3,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2175,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2181,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2183,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2186,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2187,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2190,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2235,
+   "title": "chore(osint): refresh coverage + page snapshots",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.7,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2252,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.7,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2261,
+   "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2304,
+   "title": "\ud83d\udcd6 Linguist: optimize token efficiency & add stego cipher",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2330,
+   "title": "\ud83d\udee1\ufe0f Sentinel: Fix umask permission exposure in token provider vault",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 18.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2343,
+   "title": "Add Merged Branch Audit and Timing Quotas Evaluator",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2344,
+   "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.6,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2348,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2349,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2359,
+   "title": "Linguist 1337 Grimoire Review & Codec Upgrade for RevWright Candidate Set",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.5,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2377,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.5,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2378,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2436,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Prevent path traversal and symlink hijacking in cookie loading",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.3,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2445,
+   "title": "\u26a1 Bolt: optimize research intake parsing and observatory intake processing",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.2,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 2456,
+   "title": "docs(ops): refresh AppID quota and telemetry maintenance status",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2461,
+   "title": "feat(3l0): visualize observed Delphi weights with provenance",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2482,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2483,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2492,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.1,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2499,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2513,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 17.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2525,
+   "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2527,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2530,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2534,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2536,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2539,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2541,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2545,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2550,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2555,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2562,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2568,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2570,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2574,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2575,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2577,
+   "title": "[AMD AI League] Add evidence-backed Delphi pass for repository repair",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2578,
+   "title": "docs: integrate AMD and NVIDIA skill workflows",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.6,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2581,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.5,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2584,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.5,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2598,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.5,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2605,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2608,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2610,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2613,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2628,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2629,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 16.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2702,
+   "title": "docs(dashboard): standing preview QA checklist",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2757,
+   "title": "feat(ci): add merged branch review audit and quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2856,
+   "title": "doe(live-3): ci_mode \u2014 stamped dispatch comment as prompt (ruling (i-a), owners' review)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.5,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2857,
+   "title": "doe(live-3): deepseek-ci harvest step \u2014 mirror dispatch outcome to #2830 (ruling (i-a), owners' review)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2899,
+   "title": "fix: enforce descending provider cost ranking",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.5,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2907,
+   "title": "fix: scope free-tier opportunity cost to repo work",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.5,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2966,
+   "title": "[apk-doe] A v0.2.1",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 2978,
+   "title": "docs(ops): map UI surfaces and version lanes",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.3,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 2980,
+   "title": "feat(orbital): add independent radial hierarchy layout lab",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.3,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3024,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3029,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3032,
+   "title": "fix(crg): align promotion gate with canonical master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3034,
+   "title": "[Draft] Independent Foresight Landscape Explorer track",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3035,
+   "title": "[Draft] Independent RFP: foresight platform evaluation",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3037,
+   "title": "docs(rfp): BLU View 5 mobile-first independent evaluation",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3045,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.1,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3113,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 15.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3209,
+   "title": "chore(cadence): auto-register providers from surface drift",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3241,
+   "title": "ci(ops): vercel-batch-deploy watchdog (Tribute prod lagged master)",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3242,
+   "title": "feat(quota): harden provider consumption audit",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.7,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3247,
+   "title": "docs(ops): account-creation lane record 2026-11-01 \u2014 census 66, tiers, \u2205CC closed class, HITL list",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3342,
+   "title": "feat(ci): add merged branch review audit and quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3437,
+   "title": "feat(dispatch): wire gemini-invoke to the stamp fan-out",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3500,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3501,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3502,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3723,
+   "title": "apk-release: release step token class fix (GITHUB_TOKEN 403 on non-master refs)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3755,
+   "title": "feat(ci): archwiz func_index \u2014 repo-side func_indexer variant (ast depth)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3757,
+   "title": "feat(ci): archwiz foresight_feed \u2014 repo-side foresight_collect variant (re-derived scoring)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3758,
+   "title": "feat(ci): archwiz mirror_report \u2014 repo-side mirror variant (advisory rollup)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3763,
+   "title": "archwiz \u2465: archaeo cursor-mode spec + inert workflow pass-through (context_relationships)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.0,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "author": "termux-fleet-swarm[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 14.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3969,
+   "title": "ci(ops): sync Vercel Root Directory to apps/tribute-dashboard (stops Bundle D preview-failure flood)",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 3991,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4005,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4006,
+   "title": "Implement Merged Branch Review Audit and Production Quota Engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4007,
+   "title": "Wire invocation observations into Free-Tier Value evidence projection",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4011,
+   "title": "docs(proposals): register external agent toolchain integration portfolio",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4016,
+   "title": "security(issues): gate advisory triage through deterministic intake firewall",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4017,
+   "title": "feat(ops): map federated AppIDs and independent release lanes",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4018,
+   "title": "feat(viz): upgrade renderer preview and harden telemetry snapshots",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 24,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4019,
+   "title": "feat(api-impact): add SHA-bound API evolution review lane",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 25,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4020,
+   "title": "feat(mesh): add fail-closed deployment admission and resiliency contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4021,
+   "title": "feat(integrations): extend governed agent toolchain portfolio",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/api-impact-review-lane",
+   "mergeable_state": "unstable",
+   "age_days": 13.5,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4022,
+   "title": "docs(ops): record post-merge backfill remediation checkpoint",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4023,
+   "title": "docs: integrate competitive opportunities and quota reconciliation",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.5,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4048,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4055,
+   "title": "doe(apk-1): records 3 \u2014 arm-A release identity convergence (431287533)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4069,
+   "title": "chore(dashboards): refresh surface feeds",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.4,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4083,
+   "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.3,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4084,
+   "title": "docs(deploy): map Vercel alternatives and staged failover",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.3,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4085,
+   "title": "docs(architecture): define visual architecture versioning and export standard",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4086,
+   "title": "feat(integrations): add read-only provider evidence adapters",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/agent-toolchain-portfolio",
+   "mergeable_state": "unstable",
+   "age_days": 13.3,
+   "changed_files": 13,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4088,
+   "title": "fix(ci): distinguish dynamic references from dangling paths",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.3,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4089,
+   "title": "feat(mesh): add quota-bound deployment admission and resiliency contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.2,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4148,
+   "title": "\u26a1 Bolt: fast-path comment stripping in cadence audit",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 4352,
+   "title": "Delphi gate P3 (EGM-2): vote profiles + collision flags on the board + quarantine guard",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4353,
+   "title": "Delphi gate P1+P2 (EGM-2): scoreable verification records via oracle resolution",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.0,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4355,
+   "title": "Delphi gate P4 (EGM-2): shadow substance score + convergence readout (never merged)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4390,
+   "title": "docs(ops): swarm research template \u2014 issue \u2192 SOFA \u2192 FIX (+ #4283 worked example)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 13.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4442,
+   "title": "feat(tui): pipx one-liner packaging \u2014 [project.scripts] studysprint-tui (#4436)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4445,
+   "title": "docs(swarm-research): worked example #2 \u2014 #4276 WebView state-fetch, verdict INCOMPLETE (#4443)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4473,
+   "title": "fix(web): FSRS receipt NaN \u2014 grade() passes epoch ms; surfaces 0.1.4 (#4461)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4474,
+   "title": "docs(ask): question-sending spec \u2014 compose-never-send, own-syllabus channel (#4462)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4477,
+   "title": "fix(smoke): recording start ladder \u2014 verified forms, REC_PATH pull (#4420)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4483,
+   "title": "feat(web): app-package B \u2014 richer install, custom prompt + iOS fallback, update toast, offline page (#4437)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4493,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4494,
+   "title": "feat(apk): app-package C \u2014 release trust (hardening \u2200false \u00b7 reproducible build \u00b7 versionCode 2) (#4438)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/parity-iteration1-calendar-geo",
+   "mergeable_state": "unstable",
+   "age_days": 12.9,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4502,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4503,
+   "title": "docs: app-package D \u2014 CHANGELOG discipline \u00b7 verification decision \u00b7 perf budgets + measured run (#4439)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/app-package-c-apk-trust",
+   "mergeable_state": "unstable",
+   "age_days": 12.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4506,
+   "title": "feat(pkg-e): 60-second three doors (live) \u00b7 video restructure note \u00b7 resilience evidence pack (#4440)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/app-package-d-docs-budgets",
+   "mergeable_state": "unstable",
+   "age_days": 12.9,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4508,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4509,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4511,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4516,
+   "title": "feat(schema): integration 5 \u2014 schema_version discipline, state stamped end-to-end (#4470)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/app-package-e-judge-path",
+   "mergeable_state": "unstable",
+   "age_days": 12.8,
+   "changed_files": 9,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4521,
+   "title": "feat(ereader): EPUB reader-edition export \u2014 generator \u00b7 TUI \u00b7 evidence workflow (#4472)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/schema-version-discipline",
+   "mergeable_state": "unstable",
+   "age_days": 12.8,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4522,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4523,
+   "title": "docs(research): podium dataset & test systems \u2014 swarm research record",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4526,
+   "title": "docs(osint): OSINT dispatch template + D2 worked example",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4528,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4533,
+   "title": "feat(doe): webApp variant B \u2014 doctrine-stripped chrome, same state, panel record (#4478)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4539,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4543,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4549,
+   "title": "docs(research): D0+D1 opportunity-spec cycle \u2014 atoms + gathered sets",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4552,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4556,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4557,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4558,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4570,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4571,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4573,
+   "title": "docs(ops): challenge-opportunity pipeline \u2014 flow of record + diagnosis",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4575,
+   "title": "cadence: surface G1 saturation in dispatch tree (escalation axis 4)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4578,
+   "title": "cadence: resolve onboarding drift \u2014 5 missing entries + ollama exception (escalation axis 4)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4589,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4596,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4609,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4615,
+   "title": "fix(ci): harden dangling-reference detection on current master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4617,
+   "title": "feat(mesh): harden quota-bound deployment admission and resiliency",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4621,
+   "title": "feat(dashboards): queue-state board \u2014 live Actions queue timers (owner's queue-timers ask)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4623,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4624,
+   "title": "docs(ops): QUE \u2014 the fleet queue system spec (owner mandate) + tranche plan",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4626,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4627,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4630,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4631,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4634,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4635,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4637,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4644,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4646,
+   "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4663,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4664,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4670,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4686,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4690,
+   "title": "feat(ci): add merged branch review audit and quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4694,
+   "title": "feat(tribute): resume prerequisites \u2014 merged ledger, volume gate, diagnostics record",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4699,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4730,
+   "title": "\ud83d\udcd6 Linguist: implement Notation matrices, ConversationalSteganographyCipher 4th lane, and Base64 efficiency research",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 4737,
+   "title": "refTemplates: Agentic Wallet template spec \u2014 01_Agent_Runtime (Web3 TEMPLATES dispatch)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4742,
+   "title": "POOL-SYNC: continuous pool provisioning mechanism (MoneyBall Dispatch #3)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.6,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4758,
+   "title": "Swarm: per-call token usage into dispatch stamps (consumption fix leg)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.5,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4780,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4790,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4795,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.3,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4801,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4821,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4827,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4852,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4883,
+   "title": "docs(ops): gated spend authorizations protocol \u2014 proposal-required, hard caps, receipts (owner spec 2026-11-04)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4898,
+   "title": "feat(dashboard): surfaces-map serve step \u2014 canon 39 + census rows",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.1,
+   "changed_files": 37,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4901,
+   "title": "docs(ops): continuous-operations dependency register \u2014 runway view (dependencies x inflow cover x gap)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.1,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4904,
+   "title": "viz(map): Bolt + Sentinel rows (owner query); linguist verified",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.0,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4930,
+   "title": "docs(secrets): phantom-secret remediation map + provisioning checklist",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4931,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 12.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4935,
+   "title": "feat(quota): add nested task-level usage attribution tree",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.9,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4936,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4954,
+   "title": "feat(ci): add merged branch review audit and quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4964,
+   "title": "QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as machinery)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4969,
+   "title": "QUE docs: records-hygiene rule stamped + literal converted (owner caution 2026-11-04)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 4972,
+   "title": "Records hygiene: sweep-thresholds values -> null (token never storable)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 4990,
+   "title": "chore(linguist): refresh linguist-panel-feed.json",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5007,
+   "title": "feat(graph-studio): ship parallel graph explorer v0.1.0",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.2,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5008,
+   "title": "Proposal: evidence-led polyglot build orchestration",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.1,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5009,
+   "title": "fix(graph-studio): independent review and GitHub Pages release",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/parallel-graph-explorer-v0.1.0",
+   "mergeable_state": "unstable",
+   "age_days": 11.1,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5010,
+   "title": "feat: add AgentRouter catalog and unified observability index",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 11.0,
+   "changed_files": 13,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5013,
+   "title": "perf(peer-review): reuse one event snapshot and remove dead polling",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5014,
+   "title": "perf(observer): bound scheduled and shared poller scans",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5015,
+   "title": "feat: add AgentRouter catalog and unified provider observability index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 15,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5016,
+   "title": "feat: AgentRouter catalog and unified provider observability index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5017,
+   "title": "feat: AgentRouter catalog and unified provider observability index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5018,
+   "title": "feat: AgentRouter catalog and unified provider observability index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5019,
+   "title": "feat: AgentRouter catalog and unified provider observability index",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.8,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5021,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5023,
+   "title": "Governance: Merged Branch Review Audit & Deployment Quota Engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5024,
+   "title": "perf(actions): centralize issue-comment workflow fan-out",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.6,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5025,
+   "title": "docs(tak): register proposal and establish common operating picture contract v1",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.6,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5029,
+   "title": "docs(ridp): establish Repository Intelligence & Collaboration Data Plane",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.5,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5030,
+   "title": "docs(tak): define Taktikal Awareness Kit OODA/COP architecture",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.4,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5031,
+   "title": "fix(proposals): complete AppID control-plane registry contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 10.4,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5034,
+   "title": "chore(dashboards): refresh dispatch-tree feed",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 10.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5035,
+   "title": "feat(vultr-agent-rush): build Match Impact Desk for Challenge 2",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.9,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5036,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.9,
+   "changed_files": 21,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5037,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.9,
+   "changed_files": 21,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5038,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.9,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5041,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.6,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5043,
+   "title": "docs(wait): integrate bounded Loopy cycle with native WAIT",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.4,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5045,
+   "title": "feat(langgraph): provision BIUDL orchestration skill and integration contract",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.3,
+   "changed_files": 20,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5046,
+   "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Fix path traversal, symlink hijacking, and permissions in ConversationDAG",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "EXTRACT"
+  },
+  {
+   "number": 5051,
+   "title": "feat(challenge): register Game Off 2026 SHIFT opportunity + deadline timebox",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.0,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5052,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5054,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 9.0,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5059,
+   "title": "fix(ci): expose paths behind YAML ratchet failures",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5060,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.9,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5061,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.9,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5062,
+   "title": "feat(orchestration): autonomous escalation on current master",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.9,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5063,
+   "title": "feat(events): unify wagering book and countdown projections",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "feat/challenge-game-off-2026-intake",
+   "mergeable_state": "unstable",
+   "age_days": 8.9,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5064,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5074,
+   "title": "fix(tracking): harden desk evidence parsing on master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5075,
+   "title": "fix(ci): resolve dangling reference census findings",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.8,
+   "changed_files": 13,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5076,
+   "title": "fix(ops): repair quota dispatch admission pressure read",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5077,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 8.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5081,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 7.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5082,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 7.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5084,
+   "title": "fix(context): separate history pages from GitHub detail endpoint bounds",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 7.0,
+   "changed_files": 7,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5085,
+   "title": "feat(orchestration): autonomous escalation and recovery",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 7.0,
+   "changed_files": 28,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5086,
+   "title": "feat(telemetry): join credential provenance to DoE instance identity",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 7.0,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5091,
+   "title": "Fix invalid YAML in ios-termux-contribute.yml",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5092,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5093,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.6,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5094,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5128,
+   "title": "feat(vercel): read-only admin-desk host identification probe",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5134,
+   "title": "feat(provider-index): reconcile provider participation and dispatch pool",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 6.0,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5143,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5144,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.6,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5145,
+   "title": "docs(qdesk): propose Observatory + Delphi DoE self-implementation pipeline",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.5,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5147,
+   "title": "docs(quota): define API admission + resilient compute mesh contract",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.5,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5150,
+   "title": "test(ci): cover shell-quoted colon in YAML plain scalar",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5155,
+   "title": "fix(delphi): paginate complete RFP issue census",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.4,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5159,
+   "title": "test(quota): cover partial service-state snapshots",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.4,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5167,
+   "title": "fix(review): avoid exhausting GITHUB_TOKEN during peer evidence collection",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5168,
+   "title": "docs: establish integrated BIUDL steering and evidence implementation plan",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5169,
+   "title": "fix(chronomancer): scope fork selection to validated session lineage",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5170,
+   "title": "docs: complete non-device BIUDL lane contracts and operating handbook",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5171,
+   "title": "fix(secrets): phantom-secret remediation (dead-branch)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5173,
+   "title": "chore(ops): refresh computed countdown lines",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 5.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5186,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.7,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5187,
+   "title": "feat(ci): implement merged branch review audit and deployment quota engine",
+   "author": "google-labs-jules[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.6,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5188,
+   "title": "docs(linguist): implement comparative README evolution (LMP-01)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.6,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5190,
+   "title": "feat(que): add scientific and DO statement psychology experiment lanes",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.6,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5197,
+   "title": "docs(qdesk): add portfolio decision and delivery report contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.4,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5198,
+   "title": "docs(doe): establish governed free-inference endpoint tournament order",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.3,
+   "changed_files": 21,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5199,
+   "title": "feat(qdesk): deadline desk \u2014 requirement-closure Gantt, T-7d/T-48h/T-12h alarms via hark:queue, page freshness audit; fix ingest + rfp-feed collectors [skip render]",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.3,
+   "changed_files": 17,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5205,
+   "title": "Tribute: whole-corpus versioned audit revisions + census completeness + merge attribution [skip render]",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.2,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5222,
+   "title": "docs(architecture): reconcile swarm routing control planes",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.1,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5224,
+   "title": "fix(doe): make inference allocation DoE-governed",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.1,
+   "changed_files": 23,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5244,
+   "title": "feat(delphic): integrate Observatory with DoE MoneyBall pool (rebased)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 4.0,
+   "changed_files": 29,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5252,
+   "title": "ledger: OC-007 \u2014 D3 close (LOST $5,000, not submitted)",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5253,
+   "title": "fix(rate-limit): #5219 verify script \u2014 page list endpoints explicitly",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5274,
+   "title": "chore(delphi): refresh oracle-panel-feed.json",
+   "author": "termux-fleet-swarm[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 3.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5320,
+   "title": "docs(recon): correct Tribute quota publication intent and QUE findings",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5322,
+   "title": "fix(tribute): expose Surfaces Map in shared navigation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5323,
+   "title": "fix(quota): automate public readings freshness on a six-hour cadence",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5324,
+   "title": "fix(que): reconcile stale intake labels after successful re-dispatch",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5325,
+   "title": "fix(tribute): expose Surfaces Map in shared navigation",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5326,
+   "title": "fix(quota): automate public readings and self-count refresh",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5327,
+   "title": "feat(skills): vendor AMD and NVIDIA GPU agent skills",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
+   "changed_files": 33,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5328,
+   "title": "fix(que): normalize structured ranking scores in auto-claim",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5330,
+   "title": "feat(que): drain deferred admissions into QDesk safely",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5331,
+   "title": "feat(que): add guarded deferred-admission drain",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.1,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5335,
+   "title": "feat(observatory): migrate Delphic to Vercel + live GitHub feeds",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/delphic-doe-moneyball-rebased",
+   "mergeable_state": "unstable",
+   "age_days": 3.0,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5337,
+   "title": "Trigger Pages deployment after merged dashboard-source PRs",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 3.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5338,
+   "title": "feat(policy): enforce DO statements, free-tier mandate and agent readiness",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "feat/delphic-observatory-platform-migration",
+   "mergeable_state": "dirty",
+   "age_days": 3.0,
+   "changed_files": 14,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5339,
+   "title": "docs: enforce DO-first communication law across repository",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master-staging",
+   "mergeable_state": "unstable",
+   "age_days": 3.0,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5343,
+   "title": "docs(maxc): define Siglary formal semantic codec",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.9,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5349,
+   "title": "Enforce DO-statement language and publish agent-readability skills",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.9,
+   "changed_files": 24,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5369,
+   "title": "Fix QUE deferred-admission drain and QDesk routing",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5370,
+   "title": "Automate public quota readings and self-count refresh",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5371,
+   "title": "Normalize QUE auto-claim ranking scores",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5372,
+   "title": "Clear stale intake diagnosis after valid re-intake",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5373,
+   "title": "Expose Surfaces Map in shared navigation",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5375,
+   "title": "Fix DO-statement merge history filtering",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5376,
+   "title": "Exclude deferred and QDesk tasks from provider dispatch",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5378,
+   "title": "Enforce QUE admission and provider-dispatch boundaries",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5380,
+   "title": "Fix DO-statement merge history filtering",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5381,
+   "title": "feat(msm): add paired policy comparisons to economy backtests",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "cue/msm005-paper-accounting-20261022",
+   "mergeable_state": "unstable",
+   "age_days": 2.8,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5382,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5387,
+   "title": "Expose per-source quota observation freshness",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.5,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5388,
+   "title": "docs: establish declarative workflow planning and QUE \u00d7 DoE optimization model",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.4,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5390,
+   "title": "feat(que): establish SIE lifecycle contract and intake receipts",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 2.4,
+   "changed_files": 35,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5408,
+   "title": "feat(delphic): rebase Observatory Graph Lab and DoE adapter onto live master",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 2.1,
+   "changed_files": 29,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5417,
+   "title": "feat(tribute): nested versioned graph and algorithm suite",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 1.9,
+   "changed_files": 63,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5421,
+   "title": "fix(ci): accept adaptive DO statements and preserve constraints",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 1.9,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5422,
+   "title": "fix(ci): review hedged DO wording without blocking",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 1.9,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5423,
+   "title": "fix(siglary): accept export in action-first commit subjects",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5425,
+   "title": "fix(ci): repair dispatch admission and DO statement gates",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unknown",
+   "age_days": 1.9,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5426,
+   "title": "feat(waf): add AMD Academy discovery-only provider",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "fix/dispatch-style-gates-current-head-20261114",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5427,
+   "title": "feat(ates): preserve execution-controller provenance",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "feat/amd-academy-provider-current-head-20261114",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5428,
+   "title": "docs(certifications): add ROCm Associate integrity-safe runbook",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "feat/que-execution-provenance-current-head-20261114",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5429,
+   "title": "fix(challenge): correct AMD C3 coordinator provenance",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "docs/amd-rocm-associate-runbook-current-head-20261114",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5431,
+   "title": "feat(que): add device-component validation lanes and RECON tool registry",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 1.9,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5433,
+   "title": "feat(evaluation): add standalone repository-subject certification profile",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.9,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5434,
+   "title": "fix(siglary): accept export in action-first commit subjects",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5435,
+   "title": "test(dispatch): align quota tree contract with coalescing policy",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5436,
+   "title": "feat(integrations): unify feed event and measurement ingestion",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.3,
+   "changed_files": 13,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5437,
+   "title": "feat(notation): add JSON \u2194 TOON interoperability adapter",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.3,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5438,
+   "title": "feat(notation): add JSON TOON interoperability adapter",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.3,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5439,
+   "title": "feat(sip): propose MiroFish \u00d7 OASIS Simulation Intelligence Plane",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 1.3,
+   "changed_files": 36,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5440,
+   "title": "fix(msm005): address unresolved THUB-017 review findings",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "cue/implement-thub017-msm005",
+   "mergeable_state": "unstable",
+   "age_days": 1.3,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5441,
+   "title": "test(quota): align dispatcher cancellation contract",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.3,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5442,
+   "title": "[WIP] feat(qdesk): parallel read-only queue operations console",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 1.3,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5445,
+   "title": "docs(skills): require Approxination competition and reconcile skill authority",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.2,
+   "changed_files": 19,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5446,
+   "title": "feat(doe): preserve royalties and throughput across participant culling",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.2,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5447,
+   "title": "feat(msm): add origin-attributed residual royalty journal",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "cue/msm005-paper-accounting-20261022",
+   "mergeable_state": "unstable",
+   "age_days": 1.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5455,
+   "title": "Incremental intelligence RFP and queue throughput improvements",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 1.0,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5458,
+   "title": "research(re): CredKellar + ddkellar01 ecosystem RFP and QUE intake",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.0,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5459,
+   "title": "feat(que): validate free inference arms without quota-counter dependency",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.0,
+   "changed_files": 29,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5465,
+   "title": "Fix DoE/MVT evidence integrity and comparison bottlenecks",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.0,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5471,
+   "title": "docs(integrations): refresh connector evidence and Temporal status",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 1.0,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5473,
+   "title": "feat(tribute): build owner records metadata explorer",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 0.9,
+   "changed_files": 14,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5476,
+   "title": "fix(ci): accept generated backup export commit subjects",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.9,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5477,
+   "title": "fix(mvt): classify skipped lane jobs without false evaluator failures",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5478,
+   "title": "fix(review): defer Gemini second pass safely on GitHub API rate limits",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5479,
+   "title": "docs(que): register policy-gated multi-protocol build-arm projection",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.9,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5480,
+   "title": "docs(proposal): register evidence-first workflow self-repair",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.9,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5485,
+   "title": "fix(proposals): register qdesk-self-repair (#5214 S1) [skip render]",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "dirty",
+   "age_days": 0.8,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5486,
+   "title": "chore(proposals): refresh proposals-feed.json",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5487,
+   "title": "chore(recon): refresh pinned free-provider research",
+   "author": "github-actions[bot]",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.8,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5492,
+   "title": "feat(brain): build the monorepo-wide Rust cognitive kernel",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.6,
+   "changed_files": 27,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5493,
+   "title": "test(quota): align dispatch tree concurrency contract",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.6,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5496,
+   "title": "fix(ci): correct residual YAML scalar heuristics after #1347",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5500,
+   "title": "legacy branch pointer: Software Recipe Intelligence \u2014 see PR #5519",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5502,
+   "title": "docs(mosaic): add meta-methodology self-improvement program",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 13,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5503,
+   "title": "config(delphi): segment qdesk Brain architecture RFP",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5504,
+   "title": "Add sponsored public-goods lane and Fairwind admission overlay",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 4,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5505,
+   "title": "test(dispatch): align quota tree assertion with concurrency contract",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.2,
+   "changed_files": 1,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5509,
+   "title": "feat(orchestration): formalize isolated agent workspaces",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 10,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5511,
+   "title": "docs(refTemplates): register November 15 open-source radar references",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5512,
+   "title": "feat(security): add Codex Security research candidate",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 6,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5513,
+   "title": "feat(mcp-hub): add public health readiness endpoint",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 3,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5516,
+   "title": "feat(que): integrate agent-browser MCP tooling and enforce refTemplates/smods contracts",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.2,
+   "changed_files": 25,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5517,
+   "title": "[draft] DoE-governed versioned kill-method participant foundation",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5518,
+   "title": "[draft] AWS Emulator adoption and agent-built fidelity engineering loop",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 11,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5519,
+   "title": "docs(research): map software recipe intelligence and naming collisions",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 16,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5520,
+   "title": "docs: evaluate Apache Camel for governed refTemplates/smods integration",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 8,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5521,
+   "title": "docs(proposal): connect Observatory discovery to CEEL and refTemplates",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "clean",
+   "age_days": 0.1,
+   "changed_files": 5,
+   "gates": {
+    "repo-gate": false,
+    "termux-smoke": false
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5522,
+   "title": "fix(refTemplates): enforce all template metadata and sMods pin contracts",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.1,
+   "changed_files": 14,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  },
+  {
+   "number": 5523,
+   "title": "feat(que): integrate branch reconciliation with QDesk",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.0,
+   "changed_files": 12,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5524,
+   "title": "fix(que): normalize structured auto-claim ranking scores",
+   "author": "timerloggedout-spec",
+   "draft": true,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.0,
+   "changed_files": 2,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "NEED_EVIDENCE"
+  },
+  {
+   "number": 5525,
+   "title": "feat(brain): extract root kernel and add typed specialist extension contract",
+   "author": "timerloggedout-spec",
+   "draft": false,
+   "base_ref": "master",
+   "mergeable_state": "unstable",
+   "age_days": 0.0,
+   "changed_files": 22,
+   "gates": {
+    "repo-gate": true,
+    "termux-smoke": true
+   },
+   "lane": "CANDIDATE"
+  }
+ ],
+ "fetch_warnings": 0
+}

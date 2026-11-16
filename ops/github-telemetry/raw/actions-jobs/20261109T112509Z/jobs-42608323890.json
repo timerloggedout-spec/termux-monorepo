@@ -1,0 +1,65 @@
+{
+  "collected_at": "2026-11-09T11:25:17.443545+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42608323890,
+    "endpoint": ".../runs/42608323890/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 129129881710,
+        "run_id": 42608323890,
+        "workflow_name": "hark enqueue on failure",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42608323890",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeEL2gbg",
+        "head_sha": "330d76a85cc835d31bd68e6487910cd4ca547257",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129129881710",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42608323890/job/129129881710",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-09T11:20:59Z",
+        "started_at": "2026-11-09T11:20:59Z",
+        "completed_at": "2026-11-09T11:20:59Z",
+        "name": "prep",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129129881710",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 129129882955,
+        "run_id": 42608323890,
+        "workflow_name": "hark enqueue on failure",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42608323890",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAeEL2lSw",
+        "head_sha": "330d76a85cc835d31bd68e6487910cd4ca547257",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/129129882955",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42608323890/job/129129882955",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-09T11:20:59Z",
+        "started_at": "2026-11-09T11:20:59Z",
+        "completed_at": "2026-11-09T11:20:59Z",
+        "name": "enqueue",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/129129882955",
+        "labels": [],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

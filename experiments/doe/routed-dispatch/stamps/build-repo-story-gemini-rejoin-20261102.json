@@ -1,0 +1,22 @@
+{
+  "context": "repo-story build-dispatch rejoin leg (issue #2): capability class build-dispatch; arm rejoins rotation on a completed leg (s25.5)",
+  "dispatch_id": "build-repo-story-gemini-rejoin-20261102",
+  "model": "gemini-3.5-flash-lite",
+  "provider": "gemini-cli",
+  "request": {
+    "id": "repo-story-issue-2-rejoin",
+    "manager": "repo-story-manager"
+  },
+  "role": "builder",
+  "selection": {
+    "arm": "gemini-cli",
+    "basis": "capacity restored (fleet-free key resealed 2026-11-02T09:53:48Z) + monorepo probe leg 41425582650 completed success + pin fixed (repo-story PR #5)",
+    "exploration": false,
+    "manager": "repo-story-manager",
+    "request": "repo-story-issue-2-rejoin",
+    "scout": "swarm",
+    "talent_class": "promising"
+  },
+  "session_or_run": "41426129878",
+  "ts": "2026-11-02T11:21:00Z"
+}

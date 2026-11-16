@@ -1,0 +1,108 @@
+{
+ "filed_at": "2026-11-03",
+ "filed_by": "doe-expert (panel-judge-mirror v0)",
+ "forecast": {
+  "expected_panel_score": 71.7,
+  "outcome_probabilities": {
+   "finalist_or_honorable": 0.42,
+   "no_recognition": 0.2,
+   "podium": 0.38
+  }
+ },
+ "forecast_id": "pjm-2026-11-03-d1-studysprint-L5",
+ "improvement_curve": {
+  "basis_terms": {
+   "sample_content": "moved at L2 (stands)",
+   "strands_depth": "moved at L4 (stands)",
+   "surfaces": "MOVED \u2014 v1.0.0 CUT: release id 433398093, tag v1.0.0 on the parity-verified tree (166/166), release body carries the [1.0.0] notes + the full parity table, read back firsthand by the Desk. The release of record is now the version that freezes for judging; the submission set (published project + article + v1.0.0) is complete"
+  },
+  "cumulative_delta_vs_baseline": 10.0,
+  "delta_vs_L4": 2.0,
+  "fn3_note": "At 71.7 the subject sits deeper in the F-N3 score-response steep region (bimodal N=120: finalist .92 @68, podium .51 @74) \u2014 the field sim reads recognition markedly likelier than the mirror at this score. The mirror stays below the sim by construction of its seats: archetype personas price category crowding and sample-scale content, which the field sim does not model. Both instruments score Nov 18; the divergence remains the calibration datum of record",
+  "terms_status": "ALL THREE basis terms moved {sample content L2 \u00b7 surfaces L3, completed L5 \u00b7 Strands depth L4} \u2014 FINAL LAYER: the curve closes 61.7 -> 65.0 -> 66.3 -> 69.7 -> 71.7"
+ },
+ "layer": {
+  "baseline": "pjm-2026-11-03-d1-studysprint (61.7)",
+  "layer_index": 5,
+  "previous": "pjm-2026-11-03-d1-studysprint-L4 (69.7)",
+  "trigger": "mirror trigger \u2462: v1.0.0 cut (Desk landing line 2026-11-03)"
+ },
+ "panel": [
+  {
+   "enthusiasms": [
+    "the judged artifact is now the 1.0.0 build of record, parity-complete across surfaces",
+    "the submission set is complete and frozen-ready"
+   ],
+   "grade": "venue-archetype",
+   "objections": [
+    "content still sample-scale"
+   ],
+   "persona_id": "arch-d1-operator",
+   "rubric_estimate": {
+    "functionality": 33,
+    "innovation": 16,
+    "originality": 16,
+    "strands_aws": 11,
+    "total": 76
+   },
+   "seat_pattern": "Functionality-first operator"
+  },
+  {
+   "enthusiasms": [
+    "the frozen tree is the one carrying the receipted tool chain \u2014 proof and release now coincide"
+   ],
+   "grade": "venue-archetype",
+   "objections": [
+    "one proof chain != deep platform integration across the whole product \u2014 12/15, not 15/15"
+   ],
+   "persona_id": "arch-d1-platform",
+   "rubric_estimate": {
+    "functionality": 29,
+    "innovation": 16,
+    "originality": 14,
+    "strands_aws": 12,
+    "total": 71
+   },
+   "seat_pattern": "Platform-alignment reviewer"
+  },
+  {
+   "enthusiasms": [
+    "a complete, parity-verified, frozen submission reads finished \u2014 no dangling version story"
+   ],
+   "grade": "venue-archetype",
+   "objections": [
+    "category crowding unchanged"
+   ],
+   "persona_id": "arch-d1-innovation",
+   "rubric_estimate": {
+    "functionality": 28,
+    "innovation": 16,
+    "originality": 14,
+    "strands_aws": 10,
+    "total": 68
+   },
+   "seat_pattern": "Innovation/originality scout"
+  }
+ ],
+ "panel_summary": {
+  "dispersion_check": "DISCRIMINATES (spread 8; no null verdict)",
+  "mean_total": 71.7,
+  "spread": 8
+ },
+ "scoring": {
+  "method": "Brier at judging close (2026-11-18) alongside baseline + L2 + L3 + L4 \u2014 all layers scored together; the mirror closes at the submission freeze (2026-11-04 23:59 PT)",
+  "status": "FILED_PRE_OUTCOME (final layer)"
+ },
+ "stamp": {
+  "evidence_basis": [
+   "Desk landing line 2026-11-03: v1.0.0 CUT \u2014 release id 433398093, https://github.com/timerloggedout-spec/studysprint/releases/tag/v1.0.0, tag on the parity-verified tree (166/166), release body carries the [1.0.0] notes + full parity table, read back firsthand",
+   "L4/L3/L2/baseline evidence sets"
+  ],
+  "gap_flags": [
+   "PANEL_UNPUBLISHED (venue class of GAP-J1)"
+  ],
+  "grade": "venue-archetype",
+  "model": "panel-judge-mirror v0 \u2014 mirror output is a MODEL read, not the real panel's view"
+ },
+ "subject": "D1 StudySprint (AWS Builder hackathon) \u2014 state at v1.0.0 cut (final layer)"
+}

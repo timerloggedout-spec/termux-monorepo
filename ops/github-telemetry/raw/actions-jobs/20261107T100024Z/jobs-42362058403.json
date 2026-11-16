@@ -1,0 +1,135 @@
+{
+  "collected_at": "2026-11-07T10:00:32.325767+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 42362058403,
+    "endpoint": ".../runs/42362058403/jobs"
+  },
+  "data": {
+    "total_count": 3,
+    "jobs": [
+      {
+        "id": 128372334281,
+        "run_id": 42362058403,
+        "workflow_name": "Workflow Surface Policy",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058403",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45ZeyQ",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372334281",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058403/job/128372334281",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-11-07T10:00:14Z",
+        "started_at": "2026-11-07T10:00:17Z",
+        "completed_at": "2026-11-07T10:00:29Z",
+        "name": "route",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-11-07T10:00:17Z",
+            "completed_at": "2026-11-07T10:00:18Z"
+          },
+          {
+            "name": "Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-11-07T10:00:18Z",
+            "completed_at": "2026-11-07T10:00:25Z"
+          },
+          {
+            "name": "Classify changed surfaces",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-11-07T10:00:25Z",
+            "completed_at": "2026-11-07T10:00:27Z"
+          },
+          {
+            "name": "Post Run actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-11-07T10:00:27Z",
+            "completed_at": "2026-11-07T10:00:27Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-11-07T10:00:27Z",
+            "completed_at": "2026-11-07T10:00:27Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372334281",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000744764,
+        "runner_name": "GitHub Actions 1000744764",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 128372391312,
+        "run_id": 42362058403,
+        "workflow_name": "Workflow Surface Policy",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058403",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45c9kA",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372391312",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058403/job/128372391312",
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-11-07T10:00:29Z",
+        "started_at": "2026-11-07T10:00:29Z",
+        "completed_at": null,
+        "name": "verify",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372391312",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      },
+      {
+        "id": 128372392527,
+        "run_id": 42362058403,
+        "workflow_name": "Workflow Surface Policy",
+        "head_branch": "reviewer-metrics/refresh",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/42362058403",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAd45dCTw",
+        "head_sha": "50f60d912bfb804ae59d571876eac43212f3704f",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/128372392527",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/42362058403/job/128372392527",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-11-07T10:00:29Z",
+        "started_at": "2026-11-07T10:00:29Z",
+        "completed_at": "2026-11-07T10:00:29Z",
+        "name": "automation-documentation",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/128372392527",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

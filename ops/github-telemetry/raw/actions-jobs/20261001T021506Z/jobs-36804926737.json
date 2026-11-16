@@ -1,0 +1,124 @@
+{
+  "collected_at": "2026-10-01T02:15:16.934298+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 36804926737,
+    "endpoint": ".../runs/36804926737/jobs"
+  },
+  "data": {
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 110187027357,
+        "run_id": 36804926737,
+        "workflow_name": "Agent review \u2192 auto Jules",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36804926737",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZp6ibnQ",
+        "head_sha": "8d8d0a0f929f1d626b604043ca8f5fe12516451d",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110187027357",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36804926737/job/110187027357",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-01T02:14:59Z",
+        "started_at": "2026-10-01T02:15:01Z",
+        "completed_at": "2026-10-01T02:15:06Z",
+        "name": "detect-bot-feedback",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-01T02:15:02Z",
+            "completed_at": "2026-10-01T02:15:03Z"
+          },
+          {
+            "name": "Resolve PR metadata + context_key",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          },
+          {
+            "name": "Restore work-context cache",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 3,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          },
+          {
+            "name": "Load prior context (viewable text OK)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 4,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          },
+          {
+            "name": "Post @jules resolve (idempotent + continue-only + disposition-first)",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 5,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          },
+          {
+            "name": "Save work-context cache",
+            "status": "completed",
+            "conclusion": "skipped",
+            "number": 6,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 7,
+            "started_at": "2026-10-01T02:15:04Z",
+            "completed_at": "2026-10-01T02:15:04Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110187027357",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000174139,
+        "runner_name": "GitHub Actions 1000174139",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      },
+      {
+        "id": 110187057531,
+        "run_id": 36804926737,
+        "workflow_name": "Agent review \u2192 auto Jules",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/36804926737",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAZp6kRew",
+        "head_sha": "8d8d0a0f929f1d626b604043ca8f5fe12516451d",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/110187057531",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36804926737/job/110187057531",
+        "status": "completed",
+        "conclusion": "skipped",
+        "created_at": "2026-10-01T02:15:06Z",
+        "started_at": "2026-10-01T02:15:06Z",
+        "completed_at": "2026-10-01T02:15:06Z",
+        "name": "invoke-jules-api",
+        "steps": [],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/110187057531",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": null,
+        "runner_name": null,
+        "runner_group_id": null,
+        "runner_group_name": null
+      }
+    ]
+  }
+}

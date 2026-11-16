@@ -1,0 +1,1060 @@
+{
+ "schema": "quota.allocation-verification/v1",
+ "generated_by": "quota-specialist batch-1 2026-10-31",
+ "rows": [
+  {
+   "provider": "openrouter",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "free-model allowance 50/day (free_model_daily_requests); key is_free_tier=true Roster hazard verified 2026-11-01: catalog 452 models, DeepSeek 18 all paid (:free = 0), deepseek-r1:free delisted, total :free variants = 14."
+   },
+   "credits": {
+    "available": "paid credits purchasable only",
+    "claimed": "n/a",
+    "balance": 0.0,
+    "source": "GET /api/v1/credits: total_credits 0, total_usage 0.206466965 (account level)"
+   },
+   "replenishment": {
+    "mechanism": "free allowance refills daily; paid balance refills by purchase",
+    "gate": "card purchase for paid layer"
+   },
+   "verdict": "layered",
+   "flags": [
+    "card-required",
+    "free-roster-rotation"
+   ]
+  },
+  {
+   "provider": "github",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "plan=free; PAT 5000/h core, App 5000/h/installation, GITHUB_TOKEN 1000/h/repo; Actions minutes free on public repos (doc)"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "user billing API 404 via PAT (scope)"
+   },
+   "replenishment": {
+    "mechanism": "hourly bucket refill; monthly minutes",
+    "gate": "none for free layer"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "neon",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "plan=free (API /users/me); 2 projects live"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no credit surface on read API"
+   },
+   "replenishment": {
+    "mechanism": "free-plan monthly allowances (doc)",
+    "gate": "billing (card) for paid tiers - not taken"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "jules",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - API (sessions/activities) exposes no quota object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no credits surface in API"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "felo",
+   "evidence": "owner-attested",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "yes (owner-attested exemplar)",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "owner statement 2026-10-31; API attempt edge-blocked (1010) in run 41263537880 - claim-state still unverified firsthand"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free-equivalent",
+   "flags": [
+    "route-blocked",
+    "verify-claim-state"
+   ]
+  },
+  {
+   "provider": "g4f",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "cloudflare",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "401 code 1000 at /user/tokens/verify; account-scoped token not excluded"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "token verify read, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "verify-scope"
+   ]
+  },
+  {
+   "provider": "render",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "supabase",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "management projects read OK (1 project); tier not in object - not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "Management API projects read, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "pinecone",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "2 indexes Ready; plan limits not exposed"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "GET /indexes 200, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "turso",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "upstash",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "aws",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "gcp",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "oracle",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "meta",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "vercel",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "plan not present in user object - not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "GET /v2/user 200, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "azure",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "digitalocean",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "huggingface",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "account free: isPro=false, no orgs (whoami-v2)"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "whoami-v2 account object, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "gemini",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "AI Studio free-quota class; API exposes no balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "ollama",
+   "evidence": "api-read",
+   "free_tier": {
+    "state": "active",
+    "limits": "public models surface 200; auth NOT proven by this endpoint"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880 (public surface)"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "grafana",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "partners",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "fly",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "org personal (PERSONAL) via GraphQL; plan limits not exposed"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "GraphQL viewer/organizations read, run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "koyeb",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "platform201",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "deno",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "netlify",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  },
+  {
+   "provider": "aion",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "404 no Route matched - route wrong, no key verdict"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "route-dead"
+   ]
+  },
+  {
+   "provider": "cerebras",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "cohere",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - surface exposes no quota/balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "groq",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "route edge-blocked (Cloudflare 1010 from Actions egress) - no key verdict"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "route-blocked"
+   ]
+  },
+  {
+   "provider": "kilo",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "llm7",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - surface exposes no quota/balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "mistral",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "modelscope",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "nvidia",
+   "evidence": "api-read",
+   "free_tier": {
+    "state": "active",
+    "limits": "public models surface 200; auth NOT proven by this endpoint"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880 (public surface)"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "omni",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "ovhcloud",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "requesty",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "routeway",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - surface exposes no quota/balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "sambanova",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - surface exposes no quota/balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "sealion",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "DNS does not resolve - phantom-route candidate"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "route-dead"
+   ]
+  },
+  {
+   "provider": "siliconflow",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "key live on canonical .com platform (models 200, runs 41264932179 + provisioning reads); balance not-established - .com /v1/user/info deprecated (410); .cn is a separate platform"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "chain: .cn 401 (platform mismatch, retracted) -> .com user/info 410 deprecated -> .com models 200 key-live"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "typhoon",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "unorouter",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "roster carries :free ids (AI-Horde class); balance not exposed"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "xfyun",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "no secret under any name (61-name census, gaps recon PR #2859) - provisioning lane"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "no-credential"
+   ]
+  },
+  {
+   "provider": "xkiro",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "route edge-blocked (Cloudflare 1010 from Actions egress) - no key verdict"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "probe run 41263537880"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": [
+    "route-blocked"
+   ]
+  },
+  {
+   "provider": "zai",
+   "evidence": "api-verified",
+   "free_tier": {
+    "state": "active",
+    "limits": "not-established - surface exposes no quota/balance object"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "key-gated models surface answered 200 in probe run 41263537880; limits/balance not exposed by this surface"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "free",
+   "flags": []
+  },
+  {
+   "provider": "fleet",
+   "evidence": "not-established",
+   "free_tier": {
+    "state": "not-established",
+    "limits": "not-established"
+   },
+   "credits": {
+    "available": "not-established",
+    "claimed": "not-established",
+    "balance": null,
+    "source": "route named in census doc"
+   },
+   "replenishment": {
+    "mechanism": "not-established",
+    "gate": "not-established"
+   },
+   "verdict": "not-established",
+   "flags": []
+  }
+ ]
+}

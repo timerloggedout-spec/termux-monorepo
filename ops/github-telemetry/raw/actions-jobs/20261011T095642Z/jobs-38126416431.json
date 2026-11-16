@@ -1,0 +1,105 @@
+{
+  "collected_at": "2026-10-11T09:56:49.401187+00:00",
+  "collector_version": "0.1.0",
+  "meta": {
+    "run_id": 38126416431,
+    "endpoint": ".../runs/38126416431/jobs"
+  },
+  "data": {
+    "total_count": 1,
+    "jobs": [
+      {
+        "id": 114431602144,
+        "run_id": 38126416431,
+        "workflow_name": "Production Reconciliation Engine",
+        "head_branch": "master",
+        "run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs/38126416431",
+        "run_attempt": 1,
+        "node_id": "CR_kwDOTnjXOs8AAAAapKet4A",
+        "head_sha": "56188dc1a3e1cc7239d9ec46cae51645740946ef",
+        "url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/jobs/114431602144",
+        "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/38126416431/job/114431602144",
+        "status": "completed",
+        "conclusion": "success",
+        "created_at": "2026-10-11T08:53:38Z",
+        "started_at": "2026-10-11T08:53:40Z",
+        "completed_at": "2026-10-11T08:53:51Z",
+        "name": "Resolve refs and classify drift",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1,
+            "started_at": "2026-10-11T08:53:41Z",
+            "completed_at": "2026-10-11T08:53:41Z"
+          },
+          {
+            "name": "Checkout control-plane only",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2,
+            "started_at": "2026-10-11T08:53:41Z",
+            "completed_at": "2026-10-11T08:53:48Z"
+          },
+          {
+            "name": "Resolve immutable refs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3,
+            "started_at": "2026-10-11T08:53:48Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          },
+          {
+            "name": "Classify reconciliation state",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4,
+            "started_at": "2026-10-11T08:53:49Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          },
+          {
+            "name": "Record changed-path manifest",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5,
+            "started_at": "2026-10-11T08:53:49Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          },
+          {
+            "name": "Refuse mutation and candidate execution",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6,
+            "started_at": "2026-10-11T08:53:49Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          },
+          {
+            "name": "Post Checkout control-plane only",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12,
+            "started_at": "2026-10-11T08:53:49Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13,
+            "started_at": "2026-10-11T08:53:49Z",
+            "completed_at": "2026-10-11T08:53:49Z"
+          }
+        ],
+        "check_run_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/check-runs/114431602144",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "runner_id": 1000232468,
+        "runner_name": "GitHub Actions 1000232468",
+        "runner_group_id": 0,
+        "runner_group_name": "GitHub Actions"
+      }
+    ]
+  }
+}

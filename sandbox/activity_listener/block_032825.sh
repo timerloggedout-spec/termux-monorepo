@@ -1,0 +1,1 @@
+python3 ~/archwiz/archaeo_sweep.py --max 5

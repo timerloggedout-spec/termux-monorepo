@@ -1,0 +1,50 @@
+{
+ "schema": "oracle-method-pass/v1",
+ "pass_id": "temporal-durable-execution",
+ "status": "recorded",
+ "kind": "rfp",
+ "surface": "delphi-oracle-method",
+ "n": 5,
+ "candidates": [
+  "temporal-durable-execution-pi-core-resume",
+  "temporal-durable-execution-cookbook-agent-loop",
+  "temporal-durable-execution-versioned-autoscale",
+  "temporal-durable-execution-contract-first",
+  "temporal-durable-execution-serverless-skill"
+ ],
+ "registry_entries": [
+  46,
+  47,
+  48,
+  49,
+  50
+ ],
+ "brief": "brief.json (frozen G0 intake, verbatim)",
+ "generation_brief": "pass-brief.json (generator-form adaptation; frozen parameters verbatim)",
+ "expectations_source": "BRIEF:temporal-recon-lane \u2014 docs/rfps/temporal-durable-execution/INTAKE.md",
+ "ranked_outcome_round_2": [
+  "temporal-durable-execution-contract-first",
+  "temporal-durable-execution-cookbook-agent-loop",
+  "temporal-durable-execution-pi-core-resume",
+  "temporal-durable-execution-serverless-skill",
+  "temporal-durable-execution-versioned-autoscale"
+ ],
+ "round_2_scores_tied": true,
+ "round_2_note": "four-way tie at 25.0 (pi-core-resume, cookbook-agent-loop, contract-first, serverless-skill); versioned-autoscale separated at 11.615; ranked_outcome order among the tied four is the tie-break",
+ "moneyball_weighted": {
+  "temporal-durable-execution-pi-core-resume": 8.9,
+  "temporal-durable-execution-cookbook-agent-loop": 8.5,
+  "temporal-durable-execution-contract-first": 6.5,
+  "temporal-durable-execution-serverless-skill": 4.8,
+  "temporal-durable-execution-versioned-autoscale": 3.6
+ },
+ "g6_disposition": {
+  "temporal-durable-execution-pi-core-resume": "adopt",
+  "temporal-durable-execution-cookbook-agent-loop": "pilot",
+  "temporal-durable-execution-contract-first": "adopt (contract discipline)",
+  "temporal-durable-execution-serverless-skill": "reference-only",
+  "temporal-durable-execution-versioned-autoscale": "reference-only"
+ },
+ "ledger_appends": "#1487 ballot + calibration; #1489 calibration (TD-005)",
+ "tracking_issue": 1885
+}

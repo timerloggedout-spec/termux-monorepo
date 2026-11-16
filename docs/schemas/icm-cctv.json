@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ICM-CCTV projection",
+  "type": "object",
+  "required": [
+    "master_sha",
+    "issue",
+    "lanes"
+  ],
+  "properties": {
+    "master_sha": {
+      "type": "string",
+      "minLength": 7
+    },
+    "issue": {
+      "const": 175
+    },
+    "lanes": {
+      "type": "object"
+    },
+    "operator": {
+      "const": "ACTIVE"
+    }
+  }
+}

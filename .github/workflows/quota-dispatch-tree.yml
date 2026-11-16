@@ -1,0 +1,632 @@
+name: Quota Dispatch Tree
+
+# Tier 0 adaptive admission (issue #1573): cheap read-only decision tree.
+# PR lifecycle, selected lane-events recorder completions, and source-record pushes wake it on demand.
+# The 30-minute schedule is a cadence clock only; repository/lane events wake
+# demand work immediately. Human force-all is an authenticated Issue comment,
+# never a generic Actions manual-dispatch input. The Lane Matrix has its own PR events.
+# Lanes keep their own authorities, guards, and concurrency groups.
+# material_change_rules: this file owns cadence for the migrated lanes.
+
+on:
+  # Time cadence is a backstop for lanes whose due time has no external event.
+  # State-changing events wake the same admission tree immediately.
+  schedule:
+    - cron: '*/30 * * * *'
+  # #5219 RE-FIX: trigger trims. `edited`/`converted_to_draft`/
+  # `ready_for_review` created runs the decide job cannot use
+  # differently (no queue-state change); `push` is covered by the
+  # workflow_run cascade + the */30 schedule backstop. issue_comment
+  # stays: the decide job acts only on `/quota force all`, but that
+  # operator command has no other intake (measured 17% of recent
+  # runs; accepted, not hidden).
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
+  workflow_run:
+    workflows: ["lane events recorder"]
+    types: [completed]
+  issue_comment:
+    types: [created]
+permissions: {}
+
+  # #5219 RE-FIX: the old group was per-event (comment id / PR / run
+  # id) -- effectively no coalescing at all. One group + cancel: the
+  # tree is an idempotent re-evaluation, so a stale evaluation is
+  # cancelled, not run to completion (the */30 schedule re-evaluates).
+concurrency:
+  group: quota-dispatch-tree
+  cancel-in-progress: true
+
+jobs:
+  decide:
+    if: >-
+      (
+        github.event_name != 'issue_comment' &&
+        (
+          github.event_name != 'pull_request_target' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        )
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request == null &&
+        github.event.issue.state == 'open' &&
+        github.event.sender.type == 'User' &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
+        github.event.comment.body == '/quota force all'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+      issues: read
+    outputs:
+      dispatch_stall_watch: ${{ steps.tree.outputs.dispatch_stall_watch }}
+      dispatch_bridge: ${{ steps.tree.outputs.dispatch_bridge }}
+      dispatch_probe: ${{ steps.tree.outputs.dispatch_probe }}
+      dispatch_eval: ${{ steps.tree.outputs.dispatch_eval }}
+      dispatch_recon: ${{ steps.tree.outputs.dispatch_recon }}
+      dispatch_hw_refresh: ${{ steps.tree.outputs.dispatch_hw_refresh }}
+      dispatch_hw_pair: ${{ steps.tree.outputs.dispatch_hw_pair }}
+      dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
+      dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
+      dispatch_hourly: ${{ steps.tree.outputs.dispatch_hourly }}
+      dispatch_repochange: ${{ steps.tree.outputs.dispatch_repochange }}
+      dispatch_q3: ${{ steps.tree.outputs.dispatch_q3 }}
+      dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
+      dispatch_q6: ${{ steps.tree.outputs.dispatch_q6 }}
+      dispatch_vantage: ${{ steps.tree.outputs.dispatch_vantage }}
+      force_request_id: ${{ steps.tree.outputs.force_request_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decision tree — one cheap call per concern
+        id: tree
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        with:
+          script: |
+            // A force-all request is an explicit, authenticated Issue comment.
+            // It is content-addressed by the immutable comment ID; completion
+            // writes a receipt marker so duplicate webhook deliveries are no-ops.
+            let force = false;
+            let forceRequestId = '';
+            if (context.eventName === 'issue_comment') {
+              const issue = context.payload.issue || {};
+              const comment = context.payload.comment || {};
+              const association = comment.author_association;
+              const authorized = !issue.pull_request && issue.state === 'open' &&
+                context.payload.sender?.type === 'User' &&
+                ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(association) &&
+                comment.body === '/quota force all';
+              if (authorized && comment.id) {
+                forceRequestId = String(comment.id);
+                const marker = `<!-- quota-dispatch-force:${issue.number}:${forceRequestId} -->`;
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number, per_page: 100,
+                });
+                force = !comments.some(c => (c.body || '').includes(marker));
+                if (!force) {
+                  forceRequestId = '';
+                  core.info(`Issue #${issue.number} force request ${comment.id} already completed`);
+                }
+              }
+            }
+            core.setOutput('force_request_id', forceRequestId);
+            if (context.eventName === 'issue_comment' && !force) {
+              // A duplicate receipt is a strict no-op, not a chance to replay
+              // unrelated stale work from an Issue-comment wake.
+              for (const name of [
+                'dispatch_stall_watch', 'dispatch_bridge', 'dispatch_probe',
+                'dispatch_eval', 'dispatch_recon', 'dispatch_hw_refresh',
+                'dispatch_hw_pair', 'dispatch_hw_execute', 'dispatch_hw_assist',
+                'dispatch_hourly', 'dispatch_repochange', 'dispatch_q3',
+                'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
+              ]) core.setOutput(name, 'false');
+              core.info('Duplicate force request: no dispatch fan-out');
+              require('fs').writeFileSync('dispatch-admission.json', JSON.stringify({
+                generated_at: new Date().toISOString(),
+                duplicate_force_request: true,
+                issue: context.payload.issue.number,
+                comment_id: context.payload.comment.id,
+                dispatched: false
+              }, null, 2));
+              core.summary
+                .addHeading('Duplicate force request')
+                .addText('The authenticated request already has a completion receipt; no lane was dispatched.')
+                .write();
+              return;
+            }
+            // Node A (reworked, issue #3812 step 4): lane-aware admission.
+            // Active runs are listed (per_page 100, up to 2 pages per
+            // status) and bucketed per workflow file by the admission
+            // module, so one lane's backlog no longer stalls every lane.
+            // `busy` keeps its repo-wide meaning for the stall-watch.
+            // A failed pressure read fails closed (pressure = null):
+            // gated lanes defer this cycle instead of dispatching blind.
+            const admissionMod = require(require('path').join(process.env.GITHUB_WORKSPACE, 'scripts/ci/dispatch_admission.js'));
+            let busy = 0;
+            let pressure = null;
+            try {
+              const wfList = await github.rest.actions.listWorkflows({
+                owner: context.repo.owner, repo: context.repo.repo, per_page: 100
+              });
+              const idToFile = new Map((wfList.data.workflows || []).map((w) => [w.id, w.path]));
+              const activeRuns = [];
+              for (const status of ['queued', 'in_progress']) {
+                let fetched = 0;
+                for (let page = 1; page <= 2; page++) {
+                  const resp = await github.rest.actions.listWorkflowRunsForRepo({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    status, per_page: 100, page
+                  });
+                  if (page === 1) busy += resp.data.total_count;
+                  const batch = resp.data.workflow_runs || [];
+                  activeRuns.push(...batch);
+                  fetched += batch.length;
+                  if (fetched >= resp.data.total_count || batch.length < 100) break;
+                }
+              }
+              pressure = admissionMod.bucketRuns(activeRuns, idToFile);
+            } catch (e) {
+              core.warning(`admission pressure read failed; gated lanes defer this cycle: ${e.message}`);
+              pressure = null;
+            }
+            // Node B: bridge manifest freshness? (1 call)
+            let bridgeStaleMin = 1e9;
+            try {
+              const bridge = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/current.json'
+              });
+              const parsed = JSON.parse(Buffer.from(bridge.data.content, 'base64').toString());
+              const stamp = parsed.observed_at || parsed.published_at || parsed.updated_at || parsed.ts;
+              if (stamp) bridgeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node C: Tailscale probe has its own manifest; run the probe when
+            // tailscale.json (not current.json) is stale, so probe cadence is
+            // independent of bridge freshness. (1 call)
+            let probeStaleMin = 1e9;
+            try {
+              const probe = await github.rest.repos.getContent({
+                owner: context.repo.owner, repo: context.repo.repo,
+                path: 'ops/termux-bridge/tailscale.json'
+              });
+              const parsed = JSON.parse(Buffer.from(probe.data.content, 'base64').toString());
+              const stamp = parsed.observed_at || parsed.generated_at || parsed.updated_at || parsed.ts;
+              if (stamp) probeStaleMin = (Date.now() - new Date(stamp).getTime()) / 60000;
+            } catch (_) { /* missing manifest = stale */ }
+            // Node D: cycle phase throttles sub-15-min lanes to 30 min (no API call)
+            const slow = context.eventName === 'schedule' && (new Date().getUTCMinutes() % 30) < 10;
+            // Node E: repo activity since the persisted evaluation watermark, so
+            // each change wakes continuous-evaluation / team-mvt exactly once.
+            // (1 variable read + 1 commit list call)
+            let watermark = new Date(Date.now() - 3 * 3600 * 1000).toISOString();
+            try {
+              const v = await github.rest.actions.getRepoVariable({
+                owner: context.repo.owner, repo: context.repo.repo,
+                name: 'QUOTA_EVAL_WATERMARK'
+              });
+              if (v.data.value) watermark = v.data.value;
+            } catch (_) { /* variable missing: fall back to 3h window */ }
+            let repoChanged = false;
+            try {
+              const pushes = await github.rest.repos.listCommits({
+                owner: context.repo.owner, repo: context.repo.repo,
+                per_page: 1, since: watermark
+              });
+              repoChanged = pushes.data.length > 0;
+            } catch (_) {}
+            // Node F0: hw-refresh staleness (1 call). GitHub delivers this
+            // tree's */30 cadence wake at jittered minutes (two slots/hour),
+            // so the firstCycle phase window below is a cadence preference,
+            // never a guarantee: on 2026-10-25..27 every delivered run
+            // landed at minute >= 11 and the refresh lane starved for 2+
+            // days while all runs concluded success (gap G-02). Measure
+            // the lane's real age and fire on staleness so a missed phase
+            // window self-heals on the next tree run regardless of phase.
+            const laneAgeMin = async (workflowId) => {
+              try {
+                const r = await github.rest.actions.listWorkflowRuns({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  workflow_id: workflowId, per_page: 1
+                });
+                const latest = r.data.workflow_runs[0];
+                return latest ? (Date.now() - new Date(latest.created_at).getTime()) / 60000 : 1e9;
+              } catch (_) { return 1e9; /* unreadable run history = treat as stale */ }
+            };
+            const hwRefreshStaleMin = await laneAgeMin('tribute-status-refresh.yml');
+            // Node F1: sibling-lane staleness (4 calls) — G-02 follow-up.
+            // hw-pair / hw-execute / hw-assist carried the same phase
+            // defect in a rarer form (firstCycle AND an hour-mod
+            // conjunction) and have been silent since 2026-10-23.
+            // Thresholds are each lane's intended cadence + slack
+            // (pair 2h -> 150m, execute 4h -> 300m, assist 6h -> 450m);
+            // unlike the read-only refresh, these lanes spend, so
+            // their staleness branch keeps the Node A admission guard.
+            const hwPairStaleMin = Math.max(
+              await laneAgeMin('tribute-followup.yml'),
+              await laneAgeMin('tribute-scout.yml')
+            );
+            const hwExecuteStaleMin = await laneAgeMin('tribute-execute.yml');
+            const hwAssistStaleMin = await laneAgeMin('tribute-llm-assist.yml');
+            // Node F: help-wanted lane cadences (no extra calls)
+            const hour = new Date().getUTCHours();
+            // The phase window belongs to the scheduled cadence only. Event
+            // wakes evaluate demand/staleness but never replay hourly/3h/4h slots.
+            const firstCycle = context.eventName === 'schedule' && new Date().getUTCMinutes() < 10;
+            const eventDemand = ['pull_request_target', 'workflow_run', 'push'].includes(context.eventName);
+            // Raw verdicts. Node A admission is applied after Node G1,
+            // when every staleness signal exists. stall-watch and
+            // hw-refresh stay admission-exempt, exactly as they were
+            // exempt from the old repo-wide admission guard.
+            const verdicts = {};
+            verdicts.dispatch_stall_watch = (busy > 0 || force);
+            verdicts.dispatch_bridge = ((bridgeStaleMin > 30) || force);
+            verdicts.dispatch_probe = (((probeStaleMin > 45 || bridgeStaleMin > 45) && (slow || eventDemand)) || force);
+            verdicts.dispatch_eval = ((repoChanged && (slow || eventDemand)) || force);
+            verdicts.dispatch_recon = (slow || force);
+            verdicts.dispatch_hw_refresh = (firstCycle || hwRefreshStaleMin > 75 || force);
+            verdicts.dispatch_hw_pair = (((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150) || force);
+            verdicts.dispatch_hw_execute = (((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300) || force);
+            verdicts.dispatch_hw_assist = (((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450) || force);
+            // Node G: Tier 3 tranche (issue #1573). Hourly lanes reuse Node F's
+            // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
+            // check. Zero additional API calls.
+            verdicts.dispatch_hourly = (firstCycle || force);
+            verdicts.dispatch_repochange = ((repoChanged && (slow || eventDemand)) || force);
+            // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
+            // Same firstCycle arithmetic as Node F, different modulus offsets.
+            verdicts.dispatch_q3 = (((firstCycle && hour % 3 === 1)) || force);
+            verdicts.dispatch_q4 = (((firstCycle && hour % 4 === 1)) || force);
+            // Node G1: provider-availability staleness (1 call). The q6
+            // tranche rides the same firstCycle phase window that starved
+            // hw-refresh (gap G-02): availability last ran 2026-10-23 while
+            // every tree run concluded success (gap G-03, found by the
+            // 2026-10-27 enumeration audit). Fire the tranche on the lane's
+            // real age so a missed phase window self-heals on the next
+            // delivered tree run. The threshold is NOT a constant: it is
+            // re-derived every run from the lane's own delivered cadence —
+            // 1.5x the median gap between its 5 most recent runs, clamped
+            // to [120, 720] minutes so a starved lane still self-heals
+            // within 12h and a healthy lane is not double-fired. With too
+            // little history it falls back to the designed 6h cadence.
+            let paStaleMin = 1e9;
+            let paThresholdMin = 360;
+            try {
+              const lastPa = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id: 'provider-availability.yml', per_page: 5
+              });
+              const paRuns = lastPa.data.workflow_runs || [];
+              if (paRuns.length) paStaleMin = (Date.now() - new Date(paRuns[0].created_at).getTime()) / 60000;
+              const gaps = [];
+              for (let i = 0; i + 1 < paRuns.length; i++) {
+                gaps.push((new Date(paRuns[i].created_at).getTime() - new Date(paRuns[i + 1].created_at).getTime()) / 60000);
+              }
+              if (gaps.length >= 2) {
+                gaps.sort((a, b) => a - b);
+                const med = gaps[Math.floor(gaps.length / 2)];
+                paThresholdMin = Math.min(720, Math.max(120, Math.round(1.5 * med)));
+              }
+              core.info(`provider-availability age=${Math.round(paStaleMin)}m threshold=${paThresholdMin}m (median of ${gaps.length} gaps)`);
+            } catch (_) { /* unreadable run history = treat as stale */ }
+            verdicts.dispatch_q6 = ((((firstCycle && hour % 6 === 1) || paStaleMin > paThresholdMin)) || force);
+            // Node H: Vantage cost telemetry (ledger #184; RFP #1576 telemetry plane).
+            // Slow lane: twice daily at the firstCycle of hour % 12 == 1.
+            verdicts.dispatch_vantage = (((firstCycle && hour % 12 === 1)) || force);
+            // Admission (issue #3812 step 4): a gated verdict fires only
+            // when the admission module admits it. Every gated output
+            // produces a record {lane, reason, lane_inflight,
+            // global_inflight} for the summary and the
+            // dispatch-admission.json artifact.
+            const admissionResult = admissionMod.evaluateAdmission({
+              pressure, force,
+              staleness: {
+                dispatch_hw_pair: { stale_min: hwPairStaleMin, threshold_min: 150 },
+                dispatch_hw_execute: { stale_min: hwExecuteStaleMin, threshold_min: 300 },
+                dispatch_hw_assist: { stale_min: hwAssistStaleMin, threshold_min: 450 },
+                dispatch_q6: { stale_min: paStaleMin, threshold_min: paThresholdMin }
+              }
+            });
+            const ADMISSION_EXEMPT = new Set(['dispatch_stall_watch', 'dispatch_hw_refresh']);
+            const finals = {};
+            for (const [name, raw] of Object.entries(verdicts)) {
+              const ok = raw && (ADMISSION_EXEMPT.has(name) || admissionResult.admitted[name]);
+              finals[name] = !!ok;
+              core.setOutput(name, ok ? 'true' : 'false');
+            }
+            try {
+              require('fs').writeFileSync('dispatch-admission.json', JSON.stringify({
+                generated_at: new Date().toISOString(),
+                global_inflight: admissionResult.global_inflight,
+                global_cap: admissionResult.global_cap,
+                records: admissionResult.records
+              }, null, 2));
+            } catch (_) { /* the artifact is evidence, never a gate */ }
+            core.summary
+              .addHeading('Decision tree verdicts')
+              .addTable([
+                ['Node', 'Condition', 'Fired'],
+                ['A stall-watch', 'queued + in-progress runs > 0', String(busy > 0)],
+                ['— admission', `managed in-flight ${admissionResult.global_inflight} / cap ${admissionResult.global_cap}`, String(admissionResult.records.every((r) => r.admitted))],
+                ['B bridge', `manifest stale ${Math.round(bridgeStaleMin)}m`, String(bridgeStaleMin > 30)],
+                ['C probe', `probe manifest stale ${Math.round(probeStaleMin)}m && slow-cycle`, String(probeStaleMin > 45 && slow)],
+                ['E eval', 'commits since watermark && slow-cycle', String(repoChanged && slow)],
+                ['E watermark', watermark, repoChanged ? 'advance' : 'hold'],
+                ['E recon', 'slow-cycle', String(slow)],
+                ['F hw-refresh', 'hourly cycle || refresh stale > 75m', String(firstCycle || hwRefreshStaleMin > 75)],
+                ['F hw-pair', 'odd hours || stale > 150m', String((firstCycle && hour % 2 === 1) || hwPairStaleMin > 150)],
+                ['F hw-execute', 'hour % 4 == 3 || stale > 300m', String((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300)],
+                ['F hw-assist', 'hour % 6 == 5 || stale > 450m', String((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450)],
+                ['G tier3-hourly', 'hourly cycle && admission', String(finals.dispatch_hourly)],
+                ['G tier3-repochange', 'commits since watermark && slow-cycle', String(finals.dispatch_repochange)],
+                ['G q3', 'firstCycle && hour % 3 == 1', String(finals.dispatch_q3)],
+                ['G q4', 'firstCycle && hour % 4 == 1', String(finals.dispatch_q4)],
+                ['G q6', 'firstCycle && hour % 6 == 1', String(finals.dispatch_q6)],
+                ['H vantage', 'firstCycle && hour % 12 == 1', String(finals.dispatch_vantage)],
+              ])
+              .write();
+            core.summary
+              .addHeading('Lane admission (issue #3812)')
+              .addTable([
+                ['Lane', 'Admitted', 'Reason', 'Lane in-flight', 'Global in-flight'],
+                ...admissionResult.records.map((r) => [r.lane, String(r.admitted), r.reason, String(r.lane_inflight), String(r.global_inflight)])
+              ])
+              .write();
+
+      - name: Persist verdicts to Supabase lane-state (optional)
+        # Fires when SUPABASE_URL and SUPABASE_ANON_KEY repo variables exist.
+        # The anon key is public-by-design (Supabase browser credential);
+        # writes are gated by RLS: anon INSERT on dispatch_verdicts only,
+        # with lane allowlist and rate-limit guards (registry section 4).
+        # Project: termux-monorepo-lane-state, table dispatch_verdicts.
+        if: env.SUPABASE_URL != '' && env.SUPABASE_ANON_KEY != '' && (github.event_name != 'issue_comment' || steps.tree.outputs.force_request_id != '')
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+          V_STALL: ${{ steps.tree.outputs.dispatch_stall_watch }}
+          V_BRIDGE: ${{ steps.tree.outputs.dispatch_bridge }}
+          V_PROBE: ${{ steps.tree.outputs.dispatch_probe }}
+          V_EVAL: ${{ steps.tree.outputs.dispatch_eval }}
+          V_RECON: ${{ steps.tree.outputs.dispatch_recon }}
+          V_HOURLY: ${{ steps.tree.outputs.dispatch_hourly }}
+          V_REPOCHANGE: ${{ steps.tree.outputs.dispatch_repochange }}
+          V_VANTAGE: ${{ steps.tree.outputs.dispatch_vantage }}
+        run: |
+          set -euo pipefail
+          rows='[]'
+          add() {
+            rows=$(printf '%s' "$rows" | jq --arg lane "$1" --arg node "$2" --arg fired "$3" \
+              '. += [{lane:$lane,node:$node,fired:($fired=="true")}]')
+          }
+          add agent-runtime-stall-watch A "$V_STALL"
+          add bridge-lanes B "$V_BRIDGE"
+          add tailscale-bridge-probe C "$V_PROBE"
+          add eval-lanes E "$V_EVAL"
+          add recon-intel-discovery E "$V_RECON"
+          add tier3-hourly G "$V_HOURLY"
+          add tier3-repochange G "$V_REPOCHANGE"
+          add vantage-cost-report H "$V_VANTAGE"
+          curl -fsS -X POST "$SUPABASE_URL/rest/v1/dispatch_verdicts" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "$(jq -n --argjson rows "$rows" '$rows')"
+
+      - name: Upload dispatch admission report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dispatch-admission
+          path: dispatch-admission.json
+          if-no-files-found: ignore
+
+  dispatch:
+    needs: decide
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - lane: agent-runtime-stall-watch
+            run: ${{ needs.decide.outputs.dispatch_stall_watch }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tunnel-canary
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: deepcli-agent-bridge
+            run: ${{ needs.decide.outputs.dispatch_bridge }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tailscale-bridge-probe
+            run: ${{ needs.decide.outputs.dispatch_probe }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: continuous-evaluation
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
+          - lane: team-mvt
+            run: ${{ needs.decide.outputs.dispatch_eval }}
+            sweep: 'false'
+            advance_watermark: 'true'
+          - lane: recon-intel-discovery
+            run: ${{ needs.decide.outputs.dispatch_recon }}
+            inputs_json: '{"sweep":true}'
+            advance_watermark: 'false'
+          - lane: tribute-status-refresh
+            run: ${{ needs.decide.outputs.dispatch_hw_refresh }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tribute-followup
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tribute-scout
+            run: ${{ needs.decide.outputs.dispatch_hw_pair }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tribute-execute
+            run: ${{ needs.decide.outputs.dispatch_hw_execute }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: tribute-llm-assist
+            run: ${{ needs.decide.outputs.dispatch_hw_assist }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: merge-promotion-queue-v3
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: agent-continuous-ops
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: cellcog-engineering-health
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: issue-observatory
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: reconciliation-engine
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: historical-evaluation-correlation
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: vercel-batch-deploy
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: automation-docs-continuous-refresh
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: context-relationship-audit
+            run: ${{ needs.decide.outputs.dispatch_repochange }}
+            sweep: 'false'
+            advance_watermark: 'false'
+          - lane: context-relationship-backfill
+            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: tribute-system1
+            run: ${{ needs.decide.outputs.dispatch_q3 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: cadence-lead-lag
+            run: ${{ needs.decide.outputs.dispatch_q4 }}
+            inputs_json: '{"per_page":50}'
+            advance_watermark: 'false'
+          - lane: self-integrate
+            run: ${{ needs.decide.outputs.dispatch_q4 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: ci-sweep
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: hygiene-sweep
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: provider-availability
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: actions-queue-reaper
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: ''
+            advance_watermark: 'false'
+          - lane: gitlab-governed-reconciliation
+            run: ${{ needs.decide.outputs.dispatch_q6 }}
+            inputs_json: '{"gitlab_ref":"master"}'
+            advance_watermark: 'false'
+          - lane: vantage-cost-report
+            run: ${{ needs.decide.outputs.dispatch_vantage }}
+            inputs_json: ''
+            advance_watermark: 'false'
+    steps:
+      - name: Wake lane
+        # Gated at step level (not job level) so the matrix context is available.
+        if: matrix.run == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          LANE_INPUTS: ${{ matrix.inputs_json }}
+          ADVANCE_WATERMARK: ${{ matrix.advance_watermark }}
+        with:
+          script: |
+            let inputs = {};
+            try { inputs = JSON.parse(process.env.LANE_INPUTS || '{}'); } catch (_) { inputs = {}; }
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner, repo: context.repo.repo,
+              workflow_id: '${{ matrix.lane }}.yml', ref: 'master', inputs
+            });
+            // Advance the evaluation watermark only after an evaluation lane was
+            // actually woken, so each repo change wakes the lanes exactly once.
+            if (process.env.ADVANCE_WATERMARK === 'true') {
+              const now = new Date().toISOString();
+              try {
+                await github.rest.actions.updateRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              } catch (_) {
+                await github.rest.actions.createRepoVariable({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  name: 'QUOTA_EVAL_WATERMARK', value: now
+                });
+              }
+            }
+
+  complete-force-request:
+    needs: [decide, dispatch]
+    if: >-
+      needs.dispatch.result == 'success' &&
+      needs.decide.outputs.force_request_id != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Record authenticated force-execution receipt
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        env:
+          FORCE_REQUEST_ID: ${{ needs.decide.outputs.force_request_id }}
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const requestId = process.env.FORCE_REQUEST_ID;
+            const marker = `<!-- quota-dispatch-force:${issueNumber}:${requestId} -->`;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber, per_page: 100,
+            });
+            if (comments.some(c => (c.body || '').includes(marker))) {
+              core.info('Force-execution receipt already recorded');
+              return;
+            }
+            const actor = context.payload.comment.user?.login || 'authenticated collaborator';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: [
+                marker,
+                'Automated force-execution fan-out completed successfully.',
+                `Authenticated request: @${actor} · comment ${requestId}`,
+                `Dispatcher evidence: ${runUrl}`,
+                'This receipt records dispatch completion; it does not authorize merge or bypass lane-specific gates.'
+              ].join('\n')
+            });

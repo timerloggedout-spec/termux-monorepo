@@ -222,6 +222,9 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
 
     def load_json(name: str) -> dict | None:
         path = template_dir / name
+        if path.is_symlink():
+            errors.append(f"{name}: symlinked policy/config files are not allowed")
+            return None
         try:
             value = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(value, dict):
@@ -336,6 +339,9 @@ def validate_tree(
             errors.append(f"integration.json: unsafe required_files path {name!r}")
             continue
         path = template_dir / name
+        if path.is_symlink():
+            errors.append(f"{path.relative_to(root)}: symlinked template files are not allowed")
+            continue
         if not path.is_file() or not path.read_text(encoding="utf-8").strip():
             errors.append(f"{path.relative_to(root)}: missing or empty required file")
 
@@ -354,8 +360,8 @@ def validate_all(root: Path = ROOT) -> list[str]:
     gitmodules_path = root / ".gitmodules"
     if not runtime_root.is_dir():
         return ["refTemplates/01_Agent_Runtime: missing runtime template root"]
-    if not index_path.is_file():
-        return ["refTemplates/smods/INTEGRATIONS.json: missing canonical smods index"]
+    if index_path.is_symlink() or not index_path.is_file():
+        return ["refTemplates/smods/INTEGRATIONS.json: missing canonical or regular-file sMods index"]
     try:
         smods_index = json.loads(index_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -367,8 +373,11 @@ def validate_all(root: Path = ROOT) -> list[str]:
     if not isinstance(smods_index.get("entries"), list):
         return ["refTemplates/smods/INTEGRATIONS.json: entries must be a list"]
 
-    module_urls = parse_gitmodules(gitmodules_path)
-    gitlinks = parse_gitlinks(root)
+    try:
+        module_urls = parse_gitmodules(gitmodules_path)
+        gitlinks = parse_gitlinks(root)
+    except (configparser.Error, OSError, subprocess.CalledProcessError) as exc:
+        return [f"unable to inspect .gitmodules/gitlinks: {exc}"]
     template_dirs = [
         path for path in sorted(runtime_root.iterdir())
         if path.is_dir() and any((path / name).exists() for name in ("README.md", "SOURCE.txt", "integration.json"))
@@ -394,14 +403,20 @@ def validate_all(root: Path = ROOT) -> list[str]:
         if not isinstance(manifest, dict):
             continue
         for candidate in manifest.get("smods_candidates", []):
-            if isinstance(candidate, dict):
-                candidate_keys.add((candidate.get("id"), candidate.get("path"), candidate.get("status")))
+            if not isinstance(candidate, dict):
+                continue
+            values = (candidate.get("id"), candidate.get("path"), candidate.get("status"))
+            if all(isinstance(value, str) and value for value in values):
+                candidate_keys.add(values)
 
     index_entries = smods_index.get("entries", [])
-    index_keys = {
-        (entry.get("id"), entry.get("path"), entry.get("status"))
-        for entry in index_entries if isinstance(entry, dict)
-    }
+    index_keys: set[tuple] = set()
+    for entry in index_entries:
+        if not isinstance(entry, dict):
+            continue
+        values = (entry.get("id"), entry.get("path"), entry.get("status"))
+        if all(isinstance(value, str) and value for value in values):
+            index_keys.add(values)
     if candidate_keys != index_keys:
         errors.append("smods/INTEGRATIONS.json: global entries must exactly equal the union of all runtime-template smods_candidates")
     for entry in index_entries:

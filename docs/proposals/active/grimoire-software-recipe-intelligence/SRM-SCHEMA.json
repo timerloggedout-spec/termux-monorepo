@@ -1,147 +1,603 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/grimoire.srm.v1.schema.json",
-  "title": "GRIMOIRE Software Recipe Model v1",
-  "description": "A versioned, provenance-aware description of a software capability and its ingredients, procedure, execution context, outputs, evaluation, and lineage.",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/schemas/mosaic-brain.recipe-model.v1.schema.json",
+  "title": "MOSAIC Brain Software Recipe Model v1",
+  "description": "Domain schema for describing software capabilities as versioned, provenance-aware recipes owned by MOSAIC Brain; not a separate product or execution authority.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "recipe_id", "revision", "kind", "title", "intent", "ingredients", "procedure", "outputs", "evaluation", "provenance"],
+  "required": [
+    "schema_version",
+    "recipe_id",
+    "revision",
+    "kind",
+    "title",
+    "intent",
+    "ingredients",
+    "procedure",
+    "outputs",
+    "evaluation",
+    "provenance"
+  ],
   "properties": {
-    "schema_version": {"const": "grimoire.srm.v1"},
-    "recipe_id": {"type": "string", "pattern": "^grimoire://recipe/[a-z0-9][a-z0-9._/-]*$"},
-    "revision": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
-    "kind": {"enum": ["capability", "build", "test", "deploy", "analysis", "data-transform", "orchestration", "agent", "research", "policy", "observability", "recovery", "composite"]},
-    "title": {"type": "string", "minLength": 1, "maxLength": 200},
-    "summary": {"type": ["string", "null"]},
-    "intent": {"type": "string", "minLength": 1},
-    "owner": {"type": ["string", "null"]},
-    "status": {"enum": ["draft", "candidate", "validated", "active", "deprecated", "superseded", "quarantined", "unknown"]},
-    "aliases": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "labels": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "ingredients": {"type": "array", "items": {"$ref": "#/$defs/ingredient"}},
-    "preparation": {"type": "array", "items": {"$ref": "#/$defs/operation"}, "default": []},
-    "procedure": {"type": "array", "items": {"$ref": "#/$defs/operation"}},
-    "environment": {"$ref": "#/$defs/environment"},
-    "outputs": {"type": "array", "items": {"$ref": "#/$defs/output"}},
-    "evaluation": {"$ref": "#/$defs/evaluation"},
-    "provenance": {"$ref": "#/$defs/provenance"},
-    "lineage": {"$ref": "#/$defs/lineage"},
-    "extensions": {"type": "object", "description": "Namespaced extension properties; extension keys must be owned by a registered namespace."}
+    "schema_version": {
+      "const": "mosaic_brain.recipe_model.v1"
+    },
+    "recipe_id": {
+      "type": "string",
+      "pattern": "^mosaic-brain://recipe/[a-z0-9][a-z0-9._/-]*$"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "kind": {
+      "enum": [
+        "capability",
+        "build",
+        "test",
+        "deploy",
+        "analysis",
+        "data-transform",
+        "orchestration",
+        "agent",
+        "research",
+        "policy",
+        "observability",
+        "recovery",
+        "composite"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "summary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "candidate",
+        "validated",
+        "active",
+        "deprecated",
+        "superseded",
+        "quarantined",
+        "unknown"
+      ]
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ingredient"
+      }
+    },
+    "preparation": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operation"
+      },
+      "default": []
+    },
+    "procedure": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/output"
+      }
+    },
+    "evaluation": {
+      "$ref": "#/$defs/evaluation"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "lineage": {
+      "$ref": "#/$defs/lineage"
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced extension properties; extension keys must be owned by a registered namespace."
+    }
   },
   "$defs": {
     "evidenceRef": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["class", "source"],
+      "required": [
+        "class",
+        "source"
+      ],
       "properties": {
-        "class": {"enum": ["declared", "extracted", "inferred", "tested", "observed", "independently-verified", "disputed", "stale", "unavailable"]},
-        "source": {"type": "string"},
-        "immutable_ref": {"type": ["string", "null"]},
-        "digest": {"type": ["string", "null"]},
-        "extractor": {"type": ["string", "null"]},
-        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+        "class": {
+          "enum": [
+            "declared",
+            "extracted",
+            "inferred",
+            "tested",
+            "observed",
+            "independently-verified",
+            "disputed",
+            "stale",
+            "unavailable"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "immutable_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "extractor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
       }
     },
     "ingredient": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "role", "reference", "evidence"],
+      "required": [
+        "id",
+        "type",
+        "role",
+        "reference",
+        "evidence"
+      ],
       "properties": {
-        "id": {"type": "string"},
-        "type": {"enum": ["source", "dependency", "api", "data", "configuration", "secret-reference", "runtime", "tool", "policy", "service", "subrecipe", "artifact", "other"]},
-        "role": {"enum": ["required", "optional", "conditional", "environment", "policy", "input"]},
-        "reference": {"type": "string"},
-        "version": {"type": ["string", "null"]},
-        "digest": {"type": ["string", "null"]},
-        "constraints": {"type": "array", "items": {"type": "string"}},
-        "sensitivity": {"enum": ["public", "internal", "confidential", "secret-reference", "unknown"]},
-        "evidence": {"$ref": "#/$defs/evidenceRef"}
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "source",
+            "dependency",
+            "api",
+            "data",
+            "configuration",
+            "secret-reference",
+            "runtime",
+            "tool",
+            "policy",
+            "service",
+            "subrecipe",
+            "artifact",
+            "other"
+          ]
+        },
+        "role": {
+          "enum": [
+            "required",
+            "optional",
+            "conditional",
+            "environment",
+            "policy",
+            "input"
+          ]
+        },
+        "reference": {
+          "type": "string"
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sensitivity": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "secret-reference",
+            "unknown"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidenceRef"
+        }
       }
     },
     "operation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["op_id", "type", "intent", "effect_class", "depends_on"],
+      "required": [
+        "op_id",
+        "type",
+        "intent",
+        "effect_class",
+        "depends_on"
+      ],
       "properties": {
-        "op_id": {"type": "string"},
-        "type": {"enum": ["validate", "normalize", "read", "transform", "compute", "invoke", "write", "branch", "loop", "parallel", "wait", "emit", "review", "other"]},
-        "intent": {"type": "string"},
-        "inputs": {"type": "array", "items": {"type": "string"}},
-        "outputs": {"type": "array", "items": {"type": "string"}},
-        "depends_on": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-        "condition": {"type": ["string", "null"]},
-        "parallel_group": {"type": ["string", "null"]},
-        "timeout_seconds": {"type": ["integer", "null"], "minimum": 1},
-        "retry_policy": {"type": ["string", "null"]},
-        "idempotency_key": {"type": ["string", "null"]},
-        "effect_class": {"enum": ["pure", "read", "write", "external", "privileged", "destructive"]},
-        "policy_ref": {"type": ["string", "null"]},
-        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceRef"}}
+        "op_id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "validate",
+            "normalize",
+            "read",
+            "transform",
+            "compute",
+            "invoke",
+            "write",
+            "branch",
+            "loop",
+            "parallel",
+            "wait",
+            "emit",
+            "review",
+            "other"
+          ]
+        },
+        "intent": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "condition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parallel_group": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timeout_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "retry_policy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idempotency_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effect_class": {
+          "enum": [
+            "pure",
+            "read",
+            "write",
+            "external",
+            "privileged",
+            "destructive"
+          ]
+        },
+        "policy_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
+        }
       }
     },
     "environment": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "runtime": {"type": ["string", "null"]},
-        "language": {"type": ["string", "null"]},
-        "version": {"type": ["string", "null"]},
-        "os": {"type": ["string", "null"]},
-        "architecture": {"type": ["string", "null"]},
-        "container_digest": {"type": ["string", "null"]},
-        "network_policy": {"type": ["string", "null"]},
-        "resource_profile": {"type": ["string", "null"]},
-        "reproducibility_level": {"enum": ["R0", "R1", "R2", "R3", "R4", "unknown"]}
+        "runtime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "os": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "architecture": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "container_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "network_policy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resource_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reproducibility_level": {
+          "enum": [
+            "R0",
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "unknown"
+          ]
+        }
       }
     },
     "output": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "contract"],
+      "required": [
+        "id",
+        "type",
+        "contract"
+      ],
       "properties": {
-        "id": {"type": "string"},
-        "type": {"type": "string"},
-        "contract": {"type": "string"},
-        "required": {"type": "boolean", "default": true},
-        "invariants": {"type": "array", "items": {"type": "string"}},
-        "artifact_digest": {"type": ["string", "null"]},
-        "side_effects": {"type": "array", "items": {"type": "string"}}
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "contract": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifact_digest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "side_effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "evaluation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "criteria", "records"],
+      "required": [
+        "status",
+        "criteria",
+        "records"
+      ],
       "properties": {
-        "status": {"enum": ["not-run", "pass", "fail", "partial", "inconclusive", "unavailable"]},
-        "criteria": {"type": "array", "items": {"type": "string"}},
-        "records": {"type": "array", "items": {"type": "string"}},
-        "suite_versions": {"type": "array", "items": {"type": "string"}},
-        "limitations": {"type": "array", "items": {"type": "string"}}
+        "status": {
+          "enum": [
+            "not-run",
+            "pass",
+            "fail",
+            "partial",
+            "inconclusive",
+            "unavailable"
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suite_versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "provenance": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["source", "immutable_ref", "extraction"],
+      "required": [
+        "source",
+        "immutable_ref",
+        "extraction"
+      ],
       "properties": {
-        "source": {"type": "string"},
-        "immutable_ref": {"type": "string"},
-        "paths": {"type": "array", "items": {"type": "string"}},
-        "author": {"type": ["string", "null"]},
-        "extraction": {"type": "string"},
-        "extracted_at": {"type": ["string", "null"], "format": "date-time"},
-        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceRef"}}
+        "source": {
+          "type": "string"
+        },
+        "immutable_ref": {
+          "type": "string"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "author": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "extraction": {
+          "type": "string"
+        },
+        "extracted_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
+        }
       }
     },
     "lineage": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "parent_revision": {"type": ["string", "null"]},
-        "derived_from": {"type": "array", "items": {"type": "string"}},
-        "supersedes": {"type": "array", "items": {"type": "string"}},
-        "change_reason": {"type": ["string", "null"]}
+        "parent_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "derived_from": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "change_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     }
   }

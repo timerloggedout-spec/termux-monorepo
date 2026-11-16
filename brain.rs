@@ -346,7 +346,7 @@ pub trait PolicyGate {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct BrainBesult {
+pub struct BrainResult {
     pub contract_version: &'static str,
     pub identity: RunIdentity,
     pub run_status: RunStatus,

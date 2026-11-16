@@ -5,7 +5,7 @@ author: timerloggedout-spec
 posted_at: 2026-08-17
 source: source.md
 status: executing
-priority: P2
+priority: P0
 reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
@@ -13,6 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/icm-architect-submodule
+  - feat/icm-impact-gate-20261116
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -55,14 +56,20 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 - Disposition: accepted for execution.
 - Notes: The operator clarified that ICM is being applied to the monorepo itself. `icm-cctv_fork` and `content-agent-routing-promptbase_fork` are shallow, optional reference inputs under `refTemplates/smods/`; the monorepo’s own `docs/icm/` contracts remain operative. The BLU B160V/free-services envelope is documented as an operator constraint only. No Termux MCP/device access, service-account operation, network deployment, application-code refactor, or visual renderer startup is authorized by this scope.
 
+### 2026-11-16 — ICM-08 change-impact enforcement
+
+- Disposition: executing.
+- Notes: Added a standard-library-only validator and tests; wired the validator into the existing repo-gate workflow for every pull request; documented exact-delta receipts and the required ICM/related-update decision. No application runtime, submodule, device, or protected-branch settings are changed.
+
 ## Checklist (process)
 
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [x] Execution branch created from `master-staging`
-- [ ] PR cites `Implements: ICM-01`
-- [ ] Gates green before merge
+- [x] Execution branch created from `master`
+- [ ] PR cites `Implements: ICM-08`
+- [ ] ICM impact, repo-gate, and termux-smoke checks green on the exact PR head
+- [ ] Confirm branch protection requires the repo-gate status check
 - [ ] Closed and moved to `closed/` when terminal
 
 ## Links

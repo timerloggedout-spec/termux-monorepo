@@ -24,6 +24,7 @@ def sample():
         "template_id": "vercel-agent-toolchain",
         "status": "discovered",
         "smods_index": "refTemplates/smods/INTEGRATIONS.json",
+        "mcp": {"transport": "stdio", "default_profile": "core"},
         "upstreams": [
             {"id": name, "url": f"https://github.com/example/{name}"}
             for name in (

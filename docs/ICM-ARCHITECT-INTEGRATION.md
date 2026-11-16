@@ -150,3 +150,8 @@ Historical and pending PRs are not silently absorbed into this implementation. [
 [4]: https://github.com/timerloggedout-spec/icm-cctv_fork "timerloggedout-spec/icm-cctv_fork — optional file-backed visual review reference"
 [5]: https://github.com/timerloggedout-spec/cost-of-remembering_fork "timerloggedout-spec/cost-of-remembering_fork — filesystem memory evidence"
 [6]: https://github.com/RinDig/AuditEngine "RinDig/AuditEngine — staged for adapt"
+
+
+## Pull-request ICM impact gate
+
+Every pull request must include exactly one machine-readable receipt at `docs/icm/changes/<change-id>.json`. The receipt enumerates the exact PR delta, identifies existing primary ICM cards, lists related records updated in the same PR, and records either `updated` or a justified `no-map-change` disposition. The existing `.github/workflows/repo-gate.yml` runs `scripts/ci/icm_impact_gate.py` before the repository hygiene checks; missing, stale, unsafe, or incomplete receipts fail the repo-gate job. See [the Change and Validate process](icm/processes/change-and-validate.md) for the receipt contract.

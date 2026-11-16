@@ -103,10 +103,10 @@ def validate(data: object) -> list[str]:
                 errors.append(f"{prefix}.{field} must contain strings of at least 3 characters")
         if isinstance(item["resource_dimensions"], list):
             dimensions = item["resource_dimensions"]
-            invalid = {value for value in dimensions if not isinstance(value, str) or value not in RESOURCES}
+            invalid = [value for value in dimensions if not isinstance(value, str) or value not in RESOURCES]
             if not dimensions or invalid:
                 errors.append(f"{prefix}.resource_dimensions contains invalid or empty values: {sorted(map(str, invalid))}")
-            if len(dimensions) != len(set(dimensions)):
+            if all(isinstance(value, str) for value in dimensions) and len(dimensions) != len(set(dimensions)):
                 errors.append(f"{prefix}.resource_dimensions contains duplicates")
         confidence = item["confidence"]
         if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:

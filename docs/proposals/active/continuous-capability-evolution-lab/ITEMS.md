@@ -13,6 +13,8 @@
 | CCEL-009 | P1 | proposed | Preregister a bounded method-selection tournament. | Frozen baseline/cohort, explicit method arms, independent evaluator, budget, stopping rule, uncertainty and held-out confirmation; no live dispatch until authorized. |
 | CCEL-010 | P2 | proposed | Evaluate adaptive and recursive MOSAIC revisions. | Bounded recursion, independent evaluator, valid adaptive inference, Pareto outcomes and rollback evidence. |
 
+| MOS-007 | P0 | proposed | Connect the MOSAIC methodology specialist to the shared root Brain through a versioned, acyclic extension contract and verified host composition; preserve MOSAIC under `archwiz/mosaic_brain/`. | Root kernel remains domain-neutral; MOSAIC depends on `termux-brain` and implements the contract; host composes both without a duplicate registry or state authority; cross-crate tests pass; explicit shadow integration proves correlation and zero canonical state mutation; operational activation remains separately authorized. |
+
 ## Validation
 
 - python3 scripts/integrations/validate_capability_graph.py

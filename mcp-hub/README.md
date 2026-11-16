@@ -116,6 +116,15 @@ Such signals are spoofable and can only be optional user-experience hints;
 every operation that accesses data or invokes a tool must remain authenticated.
 The current router therefore keeps its fail-closed bearer gate unchanged.
 
+The official [MCP Authorization specification](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2025-11-25/basic/authorization.mdx)
+requires Protected Resource Metadata discovery for OAuth-enabled HTTP MCP
+servers. [RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728) defines
+the `resource_metadata` challenge parameter. The Jake Marsh discussion and
+[implementation note](https://deallocatedobjects.com/posts/how-remote-mcp-servers-trigger-oauth-sign-in)
+are useful UX references for the difference between OAuth clients and
+unauthenticated directory/health probes; they do not change this deployment's
+static-token security model.
+
 ## Hosts and their real status
 
 This table (and the machine-readable version in `catalog.json`) used to live

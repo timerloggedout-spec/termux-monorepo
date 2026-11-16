@@ -46,3 +46,6 @@ lanes:
   - lane_id: edge-inference-evidence
     orgs: [termux-monorepo, Research-Astute]
     inputs: [ARM64, Android, Termux, llama.cpp, llama.cpp-Vulkan-deferred, Needle, quantization, memory, thermal, energy]
+  - lane_id: cloud-emulator-fidelity
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [AWS-Emulator, AWS-API-Models-Smithy, AWS-Emulator-Evaluation-Suite, Agent-Toolkit-for-AWS, LocalStack, Docker, AWS-SAM-CLI, AWS-CDK, fidelity-tests, sandbox-validation]

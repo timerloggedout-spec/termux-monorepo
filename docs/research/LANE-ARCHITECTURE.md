@@ -11,6 +11,8 @@ Integration model: lanes may live in sibling organizations (for example Research
 4. H0-H3 is a horizon signal, not a truth score.
 5. FOSS procurement decisions are explicit and reversible.
 6. Malware/reverse-engineering research is authorized defensive/research work only; samples stay isolated from production paths.
+7. Cloud emulators are development/test surfaces, not production substitutes or security oracles.
+8. Upstream projects with explicit read-only contribution policies remain read-only; independent extensions belong in our own repositories.
 
 ## Lane families
 - foresight-radar
@@ -27,6 +29,7 @@ Integration model: lanes may live in sibling organizations (for example Research
 - provenance-supply-chain
 - accelerators-materials-energy
 - procurement-opportunities
+- cloud-emulator-fidelity
 
 ## Org separation
 Each lane may be hosted by a separate GitHub organization/repository. The hub registry records:
@@ -48,3 +51,15 @@ Every evidence record has a stable `resource_id`; every digest item has `item_id
 
 ## Termux portability
 Lane tooling should prefer Python/std-lib, POSIX shell, JSON/YAML, SQLite, Git, and HTTP interfaces. Heavy services are optional adapters.
+
+## Cloud emulator fidelity lane
+The `cloud-emulator-fidelity` lane studies local cloud emulation as an agent feedback substrate. It composes existing research lanes rather than replacing them:
+- `reproducible-environments` owns Docker/CI environment parity.
+- `agent-observability` owns execution telemetry and environment fingerprints.
+- `multi-agent-evaluation` owns controlled manager/agent comparisons.
+- `agentic-security` owns sandbox, credential, and tool-permission boundaries.
+- `cloud-emulator-fidelity` owns emulator/API-contract coverage, behavioral fidelity evidence, and real-cloud differential validation.
+
+The lane's initial AWS sources are the public AWS Emulator, AWS API Models (Smithy JSON AST), and AWS Emulator Evaluation Suite. The two user-owned forks are upstream tracking mirrors until a separately reviewed local extension is proposed. Neither fork is treated as an upstream contribution channel: the upstream emulator README says it does not accept PRs, and the evaluation-suite README says it is read-only.
+
+The lane publishes normalized evidence to the management hub; it does not create a second experiment ledger, event bus, scheduler, provider router, or merge authority.

@@ -59,6 +59,12 @@ def validate(schema, value, path="$"):
     if "enum" in schema and value not in schema["enum"]:
         errors.append(f"{path}: value is not in enum")
 
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if "minimum" in schema and value < schema["minimum"]:
+            errors.append(f"{path}: below minimum")
+        if "maximum" in schema and value > schema["maximum"]:
+            errors.append(f"{path}: above maximum")
+
     if isinstance(value, str):
         if len(value) < schema.get("minLength", 0):
             errors.append(f"{path}: shorter than minLength")

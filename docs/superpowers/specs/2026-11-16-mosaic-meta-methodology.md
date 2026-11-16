@@ -173,75 +173,108 @@ Do not create a second experiment record schema. docs/ops/corpus/EXPERIMENT.sche
 
 Comparison outputs are append-only campaign artifacts with versioned analysis code and explicit source record IDs; they do not substitute for run records.
 
-## 9. Sigil-Operator Notation (SON) — micro-dense DO statements
+## 9. Siglary Operator Notation (SON) — micro-dense DO statements
 
-SON is compact human-readable shorthand for MOSAIC plans and directives. It is not an executable DSL and does not replace schemas, workflow contracts or source code.
+**SON is a proposed authoring profile for the existing Siglary system.** It reuses registered operators and the repository's existing DO-statement marker. It does not issue a parallel notation system.
 
-| Sigil | Meaning |
-|---|---|
-| @ | Named entity/surface/participant |
-| # | Immutable version, issue, PR or evidence ID |
-| -> / <- | Directed transition / evidence dependency |
-| && / \|\| | Conjunction / permitted alternative |
-| ! | Mandatory / fail-closed |
-| ~ | Approximate, provisional or unverified |
-| ? / ∅ / ⊥ | Unknown / absent / blocked |
-| Δ / Σ | Measured change / aggregate |
-| Π / ↺ / ↯ | Promotion / repeat / supersede |
-| ✓ / ≠ | Independently verified / distinct identities |
-| := / [] | Define-bind / bounded scope or cohort |
+The Matrice and Standard remain authoritative. The current SON candidate uses the registered operators below; all field names, identifiers, version labels and references remain ordinary text.
 
-### DO grammar
+| Registered operator | Existing meaning | SON use |
+|---|---|---|
+| ∧ | logical AND | require every listed condition |
+| ∨ | logical OR | accept any listed alternative |
+| ¬ | logical NOT | state an explicit negated predicate |
+| ⇒ | implication | express a rule-to-outcome implication |
+| ∀ / ∃ | universal / existential quantifier | state quantified scope |
+| ∅ / ∈ | empty set / membership | express set conditions |
+| ∆ | measured change | describe a measured revision |
+| ++ | postfix one-step increment | express one-step version progression |
+| ≅ | conformance predicate in Siglary register | state conformance only when evidenced |
 
-~~~text
-DO[PHASE] @target[#version]
-  <- @evidence[scope]
-  ; require[condition && condition]
-  ; preserve[invariants]
-  ; emit[artifact + provenance]
-  ; decide[rule -> outcome]
-~~~
+DO: is the existing plain-text DO marker, not a new operator. Colons and line breaks are field delimiters, not operators. The profile introduces no new glyphs or chords in this candidate.
 
-### Canonical directives
+### DO statement shape
 
 ~~~text
-DO[RECON]    @SSOT[] -> @dependency_map[] -> @gap_list[]; preserve[history].
-DO[REGISTER] @method[#vN] := {ref,sha256,scope,owner,assumptions}; immutable.
-DO[PREREG]   @hypothesis + @baseline + @arms + @outcomes + @budget + @stop_rule; freeze_before_run.
-DO[ASSIGN]   @cohort[] -> @arms[]; randomize_or_justify(); check[SRM].
-DO[RUN]      @arm[#method_v] -> @EXPERIMENT[one/run]; stamp[instance_key,source_sha].
-DO[ANALYZE]  @records[] + @analysis[#vN] -> @effects + @uncertainty + @limits.
-DO[BLIND]    @evaluator[criteria_frozen] <- @same_evidence_scope; prohibit[self_grade].
-DO[DECIDE]   @results -> Π[promote|hold|revise|cull]; require[practical_gain && independent_review && gates].
-DO[EVOLVE]   @finding -> Δ@method[#vN+1] | explicit_no_change; retain[#vN].
-DO[ROLLBACK] @regression -> @last_valid[#vN]; emit[reason + evidence].
-DO[REPEAT]   @new_event || @new_evidence -> ↺[RECON..DECIDE]; no_history_rewrite.
+DO: PHASE
+  target: named participant or artifact
+  version: immutable version identifier
+  evidence: canonical source references
+  scope: declared scope
+  require: condition ∧ condition
+  preserve: named invariants
+  emit: artifact and provenance
+  decide: rule ⇒ outcome
 ~~~
 
-Use prose whenever notation hides ambiguity. Normative use requires this lexicon; extensions require a declared namespace and glossary.
-
-## 10. MOSAIC operating loop
+### Canonical SON examples
 
 ~~~text
-SENSE -> RECON -> FORMULATE -> PREREGISTER -> ADMIT -> EXECUTE
-  -> CAPTURE -> ANALYZE -> CHALLENGE -> DECIDE -> PROPAGATE -> WATCH -> REPEAT
+DO: RECON
+  target: DoE family and CEEL
+  evidence: current source-of-truth files and GitHub records
+  emit: dependency map and evidence-qualified gaps
+  preserve: historical records and source ownership
+
+DO: REGISTER
+  target: methodology identity
+  version: immutable version label
+  evidence: source commit and artifact SHA-256
+  scope: declared methodology capability
+  preserve: predecessor versions and lineage
+
+DO: PREREGISTER
+  target: method comparison
+  evidence: hypothesis, baseline, arms, outcomes and budget
+  require: frozen criteria ∧ independent evaluator ∧ stopping rule
+  preserve: the preregistration before execution
+
+DO: ASSIGN
+  target: frozen cohort
+  evidence: assignment plan and randomization seed
+  require: randomized allocation ∨ documented alternative
+  emit: assignment record and sample-ratio check
+
+DO: RUN
+  target: admitted method arm
+  evidence: method version and configured-instance identity
+  emit: one canonical EXPERIMENT record per executed run
+
+DO: BLIND
+  target: independent evaluator
+  evidence: frozen criteria and identical evidence scope
+  require: evaluator identity distinct from method owner
+
+DO: DECIDE
+  target: scope-bounded method revision
+  promote_candidate: practical_gain ∧ independent_review ∧ gates_passed ∧ ¬critical_regression ∧ rollback_ready
+  hold: evidence_incomplete ∨ uncertainty_exceeds_limit ∨ gate_pending
+  revise: evaluator_refuted ∨ critical_regression
+  cull: explicit_governance_decision ∧ evidence_recorded
+
+DO: EVOLVE
+  target: methodology
+  evidence: independently reviewed finding
+  emit: revised version or explicit no-change record
+  preserve: every predecessor version
+
+DO: REPEAT
+  target: MOSAIC evaluation cycle
+  require: new_event ∨ new_evidence
+  emit: next bounded RECON cycle
 ~~~
 
-~~~text
-DO[SENSE]     @GitHub_events + @corpus_deltas + @failed_gates -> candidate_methods.
-DO[RECON]     candidate_methods <- @DoE_family + @CEEL + @component_registry.
-DO[FORMULATE] @candidate -> {hypothesis,factors,baseline,decision_value}.
-DO[PREREG]    freeze[design,outcomes,analysis,budget,stopping,evaluator].
-DO[ADMIT]     require[proposal_authority && scope && risk_review].
-DO[EXECUTE]   use[existing_DoE + existing_workflows + ATES]; no_new_scheduler.
-DO[CAPTURE]   append[canonical_EXPERIMENT + evidence_refs]; redact[secrets,private_payloads].
-DO[ANALYZE]   calculate[effects,uncertainty,missingness,interactions,cost].
-DO[CHALLENGE] Delphi_or_independent_reviewer -> VERIFIED|PARTIAL|REFUTED.
-DO[DECIDE]    Π[scope_bound]; no_auto_merge; no_auto_production.
-DO[PROPAGATE] cherry_pick[validated_delta] -> new_version_or_cohort; cite[parent].
-DO[WATCH]     detect[regression,drift,staleness,maintenance_cost].
-DO[REPEAT]    event_driven; bounded_reconciliation_only.
-~~~
+**Decision semantics:** practical_gain is a promotion condition only. HOLD, REVISE and CULL use their own evidence and governance conditions. MOSAIC emits a recommendation; it does not execute a promotion. Existing repository-managed FA-ADE may promote an independently validated, scope-bounded change after the required dual gates pass and its outcome is verified. The method under evaluation never grades or promotes itself.
+
+### Linguist admission contract
+
+1. Record SON as a candidate extension in the existing Notation Matrice.
+2. Review its grammar, delimiter semantics and operator-class usage in the Linguist lane.
+3. Preserve the existing Siglary Standard, Shorthand Domains, exemptions and principle ⑤.
+4. Route any proposed new chord or operator through collision review and an explicit Linguist ruling before use.
+5. Keep the existing DO-statement style workflow and its policy revisions as the enforcement path; SON adds no duplicate gate.
+
+Until the Linguist ruling is recorded, treat SON as a proposal profile and use expanded plain language wherever a reading could be ambiguous.
 
 ## 11. Initial work packages
 
@@ -307,7 +340,7 @@ Promotion: repeatable practical gain + no critical validity/security/privacy reg
 
 ### Non-goals
 
-No new experiment ledger, registry, scheduler, event bus, orchestrator, provider router or merge authority. No automatic self-promotion, self-approval, auto-merge or production routing changes. No credential provisioning, paid inference, external account writes, private data export or deployment. No historical record rewriting or retroactive conversion of observational data into designed experiments. A committed specification does not mean MOSAIC is implemented.
+Reuse the existing experiment ledger, registry, scheduler, event bus, orchestrator, provider router and merge authority. Keep credentials, paid inference, external account writes, private data export and deployment outside this work package. Preserve historical records and observational data without retroactive conversion into designed experiments. Treat a committed specification as a proposal, not as evidence of runtime implementation.
 
 ## 15. External statistical references
 

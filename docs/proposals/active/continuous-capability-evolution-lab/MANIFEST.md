@@ -42,7 +42,7 @@ The 2026-11-16 operator directive authorizes the MOSAIC name, SON notation, deta
 - Existing criteria-loop (#1959) and Delphi method-self-application (#1963) are predecessor mechanisms to reconcile, not implementations to duplicate.
 - Method versions are immutable; material design changes create a new version/cohort.
 - Independent evaluation and existing proposal/dual-gate governance remain mandatory.
-- No raw prompts, completions, credentials, private traces or restricted customer data are committed.
+- Keep raw prompts, completions, credentials, private traces and restricted customer data out of git.
 
 ## Review and promotion
 

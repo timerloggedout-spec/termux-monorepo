@@ -1,19 +1,19 @@
-# GRIMOIRE — Software Recipe Intelligence, Memory & Evolution
+# MOSAIC Brain — Software Recipe Model (SRM) Extension
 
-**Proposal ID:** `GRIMOIRE.SR`
+**Proposal ID:** `MOSAIC-BRAIN.SRM`
 **Specification family:** `SRM-*` (Software Recipe Model)
-**DoE surface candidate:** `grimoire.recipe-intelligence`
-**Status:** Independent proposal / competition candidate — not adopted, awarded, merged, or production-authorized
+**DoE surface candidate:** `mosaic_brain.recipe_model`
+**Status:** MOSAIC Brain domain-model extension proposal — not adopted, awarded, merged, or production-authorized
 **Target repository:** `timerloggedout-spec/termux-monorepo`
-**Proposal lane:** DoE versioning competition; parallel to QUE → RFP → Delphi → DoE lifecycle work
-**Version:** 0.1.0-draft
+**Proposal lane:** MOSAIC Brain / CEEL; evaluated through existing QUE → RFP → Delphi → DoE lifecycle
+**Version:** 0.2.0-draft
 **Authored:** 2026-11-16
 
 ---
 
-## 0. Executive decision brief
+## 0. Scope correction and executive decision brief\n\n> **Correction:** MOSAIC Brain is an existing repository vocabulary/protocol and run-history/scorebook concept. It is not the name of this proposal. This draft is subordinate to MOSAIC Brain and the existing Monorepo Brain architecture. See SCOPE-CORRECTION.md and the canonical integration design under continuous-capability-evolution-lab. The canonical proposed domain namespace is `mosaic_brain.recipe_model`; no new brain, graph, memory store, experiment ledger, dictionary or promotion authority is created. Honor the owner-supplied `META-brain.rs` → `mosaic.brain.rs` rename and preserve its lineage.\n\n## 0. Executive decision brief
 
-GRIMOIRE proposes a compositional intelligence layer that treats software systems as **executable, versioned recipes**. A recipe is not merely a file, script, build manifest, workflow, or prompt. It is a typed, evidence-bearing description of how a capability is assembled from ingredients, transformed through ordered operations, executed in a declared environment, evaluated against outcomes, and evolved across revisions.
+MOSAIC Brain proposes a compositional intelligence layer that treats software systems as **executable, versioned recipes**. A recipe is not merely a file, script, build manifest, workflow, or prompt. It is a typed, evidence-bearing description of how a capability is assembled from ingredients, transformed through ordered operations, executed in a declared environment, evaluated against outcomes, and evolved across revisions.
 
 The culinary analogy is useful because it forces a complete view:
 
@@ -32,7 +32,7 @@ The culinary analogy is useful because it forces a complete view:
 
 The metaphor is a modeling aid, not a replacement for engineering semantics. Software recipes require formal contracts, machine-verifiable evidence, security boundaries, deterministic identity, and explicit unknown states.
 
-**Recommendation:** admit GRIMOIRE as a bounded research/design candidate, not as a live autonomous executor. Begin with read-only extraction, identity, taxonomy, graph relationships, and deterministic baselines. Enable execution only in an isolated, policy-constrained environment after reproducibility and safety gates pass.
+**Recommendation:** admit MOSAIC Brain as a bounded research/design candidate, not as a live autonomous executor. Begin with read-only extraction, identity, taxonomy, graph relationships, and deterministic baselines. Enable execution only in an isolated, policy-constrained environment after reproducibility and safety gates pass.
 
 ### What this proposal adds
 
@@ -58,19 +58,19 @@ The metaphor is a modeling aid, not a replacement for engineering semantics. Sof
 
 ### 1.1 Product and technical names
 
-**GRIMOIRE** is the project identity: *Generative Recipe Intelligence, Memory, Orchestration & Evolution*.
+**MOSAIC Brain** is the project identity: *Generative Recipe Intelligence, Memory, Orchestration & Evolution*.
 
 Canonical identifiers:
 
-- Product / program: `GRIMOIRE`
+- Product / program: `MOSAIC Brain`
 - System namespace: `grimoire`
-- Core capability: `grimoire.recipe-intelligence`
+- Core capability: `mosaic_brain.recipe_model`
 - Canonical model: `SRM` — Software Recipe Model
-- Model schema: `grimoire.srm.v1`
-- Recipe instance ID: `grimoire://recipe/{namespace}/{slug}`
+- Model schema: `mosaic_brain.recipe_model.v1`
+- Recipe instance ID: `mosaic-brain://recipe/{namespace}/{slug}`
 - Immutable revision: `sha256:{content-digest}`
-- DoE surface ID: `grimoire.recipe-intelligence`
-- Proposal package: `GRIMOIRE-SR-PROPOSAL`
+- DoE surface ID: `mosaic_brain.recipe_model`
+- Proposal package: `MOSAIC Brain-SR-PROPOSAL`
 
 `SYSTEM_RECIPE` remains a generic descriptive alias only. It must not be the product namespace, schema identifier, registry key, or globally unique ID.
 
@@ -84,16 +84,16 @@ Canonical identifiers:
 6. A revision digest covers canonicalized content and declared semantic fields; volatile telemetry is excluded.
 7. Registry uniqueness is enforced on normalized IDs, not display names.
 8. Similar names trigger a collision warning; matching IDs are a hard conflict.
-9. Reserved namespaces include `grimoire.*`, `srm.*`, and the repository's existing `siglary.*` namespace. GRIMOIRE must not claim or redefine Siglary operators.
+9. Reserved namespaces include `mosaic_brain.*`, `srm.*`, and the repository's existing `siglary.*` namespace. MOSAIC Brain must not claim or redefine Siglary operators.
 10. The canonical registry records aliases, redirects, ownership, status, and supersession.
 
 ### 1.3 Identity layers
 
 | Layer | Example | Mutability |
 |---|---|---|
-| Program | `GRIMOIRE` | Governed |
-| Surface | `grimoire.recipe-intelligence` | Stable |
-| Recipe identity | `grimoire://recipe/build/python-package` | Stable |
+| Program | `MOSAIC Brain` | Governed |
+| Surface | `mosaic_brain.recipe_model` | Stable |
+| Recipe identity | `mosaic-brain://recipe/build/python-package` | Stable |
 | Recipe revision | `sha256:…` | Immutable |
 | Execution instance | `run:{provider}:{run-id}` | Immutable record |
 | Evaluation record | `eval:{recipe-revision}:{suite}:{run}` | Append-only |
@@ -115,7 +115,7 @@ Consequences include:
 - Research findings that do not reliably become reusable engineering knowledge.
 - Agent orchestration that selects tools or workflows without a complete capability contract.
 
-GRIMOIRE's hypothesis is that a normalized recipe representation can connect these artifacts into a searchable, evaluable, evolvable capability graph.
+MOSAIC Brain's hypothesis is that a normalized recipe representation can connect these artifacts into a searchable, evaluable, evolvable capability graph.
 
 **Research question:** Does a typed, provenance-aware recipe representation improve retrieval, classification, duplication detection, composition quality, reproducibility, and change-impact analysis compared with existing repository representations alone?
 
@@ -149,7 +149,7 @@ GRIMOIRE's hypothesis is that a normalized recipe representation can connect the
 | Dependency graph | One projection of ingredient relationships | SRM graph has richer typed edges |
 | Runbook | Human-readable procedure | SRM can link and normalize it without discarding narrative |
 | Prompt/agent skill | A recipe ingredient or operation contract | Prompt text is untrusted input, not policy authority |
-| Commit Replay / Repo Replay | Related content-addressed recipe/pointer work | GRIMOIRE models system capability; it must reuse and not duplicate replay primitives |
+| Commit Replay / Repo Replay | Related content-addressed recipe/pointer work | MOSAIC Brain models system capability; it must reuse and not duplicate replay primitives |
 
 ---
 
@@ -284,7 +284,7 @@ A label must carry provenance and confidence. Human-confirmed facts, parser-extr
 
 ## 6. Classification and similarity engine
 
-GRIMOIRE uses an ensemble of specialized methods. No single algorithm is treated as universally best.
+MOSAIC Brain uses an ensemble of specialized methods. No single algorithm is treated as universally best.
 
 ### 6.1 Feature families
 
@@ -396,9 +396,9 @@ The graph is a derived knowledge layer, not a replacement for Git, issue ledgers
 
 ### 8.2 Existing project integration map
 
-The following are integration targets, not claims that GRIMOIRE is already wired into them:
+The following are integration targets, not claims that MOSAIC Brain is already wired into them:
 
-| Existing system | GRIMOIRE relationship |
+| Existing system | MOSAIC Brain relationship |
 |---|---|
 | Historical Corpus | Historical recipe source, revisions, lineage and evidence backfill |
 | Context Relationship Graph | Canonical typed recipe/ingredient/operation graph |
@@ -425,7 +425,7 @@ Repository search surfaced existing Commit Replay work, including:
 - PR #3734 — surgical recipe operations and edit flow.
 - PR #3749 — extraction record and lineage condition.
 
-These are material prior art inside this repository. GRIMOIRE must not reimplement their pointer/index/edit primitives. Its distinct layer is the higher-order capability model: purpose, contracts, ingredients, execution environment, evaluation, learning and lifecycle. Integration should use adapters and typed references to the replay system.
+These are material prior art inside this repository. MOSAIC Brain must not reimplement their pointer/index/edit primitives. Its distinct layer is the higher-order capability model: purpose, contracts, ingredients, execution environment, evaluation, learning and lifecycle. Integration should use adapters and typed references to the replay system.
 
 ### 8.4 Data flow
 
@@ -651,7 +651,7 @@ Integrate approved projections into SHE, Historical Corpus, Context Relationship
 | Risk | Mitigation |
 |---|---|
 | Recipe metaphor becomes vague | Strict schema, typed operations and contracts |
-| Duplicate of existing replay engines | Reuse Commit Replay/Repo Replay primitives; GRIMOIRE stays at capability-model layer |
+| Duplicate of existing replay engines | Reuse Commit Replay/Repo Replay primitives; MOSAIC Brain stays at capability-model layer |
 | Taxonomy drift | Versioned taxonomy, aliases, deprecation and migration rules |
 | Model hallucination | Evidence-bearing predictions, abstention, deterministic validation |
 | Similarity mistaken for equivalence | Separate edge types and contract-backed compatibility |
@@ -667,16 +667,16 @@ Integrate approved projections into SHE, Historical Corpus, Context Relationship
 
 ## 14. Decision requested
 
-Admit `grimoire.recipe-intelligence` as a **research/design candidate** for DoE evaluation, with initial authority restricted to read-only extraction and analysis.
+Admit `mosaic_brain.recipe_model` as a **research/design candidate** for DoE evaluation, with initial authority restricted to read-only extraction and analysis.
 
 Requested next decisions:
-1. Accept or reject the GRIMOIRE naming/identity proposal.
+1. Accept or reject the MOSAIC Brain naming/identity proposal.
 2. Accept SRM v1 as a candidate schema contract or request competing variants.
 3. Register the surface for independent Delphi/DoE review.
 4. Approve the bounded baseline experiment, not execution authority.
 5. Require explicit overlap review against Commit Replay, Repo Replay, the existing Context Relationship Graph, and the existing DoE component registry before implementation promotion.
 
-**No-change is an acceptable outcome.** If an existing system already satisfies a requirement, GRIMOIRE should reference it rather than duplicate it.
+**No-change is an acceptable outcome.** If an existing system already satisfies a requirement, MOSAIC Brain should reference it rather than duplicate it.
 
 ---
 

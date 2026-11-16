@@ -27,6 +27,12 @@
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
 | Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |
 | TinyFish | P1 | Search/fetch/browser tools exposed; no browser mutation run | Planned | Bounded browser workflows |
+| Vercel agent-browser | P0 | Official upstream CLI/docs identified; no local binary or Termux runtime validated | Discovered; WAF executor adapter planned | Browser-backed operations as the last automated route; CDP candidate |
+| Vercel skills CLI | P0 | Official CLI/source identified; no install performed | Discovered; selective project-scoped adoption planned | Skill discovery and installation |
+| Vercel agent-skills | P1 | Official upstream collection identified; no bulk import performed | Source reference; selective review planned | Reusable agent instructions |
+| Vercel agent-desktop | P1 | Official repository identified; no desktop runtime validated | Separate desktop lane; not Android/Termux | OS accessibility and computer-use automation |
+| Vercel Portless | P1 | Official repository identified; no local service configured | Optional developer infrastructure | Stable named local development URLs |
+| Cloudflare Kitesurf | P2 | Open-source announcement/repository identified; no deployment performed | Research-only; cost/security review required | Experimental Workers-hosted CDP browser engine |
 | Manus | P1 | Research/task tools exposed; no task dispatched | Planned | Delegated research and execution |
 | Ahrefs | P2 | Tool exposed; account call returned Insufficient plan | Blocked by plan | SEO and site research |
 | Soracom Knowledge | P2 | Documentation tools exposed | Planned | IoT/vendor documentation |
@@ -46,7 +52,7 @@
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
 
-The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
+The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. The Vercel/Cloudflare entries are likewise separate capability lanes: browser CLI, skill installer, skill source, desktop computer use, local URL infrastructure, and experimental browser engine. None of these inventory entries proves a Termux runtime, authenticated session, fork, or production adapter. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 
 ## Priority rationale
 

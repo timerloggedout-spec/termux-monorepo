@@ -38,11 +38,14 @@ cs scan . --path src --path tests
 # Scan committed changes relative to the fetched canonical base.
 cs scan . --diff origin/master
 
-# Run a bounded-time Standard investigation.
+# Run a bounded-time Standard investigation (advisory allowance).
 cs scan . --max-time 15
+
+# Apply an estimated model-cost limit to the scan and its workers.
+cs scan . --max-cost 2.00
 ```
 
-The `--max-time` setting is documented as an advisory investigation allowance, not a hard wall-clock or spend guarantee. Review the current CLI help before using flags in automation.
+The `--max-time` setting is an advisory Standard investigation allowance, not a hard wall-clock or spend guarantee. The current CLI also documents `--max-cost USD`: it stops the scan/workers after estimated usage exceeds the limit, but in-flight requests can finish above it. Budget enforcement requires complete token-usage records for the scan and workers. Review the current CLI help and select a conservative ceiling before using flags in automation.
 
 ## Runtime compatibility
 
@@ -61,7 +64,8 @@ Before a pilot:
 1. Establish the intended auth mode and credential scope.
 2. Set an explicit model/provider and spend/time budget where supported.
 3. Confirm what source context is transmitted to the selected inference provider.
-4. Record cost as an observed value, not a marketing assumption.
+4. Use `--max-cost` where supported, while accounting for in-flight requests and incomplete usage data.
+5. Record actual cost as an observed value, not a marketing assumption.
 
 ## Privacy and execution boundary
 

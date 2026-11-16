@@ -5,6 +5,8 @@
 | [Termux Agentic Hub](platform/termux-agentic-hub.md) | platform | live | verified | changing Android execution, job routing, capability policy, or device-bound behavior |
 | [BLU B160V and Free-Services Envelope](platform/blu-b160v-free-services.md) | platform | live | stale | checking device or service assumptions before proposing execution work |
 | [GitHub App Fleet](platform/github-app-fleet.md) | platform | live | initiated | identifying a fleet App actor, its permission or install scope, or its provisioning state |
+| [Monorepo Brain Kernel](operations/brain-kernel.md) | operations | live | initiated | changing the shared reasoning kernel, extension contract, or typed plan interface |
+| [MOSAIC Brain](operations/mosaic-brain.md) | operations | live | initiated | changing methodology-intelligence evaluation, MOSAIC recommendation rules, or its root Brain adapter |
 | [ArchWiz](operations/archwiz.md) | operations | live | verified | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface |
 | [Optional Visual Review](operations/optional-visual-review.md) | operations | live | initiated | reviewing the file-backed CCTV cards, proposing a mirror, or defining a human checkpoint |
 | [Challenge and Certifications Program](operations/challenge-program.md) | operations | live | initiated | routing a challenge entry, deadline, or certification question to the program records |

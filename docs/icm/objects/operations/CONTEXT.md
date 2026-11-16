@@ -18,6 +18,8 @@ One job: route a change touching monorepo operational tooling to the smallest ca
 
 | Object | Open when… | Stop at |
 |---|---|---|
+| [brain-kernel.md](brain-kernel.md) | changing the shared reasoning kernel, typed extension contract, or Brain package facade | the root kernel, contract tests and host ownership boundary |
+| [mosaic-brain.md](mosaic-brain.md) | changing methodology-intelligence logic or its specialist adapter | the pure MOSAIC crate and its advisory-only authority boundary |
 | [`archwiz.md`](archwiz.md) | changing the cockpit, forensic, autonomous, verification, or knowledge tool surface | the named tool’s source and probe/test boundary |
 | [`optional-visual-review.md`](optional-visual-review.md) | reviewing initiated CCTV cards, proposing a file-backed stage mirror or human checkpoint, or scoping later publication | the canonical source artifact and the separate renderer/publication gate |
 | [`challenge-program.md`](challenge-program.md) | routing a challenge entry, deadline, or certification question | the program's own records in `docs/ops/` and its management tree |

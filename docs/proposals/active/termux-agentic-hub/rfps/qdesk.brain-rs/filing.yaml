@@ -97,25 +97,25 @@ proposal:
     - Assume all execution occurs on Android
     - Claim scientific reproduction without independent evidence
   research_transfer:
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L42
+    - source_ref: research:nao-brain-body
       adopted_pattern: Brain/body separation in embodied-agent architecture
       adaptation: Brain emits typed plans; existing Harness/Hands execute authorized work.
       limitations:
         - Repository and hardware contracts must be verified independently.
         - Example project behavior is not automatically portable.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L43
+    - source_ref: research:mnemosyne-memory-facade
       adopted_pattern: Memory facade separated from reasoning and model access
       adaptation: Brain uses read adapters and emits learning candidates; existing stores own persistence.
       limitations:
         - Do not import a second memory database.
         - Source behavior and license require pinning.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L57
+    - source_ref: research:logpai-brain-parser
       adopted_pattern: Research algorithm / log parsing as a specialized subsystem
       adaptation: Treat log and event understanding as a domain perception adapter.
       limitations:
         - Not an LLM agent architecture.
         - Research claims and code revision require independent verification.
-    - source_ref: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md#L63
+    - source_ref: research:nidus-externalized-reasoning
       adopted_pattern: Externalized reasoning and engineering proof obligations
       adaptation: Bind decisions to requirements, tests and immutable evidence references.
       limitations:
@@ -183,6 +183,42 @@ evidence:
     limitations:
       - Does not implement all target subsystems.
       - Existing CI currently reports a Clippy issue and formatting drift.
+  - id: research:nao-brain-body
+    kind: research_code
+    locator: https://github.com/fabianbosshard/nao_meets_gpt
+    verification: indexed_only
+    supports:
+      - Separate brain/body responsibility boundary in a robot interaction application.
+    limitations:
+      - Application example, not a validated general-purpose agent architecture.
+      - Pin and inspect source revision before transfer.
+  - id: research:mnemosyne-memory-facade
+    kind: research_code
+    locator: https://github.com/MnemosyneOS/mnemosyne
+    verification: indexed_only
+    supports:
+      - Memory facade separated from reasoning/model access.
+    limitations:
+      - Do not introduce a second persistent memory database.
+      - Pin and inspect source revision and license before transfer.
+  - id: research:logpai-brain-parser
+    kind: research_code
+    locator: https://github.com/logpai/logparser/blob/main/logparser/Brain/Brain.py
+    verification: indexed_only
+    supports:
+      - Specialized log/event parsing as a perception subsystem.
+    limitations:
+      - Log parser algorithm, not an LLM agent brain.
+      - Research results are not claimed as reproduced.
+  - id: research:nidus-externalized-reasoning
+    kind: research_paper
+    locator: https://arxiv.org/html/2604.05080v1
+    verification: indexed_only
+    supports:
+      - Externalized reasoning and explicit engineering proof obligations.
+    limitations:
+      - Paper/example references are not proof of a released runtime.
+      - Review methodology and claims before adoption.
   - id: repo:brain-ownership-map
     kind: repository_documentation
     locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md
@@ -215,7 +251,7 @@ evidence:
       - Delphi gate parked the synthetic unsourced surface at 6.69/25; this is admission classification, not technical architecture merit.
       - Technical architecture evaluation and runtime authorization remain ungranted.
   - id: research:brain-survey
-    kind: research_code
+    kind: repository_documentation
     locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/2532f3cd4372fecbbbf71c06b4fa7005f53c23d6/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md
     revision: 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6
     verification: indexed_only

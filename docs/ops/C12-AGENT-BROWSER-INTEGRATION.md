@@ -135,6 +135,16 @@ The sMods disposition lives at `refTemplates/smods/INTEGRATIONS.json`. `fork_req
 
 CI runs `scripts/ci/verify_agent_tooling_templates.py` and its contract tests through the existing `refTemplates-eval` workflow. This extends the existing template inventory rather than replacing it.
 
+## Adjacent Vercel eve starter templates — reference only
+
+The three supplied eve repositories are useful but belong to separate research lanes, not the C12 browser executor:
+
+- `eve-data-analyst-template` provides metric definitions, SQL cost approvals, row caps, timezone-aware reporting, and evaluation fixtures. This is relevant to Moneyball/SHE analytics.
+- `eve-memory-agent-template` demonstrates scoped user/channel memory and pluggable providers. This is relevant to memory architecture, but must not import personal data or enable automatic capture without privacy/retention review.
+- `eve-vercel-drives-starter` uses read-only Drive snapshots and a serialized write path with `drive_busy` backpressure. This is a useful evidence-store pattern, but no Drive provisioning or data transfer is authorized.
+
+These remain P2 reference candidates; no deployment, database connection, memory provider, or storage integration was performed.
+
 ## Adjacent platforms — not core dependencies
 
 The supplied Anaconda and Braze links are useful comparison inputs but solve different problems:

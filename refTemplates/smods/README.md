@@ -18,7 +18,7 @@ refTemplates/smods/INTEGRATIONS.json
 
 Every integration template must record its smods disposition. A planned fork is **not** a gitlink, and a fork name in a JSON file is not evidence that the repository exists. The validator rejects a `pinned` record without both a matching `.gitmodules` entry and a 160000 gitlink.
 
-The Vercel agent toolchain template currently records `agent-browser` as `fork_required`. No fork or submodule is asserted. Keep upstreams metadata-only until repository-specific changes are justified, license/provenance is checked, and a reviewed immutable pin is available.
+The Vercel agent toolchain template currently records `agent-browser` as `deferred`: the existing package record and Lightpanda option must be reconciled before deciding whether a custom fork is needed. No fork or submodule is asserted. Keep upstreams metadata-only until repository-specific changes are justified, license/provenance is checked, and a reviewed immutable pin is available.
 
 ## Rules
 

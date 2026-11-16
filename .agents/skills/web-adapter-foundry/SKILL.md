@@ -218,7 +218,7 @@ triggers investigation without permission expansion.
 Use the repository template at `refTemplates/01_Agent_Runtime/vercel-agent-toolchain/` and the current smods disposition at `refTemplates/smods/INTEGRATIONS.json`.
 
 - Reuse this Foundry for route selection; never create a parallel QUE browser router.
-- Treat agent-browser as a discovered external CLI, not a validated Termux binary. Prefer approved CDP attachment to an external browser when the device cannot host Chrome; verify the actual device path before claiming support.
+- Treat agent-browser as a discovered CLI + stdio-MCP candidate, not a validated Termux runtime. Start with `agent-browser mcp --tools core` and a default-deny action policy; do not expose `--tools all`. The upstream security controls are opt-in. Prefer a fresh locally managed browser context with `--allowed-domains`; this allowlist cannot be combined with pre-existing CDP attach. Remote CDP requires host/network egress controls. Verify the actual device path and engine before claiming support.
 - Use a named session and a fresh accessibility snapshot before acting. Re-snapshot after navigation or DOM changes; refs are not durable identifiers.
 - Read-only is default. Writes require a separately authorized operation, a unique idempotency key, `SUBMIT-ONCE`, and read-before-retry when the result is unknown.
 - Before dispatch, verify executor liveness, version, CDP reachability, budget/credits where available, deadline, and approval-prompt delivery. Emit `CANNOT_EXECUTE` early when any prerequisite fails.

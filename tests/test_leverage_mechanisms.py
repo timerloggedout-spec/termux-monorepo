@@ -64,6 +64,16 @@ class MechanismCatalogTests(unittest.TestCase):
         data["updated_at"] = "yesterday"
         self.assertTrue(any("ISO 8601" in error for error in validate(data)))
 
+    def test_malformed_lifecycle_type_is_rejected_without_crashing(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["lifecycle_state"] = ["validated"]
+        self.assertTrue(any("lifecycle_state is invalid" in error for error in validate(data)))
+
+    def test_malformed_evidence_kind_is_rejected_without_crashing(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["evidence_refs"] = [{"kind": [], "ref": "x"}]
+        self.assertTrue(any("evidence_refs[0] is malformed" in error for error in validate(data)))
+
     def test_unknown_lifecycle_state_is_rejected(self):
         data = copy.deepcopy(self.data)
         data["mechanisms"][0]["lifecycle_state"] = "deployed-ish"

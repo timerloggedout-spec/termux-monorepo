@@ -1,5 +1,5 @@
 version: 1
-updated_at: "2026-09-18T21:50:00Z"
+updated_at: "2026-11-16T12:50:00Z"
 updated_by: "Grok (Administrator)"
 status: reviewed
 candidates:
@@ -85,7 +85,8 @@ candidates:
       Customizable LEGO composition template: pieces → inventories → available sets.
       Complementary method for Teams/Rosters/MoneyBall selection (wait when pieces
       incomplete; assemble only complete sets toward trunk). Pin advances via PR.
-      Gitlink mode=160000 requires local `git submodule add` after registry merge.
+      The documented revision is restored as the mode=160000 gitlink at the target path;
+      future pin advances require an explicit reviewed PR.
 
   - id: Approxination-Benchmark_fork
     repository: timerloggedout-spec/Approxination-Benchmark_fork

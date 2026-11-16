@@ -414,7 +414,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <div class="btnrow"><button class="btn small" id="tplSheetClose" type="button" style="min-height:44px">Close</button></div>
 </div>
 <div class="mobile-bar" role="group" aria-label="Primary actions">
-  <button class="btn primary" id="mbPulse" type="button">▶ Pulse</button>
+  <button class="btn primary" id="mbPulse" type="button">↻ Live feed</button>
   <button class="btn" id="mbFocus" type="button" aria-pressed="false">◎ Focus</button>
   <button class="btn" id="mbFit" type="button">Fit</button>
   <button class="btn" id="mbNode" type="button">+ Node</button>
@@ -1173,7 +1173,7 @@ function eventLabel(ev){return (ev.workflow||"GitHub Actions")+" · "+(ev.job?ev
 function eventColor(ev){var s=String(ev.status||"").toLowerCase();if(s==="success"||s==="completed")return "#34d399";if(s==="failure"||s==="failed"||s==="timed_out"||s==="error")return "#f472b6";if(s==="cancelled"||s==="skipped")return "#fbbf24";return "#22d3ee";}
 function edgeForRuntimeEvent(ev){
  var candidates=[];
- [ev.job,ev.workflow].filter(Boolean).forEach(function(term){var q=String(term).toLowerCase();var found=MODEL.nodes.find(function(n){var label=[n.id,n.title,n.subtitle,n.description].filter(Boolean).join(" ").toLowerCase();return label.indexOf(q)>=0||q.indexOf(String(n.title||"").toLowerCase())>=0;});if(found)candidates.push(found);});
+ [ev.job,ev.workflow].filter(Boolean).forEach(function(term){var q=String(term).toLowerCase();var found=MODEL.nodes.find(function(n){var label=[n.id,n.title,n.subtitle,n.description].filter(Boolean).join(" ").toLowerCase();var title=String(n.title||"").toLowerCase();return label.indexOf(q)>=0||(title&&q.indexOf(title)>=0);});if(found)candidates.push(found);});
  var target=candidates[0]||byId("ghactions");
  if(!target)return null;
  var keys=Object.keys(edgeEls);

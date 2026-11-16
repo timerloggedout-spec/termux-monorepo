@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/doe-siglary-kill-method-participant-5514/docs/proposals/active/siglary-doe-kill-method-participant/schemas/kill-method-participant.schema.json",
+  "title": "Versioned Kill-Method Participant Contract",
+  "description": "Non-executable, fail-closed descriptor for a bounded method participant. It records participant, method, and schema versions independently. It grants no authority to terminate processes, workflows, sessions, devices, services, deployments, or production resources.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "participant",
+    "method",
+    "scope",
+    "authorization",
+    "preconditions",
+    "effect",
+    "recovery",
+    "evidence",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "kill-method-participant.v1"
+    },
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["participant_id", "participant_version", "participant_kind", "lifecycle_state"],
+      "properties": {
+        "participant_id": { "const": "kill-method" },
+        "participant_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+        "participant_kind": { "const": "method_participant" },
+        "lifecycle_state": {
+          "enum": ["proposed", "admitted", "validated", "deprecated", "superseded", "retired"]
+        },
+        "owner_ref": { "type": ["string", "null"], "maxLength": 300 }
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method_id", "method_version", "method_family", "target_kind", "effect_kind"],
+      "properties": {
+        "method_id": {
+          "enum": [
+            "queue.cancel_queued_run",
+            "worker.inject_test_failure",
+            "doe.cull_participant",
+            "feature_flag.disable_exact"
+          ]
+        },
+        "method_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" },
+        "method_family": {
+          "enum": ["queue_cancellation", "worker_fault_injection", "experiment_population_cull", "feature_flag_control"]
+        },
+        "target_kind": {
+          "enum": ["workflow_run", "test_worker", "experiment_participant", "feature_flag"]
+        },
+        "effect_kind": {
+          "enum": ["cancel_queued_work", "signal_test_process", "participant_lifecycle_transition", "disable_named_flag"]
+        },
+        "supersedes": {
+          "type": ["string", "null"],
+          "maxLength": 200
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "target_ref", "selection", "max_targets"],
+      "properties": {
+        "environment": { "enum": ["development", "test", "staging"] },
+        "target_ref": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "selection": { "const": "exact_identity_only" },
+        "max_targets": { "const": 1 },
+        "allowed_states": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 80 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "forbidden_states": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 80 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_decision", "requires_explicit_approval", "execution_enabled", "policy_ref"],
+      "properties": {
+        "default_decision": { "const": "deny" },
+        "requires_explicit_approval": { "const": true },
+        "execution_enabled": { "const": false },
+        "policy_ref": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "allowed_authority_classes": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 80 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dry_run_required", "exact_target_required", "idempotency_required", "unknown_state_behavior"],
+      "properties": {
+        "dry_run_required": { "const": true },
+        "exact_target_required": { "const": true },
+        "idempotency_required": { "const": true },
+        "unknown_state_behavior": { "const": "reject" },
+        "timeout_seconds": { "type": "integer", "minimum": 1, "maximum": 300 }
+      }
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "graceful_or_force", "reversible", "description"],
+      "properties": {
+        "mode": { "enum": ["observe", "dry_run"] },
+        "graceful_or_force": { "enum": ["none", "graceful", "force"] },
+        "reversible": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "reference"],
+      "properties": {
+        "strategy": { "enum": ["not_applicable", "resume", "reconcile", "compensate", "manual_review"] },
+        "reference": { "type": ["string", "null"], "maxLength": 500 }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receipt_required", "evidence_refs"],
+      "properties": {
+        "receipt_required": { "const": true },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri", "maxLength": 1000 },
+          "minItems": 1,
+          "maxItems": 25
+        },
+        "run_id": { "type": ["string", "null"], "maxLength": 200 },
+        "observed_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_kind", "source_ref", "content_sha256"],
+      "properties": {
+        "source_kind": { "enum": ["repository_file", "github_issue", "github_workflow", "runtime_observation", "operator_request"] },
+        "source_ref": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "content_sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "method": { "properties": { "method_id": { "const": "queue.cancel_queued_run" } }, "required": ["method_id"] } }, "required": ["method"] },
+      "then": {
+        "properties": {
+          "method": { "properties": { "target_kind": { "const": "workflow_run" }, "effect_kind": { "const": "cancel_queued_work" } } },
+          "scope": { "properties": { "allowed_states": { "contains": { "const": "queued" } }, "forbidden_states": { "contains": { "const": "in_progress" } } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "method": { "properties": { "method_id": { "const": "worker.inject_test_failure" } }, "required": ["method_id"] } }, "required": ["method"] },
+      "then": {
+        "properties": {
+          "method": { "properties": { "target_kind": { "const": "test_worker" }, "effect_kind": { "const": "signal_test_process" } } },
+          "scope": { "properties": { "environment": { "enum": ["development", "test"] } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "method": { "properties": { "method_id": { "const": "doe.cull_participant" } }, "required": ["method_id"] } }, "required": ["method"] },
+      "then": {
+        "properties": {
+          "method": { "properties": { "target_kind": { "const": "experiment_participant" }, "effect_kind": { "const": "participant_lifecycle_transition" } } }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "method": { "properties": { "method_id": { "const": "feature_flag.disable_exact" } }, "required": ["method_id"] } }, "required": ["method"] },
+      "then": {
+        "properties": {
+          "method": { "properties": { "target_kind": { "const": "feature_flag" }, "effect_kind": { "const": "disable_named_flag" } } }
+        }
+      }
+    }
+  ]
+}

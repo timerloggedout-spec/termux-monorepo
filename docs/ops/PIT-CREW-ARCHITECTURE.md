@@ -214,6 +214,8 @@ The analogies below are design lenses. They are not claims that the repository i
 
 ### Mapping interpretation
 
+Each of the 20 rows above is also a first-class alternative architecture seed, not merely an analogy. The complete versioned treatment mapping, seed IDs PC-SEED-001 through PC-SEED-020, shared Crew Chief chassis, factors, outcomes, guardrails, lineage and tournament design are specified in [PIT-CREW-ALTERNATIVE-ARCHITECTURES.md](PIT-CREW-ALTERNATIVE-ARCHITECTURES.md) and [PIT-CREW-ARCHITECTURE-SEED-REGISTRY.yaml](PIT-CREW-ARCHITECTURE-SEED-REGISTRY.yaml).
+
 1. **F1 is the primary metaphor** for the execution team: specialist roles, precise coordination and fast but safe handoffs.
 2. **NASA + SRE + ATC** explain the command and observability layers: strategy, local execution, authority, anomaly response and independent telemetry.
 3. **Surgery + cyber response** explain safety and verification: bounded permissions, checklists, independent inspection and evidence preservation.

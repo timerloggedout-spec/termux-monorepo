@@ -292,6 +292,10 @@ def validate_tree(
         index = json.loads(smods_index_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         return [f"invalid integration JSON: {exc}"]
+    if not isinstance(manifest, dict):
+        return ["integration.json: JSON root must be an object"]
+    if not isinstance(index, dict):
+        return ["smods/INTEGRATIONS.json: JSON root must be an object"]
 
     required_files = manifest.get("required_files", ["README.md", "SOURCE.txt", "integration.json"])
     if (
@@ -330,6 +334,12 @@ def validate_all(root: Path = ROOT) -> list[str]:
         smods_index = json.loads(index_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         return [f"refTemplates/smods/INTEGRATIONS.json: invalid JSON: {exc}"]
+    if not isinstance(smods_index, dict):
+        return ["refTemplates/smods/INTEGRATIONS.json: JSON root must be an object"]
+    if smods_index.get("schema") != "smods-integration-index/v1":
+        return ["refTemplates/smods/INTEGRATIONS.json: unsupported or missing schema"]
+    if not isinstance(smods_index.get("entries"), list):
+        return ["refTemplates/smods/INTEGRATIONS.json: entries must be a list"]
 
     module_urls = parse_gitmodules(gitmodules_path)
     gitlinks = parse_gitlinks(root)

@@ -24,6 +24,7 @@ External evaluators consume that evidence through bounded adapters.
 | PostHog | event analytics, experiment assignment/exposure and cohorts (candidate hypotheses; verify by version) | product/experiment measurement participant | observational; not runtime-verified |
 | Braintrust | evaluation datasets, scorers and experiment lineage (candidate hypotheses; verify by version) | evaluation comparison participant | observational; not runtime-verified |
 | SWE-style reference suites | issue-to-patch/software-engineering task outcomes | bounded external reference comparison | observational |
+| AWS Emulator + AWS Emulator Evaluation Suite | AWS API behavioral fidelity for covered operations and multi-step workflows; service-specific coverage only | external cloud-emulation fidelity reference; compare against real AWS sandbox evidence and local project cohorts | observational; upstream read-only; never a security oracle or merge authority |
 | Local cohort harnesses | project-specific task success, cost, latency, regressions | highest-fidelity manager experiments | evidence source owned by this repository |
 
 ### Gamut is not one thing
@@ -74,6 +75,22 @@ Compare task outcome, integration quality, time, useful/duplicate actions, retri
 Use **parallel adapters before replacement**. A lane is retained when it adds decision-relevant evidence at acceptable operational cost. A lane is retired when it duplicates existing evidence without improving coverage, reproducibility, or decision quality.
 
 No external score is a universal model-quality score and no external dashboard is a merge gate by itself.
+
+## Cloud-emulator fidelity
+
+AWS Emulator is an optional local execution surface, not a canonical evaluator. Its public API models (Smithy JSON AST) describe service contracts; the AWS Emulator Evaluation Suite supplies reusable behavioral scenarios; real AWS sandbox accounts remain the reference oracle for any newly authored fidelity test. The evaluation suite states that each included test was verified against at least two sandboxed AWS accounts, and that uncovered behavior is not verified. The AWS Emulator and evaluation-suite repositories both declare upstream contribution restrictions; our forks are tracking mirrors, not assumed contribution channels.
+
+Admission requirements for any local cohort using an emulator:
+1. Pin emulator release/commit, API-model snapshot, evaluation-suite commit, SDK/CLI versions, and runner version.
+2. Record exact service, operation, scenario, request-shape class, expected result/error, and coverage status.
+3. Separate `PASS`, `FAIL`, `ERROR`, `SKIP`, `UNSUPPORTED`, and `NOT_TESTED`; unsupported or absent tests are not passes.
+4. Run each stateful fidelity test in an isolated emulator instance; retain cleanup outcomes.
+5. Use only loopback endpoints and emulator-generated credentials; do not expose the listener or inject real AWS credentials.
+6. Disable emulator telemetry for controlled evaluation runs unless a separately reviewed measurement requires it.
+7. Preserve a real-AWS sandbox validation tier for IAM, cross-account/Region, quotas, throttling, outages, data-plane behavior, and release readiness.
+8. Link results to the existing canonical experiment record and repository SHA. Do not create a parallel evidence ledger.
+
+AWS Emulator is explicitly unsuitable for production workloads and security testing. LocalStack, SAM local, mocks, and real AWS are complementary comparison arms with distinct scopes; no one surface is assumed to subsume the others.
 
 ## Current alternatives
 

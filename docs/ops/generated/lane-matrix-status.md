@@ -1,20 +1,20 @@
-# Lane matrix status (2026-11-16T12:38:42Z)
+# Lane matrix status (2026-11-16T12:40:10Z)
 
-- Master: `ede58cf3922a10e1a93ce0624963b8edcf116c3e`
-- Open PRs: **446**
+- Master: `0dc2e1b3fc63fe3376a977647ceed4aed9bba604`
+- Open PRs: **447**
 - Oldest: #47 (102.87d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
 | CANDIDATE | 144 |
 | EXTRACT | 6 |
-| NEED_EVIDENCE | 125 |
+| NEED_EVIDENCE | 126 |
 | SUPERSEDE | 171 |
 
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 122 |
+| fresh | 123 |
 | mid | 245 |
 | stale | 52 |
 
@@ -30,7 +30,7 @@
 | #5034 | 9.9 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 102.87 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 100.62 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 99.48 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 99.49 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 62.2 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 58.78 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 56.76 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
@@ -50,11 +50,11 @@
 | #1537 | 25.15 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 24.48 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 23.4 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 23.39 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 23.4 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 23.39 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 23.27 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 22.51 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 22.43 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1650 | 22.44 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 20.47 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 20.06 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 20.05 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |

@@ -43,9 +43,14 @@ def build_event(payload: dict[str, Any], event_name: str) -> dict[str, Any]:
         base["occurred_at"] = occurred
     base["repo"] = (payload.get("repository") or {}).get("full_name") or REPO
     base["actor"] = (payload.get("sender") or {}).get("login")
-    identity = "|".join(str(base.get(k) or "") for k in
-                        ("kind","run_id","run_attempt","job_id","event","occurred_at"))
-    base["id"] = hashlib.sha256(identity.encode()).hexdigest()
+    if base["kind"] == "workflow":
+        # Match the Worker's run-derived ID so job-triggered updates and
+        # scheduled snapshots deduplicate to one workflow-state row.
+        base["id"] = "workflow:"+str(run_id)+":"+str(attempt)+":"+status+":"+str(occurred)
+    else:
+        identity = "|".join(str(base.get(k) or "") for k in
+                            ("kind","run_id","run_attempt","job_id","event","occurred_at"))
+        base["id"] = hashlib.sha256(identity.encode()).hexdigest()
     return base
 
 def build_events(payload: dict[str, Any], event_name: str) -> list[dict[str, Any]]:

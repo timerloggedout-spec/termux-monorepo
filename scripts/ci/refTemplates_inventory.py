@@ -193,6 +193,79 @@ def validate_smods(root: Path = ROOT) -> list[str]:
     return validate_smods_contract(entries, gitlinks)
 
 
+def validate_integration_adoption(registry: dict, root: Path = ROOT) -> list[str]:
+    """Require an explicit template disposition before an adapter is implemented."""
+    errors: list[str] = []
+    policy = registry.get("template_adoption_policy") if isinstance(registry, dict) else None
+    if not isinstance(policy, dict) or policy.get("enforcement") != "required_before_implementation":
+        return ["docs/integrations/registry.json: missing required template_adoption_policy"]
+    required_states = {"repo_adapter_implemented", "native_repository_integration"}
+    declared_states = policy.get("applies_to_states")
+    if not isinstance(declared_states, list) or set(declared_states) != required_states:
+        errors.append("docs/integrations/registry.json: template_adoption_policy must cover implemented and native adapter states")
+    if set(policy.get("allowed_dispositions", [])) != {"adopted", "not_applicable"}:
+        errors.append("docs/integrations/registry.json: template_adoption_policy must allow adopted and not_applicable")
+    integrations = registry.get("integrations")
+    if not isinstance(integrations, list):
+        return errors + ["docs/integrations/registry.json: integrations must be a list"]
+    seen_ids: set[str] = set()
+    for index, integration in enumerate(integrations):
+        if not isinstance(integration, dict):
+            errors.append(f"docs/integrations/registry.json: integrations[{index}] must be an object")
+            continue
+        integration_id = integration.get("id")
+        if not isinstance(integration_id, str) or not integration_id:
+            errors.append(f"docs/integrations/registry.json: integrations[{index}] needs a stable id")
+            continue
+        if integration_id in seen_ids:
+            errors.append(f"docs/integrations/registry.json: duplicate integration id {integration_id}")
+        seen_ids.add(integration_id)
+        if integration.get("repo_adapter_state") not in required_states:
+            continue
+        adoption = integration.get("template_adoption")
+        if not isinstance(adoption, dict):
+            errors.append(f"{integration_id}: implemented integration requires template_adoption disposition")
+            continue
+        disposition = adoption.get("status")
+        if disposition == "not_applicable":
+            reason = adoption.get("reason")
+            if not isinstance(reason, str) or not reason.strip():
+                errors.append(f"{integration_id}: not_applicable template disposition requires a reason")
+            if adoption.get("template_path") is not None:
+                errors.append(f"{integration_id}: not_applicable disposition must not claim template_path")
+        elif disposition == "adopted":
+            template_path = adoption.get("template_path")
+            template_id = adoption.get("template_id")
+            if not isinstance(template_id, str) or not template_id.strip():
+                errors.append(f"{integration_id}: adopted template requires template_id")
+            if not isinstance(template_path, str) or not template_path.startswith("refTemplates/"):
+                errors.append(f"{integration_id}: adopted template_path must be under refTemplates/")
+                continue
+            relative = Path(template_path)
+            if relative.is_absolute() or ".." in relative.parts:
+                errors.append(f"{integration_id}: adopted template_path is unsafe")
+                continue
+            target = root / relative
+            if target.is_symlink() or not target.is_dir():
+                errors.append(f"{integration_id}: adopted template_path must resolve to a regular template directory")
+                continue
+            for filename in ("README.md", "SOURCE.txt"):
+                file_path = target / filename
+                if file_path.is_symlink() or not file_path.is_file() or not file_path.read_text(encoding="utf-8").strip():
+                    errors.append(f"{integration_id}: adopted template missing nonempty regular {filename}")
+            if relative.parts[1:2] == ("01_Agent_Runtime",):
+                manifest = target / "integration.json"
+                try:
+                    valid_manifest = not manifest.is_symlink() and isinstance(json.loads(manifest.read_text(encoding="utf-8")), dict)
+                except (OSError, json.JSONDecodeError):
+                    valid_manifest = False
+                if not valid_manifest:
+                    errors.append(f"{integration_id}: adopted runtime template requires valid integration.json")
+        else:
+            errors.append(f"{integration_id}: template_adoption.status must be adopted or not_applicable")
+    return errors
+
+
 def validate_slot_roots(root: Path = ROOT) -> list[str]:
     ref_root = root / "refTemplates"
     if ref_root.is_symlink() or not ref_root.is_dir():
@@ -214,7 +287,14 @@ def main() -> int:
     args = parser.parse_args()
 
     entries = [inventory_entry(slot) for slot in slots()]
-    failures = validate_slot_roots(ROOT) + validate(entries) + validate_smods(ROOT)
+    integration_registry_path = ROOT / "docs/integrations/registry.json"
+    try:
+        integration_registry = json.loads(integration_registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        integration_failures = [f"docs/integrations/registry.json: unable to read valid JSON: {exc}"]
+    else:
+        integration_failures = validate_integration_adoption(integration_registry, ROOT)
+    failures = validate_slot_roots(ROOT) + validate(entries) + validate_smods(ROOT) + integration_failures
 
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

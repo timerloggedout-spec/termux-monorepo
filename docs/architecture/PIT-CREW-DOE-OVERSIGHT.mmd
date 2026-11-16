@@ -1,0 +1,21 @@
+flowchart TB
+  OWNER["Owner / Operator"] --> WALL["PIT WALL<br/>Lane Manager + Manager Policy"]
+  BRAIN["MONOREPO BRAIN<br/>Intent · Context · Reasoning · Plan"] <--> WALL
+  WALL --> QUE["QUE / QDesk<br/>Intake · Admission · Authority"]
+  QUE --> PHASE["Dependency-Phase Engine<br/>Readiness · Claims · Lifecycle"]
+  PHASE --> BALLET["BALLET<br/>Choreography Policy"]
+  BALLET --> ROUTER["Existing Specialist Router"]
+  ROUTER --> ADAPTERS["Existing Execution Adapters"]
+  ADAPTERS --> CREW["PIT CREW<br/>Chief + Specialist Roles"]
+  CREW --> RESULT["Integrated Artifact"]
+  RESULT --> VERIFY["Independent Verification"]
+  VERIFY --> EVIDENCE["Canonical Evidence<br/>Run · Attempt · SHA · Artifact"]
+  ADAPTERS --> EVIDENCE
+  EVIDENCE --> ATES["ATES / WTCV / TCV"]
+  EVIDENCE --> DOE["DoE OVERSIGHT<br/>Preregister · Assign · Monitor · Analyze"]
+  ATES --> DOE
+  DOE --> SCORE["MoneyBall / 3L0"]
+  SCORE --> WALL
+  DOE --> GATES["Existing Correctness + Integration Gates"]
+  GATES --> OWNER
+  OWNER --> PROMOTE["Authorized Promotion / Release"]

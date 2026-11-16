@@ -32,10 +32,17 @@ def sample():
             "tool_allowlist_required": True,
             "read_only_tool_allowlist": [
                 "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
+                "agent_browser_get_url", "agent_browser_get_title", "agent_browser_wait_ms",
+                "agent_browser_wait_for_selector", "agent_browser_wait_for_text",
+                "agent_browser_wait_for_load", "agent_browser_scroll", "agent_browser_tab_list",
             ],
             "authorized_write_tool_allowlist": [
                 "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
-                "agent_browser_click", "agent_browser_fill", "agent_browser_press", "agent_browser_upload",
+                "agent_browser_get_url", "agent_browser_get_title", "agent_browser_wait_ms",
+                "agent_browser_wait_for_selector", "agent_browser_wait_for_text",
+                "agent_browser_wait_for_load", "agent_browser_scroll", "agent_browser_tab_list",
+                "agent_browser_click", "agent_browser_fill", "agent_browser_type", "agent_browser_press",
+                "agent_browser_check", "agent_browser_uncheck", "agent_browser_select",
                 "agent_browser_confirm", "agent_browser_deny",
             ],
         },

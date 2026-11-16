@@ -1,7 +1,7 @@
 # Agent Team Control Plane
 
 **Status:** canonical architecture description
-**Owner/lane:** unrecorded
+**Owner/lane:** Agent Team Control Plane
 **Canonical for:** the agent-team operating loop and control-plane shape
 
 The canonical compact architecture chart is [`AGENT-TEAM-CONTROL-PLANE.mmd`](./AGENT-TEAM-CONTROL-PLANE.mmd).
@@ -49,6 +49,14 @@ MVT / DOE
   └── provider × model × prompt × manager × cohort × sequencing
   │
   ▼
+WORKSPACE / EXECUTION
+  │
+  ├── shared read-only investigation
+  ├── coordinated shared workspace
+  ├── isolated Git worktrees
+  └── container / remote executor
+  │
+  ▼
 TELEMETRY
   │
   └── SHA → run → job → step → logs → artifacts
@@ -78,9 +86,10 @@ BIUDL
 | Lane | Function | Evidence output |
 |---|---|---|
 | Scout | discover and normalize provider/model/task candidates | candidate roster |
-| Builder | smallest useful implementation | commit/SHA |
+| Builder | smallest useful implementation in an explicitly declared workspace | commit/SHA |
 | Recon | correlate prior art and context | provenance graph |
 | Experiment | DOE/MVT treatments and performance requests | request/run records |
+| Workspace | enforce actual isolation and write ownership | sanitized workspace evidence |
 | Telemetry | collect and reduce runtime evidence | run/job/step/artifact records |
 | Review | bilateral critique and regression detection | review disposition |
 | MoneyBall | score observed performance | ranking/treatment score |
@@ -90,17 +99,19 @@ BIUDL
 
 The system must not equate activity with success. A green workflow, HTTP 200, reviewer acknowledgement, low latency, or large response can be an observation, but **task outcome remains separately classified** as `PASS`, `FAIL`, `UNKNOWN`, or other documented state.
 
-Correctness has priority over latency. Resource/quota state is a capacity signal, not a quality score. Provider/model availability is dynamic evidence, not a permanent hardcoded winner.
+Correctness has priority over latency. Resource/quota state is a capacity signal, not a quality score.
 
 ## Dynamic population
 
-Scout discovers candidates from observed provider/model evidence. OX-Alpha and DeepSeek are current priority admission lanes, but neither is permanently privileged. Additional models and providers can enter through the same evidence-backed pipeline.
+Scout discovers candidates from observed provider/model/task evidence. OX-Alpha and DeepSeek are current priority admission lanes, but neither is permanently privileged. Additional models and providers can enter through the same evidence-backed pipeline.
 
 Scout proposals do not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from observed evidence.
 
-## Research and oversight cohorts
+## Workspace and isolation policy
 
-Scout missions can propose work across provider research, code reconnaissance, performance testing, regression investigation, and oversight/security evaluation. Examples include bug-bounty, Help Wanted, CTF, developer-skill, security-skill, and other validation cohorts. These are evaluation populations and task sources, not automatic trust grants.
+Workspace isolation is a treatment dimension, not a product-specific assumption. Shared read-only investigation is the default for reconnaissance; independent mutable tasks should use isolated Git worktrees when available. Multiple writers in one checkout require explicit path ownership or serialization. Containers and remote workspaces must report their actual isolation boundary separately from Git isolation.
+
+See [`docs/ops/AGENT-WORKTREE-ORCHESTRATION.md`](../ops/AGENT-WORKTREE-ORCHESTRATION.md) and the existing [native orchestration contracts](../ops/ORCHESTRATION-CONTRACTS.md). Kilo Agent Manager is a research reference, not a required dependency or proof of Termux runtime support.
 
 ## Agent lifecycle and culling
 
@@ -111,6 +122,10 @@ Culling is a state transition, not deletion. Preserve agent identity, attempts, 
 A node transition is not proof of success. Promotion requires attributable evidence. The telemetry lineage is:
 
 `SHA → workflow run → job → step → logs/artifacts → outcome → review → promotion decision`.
+
+## Research and oversight cohorts
+
+Scout missions can propose work across provider research, code reconnaissance, performance testing, regression investigation, and oversight/security evaluation. Examples include bug-bounty, Help Wanted, CTF, developer-skill, security-skill, and other validation cohorts. These are evaluation populations and task sources, not automatic trust grants.
 
 ## Related systems
 

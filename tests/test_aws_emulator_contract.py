@@ -77,6 +77,15 @@ class AwsEmulatorContractTests(unittest.TestCase):
             self.validate(forbidden_environments=["developer_local"]).returncode, 0
         )
 
+    def test_rejects_malformed_endpoint_type(self):
+        self.assertNotEqual(self.validate(endpoint=["https://127.0.0.1:9297"]).returncode, 0)
+
+    def test_rejects_malformed_gate_collection(self):
+        self.assertNotEqual(self.validate(required_gates=[{}]).returncode, 0)
+
+    def test_rejects_unrecognized_contract_fields(self):
+        self.assertNotEqual(self.validate(unreviewed_runtime_option=True).returncode, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

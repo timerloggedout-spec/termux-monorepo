@@ -40,3 +40,14 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 ## One rule
 
 Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.
+
+
+## Siglary and DO statement enforcement
+
+DO: use docs/proposals/active/notation-sets/SIGLARY-STANDARD.md and its canonical Notation Matrice when authoring ICM surfaces.
+
+DO: distinguish GLYPHS, CHORDS, and OPERATORS; resolve each explicit chord in its named Shorthand Domain.
+
+DO: attach an evidence receipt adjacent to each state or verdict claim. Store missing data as null, not as N∅ or NOT_ESTABLISHED.
+
+DO: expand notation that awaits a Linguist ruling. Keep historical quotations, code, fixtures, generated projections, and chat exports within their defined E1–E6 boundaries.

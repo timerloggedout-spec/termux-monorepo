@@ -74,6 +74,16 @@ class KillMethodParticipantContractTests(unittest.TestCase):
         del record["impact"]["dependent_work_policy"]
         self.assert_rejected(record)
 
+    def test_timeout_bound_is_enforced(self):
+        record = copy.deepcopy(FIXTURE)
+        record["preconditions"]["timeout_seconds"] = 301
+        self.assert_rejected(record)
+
+    def test_idempotency_window_bound_is_enforced(self):
+        record = copy.deepcopy(FIXTURE)
+        record["idempotency"]["window_seconds"] = 86401
+        self.assert_rejected(record)
+
     def test_unknown_method_is_rejected(self):
         record = copy.deepcopy(FIXTURE)
         record["method"]["method_id"] = "kill.everything"

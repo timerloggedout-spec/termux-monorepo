@@ -1204,7 +1204,7 @@ async function pollRuntimeEvents(){
  }catch(err){if(liveStatusEl){liveStatusEl.textContent="LIVE FEED · DISCONNECTED";liveStatusEl.className="dirty-badge";}log("Live feed unavailable: "+String(err.message||err));}
 }
 document.getElementById("pulseBtn").addEventListener("click",function(){pollRuntimeEvents();});
-pollRuntimeEvents();
+window.setTimeout(pollRuntimeEvents,750);
 window.setInterval(pollRuntimeEvents,10000);
 var resizeFitTimer=null;
 window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});

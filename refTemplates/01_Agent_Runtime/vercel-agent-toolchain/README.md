@@ -76,3 +76,16 @@ This template remains metadata-only until all of the following are evidenced:
 8. Repository dual gates pass on the same SHA.
 
 See `SOURCE.txt`, `integration.json`, and `refTemplates/smods/INTEGRATIONS.json`.
+
+## Skills ecosystem
+
+The upstream `skills` CLI documents Node.js 22.20 or later. Use it to discover and install only the skills selected for a specific collaborator/workflow; do not bulk-install every upstream skill into the shared repository.
+
+```bash
+npx skills find browser
+npx skills add vercel-labs/agent-skills --skill <selected-skill> -a codex
+npx skills list
+npx skills check
+```
+
+Treat imported skill text as untrusted third-party instructions until reviewed. Keep repository policy, authorization, and credential boundaries authoritative. Record the selected skill name, upstream source, and version/revision in the integration evidence; do not treat installation as proof that the associated runtime or account connector is available.

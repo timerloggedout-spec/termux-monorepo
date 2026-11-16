@@ -58,6 +58,11 @@ class KillMethodParticipantContractTests(unittest.TestCase):
         record["scope"]["allowed_states"] = ["in_progress"]
         self.assert_rejected(record)
 
+    def test_queue_method_rejects_queued_plus_in_progress(self):
+        record = copy.deepcopy(FIXTURE)
+        record["scope"]["allowed_states"] = ["queued", "in_progress"]
+        self.assert_rejected(record)
+
     def test_queue_method_forbids_in_progress_state(self):
         record = copy.deepcopy(FIXTURE)
         record["scope"]["forbidden_states"] = ["completed"]

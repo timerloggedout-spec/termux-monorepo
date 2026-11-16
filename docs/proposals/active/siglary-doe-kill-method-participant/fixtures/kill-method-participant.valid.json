@@ -1,0 +1,64 @@
+{
+  "schema_version": "kill-method-participant.v1",
+  "participant": {
+    "participant_id": "kill-method",
+    "participant_version": "0.1.0",
+    "participant_kind": "method_participant",
+    "lifecycle_state": "proposed",
+    "owner_ref": null
+  },
+  "method": {
+    "method_id": "queue.cancel_queued_run",
+    "method_version": "1.0.0",
+    "method_family": "queue_cancellation",
+    "target_kind": "workflow_run",
+    "effect_kind": "cancel_queued_work",
+    "supersedes": null
+  },
+  "scope": {
+    "environment": "test",
+    "target_ref": "workflow-run:12345",
+    "selection": "exact_identity_only",
+    "max_targets": 1,
+    "allowed_states": ["queued"],
+    "forbidden_states": ["in_progress", "completed"]
+  },
+  "authorization": {
+    "default_decision": "deny",
+    "requires_explicit_approval": true,
+    "execution_enabled": false,
+    "policy_ref": "ops/queue/pitcrew.json",
+    "allowed_authority_classes": []
+  },
+  "preconditions": {
+    "dry_run_required": true,
+    "exact_target_required": true,
+    "idempotency_required": true,
+    "unknown_state_behavior": "reject",
+    "timeout_seconds": 30
+  },
+  "effect": {
+    "mode": "dry_run",
+    "graceful_or_force": "none",
+    "reversible": false,
+    "description": "Describe the bounded queued-run cancellation candidate without issuing a cancellation request."
+  },
+  "recovery": {
+    "strategy": "manual_review",
+    "reference": null
+  },
+  "evidence": {
+    "receipt_required": true,
+    "evidence_refs": [
+      "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/scripts/ci/queue_pitcrew.py",
+      "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/ops/queue/pitcrew.json"
+    ],
+    "run_id": null,
+    "observed_at": null
+  },
+  "provenance": {
+    "source_kind": "github_issue",
+    "source_ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5514",
+    "content_sha256": null
+  }
+}

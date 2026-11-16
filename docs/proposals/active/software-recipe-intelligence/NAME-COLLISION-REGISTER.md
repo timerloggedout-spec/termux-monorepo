@@ -19,7 +19,7 @@ The model abbreviation **SRM** means Software Recipe Model. It names the data mo
 | **BRACE** | Blueprint, Recipe Architecture, Composition & Evolution. | Existing Brace applied-AI lab, Brace software development/AI automation provider, and BRACE agent-security framework. | Collision; exclude |
 | **RAXIS** | Recipe Architecture eXchange & Intelligence System. | Near-name derivative of RAXI; do not use as a workaround for the RAXI collision. | Exclude |
 | **RACE** | Recipe Analysis, Composition & Evolution. Clear expansion, but a common acronym/word. | High generic acronym ambiguity; likely search noise. | Hold |
-| **SRI** | Software Recipe Intelligence. Closest to the user's preferred phrase. | **High collision:** SRI International / Stanford Research Institute and Siri-origin association. | Do not use as public acronym |
+| **SRI** | Software Recipe Intelligence. Closest to the user's preferred phrase. | **High collision:** SRI International / Stanford Research Institute and Siri-origin association. | Do not use as public acronym |\n| **SRAI** | Software Recipe and Artificial Intelligence (possible expansion). | Existing Society of Research Administrators International and an existing Statistics, Reasoning & AI ecosystem. | Avoid; near-acronym confusion |
 | **SRM** | Software Recipe Model. | Correct and useful as a schema/model abbreviation, but too narrow for the whole system identity. | Retain for model only |
 
 ## Collision watchlist — avoid or hold
@@ -72,7 +72,7 @@ The searches were bounded discovery searches, not legal clearance. No candidate 
 
 ## Required next naming checks
 
-1. Run the repository's existing Name Forge against the candidate set and inspect its source vocabulary.
+1. Consult the repository's existing Name Forge/Grimoire for vocabulary proximity only. The inspected Name Forge implementation suggests matches from existing Grimoire terms; it is not a general external collision scanner or clearance authority.
 2. Check the authoritative nomenclature/identity registries and open proposals for exact, near, phonetic, and semantic collisions.
 3. Check GitHub repositories, crates.io, npm, PyPI, package registries, domains, and trademark databases for the final two candidates.
 4. Obtain owner review before issuing a name.

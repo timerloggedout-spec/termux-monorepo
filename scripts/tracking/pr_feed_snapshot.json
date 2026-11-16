@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-16T14:23:08Z",
+ "read_at": "2026-11-16T14:34:29Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,25 +1956,12 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-16T14:22:16Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "f964ac0899bacdb8c24e35403bd90567355fd751",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-16T14:21:48Z",
+   "updated_at": "2026-11-16T14:33:57Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "a94efe6f20430f3f694e68f6d3a4d351075ceb6f",
+   "merge_commit_sha": "c4ed0f4ef0a4b42fa0356e550ee0f5e8f8b55427",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
@@ -1982,16 +1969,55 @@
    "merged": false
   },
   {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-16T14:30:52Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "8f47806b408b8a5090271a57afad350932716434",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T13:58:15Z",
+   "updated_at": "2026-11-16T14:30:05Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "fe71efb5e95ddb811b9b35a134af130379607456",
+   "merge_commit_sha": "bdfd7182c08c7636a10c74554831c2e0335299a1",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-16T14:27:32Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "7896d31069342915efe279854884aab5b69cd030",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 5526,
+   "title": "Add Devpost discovery source and SLAY HACKS candidate C17",
+   "merged_at": null,
+   "updated_at": "2026-11-16T14:25:52Z",
+   "created_at": "2026-11-16T14:23:48Z",
+   "merge_commit_sha": "722751c414cd78126ea37b3f1a6624d73059f37a",
+   "head_ref": "feat/devpost-discovery-source-c17-slay-hacks",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5526",
    "merged": false
   },
   {
@@ -2005,19 +2031,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5525",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-16T13:54:06Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "c8957bc5e7accc80bd51da3f9c7ce87d8fbaa924",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
    "merged": false
   },
   {
@@ -4548,19 +4561,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4964",
-   "merged": false
-  },
-  {
-   "number": 4954,
-   "title": "feat(ci): add merged branch review audit and quota engine",
-   "merged_at": null,
-   "updated_at": "2026-11-04T23:31:43Z",
-   "created_at": "2026-11-04T23:26:04Z",
-   "merge_commit_sha": "4e815b7253518533f0d0d6dc5feca9b4b47de56c",
-   "head_ref": "feat/merged-branch-audit-production-improvements-13339224639316671047",
-   "author": "google-labs-jules[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4954",
    "merged": false
   }
  ],

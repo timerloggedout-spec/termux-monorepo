@@ -38,7 +38,7 @@ The programme establishes a model/specification-driven fidelity workflow: author
 ## Current state and honesty
 
 - Proposal, machine-readable integration contract, validator, and regression tests are committed on `feat/aws-emulator-agent-fidelity`.
-- The offline validator and all 10 focused unit tests passed in a local Python environment.
+- The offline validator and all 13 focused unit tests passed in a local Python environment.
 - The contract is research-only and runtime-disabled.
 - No AWS account, AWS credentials, real-cloud calls, emulator binary, Docker image, package, or Termux device execution is claimed.
 - AWS Emulator documents Linux x86_64/aarch64 source builds but a full cold build needs approximately 100 GB free disk; Android/Termux is not documented as a supported host. Use hosted Linux CI or a supported developer host for initial execution.

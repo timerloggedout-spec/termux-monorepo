@@ -214,9 +214,11 @@ def text_findings(text: str, path: str, kind: str, glyphs: set[str], domains: di
 def surface_kind(path: str) -> str | None:
     p, name = path.replace("\\", "/"), Path(path).name
     if name == "CLAUDE.md": return "claude"
+    lower = p.lower()
     if name in {"SKILL.md", "SKILLS.md"} or name.endswith(".SKILLS") or p.startswith(("skills/", ".agents/skills/", ".github/skills/")): return "skills"
+    if lower.startswith((".github/issue_template/", "templates/")) or lower in {".github/pull_request_template.md", ".github/issue_template.md"}: return "github_collaboration"
     if p.startswith("docs/icm/"): return "icm"
-    if p.startswith(("ops/doe/", "ops/que/dispatch/", "docs/ops/doe/")): return "doe_participant"
+    if p.startswith(("ops/doe/", "ops/que/dispatch/", "ops/que/feeds/", "ops/challenge/", "docs/ops/doe/")): return "doe_participant"
     if p in {"docs/proposals/active/notation-sets/SIGLARY-STANDARD.md", MATRICE}: return "standard"
     if Path(p).suffix.lower() in DATA_EXT: return "data"
     return None
@@ -251,8 +253,11 @@ def census(root: Path, paths: list[str], event: dict | None = None, event_name: 
         if exemption(rel,text): continue
         kind=surface_kind(rel)
         if not kind: continue
-        if kind == "data" or (kind == "doe_participant" and Path(rel).suffix.lower() in DATA_EXT):
+        is_data_file = Path(rel).suffix.lower() in DATA_EXT
+        if kind == "data":
             current = data_findings(text,rel)
+        elif is_data_file and kind in {"doe_participant", "github_collaboration"}:
+            current = data_findings(text,rel) + text_findings(text,rel,kind,glyphs,domains)
             if kind == "doe_participant": current.extend(structured_receipt_findings(text,rel))
         else:
             current = text_findings(text,rel,kind,glyphs,domains)

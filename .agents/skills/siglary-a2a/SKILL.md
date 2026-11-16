@@ -41,3 +41,16 @@ dispatch {from}→{to} · {task} · gate: {scope} · receipt {refs} · ∆ ask: 
 
 ## Re-measure
 `pip install tiktoken && python3 scripts/notation/siglary_token_cost.py`. Re-run it when the register changes ∨ when the target model's tokenizer changes.
+
+
+## CI hard-gate contract
+
+DO: follow docs/proposals/active/notation-sets/SIGLARY-STANDARD.md as the canonical standard and the CAVEMAN-MICRO-DENSE-V2.md file as its notation register.
+
+DO: resolve explicit chord tokens against a named Shorthand Domain. Keep glyphs, chords, and operators in separate classes.
+
+DO: attach a receipt reference to every emitted state or verdict claim on the same line or the immediately following line.
+
+DO: use null for absent machine data. Keep N∅ and NOT_ESTABLISHED in chat-only prose.
+
+DO: expand a flagged form to plain language until the Linguist records a ruling. Keep E1–E6 exemptions explicit and preserve source bytes.

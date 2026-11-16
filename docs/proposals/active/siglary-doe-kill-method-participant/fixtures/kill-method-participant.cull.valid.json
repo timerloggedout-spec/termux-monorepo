@@ -1,0 +1,87 @@
+{
+  "schema_version": "kill-method-participant.v1",
+  "participant": {
+    "participant_id": "kill-method",
+    "participant_version": "0.1.0",
+    "participant_kind": "method_participant",
+    "lifecycle_state": "proposed",
+    "owner_ref": null
+  },
+  "method": {
+    "method_id": "doe.cull_participant",
+    "method_version": "1.0.0",
+    "method_family": "experiment_population_cull",
+    "target_kind": "experiment_participant",
+    "effect_kind": "participant_lifecycle_transition",
+    "supersedes": null
+  },
+  "scope": {
+    "environment": "test",
+    "target_ref": "doe:campaign:kill-method-contract-1:participant:synthetic-01",
+    "selection": "exact_identity_only",
+    "max_targets": 1,
+    "allowed_states": [
+      "active"
+    ],
+    "forbidden_states": [
+      "culled"
+    ],
+    "domain_context": "agentic-gambling"
+  },
+  "authorization": {
+    "default_decision": "deny",
+    "requires_explicit_approval": true,
+    "execution_enabled": false,
+    "policy_ref": "docs/ops/DOE-FAMILY.md",
+    "allowed_authority_classes": []
+  },
+  "preconditions": {
+    "dry_run_required": true,
+    "exact_target_required": true,
+    "idempotency_required": true,
+    "unknown_state_behavior": "reject",
+    "timeout_seconds": 30
+  },
+  "idempotency": {
+    "required": true,
+    "key_template": "{run_id}:{target_ref}:{method_version}",
+    "scope": "participant_and_method",
+    "window_seconds": 3600
+  },
+  "effect": {
+    "mode": "dry_run",
+    "graceful_or_force": "none",
+    "reversible": false,
+    "description": "Synthetic DoE cull descriptor; no participant is actually culled."
+  },
+  "impact": {
+    "classification": "medium",
+    "estimated_impact": "Synthetic population transition only; gambling-lane consequence is represented in the same descriptor.",
+    "affected_dependents": [],
+    "dependent_work_policy": "manual_review"
+  },
+  "recovery": {
+    "strategy": "manual_review",
+    "reference": "docs/ops/DOE-FAMILY.md"
+  },
+  "cull_consequence": {
+    "culled_participant": "synthetic-01",
+    "wallet_balance_at_cull": null,
+    "pool_destination": "pooled-buckets/promotions-incentives-bonuses",
+    "same_record": true
+  },
+  "evidence": {
+    "receipt_required": true,
+    "evidence_refs": [
+      "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/DOE-FAMILY.md",
+      "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/AGENTIC-GAMBLING-LANE.md"
+    ],
+    "run_id": null,
+    "observed_at": null
+  },
+  "provenance": {
+    "source_kind": "repository_file",
+    "source_ref": "docs/ops/DOE-FAMILY.md",
+    "content_sha256": null
+  }
+}

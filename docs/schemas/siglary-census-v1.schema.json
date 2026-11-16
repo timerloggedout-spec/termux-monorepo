@@ -4,26 +4,28 @@
   "title": "Siglary conformance census",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "state", "surfaces_scanned", "hard_violations", "soft_violations", "surface_classes", "violations", "performance"],
+  "required": ["schema", "state", "surfaces_scanned", "hard_violations", "soft_violations", "est_violations", "surface_classes", "violations", "performance"],
   "properties": {
     "schema": {"const": "siglary-census/v1"},
-    "state": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+    "state": {"enum": ["PASS", "FAIL", "REVIEW", "INCONCLUSIVE"]},
     "receipt_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "feed_appended": {"type": "boolean"},
     "surfaces_scanned": {"type": "integer", "minimum": 0},
     "hard_violations": {"type": "integer", "minimum": 0},
     "soft_violations": {"type": "integer", "minimum": 0},
+    "est_violations": {"type": "integer", "minimum": 0},
     "surface_classes": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["surfaces_scanned", "compliant", "soft_violations", "hard_violations", "compliance_rate"],
+        "required": ["surfaces_scanned", "compliant", "soft_violations", "hard_violations", "est_violations", "compliance_rate"],
         "properties": {
           "surfaces_scanned": {"type": "integer", "minimum": 0},
           "compliant": {"type": "integer", "minimum": 0},
           "soft_violations": {"type": "integer", "minimum": 0},
           "hard_violations": {"type": "integer", "minimum": 0},
+          "est_violations": {"type": "integer", "minimum": 0},
           "compliance_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
         }
       }

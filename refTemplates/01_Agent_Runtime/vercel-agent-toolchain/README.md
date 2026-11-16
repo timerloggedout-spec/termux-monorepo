@@ -27,7 +27,7 @@ This is not a first-time discovery or a request to install a second browser pack
 - `docs/repositories/STARS-FORKS-WATCH.md` records `vercel-labs/agent-browser` as already starred and notes its `--engine lightpanda` option.
 - `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` already classifies agent-browser in the `drivers-and-clients` lane.
 
-These are repository inventory/research records, not a live device check. The recorded 0.26.0 package version is older than the upstream changelog's documented 0.34.0 release (August 2026); verify the installed binary before upgrading or replacing it. Reconcile the existing Termux package first; do not install a duplicate.
+These are repository inventory/research records, not a live device check. The recorded 0.26.0 package version is stale: the official upstream releases page lists v0.43.0 released 2026-11-12. Verify the installed binary before upgrading or replacing it. Reconcile the existing Termux package first; do not install a duplicate.
 
 ## Runtime selection
 
@@ -47,10 +47,12 @@ Example upstream installation on a compatible host:
 ```bash
 npm install -g agent-browser
 agent-browser --version
-agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly open https://example.org
-agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly snapshot -i
+# Local browser mode (fresh context; use the policy examples below):
+agent-browser --content-boundaries --action-policy /path/to/policy-readonly.json open https://example.org
+agent-browser --content-boundaries --action-policy /path/to/policy-readonly.json snapshot -i
 
-# Candidate thin-engine path when Lightpanda is installed and compatible:
+# Optional Lightpanda engine; the upstream install guide currently lists
+# macOS Apple Silicon and Linux x86_64 binaries, not Android/Termux.
 agent-browser --engine lightpanda --session que-readonly open https://example.org
 agent-browser --engine lightpanda --session que-readonly snapshot -i
 ```
@@ -104,3 +106,23 @@ npx skills check
 ```
 
 Treat imported skill text as untrusted third-party instructions until reviewed. Keep repository policy, authorization, and credential boundaries authoritative. Record the selected skill name, upstream source, and version/revision in the integration evidence; do not treat installation as proof that the associated runtime or account connector is available.
+
+## MCP transport and security profiles
+
+The upstream CLI exposes a stdio MCP server. This is the preferred integration surface to evaluate with Termux-MCP/QUE because it gives the orchestrator typed tools without inventing a second browser protocol:
+
+```bash
+agent-browser mcp --tools core
+```
+
+- Use `mcp-stdio-readonly.example.json` with `policy-readonly.json` for discovery, snapshots, and read-only checks.
+- Use `mcp-stdio-authorized-write.example.json` with `policy-authorized-write.json` only for a separately authorized operation. It includes `--confirm-actions` for click/fill/interact/download/upload/state categories; the orchestrator must explicitly answer confirmation requests. Do not use `--confirm-interactive` in a non-TTY MCP process.
+- Do not use `--tools all`; start with `core` and the restrictive action policy.
+- `agent-browser mcp call <tool> '<json>'` is available for one-shot calls where a persistent stdio process is unavailable, but validate session/daemon continuity before adopting it.
+- `agent-browser doctor --offline --quick --json` is the local preflight. It reports version/platform/runtime health and may clean stale daemon sidecar files; never add `--fix` to an unattended preflight.
+
+**Security controls are opt-in upstream.** The defaults do not restrict navigation, actions, or output. The examples explicitly enable content boundaries, output limits, a default-deny action policy, and a domain allowlist.
+
+**CDP caveat:** the upstream domain allowlist is incompatible with pre-existing CDP attach sessions. The example configurations therefore launch a fresh locally managed browser. If a remote CDP browser is used, enforce egress restrictions at the host/container/network layer and keep the endpoint secret out of command-line arguments, config files, logs, and artifacts. Do not claim the browser's own allowlist is protecting an attached CDP session.
+
+The `--allowed-domains` setting is not an OS firewall and should be combined with network egress controls for higher assurance. Lightpanda is a separate engine option, but the upstream installation guide does not currently document an Android/Termux binary; do not infer B160V support from the flag alone.

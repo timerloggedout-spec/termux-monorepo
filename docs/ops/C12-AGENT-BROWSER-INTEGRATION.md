@@ -7,7 +7,7 @@
 
 ## Decision
 
-Integrate Vercel `agent-browser` as the preferred **candidate CLI** for browser-backed operations, while keeping browser automation as the last automated route. Do not create a second route planner: QUE and the Academy adapter continue to use the existing Web Adapter Foundry and its operation registry.
+Integrate Vercel `agent-browser` as the preferred **candidate CLI + stdio MCP server** for browser-backed operations, while keeping browser automation as the last automated route. Do not create a second route planner: QUE and the Academy adapter continue to use the existing Web Adapter Foundry and its operation registry.
 
 The Vercel `skills` CLI and `agent-skills` collection supply reusable instructions. `agent-desktop` is a separate desktop-only executor. Portless is optional local development infrastructure. Cloudflare Kitesurf is a research-only CDP engine until its compatibility, security, performance, and cost are measured.
 
@@ -36,7 +36,7 @@ This census is bounded to the paths above and the matching repository search res
 
 | Component | Capability | Current disposition |
 |---|---|---|
-| agent-browser | Accessibility snapshots, element refs, named sessions, CDP attachment | Discovered; external executor; Termux unverified |
+| agent-browser | CLI + stdio MCP, accessibility snapshots, element refs, named sessions, CDP attachment, action policies | Discovered; external executor; Termux unverified |
 | skills | Find/add/list/check/update/remove skills | Install selected skills project-scoped; CLI runtime unverified on Termux |
 | agent-skills | Upstream skill collection | Source reference; install selectively |
 | agent-desktop | OS accessibility tree and desktop actions | macOS/Windows/Linux desktop lane; not Android |
@@ -65,7 +65,7 @@ Termux / QUE
     |
     | normalized WAF operation
     v
-agent-browser CLI
+agent-browser CLI / stdio MCP
     |
     | authenticated CDP connection (secret/session store only)
     v

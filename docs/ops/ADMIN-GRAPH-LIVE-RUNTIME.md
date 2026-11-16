@@ -1,14 +1,15 @@
 # Admin Interaction Graph — live runtime events
 
 **Status:** runtime event intake deployed; dashboard integration in this change.
-**Source of truth:** GitHub Actions `workflow_run` and `workflow_job` lifecycle events.
+**Source of truth:** GitHub Actions `workflow_job` lifecycle events plus authoritative workflow-run state from the Actions API.
 **Transport:** Cloudflare Worker `admin-graph-live` + D1 `admin-graph-runtime-events`.
 **Read model:** `GET /events`; publisher: `.github/workflows/admin-graph-runtime-publisher.yml`.
 
 ## Event path
 
-1. GitHub emits `workflow_run` requested/in-progress/completed and
-   `workflow_job` queued/in-progress/completed events.
+1. GitHub emits `workflow_job` queued/in-progress/completed events for all
+   workflows. The Worker resolves each job's authoritative workflow-run record
+   through the Actions API and stores both workflow-level and job-level state.
 2. The observer workflow mints a read-only GitHub App installation token
    with Actions read scope. It never checks out or executes the triggering SHA.
 3. `scripts/ops/admin_graph_runtime_event.py` emits a closed metadata

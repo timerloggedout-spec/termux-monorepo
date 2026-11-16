@@ -194,6 +194,28 @@ class RefTemplatesEnforcementTests(unittest.TestCase):
         })
         self.assertTrue(any("credential-free HTTPS GitHub URL" in error for error in errors))
 
+    def test_smods_section_name_must_match_declared_path(self):
+        modules = [{
+            "section": 'submodule "refTemplates/smods/original_fork"',
+            "path": "refTemplates/smods/renamed_fork",
+            "url": "https://github.com/timerloggedout-spec/renamed_fork.git",
+            "shallow": True,
+        }]
+        errors = validate_smods_contract(modules, {
+            "refTemplates/smods/renamed_fork": "d" * 40,
+        })
+        self.assertTrue(any("section name and path must match exactly" in error for error in errors))
+
+    def test_smods_section_without_path_fails_closed(self):
+        modules = [{
+            "section": 'submodule "refTemplates/smods/missing_path_fork"',
+            "path": "",
+            "url": "https://github.com/timerloggedout-spec/missing_path_fork.git",
+            "shallow": True,
+        }]
+        errors = validate_smods_contract(modules, {})
+        self.assertTrue(any("sMods section must declare a path" in error for error in errors))
+
     def test_smods_reject_duplicate_paths(self):
         entry = {
             "path": "refTemplates/smods/example_fork",

@@ -51,7 +51,7 @@ class AgentToolingTemplateTests(unittest.TestCase):
             manifest,
             index,
             {pinned["path"]: pinned["fork_url"]},
-            {pinned["path"]},
+            {pinned["path"]: pinned["pinned_sha"]},
         )
         self.assertEqual(errors, [])
 
@@ -67,6 +67,19 @@ class AgentToolingTemplateTests(unittest.TestCase):
             set(),
         )
         self.assertTrue(any("missing its 160000 gitlink" in error for error in errors))
+
+    def test_pinned_sha_must_match_actual_gitlink(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="c" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [pinned]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            {pinned["path"]: "d" * 40},
+        )
+        self.assertTrue(any("does not match the actual 160000 gitlink SHA" in error for error in errors))
 
     def test_manifest_and_smods_index_cannot_drift(self):
         manifest, index, _ = sample()

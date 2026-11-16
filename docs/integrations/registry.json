@@ -144,7 +144,11 @@
       "authority": "repository-source-plus-mintlify-publication",
       "write_boundary": "Repository docs and docs.json remain canonical. Do not publish from this audit; changes must land through the repository review path.",
       "next_step": "Expose the integration portfolio in docs.json navigation and reconcile Agent Ready findings through the repository-backed docs workflow.",
-      "sensitivity": "public-documentation-and-deployment-metadata"
+      "sensitivity": "public-documentation-and-deployment-metadata",
+      "template_adoption": {
+        "status": "not_applicable",
+        "reason": "Native documentation publication uses the repository's existing documentation build and publication contract; no reusable refTemplates scaffold applies."
+      }
     },
     {
       "id": "devin-deepwiki",
@@ -158,7 +162,11 @@
       "authority": "provider-generated-discovery-only",
       "write_boundary": "Names-only secret references. Keep DEVIN_API_KEY separate from DEEPWIKI_TOKEN and DEEPWIKI_LLM_API_KEY. No credential values in repository docs, issues, logs, or artifacts.",
       "next_step": "Observe a bounded reconcile-devin-wiki-access run and verify redacted per-branch status plus org/effort variable readiness.",
-      "sensitivity": "restricted-credential-presence-metadata"
+      "sensitivity": "restricted-credential-presence-metadata",
+      "template_adoption": {
+        "status": "not_applicable",
+        "reason": "The current adapter is a repository-native GitHub Actions indexing controller, not a reusable runtime integration scaffold. Reassess before extracting a generalized template."
+      }
     },
     {
       "id": "deepwiki-com",
@@ -172,7 +180,11 @@
       "authority": "generated-external-discovery-only",
       "write_boundary": "Public DeepWiki MCP is read-only. No undocumented indexing API. UI refresh remains on the existing webWrapper/Jules campaign; do not bypass its assigned builder/evaluator separation.",
       "sensitivity": "public-generated-documentation",
-      "next_step": "Continue the existing issue #3346 refresh campaign through its assigned builder/evaluator process; verify the indexed commit and page freshness after the approved refresh completes."
+      "next_step": "Continue the existing issue #3346 refresh campaign through its assigned builder/evaluator process; verify the indexed commit and page freshness after the approved refresh completes.",
+      "template_adoption": {
+        "status": "not_applicable",
+        "reason": "The current adapter is a public generated-wiki discovery workflow, not a reusable runtime integration scaffold. Reassess before extracting a generalized template."
+      }
     },
     {
       "id": "mermaid-chart",
@@ -510,5 +522,19 @@
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
     }
-  ]
+  ],
+  "template_adoption_policy": {
+    "version": 1,
+    "enforcement": "required_before_implementation",
+    "applies_to_states": [
+      "repo_adapter_implemented",
+      "native_repository_integration"
+    ],
+    "required_field": "template_adoption",
+    "allowed_dispositions": [
+      "adopted",
+      "not_applicable"
+    ],
+    "note": "Before an integration is marked implemented/native, it must adopt an applicable refTemplates scaffold or record a reasoned not_applicable disposition. Planned integrations must make this choice before implementation."
+  }
 }

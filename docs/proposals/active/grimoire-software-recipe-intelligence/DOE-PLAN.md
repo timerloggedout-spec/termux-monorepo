@@ -1,6 +1,6 @@
-# GRIMOIRE DoE Plan — versioned recipe intelligence competition
+> Scope correction: evaluate SRM as a domain-model treatment within existing MOSAIC Brain/DoE governance, not as an independent GRIMOIRE component. See ../continuous-capability-evolution-lab/MOSAIC-BRAIN-SOFTWARE-RECIPE-MODEL.md.\n\n# MOSAIC Brain DoE Plan — versioned recipe intelligence competition
 
-**Surface:** `grimoire.recipe-intelligence`  
+**Surface:** `mosaic_brain.recipe_model`  
 **Version:** 0.1.0-draft  
 **Status:** Proposed; no live traffic or production execution authorized.
 

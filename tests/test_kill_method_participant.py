@@ -54,6 +54,26 @@ class KillMethodParticipantContractTests(unittest.TestCase):
         record["scope"]["forbidden_states"] = ["completed"]
         self.assert_rejected(record)
 
+    def test_wildcard_target_reference_is_rejected(self):
+        record = copy.deepcopy(FIXTURE)
+        record["scope"]["target_ref"] = "workflow-run:*"
+        self.assert_rejected(record)
+
+    def test_method_family_must_match_method_id(self):
+        record = copy.deepcopy(FIXTURE)
+        record["method"]["method_family"] = "worker_fault_injection"
+        self.assert_rejected(record)
+
+    def test_idempotency_key_contract_is_required(self):
+        record = copy.deepcopy(FIXTURE)
+        del record["idempotency"]["key_template"]
+        self.assert_rejected(record)
+
+    def test_dependent_work_policy_is_required(self):
+        record = copy.deepcopy(FIXTURE)
+        del record["impact"]["dependent_work_policy"]
+        self.assert_rejected(record)
+
     def test_unknown_method_is_rejected(self):
         record = copy.deepcopy(FIXTURE)
         record["method"]["method_id"] = "kill.everything"

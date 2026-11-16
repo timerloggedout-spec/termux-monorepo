@@ -158,5 +158,31 @@
     "authorized_write": "policy-authorized-write.json",
     "mcp_read_only": "mcp-stdio-readonly.example.json",
     "mcp_authorized_write": "mcp-stdio-authorized-write.example.json"
+  },
+  "mcp": {
+    "transport": "stdio",
+    "command": "agent-browser",
+    "args": [
+      "mcp",
+      "--tools",
+      "core"
+    ],
+    "default_profile": "core",
+    "tool_exposure": "restricted_by_default_deny_action_policy",
+    "read_only_policy": "policy-readonly.json",
+    "authorized_write_policy": "policy-authorized-write.json",
+    "write_confirmation_categories": [
+      "click",
+      "fill",
+      "interact",
+      "download",
+      "upload",
+      "state"
+    ]
+  },
+  "runtime_requirements": {
+    "skills_cli_node_minimum": "22.20.0",
+    "agent_browser_termux_support": "not_established",
+    "lightpanda_android_binary": "not_documented_upstream"
   }
 }

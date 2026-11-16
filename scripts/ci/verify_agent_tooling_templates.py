@@ -162,6 +162,12 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
     required_keys = {"read_only", "authorized_write", "mcp_read_only", "mcp_authorized_write"}
     if not required_keys.issubset(files):
         return ["integration.json: security_policy_files is missing required policy/example paths"]
+    required_files = set(manifest.get("required_files", []))
+    for key, name in files.items():
+        if not isinstance(name, str) or Path(name).is_absolute() or ".." in Path(name).parts or name not in required_files:
+            errors.append(f"security_policy_files.{key}: unsafe or unrequired path {name!r}")
+    if errors:
+        return errors
 
     def load_json(name: str) -> dict | None:
         path = template_dir / name
@@ -205,7 +211,8 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
             return
         if "--tools" not in args or args[args.index("--tools") + 1:args.index("--tools") + 2] != ["core"]:
             errors.append(f"{name}: MCP must start with the least-privilege core tool profile")
-        if "--action-policy" not in args or policy_name not in args[args.index("--action-policy") + 1:args.index("--action-policy") + 2]:
+        policy_arg = args[args.index("--action-policy") + 1] if "--action-policy" in args and args.index("--action-policy") + 1 < len(args) else ""
+        if not policy_arg.endswith(policy_name):
             errors.append(f"{name}: MCP must reference {policy_name}")
         for flag in ("--content-boundaries", "--max-output", "--allowed-domains"):
             if flag not in args:

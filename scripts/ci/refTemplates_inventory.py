@@ -50,6 +50,12 @@ def _template_child(slot: Path, child: Path) -> dict:
     source = child / "SOURCE.txt"
     readme = child / "README.md"
     manifest = child / "integration.json"
+    manifest_valid = False
+    if manifest.is_file() and not manifest.is_symlink():
+        try:
+            manifest_valid = isinstance(json.loads(manifest.read_text(encoding="utf-8")), dict)
+        except (OSError, json.JSONDecodeError):
+            manifest_valid = False
     return {
         "name": child.name,
         "path": str(child.relative_to(ROOT)),
@@ -59,6 +65,7 @@ def _template_child(slot: Path, child: Path) -> dict:
         "has_readme": readme.is_file() and not readme.is_symlink(),
         "readme_nonempty": readme.is_file() and not readme.is_symlink() and bool(readme.read_text(encoding="utf-8").strip()),
         "has_integration_manifest": manifest.is_file() and not manifest.is_symlink(),
+        "integration_manifest_valid": manifest_valid,
         "source_preview": source.read_text(encoding="utf-8").strip().splitlines()[0]
         if source.is_file() and not source.is_symlink() and source.stat().st_size else None,
     }
@@ -104,8 +111,11 @@ def validate(entries: list[dict]) -> list[str]:
                 failures.append(f"{path}: missing or empty regular README.md")
             if not template.get("has_source") or not template.get("source_nonempty", True):
                 failures.append(f"{path}: missing or empty regular SOURCE.txt")
-            if slot == "01_Agent_Runtime" and not template.get("has_integration_manifest"):
-                failures.append(f"{path}: runtime integration template requires integration.json")
+            if slot == "01_Agent_Runtime":
+                if not template.get("has_integration_manifest"):
+                    failures.append(f"{path}: runtime integration template requires integration.json")
+                elif not template.get("integration_manifest_valid", True):
+                    failures.append(f"{path}: integration.json must be valid JSON with an object root")
     return failures
 
 
@@ -145,6 +155,9 @@ def validate_smods_contract(module_entries: list[dict], gitlinks: dict[str, str]
 
 
 def validate_smods(root: Path = ROOT) -> list[str]:
+    smods_root = root / "refTemplates/smods"
+    if smods_root.is_symlink() or not smods_root.is_dir():
+        return ["refTemplates/smods: missing regular directory or symlinked root"]
     modules_path = root / ".gitmodules"
     if modules_path.is_symlink() or not modules_path.is_file():
         return [".gitmodules: missing regular file"]
@@ -180,6 +193,20 @@ def validate_smods(root: Path = ROOT) -> list[str]:
     return validate_smods_contract(entries, gitlinks)
 
 
+def validate_slot_roots(root: Path = ROOT) -> list[str]:
+    ref_root = root / "refTemplates"
+    if ref_root.is_symlink() or not ref_root.is_dir():
+        return ["refTemplates: missing regular directory or symlinked root"]
+    errors = []
+    for path in sorted(ref_root.iterdir()):
+        if SLOTS_RE.match(path.name) or path.name == "smods":
+            if path.is_symlink():
+                errors.append(f"{path.relative_to(root)}: template slot root must not be a symlink")
+            elif not path.is_dir():
+                errors.append(f"{path.relative_to(root)}: template slot root must be a directory")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, help="JSONL output path")
@@ -187,7 +214,7 @@ def main() -> int:
     args = parser.parse_args()
 
     entries = [inventory_entry(slot) for slot in slots()]
-    failures = validate(entries) + validate_smods(ROOT)
+    failures = validate_slot_roots(ROOT) + validate(entries) + validate_smods(ROOT)
 
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

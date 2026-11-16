@@ -35,6 +35,9 @@
 | Cloudflare Kitesurf | P2 | Open-source announcement/repository identified; no deployment performed | Research-only; cost/security review required | Experimental Workers-hosted CDP browser engine |
 | Anaconda AI Orchestration | P1 | Official platform documentation identified; no account/deployment validated | Optional orchestration candidate; no runtime adapter | Production workflow orchestration, Metaflow lineage and reproducible agentic workflows |
 | BrazeAI Decisioning Studio | P3 | Official product documentation identified; no account/customer data accessed | Domain-specific decisioning only; not a generic agent router | Customer-engagement personalization and continuous marketing experiments |
+| Vercel eve Data Analyst Starter | P2 | Official template/customization docs identified; no database accessed | Reference-only; no adapter | Metric definitions, SQL cost approvals, row caps, timezone-aware reports and eval fixtures |
+| Vercel eve Memory Agent Starter | P2 | Official template docs identified; no personal data/provider accessed | Reference-only; no adapter | Scoped user/channel memory and pluggable memory providers |
+| Vercel eve Drives Starter | P2 | Official starter docs identified; no Drive provisioned | Reference-only; no adapter | Read-only snapshots, serialized write path and drive-busy backpressure |
 | Manus | P1 | Research/task tools exposed; no task dispatched | Planned | Delegated research and execution |
 | Ahrefs | P2 | Tool exposed; account call returned Insufficient plan | Blocked by plan | SEO and site research |
 | Soracom Knowledge | P2 | Documentation tools exposed | Planned | IoT/vendor documentation |
@@ -54,7 +57,7 @@
 | PostHog | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Event analytics and experiment assignment comparison hypothesis |
 | Braintrust | P1 | Named candidate; no runtime proof in this change | Planned; observational only | Dataset/evaluation and scoring comparison hypothesis |
 
-The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. The Vercel/Cloudflare entries are likewise separate capability lanes: browser CLI, skill installer, skill source, desktop computer use, local URL infrastructure, and experimental browser engine. Anaconda is an optional production workflow orchestration candidate; Braze is customer-engagement decisioning, not a generic agent router. None of these inventory entries proves a Termux runtime, authenticated session, fork, or production adapter. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
+The four CEEL entries are separate candidate participants, not claims of authenticated accounts or implemented adapters. The Vercel/Cloudflare entries are likewise separate capability lanes: browser CLI, skill installer, skill source, desktop computer use, local URL infrastructure, and experimental browser engine. Anaconda is an optional production workflow orchestration candidate; Braze is customer-engagement decisioning, not a generic agent router. The three eve starters are P2 reference templates for analytics, scoped memory, and artifact storage, not deployed dependencies. None of these inventory entries proves a Termux runtime, authenticated session, fork, or production adapter. Feature descriptions are hypotheses to verify against version-pinned official documentation and bounded tests.
 
 ## Priority rationale
 

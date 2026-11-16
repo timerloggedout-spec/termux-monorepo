@@ -25,7 +25,7 @@ Repository/API inspection on 2026-11-16 established:
 - Default branch is `main`; latest observed commit is `12014575a8f2c71174a8f9f4cbef9a61e25439e8`.
 - The repository reports a size of 1,561,977 KB. Treat it as a large source repository; do not assume a submodule checkout is lightweight merely because it is shallow.
 - The latest observed HEAD commit is also present in the canonical `apache/camel` repository with the exact same SHA, establishing that this observed tip is upstream-identical: https://github.com/apache/camel/commit/12014575a8f2c71174a8f9f4cbef9a61e25439e8
-- A bounded GitHub commit-search comparison of the 20 most recent commits on both repositories returned the same 20 SHAs in the same order. This is strong evidence that the fork tip is currently tracking upstream at the sampled window; it is not a complete historical proof that no older fork-only commits exist.
+- A bounded GitHub commit-search comparison of the 20 most recent commits on both repositories returned the same 20 SHAs in the same order. This is strong evidence that the fork tip is currently tracking upstream at the sampled window; it is not a complete historical proof that no older fork-only commits exist. No unique customization has been demonstrated in this sample, so an eventual live pin should prefer canonical `apache/camel` unless the full-history audit finds fork-only patches or the operator explicitly wants the fork to remain the maintenance remote.
 - Root `pom.xml` identifies Camel `4.24.0-SNAPSHOT`, a Maven multi-module build, and JDK 21 as the minimum build version.
 - `LICENSE.txt` contains the Apache License 2.0 text.
 - The fork's `.gitmodules` is empty.
@@ -138,7 +138,7 @@ Do not clone the full fork into every CI job. A metadata reference and immutable
 3. **Security contract:** define tool allowlist, identity, authentication, timeout/unknown-outcome behavior, idempotency, output bounds, and secret handling.
 4. **Offline POC:** create deterministic route fixtures and MCP contract tests; no external side effects.
 5. **Runtime spike:** execute only in an isolated disposable environment; record JDK, memory, startup, and compatibility evidence.
-6. **Decision:** adopt patterns, add a shallow gitlink, or retain metadata-only status. Any gitlink must use a reviewed immutable SHA and pass the refTemplates integrity checks and both repository gates.
+6. **Decision:** adopt patterns, add a shallow gitlink, or retain metadata-only status. Prefer the canonical upstream remote unless a fork-only delta is demonstrated or the operator selects the fork as the maintained remote. Any gitlink must use a reviewed immutable SHA and pass the refTemplates integrity checks and both repository gates.
 
 ## 9. Acceptance criteria
 

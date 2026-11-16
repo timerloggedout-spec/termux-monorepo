@@ -27,7 +27,7 @@
 | Product Design | P1 | Skill installed; Work Mode required for full workflow | Planned | UX research, audit, prototyping |
 | Flow AI Collaboration tool | P1 | Workspace tools exposed; no records modified | Planned | Team work-item projection |
 | TinyFish | P1 | Search/fetch/browser tools exposed; no browser mutation run | Planned | Bounded browser workflows |
-| Vercel agent-browser | P0 | Upstream v0.43.0 and stdio MCP documented; repo inventory records 0.26.0 but no live device probe | Discovered; WAF executor adapter planned | Browser-backed operations as last automated route; MCP core profile + default-deny policy |
+| Vercel agent-browser | P0 | Upstream v0.43.0 and stdio MCP documented; repo inventory records 0.26.0 but no live device probe | Discovered; WAF executor adapter planned | Browser-backed operations as last automated route; MCP core/debug behind exact WAF allowlist + default-deny policy; raw server exposure prohibited |
 | Vercel skills CLI | P0 | Official CLI/source identified; no install performed | Discovered; selective project-scoped adoption planned | Skill discovery and installation |
 | Vercel agent-skills | P1 | Official upstream collection identified; no bulk import performed | Source reference; selective review planned | Reusable agent instructions |
 | Vercel agent-desktop | P1 | Official repository identified; no desktop runtime validated | Separate desktop lane; not Android/Termux | OS accessibility and computer-use automation |

@@ -11,7 +11,7 @@ ACTION_VERBS = frozenset({
     "build", "bump", "canonicalize", "centralize", "carry", "check", "close", "collect",
     "compare", "consolidate", "constrain", "correct", "cover", "create", "define", "deploy",
     "differentiate", "distinguish", "document", "emit", "enforce", "exclude", "exercise",
-    "expand", "export", "extend", "fix", "gate", "generate", "guard", "include", "inspect",
+    "expand", "export", "extend", "fix", "gate", "generate", "guard", "harden", "include", "inspect", "map", "pin",
     "keep", "lock", "measure", "migrate", "move", "normalize", "open", "pass", "preserve",
     "prevent", "propagate", "publish", "recognize", "record", "reconcile", "refresh", "refine",
     "register", "reject", "remove", "rename", "repair", "replace", "require", "restore", "retain",

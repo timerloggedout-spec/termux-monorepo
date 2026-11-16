@@ -1,5 +1,8 @@
 name: refTemplates continuous eval
 
+# The strict inventory entry point also runs verify_agent_tooling_templates.py,
+# so base-branch pull_request runs validate the new runtime-template/sMods contract.
+
 on:
   push:
     paths:

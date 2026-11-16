@@ -9,12 +9,12 @@ on:
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
       - "scripts/laya_decision_stub.py"
-      - ".gitmodules"
-      - "tests/test_refTemplates_inventory.py"
       - ".github/workflows/refTemplates-eval.yml"
   pull_request:
     paths:
       - "refTemplates/**"
+      - ".gitmodules"
+      - "tests/test_refTemplates_inventory.py"
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
       - "scripts/laya_decision_stub.py"

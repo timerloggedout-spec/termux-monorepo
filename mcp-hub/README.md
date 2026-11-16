@@ -47,17 +47,19 @@ mcp-hub/
   android-mcp/       git submodule -> github.com/timerloggedout-spec/android-mcp
   api/
     auth.ts          withMcpAuth: timing-safe Bearer token check
+    health.ts        public configuration-readiness endpoint for monitors
     mcp/[server].ts  one dynamic router: /api/mcp/<server> dispatches by
                       name through a registry map, wrapped in withMcpAuth
   test/
-    router.test.ts   covers server dispatch, unknown-server 404, and all
-                      three auth outcomes (401 / 503 / forwarded)
+    router.test.ts   covers server dispatch, auth outcomes, and health readiness
   package.json       deps (mcp-handler, zod) + vercel/tsx dev tools
   vercel.json        one rewrite: /mcp/:server -> /api/mcp/:server
   tsconfig.json
 ```
 
-## Endpoints (live)
+## Endpoints
+
+### MCP endpoints
 
 Deployed as its own Vercel project (`mcp-hub`, not a Root-Directory takeover
 of the pre-existing generic `termux-monorepo` project — that project hosts a
@@ -73,6 +75,46 @@ host. Both endpoints require `Authorization: Bearer <token>`, where the
 token is the project's `MCP_AUTH_TOKEN` environment variable. Verified live
 with a real `initialize` handshake against both hosts, through both prefixes,
 and confirmed a missing/wrong token still gets a 401.
+
+### Public configuration health
+
+`GET /api/health` is unauthenticated so uptime monitors can distinguish a
+configured hub from a missing-auth configuration:
+
+- `200`: `MCP_AUTH_TOKEN` is configured.
+- `503`: the required token is not configured.
+
+The response reveals only whether the variable is present. It never returns
+the token, registered server list, tool metadata, or upstream data. It also
+states that MCP protocol and upstream probes were **not performed**. Therefore
+a 200 is configuration readiness, not proof that a submodule handshake or
+tool call succeeds.
+
+### Static bearer is not OAuth
+
+The current hub uses a pre-shared static Bearer token. Its
+`WWW-Authenticate: Bearer` response is an HTTP authentication challenge,
+but it is **not a complete MCP OAuth sign-in flow**: this deployment does not
+currently publish RFC 9728 Protected Resource Metadata or operate an OAuth
+authorization server.
+
+An OAuth-capable MCP client needs a discoverable authorization-server flow;
+a bare `WWW-Authenticate: Bearer` header does not create one. If OAuth is
+added later, implement and test the full protected-resource metadata,
+authorization-server discovery, token issuance, resource/audience validation,
+and browser CORS exposure together.
+
+Some directories and health checkers probe MCP `initialize` or `tools/list`
+without credentials and may classify the expected 401 as an outage. Use
+`/api/health` for ordinary uptime monitoring. This endpoint does not change
+directory behavior: indexers that require anonymous MCP discovery still need
+a separately designed read-only discovery surface or an explicitly configured
+credential.
+
+Do not copy User-Agent/client-name detection as an authorization boundary.
+Such signals are spoofable and can only be optional user-experience hints;
+every operation that accesses data or invokes a tool must remain authenticated.
+The current router therefore keeps its fail-closed bearer gate unchanged.
 
 ## Hosts and their real status
 

@@ -23,6 +23,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  icm-impact:
+    name: ICM impact gate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Resolve base ref
+        id: base
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+          echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: ICM impact gate contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_icm_impact_gate.py' -v
+
+      - name: Enforce ICM impact receipt
+        run: python3 scripts/ci/icm_impact_gate.py --base "${{ steps.base.outputs.ref }}"
+
   gate:
     name: hygiene + portability gate
     runs-on: ubuntu-latest
@@ -45,13 +73,6 @@ jobs:
           # script body, so a branch name can't inject shell.
           git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
           echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
-
-      - name: ICM impact gate contracts
-        run: python3 -B -m unittest discover -s tests -p 'test_icm_impact_gate.py' -v
-
-      - name: Enforce ICM impact receipt
-        if: github.event_name == 'pull_request'
-        run: python3 scripts/ci/icm_impact_gate.py --base "${{ steps.base.outputs.ref }}"
 
       - name: Index-only scope regressions
         run: python3 -B -m unittest discover -s tests -p 'test_repo_gate_index_scope.py' -v

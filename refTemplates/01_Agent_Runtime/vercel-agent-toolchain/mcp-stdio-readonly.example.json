@@ -3,6 +3,8 @@
     "agent-browser-readonly": {
       "command": "agent-browser",
       "args": [
+        "--session",
+        "que-readonly",
         "--content-boundaries",
         "--max-output",
         "50000",

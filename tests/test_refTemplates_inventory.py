@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -8,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.ci.refTemplates_inventory import validate, validate_smods_contract
+from scripts.ci.refTemplates_inventory import validate, validate_integration_adoption, validate_smods_contract
 
 
 class RefTemplatesEnforcementTests(unittest.TestCase):
@@ -84,6 +85,71 @@ class RefTemplatesEnforcementTests(unittest.TestCase):
             "refTemplates/15_Research_Repo_Templates/external: template directory must not be a symlink",
             validate(entries),
         )
+
+    def test_implemented_integration_requires_template_disposition(self):
+        registry = {
+            "template_adoption_policy": {
+                "enforcement": "required_before_implementation",
+                "applies_to_states": ["repo_adapter_implemented", "native_repository_integration"],
+                "allowed_dispositions": ["adopted", "not_applicable"],
+            },
+            "integrations": [{"id": "sample", "repo_adapter_state": "repo_adapter_implemented"}],
+        }
+        self.assertIn(
+            "sample: implemented integration requires template_adoption disposition",
+            validate_integration_adoption(registry, Path("/tmp")),
+        )
+
+    def test_not_applicable_requires_reason(self):
+        registry = {
+            "template_adoption_policy": {
+                "enforcement": "required_before_implementation",
+                "applies_to_states": ["repo_adapter_implemented", "native_repository_integration"],
+                "allowed_dispositions": ["adopted", "not_applicable"],
+            },
+            "integrations": [{
+                "id": "sample",
+                "repo_adapter_state": "native_repository_integration",
+                "template_adoption": {"status": "not_applicable", "reason": "No matching scaffold."},
+            }],
+        }
+        self.assertEqual(validate_integration_adoption(registry, Path("/tmp")), [])
+
+    def test_adopted_template_must_resolve_and_have_metadata(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            template = root / "refTemplates/15_Research_Repo_Templates/sample"
+            template.mkdir(parents=True)
+            (template / "README.md").write_text("Template", encoding="utf-8")
+            (template / "SOURCE.txt").write_text("https://example.com/source", encoding="utf-8")
+            registry = {
+                "template_adoption_policy": {
+                    "enforcement": "required_before_implementation",
+                    "applies_to_states": ["repo_adapter_implemented", "native_repository_integration"],
+                    "allowed_dispositions": ["adopted", "not_applicable"],
+                },
+                "integrations": [{
+                    "id": "sample",
+                    "repo_adapter_state": "repo_adapter_implemented",
+                    "template_adoption": {
+                        "status": "adopted",
+                        "template_id": "sample-template",
+                        "template_path": "refTemplates/15_Research_Repo_Templates/sample",
+                    },
+                }],
+            }
+            self.assertEqual(validate_integration_adoption(registry, root), [])
+
+    def test_planned_integration_is_not_blocked_before_implementation(self):
+        registry = {
+            "template_adoption_policy": {
+                "enforcement": "required_before_implementation",
+                "applies_to_states": ["repo_adapter_implemented", "native_repository_integration"],
+                "allowed_dispositions": ["adopted", "not_applicable"],
+            },
+            "integrations": [{"id": "sample", "repo_adapter_state": "repo_adapter_planned"}],
+        }
+        self.assertEqual(validate_integration_adoption(registry, Path("/tmp")), [])
 
     def test_smods_pin_requires_matching_gitlink(self):
         modules = [{

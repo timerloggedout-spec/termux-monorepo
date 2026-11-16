@@ -43,10 +43,45 @@ class RefTemplatesEnforcementTests(unittest.TestCase):
                 "has_source": True,
                 "source_nonempty": True,
                 "has_integration_manifest": False,
+                "integration_manifest_valid": False,
             }],
         }]
         self.assertIn(
             "refTemplates/01_Agent_Runtime/sample: runtime integration template requires integration.json",
+            validate(entries),
+        )
+
+    def test_runtime_integration_manifest_must_be_valid_json_object(self):
+        entries = [{
+            "slot": "01_Agent_Runtime",
+            "template_children": [{
+                "name": "sample",
+                "path": "refTemplates/01_Agent_Runtime/sample",
+                "is_symlink": False,
+                "has_readme": True,
+                "readme_nonempty": True,
+                "has_source": True,
+                "source_nonempty": True,
+                "has_integration_manifest": True,
+                "integration_manifest_valid": False,
+            }],
+        }]
+        self.assertIn(
+            "refTemplates/01_Agent_Runtime/sample: integration.json must be valid JSON with an object root",
+            validate(entries),
+        )
+
+    def test_symlinked_template_directory_fails_closed(self):
+        entries = [{
+            "slot": "15_Research_Repo_Templates",
+            "template_children": [{
+                "name": "external",
+                "path": "refTemplates/15_Research_Repo_Templates/external",
+                "is_symlink": True,
+            }],
+        }]
+        self.assertIn(
+            "refTemplates/15_Research_Repo_Templates/external: template directory must not be a symlink",
             validate(entries),
         )
 

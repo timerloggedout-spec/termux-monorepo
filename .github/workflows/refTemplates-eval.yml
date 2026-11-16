@@ -5,6 +5,8 @@ on:
     paths:
       - "refTemplates/**"
       - "scripts/ci/refTemplates_*.py"
+      - "scripts/ci/verify_agent_tooling_templates.py"
+      - "tests/test_agent_tooling_templates.py"
       - "scripts/decision_engines.py"
       - "scripts/laya_decision_stub.py"
       - ".github/workflows/refTemplates-eval.yml"
@@ -37,6 +39,10 @@ jobs:
           python3 scripts/ci/refTemplates_inventory.py \
             --output docs/ops/generated/refTemplates/inventory.jsonl \
             --strict
+      - name: verify agent runtime templates and smods linkage
+        run: python3 scripts/ci/verify_agent_tooling_templates.py
+      - name: focused template contract tests
+        run: python3 -m unittest discover -s tests -p 'test_agent_tooling_templates.py' -v
       - name: score
         run: |
           python3 scripts/ci/refTemplates_score.py \

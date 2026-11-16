@@ -16,7 +16,7 @@
 ## Integrity checklist (for CI / scripts)
 
 1. Every slot under `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`.
-2. Every new `01_Agent_Runtime/*` integration template has `README.md`, `SOURCE.txt`, and `integration.json`.
+2. Every new `01_Agent_Runtime/*` integration template has `README.md`, `SOURCE.txt`, and `integration.json`; all manifest-declared `required_files` must exist and be nonempty.
 3. Every template sMods candidate has an explicit disposition in `refTemplates/smods/INTEGRATIONS.json`.
 4. A `pinned` sMods record must match the exact `.gitmodules` URL and a 160000 gitlink; `fork_required` must not masquerade as a live pin.
 5. Every live `smods/*` gitlink remains reconciled with `.gitmodules`; shallow-pin policy is validated for new pins without silently rewriting historical entries.

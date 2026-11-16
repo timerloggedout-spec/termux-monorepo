@@ -5,7 +5,7 @@
 
 ## Two gates, one constitution
 
-```
+```text
 repo-gate          hygiene / portability / secrets / ratchet
        ↓
 termux-smoke       agent runtime surface is alive
@@ -19,14 +19,13 @@ Every change that wants to reach `master` should survive both gates.
 
 ---
 
-## Gate 1 — repo-gate (on `master-staging`)
+## Gate 1 — repo-gate
 
 ```bash
 python3 scripts/ci/repo_gate.py
 ```
 
 Workflow: `.github/workflows/repo-gate.yml`
-Docs: this file + original Critical-Eval recommendation
 
 ### Design rules (non-negotiable)
 
@@ -46,14 +45,24 @@ Docs: this file + original Critical-Eval recommendation
 | No browser credential stores | changed paths | HARD |
 | No committed backups | changed paths | HARD |
 | High-confidence secrets | changed content | HARD |
+| ICM impact receipt | exact pull-request delta + primary cards + related updates | HARD |
 | Debt counters | whole index | RATCHET |
+
+The ICM impact subgate runs in the repo-gate workflow on every pull request. Exactly one changed `docs/icm/changes/*.json` receipt must enumerate the complete PR delta, identify existing primary ICM cards, and list related repository records changed in the PR. A receipt may declare `updated` only when at least one primary ICM card is changed; `no-map-change` requires a non-empty rationale. Missing, stale, incomplete, unsafe, or unsupported receipt fields fail closed.
+
+### Tests
+
+```bash
+python3 -B -m unittest discover -s tests -p 'test_icm_impact_gate.py' -v
+python3 scripts/ci/icm_impact_gate.py --base origin/master
+```
 
 Baseline: `scripts/ci/baseline.json`
 Lower debt with: `python3 scripts/ci/repo_gate.py --write-baseline`
 
 ---
 
-## Gate 2 — termux-smoke (on `termux-smoke`)
+## Gate 2 — termux-smoke
 
 ```bash
 python3 scripts/ci/termux_smoke.py
@@ -82,9 +91,9 @@ Full docs: [`docs/TERMUX-SMOKE.md`](TERMUX-SMOKE.md)
 
 ## Integration order (ArchW1z)
 
-```
+```text
 P0  credential / session-store containment
-    repo-gate
+    repo-gate (including ICM impact receipt)
     termux-smoke          ← now live
     deterministic configuration
     session SSOT schema
@@ -102,10 +111,11 @@ P2  DeepForge ↔ Rust protocol
 
 ## How to land work
 
-1. Branch off `master-staging` or `termux-smoke`.
-2. Smallest atomic change that preserves invariants.
-3. Push → both gates run on PR.
-4. Green on both → candidate for `master`.
+1. Branch off `master` or the active integration branch.
+2. Add the ICM impact receipt before opening the PR.
+3. Smallest atomic change that preserves invariants.
+4. Push → repo-gate (including ICM impact) and termux-smoke run on the PR.
+5. Green on both + verified task outcome → candidate for `master`.
 
 Do **not** treat `master` as the integration point for large TER-*
 branches.

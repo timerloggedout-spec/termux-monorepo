@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.ci.verify_agent_tooling_templates import validate_manifest
+from scripts.ci.verify_agent_tooling_templates import validate_manifest, validate_security_examples
 
 
 def sample():
@@ -97,6 +97,11 @@ class AgentToolingTemplateTests(unittest.TestCase):
             {deferred["path"]},
         )
         self.assertTrue(any("deferred/research-only entry must not claim" in error for error in errors))
+
+    def test_browser_mcp_examples_use_default_deny_and_confirmation(self):
+        template = ROOT / "refTemplates/01_Agent_Runtime/vercel-agent-toolchain"
+        manifest = __import__("json").loads((template / "integration.json").read_text(encoding="utf-8"))
+        self.assertEqual(validate_security_examples(template, manifest), [])
 
 
 if __name__ == "__main__":

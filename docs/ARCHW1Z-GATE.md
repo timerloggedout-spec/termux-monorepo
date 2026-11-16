@@ -48,7 +48,7 @@ Workflow: `.github/workflows/repo-gate.yml`
 | ICM impact receipt | exact pull-request delta + primary cards + related updates | HARD |
 | Debt counters | whole index | RATCHET |
 
-The ICM impact subgate runs in the repo-gate workflow on every pull request. Exactly one changed `docs/icm/changes/*.json` receipt must enumerate the complete PR delta, identify existing primary ICM cards, and list related repository records changed in the PR. A receipt may declare `updated` only when at least one primary ICM card is changed; `no-map-change` requires a non-empty rationale. Missing, stale, incomplete, unsafe, or unsupported receipt fields fail closed.
+The ICM impact validator runs as a distinct named job (`ICM impact gate`) in the repo-gate workflow on every pull request. Exactly one changed `docs/icm/changes/*.json` receipt must enumerate the complete PR delta, identify existing primary ICM cards, and list related repository records changed in the PR. A receipt may declare `updated` only when at least one primary ICM card is changed; `no-map-change` requires a non-empty rationale. Missing, stale, incomplete, unsafe, or unsupported receipt fields fail closed.
 
 ### Tests
 

@@ -36,7 +36,13 @@ lanes:
   - lane_id: foss-developer-tools
     orgs: [termux-monorepo, Research-Astute]
     inputs: [Tree-sitter, Lizard, Radon, FOSS-runtimes]
-
+  - lane_id: sponsored-research-public-goods
+    orgs: [Research-Astute, termux-monorepo]
+    charter: docs/research/SPONSORED-RESEARCH-PUBLIC-GOODS-LANE.md
+    domains: [education, learning-sciences, formative-assessment, k12-ai-infrastructure, digital-public-goods]
+    inputs: [grant-opportunities, public-goods-catalogs, learning-sciences-frameworks, open-licensing, downstream-adoption-evidence]
+    opportunity_anchors: [C13]
+    integration: normalized-evidence-to-termux-hub
   - lane_id: mcp-admission-security
     orgs: [termux-monorepo, Research-Astute]
     inputs: [MCP, tool-schema-hashes, authorization, delegation, provenance, OpenTelemetry]

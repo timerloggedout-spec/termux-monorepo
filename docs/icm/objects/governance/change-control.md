@@ -19,7 +19,7 @@ The repository separates implementation from promotion so new work is traceable 
 
 - Root `CLAUDE.md` requires integration work to target `master`, cites work items, and requires an ICM impact receipt for every pull request.
 - The receipt under `docs/icm/changes/` enumerates the exact PR delta, existing primary ICM cards, related records changed in the PR, and either an `updated` or justified `no-map-change` disposition.
-- `.github/workflows/repo-gate.yml` runs `scripts/ci/icm_impact_gate.py` on pull requests; the standard repo gate and Termux smoke checks remain separate required validation evidence.
+- `.github/workflows/repo-gate.yml` runs `scripts/ci/icm_impact_gate.py` as the distinct `ICM impact gate` job on pull requests; the standard repo gate and Termux smoke checks remain separate validation evidence. Branch protection must require the `ICM impact gate` status check before it can block merges.
 - The proposal process registers work, itemizes it, records review/acceptance, and couples completion to gate evidence.
 - Human-only edges include credential rotation, history rewrite, protected-branch rules, device state, and interactive provider login.
 

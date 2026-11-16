@@ -24,7 +24,21 @@ def sample():
         "template_id": "vercel-agent-toolchain",
         "status": "discovered",
         "smods_index": "refTemplates/smods/INTEGRATIONS.json",
-        "mcp": {"transport": "stdio", "default_profile": "core"},
+        "mcp": {
+            "transport": "stdio",
+            "default_profile": "core",
+            "exposure_policy": "web_adapter_foundry_only",
+            "raw_server_exposure": False,
+            "tool_allowlist_required": True,
+            "read_only_tool_allowlist": [
+                "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
+            ],
+            "authorized_write_tool_allowlist": [
+                "agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text",
+                "agent_browser_click", "agent_browser_fill", "agent_browser_press", "agent_browser_upload",
+                "agent_browser_confirm", "agent_browser_deny",
+            ],
+        },
         "upstreams": [
             {"id": name, "url": f"https://github.com/example/{name}"}
             for name in (

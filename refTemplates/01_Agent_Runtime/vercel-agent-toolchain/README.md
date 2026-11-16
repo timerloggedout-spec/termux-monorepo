@@ -48,16 +48,15 @@ Example upstream installation on a compatible host:
 npm install -g agent-browser
 agent-browser --version
 # Local browser mode (fresh context; use the policy examples below):
-agent-browser --content-boundaries --action-policy /path/to/policy-readonly.json open https://example.org
-agent-browser --content-boundaries --action-policy /path/to/policy-readonly.json snapshot -i
+agent-browser --session que-readonly --content-boundaries --max-output 50000 --allowed-domains example.org,*.example.org --action-policy /path/to/policy-readonly.json open https://example.org
+agent-browser --session que-readonly --content-boundaries --max-output 50000 --allowed-domains example.org,*.example.org --action-policy /path/to/policy-readonly.json snapshot -i
 
-# Optional Lightpanda engine; the upstream install guide currently lists
-# macOS Apple Silicon and Linux x86_64 binaries, not Android/Termux.
-agent-browser --engine lightpanda --session que-readonly open https://example.org
-agent-browser --engine lightpanda --session que-readonly snapshot -i
+# `--engine lightpanda` is an upstream option, not a validated Termux command.
+# The upstream install guide currently lists macOS Apple Silicon and Linux
+# x86_64 binaries, not Android/Termux. Validate its policy support separately.
 ```
 
-This is an upstream usage example, not a verified Termux command sequence. The CDP URL is shown as an environment-variable name only; never place a real endpoint or token in a tracked file.
+This is an upstream usage example, not a verified Termux command sequence. No CDP endpoint is configured here. Until a protected secret-injection wrapper is implemented and validated, do not pass tokenized CDP URLs in process arguments or tracked configuration.
 
 ## Platform truth
 

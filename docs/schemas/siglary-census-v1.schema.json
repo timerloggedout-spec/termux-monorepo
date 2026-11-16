@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/schemas/siglary-census-v1.schema.json",
+  "title": "Siglary conformance census",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "state", "surfaces_scanned", "hard_violations", "soft_violations", "surface_classes", "violations", "performance"],
+  "properties": {
+    "schema": {"const": "siglary-census/v1"},
+    "state": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+    "receipt_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "feed_appended": {"type": "boolean"},
+    "surfaces_scanned": {"type": "integer", "minimum": 0},
+    "hard_violations": {"type": "integer", "minimum": 0},
+    "soft_violations": {"type": "integer", "minimum": 0},
+    "surface_classes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surfaces_scanned", "compliant", "soft_violations", "hard_violations", "compliance_rate"],
+        "properties": {
+          "surfaces_scanned": {"type": "integer", "minimum": 0},
+          "compliant": {"type": "integer", "minimum": 0},
+          "soft_violations": {"type": "integer", "minimum": 0},
+          "hard_violations": {"type": "integer", "minimum": 0},
+          "compliance_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "rule", "severity", "line", "message"],
+        "properties": {
+          "path": {"type": "string"},
+          "rule": {"type": "string"},
+          "severity": {"enum": ["HARD", "SOFT", "EST"]},
+          "line": {"type": ["integer", "null"], "minimum": 1},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_seconds", "characters_scanned", "files_considered"],
+      "properties": {
+        "runtime_seconds": {"type": "number", "minimum": 0},
+        "characters_scanned": {"type": "integer", "minimum": 0},
+        "files_considered": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

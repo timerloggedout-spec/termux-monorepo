@@ -41,7 +41,7 @@ One object per packet (D0–D5), mirroring log §4. Plus slate-history events (e
 | `prizes{}` | `{status (ESTABLISHED\|NOT_ESTABLISHED), pool, tiers[{place, award, source_url}], notes}` — `pool`/`notes` optional; tiers verbatim amounts only |
 | `opportunity_cost{}` | see Opportunity-cost section below — always populated per event |
 | `registration{}` | `{state, evidence[]}` — platform join/registration state with its proof |
-| `submission{}` | `{state (none\|draft\|submitted\|confirmed), at, confirmation_ref}` |
+| `submission{}` | `{state (none\|draft\|submitted\|confirmed), at, confirmation_ref, evidence[]}` — evidence may confirm state without exposing an exact submission timestamp; do not substitute project-created time for submission time |
 | `brief{}` | `{evidence_pack_ref, anchor_lines[]}` — the verbatim official-brief pack the concept generation anchors to |
 | `projects[]` | see below |
 

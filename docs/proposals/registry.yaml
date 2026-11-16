@@ -1324,3 +1324,25 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: qdesk-self-repair
+    title: "QDesk self-repair loop (SIE ⇒ Desk QUE) with branch reconciliation intake"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/qdesk-self-repair/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feat/que-brr-clean-integration-2026-11-16
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

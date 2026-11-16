@@ -160,5 +160,8 @@ To make the comparison context explicit without changing gate scoring, [PR #5503
 - [Brain research dossier](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md)
 - [Subsystem map](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
 - [Proposed filing schema](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/schemas/delphi-rfp-filing.schema.json)
+- [Complete filed YAML record](filing.yaml)
+- [Source-inspected ownership and integration map](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md)
+- [Delphi RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
 
 **Evidence status:** owner directives, repository implementation and external research are distinct evidence classes. External sources retain individual verification status and limitations.

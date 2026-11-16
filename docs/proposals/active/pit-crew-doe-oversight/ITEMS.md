@@ -1,0 +1,11 @@
+# Work Items — pit-crew-doe-oversight
+
+| ID | Priority | Status | Scope | Acceptance criteria |
+|---|---:|---|---|---|
+| PCDOE-001 | P1 | done | Define Pit Crew vocabulary, roles, authority boundaries and whole-system architecture. | Architecture maps Brain, Pit Wall, Crew Chief, Ballet, Race Control, specialist router, adapters, evidence, DoE and promotion without duplicating canonical owners. |
+| PCDOE-002 | P1 | done | Map cross-domain analogies to concrete architecture components and DoE factors/outcomes. | Each analogy has transferable principle, role/component mapping, treatment dimensions and measurable outcomes/guardrails. |
+| PCDOE-003 | P1 | done | Define DoE Oversight and tournament lifecycle, cohort, factors, outcomes, stopping, analysis and promotion recommendation. | Preregistered controls/treatments, preserved failures, uncertainty, holdout and independent promotion boundary documented. |
+| PCDOE-004 | P1 | done | Produce tournament and system architecture illustrations. | Mermaid source diagrams committed; tournament is multi-round with control, holdout, safety gate and external promotion authority. |
+| PCDOE-005 | P1 | in_review | Reconcile the proposal with Ballet PR #5529 and Brain RFP #5501 / PR #5503. | Independent review confirms no competing scheduler, router, queue, claim protocol, ledger, memory or authority layer. |
+| PCDOE-006 | P1 | pending | Validate proposal links, registry consistency, Mermaid syntax and repository gates on the exact PR SHA. | Proposal validator, repo-gate and termux-smoke pass; all claims match the committed revision. |
+| PCDOE-007 | P1 | pending | Decide whether to fold selected Pit Crew role/oversight material into Ballet/Brain owners or retain as a cross-system architecture doc. | Owner review records disposition; no parallel source of truth remains. |

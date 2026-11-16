@@ -30,6 +30,7 @@ Integration model: lanes may live in sibling organizations (for example Research
 - accelerators-materials-energy
 - procurement-opportunities
 - sponsored-research-public-goods
+- trusted-defender-program-admissions
 
 ## Org separation
 Each lane may be hosted by a separate GitHub organization/repository. The hub registry records:
@@ -65,3 +66,28 @@ Every evidence record has a stable `resource_id`; every digest item has `item_id
 
 ## Termux portability
 Lane tooling should prefer Python/std-lib, POSIX shell, JSON/YAML, SQLite, Git, and HTTP interfaces. Heavy services are optional adapters.
+
+
+## Common knowledge-plane integration
+
+All research lanes use the shared integration contract in
+`docs/research/COMMON-KNOWLEDGE-PLANE.md`. The contract reuses, rather than
+replaces, the repository's existing knowledge surfaces:
+
+- `docs/proposals/active/notation-sets/ITEMS.md` — NSE-003 living vocabulary
+  and NSE-005 context-relationship integration.
+- `docs/icm/objects/knowledge/context-relationship-index.md` and
+  `config/context_relationships/schema.json` — verified, metadata-only
+  repository relationship evidence.
+- `workspace/llm_map/context_relationships/` — generated canonical graph
+  artifacts; never hand-edit.
+- `archwiz/CONCEPT_INDEX.md`, `POINTER_INDEX.md`,
+  `METHODOLOGY_INDEX.md`, and `TOOL_INDEX.md` — operational navigation.
+- `ops/challenge/coordinator.json`, the opportunity-cycle receipts, and
+  `ops/que/feeds/opportunity-priority.json` — opportunity system of record
+  and its derived readiness/priority views.
+
+The Context Relationship Index is not the domain ontology, and the Graph
+Matrix is not a general knowledge graph. Research-Astute owns canonical
+disciplinary concepts and evidence; the hub links and consumes normalized
+records while preserving each source's authority and provenance.

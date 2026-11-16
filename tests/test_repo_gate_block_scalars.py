@@ -210,13 +210,29 @@ class BlockScalarScanTests(unittest.TestCase):
             'items:\n  - "first\n    second\\n more"\n',
             'value: ["first\n  second\\n more"]\n',
             'value: [plain, "first\n  second\\n more"]\n',
+            'value: ["first\n  second", "third\n  fourth\\n more"]\n',
+            'value: [\n  "first\\n more",\n  "second\\n more"]\n',
             'value: {key: "first\n  second\\n more"}\n',
+            'value: {"key":"first\n  second\\n more"}\n',
             'value: &anchor "first\n  second\\n more"\n',
             'value: !!str "first\n  second\\n more"\n',
             '"value": "first\n  second\\n more"\n',
         ):
             with self.subTest(source=source):
                 self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                if yaml is not None:
+                    yaml.safe_load(source)
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+
+    def test_flow_plain_colons_do_not_open_quote_state(self) -> None:
+        for source in (
+            "value: [prefix:'unfinished]\n",
+            'value: [prefix:"unfinished]\n',
+            "value: {key: prefix:'unfinished}\n",
+        ):
+            with self.subTest(source=source):
                 if yaml is not None:
                     yaml.safe_load(source)
                 found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")

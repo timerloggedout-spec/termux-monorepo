@@ -184,10 +184,16 @@ SIBLING_ENTRY_RE = re.compile(r"^[ ]*(?:- +[^\s#]|[^\s#][^:]*:)")
 LITERAL_ESCAPE_RE = re.compile(r"\\[nrt]")
 
 
-def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> str | None:
+def literal_escape_fault(
+    line: str,
+    quote_state: list[bool] | None = None,
+    flow_state: list[int] | None = None,
+) -> str | None:
     """Return the offending `\\x` escape in `line`, or None.
 
     Optional mutable quote_state preserves open quotes across YAML lines.
+    Optional flow_state preserves collection depth so a second quoted item after
+    a multiline item still begins at a flow delimiter, not inside a plain scalar.
     Scans left to right tracking quoted-scalar state, so the rule fires only where
     the escape is unquoted and therefore unintended: inside either quote style the
     author has explicitly asked for the backslash (as a real escape in `"..."`, as
@@ -208,7 +214,8 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
     index = 0
     in_single, in_double = quote_state if quote_state is not None else (False, False)
     scalar_start = not (in_single or in_double)
-    flow_depth = 0
+    flow_depth = flow_state[0] if flow_state is not None else 0
+    quoted_end = -2
     while index < len(line):
         char = line[index]
         if in_double:
@@ -218,6 +225,7 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
             if char == '"':
                 in_double = False
                 scalar_start = False
+                quoted_end = index
         elif in_single:
             if char == "'":
                 if line[index + 1 : index + 2] == "'":
@@ -225,6 +233,7 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
                     continue
                 in_single = False
                 scalar_start = False
+                quoted_end = index
         elif char == '"' and scalar_start:
             in_double = True
         elif char == "'" and scalar_start:
@@ -244,7 +253,8 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
             ):
                 return line[index : index + 2]
         elif char == ":" and (
-            line[index + 1 : index + 2] in ("", " ", "\t") or flow_depth
+            line[index + 1 : index + 2] in ("", " ", "\t")
+            or (flow_depth and quoted_end == index - 1)
         ):
             scalar_start = True
         elif scalar_start and char == "-" and line[index + 1 : index + 2] in (" ", "\t"):
@@ -266,6 +276,8 @@ def literal_escape_fault(line: str, quote_state: list[bool] | None = None) -> st
         index += 1
     if quote_state is not None:
         quote_state[:] = [in_single, in_double]
+    if flow_state is not None:
+        flow_state[:] = [flow_depth]
     return None
 
 
@@ -399,13 +411,14 @@ def yaml_structure_faults(text: str) -> list[str]:
     lines = text.replace("\r\n", "\n").split("\n")
     inside_block, block_faults = block_scalar_scan(lines)
     quote_state = [False, False]
+    flow_state = [0]
 
     for index, line in enumerate(lines):
         number = index + 1
         if index in inside_block:
             continue
         continued_quote = any(quote_state)
-        escape = literal_escape_fault(line, quote_state)
+        escape = literal_escape_fault(line, quote_state, flow_state)
         if continued_quote:
             # YAML folds multiline quoted content; it is not a new mapping entry.
             continue

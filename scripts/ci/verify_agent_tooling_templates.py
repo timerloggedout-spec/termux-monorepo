@@ -106,6 +106,41 @@ def validate_manifest(
     mcp = manifest.get("mcp")
     if not isinstance(mcp, dict) or mcp.get("transport") != "stdio" or mcp.get("default_profile") != "core":
         errors.append("integration.json: agent-browser MCP transport must be stdio with the core profile")
+    else:
+        if mcp.get("exposure_policy") != "web_adapter_foundry_only" or mcp.get("raw_server_exposure") is not False:
+            errors.append("integration.json: raw agent-browser MCP server must not be exposed directly")
+        if mcp.get("tool_allowlist_required") is not True:
+            errors.append("integration.json: Web Adapter Foundry tool allowlist is mandatory")
+        readonly_tools = mcp.get("read_only_tool_allowlist")
+        write_tools = mcp.get("authorized_write_tool_allowlist")
+        if not isinstance(readonly_tools, list) or not all(isinstance(x, str) for x in readonly_tools):
+            errors.append("integration.json: read_only_tool_allowlist must be a string array")
+            readonly_tools = []
+        if not isinstance(write_tools, list) or not all(isinstance(x, str) for x in write_tools):
+            errors.append("integration.json: authorized_write_tool_allowlist must be a string array")
+            write_tools = []
+        required_read = {"agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text"}
+        required_write = {"agent_browser_click", "agent_browser_fill", "agent_browser_press", "agent_browser_upload", "agent_browser_confirm", "agent_browser_deny"}
+        if not required_read.issubset(set(readonly_tools)):
+            errors.append("integration.json: read-only MCP allowlist is missing required read tools")
+        if not set(readonly_tools).issubset(set(write_tools)) or not required_write.issubset(set(write_tools)):
+            errors.append("integration.json: authorized-write allowlist must include read tools and the confirmed write tools")
+        forbidden_prefixes = (
+            "agent_browser_flow_", "agent_browser_auth_", "agent_browser_plugin_",
+            "agent_browser_storage_", "agent_browser_cookies_", "agent_browser_network_",
+            "agent_browser_dashboard_", "agent_browser_state_",
+        )
+        forbidden_exact = {"agent_browser_eval", "agent_browser_get_cdp_url", "agent_browser_install", "agent_browser_upgrade", "agent_browser_chat"}
+        for tool_name in set(readonly_tools) | set(write_tools):
+            if tool_name in forbidden_exact or tool_name.startswith(forbidden_prefixes):
+                errors.append(f"integration.json: MCP tool allowlist contains forbidden tool {tool_name}")
+        forbidden_read_writes = {
+            "agent_browser_click", "agent_browser_fill", "agent_browser_type", "agent_browser_press",
+            "agent_browser_check", "agent_browser_uncheck", "agent_browser_select",
+            "agent_browser_upload", "agent_browser_download", "agent_browser_confirm", "agent_browser_deny",
+        }
+        if set(readonly_tools) & forbidden_read_writes:
+            errors.append("integration.json: read-only MCP allowlist contains write-capable tools")
 
     candidates = manifest.get("smods_candidates")
     if not isinstance(candidates, list):

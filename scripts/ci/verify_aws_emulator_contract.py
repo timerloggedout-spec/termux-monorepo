@@ -28,33 +28,37 @@ REQUIRED_GATES = {
     "security_review",
     "exact_sha_ci",
 }
+REQUIRED_KEYS = {
+    "schema_version",
+    "integration_id",
+    "status",
+    "runtime_enabled",
+    "execution_authority",
+    "target",
+    "endpoint",
+    "cloud_fallback",
+    "credentials",
+    "production_allowed",
+    "security_testing_allowed",
+    "selected_emulator_release",
+    "selected_evaluation_suite_revision",
+    "candidate_services",
+    "allowed_environments",
+    "forbidden_environments",
+    "required_gates",
+    "upstream",
+}
 
 
 def validate_contract(data: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    required = {
-        "schema_version",
-        "integration_id",
-        "status",
-        "runtime_enabled",
-        "execution_authority",
-        "target",
-        "endpoint",
-        "cloud_fallback",
-        "credentials",
-        "production_allowed",
-        "security_testing_allowed",
-        "selected_emulator_release",
-        "selected_evaluation_suite_revision",
-        "candidate_services",
-        "allowed_environments",
-        "forbidden_environments",
-        "required_gates",
-        "upstream",
-    }
-    missing = sorted(required - data.keys())
+    missing = sorted(REQUIRED_KEYS - data.keys())
+    extra = sorted(data.keys() - REQUIRED_KEYS)
     if missing:
         errors.append(f"missing required keys: {', '.join(missing)}")
+    if extra:
+        errors.append(f"unexpected keys: {', '.join(extra)}")
+    if missing:
         return errors
 
     if data["schema_version"] != "aws-emulator-integration.v1":
@@ -67,7 +71,9 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("execution_authority must be none")
     if data["target"] != "local_only":
         errors.append("target must be local_only")
-    if data["endpoint"] not in ALLOWED_ENDPOINTS:
+
+    endpoint = data["endpoint"]
+    if not isinstance(endpoint, str) or endpoint not in ALLOWED_ENDPOINTS:
         errors.append("endpoint must be an approved loopback HTTPS endpoint")
     if data["cloud_fallback"] != "deny":
         errors.append("cloud_fallback must be deny")
@@ -78,12 +84,10 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
     if data["security_testing_allowed"] is not False:
         errors.append("security_testing_allowed must be false")
 
-    if data["selected_emulator_release"] is not None:
-        if not isinstance(data["selected_emulator_release"], str) or not data["selected_emulator_release"].strip():
-            errors.append("selected_emulator_release must be null or a non-empty pinned version")
-    if data["selected_evaluation_suite_revision"] is not None:
-        if not isinstance(data["selected_evaluation_suite_revision"], str) or not data["selected_evaluation_suite_revision"].strip():
-            errors.append("selected_evaluation_suite_revision must be null or a non-empty immutable revision")
+    for field in ("selected_emulator_release", "selected_evaluation_suite_revision"):
+        value = data[field]
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            errors.append(f"{field} must be null or a non-empty pinned version")
 
     services = data["candidate_services"]
     if not isinstance(services, list) or not services or any(
@@ -92,14 +96,21 @@ def validate_contract(data: dict[str, Any]) -> list[str]:
         errors.append("candidate_services must be a non-empty list of service identifiers")
 
     allowed = data["allowed_environments"]
-    if not isinstance(allowed, list) or not set(allowed) <= {"developer_local", "hosted_ci"}:
+    if not isinstance(allowed, list) or any(not isinstance(item, str) for item in allowed):
+        errors.append("allowed_environments must be a list of environment identifiers")
+    elif not set(allowed) <= {"developer_local", "hosted_ci"}:
         errors.append("allowed_environments contains an unsupported environment")
+
     forbidden = data["forbidden_environments"]
-    if not isinstance(forbidden, list) or "production" not in forbidden:
+    if not isinstance(forbidden, list) or any(not isinstance(item, str) for item in forbidden):
+        errors.append("forbidden_environments must be a list of environment identifiers")
+    elif "production" not in forbidden:
         errors.append("forbidden_environments must explicitly include production")
 
     gates = data["required_gates"]
-    if not isinstance(gates, list) or not REQUIRED_GATES <= set(gates):
+    if not isinstance(gates, list) or any(not isinstance(item, str) for item in gates):
+        errors.append("required_gates must be a list of gate identifiers")
+    elif not REQUIRED_GATES <= set(gates):
         errors.append("required_gates is missing one or more mandatory gates")
 
     upstream = data["upstream"]

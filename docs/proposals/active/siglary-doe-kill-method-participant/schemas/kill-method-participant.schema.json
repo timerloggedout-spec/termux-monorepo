@@ -165,6 +165,12 @@
             "maxLength": 80
           },
           "uniqueItems": true
+        },
+        "domain_context": {
+          "enum": [
+            "general",
+            "agentic-gambling"
+          ]
         }
       }
     },
@@ -433,6 +439,38 @@
           ]
         }
       }
+    },
+    "cull_consequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "culled_participant",
+        "wallet_balance_at_cull",
+        "pool_destination",
+        "same_record"
+      ],
+      "properties": {
+        "culled_participant": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "wallet_balance_at_cull": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "pool_destination": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "same_record": {
+          "const": true
+        }
+      }
     }
   },
   "allOf": [
@@ -602,6 +640,41 @@
             }
           }
         }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "method": {
+            "properties": {
+              "method_id": {
+                "const": "doe.cull_participant"
+              }
+            },
+            "required": [
+              "method_id"
+            ]
+          },
+          "scope": {
+            "properties": {
+              "domain_context": {
+                "const": "agentic-gambling"
+              }
+            },
+            "required": [
+              "domain_context"
+            ]
+          }
+        },
+        "required": [
+          "method",
+          "scope"
+        ]
+      },
+      "then": {
+        "required": [
+          "cull_consequence"
+        ]
       }
     }
   ]

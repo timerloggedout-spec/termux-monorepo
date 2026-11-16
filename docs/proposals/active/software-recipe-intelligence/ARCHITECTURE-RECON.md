@@ -19,8 +19,14 @@
 |---|---|---|---|
 | Repo Replay (external repo; imported by reference) | Session-provenance recipe/pointer composition and replay plane | Source recipe/provenance adapter; avoid reimplementing methods | Not owner by default |
 | Commit Replay | Git-object/fragment pointer recipes and Git-plane composition | Code-fragment ingredients, Git provenance, safe materialization references | Not owner by default |
-| Monorepo Brain kernel | Typed reasoning kernel and shared subsystem composition (per existing Brain ownership docs and PR #5492) | Reasoning primitives only if contracts match | Candidate consumer; inspect deployed implementation |
-| MOSAIC Brain | Methodology-intelligence subsystem under MOSAIC/DoE work (PR #5502) | Method evaluation/advisory analysis may consume recipe records | Candidate consumer; **not selected as owner** |
+| Monorepo Brain (PR #5492) | Proposed repository-wide cognitive coordination layer; subsystem map includes a distinct [0m`domains` / domain-cognition family with shared Brain contracts. The ownership map explicitly keeps execution, policy, memory, routing, verification and evidence with existing owners. | Candidate integration contract or software-domain cognition package; reuse its typed reasoning and domain interfaces if admitted. | **Strong candidate interface to investigate, not an assigned owner.** PR #5492 is open and unmerged at this snapshot. |
+| MOSAIC Brain (PR #5502) | Dedicated ArchWiz subsystem, crate `mosaic-brain`, scope `methodology_intelligence`, advisory-only recommendations over CRG/ICM/DoE/Delphi evidence. | Consume methodology/experiment recipe references and evaluate methodology treatments. | **Not the owner for broad software capability recipes.** PR #5502 is open and unmerged at this snapshot. |
+| Agent Team Control Plane / Agent Team Orchestration | Existing manager/router/specialist/evidence-collector/review/MoneyBall/3L0/BIUDL operating model; provider and agent identities remain distinct. | Agent/team/workflow recipe source and composition contract. | Existing orchestration authority; do not create another manager, router, roster or control plane. |
+| Native Orchestration Contracts | `ORCHESTRATION-TREATMENT.schema.json` defines repeatable orchestration treatments; `ORCHESTRATION-RECEIPT.schema.json` defines one cycle receipt. | Reuse the treatment schema for orchestration/workflow recipe instances and the receipt schema for execution observations. | **Direct overlap.** Do not create a second orchestration-treatment or run-receipt schema. |
+| Termux Multi-Agent | Existing `termux-multi-agent/` implementation/documentation describes task registry, agent provisioning, scheduler, dashboard and CedarScript MCP. | Agent recipes and local execution-environment references. | Existing implementation surface; current live runtime/deployment state not verified in this recon. |
+| Temporal Durable Execution / AI Cookbook | Existing RECON/RFP/PASS records an Oracle Method cycle and evaluates ai-cookbook patterns (agentic loop, HITL approval, deep research), with no Temporal substrate selected. | Workflow recipe starters, durable wait/resume and idempotency patterns. | Pattern source and experiment history; not a selected runtime or new orchestration owner. |
+| System One classifier census | Existing classifier/decision-system research inventory. | Candidate algorithm adapters and classification baselines. | Research catalogue, not a new classifier registry or proven deployed classifier. |
+| Agent Evaluation Lane Registry | Existing evaluation taxonomy separates repository-native evidence, ATES/3L0, external evaluators, SWE cohorts and local harnesses. | Evaluation contracts and evidence adapters for recipe quality. | Observational adapters only; repository evidence remains canonical. |
 | Integration Intelligence | Canonical integration registry, normalized event contract, provider adapters | Integration/capability identity, source evidence, provider state | Existing authority to reuse |
 | CEEL | Continuous capability discovery, classification, mapping, proposal, experiment, verification, integration, measurement and evolution | Discovery/evolution lifecycle | Existing process lane; not a duplicate orchestrator |
 | Context Relationship Graph (CRG) | Metadata-only, evidence-backed relationship graph with verified/candidate distinction | Relationships between recipes, source files, symbols, PRs, issues and capabilities | Existing graph authority; projection only |
@@ -34,6 +40,24 @@
 | Termux MCP stewardship | Device-aware, lean-worktree, read-only-first operational discipline | Local execution constraints and bounded apply process | Operational source; not the recipe owner |
 
 The table distinguishes confirmed responsibilities from candidate contributions. It does not establish implementation maturity, live deployment, or ownership beyond the cited repository records.
+
+
+
+### Deployment and maturity snapshot (2026-11-16)
+
+- **Monorepo Brain — PR #5492:** open, non-draft, unmerged. The branch contains a Rust kernel, tests, and a source-inspected ownership/subsystem architecture. Its design defines domain cognition as one subsystem family; it does not establish that the kernel is deployed or that any particular domain package is admitted.
+- **MOSAIC / MOSAIC Brain — PR #5502:** open, non-draft, unmerged. The branch is a methodology program/specification and implementation plan. MOSAIC Brain's declared scope is `methodology_intelligence`, with advisory-only output; this is narrower than the software capability/recipe domain.
+- **Termux Multi-Agent:** implementation files and operator documentation exist on `master`; documentation describes how to run provisioning, scheduling, dashboard and MCP components. This recon did not start the runtime or verify current device deployment.
+- **Agent Team Control Plane / Agent Team Orchestration:** canonical architecture and schemas exist on `master`; the roster distinguishes providers, models, agents, adapters and roles. A roster entry or catalog probe does not prove a configured execution adapter or active deployment.
+- **CEEL / Integration Intelligence:** architecture, registry and lifecycle specifications exist. CEEL is explicitly a discovery/evolution lane that reuses Integration Intelligence, DoE, ATES, Delphi and proposal authorities; it is not a second control plane.
+- **Temporal Durable Execution:** a PASS record documents a completed research/experiment cycle on 2026-10-27. The pass records candidate patterns such as `cookbook-agent-loop`; it does not mean Temporal was selected as the fleet execution substrate.
+- **System One classifier census:** a research inventory exists; no assumption is made here that its candidates are deployed as a unified classifier runtime.
+
+This is a repository artifact/status snapshot, not a device-health or live-runtime audit. “Implemented in repository,” “documented as runnable,” “workflow configured,” “connected in this session,” “validated,” and “deployed” remain separate states.
+
+### Most plausible integration hypothesis — not a placement decision
+
+The Monorepo Brain subsystem map's **domain-cognition** family is a plausible shared contract for a software-domain package. That is materially different from making the entire capability a child of MOSAIC Brain. The broad recipe model may instead be a shared domain contract with adapters to Repo Replay, Commit Replay, orchestration treatments, agent/team systems, Integration Intelligence, DoE, CRG and existing Brain interfaces. The system-wide ownership and interface census must test these options before an owner is selected.
 
 ## 3. Responsibility boundaries to preserve
 

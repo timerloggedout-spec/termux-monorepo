@@ -5,8 +5,6 @@ on:
     types: [requested, in_progress, completed]
   workflow_job:
     types: [queued, in_progress, completed]
-  schedule:
-    - cron: "*/30 * * * *"
 
 permissions:
   actions: read
@@ -62,6 +60,3 @@ jobs:
             --data-binary @runtime-event.json \
             -o /dev/null
 
-      - name: Refresh observer liveness
-        if: github.event_name == 'schedule'
-        run: echo "Scheduled tokenless observer heartbeat; live event rows remain sourced from GitHub lifecycle deliveries."

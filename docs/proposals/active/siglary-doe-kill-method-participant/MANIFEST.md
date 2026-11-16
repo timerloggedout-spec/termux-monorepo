@@ -32,7 +32,7 @@ Participant identity/version, method identity/version, and schema identity/versi
 
 - `RECON.md` — source-backed ownership and existing-mechanism map.\n- `DOE-DESIGN.md` — pre-registered synthetic factorial design; design-only, not admitted or executed.
 - `schemas/kill-method-participant.schema.json` — draft v1 participant contract.
-- `fixtures/kill-method-participant.valid.json` — non-executable fixture.\n- `scripts/proposals/validate_kill_method_participant.py` — stdlib-only contract validator.\n- `tests/test_kill_method_participant.py` — fail-closed positive/negative contract tests.\n- `.github/workflows/repo-gate.yml` — focused contract test + validator invocation.
+- `fixtures/kill-method-participant.*.valid.json` — four non-executable method-family fixtures (queue, worker fault injection, DoE cull, exact feature flag).\n- `scripts/proposals/validate_kill_method_participant.py` — stdlib-only contract validator.\n- `tests/test_kill_method_participant.py` — fail-closed positive/negative contract tests.\n- `.github/workflows/repo-gate.yml` — focused contract test + validator invocation.
 
 ## Deferred gates
 

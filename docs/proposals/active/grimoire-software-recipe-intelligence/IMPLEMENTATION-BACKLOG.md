@@ -1,4 +1,4 @@
-# GRIMOIRE Implementation Backlog
+> Scope correction: this backlog belongs to the existing MOSAIC Brain capability; it does not establish a GRIMOIRE product or independent system. See ../continuous-capability-evolution-lab/MOSAIC-BRAIN-SOFTWARE-RECIPE-MODEL.md and SCOPE-CORRECTION.md.\n\n# MOSAIC Brain — SRM Domain Extension Backlog
 
 Status: proposed backlog; not implementation authorization.
 

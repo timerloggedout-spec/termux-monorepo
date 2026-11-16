@@ -13,7 +13,7 @@ Validate the contract offline:
 
 ```sh
 python3 scripts/ci/verify_aws_emulator_contract.py
-python3 -m unittest tests.test_aws_emulator_contract -v
+python3 -m unittest discover -s tests -p 'test_aws_emulator_contract.py' -v
 ```
 
 The validator does not install, start, or contact AWS Emulator. A supported-host pilot requires a separately reviewed pinned release and evaluation-suite revision, an isolated disposable environment, and exact-SHA evidence.

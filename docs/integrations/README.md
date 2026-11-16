@@ -13,7 +13,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 - [Superpowers design](../superpowers/specs/2026-11-02-integration-intelligence-design.md) and [implementation plan](../superpowers/plans/2026-11-02-integration-intelligence.md).
 - [CEEL architecture](../superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md), [platform comparison](PLATFORM-COMPARISON.md), [event contract](CEEL-EVENT-CONTRACT.md), and [capability opportunity graph](capability-opportunity-graph.json).
 
-## Authority model
+## L3VERAGE Department\n\n[`../leverage/README.md`](../leverage/README.md) defines the intervention/mechanism discipline that consumes CEEL opportunities and submits bounded experiments to the existing DoE family. Integration Intelligence remains the authority for integration identity and events; L3VERAGE stores only mechanism definitions and lifecycle references, not provider records or run telemetry.\n\n## Authority model
 
 Repository files, Git history, CI results, and approved proposal records remain authoritative for repository state. External services are providers of bounded observations or operations. A connector visible in one ChatGPT session is not evidence of availability to Termux, GitHub Actions, another collaborator, or production.
 

@@ -15,13 +15,20 @@ on:
     types: [created, edited]
   pull_request_review_comment:
     types: [created, edited]
+  pull_request_review:
+    types: [submitted, edited]
+  commit_comment:
+    types: [created, edited]
+  release:
+    types: [published, edited]
 
 permissions:
   contents: read
   pull-requests: read
+  issues: read
 
 concurrency:
-  group: do-statement-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.event.discussion.number || github.ref }}
+  group: do-statement-${{ github.event_name }}-${{ github.event.issue.number || github.event.pull_request.number || github.event.discussion.number || github.event.release.id || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,12 +36,15 @@ jobs:
     if: >-
       github.event_name == 'push' ||
       github.event_name == 'pull_request' ||
-      github.event_name == 'issues' ||
-      github.event_name == 'discussion' ||
       (
         (
+          github.event_name == 'issues' ||
+          github.event_name == 'discussion' ||
+          github.event_name == 'release' ||
           github.event_name == 'issue_comment' ||
+          github.event_name == 'commit_comment' ||
           github.event_name == 'discussion_comment' ||
+          github.event_name == 'pull_request_review' ||
           github.event_name == 'pull_request_review_comment'
         ) && !endsWith(github.actor, '[bot]')
       )
@@ -46,5 +56,53 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check DO statements, PR text, comments, and commit subjects
+      - name: Test DO and Siglary contract rules
+        run: python -m unittest discover -s tests -p 'test_siglary_validate.py' -v
+      - name: Enforce action-first collaboration language
         run: python scripts/ci/check_do_statement_style.py
+      - name: Enforce Siglary on changed files and event payload
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          args=(--event-file "$GITHUB_EVENT_PATH" --event-name "$EVENT_NAME" --report "$RUNNER_TEMP/siglary-event-census.json" --feed "$RUNNER_TEMP/siglary-event-feed.jsonl")
+          case "$EVENT_NAME" in
+            issue_comment|discussion_comment|pull_request_review_comment|commit_comment)
+              if ! jq -e '.comment.body | type == "string" and length > 0' "$GITHUB_EVENT_PATH" >/dev/null; then
+                echo "No authored comment body; no surface to validate."
+                exit 0
+              fi
+              ;;
+            pull_request_review)
+              if ! jq -e '.review.body | type == "string" and length > 0' "$GITHUB_EVENT_PATH" >/dev/null; then
+                echo "No authored review summary; no surface to validate."
+                exit 0
+              fi
+              ;;
+          esac
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            args+=(--changed-from "$BASE_SHA")
+          elif [ "$EVENT_NAME" = "push" ]; then
+            if [ -z "$BASE_SHA" ] || [[ "$BASE_SHA" =~ ^0+$ ]]; then
+              echo "New-branch push has no prior range; the pull-request gate owns prospective validation."
+              exit 0
+            fi
+            if ! git diff --name-only "$BASE_SHA...HEAD" | grep -Eq '^(skills/|\.agents/skills/|\.github/skills/|\.github/ISSUE_TEMPLATE/|\.github/PULL_REQUEST_TEMPLATE\.md$|templates/|docs/icm/|([^/]+/)*CLAUDE\.md$|ops/doe/|ops/que/dispatch/|ops/que/feeds/|ops/challenge/|docs/ops/doe/|docs/proposals/active/notation-sets/(SIGLARY-STANDARD|CAVEMAN-MICRO-DENSE-V2)\.md$|scripts/siglary/|tests/test_siglary_validate\.py$)'; then
+              echo "No Siglary-enforced surface changed; skip the surface census."
+              exit 0
+            fi
+            args+=(--changed-from "$BASE_SHA")
+          else
+            args+=(--event-only)
+          fi
+          python scripts/siglary/siglary_validate.py "${args[@]}"
+      - name: Upload Siglary event receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: siglary-event-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/siglary-event-census.json
+            ${{ runner.temp }}/siglary-event-feed.jsonl
+          if-no-files-found: ignore
+          retention-days: 14

@@ -93,7 +93,7 @@ flowchart TD
 ## 4. Resource and repository register
 
 | Resource | Role in this lane | Current disposition | License / reuse note |
-|---|---|---|---|
+|---|---|---|---|---|
 | [aws/aws-emulator](https://github.com/aws/aws-emulator) | Local AWS API emulator; Rust workspace, one crate per service | upstream reference; no upstream PRs | CC0-1.0; `vendor/` Apache-2.0 |
 | [aws/api-models-aws](https://github.com/aws/api-models-aws) | Generated Smithy JSON AST service models | pinned contract input; generated/read-only | Apache-2.0 |
 | [aws/aws-emulator-evaluation-suite](https://github.com/aws/aws-emulator-evaluation-suite) | Boto3 fidelity scenarios and runner | upstream test corpus; read-only | CC0-1.0 |

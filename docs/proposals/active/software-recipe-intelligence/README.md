@@ -36,6 +36,9 @@ No new Brain, graph database, memory store, experiment ledger, orchestrator, not
 ## Existing authorities to reuse
 
 - Repo Replay and Commit Replay for their existing, deliberately separate recipe/pointer/replay models.
+- Native Orchestration Contracts: `ORCHESTRATION-TREATMENT.schema.json` for repeatable orchestration patterns and `ORCHESTRATION-RECEIPT.schema.json` for cycle observations.
+- The Monorepo Brain's proposed domain-cognition contract as a candidate integration surface only; the broad model is not assigned to a Brain, and MOSAIC Brain's narrower `methodology_intelligence` scope is not presumed to own it.
+- Agent Team Control Plane, Termux Multi-Agent, and Temporal AI Cookbook patterns as existing workflow/agent recipe sources; their deployment and adoption states must remain evidence-qualified.
 - Context Relationship Graph for metadata-only, evidence-qualified relationships.
 - Integration Intelligence registry and event contract for provider/capability identities and normalized integration evidence.
 - CEEL for continuous discovery, classification, mapping, comparison, and governed evolution.

@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-16T12:34:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1324,3 +1324,25 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: apache-camel-smods-integration
+    title: Apache Camel integration opportunity — governed MCP, event routing, and EIP adapter
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/apache-camel-smods-integration/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - proposal/apache-camel-smods-integration
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

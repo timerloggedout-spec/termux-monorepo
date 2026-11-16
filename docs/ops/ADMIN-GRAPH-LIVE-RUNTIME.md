@@ -10,6 +10,8 @@
 1. GitHub emits `workflow_job` queued/in-progress/completed events for all
    workflows. The Worker resolves each job's authoritative workflow-run record
    through the Actions API and stores both workflow-level and job-level state.
+   A two-minute bounded run snapshot reconciles final workflow conclusions that
+   can arrive just after the last job-completed delivery.
 2. The observer workflow mints a read-only GitHub App installation token
    with Actions read scope. It never checks out or executes the triggering SHA.
 3. `scripts/ops/admin_graph_runtime_event.py` emits a closed metadata
@@ -38,7 +40,8 @@ The D1 database is `admin-graph-runtime-events`; its schema is versioned at
 
 - This is near-real-time event delivery, not a fabricated animation. GitHub
   webhook-triggered Actions runs publish state changes as separate events.
-- Browser refresh interval is 10 seconds. Delivery latency also includes
+- Browser refresh interval is 10 seconds; the scheduled workflow-state
+  reconciliation runs every two minutes. Delivery latency also includes
   GitHub's webhook scheduling and the observer workflow startup time.
 - Workflow and job lifecycle are observed. Step-level detail, agent tool-call
   spans and handoffs are not claimed unless a producer emits them under a

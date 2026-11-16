@@ -192,10 +192,10 @@ def glyph_clusters(line: str) -> list[str]:
 def text_findings(text: str, path: str, kind: str, glyphs: set[str], domains: dict[str, set[str]]) -> list[dict[str, Any]]:
     found, lines = [], visible_lines(text)
     for i, (n, line) in enumerate(lines):
-        check = "" if "Working title" in line or "Caveman Micro Dense" in line else line
+        check = "" if "Working title" in line or "Caveman Micro Dense" in line else re.sub(r"`+.*?`+", "", line)
         for glyph in glyph_clusters(check):
             if glyph not in glyphs: found.append({"path": path, "rule": "UNISSUED-GLYPH", "severity": "HARD", "line": n, "message": f"unissued pictograph {glyph}"})
-        if any(p.search(line) for p in MISUSE): found.append({"path": path, "rule": "CLASS-MISUSE", "severity": "HARD", "line": n, "message": "keep GLYPHS, CHORDS and OPERATORS distinct"})
+        if any(p.search(check) for p in MISUSE): found.append({"path": path, "rule": "CLASS-MISUSE", "severity": "HARD", "line": n, "message": "keep GLYPHS, CHORDS and OPERATORS distinct"})
         plain = line.replace(chr(96), "")
         for m in GLYPH.finditer(plain):
             if m.group(1) not in glyphs: found.append({"path": path, "rule": "UNISSUED-GLYPH", "severity": "HARD", "line": n, "message": f"glyph {m.group(1)} is not issued"})

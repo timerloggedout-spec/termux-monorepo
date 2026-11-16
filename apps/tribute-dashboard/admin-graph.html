@@ -139,10 +139,10 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 <header class="topbar">
   <div>
     <h1>Admin Interaction Graph</h1>
-    <div class="sub">Canonical model → deterministic render · draft, verify, diff &amp; dispatch-prep from this screen · <span class="sim-badge">SIMULATED PULSES — prototype, not live traffic</span> <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
+    <div class="sub">Canonical model → deterministic render · draft, verify, diff &amp; dispatch-prep from this screen · <span class="clean-badge" id="liveStatus">LIVE FEED · CONNECTING</span> <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
   </div>
   <div class="controls" role="group" aria-label="Graph controls">
-    <button class="btn primary" id="pulseBtn" type="button">▶ Send pulse</button>
+    <button class="btn primary" id="pulseBtn" type="button">↻ Refresh live feed</button>
     <button class="btn" id="playPauseBtn" type="button" aria-pressed="false">⏸ Pause motion</button>
     <button class="btn" id="resetBtn" type="button">Reset layout</button>
   </div>
@@ -1163,16 +1163,49 @@ function syncGate(){
 }
 gate.addEventListener("click",function(){vercelArmed=!vercelArmed;syncGate();log(vercelArmed?"Vercel gate OPEN (ON) — armed by admin, manual dispatch may publish.":"Vercel gate CLOSED (OFF) — publish held.");render();});
 syncGate();
-/* log + pulse */
+/* observed runtime events — no synthetic pulse sequence */
 var logEl=document.getElementById("eventLog");
-function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
-var PULSE_SEQ=[["user-routing","User Request → Routing / Who?"],["routing-orch","Routing → Orchestrator"],["orch-dostuff","Orchestrator → Do Stuff!"],["dostuff-x","Do Stuff! —Route→ X"],["x-laneB","X → worker lanes (fan-out)"],["laneB-agg","Workers → Aggregator"],["dostuff-scout","Do Stuff! → Scout (recon)"],["scout-biudl","Scout → BIUDL!"],["biudl-validate","BIUDL! → Validate"],["validate-show","Validate → Show User (outer loop)"],["show-user","Show User → User: results delivered ✓"]];
-var pulsing=false;
-document.getElementById("pulseBtn").addEventListener("click",function(){if(pulsing)return;pulsing=true;logEl.innerHTML="";log("Pulse sent (simulated trace).");pulseDot.style.display="";var i=0;
-  function step(){if(i>=PULSE_SEQ.length){pulseDot.style.display="none";pulsing=false;log("Trace complete — outer loop closed.");return;}var rec=edgeEls[PULSE_SEQ[i][0]];if(!rec){i++;step();return;}var path=rec.path;path.classList.add("hl");var L=path.getTotalLength(),t0=null,dur=Math.max(350,L*1.1);
-    function frame(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);var pt=path.getPointAtLength(L*k);pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);if(k<1)requestAnimationFrame(frame);else{var via=(rec.def&&(String(rec.def.from).indexOf("group:")===0||String(rec.def.to).indexOf("group:")===0||(rec.def.memberIds&&rec.def.memberIds.length>1)))?" (via collapsed group summary)":"";log(PULSE_SEQ[i][1]+via);path.classList.remove("hl");i++;step();}}
-    requestAnimationFrame(frame);}
-  step();});
+var liveStatusEl=document.getElementById("liveStatus");
+var LIVE_FEED_URL="https://admin-graph-live.timerloggedout.workers.dev/events?limit=300";
+var liveSeen=Object.create(null),liveQueue=[],liveAnimating=false,liveFirstLoad=true;
+function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;while(logEl.children.length>100)logEl.removeChild(logEl.firstChild);}
+function eventLabel(ev){return (ev.workflow||"GitHub Actions")+" · "+(ev.job?ev.job+" · ":"")+(ev.step?ev.step+" · ":"")+ev.status;}
+function eventColor(ev){var s=String(ev.status||"").toLowerCase();if(s==="success"||s==="completed")return "#34d399";if(s==="failure"||s==="failed"||s==="timed_out"||s==="error")return "#f472b6";if(s==="cancelled"||s==="skipped")return "#fbbf24";return "#22d3ee";}
+function edgeForRuntimeEvent(ev){
+ var candidates=[];
+ [ev.job,ev.workflow].filter(Boolean).forEach(function(term){var q=String(term).toLowerCase();var found=MODEL.nodes.find(function(n){var label=[n.id,n.title,n.subtitle,n.description].filter(Boolean).join(" ").toLowerCase();return label.indexOf(q)>=0||q.indexOf(String(n.title||"").toLowerCase())>=0;});if(found)candidates.push(found);});
+ var target=candidates[0]||byId("ghactions");
+ if(!target)return null;
+ var keys=Object.keys(edgeEls);
+ for(var i=0;i<keys.length;i++){var rec=edgeEls[keys[i]];if(rec&&rec.def&&(rec.def.from===target.id||rec.def.to===target.id))return rec;}
+ return null;
+}
+function animateRuntimeEvent(ev){
+ var rec=edgeForRuntimeEvent(ev);
+ if(!rec){log("Observed (no mapped graph edge): "+eventLabel(ev));return;}
+ var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
+ path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
+ function frame(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur),pt=path.getPointAtLength(L*k);pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);if(k<1)requestAnimationFrame(frame);else{path.classList.remove("hl");pulseDot.style.display="none";log("Observed "+ev.kind+": "+eventLabel(ev));liveAnimating=false;drainRuntimeQueue();}}
+ requestAnimationFrame(frame);
+}
+function drainRuntimeQueue(){if(liveAnimating||!liveQueue.length)return;liveAnimating=true;animateRuntimeEvent(liveQueue.shift());}
+async function pollRuntimeEvents(){
+ try{
+  var response=await fetch(LIVE_FEED_URL,{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});
+  if(!response.ok)throw new Error("feed HTTP "+response.status);
+  var feed=await response.json();
+  if(feed.error)throw new Error(feed.error);
+  var events=Array.isArray(feed.events)?feed.events:[];
+  var fresh=[];
+  events.forEach(function(ev){if(!ev||!ev.id||liveSeen[ev.id])return;liveSeen[ev.id]=true;if(liveFirstLoad){if(ev.status==="queued"||ev.status==="in_progress")fresh.push(ev);}else fresh.push(ev);});
+  liveFirstLoad=false;
+  if(liveStatusEl){liveStatusEl.textContent="LIVE · "+events.length+" EVENTS";liveStatusEl.className="clean-badge";liveStatusEl.title="Last received "+(feed.generated_at||"");}
+  if(fresh.length){fresh.sort(function(a,b){return Date.parse(a.occurred_at||0)-Date.parse(b.occurred_at||0);});fresh.forEach(function(ev){liveQueue.push(ev);});drainRuntimeQueue();}
+ }catch(err){if(liveStatusEl){liveStatusEl.textContent="LIVE FEED · DISCONNECTED";liveStatusEl.className="dirty-badge";}log("Live feed unavailable: "+String(err.message||err));}
+}
+document.getElementById("pulseBtn").addEventListener("click",function(){pollRuntimeEvents();});
+pollRuntimeEvents();
+window.setInterval(pollRuntimeEvents,10000);
 var resizeFitTimer=null;
 window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});
 /* mobile bottom action bar (B160V primary actions, thumb reach) */

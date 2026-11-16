@@ -17,6 +17,12 @@ SCHEMA, FIXTURE = VALIDATOR.load_contract()
 CULL_FIXTURE = json.loads(
     (ROOT / "docs/proposals/active/siglary-doe-kill-method-participant/fixtures/kill-method-participant.cull.valid.json").read_text()
 )
+WORKER_FIXTURE = json.loads(
+    (ROOT / "docs/proposals/active/siglary-doe-kill-method-participant/fixtures/kill-method-participant.worker.valid.json").read_text()
+)
+FLAG_FIXTURE = json.loads(
+    (ROOT / "docs/proposals/active/siglary-doe-kill-method-participant/fixtures/kill-method-participant.flag.valid.json").read_text()
+)
 
 
 class KillMethodParticipantContractTests(unittest.TestCase):
@@ -86,6 +92,11 @@ class KillMethodParticipantContractTests(unittest.TestCase):
         record = copy.deepcopy(FIXTURE)
         record["idempotency"]["window_seconds"] = 86401
         self.assert_rejected(record)
+
+    def test_each_method_family_has_a_valid_dry_run_fixture(self):
+        for record in (FIXTURE, CULL_FIXTURE, WORKER_FIXTURE, FLAG_FIXTURE):
+            with self.subTest(method=record["method"]["method_id"]):
+                self.assertEqual([], VALIDATOR.validate_record(record, SCHEMA))
 
     def test_agentic_gambling_cull_requires_same_record_consequence(self):
         self.assertEqual([], VALIDATOR.validate_record(CULL_FIXTURE, SCHEMA))

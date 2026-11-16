@@ -298,7 +298,7 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
             if authorized.get("default") != "deny" or not (READ_ONLY_ACTIONS | WRITE_ACTIONS).issuperset(allow):
                 errors.append("authorized-write policy must default-deny and use only reviewed read/write categories")
             if not WRITE_ACTIONS.issubset(allow):
-                errors.append("authorized-write policy must explicitly enumerate click/fill/interact/download/upload/state")
+                errors.append("authorized-write policy must explicitly enumerate click/fill/interact")
             if "eval" in allow or "network" in allow:
                 errors.append("authorized-write policy must not enable eval or network control")
 
@@ -333,8 +333,21 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
                 errors.append(f"{name}: missing required security flag {flag}")
         if "--cdp" in args and "--allowed-domains" in args:
             errors.append(f"{name}: upstream domain allowlist cannot be combined with CDP attach")
-        if "--tools" in args and "all" in args:
-            errors.append(f"{name}: do not expose all MCP tools by default")
+        if "--tools" in args:
+            tool_position = args.index("--tools")
+            if tool_position + 1 < len(args) and args[tool_position + 1] == "all":
+                errors.append(f"{name}: do not expose all MCP tools by default")
+        if "--max-output" in args:
+            output_position = args.index("--max-output")
+            try:
+                if output_position + 1 >= len(args) or int(args[output_position + 1]) <= 0:
+                    raise ValueError("max-output must be positive")
+            except ValueError:
+                errors.append(f"{name}: max-output must be a positive integer")
+        if "--allowed-domains" in args:
+            domain_position = args.index("--allowed-domains")
+            if domain_position + 1 >= len(args) or not args[domain_position + 1].strip() or args[domain_position + 1].strip() == "*":
+                errors.append(f"{name}: allowed-domains must be an explicit non-wildcard host allowlist")
         if write_mode:
             if "--confirm-actions" not in args:
                 errors.append(f"{name}: authorized-write MCP must require action confirmations")

@@ -32,12 +32,12 @@ Participant identity/version, method identity/version, and schema identity/versi
 
 - `RECON.md` — source-backed ownership and existing-mechanism map.
 - `schemas/kill-method-participant.schema.json` — draft v1 participant contract.
-- `fixtures/kill-method-participant.valid.json` — non-executable fixture.
+- `fixtures/kill-method-participant.valid.json` — non-executable fixture.\n- `scripts/proposals/validate_kill_method_participant.py` — stdlib-only contract validator.\n- `tests/test_kill_method_participant.py` — fail-closed positive/negative contract tests.\n- `.github/workflows/repo-gate.yml` — focused contract test + validator invocation.
 
 ## Deferred gates
 
 - Linguist review/ratification is required before a DO-statement grammar becomes normative.
 - CEEL owner review is required before the participant is added to the canonical opportunity graph.
 - DoE owner review is required before admission as an experiment-family member.
-- Parser, validator, conformance tests, and graph integration remain follow-on work.
+- A focused stdlib policy-contract validator and negative tests now exist; full grammar parser/conformance suite and graph integration remain follow-on work.
 - No process/session/workflow/device/deployment/production termination is enabled.

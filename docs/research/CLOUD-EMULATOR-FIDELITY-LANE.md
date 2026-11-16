@@ -56,7 +56,9 @@ The runner distinguishes:
 
 The runner uses loopback-only endpoints and emulator-generated keys, and removes ambient AWS credentials, profiles, and proxy settings from the fidelity test process. It does not restrict network access of tools or containers a test starts. Retain this distinction in threat models.
 
-Both upstream AWS Emulator and AWS Emulator Evaluation Suite declare restrictive contribution policies in their READMEs. The user-owned forks currently point at the same observed upstream HEAD commits; they are tracking mirrors, not independent code changes. Keep upstream assets read-only unless a distinct, reviewed local extension is intentionally developed in a separate repository.
+Both upstream AWS Emulator and AWS Emulator Evaluation Suite declare restrictive contribution policies in their READMEs. The user-owned forks currently point at the same observed upstream HEAD commits; they are tracking mirrors, not independent code changes. At the 2026-11-16 observation, both the emulator fork and upstream were at `813af480bf7f16d5418b64e4f5644a74a7da11c5`; both evaluation-suite repositories were at `4df2823bafface2ada35f482c07ff6668cc078e1`. Keep upstream assets read-only unless a distinct, reviewed local extension is intentionally developed in a separate repository.
+
+Licensing must be checked per asset: AWS Emulator is CC0 1.0 except vendored code under Apache-2.0; the evaluation suite is CC0 1.0; AWS API Models are Apache-2.0; Agent Toolkit for AWS is Apache-2.0. Do not infer that adjacent AWS repositories share one license; inspect each repository's LICENSE and third-party notices before redistribution.
 
 ## 3. Reference architecture
 
@@ -90,15 +92,15 @@ flowchart TD
 
 ## 4. Resource and repository register
 
-| Resource | Role in this lane | Current disposition |
+| Resource | Role in this lane | Current disposition | License / reuse note |
 |---|---|---|
-| [aws/aws-emulator](https://github.com/aws/aws-emulator) | Local AWS API emulator; Rust workspace, one crate per service | upstream reference; no upstream PRs |
-| [aws/api-models-aws](https://github.com/aws/api-models-aws) | Generated Smithy JSON AST service models | pinned contract input; generated/read-only |
-| [aws/aws-emulator-evaluation-suite](https://github.com/aws/aws-emulator-evaluation-suite) | Boto3 fidelity scenarios and runner | upstream test corpus; read-only |
-| [timerloggedout-spec/aws-emulator_fork](https://github.com/timerloggedout-spec/aws-emulator_fork) | User-owned upstream mirror | HEAD matched upstream at observation |
-| [timerloggedout-spec/aws-emulator-evaluation-suite_fork](https://github.com/timerloggedout-spec/aws-emulator-evaluation-suite_fork) | User-owned upstream mirror | HEAD matched upstream at observation |
-| [aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws) | Agent skills, plugins, AWS MCP setup | integration/skill research |
-| [aws/aws-sam-cli](https://github.com/aws/aws-sam-cli) | Serverless build and local Lambda/API workflow | application integration candidate |
+| [aws/aws-emulator](https://github.com/aws/aws-emulator) | Local AWS API emulator; Rust workspace, one crate per service | upstream reference; no upstream PRs | CC0-1.0; `vendor/` Apache-2.0 |
+| [aws/api-models-aws](https://github.com/aws/api-models-aws) | Generated Smithy JSON AST service models | pinned contract input; generated/read-only | Apache-2.0 |
+| [aws/aws-emulator-evaluation-suite](https://github.com/aws/aws-emulator-evaluation-suite) | Boto3 fidelity scenarios and runner | upstream test corpus; read-only | CC0-1.0 |
+| [timerloggedout-spec/aws-emulator_fork](https://github.com/timerloggedout-spec/aws-emulator_fork) | User-owned upstream mirror | HEAD matched upstream at observation | inherited upstream files; inspect vendored notices |
+| [timerloggedout-spec/aws-emulator-evaluation-suite_fork](https://github.com/timerloggedout-spec/aws-emulator-evaluation-suite_fork) | User-owned upstream mirror | HEAD matched upstream at observation | CC0-1.0 |
+| [aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws) | Agent skills, plugins, AWS MCP setup | integration/skill research | Apache-2.0 |
+| [aws/aws-sam-cli](https://github.com/aws/aws-sam-cli) | Serverless build and local Lambda/API workflow | application integration candidate | verify at adoption |
 | [aws/aws-cdk](https://github.com/aws/aws-cdk) | Infrastructure definition and CloudFormation synthesis | IaC integration candidate |
 | [aws/jsii](https://github.com/aws/jsii) | Cross-language bindings for TypeScript libraries | SDK/toolchain context |
 | [aws/eks-pod-identity-agent](https://github.com/aws/eks-pod-identity-agent) | EKS workload credential delivery | identity/security boundary research; not emulator parity |

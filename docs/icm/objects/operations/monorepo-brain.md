@@ -14,6 +14,7 @@ verified_at: 2026-11-16
 ## Canonical design
 
 - [Subsystem and capability map](../../../architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
+- [Verified ownership and integration map](../../../architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md)
 - [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
 - [Research dossier](../../../../refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md)
 - [Proposed filing schema](../../../schemas/delphi-rfp-filing.schema.json)

@@ -39,6 +39,10 @@ Pins intentional; no auto-advance without dual-gate green. Flywheel components r
 
 ## Brain architecture / academic research
 
+| Source | Role | Link |
+|---|---|---|
+| [Monorepo Brain ownership and integration map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md) | Source-inspected canonical owner paths, non-duplication boundaries and integration phases | [Open ownership map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md) |
+
 | Slot / dossier | Preferred sources | Brain subsystems |
 |---|---|---|
 | [Brain filename and agent-architecture dossier](../17_Papers/citations/brain-file-and-agent-architecture-survey.md) | GitHub implementations, author repositories, arXiv/DOI and secondary analyses listed in the dossier; frontmatter records linked_slots across 01–17 | cognition, memory, perception, planning, safeguards, embodied/domain modules, swarm and research intelligence |

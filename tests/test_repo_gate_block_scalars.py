@@ -226,6 +226,26 @@ class BlockScalarScanTests(unittest.TestCase):
                 self.assertEqual(len(found), 1, found)
                 self.assertIn("scans as a tag", found[0])
 
+    def test_explicit_quoted_keys_preserve_escape_boundaries(self) -> None:
+        for source in (
+            'values:\n  ? "first\\n more"\n  : value\n',
+            "values:\n  ? 'first\\n more'\n  : value\n",
+            'values:\n  ? "first\n    second\\n more"\n  : value\n',
+            "values:\n  ? 'first\n    second\\n more'\n  : value\n",
+        ):
+            with self.subTest(source=source):
+                if yaml is not None:
+                    yaml.safe_load(source)
+                self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("scans as a tag", found[0])
+        # A question mark within a plain scalar must not enable quoted state.
+        for value in ('plain ? "unfinished', "plain ? 'unfinished"):
+            found = repo_gate.yaml_structure_faults(f"value: {value}\nif: !(false)\n")
+            self.assertEqual(len(found), 1, found)
+            self.assertIn("scans as a tag", found[0])
+
     def test_flow_plain_colons_do_not_open_quote_state(self) -> None:
         for source in (
             "value: [prefix:'unfinished]\n",

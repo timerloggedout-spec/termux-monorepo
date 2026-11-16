@@ -257,8 +257,8 @@ def literal_escape_fault(
             or (flow_depth and quoted_end == index - 1)
         ):
             scalar_start = True
-        elif scalar_start and char == "-" and line[index + 1 : index + 2] in (" ", "\t"):
-            pass  # sequence-entry indicator, not plain scalar content
+        elif scalar_start and char in "-?" and line[index + 1 : index + 2] in (" ", "\t"):
+            pass  # sequence entry or explicit mapping key, not plain content
         elif scalar_start and char in "[{":
             flow_depth += 1
         elif flow_depth and char in "]}":

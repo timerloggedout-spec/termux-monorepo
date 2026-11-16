@@ -204,7 +204,7 @@ def text_findings(text: str, path: str, kind: str, glyphs: set[str], domains: di
         for m in CHORD.finditer(plain):
             d = DOMAIN.search(plain)
             if not d or m.group(1) not in domains.get(d.group(1), set()): found.append({"path": path, "rule": "UNRESOLVED-CHORD", "severity": "HARD", "line": n, "message": f"chord {m.group(1)} lacks a matching named domain"})
-        if kind in {"github_collaboration", "doe_participant"} and STATUS.match(line):
+        if kind != "standard" and STATUS.match(line):
             adjacent = line + ("\n" + lines[i + 1][1] if i + 1 < len(lines) else "")
             if not RECEIPT.search(adjacent): found.append({"path": path, "rule": "RECEIPT-ADJACENCY", "severity": "HARD", "line": n, "message": "state/verdict requires an adjacent receipt reference"})
         if "SIGLARY-FLAG:" in line: found.append({"path": path, "rule": "PRINCIPLE-5-SUSPENDED", "severity": "EST", "line": n, "message": "pending Linguist ruling; expand to plain form"})
@@ -242,7 +242,7 @@ def event_surfaces(event: dict, name: str) -> list[tuple[str, str, str]]:
 def census(root: Path, paths: list[str], event: dict | None = None, event_name: str = "") -> dict:
     start, glyphs = time.perf_counter(), load_glyphs(root / GLYPH_FILE)
     domains = load_domains(root)
-    classes, findings = defaultdict(lambda: {"surfaces_scanned":0,"compliant":0,"soft_violations":0,"hard_violations":0}), []
+    classes, findings = defaultdict(lambda: {"surfaces_scanned":0,"compliant":0,"soft_violations":0,"hard_violations":0,"est_violations":0}), []
     for rel in sorted(set(paths)):
         file=root/rel
         if not file.is_file(): continue
@@ -264,15 +264,17 @@ def census(root: Path, paths: list[str], event: dict | None = None, event_name: 
         for f in current:
             if f["severity"] == "HARD": classes[kind]["hard_violations"] += 1
             elif f["severity"] == "SOFT": classes[kind]["soft_violations"] += 1
+            elif f["severity"] == "EST": classes[kind]["est_violations"] += 1
     for kind,label,content in event_surfaces(event or {},event_name):
         current=text_findings(content,label,kind,glyphs,domains); classes[kind]["surfaces_scanned"]+=1; findings.extend(current)
         if not current: classes[kind]["compliant"]+=1
         for f in current:
             if f["severity"] == "HARD": classes[kind]["hard_violations"]+=1
             elif f["severity"] == "SOFT": classes[kind]["soft_violations"]+=1
-    total=sum(x["surfaces_scanned"] for x in classes.values()); hard=sum(x["hard_violations"] for x in classes.values()); soft=sum(x["soft_violations"] for x in classes.values())
+            elif f["severity"] == "EST": classes[kind]["est_violations"]+=1
+    total=sum(x["surfaces_scanned"] for x in classes.values()); hard=sum(x["hard_violations"] for x in classes.values()); soft=sum(x["soft_violations"] for x in classes.values()); est=sum(x["est_violations"] for x in classes.values())
     for x in classes.values(): x["compliance_rate"]=(x["compliant"]/x["surfaces_scanned"]) if x["surfaces_scanned"] else None
-    return {"schema":"siglary-census/v1","state":"INCONCLUSIVE" if total==0 else ("FAIL" if hard else "PASS"),"surfaces_scanned":total,"hard_violations":hard,"soft_violations":soft,"surface_classes":dict(sorted(classes.items())),"violations":findings,"performance":{"runtime_seconds":round(time.perf_counter()-start,6),"characters_scanned":sum(len((root/p).read_text(encoding="utf-8",errors="ignore")) for p in set(paths) if (root/p).is_file()),"files_considered":len(set(paths))}}
+    return {"schema":"siglary-census/v1","state":"INCONCLUSIVE" if total==0 else ("FAIL" if hard else ("REVIEW" if est else "PASS")),"surfaces_scanned":total,"hard_violations":hard,"soft_violations":soft,"est_violations":est,"surface_classes":dict(sorted(classes.items())),"violations":findings,"performance":{"runtime_seconds":round(time.perf_counter()-start,6),"characters_scanned":sum(len((root/p).read_text(encoding="utf-8",errors="ignore")) for p in set(paths) if (root/p).is_file()),"files_considered":len(set(paths))}}
 
 
 def receipt_id(event: dict, event_name: str, report: dict) -> str:
@@ -299,13 +301,14 @@ def main(argv=None) -> int:
     report=census(root,paths,event,a.event_name)
     if event or a.event_name: report["receipt_id"]=receipt_id(event,a.event_name,report)
     if a.feed:
-        entry={"schema":"siglary_compliance/v1","receipt_id":report.get("receipt_id") or receipt_id(event,a.event_name,report),"state":report["state"],"surfaces_scanned":report["surfaces_scanned"],"hard_violations":report["hard_violations"],"soft_violations":report["soft_violations"],"surface_classes":report["surface_classes"],"runtime_seconds":report["performance"]["runtime_seconds"]}
+        entry={"schema":"siglary_compliance/v1","receipt_id":report.get("receipt_id") or receipt_id(event,a.event_name,report),"state":report["state"],"surfaces_scanned":report["surfaces_scanned"],"hard_violations":report["hard_violations"],"soft_violations":report["soft_violations"],"est_violations":report["est_violations"],"surface_classes":report["surface_classes"],"runtime_seconds":report["performance"]["runtime_seconds"]}
         report["feed_appended"]=append_feed(a.feed,entry)
     encoded=json.dumps(report,indent=2,sort_keys=True,ensure_ascii=False)+"\n"
     if a.report: a.report.parent.mkdir(parents=True,exist_ok=True); a.report.write_text(encoded,encoding="utf-8")
     print(encoded,end="")
     if report["state"] == "INCONCLUSIVE": print("INCONCLUSIVE: zero surfaces scanned; empty census is not PASS",file=sys.stderr); return 2
     if report["state"] == "FAIL": print(f"FAIL: {report['hard_violations']} HARD violation(s)",file=sys.stderr); return 1
+    if report["state"] == "REVIEW": print(f"REVIEW: {report['est_violations']} EST finding(s) await a Linguist ruling",file=sys.stderr); return 3
     print("PASS",file=sys.stderr); return 0
 
 if __name__ == "__main__": raise SystemExit(main())

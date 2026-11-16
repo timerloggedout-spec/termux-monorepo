@@ -57,7 +57,10 @@ The following must remain explicit dependencies until the exact owner and versio
 - Runtime task verification contract that distinguishes workflow success from TASK_PASS/FAIL/UNKNOWN.
 - Persistent memory write contract and owner approval for learning-candidate promotion.
 - Provider routing API and the current source of quota entitlement.
-- Owner cockpit projection contract for ArchWiz/Tribute.
+- Security/artifact-trust/sandbox owner contract and secret-provenance boundary.
+- Exact SHE and adaptive-wait interfaces, plus ForeSight/HindSight source-of-truth contracts.
+- Domain-package registry and domain-specific scientific validation ownership.
+- Owner cockpit projection and pause/revoke API contract for ArchWiz/Tribute.
 
 No source-inspection result in this document upgrades those dependencies to verified.
 

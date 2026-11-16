@@ -16,7 +16,7 @@ ACTION_VERBS = frozenset({
     "prevent", "propagate", "publish", "recognize", "record", "reconcile", "refresh", "refine",
     "register", "reject", "remove", "rename", "repair", "replace", "require", "restore", "retain",
     "route", "run", "set", "share", "skip", "snapshot", "specify", "split", "support", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "regenerate", "rebuild",
+    "test", "trigger", "update", "use", "validate", "verify", "wire", "regenerate", "rebuild",
 })
 _EXPLICIT_DO = re.compile(r"^\s*DO\s*:\s*\S", re.IGNORECASE)
 _PROHIBITION = re.compile(

@@ -183,3 +183,21 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+## SIGLARY-ENF-001 — Siglary + DO statement GitHub surface enforcement
+
+**Status:** executing. **Implementation issue:** #5334. **Leg-B lineage:** #5116 / #5131.
+
+Bind the canonical Siglary standard and DO Statement policy to newly authored repository and GitHub collaboration surfaces. Preserve the standard and Matrice as authoritative sources; implement deterministic validators and fail-closed CI gates without rewriting historical or generated material.
+
+**Scope:** skill files, ICM instructions, root and nested CLAUDE.md files, DoE participant records, GitHub PR/issue/comment/review/release payloads, commit subjects and bodies, and generator/template validation boundaries.
+
+**Acceptance criteria:**
+- A provenance-pinned issued-glyph registry and Matrice-derived Shorthand Domain resolver power the Siglary validator.
+- HARD checks reject unissued glyphs, explicit unregistered operators, class misuse, unresolved chord/domain pairs, N∅/NOT_ESTABLISHED data values, missing CLAUDE references, and state/verdict claims without adjacent receipts.
+- Principle-⑤ ambiguity remains EST pending Linguist ruling; the validator does not invent semantic judgments.
+- E1–E6 exemptions preserve sealed history, quoted prior art, code, fixtures, generated projections, and chat exports.
+- DO policy accepts natural imperatives and explicit DO markers, rejects hedged instructions, preserves necessary prohibitions, and checks commit subjects plus newly authored PR, issue, discussion, comment, review, and release text.
+- Seeded positive/negative tests prove pass, block, empty-census INCONCLUSIVE, and idempotent receipt behavior.
+- CI uploads a structured census and deduplicated feed receipt. Persistent Linguist-feed publication requires an authorized writer and is not implied by read-only CI.
+- Do not mark execution or promotion complete until hosted Actions receipts prove the hard gates and a full census.

@@ -46,6 +46,17 @@ class RuntimeEventTests(unittest.TestCase):
         self.assertEqual(event["job_id"], 456)
         self.assertEqual(event["workflow"], "tribute execute")
 
+    def test_workflow_snapshot_builds_run_events(self):
+        payload = {"workflow_runs": [
+            {"id": 123, "run_attempt": 1, "name": "tribute execute", "status": "in_progress", "created_at": "2026-11-16T12:00:00Z"},
+            {"id": 124, "run_attempt": 2, "name": "n8n SHE bridge", "status": "completed", "conclusion": "failure", "updated_at": "2026-11-16T12:01:00Z"}
+        ]}
+        events = MODULE.build_events(payload, "workflow_snapshot")
+        self.assertEqual(len(events), 2)
+        self.assertEqual(events[0]["event"], "workflow_in_progress")
+        self.assertEqual(events[1]["event"], "workflow_failure")
+        self.assertTrue(all(event["repo"] == MODULE.REPO for event in events))
+
     def test_unsupported_event_is_rejected(self):
         with self.assertRaises(ValueError):
             MODULE.build_event({}, "push")

@@ -223,3 +223,39 @@ States may branch where the sponsor process requires it. Record the evidence for
 - Do not let sponsor deadlines override privacy, safety, accessibility, or research ethics.
 - Do not create a new teacher-facing product where the funding call is explicitly for reusable infrastructure.
 - Do not treat taxonomy labels as proof of disciplinary competence.
+
+
+## 9. Existing-system integration and current C13 readiness
+
+C13 remains the canonical opportunity record; this charter is a linked
+research/domain lane, not a replacement grant record.
+
+- **Opportunity source of truth:** `ops/challenge/coordinator.json`, event
+  record `C13`.
+- **Priority projection:** `ops/que/feeds/opportunity-priority.json`
+  (derived; do not hand-edit).
+- **Readiness contract:** `docs/ops/OPPORTUNITY-CYCLE.md`.
+- **Per-entry prep artifacts:** `entries/c13/prep-manifest.json` and
+  `entries/c13/submission-requirements.json`.
+- **Cycle evidence:** `ops/opportunities/cycles/` and
+  `ops/opportunities/cycle-ledger.jsonl`.
+
+Latest observed cycle receipt (2026-11-16,
+`cyc-20261116T080046Z-43827809644`) records C13 as
+`PREP_INCOMPLETE`: the prep manifest is missing, the submission-requirements
+census is missing, stages 0–4 are `NOT_ESTABLISHED`, and stages 5–7 are
+blocked. The coordinator record separately remains
+`candidate — VIABLE, eligibility CONFIRMED`, awaiting the Manager/owner
+slate decision. These are different state dimensions and must not be
+collapsed. Do not fabricate receipts or alter the owner decision through
+this charter. The next legitimate integration step is to populate the
+existing C13 entry's prep manifest and requirement census with verified
+artifacts and capacity/route-around evidence, then let the existing cycle
+recompute readiness.
+
+## 10. Shared knowledge-plane contract
+
+See [Common Knowledge Plane](COMMON-KNOWLEDGE-PLANE.md). The education
+ontology and competency map are canonical research assets; the repository
+Context Relationship Index supplies metadata-backed links to implementation
+and decision history. Neither is a substitute for the other.

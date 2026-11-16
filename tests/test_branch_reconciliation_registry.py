@@ -34,8 +34,8 @@ class ClassificationTests(unittest.TestCase):
             Path(tmp, "file.txt").write_text("head", encoding="utf-8")
             git("commit", "-am", "head")
             head = git("rev-parse", "HEAD")
-            self.assertEqual(registry.git_count(base, head), (1, 0))
-            self.assertEqual(registry.git_count(base, base), (0, 0))
+            self.assertEqual(registry.git_count(base, head, cwd=tmp), (1, 0))
+            self.assertEqual(registry.git_count(base, base, cwd=tmp), (0, 0))
 
     def test_diverged(self):
         self.assertEqual(registry.classify(2, 4), "diverged")

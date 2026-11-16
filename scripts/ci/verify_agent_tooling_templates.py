@@ -45,7 +45,7 @@ def parse_gitmodules(path: Path) -> dict[str, str]:
     return found
 
 
-def parse_gitlinks(root: Path) -> set[str]:
+def parse_gitlinks(root: Path) -> dict[str, str]:
     result = subprocess.run(
         ["git", "ls-files", "--stage"],
         cwd=root,
@@ -53,24 +53,29 @@ def parse_gitlinks(root: Path) -> set[str]:
         text=True,
         check=True,
     )
-    return {
-        line.split("\t", 1)[1]
-        for line in result.stdout.splitlines()
-        if line.startswith("160000 ") and "\t" in line
-    }
+    found: dict[str, str] = {}
+    for line in result.stdout.splitlines():
+        if not line.startswith("160000 ") or "\t" not in line:
+            continue
+        metadata, path = line.split("\t", 1)
+        fields = metadata.split()
+        if len(fields) >= 3:
+            found[path] = fields[1]
+    return found
 
 
 def validate_manifest(
     manifest: dict,
     smods_index: dict,
     module_urls: dict[str, str],
-    gitlinks: Iterable[str],
+    gitlinks: Iterable[str] | dict[str, str],
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(manifest, dict):
         return ["integration.json: JSON root must be an object"]
     if not isinstance(smods_index, dict):
         return ["smods/INTEGRATIONS.json: JSON root must be an object"]
+    gitlink_shas = gitlinks if isinstance(gitlinks, dict) else {}
     gitlink_set = set(gitlinks)
 
     if manifest.get("schema") != "agent-toolchain-template/v1":
@@ -166,6 +171,8 @@ def validate_manifest(
             sha = entry.get("pinned_sha")
             if not isinstance(sha, str) or len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha.lower()):
                 errors.append(f"{path}: pinned entry needs a 40-character immutable commit SHA")
+            elif gitlink_shas.get(path) != sha:
+                errors.append(f"{path}: pinned_sha does not match the actual 160000 gitlink SHA")
         elif status in {"deferred", "research_only"}:
             if entry.get("pinned_sha") is not None:
                 errors.append(f"{path}: deferred/research-only entry must have pinned_sha=null")
@@ -280,7 +287,7 @@ def validate_tree(
     smods_index_path: Path,
     gitmodules_path: Path,
     module_urls: dict[str, str] | None = None,
-    gitlinks: Iterable[str] | None = None,
+    gitlinks: Iterable[str] | dict[str, str] | None = None,
     root: Path = ROOT,
 ) -> list[str]:
     errors: list[str] = []

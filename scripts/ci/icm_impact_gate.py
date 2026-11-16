@@ -31,7 +31,7 @@ REQUIRED_KEYS = {
 def changed_paths(base: str, head: str = "HEAD") -> list[str]:
     """Return changed repository paths for the three-dot merge-base diff."""
     result = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=ACMRT", "-z", f"{base}...{head}"],
+        ["git", "diff", "--name-only", "--diff-filter=ACMRTD", "-z", f"{base}...{head}"],
         cwd=REPO_ROOT,
         check=True,
         capture_output=True,
@@ -97,7 +97,7 @@ def validate_receipt(root: Path, paths: list[str]) -> list[str]:
         errors.append("receipt filename must match change_id (lowercase, underscores as hyphens)")
 
     disposition = receipt.get("disposition")
-    if disposition not in {"updated", "no-map-change"}:
+    if disposition not in ("updated", "no-map-change"):
         errors.append("disposition must be 'updated' or 'no-map-change'")
 
     listed_changed = _path_list(receipt, "changed_paths", errors)

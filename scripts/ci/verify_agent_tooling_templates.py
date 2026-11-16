@@ -128,14 +128,30 @@ def validate_manifest(
             candidate_keys.add(candidate_key)
 
     index_keys: set[tuple] = set()
+    index_by_key: dict[tuple, dict] = {}
+    seen_ids: set[str] = set()
     for entry_index, entry in enumerate(index_entries):
         entry_key = key(entry) if isinstance(entry, dict) else None
         if entry_key is None:
             errors.append(f"smods/INTEGRATIONS.json: entries[{entry_index}] needs non-empty string id/path/status")
         else:
             index_keys.add(entry_key)
+            index_by_key[entry_key] = entry
+            if entry_key[0] in seen_ids:
+                errors.append(f"smods/INTEGRATIONS.json: duplicate integration id {entry_key[0]}")
+            seen_ids.add(entry_key[0])
     if not candidate_keys.issubset(index_keys):
         errors.append("smods/INTEGRATIONS.json: one or more template smods_candidates are missing from the global index")
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        candidate_key = key(candidate)
+        if candidate_key is None or candidate_key not in index_by_key:
+            continue
+        indexed = index_by_key[candidate_key]
+        for field in ("upstream", "fork_url", "pinned_sha"):
+            if candidate.get(field) != indexed.get(field):
+                errors.append(f"smods/INTEGRATIONS.json: candidate {candidate_key[0]} has mismatched {field}")
 
     seen_paths: set[str] = set()
     for index, entry in enumerate(index_entries):
@@ -150,13 +166,16 @@ def validate_manifest(
         if path is not None and not isinstance(path, str):
             errors.append(f"smods/INTEGRATIONS.json: entries[{index}] path must be a string or null")
             continue
-        if status in {"fork_required", "pinned"}:
-            if not isinstance(path, str) or not path.startswith("refTemplates/smods/"):
-                errors.append(f"smods/INTEGRATIONS.json: entries[{index}] requires a refTemplates/smods path")
+        if path is not None:
+            if not path.startswith("refTemplates/smods/"):
+                errors.append(f"smods/INTEGRATIONS.json: entries[{index}] path must be under refTemplates/smods/")
                 continue
             if path in seen_paths:
                 errors.append(f"smods/INTEGRATIONS.json: duplicate path {path}")
             seen_paths.add(path)
+        if status in {"fork_required", "pinned"} and not path:
+            errors.append(f"smods/INTEGRATIONS.json: entries[{index}] requires a refTemplates/smods path")
+            continue
         if status == "fork_required":
             if path in module_urls or path in gitlink_set:
                 errors.append(f"{path}: fork_required must not be represented as a .gitmodules entry or gitlink")

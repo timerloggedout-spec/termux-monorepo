@@ -127,3 +127,13 @@ agent-browser mcp --tools core
 **CDP caveat:** the upstream domain allowlist is incompatible with pre-existing CDP attach sessions. The example configurations therefore launch a fresh locally managed browser. If a remote CDP browser is used, enforce egress restrictions at the host/container/network layer and keep the endpoint secret out of command-line arguments, config files, logs, and artifacts. Do not claim the browser's own allowlist is protecting an attached CDP session.
 
 The `--allowed-domains` setting is not an OS firewall and should be combined with network egress controls for higher assurance. Lightpanda is a separate engine option, but the upstream installation guide does not currently document an Android/Termux binary; do not infer B160V support from the flag alone.
+
+## Adjacent Vercel eve starter templates (reference only)
+
+These are not C12 runtime dependencies, but they are useful parallel research inputs:
+
+- `eve-data-analyst-template`: metric definitions, SQL cost approvals, row caps, timezone-aware reporting, and evaluation fixtures. Relevant to Moneyball/SHE analytics, not browser execution.
+- `eve-memory-agent-template`: scoped user/channel memory and provider adapters. Relevant to memory architecture research; do not import personal data or enable automatic capture.
+- `eve-vercel-drives-starter`: read-only Drive snapshots plus a serialized write path and `drive_busy` backpressure. Potential evidence-store pattern; no Drive provisioning or data transfer is authorized.
+
+Treat all three as reference templates until a separate use case, data boundary, and deployment decision is approved.

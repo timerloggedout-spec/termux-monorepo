@@ -103,6 +103,9 @@ def validate_manifest(
 
     if manifest.get("smods_index") != "refTemplates/smods/INTEGRATIONS.json":
         errors.append("integration.json: smods_index must point to the canonical INTEGRATIONS.json")
+    mcp = manifest.get("mcp")
+    if not isinstance(mcp, dict) or mcp.get("transport") != "stdio" or mcp.get("default_profile") != "core":
+        errors.append("integration.json: agent-browser MCP transport must be stdio with the core profile")
 
     candidates = manifest.get("smods_candidates")
     if not isinstance(candidates, list):

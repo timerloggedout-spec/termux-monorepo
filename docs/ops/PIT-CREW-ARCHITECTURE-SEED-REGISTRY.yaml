@@ -1,0 +1,375 @@
+schema_version: "1.0.0"
+registry_id: "pit-crew-architecture-seed-registry"
+status: "proposal"
+purpose: "Map every analogy architecture in PIT-CREW-ARCHITECTURE.md Section 7 to an independently versioned DoE treatment seed."
+authority:
+  crew_chief: "Preserved common Crew Chief contract; mission-scoped coordination only."
+  doe: "Independent oversight of preregistration, assignment, measurement, monitoring, analysis and recommendation."
+  dispatch: "Existing QUE/QDesk, phase engine, claims, router and execution adapters only."
+  promotion: "Existing Operator and production gates only; DoE recommendation is not authorization."
+  canonical_experiment_record: "docs/ops/corpus/EXPERIMENT.schema.json"
+  canonical_tournament_record: "docs/ops/MANAGER-TOURNAMENT.schema.json"
+shared_invariants:
+  - "Same Crew Chief mandate, inputs, responsibilities and prohibited powers for every seed."
+  - "No seed owns queue, scheduler, router, lease, execution, evidence ledger or promotion."
+  - "One authoritative writer per protected resource."
+  - "Independent verification; builder cannot self-certify."
+  - "Unknown remains unknown; failures and deviations are retained."
+  - "Treatment identity pins policy, role map, prompt/tool references, configured instances and environment."
+  - "No live dispatch from this registry; seeds are proposals until separately authorized."
+assignment:
+  unit: "one mission/task instance × one seed × one repetition"
+  control: "incumbent Pit Crew / manager policy"
+  blocking: ["task_family","complexity_stratum","risk_tier","repository_surface","environment"]
+  comparability: "same task contract, source baseline, acceptance rubric and independent verifier"
+  holdout: "fresh task instances not used for seed design or tuning"
+  missingness: "retain null/unknown/censored/failed observations; never zero-fill"
+  contamination: "one task instance cannot silently cross arms"
+seeds:
+  - seed_id: "PC-SEED-001"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "f1-specialist"
+    name: "Formula 1 pit crew"
+    architecture_delta: "Specialist pods with timed synchronized handoffs"
+    crew_chief_mode: "Fixed pit-stop checklist and explicit role call"
+    factors: ["role specialization", "choreography", "capacity", "handoff protocol"]
+    primary_outcomes: ["accepted integration time", "first-pass yield"]
+    hard_guardrails: ["collision", "skipped verification", "unsafe concurrency"]
+    target_task_families: ["bounded implementation and rapid integration"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-002"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "nascar-spotter"
+    name: "NASCAR spotter and crew chief"
+    architecture_delta: "Continuous recon-to-chief feedback loop with track-state snapshots"
+    crew_chief_mode: "Re-plan only on evidence-backed hazard or state change"
+    factors: ["recon depth", "update cadence", "hazard threshold"]
+    primary_outcomes: ["stale-state incidents", "useful discoveries", "decision latency"]
+    hard_guardrails: ["false hazard", "stale source", "uncontrolled plan churn"]
+    target_task_families: ["volatile repos and fast-moving incidents"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-003"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "nasa-mission-control"
+    name: "NASA mission control"
+    architecture_delta: "Flight-director command with subsystem specialist cells and telemetry console"
+    crew_chief_mode: "Coordinate subsystem leads; independent evidence steward monitors anomalies"
+    factors: ["command topology", "escalation policy", "telemetry coverage"]
+    primary_outcomes: ["verified outcome", "anomaly detection latency"]
+    hard_guardrails: ["missed anomaly", "false alarm", "unverified subsystem state"]
+    target_task_families: ["complex multi-system work"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-004"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "surgical-team"
+    name: "Surgical operating team"
+    architecture_delta: "Time-out/checklist gates, sterile work scopes and independent verification roles"
+    crew_chief_mode: "Conduct preflight, pause points and explicit handoff/read-back"
+    factors: ["checklist depth", "role independence", "handoff protocol"]
+    primary_outcomes: ["defect escape", "rework", "acceptance"]
+    hard_guardrails: ["boundary breach", "skipped timeout", "self-review"]
+    target_task_families: ["high-risk changes and sensitive boundaries"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-005"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "sre-incident-command"
+    name: "SRE incident command"
+    architecture_delta: "Incident command with operations, investigation, communications and recovery cells"
+    crew_chief_mode: "Act as incident commander; delegate bounded workstreams and track incident state"
+    factors: ["command pattern", "diagnosis strategy", "recovery sequencing"]
+    primary_outcomes: ["verified recovery", "recurrence", "MTTR"]
+    hard_guardrails: ["unsafe mitigation", "recurrence", "lost evidence"]
+    target_task_families: ["outages, CI failures and platform incidents"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-006"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "aircraft-turnaround"
+    name: "Aircraft turnaround / ground crew"
+    architecture_delta: "Dependency- and resource-constrained parallel service teams"
+    crew_chief_mode: "Sequence service windows around shared resources and hard dependencies"
+    factors: ["parallel capacity", "partitioning", "resource contention"]
+    primary_outcomes: ["turnaround time", "integration success"]
+    hard_guardrails: ["resource conflict", "skipped dependency", "unsafe overlap"]
+    target_task_families: ["large multi-file changes and maintenance batches"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-007"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "air-traffic-control"
+    name: "Air traffic control"
+    architecture_delta: "Central admission/routing authority with locally autonomous execution crews"
+    crew_chief_mode: "Manage local sequencing under Race Control clearances; never self-grant clearance"
+    factors: ["admission policy", "queue pressure", "priority"]
+    primary_outcomes: ["safe throughput", "queue age"]
+    hard_guardrails: ["duplicate/stale dispatch", "unauthorized action"]
+    target_task_families: ["high-volume concurrent task systems"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-008"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "mission-command"
+    name: "Military mission command"
+    architecture_delta: "Intent-led mission cells with delegated bounded authority and escalation channels"
+    crew_chief_mode: "Translate approved intent into mission orders and check revocation"
+    factors: ["delegation depth", "autonomy envelope", "revocation latency"]
+    primary_outcomes: ["mission success", "intervention burden"]
+    hard_guardrails: ["authority violation", "scope drift", "delayed revocation"]
+    target_task_families: ["ambiguous goals and distributed execution"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-009"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "orchestra-conductor"
+    name: "Orchestra / conductor"
+    architecture_delta: "Section-based specialists follow one task score with rehearsal/context synchronization"
+    crew_chief_mode: "Interpret approved score, set entrances and resolve integration timing"
+    factors: ["conductor policy", "section parallelism", "rehearsal/context depth"]
+    primary_outcomes: ["coherence", "integration rework"]
+    hard_guardrails: ["section drift", "incompatible outputs"]
+    target_task_families: ["multi-discipline deliverables and coordinated docs/code"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-010"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "lean-cell"
+    name: "Manufacturing cell / Lean"
+    architecture_delta: "Standardized work cells, WIP caps, visual blockers and Andon escalation"
+    crew_chief_mode: "Balance cell load, enforce WIP limits and escalate blocked work"
+    factors: ["WIP limit", "batch size", "standard work"]
+    primary_outcomes: ["first-pass yield", "throughput", "queue age"]
+    hard_guardrails: ["defects", "hidden blockers", "excess WIP"]
+    target_task_families: ["repeatable task families and throughput tuning"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-011"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "actor-system"
+    name: "Distributed systems / actor model"
+    architecture_delta: "Isolated task actors with message-passing, idempotent commands and event receipts"
+    crew_chief_mode: "Coordinate messages and ownership; actor owns its state transition"
+    factors: ["lease duration", "idempotency", "retry policy"]
+    primary_outcomes: ["duplicate side effects", "lost work", "conflict rate"]
+    hard_guardrails: ["split-brain writer", "replay duplication", "lost receipt"]
+    target_task_families: ["parallel work, retries and distributed tool chains"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-012"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "supply-chain"
+    name: "Supply chain / logistics"
+    architecture_delta: "Capability inventory, capacity buffers, critical-path routing and replenishment"
+    crew_chief_mode: "Plan against available capability/capacity and protect scarce resources"
+    factors: ["buffer policy", "route mix", "capacity allocation"]
+    primary_outcomes: ["accepted outcome per total cost"]
+    hard_guardrails: ["quota exhaustion", "starvation", "stale inventory"]
+    target_task_families: ["provider quotas and scarce specialist capacity"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-013"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "cyber-soc"
+    name: "Cyber SOC / incident response"
+    architecture_delta: "Triage, containment, investigation, remediation and evidence-preservation cells"
+    crew_chief_mode: "Prioritize containment and evidence custody; security authority controls quarantine"
+    factors: ["triage threshold", "review independence", "containment sequence"]
+    primary_outcomes: ["verified remediation", "missed-threat rate"]
+    hard_guardrails: ["secret leakage", "evidence tampering", "unsafe containment"]
+    target_task_families: ["security and provenance-sensitive work"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-014"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "scientific-lab"
+    name: "Scientific laboratory"
+    architecture_delta: "Preregistered protocol, calibrated instruments, blinded evaluator and reproducible runs"
+    crew_chief_mode: "Execute only registered protocol; DoE steward independently controls design integrity"
+    factors: ["factor levels", "randomization", "replication", "blocking"]
+    primary_outcomes: ["effect estimate", "uncertainty", "reproducibility"]
+    hard_guardrails: ["protocol drift", "selective reporting", "uncalibrated measurement"]
+    target_task_families: ["all architecture and policy experiments"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-015"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "sports-coaching"
+    name: "Sports coaching / talent development"
+    architecture_delta: "Seasonal roster development, role fit, training and repeated performance review"
+    crew_chief_mode: "Assign roles by demonstrated task-family capability, not popularity"
+    factors: ["role mix", "coaching policy", "task family", "season"]
+    primary_outcomes: ["holdout performance", "stability", "learning rate"]
+    hard_guardrails: ["overfit", "selection bias", "role lock-in"]
+    target_task_families: ["longitudinal capability evolution"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-016"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "newsroom"
+    name: "Newsroom / editorial desk"
+    architecture_delta: "Assignment editor, beat specialists, fact-check desk, copy desk and correction trail"
+    crew_chief_mode: "Assign source-backed beats and require fact-check before integration"
+    factors: ["source diversity", "fact-check depth", "review order"]
+    primary_outcomes: ["factual acceptance", "correction rate"]
+    hard_guardrails: ["unsupported claim", "provenance gap", "correction loss"]
+    target_task_families: ["research, docs, synthesis and external-facing artifacts"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-017"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "release-train"
+    name: "Software release train"
+    architecture_delta: "Feature crews integrate through staged readiness, canary and rollback checkpoints"
+    crew_chief_mode: "Coordinate release train; release authority remains external"
+    factors: ["validation depth", "rollout strategy", "cohort"]
+    primary_outcomes: ["stable release", "rollback rate"]
+    hard_guardrails: ["regression", "unauthorized promotion"]
+    target_task_families: ["release engineering and deployment proposals"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-018"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "brain-cognitive"
+    name: "Brain / cognitive architecture"
+    architecture_delta: "Shared context graph, reasoning, decomposition and feedback loop separated from execution"
+    crew_chief_mode: "Consume Brain proposals and route only manager-approved bounded plans"
+    factors: ["context strategy", "decomposition", "handoff representation"]
+    primary_outcomes: ["verified outcome per total effort", "stale-context rate"]
+    hard_guardrails: ["context leakage", "plan treated as permission"]
+    target_task_families: ["repo-wide reasoning and context-heavy tasks"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-019"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "ballet-choreography"
+    name: "Ballet / choreography"
+    architecture_delta: "Deterministic dependency DAG and inspectable sequential/parallel/adaptive waves"
+    crew_chief_mode: "Delegate wave construction to Ballet; dispatch remains with existing controls"
+    factors: ["wave policy", "capacity treatment", "dependency shape"]
+    primary_outcomes: ["observed integration outcome", "useful parallel yield"]
+    hard_guardrails: ["planned makespan mistaken for outcome", "dependency violation"]
+    target_task_families: ["dependency-rich engineering tasks"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+  - seed_id: "PC-SEED-020"
+    version: "0.1.0"
+    status: "design_only"
+    mapping_source: "PIT-CREW-ARCHITECTURE.md#section-7"
+    architecture_id: "doe-oversight"
+    name: "DoE / experimental science"
+    architecture_delta: "Independent design, assignment, monitoring, analysis and promotion recommendation wrapped around all crews"
+    crew_chief_mode: "Cannot alter treatment; DoE steward owns protocol integrity and evaluator independence"
+    factors: ["architecture factors", "randomization", "replication", "holdout"]
+    primary_outcomes: ["effect estimate with uncertainty"]
+    hard_guardrails: ["self-evaluation", "contamination", "post-hoc relabeling"]
+    target_task_families: ["tournament governance across every seed"]
+    control_arm_required: true
+    independent_verifier_required: true
+    doe_preregistration_required: true
+    live_dispatch_authorized: false
+    promotion_authorized: false
+evolution:
+  version_rule: "Any change to role topology, Chief policy, factor levels, prompts, tools, model instance, evaluator or environment creates a new immutable seed version."
+  lineage_fields: ["parent_seed_id","parent_version","change_set","hypothesis","experiment_id","arm_id","repetition","evidence_refs","doe_disposition"]
+  inheritance: "A child seed inherits shared invariants and Crew Chief contract; it may change only declared architecture deltas."
+  selection: "No popularity or single-run winner; compare replicated, blocked outcomes and fresh holdout."
+  retirement: "Retire from future assignment only under preregistered rules; retain historical records and evidence."
+  promotion: "DoE recommends; existing operator/policy authority separately approves exact immutable version."

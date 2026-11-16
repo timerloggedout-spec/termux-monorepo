@@ -12,14 +12,17 @@
 | Codespace agent lane | Preferred smoke for any new `smods/` pin |
 | ecc-tools overflow | Large template PRs thin-track if comment volume warrants |
 
-## Integrity checklist (for CI / scripts)
+## Enforced template contract
 
-1. Every slot under `15_Research_Repo_Templates/*` has `README.md` + `SOURCE.txt`
-2. Every `smods/*` path appears in `.gitmodules` with `shallow = true` when present
-3. Preferred SOURCE URLs are resolvable (HEAD or public)
-4. No hardcoded API keys in template metadata
+1. Every reusable template child under numbered categories (excluding the index and papers/citation shelves) has nonempty regular `README.md` and `SOURCE.txt`.
+2. Every child under `01_Agent_Runtime/` additionally has a regular, valid object-root `integration.json`.
+3. Every `refTemplates/smods/*` path has exactly one `.gitmodules` entry and one mode-160000 gitlink; orphan entries and orphan gitlinks fail.
+4. Every sMods pin uses a credential-free HTTPS GitHub URL, `shallow = true`, and a 40-character immutable gitlink SHA.
+5. Symlinked slot roots, template directories, and metadata files fail closed.
+6. CI reads Git metadata only. It does not initialize, fetch, or recursively update submodules.
 
-## Follow-up implementation
+The executable contract is `scripts/ci/refTemplates_inventory.py --strict`; focused regression tests run in `.github/workflows/refTemplates-eval.yml`.
 
-- Extend evidence-led inventory script to walk `15_*` and diff `smods` vs `.gitmodules`
-- Optional: thin GHA job on path `refTemplates/**` that asserts SOURCE.txt presence
+## Operating rule
+
+Select and adapt an existing reference template before introducing a new integration-specific structure. A new runtime integration must carry its own `integration.json`, source record, and README. A new sMods fork must be an intentional shallow custom fork pinned by a gitlink SHA; a floating branch name is not a pin.

@@ -4,9 +4,13 @@ on:
   push:
     paths:
       - "refTemplates/**"
+      - ".gitmodules"
+      - "tests/test_refTemplates_inventory.py"
       - "scripts/ci/refTemplates_*.py"
       - "scripts/decision_engines.py"
       - "scripts/laya_decision_stub.py"
+      - ".gitmodules"
+      - "tests/test_refTemplates_inventory.py"
       - ".github/workflows/refTemplates-eval.yml"
   pull_request:
     paths:
@@ -31,6 +35,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: refTemplates and sMods contract tests
+        run: python3 -m unittest discover -s tests -p 'test_refTemplates_inventory.py' -v
       - name: inventory (strict)
         run: |
           mkdir -p docs/ops/generated/refTemplates

@@ -93,7 +93,7 @@ flowchart TD
 ## 4. Resource and repository register
 
 | Resource | Role in this lane | Current disposition | License / reuse note |
-|---|---|---|
+|---|---|---|---|
 | [aws/aws-emulator](https://github.com/aws/aws-emulator) | Local AWS API emulator; Rust workspace, one crate per service | upstream reference; no upstream PRs | CC0-1.0; `vendor/` Apache-2.0 |
 | [aws/api-models-aws](https://github.com/aws/api-models-aws) | Generated Smithy JSON AST service models | pinned contract input; generated/read-only | Apache-2.0 |
 | [aws/aws-emulator-evaluation-suite](https://github.com/aws/aws-emulator-evaluation-suite) | Boto3 fidelity scenarios and runner | upstream test corpus; read-only | CC0-1.0 |
@@ -101,16 +101,15 @@ flowchart TD
 | [timerloggedout-spec/aws-emulator-evaluation-suite_fork](https://github.com/timerloggedout-spec/aws-emulator-evaluation-suite_fork) | User-owned upstream mirror | HEAD matched upstream at observation | CC0-1.0 |
 | [aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws) | Agent skills, plugins, AWS MCP setup | integration/skill research | Apache-2.0 |
 | [aws/aws-sam-cli](https://github.com/aws/aws-sam-cli) | Serverless build and local Lambda/API workflow | application integration candidate | verify at adoption |
-| [aws/aws-cdk](https://github.com/aws/aws-cdk) | Infrastructure definition and CloudFormation synthesis | IaC integration candidate |
-| [aws/jsii](https://github.com/aws/jsii) | Cross-language bindings for TypeScript libraries | SDK/toolchain context |
-| [aws/eks-pod-identity-agent](https://github.com/aws/eks-pod-identity-agent) | EKS workload credential delivery | identity/security boundary research; not emulator parity |
-| [aws/aws-advanced-python-wrapper](https://github.com/aws/aws-advanced-python-wrapper) | Aurora/RDS-aware Python driver wrapper | database integration research; not a core emulator dependency |
-| [aws/c3r](https://github.com/aws/c3r) | AWS Clean Rooms client-side cryptographic data processing | specialized data-security research |
-| [aws/csi-components](https://github.com/aws/csi-components) | Kubernetes CSI sidecar image tooling | Kubernetes/storage integration research |
-| [timerloggedout-spec/event-ruler_fork](https://github.com/timerloggedout-spec/event-ruler_fork) | User-owned Event Ruler fork | compare only if event-pattern semantics are in the target workflow |
-| [aws/aws-kotlin-repo-tools](https://github.com/aws/aws-kotlin-repo-tools) | Kotlin SDK repository tooling | language/tooling context |
-| [aws](https://github.com/aws) | AWS public repository discovery | catalog, not a dependency |
-
+| [aws/aws-cdk](https://github.com/aws/aws-cdk) | Infrastructure definition and CloudFormation synthesis | IaC integration candidate | verify at adoption |
+| [aws/jsii](https://github.com/aws/jsii) | Cross-language bindings for TypeScript libraries | SDK/toolchain context | verify at adoption |
+| [aws/eks-pod-identity-agent](https://github.com/aws/eks-pod-identity-agent) | EKS workload credential delivery | identity/security boundary research; not emulator parity | verify at adoption |
+| [aws/aws-advanced-python-wrapper](https://github.com/aws/aws-advanced-python-wrapper) | Aurora/RDS-aware Python driver wrapper | database integration research; not a core emulator dependency | verify at adoption |
+| [aws/c3r](https://github.com/aws/c3r) | AWS Clean Rooms client-side cryptographic data processing | specialized data-security research | verify at adoption |
+| [aws/csi-components](https://github.com/aws/csi-components) | Kubernetes CSI sidecar image tooling | Kubernetes/storage integration research | verify at adoption |
+| [timerloggedout-spec/event-ruler_fork](https://github.com/timerloggedout-spec/event-ruler_fork) | User-owned Event Ruler fork | compare only if event-pattern semantics are in the target workflow | verify fork and upstream license |
+| [aws/aws-kotlin-repo-tools](https://github.com/aws/aws-kotlin-repo-tools) | Kotlin SDK repository tooling | language/tooling context | verify at adoption |
+| [aws](https://github.com/aws) | AWS public repository discovery | catalog, not a dependency | repository-specific |
 Do not clone all of these repositories into the Termux home checkout. Add only a resource record and a bounded evidence pointer when a concrete experiment requires it.
 
 ## 5. Tool and emulator comparison

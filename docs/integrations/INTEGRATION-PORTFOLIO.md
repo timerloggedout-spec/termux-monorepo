@@ -9,11 +9,11 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-11. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Audit performed:** 2026-11-16. **Registry update date:** 2026-11-16. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
 
 ## Executive status
 
-The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.
+The existing Integration Intelligence foundation is established by merged PR #4009. The machine-readable registry now tracks 37 integration records. Records distinguish session capability, repository adapter state, and validated runtime behavior.
 
 The repository remains the source of truth. Session connectors and installed skills are capabilities of this assistant environment, not automatic capabilities of GitHub Actions, Termux, other collaborators, or production.
 
@@ -56,6 +56,25 @@ The repository remains the source of truth. Session connectors and installed ski
 | Manus | Research and task tools exposed | Dispatch only bounded briefs; independently validate outputs |
 | Sixtyfour Intelligence | Company/person research tools exposed; not exercised | Require an explicit legitimate research purpose and privacy review |
 | WorkOS | Login authenticated, but no dashboard account backs it | Provisioning is blocked until a supported account setup path exists |
+| OpenAI Codex Security | Official public repository and v0.10.0 Apache-2.0 CLI/TypeScript SDK metadata verified; no package installed or scan executed | Run a bounded, cost-aware pilot only after reviewing model/data handling, private report storage, and Termux runtime support |
+
+## Codex Security assessment
+
+The official [openai/codex-security](https://github.com/openai/codex-security) repository and package metadata identify **Codex Security v0.10.0**, licensed Apache-2.0. It provides a CLI (`cs` / `codex-security`), TypeScript SDK, and GitHub Action.
+
+Supported scan workflows include repository/path scans, PR or Git-diff scans, repeated deep scans, finding validation, patch proposals, fix verification, SARIF/JSON/CSV export, and integrations for tracking findings. This is a useful candidate for the existing `agentic-security` research lane, not a new security authority.
+
+**Runtime requirements:** Node.js 22.13+ within 22.x, or Node.js 24.x/26.x, plus Python 3.10+. Termux/Android ARM compatibility has not been established. No dependency was installed and no scan was run in this audit.
+
+**Important corrections to the social post:**
+- The package is open source and Apache-2.0; that does not establish that model usage is free. The CLI exposes estimated model cost, supports API-key authentication, and some protected cybersecurity requests require Trusted Access for Cyber.
+- The official documentation describes local execution under the caller's OS permissions, but I found no guarantee that scanning is offline or that source code never leaves the machine. Treat that claim as unverified until provider/model data-handling terms are reviewed.
+- Reports and logs may contain source code, credentials, and vulnerability details. Keep them in a private state/output directory outside the scanned checkout and enclosing worktrees; do not upload them as public CI artifacts.
+- Deep-scan workers are documented as read-only, but the upstream security policy explicitly says this does not make them isolated or offline and does not disable inherited MCP servers.
+
+**Proposed pilot:** use a bounded PR diff or selected path, set an explicit time/cost ceiling, capture the scan manifest, scope, exclusions, estimated cost, and report reference, then independently validate findings. Keep patch generation advisory. Do not add a required CI gate until false-positive rate, data handling, spend, Termux compatibility, and failure semantics are measured.
+
+See [Codex Security adoption notes](CODEX-SECURITY-ADOPTION.md) for the versioned assessment and proposed integration boundary.
 
 ## DeepWiki and Devin are separate systems
 

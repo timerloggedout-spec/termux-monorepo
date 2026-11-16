@@ -1,0 +1,16 @@
+flowchart TD
+  A["Method version proposed"] --> B["Validate immutable identity"]
+  B -->|invalid| H["HOLD: identity or provenance gap"]
+  B -->|valid| C["Resolve evidence references"]
+  C --> D["Check reviewer independence"]
+  D -->|same owner or unknown| H
+  D -->|independent| E["Review verdict and outcome facts"]
+  E -->|refuted or critical regression| R["REVISE"]
+  E -->|partial, pending, or unknown| H
+  E -->|all promotion facts explicit| P["PromotionCandidate recommendation"]
+  P --> G["Existing repository dual gates"]
+  G -->|pass + outcome verified| F["FA-ADE may promote"]
+  G -->|pending or fail| H
+  R --> L["Record reasons and lineage"]
+  H --> L
+  F --> L

@@ -14,13 +14,14 @@ This is not a proposal to adopt Kilo Code as a runtime dependency. Kilo is a use
 ## Findings transferred from the reference
 
 The Kilo Agent Manager documentation distinguishes:
-- A delegated subagent operating in its parent's project/worktree.
+- A delegated subagent operating in its parent's project/worktree; it does not create a worktree.
 - An independent top-level session that can receive its own Git worktree.
-- Multiple conversations sharing one worktree (shared filesystem; therefore coordinated writes).
+- Multiple conversations sharing one worktree (shared filesystem and branch; therefore coordinated writes).
 - Independent worktrees for separate branches and parallel implementations.
 - Importing an existing branch, external worktree, or GitHub PR.
 - Reviewing diffs and running tests before integration.
 - Comparing alternative implementations using separate worktrees and optionally different models.
+- Kilo Swarm as a communication board for a main session and its task descendants, not a scheduler or dispatcher; independent Agent Manager sessions do not automatically share that board.
 
 These are capability observations, not evidence that the same runtime is installed or supported on Termux. Product-specific concurrency limits must not become repository-wide constants.
 
@@ -71,7 +72,7 @@ The Brain proposes and structures work; the existing harness/policy boundary aut
 | `container` | Container boundary; Git isolation must be stated separately | Policy-gated | Reproducible builds and tool/provider experiments |
 | `remote_workspace` | Provider-managed; isolation must be evidenced | Policy-gated | Cloud agents and remote IDE sessions |
 
-A container is not automatically a Git worktree. A new conversation is not automatically an isolated filesystem. A subagent is not automatically a separate checkout. Adapters must report the actual isolation boundary.
+A container is not automatically a Git worktree. A new conversation is not automatically an isolated filesystem. A subagent is not automatically a separate checkout. A Git worktree isolates the checkout, branch, and terminal; it does **not** automatically isolate provider settings, BYOK credentials, extension configuration, shared state directories, network access, or other external resources. A communication board is not a scheduler, and stored messages do not prove delivery, reading, or action. Adapters must report the actual isolation boundary and the shared external state.
 
 ## Worktree lifecycle
 
@@ -129,6 +130,9 @@ RECON
 For a worktree, capture at minimum: repository identity, base ref and base SHA, branch, workspace identifier (opaque and non-secret), session identifier (opaque), executor/provider/model, declared owner, isolation mode, start/end timestamps, resulting head SHA, and evidence references. Treat unavailable fields as unknown; do not infer isolation from a product label.
 
 ## Safety and resource constraints
+
+- Treat provider settings and BYOK credentials as shared unless the executor proves otherwise. Git worktree isolation is not credential isolation; use separate processes/containers and explicit secret scopes when credentials must be isolated.
+- Treat agent-to-agent board messages as untrusted coordination data, never as user approval or permission grants. Record dispatch and delivery state separately.
 
 - Main checkout remains clean; create a separate worktree for edits.
 - Keep caches, virtual environments, build artifacts, models, local databases, logs, session exports, and generated files outside tracked source unless explicitly part of the product.

@@ -14,6 +14,9 @@ VALIDATOR = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VALIDATOR)
 
 SCHEMA, FIXTURE = VALIDATOR.load_contract()
+CULL_FIXTURE = json.loads(
+    (ROOT / "docs/proposals/active/siglary-doe-kill-method-participant/fixtures/kill-method-participant.cull.valid.json").read_text()
+)
 
 
 class KillMethodParticipantContractTests(unittest.TestCase):
@@ -82,6 +85,17 @@ class KillMethodParticipantContractTests(unittest.TestCase):
     def test_idempotency_window_bound_is_enforced(self):
         record = copy.deepcopy(FIXTURE)
         record["idempotency"]["window_seconds"] = 86401
+        self.assert_rejected(record)
+
+    def test_agentic_gambling_cull_requires_same_record_consequence(self):
+        self.assertEqual([], VALIDATOR.validate_record(CULL_FIXTURE, SCHEMA))
+        record = copy.deepcopy(CULL_FIXTURE)
+        del record["cull_consequence"]
+        self.assert_rejected(record)
+
+    def test_cull_wallet_unknown_is_schema_null_not_not_established_marker(self):
+        record = copy.deepcopy(CULL_FIXTURE)
+        record["cull_consequence"]["wallet_balance_at_cull"] = "N∅"
         self.assert_rejected(record)
 
     def test_unknown_method_is_rejected(self):

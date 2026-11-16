@@ -20,7 +20,7 @@ The browser CLI was already present in repository inventories before this integr
 - `docs/repositories/STARS-FORKS-WATCH.md` already lists the upstream as starred and identifies `--engine lightpanda`.
 - `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` places agent-browser in the existing `drivers-and-clients` taxonomy.
 
-The recorded package version is a historical inventory value, not a live executable check; upstream changelog material documents v0.34.0 by August 2026. This PR reconciles the existing record and adds governance; it does not reinstall the CLI or claim a successful device session.
+The recorded package version is a historical inventory value, not a live executable check; the official releases page lists v0.43.0 released 2026-11-12. This PR reconciles the existing record and adds governance; it does not reinstall the CLI or claim a successful device session.
 
 | Filing/execution surface | Existing evidence | Relationship to C12 |
 |---|---|---|
@@ -76,6 +76,21 @@ sanitized operation receipt
 ```
 
 This is a candidate architecture, not a verified BLU B160V deployment. The bundled Chrome installer and native binary must not be assumed to work on Android. Validate the actual device, Node/Rust requirements, browser endpoint, network route, session lifetime, and resource cost before marking Termux support.
+
+## MCP transport and secure browser profiles
+
+The upstream CLI includes `agent-browser mcp`, a stdio MCP server with typed tools and startup profiles. It is a better first integration target for Termux-MCP/QUE than a custom JSON-over-shell bridge:
+
+- Start with `agent-browser mcp --tools core`; do not expose `--tools all` by default.
+- The `core` profile includes interaction tools, so pair it with a default-deny action policy.
+- `policy-readonly.json` allows only navigation, snapshots, scrolling, waits, reads, and gets.
+- `policy-authorized-write.json` is a separate mode for explicitly authorized operations and is paired with `--confirm-actions click,fill,interact,download,upload,state`.
+- The stdio MCP examples also enable `--content-boundaries`, `--max-output 50000`, and an explicit domain allowlist.
+- `agent-browser doctor --offline --quick --json` is the local preflight. It may clean stale daemon sidecar files; do not use `--fix` in unattended workflows.
+
+Upstream security controls are **opt-in**, not default-on. The domain allowlist cannot be combined with pre-existing CDP attach. The supplied examples therefore use a fresh locally managed browser. If an external CDP browser is used, network egress must be enforced outside agent-browser; do not treat the CLI allowlist as a boundary for attached sessions.
+
+The upstream Lightpanda engine page currently lists macOS Apple Silicon and Linux x86_64 installation paths, not Android/Termux. The repository's `--engine lightpanda` note is therefore a candidate to evaluate, not proof of B160V compatibility.
 
 ## C12 reliability requirements
 

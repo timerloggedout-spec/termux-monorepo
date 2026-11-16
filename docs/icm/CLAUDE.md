@@ -17,6 +17,7 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | [`processes/`](processes/CONTEXT.md) | Real editor workflows with explicit inputs and outputs. |
 | [`effects/`](effects/CONTEXT.md) | A compact “if you change X, read Y” index. |
 | [`maintenance/`](maintenance/CLAUDE.md) | A human-gated, documentation-only pipeline for future map updates. |
+| [`changes/`](changes/) | One machine-validated impact receipt per pull request, recording the exact delta and ICM/related-document disposition. |
 
 ## Route by task
 
@@ -31,12 +32,12 @@ Built with the integrated [ICM Architect](../../refTemplates/smods/icm-architect
 | alter navigation or an index | [`objects/knowledge/navigation-and-indexes.md`](objects/knowledge/navigation-and-indexes.md) | the owning navigation/index file |
 | reconstruct related source/GitHub history before a nontrivial change | [`processes/context-relationship-reconnaissance.md`](processes/context-relationship-reconnaissance.md) | the exact graph root, its evidence, and separately labeled candidates |
 | select or update an ICM reference | [`objects/knowledge/reference-inputs.md`](objects/knowledge/reference-inputs.md) | the pinned reference input and custom-submodule review |
-| design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest suitable form and reference workspace |
+| design or customize a recurring ICM workspace | [`objects/knowledge/interpretable-context-methodology.md`](objects/knowledge/interpretable-context-methodology.md) | the smallest form, reference rule, and custom-submodule review |
 | classify nested `workspace/` artifacts | [`processes/workspace-artifact-triage.md`](processes/workspace-artifact-triage.md) | the human decision before any cleanup or promotion |
-| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required human gate |
+| modify tracked code or documentation | [`processes/change-and-validate.md`](processes/change-and-validate.md) | the required ICM receipt and repository gates |
 | assess first-order change impact | [`effects/CONTEXT.md`](effects/CONTEXT.md) | the linked object/process card |
 | maintain or extend the ICM map | [`maintenance/CLAUDE.md`](maintenance/CLAUDE.md) | the `02_design` human gate |
 
 ## One rule
 
-Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth.
+Read this static catalog, one relevant card or nested resource, and its cited sources. Do **not** crawl the monorepo or treat visual cards, generated maps, recovery notes, provider observations, or untracked device state as substitute sources of truth. Every PR must carry the exact-delta receipt described in [`processes/change-and-validate.md`](processes/change-and-validate.md); the repo-gate workflow rejects missing or inconsistent receipts.

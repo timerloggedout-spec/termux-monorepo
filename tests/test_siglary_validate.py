@@ -28,6 +28,10 @@ class SiglaryTests(unittest.TestCase):
  def test_code_and_quoted_prior_art_are_exempt(self):
   g,d=self.rules(); f=chr(96)*3
   self.assertEqual(s.text_findings("> prior art 🧬\n\n"+f+"python\nx='🧬'\n"+f,"SKILL.md","skills",g,d),[])
+ def test_inline_code_tokens_are_exempt_but_explicit_glyph_markers_are_checked(self):
+  g,d=self.rules()
+  self.assertEqual(s.text_findings(chr(96)+"🧬"+chr(96)+" is a code token.","x","skills",g,d),[])
+  self.assertEqual(s.text_findings("glyph: "+chr(96)+"🧬"+chr(96),"x","skills",g,d)[0]["rule"],"UNISSUED-GLYPH")
  def test_class_misuse_and_unregistered_operator(self):
   g,d=self.rules(); self.assertEqual(s.text_findings("Operators are glyphs.","x","skills",g,d)[0]["rule"],"CLASS-MISUSE")
   self.assertEqual(s.text_findings("operator: ⊕","x","skills",g,d)[0]["rule"],"UNREGISTERED-OPERATOR")

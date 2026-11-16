@@ -220,6 +220,43 @@ must identify the actual legal sponsor, contracting party, PI/employment
 relationship, funds flow, fees, reporting, and control terms before it is
 treated as eligible.
 
+
+## 7B. External-source ingestion and current integration boundary
+
+The lane is linked to existing opportunity and evidence records, but a
+general automated external grant/RFP feed is **not yet established**. The
+existing components have narrower responsibilities:
+
+- `config/foresight_digest_sources.json` is a standing source catalog. It
+  records source families and URLs; its presence does not establish that
+  those URLs are being polled.
+- The ForeSight Evidence Spine and
+  `data/foresight/resource-registry.jsonl` define the normalized,
+  provenance-bearing evidence interchange. Their validation workflows
+  validate and package repository material; the daily briefing heartbeat
+  does not crawl external websites.
+- `delphi-rfp-feed-collect` fetches this repository's open GitHub issues
+  labeled `delphi:rfp` and their gate-ledger comments. It builds the
+  Delphi dashboard feed. It is not an external grant/RFP discovery feed.
+- `challenge-osint-watch` and `field_size_scrape.py` fetch official public
+  pages for records in `coordinator.json.events` (the challenge/event
+  collection). They do not process `candidate_events`, including C13,
+  C15, or C16.
+- `opportunity-cycle` reads `ops/challenge/coordinator.json`, stamps
+  readiness and priority receipts, and writes derived projections. It is
+  deterministic and repo-local; it does not fetch web pages or submit
+  applications.
+
+Accordingly, C13 is connected to the canonical coordinator record and the
+existing readiness cycle, but it is **not** automatically refreshed from
+the Digital Promise/K-12 AI Infrastructure web sources. The same distinction
+applies to C15/C16. The missing integration is a source-ingestion adapter
+for grant/program sources: scheduled or event-triggered fetch, immutable
+source snapshots, source/version/date capture, change detection, normalized
+evidence records, and a human-reviewed promotion path into the coordinator.
+Until that adapter exists, source discovery and updates remain manual or
+separately recorded; no live feed connection should be claimed.
+
 ## 8. Evidence and success measures
 
 Measure more than software completion:

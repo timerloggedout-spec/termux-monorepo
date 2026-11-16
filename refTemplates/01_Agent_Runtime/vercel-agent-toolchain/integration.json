@@ -102,6 +102,49 @@
       "termux_support": "not_applicable",
       "runtime_state": "research_only",
       "default_mode": "benchmark_only"
+    },
+    {
+      "id": "eve-data-analyst-template",
+      "repository": "vercel-labs/eve-data-analyst-template",
+      "role": "reference-data-analyst-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "metric-definitions",
+        "sql-cost-approval",
+        "row-caps",
+        "timezone-aware-reporting",
+        "evaluation-fixtures"
+      ],
+      "boundary": "Reference only for Moneyball/SHE analytics. Do not connect production databases, run SQL, export data, or deploy without a separate data-access review."
+    },
+    {
+      "id": "eve-memory-agent-template",
+      "repository": "vercel-labs/eve-memory-agent-template",
+      "role": "reference-memory-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "scoped-memory-slots",
+        "memory-provider-adapters",
+        "retention-controls",
+        "user-channel-memory"
+      ],
+      "boundary": "Reference only for memory architecture. Do not import personal data, connect external memory providers, or enable automatic capture without explicit privacy/retention review."
+    },
+    {
+      "id": "eve-vercel-drives-starter",
+      "repository": "vercel-labs/eve-vercel-drives-starter",
+      "role": "reference-artifact-storage-agent-starter",
+      "priority": "P2",
+      "status": "reference_only",
+      "capabilities": [
+        "read-only-snapshots",
+        "serialized-write-path",
+        "drive-busy-backpressure",
+        "sandbox-isolation"
+      ],
+      "boundary": "Reference only for evidence/artifact storage patterns. Do not provision Vercel Drives, upload files, or transfer project data without a separate approval and retention review."
     }
   ],
   "smods_candidates": [

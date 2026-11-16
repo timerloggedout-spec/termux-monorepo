@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/proposals/active/software-recipe-intelligence/SRM-SCHEMA.json",
   "title": "Software Recipe Model v1",
-  "description": "Neutral domain schema for describing software capabilities as versioned, provenance-aware recipes. Ownership is intentionally unassigned; this schema grants no execution authority.",
+  "description": "Neutral domain schema for describing software capabilities as versioned, provenance-aware recipes. Ownership is intentionally unassigned; this schema grants no execution authority. Canonical subsystem schemas and registries are linked by contract_refs rather than duplicated.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -24,7 +24,7 @@
     },
     "recipe_id": {
       "type": "string",
-      "pattern": "^urn:software-recipe:[a-z0-9][a-z0-9._/-]*$"
+      "pattern": "^software-recipe/[a-z0-9][a-z0-9._/-]*$"
     },
     "revision": {
       "type": "string",
@@ -134,6 +134,13 @@
     "extensions": {
       "type": "object",
       "description": "Namespaced extension properties; extension keys must be owned by a registered namespace."
+    },
+    "contract_refs": {
+      "type": "array",
+      "description": "References to existing authoritative subsystem contracts. Referenced schemas/registries remain authoritative; this record does not copy or replace them.",
+      "items": {
+        "$ref": "#/$defs/contractRef"
+      }
     }
   },
   "$defs": {
@@ -342,7 +349,8 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Reference to an existing retry-policy contract; do not duplicate policy definitions here."
         },
         "idempotency_key": {
           "type": [
@@ -364,7 +372,8 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Reference to the existing authorization/policy owner; this recipe does not grant permission."
         },
         "evidence": {
           "type": "array",
@@ -597,6 +606,54 @@
             "string",
             "null"
           ]
+        }
+      }
+    },
+    "contractRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "uri",
+        "role"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "orchestration-treatment",
+            "orchestration-receipt",
+            "experiment-record",
+            "integration-event",
+            "agent-roster",
+            "repo-replay",
+            "commit-replay",
+            "crg-relationship",
+            "other"
+          ]
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "role": {
+          "enum": [
+            "authoritative",
+            "adapter",
+            "evidence",
+            "reference"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceRef"
+          }
         }
       }
     }

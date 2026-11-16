@@ -67,7 +67,7 @@
     "scope": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["environment", "target_ref", "selection", "max_targets"],
+      "required": ["environment", "target_ref", "selection", "max_targets", "allowed_states", "forbidden_states"],
       "properties": {
         "environment": { "enum": ["development", "test", "staging"] },
         "target_ref": { "type": "string", "minLength": 1, "maxLength": 500 },
@@ -166,7 +166,7 @@
       "if": { "properties": { "method": { "properties": { "method_id": { "const": "queue.cancel_queued_run" } }, "required": ["method_id"] } }, "required": ["method"] },
       "then": {
         "properties": {
-          "method": { "properties": { "target_kind": { "const": "workflow_run" }, "effect_kind": { "const": "cancel_queued_work" } } },
+          "method": { "properties": { "method_family": { "const": "queue_cancellation" }, "target_kind": { "const": "workflow_run" }, "effect_kind": { "const": "cancel_queued_work" } } },
           "scope": { "properties": { "allowed_states": { "contains": { "const": "queued" } }, "forbidden_states": { "contains": { "const": "in_progress" } } } }
         }
       }
@@ -175,7 +175,7 @@
       "if": { "properties": { "method": { "properties": { "method_id": { "const": "worker.inject_test_failure" } }, "required": ["method_id"] } }, "required": ["method"] },
       "then": {
         "properties": {
-          "method": { "properties": { "target_kind": { "const": "test_worker" }, "effect_kind": { "const": "signal_test_process" } } },
+          "method": { "properties": { "method_family": { "const": "worker_fault_injection" }, "target_kind": { "const": "test_worker" }, "effect_kind": { "const": "signal_test_process" } } },
           "scope": { "properties": { "environment": { "enum": ["development", "test"] } } }
         }
       }
@@ -184,7 +184,7 @@
       "if": { "properties": { "method": { "properties": { "method_id": { "const": "doe.cull_participant" } }, "required": ["method_id"] } }, "required": ["method"] },
       "then": {
         "properties": {
-          "method": { "properties": { "target_kind": { "const": "experiment_participant" }, "effect_kind": { "const": "participant_lifecycle_transition" } } }
+          "method": { "properties": { "method_family": { "const": "experiment_population_cull" }, "target_kind": { "const": "experiment_participant" }, "effect_kind": { "const": "participant_lifecycle_transition" } } }
         }
       }
     },
@@ -192,7 +192,7 @@
       "if": { "properties": { "method": { "properties": { "method_id": { "const": "feature_flag.disable_exact" } }, "required": ["method_id"] } }, "required": ["method"] },
       "then": {
         "properties": {
-          "method": { "properties": { "target_kind": { "const": "feature_flag" }, "effect_kind": { "const": "disable_named_flag" } } }
+          "method": { "properties": { "method_family": { "const": "feature_flag_control" }, "target_kind": { "const": "feature_flag" }, "effect_kind": { "const": "disable_named_flag" } } }
         }
       }
     }

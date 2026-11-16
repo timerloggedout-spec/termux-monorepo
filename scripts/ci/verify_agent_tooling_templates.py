@@ -150,6 +150,84 @@ def validate_manifest(
     return errors
 
 
+READ_ONLY_ACTIONS = {"navigate", "snapshot", "scroll", "wait", "read", "get"}
+WRITE_ACTIONS = {"click", "fill", "interact", "download", "upload", "state"}
+
+
+def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
+    errors: list[str] = []
+    files = manifest.get("security_policy_files")
+    if not isinstance(files, dict):
+        return ["integration.json: security_policy_files must be an object"]
+    required_keys = {"read_only", "authorized_write", "mcp_read_only", "mcp_authorized_write"}
+    if not required_keys.issubset(files):
+        return ["integration.json: security_policy_files is missing required policy/example paths"]
+
+    def load_json(name: str) -> dict | None:
+        path = template_dir / name
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(value, dict):
+                errors.append(f"{name}: JSON root must be an object")
+                return None
+            return value
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"{name}: cannot read valid JSON: {exc}")
+            return None
+
+    readonly = load_json(files["read_only"])
+    authorized = load_json(files["authorized_write"])
+    if readonly is not None:
+        allow = set(readonly.get("allow", []))
+        if readonly.get("default") != "deny" or not allow or not allow.issubset(READ_ONLY_ACTIONS):
+            errors.append("read-only action policy must default-deny and allow only read/navigation categories")
+    if authorized is not None:
+        allow = set(authorized.get("allow", []))
+        if authorized.get("default") != "deny" or not (READ_ONLY_ACTIONS | WRITE_ACTIONS).issuperset(allow):
+            errors.append("authorized-write policy must default-deny and use only reviewed read/write categories")
+        if not WRITE_ACTIONS.issubset(allow):
+            errors.append("authorized-write policy must explicitly enumerate click/fill/interact/download/upload/state")
+        if "eval" in allow or "network" in allow:
+            errors.append("authorized-write policy must not enable eval or network control")
+
+    def validate_mcp_config(name: str, policy_name: str, write_mode: bool) -> None:
+        config = load_json(name)
+        if config is None:
+            return
+        servers = config.get("mcpServers")
+        if not isinstance(servers, dict) or len(servers) != 1:
+            errors.append(f"{name}: expected exactly one mcpServers entry")
+            return
+        server = next(iter(servers.values()))
+        args = server.get("args") if isinstance(server, dict) else None
+        if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
+            errors.append(f"{name}: server args must be a string array")
+            return
+        if "--tools" not in args or args[args.index("--tools") + 1:args.index("--tools") + 2] != ["core"]:
+            errors.append(f"{name}: MCP must start with the least-privilege core tool profile")
+        if "--action-policy" not in args or policy_name not in args[args.index("--action-policy") + 1:args.index("--action-policy") + 2]:
+            errors.append(f"{name}: MCP must reference {policy_name}")
+        for flag in ("--content-boundaries", "--max-output", "--allowed-domains"):
+            if flag not in args:
+                errors.append(f"{name}: missing required security flag {flag}")
+        if "--cdp" in args and "--allowed-domains" in args:
+            errors.append(f"{name}: upstream domain allowlist cannot be combined with CDP attach")
+        if "--tools" in args and "all" in args:
+            errors.append(f"{name}: do not expose all MCP tools by default")
+        if write_mode:
+            if "--confirm-actions" not in args:
+                errors.append(f"{name}: authorized-write MCP must require action confirmations")
+            else:
+                position = args.index("--confirm-actions")
+                confirmed = set(args[position + 1].split(",")) if position + 1 < len(args) else set()
+                if not WRITE_ACTIONS.issubset(confirmed):
+                    errors.append(f"{name}: confirm-actions must cover all write categories")
+
+    validate_mcp_config(files["mcp_read_only"], files["read_only"], False)
+    validate_mcp_config(files["mcp_authorized_write"], files["authorized_write"], True)
+    return errors
+
+
 def validate_tree(
     template_dir: Path,
     smods_index_path: Path,
@@ -159,24 +237,35 @@ def validate_tree(
     root: Path = ROOT,
 ) -> list[str]:
     errors: list[str] = []
-    for name in ("README.md", "SOURCE.txt", "integration.json"):
-        path = template_dir / name
-        if not path.is_file() or not path.read_text(encoding="utf-8").strip():
-            errors.append(f"{path.relative_to(root)}: missing or empty {name}")
-    if errors:
-        return errors
+    manifest_path = template_dir / "integration.json"
+    if not manifest_path.is_file():
+        return [f"{manifest_path.relative_to(root)}: missing integration.json"]
     try:
-        manifest = json.loads((template_dir / "integration.json").read_text(encoding="utf-8"))
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         index = json.loads(smods_index_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         return [f"invalid integration JSON: {exc}"]
-    return errors + validate_manifest(
+
+    required_files = manifest.get("required_files", ["README.md", "SOURCE.txt", "integration.json"])
+    if not isinstance(required_files, list) or not {"README.md", "SOURCE.txt", "integration.json"}.issubset(set(required_files)):
+        errors.append("integration.json: required_files must include README.md, SOURCE.txt, and integration.json")
+        return errors
+    for name in required_files:
+        if not isinstance(name, str) or Path(name).is_absolute() or ".." in Path(name).parts:
+            errors.append(f"integration.json: unsafe required_files path {name!r}")
+            continue
+        path = template_dir / name
+        if not path.is_file() or not path.read_text(encoding="utf-8").strip():
+            errors.append(f"{path.relative_to(root)}: missing or empty required file")
+
+    errors.extend(validate_manifest(
         manifest,
         index,
         module_urls if module_urls is not None else parse_gitmodules(gitmodules_path),
         gitlinks if gitlinks is not None else parse_gitlinks(root),
-    )
-
+    ))
+    errors.extend(validate_security_examples(template_dir, manifest))
+    return errors
 
 def validate_all(root: Path = ROOT) -> list[str]:
     runtime_root = root / "refTemplates/01_Agent_Runtime"

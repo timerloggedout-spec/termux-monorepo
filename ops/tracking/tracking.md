@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-16T11:12:44Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-16T11:31:00Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-16T11:12:43Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`68881` read_at=`2026-11-16T11:12:43Z`
+Sources: PR feed read_at=`2026-11-16T11:30:59Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`69027` read_at=`2026-11-16T11:30:59Z`
 
 Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown=9
 
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=9 · landed=1 · unknown
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5258 `87dd55c618fd` 2026-11-13T05:47:31Z | land/close PR #5505 — test(dispatch): align quota tree assertion with concurrency contract |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #5337 — Trigger Pages deployment after merged dashboard-source PRs |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 

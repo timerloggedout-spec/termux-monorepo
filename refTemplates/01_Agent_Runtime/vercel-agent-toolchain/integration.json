@@ -101,11 +101,11 @@
     {
       "id": "agent-browser",
       "path": "refTemplates/smods/agent-browser_fork",
-      "status": "fork_required",
+      "status": "deferred",
       "upstream": "https://github.com/vercel-labs/agent-browser",
       "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
       "pinned_sha": null,
-      "reason": "Create a user-owned adaptation only if repository-specific Termux/QUE changes are required; no fork or gitlink is claimed yet."
+      "reason": "No custom fork is justified until the existing package is reconciled and the actual Termux/Lightpanda/CDP runtime is tested; create a user-owned fork only if repository-specific patches are proven necessary."
     }
   ],
   "policy": {
@@ -116,5 +116,17 @@
     "secrets_in_git": false,
     "browser_state_in_git": false,
     "termux_runtime_claim": "not_established"
+  },
+  "existing_repository_evidence": {
+    "npm_inventory_version": "0.26.0",
+    "expected_termux_executable": "/data/data/com.termux/files/usr/bin/agent-browser",
+    "lightpanda_engine_option_documented": true,
+    "source_paths": [
+      "workspace/llm_map/_TOOL_TAXONOMY/state/npm_curr.json",
+      "workspace/llm_map/_TOOL_TAXONOMY/python3/reverse_engineering.json",
+      "docs/repositories/STARS-FORKS-WATCH.md",
+      "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md"
+    ],
+    "verification_state": "historical_inventory_only_live_device_probe_required"
   }
 }

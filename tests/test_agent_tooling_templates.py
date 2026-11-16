@@ -81,6 +81,20 @@ class AgentToolingTemplateTests(unittest.TestCase):
         )
         self.assertTrue(any("does not match the actual 160000 gitlink SHA" in error for error in errors))
 
+    def test_template_pin_metadata_must_match_global_index(self):
+        manifest, index, candidate = sample()
+        pinned = dict(candidate, status="pinned", pinned_sha="e" * 40)
+        indexed = dict(pinned, pinned_sha="f" * 40)
+        manifest["smods_candidates"] = [pinned]
+        index["entries"] = [indexed]
+        errors = validate_manifest(
+            manifest,
+            index,
+            {pinned["path"]: pinned["fork_url"]},
+            {pinned["path"]: pinned["pinned_sha"]},
+        )
+        self.assertTrue(any("mismatched pinned_sha" in error for error in errors))
+
     def test_manifest_and_smods_index_cannot_drift(self):
         manifest, index, _ = sample()
         index["entries"][0]["path"] = "refTemplates/smods/wrong_fork"

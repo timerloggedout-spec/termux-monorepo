@@ -80,14 +80,17 @@ This is a candidate architecture, not a verified BLU B160V deployment. The bundl
 
 ## MCP transport and secure browser profiles
 
-The upstream CLI includes `agent-browser mcp`, a stdio MCP server with typed tools and startup profiles. It is a better first integration target for Termux-MCP/QUE than a custom JSON-over-shell bridge:
+The upstream CLI includes `agent-browser mcp`, a stdio MCP server with typed tools and startup profiles. It is the preferred provider transport to evaluate **behind the Web Adapter Foundry**, not a direct QUE endpoint:
 
 - Start with `agent-browser mcp --tools core`; do not expose `--tools all` by default.
-- The `core` profile includes interaction tools, so pair it with a default-deny action policy.
+- The `core` profile is not intrinsically read-only; it includes flow-management tools. Pair it with a default-deny action policy, but do not mistake that policy for an MCP method allowlist.
 - `policy-readonly.json` allows only navigation, snapshots, scrolling, waits, reads, and gets.
-- `policy-authorized-write.json` is a separate mode for explicitly authorized operations and is paired with `--confirm-actions click,fill,interact,download,upload,state`.
+- `policy-authorized-write.json` is a separate mode for explicitly authorized operations and is paired with `--confirm-actions click,fill,interact`. File upload/download, auth, storage, and cookie tools are excluded from this first contract.
 - The stdio MCP examples also enable `--content-boundaries`, `--max-output 50000`, and an explicit domain allowlist.
 - `agent-browser doctor --offline --quick --json` is the local preflight. It may clean stale daemon sidecar files; do not use `--fix` in unattended workflows.
+
+
+**Raw MCP exposure is prohibited.** The `core,debug` authorized-write profile is used only to make confirmation/deny tools available; it also exposes additional upstream methods. The WAF adapter must filter exact tool names using the manifest's explicit read-only/authorized-write allowlists. `raw_server_exposure=false` is a required integration invariant. The example JSON configs are trusted-local diagnostics, not production QUE registration.
 
 Upstream security controls are **opt-in**, not default-on. The domain allowlist cannot be combined with pre-existing CDP attach. The supplied examples therefore use a fresh locally managed browser. If an external CDP browser is used, network egress must be enforced outside agent-browser; do not treat the CLI allowlist as a boundary for attached sessions.
 

@@ -54,6 +54,27 @@ flowchart TB
 
 A tournament is a sequence of designed comparisons, not a popularity contest. The control remains in the design. Arms may be culled only under preregistered rules, with all prior evidence retained. A candidate that wins a training cohort must face a fresh holdout. No winner is crowned from a single run or from simulated makespan.
 
+### 2.1 Architecture seed tournament — every analogy is a treatment candidate
+
+The architecture mappings in `PIT-CREW-ARCHITECTURE.md` Section 7 are not merely explanatory analogies. **Each of the 20 mappings is a separately versioned Pit Crew architecture seed** and a candidate DoE treatment arm. The common Pit Crew chassis and Crew Chief contract remain invariant; each seed changes only its declared architecture delta, crew topology/emphasis and registered policy factors.
+
+Canonical seed catalogue: `docs/ops/PIT-CREW-ALTERNATIVE-ARCHITECTURES.md`. Machine-readable mapping: `docs/ops/PIT-CREW-ARCHITECTURE-SEED-REGISTRY.yaml`.
+
+| Seed range | Architecture families | Primary comparison dimensions |
+|---|---|---|
+| PC-SEED-001–002 | F1 specialist; NASCAR spotter | role specialization, choreography, recon cadence |
+| PC-SEED-003–005 | NASA mission control; surgical team; SRE incident command | command topology, verification independence, escalation/recovery |
+| PC-SEED-006–008 | aircraft turnaround; air traffic control; mission command | concurrency/resources, admission, delegated autonomy |
+| PC-SEED-009–012 | orchestra; Lean cell; actor system; supply chain | integration coherence, WIP, idempotency, capacity buffers |
+| PC-SEED-013–016 | cyber SOC; scientific lab; sports coaching; newsroom | containment/evidence, experimental rigor, learning, fact-checking |
+| PC-SEED-017–020 | release train; Brain cognitive; Ballet choreography; DoE oversight | rollout/rollback, context/decomposition, dependency waves, experiment governance |
+
+**Assignment rule:** each seed competes against the incumbent control on matched task instances under a preregistered campaign. The first pass is a screening design, not a single-elimination winner bracket. Use blocked family tournaments, then factor decomposition, replication and a fresh holdout. A seed is never promoted because it wins one task or a raw speed/cost metric.
+
+**Immutable evolution:** every seed starts at version `0.1.0` and `DESIGN_ONLY`. Any architecture, role, Chief policy, factor, prompt/tool, configured-instance, evaluator or environment change creates a child version with parent lineage and a new arm/version identity. Historical parents, failures, culls and inconclusive arms remain addressable. DoE controls protocol integrity; existing Operator/promotion authority alone can authorize a production version.
+
+All seeds inherit the same Chief inputs, responsibilities and prohibited powers defined in the architecture report. No seed gains dispatch, queue, scheduler, router, lease, evidence-ledger or promotion ownership.
+
 ## 3. Tournament illustration — multi-round championship
 
 ```mermaid

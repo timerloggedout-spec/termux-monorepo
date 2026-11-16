@@ -11,96 +11,78 @@
 
 ---
 
-## 0. Scope correction and executive decision brief\n\n> **Correction:** MOSAIC Brain is an existing repository vocabulary/protocol and run-history/scorebook concept. It is not the name of this proposal. This draft is subordinate to MOSAIC Brain and the existing Monorepo Brain architecture. See SCOPE-CORRECTION.md and the canonical integration design under continuous-capability-evolution-lab. The canonical proposed domain namespace is `mosaic_brain.recipe_model`; no new brain, graph, memory store, experiment ledger, dictionary or promotion authority is created. Honor the owner-supplied `META-brain.rs` → `mosaic.brain.rs` rename and preserve its lineage.\n\n## 0. Executive decision brief
+## 0. Scope correction and executive decision brief
 
-MOSAIC Brain proposes a compositional intelligence layer that treats software systems as **executable, versioned recipes**. A recipe is not merely a file, script, build manifest, workflow, or prompt. It is a typed, evidence-bearing description of how a capability is assembled from ingredients, transformed through ordered operations, executed in a declared environment, evaluated against outcomes, and evolved across revisions.
+> **Correction:** GRIMOIRE is an existing repository vocabulary/protocol and run-history/scorebook concept. It is not the name of this proposal. This draft is subordinate to MOSAIC Brain and the existing Monorepo Brain architecture. See SCOPE-CORRECTION.md and the canonical integration design under continuous-capability-evolution-lab. The canonical proposed domain namespace is mosaic_brain.recipe_model; no new brain, graph, memory store, experiment ledger, dictionary or promotion authority is created. Honor the owner-supplied META-brain.rs → mosaic.brain.rs rename and preserve its lineage.
 
-The culinary analogy is useful because it forces a complete view:
+The Software Recipe Model (SRM) proposes a compositional domain model that treats software capabilities as **versioned, evidence-bearing recipes**. A recipe describes how a capability is assembled from ingredients, transformed through ordered operations, executed in a declared environment, evaluated against outcomes, and evolved across revisions.
 
-| Culinary concept | Software counterpart |
-|---|---|
-| Dish / recipe identity | Capability identity + immutable revision |
-| Ingredients | Source, dependencies, data, APIs, config, tools, policies |
-| Preparation | Parsing, normalization, validation, preconditions |
-| Method / steps | Ordered operations, algorithms, branches, concurrency |
-| Equipment | Runtime, OS, compiler, container, infrastructure |
-| Serving / result | Outputs, interfaces, artifacts, state transitions |
-| Taste / quality | Tests, acceptance, quality, performance, safety |
-| Substitution | Compatible alternative dependency or implementation |
-| Cookbook lineage | Provenance, derivation, supersession, historical corpus |
-| Chef's notes | Human annotations, rationale, confidence, unresolved assumptions |
+The culinary analogy remains a modeling aid, not a new product identity or independent subsystem.
 
-The metaphor is a modeling aid, not a replacement for engineering semantics. Software recipes require formal contracts, machine-verifiable evidence, security boundaries, deterministic identity, and explicit unknown states.
+**Recommendation:** evaluate SRM as a bounded domain-model extension to MOSAIC Brain. Begin with read-only extraction, identity, taxonomy, graph references and deterministic baselines. Execution remains outside scope and requires separate safety admission.
 
-**Recommendation:** admit MOSAIC Brain as a bounded research/design candidate, not as a live autonomous executor. Begin with read-only extraction, identity, taxonomy, graph relationships, and deterministic baselines. Enable execution only in an isolated, policy-constrained environment after reproducibility and safety gates pass.
+### What this extension adds
 
-### What this proposal adds
+1. A canonical Software Recipe Model (SRM) and JSON Schema within the MOSAIC Brain domain.
+2. Stable capability identity, immutable revision and lineage rules.
+3. A recipe taxonomy and CRG-compatible typed relationship projection.
+4. A classifier/similarity architecture separating extracted facts from semantic inference.
+5. A DoE plan comparing methods under existing family governance.
+6. SRM-000 through SRM-015 work packages mapped to MOSAIC Brain MOS-001 through MOS-006.
+7. Acceptance criteria, risk controls, provenance and research inspirations.
 
-1. A canonical Software Recipe Model (SRM) and JSON Schema.
-2. A stable identity and naming system that avoids collision with generic terms such as `SYSTEM_RECIPE`.
-3. A recipe taxonomy and typed relationship graph.
-4. A classifier/similarity architecture that separates structural facts from semantic inference.
-5. A DoE plan that compares competing representations and methods under controlled, version-pinned conditions.
-6. A phased implementation plan integrated with existing repository systems.
-7. Acceptance criteria, risk controls, governance, evidence, and source inspirations.
+### What it does not add
 
-### What it does not claim
-
-- It does not claim that a recipe metaphor is novel in software engineering.
-- It does not replace build systems, package managers, SBOMs, workflow engines, ASTs, dependency graphs, or source control.
-- It does not assert that similarity means equivalence or that a model prediction is proof.
-- It does not authorize production execution, secret access, deployment, autonomous merge, or policy bypass.
-- It does not assert any measured performance improvement; the proposed benefits require experiments.
+- No new GRIMOIRE product/program or namespace.
+- No second repository-wide brain, memory store, graph database, experiment ledger, notation dictionary or promotion authority.
+- No replacement for build systems, package managers, SBOMs, workflow engines, ASTs, dependency graphs, source control or existing Brain/MOSAIC services.
+- No claim that similarity means equivalence or model prediction is proof.
+- No production execution, secret access, deployment, autonomous merge, provider inference or policy bypass.
+- No measured performance improvement claim; benefits require controlled DoE evidence.
 
 ---
 
 ## 1. Naming, identity and collision governance
 
-### 1.1 Product and technical names
+### 1.1 Canonical ownership and technical identity
 
-**MOSAIC Brain** is the project identity: *Generative Recipe Intelligence, Memory, Orchestration & Evolution*.
+- Existing vocabulary/protocol: **Grimoire**, owned by its established repository surfaces and Linguist governance.
+- Meta-methodology program: **MOSAIC**, within the existing DoE family and CEEL lane.
+- Reasoning subsystem: **MOSAIC Brain**, advisory methodology-intelligence capability.
+- Broader reasoning kernel: existing **Monorepo Brain**.
+- Domain model: **Software Recipe Model (SRM)**.
+- Proposed domain namespace: `mosaic_brain.recipe_model`.
+- Proposed schema version: `mosaic_brain.recipe_model.v1`.
+- Recipe identity URI: `mosaic-brain://recipe/{namespace}/{slug}`.
+- Immutable revision: SHA-256 of canonicalized semantic recipe content.
+- Existing Grimoire terms may be human-facing aliases only when approved by the Grimoire/Linguist owners.
 
-Canonical identifiers:
+### 1.2 Collision and lineage rules
 
-- Product / program: `MOSAIC Brain`
-- System namespace: `grimoire`
-- Core capability: `mosaic_brain.recipe_model`
-- Canonical model: `SRM` — Software Recipe Model
-- Model schema: `mosaic_brain.recipe_model.v1`
-- Recipe instance ID: `mosaic-brain://recipe/{namespace}/{slug}`
-- Immutable revision: `sha256:{content-digest}`
-- DoE surface ID: `mosaic_brain.recipe_model`
-- Proposal package: `MOSAIC Brain-SR-PROPOSAL`
-
-`SYSTEM_RECIPE` remains a generic descriptive alias only. It must not be the product namespace, schema identifier, registry key, or globally unique ID.
-
-### 1.2 Naming rules
-
-1. Human-readable names are labels; machine identity is a stable ID.
-2. IDs are namespaced, versioned, normalized, and never reused.
-3. A recipe's logical identity is separate from its content revision.
-4. A rename does not create a new logical recipe; it creates an alias/history event.
-5. A fork or materially different capability receives a new logical identity with `DERIVED_FROM`.
-6. A revision digest covers canonicalized content and declared semantic fields; volatile telemetry is excluded.
-7. Registry uniqueness is enforced on normalized IDs, not display names.
-8. Similar names trigger a collision warning; matching IDs are a hard conflict.
-9. Reserved namespaces include `mosaic_brain.*`, `srm.*`, and the repository's existing `siglary.*` namespace. MOSAIC Brain must not claim or redefine Siglary operators.
-10. The canonical registry records aliases, redirects, ownership, status, and supersession.
+1. Do not register GRIMOIRE, grimoire.*, or a derivative as a new product/program for this capability.
+2. Machine identity is a stable, namespaced ID; display labels are mutable aliases.
+3. A rename does not create a new logical capability; preserve old-name aliases and a rename event.
+4. The owner-specified META-brain.rs → mosaic.brain.rs rename is authoritative for new naming; preserve historical references and confirm exact path/module mapping against its source commit before file changes.
+5. A fork or materially different capability receives a new logical identity with DERIVED_FROM lineage.
+6. Revision digests cover canonical recipe content and declared semantic fields; volatile telemetry is excluded.
+7. Similar labels trigger a collision warning; duplicate stable IDs are a hard conflict.
+8. SRM does not claim or redefine Siglary operators, Grimoire terms, CRG relations or existing Brain APIs.
+9. Registry metadata belongs in existing MOSAIC/CEEL/ICM/CRG governance surfaces; no independent registry is created.
 
 ### 1.3 Identity layers
 
 | Layer | Example | Mutability |
 |---|---|---|
-| Program | `MOSAIC Brain` | Governed |
-| Surface | `mosaic_brain.recipe_model` | Stable |
-| Recipe identity | `mosaic-brain://recipe/build/python-package` | Stable |
-| Recipe revision | `sha256:…` | Immutable |
-| Execution instance | `run:{provider}:{run-id}` | Immutable record |
-| Evaluation record | `eval:{recipe-revision}:{suite}:{run}` | Append-only |
+| Existing program | MOSAIC | Governed |
+| Reasoning subsystem | MOSAIC Brain | Governed |
+| Domain model | mosaic_brain.recipe_model | Versioned |
+| Recipe identity | mosaic-brain://recipe/build/python-package | Stable |
+| Recipe revision | sha256:… | Immutable |
+| Execution instance | run:{provider}:{run-id} | Immutable record |
+| Evaluation record | eval:{recipe-revision}:{suite}:{run} | Append-only |
 | Display title | “Build Python package” | Mutable alias |
 
 ---
-
 ## 2. Problem statement and opportunity
 
 Large software repositories contain many overlapping representations of the same capability: source files, functions, packages, workflow YAML, build manifests, infrastructure definitions, tests, runbooks, issue descriptions, telemetry, and historical pull requests. These representations are not consistently connected.

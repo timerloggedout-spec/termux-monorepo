@@ -69,7 +69,7 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 - [x] Execution branch created from `master`
 - [ ] PR cites `Implements: ICM-08`
 - [ ] ICM impact, repo-gate, and termux-smoke checks green on the exact PR head
-- [ ] Confirm branch protection requires the repo-gate status check
+- [ ] Confirm branch protection requires the exact `ICM impact gate` status check
 - [ ] Closed and moved to `closed/` when terminal
 
 ## Links

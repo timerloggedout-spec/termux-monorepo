@@ -56,11 +56,11 @@ jobs:
         with:
           name: brain-rustfmt-output-${{ matrix.rust }}
           path: |
-            ../brain.rs
-            src/lib.rs
-            src/extensions.rs
-            tests/brain.rs
-            tests/extensions.rs
+            brain.rs
+            brain/src/lib.rs
+            brain/src/extensions.rs
+            brain/tests/brain.rs
+            brain/tests/extensions.rs
       - name: Check
         run: cargo check --all-targets
       - name: Test

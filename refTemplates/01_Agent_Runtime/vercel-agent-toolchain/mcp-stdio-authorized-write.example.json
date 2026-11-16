@@ -13,10 +13,10 @@
         "--action-policy",
         "/absolute/path/to/policy-authorized-write.json",
         "--confirm-actions",
-        "click,fill,interact,download,upload,state",
+        "click,fill,interact",
         "mcp",
         "--tools",
-        "core"
+        "core,debug"
       ]
     }
   }

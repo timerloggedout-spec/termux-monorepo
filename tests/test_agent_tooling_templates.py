@@ -72,7 +72,7 @@ class AgentToolingTemplateTests(unittest.TestCase):
         manifest, index, _ = sample()
         index["entries"][0]["path"] = "refTemplates/smods/wrong_fork"
         errors = validate_manifest(manifest, index, {}, set())
-        self.assertTrue(any("do not exactly match" in error for error in errors))
+        self.assertTrue(any("missing from the global index" in error for error in errors))
 
     def test_fork_required_cannot_already_be_a_live_submodule(self):
         manifest, index, candidate = sample()

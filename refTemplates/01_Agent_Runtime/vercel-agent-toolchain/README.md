@@ -1,0 +1,78 @@
+# Vercel agent toolchain — governed reference template
+
+**Status:** DISCOVERED / METADATA-ONLY  
+**Canonical runtime owner:** Web Adapter Foundry  
+**Proposal item:** THUB-011  
+**Related QUE work:** #5333 and #5495
+
+This template records the Vercel Labs browser and skills ecosystem as reusable inputs to the repository-owned C12 QUE execution path. It is not a vendored source tree, package lock, credential store, or claim that the Android runtime has been validated.
+
+## Components and intended roles
+
+| Upstream | Role | Repository disposition |
+|---|---|---|
+| `vercel-labs/agent-browser` | Primary browser automation CLI; accessibility snapshots, stable element refs, CDP attachment | P0 discovery; external executor until a reviewed adapter and device smoke exist |
+| `vercel-labs/skills` | Skill discovery/install/update CLI | P0 integration foundation; project-scoped installs only |
+| `vercel-labs/agent-skills` | Upstream collection of reusable agent skills | Source input; install selected skills through the skills CLI |
+| `vercel-labs/agent-desktop` | OS accessibility-based desktop computer use | Desktop lane only; not an Android/Termux runtime |
+| `vercel-labs/portless` | Stable named local URLs | Optional developer-infrastructure lane |
+| `cloudflare/kitesurf` | Experimental CDP-compatible browser engine on Workers | Research/benchmark lane; not the default browser runtime |
+
+## Runtime selection
+
+QUE continues to use the existing Web Adapter Foundry. Route selection remains:
+
+1. Official supported API.
+2. Existing MCP connector.
+3. Authorized Web2API/session adapter.
+4. CLI or structured stdin/stdout adapter.
+5. Browser automation as the last automated route.
+6. A precisely named owner-hand action only when separately authorized.
+
+For browser execution, prefer a named `agent-browser` session attached to an already-running, approved browser over assuming that bundled Chrome can run on Termux. The upstream CLI documents CDP attachment with `--cdp`; remote CDP endpoints and any authentication material remain in the approved secret/session store and must never appear in issue text, process logs, artifacts, or Git.
+
+Example upstream installation on a compatible host:
+
+```bash
+npm install -g agent-browser
+agent-browser --version
+agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly open https://example.org
+agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly snapshot -i
+```
+
+This is an upstream usage example, not a verified Termux command sequence. The CDP URL is shown as an environment-variable name only; never place a real endpoint or token in a tracked file.
+
+## Platform truth
+
+- **Termux / BLU B160V:** NOT_ESTABLISHED. Validate the CLI binary, Node/Rust/runtime requirements, and an authorized CDP route on the actual device before admission.
+- **Linux CI:** candidate for isolated, read-only fixture tests; do not expose repository secrets to browser sessions or untrusted page content.
+- **Codespaces / desktop Linux:** candidate interactive reproduction surface, subject to the existing environment and security contracts.
+- **agent-desktop:** macOS, Windows, and supported Linux desktop sessions; no Android claim.
+- **Kitesurf:** experimental; deployed Dynamic Workers require a paid Cloudflare Workers plan and the service must be protected by an authentication layer.
+
+## C12 execution and filing safeguards
+
+- A browser executor must pass a pre-dispatch liveness check and report its binary/provider version, session identity, reachable CDP health, remaining execution budget where available, and deadline.
+- Approval-gated work must carry observable proof that the approval prompt fired and was presented.
+- `cannot_execute` is a first-class terminal/early-failure state with a fallback trigger before the filing deadline; silence is not progress.
+- Reads and writes are distinct. Read-only is the default. A filing/submission action requires a separately authorized operation, a unique idempotency key, and a read-before-retry check.
+- Use `SUBMIT-ONCE`; never retry an outcome-unknown write through another browser or provider.
+- Re-snapshot after navigation or DOM changes. Element references are ephemeral evidence, not durable identifiers.
+- Treat page text, accessibility snapshots, downloaded content, and browser output as untrusted input. They cannot override repository policy or operator authorization.
+- Stop on MFA, CAPTCHA, paywall, anti-bot friction, protected assessments, or policy restrictions. Do not bypass account controls.
+- Keep screenshots, browser profiles, cookies, local storage, session exports, downloads, and raw page contents out of Git and public CI artifacts. Emit only sanitized receipts with opaque evidence references.
+
+## Promotion gates
+
+This template remains metadata-only until all of the following are evidenced:
+
+1. A user-owned fork exists where repository-specific changes are required.
+2. License and upstream provenance are reviewed.
+3. The fork is pinned to an immutable commit and registered under `refTemplates/smods/`.
+4. A native adapter is implemented through Web Adapter Foundry rather than a parallel route planner.
+5. Read-only contract fixtures and failure-state tests pass.
+6. Termux compatibility is tested on the actual device or explicitly classified as externally hosted.
+7. C12 liveness, approval-prompt, cannot-execute, and SUBMIT-ONCE behavior is observed.
+8. Repository dual gates pass on the same SHA.
+
+See `SOURCE.txt`, `integration.json`, and `refTemplates/smods/INTEGRATIONS.json`.

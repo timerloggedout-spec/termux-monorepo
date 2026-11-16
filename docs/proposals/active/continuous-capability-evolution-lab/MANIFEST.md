@@ -3,7 +3,7 @@ id: continuous-capability-evolution-lab
 title: "Continuous Capability Evolution Laboratory — event-driven FOSS discovery, DoE comparison, and benefit compounding"
 author: ChatGPT
 posted_at: 2026-11-11
-source: "Operator directive: compare Langfuse, PromptLayer, PostHog, Braintrust and FOSS alternatives; continuously discover novel capabilities; use GitHub-native event paths; commit detailed implementation."
+source: "Operator directives: continuous capability discovery and DoE comparison; 2026-11-16 directive to name META-DOE, formalize SON micro-dense DO statements, and develop the meta-methodology self-improvement architecture."
 status: executing
 priority: P1
 reviewers:
@@ -11,9 +11,11 @@ reviewers:
     role: operator-authorizer
     status: accepted
 related_issues: []
-related_prs: []
+related_prs:
+  - 5191
 related_branches:
   - feat/ceel-continuous-capability-evolution-20261111
+  - feat/mosaic-meta-methodology-20261116
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 
@@ -21,44 +23,48 @@ gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 
 ## Summary
 
-CEEL is the continuous capability-discovery and evolution lane inside existing Integration Intelligence and the DoE family. It discovers candidate capabilities from FOSS and commercial projects, maps them to repository-owned consumers, compares alternatives and combinations, and propagates only verified improvements through the existing proposal/PR lifecycle.
+CEEL is the continuous capability-discovery and evolution lane inside existing Integration Intelligence and the DoE family. MOSAIC is its named meta-methodology self-improvement program: methods that design, execute, analyze and promote experiments become versioned participants and are evaluated under independent, preregistered evidence.
 
-It does not create a second orchestrator, telemetry ledger, integration registry, scheduler, or merge authority. The repository event plane, Integration Intelligence registry/event contract, DoE experiment record schema, ATES execution discipline, Delphi Oracle RFP process, and dual gates remain authoritative.
+CEEL and MOSAIC do not create a second orchestrator, telemetry ledger, experiment registry, scheduler, integration registry or merge authority. The repository event plane, Integration Intelligence registry/event contract, DoE experiment record schema, ATES execution discipline, Delphi Oracle/EGM, SHE/3L0/MoneyBall and dual gates remain authoritative.
 
 ## Operator authorization
 
-Operator directive received 2026-11-11: "Do everything high Detail at once. Get it committed. iDEAL documentation. MAXIMUM EFFORT. CLAUDE.md is entry. /continue". This authorizes the bounded documentation, schema, validator, and event-trigger integration in this branch. External account setup, paid inference, provider writes, deployment, secret creation, model routing changes, and production promotion are not authorized by this proposal.
+The 2026-11-16 operator directive authorizes the MOSAIC name, SON notation, detailed specification and documentation-only proposal extension. It does not authorize live experiment dispatch, paid inference, external account writes, credential provisioning, production routing changes, automatic promotion, merge or deployment outside existing governance.
 
 ## Scope boundaries
 
-- CLAUDE.md is the collaborator entry and links to this proposal's implementation map.
-- docs/proposals/registry.yaml is the proposal index; this manifest and ITEMS are the work ledger.
+- CLAUDE.md remains the collaborator entry and CEEL remains the broad capability-evolution lane.
+- docs/proposals/registry.yaml, this manifest and ITEMS.md define proposal status and work.
 - docs/integrations/registry.json remains the canonical integration inventory.
 - docs/integrations/schemas/integration-event.schema.json remains the normalized integration event envelope.
-- docs/ops/corpus/EXPERIMENT.schema.json remains the family run-record contract; this work adds no competing experiment receipt.
-- docs/ops/DOE-FAMILY.md remains the family structure record; MVT and ATES stay nested members.
-- docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md remains the evaluator lane registry; external platforms remain observational.
-- GitHub-native events are the primary awareness path. Existing bounded reconciliation jobs remain recovery paths only.
-- External provider capabilities are hypotheses until version-pinned documentation, runtime evidence, or reproducible tests verify them.
-- No raw prompts, completions, credentials, private traces, or restricted customer data are committed.
+- docs/ops/corpus/EXPERIMENT.schema.json remains the canonical experiment observation contract; MOSAIC adds no competing run receipt.
+- docs/ops/DOE-FAMILY.md remains the family structure record; MVT and ATES remain nested under existing doctrine.
+- Existing criteria-loop (#1959) and Delphi method-self-application (#1963) are predecessor mechanisms to reconcile, not implementations to duplicate.
+- Method versions are immutable; material design changes create a new version/cohort.
+- Independent evaluation and existing proposal/dual-gate governance remain mandatory.
+- No raw prompts, completions, credentials, private traces or restricted customer data are committed.
 
 ## Review and promotion
 
-The operator authorized this scoped execution. Independent review and same-SHA repository gates remain required before merge or production promotion. A commit or PR is not a validated integration or completed production rollout.
+The operator authorized this bounded documentation extension. Independent review and same-SHA repository gates remain required before merge or production promotion. A commit or PR is not a validated method improvement. MOSAIC may recommend a method revision but cannot self-grade or self-promote.
 
 ## Checklist
 
-- [x] Proposal and work ledger created on implementation branch
-- [x] Operator authorization recorded
+- [x] CEEL foundation merged in PR #5191
+- [x] MOSAIC specification and SON notation drafted on feature branch
+- [x] Reconcile current #1959 and #1963 issue bodies; both are open/parked, not completed cycles
 - [ ] Independent review recorded
-- [ ] Proposal lifecycle, repo-gate, and Termux smoke pass on the same immutable PR head
-- [ ] Evidence, limitations, and deferred runtime work reconciled
+- [ ] Proposal lifecycle, repo-gate and Termux smoke pass on the same immutable PR head
+- [ ] Method identity and campaign DESIGN integration validated against current schema and code
+- [ ] Pilot preregistered and separately admitted before execution
+- [ ] Evidence, limitations and deferred runtime work reconciled
 - [ ] Merge/promotion only under repository policy
 
 ## Links
 
 - ITEMS.md
 - docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md
+- docs/superpowers/specs/2026-11-16-mosaic-meta-methodology.md
 - docs/superpowers/plans/2026-11-11-continuous-capability-evolution-lab.md
 - docs/integrations/capability-opportunity-graph.json
 - docs/integrations/PLATFORM-COMPARISON.md

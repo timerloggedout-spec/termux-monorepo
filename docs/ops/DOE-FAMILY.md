@@ -1571,3 +1571,10 @@ Awareness is event-driven. GitHub push, pull-request, release, issue, workflow-c
 The four initial platform factors are Langfuse, PromptLayer, PostHog and Braintrust. Their capabilities remain hypotheses until pinned documentation and runtime evidence exist. The native repository baseline is mandatory. Combination and interaction effects must be measured rather than assumed; the 2^4 full-factorial comparison has 16 cells when all four factors are executable.
 
 Every dispatched run continues to emit exactly one canonical experiment record under docs/ops/corpus/EXPERIMENT.schema.json. Candidate status, proposal status, execution state, outcome validation and promotion remain distinct. Delphi/EGM and repository dual gates retain their existing authority.
+
+
+## MOSAIC — meta-methodology self-improvement
+
+**MOSAIC** (Methodology Optimization, Self-assessment, Adaptive Intelligence & Calibration) is the meta-methodology program within this DoE family. It treats design, assignment, analysis, evaluation and promotion methods as versioned experimental participants. It does NOT replace this family, MVT, ATES, CEEL, the canonical EXPERIMENT record, or existing source-of-truth surfaces.
+
+Specification and Sigil-Operator Notation (SON): docs/superpowers/specs/2026-11-16-mosaic-meta-methodology.md. Existing self-application RFPs #1959 and #1963 remain separate, open/parked predecessor mechanisms; see the specification for their reconciled status. MOSAIC adds no parallel registry, scheduler, ledger or promotion authority.

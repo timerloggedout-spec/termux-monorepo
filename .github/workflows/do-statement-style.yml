@@ -16,7 +16,7 @@ on:
   pull_request_review_comment:
     types: [created, edited]
   pull_request_review:
-    types: [submitted, edited, dismissed]
+    types: [submitted, edited]
   commit_comment:
     types: [created, edited]
   release:
@@ -66,6 +66,20 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           args=(--event-file "$GITHUB_EVENT_PATH" --event-name "$EVENT_NAME" --report "$RUNNER_TEMP/siglary-event-census.json" --feed "$RUNNER_TEMP/siglary-event-feed.jsonl")
+          case "$EVENT_NAME" in
+            issue_comment|discussion_comment|pull_request_review_comment|commit_comment)
+              if ! jq -e '.comment.body | type == "string" and length > 0' "$GITHUB_EVENT_PATH" >/dev/null; then
+                echo "No authored comment body; no surface to validate."
+                exit 0
+              fi
+              ;;
+            pull_request_review)
+              if ! jq -e '.review.body | type == "string" and length > 0' "$GITHUB_EVENT_PATH" >/dev/null; then
+                echo "No authored review summary; no surface to validate."
+                exit 0
+              fi
+              ;;
+          esac
           if [ "$EVENT_NAME" = "pull_request" ]; then
             args+=(--changed-from "$BASE_SHA")
           elif [ "$EVENT_NAME" = "push" ]; then

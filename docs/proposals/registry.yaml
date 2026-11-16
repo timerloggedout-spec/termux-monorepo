@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-16T00:00:00Z'
 updated_by: ChatGPT
 proposals:
 
@@ -1324,3 +1324,25 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: l3verage-department
+    title: "L3VERAGE Department — adaptive leverage engineering and compounding mechanisms"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/l3verage-department/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_proposals:
+      - continuous-capability-evolution-lab
+      - provider-family-doe-observatory
+      - agent-contributor-provenance
+    related_prs: []
+    related_branches:
+      - feat/l3verage-department-foundation
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

@@ -48,6 +48,17 @@ class SiglaryTests(unittest.TestCase):
   good=s.structured_receipt_findings('{"state":"PROMOTED","receipt_id":"abc"}',"ops/doe/receipt.json")
   self.assertEqual(bad[0]["rule"],"RECEIPT-ADJACENCY")
   self.assertEqual(good,[])
+ def test_doe_structured_record_requires_receipt(self):
+  bad=s.structured_receipt_findings('{"state":"PROMOTED"}',"ops/doe/receipt.json")
+  good=s.structured_receipt_findings('{"state":"PROMOTED","receipt_id":"abc"}',"ops/doe/receipt.json")
+  self.assertEqual(bad[0]["rule"],"RECEIPT-ADJACENCY")
+  self.assertEqual(good,[])
+ def test_principle_five_remains_est_review_not_hard(self):
+  g,d=self.rules(); f=s.text_findings("SIGLARY-FLAG: ambiguous token","skill","skills",g,d)
+  self.assertEqual(f[0]["severity"],"EST")
+  report=s.census(self.root,[],{"pull_request":{"title":"plain title","body":"SIGLARY-FLAG: ambiguous token"}},"pull_request")
+  self.assertEqual(report["state"],"REVIEW")
+  self.assertEqual(report["est_violations"],1)
  def test_event_surface_inventory(self):
   self.assertEqual(len(s.event_surfaces({"review":{"body":"DO: inspect"}},"pull_request_review")),1)
   self.assertEqual(len(s.event_surfaces({"release":{"name":"v1","body":"DO: publish"}},"release")),2)

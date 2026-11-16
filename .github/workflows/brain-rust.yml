@@ -1,0 +1,72 @@
+name: Root Brain Rust core
+
+on:
+  pull_request:
+    paths:
+      - "brain.rs"
+      - "brain/**"
+      - ".github/workflows/brain-rust.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: brain-rust-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    name: fmt + check + test + clippy (${{ matrix.rust }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep the crate's declared MSRV honest while also exercising the
+        # current stable release requested by the 2026-11 Rust 1.100 upgrade.
+        rust: ["1.85.0", "1.100.0"]
+    defaults:
+      run:
+        working-directory: brain
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt, clippy
+      - name: Check committed formatting
+        id: format_check
+        continue-on-error: true
+        run: |
+          cargo fmt --all -- --check
+          rustfmt --edition 2021 --check ../brain.rs src/lib.rs src/extensions.rs tests/brain.rs tests/extensions.rs
+      - name: Generate formatting artifact for diagnosis
+        if: steps.format_check.outcome == 'failure'
+        run: |
+          cargo fmt --all
+          rustfmt --edition 2021 ../brain.rs src/lib.rs src/extensions.rs tests/brain.rs tests/extensions.rs
+      - name: Upload rustfmt output
+        if: steps.format_check.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: brain-rustfmt-output-${{ matrix.rust }}
+          path: |
+            ../brain.rs
+            src/lib.rs
+            src/extensions.rs
+            tests/brain.rs
+            tests/extensions.rs
+      - name: Check
+        run: cargo check --all-targets
+      - name: Test
+        run: cargo test
+      - name: Clippy
+        run: cargo clippy --all-targets -- -D warnings
+      - name: Fail if committed formatting differs
+        if: steps.format_check.outcome == 'failure'
+        run: exit 1

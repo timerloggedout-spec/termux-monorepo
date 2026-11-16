@@ -9,6 +9,8 @@
 | CCEL-005 | P1 | queued | Define DoE campaign admission, execution, analysis and promotion evidence. | Shared cohort/configuration identity, immutable run evidence, randomization/blocking, interaction analysis, uncertainty, costs and fail-closed promotion specified. |
 | CCEL-006 | P1 | queued | Document FOSS template inspiration, benefit compounding and evolutionary reuse. | Candidates have disposition and source provenance; reuse/combination measured; Pareto trade-offs and maintenance/security costs visible. |
 
+| MOS-007 | P0 | executing | Implement the root Brain's domain-neutral, versioned specialist extension contract; retain MOSAIC under `archwiz/mosaic_brain/` and compose it from the existing host after host ownership is verified. | `termux-brain` exports a validated typed extension contract; run/cycle/attempt identity is preserved; contract/domain mismatches fail closed; extension errors remain distinguishable; no root-to-MOSAIC dependency or duplicate registry; MOSAIC implementation and host route remain separate follow-on work until the owner contract is verified. |
+
 ## Validation
 
 - python3 scripts/integrations/validate_capability_graph.py

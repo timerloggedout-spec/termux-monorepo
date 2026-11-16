@@ -1,4 +1,4 @@
-# GRIMOIRE Siglary-Compatible Notation Profile
+> Scope correction: Siglary remains Linguist-governed. This is a candidate MOSAIC Brain recipe-model authoring profile, not a GRIMOIRE-owned notation dialect.\n\n# GRIMOIRE Siglary-Compatible Notation Profile
 
 **Profile ID:** `grimoire.siglary-bridge.v1`  
 **Status:** Proposal only. This document does not redefine or reserve Siglary's canonical operator grammar.

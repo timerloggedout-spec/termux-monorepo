@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-16T11:39:46Z",
+ "read_at": "2026-11-16T11:49:01Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,25 +1956,38 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "number": 5500,
+   "title": "docs(mosaic): propose recipe model extension to Mosaic Brain",
    "merged_at": null,
-   "updated_at": "2026-11-16T11:38:47Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "4f5dea708346ccfaaebf05d477019b6167f38be3",
-   "head_ref": "telemetry-ingest/refresh",
+   "updated_at": "2026-11-16T11:48:40Z",
+   "created_at": "2026-11-16T08:57:42Z",
+   "merge_commit_sha": "b03bb6605bb73e3e6977a2f4c7fa4410f2b8e3ae",
+   "head_ref": "proposal/grimoire-software-recipe-intelligence",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5500",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-16T11:47:04Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "b121c2e77f493522ff0e2ec854be90aa1ecdd3ac",
+   "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
    "merged": false
   },
   {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-16T11:38:01Z",
+   "updated_at": "2026-11-16T11:46:43Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "b32c10f76e1ab59f0388103535514ff593e58d83",
+   "merge_commit_sha": "93f262ce291a75ff4edf472e4a063b8ab132bc95",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
@@ -1982,16 +1995,42 @@
    "merged": false
   },
   {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T11:26:08Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "f9d10e3b705a6ab390a2f8c42e9b93dcd04c4017",
-   "head_ref": "delphi-rfp-feed/refresh",
+   "updated_at": "2026-11-16T11:43:40Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "d37f2c9a30ac40b6534d09fdc76a5eb1f10bb24f",
+   "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-16T11:43:26Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "ac26d7a070278073590b8291a37b89b31709cb35",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 5518,
+   "title": "[draft] AWS Emulator adoption and agent-built fidelity engineering loop",
+   "merged_at": null,
+   "updated_at": "2026-11-16T11:42:00Z",
+   "created_at": "2026-11-16T11:14:44Z",
+   "merge_commit_sha": "5abb2230a8393ecff9e7edbb70a83be6397aa9c3",
+   "head_ref": "feat/aws-emulator-agent-fidelity",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5518",
    "merged": false
   },
   {
@@ -2008,19 +2047,6 @@
    "merged": false
   },
   {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-16T11:22:06Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "cd390c0c51b93596f19e74792027bb60b48905d2",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
    "number": 4069,
    "title": "chore(dashboards): refresh surface feeds",
    "merged_at": null,
@@ -2031,19 +2057,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4069",
-   "merged": false
-  },
-  {
-   "number": 5518,
-   "title": "[draft] AWS Emulator adoption and agent-built fidelity engineering loop",
-   "merged_at": null,
-   "updated_at": "2026-11-16T11:18:07Z",
-   "created_at": "2026-11-16T11:14:44Z",
-   "merge_commit_sha": "730c81c10ce6c3ec3ffa8503834f31c50a673ea2",
-   "head_ref": "feat/aws-emulator-agent-fidelity",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5518",
    "merged": false
   },
   {
@@ -2174,19 +2187,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5504",
-   "merged": false
-  },
-  {
-   "number": 5500,
-   "title": "docs(grimoire): propose software recipe intelligence architecture",
-   "merged_at": null,
-   "updated_at": "2026-11-16T09:00:35Z",
-   "created_at": "2026-11-16T08:57:42Z",
-   "merge_commit_sha": "ae680f950a3a73d22a51d786f203b1a57bde9f54",
-   "head_ref": "proposal/grimoire-software-recipe-intelligence",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5500",
    "merged": false
   },
   {

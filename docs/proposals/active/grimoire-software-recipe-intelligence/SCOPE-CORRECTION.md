@@ -1,24 +1,23 @@
-# Scope correction — GRIMOIRE is existing; recipe intelligence belongs to MOSAIC Brain
+# Scope and Ownership Correction
 
-**This notice supersedes the GRIMOIRE product/name/namespace claims in the original companion draft.**
+**This correction supersedes both earlier identity mistakes.**
 
-The original draft incorrectly introduced GRIMOIRE as a new software-recipe intelligence program. That proposal collides with the repository's existing Grimoire dictionary, protocol, run-history/scorebook meaning and ArchWiz consumers. Do not adopt that new product identity or grimoire.* namespace.
+1. The initial draft incorrectly presented GRIMOIRE as a new software-recipe intelligence program. GRIMOIRE already exists as repository vocabulary/protocol and run-history/scorebook concept. That new identity and namespace are withdrawn.
+2. The subsequent correction prematurely assigned the work to MOSAIC Brain. That assignment is also withdrawn. The existence of MOSAIC Brain and the owner's example rename `META-brain.rs` → `mosaic.brain.rs` do not establish ownership or placement.
 
-The corrected canonical framing is:
+## Current authoritative framing
 
-- Existing Grimoire remains the repository's established lexicon/protocol and historical scorebook/run-history concept.
-- MOSAIC remains the meta-methodology program within the DoE family and CEEL.
-- MOSAIC Brain remains the bounded, advisory methodology-intelligence subsystem.
-- The Software Recipe Model (SRM) is a domain schema/capability extension owned by MOSAIC Brain, proposed namespace mosaic_brain.recipe_model.
-- The existing Monorepo Brain kernel, Context Relationship Graph, DoE EXPERIMENT schema, ICM, Delphi/EGM, SHE, 3L0, MoneyBall, ATES, FA-ADE, Commit Replay and existing planners remain authoritative. No parallel brain, graph, memory store, experiment ledger, dictionary or promotion authority is proposed.
-- Honor the owner-supplied rename META-brain.rs → mosaic.brain.rs. Preserve old-name history and aliases; new references use the new identity. Confirm exact path/module mapping against the rename commit before file-level implementation.
+- Descriptive research scope: **Software Recipe Intelligence**.
+- Domain model: **Software Recipe Model (SRM)**.
+- Project name/acronym: **unassigned pending collision review**. Do not use SRI as the public acronym because of the SRI International collision documented in the name register.
+- Architectural owner: **unassigned pending system-wide recon**.
+- Existing systems are evaluated as candidate consumers, adapters, or owners only after their actual contracts, deployment status, authority boundaries and interfaces are examined.
+- Repo Replay and Commit Replay are existing, separate recipe/provenance systems. Preserve their distinct ownership and planes.
+- CRG, Integration Intelligence, CEEL, DoE, Delphi/EGM, SHE/3L0/MoneyBall/ATES, ICM, Linguist/Siglary, Grimoire/Name Forge, existing Brain kernels, planners and orchestration remain existing authorities to reuse where appropriate.
+- No second Brain, graph database, memory store, scheduler, experiment ledger, integration registry, notation system, replay engine, or promotion authority is proposed.
 
-Read the corrected canonical integration design first:
+## Canonical neutral package
 
-../continuous-capability-evolution-lab/MOSAIC-BRAIN-SOFTWARE-RECIPE-MODEL.md
+Read [Software Recipe Intelligence](../software-recipe-intelligence/README.md), then the [Architecture Recon](../software-recipe-intelligence/ARCHITECTURE-RECON.md) and [Name Collision Register](../software-recipe-intelligence/NAME-COLLISION-REGISTER.md).
 
-The original proposal and SRM-000..SRM-015 research remain useful as source material only where they fit that integration design. They are not an independent program charter. The old folder name is retained as historical proposal-path provenance and is not a canonical product namespace.
-
-## Required review
-
-MOSAIC Brain owner, CRG owner, DoE expert and Linguist must review the model, graph projection, version identity, Siglary use and ownership boundaries before implementation. No execution, provider inference, merge, deployment, production routing or permission expansion is authorized by this companion research package.
+The old directory name and branch name are historical provenance only. They are not canonical identity.

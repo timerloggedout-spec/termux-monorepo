@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "change_id": "icm-08",
+  "disposition": "updated",
+  "changed_paths": [
+    ".github/workflows/repo-gate.yml",
+    "CLAUDE.md",
+    "docs/ARCHW1Z-GATE.md",
+    "docs/ICM-ARCHITECT-INTEGRATION.md",
+    "docs/icm/CLAUDE.md",
+    "docs/icm/changes/icm-08.json",
+    "docs/icm/effects/CONTEXT.md",
+    "docs/icm/objects/governance/change-control.md",
+    "docs/icm/processes/change-and-validate.md",
+    "docs/proposals/active/icm-architect-integration/ITEMS.md",
+    "docs/proposals/active/icm-architect-integration/MANIFEST.md",
+    "scripts/ci/icm_impact_gate.py",
+    "tests/test_icm_impact_gate.py"
+  ],
+  "primary_cards": [
+    "docs/icm/objects/governance/change-control.md",
+    "docs/icm/processes/change-and-validate.md",
+    "docs/icm/effects/CONTEXT.md"
+  ],
+  "related_updates": [
+    ".github/workflows/repo-gate.yml",
+    "CLAUDE.md",
+    "docs/ARCHW1Z-GATE.md",
+    "docs/ICM-ARCHITECT-INTEGRATION.md",
+    "docs/proposals/active/icm-architect-integration/ITEMS.md",
+    "docs/proposals/active/icm-architect-integration/MANIFEST.md"
+  ],
+  "rationale": "This PR adds a repository-wide ICM impact receipt gate. The primary governance, change-process, and effect-index cards are updated with the new contract; root governance, gate documentation, integration guidance, and the governing ICM work ledger are updated in the same PR."
+}

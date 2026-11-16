@@ -502,6 +502,31 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: siglary-doe-kill-method-participant
+    title: "Siglary micro-dense DO statements and versioned kill-method participant"
+    author: ChatGPT
+    status: draft
+    priority: P1
+    path: active/siglary-doe-kill-method-participant/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: linguist
+        role: siglary-standard-owner
+        status: requested
+    related_issues:
+      - 5514
+    related_prs: []
+    related_branches:
+      - feat/doe-siglary-kill-method-participant-5514
+    related_proposals:
+      - notation-sets
+      - continuous-capability-evolution-lab
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke
   - id: archwiz-ui-protocol
     title: ArchW1z Termux UI over shared agentic protocols
     author: ChatGPT

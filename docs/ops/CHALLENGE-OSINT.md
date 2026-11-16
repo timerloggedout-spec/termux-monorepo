@@ -5,6 +5,17 @@ judges, etc." The tracking system (`ops/challenge/coordinator.json` +
 Neon DB + opportunity ledger) covers all of it, **public sources only**,
 every fact sourced + `fetched_at`, gaps `NOT_ESTABLISHED`.
 
+## Discovery sources — new-opportunity intake
+
+The discovery layer must search more than already-known event pages. **Devpost is now an explicit candidate-discovery source**, not an exclusive source and not the final record of truth:
+
+- **Devpost directory:** https://devpost.com/hackathons — scan public, upcoming/open listings; use online/in-person, status, length, interest tags, host and public/invite-only filters to widen and narrow the candidate set.
+- **Devpost AI category:** https://devpost.com/c/artificial-intelligence — focused AI challenge discovery.
+- **Per-event Devpost pages and rules:** verify eligibility, dates/time zones, project originality, required technologies, submission fields, judging, prizes and updates before admission.
+- **Other discovery lanes remain in scope:** sponsor/organizer pages (including AWS Builder Center and direct Google/Atlassian/Mozilla program pages), lablab.ai, MLH, HackerEarth and Devfolio. These are alternatives/complements; a directory listing is a lead, not verified event truth.
+
+**Automation boundary (important):** the current scripts/challenge/osint_watch.py watches official URLs already present in coordinator.json; it does not crawl the global Devpost directory or discover new events by itself. C17 / SLAY HACKS is a firsthand-verified candidate intake from the Devpost directory and its event/rules pages on 2026-11-16. A recurring directory-discovery collector remains a separate implementation task. Every candidate must carry discovery_source, sources[] and fetched_at; unresolved eligibility stays a hard hold, not an inferred pass.
+
 ## Surfaces
 
 - **EVENTS** — organizer intel (`events[].organizers[]`), rules/prize

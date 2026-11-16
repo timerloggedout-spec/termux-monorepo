@@ -17,11 +17,15 @@ integration registry.
    integration.json for every runtime integration template.
 3. Validate sMods .gitmodules/gitlink parity, HTTPS URL hygiene, shallow pins,
    and exact immutable gitlink SHAs using local Git metadata only.
-4. Add focused regression tests for missing metadata, missing runtime manifest,
-   orphan/duplicate pins, unsafe URLs, shallow policy, and invalid SHAs.
-5. Wire tests into the existing refTemplates evaluation workflow and update the
-   workflow-hook and sMods documentation.
-6. Run focused tests and repository gates; wait for same-head Actions evidence.
+4. Require every implemented/native Integration Registry entry to adopt a
+   concrete template or record a reasoned not_applicable disposition; planned
+   integrations must make this choice before implementation.
+5. Add focused regression tests for missing metadata, missing runtime manifest,
+   orphan/duplicate pins, unsafe URLs, shallow policy, invalid SHAs, and missing
+   integration-adoption dispositions.
+6. Wire tests into the existing refTemplates evaluation workflow and update the
+   workflow-hook, Integration Registry, and sMods documentation.
+7. Run focused tests and repository gates; wait for same-head Actions evidence.
 
 ## Non-goals
 

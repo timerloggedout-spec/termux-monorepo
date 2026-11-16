@@ -32,6 +32,7 @@ architecture:
   implementation_language: Rust core with existing-language adapters
   existing_surfaces:
     - Root Rust kernel PR #5492
+    - Source-inspected ownership map
     - ICM and Context Relationship Graph
     - QUE / QDesk intake, admission and task lifecycle
     - hub_mcp capability and policy boundaries
@@ -182,6 +183,17 @@ evidence:
     limitations:
       - Does not implement all target subsystems.
       - Existing CI currently reports a Clippy issue and formatting drift.
+  - id: repo:brain-ownership-map
+    kind: repository_documentation
+    locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md
+    revision: 5bba82b48531572337848cad558b09fdebee01af
+    verification: source_inspected
+    supports:
+      - Existing canonical owners for QUE, dispatch, capability policy, CRG, provider evidence, Delphi and orchestration.
+      - Explicit non-duplication boundaries and unverified contracts.
+    limitations:
+      - Source inspection does not substitute for runtime integration tests.
+      - Some owner interfaces remain explicitly unverified.
   - id: repo:orchestration-contracts
     kind: repository_documentation
     locator: https://github.com/timerloggedout-spec/termux-monorepo/blob/2532f3cd4372fecbbbf71c06b4fa7005f53c23d6/docs/ops/ORCHESTRATION-CONTRACTS.md

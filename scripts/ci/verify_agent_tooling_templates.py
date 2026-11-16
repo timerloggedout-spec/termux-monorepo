@@ -67,20 +67,25 @@ def validate_manifest(
     gitlinks: Iterable[str],
 ) -> list[str]:
     errors: list[str] = []
+    if not isinstance(manifest, dict):
+        return ["integration.json: JSON root must be an object"]
+    if not isinstance(smods_index, dict):
+        return ["smods/INTEGRATIONS.json: JSON root must be an object"]
     gitlink_set = set(gitlinks)
 
     if manifest.get("schema") != "agent-toolchain-template/v1":
         errors.append("integration.json: unsupported or missing schema")
     if manifest.get("template_id") != "vercel-agent-toolchain":
         errors.append("integration.json: template_id must be vercel-agent-toolchain")
-    if manifest.get("status") not in {"discovered", "validated", "promoted"}:
+    lifecycle_status = manifest.get("status")
+    if not isinstance(lifecycle_status, str) or lifecycle_status not in {"discovered", "validated", "promoted"}:
         errors.append("integration.json: invalid lifecycle status")
 
     upstreams = manifest.get("upstreams")
     if not isinstance(upstreams, list):
         upstreams = []
         errors.append("integration.json: upstreams must be a list")
-    ids = {u.get("id") for u in upstreams if isinstance(u, dict)}
+    ids = {u.get("id") for u in upstreams if isinstance(u, dict) and isinstance(u.get("id"), str)}
     for required in sorted(REQUIRED_UPSTREAMS - ids):
         errors.append(f"integration.json: missing upstream {required}")
     for index, upstream in enumerate(upstreams):
@@ -103,11 +108,27 @@ def validate_manifest(
         index_entries = []
         errors.append("smods/INTEGRATIONS.json: entries must be a list")
 
-    def key(entry: dict) -> tuple:
-        return (entry.get("id"), entry.get("path"), entry.get("status"))
+    def key(entry: dict) -> tuple | None:
+        values = (entry.get("id"), entry.get("path"), entry.get("status"))
+        if not all(isinstance(value, str) and value for value in values):
+            return None
+        return values
 
-    candidate_keys = {key(x) for x in candidates if isinstance(x, dict)}
-    index_keys = {key(x) for x in index_entries if isinstance(x, dict)}
+    candidate_keys: set[tuple] = set()
+    for candidate_index, candidate in enumerate(candidates):
+        candidate_key = key(candidate) if isinstance(candidate, dict) else None
+        if candidate_key is None:
+            errors.append(f"integration.json: smods_candidates[{candidate_index}] needs non-empty string id/path/status")
+        else:
+            candidate_keys.add(candidate_key)
+
+    index_keys: set[tuple] = set()
+    for entry_index, entry in enumerate(index_entries):
+        entry_key = key(entry) if isinstance(entry, dict) else None
+        if entry_key is None:
+            errors.append(f"smods/INTEGRATIONS.json: entries[{entry_index}] needs non-empty string id/path/status")
+        else:
+            index_keys.add(entry_key)
     if not candidate_keys.issubset(index_keys):
         errors.append("smods/INTEGRATIONS.json: one or more template smods_candidates are missing from the global index")
 
@@ -118,8 +139,11 @@ def validate_manifest(
             continue
         status = entry.get("status")
         path = entry.get("path")
-        if status not in ALLOWED_PIN_STATES:
+        if not isinstance(status, str) or status not in ALLOWED_PIN_STATES:
             errors.append(f"smods/INTEGRATIONS.json: entries[{index}] has invalid status {status!r}")
+            continue
+        if path is not None and not isinstance(path, str):
+            errors.append(f"smods/INTEGRATIONS.json: entries[{index}] path must be a string or null")
             continue
         if status in {"fork_required", "pinned"}:
             if not isinstance(path, str) or not path.startswith("refTemplates/smods/"):
@@ -185,17 +209,25 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
     readonly = load_json(files["read_only"])
     authorized = load_json(files["authorized_write"])
     if readonly is not None:
-        allow = set(readonly.get("allow", []))
-        if readonly.get("default") != "deny" or not allow or not allow.issubset(READ_ONLY_ACTIONS):
-            errors.append("read-only action policy must default-deny and allow only read/navigation categories")
+        raw_allow = readonly.get("allow")
+        if not isinstance(raw_allow, list) or not all(isinstance(action, str) for action in raw_allow):
+            errors.append("read-only action policy allow must be a string array")
+        else:
+            allow = set(raw_allow)
+            if readonly.get("default") != "deny" or not allow or not allow.issubset(READ_ONLY_ACTIONS):
+                errors.append("read-only action policy must default-deny and allow only read/navigation categories")
     if authorized is not None:
-        allow = set(authorized.get("allow", []))
-        if authorized.get("default") != "deny" or not (READ_ONLY_ACTIONS | WRITE_ACTIONS).issuperset(allow):
-            errors.append("authorized-write policy must default-deny and use only reviewed read/write categories")
-        if not WRITE_ACTIONS.issubset(allow):
-            errors.append("authorized-write policy must explicitly enumerate click/fill/interact/download/upload/state")
-        if "eval" in allow or "network" in allow:
-            errors.append("authorized-write policy must not enable eval or network control")
+        raw_allow = authorized.get("allow")
+        if not isinstance(raw_allow, list) or not all(isinstance(action, str) for action in raw_allow):
+            errors.append("authorized-write policy allow must be a string array")
+        else:
+            allow = set(raw_allow)
+            if authorized.get("default") != "deny" or not (READ_ONLY_ACTIONS | WRITE_ACTIONS).issuperset(allow):
+                errors.append("authorized-write policy must default-deny and use only reviewed read/write categories")
+            if not WRITE_ACTIONS.issubset(allow):
+                errors.append("authorized-write policy must explicitly enumerate click/fill/interact/download/upload/state")
+            if "eval" in allow or "network" in allow:
+                errors.append("authorized-write policy must not enable eval or network control")
 
     def validate_mcp_config(name: str, policy_name: str, write_mode: bool) -> None:
         config = load_json(name)
@@ -262,8 +294,12 @@ def validate_tree(
         return [f"invalid integration JSON: {exc}"]
 
     required_files = manifest.get("required_files", ["README.md", "SOURCE.txt", "integration.json"])
-    if not isinstance(required_files, list) or not {"README.md", "SOURCE.txt", "integration.json"}.issubset(set(required_files)):
-        errors.append("integration.json: required_files must include README.md, SOURCE.txt, and integration.json")
+    if (
+        not isinstance(required_files, list)
+        or not all(isinstance(name, str) for name in required_files)
+        or not {"README.md", "SOURCE.txt", "integration.json"}.issubset(set(required_files))
+    ):
+        errors.append("integration.json: required_files must be a string array including README.md, SOURCE.txt, and integration.json")
         return errors
     for name in required_files:
         if not isinstance(name, str) or Path(name).is_absolute() or ".." in Path(name).parts:
@@ -319,6 +355,8 @@ def validate_all(root: Path = ROOT) -> list[str]:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
+        if not isinstance(manifest, dict):
+            continue
         for candidate in manifest.get("smods_candidates", []):
             if isinstance(candidate, dict):
                 candidate_keys.add((candidate.get("id"), candidate.get("path"), candidate.get("status")))
@@ -334,7 +372,7 @@ def validate_all(root: Path = ROOT) -> list[str]:
         if not isinstance(entry, dict):
             continue
         template_path = entry.get("template")
-        if template_path not in template_paths:
+        if not isinstance(template_path, str) or template_path not in template_paths:
             errors.append(f"smods/INTEGRATIONS.json: {entry.get('id')!r} references missing template {template_path!r}")
     return errors
 

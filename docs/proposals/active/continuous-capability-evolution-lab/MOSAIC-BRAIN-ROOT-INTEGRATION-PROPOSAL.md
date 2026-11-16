@@ -3,7 +3,7 @@
 **Proposal ID:** MOS-007  
 **Parent:** Continuous Capability Evolution Laboratory (CEEL) / DoE family  
 **Related work:** MOS-001–MOS-006; root Brain PR #5492; MOSAIC documentation PR #5502; qdesk.brain-rs RFP #5501  
-**Status:** proposed architecture and implementation sequence; no runtime integration claimed  
+**Status:** implementation in progress; typed contract and pure specialist crate are included in PR #5525; no host runtime integration claimed  
 **Revision:** 0.1.0 · 2026-11-16  
 **Decision owner:** repository operator through existing proposal lifecycle  
 **Implementation target:** a one-way, versioned extension contract with composition outside the root kernel
@@ -650,4 +650,4 @@ The following are not part of MOS-007 unless a separate evidence-backed proposal
 - MOSAIC implementation plan: [2026-11-16-mosaic-brain-implementation.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/mosaic-meta-methodology-20261116/docs/superpowers/plans/2026-11-16-mosaic-brain-implementation.md)
 - QUE/QDesk Brain RFP: [issue #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
 
-**Evidence note:** This proposal is based on the pinned branch sources above. It is a design/reconciliation artifact. No live adapter, compiled MOSAIC package, host route, CRG publication, or runtime completion is asserted.
+**Evidence note:** This proposal is based on the pinned branch sources above. PR #5525 now contains the shared typed extension contract, the pure `mosaic-brain` crate, its `BrainExtension` adapter, and cross-crate tests. GitHub Actions validation is tracked on the exact PR head. The host runtime route, CRG scope publication, and operational activation remain unimplemented and are not asserted.

@@ -28,6 +28,27 @@ Descriptor, contract-version, identity and domain checks fail closed before the
 specialist is called. A specialist's evaluation error remains distinct from a
 contract error.
 
+## Specialist extensions
+
+The `extensions` module defines a small, statically typed contract for domain-owned
+specialists. A specialist crate implements `BrainExtension`; the existing host
+composes that crate with `termux-brain` and routes an explicit domain request.
+The root kernel does not depend on a specialist, dynamically load plugins, or
+create a second capability registry.
+
+The invocation context carries the existing orchestration/cycle/attempt identity.
+Descriptor, contract-version, identity and domain checks fail closed before the
+specialist is called. A specialist's evaluation error remains distinct from a
+contract error.
+
+## MOSAIC specialist
+
+The `mosaic-brain` crate lives at `archwiz/mosaic_brain/` and depends on
+`termux-brain` through a local Cargo path. The host composes both crates;
+the root kernel never imports MOSAIC. MOSAIC consumes evidence references and
+returns advisory `PromotionCandidate`, `Hold` or `Revise` recommendations.
+It cannot dispatch experiments, mutate proposal state, or promote a method.
+
 ## Boundaries
 
 - Brain coordinates typed reasoning stages and returns a plan plus policy decision. Adaptive is the default mode and selects Fast, Standard or Deep depth from the intent-stage complexity assessment; explicit modes remain available.

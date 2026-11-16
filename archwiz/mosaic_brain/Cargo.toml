@@ -1,0 +1,14 @@
+[package]
+name = "mosaic-brain"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Pure methodology-intelligence specialist for the Termux monorepo Brain"
+license = "MIT"
+publish = false
+
+[dependencies]
+termux-brain = { path = "../../brain" }
+
+[lib]
+path = "src/lib.rs"

@@ -4,6 +4,8 @@
 **Owner concept:** Brain is the monorepo-wide consciousness / cognitive coordination layer  
 **Boundary:** shared cognition and coordination; existing systems remain authoritative for execution, policy, persistence, identity, scheduling and evidence.
 
+**Source-of-truth ownership map:** [TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md](TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md) — source-inspected owner paths, authority boundaries, explicit gaps and staged integration contracts.
+
 ## 1. Definition
 
 The Monorepo Brain is the shared, evidence-grounded cognitive layer that constructs an operational understanding of the repository, interprets intent, discovers relevant capabilities, forms and compares plans, requests authorized action through existing control planes, evaluates verified outcomes, and proposes governed learning updates.

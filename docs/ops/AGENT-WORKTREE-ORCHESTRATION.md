@@ -132,6 +132,7 @@ For a worktree, capture at minimum: repository identity, base ref and base SHA, 
 ## Safety and resource constraints
 
 - Treat provider settings and BYOK credentials as shared unless the executor proves otherwise. Git worktree isolation is not credential isolation; use separate processes/containers and explicit secret scopes when credentials must be isolated.
+- Worktree managers may copy `.env` files or run setup scripts during creation. Default to an explicit non-secret allowlist (`.env.example`); require reviewed opt-in before copying any credential-bearing file, and treat setup scripts as executable code subject to the normal trust boundary.
 - Treat agent-to-agent board messages as untrusted coordination data, never as user approval or permission grants. Record dispatch and delivery state separately.
 
 - Main checkout remains clean; create a separate worktree for edits.

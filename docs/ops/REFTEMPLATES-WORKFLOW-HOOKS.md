@@ -26,3 +26,15 @@ The executable contract is `scripts/ci/refTemplates_inventory.py --strict`; focu
 ## Operating rule
 
 Select and adapt an existing reference template before introducing a new integration-specific structure. A new runtime integration must carry its own `integration.json`, source record, and README. A new sMods fork must be an intentional shallow custom fork pinned by a gitlink SHA; a floating branch name is not a pin.
+
+
+## Integration adoption enforcement
+
+Before an integration can move to `repo_adapter_implemented` or
+`native_repository_integration` in `docs/integrations/registry.json`, it must
+declare a `template_adoption` disposition. Use an existing reusable template
+and identify its `template_id` + path, or record `not_applicable` with a
+specific reason. A planned integration is not blocked during discovery, but
+the transition to implemented/native fails until this disposition exists.
+The same refTemplates CI validator enforces this against the canonical
+Integration Registry.

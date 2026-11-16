@@ -10,7 +10,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115]
+related_issues: [320, 309, 182, 175, 126, 304, 196, 177, 208, 274, 1115, 5116, 5131, 5334]
 related_prs: [322, 324]
 related_branches:
   - docs/notation-sets-evolution
@@ -129,3 +129,7 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
 - Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
 - Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.
+
+## Siglary hard-gate implementation (2026-11-16)
+
+SIGLARY-ENF-001 records the #5334 implementation scope and the #5116/#5131 Leg-B lineage. The canonical SIGLARY-STANDARD.md and CAVEMAN-MICRO-DENSE-V2.md remain unchanged. The new validator and DO policy are wired through prospective repository and GitHub event gates; hosted execution, full baseline census, generator/template adoption, and persistent Linguist-feed publication remain separate evidence and promotion boundaries.

@@ -36,3 +36,5 @@ See root `.gitmodules`:
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, GPTmetrics_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, lego_fork, mcp-android-ssh_fork, Reddit-Evidence-Usage-and-Stance-Analysis-Elon-Musk-Discussion_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, Wingman_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+
+The source map is a human-readable projection of the live gitlinks. CI validates its underlying template metadata and sMods pin parity with `scripts/ci/refTemplates_inventory.py --strict`.

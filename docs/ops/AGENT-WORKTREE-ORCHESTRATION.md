@@ -73,6 +73,20 @@ The Brain proposes and structures work; the existing harness/policy boundary aut
 
 A container is not automatically a Git worktree. A new conversation is not automatically an isolated filesystem. A subagent is not automatically a separate checkout. Adapters must report the actual isolation boundary.
 
+## Worktree lifecycle
+
+```text
+CREATE -> ACTIVE -> LOCKED -> RECONCILED -> RETAINED or REMOVED
+```
+
+- Create from an explicit base ref/SHA; record the returned worktree path and branch.
+- ACTIVE permits the declared writer to work; other sessions remain read-only unless path ownership is disjoint.
+- LOCKED is a coordination state that prevents new writes while review/reconciliation runs. It is not an authorization or security boundary.
+- RECONCILED means the diff, tests, resulting SHA, and provenance have been checked against the canonical branch.
+- Retain the worktree when debugging, review, or provenance requires it. Remove it only after uncommitted changes, branch ownership, artifacts, and evidence references have been checked.
+
+A worktree manager may expose lock/unlock/remove operations, as demonstrated by the Sourcerer reference. Those are lifecycle conveniences; they do not replace Git review, permission checks, or the canonical promotion gate.
+
 ## Scheduling and conflict rules
 
 1. Parallelize only tasks with independent inputs and bounded file ownership.
@@ -118,6 +132,8 @@ For a worktree, capture at minimum: repository identity, base ref and base SHA, 
 
 - Main checkout remains clean; create a separate worktree for edits.
 - Keep caches, virtual environments, build artifacts, models, local databases, logs, session exports, and generated files outside tracked source unless explicitly part of the product.
+- Do not share `CARGO_TARGET_DIR`, local databases, bound ports, emulators, or mutable caches across concurrent worktrees by default. Derive a per-worktree build/cache location; Rust 1.100 improves Cargo build-directory hash separation, but does not remove disk, lock, port, or cache contention.
+- Codex Security scan history may intentionally be shared through a stable `CODEX_SECURITY_STATE_DIR`; use separate private state directories for independent experiments when cross-cohort deduplication would contaminate comparisons.
 - Never commit credentials, API keys, cookies, browser profiles, CDP endpoints/tokens, or environment files.
 - Do not force-push, merge, close, delete, deploy, or promote through an agent workspace unless the existing authority explicitly grants that action.
 - Respect device storage and memory pressure. On constrained Termux devices, avoid cloning the repository per agent; use Git worktrees where supported and measure actual resource cost.
@@ -156,6 +172,8 @@ Promotion requires implementation evidence from the actual adapter, isolation te
 ## Sources
 
 - Kilo Agent Manager: https://kilo.ai/docs/automate/agent-manager
+- Sourcerer / Dezelin worktree-management reference: https://www.threads.com/@dezelin/post/DfVdMTcjGTc
+- Rust 1.100.0 Cargo build-directory and dependency-cooldown changes: https://blog.rust-lang.org/2026/11/12/Rust-1.100.0/
 - Kilo Agent Manager workflows: https://kilo.ai/docs/automate/agent-manager-workflows
 - Kilo multi-project Agent Manager: https://kilo.ai/docs/automate/agent-manager-projects
 - XDA article (15 Nov 2026): https://www.xda-developers.com/replaced-claude-code-codex-google-antigravity-coding-tool-feel-outdated/

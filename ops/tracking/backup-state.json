@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-16T06:49:29Z",
+ "generated_at": "2026-11-16T06:51:37Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -10,21 +10,33 @@
   {
    "id": "relays",
    "path": "ops/tracking/backup-relays.jsonl",
-   "records": 1275
+   "records": 1276
   },
   {
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
    "status": "error:HTTPError: HTTP Error 404: Not Found",
-   "read_at": "2026-11-16T06:49:29Z"
+   "read_at": "2026-11-16T06:51:37Z"
   }
  ],
  "marker": {
-  "state_hash": "15862efd234e6d94f2fb1a08b301fcef2ce49edf6f98c3dea026579662eb6503",
-  "export_id": "exp-20261116T062836Z-f9ddd2",
+  "state_hash": "03d6574992e69a2684904251901fc9eb7f19556e94101b71ebfee8b23139ff4c",
+  "export_id": "exp-20261116T064342Z-73953c",
   "source": "relay"
  },
  "exports": [
+  {
+   "id": "exp-20261116T064342Z-73953c",
+   "at": "2026-11-16T06:49:00Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "d204d884da0e55fd2982feb1e2a1defe5d15f892",
+   "state_hash": "03d6574992e69a2684904251901fc9eb7f19556e94101b71ebfee8b23139ff4c"
+  },
   {
    "id": "exp-20261116T062836Z-f9ddd2",
    "at": "2026-11-16T06:28:28Z",
@@ -15078,14 +15090,14 @@
   }
  ],
  "summary": {
-  "exports": 1232,
+  "exports": 1233,
   "drills": 1,
   "failed_attempts": 41,
-  "last_export_at": "2026-11-16T06:28:28Z",
-  "last_export_id": "exp-20261116T062836Z-f9ddd2",
+  "last_export_at": "2026-11-16T06:49:00Z",
+  "last_export_id": "exp-20261116T064342Z-73953c",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-16T06:49:29Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-16T06:51:37Z): data may be stale; relays remain live"
  ]
 }

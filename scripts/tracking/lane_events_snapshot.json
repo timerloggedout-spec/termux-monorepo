@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-16T00:51:58Z",
+ "read_at": "2026-11-16T00:52:44Z",
  "status": "ok",
- "count": 65927,
+ "count": 65928,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "6860a6d5098943363c011fd6e7e9d8ec4da22dd4",
+   "occurred_at": "2026-11-16 00:52:02+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -1117,25 +1126,25 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
+   "head_sha": "edde3b885d84d500212581a4d7bbc3a6b4134b8d",
+   "occurred_at": "2026-11-16 00:06:36+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "edde3b885d84d500212581a4d7bbc3a6b4134b8d",
+   "occurred_at": "2026-11-16 00:06:36+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
    "head_sha": "040d9e14c73ae1a6065a317742d22672119e2c0c",
-   "occurred_at": "2026-11-16 00:06:36+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "edde3b885d84d500212581a4d7bbc3a6b4134b8d",
-   "occurred_at": "2026-11-16 00:06:36+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "edde3b885d84d500212581a4d7bbc3a6b4134b8d",
    "occurred_at": "2026-11-16 00:06:36+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "acd163fcf745fa543069a24aa6c5b071eb08dc2d",
    "occurred_at": "2026-11-15 23:39:53+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "acd163fcf745fa543069a24aa6c5b071eb08dc2d",
-   "occurred_at": "2026-11-15 23:39:45+00"
   }
  ]
 }

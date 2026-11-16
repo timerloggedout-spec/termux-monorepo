@@ -14,14 +14,14 @@ import json
 from pathlib import Path
 import re
 import sys
+import time
 from urllib.error import URLError
 from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
-SOURCES = (
-    "https://devpost.com/hackathons",
-    "https://devpost.com/c/artificial-intelligence",
-)
+DIRECTORIES = ("https://devpost.com/hackathons", "https://devpost.com/c/artificial-intelligence")
+# Bounded pagination keeps the daily collector useful without crawling the entire site.
+SOURCES = tuple(f"{base}?page={page}" for base in DIRECTORIES for page in range(1, 6))
 SCHEMA = "devpost-directory-discovery/v1"
 AI_TERMS = ("ai", "artificial intelligence", "machine learning", "llm", "agent", "generative", "robot", "data science")
 OTHER_TERMS = ("hackathon", "challenge", "build", "developer", "open source")
@@ -111,7 +111,7 @@ def known_urls(root: Path) -> dict[str, str]:
     return known
 
 
-def collect(root: Path, pages: dict[str, str], fetched_at: str) -> dict:
+def collect(root: Path, pages: dict[str, str], fetched_at: str, source_failures: list[dict] | None = None) -> dict:
     out_path = root / "ops/challenge/discovery/devpost-directory.json"
     old = json.loads(out_path.read_text()) if out_path.exists() else {"schema": SCHEMA, "leads": [], "runs": []}
     by_url = {x["url"]: x for x in old.get("leads", []) if x.get("url")}
@@ -145,7 +145,7 @@ def collect(root: Path, pages: dict[str, str], fetched_at: str) -> dict:
                     row[field] = prior[field]
         by_url[url] = row
     leads = sorted(by_url.values(), key=lambda x: (-int(x.get("triage_score", 0)), x.get("title", "").lower(), x["url"]))
-    run = {"fetched_at": fetched_at, "sources": run_sources, "discovered_this_run": len(fresh), "total_leads": len(leads)}
+    run = {"fetched_at": fetched_at, "sources": run_sources, "source_failures": source_failures or [], "discovered_this_run": len(fresh), "total_leads": len(leads)}
     old["schema"] = SCHEMA
     old["generated_at"] = fetched_at
     old["source_policy"] = "Public directory listings are leads only; event rules, dates, eligibility and prizes require official-page verification."
@@ -177,13 +177,15 @@ def main() -> int:
         for source in SOURCES:
             try:
                 pages[source] = Path(fixtures[source]).read_text() if source in fixtures else fetch_page(source)
+                if source not in fixtures:
+                    time.sleep(0.5)
             except Exception as exc:
-                errors.append(f"{source}: {type(exc).__name__}")
+                errors.append({"url": source, "status": "failed", "error_type": type(exc).__name__, "fetched_at": utc_now()})
                 print(f"::warning title=devpost-discovery::{source} fetch failed: {type(exc).__name__}")
     if not pages and not ns.no_fetch:
         print("devpost discovery: no source fetched; existing feed left unchanged", file=sys.stderr)
         return 2
-    run = collect(root, pages, utc_now())
+    run = collect(root, pages, utc_now(), errors)
     print(f"devpost discovery: {run['discovered_this_run']} leads seen; {run['total_leads']} retained; {len(errors)} source failures")
     return 0
 

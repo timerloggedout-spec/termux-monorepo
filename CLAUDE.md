@@ -57,7 +57,7 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - Both gates must pass before promote (automated CI + local parity):
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
-- Every pull request must add or update exactly one `docs/icm/changes/*.json` impact receipt. It must enumerate the exact PR delta, identify existing primary ICM cards, list related records updated in the PR, and declare `updated` or `no-map-change` with a rationale. The repo-gate workflow validates this contract; missing, stale, unsafe, or incomplete receipts fail.
+- Every pull request must add or update exactly one `docs/icm/changes/*.json` impact receipt. It must enumerate the exact PR delta, identify existing primary ICM cards, list related records updated in the PR, and declare `updated` or `no-map-change` with a rationale. The repo-gate workflow exposes a distinct PR status check named `ICM impact gate`; missing, stale, unsafe, or incomplete receipts fail. Branch protection must require that exact check for merge blocking.
 - Material changes must update the directly affected ICM card/process/effect route and related proposal or architecture records in the same PR. Use `no-map-change` only when the existing map remains accurate, and explain why in the receipt.
 - Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.

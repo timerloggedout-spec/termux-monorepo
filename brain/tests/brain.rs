@@ -322,8 +322,8 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
             max_plan_steps: 10,
         },
     )
-        .run(request)
-        .unwrap();
+    .run(request)
+    .unwrap();
     assert_eq!(result.context.selected_ids, vec!["higher".to_string()]);
     assert_eq!(
         result.context.excluded_by_classification,
@@ -344,7 +344,7 @@ fn plan_cycles_and_missing_dependencies_are_rejected() {
                 id: "a".into(),
                 title: "A".into(),
                 description: "".into(),
-                depends_on: vec!["b".into()],
+                depends_on: vec!["b".into(), "missing".into()],
                 agent_role: None,
                 tool_ids: vec![],
                 expected_output: "".into(),
@@ -565,7 +565,6 @@ fn default_mode_is_adaptive() {
 }
 
 struct DegradedAwarePolicy;
-
 
 impl PolicyGate for DegradedAwarePolicy {
     fn evaluate(&self, input: &PolicyInput<'_>) -> PolicyDecision {

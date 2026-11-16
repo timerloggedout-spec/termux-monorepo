@@ -9,7 +9,7 @@ verified_at: 2026-11-15
 
 # Monorepo Brain Kernel
 
-> This file documents the initial P1 reasoning kernel, not the complete monorepo Brain. The broader cognitive architecture, subsystem taxonomy and staged integration roadmap live in [monorepo-brain.md](monorepo-brain.md) and the [subsystem map](../../../architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md). The associated [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) requests evaluation only.
+> This file documents the initial P1 reasoning kernel, not the complete monorepo Brain. The broader cognitive architecture, subsystem taxonomy and staged integration roadmap live in [monorepo-brain.md](monorepo-brain.md) and the [subsystem map](../../../architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md) and [source-inspected ownership map](../../../architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md). The associated [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) requests evaluation only.
 
 **Brain** is the shared, provider-neutral cognitive kernel at repository root. It turns a request and bounded context into typed reasoning-stage records, a validated execution plan, and a decision from an injected policy adapter.
 

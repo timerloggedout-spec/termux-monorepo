@@ -1,0 +1,44 @@
+{
+  "schema": "doe.component-registry.v1",
+  "status": "proposed-not-registered",
+  "component": {
+    "id": "grimoire.recipe-intelligence",
+    "title": "GRIMOIRE Software Recipe Intelligence",
+    "kind": "compositional-recipe-intelligence",
+    "status": "proposal",
+    "role": "Versioned, provenance-aware software capability model: ingredients, operations, environment, outputs, evaluation, and evolution.",
+    "delphi_rfp": "pending",
+    "doe": {
+      "evaluation": "individual, per gate cycle",
+      "factor_candidate": true,
+      "candidate_arms": ["A0-baseline", "A1-srm-rule", "A2-srm-stat", "A3-srm-graph", "A4-srm-hybrid", "A5-srm-execution"],
+      "promotion_rule": "held-out confirmation + independent evidence; no automatic promotion"
+    },
+    "paths": [
+      "docs/proposals/active/grimoire-software-recipe-intelligence/",
+      "docs/proposals/active/grimoire-software-recipe-intelligence/PROPOSAL.md",
+      "docs/proposals/active/grimoire-software-recipe-intelligence/SRM-SCHEMA.json",
+      "docs/proposals/active/grimoire-software-recipe-intelligence/DOE-PLAN.md"
+    ],
+    "evidence_feeds": [
+      "docs/proposals/active/grimoire-software-recipe-intelligence/SOURCES.md",
+      "docs/proposals/active/grimoire-software-recipe-intelligence/IMPLEMENTATION-BACKLOG.md",
+      "docs/ops/DOE-COMPONENT-REGISTRY.md",
+      "docs/ops/DELPHI-ORACLE-RFP-GATE.md"
+    ],
+    "integration": {
+      "commit_replay": "consumer/adapter only; no reimplementation of fragment index, compose, symbol resolution, or surgical edit primitives",
+      "historical_corpus": "candidate source and lineage projection",
+      "context_relationship_graph": "candidate typed graph projection",
+      "she_ates_moneyball": "candidate evaluation/observability consumers",
+      "kahn_dag": "reuse canonical dependency planner",
+      "opentelemetry": "optional runtime signal adapter"
+    }
+  },
+  "governance": {
+    "registration_requires": "Delphi admission and owner-approved registry change",
+    "evaluation": "separate component context; no cross-component aggregate score",
+    "execution": "read-only until separately admitted",
+    "promotion": "human-governed; no automatic merge, deploy, or permission expansion"
+  }
+}

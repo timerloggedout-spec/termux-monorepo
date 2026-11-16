@@ -181,6 +181,45 @@ Potential reusable components:
 
 This is a hypothesis to validate with educators, learning scientists, public-good creators, and downstream developers. Existing Termux-MonoRepo engineering assets may accelerate implementation, but they do not replace missing education-domain expertise or partner commitments.
 
+
+## 7A. Adjacent institutional-sponsor precedent — Amazon Research Awards (C15/C16)
+
+C15 and C16 are **separate coordinator candidate-event records**, not
+sub-opportunities within C13 and not research-lane identifiers. Both are
+Amazon Research Awards calls hosted by Amazon Web Services/Amazon. Their
+institution-gap annotations are relevant to the organization's future
+sponsor and legal-entity pathway, but they do not change the scope or
+eligibility rules of the K-12 AI Infrastructure Program.
+
+- **C15 — AWS Agentic AI Call for Proposals, Fall 2026:** screened out for
+  that cycle. Amazon clarified that a permanent researcher employed by a
+  501(c)(3) fiscal sponsor in a Model A arrangement can satisfy the ARA
+  institutional PI clause, with the award gift paid to the sponsor. The
+  route decision remained deferred and no fiscal sponsor or sponsor-employed
+  PI was in place before the deadline.
+- **C16 — Amazon Security Fall Grant Program, 2026:** screened out after its
+  November 4, 2026 deadline. The same institutional gap was recorded; its
+  cycle is closed.
+
+These records are the source of truth for those opportunity states:
+`ops/challenge/coordinator.json#C15` and `#C16`. Re-screen future ARA
+cycles only when the coordinator's reopening trigger is met. Do not treat
+the C15 Model A interpretation as an already-established sponsor route.
+
+The coordinator's `C` and `D` prefixes are record identifiers, not
+disciplinary lane classes. C13/C15/C16 are in `candidate_events`; D0–D5
+are challenge/event records. The opportunity-cycle machinery processes live
+records from both collections and writes readiness/priority projections.
+AWS appears as the host for C15/C16 and some D-series events, but that
+shared host does not make them one opportunity or one research lane.
+
+**Open Collective distinction:** Open Collective may be evaluated as a
+fundraising/platform mechanism, but a platform account is not itself proof
+of a legally sufficient fiscal-sponsorship relationship. Any proposed route
+must identify the actual legal sponsor, contracting party, PI/employment
+relationship, funds flow, fees, reporting, and control terms before it is
+treated as eligible.
+
 ## 8. Evidence and success measures
 
 Measure more than software completion:

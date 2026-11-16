@@ -24,5 +24,6 @@ All slots are continuous repopulate / upgrade / score targets — not a one-shot
 ## Brain research references
 
 - [Brain filename and agent-architecture dossier](../17_Papers/citations/brain-file-and-agent-architecture-survey.md) — user-supplied GitHub and academic references classified by responsibility, evidence relationship, transfer and limitation.
-- [Monorepo Brain subsystem map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md) — target subsystem taxonomy and existing-owner boundaries.
+- [Monorepo Brain subsystem map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
+- [Monorepo Brain ownership and integration map](../../docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md) — target subsystem taxonomy and existing-owner boundaries.
 - [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) — formal Delphi intake; evaluation only, no runtime authority.

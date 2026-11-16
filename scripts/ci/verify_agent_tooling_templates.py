@@ -141,8 +141,11 @@ def validate_manifest(
             sha = entry.get("pinned_sha")
             if not isinstance(sha, str) or len(sha) != 40 or any(c not in "0123456789abcdef" for c in sha.lower()):
                 errors.append(f"{path}: pinned entry needs a 40-character immutable commit SHA")
-        elif path and (path in module_urls or path in gitlink_set):
-            errors.append(f"{path}: deferred/research-only entry must not claim a live gitlink")
+        elif status in {"deferred", "research_only"}:
+            if entry.get("pinned_sha") is not None:
+                errors.append(f"{path}: deferred/research-only entry must have pinned_sha=null")
+            if path and (path in module_urls or path in gitlink_set):
+                errors.append(f"{path}: deferred/research-only entry must not claim a live gitlink")
 
     return errors
 

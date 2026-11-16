@@ -57,6 +57,8 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 - Both gates must pass before promote (automated CI + local parity):
   - `python3 scripts/ci/repo_gate.py`
   - `python3 scripts/ci/termux_smoke.py`
+- Every pull request must add or update exactly one `docs/icm/changes/*.json` impact receipt. It must enumerate the exact PR delta, identify existing primary ICM cards, list related records updated in the PR, and declare `updated` or `no-map-change` with a rationale. The repo-gate workflow validates this contract; missing, stale, unsafe, or incomplete receipts fail.
+- Material changes must update the directly affected ICM card/process/effect route and related proposal or architecture records in the same PR. Use `no-map-change` only when the existing map remains accurate, and explain why in the receipt.
 - Do not invent work outside `docs/proposals/active/<id>/ITEMS.md` — add a row first.
 - Cite `Implements: <ITEM-ID>` on PRs/commits.
 - **No** wholesale merge of NO-GO mega-PRs (#2, #6) — extract-only.
@@ -70,8 +72,8 @@ Then route the task with **[`docs/icm/CLAUDE.md`](docs/icm/CLAUDE.md)** — one 
 
 ```text
 registry.yaml → pick todo item → branch from master
-  → implement (automate surfaces: GHA, Codespaces, Docker, Render where applicable)
-  → PR with Implements: ID → dual gates green → auto-promote
+  → write ICM impact receipt → implement scoped change
+  → PR with Implements: ID → ICM/repo/smoke gates green → auto-promote
   → update ITEMS.md status
 ```
 
@@ -98,6 +100,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Status | `docs/ARCHW1Z-STATUS.md` |
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
+| ICM impact receipts | `docs/icm/changes/*.json` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
@@ -139,13 +142,11 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 Full text: `docs/ops/TOOL-ACQUISITION-ROUTES.md`. Summary for every install/download task:
 ① Exec network calls ride an approval system — "Site always allowed" is decided per host by card (precedents: api.github.com, api.mistral.ai, mcp.deepwiki.com). ② Silent failure mode: downloads from non-whitelisted hosts (storage.googleapis.com, googlechromelabs.github.io) die at write (curl rc23/EPERM, 0-byte) with ∅ card generated — never report "platform-impossible"; correct report = "host not whitelisted ∧ no card engaged; route via ③/④". ③ Browser-channel downloads persist (~/workspace/browser_downloads). ④ GitHub-artifact route via api.github.com (precedent dd04486c). ⑤ Precedent: go.tgz 66.9MB + Go tree landed 2026-10-27.
 
-
 ## Superpowers engineering workflow
 
 Repository-local skill: `.agents/skills/superpowers/SKILL.md`. Load it for feature work, bug fixes, refactors, and non-trivial engineering changes. The upstream Superpowers methodology supplements this file; it does not override proposal authorization, ICM source ownership, `AGENTIC-PERMISSIONS.md`, dual gates, or adaptive WAIT.
 
 Integration catalog and event contract: `docs/integrations/README.md`. Design and execution plan: `docs/superpowers/specs/2026-11-02-integration-intelligence-design.md` and `docs/superpowers/plans/2026-11-02-integration-intelligence.md`.
-
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 

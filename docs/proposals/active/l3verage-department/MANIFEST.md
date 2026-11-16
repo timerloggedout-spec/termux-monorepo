@@ -14,7 +14,7 @@ related_proposals:
   - continuous-capability-evolution-lab
   - provider-family-doe-observatory
   - agent-contributor-provenance
-related_prs: []
+related_prs: [5530]
 related_branches:
   - feat/l3verage-department-foundation
 gates_required:

@@ -8,11 +8,11 @@
 
 | Concern | Canonical owner | Contract / evidence |
 |---|---|---|
-| Siglary taxonomy, standard, enforcement design | Linguist | [SIGLARY-STANDARD.md](../../notation-sets/SIGLARY-STANDARD.md), [Matrice](../../notation-sets/CAVEMAN-MICRO-DENSE-V2.md) |
-| DoE family and campaign intake | DoE family | [DOE-FAMILY.md](../../../../ops/DOE-FAMILY.md) |
+| Siglary taxonomy, standard, enforcement design | Linguist | [SIGLARY-STANDARD.md](../notation-sets/SIGLARY-STANDARD.md), [Matrice](../../notation-sets/CAVEMAN-MICRO-DENSE-V2.md) |
+| DoE family and campaign intake | DoE family | [DOE-FAMILY.md](../../../ops/DOE-FAMILY.md) |
 | Experiment record | MVT surface; adopted by DoE family | [EXPERIMENT.schema.json](../../../../ops/corpus/EXPERIMENT.schema.json) |
 | MVT / DoE / ATES separation | DoE expert lane | [MVT-DOE-ATES-SEPARATION.md](../../../../ops/MVT-DOE-ATES-SEPARATION.md) |
-| Candidate capability / participant index | CEEL / Integration Intelligence | [capability graph](../../../../integrations/capability-opportunity-graph.json), [graph schema](../../../../integrations/capability-opportunity-graph.schema.json) |
+| Candidate capability / participant index | CEEL / Integration Intelligence | [capability graph](../../../integrations/capability-opportunity-graph.json), [graph schema](../../../../integrations/capability-opportunity-graph.schema.json) |
 | Normalized integration event | Integration Intelligence | [integration event schema](../../../../integrations/schemas/integration-event.schema.json) |
 
 **No new SSOT is proposed.** The opportunity graph is an index/projection, not a runtime authority. The experiment record remains one record per dispatched/executed run. Cross-surface references remain citations, not copied payloads.

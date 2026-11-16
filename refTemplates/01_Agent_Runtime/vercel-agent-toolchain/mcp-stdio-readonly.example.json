@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "agent-browser-readonly": {
+      "command": "agent-browser",
+      "args": [
+        "--content-boundaries",
+        "--max-output",
+        "50000",
+        "--allowed-domains",
+        "venue.example,*.venue.example",
+        "--action-policy",
+        "/absolute/path/to/policy-readonly.json",
+        "mcp",
+        "--tools",
+        "core"
+      ]
+    }
+  }
+}

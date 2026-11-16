@@ -34,6 +34,36 @@ class MechanismCatalogTests(unittest.TestCase):
         data["mechanisms"][0]["secondary_classes"] = ["magic"]
         self.assertTrue(any("secondary_classes is invalid" in error for error in validate(data)))
 
+    def test_empty_required_arrays_are_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["target_outcomes"] = []
+        data["mechanisms"][0]["guardrails"] = []
+        data["mechanisms"][0]["resource_dimensions"] = []
+        errors = validate(data)
+        self.assertTrue(any("target_outcomes" in error for error in errors))
+        self.assertTrue(any("guardrails" in error for error in errors))
+        self.assertTrue(any("resource_dimensions" in error for error in errors))
+
+    def test_non_string_guardrail_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["guardrails"] = [42]
+        self.assertTrue(any("guardrails" in error for error in validate(data)))
+
+    def test_duplicate_resource_dimensions_are_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["resource_dimensions"].append(data["mechanisms"][0]["resource_dimensions"][0])
+        self.assertTrue(any("resource_dimensions contains duplicates" in error for error in validate(data)))
+
+    def test_unknown_property_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["unreviewed_override"] = True
+        self.assertTrue(any("unsupported fields" in error for error in validate(data)))
+
+    def test_invalid_timestamp_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["updated_at"] = "yesterday"
+        self.assertTrue(any("ISO 8601" in error for error in validate(data)))
+
     def test_unknown_lifecycle_state_is_rejected(self):
         data = copy.deepcopy(self.data)
         data["mechanisms"][0]["lifecycle_state"] = "deployed-ish"

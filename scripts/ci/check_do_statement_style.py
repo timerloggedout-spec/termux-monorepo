@@ -17,6 +17,7 @@ BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
+    ".github/ISSUE_TEMPLATE", ".github/PULL_REQUEST_TEMPLATE.md", "templates",
     "docs/icm", "docs/ops", "docs/proposals",
 ]
 

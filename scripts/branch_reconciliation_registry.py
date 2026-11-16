@@ -15,8 +15,8 @@ from pathlib import Path
 from typing import Any
 
 
-def run(args: list[str], *, check: bool = True) -> str:
-    proc = subprocess.run(args, text=True, capture_output=True)
+def run(args: list[str], *, check: bool = True, cwd: str | Path | None = None) -> str:
+    proc = subprocess.run(args, text=True, capture_output=True, cwd=cwd)
     if check and proc.returncode:
         raise RuntimeError(f"command failed ({proc.returncode}): {' '.join(args)}\n{proc.stderr.strip()}")
     return proc.stdout.strip()
@@ -30,16 +30,16 @@ def gh_pages(endpoint: str) -> list[dict[str, Any]]:
     return [row for page in pages if isinstance(page, list) for row in page if isinstance(row, dict)]
 
 
-def git_count(base: str, head: str) -> tuple[int, int] | None:
+def git_count(base: str, head: str, *, cwd: str | Path | None = None) -> tuple[int, int] | None:
     # `git cat-file -e` succeeds with empty stdout; inspect its exit code.
     for ref in (base, head):
-        probe = subprocess.run(["git", "cat-file", "-e", f"{ref}^{{commit}}"], text=True, capture_output=True)
+        probe = subprocess.run(["git", "cat-file", "-e", f"{ref}^{{commit}}"], text=True, capture_output=True, cwd=cwd)
         if probe.returncode != 0:
             return None
-    merge_base = run(["git", "merge-base", base, head], check=False)
+    merge_base = run(["git", "merge-base", base, head], check=False, cwd=cwd)
     if not merge_base:
         return None
-    counts = run(["git", "rev-list", "--left-right", "--count", f"{base}...{head}"])
+    counts = run(["git", "rev-list", "--left-right", "--count", f"{base}...{head}"], cwd=cwd)
     behind, ahead = (int(x) for x in counts.split())
     return ahead, behind
 

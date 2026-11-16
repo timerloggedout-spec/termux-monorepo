@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 
 from scripts.challenge.devpost_discovery import (
-    canonical_event_url, parse_directory, triage_score, collect,
+    canonical_event_url, parse_directory, triage_score, collect, SOURCES,
 )
 
 

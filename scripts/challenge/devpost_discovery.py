@@ -15,7 +15,6 @@ from pathlib import Path
 import re
 import sys
 import time
-from urllib.error import URLError
 from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
@@ -65,7 +64,7 @@ class DirectoryParser(HTMLParser):
     def handle_endtag(self, tag: str) -> None:
         if tag == "a" and self.current is not None:
             title = " ".join(self.current["title_parts"]).strip() or self.current["aria"]
-            title = re.sub(r"\\s+", " ", title).strip()
+            title = re.sub(r"\s+", " ", title).strip()
             self.links.append({"url": self.current["url"], "title": title})
             self.current = None
 
@@ -166,10 +165,13 @@ def collect(root: Path, pages: dict[str, str], fetched_at: str, source_failures:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", default=".")
-    ap.add_argument("--no-fetch", action="store_true", help="write an empty-safe run using supplied existing feed only")
+    ap.add_argument("--no-fetch", action="store_true", help="skip network access and leave the existing feed unchanged")
     ap.add_argument("--fixture", action="append", default=[], metavar="URL=PATH", help="offline HTML fixture for a source URL")
     ns = ap.parse_args()
     root = Path(ns.root)
+    if ns.no_fetch:
+        print("devpost discovery: offline mode; existing feed unchanged")
+        return 0
     pages: dict[str, str] = {}
     fixtures = dict(item.split("=", 1) for item in ns.fixture)
     errors = []

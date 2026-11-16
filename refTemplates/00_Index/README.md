@@ -5,8 +5,8 @@
 | Path | Role |
 |------|------|
 | 00_Index/ | This navigator + recovery + SOURCE map |
-| 01_Agent_Runtime/ … 14_* | Categorical metadata from skeleton; new runtime integration templates require README.md + SOURCE.txt + integration.json |
-| 01_Agent_Runtime/vercel-agent-toolchain/ | Vercel agent-browser + skills ecosystem reference; Termux runtime remains unverified |
+| 01_Agent_Runtime/ … 14_* | Categorical metadata from skeleton; new runtime integration templates require README.md + SOURCE.txt + integration.json plus manifest-declared policy/config artifacts |
+| 01_Agent_Runtime/vercel-agent-toolchain/ | Vercel agent-browser CLI/MCP + skills ecosystem reference; default-deny policy examples; Termux runtime remains unverified |
 | 15_Research_Repo_Templates/ | Consolidated research scaffolds, including the Dicklesworthstone Flywheel stack profile |
 | 16_Org_Phased/ | Orgs + Enterprise phase gates |
 | 17_Papers/ | Cited research + implementation sources |

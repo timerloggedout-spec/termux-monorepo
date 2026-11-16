@@ -119,8 +119,12 @@ def validate_manifest(
         if not isinstance(write_tools, list) or not all(isinstance(x, str) for x in write_tools):
             errors.append("integration.json: authorized_write_tool_allowlist must be a string array")
             write_tools = []
+        if not set(readonly_tools).issubset(READ_ONLY_TOOLS):
+            errors.append("integration.json: read-only MCP allowlist contains tools outside the reviewed read-only core set")
+        if not set(write_tools).issubset(READ_ONLY_TOOLS | AUTHORIZED_WRITE_TOOLS):
+            errors.append("integration.json: authorized-write MCP allowlist contains tools outside the reviewed core/debug set")
         required_read = {"agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text"}
-        required_write = {"agent_browser_click", "agent_browser_fill", "agent_browser_press", "agent_browser_upload", "agent_browser_confirm", "agent_browser_deny"}
+        required_write = {"agent_browser_click", "agent_browser_fill", "agent_browser_press", "agent_browser_confirm", "agent_browser_deny"}
         if not required_read.issubset(set(readonly_tools)):
             errors.append("integration.json: read-only MCP allowlist is missing required read tools")
         if not set(readonly_tools).issubset(set(write_tools)) or not required_write.issubset(set(write_tools)):
@@ -240,7 +244,9 @@ def validate_manifest(
 
 
 READ_ONLY_ACTIONS = {"navigate", "snapshot", "scroll", "wait", "read", "get"}
-WRITE_ACTIONS = {"click", "fill", "interact", "download", "upload", "state"}
+WRITE_ACTIONS = {"click", "fill", "interact"}
+READ_ONLY_TOOLS = {"agent_browser_open", "agent_browser_snapshot", "agent_browser_read", "agent_browser_get_text", "agent_browser_get_url", "agent_browser_get_title", "agent_browser_wait_ms", "agent_browser_wait_for_selector", "agent_browser_wait_for_text", "agent_browser_wait_for_load", "agent_browser_scroll", "agent_browser_tab_list"}
+AUTHORIZED_WRITE_TOOLS = {"agent_browser_click", "agent_browser_fill", "agent_browser_type", "agent_browser_press", "agent_browser_check", "agent_browser_uncheck", "agent_browser_select", "agent_browser_confirm", "agent_browser_deny"}
 
 
 def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
@@ -309,8 +315,9 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
         if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
             errors.append(f"{name}: server args must be a string array")
             return
-        if "--tools" not in args or args[args.index("--tools") + 1:args.index("--tools") + 2] != ["core"]:
-            errors.append(f"{name}: MCP must start with the least-privilege core tool profile")
+        expected_profile = "core,debug" if write_mode else "core"
+        if "--tools" not in args or args[args.index("--tools") + 1:args.index("--tools") + 2] != [expected_profile]:
+            errors.append(f"{name}: MCP must use the reviewed {expected_profile} profile")
         if "--session" not in args:
             errors.append(f"{name}: MCP must use a named isolated session")
         else:

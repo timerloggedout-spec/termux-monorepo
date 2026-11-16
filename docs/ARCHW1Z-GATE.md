@@ -50,6 +50,10 @@ Workflow: `.github/workflows/repo-gate.yml`
 
 The ICM impact validator runs as a distinct named job (`ICM impact gate`) in the repo-gate workflow on every pull request. Exactly one changed `docs/icm/changes/*.json` receipt must enumerate the complete PR delta, identify existing primary ICM cards, and list related repository records changed in the PR. A receipt may declare `updated` only when at least one primary ICM card is changed; `no-map-change` requires a non-empty rationale. Missing, stale, incomplete, unsafe, or unsupported receipt fields fail closed.
 
+### Merge protection
+
+Branch protection must require the exact status check `ICM impact gate` for `master`. The active repository ruleset inspected on 2026-11-16 (`master-no-rewind`) enforces deletion and non-fast-forward protection only; it does **not** require status checks. The ICM validator is implemented as a CI check, but merge blocking is not established until this required-check rule is configured and verified.
+
 ### Tests
 
 ```bash

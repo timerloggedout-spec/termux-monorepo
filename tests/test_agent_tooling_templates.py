@@ -152,6 +152,18 @@ class AgentToolingTemplateTests(unittest.TestCase):
         manifest = __import__("json").loads((template / "integration.json").read_text(encoding="utf-8"))
         self.assertEqual(validate_security_examples(template, manifest), [])
 
+    def test_raw_mcp_server_exposure_is_rejected(self):
+        manifest, index, _ = sample()
+        manifest["mcp"]["raw_server_exposure"] = True
+        errors = validate_manifest(manifest, index, {}, set())
+        self.assertTrue(any("raw agent-browser MCP server must not be exposed" in error for error in errors))
+
+    def test_mcp_allowlist_rejects_flow_management_tools(self):
+        manifest, index, _ = sample()
+        manifest["mcp"]["authorized_write_tool_allowlist"].append("agent_browser_flow_save")
+        errors = validate_manifest(manifest, index, {}, set())
+        self.assertTrue(any("outside the reviewed core/debug set" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

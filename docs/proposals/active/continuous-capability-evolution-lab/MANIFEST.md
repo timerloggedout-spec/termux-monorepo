@@ -3,7 +3,7 @@ id: continuous-capability-evolution-lab
 title: "Continuous Capability Evolution Laboratory — event-driven FOSS discovery, DoE comparison, and benefit compounding"
 author: ChatGPT
 posted_at: 2026-11-11
-source: "Operator directives: continuous capability discovery and DoE comparison; 2026-11-16 directive to name META-DOE, formalize SON micro-dense DO statements, and develop the meta-methodology self-improvement architecture."
+source: "Operator directives: continuous capability discovery and DoE comparison; 2026-11-16 directive to name MOSAIC, formalize SON micro-dense DO statements, and develop the meta-methodology self-improvement architecture."
 status: executing
 priority: P1
 reviewers:
@@ -29,7 +29,7 @@ CEEL and MOSAIC do not create a second orchestrator, telemetry ledger, experimen
 
 ## Operator authorization
 
-The 2026-11-16 operator directive authorizes the MOSAIC name, SON notation, detailed specification and documentation-only proposal extension. It does not authorize live experiment dispatch, paid inference, external account writes, credential provisioning, production routing changes, automatic promotion, merge or deployment outside existing governance.
+The 2026-11-16 operator directive authorizes the MOSAIC name, SON proposal, detailed specification, documentation work and a bounded pure-Rust recommendation core. Keep live experiment dispatch, paid inference, external account writes, credential provisioning and production routing outside this implementation. Route independently validated changes through the existing repository-managed FA-ADE and proposal lifecycle; MOSAIC itself supplies recommendations and holds no merge or promotion authority.
 
 ## Scope boundaries
 

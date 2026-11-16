@@ -276,6 +276,69 @@ DO: REPEAT
 
 Until the Linguist ruling is recorded, treat SON as a proposal profile and use expanded plain language wherever a reading could be ambiguous.
 
+## 10. MOSAIC operating loop
+
+MOSAIC uses the repository's existing event plane, DoE execution surfaces, evidence contracts and promotion governance.
+
+DO: SENSE
+  inputs: GitHub-native events, corpus deltas and failed gates
+  emit: evidence-qualified methodology candidates
+
+DO: RECON
+  inputs: DoE family, CEEL, component registry and context-relationship references
+  emit: source map, dependency map and bounded gap list
+
+DO: FORMULATE
+  target: one decision that a method comparison can change
+  emit: hypothesis, factors, baseline and expected decision value
+
+DO: PREREGISTER
+  target: method comparison
+  require: frozen design ∧ outcomes ∧ analysis ∧ budget ∧ stopping rule ∧ evaluator
+
+DO: ADMIT
+  target: preregistered campaign
+  require: proposal authority ∧ declared scope ∧ risk review
+
+DO: EXECUTE
+  target: admitted method arms
+  use: existing DoE workflows and ATES execution surfaces
+  preserve: existing scheduler and dispatch authority
+
+DO: CAPTURE
+  target: executed runs
+  emit: canonical EXPERIMENT records and evidence references
+  preserve: secret redaction and schema-native nulls
+
+DO: ANALYZE
+  target: canonical run records
+  emit: effects, uncertainty, missingness, interactions and cost
+
+DO: CHALLENGE
+  target: method claim
+  use: Delphi or an independent assigned evaluator
+  emit: VERIFIED, PARTIAL or REFUTED with evidence references
+
+DO: DECIDE
+  target: scope-bounded methodology revision
+  emit: promotion candidate, HOLD or REVISE recommendation
+  preserve: CULL authority in the existing governance process
+
+DO: PROPAGATE
+  target: independently validated revision
+  require: independent_validation ∧ dual_gates_passed ∧ outcome_verified
+  use: existing repository-managed FA-ADE and proposal lifecycle
+
+DO: WATCH
+  target: promoted methodology scope
+  detect: regression, drift, staleness and maintenance cost
+
+DO: REPEAT
+  trigger: new event or new evidence
+  next: bounded SENSE and RECON cycle
+
+MOSAIC owns the recommendation function and its evidence contract. Existing repository governance owns state changes, merges and production promotion.
+
 ## 11. Initial work packages
 
 | ID | Priority | Work | Exit condition |

@@ -83,3 +83,14 @@ Establish a Termux-first Agentic Hub for the BLU B160V by adding the approved us
 - Architecture: Brain reasons and returns a typed plan/decision; the existing harness governs the run; existing hands execute authorized actions. PolicyGate, memory, provider routing, evidence receipts and scheduling remain owned by existing canonical systems.
 - Research references: AgentincOS Native seven-stage engine; JARVIS cognitive/execution split; BLADE selective-context Rust brain; brainctl persistent-memory API; Tended knowledge/coordination hub; Rig composable Rust agent components; LangGraph state-graph orchestration.
 - Safety: no model credentials, direct tool execution, persistent memory, new policy registry, root Cargo workspace, or Python runtime switch. A later Python adapter requires separate protocol-parity and task-outcome evidence.
+
+
+### 2026-11-16 — user / ChatGPT — THUB-012 monorepo Brain architecture and QUE RFP
+
+- Disposition: **accepted continuation by explicit Operator instruction**; RFP #5501 filed for evaluation.
+- Scope: expand the initial root Rust kernel into the monorepo-wide Brain architecture covering identity/intent, perception, context, knowledge/memory adapters, repository ontology, research intelligence, capability discovery, reasoning/planning, simulation, policy handoff, QUE/QDesk coordination, execution observation, verification/evidence, observability, adaptation, resilience, security, swarm and owner experience.
+- Research: the owner-supplied Perplexity GitHub and academic references are catalogued in [refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md](../../../../refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md), with source classes, limitations and linked_slots metadata. The actual refTemplates category names were reconciled against the repository tree.
+- RFP: [qdesk.brain-rs #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) filed using the existing delphi:rfp intake. Gate disposition: parked 6.69/25, recheck after 2026-12-16T09:39Z. This is an admission score for an unsourced synthetic surface, not a technical architecture verdict or runtime authorization.
+- Segmentation: [PR #5503](https://github.com/timerloggedout-spec/termux-monorepo/pull/5503) registers a distinct brain-architecture comparison segment without changing gate scoring or creating a parallel panel.
+- Safety: filing_grants_execution=false; existing QUE admission, policy, dispatch, memory, execution and evidence owners remain authoritative. Shadow-only integration precedes any separately authorized vertical slice. No second control plane, scheduler, registry, memory database or evidence ledger.
+- Implementation: [PR #5492](https://github.com/timerloggedout-spec/termux-monorepo/pull/5492) remains the kernel and architecture delivery PR. Final Rust CI and repository gates are pending on its latest head; do not merge on stale checks.

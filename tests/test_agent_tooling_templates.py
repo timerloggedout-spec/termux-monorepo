@@ -84,6 +84,20 @@ class AgentToolingTemplateTests(unittest.TestCase):
         )
         self.assertTrue(any("fork_required must not be represented" in error for error in errors))
 
+    def test_deferred_entry_must_not_claim_a_live_pin(self):
+        manifest, index, candidate = sample()
+        deferred = dict(candidate, status="deferred")
+        manifest["smods_candidates"] = [deferred]
+        index["entries"] = [deferred]
+        self.assertEqual(validate_manifest(manifest, index, {}, set()), [])
+        errors = validate_manifest(
+            manifest,
+            index,
+            {deferred["path"]: deferred["fork_url"]},
+            {deferred["path"]},
+        )
+        self.assertTrue(any("deferred/research-only entry must not claim" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

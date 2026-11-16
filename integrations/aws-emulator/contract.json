@@ -1,0 +1,40 @@
+{
+  "schema_version": "aws-emulator-integration.v1",
+  "integration_id": "aws-emulator-local-fidelity",
+  "status": "research_only",
+  "runtime_enabled": false,
+  "execution_authority": "none",
+  "target": "local_only",
+  "endpoint": "https://127.0.0.1:9297",
+  "cloud_fallback": "deny",
+  "credentials": "synthetic_only",
+  "production_allowed": false,
+  "security_testing_allowed": false,
+  "selected_emulator_release": null,
+  "selected_evaluation_suite_revision": null,
+  "candidate_services": [
+    "sqs",
+    "s3",
+    "dynamodb"
+  ],
+  "allowed_environments": [
+    "developer_local",
+    "hosted_ci"
+  ],
+  "forbidden_environments": [
+    "production",
+    "shared_development_account"
+  ],
+  "required_gates": [
+    "contract_validation",
+    "unit_tests",
+    "fidelity_replay",
+    "security_review",
+    "exact_sha_ci"
+  ],
+  "upstream": {
+    "emulator": "https://github.com/aws/aws-emulator",
+    "evaluation_suite": "https://github.com/aws/aws-emulator-evaluation-suite",
+    "api_models": "https://github.com/aws/api-models-aws"
+  }
+}

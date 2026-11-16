@@ -4,30 +4,20 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import subprocess
 import sys
 from pathlib import Path
 
+from do_statement_policy import ACTION_VERBS, is_hedged_instruction, subject_action_verb
+
 EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
-NEGATIVE_FIRST = re.compile(
-    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
-    re.IGNORECASE,
-)
-IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
-    "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
-    "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
-}
+# Compatibility pins: "guard" and "export" remain registered in ACTION_VERBS.
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
-    "docs/ops", "docs/proposals",
+    "docs/icm", "docs/ops", "docs/proposals",
 ]
 
 errors: list[str] = []
@@ -35,8 +25,8 @@ errors: list[str] = []
 
 def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
-        if NEGATIVE_FIRST.match(line):
-            errors.append(f"{label}:{number}: lead with the intended DO action")
+        if is_hedged_instruction(line):
+            errors.append(f"{label}:{number}: replace hedged framing with the direct action")
 
 
 def inspect_git_range(base: str, head: str) -> None:
@@ -50,9 +40,9 @@ def inspect_git_range(base: str, head: str) -> None:
             current_path = line[6:]
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
-            if NEGATIVE_FIRST.match(added):
+            if is_hedged_instruction(added):
                 errors.append(
-                    f"{current_path}: lead with the intended DO action: {added.strip()}"
+                    f"{current_path}: replace hedged framing with the direct action: {added.strip()}"
                 )
 
     subjects = subprocess.run(
@@ -65,9 +55,8 @@ def inspect_git_range(base: str, head: str) -> None:
     ).stdout
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
-        verb = first[0].lower() if first else ""
-        if verb not in IMPERATIVE:
+        verb = subject_action_verb(subject)
+        if verb not in ACTION_VERBS:
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
             )
@@ -105,6 +94,11 @@ def inspect_event() -> None:
         inspect_text("discussion.body", event.get("discussion", {}).get("body") or "")
     elif EVENT_NAME in {"issue_comment", "pull_request_review_comment", "discussion_comment", "commit_comment"}:
         inspect_text("comment.body", event.get("comment", {}).get("body") or "")
+    elif EVENT_NAME == "pull_request_review":
+        inspect_text("pull_request_review.body", event.get("review", {}).get("body") or "")
+    elif EVENT_NAME == "release":
+        inspect_text("release.name", event.get("release", {}).get("name") or "")
+        inspect_text("release.body", event.get("release", {}).get("body") or "")
 
 
 event = {}

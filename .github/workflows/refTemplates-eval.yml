@@ -42,7 +42,7 @@ jobs:
       - name: verify agent runtime templates and smods linkage
         run: python3 scripts/ci/verify_agent_tooling_templates.py
       - name: focused template contract tests
-        run: python3 -m pytest tests/test_agent_tooling_templates.py -q
+        run: python3 -m unittest discover -s tests -p 'test_agent_tooling_templates.py' -v
       - name: score
         run: |
           python3 scripts/ci/refTemplates_score.py \

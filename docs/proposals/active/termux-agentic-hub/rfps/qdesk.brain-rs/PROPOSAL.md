@@ -22,7 +22,7 @@ The root brain.rs kernel in PR #5492 is the first implementation slice, not the 
 - Existing surfaces to reuse: ArchWiz, HyperForge, ICM, Context Relationship Graph, hub_mcp, GitHub Actions, provider routing/3L0, QUE admission, dispatch/claim, evidence-led ops, Delphi/DoE, ForeSight/HindSight, adaptive-wait and SHE.
 - Contracts to verify before adapters: exact QUE ownership/intake, QDesk/ArchWiz projection, genome component semantics, identity/authority, dispatch/claim/receipt, policy and memory APIs, Rust package placement and JSONL bridge.
 
-Full design: [Monorepo Brain subsystem map](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md).
+Full design: [Monorepo Brain subsystem map](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md); [source-inspected ownership and integration map](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md).
 
 ## 3. Problem
 

@@ -6,7 +6,7 @@ flowchart TB
   PHASE --> BALLET["BALLET<br/>Choreography Policy"]
   BALLET --> ROUTER["Existing Specialist Router"]
   ROUTER --> ADAPTERS["Existing Execution Adapters"]
-  ADAPTERS --> CREW["PIT CREW<br/>Chief + Specialist Roles"]
+  ADAPTERS --> CREW["PIT CREW<br/>Invariant Crew Chief + Specialist Roles"]
   CREW --> RESULT["Integrated Artifact"]
   RESULT --> VERIFY["Independent Verification"]
   VERIFY --> EVIDENCE["Canonical Evidence<br/>Run · Attempt · SHA · Artifact"]
@@ -14,6 +14,10 @@ flowchart TB
   EVIDENCE --> ATES["ATES / WTCV / TCV"]
   EVIDENCE --> DOE["DoE OVERSIGHT<br/>Preregister · Assign · Monitor · Analyze"]
   ATES --> DOE
+  SEEDS["20 Architecture Seeds<br/>PC-SEED-001 … PC-SEED-020"] --> DOE
+  CREW -. "same Chief contract; seed changes topology/policy only" .-> SEEDS
+  DOE --> CONTROL["Incumbent Control + Matched Seed Arms"]
+  CONTROL --> VERIFY
   DOE --> SCORE["MoneyBall / 3L0"]
   SCORE --> WALL
   DOE --> GATES["Existing Correctness + Integration Gates"]

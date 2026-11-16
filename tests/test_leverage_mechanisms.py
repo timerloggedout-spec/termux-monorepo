@@ -24,6 +24,16 @@ class MechanismCatalogTests(unittest.TestCase):
         data["mechanisms"].append(copy.deepcopy(data["mechanisms"][0]))
         self.assertTrue(any("duplicate mechanism id" in error for error in validate(data)))
 
+    def test_missing_required_field_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        del data["mechanisms"][0]["intervention"]
+        self.assertTrue(any("missing required fields" in error for error in validate(data)))
+
+    def test_unknown_secondary_class_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["mechanisms"][0]["secondary_classes"] = ["magic"]
+        self.assertTrue(any("secondary_classes is invalid" in error for error in validate(data)))
+
     def test_unknown_lifecycle_state_is_rejected(self):
         data = copy.deepcopy(self.data)
         data["mechanisms"][0]["lifecycle_state"] = "deployed-ish"

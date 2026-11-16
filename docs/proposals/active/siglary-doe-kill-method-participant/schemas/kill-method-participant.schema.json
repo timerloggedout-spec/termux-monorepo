@@ -510,9 +510,9 @@
           "scope": {
             "properties": {
               "allowed_states": {
-                "contains": {
-                  "const": "queued"
-                }
+                "const": [
+                  "queued"
+                ]
               },
               "forbidden_states": {
                 "contains": {

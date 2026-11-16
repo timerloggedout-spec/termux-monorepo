@@ -150,3 +150,20 @@ Integration catalog and event contract: `docs/integrations/README.md`. Design an
 ## Continuous Capability Evolution Laboratory (CEEL)
 
 Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+
+
+## Siglary + DO statement hard gates
+
+DO: use docs/proposals/active/notation-sets/SIGLARY-STANDARD.md as the canonical communication and notation authority.
+
+DO: keep GLYPHS, CHORDS, and OPERATORS in their registered classes. Resolve each explicit chord in a named Shorthand Domain.
+
+DO: use only the issued glyph inventory and registered operators. Expand ambiguous notation while a Linguist ruling is pending.
+
+DO: attach a receipt reference to every state or verdict claim on the same line or the immediately following line.
+
+DO: store data absence as schema-native null. Keep N∅ and NOT_ESTABLISHED chat-only; never store either marker as a machine-data value.
+
+DO: use natural imperative language or an explicit DO: marker for instructions. Preserve necessary security, privacy, and historical-integrity prohibitions as valid constraints.
+
+Do not hand-edit generated projections or rewrite sealed historical records. Apply E1–E6 exemptions exactly as defined by the canonical standard.

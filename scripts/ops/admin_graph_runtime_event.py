@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Normalize GitHub Actions lifecycle webhook payloads for the live graph.
+"""Normalize GitHub Actions lifecycle payloads for the live admin graph.
 
-Only bounded execution metadata is emitted. No workflow logs, comments,
-prompts, tool arguments, credentials, or arbitrary payloads are retained.
+Only bounded execution metadata is emitted. Logs, comments, prompts,
+completions, credentials, tool arguments and arbitrary payloads are excluded.
 """
 from __future__ import annotations
 import argparse
@@ -48,6 +48,15 @@ def build_event(payload: dict[str, Any], event_name: str) -> dict[str, Any]:
     base["id"] = hashlib.sha256(identity.encode()).hexdigest()
     return base
 
+def build_events(payload: dict[str, Any], event_name: str) -> list[dict[str, Any]]:
+    if event_name == "workflow_snapshot":
+        runs = payload.get("workflow_runs") or []
+        if not isinstance(runs, list) or len(runs) > 100:
+            raise ValueError("workflow snapshot must contain at most 100 runs")
+        return [build_event({"repository":{"full_name":REPO},"workflow_run":run},"workflow_run")
+                for run in runs]
+    return [build_event(payload, event_name)]
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--event-file", required=True)
@@ -55,11 +64,11 @@ def main() -> int:
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
     payload = json.loads(Path(args.event_file).read_text(encoding="utf-8"))
-    event = build_event(payload, args.event_name)
-    if event["repo"] != REPO:
+    events = build_events(payload, args.event_name)
+    if any(event["repo"] != REPO for event in events):
         raise SystemExit("event repository mismatch")
-    Path(args.output).write_text(json.dumps({"event":event},separators=(",",":"))+"\n",encoding="utf-8")
-    print("normalized "+event["kind"]+" lifecycle event: "+event["event"])
+    Path(args.output).write_text(json.dumps({"events":events},separators=(",",":"))+"\n",encoding="utf-8")
+    print("normalized "+str(len(events))+" runtime lifecycle event(s)")
     return 0
 
 if __name__ == "__main__":

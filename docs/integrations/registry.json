@@ -593,6 +593,34 @@
       "write_boundary": "Not a default runtime. Deployment requires a paid Cloudflare Workers plan and protected authentication; no paid resource, deployment, or account mutation authorized.",
       "next_step": "Benchmark only after agent-browser baseline and cost/security review.",
       "sensitivity": "browser-runtime-and-cloud-deployment-metadata"
+    },
+    {
+      "id": "anaconda-ai-orchestration",
+      "name": "Anaconda AI Orchestration",
+      "category": "agentic-workflow-orchestration",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Anaconda platform documentation describes the former Outerbounds/Metaflow production orchestration capabilities, including reproducible environments, lineage, cloud deployment and agentic workflows. No account, deployment, runtime adapter, or project access was validated.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "optional-workflow-orchestration-candidate",
+      "write_boundary": "No core QUE routing dependency, cloud deployment, workload dispatch, dataset transfer, or paid resource is authorized by this inventory entry. Compare against existing GitHub Actions/Temporal/Docker contracts using synthetic fixtures and an explicit cost/security review.",
+      "next_step": "Evaluate whether Metaflow lineage/reproducibility adds measurable value beyond the existing repository control plane; keep optional until a bounded use case and deployment model are approved.",
+      "sensitivity": "workflow-metadata-and-compute-cost"
+    },
+    {
+      "id": "brazeai-decisioning-studio",
+      "name": "BrazeAI Decisioning Studio",
+      "category": "customer-engagement-decisioning",
+      "priority": "P3",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Braze product documentation describes AI decisioning agents for 1:1 customer personalization and continuous experimentation. No account, customer data, campaign, or integration access was validated.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "not_applicable",
+      "authority": "domain-specific-customer-engagement-decisioning-only",
+      "write_boundary": "Not a generic agent orchestrator or QUE route planner. No customer PII, profile data, event stream, audience mutation, campaign send, or paid integration until explicit consent, privacy/retention review, and a concrete customer-engagement use case.",
+      "next_step": "Keep out of the C12 core; revisit only for a separately authorized customer-engagement optimization project.",
+      "sensitivity": "customer-data-and-marketing-decisioning"
     }
   ]
 }

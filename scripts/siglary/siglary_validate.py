@@ -108,8 +108,30 @@ def data_findings(text: str, path: str) -> list[dict[str, Any]]:
     return findings
 
 
-# Backward-compatible test/API name.
 data_value_findings = data_findings
+
+
+def structured_receipt_findings(text: str, path: str) -> list[dict[str, Any]]:
+    findings = []
+    receipt_keys = {"receipt", "receipt_id", "evidence_url", "source_url", "run_url", "url", "commit_sha", "source_ref", "issue_url"}
+    status_keys = {"state", "status", "verdict", "outcome"}
+    def walk(value: Any, loc: str = "$", line: int | None = None):
+        if isinstance(value, dict):
+            keys = {str(k).lower() for k in value}
+            if keys & status_keys and not any(value.get(k) for k in value if str(k).lower() in receipt_keys):
+                findings.append({"path": path, "rule": "RECEIPT-ADJACENCY", "severity": "HARD", "line": line, "message": f"DoE record at {loc} has a state/verdict without a receipt reference"})
+            for key, item in value.items(): walk(item, f"{loc}.{key}", line)
+        elif isinstance(value, list):
+            for i, item in enumerate(value): walk(item, f"{loc}[{i}]", line)
+    suffix = Path(path).suffix.lower()
+    if suffix == ".json":
+        try: walk(json.loads(text))
+        except json.JSONDecodeError: pass
+    elif suffix in {".jsonl", ".ndjson"}:
+        for n, line in enumerate(text.splitlines(), 1):
+            try: walk(json.loads(line), "$", n)
+            except json.JSONDecodeError: pass
+    return findings
 
 
 def data_blocks(text: str, path: str) -> list[dict[str, Any]]:
@@ -150,7 +172,7 @@ def glyph_clusters(line: str) -> list[str]:
     for ch in line:
         cat = unicodedata.category(ch)
         mark = ch in {"\ufe0e", "\ufe0f", "\u200d"} or cat in {"Mn", "Mc"}
-        symbol = cat == "So" or 0x1F3FB <= ord(ch) <= 0x1F3FF
+        symbol = cat == "So"
         if ch == "\u200d" and cur: cur += ch; join = True
         elif symbol:
             if join and cur: cur += ch
@@ -229,7 +251,11 @@ def census(root: Path, paths: list[str], event: dict | None = None, event_name: 
         if exemption(rel,text): continue
         kind=surface_kind(rel)
         if not kind: continue
-        current = data_findings(text,rel) if kind == "data" else text_findings(text,rel,kind,glyphs,domains)
+        if kind == "data" or (kind == "doe_participant" and Path(rel).suffix.lower() in DATA_EXT):
+            current = data_findings(text,rel)
+            if kind == "doe_participant": current.extend(structured_receipt_findings(text,rel))
+        else:
+            current = text_findings(text,rel,kind,glyphs,domains)
         if kind == "skills": current.extend(data_blocks(text,rel))
         if kind == "claude" and not re.search(r"SIGLARY-STANDARD\.md|Siglary",text,re.I): current.append({"path":rel,"rule":"CLAUDE-REFERENCE","severity":"HARD","line":None,"message":"CLAUDE.md must reference the canonical Siglary standard"})
         classes[kind]["surfaces_scanned"] += 1

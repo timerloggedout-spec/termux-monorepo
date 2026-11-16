@@ -1,52 +1,8 @@
 {
   "schema": "doe.component-registry.v1",
-  "status": "proposed-not-registered",
-  "component": {
-    "id": "mosaic_brain.recipe_model",
-    "title": "MOSAIC Brain Software Recipe Model",
-    "kind": "methodology-intelligence-domain-model",
-    "status": "proposal",
-    "role": "Domain model for capability ingredients, operations, execution context, outputs, evaluation and evolution, integrated into existing MOSAIC Brain.",
-    "delphi_rfp": "pending",
-    "doe": {
-      "evaluation": "individual, per gate cycle",
-      "factor_candidate": true,
-      "candidate_arms": [
-        "A0-baseline",
-        "A1-srm-rule",
-        "A2-srm-stat",
-        "A3-srm-graph",
-        "A4-srm-hybrid",
-        "A5-srm-execution"
-      ],
-      "promotion_rule": "held-out confirmation + independent evidence; no automatic promotion"
-    },
-    "paths": [
-      "docs/proposals/active/continuous-capability-evolution-lab/MOSAIC-BRAIN-SOFTWARE-RECIPE-MODEL.md",
-      "docs/proposals/active/grimoire-software-recipe-intelligence/SCOPE-CORRECTION.md",
-      "docs/proposals/active/grimoire-software-recipe-intelligence/SRM-SCHEMA.json"
-    ],
-    "evidence_feeds": [
-      "docs/proposals/active/grimoire-software-recipe-intelligence/SOURCES.md",
-      "docs/proposals/active/grimoire-software-recipe-intelligence/IMPLEMENTATION-BACKLOG.md",
-      "docs/ops/DOE-COMPONENT-REGISTRY.md",
-      "docs/ops/DELPHI-ORACLE-RFP-GATE.md"
-    ],
-    "integration": {
-      "commit_replay": "consumer/adapter only; no reimplementation of fragment index, compose, symbol resolution, or surgical edit primitives",
-      "historical_corpus": "candidate source and lineage projection",
-      "context_relationship_graph": "candidate typed graph projection",
-      "she_ates_moneyball": "candidate evaluation/observability consumers",
-      "kahn_dag": "reuse canonical dependency planner",
-      "opentelemetry": "optional runtime signal adapter",
-      "monorepo_brain": "compose through existing typed reasoning kernel; do not create another brain",
-      "mosaic_brain": "owned domain capability under methodology_intelligence; advisory only"
-    }
-  },
-  "governance": {
-    "registration_requires": "MOSAIC Brain owner + CRG owner + DoE expert + Linguist review and existing Delphi admission",
-    "evaluation": "separate component context; no cross-component aggregate score",
-    "execution": "read-only until separately admitted",
-    "promotion": "human-governed; no automatic merge, deploy, or permission expansion"
-  }
+  "status": "withdrawn-not-registered",
+  "reason": "Prior proposed identity mosaic_brain.recipe_model and MOSAIC Brain ownership were premature and are withdrawn. No project owner or final identity has been assigned.",
+  "superseded_by": "docs/proposals/active/software-recipe-intelligence/README.md",
+  "canonical_experiment_schema": "docs/ops/corpus/EXPERIMENT.schema.json",
+  "registration_policy": "Do not register until the name/identity review and system-wide architecture ownership census are complete; reuse existing DoE registry and admission gates."
 }

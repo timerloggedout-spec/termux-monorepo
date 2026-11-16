@@ -18,6 +18,17 @@ This template records the Vercel Labs browser and skills ecosystem as reusable i
 | `vercel-labs/portless` | Stable named local URLs | Optional developer-infrastructure lane |
 | `cloudflare/kitesurf` | Experimental CDP-compatible browser engine on Workers | Research/benchmark lane; not the default browser runtime |
 
+## Existing repository evidence and reuse
+
+This is not a first-time discovery or a request to install a second browser package. The repository already records `agent-browser` in its tool/research inventory:
+
+- `workspace/llm_map/_TOOL_TAXONOMY/state/npm_curr.json` records npm package version `0.26.0`.
+- `workspace/llm_map/_TOOL_TAXONOMY/python3/reverse_engineering.json` records the expected Termux executable path `/data/data/com.termux/files/usr/bin/agent-browser`.
+- `docs/repositories/STARS-FORKS-WATCH.md` records `vercel-labs/agent-browser` as already starred and notes its `--engine lightpanda` option.
+- `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` already classifies agent-browser in the `drivers-and-clients` lane.
+
+These are repository inventory/research records, not a live device check. The recorded 0.26.0 package version is older than the upstream changelog's documented 0.34.0 release (August 2026); verify the installed binary before upgrading or replacing it. Reconcile the existing Termux package first; do not install a duplicate.
+
 ## Runtime selection
 
 QUE continues to use the existing Web Adapter Foundry. Route selection remains:
@@ -38,6 +49,10 @@ npm install -g agent-browser
 agent-browser --version
 agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly open https://example.org
 agent-browser --cdp "$AGENT_BROWSER_CDP_URL" --session que-readonly snapshot -i
+
+# Candidate thin-engine path when Lightpanda is installed and compatible:
+agent-browser --engine lightpanda --session que-readonly open https://example.org
+agent-browser --engine lightpanda --session que-readonly snapshot -i
 ```
 
 This is an upstream usage example, not a verified Termux command sequence. The CDP URL is shown as an environment-variable name only; never place a real endpoint or token in a tracked file.

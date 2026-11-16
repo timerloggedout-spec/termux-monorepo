@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/leverage/MECHANISM.schema.json",
+  "title": "L3VERAGE Mechanism Catalog",
+  "description": "Domain contract for interventions. Run-level observations remain in canonical DoE and evidence-envelope records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated_at", "mechanisms"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "mechanisms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "primary_class", "lifecycle_state", "hypothesis", "trigger", "intervention", "target_outcomes", "resource_dimensions", "guardrails", "owner", "evidence_refs", "confidence"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^L3V-[A-Z0-9-]+$"},
+          "name": {"type": "string", "minLength": 3},
+          "primary_class": {"enum": ["capability", "knowledge", "coordination", "automation", "measurement"]},
+          "secondary_classes": {"type": "array", "uniqueItems": true, "items": {"enum": ["capability", "knowledge", "coordination", "automation", "measurement"]}},
+          "lifecycle_state": {"enum": ["discovered", "designed", "admitted", "experimenting", "validated", "promoted", "monitored", "rejected", "deferred", "blocked", "superseded", "retired"]},
+          "hypothesis": {"type": "string", "minLength": 12},
+          "trigger": {"type": "string", "minLength": 3},
+          "intervention": {"type": "string", "minLength": 3},
+          "target_outcomes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3}},
+          "resource_dimensions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["tokens", "wall_time", "compute_cost", "provider_cost", "retries", "human_minutes", "integration_effort", "maintenance_burden"]}},
+          "guardrails": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3}},
+          "owner": {"type": "string", "minLength": 2},
+          "related_capability_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "related_integration_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+          "experiment_id": {"type": "string"},
+          "evidence_refs": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["kind", "ref"], "properties": {"kind": {"enum": ["experiment", "evidence_envelope", "commit", "pull_request", "workflow_run", "document"]}, "ref": {"type": "string", "minLength": 1}, "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}}},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "notes": {"type": "string"}
+        },
+        "allOf": [
+          {"if": {"properties": {"lifecycle_state": {"enum": ["validated", "promoted", "monitored"]}}}, "then": {"properties": {"evidence_refs": {"minItems": 1}, "experiment_id": {"type": "string", "minLength": 1}}}}
+        ]
+      }
+    }
+  }
+}

@@ -39,6 +39,7 @@ The programme establishes a model/specification-driven fidelity workflow: author
 
 - Proposal, machine-readable integration contract, validator, and regression tests are committed on `feat/aws-emulator-agent-fidelity`.
 - The offline validator and all 13 focused unit tests passed in a local Python environment.
+- The first PR-triggered validation cohort ran against the superseded head `63080f632f64d61b90901e2a541b760ad3dbdc39`: PR evidence evaluation and PR scope guard succeeded; repo-gate, Termux smoke, and evidence collection were cancelled. The current head is `dc7d0339c756ae1ddc7647be99fae5522e9fa7bf`; no PR-triggered run is currently surfaced for that exact head.
 - The contract is research-only and runtime-disabled.
 - No AWS account, AWS credentials, real-cloud calls, emulator binary, Docker image, package, or Termux device execution is claimed.
 - AWS Emulator documents Linux x86_64/aarch64 source builds but a full cold build needs approximately 100 GB free disk; Android/Termux is not documented as a supported host. Use hosted Linux CI or a supported developer host for initial execution.

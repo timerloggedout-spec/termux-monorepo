@@ -17,7 +17,8 @@ The model abbreviation **SRM** means Software Recipe Model. It names the data mo
 | **RAXI** | Recipe Architecture eXchange & Intelligence. | Existing Raxi mobility/social-search app, RAXI LLC, and registered RAXI word mark for downloadable mobile software/trading-platform-related services. | Collision; exclude |
 | **TARSIER** | Technique And Recipe Synthesis, Intelligence, Evaluation & Reuse. | Existing Tarsier vision utilities for web-interaction agents, Tarsier video-language models, and Tarsier desktop/UI automation projects. | Collision; exclude |
 | **BRACE** | Blueprint, Recipe Architecture, Composition & Evolution. | Existing Brace applied-AI lab, Brace software development/AI automation provider, and BRACE agent-security framework. | Collision; exclude |
-| **RAXIS** | Recipe Architecture eXchange & Intelligence System. | Near-name derivative of RAXI; do not use as a workaround for the RAXI collision. | Exclude |\n| **RACE** | Recipe Analysis, Composition & Evolution. Clear expansion, but a common acronym/word. | High generic acronym ambiguity; likely search noise. | Hold |
+| **RAXIS** | Recipe Architecture eXchange & Intelligence System. | Near-name derivative of RAXI; do not use as a workaround for the RAXI collision. | Exclude |
+| **RACE** | Recipe Analysis, Composition & Evolution. Clear expansion, but a common acronym/word. | High generic acronym ambiguity; likely search noise. | Hold |
 | **SRI** | Software Recipe Intelligence. Closest to the user's preferred phrase. | **High collision:** SRI International / Stanford Research Institute and Siri-origin association. | Do not use as public acronym |
 | **SRM** | Software Recipe Model. | Correct and useful as a schema/model abbreviation, but too narrow for the whole system identity. | Retain for model only |
 
@@ -56,7 +57,8 @@ The model abbreviation **SRM** means Software Recipe Model. It names the data mo
 - SRI's official CALO history: https://www.sri.com/hoi/artificial-intelligence-calo/
 - BRACE applied-AI lab: https://brace.so/; BRACE agent-security ecosystem: https://braceframework.org/; Brace software/AI automation provider: https://www.bracedevelopers.com/en
 - TARSIER web-agent vision utilities: https://github.com/reworkd/tarsier; Tarsier video-language models: https://github.com/bytedance/tarsier
-- RAXI mobility/social-search app: https://apps.apple.com/us/app/raxi/id1229385775; RAXI LLC registered mark: https://trademarks.justia.com/792/39/raxi-79239511.html\n- RAVEL IT/DevOps automation: https://ravelinc.com/about/
+- RAXI mobility/social-search app: https://apps.apple.com/us/app/raxi/id1229385775; RAXI LLC registered mark: https://trademarks.justia.com/792/39/raxi-79239511.html
+- RAVEL IT/DevOps automation: https://ravelinc.com/about/
 - Kiln AI development platform: https://kiln.tech/about and https://github.com/kiln-ai/kiln
 - Claude Fable model: https://www.anthropic.com/claude/fable
 - Weave agent orchestration: https://tryweave.io/blog/hello-world/ and engineering intelligence: https://weaveos.com/

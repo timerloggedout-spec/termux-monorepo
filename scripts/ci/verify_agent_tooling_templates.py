@@ -107,8 +107,8 @@ def validate_manifest(
 
     candidate_keys = {key(x) for x in candidates if isinstance(x, dict)}
     index_keys = {key(x) for x in index_entries if isinstance(x, dict)}
-    if candidate_keys != index_keys:
-        errors.append("smods/INTEGRATIONS.json: entries do not exactly match template smods_candidates")
+    if not candidate_keys.issubset(index_keys):
+        errors.append("smods/INTEGRATIONS.json: one or more template smods_candidates are missing from the global index")
 
     seen_paths: set[str] = set()
     for index, entry in enumerate(index_entries):
@@ -175,24 +175,59 @@ def validate_tree(
     )
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=ROOT)
-    args = parser.parse_args()
-    root = args.root.resolve()
-    errors = validate_tree(
-        root / "refTemplates/01_Agent_Runtime/vercel-agent-toolchain",
-        root / "refTemplates/smods/INTEGRATIONS.json",
-        root / ".gitmodules",
-        root=root,
-    )
-    if errors:
-        for error in errors:
-            print(f"FAIL: {error}", file=sys.stderr)
-        return 1
-    print("OK: Vercel agent toolchain template and smods dispositions are consistent")
-    return 0
+def validate_all(root: Path = ROOT) -> list[str]:
+    runtime_root = root / "refTemplates/01_Agent_Runtime"
+    index_path = root / "refTemplates/smods/INTEGRATIONS.json"
+    gitmodules_path = root / ".gitmodules"
+    if not runtime_root.is_dir():
+        return ["refTemplates/01_Agent_Runtime: missing runtime template root"]
+    if not index_path.is_file():
+        return ["refTemplates/smods/INTEGRATIONS.json: missing canonical smods index"]
+    try:
+        smods_index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"refTemplates/smods/INTEGRATIONS.json: invalid JSON: {exc}"]
 
+    module_urls = parse_gitmodules(gitmodules_path)
+    gitlinks = parse_gitlinks(root)
+    template_dirs = [
+        path for path in sorted(runtime_root.iterdir())
+        if path.is_dir() and any((path / name).exists() for name in ("README.md", "SOURCE.txt", "integration.json"))
+    ]
+    errors: list[str] = []
+    if not template_dirs:
+        return ["refTemplates/01_Agent_Runtime: no integration templates discovered"]
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+    candidate_keys: set[tuple] = set()
+    template_paths = {str(path.relative_to(root)) for path in template_dirs}
+    for template_dir in template_dirs:
+        errors.extend(validate_tree(
+            template_dir, index_path, gitmodules_path,
+            module_urls=module_urls, gitlinks=gitlinks, root=root,
+        ))
+        manifest_path = template_dir / "integration.json"
+        if not manifest_path.is_file():
+            continue
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for candidate in manifest.get("smods_candidates", []):
+            if isinstance(candidate, dict):
+                candidate_keys.add((candidate.get("id"), candidate.get("path"), candidate.get("status")))
+
+    index_entries = smods_index.get("entries", [])
+    index_keys = {
+        (entry.get("id"), entry.get("path"), entry.get("status"))
+        for entry in index_entries if isinstance(entry, dict)
+    }
+    if candidate_keys != index_keys:
+        errors.append("smods/INTEGRATIONS.json: global entries must exactly equal the union of all runtime-template smods_candidates")
+    for entry in index_entries:
+        if not isinstance(entry, dict):
+            continue
+        template_path = entry.get("template")
+        if template_path not in template_paths:
+            errors.append(f"smods/INTEGRATIONS.json: {entry.get('id')!r} references missing template {template_path!r}")
+    return errors
+

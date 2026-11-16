@@ -1,8 +1,6 @@
 name: Admin Graph Runtime Publisher
 
 on:
-  workflow_run:
-    types: [requested, in_progress, completed]
   workflow_job:
     types: [queued, in_progress, completed]
 
@@ -19,8 +17,7 @@ jobs:
     name: admin-graph-runtime-publisher
     if: >-
       github.event_name == 'schedule' ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.name != 'Admin Graph Runtime Publisher') ||
-      (github.event_name == 'workflow_job' && github.event.workflow_job.name != 'admin-graph-runtime-publisher')
+      github.event_name == 'workflow_job' && github.event.workflow_job.name != 'admin-graph-runtime-publisher'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -39,7 +36,7 @@ jobs:
           permission-contents: read
 
       - name: Normalize lifecycle event
-        if: github.event_name != 'schedule'
+        if: github.event_name == 'workflow_job'
         env:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_FILE: ${{ github.event_path }}

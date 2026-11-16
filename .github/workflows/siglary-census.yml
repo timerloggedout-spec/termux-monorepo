@@ -1,0 +1,85 @@
+name: Siglary Conformance Census
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'skills/**'
+      - '**/SKILL.md'
+      - '**/SKILLS.md'
+      - '**/*.SKILLS'
+      - 'docs/icm/**'
+      - '**/CLAUDE.md'
+      - 'ops/doe/**'
+      - 'ops/que/dispatch/**'
+      - 'docs/proposals/active/notation-sets/SIGLARY-STANDARD.md'
+      - 'docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md'
+      - 'scripts/siglary/**'
+      - 'tests/test_siglary_validate.py'
+  pull_request:
+    paths:
+      - 'skills/**'
+      - '**/SKILL.md'
+      - '**/SKILLS.md'
+      - '**/*.SKILLS'
+      - 'docs/icm/**'
+      - '**/CLAUDE.md'
+      - 'ops/doe/**'
+      - 'ops/que/dispatch/**'
+      - 'docs/proposals/active/notation-sets/SIGLARY-STANDARD.md'
+      - 'docs/proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md'
+      - 'scripts/siglary/**'
+      - 'tests/test_siglary_validate.py'
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: siglary-census-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test validator contract
+        run: python -m unittest discover -s tests -p 'test_siglary_validate.py' -v
+      - name: Run full repository census
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        run: |
+          python scripts/siglary/siglary_validate.py \
+            --event-file "$GITHUB_EVENT_PATH" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --report "$RUNNER_TEMP/siglary-census.json" \
+            --feed "$RUNNER_TEMP/siglary-compliance-feed.jsonl"
+      - name: Run pull-request census
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python scripts/siglary/siglary_validate.py \
+            --changed-from "$BASE_SHA" \
+            --event-file "$GITHUB_EVENT_PATH" \
+            --event-name "$GITHUB_EVENT_NAME" \
+            --report "$RUNNER_TEMP/siglary-census.json" \
+            --feed "$RUNNER_TEMP/siglary-compliance-feed.jsonl"
+      - name: Upload conformance report and deduplicated feed receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: siglary-census-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/siglary-census.json
+            ${{ runner.temp }}/siglary-compliance-feed.jsonl
+          if-no-files-found: ignore
+          retention-days: 30

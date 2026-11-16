@@ -43,6 +43,11 @@ class SiglaryTests(unittest.TestCase):
   (self.root/"CLAUDE.md").write_text("General instructions\n",encoding="utf-8")
   self.assertEqual(s.census(self.root,["CLAUDE.md"])["state"],"FAIL")
  def test_empty_census_is_inconclusive(self): self.assertEqual(s.census(self.root,[])["state"],"INCONCLUSIVE")
+ def test_doe_structured_record_requires_receipt(self):
+  bad=s.structured_receipt_findings('{"state":"PROMOTED"}',"ops/doe/receipt.json")
+  good=s.structured_receipt_findings('{"state":"PROMOTED","receipt_id":"abc"}',"ops/doe/receipt.json")
+  self.assertEqual(bad[0]["rule"],"RECEIPT-ADJACENCY")
+  self.assertEqual(good,[])
  def test_event_surface_inventory(self):
   self.assertEqual(len(s.event_surfaces({"review":{"body":"DO: inspect"}},"pull_request_review")),1)
   self.assertEqual(len(s.event_surfaces({"release":{"name":"v1","body":"DO: publish"}},"release")),2)

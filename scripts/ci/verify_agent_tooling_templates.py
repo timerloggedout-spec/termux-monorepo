@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import configparser
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -211,6 +212,13 @@ def validate_security_examples(template_dir: Path, manifest: dict) -> list[str]:
             return
         if "--tools" not in args or args[args.index("--tools") + 1:args.index("--tools") + 2] != ["core"]:
             errors.append(f"{name}: MCP must start with the least-privilege core tool profile")
+        if "--session" not in args:
+            errors.append(f"{name}: MCP must use a named isolated session")
+        else:
+            session_position = args.index("--session")
+            session_name = args[session_position + 1] if session_position + 1 < len(args) else ""
+            if not re.fullmatch(r"[A-Za-z0-9_-]+", session_name):
+                errors.append(f"{name}: session name must be path-safe alphanumeric/hyphen/underscore")
         policy_arg = args[args.index("--action-policy") + 1] if "--action-policy" in args and args.index("--action-policy") + 1 < len(args) else ""
         if not policy_arg.endswith(policy_name):
             errors.append(f"{name}: MCP must reference {policy_name}")

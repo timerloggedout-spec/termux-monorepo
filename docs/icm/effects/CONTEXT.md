@@ -4,6 +4,7 @@ One job: answer **which cards should I open before changing X**. This index is i
 
 | Planned change | Open first | Then verify |
 |---|---|---|
+| Any tracked repository delta or pull request | [`../objects/governance/change-control.md`](../objects/governance/change-control.md) and [`../processes/change-and-validate.md`](../processes/change-and-validate.md) | add one exact-delta receipt under `docs/icm/changes/`; update the primary card and related records or record a justified `no-map-change` |
 | Android/Termux capability, adapter, job schema, or device boundary | [`../objects/platform/termux-agentic-hub.md`](../objects/platform/termux-agentic-hub.md) and [`../processes/structured-termux-job.md`](../processes/structured-termux-job.md) | capability tier, validation, redaction, and exclusion boundary |
 | Device availability, service tier, or execution-host assumption | [`../objects/platform/blu-b160v-free-services.md`](../objects/platform/blu-b160v-free-services.md) | declared envelope and required re-verification; no device access is implied |
 | ArchWiz cockpit, forensic, autonomous, verification, or knowledge tool | [`../objects/operations/archwiz.md`](../objects/operations/archwiz.md) | the named tool’s source and direct probe/test surface |

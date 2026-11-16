@@ -24,7 +24,7 @@ This matrix separates source-derived requirements from proposed adaptations. A c
 | Loopy Skill / Loop Library | Bounded loops use Observe → Choose → Act → Verify → Record → Repeat/stop and explicit terminal states. | Adopt | Use bounded cycles, measurable progress, explicit stop conditions and no retry-to-green behavior. |
 | Termux MCP Project Steward | Read-only by default; apply only on explicit request; clean worktrees; resource-aware operations. | Adopt | Keep reconnaissance read-only, use isolated worktrees for changes, and avoid device-heavy operations without preflight. |
 | Jules actions and skills reference (uploaded PDF) | Jules action/skill patterns include issue-triggered work, TDD, scoped subagents, PR review, and isolated cloud VM setup. | Adapt as external patterns | Model agent/workflow recipes with trigger, scope, environment, verification and attribution. Do not treat the PDF examples as deployed repository capabilities. |
-| Agent-team routing architecture (uploaded notes) | Team operating system rather than model router; measure outcomes and integration, not model identity alone; separate manager policy from players. | Adopt as design principle | Agent/team recipes include role, assignment, routing policy, tools, handoffs, integration and outcome metrics. |
+| Agent-team routing architecture (uploaded notes) | Team operating system rather than model router; measure outcomes and integration, not model identity alone; separate manager policy from players. | Adopt as design principle | Agent/team recipes include role, assignment, routing policy, tools, handoffs, integration and outcome metrics. |\n| Uploaded operational-methodology report (file named `Notation Registry Proposal.txt`) | Historical PR #523 report covering RECON → ACT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → RECORD, runtime observation, and research/measurement surfaces. Despite its filename, it is not a notation registry proposal. | Adapt as process evidence | Reuse bounded evidence loops and explicit terminal-state discipline; do not cite it as Siglary/notation authority or assume its PR #523 state is current. |
 | GitLab sync diagnosis (uploaded notes) | Correct sync-pair identity, single-writer/lease enforcement, idempotency, secret separation and correct comparison endpoints matter. | Adapt | Represent coordination recipes with canonical source-pair identity, authority/lease, idempotency and reconciliation evidence. Never include secret values. |
 
 ## External research references
@@ -41,13 +41,13 @@ This matrix separates source-derived requirements from proposed adaptations. A c
 - `Awesome Jules Skills Actions and Workflows for GitHub Development.` (PDF)
 - `Diagnose Routing Architecture.txt`
 - `Implement GitLab Sync Diagnosis.txt`
-- `Notation Registry Proposal.txt`
+- `Notation Registry Proposal.txt` (reviewed; content is a prior operational-methodology/PR #523 report, not a notation-registry source)
 - `termux-mcp-project-steward.skill`
 - `context-relationship-graph.skill`
 - `context-relationship-graph_2.skill`
 - `skill-loopy-api-loop-library-skill.json`
 
-The two uploaded files whose IDs were reported as unavailable/unparsed by the attachment index were not needed for this source matrix. They remain unverified and are not claimed as inputs.
+Although attachment indexing reported the Jules PDF and Loopy JSON as unparsed, their mounted originals were inspected directly (PDF text extraction and JSON parsing) and are included above. This statement records the actual source path used; it does not claim a live Jules deployment or Loop Library lookup.
 
 ## Evidence discipline
 

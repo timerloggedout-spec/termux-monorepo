@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-16T18:59:49Z",
+ "read_at": "2026-11-16T19:11:40Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,38 +1956,12 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-16T18:59:32Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "57b3ee42e98921797abeaaa73ccdbada1f87d0e6",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-16T18:58:15Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "3d57dddad829935601cb7155613e9bcae5f495d2",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
-   "merged": false
-  },
-  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T18:46:47Z",
+   "updated_at": "2026-11-16T19:09:24Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "3a8e769b99189d9f06e943ae9c252cd8374d455b",
+   "merge_commit_sha": "3fbdea270525e70e1701f0991f05cc5558355acd",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1995,16 +1969,55 @@
    "merged": false
   },
   {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-16T19:09:13Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "7dea02738cb1fcf74f608637b06b5d1809baf6e4",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T18:44:47Z",
+   "updated_at": "2026-11-16T19:06:03Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "a981b076cf0e3f846c5c0632aa597cf359f90306",
+   "merge_commit_sha": "484282fa5236a1419fcd9862dc8bad94bc616daa",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-16T19:04:42Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "9e44e79af2ab7daf35e264c25ac46e4caa2700f1",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 5529,
+   "title": "feat(ballet): add orchestration coordinator and DoE tournament treatment",
+   "merged_at": null,
+   "updated_at": "2026-11-16T19:01:32Z",
+   "created_at": "2026-11-16T19:00:21Z",
+   "merge_commit_sha": "c47fda359fc0afc080d8bcc0f7a900c304d3b65d",
+   "head_ref": "feat/ballet-coordinator-doe-rfp",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5529",
    "merged": false
   },
   {
@@ -2442,7 +2455,7 @@
    "merged_at": null,
    "updated_at": "2026-11-15T19:01:24Z",
    "created_at": "2026-11-15T18:59:21Z",
-   "merge_commit_sha": "c222d400bcdb90c2a4543b2b977c549c6bdb4788",
+   "merge_commit_sha": "f68619b3d0635d5bbd7b9ff6ae9c93eb7df1020a",
    "head_ref": "q/provider-recon-cfc4f8563294c3cd95b6",
    "author": "github-actions[bot]",
    "labels": [],
@@ -4548,19 +4561,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4972",
-   "merged": false
-  },
-  {
-   "number": 4964,
-   "title": "QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as machinery)",
-   "merged_at": null,
-   "updated_at": "2026-11-05T03:44:16Z",
-   "created_at": "2026-11-05T02:13:51Z",
-   "merge_commit_sha": "b5bca41ad26eefc46a87ed3d00a1b769718e8721",
-   "head_ref": "cadence/que-gov-media-001",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4964",
    "merged": false
   }
  ],

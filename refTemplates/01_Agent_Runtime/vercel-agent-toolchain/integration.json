@@ -11,7 +11,7 @@
       "id": "agent-browser",
       "repository": "vercel-labs/agent-browser",
       "url": "https://github.com/vercel-labs/agent-browser",
-      "role": "browser-automation-cli",
+      "role": "browser-automation-cli-and-stdio-mcp-server",
       "priority": "P0",
       "capabilities": [
         "accessibility-snapshot",
@@ -53,7 +53,7 @@
       "repository": "vercel-labs/agent-skills",
       "url": "https://github.com/vercel-labs/agent-skills",
       "role": "upstream-agent-skill-collection",
-      "priority": "P0",
+      "priority": "P1",
       "capabilities": [
         "reusable-agent-instructions"
       ],
@@ -141,8 +141,8 @@
     "release_date": "2026-11-12",
     "source": "https://github.com/vercel-labs/agent-browser/releases/tag/v0.43.0",
     "inventory_version": "0.26.0",
-    "inventory_version_date": "2026-04-16",
-    "inventory_state": "stale_reconciliation_required"
+    "inventory_state": "stale_reconciliation_required",
+    "inventory_version_release_date": "2026-04-16"
   },
   "required_files": [
     "README.md",

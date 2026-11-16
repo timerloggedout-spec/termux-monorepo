@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-16T11:49:40Z)
+# Lane matrix status (2026-11-16T11:53:08Z)
 
-- Master: `62a604e7cc4beec35a86c031a1debc258c2cd4b7`
+- Master: `654b04cbefaf79023ed497b62576aef0b466ac3c`
 - Open PRs: **444**
 - Oldest: #47 (102.84d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -24,8 +24,8 @@
 |---:|-----:|------|---------|-------|
 | #1436 | 26.22 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 15.82 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
-| #4069 | 13.31 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
-| #4621 | 12.62 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
+| #4069 | 13.32 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
+| #4621 | 12.63 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 11.97 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 9.87 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 102.84 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
@@ -45,22 +45,22 @@
 | #1495 | 25.39 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 25.15 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 25.15 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 25.14 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 25.13 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 25.15 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 25.14 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 25.12 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 24.45 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 23.37 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 23.36 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 23.36 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 23.24 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 22.47 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 22.48 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 22.4 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 20.43 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 20.02 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 20.02 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 19.28 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 19.29 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 17.12 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
-| #2577 | 16.48 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
-| #2856 | 15.41 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
+| #2577 | 16.49 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
+| #2856 | 15.42 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

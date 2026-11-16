@@ -1,8 +1,21 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-16T18:17:04Z",
+ "read_at": "2026-11-16T18:26:16Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
+  {
+   "number": 5527,
+   "title": "Affiliate sweep 2026-11-16 (Monday): terms re-reads + census/gantt regen",
+   "merged_at": "2026-11-16T18:17:05Z",
+   "updated_at": "2026-11-16T18:19:49Z",
+   "created_at": "2026-11-16T18:11:52Z",
+   "merge_commit_sha": "370160aa946a194a72510f6d12fc29934599a4a0",
+   "head_ref": "affiliate-sweep-2026-11-16",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5527",
+   "merged": true
+  },
   {
    "number": 5488,
    "title": "fix(que): repair registry feed \u2014 aliases, terminal rows, deadline wall, freshness [skip render]",
@@ -1939,42 +1952,16 @@
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5020",
    "merged": true
-  },
-  {
-   "number": 5028,
-   "title": "chore(ops): regenerate operator matrix",
-   "merged_at": "2026-11-06T01:56:35Z",
-   "updated_at": "2026-11-06T01:56:35Z",
-   "created_at": "2026-11-06T01:56:30Z",
-   "merge_commit_sha": "03f552bace38a59370f395f83b44acf5e5d42a1a",
-   "head_ref": "operator-matrix/auto",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5028",
-   "merged": true
   }
  ],
  "open": [
   {
-   "number": 5527,
-   "title": "Affiliate sweep 2026-11-16 (Monday): terms re-reads + census/gantt regen",
-   "merged_at": null,
-   "updated_at": "2026-11-16T18:16:48Z",
-   "created_at": "2026-11-16T18:11:52Z",
-   "merge_commit_sha": "5c3c7c9b6f70ff69d685ca870a8872e01b62bb1c",
-   "head_ref": "affiliate-sweep-2026-11-16",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5527",
-   "merged": false
-  },
-  {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-16T18:16:14Z",
+   "updated_at": "2026-11-16T18:25:19Z",
    "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "6842ddc3ef21ad98fb6a4ec111cf26e887d64bc2",
+   "merge_commit_sha": "90fd1ef8ceab11a9d63592992965b7698a6c13e9",
    "head_ref": "reviewer-metrics/refresh",
    "author": "termux-fleet-swarm[bot]",
    "labels": [],
@@ -1985,9 +1972,9 @@
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T18:15:57Z",
+   "updated_at": "2026-11-16T18:24:44Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "7da05587916e37b6b2d62d640d142b880e1513ed",
+   "merge_commit_sha": "17c8bb88de45c49ded82857bc9518b59c7a62e5b",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1995,29 +1982,29 @@
    "merged": false
   },
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-16T18:15:08Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "a383d73a89383e024d38e275b3482820d271a39a",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
    "number": 2263,
    "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-16T18:14:55Z",
+   "updated_at": "2026-11-16T18:23:00Z",
    "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "1bacd7b4c3b5f9167a888b5e9afc1e12d740a246",
+   "merge_commit_sha": "3f2e829adeab35a51c7acd35336eae2d20c0a995",
    "head_ref": "delphi-ledger-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-16T18:21:31Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "68dd609dfd2eb125eb899750273c64e83750b576",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -4561,6 +4548,19 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4972",
+   "merged": false
+  },
+  {
+   "number": 4964,
+   "title": "QUE governor rule QUE-GOV-MEDIA-001: media-generation admission (PR #1967 as machinery)",
+   "merged_at": null,
+   "updated_at": "2026-11-05T03:44:16Z",
+   "created_at": "2026-11-05T02:13:51Z",
+   "merge_commit_sha": "b5bca41ad26eefc46a87ed3d00a1b769718e8721",
+   "head_ref": "cadence/que-gov-media-001",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4964",
    "merged": false
   }
  ],

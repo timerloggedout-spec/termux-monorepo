@@ -25,6 +25,7 @@ Repository/API inspection on 2026-11-16 established:
 - Default branch is `main`; latest observed commit is `12014575a8f2c71174a8f9f4cbef9a61e25439e8`.
 - The repository reports a size of 1,561,977 KB. Treat it as a large source repository; do not assume a submodule checkout is lightweight merely because it is shallow.
 - The latest observed HEAD commit is also present in the canonical `apache/camel` repository with the exact same SHA, establishing that this observed tip is upstream-identical: https://github.com/apache/camel/commit/12014575a8f2c71174a8f9f4cbef9a61e25439e8
+- A bounded GitHub commit-search comparison of the 20 most recent commits on both repositories returned the same 20 SHAs in the same order. This is strong evidence that the fork tip is currently tracking upstream at the sampled window; it is not a complete historical proof that no older fork-only commits exist.
 - Root `pom.xml` identifies Camel `4.24.0-SNAPSHOT`, a Maven multi-module build, and JDK 21 as the minimum build version.
 - `LICENSE.txt` contains the Apache License 2.0 text.
 - The fork's `.gitmodules` is empty.

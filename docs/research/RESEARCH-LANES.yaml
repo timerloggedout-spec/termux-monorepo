@@ -44,11 +44,11 @@ lanes:
     domains: [education, learning-sciences, formative-assessment, k12-ai-infrastructure, digital-public-goods]
     inputs: [grant-opportunities, public-goods-catalogs, learning-sciences-frameworks, open-licensing, downstream-adoption-evidence]
     opportunity_anchors: [C13]
-    integration: normalized-evidence-to-termux-hub
+    integration: documented-contract-only
+    integration_status: external-source-adapter-not-established
     canonical_opportunity_source: ops/challenge/coordinator.json#C13
     readiness_pipeline: [docs/ops/OPPORTUNITY-CYCLE.md, entries/c13/prep-manifest.json, entries/c13/submission-requirements.json]
-    relationship_index: docs/icm/objects/knowledge/context-relationship-index.md
-    vocabulary_registry: docs/proposals/active/notation-sets/ITEMS.md
+    reference_surfaces: [docs/ops/FORESIGHT-EVIDENCE-SPINE.md, docs/icm/objects/knowledge/context-relationship-index.md, docs/proposals/active/notation-sets/ITEMS.md]
   - lane_id: mcp-admission-security
     orgs: [termux-monorepo, Research-Astute]
     inputs: [MCP, tool-schema-hashes, authorization, delegation, provenance, OpenTelemetry]

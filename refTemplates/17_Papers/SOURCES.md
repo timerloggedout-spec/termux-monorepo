@@ -54,5 +54,6 @@
 | arxivatlas | Semantic arXiv canvas | https://github.com/Jaluus/ArXivAtlas | 17_Papers | normal |
 | typesafe-system-one | System One + JEV waitlist | https://typesafe.ai/blog/introducing-system-one-models-and-jev | watchlist | watch |
 | yt-hygMRgnDD7w | Operator research video | https://youtu.be/hygMRgnDD7w | seed | seed |
+| **brain-filename-architecture-survey** | Brain.py/Brain.py GitHub + academic survey; responsibility/evidence classification | https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/refTemplates/17_Papers/citations/brain-file-and-agent-architecture-survey.md | 01_Agent_Runtime, 02_Memory_Session, 03_Agent_Communication, 04_CedarScript, 05_Safety_Observability, 06_Task_Tracking, 07_Prompt_Context, 08_Swarm_References, 09_Auth_Networking, 10_Infrastructure, 11_Evaluation_Quality, 12_External_Agents, 13_Third_Party_Refs, 14_Plain_Files, 15_Research_Repo_Templates, 16_Org_Phased, 17_Papers | normal |
 
 Scanners under `scripts/ci/refTemplates_*` — rate-limited, dual-gate, free-first.

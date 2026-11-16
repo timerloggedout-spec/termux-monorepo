@@ -1,9 +1,9 @@
 # qdesk.brain-rs — Rust Brain for the Termux Monorepo
 
-**Status:** RFP package draft prepared for QUE/Delphi intake  
+**Status:** RFP package submitted through QUE/Delphi intake; admission parked; technical architecture evaluation pending  
 **Surface ID:** qdesk.brain-rs · **Revision:** 1 · **Requested disposition:** evaluate fit and readiness  
 **Implementation seed:** [PR #5492](https://github.com/timerloggedout-spec/termux-monorepo/pull/5492)  
-**Branch:** feat/root-brain-rust-core-final · **Initial source SHA:** e0a78fdf1e7f9273492ba9d4772c7dda6e3b18bd (repin at filing)  
+**Branch:** feat/root-brain-rust-core-final · **Pinned filing source SHA:** 2532f3cd4372fecbbbf71c06b4fa7005f53c23d6  
 **QUE/Delphi filing:** [Issue #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) · **Authority:** Filing requests evaluation only; it grants no execution, deployment, merge, provider or permission authority.
 
 ## 1. Decision sought

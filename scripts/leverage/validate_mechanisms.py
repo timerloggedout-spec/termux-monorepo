@@ -47,6 +47,10 @@ def validate(data: object) -> list[str]:
         "trigger", "intervention", "target_outcomes", "resource_dimensions",
         "guardrails", "owner", "evidence_refs", "confidence",
     }
+    allowed = required | {
+        "secondary_classes", "related_capability_ids", "related_integration_ids",
+        "experiment_id", "notes",
+    }
     for index, item in enumerate(mechanisms):
         prefix = f"mechanisms[{index}]"
         if not isinstance(item, dict):
@@ -56,6 +60,9 @@ def validate(data: object) -> list[str]:
         if missing:
             errors.append(f"{prefix} missing required fields: {', '.join(missing)}")
             continue
+        extra = sorted(item.keys() - allowed)
+        if extra:
+            errors.append(f"{prefix} contains unsupported fields: {', '.join(extra)}")
         identifier = item["id"]
         if not isinstance(identifier, str) or not ID_RE.fullmatch(identifier):
             errors.append(f"{prefix}.id has invalid format")
@@ -64,20 +71,28 @@ def validate(data: object) -> list[str]:
         else:
             seen.add(identifier)
 
-        if item["primary_class"] not in CLASSES:
+        if not isinstance(item["primary_class"], str) or item["primary_class"] not in CLASSES:
             errors.append(f"{prefix}.primary_class is invalid")
-        if item["lifecycle_state"] not in STATES:
+        if not isinstance(item["lifecycle_state"], str) or item["lifecycle_state"] not in STATES:
             errors.append(f"{prefix}.lifecycle_state is invalid")
+        secondary = item.get("secondary_classes", [])
+        if not isinstance(secondary, list) or any(not isinstance(value, str) or value not in CLASSES for value in secondary):
+            errors.append(f"{prefix}.secondary_classes is invalid")
         for field in ("name", "hypothesis", "trigger", "intervention", "owner"):
             if not isinstance(item[field], str) or not item[field].strip():
                 errors.append(f"{prefix}.{field} must be a non-empty string")
         for field in ("target_outcomes", "guardrails", "resource_dimensions", "evidence_refs"):
             if not isinstance(item[field], list):
                 errors.append(f"{prefix}.{field} must be an array")
+        for field in ("target_outcomes", "guardrails"):
+            values = item[field]
+            if isinstance(values, list) and (not values or any(not isinstance(value, str) or not value.strip() for value in values)):
+                errors.append(f"{prefix}.{field} must contain non-empty strings")
         if isinstance(item["resource_dimensions"], list):
-            invalid = set(item["resource_dimensions"]) - RESOURCES
-            if invalid:
-                errors.append(f"{prefix}.resource_dimensions contains invalid values: {sorted(invalid)}")
+            dimensions = item["resource_dimensions"]
+            invalid = {value for value in dimensions if not isinstance(value, str) or value not in RESOURCES}
+            if not dimensions or invalid:
+                errors.append(f"{prefix}.resource_dimensions contains invalid or empty values: {sorted(map(str, invalid))}")
         confidence = item["confidence"]
         if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
             errors.append(f"{prefix}.confidence must be between 0 and 1")

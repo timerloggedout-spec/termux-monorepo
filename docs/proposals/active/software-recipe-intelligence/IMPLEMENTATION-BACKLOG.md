@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | SRW-000 | P0 | Identity, naming and collision census | Name register + issued-name decision | Name Forge/registry review complete; acronym and slug collision checked |
 | SRW-001 | P0 | System-wide ownership and deployment census | Architecture recon + source-owner map | Existing Brain/agent/graph/memory/recipe/orchestration systems and authorities mapped |
-| SRW-002 | P0 | Recipe prior-art boundary | Repo Replay / Commit Replay compatibility note | Separate planes preserved; no duplicate replay engine |
+| SRW-002 | P0 | Recipe and workflow prior-art boundary | Repo Replay / Commit Replay, Orchestration Treatment/Receipt schemas, Agent Team Control Plane, Termux Multi-Agent and Temporal cookbook compatibility map | Separate replay planes preserved; orchestration treatments/receipts reused; no duplicate replay engine, roster, manager or run ledger |
 | SRW-003 | P0 | Neutral Software Recipe Model | Versioned model specification | Atomic/component/workflow/agent/team/integration/experiment/operational recipes represented |
 | SRW-004 | P0 | Schema and validator | JSON Schema + positive/negative fixtures | Unknown, stale, disputed, unavailable and evidence classes validated |
 | SRW-005 | P1 | Read-only source extraction | Git/docs/manifests/workflow/skill extractors | Every extracted fact has immutable source and extractor provenance |

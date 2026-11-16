@@ -7,9 +7,9 @@
       "upstream": "https://github.com/vercel-labs/agent-browser",
       "path": "refTemplates/smods/agent-browser_fork",
       "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
-      "status": "fork_required",
+      "status": "deferred",
       "pinned_sha": null,
-      "reason": "P0 candidate; only fork if a repository-owned adapter or Termux compatibility patch is required. No fork or gitlink exists in this change."
+      "reason": "No custom fork is justified until the existing package is reconciled and the actual Termux/Lightpanda/CDP runtime is tested; create a user-owned fork only if repository-specific patches are proven necessary."
     }
   ]
 }

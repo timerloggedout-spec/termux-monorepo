@@ -399,7 +399,7 @@ def validate_all(root: Path = ROOT) -> list[str]:
             module_urls=module_urls, gitlinks=gitlinks, root=root,
         ))
         manifest_path = template_dir / "integration.json"
-        if not manifest_path.is_file():
+        if manifest_path.is_symlink() or not manifest_path.is_file():
             continue
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))

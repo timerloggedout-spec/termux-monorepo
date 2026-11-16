@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "agent-browser-authorized-write": {
+      "command": "agent-browser",
+      "args": [
+        "--content-boundaries",
+        "--max-output",
+        "50000",
+        "--allowed-domains",
+        "venue.example,*.venue.example",
+        "--action-policy",
+        "/absolute/path/to/policy-authorized-write.json",
+        "--confirm-actions",
+        "click,fill,interact,download,upload,state",
+        "mcp",
+        "--tools",
+        "core"
+      ]
+    }
+  }
+}

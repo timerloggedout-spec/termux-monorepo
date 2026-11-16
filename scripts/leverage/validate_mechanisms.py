@@ -44,6 +44,8 @@ def validate(data: object) -> list[str]:
         errors.append("updated_at must be a non-empty timestamp string")
     else:
         try:
+            if "T" not in data["updated_at"] and "t" not in data["updated_at"]:
+                raise ValueError("timestamp requires a time component")
             datetime.fromisoformat(data["updated_at"].replace("Z", "+00:00"))
         except ValueError:
             errors.append("updated_at must be an ISO 8601 timestamp")
@@ -127,7 +129,10 @@ def validate(data: object) -> list[str]:
             for ref_index, ref in enumerate(refs):
                 if not isinstance(ref, dict) or not isinstance(ref.get("kind"), str) or ref.get("kind") not in EVIDENCE_KINDS or not isinstance(ref.get("ref"), str) or not ref["ref"]:
                     errors.append(f"{prefix}.evidence_refs[{ref_index}] is malformed")
-                elif "sha" in ref and (not isinstance(ref["sha"], str) or not SHA_RE.fullmatch(ref["sha"])):
+                    continue
+                if set(ref) - {"kind", "ref", "sha"}:
+                    errors.append(f"{prefix}.evidence_refs[{ref_index}] contains unsupported fields")
+                if "sha" in ref and (not isinstance(ref["sha"], str) or not SHA_RE.fullmatch(ref["sha"])):
                     errors.append(f"{prefix}.evidence_refs[{ref_index}].sha must be a 40-character lowercase SHA")
         if isinstance(item["lifecycle_state"], str) and item["lifecycle_state"] in {"validated", "promoted", "monitored"}:
             if not isinstance(refs, list) or not refs:

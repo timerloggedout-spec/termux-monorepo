@@ -109,14 +109,16 @@ Treat imported skill text as untrusted third-party instructions until reviewed. 
 
 ## MCP transport and security profiles
 
-The upstream CLI exposes a stdio MCP server. This is the preferred integration surface to evaluate with Termux-MCP/QUE because it gives the orchestrator typed tools without inventing a second browser protocol:
+**Do not expose the raw MCP server directly to QUE or an untrusted agent.** The upstream `core` profile is not intrinsically read-only and includes flow-management tools. The action policy gates browser action categories; it is not a complete MCP method allowlist. The `core,debug` write example exposes additional upstream tools to make confirmation responses available. The WAF adapter must filter exact tool names using `integration.json`'s `read_only_tool_allowlist` / `authorized_write_tool_allowlist`; the raw server exposure flag remains false. The JSON examples are trusted-local diagnostic launch references, not production QUE registration.
+
+The upstream CLI exposes a stdio MCP server. This is the preferred **provider transport to evaluate behind the Web Adapter Foundry** with Termux-MCP/QUE; it gives the orchestrator typed tools without inventing a second browser protocol:
 
 ```bash
 agent-browser mcp --tools core
 ```
 
 - Use `mcp-stdio-readonly.example.json` with `policy-readonly.json` for discovery, snapshots, and read-only checks.
-- Use `mcp-stdio-authorized-write.example.json` with `policy-authorized-write.json` only for a separately authorized operation. It includes `--confirm-actions` for click/fill/interact/download/upload/state categories; the orchestrator must explicitly answer confirmation requests. Do not use `--confirm-interactive` in a non-TTY MCP process.
+- Use `mcp-stdio-authorized-write.example.json` with `policy-authorized-write.json` only for a separately authorized operation. It uses `core,debug` only to expose confirmation/deny tools and includes `--confirm-actions click,fill,interact`; the orchestrator must explicitly answer confirmation requests. File upload/download and storage/auth tools are excluded from this first contract. Do not use `--confirm-interactive` in a non-TTY MCP process.
 - Do not use `--tools all`; start with `core` and the restrictive action policy.
 - `agent-browser mcp call <tool> '<json>'` is available for one-shot calls where a persistent stdio process is unavailable, but validate session/daemon continuity before adopting it.
 - `agent-browser doctor --offline --quick --json` is the local preflight. It reports version/platform/runtime health and may clean stale daemon sidecar files; never add `--fix` to an unattended preflight.

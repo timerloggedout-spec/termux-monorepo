@@ -17,7 +17,14 @@
         "accessibility-snapshot",
         "element-refs",
         "cdp-attach",
-        "named-sessions"
+        "named-sessions",
+        "stdio-mcp-server",
+        "mcp-tool-profiles",
+        "one-shot-mcp-call",
+        "action-policy",
+        "domain-allowlist",
+        "content-boundaries",
+        "doctor-health-probe"
       ],
       "termux_support": "not_established",
       "runtime_state": "discovered_external_executor",
@@ -128,5 +135,28 @@
       "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md"
     ],
     "verification_state": "historical_inventory_only_live_device_probe_required"
+  },
+  "upstream_version_observed": {
+    "version": "0.43.0",
+    "release_date": "2026-11-12",
+    "source": "https://github.com/vercel-labs/agent-browser/releases/tag/v0.43.0",
+    "inventory_version": "0.26.0",
+    "inventory_version_date": "2026-04-16",
+    "inventory_state": "stale_reconciliation_required"
+  },
+  "required_files": [
+    "README.md",
+    "SOURCE.txt",
+    "integration.json",
+    "policy-readonly.json",
+    "policy-authorized-write.json",
+    "mcp-stdio-readonly.example.json",
+    "mcp-stdio-authorized-write.example.json"
+  ],
+  "security_policy_files": {
+    "read_only": "policy-readonly.json",
+    "authorized_write": "policy-authorized-write.json",
+    "mcp_read_only": "mcp-stdio-readonly.example.json",
+    "mcp_authorized_write": "mcp-stdio-authorized-write.example.json"
   }
 }

@@ -6,6 +6,12 @@ from scripts.challenge.devpost_discovery import (
 )
 
 
+def test_collector_paginates_both_devpost_discovery_surfaces():
+    assert len(SOURCES) == 10
+    assert SOURCES[0] == "https://devpost.com/hackathons?page=1"
+    assert SOURCES[-1] == "https://devpost.com/c/artificial-intelligence?page=5"
+
+
 def test_only_devpost_event_subdomains_are_accepted():
     assert canonical_event_url("https://sample.devpost.com/", "https://devpost.com/hackathons") == "https://sample.devpost.com/"
     assert canonical_event_url("https://devpost.com/hackathons", "https://devpost.com") is None

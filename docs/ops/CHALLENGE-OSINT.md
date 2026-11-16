@@ -72,8 +72,10 @@ entries lane (a33d3ca1) owns the source records, DB lane pattern
 
 ## Recurring Devpost directory collector
 
-`scripts/challenge/devpost_discovery.py` scans the public Devpost hackathon
-directory and AI category on a daily GitHub Actions schedule. It writes
+`scripts/challenge/devpost_discovery.py` scans pages 1–5 of both the public Devpost hackathon
+directory and AI category on a daily GitHub Actions schedule (10 bounded
+page requests with a short inter-request pause). Source failures are retained
+in each run receipt; if all pages fail, the previous feed is left untouched. It writes
 `ops/challenge/discovery/devpost-directory.json`, a deduplicated, timestamped
 lead feed. Each record carries source URLs, first/last seen, a title-keyword
 triage heuristic, and explicit `UNVERIFIED_LEAD` / `NOT_ESTABLISHED`

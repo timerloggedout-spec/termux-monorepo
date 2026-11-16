@@ -35,6 +35,18 @@ def slots() -> list[Path]:
 
 
 def _template_child(slot: Path, child: Path) -> dict:
+    if child.is_symlink():
+        return {
+            "name": child.name,
+            "path": str(child.relative_to(ROOT)),
+            "is_symlink": True,
+            "has_source": False,
+            "source_nonempty": False,
+            "has_readme": False,
+            "readme_nonempty": False,
+            "has_integration_manifest": False,
+            "source_preview": None,
+        }
     source = child / "SOURCE.txt"
     readme = child / "README.md"
     manifest = child / "integration.json"

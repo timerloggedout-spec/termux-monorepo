@@ -621,6 +621,48 @@
       "write_boundary": "Not a generic agent orchestrator or QUE route planner. No customer PII, profile data, event stream, audience mutation, campaign send, or paid integration until explicit consent, privacy/retention review, and a concrete customer-engagement use case.",
       "next_step": "Keep out of the C12 core; revisit only for a separately authorized customer-engagement optimization project.",
       "sensitivity": "customer-data-and-marketing-decisioning"
+    },
+    {
+      "id": "eve-data-analyst-template",
+      "name": "Vercel eve Data Analyst Starter",
+      "category": "agent-analytics-template",
+      "priority": "P2",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Vercel template customization documentation describes metric definitions, SQL cost approvals, row caps, timezone-aware reporting, query limits, and evaluation fixtures. No database account or production data was accessed.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "not_applicable",
+      "authority": "reference_template_only",
+      "write_boundary": "No production database connection, SQL execution, data export, or deployment is authorized by this registry entry. Evaluate with synthetic fixtures only.",
+      "next_step": "Compare its metric-definition, approval, and evaluation patterns with Moneyball/SHE before proposing any data adapter.",
+      "sensitivity": "database-access-and-analytics"
+    },
+    {
+      "id": "eve-memory-agent-template",
+      "name": "Vercel eve Memory Agent Starter",
+      "category": "agent-memory-template",
+      "priority": "P2",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Vercel eve template documentation describes scoped user/channel memory slots and provider adapters, including file-backed and external memory providers. No personal data or external memory account was accessed.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "not_applicable",
+      "authority": "reference_template_only",
+      "write_boundary": "No personal-data import, automatic memory capture, external provider connection, or retention-policy change without a separate privacy and consent review. Use synthetic identities for experiments.",
+      "next_step": "Compare scope isolation, capture semantics, retention and provider interchangeability against the existing project memory contracts.",
+      "sensitivity": "personal-data-and-memory-retention"
+    },
+    {
+      "id": "eve-vercel-drives-starter",
+      "name": "Vercel eve Drives Starter",
+      "category": "agent-artifact-storage-template",
+      "priority": "P2",
+      "discovery_state": "discovered",
+      "session_evidence": "Official starter documentation describes read-only Drive snapshots for sessions, a separate write path, and drive_busy backpressure while a read-write mount is held. No Vercel Drive was provisioned and no files were transferred.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "not_applicable",
+      "authority": "reference_template_only",
+      "write_boundary": "No Drive provisioning, upload, project-data transfer, or external storage integration without a separate approval and retention review.",
+      "next_step": "Compare snapshot consistency and serialized write behavior with the existing evidence/artifact lane using synthetic fixtures.",
+      "sensitivity": "project-artifacts-and-storage"
     }
   ]
 }

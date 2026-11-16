@@ -7,7 +7,11 @@ from .leaderboard import Leaderboard
 from .doe import full_factorial, taguchi_l9, mvt_shuffle
 from .tournament import campaign
 from .trial import run_trial
+from .ballet import plan_choreography, score_observation, run_doe_tournament
+
 __all__ = [
-    "produce","critique","verify","synthesize",
-    "Leaderboard","full_factorial","taguchi_l9","mvt_shuffle","campaign", "run_trial",
+    "produce", "critique", "verify", "synthesize",
+    "Leaderboard", "full_factorial", "taguchi_l9", "mvt_shuffle",
+    "campaign", "run_trial", "plan_choreography", "score_observation",
+    "run_doe_tournament",
 ]

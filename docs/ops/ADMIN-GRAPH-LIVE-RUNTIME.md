@@ -29,7 +29,9 @@
 - `GET /events?limit=200` — public read-only event projection for GitHub Pages.
 
 The Worker is deployed on `admin-graph-live.timerloggedout.workers.dev`.
-The D1 database is `admin-graph-runtime-events`. CORS is restricted to
+The D1 database is `admin-graph-runtime-events`; its schema is versioned at
+`ops/admin-graph-live/schema.sql`, and deployment bindings are declared in
+`ops/admin-graph-live/wrangler.toml`. CORS is restricted to
 `https://timerloggedout-spec.github.io`.
 
 ## Semantics and limits

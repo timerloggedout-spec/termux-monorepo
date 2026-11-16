@@ -314,8 +314,8 @@ def validate_tree(
 ) -> list[str]:
     errors: list[str] = []
     manifest_path = template_dir / "integration.json"
-    if not manifest_path.is_file():
-        return [f"{manifest_path.relative_to(root)}: missing integration.json"]
+    if manifest_path.is_symlink() or not manifest_path.is_file():
+        return [f"{manifest_path.relative_to(root)}: missing regular integration.json"]
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         index = json.loads(smods_index_path.read_text(encoding="utf-8"))
@@ -358,8 +358,8 @@ def validate_all(root: Path = ROOT) -> list[str]:
     runtime_root = root / "refTemplates/01_Agent_Runtime"
     index_path = root / "refTemplates/smods/INTEGRATIONS.json"
     gitmodules_path = root / ".gitmodules"
-    if not runtime_root.is_dir():
-        return ["refTemplates/01_Agent_Runtime: missing runtime template root"]
+    if runtime_root.is_symlink() or not runtime_root.is_dir():
+        return ["refTemplates/01_Agent_Runtime: missing regular runtime template root"]
     if index_path.is_symlink() or not index_path.is_file():
         return ["refTemplates/smods/INTEGRATIONS.json: missing canonical or regular-file sMods index"]
     try:
@@ -378,11 +378,16 @@ def validate_all(root: Path = ROOT) -> list[str]:
         gitlinks = parse_gitlinks(root)
     except (configparser.Error, OSError, subprocess.CalledProcessError) as exc:
         return [f"unable to inspect .gitmodules/gitlinks: {exc}"]
-    template_dirs = [
-        path for path in sorted(runtime_root.iterdir())
-        if path.is_dir() and any((path / name).exists() for name in ("README.md", "SOURCE.txt", "integration.json"))
+    children = sorted(runtime_root.iterdir())
+    errors: list[str] = [
+        f"{path.relative_to(root)}: symlinked runtime template directories are not allowed"
+        for path in children if path.is_symlink()
     ]
-    errors: list[str] = []
+    template_dirs = [
+        path for path in children
+        if not path.is_symlink() and path.is_dir()
+        and any((path / name).exists() for name in ("README.md", "SOURCE.txt", "integration.json"))
+    ]
     if not template_dirs:
         return ["refTemplates/01_Agent_Runtime: no integration templates discovered"]
 

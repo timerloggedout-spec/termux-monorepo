@@ -18,7 +18,7 @@ reviewers:
 related_issues: []
 related_prs: []
 related_branches:
-  - proposal/apache-camel-smods-integration
+  - proposal/apache-camel-smods-integration-rebased
 gates_required:
   - proposal-lifecycle
   - repo-gate

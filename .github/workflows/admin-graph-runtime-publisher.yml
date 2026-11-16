@@ -16,10 +16,11 @@ concurrency:
 
 jobs:
   publish:
+    name: admin-graph-runtime-publisher
     if: >-
       github.event_name == 'schedule' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.name != 'Admin Graph Runtime Publisher') ||
-      (github.event_name == 'workflow_job' && github.event.workflow.name != 'Admin Graph Runtime Publisher')
+      (github.event_name == 'workflow_job' && github.event.workflow_job.name != 'admin-graph-runtime-publisher')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

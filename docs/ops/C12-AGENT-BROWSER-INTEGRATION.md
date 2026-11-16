@@ -26,11 +26,12 @@ The recorded package version is a historical inventory value, not a live executa
 |---|---|---|
 | QUE Hark filing executor (#5495) | Owner-reported two-day credit exhaustion, no pickup/cannot-execute signal, and main seat-browser deviation | Direct failure class; not repaired merely by cataloguing agent-browser |
 | `scripts/venues/venue_execution.py` | Fleet-executable requirement bindings; GitHub Actions adapter → unauthenticated public verification → receipt; SUBMIT-ONCE state | Existing repo-owned venue machinery; not a seat-browser lane |
+| Historical D3 Clips seat-browser deviation (#5137) | `docs/ops/VENUE-EXECUTION.md` explicitly marks it DEVIATION and says #5254 supersedes it with GitHub Actions machinery | Superseded historical deviation; do not count as a live route |
 | `scripts/venues/clips_adapter.py` | Upload requires sealed `CLIPS_FLEET_TOKEN`; absent credential returns `venue_auth_missing`; upload route remains unbuilt rather than falling back to seat-browser | Explicit refusal path; do not replace with browser scraping |
 | `scripts/que/que_feed_collect.py` / QUE feed | `agent-browser-clerk` appears as a design-input pattern | Design reference, not proof of a running browser executor |
 | Tool taxonomy | Package/version/path record for agent-browser | Existing package candidate; live binary and browser endpoint still need preflight |
 
-This census is bounded to the paths above and the matching repository search results; it is not a claim that every agent-surface filing leg has been exhaustively audited. Issue #5495 remains the authoritative census/hardening work item.
+This census distinguishes the superseded D3 Clips seat-browser deviation from the separate Hark/QUE seat-browser deviation reported in #5495. It is bounded to the paths above and matching repository search results; it is not a claim that every agent-surface filing leg has been exhaustively audited. Issue #5495 remains the authoritative census/hardening work item.
 
 ## Capability and maturity matrix
 

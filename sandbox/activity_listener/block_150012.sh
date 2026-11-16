@@ -1,1 +1,0 @@
-cat ~/deepseek-cli/probe-expert-abc.mjs

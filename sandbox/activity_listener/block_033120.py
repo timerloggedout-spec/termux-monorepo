@@ -1,1 +1,0 @@
-tail -20 ~/archwiz/listener.log

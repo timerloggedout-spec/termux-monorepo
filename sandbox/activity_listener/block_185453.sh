@@ -1,1 +1,0 @@
-tail -10 ~/archwiz/poller.log

@@ -1,3 +1,0 @@
-# smoke
-
-line one

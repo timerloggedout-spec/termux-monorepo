@@ -1,1 +1,0 @@
-cat ~/termux-multi-agent/workspace/commit_notes.py

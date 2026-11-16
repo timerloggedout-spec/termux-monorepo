@@ -1,1 +1,0 @@
-echo "The echo is back at $(date)"

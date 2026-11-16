@@ -1,1 +1,0 @@
-echo "The pipeline is alive. The dispatcher has a single wound. Let's heal it and mark what's already forged."

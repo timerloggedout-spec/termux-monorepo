@@ -1,1 +1,0 @@
-grep -n 'thinking\|search\|thinking_enabled\|search_enabled' ~/deepcli/workspace/reference/deepcli/core.py | head -15

@@ -1,1 +1,0 @@
-grep -n 'def create_session\|def stream_completion\|def send_message' ~/deepcli/deepcli/core.py

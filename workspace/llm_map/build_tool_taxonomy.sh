@@ -1,1 +1,0 @@
-/data/data/com.termux/files/home/workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh

@@ -1,1 +1,0 @@
-find ~/workspace ~/archwiz ~/cli-synthegration ~/harmony_hub -name '*commit*' -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null

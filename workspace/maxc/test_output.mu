@@ -1,1 +1,0 @@
-<div class="container"><p>{{title}}</p><button on:click="increment">Click me</button></div>

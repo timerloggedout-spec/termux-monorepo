@@ -1,1 +1,0 @@
-echo "Pipeline status check at $(date)"

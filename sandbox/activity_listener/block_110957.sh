@@ -1,1 +1,0 @@
-grep -n 'send_message\|stream_completion\|model_type\|thinking\|search' ~/deepcli-tui/tui.py | head -20

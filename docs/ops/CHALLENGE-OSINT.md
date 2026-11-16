@@ -69,3 +69,24 @@ galleries open). Prizes column shows tier counts when ESTABLISHED
 — Stood up 2026-10-28 by the challenge-entries-manager assistant seat;
 entries lane (a33d3ca1) owns the source records, DB lane pattern
 (e3055a9c) owns the store.
+
+## Recurring Devpost directory collector
+
+`scripts/challenge/devpost_discovery.py` scans the public Devpost hackathon
+directory and AI category on a daily GitHub Actions schedule. It writes
+`ops/challenge/discovery/devpost-directory.json`, a deduplicated, timestamped
+lead feed. Each record carries source URLs, first/last seen, a title-keyword
+triage heuristic, and explicit `UNVERIFIED_LEAD` / `NOT_ESTABLISHED`
+states. The score is a search-order hint only—not fit probability, eligibility,
+or expected value.
+
+The collector never writes `coordinator.json`, promotes candidates, registers,
+submits, or creates wagering-book subjects. Event pages and rules must be
+verified before a separate governed admission. Existing human review notes and
+verification states survive later scans. A run with both sources unavailable
+fails without replacing the last good feed.
+
+The directory scan currently covers Devpost's general directory and AI
+category. lablab.ai, MLH, HackerEarth, Devfolio, and sponsor/organizer pages
+remain complementary discovery sources recorded in the feed as not yet
+automated; they are not falsely reported as crawled by this collector.

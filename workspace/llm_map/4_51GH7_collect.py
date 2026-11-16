@@ -1,1 +1,0 @@
-foresight_collect.py

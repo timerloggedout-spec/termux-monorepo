@@ -11,6 +11,27 @@ Integrate Vercel `agent-browser` as the preferred **candidate CLI** for browser-
 
 The Vercel `skills` CLI and `agent-skills` collection supply reusable instructions. `agent-desktop` is a separate desktop-only executor. Portless is optional local development infrastructure. Cloudflare Kitesurf is a research-only CDP engine until its compatibility, security, performance, and cost are measured.
 
+## Existing repository state and bounded filing-lane census
+
+The browser CLI was already present in repository inventories before this integration pass:
+
+- `workspace/llm_map/_TOOL_TAXONOMY/state/npm_curr.json` records `agent-browser` version `0.26.0`.
+- `workspace/llm_map/_TOOL_TAXONOMY/python3/reverse_engineering.json` records the expected Termux path `/data/data/com.termux/files/usr/bin/agent-browser`.
+- `docs/repositories/STARS-FORKS-WATCH.md` already lists the upstream as starred and identifies `--engine lightpanda`.
+- `docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md` places agent-browser in the existing `drivers-and-clients` taxonomy.
+
+The recorded package version is a historical inventory value, not a live executable check; upstream changelog material documents v0.34.0 by August 2026. This PR reconciles the existing record and adds governance; it does not reinstall the CLI or claim a successful device session.
+
+| Filing/execution surface | Existing evidence | Relationship to C12 |
+|---|---|---|
+| QUE Hark filing executor (#5495) | Owner-reported two-day credit exhaustion, no pickup/cannot-execute signal, and main seat-browser deviation | Direct failure class; not repaired merely by cataloguing agent-browser |
+| `scripts/venues/venue_execution.py` | Fleet-executable requirement bindings; GitHub Actions adapter → unauthenticated public verification → receipt; SUBMIT-ONCE state | Existing repo-owned venue machinery; not a seat-browser lane |
+| `scripts/venues/clips_adapter.py` | Upload requires sealed `CLIPS_FLEET_TOKEN`; absent credential returns `venue_auth_missing`; upload route remains unbuilt rather than falling back to seat-browser | Explicit refusal path; do not replace with browser scraping |
+| `scripts/que/que_feed_collect.py` / QUE feed | `agent-browser-clerk` appears as a design-input pattern | Design reference, not proof of a running browser executor |
+| Tool taxonomy | Package/version/path record for agent-browser | Existing package candidate; live binary and browser endpoint still need preflight |
+
+This census is bounded to the paths above and the matching repository search results; it is not a claim that every agent-surface filing leg has been exhaustively audited. Issue #5495 remains the authoritative census/hardening work item.
+
 ## Capability and maturity matrix
 
 | Component | Capability | Current disposition |

@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-16T18:36:04Z)
+# Lane matrix status (2026-11-16T18:36:55Z)
 
-- Master: `1e7b1c33abed193075aae8b83c1bf137916292d1`
+- Master: `f9ec70df639b06e1700f141a4caeee2107fa8e10`
 - Open PRs: **451**
 - Oldest: #47 (103.12d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -58,9 +58,9 @@
 | #1694 | 20.71 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 20.3 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 20.3 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
-| #1966 | 19.56 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
+| #1966 | 19.57 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 17.4 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
-| #2577 | 16.76 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
+| #2577 | 16.77 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
 | #2856 | 15.7 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 
 Writer only: does not merge. Dual-gate remains promote authority. HOLD/WAIT/OBSERVE are invalid parking. Age alone ≠ promote.

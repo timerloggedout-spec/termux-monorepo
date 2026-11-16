@@ -10,8 +10,8 @@
 | Skills (SKILL.md, SKILLS.md, *.SKILLS) | siglary-census | issued glyphs, explicit chord/domain resolution, class labels, N∅ data blocks, receipt claims | principle ⑤ ambiguity remains EST pending Linguist ruling |
 | ICM (docs/icm/**) | siglary-census | class labels, glyph register, explicit chord/domain resolution, N∅ data blocks | principle ⑤ ambiguity remains EST pending Linguist ruling |
 | Root + nested CLAUDE.md | siglary-census | canonical-standard reference, class labels, glyph register | principle ⑤ ambiguity remains EST pending Linguist ruling |
-| DoE participant records | siglary-census | N∅ data boundary, explicit chord/domain resolution, receipt claims | principle ⑤ ambiguity remains EST pending Linguist ruling |
-| GitHub PRs, issues, comments, reviews, releases | DO Statement Style + siglary-census | DO hedging, action-first commit subjects, notation class/glyph/chord rules, state/verdict receipt adjacency | principle ⑤ ambiguity remains EST pending Linguist ruling |
+| DoE participant records (ops/doe, ops/que/dispatch, ops/que/feeds, ops/challenge) | siglary-census | N∅ data boundary, explicit chord/domain resolution, receipt claims | principle ⑤ ambiguity remains EST pending Linguist ruling |
+| GitHub PRs, issues, comments, reviews, releases, issue/PR templates | DO Statement Style + siglary-census | DO hedging, action-first commit subjects, notation class/glyph/chord rules, state/verdict receipt adjacency | principle ⑤ ambiguity remains EST pending Linguist ruling |
 | Bot-generated output | generator/template owner | validate rendered output before publication; retain source/template identity | generated artifacts are E5 and are not hand-edited |
 
 ## Normative behavior

@@ -516,12 +516,12 @@
       "category": "browser-automation",
       "priority": "P0",
       "discovery_state": "discovered",
-      "session_evidence": "Official upstream README/docs describe a native Rust browser automation CLI with accessibility snapshots, element refs, named sessions and CDP attachment. Existing repository inventory records npm agent-browser 0.26.0 and expected Termux path /data/data/com.termux/files/usr/bin/agent-browser; this is a historical inventory snapshot, not a live binary or authenticated browser-session validation.",
+      "session_evidence": "Official upstream releases list agent-browser v0.43.0 (2026-11-12), with CLI, stdio MCP server/tool profiles, CDP attach, security policies and doctor diagnostics. Existing repository inventory records npm agent-browser 0.26.0 and expected Termux path /data/data/com.termux/files/usr/bin/agent-browser; this historical snapshot is not a live binary or authenticated browser-session validation.",
       "repo_skill_path": ".agents/skills/web-adapter-foundry/SKILL.md",
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "bounded-browser-execution-provider-not-source-of-truth",
       "write_boundary": "Browser is the last automated route after API, MCP, authorized Web2API/session and CLI/stdin. Read-only default; separately authorized writes require SUBMIT-ONCE, idempotency, read-before-retry and explicit approval. No cookies, profiles, CDP URLs/tokens or session exports in Git/logs/artifacts.",
-      "next_step": "Reconcile the existing Termux package record and probe the actual binary/version; test --engine lightpanda and approved CDP attachment. Implement the WAF executor adapter with read-only fixtures before C12 write operations.",
+      "next_step": "Reconcile the existing Termux package and run `agent-browser doctor --offline --quick --json`; test the stdio MCP core profile with default-deny policy and the actual device engine. The documented Lightpanda install targets do not establish Android/Termux support. Implement the WAF executor adapter with read-only fixtures before C12 write operations.",
       "sensitivity": "browser-session-metadata-only"
     },
     {

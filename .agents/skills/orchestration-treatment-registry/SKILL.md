@@ -29,9 +29,10 @@ Capture, where known:
 - capabilities, hooks, tools, and routing;
 - wait and retry policies;
 - evidence and validation contracts;
+- optional workspace isolation mode, writer policy, integration policy, treatment-specific parallel-session bound, and base ref;
 - lifecycle status.
 
-Unknown fields stay absent. Never manufacture capabilities, metrics, providers, or validation evidence.
+Unknown fields stay absent. Never manufacture capabilities, metrics, providers, or validation evidence. A declared workspace mode is a treatment hypothesis, not runtime proof.
 
 ## Lifecycle
 
@@ -49,6 +50,12 @@ Keep state, task outcome, and promotion separate:
 - promotion answers whether the implementation may be adopted.
 
 Never infer task success from a completed dispatch, a green-looking activity stream, or provider availability.
+
+## Workspace evidence
+
+Keep provider-specific session and workspace facts in a sanitized adapter evidence artifact referenced by the canonical receipt's evidence_ids. Capture actual repository, base ref/SHA, branch, opaque workspace/session IDs, executor/provider/model, write owner, isolation mode, timestamps, resulting head SHA, and evidence references where available. Unknown values stay unknown.
+
+Do not widen the canonical receipt with vendor-specific session payloads. Never persist prompts, transcripts, credentials, environment values, browser profiles, or raw tool payloads in the evidence plane.
 
 ## Adapter rule
 
@@ -69,10 +76,11 @@ External material may supply a pattern or hypothesis. It becomes repository-nati
 4. evidence capture;
 5. recorded promotion decision.
 
-This keeps Wingman, Devin, Loopy, and future orchestration systems useful as pattern corpora without making them hidden authorities.
+This keeps Wingman, Devin, Kilo Agent Manager, Loopy, and future orchestration systems useful as pattern corpora without making them hidden authorities.
 
 ## Related contracts
 
+- docs/ops/AGENT-WORKTREE-ORCHESTRATION.md
 - docs/ops/EVIDENCE-ENVELOPE.schema.json
 - docs/ops/ACTION-EFFECT-EVENT.schema.json
 - .agents/skills/adaptive-wait/SKILL.md

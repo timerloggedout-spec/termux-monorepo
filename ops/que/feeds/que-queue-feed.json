@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-16T01:58:11Z",
+ "generated_at": "2026-11-16T09:25:55Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -11,7 +11,7 @@
    "1": {
     "tier": 1,
     "queued": 8,
-    "in_progress": 2,
+    "in_progress": 1,
     "oldest_queued_at": "2026-11-11T20:23:55Z",
     "by_workflow_queued": {
      "repo gate": 4,
@@ -22,7 +22,7 @@
    "2": {
     "tier": 2,
     "queued": 0,
-    "in_progress": 1,
+    "in_progress": 3,
     "oldest_queued_at": null,
     "by_workflow_queued": {}
    },
@@ -36,11 +36,11 @@
    "4": {
     "tier": 4,
     "queued": 47,
-    "in_progress": 16,
+    "in_progress": 12,
     "oldest_queued_at": "2026-11-11T20:23:55Z",
     "by_workflow_queued": {
-     "lane events recorder": 1,
-     "quota-usage-series-refresh": 1,
+     "tribute-status-refresh": 1,
+     "Gemini review after peers": 1,
      "repo-tracking-collect": 3,
      "Foresight Evidence Spine": 2,
      "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
@@ -70,7 +70,7 @@
   },
   "totals": {
    "queued": 55,
-   "in_progress": 19
+   "in_progress": 16
   },
   "wedged_ancient": [
    {

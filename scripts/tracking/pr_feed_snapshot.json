@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-16T13:40:33Z",
+ "read_at": "2026-11-16T13:43:08Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,6 +1956,58 @@
  ],
  "open": [
   {
+   "number": 5525,
+   "title": "feat(brain): extract root kernel and add typed specialist extension contract",
+   "merged_at": null,
+   "updated_at": "2026-11-16T13:42:49Z",
+   "created_at": "2026-11-16T13:41:00Z",
+   "merge_commit_sha": "6758e66fdb953ed5c6ca99494d57ff7ac535ec7b",
+   "head_ref": "feat/root-brain-extension-contract-20261116",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5525",
+   "merged": false
+  },
+  {
+   "number": 2310,
+   "title": "chore(delphi): refresh delphi-rfp-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-16T13:42:46Z",
+   "created_at": "2026-10-29T05:02:25Z",
+   "merge_commit_sha": "2354cf06d9a8142f7c4afffc43b65afb23667c70",
+   "head_ref": "delphi-rfp-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
+   "merged": false
+  },
+  {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-16T13:42:29Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "1b2015e6bc36d7fbcf84e6ff055137b490575ac9",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-16T13:41:33Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "01cfca41a34f8bcac949fd3119f7287fe3d2c293",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
    "number": 3916,
    "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
@@ -1969,32 +2021,6 @@
    "merged": false
   },
   {
-   "number": 2310,
-   "title": "chore(delphi): refresh delphi-rfp-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-16T13:33:20Z",
-   "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "3134de7d9cde89556fac589ac7bc9b5d4d77fcdd",
-   "head_ref": "delphi-rfp-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-16T13:31:54Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "4d075482f08befa4bd3fe33c0ec710ebbe3f18f0",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
    "number": 5524,
    "title": "fix(que): normalize structured auto-claim ranking scores",
    "merged_at": null,
@@ -2005,19 +2031,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5524",
-   "merged": false
-  },
-  {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-16T13:27:17Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "e8b9266d68e0273a2ac1280ffc5a836be7b6430d",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
    "merged": false
   },
   {
@@ -4548,19 +4561,6 @@
    "author": "google-labs-jules[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4954",
-   "merged": false
-  },
-  {
-   "number": 4526,
-   "title": "docs(osint): OSINT dispatch template + D2 worked example",
-   "merged_at": null,
-   "updated_at": "2026-11-04T22:55:53Z",
-   "created_at": "2026-11-03T17:58:04Z",
-   "merge_commit_sha": "29333fc2c31de5f91bca7535dd879eeb730a7ba1",
-   "head_ref": "docs/osint-dispatch-template",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/4526",
    "merged": false
   }
  ],

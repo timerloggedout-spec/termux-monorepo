@@ -5,8 +5,9 @@ name: repo gate
 #
 #     python3 scripts/ci/repo_gate.py
 #
-# No cargo, no node, no pip, no network, no device dependencies. One runner, one
-# job, well under a minute. Rust builds stay out of this workflow on purpose —
+# No cargo, no node, no pip, no network, no device dependencies. The ICM impact
+# check is a separate short job so branch rules can require its named status.
+# Rust builds stay out of this workflow on purpose —
 # see docs/TRIAGE.md (PR #2) for why they belong behind workflow_dispatch.
 
 on:

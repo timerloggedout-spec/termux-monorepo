@@ -1324,3 +1324,23 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: observatory-capability-intake
+    title: "Observatory → CEEL opportunity intake and refTemplates promotion gates"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/observatory-capability-intake/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_prs: []
+    related_branches:
+      - proposal/observatory-capability-intake-20261116
+    related_proposals:
+      - continuous-capability-evolution-lab
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

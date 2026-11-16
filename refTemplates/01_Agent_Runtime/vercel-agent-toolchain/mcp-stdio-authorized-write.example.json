@@ -3,6 +3,8 @@
     "agent-browser-authorized-write": {
       "command": "agent-browser",
       "args": [
+        "--session",
+        "que-authorized-write",
         "--content-boundaries",
         "--max-output",
         "50000",

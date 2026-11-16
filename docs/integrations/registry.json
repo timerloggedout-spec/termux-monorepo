@@ -521,7 +521,7 @@
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "bounded-browser-execution-provider-not-source-of-truth",
       "write_boundary": "Browser is the last automated route after API, MCP, authorized Web2API/session and CLI/stdin. Read-only default; separately authorized writes require SUBMIT-ONCE, idempotency, read-before-retry and explicit approval. No cookies, profiles, CDP URLs/tokens or session exports in Git/logs/artifacts.",
-      "next_step": "Reconcile the existing Termux package and run `agent-browser doctor --offline --quick --json`; test the stdio MCP core profile with default-deny policy and the actual device engine. The documented Lightpanda install targets do not establish Android/Termux support. Implement the WAF executor adapter with read-only fixtures before C12 write operations.",
+      "next_step": "Reconcile the existing Termux package and run `agent-browser doctor --offline --quick --json`; test the stdio MCP core profile behind the exact WAF tool allowlist, default-deny policy and explicit confirmation gate. Raw MCP exposure is prohibited. The documented Lightpanda install targets do not establish Android/Termux support. Implement the WAF executor adapter with read-only fixtures before C12 write operations.",
       "sensitivity": "browser-session-metadata-only"
     },
     {

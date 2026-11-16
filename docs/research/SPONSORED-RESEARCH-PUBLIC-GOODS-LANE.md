@@ -207,11 +207,14 @@ cycles only when the coordinator's reopening trigger is met. Do not treat
 the C15 Model A interpretation as an already-established sponsor route.
 
 The coordinator's `C` and `D` prefixes are record identifiers, not
-disciplinary lane classes. C13/C15/C16 are in `candidate_events`; D0–D5
-are challenge/event records. The opportunity-cycle machinery processes live
-records from both collections and writes readiness/priority projections.
-AWS appears as the host for C15/C16 and some D-series events, but that
-shared host does not make them one opportunity or one research lane.
+disciplinary lane classes, and the `C` prefix does not identify one
+coordinator collection: C11/C12 are in `events`, while C13–C16 are in
+`candidate_events`. D0–D5 are in `events`. The opportunity-cycle
+machinery processes live records from both collections and writes
+readiness/priority projections. AWS/Amazon is the host for C15/C16 and
+AWS Builder Center hosts D0/D1; other C/D records have different hosts.
+A shared prefix or host does not make these one opportunity or one research
+lane.
 
 **Open Collective distinction:** Open Collective may be evaluated as a
 fundraising/platform mechanism, but a platform account is not itself proof

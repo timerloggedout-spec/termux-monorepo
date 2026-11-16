@@ -20,8 +20,13 @@
     "target_ref": "workflow-run:12345",
     "selection": "exact_identity_only",
     "max_targets": 1,
-    "allowed_states": ["queued"],
-    "forbidden_states": ["in_progress", "completed"]
+    "allowed_states": [
+      "queued"
+    ],
+    "forbidden_states": [
+      "in_progress",
+      "completed"
+    ]
   },
   "authorization": {
     "default_decision": "deny",
@@ -60,5 +65,17 @@
     "source_kind": "github_issue",
     "source_ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5514",
     "content_sha256": null
+  },
+  "idempotency": {
+    "required": true,
+    "key_template": "{run_id}:{target_ref}:{method_version}",
+    "scope": "run_and_target",
+    "window_seconds": 3600
+  },
+  "impact": {
+    "classification": "low",
+    "estimated_impact": "No runtime action; the fixture describes a dry-run candidate only.",
+    "affected_dependents": [],
+    "dependent_work_policy": "preserve"
   }
 }

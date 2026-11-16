@@ -1,6 +1,6 @@
 {
  "schema": "bucket-headroom/v1",
- "generated_at": "2026-11-15T21:18:02Z",
+ "generated_at": "2026-11-16T01:10:50Z",
  "poll_interval_min": 10,
  "buckets": [
   {
@@ -14,7 +14,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -33,20 +33,20 @@
     "limit": 5000,
     "used": 5000,
     "remaining": 0,
-    "reset": 1794778070,
-    "read_ts": 1794777481,
-    "read_at": "2026-11-15T21:18:01Z"
+    "reset": 1794792494,
+    "read_ts": 1794791449,
+    "read_at": "2026-11-16T01:10:49Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
     "value": 0,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:01Z",
-    "valid_until": "2026-11-15T21:27:50Z"
+    "as_of": "2026-11-16T01:10:49Z",
+    "valid_until": "2026-11-16T01:28:14Z"
    },
    "probe_episode": {
-    "episode_id": "github-token@2026-11-15T21:18:01Z",
+    "episode_id": "github-token@2026-11-16T01:10:49Z",
     "probed": false
    }
   },
@@ -61,22 +61,22 @@
     "kind": "app_installation",
     "source": "sec03-mint",
     "limit": 5000,
-    "used": 65,
-    "remaining": 4935,
-    "reset": 1794778710,
-    "read_ts": 1794777481,
-    "read_at": "2026-11-15T21:18:01Z"
+    "used": 29,
+    "remaining": 4971,
+    "reset": 1794793747,
+    "read_ts": 1794791449,
+    "read_at": "2026-11-16T01:10:49Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 4935,
+    "value": 4971,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:01Z",
-    "valid_until": "2026-11-15T21:38:30Z"
+    "as_of": "2026-11-16T01:10:49Z",
+    "valid_until": "2026-11-16T01:49:07Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-collector@2026-11-15T21:18:01Z",
+    "episode_id": "app-termux-fleet-collector@2026-11-16T01:10:49Z",
     "probed": false
    }
   },
@@ -93,7 +93,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -114,7 +114,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -135,7 +135,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -156,7 +156,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -175,22 +175,22 @@
     "kind": "app_installation",
     "source": "swarm-mint",
     "limit": 12500,
-    "used": 3885,
-    "remaining": 8615,
-    "reset": 1794779339,
-    "read_ts": 1794777481,
-    "read_at": "2026-11-15T21:18:01Z"
+    "used": 1828,
+    "remaining": 10672,
+    "reset": 1794793772,
+    "read_ts": 1794791449,
+    "read_at": "2026-11-16T01:10:49Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 8615,
+    "value": 10672,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:01Z",
-    "valid_until": "2026-11-15T21:48:59Z"
+    "as_of": "2026-11-16T01:10:49Z",
+    "valid_until": "2026-11-16T01:49:32Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-swarm@2026-11-15T21:18:01Z",
+    "episode_id": "app-termux-fleet-swarm@2026-11-16T01:10:49Z",
     "probed": false
    }
   },
@@ -207,20 +207,20 @@
     "limit": 5000,
     "used": 0,
     "remaining": 5000,
-    "reset": 1794781082,
-    "read_ts": 1794777481,
-    "read_at": "2026-11-15T21:18:01Z"
+    "reset": 1794795050,
+    "read_ts": 1794791449,
+    "read_at": "2026-11-16T01:10:49Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
     "value": 5000,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:01Z",
-    "valid_until": "2026-11-15T22:18:02Z"
+    "as_of": "2026-11-16T01:10:49Z",
+    "valid_until": "2026-11-16T02:10:50Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-crossreference@2026-11-15T21:18:01Z",
+    "episode_id": "app-termux-fleet-crossreference@2026-11-16T01:10:49Z",
     "probed": false
    }
   },
@@ -237,7 +237,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -258,7 +258,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -279,7 +279,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-15T21:18:02Z",
+    "as_of": "2026-11-16T01:10:50Z",
     "valid_until": null
    },
    "probe_episode": {

@@ -59,6 +59,11 @@ class SiglaryTests(unittest.TestCase):
   report=s.census(self.root,[],{"pull_request":{"title":"plain title","body":"SIGLARY-FLAG: ambiguous token"}},"pull_request")
   self.assertEqual(report["state"],"REVIEW")
   self.assertEqual(report["est_violations"],1)
+ def test_template_and_doe_feed_surface_classes(self):
+  self.assertEqual(s.surface_kind(".github/ISSUE_TEMPLATE/bug.md"),"github_collaboration")
+  self.assertEqual(s.surface_kind("templates/release-note.md"),"github_collaboration")
+  self.assertEqual(s.surface_kind("ops/que/feeds/queue.json"),"doe_participant")
+  self.assertEqual(s.surface_kind("ops/challenge/dispatch-state-feed.json"),"doe_participant")
  def test_event_surface_inventory(self):
   self.assertEqual(len(s.event_surfaces({"review":{"body":"DO: inspect"}},"pull_request_review")),1)
   self.assertEqual(len(s.event_surfaces({"release":{"name":"v1","body":"DO: publish"}},"release")),2)

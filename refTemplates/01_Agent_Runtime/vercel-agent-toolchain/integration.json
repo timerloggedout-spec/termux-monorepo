@@ -1,0 +1,120 @@
+{
+  "schema": "agent-toolchain-template/v1",
+  "template_id": "vercel-agent-toolchain",
+  "proposal_item": "THUB-011",
+  "status": "discovered",
+  "runtime_owner": "ops/web_adapter_foundry/waf.py",
+  "source_file": "refTemplates/01_Agent_Runtime/vercel-agent-toolchain/SOURCE.txt",
+  "smods_index": "refTemplates/smods/INTEGRATIONS.json",
+  "upstreams": [
+    {
+      "id": "agent-browser",
+      "repository": "vercel-labs/agent-browser",
+      "url": "https://github.com/vercel-labs/agent-browser",
+      "role": "browser-automation-cli",
+      "priority": "P0",
+      "capabilities": [
+        "accessibility-snapshot",
+        "element-refs",
+        "cdp-attach",
+        "named-sessions"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "discovered_external_executor",
+      "default_mode": "read_only"
+    },
+    {
+      "id": "skills-cli",
+      "repository": "vercel-labs/skills",
+      "url": "https://github.com/vercel-labs/skills",
+      "role": "agent-skill-discovery-and-installation",
+      "priority": "P0",
+      "capabilities": [
+        "find",
+        "add",
+        "list",
+        "check",
+        "update",
+        "remove"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "source_reference_only",
+      "default_mode": "project_scoped"
+    },
+    {
+      "id": "agent-skills",
+      "repository": "vercel-labs/agent-skills",
+      "url": "https://github.com/vercel-labs/agent-skills",
+      "role": "upstream-agent-skill-collection",
+      "priority": "P0",
+      "capabilities": [
+        "reusable-agent-instructions"
+      ],
+      "termux_support": "not_applicable",
+      "runtime_state": "source_reference_only",
+      "default_mode": "selective_install"
+    },
+    {
+      "id": "agent-desktop",
+      "repository": "vercel-labs/agent-desktop",
+      "url": "https://github.com/vercel-labs/agent-desktop",
+      "role": "desktop-computer-use-cli",
+      "priority": "P1",
+      "capabilities": [
+        "os-accessibility-tree",
+        "desktop-actions",
+        "ffi"
+      ],
+      "termux_support": "unsupported_target",
+      "runtime_state": "desktop_lane_only",
+      "default_mode": "separate_desktop_executor"
+    },
+    {
+      "id": "portless",
+      "repository": "vercel-labs/portless",
+      "url": "https://github.com/vercel-labs/portless",
+      "role": "named-local-development-urls",
+      "priority": "P1",
+      "capabilities": [
+        "stable-local-hostnames"
+      ],
+      "termux_support": "not_established",
+      "runtime_state": "optional_infrastructure",
+      "default_mode": "developer_opt_in"
+    },
+    {
+      "id": "kitesurf",
+      "repository": "cloudflare/kitesurf",
+      "url": "https://github.com/cloudflare/kitesurf",
+      "role": "experimental-cdp-browser-engine",
+      "priority": "P2",
+      "capabilities": [
+        "workers-browser-engine",
+        "cdp"
+      ],
+      "termux_support": "not_applicable",
+      "runtime_state": "research_only",
+      "default_mode": "benchmark_only"
+    }
+  ],
+  "smods_candidates": [
+    {
+      "id": "agent-browser",
+      "path": "refTemplates/smods/agent-browser_fork",
+      "status": "fork_required",
+      "upstream": "https://github.com/vercel-labs/agent-browser",
+      "fork_url": "https://github.com/timerloggedout-spec/agent-browser_fork.git",
+      "pinned_sha": null,
+      "reason": "Create a user-owned adaptation only if repository-specific Termux/QUE changes are required; no fork or gitlink is claimed yet."
+    }
+  ],
+  "policy": {
+    "reuse_existing_web_adapter_foundry": true,
+    "browser_is_last_automated_route": true,
+    "read_only_default": true,
+    "write_retry": "SUBMIT-ONCE; read state before any retry",
+    "secrets_in_git": false,
+    "browser_state_in_git": false,
+    "termux_runtime_claim": "not_established"
+  }
+}

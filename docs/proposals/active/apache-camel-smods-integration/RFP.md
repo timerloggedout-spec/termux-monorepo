@@ -24,12 +24,13 @@ Repository/API inspection on 2026-11-16 established:
 - The source repository is public and owned by `timerloggedout-spec`; GitHub reports admin/push access.
 - Default branch is `main`; latest observed commit is `12014575a8f2c71174a8f9f4cbef9a61e25439e8`.
 - The repository reports a size of 1,561,977 KB. Treat it as a large source repository; do not assume a submodule checkout is lightweight merely because it is shallow.
+- The latest observed HEAD commit is also present in the canonical `apache/camel` repository with the exact same SHA, establishing that this observed tip is upstream-identical: https://github.com/apache/camel/commit/12014575a8f2c71174a8f9f4cbef9a61e25439e8
 - Root `pom.xml` identifies Camel `4.24.0-SNAPSHOT`, a Maven multi-module build, and JDK 21 as the minimum build version.
 - `LICENSE.txt` contains the Apache License 2.0 text.
 - The fork's `.gitmodules` is empty.
 - The fork README describes Camel's Java/YAML/XML routes, 350+ connectors, MCP server, LangChain4j/OpenAI components, A2A support, and Kaoto/Karavan visual designers.
 
-The inspected repository metadata does not by itself establish the fork's upstream-parent relationship, Termux/Android runtime compatibility, or the existence of any local custom patches. Those remain explicit verification items.
+The exact HEAD match establishes that the observed tip is an Apache Camel upstream commit. It does not yet establish the fork's original parent/base point or whether older fork-only commits exist. Termux/Android runtime compatibility also remains unverified.
 
 ## 3. Integration opportunities
 

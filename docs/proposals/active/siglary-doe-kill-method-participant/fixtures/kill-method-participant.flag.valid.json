@@ -1,0 +1,79 @@
+{
+  "schema_version": "kill-method-participant.v1",
+  "participant": {
+    "participant_id": "kill-method",
+    "participant_version": "0.1.0",
+    "participant_kind": "method_participant",
+    "lifecycle_state": "proposed",
+    "owner_ref": null
+  },
+  "authorization": {
+    "default_decision": "deny",
+    "requires_explicit_approval": true,
+    "execution_enabled": false,
+    "policy_ref": "docs/proposals/active/siglary-doe-kill-method-participant/MANIFEST.md",
+    "allowed_authority_classes": []
+  },
+  "preconditions": {
+    "dry_run_required": true,
+    "exact_target_required": true,
+    "idempotency_required": true,
+    "unknown_state_behavior": "reject",
+    "timeout_seconds": 30
+  },
+  "idempotency": {
+    "required": true,
+    "key_template": "{run_id}:{target_ref}:{method_version}",
+    "scope": "run_and_target",
+    "window_seconds": 3600
+  },
+  "impact": {
+    "classification": "low",
+    "estimated_impact": "Synthetic descriptor only; no runtime action.",
+    "affected_dependents": [],
+    "dependent_work_policy": "preserve"
+  },
+  "evidence": {
+    "receipt_required": true,
+    "evidence_refs": [
+      "https://github.com/timerloggedout-spec/termux-monorepo/issues/5514"
+    ],
+    "run_id": null,
+    "observed_at": null
+  },
+  "provenance": {
+    "source_kind": "github_issue",
+    "source_ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5514",
+    "content_sha256": null
+  },
+  "method": {
+    "method_id": "feature_flag.disable_exact",
+    "method_version": "1.0.0",
+    "method_family": "feature_flag_control",
+    "target_kind": "feature_flag",
+    "effect_kind": "disable_named_flag",
+    "supersedes": null
+  },
+  "scope": {
+    "environment": "test",
+    "target_ref": "repo-var:QUEUE_PITCREW_ENABLED",
+    "selection": "exact_identity_only",
+    "max_targets": 1,
+    "allowed_states": [
+      "enabled"
+    ],
+    "forbidden_states": [
+      "unknown"
+    ]
+  },
+  "effect": {
+    "mode": "dry_run",
+    "graceful_or_force": "none",
+    "reversible": true,
+    "description": "Describe disabling this exact test-only flag; do not update repository variables."
+  },
+  "recovery": {
+    "strategy": "resume",
+    "reference": "ops/queue/pitcrew.json"
+  }
+}

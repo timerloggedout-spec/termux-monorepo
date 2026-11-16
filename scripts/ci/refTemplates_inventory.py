@@ -125,8 +125,14 @@ def validate_smods_contract(module_entries: list[dict], gitlinks: dict[str, str]
     modules: dict[str, dict] = {}
     for index, entry in enumerate(module_entries):
         path = entry.get("path")
+        section = entry.get("section")
+        section_declares_smods = isinstance(section, str) and section.startswith('submodule "refTemplates/smods/')
         if not isinstance(path, str) or not path.startswith(SMODS_PREFIX):
+            if section_declares_smods:
+                errors.append(f".gitmodules entry {index}: sMods section must declare a path under refTemplates/smods/")
             continue
+        if section is not None and section != f'submodule "{path}"':
+            errors.append(f"{path}: .gitmodules section name and path must match exactly")
         parts = Path(path).parts
         if len(parts) != 3 or ".." in parts:
             errors.append(f".gitmodules entry {index}: sMods path must be one direct child of refTemplates/smods/")
@@ -169,6 +175,7 @@ def validate_smods(root: Path = ROOT) -> list[str]:
             if not section.startswith("submodule "):
                 continue
             entries.append({
+                "section": section,
                 "path": parser.get(section, "path", fallback=""),
                 "url": parser.get(section, "url", fallback=""),
                 "shallow": parser.getboolean(section, "shallow", fallback=False),

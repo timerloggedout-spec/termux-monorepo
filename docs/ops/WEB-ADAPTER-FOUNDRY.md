@@ -52,6 +52,8 @@ recount at use time (counts drift). Upstreams are composed, not vendored.
 |---|---|---|---|
 | [greekr4/rever-browser](https://github.com/greekr4/rever-browser) | Closest end-to-end: CDP capture, script inspection, deobfuscation, crypto tracing, replay, WASM, macros, CLI + Python export; ships a Claude Code skill | MIT | 2026-10-21 |
 | [jackwener/opencli](https://github.com/jackwener/opencli) | Closest website->CLI: logged-in browser bridge, reusable site adapters, `opencli-browser` + `opencli-adapter-author` skills | Apache-2.0 | 2026-10-20 |
+| [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) | Native Rust browser CLI: accessibility snapshots, element refs, named sessions, and local/remote CDP attachment; Termux runtime remains unverified | Verify at pin time | Recheck at use time |
+| [cloudflare/kitesurf](https://github.com/cloudflare/kitesurf) | Experimental Workers-hosted CDP browser engine; research/benchmark alternative, not default runtime | Apache-2.0 | Recheck at use time |
 | [morluto/rea](https://github.com/morluto/rea) | Broad RE substrate: web structure/scripts/network, JS/Electron, HAR/SAZ, native/.NET — inspection provider, not the whole pipeline | MIT | 2026-10-22 |
 | [alufers/mitmproxy2swagger](https://github.com/alufers/mitmproxy2swagger) | Captured traffic -> draft OpenAPI 3.0 (review + second pass are part of its workflow) | — | 2026-10-19 |
 | [j4k0xb/webcrack](https://github.com/j4k0xb/webcrack) | JS recovery: obfuscator.io deobfuscation, unminify, transpile, webpack/browserify unpack | MIT | 2026-07-26 |
@@ -61,6 +63,16 @@ recount at use time (counts drift). Upstreams are composed, not vendored.
 | [alexgaoth/awesome-reverse-engineered](https://github.com/alexgaoth/awesome-reverse-engineered) | Discovery: search for an existing client before building one (leads, not truth) | MIT | 2026-10-22 |
 | [leileqiTHU/reverse-cli-anything](https://github.com/leileqiTHU/reverse-cli-anything) | Adjacent: closed-source desktop/Electron -> CLI recovery + verification | MIT | 2026-10-16 |
 | [linxule/opencli](https://github.com/linxule/opencli) | OpenCLI fork (websites + Electron + local CLIs, recording workflow) — evaluate independently, do not assume upstream compatibility | Apache-2.0 | 2026-04-04 |
+
+### C12 browser executor binding
+
+`agent-browser` is the preferred **candidate CLI** for browser-backed operations in QUE. It complements OpenCLI and the existing Foundry; it does not replace the Foundry router or prove a direct API exists. The Foundry currently classifies browser executors as external dependencies, so the catalog addition is discovery metadata, not a claim of a working executor adapter.
+
+For Termux, evaluate CDP attachment to an approved external browser before attempting the bundled Chrome installer. A named session, endpoint health check, bounded deadline, and secret-store-only CDP URL are required. No Termux compatibility claim is made until an actual BLU B160V smoke is recorded.
+
+Use the route order in issue #5333: supported API → MCP → authorized Web2API/session → CLI/stdin → browser last resort. For C12 filing reliability (#5495), preflight executor liveness/budget, verify approval-prompt delivery, and emit a first-class `CANNOT_EXECUTE` signal before the deadline. Writes require a separately authorized operation, `SUBMIT-ONCE`, and read-before-retry on `OUTCOME_UNKNOWN`.
+
+The Vercel skills CLI and `agent-skills` collection are instruction sources, not execution providers. `agent-desktop` is a separate desktop-only lane; Portless is optional local infrastructure; Kitesurf remains experimental and separately cost-gated. The repository template and its sMods disposition are at `refTemplates/01_Agent_Runtime/vercel-agent-toolchain/` and `refTemplates/smods/INTEGRATIONS.json`.
 
 **Consolidation rule — smallest stack that satisfies the target:**
 existing-client discovery -> rever-browser investigation -> OpenCLI

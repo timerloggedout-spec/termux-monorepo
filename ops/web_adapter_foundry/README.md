@@ -26,7 +26,10 @@ Rules enforced by the core (not just documented): stdout = protocol only,
 no credentials in request bodies (use `account_ref`), promotion moves one
 step at a time, write operations never get automatic fallback, direct-http
 execution is read-only and allowlist-bound, browser executors report their
-external dependency (OpenCLI / rever-browser) honestly instead of faking it.
+external dependency (OpenCLI / rever-browser / agent-browser) honestly instead of faking it.
+The agent-browser entry is a discovered CLI candidate; the Foundry does not
+claim a Termux runtime or a native browser executor until an adapter is
+implemented and independently validated.
 
 Full design: `docs/ops/WEB-ADAPTER-FOUNDRY.md` ·
 Skill: `.agents/skills/web-adapter-foundry/SKILL.md` ·

@@ -24,7 +24,7 @@ class RuntimeEventTests(unittest.TestCase):
         self.assertEqual(event["run_id"], 123)
         self.assertEqual(event["run_attempt"], 2)
         self.assertEqual(event["repo"], MODULE.REPO)
-        self.assertEqual(len(event["id"]), 64)
+        self.assertTrue(event["id"].startswith("workflow:123:2:success:"))
         self.assertNotIn("logs", event)
 
     def test_workflow_job_event_is_normalized(self):

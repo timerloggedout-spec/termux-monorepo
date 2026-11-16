@@ -36,3 +36,11 @@ See root `.gitmodules`:
 AuditEngine_fork, batteries_fork, content-agent-routing-promptbase_fork, cost-of-remembering_fork, icm-architect_fork, icm-cctv_fork, interpretable-context-methodology_fork, mcp-android-ssh_fork, term_mcp_deepseek_fork, termux-mcp-server_fork, lego_fork
 
 Pins intentional; no auto-advance without dual-gate green. Flywheel components remain metadata-only until a real customized fork and compatibility evidence exist.
+
+## smods candidate queue (not live gitlinks)
+
+| Candidate | Source | Proposed role | Admission status |
+|---|---|---|---|
+| apache-camel | https://github.com/timerloggedout-spec/camel_fork-apache | Governed MCP integration, EIP/connectors, event routing, optional OTel bridge | RFP in review; metadata-only; no gitlink until provenance, Termux/runtime, security, and dual-gate evidence pass |
+
+The proposed future pin path is `refTemplates/smods/camel_fork-apache`. Candidate entries are not live submodules and must not be initialized by CI.

@@ -116,6 +116,15 @@ The sMods disposition lives at `refTemplates/smods/INTEGRATIONS.json`. `fork_req
 
 CI runs `scripts/ci/verify_agent_tooling_templates.py` and its contract tests through the existing `refTemplates-eval` workflow. This extends the existing template inventory rather than replacing it.
 
+## Adjacent platforms — not core dependencies
+
+The supplied Anaconda and Braze links are useful comparison inputs but solve different problems:
+
+- **Anaconda AI Orchestration (formerly Outerbounds/Metaflow):** a production workflow/orchestration platform with reproducible environments, lineage, compute governance and agentic workflow support. It is a possible optional orchestration adapter, not a reason to replace the existing GitHub Actions/Temporal control plane. Evaluate only against a bounded workflow and synthetic data.
+- **BrazeAI Decisioning Studio:** a customer-engagement decisioning product for 1:1 personalization and continuous marketing experimentation. It is not a general-purpose agent router, browser executor, or C12 queue manager. Keep it outside the C12 core unless a separately authorized customer-engagement use case emerges.
+
+The supplied OpenAI article titled **“A step toward defining the Standard Model”** is about a candidate lattice definition of the Standard Model of particle physics, with GPT-6 Astra assisting a physicist. It is scientific research, not a standard agent architecture or model-orchestration specification. Track it in the science research lane, not the tooling registry.
+
 ## Promotion sequence
 
 1. Validate template metadata and sMods ledger.

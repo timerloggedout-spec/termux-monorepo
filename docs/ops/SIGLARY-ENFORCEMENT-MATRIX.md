@@ -38,7 +38,7 @@
 
 ## Receipt and output contract
 
-The validator emits siglary-census/v1 with per-surface-class counts, named findings, runtime and character/file measurements. A zero-surface census exits non-zero as INCONCLUSIVE; it is never represented as a pass. Event receipts use a deterministic SHA-256 identity, and the JSONL feed writer deduplicates that identity on replay.
+The validator emits siglary-census/v1 with per-surface-class counts, named findings, runtime and character/file measurements. A zero-surface census exits non-zero as INCONCLUSIVE; it is never represented as a pass. HARD findings produce FAIL; principle-⑤ EST findings produce REVIEW and block the affected form pending a Linguist ruling. Event receipts use a deterministic SHA-256 identity. The feed writer deduplicates within its feed file; cross-run replay deduplication awaits the persistent authorized feed writer.
 
 The Actions workflows upload the census and feed line as immutable run artifacts. The current workflow uses read-only GitHub permissions; it does not silently write to master. Persistent publication into the Linguist panel feed remains a separately authorized writer integration and is not claimed by this change.
 
@@ -47,7 +47,7 @@ The Actions workflows upload the census and feed line as immutable run artifacts
 | Capability | State |
 |---|---|
 | Validator and DO policy authored | IMPLEMENTED |
-| Positive/negative seeded contract tests | TESTED locally; hosted CI receipt pending |
+| Positive/negative seeded contract tests | TESTED locally; hosted CI receipt pending |\n| Principle-⑤ EST review state | IMPLEMENTED and locally tested; hosted receipt pending |
 | PR/issue/comment/review/release event wiring | IMPLEMENTED; hosted event receipts pending |
 | Hard-gate behavior in Actions | IMPLEMENTED in workflow source; ENFORCED only after a successful hosted run is observed |
 | Full-repository baseline census | PENDING first hosted census |

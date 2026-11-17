@@ -3,8 +3,8 @@
 | ID | Work item | State | Acceptance evidence |
 |---|---|---|---|
 | WAG-01 | Reconcile current book, feed, ledger, generator, page, mirror, fixtures and refresh owner | OPEN | Exact SHAs + source freshness census |
-| WAG-02 | Repair stale/hard-coded subject counts in the Wagertome page | PROPOSED | Counts derived from loaded feed; mismatch regression tests |
-| WAG-03 | Preserve B1–B5 and R1–R3 publication gates | REQUIRED | Existing and new contract tests pass |
+| WAG-02 | Repair stale/hard-coded subject counts in the Wagertome page | IMPLEMENTED_ON_BRANCH · NOT CI-VERIFIED | Page copy is feed-driven; regression test added; execution pending |
+| WAG-03 | Preserve B1–B5 and R1–R3 publication gates | REQUIRED · NOT CI-VERIFIED | Existing contracts retained; current-head test execution pending |
 | WAG-04 | Establish public wallet onboarding disclosures and consent model | DESIGN | Versioned privacy/consent policy approved |
 | WAG-05 | Define domain-bound wallet proof and receipt lifecycle | DESIGN | Schema validation, replay/expiry/chain negative tests |
 | WAG-06 | Define separate non-financial participation intake | DESIGN | Idempotency, abuse, consent and no-book-write tests |

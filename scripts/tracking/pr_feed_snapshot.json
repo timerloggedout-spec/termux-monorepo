@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-17T13:17:34Z",
+ "read_at": "2026-11-17T13:25:43Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,12 +1956,25 @@
  ],
  "open": [
   {
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
+   "merged_at": null,
+   "updated_at": "2026-11-17T13:23:53Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "3e76ada7ca9d117e82a2367b1ab3e6409d160006",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-17T13:17:29Z",
+   "updated_at": "2026-11-17T13:23:52Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "8c52d9a1ee8b075427142852af62ddc77fe03f48",
+   "merge_commit_sha": "95d4446534b9b4c434620f01302017afa5ad3ef4",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1972,13 +1985,39 @@
    "number": 3890,
    "title": "chore(telemetry): refresh HindSight+Provenance ingest",
    "merged_at": null,
-   "updated_at": "2026-11-17T13:16:08Z",
+   "updated_at": "2026-11-17T13:23:15Z",
    "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "d34b6f19c66a69e262609e4352f9acd656f6499c",
+   "merge_commit_sha": "f1006bec59bdb5bf7d46a734aa630df3419090cb",
    "head_ref": "telemetry-ingest/refresh",
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 5523,
+   "title": "feat(que): integrate branch reconciliation with QDesk",
+   "merged_at": null,
+   "updated_at": "2026-11-17T13:22:28Z",
+   "created_at": "2026-11-16T12:54:35Z",
+   "merge_commit_sha": "7b4f3e352892b345341bb75fdaa76b7f16542544",
+   "head_ref": "feat/que-brr-clean-integration-2026-11-16",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5523",
+   "merged": false
+  },
+  {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-17T13:22:07Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "87135fe57f70eeeeb29b67c683011712fa09da9a",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
@@ -1992,32 +2031,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5525",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-17T13:15:59Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "e70f7dc6a8ab2f757fc4aaa1db49559ab105b687",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
-   "merged": false
-  },
-  {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-17T13:14:32Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "c1501107e315b9be083a74c1dbf01092ddffded6",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
@@ -2213,19 +2226,6 @@
    "author": "timerloggedout-spec",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5522",
-   "merged": false
-  },
-  {
-   "number": 5523,
-   "title": "feat(que): integrate branch reconciliation with QDesk",
-   "merged_at": null,
-   "updated_at": "2026-11-16T13:00:53Z",
-   "created_at": "2026-11-16T12:54:35Z",
-   "merge_commit_sha": "7b4f3e352892b345341bb75fdaa76b7f16542544",
-   "head_ref": "feat/que-brr-clean-integration-2026-11-16",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5523",
    "merged": false
   },
   {

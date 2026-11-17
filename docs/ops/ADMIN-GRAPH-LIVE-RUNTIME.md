@@ -1,6 +1,6 @@
 # Admin Interaction Graph — live runtime events
 
-**Status:** runtime event intake deployed; dashboard integration in this change.
+**Status:** Worker and D1 deployed; public feed health verified; publisher activation pending merge of this change.
 **Source of truth:** GitHub Actions `workflow_job` lifecycle events plus authoritative workflow-run state from the Actions API.
 **Transport:** Cloudflare Worker `admin-graph-live` + D1 `admin-graph-runtime-events`.
 **Read model:** `GET /events`; publisher: `.github/workflows/admin-graph-runtime-publisher.yml`.
@@ -34,7 +34,13 @@ The Worker is deployed on `admin-graph-live.timerloggedout.workers.dev`.
 The D1 database is `admin-graph-runtime-events`; its schema is versioned at
 `ops/admin-graph-live/schema.sql`, and deployment bindings are declared in
 `ops/admin-graph-live/wrangler.toml`. CORS is restricted to
-`https://timerloggedout-spec.github.io`.
+`https://timerloggedout-spec.github.io`. The workers.dev subdomain is enabled.
+
+Live verification on 2026-11-17: `GET /health` returned HTTP 200 with
+`ok: true`, the expected repository, `n: 0`, and `latest: null`;
+`GET /events?limit=10` returned the expected schema with an empty event list.
+The empty ledger is expected until the publisher workflow is active on the
+repository's default branch and its first event is ingested.
 
 ## Semantics and limits
 

@@ -73,8 +73,6 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
     wiring = catalog.get("inference_wiring", {}).get("wired_invoke", {})
     surfaces = _route_surfaces(wiring)
     g4f_route = wiring.get("by_surface", {}).get("g4f-working/gpt4free route", {})
-    g4f_records = _safe_count(g4f_route.get("records")) if isinstance(g4f_route, dict) else None
-
     grouped: dict[str, list[dict[str, Any]]] = {}
     for record in records:
         if not isinstance(record, dict):
@@ -85,8 +83,15 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
 
     catalog_names = set(_strings(catalog.get("inference_only", {}).get("distinct_providers")))
     provider_names = catalog_names | set(grouped) | set(surfaces)
+    g4f_records = _safe_count(g4f_route.get("records")) if isinstance(g4f_route, dict) else None
+    if g4f_records:
+        for provider in provider_names:
+            if provider.startswith("g4f/"):
+                surfaces.setdefault(provider, set()).add("g4f_catalogued_route")
 
     g4f_doc = g4f_working if isinstance(g4f_working, dict) else {}
+    if g4f_doc.get("schema") not in (None, G4F_SCHEMA):
+        raise ValueError("unsupported_g4f_working_schema")
     g4f_endpoints = g4f_doc.get("endpoints", [])
     if not isinstance(g4f_endpoints, list):
         g4f_endpoints = []

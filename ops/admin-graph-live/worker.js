@@ -33,7 +33,7 @@ export default{async fetch(req,env){
  if(u.pathname==="/events"&&req.method==="GET"){
   const limit=Math.min(400,Math.max(1,Number(u.searchParams.get("limit")||200)));
   const rows=await env.EVENTS_DB.prepare("SELECT id,kind,event,status,workflow,job,step,repo,run_id,run_attempt,job_id,head_sha,url,occurred_at,received_at FROM runtime_events ORDER BY occurred_at DESC LIMIT ?").bind(limit).all();
-  return Response.json({schema:"admin-graph-live-events/v1",source:"GitHub Actions workflow_run + workflow_job observer",repo:REPO,generated_at:new Date().toISOString(),poll_hint_ms:5000,events:(rows.results||[]).reverse()},{headers:{...cors,"Cache-Control":"no-store"}});
+  return Response.json({schema:"admin-graph-live-events/v1",source:"GitHub Actions workflow_job observer + API-backed workflow-run reconciler",repo:REPO,generated_at:new Date().toISOString(),poll_hint_ms:5000,events:(rows.results||[]).reverse()},{headers:{...cors,"Cache-Control":"no-store"}});
  }
  return new Response("not found",{status:404});
 }};

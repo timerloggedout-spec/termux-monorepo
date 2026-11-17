@@ -29,7 +29,7 @@ _INSTRUCTION_OVERRIDE = re.compile(
 )
 _SECRET_TEXT = re.compile(
     r"(?i)(?:sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|"
-    r"AIza[0-9A-Za-z_-]{30,}|(?:api[_-]?key|access[_-]?token|password)\\s*[:=]\\s*[A-Za-z0-9_./+=-]{12,})"
+    r"AIza[0-9A-Za-z_-]{30,}|(?:api[_-]?key|access[_-]?token|password)\s*[:=]\s*[A-Za-z0-9_./+=-]{12,})"
 )
 
 

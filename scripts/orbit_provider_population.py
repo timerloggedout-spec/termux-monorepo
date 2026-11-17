@@ -13,7 +13,6 @@ from typing import Any
 SCHEMA = "orbit-provider-population/v1"
 DESK_FEED_SCHEMA = "desk-feed/v1.3"
 G4F_SCHEMA = "g4f-working-endpoints/v1"
-G4F_COMPOSITE = "gpt4free/CLIProxyAPI/Chapito/ai-manus"
 
 
 def _strings(values: Any) -> list[str]:
@@ -29,6 +28,39 @@ def _safe_count(value: Any) -> int | None:
     return value
 
 
+def _route_surfaces(wiring: dict[str, Any]) -> dict[str, set[str]]:
+    surfaces: dict[str, set[str]] = {}
+
+    def add(provider: str, surface: str) -> None:
+        if provider:
+            surfaces.setdefault(provider, set()).add(surface)
+
+    for provider in _strings(wiring.get("named_providers")):
+        add(provider, "named_invoke")
+
+    by_surface = wiring.get("by_surface", {})
+    if not isinstance(by_surface, dict):
+        by_surface = {}
+    for surface_name, value in by_surface.items():
+        if surface_name == "g4f-working/gpt4free route":
+            if isinstance(value, dict):
+                for provider in _strings(value.get("composite")):
+                    add(provider, "g4f_composite")
+            continue
+        if not isinstance(value, list):
+            continue
+        for entry in value:
+            if not isinstance(entry, str):
+                continue
+            if surface_name.startswith("connector-config"):
+                provider = entry.split("—", 1)[0].strip()
+            else:
+                provider = entry.strip()
+            if provider:
+                add(provider, surface_name.split(" ", 1)[0].strip("()"))
+    return surfaces
+
+
 def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = None) -> dict[str, Any]:
     if not isinstance(feed, dict) or feed.get("schema") != DESK_FEED_SCHEMA:
         raise ValueError("unsupported_desk_feed_schema")
@@ -39,10 +71,9 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
         raise ValueError("inference_availability_records_must_be_list")
 
     wiring = catalog.get("inference_wiring", {}).get("wired_invoke", {})
-    named = set(_strings(wiring.get("named_providers")))
+    surfaces = _route_surfaces(wiring)
     g4f_route = wiring.get("by_surface", {}).get("g4f-working/gpt4free route", {})
-    g4f_composite = set(_strings(g4f_route.get("composite")))
-    g4f_composite.add(G4F_COMPOSITE)
+    g4f_records = _safe_count(g4f_route.get("records")) if isinstance(g4f_route, dict) else None
 
     grouped: dict[str, list[dict[str, Any]]] = {}
     for record in records:
@@ -53,7 +84,7 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
             grouped.setdefault(provider.strip(), []).append(record)
 
     catalog_names = set(_strings(catalog.get("inference_only", {}).get("distinct_providers")))
-    provider_names = catalog_names | named | set(grouped) | g4f_composite
+    provider_names = catalog_names | set(grouped) | set(surfaces)
 
     g4f_doc = g4f_working if isinstance(g4f_working, dict) else {}
     g4f_endpoints = g4f_doc.get("endpoints", [])
@@ -79,20 +110,15 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
             record.get("id") for record in provider_records
             if isinstance(record.get("id"), str) and record.get("id").strip()
         })
-        if provider in named:
-            route_surface = "named_invoke"
-        elif provider.startswith("g4f/") or provider in g4f_composite:
-            route_surface = "g4f_catalogued_route"
-        else:
-            route_surface = "not_established"
+        provider_surfaces = sorted(surfaces.get(provider, set()))
         g4f_name = provider.split("/", 1)[1] if provider.startswith("g4f/") else None
         providers.append({
             "id": provider,
             "dispatch_classes": classes,
             "availability_record_count": len(provider_records),
             "availability_record_ids": record_ids,
-            "invoke_route_registered": route_surface != "not_established",
-            "invoke_route_surface": route_surface,
+            "invoke_route_registered": bool(provider_surfaces),
+            "invoke_route_surfaces": provider_surfaces,
             "g4f_sandbox_verified_pairs": sandbox_by_provider.get(g4f_name) if g4f_name else None,
         })
 
@@ -101,6 +127,7 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
     g4f_universe = g4f_doc.get("universe", {}) if isinstance(g4f_doc, dict) else {}
     if not isinstance(g4f_universe, dict):
         g4f_universe = {}
+    providers_ok = g4f_doc.get("providers_ok", {}) if isinstance(g4f_doc, dict) else {}
 
     return {
         "schema": SCHEMA,
@@ -112,8 +139,9 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
         "inference_wiring": {
             "wired": _safe_count(wiring.get("count")),
             "total": _safe_count(wiring.get("of")),
-            "named_provider_count": len(named),
-            "g4f_route_records": _safe_count(g4f_route.get("records")),
+            "named_provider_count": len(_strings(wiring.get("named_providers"))),
+            "g4f_route_records": g4f_records,
+            "route_surface_provider_count": len(surfaces),
         },
         "endpoint_census": {
             "verified_floor": verified_floor,
@@ -124,7 +152,7 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
             "universe_providers": _safe_count(g4f_universe.get("providers_total")),
             "universe_pairs": _safe_count(g4f_universe.get("pairs_total")),
             "sandbox_verified_pairs": _safe_count(g4f_doc.get("inference_ok")) if g4f_doc else None,
-            "sandbox_verified_provider_count": len(g4f_doc.get("providers_ok", {})) if isinstance(g4f_doc.get("providers_ok"), dict) else None,
+            "sandbox_verified_provider_count": len(providers_ok) if isinstance(providers_ok, dict) else None,
             "actions_verified_pairs": None,
             "actions_verified_evidence": "not_machine_readable_in_desk_feed",
         },

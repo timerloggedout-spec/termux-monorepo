@@ -26,7 +26,8 @@ Make the already-published LoggedOut Timer YouTube content discoverable from the
 | Delphi Oracle | [Evidence Over Claims v1.0.0 walkthrough](https://www.youtube.com/watch?v=AZSeqOI5H9M) | 1:48 | 2026-11-03 | Evidence-gate oracle walkthrough |
 | StudySprint | [Strands Agents SDK demo](https://www.youtube.com/watch?v=N3HBRV4LOGQ) | 1:10 | 2026-11-01 | Earlier architecture walkthrough |
 | Archive | [StudySprint v0.3.0 demo](https://www.youtube.com/watch?v=AKCqOCXAFu0) | 2:34 | 2026-11-03 | Earlier release |
-| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-11-01 | Earlier release |\n| Operations | [Admin Interaction Graph — live runtime walkthrough](https://res.cloudinary.com/cc4wyoa6/video/upload/v1794874227/loggedout-timer/product-demos/admin-graph-live-runtime-walkthrough.mp4) | 2:21 | 2026-11-17 | Narrated implementation preview: workflow/job events, validation, D1, live graph pulses and health |
+| Archive | [StudySprint v0.2.0 demo](https://www.youtube.com/watch?v=eFXyOYTpuvg) | 1:40 | 2026-11-01 | Earlier release |
+| Operations | [Admin Interaction Graph — live runtime walkthrough](https://res.cloudinary.com/cc4wyoa6/video/upload/v1794874227/loggedout-timer/product-demos/admin-graph-live-runtime-walkthrough.mp4) | 2:21 | 2026-11-17 | Narrated implementation preview: workflow/job events, validation, D1, live graph pulses and health |
 
 View counts are intentionally omitted because they change and are not needed for discovery.
 

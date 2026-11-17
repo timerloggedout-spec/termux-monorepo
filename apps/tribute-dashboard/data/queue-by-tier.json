@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-16T19:47:00Z",
+ "generated_at": "2026-11-17T02:39:11Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -16,10 +16,12 @@
   },
   "2": {
    "tier": 2,
-   "queued": 0,
-   "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 1,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-17T02:38:26Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -30,19 +32,24 @@
   },
   "4": {
    "tier": 4,
-   "queued": 46,
-   "in_progress": 6,
+   "queued": 53,
+   "in_progress": 10,
    "oldest_queued_at": "2026-11-11T20:23:55Z",
    "by_workflow_queued": {
-    "Gemini review after peers": 1,
+    "lane events recorder": 1,
+    "Agent review \u2192 auto Jules": 1,
+    "Context Relationship + Lead/Lag Audit": 4,
+    "PR production ledger": 3,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "PR evidence evaluation": 3,
+    "DO Statement Style": 1,
+    "termux smoke": 4,
     "repo-tracking-collect": 3,
     "Foresight Evidence Spine": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
     "graph-matrix-probe": 2,
-    "termux smoke": 3,
     "Quota Dispatch Tree": 3,
     "hitl-control-plane-verify": 2,
-    "Context Relationship + Lead/Lag Audit": 3,
     "Sweep Accountability": 3,
     "doe-nc1-continuous-log": 1,
     "Repository development evaluation": 1,
@@ -56,15 +63,13 @@
     "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
     "Peer review orchestrator": 2,
     "RECON INTEL discovery": 2,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "PR evidence evaluation": 2,
-    "PR production ledger": 2
+    "DeepSeek CI \u2013 Agentic Automation": 1
    }
   }
  },
  "totals": {
-  "queued": 54,
-  "in_progress": 7
+  "queued": 62,
+  "in_progress": 10
  },
  "wedged_ancient": [
   {

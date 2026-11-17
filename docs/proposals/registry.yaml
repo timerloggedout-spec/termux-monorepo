@@ -1324,3 +1324,25 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: pit-crew-doe-oversight
+    title: "Pit Crew whole architecture, analogy mappings and DoE oversight tournaments"
+    author: ChatGPT
+    status: in_review
+    priority: P1
+    path: active/pit-crew-doe-oversight/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 5528
+      - 5501
+    related_prs:
+      - 5529
+      - 5503
+    related_branches:
+      - docs/pit-crew-doe-oversight
+    gates_required:
+      - repo-gate
+      - termux-smoke

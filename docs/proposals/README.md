@@ -20,7 +20,7 @@
 | provider-family-doe-observatory | P1 | executing | [active/provider-family-doe-observatory/](active/provider-family-doe-observatory/) |
 | continuous-capability-evolution-lab | P1 | executing | [active/continuous-capability-evolution-lab/](active/continuous-capability-evolution-lab/) — event-driven FOSS discovery and DoE combination evaluation |
 
-## Large sources / debate branches
+| pit-crew-doe-oversight | P1 | in_review | [active/pit-crew-doe-oversight/](active/pit-crew-doe-oversight/) — whole-system Pit Crew architecture, analogy mappings and DoE Oversight tournaments |\n\n## Large sources / debate branches
 
 | Pointer on master | Full text branch | Notes |
 |-------------------|------------------|-------|

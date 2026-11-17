@@ -51,6 +51,10 @@ Chooses a coordinated plan: sequencing, parallelism, waiting, escalation, and cu
 
 Selects an eligible provider/model from the current live catalog. Model IDs are **data**, not architecture. No model should be hardcoded as a permanent special route when it can be selected from catalog state.
 
+### ORBIT × SHIELD control boundary
+
+The provider-neutral ORBIT arbitration and SHIELD context-admission contracts are indexed in [ORBIT-SHIELD-ARCHITECTURE.md](ORBIT-SHIELD-ARCHITECTURE.md). ORBIT consumes the existing dispatch population and keeps provider routes distinct from provider×model endpoint counts, agent identities, and manager policies. SHIELD governs bounded context admission and reuses the existing context-store and relationship-graph owners. The provider-invoke integration is observe-only until a separate owner-authorized promotion; catalog visibility and route wiring never imply production inference eligibility.
+
 ### Dependency-phase admission routing
 
 Agentic-Agile dependency waves are **admission evidence**, not an execution-provider choice. The dependency-phase dispatcher must resolve a manager-approved specialist route before creating an execution claim. The route is resolved from the approved specialist allowlist plus `docs/schemas/agent-roster.yaml` capability routing and records a routing envelope before any specialist adapter runs.

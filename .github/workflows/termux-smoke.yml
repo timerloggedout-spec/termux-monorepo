@@ -40,9 +40,11 @@ jobs:
         run: python3 -B -m unittest discover -s tests -p 'test_shield_context.py' -v
 
       - name: ORBIT arbitration contract tests
+        if: always()
         run: python3 -B -m unittest discover -s tests -p 'test_orbit_arbitration.py' -v
 
       - name: ORBIT provider population contract tests
+        if: always()
         run: python3 -B -m unittest discover -s tests -p 'test_orbit_provider_population.py' -v
 
       - name: Core smoke (required)

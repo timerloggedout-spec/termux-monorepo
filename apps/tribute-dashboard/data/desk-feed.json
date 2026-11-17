@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-04T10:26:53Z",
+  "generated_at": "2026-11-17T14:22:00Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -3410,6 +3410,79 @@
       "resubmit_policy": "edit-until-deadline (locks Dec 4 14:00 PT)"
     },
     {
+      "entry": "D5",
+      "priority_timebox": {
+        "owner_order": "2026-11-03 owner: this type of process is required for all opportunities (D1 pattern, PR #4126); standing requirement 2026-11-03: the D5 row is created at build start WITH this block",
+        "wall": "2026-11-19T12:00:00-08:00",
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "BASE \u2014 BUILD START",
+            "at": "2026-11-17T09:00:00-08:00",
+            "reminder": null,
+            "effect": "kickoff \u2014 row created with this timebox; repo + AppID at build start via AppID lane, gated on Registry moniker issuance; landing driven to Nov 18 EOD",
+            "from": "build-start"
+          },
+          {
+            "tier": 1,
+            "name": "CUSHION",
+            "at": "2026-11-18T09:00:00-08:00",
+            "reminder": null,
+            "effect": "HIGH \u2014 D5 admits ahead of routine slate work; landing driven to close (Nov 18 EOD)"
+          },
+          {
+            "tier": 2,
+            "name": "ESCALATION",
+            "at": "2026-11-19T08:00:00-08:00",
+            "reminder": null,
+            "effect": "MAX \u2014 submission mechanics only; all other D5 streams frozen"
+          },
+          {
+            "tier": 3,
+            "name": "FINAL",
+            "at": "2026-11-19T11:30:00-08:00",
+            "reminder": null,
+            "effect": "last call \u2014 the submission lands in the remaining minutes or the wall closes it"
+          }
+        ],
+        "step_down_cushion": [
+          {
+            "at": "wall+24h",
+            "tier": 1
+          },
+          {
+            "at": "wall+48h",
+            "tier": 0
+          }
+        ],
+        "note": "SUBMIT-ONCE entry: the first send must be complete + receipt-verified. Priority decays through the cushion tiers after the wall."
+      },
+      "project": "AI Builder Day Hackathon - November 2026 (Aha!) \u2014 concept \u2205 (freeze running at D5 seat)",
+      "artifact_repo": null,
+      "status": "queued",
+      "stages": {
+        "spec": "in-progress",
+        "desk": "done",
+        "builder": "gated",
+        "pr": "pending",
+        "ci": "pending",
+        "merge": "pending",
+        "sync": "pending"
+      },
+      "evidence": {
+        "note": "coordinator@master df033b6d685c (Desk read 2026-11-17): D5 registering \u00b7 projects [] \u00b7 submission none \u00b7 gate D5-SPOT open (Aha! spot confirmation email; evidence of record stale 2026-10-28 \u2014 fresh D5-SPOT check running at D5 seat 2026-11-17) \u00b7 concept \u2205, freeze in parallel at D5 seat",
+        "naming": "naming gate held: Registry issuance precedes new D5 surfaces/issues \u2014 issuance requested \u21a6 Registry (ref 754373c7); moniker form `Moniker \u00b7 What-it-is (D5)` (convention PR #5558 merged bca4313025b0 \u00b7 coordinator PR #5559 merged fb079f8cb8d6); platform entrant handle of record = entrant{n0nAha}[platform:aha-io] (\u00ac fleet moniker)",
+        "desk": "row created by desk 2026-11-17 at build-start prep (kickoff 09:00 PT today) WITH priority_timebox per standing requirement 2026-11-03; QUE spec skeleton prepared at desk \u2014 filing fires on Registry issuance (flow: issuance \u21d2 repo+AppID dispatch \u21d2 spec \u21d2 Desk QUE \u21d2 Swarm)",
+        "in_window_development": {
+          "rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, \u00ac done; done only at wall/submission close.",
+          "line": "BUILD START 2026-11-17 09:00 PT \u2014 landing Nov 18 EOD",
+          "wall": "2026-11-19 12:00 PT submit wall (SUBMIT-ONCE)"
+        }
+      },
+      "next": "kickoff 2026-11-17 09:00 PT \u00b7 on Registry issuance \u21d2 repo+AppID dispatch (AppID lane 7075f9c0) \u21d2 spec \u21d2 Desk QUE filing \u21d2 Swarm build \u00b7 gate D5-SPOT open (Aha! spot confirmation; fresh check at D5 seat) \u00b7 landing Nov 18 EOD \u00b7 submit 2026-11-19 12:00 PT SUBMIT-ONCE \u00b7 awards 2026-11-20 11:30 PT",
+      "resubmit_policy": "SUBMIT-ONCE \u2014 complete + receipt-verified at first send"
+    },
+    {
       "entry": "DOMINO",
       "project": "Domino Data Lab \u2014 partner/certified-consultant + self-host tracks (applicant: termux-monorepo)",
       "artifact_repo": null,
@@ -4098,6 +4171,57 @@
           },
           "model": "gemini-3.5-flash-lite",
           "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "mistral",
+          "via": "provider-invoke.yml",
+          "session_id": null,
+          "state": "landed",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch provider-invoke-42952215553: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "not_established"
+          },
+          "model": "NOT_ESTABLISHED",
+          "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "sealion",
+          "via": "build-dispatch.yml",
+          "session_id": null,
+          "state": "not_established",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch build-dispatch-43428174954-sealion-llama: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "measured"
+          },
+          "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+          "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "sealion",
+          "via": "build-dispatch.yml",
+          "session_id": null,
+          "state": "not_established",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch build-dispatch-43595071315-sealion-llama: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "measured"
+          },
+          "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+          "phrases": "NOT_ESTABLISHED"
         }
       ],
       "stages": {
@@ -4114,7 +4238,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-04T10:26:53Z",
+    "updated_at": "2026-11-17T14:22:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

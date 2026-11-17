@@ -46,6 +46,11 @@ audience/comment watch = this lane.
 
 publish(beat) ⇒ D5-SPOT cleared ∧ concept frozen ∧ signal from D5 seat.
 Until then: drafts only, ∅ publish, ∅ teaser claiming entry/spot/concept.
+Δ 2026-11-17: D5-SPOT = DECLINED (see §6) ⇒ event-claim beats
+{ANN, BIO-1..4, SUB, AW} NEVER fire on an Aha-participation claim;
+∀ beats HELD pending manager ruling. Construction continues
+claim-free per owner BUILD-anyway (2026-11-01); claim-free build
+promo = ∅ until manager ruling lands.
 Copy ∀ beats carries placeholders [FRUSTRATING APP] / [REPLACEMENT] /
 [DEMO LINK] — filled only from D5-seat evidence at fire time.
 4n0n ∀ public artifacts: moniker only, ∅ personal names/handles.
@@ -177,3 +182,21 @@ Next: awards, Nov 20, 11:30 PT.
 - Channel RESOLVED 2026-10-31 (parent confirm): FB Page
   `Dream In Production`, parent publishes + returns URL (see §2).
   D5-owned public surface stays ∅; aha.io surfaces = watch-only.
+
+## §6 Status Δ — 2026-11-17: D5-SPOT DECLINED
+
+- D5-SPOT flipped DECLINED: Aha! canceled registration — Gmail
+  2026-11-16 18:57 PT msg `1a1e770287389fb9` "unable to confirm your
+  participation" 【D5 seat firsthand Gmail, relay 2026-11-17;
+  supersedes reminder msg `1a1e559948230ab0` 2026-11-16 09:13 PT】
+- coordinator@master `df033b6d685c` still shows registering /
+  D5-SPOT open (evidence stale 2026-10-28) = record lag; coordinator
+  Δ = entries-lane single-writer, ¬ this lane.
+- concept FROZEN (manager, 2026-11-17): C1 IdeaInbox — capture ⇒ AI
+  dedupe/cluster ⇒ vote ⇒ roadmap view 【manager chat 9cb1c873
+  fd2199ba】 — freeze satisfies concept leg; spot leg failed ⇒
+  gate ¬clears.
+- ∴ beats {ANN, BIO-1..4, SUB, AW} HELD, ∅ fired, ∅ published;
+  reopening condition = manager ruling on claim-free promo scope
+  ∨ spot reversal evidence. MVT-1 winner relay (owed @2026-11-10)
+  = moot for ANN pick while HELD.

@@ -2,15 +2,15 @@
 
 > Canonical data: `workspace/llm_map/graph/edges.jsonl` + `graph-index.json`, derived by `scripts/graph/cross_plane_link.py` from the plane indexes. This is a view over existing planes, never a source of truth; signals are research signals, never adoption orders.
 
-Observed (repository index): `2026-11-12T13:14:25.053926Z` · Edges: **25329**
+Observed (repository index): `2026-11-17T13:30:36.043677Z` · Edges: **26374**
 
 ## Edges by type
 
-- **about_topic:** 12076
-- **in_domain:** 5266
-- **authored_by:** 3776
-- **starred:** 3280
-- **owned:** 756
+- **about_topic:** 12633
+- **in_domain:** 5465
+- **authored_by:** 3917
+- **starred:** 3420
+- **owned:** 764
 - **watching:** 128
 - **mentions_repo:** 17
 - **submitted_to:** 14

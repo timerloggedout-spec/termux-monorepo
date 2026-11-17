@@ -70,7 +70,8 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
     if not isinstance(records, list):
         raise ValueError("inference_availability_records_must_be_list")
 
-    wiring = catalog.get("inference_wiring", {}).get("wired_invoke", {})
+    inference_wiring = catalog.get("inference_wiring", {})
+    wiring = inference_wiring.get("wired_invoke", {})
     surfaces = _route_surfaces(wiring)
     g4f_route = wiring.get("by_surface", {}).get("g4f-working/gpt4free route", {})
     grouped: dict[str, list[dict[str, Any]]] = {}
@@ -129,6 +130,15 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
 
     census = catalog.get("endpoint_census", {})
     verified_floor = _safe_count(census.get("verified_floor")) if isinstance(census, dict) else None
+    g4f_pool = inference_wiring.get("compounding", {}).get("g4f_verified_pool", {})
+    if not isinstance(g4f_pool, dict):
+        g4f_pool = {}
+    actions_verified = g4f_pool.get("actions_verified", {})
+    if not isinstance(actions_verified, dict):
+        actions_verified = {}
+    actions_providers_ok = actions_verified.get("providers_ok", {})
+    if not isinstance(actions_providers_ok, dict):
+        actions_providers_ok = {}
     g4f_universe = g4f_doc.get("universe", {}) if isinstance(g4f_doc, dict) else {}
     if not isinstance(g4f_universe, dict):
         g4f_universe = {}
@@ -156,10 +166,14 @@ def build_population(feed: dict[str, Any], g4f_working: dict[str, Any] | None = 
         "g4f": {
             "universe_providers": _safe_count(g4f_universe.get("providers_total")),
             "universe_pairs": _safe_count(g4f_universe.get("pairs_total")),
-            "sandbox_verified_pairs": _safe_count(g4f_doc.get("inference_ok")) if g4f_doc else None,
+            "sandbox_verified_pairs": _safe_count(g4f_pool.get("inference_ok_pairs")) if _safe_count(g4f_pool.get("inference_ok_pairs")) is not None else (_safe_count(g4f_doc.get("inference_ok")) if g4f_doc else None),
             "sandbox_verified_provider_count": len(providers_ok) if isinstance(providers_ok, dict) else None,
-            "actions_verified_pairs": None,
-            "actions_verified_evidence": "not_machine_readable_in_desk_feed",
+            "actions_verified_pairs": _safe_count(actions_verified.get("inference_ok")),
+            "actions_verified_attempted_pairs": _safe_count(actions_verified.get("attempted")),
+            "actions_verified_run_id": _safe_count(actions_verified.get("run")),
+            "actions_verified_artifact_id": _safe_count(actions_verified.get("artifact")),
+            "actions_verified_provider_count": len(actions_providers_ok),
+            "actions_verified_evidence": "ops/challenge/desk-feed.json#dispatch.provider_catalog.inference_wiring.compounding.g4f_verified_pool.actions_verified",
         },
         "providers": providers,
     }

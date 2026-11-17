@@ -134,7 +134,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
 /* QUE live feed strip — read-only projection of the producer-of-record feed */
-.que-live-strip{flex:0 0 auto;display:grid;grid-template-columns:minmax(150px,1fr) repeat(4,minmax(100px,.7fr)) minmax(240px,1.6fr);gap:8px;align-items:stretch;padding:8px 12px;background:#0e1420;border-bottom:1px solid var(--line);max-height:156px;overflow:auto}
+.que-live-strip{flex:0 0 auto;display:grid;grid-template-columns:minmax(150px,1fr) repeat(4,minmax(100px,.7fr)) repeat(3,minmax(120px,.8fr)) minmax(240px,1.6fr);gap:8px;align-items:stretch;padding:8px 12px;background:#0e1420;border-bottom:1px solid var(--line);max-height:156px;overflow:auto}
 .que-tile{min-width:0;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--panel);overflow:hidden}
 .que-tile .q-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .que-tile .q-value{font-size:19px;font-weight:750;line-height:1.25;font-variant-numeric:tabular-nums}
@@ -166,6 +166,9 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <div class="que-tile"><div class="q-label">In progress</div><div id="queRunning" class="q-value">—</div><div class="q-note">GitHub Actions runs</div></div>
   <div class="que-tile"><div class="q-label">Claimed</div><div id="queClaimed" class="q-value">—</div><div class="q-note">Dispatch-state feed</div></div>
   <div class="que-tile"><div class="q-label">Escalated</div><div id="queEscalated" class="q-value">—</div><div class="q-note">Dispatch-state feed</div></div>
+  <div class="que-tile"><div class="q-label">Tier 1 / 2 / 3 / 4</div><div id="queTierSplit" class="q-value">—</div><div class="q-note">Queued / running by tier</div></div>
+  <div class="que-tile"><div class="q-label">Governor</div><div id="queGovernorState" class="q-value">—</div><div id="queGovernorNote" class="q-note">Admission + flow state</div></div>
+  <div class="que-tile"><div class="q-label">Priority windows</div><div id="quePriorityState" class="q-value">—</div><div id="quePriorityNote" class="q-note">Current window state</div></div>
   <div class="que-tile que-claims-tile"><div class="q-label">Recent active claims · issue / owner / state</div><div id="queClaims" class="que-claims">No feed loaded</div></div>
 </section>
 <div class="layout">
@@ -1188,7 +1191,7 @@ syncGate();
 var logEl=document.getElementById("eventLog");
 function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
 function setQueText(id,value){var el=document.getElementById(id);if(el)el.textContent=value;}
-function renderQueFeed(feed){
+function renderQueFeed(feed,governor,priority){
  if(!feed||feed.schema!=="que-queue-feed/v1")throw new Error("Unexpected QUE feed schema");
  var q=feed.queue||{},tot=q.totals||{},claims=feed.dispatch_claims||{},counts=claims.counts||{};
  var generated=Date.parse(feed.generated_at||"");if(!Number.isFinite(generated))throw new Error("Missing feed timestamp");
@@ -1197,6 +1200,9 @@ function renderQueFeed(feed){
  setQueText("queFeedState",state);setQueText("queFeedUpdated","Updated "+new Date(generated).toLocaleString()+" · "+Math.floor(age)+"m ago · 10m producer cadence");
  setQueText("queQueued",String(tot.queued??"—"));setQueText("queRunning",String(tot.in_progress??"—"));
  setQueText("queClaimed",String(counts.claimed??"—"));setQueText("queEscalated",String(counts.escalated??"—"));
+ var tierParts=[];["1","2","3","4"].forEach(function(k){var t=(q.tiers||{})[k]||{};tierParts.push("T"+k+" "+(t.queued??0)+"/"+(t.in_progress??0));});setQueText("queTierSplit",tierParts.join(" · "));
+ if(governor&&governor.schema==="que.governor/v1"){var adm=governor.admission||{},flow=governor.flow_governor||{};setQueText("queGovernorState",flow.state||"unknown");setQueText("queGovernorNote",(adm.deferral_stamped_issues_24h??"—")+" deferred / 24h · "+(adm.deferral_stamped_open??"—")+" open · "+(flow.events_total??0)+" flow events");}else{setQueText("queGovernorState","UNAVAILABLE");setQueText("queGovernorNote","Governor feed not reachable");}
+ if(priority&&priority.schema==="que.priority-windows/v1"){var wins=Array.isArray(priority.windows)?priority.windows:[],active=wins.filter(function(w){return w.state==="active";}).length;setQueText("quePriorityState",active+" active / "+wins.length+" total");setQueText("quePriorityNote",wins.slice(0,1).map(function(w){return (w.name||w.chain||"Window")+" · "+(w.state||"unknown");}).join("")||"No configured priority windows");}else{setQueText("quePriorityState","UNAVAILABLE");setQueText("quePriorityNote","Priority feed not reachable");}
  var box=document.getElementById("queClaims");if(box){box.textContent="";var rows=Array.isArray(claims.active_claims)?claims.active_claims.slice(0,5):[];
   if(!rows.length){var empty=document.createElement("div");empty.textContent="No active claims in the latest producer snapshot.";box.appendChild(empty);}
   rows.forEach(function(row){var line=document.createElement("div");var c=row.claim||{};line.textContent="#"+(row.issue??"—")+" · "+(c.by||"unassigned")+" · "+(row.state||"unknown")+" · "+(row.title||row.entry||"");box.appendChild(line);});
@@ -1204,7 +1210,8 @@ function renderQueFeed(feed){
  var tiers=q.tiers||{};log("QUE feed refreshed: "+(tot.queued??0)+" queued, "+(tot.in_progress??0)+" in progress; dispatch claims "+(counts.claimed??0)+" claimed / "+(counts.escalated??0)+" escalated. Feed state: "+state+".");
 }
 var queRefreshBusy=false;
-async function refreshQueFeed(){if(queRefreshBusy)return;queRefreshBusy=true;setQueText("queFeedState","FETCH");try{var response=await fetch("./data/que-queue-feed.json?ts="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});if(!response.ok)throw new Error("HTTP "+response.status);renderQueFeed(await response.json());}catch(err){setQueText("queFeedState","OFFLINE");var dot=document.getElementById("queFeedDot");if(dot)dot.className="que-feed-state stale";setQueText("queFeedUpdated","Feed unavailable: "+String(err.message||err));log("QUE feed refresh failed: "+String(err.message||err));}finally{queRefreshBusy=false;}}
+async function fetchQueJson(path){var response=await fetch(path+"?ts="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});if(!response.ok)throw new Error(path+" HTTP "+response.status);return response.json();}
+async function refreshQueFeed(){if(queRefreshBusy)return;queRefreshBusy=true;setQueText("queFeedState","FETCH");try{var results=await Promise.allSettled([fetchQueJson("./data/que-queue-feed.json"),fetchQueJson("./data/que-governor.json"),fetchQueJson("./data/que-priority-windows.json")]);if(results[0].status!=="fulfilled")throw results[0].reason;renderQueFeed(results[0].value,results[1].status==="fulfilled"?results[1].value:null,results[2].status==="fulfilled"?results[2].value:null);}catch(err){setQueText("queFeedState","OFFLINE");var dot=document.getElementById("queFeedDot");if(dot)dot.className="que-feed-state stale";setQueText("queFeedUpdated","Queue feed unavailable: "+String(err.message||err));log("QUE feed refresh failed: "+String(err.message||err));}finally{queRefreshBusy=false;}}
 document.getElementById("pulseBtn").addEventListener("click",refreshQueFeed);
 document.getElementById("mbPulse").addEventListener("click",refreshQueFeed);
 refreshQueFeed();window.setInterval(refreshQueFeed,60000);

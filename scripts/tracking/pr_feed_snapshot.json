@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-17T01:25:21Z",
+ "read_at": "2026-11-17T01:30:42Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,6 +1956,32 @@
  ],
  "open": [
   {
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "merged_at": null,
+   "updated_at": "2026-11-17T01:29:07Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "c7dc2b9bee505080f536e2977f680db97e856e04",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-17T01:26:38Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "7428149521eb166f40341c26f238b6d01826d937",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
@@ -1966,19 +1992,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2310",
-   "merged": false
-  },
-  {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
-   "merged_at": null,
-   "updated_at": "2026-11-17T01:24:25Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "ae079a224ad4451e37b17b90c91c65e42aea7e1a",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
@@ -1995,25 +2008,12 @@
    "merged": false
   },
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-   "merged_at": null,
-   "updated_at": "2026-11-17T01:21:35Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "7963ce0a5b05b7c17ced1739cc619d38807a1ea3",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
    "number": 5540,
    "title": "Replace simulated admin graph pulses with live runtime events",
    "merged_at": null,
    "updated_at": "2026-11-17T00:36:21Z",
    "created_at": "2026-11-17T00:15:01Z",
-   "merge_commit_sha": "e018205fbb9f2b4722ad6e3925d9ded6913af432",
+   "merge_commit_sha": null,
    "head_ref": "feat/admin-graph-live-runtime-pulses-v4",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -2143,7 +2143,7 @@
    "merged_at": null,
    "updated_at": "2026-11-16T13:31:11Z",
    "created_at": "2026-11-16T13:26:38Z",
-   "merge_commit_sha": "801c0ee211f4fada69aa77983d6c4c51efcf744c",
+   "merge_commit_sha": "f00cbbc7f18db1d00f57375303af51c24a3ddd3f",
    "head_ref": "fix/que-auto-claim-score-normalization-current-master",
    "author": "timerloggedout-spec",
    "labels": [],

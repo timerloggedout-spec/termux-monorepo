@@ -223,9 +223,9 @@
   ],
   "fleet_position": {
    "four_roles_projection": "4 registrations of 100; 20000/h separated installation quota once all installed on termux-monorepo",
-   "owned_apps_established": 10,
+   "owned_apps_established": 11,
    "owned_apps_note": "no REST route lists an account's owned apps; other registrations are NOT ESTABLISHED via API — owner-UI census item of record",
-   "slate_live": "10 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference, RepoStory, DelphiOracle, MoneyBall); 35000/h separated installation quota on termux-monorepo (7 apps x 5000/h) + 5000/h each on repo-story (RepoStory), delphi-oracle (DelphiOracle), moneyball (MoneyBall)"
+   "slate_live": "11 registrations of 100 (Collector, Publisher, Reviewer, Gate, Lifecycle, Swarm, CrossReference, RepoStory, DelphiOracle, MoneyBall, Understudy); 35000/h separated installation quota on termux-monorepo (7 apps x 5000/h) + 5000/h each on repo-story (RepoStory), delphi-oracle (DelphiOracle), moneyball (MoneyBall), understudy (Understudy)"
   },
   "limits": {
    "app_jwt_max_lifetime_min": 10,
@@ -520,7 +520,7 @@
    ]
   }
  },
- "updated_at": "2026-11-03T22:41Z",
+ "updated_at": "2026-11-17T16:27Z",
  "web_pr_failsafe": {
   "doc": "docs/ops/FAILSAFE-PUBLISH-PROTOCOL.md",
   "posture": "fallback for merge (+small creates) only; primary stays PAT helper / AppID token; oracle verification still binds",
@@ -680,6 +680,47 @@
     "limit": 5000,
     "remaining": 4999,
     "used": 1
+   },
+   "installations_count": 1,
+   "routes": [
+    "GET /app (App JWT)",
+    "GET /app/installations",
+    "GET /installation/repositories",
+    "GET /rate_limit (installation token)"
+   ]
+  }
+ },
+ "understudy": {
+  "app_id": 5803279,
+  "avatar": "avatar.png in understudy-pilot package; uploaded 2026-11-17; PNG 1600x1600, 25,673 B <= 1 MB cap",
+  "client_id": "Iv23liVLfWCOa6HQyBwS",
+  "events": [],
+  "installation": {
+   "account": "timerloggedout-spec",
+   "id": 183001677,
+   "repositories": [
+    "understudy"
+   ],
+   "repository_selection": "selected"
+  },
+  "moniker": "Understudy \u00b7 Aha! AI Builder Day (D5)",
+  "moniker_detail": "canonical Understudy; leet marks Und3rstudy > Under5tudy (mark layer only); queued alt Antidote; bounces not consumed; issued by registry lane 2026-11-17, docs/ops/AGENT-MONIKERS.md (PR #5560, register blob a6f2239469ce)",
+  "name": "Termux Fleet Understudy",
+  "permissions": {
+   "contents": "write",
+   "issues": "write",
+   "metadata": "read",
+   "pull_requests": "write"
+  },
+  "public": true,
+  "role": "competition-entry-actor (D5 Aha! AI Builder Day; project IdeaInbox) - build-start pair dispatch from the D5 seat 2026-11-17 (gate cleared); repo timerloggedout-spec/understudy (id 1461521301) created by the AppID lane at build start; D5-SPOT declined gates claims only - no event claim in any app/repo text",
+  "slug": "termux-fleet-understudy",
+  "verified": {
+   "at": "2026-11-17T16:25Z",
+   "bucket": {
+    "limit": 5000,
+    "remaining": 5000,
+    "used": 0
    },
    "installations_count": 1,
    "routes": [

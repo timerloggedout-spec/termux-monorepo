@@ -61,6 +61,11 @@ class ShieldContextTests(unittest.TestCase):
         self.assertIn("secret", result["reason"])
         self.assertNotIn(token, str(result))
 
+    def test_credential_assignment_in_text_is_quarantined(self):
+        result = shield.classify_signal(trusted_signal(text="api_key = ordinary-looking-value-123456"))
+        self.assertEqual(result["disposition"], "quarantine")
+        self.assertEqual(result["reason"], "secret_bearing_signal")
+
     def test_irrelevant_signal_is_deferred(self):
         result = shield.classify_signal(trusted_signal(relevance=0.05))
         self.assertEqual(result["disposition"], "defer")

@@ -41,9 +41,28 @@ One object per packet (D0–D5), mirroring log §4. Plus slate-history events (e
 | `prizes{}` | `{status (ESTABLISHED\|NOT_ESTABLISHED), pool, tiers[{place, award, source_url}], notes}` — `pool`/`notes` optional; tiers verbatim amounts only |
 | `opportunity_cost{}` | see Opportunity-cost section below — always populated per event |
 | `registration{}` | `{state, evidence[]}` — platform join/registration state with its proof |
-| `submission{}` | `{state (none\|draft\|submitted\|confirmed), at, confirmation_ref}` |
+| `submission{}` | `{state (none\|draft\|submitted\|confirmed), at, confirmation_ref, evidence[]}` — evidence may confirm state without exposing an exact submission timestamp; do not substitute project-created time for submission time |
 | `brief{}` | `{evidence_pack_ref, anchor_lines[]}` — the verbatim official-brief pack the concept generation anchors to |
 | `projects[]` | see below |
+
+## candidate_events[]
+
+Candidate opportunities found by discovery but not yet promoted to the active event slate. They may be ranked by the opportunity-cycle, but remain distinct from events[] until a Manager/owner slate decision. A candidate is not a registration or submission commitment.
+
+| field | meaning |
+|---|---|
+| id, name, host, platform, official_url | candidate identity and canonical event page |
+| rules_url | official rules page when separately published |
+| status | candidate/watch/hold/screened-out state; eligibility uncertainty must be explicit |
+| dates{} | verified date anchors; each timed date carries at, tz, and source |
+| eligibility{} | requirements, state, source URL, fetched_at, and unresolved hard gates |
+| constraints[] | sourced participation, originality, build and submission requirements |
+| prizes{} | verified award tiers, source, fetched_at, and explicit unresolved page conflicts |
+| discovery_source{} | directory/source name, URL(s), discovery method and fetched_at |
+| sources[] | source URL + fetched_at for every populated fact |
+| aliases[], search_terms[] | matching terms for search and reconciliation |
+
+Candidate records feed opportunity prioritization. They do not automatically become wagering-book subjects: promotion to events[], entrant registration and book-subject creation are separate governed decisions. A candidate with unresolved eligibility may be visible/ranked for triage but must not be treated as eligible.
 
 ## projects[] (nested per event)
 

@@ -5,6 +5,17 @@ judges, etc." The tracking system (`ops/challenge/coordinator.json` +
 Neon DB + opportunity ledger) covers all of it, **public sources only**,
 every fact sourced + `fetched_at`, gaps `NOT_ESTABLISHED`.
 
+## Discovery sources — new-opportunity intake
+
+The discovery layer must search more than already-known event pages. **Devpost is now an explicit candidate-discovery source**, not an exclusive source and not the final record of truth:
+
+- **Devpost directory:** https://devpost.com/hackathons — scan public, upcoming/open listings; use online/in-person, status, length, interest tags, host and public/invite-only filters to widen and narrow the candidate set.
+- **Devpost AI category:** https://devpost.com/c/artificial-intelligence — focused AI challenge discovery.
+- **Per-event Devpost pages and rules:** verify eligibility, dates/time zones, project originality, required technologies, submission fields, judging, prizes and updates before admission.
+- **Other discovery lanes remain in scope:** sponsor/organizer pages (including AWS Builder Center and direct Google/Atlassian/Mozilla program pages), lablab.ai, MLH, HackerEarth and Devfolio. These are alternatives/complements; a directory listing is a lead, not verified event truth.
+
+**Automation boundary (important):** the current scripts/challenge/osint_watch.py watches official URLs already present in coordinator.json; it does not crawl the global Devpost directory or discover new events by itself. C17 / SLAY HACKS is a firsthand-verified candidate intake from the Devpost directory and its event/rules pages on 2026-11-16. A recurring directory-discovery collector remains a separate implementation task. Every candidate must carry discovery_source, sources[] and fetched_at; unresolved eligibility stays a hard hold, not an inferred pass.
+
 ## Surfaces
 
 - **EVENTS** — organizer intel (`events[].organizers[]`), rules/prize
@@ -58,3 +69,26 @@ galleries open). Prizes column shows tier counts when ESTABLISHED
 — Stood up 2026-10-28 by the challenge-entries-manager assistant seat;
 entries lane (a33d3ca1) owns the source records, DB lane pattern
 (e3055a9c) owns the store.
+
+## Recurring Devpost directory collector
+
+`scripts/challenge/devpost_discovery.py` scans pages 1–5 of both the public Devpost hackathon
+directory and AI category on a daily GitHub Actions schedule (10 bounded
+page requests with a short inter-request pause). Source failures are retained
+in each run receipt; if all pages fail, the previous feed is left untouched. It writes
+`ops/challenge/discovery/devpost-directory.json`, a deduplicated, timestamped
+lead feed. Each record carries source URLs, first/last seen, a title-keyword
+triage heuristic, and explicit `UNVERIFIED_LEAD` / `NOT_ESTABLISHED`
+states. The score is a search-order hint only—not fit probability, eligibility,
+or expected value.
+
+The collector never writes `coordinator.json`, promotes candidates, registers,
+submits, or creates wagering-book subjects. Event pages and rules must be
+verified before a separate governed admission. Existing human review notes and
+verification states survive later scans. A run with both sources unavailable
+fails without replacing the last good feed.
+
+The directory scan currently covers Devpost's general directory and AI
+category. lablab.ai, MLH, HackerEarth, Devfolio, and sponsor/organizer pages
+remain complementary discovery sources recorded in the feed as not yet
+automated; they are not falsely reported as crawled by this collector.

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.timerloggedout-spec.github.io/wagertome/wallet-verification-receipt/v1",
+  "title": "Wagertome Wallet Verification Receipt",
+  "description": "PROPOSAL ONLY. Minimal receipt for domain-bound proof of wallet-address control. Never contains private keys, seed phrases, raw signatures, or transaction authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "receipt_id",
+    "challenge_ref",
+    "domain",
+    "chain_id",
+    "address",
+    "verification_status",
+    "issued_at",
+    "expires_at",
+    "verified_at",
+    "policy_version"
+  ],
+  "properties": {
+    "schema": {
+      "const": "wagertome.wallet-verification-receipt/v1"
+    },
+    "receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "challenge_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chain_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Explicitly allowlisted chain/network identifier; representation to be finalized by owner."
+    },
+    "address": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Public wallet address only."
+    },
+    "verification_status": {
+      "enum": [
+        "VERIFIED",
+        "REJECTED",
+        "EXPIRED"
+      ]
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verified_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1324,3 +1324,23 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: wagertome-public-wallet-lane
+    title: Wagertome public wallet and participation lane — gated architecture blueprint
+    author: ChatGPT
+    status: draft
+    priority: P1
+    path: active/wagertome-public-wallet-lane/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues:
+      - 5212
+    related_prs: []
+    related_branches:
+      - proposal/wagertome-public-wallet-lane-20261117
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

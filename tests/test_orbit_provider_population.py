@@ -102,9 +102,19 @@ class OrbitProviderPopulationTests(unittest.TestCase):
     def test_live_dispatch_population_exposes_full_registered_provider_universe(self):
         root = Path(__file__).resolve().parents[1]
         result = population.load_population(root)
-        self.assertGreaterEqual(result["provider_count"], 90)
-        self.assertGreaterEqual(result["endpoint_census"]["verified_floor"], 7000)
-        self.assertGreaterEqual(result["inference_wiring"]["wired"], 90)
+        self.assertEqual(result["provider_count"], 93)
+        self.assertEqual(result["endpoint_census"]["verified_floor"], 7341)
+        self.assertEqual(result["inference_wiring"]["wired"], 92)
+        self.assertEqual(result["inference_wiring"]["total"], 93)
+        self.assertEqual(
+            sum(1 for item in result["providers"] if item["invoke_route_registered"]),
+            92,
+        )
+        self.assertEqual(result["g4f"]["universe_providers"], 160)
+        self.assertEqual(result["g4f"]["universe_pairs"], 9588)
+        self.assertEqual(result["g4f"]["sandbox_verified_pairs"], 160)
+        self.assertEqual(result["g4f"]["actions_verified_pairs"], 83)
+        self.assertEqual(result["g4f"]["actions_verified_attempted_pairs"], 160)
         candidates = population.as_orbit_candidates(result)
         self.assertEqual(len(candidates), result["provider_count"])
         self.assertTrue(all(item["identity"]["kind"] == "provider_route" for item in candidates))

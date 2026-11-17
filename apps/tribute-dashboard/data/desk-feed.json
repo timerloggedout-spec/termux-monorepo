@@ -1,6 +1,6 @@
 {
   "schema": "desk-feed/v1.3",
-  "generated_at": "2026-11-17T14:31:00Z",
+  "generated_at": "2026-11-17T14:36:00Z",
   "built_by": "providers-dispatch fix seat 5f3a3217 (full-catalog resolution, owner order 2026-11-01) via contribution desk refresh pattern",
   "refresh": "The Contribution Desk lane refreshes this pack by PR as traversals move; states carry their audit basis in each row's evidence. v1.1 (viz lane, owner order 2026-10-30): provider_usage[] per traversal \u2014 the desk stamps provider + session at dispatch time; consumption stays null until a provider surface establishes it, never estimated.",
   "desk": {
@@ -3457,8 +3457,8 @@
         ],
         "note": "SUBMIT-ONCE entry: the first send must be complete + receipt-verified. Priority decays through the cushion tiers after the wall."
       },
-      "project": "AI Builder Day Hackathon - November 2026 (Aha!) \u2014 concept \u2205 (freeze running at D5 seat)",
-      "artifact_repo": null,
+      "project": "Understudy \u2014 AI Builder Day Hackathon - November 2026 (Aha!) \u00b7 concept FROZEN: C1 IdeaInbox",
+      "artifact_repo": "timerloggedout-spec/understudy",
       "status": "queued",
       "stages": {
         "spec": "in-progress",
@@ -3470,8 +3470,8 @@
         "sync": "pending"
       },
       "evidence": {
-        "note": "coordinator@master df033b6d685c: D5 registering \u00b7 projects [] \u00b7 submission none \u00b7 concept candidates delivered \u21a6 manager (freeze = manager word) \u00b7 **gate D5-SPOT = DECLINED** (fresh firsthand Gmail read 2026-11-17: reminder msg 2026-11-16 09:13 PT superseded by cancellation msg 2026-11-16 18:57 PT \u2014 Aha!/Zoom host: unable to confirm participation; kickoff webinar access revoked). Per manager directive + owner BUILD-anyway rule: construction proceeds CLAIM-FREE; submission claim gated OFF pending manager ruling.",
-        "naming": "naming gate held: Registry issuance precedes new D5 surfaces/issues \u2014 issuance requested \u21a6 Registry (ref 754373c7); moniker form `Moniker \u00b7 What-it-is (D5)` (convention PR #5558 merged bca4313025b0 \u00b7 coordinator PR #5559 merged fb079f8cb8d6); platform entrant handle of record = entrant{n0nAha}[platform:aha-io] (\u00ac fleet moniker)",
+        "note": "coordinator@master df033b6d685c: D5 registering \u00b7 projects [] \u00b7 submission none \u00b7 concept candidates delivered \u21a6 manager (freeze = manager word) \u00b7 **gate D5-SPOT = DECLINED** (fresh firsthand Gmail read 2026-11-17: reminder msg 2026-11-16 09:13 PT superseded by cancellation msg 2026-11-16 18:57 PT \u2014 Aha!/Zoom host: unable to confirm participation; kickoff webinar access revoked). Manager ruling ISSUED (2026-11-17): submission claim OFF unless reinstatement lands pre-wall; appeal in flight (fired at D5 seat); construction proceeds CLAIM-FREE per owner BUILD-anyway.",
+        "naming": "ISSUED: `Understudy \u00b7 Aha! AI Builder Day (D5)` \u2014 Registry PR #5560 merged 15a102f9e8a1 (register blob a6f2239469ce); repo timerloggedout-spec/understudy + Termux Fleet Understudy App dispatched \u21a6 AppID lane (receipts owed); platform entrant handle = entrant{n0nAha}[platform:aha-io] (\u00ac fleet moniker)",
         "desk": "row created by desk 2026-11-17 at build-start prep (kickoff 09:00 PT today) WITH priority_timebox per standing requirement 2026-11-03; QUE spec skeleton prepared at desk \u2014 filing fires on Registry issuance (flow: issuance \u21d2 repo+AppID dispatch \u21d2 spec \u21d2 Desk QUE \u21d2 Swarm)",
         "in_window_development": {
           "rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, \u00ac done; done only at wall/submission close.",
@@ -3479,7 +3479,7 @@
           "wall": "2026-11-19 12:00 PT submit wall (SUBMIT-ONCE)"
         }
       },
-      "next": "kickoff 2026-11-17 09:00 PT \u00b7 on Registry issuance \u21d2 repo+AppID dispatch (AppID lane 7075f9c0) \u21d2 spec \u21d2 Desk QUE filing \u21d2 Swarm build (claim-free construction; submission claim OFF pending manager ruling) \u00b7 landing Nov 18 EOD \u00b7 wall 2026-11-19 12:00 PT SUBMIT-ONCE (claim gated) \u00b7 awards 2026-11-20 11:30 PT",
+      "next": "kickoff 2026-11-17 09:00 PT \u00b7 on Registry issuance \u21d2 repo+AppID dispatch (AppID lane 7075f9c0) \u21d2 spec \u21d2 Desk QUE filing \u21d2 Swarm build (claim-free construction; submission claim OFF \u2014 ruling issued; reinstatement pre-wall re-opens it; appeal in flight) \u00b7 landing Nov 18 EOD \u00b7 wall 2026-11-19 12:00 PT SUBMIT-ONCE (claim gated) \u00b7 awards 2026-11-20 11:30 PT",
       "resubmit_policy": "SUBMIT-ONCE \u2014 complete + receipt-verified at first send"
     },
     {
@@ -4238,7 +4238,7 @@
   ],
   "provenance": "Seeded by the viz lane from firsthand PAT-API audits on 2026-10-30 (contribution-desk audit + lane-level identification for the challenge manager): every PR, merge SHA (master-history verified), CI count and sync HEAD above was read from the live record; items sourced from another lane's record say so in their evidence.",
   "meta": {
-    "updated_at": "2026-11-17T14:31:00Z",
+    "updated_at": "2026-11-17T14:36:00Z",
     "standing_rule": "OWNER MANDATE 2026-11-03: continuous improvement && development while the window is allowed \u2014 landing = checkpoint, never done; done only at wall/submission close. Parked-but-open entry = violation, flagged \u2191main.",
     "d1_priority_elevation": {
       "order": "owner order 2026-11-03 via main (next to the continuous-development mandate)",

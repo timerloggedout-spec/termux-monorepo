@@ -6,7 +6,7 @@
      this file firsthand: graph model + interaction behavior identical; this copy carries
      additional repo-side hardening (runVerify model-validation gate on dispatch payloads,
      versioning wiring) the Muse copy lacks. The Muse-domain copy is SUPERSEDED.
-     Self-contained page: no fetches, no credentials; pulses simulated, dispatch payloads prepared-not-sent. -->
+     Live QUE feed is fetched from published producer snapshots; graph pulse animation is visual-only; dispatch payloads remain prepared-not-sent. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -370,8 +370,8 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
     <label class="flabel" for="payloadOut">Dispatch payload (prepared, not sent)</label>
     <textarea id="payloadOut" readonly placeholder="No payload prepared yet."></textarea>
 
-    <h2>Event trace <span class="sim-badge">simulated</span></h2>
-    <div class="event-log" id="eventLog" aria-live="polite"><div>Idle. Press “Send pulse” to trace one request end-to-end.</div></div>
+    <h2>Operational activity <span class="clean-badge">producer-backed</span></h2>
+    <div class="event-log" id="eventLog" aria-live="polite"><div>Waiting for the first QUE producer snapshot. This log records successful feed refreshes and source errors; it does not fabricate dispatch events.</div></div>
 
     <h2>Resource inventory</h2>
     <p class="small">Full fleet inventory — not just examples. Statuses reconciled against termux-monorepo master (fetched 2026-10-30 via PAT API): docs/DEPLOYMENT-LANES.md is the authority; where the repo disagrees with itself (Pages / Render / Cloudflare), the SSOT status governs and a ⚠ repo delta names both sources. Status snapshot — not live data; this static page does not call these endpoints.</p>

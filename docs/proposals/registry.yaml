@@ -1324,3 +1324,24 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
+  - id: aws-emulator-agent-fidelity
+    title: "AWS Emulator adoption and agent-built fidelity engineering loop"
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/aws-emulator-agent-fidelity/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feat/aws-emulator-agent-fidelity
+    related_proposals:
+      - aws-free-tier-strands-delphi-oracle
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
+      - termux-smoke

@@ -1,0 +1,25 @@
+flowchart TD
+    SPEC["Authoritative contracts / Smithy API models"] --> TESTS["Test authors: deterministic fidelity fixtures"]
+    REF["Reference behavior / approved sandbox oracle"] --> TESTS
+    TESTS --> CORPUS[("Versioned fidelity corpus")]
+    CORPUS --> REPLAY["Gap finders: replay and compare"]
+    REPLAY --> CLUSTER["Cluster failures by root cause"]
+    CLUSTER --> QUE["Existing QUE / QDesk bounded issue admission"]
+    QUE --> FIX["Fixer: one issue, isolated worktree"]
+    FIX --> GATE["Independent quality + security + regression gates"]
+    GATE -->|fail| QUE
+    GATE -->|pass| PR["Existing PR / promotion controls"]
+    PR --> EVIDENCE["Existing SHE / JSONL / ATES / 3L0 evidence"]
+    EVIDENCE --> MANAGER["Existing manager-policy evaluation"]
+    MANAGER --> TESTS
+
+    EMU["Optional pinned AWS Emulator host runtime"] -.-> REPLAY
+    LOCALSTACK["Optional LocalStack comparison"] -.-> REPLAY
+    AWS["Real AWS sandbox: separately approved only"] -.-> REF
+
+    classDef source fill:#e8f0fe,stroke:#315ea8,color:#15294b
+    classDef gate fill:#fff3cd,stroke:#9a6b00,color:#4a3600
+    classDef optional fill:#f2f2f2,stroke:#777,color:#222
+    class SPEC,REF source
+    class GATE,PR gate
+    class EMU,LOCALSTACK,AWS optional

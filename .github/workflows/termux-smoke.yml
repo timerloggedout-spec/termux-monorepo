@@ -36,6 +36,11 @@ jobs:
       - name: Smoke gate regression tests
         run: python3 -B -m unittest discover -s tests -p 'test_termux_smoke.py' -v
 
+      - name: ORBIT and SHIELD contract tests
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_shield_context.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_orbit_arbitration.py' -v
+
       - name: Core smoke (required)
         run: python3 scripts/ci/termux_smoke.py
 

@@ -1714,6 +1714,26 @@ Linguist lands the name in the Matrice (their leg).
 Marks / leet forms: none issued. NOT an App moniker —
 ∅ SSOT App-table row, ∅ actor/slug provisioning.
 
+## Opportunity moniker issuance — the A/C/D remap register (2026-11-17)
+
+Owner-approved remap (QUE #5556, 2026-11-17): the A/C/D opportunity codes stay the machine keys; each entry gains a Registry-issued moniker + mandatory descriptor. Form: `Moniker · What-it-is (CODE)`. History reads as written — no retroactive renames; all new surfaces use the moniker form. `coordinator.json` gains a `moniker` field beside the code (entries lane stays single writer). New entries receive moniker + descriptor at intake/graduation — a bare code never circulates unexplained.
+
+| Code | Moniker form | What it is |
+|---|---|---|
+| D1 | `Summa · StudySprint` | Education app entry; judging Nov 5–18 |
+| D2 | `Headlong · Vultr Agent Rush` | Agent build entry; wall passed unlanded |
+| D3 | `Lensmith · ListingLens` | Builder.io entry; terminal, 0 submissions |
+| D5 | *(issues at build start 2026-11-17, with its new repo + AppID)* | Build entry; wall Nov 19 12:00 PT |
+| C8 | `Forgehand · Codegeist` | Jira Forge app; closes Dec 22 |
+| C11 | `Syllabus · AMD Academy` | Course-completion campaign; internal course units C1–C7 get course descriptors (ends the C-collision) |
+| C12 | `Tallyvault · Receipts Vault` | UGREEN Hackathon Track 01; R1 submitted 2026-11-15 |
+| C13 | `Covenant · Digital Promise RFP` | 18-month capacity call due 2026-11-20 |
+| C14 | `Ember · Mozilla` | HOLD |
+| C15 | `Surveyor · Amazon ARA` | FAIL stands this cycle |
+
+Issuance notes (screens of record, 2026-11-17): S1 in-fleet — the coined forms {Headlong · Lensmith · Forgehand · Tallyvault · Surveyor} are 0-hit across the monorepo and this SSOT; `Summa`'s code-search mass is `summary`-compound noise (the descriptor `StudySprint` disambiguates); `Syllabus`'s hits are StudySprint's own course content — descriptive fit for the AMD Academy campaign, not an identity occupant; `Covenant` has one stray text hit, no identity occupant. **Adjacency of record:** `Ember` is a member of the v3 derivation adjective pool (`scripts/registration_monikers/registry.py`, `V3_ADJECTIVES`) — a derivable component of future 4n0n handles, not an issued identity; this issuance consumes it at the opportunity layer only and the pool membership stands (a handle that later derives with `Ember` reads as a handle, never as the C14 opportunity). Scope: opportunity display layer only — these are not App monikers (no App-table rows), not 4n0n registration monikers (never in `config/registration_monikers.json`), and not product brands; external challenge names (StudySprint, Codegeist, Receipts Vault, …) are the entries' own names, cited as descriptors, not coined here. D5's moniker issues at its build start today under the owner build-start rule, with its repo + AppID, and joins this register by amendment.
+
+
 ## Rules
 
 1. Automated comments: **display** moniker in backticks; **ping** only the live trigger (`@jules`, `@gemini-cli`, `@deepseek` / `@deepseek-ci`).

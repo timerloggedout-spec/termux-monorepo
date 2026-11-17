@@ -34,6 +34,19 @@ class OrbitProviderPopulationTests(unittest.TestCase):
                             },
                         }
                     },
+                    "compounding": {
+                        "g4f_verified_pool": {
+                            "inference_ok_pairs": 160,
+                            "of_universe_pairs": 9588,
+                            "actions_verified": {
+                                "inference_ok": 83,
+                                "attempted": 160,
+                                "run": 41457191473,
+                                "artifact": 13154370032,
+                                "providers_ok": {"Gemini": 18, "AnyProvider": 29},
+                            },
+                        }
+                    },
                     "endpoint_census": {"verified_floor": 7341, "counted_at": "2026-11-01"},
                 }
             },
@@ -56,8 +69,12 @@ class OrbitProviderPopulationTests(unittest.TestCase):
         gemini = next(item for item in result["providers"] if item["id"] == "g4f/Gemini")
         self.assertEqual(gemini["g4f_sandbox_verified_pairs"], 2)
         self.assertTrue(gemini["invoke_route_registered"])
-        self.assertIsNone(result["g4f"]["actions_verified_pairs"])
-        self.assertEqual(result["g4f"]["actions_verified_evidence"], "not_machine_readable_in_desk_feed")
+        self.assertEqual(result["g4f"]["sandbox_verified_pairs"], 160)
+        self.assertEqual(result["g4f"]["actions_verified_pairs"], 83)
+        self.assertEqual(result["g4f"]["actions_verified_attempted_pairs"], 160)
+        self.assertEqual(result["g4f"]["actions_verified_run_id"], 41457191473)
+        self.assertEqual(result["g4f"]["actions_verified_artifact_id"], 13154370032)
+        self.assertEqual(result["g4f"]["actions_verified_provider_count"], 2)
         alpha = next(item for item in result["providers"] if item["id"] == "alpha")
         self.assertEqual(alpha["dispatch_classes"], ["proven"])
         self.assertEqual(alpha["availability_record_count"], 2)

@@ -27,6 +27,10 @@ _INSTRUCTION_OVERRIDE = re.compile(
     r"|send\s+(?:the\s+)?credentials?",
     re.IGNORECASE,
 )
+_SECRET_TEXT = re.compile(
+    r"(?i)(?:sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|"
+    r"AIza[0-9A-Za-z_-]{30,}|(?:api[_-]?key|access[_-]?token|password)\\s*[:=]\\s*[A-Za-z0-9_./+=-]{12,})"
+)
 
 
 def _has_secret_key(value: Any, depth: int = 0) -> bool:
@@ -81,7 +85,7 @@ def classify_signal(signal: dict[str, Any]) -> dict[str, Any]:
         "urgency": urgency,
     }
 
-    if _has_secret_key(signal):
+    if _has_secret_key(signal) or _SECRET_TEXT.search(text):
         return {**base, "disposition": "quarantine", "reason": "secret_bearing_signal"}
     if signal.get("security_critical") is True or urgency == "critical":
         return {**base, "disposition": "escalate", "reason": "critical_security_or_operational_signal"}

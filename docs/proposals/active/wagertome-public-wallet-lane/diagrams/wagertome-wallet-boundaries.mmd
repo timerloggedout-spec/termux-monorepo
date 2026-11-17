@@ -1,0 +1,35 @@
+flowchart TB
+  subgraph PUBLIC["Public web · read-only by default"]
+    DISC["Discovery + rules"]
+    BOOKUI["Wagertome book view"]
+    ARENA["WagerDome arena · HELD"]
+    ONBOARD["Wallet onboarding · DISABLED"]
+  end
+  subgraph AUTH["Authorization boundary"]
+    OWNER["Explicit owner ruling"]
+    DOE["DoE conformity review"]
+    SEC["Security + privacy review"]
+  end
+  subgraph ID["Separate identity service · proposed"]
+    CHALLENGE["Domain-bound challenge"]
+    VERIFY["Signature verification"]
+    RECEIPT["Append-only verification receipt"]
+    PROFILE["Participant profile · consented"]
+    INTAKE["Non-financial intake · separately gated"]
+  end
+  subgraph RECORDS["Authoritative record planes"]
+    BOOK["Private Wagertome book + ledger"]
+    FEED["Approved read-only book feed"]
+    PROJ["Generated projection + mirror"]
+    WALLET["Existing wallet-ledger authority"]
+  end
+  DISC --> BOOKUI
+  BOOK --> FEED --> PROJ --> BOOKUI
+  BOOKUI -. "no write path" .-> BOOK
+  ONBOARD -. "blocked until all approvals" .-> CHALLENGE
+  OWNER --> DOE --> SEC
+  SEC --> CHALLENGE
+  CHALLENGE --> VERIFY --> RECEIPT --> PROFILE --> INTAKE
+  INTAKE -. "no automatic book mutation" .-> BOOK
+  PROFILE -. "read by reference only when approved" .-> WALLET
+  ARENA -. "held; future references only" .-> BOOK

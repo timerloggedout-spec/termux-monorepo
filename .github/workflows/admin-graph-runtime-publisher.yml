@@ -1,0 +1,74 @@
+name: Admin Graph Runtime Publisher
+
+on:
+  workflow_job:
+    types: [queued, in_progress, completed]
+  schedule:
+    - cron: "*/2 * * * *"
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: admin-graph-runtime-publisher-${{ github.event.workflow_job.run_id || 'refresh' }}-${{ github.event.workflow_job.id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: admin-graph-runtime-publisher
+    if: >-
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_job' && github.event.workflow_job.name != 'admin-graph-runtime-publisher')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Mint read-only Actions token
+        id: app-token
+        uses: actions/create-github-app-token@b60ed23e06e1e229cd0384bf542ad2781a8df21e # v3
+        with:
+          app-id: ${{ vars.TERMUX_FLEET_SWARM_APP_ID }}
+          private-key: ${{ secrets.TERMUX_FLEET_SWARM_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-actions: read
+          permission-contents: read
+
+      - name: Normalize job lifecycle event
+        if: github.event_name == 'workflow_job'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_FILE: ${{ github.event_path }}
+        run: |
+          python3 scripts/ops/admin_graph_runtime_event.py \
+            --event-file "$EVENT_FILE" --event-name "$EVENT_NAME" \
+            --output runtime-event.json
+
+      - name: Reconcile recent workflow states
+        if: github.event_name == 'schedule'
+        env:
+          TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?per_page=30" \
+            -o workflow-runs.json
+          python3 scripts/ops/admin_graph_runtime_event.py \
+            --event-file workflow-runs.json --event-name workflow_snapshot \
+            --output runtime-event.json
+
+      - name: Publish verified events
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 3 --retry-all-errors \
+            -X POST "https://admin-graph-live.timerloggedout.workers.dev/ingest" \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+            -H "Content-Type: application/json" \
+            --data-binary @runtime-event.json \
+            -o /dev/null

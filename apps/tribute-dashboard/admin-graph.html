@@ -132,6 +132,19 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 .btn{min-height:44px;padding:10px 14px}.btn.small{min-height:44px;padding:9px 12px}.canvas-toolbar select{min-height:44px}.tpl{min-height:44px}input[type=text]{min-height:44px}select{min-height:44px}.frow-edit input{min-height:40px}
 .mobile-bar{display:flex;flex-wrap:wrap;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(17,21,31,.98);border-top:1px solid var(--line)}.mobile-bar .btn{flex:1 1 21%;min-height:48px;font-size:13px;padding:8px 4px}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+/* QUE live feed strip — read-only projection of the producer-of-record feed */
+.que-live-strip{flex:0 0 auto;display:grid;grid-template-columns:minmax(150px,1fr) repeat(4,minmax(100px,.7fr)) minmax(240px,1.6fr);gap:8px;align-items:stretch;padding:8px 12px;background:#0e1420;border-bottom:1px solid var(--line);max-height:156px;overflow:auto}
+.que-tile{min-width:0;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:var(--panel);overflow:hidden}
+.que-tile .q-label{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.que-tile .q-value{font-size:19px;font-weight:750;line-height:1.25;font-variant-numeric:tabular-nums}
+.que-tile .q-note{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.que-feed-state{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:5px}
+.que-feed-state.live{background:var(--green)}.que-feed-state.stale{background:#fb7185}
+.que-claims{font-size:11px;line-height:1.35;overflow:auto;max-height:90px;color:var(--ink)}
+.que-claims div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:900px){.que-live-strip{grid-template-columns:repeat(3,minmax(105px,1fr));max-height:190px}.que-live-strip .que-claims-tile{grid-column:span 3}}
+@media(max-width:520px){.que-live-strip{grid-template-columns:repeat(2,minmax(100px,1fr));padding:6px}.que-live-strip .que-claims-tile{grid-column:span 2}.que-tile .q-value{font-size:17px}}
 </style>
  <script src="./versioning.js" defer></script>
 </head>
@@ -139,14 +152,22 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 <header class="topbar">
   <div>
     <h1>Admin Interaction Graph</h1>
-    <div class="sub">Canonical model → deterministic render · draft, verify, diff &amp; dispatch-prep from this screen · <span class="sim-badge">SIMULATED PULSES — prototype, not live traffic</span> <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
+    <div class="sub">Canonical model → deterministic render · live QUE queue + dispatch claims · inspect, verify &amp; trace <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
   </div>
   <div class="controls" role="group" aria-label="Graph controls">
-    <button class="btn primary" id="pulseBtn" type="button">▶ Send pulse</button>
-    <button class="btn" id="playPauseBtn" type="button" aria-pressed="false">⏸ Pause motion</button>
+    <button class="btn primary" id="pulseBtn" type="button">↻ Refresh QUE feed</button>
+    
     <button class="btn" id="resetBtn" type="button">Reset layout</button>
   </div>
 </header>
+<section class="que-live-strip" aria-label="Live QUE dispatch feed">
+  <div class="que-tile"><div class="q-label"><span id="queFeedDot" class="que-feed-state"></span>QUE producer feed</div><div id="queFeedState" class="q-value">Loading</div><div id="queFeedUpdated" class="q-note">Waiting for feed snapshot</div></div>
+  <div class="que-tile"><div class="q-label">Queued</div><div id="queQueued" class="q-value">—</div><div class="q-note">Across all four tiers</div></div>
+  <div class="que-tile"><div class="q-label">In progress</div><div id="queRunning" class="q-value">—</div><div class="q-note">GitHub Actions runs</div></div>
+  <div class="que-tile"><div class="q-label">Claimed</div><div id="queClaimed" class="q-value">—</div><div class="q-note">Dispatch-state feed</div></div>
+  <div class="que-tile"><div class="q-label">Escalated</div><div id="queEscalated" class="q-value">—</div><div class="q-note">Dispatch-state feed</div></div>
+  <div class="que-tile que-claims-tile"><div class="q-label">Recent active claims · issue / owner / state</div><div id="queClaims" class="que-claims">No feed loaded</div></div>
+</section>
 <div class="layout">
   <aside class="left" data-scrollable="1" aria-label="Edge legend, filters and templates">
     <h2>Edge taxonomy</h2>
@@ -423,7 +444,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <button class="btn" id="mbDispatch" type="button">Prepare dispatch</button>
   <button class="btn primary" id="mbProposal" type="button">＋ Proposal</button>
 </div>
-<footer class="note">Static prototype. Primary target surface: BLU View 5 (B160V), touch-first; desktop secondary. The diagram is a canonical data model (model version shown in Verify) rendered deterministically to SVG; Mermaid and JSON exports are generated from that same model. The hand sketch was a semi-random concept draft, not a spec — topology here is the model, not a tracing. Pulses are simulated in-page; resource statuses are the 2026-10-30 checked snapshot. Dispatch prepares and exports a payload only; it does not send to GitHub.</footer>
+<footer class="note">Static prototype. Primary target surface: BLU View 5 (B160V), touch-first; desktop secondary. The diagram is a canonical data model (model version shown in Verify) rendered deterministically to SVG; Mermaid and JSON exports are generated from that same model. The hand sketch was a semi-random concept draft, not a spec — topology here is the model, not a tracing. The QUE strip reads the published que-queue-feed/v1 producer snapshot (10-minute producer cadence; 60-second browser refresh) and marks delayed or stale data explicitly. This page is read-only: it does not claim to execute or dispatch QUE work.</footer>
 <script>
 (function(){
 "use strict";
@@ -1166,17 +1187,31 @@ syncGate();
 /* log + pulse */
 var logEl=document.getElementById("eventLog");
 function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
-var PULSE_SEQ=[["user-routing","User Request → Routing / Who?"],["routing-orch","Routing → Orchestrator"],["orch-dostuff","Orchestrator → Do Stuff!"],["dostuff-x","Do Stuff! —Route→ X"],["x-laneB","X → worker lanes (fan-out)"],["laneB-agg","Workers → Aggregator"],["dostuff-scout","Do Stuff! → Scout (recon)"],["scout-biudl","Scout → BIUDL!"],["biudl-validate","BIUDL! → Validate"],["validate-show","Validate → Show User (outer loop)"],["show-user","Show User → User: results delivered ✓"]];
-var pulsing=false;
-document.getElementById("pulseBtn").addEventListener("click",function(){if(pulsing)return;pulsing=true;logEl.innerHTML="";log("Pulse sent (simulated trace).");pulseDot.style.display="";var i=0;
-  function step(){if(i>=PULSE_SEQ.length){pulseDot.style.display="none";pulsing=false;log("Trace complete — outer loop closed.");return;}var rec=edgeEls[PULSE_SEQ[i][0]];if(!rec){i++;step();return;}var path=rec.path;path.classList.add("hl");var L=path.getTotalLength(),t0=null,dur=Math.max(350,L*1.1);
-    function frame(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);var pt=path.getPointAtLength(L*k);pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);if(k<1)requestAnimationFrame(frame);else{var via=(rec.def&&(String(rec.def.from).indexOf("group:")===0||String(rec.def.to).indexOf("group:")===0||(rec.def.memberIds&&rec.def.memberIds.length>1)))?" (via collapsed group summary)":"";log(PULSE_SEQ[i][1]+via);path.classList.remove("hl");i++;step();}}
-    requestAnimationFrame(frame);}
-  step();});
+function setQueText(id,value){var el=document.getElementById(id);if(el)el.textContent=value;}
+function renderQueFeed(feed){
+ if(!feed||feed.schema!=="que-queue-feed/v1")throw new Error("Unexpected QUE feed schema");
+ var q=feed.queue||{},tot=q.totals||{},claims=feed.dispatch_claims||{},counts=claims.counts||{};
+ var generated=Date.parse(feed.generated_at||"");if(!Number.isFinite(generated))throw new Error("Missing feed timestamp");
+ var age=Math.max(0,(Date.now()-generated)/60000),state=age<=15?"LIVE":age<=30?"DELAYED":"STALE";
+ var dot=document.getElementById("queFeedDot");if(dot)dot.className="que-feed-state "+(state==="LIVE"?"live":state==="STALE"?"stale":"");
+ setQueText("queFeedState",state);setQueText("queFeedUpdated","Updated "+new Date(generated).toLocaleString()+" · "+Math.floor(age)+"m ago · 10m producer cadence");
+ setQueText("queQueued",String(tot.queued??"—"));setQueText("queRunning",String(tot.in_progress??"—"));
+ setQueText("queClaimed",String(counts.claimed??"—"));setQueText("queEscalated",String(counts.escalated??"—"));
+ var box=document.getElementById("queClaims");if(box){box.textContent="";var rows=Array.isArray(claims.active_claims)?claims.active_claims.slice(0,5):[];
+  if(!rows.length){var empty=document.createElement("div");empty.textContent="No active claims in the latest producer snapshot.";box.appendChild(empty);}
+  rows.forEach(function(row){var line=document.createElement("div");var c=row.claim||{};line.textContent="#"+(row.issue??"—")+" · "+(c.by||"unassigned")+" · "+(row.state||"unknown")+" · "+(row.title||row.entry||"");box.appendChild(line);});
+ }
+ var tiers=q.tiers||{};log("QUE feed refreshed: "+(tot.queued??0)+" queued, "+(tot.in_progress??0)+" in progress; dispatch claims "+(counts.claimed??0)+" claimed / "+(counts.escalated??0)+" escalated. Feed state: "+state+".");
+}
+var queRefreshBusy=false;
+async function refreshQueFeed(){if(queRefreshBusy)return;queRefreshBusy=true;setQueText("queFeedState","FETCH");try{var response=await fetch("./data/que-queue-feed.json?ts="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});if(!response.ok)throw new Error("HTTP "+response.status);renderQueFeed(await response.json());}catch(err){setQueText("queFeedState","OFFLINE");var dot=document.getElementById("queFeedDot");if(dot)dot.className="que-feed-state stale";setQueText("queFeedUpdated","Feed unavailable: "+String(err.message||err));log("QUE feed refresh failed: "+String(err.message||err));}finally{queRefreshBusy=false;}}
+document.getElementById("pulseBtn").addEventListener("click",refreshQueFeed);
+document.getElementById("mbPulse").addEventListener("click",refreshQueFeed);
+refreshQueFeed();window.setInterval(refreshQueFeed,60000);
 var resizeFitTimer=null;
 window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});
 /* mobile bottom action bar (B160V primary actions, thumb reach) */
-document.getElementById("mbPulse").addEventListener("click",function(){document.getElementById("pulseBtn").click();});
+
 document.getElementById("mbFit").addEventListener("click",function(){fitView(false);});
 document.getElementById("mbNode").addEventListener("click",function(){toggleTplSheet();});
 document.getElementById("mbFs").addEventListener("click",function(){if(fsActive)exitFs();else enterFs();});

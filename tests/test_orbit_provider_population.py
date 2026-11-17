@@ -64,7 +64,8 @@ class OrbitProviderPopulationTests(unittest.TestCase):
 
         result = population.build_population(feed, working)
         self.assertEqual(result["provider_count"], 3)
-        self.assertEqual(result["inference_wiring"], {"wired": 2, "total": 3})
+        self.assertEqual(result["inference_wiring"]["wired"], 2)
+        self.assertEqual(result["inference_wiring"]["total"], 3)
         self.assertEqual(result["endpoint_census"]["verified_floor"], 7341)
         gemini = next(item for item in result["providers"] if item["id"] == "g4f/Gemini")
         self.assertEqual(gemini["g4f_sandbox_verified_pairs"], 2)

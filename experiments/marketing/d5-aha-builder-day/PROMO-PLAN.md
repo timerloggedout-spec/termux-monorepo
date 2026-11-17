@@ -189,14 +189,20 @@ Next: awards, Nov 20, 11:30 PT.
   2026-11-16 18:57 PT msg `1a1e770287389fb9` "unable to confirm your
   participation" 【D5 seat firsthand Gmail, relay 2026-11-17;
   supersedes reminder msg `1a1e559948230ab0` 2026-11-16 09:13 PT】
-- coordinator@master `df033b6d685c` still shows registering /
-  D5-SPOT open (evidence stale 2026-10-28) = record lag; coordinator
-  Δ = entries-lane single-writer, ¬ this lane.
+- coordinator lag closed by entries lane: PR #5570 merged
+  `db0c32a2b6f4` ⇒ coordinator D5 registration.state = DECLINED w/
+  host-cancellation evidence; record consistent {registration,
+  gates, status} 【entries lane, verified firsthand】 (at this
+  plan's first write coordinator@master `df033b6d685c` was stale).
 - concept FROZEN (manager, 2026-11-17): C1 IdeaInbox — capture ⇒ AI
   dedupe/cluster ⇒ vote ⇒ roadmap view 【manager chat 9cb1c873
   fd2199ba】 — freeze satisfies concept leg; spot leg failed ⇒
   gate ¬clears.
+- appeal SENT (manager ruling, owner-approved): Gmail
+  `1a1e9e80cb076226` ↦ support@aha.io — asks deficiency +
+  reinstatement path; reply watch live.
 - ∴ beats {ANN, BIO-1..4, SUB, AW} HELD, ∅ fired, ∅ published;
-  reopening condition = manager ruling on claim-free promo scope
-  ∨ spot reversal evidence. MVT-1 winner relay (owed @2026-11-10)
-  = moot for ANN pick while HELD.
+  reopening conditions = (a) appeal reinstatement evidenced
+  before 2026-11-19 12:00 PT (only claim-reopen path) ∨
+  (b) manager ruling on claim-free promo scope. MVT-1 winner
+  relay (owed @2026-11-10) = moot for ANN pick while HELD.

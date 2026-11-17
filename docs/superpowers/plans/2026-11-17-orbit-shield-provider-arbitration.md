@@ -44,11 +44,11 @@
 - Capsule dispositions: `admit`, `quarantine`, `defer`, `escalate`.
 - No file, network, environment, or persistence access.
 
-- [ ] **Step 1: Write failing tests** for trusted relevant admission, untrusted/instruction-bearing quarantine, secret-key denial, irrelevant deferral, critical escalation, item/character budget bounds, and stable source-reference preservation.
-- [ ] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because `scripts/shield_context.py` does not yet exist.
-- [ ] **Step 3: Implement the pure SHIELD helpers** with explicit allowlisted metadata and bounded text accounting; never echo secret values or raw untrusted content into the capsule.
-- [ ] **Step 4: Run the focused unittest suite** through the same workflow; expected PASS.
-- [ ] **Step 5: Commit** `feat(shield): add bounded task context admission`.
+- [x] **Step 1: Write failing tests** for trusted relevant admission, untrusted/instruction-bearing quarantine, secret-key denial, irrelevant deferral, critical escalation, item/character budget bounds, and stable source-reference preservation.
+- [x] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because `scripts/shield_context.py` does not yet exist.
+- [x] **Step 3: Implement the pure SHIELD helpers** with explicit allowlisted metadata and bounded text accounting; never echo secret values or raw untrusted content into the capsule.
+- [x] **Step 4: Run the focused unittest suite** through the same workflow; expected PASS.
+- [x] **Step 5: Commit** `feat(shield): add bounded task context admission`.
 
 ### Task 2: ORBIT dual-accumulator arbitration
 
@@ -61,11 +61,11 @@
 - Candidate fields include endpoint/specialist identity, capability, hard-gate states, benefit factors, risk/cost factors, and evidence references.
 - Decision states: `SELECT`, `DEFER`, `VETO`; output exposes separate benefit and risk/cost accumulators, margin, exclusions, and policy version.
 
-- [ ] **Step 1: Write failing tests** for hard-gate veto, stale/catalog-only deferral, benefit-over-risk selection, tie/uncertainty deferral, deterministic ordering, candidate cap, duplicate identity rejection, and missing-value semantics.
-- [ ] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because `scripts/orbit_arbitration.py` does not yet exist.
-- [ ] **Step 3: Implement deterministic pure arbitration**; hard-gate failures never receive a selectable score, and unknown evidence is not coerced to zero.
-- [ ] **Step 4: Run the focused unittest suite** through the same workflow; expected PASS.
-- [ ] **Step 5: Commit** `feat(orbit): add dual-accumulator arbitration`.
+- [x] **Step 1: Write failing tests** for hard-gate veto, stale/catalog-only deferral, benefit-over-risk selection, tie/uncertainty deferral, deterministic ordering, candidate cap, duplicate identity rejection, and missing-value semantics.
+- [x] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because `scripts/orbit_arbitration.py` does not yet exist.
+- [x] **Step 3: Implement deterministic pure arbitration**; hard-gate failures never receive a selectable score, and unknown evidence is not coerced to zero.
+- [x] **Step 4: Run the focused unittest suite** through the same workflow; expected PASS.
+- [x] **Step 5: Commit** `feat(orbit): add dual-accumulator arbitration`.
 
 ### Task 3: Canonical provider-population projection
 
@@ -79,12 +79,12 @@
 - Produces: `as_orbit_candidates(population: dict) -> list[dict]`
 - Reads existing desk-feed and G4F working evidence; creates no new source-of-truth registry and performs no provider requests.
 
-- [ ] **Step 1: Write failing tests** for provider-name deduplication, 93-provider population coverage, 92/93 route classification, 7,341 endpoint census floor, separate G4F sandbox/Actions evidence, and unknown score preservation.
-- [ ] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because the projection module does not yet exist.
-- [ ] **Step 3: Implement the read-only projection** from `dispatch.provider_catalog.inference_availability`, `inference_wiring`, `endpoint_census`, and `data/g4f-working/working-endpoints.json`.
-- [ ] **Step 4: Convert provider routes into ORBIT candidates** with endpoint registration evidence and null task-fit/benefit/risk fields where the source cannot establish them. The initial full-population result should DEFER, not fabricate a winner.
+- [x] **Step 1: Write failing tests** for provider-name deduplication, 93-provider population coverage, 92/93 route classification, 7,341 endpoint census floor, separate G4F sandbox/Actions evidence, and unknown score preservation.
+- [x] **Step 2: Run RED through the Termux smoke workflow**; expected result is ImportError because the projection module does not yet exist.
+- [x] **Step 3: Implement the read-only projection** from `dispatch.provider_catalog.inference_availability`, `inference_wiring`, `endpoint_census`, and `data/g4f-working/working-endpoints.json`.
+- [x] **Step 4: Convert provider routes into ORBIT candidates** with endpoint registration evidence and null task-fit/benefit/risk fields where the source cannot establish them. The initial full-population result should DEFER, not fabricate a winner.
 - [ ] **Step 5: Run the focused unittest suite** through the same workflow; expected PASS.
-- [ ] **Step 6: Commit** `feat(orbit): project canonical provider population`.
+- [x] **Step 6: Commit** `feat(orbit): project canonical provider population`.
 
 ### Task 4: Observe-only provider-invoke integration
 
@@ -100,8 +100,8 @@
 
 - [ ] **Step 1: Write failing integration tests** proving the provider population and ORBIT DEFER result are attached, SHIELD emits only capsule metadata/counts, no prompt/token content appears in the verdict, and the existing invocation inputs are unchanged.
 - [ ] **Step 2: Run RED through the Termux smoke workflow**; expected result is missing `control_plane` output.
-- [ ] **Step 3: Integrate the observe-only helpers** before invocation; retain the original prompt and route without transformation or additional provider calls.
-- [ ] **Step 4: Add the new test module to the existing offline Termux smoke test steps.**
+- [x] **Step 3: Integrate the observe-only helpers** before invocation; retain the original prompt and route without transformation or additional provider calls.
+- [x] **Step 4: Add the new test module to the existing offline Termux smoke test steps.**
 - [ ] **Step 5: Run all SHIELD, ORBIT, provider-population, provider-invoke, repo-gate, and Termux smoke checks**; expected PASS on the same PR head SHA.
 - [ ] **Step 6: Commit** `feat(provider-invoke): observe SHIELD and ORBIT decisions`.
 
@@ -112,8 +112,8 @@
 - Create: `docs/ops/ORBIT-SHIELD-ARCHITECTURE.md`
 - Modify: `docs/ops/AGENT-TEAM-ORCHESTRATION.md` only for the canonical pointer
 
-- [ ] **Step 1: Preserve CCEL-007 and CCEL-008** acceptance criteria distinguishing catalog visibility from verified invocation.
-- [ ] **Step 2: Document the 93-provider population, endpoint evidence grades, SHIELD/ORBIT boundaries, and why Gemini/OpenRouter/Jules are not the provider universe.**
+- [x] **Step 1: Preserve CCEL-007 and CCEL-008** acceptance criteria distinguishing catalog visibility from verified invocation.
+- [x] **Step 2: Document the 93-provider population, endpoint evidence grades, SHIELD/ORBIT boundaries, and why Gemini/OpenRouter/Jules are not the provider universe.**
 - [ ] **Step 3: Run proposal validation, repo gate, Termux smoke, and the provider-invoke contract suite through existing Actions checks.**
 - [ ] **Step 4: Re-fetch the exact PR head, check runs, jobs, and logs**; report success only for terminal successful checks on that SHA.
 - [ ] **Step 5: Commit** `docs(agents): record ORBIT and SHIELD control contracts`.

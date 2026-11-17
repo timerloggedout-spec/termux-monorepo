@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.timerloggedout-spec.github.io/wagertome/participation-intake/v1",
+  "title": "Wagertome Non-Financial Participation Intake",
+  "description": "PROPOSAL ONLY. Separate intake for a user-submitted forecast or proposal. Does not create a book subject, position, stake, settlement, wallet movement, or eligibility grant.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "intake_id",
+    "idempotency_key",
+    "participant_ref",
+    "kind",
+    "subject_ref",
+    "submitted_at",
+    "consent_version",
+    "content",
+    "status"
+  ],
+  "properties": {
+    "schema": {
+      "const": "wagertome.participation-intake/v1"
+    },
+    "intake_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "participant_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "FORECAST",
+        "PROPOSAL"
+      ]
+    },
+    "subject_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Existing subject reference only; new subject creation remains separately governed."
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consent_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "status": {
+      "enum": [
+        "RECEIVED",
+        "HELD",
+        "REJECTED",
+        "ACCEPTED_FOR_REVIEW"
+      ]
+    },
+    "review_receipt_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

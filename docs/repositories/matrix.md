@@ -2,7 +2,7 @@
 
 > Generated from GitHub repository and starring metadata. JSON is canonical; this file is a navigation projection.
 
-Observed: `2026-11-16T12:51:04.241019Z`
+Observed: `2026-11-17T13:30:36.043677Z`
 
 ## Navigation
 
@@ -16,9 +16,9 @@ Observed: `2026-11-16T12:51:04.241019Z`
 
 ## Changes since previous snapshot
 
-- **Added (41):** `BluSpring/Origins-Legacy`, `Chelovedus/Forward-To-The-Future`, `CraigComeOnThisNameCantBeTaken/AuthorisationServer`, `CraigComeOnThisNameCantBeTaken/FileConvertingConsoleApp`, `CraigComeOnThisNameCantBeTaken/IS_608`, `CraigComeOnThisNameCantBeTaken/ServiceEnforcer`, `CraigComeOnThisNameCantBeTaken/SoapCore`, `CraigComeOnThisNameCantBeTaken/TrampolineRecursion`, `CraigComeOnThisNameCantBeTaken/actions`, `CraigComeOnThisNameCantBeTaken/angular_init_bug_reproduce`, `CraigComeOnThisNameCantBeTaken/asp-net-auth`, `CraigComeOnThisNameCantBeTaken/asp-net-core-identity-poc`, `CraigComeOnThisNameCantBeTaken/ionic-learning-one`, `CraigComeOnThisNameCantBeTaken/knowledge_session_1`, `CraigComeOnThisNameCantBeTaken/personal-website`, `CraigComeOnThisNameCantBeTaken/rabbitMQ_massTransit`, `CraigComeOnThisNameCantBeTaken/temp_bricks`, `Forward-Future/alexs-davinci-editing-skills`, `Future-Forward-Software/Time`, `Icelk/kvarn`, `SaulDoesCode/rilti.js`, `apache/camel`, `aws/aws-emulator`, `aws/aws-emulator-evaluation-suite`, `aws/event-ruler`, `deepseek-ai/dsh-superagent-prototype`, `francozappa/bluffs`, `hyunwoongko/beyond-lm`, `lucasyanetsko/FutureForward`, `naveen497/actions`, `naveen497/wired-brain-coffee`, `naveen497/write-docker-actions`, `odomojuli/ForwardsFutures`, `soasis/text`, `timerloggedout-spec/Time_fork`, `timerloggedout-spec/agent-browser_fork`, `timerloggedout-spec/aws-emulator-evaluation-suite_fork`, `timerloggedout-spec/aws-emulator_fork`, `timerloggedout-spec/camel_fork-apache`, `timerloggedout-spec/dsh-superagent-prototype_fork`, `timerloggedout-spec/event-ruler_fork`
-- **Removed (0):** —
-- **Provenance changed (2):** `timerloggedout-spec/MergeEarn_fork` (owned → owned, starred), `timerloggedout-spec/mergepay-web` (owned → owned, starred)
+- **Added (2):** `avalanche-run/predict-rlm`, `zerx-lab/zap-warp`
+- **Removed (3):** `Trampoline-AI/predict-rlm`, `abduznik/obsidian-shell-termux`, `zerx-lab/zap`
+- **Provenance changed (3):** `frappe/gantt` (issue, starred → starred), `gravitee-io/gravitee-api-management` (issue, starred → starred), `timerloggedout-spec/termux-monorepo` (issue, owned, starred → owned, starred)
 
 ## Owned
 
@@ -472,7 +472,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [timerloggedout-spec/mathematics_in_lean_fork](https://github.com/timerloggedout-spec/mathematics_in_lean_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/opencode-research-papers_fork](https://github.com/timerloggedout-spec/opencode-research-papers_fork) | owned | research | high | upstream-comparison |
 | [timerloggedout-spec/portals](https://github.com/timerloggedout-spec/portals) | owned | research, platform | high | upstream-comparison |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/awesome-github-actions-security_fork](https://github.com/timerloggedout-spec/awesome-github-actions-security_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
 | [timerloggedout-spec/awesome-workflows_fork](https://github.com/timerloggedout-spec/awesome-workflows_fork) | owned | security | medium | upstream-comparison, workflow-candidate |
@@ -1146,7 +1146,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [xai-org/grok-build](https://github.com/xai-org/grok-build) | starred | agent, ai | medium | — |
 | [XiaoConstantine/dspy-go](https://github.com/XiaoConstantine/dspy-go) | starred | agent, ai | medium | dependency-candidate, workflow-candidate |
 | [yuruotong1/autoMate](https://github.com/yuruotong1/autoMate) | starred | agent, ai | medium | — |
-| [zerx-lab/zap](https://github.com/zerx-lab/zap) | starred | agent, ai | medium | upstream-comparison |
+| [zerx-lab/zap-warp](https://github.com/zerx-lab/zap-warp) | starred | agent, ai | medium | upstream-comparison |
 | [ZhangHanDong/mempal](https://github.com/ZhangHanDong/mempal) | starred | agent, ai | medium | — |
 | [zhound420/swarm-trader](https://github.com/zhound420/swarm-trader) | starred | agent, ai | medium | — |
 | [ZhuLinsen/daily_stock_analysis](https://github.com/ZhuLinsen/daily_stock_analysis) | starred | agent, ai | medium | — |
@@ -1551,6 +1551,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [betcode-org/flumine](https://github.com/betcode-org/flumine) | starred | ai | medium | dependency-candidate |
 | [betfair-datascientists/betfair-datascientists.github.io](https://github.com/betfair-datascientists/betfair-datascientists.github.io) | starred | ai | medium | — |
 | [bigmacman1129/solana-sniper-trading-mev-bot](https://github.com/bigmacman1129/solana-sniper-trading-mev-bot) | starred | ai | medium | — |
+| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) | starred | ai | medium | — |
 | [Bititib/aistudio2apiyes](https://github.com/Bititib/aistudio2apiyes) | starred | ai | medium | — |
 | [bitnom/colabctl](https://github.com/bitnom/colabctl) | starred | ai | medium | — |
 | [Bitsino/BitsinoDice](https://github.com/Bitsino/BitsinoDice) | starred | ai | medium | — |
@@ -2000,6 +2001,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [alexbakers/mcp-ipfs](https://github.com/alexbakers/mcp-ipfs) | starred | ai, context | high | — |
 | [AndyShaman/gemini-webapi-mcp](https://github.com/AndyShaman/gemini-webapi-mcp) | starred | ai, context | high | — |
 | [aurelienbran/Deepseek-MCP](https://github.com/aurelienbran/Deepseek-MCP) | starred | ai, context | high | — |
+| [avalanche-run/predict-rlm](https://github.com/avalanche-run/predict-rlm) | starred | ai, context | high | — |
 | [Berserk-hub150/moodle-ai-skill-navigator](https://github.com/Berserk-hub150/moodle-ai-skill-navigator) | starred | ai, context | high | — |
 | [billvsme/law_ai](https://github.com/billvsme/law_ai) | starred | ai, context | high | — |
 | [castai/openwebui-content-sync](https://github.com/castai/openwebui-content-sync) | starred | ai, context | high | — |
@@ -2041,7 +2043,6 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [timerloggedout-spec/knowledge-garden_fork](https://github.com/timerloggedout-spec/knowledge-garden_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/moodle-ai-skill-navigator_fork](https://github.com/timerloggedout-spec/moodle-ai-skill-navigator_fork) | owned, starred | ai, context | high | upstream-comparison |
 | [TOPDEV99999/AI-codepilot](https://github.com/TOPDEV99999/AI-codepilot) | starred | ai, context | high | — |
-| [Trampoline-AI/predict-rlm](https://github.com/Trampoline-AI/predict-rlm) | starred | ai, context | high | — |
 | [vesoft-inc/nebula](https://github.com/vesoft-inc/nebula) | starred, watching | ai, context | high | — |
 | [Wbaker7702/vscode-gitlens](https://github.com/Wbaker7702/vscode-gitlens) | starred | ai, context | high | upstream-comparison |
 | [wilpel/caveman-compression](https://github.com/wilpel/caveman-compression) | starred | ai, context | high | — |
@@ -2625,7 +2626,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
 | [2022it0489-hub/FUTURE_CS_01](https://github.com/2022it0489-hub/FUTURE_CS_01) | starred, watching | security | medium | — |
 | [alechilczenko/kimi](https://github.com/alechilczenko/kimi) | starred | security | medium | — |
@@ -2650,14 +2651,13 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [tokyoneon/Chimera](https://github.com/tokyoneon/Chimera) | starred | security | medium | — |
 | [twpayne/chezmoi](https://github.com/twpayne/chezmoi) | starred | security | medium | — |
 | [Vishisht16/awesome-workflows](https://github.com/Vishisht16/awesome-workflows) | starred | security | medium | workflow-candidate |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [Wbaker7702/nova-wallet-android](https://github.com/Wbaker7702/nova-wallet-android) | starred | security, termux | medium | upstream-comparison |
 | [alphaSeclab/awesome-reverse-engineering](https://github.com/alphaSeclab/awesome-reverse-engineering) | starred | security, termux, platform | high | — |
 | [1N3/ReverseAPK](https://github.com/1N3/ReverseAPK) | starred | termux | medium | — |
 | [3oFiz4/Exvia](https://github.com/3oFiz4/Exvia) | starred | termux | medium | — |
-| [abduznik/obsidian-shell-termux](https://github.com/abduznik/obsidian-shell-termux) | starred | termux | medium | workflow-candidate |
 | [alipay/SoloPi](https://github.com/alipay/SoloPi) | starred | termux | medium | — |
 | [ankidroid/Anki-Android](https://github.com/ankidroid/Anki-Android) | starred | termux | medium | — |
 | [Anmolk7/IntentInterceptor](https://github.com/Anmolk7/IntentInterceptor) | starred | termux | medium | — |
@@ -2876,7 +2876,6 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [bigmacman1129/solana-copy-trading-bot](https://github.com/bigmacman1129/solana-copy-trading-bot) | starred | unclassified | medium | — |
 | [bigmacman1129/solana-rust-sniper-bot](https://github.com/bigmacman1129/solana-rust-sniper-bot) | starred | unclassified | medium | — |
 | [bigmacman1129/solana-sniper-copy-trading-bot](https://github.com/bigmacman1129/solana-sniper-copy-trading-bot) | starred | unclassified | medium | — |
-| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) | starred | unclassified | medium | — |
 | [bilawalsidhu/see-through-walls](https://github.com/bilawalsidhu/see-through-walls) | starred, watching | unclassified | medium | — |
 | [BillyMicMac/FFATournament](https://github.com/BillyMicMac/FFATournament) | starred | unclassified | medium | — |
 | [biobrad/tormesbot](https://github.com/biobrad/tormesbot) | starred | unclassified | medium | — |
@@ -3122,7 +3121,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [frankier/awesome-institutional-hpc](https://github.com/frankier/awesome-institutional-hpc) | starred | unclassified | medium | — |
 | [frankiethull/tabfm](https://github.com/frankiethull/tabfm) | starred | unclassified | medium | — |
 | [frankwswang/Quiqbox.jl](https://github.com/frankwswang/Quiqbox.jl) | starred | unclassified | medium | — |
-| [frappe/gantt](https://github.com/frappe/gantt) | issue, starred | unclassified | medium | — |
+| [frappe/gantt](https://github.com/frappe/gantt) | starred | unclassified | medium | — |
 | [fred4jupiter/fredbet](https://github.com/fred4jupiter/fredbet) | starred | unclassified | medium | — |
 | [FreeLanguageTools/vocabsieve](https://github.com/FreeLanguageTools/vocabsieve) | starred | unclassified | medium | — |
 | [freuk/awesome-nix-hpc](https://github.com/freuk/awesome-nix-hpc) | starred | unclassified | medium | — |
@@ -5282,6 +5281,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [alexbakers/mcp-ipfs](https://github.com/alexbakers/mcp-ipfs) | starred | ai, context | high | — |
 | [AndyShaman/gemini-webapi-mcp](https://github.com/AndyShaman/gemini-webapi-mcp) | starred | ai, context | high | — |
 | [aurelienbran/Deepseek-MCP](https://github.com/aurelienbran/Deepseek-MCP) | starred | ai, context | high | — |
+| [avalanche-run/predict-rlm](https://github.com/avalanche-run/predict-rlm) | starred | ai, context | high | — |
 | [Berserk-hub150/moodle-ai-skill-navigator](https://github.com/Berserk-hub150/moodle-ai-skill-navigator) | starred | ai, context | high | — |
 | [billvsme/law_ai](https://github.com/billvsme/law_ai) | starred | ai, context | high | — |
 | [castai/openwebui-content-sync](https://github.com/castai/openwebui-content-sync) | starred | ai, context | high | — |
@@ -5330,7 +5330,6 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [timerloggedout-spec/wdoc_fork](https://github.com/timerloggedout-spec/wdoc_fork) | owned | ai, context | high | upstream-comparison |
 | [timerloggedout-spec/xai-cookbook_fork](https://github.com/timerloggedout-spec/xai-cookbook_fork) | owned | ai, context | high | upstream-comparison |
 | [TOPDEV99999/AI-codepilot](https://github.com/TOPDEV99999/AI-codepilot) | starred | ai, context | high | — |
-| [Trampoline-AI/predict-rlm](https://github.com/Trampoline-AI/predict-rlm) | starred | ai, context | high | — |
 | [vesoft-inc/nebula](https://github.com/vesoft-inc/nebula) | starred, watching | ai, context | high | — |
 | [Wbaker7702/vscode-gitlens](https://github.com/Wbaker7702/vscode-gitlens) | starred | ai, context | high | upstream-comparison |
 | [wilpel/caveman-compression](https://github.com/wilpel/caveman-compression) | starred | ai, context | high | — |
@@ -5717,9 +5716,9 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [t3l3machus/PowerShell-Obfuscation-Bible](https://github.com/t3l3machus/PowerShell-Obfuscation-Bible) | starred | research, security | high | — |
 | [Hack-with-Github/Awesome-Hacking](https://github.com/Hack-with-Github/Awesome-Hacking) | starred | research, security, termux | high | — |
 | [Nishant-Pathak/MathView](https://github.com/Nishant-Pathak/MathView) | starred | research, termux | high | — |
-| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | issue, owned, starred | research, termux | high | — |
+| [timerloggedout-spec/termux-monorepo](https://github.com/timerloggedout-spec/termux-monorepo) | owned, starred | research, termux | high | — |
 | [timerloggedout-spec/termux-monorepo-sparked](https://github.com/timerloggedout-spec/termux-monorepo-sparked) | owned, starred | research, termux | high | — |
-| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | issue, starred | security, api-management | high | — |
+| [gravitee-io/gravitee-api-management](https://github.com/gravitee-io/gravitee-api-management) | starred | security, api-management | high | — |
 | [gravitee-io/gravitee-gateway-api](https://github.com/gravitee-io/gravitee-gateway-api) | starred | security, api-management | high | — |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [alphaSeclab/awesome-reverse-engineering](https://github.com/alphaSeclab/awesome-reverse-engineering) | starred | security, termux, platform | high | — |
@@ -5920,7 +5919,7 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [Wbaker7702/openai-chatkit-starter-app](https://github.com/Wbaker7702/openai-chatkit-starter-app) | starred | agent, ai | medium | upstream-comparison |
 | [Wbaker7702/openai-realtime-agents](https://github.com/Wbaker7702/openai-realtime-agents) | starred | agent, ai | medium | upstream-comparison |
 | [XiaoConstantine/dspy-go](https://github.com/XiaoConstantine/dspy-go) | starred | agent, ai | medium | dependency-candidate, workflow-candidate |
-| [zerx-lab/zap](https://github.com/zerx-lab/zap) | starred | agent, ai | medium | upstream-comparison |
+| [zerx-lab/zap-warp](https://github.com/zerx-lab/zap-warp) | starred | agent, ai | medium | upstream-comparison |
 | [zskbot/agent-zero](https://github.com/zskbot/agent-zero) | starred | agent, ai | medium | dependency-candidate, upstream-comparison |
 | [timerloggedout-spec/LibreChat_fork](https://github.com/timerloggedout-spec/LibreChat_fork) | owned, starred | agent, ai, api-management | high | upstream-comparison |
 | [Wbaker7702/agentgateway](https://github.com/Wbaker7702/agentgateway) | starred | agent, ai, api-management | high | upstream-comparison |
@@ -6527,7 +6526,6 @@ Observed: `2026-11-16T12:51:04.241019Z`
 | [Vishisht16/awesome-workflows](https://github.com/Vishisht16/awesome-workflows) | starred | security | medium | workflow-candidate |
 | [google-github-actions/auth](https://github.com/google-github-actions/auth) | starred | security, platform | high | workflow-candidate |
 | [Wbaker7702/nova-wallet-android](https://github.com/Wbaker7702/nova-wallet-android) | starred | security, termux | medium | upstream-comparison |
-| [abduznik/obsidian-shell-termux](https://github.com/abduznik/obsidian-shell-termux) | starred | termux | medium | workflow-candidate |
 | [esfelurm/Termux](https://github.com/esfelurm/Termux) | starred | termux | medium | dependency-candidate |
 | [JayeshB92/Gantt_Chart_Library](https://github.com/JayeshB92/Gantt_Chart_Library) | starred | termux | medium | dependency-candidate |
 | [MetaCubeX/ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid) | starred | termux | medium | upstream-comparison |
@@ -7140,14 +7138,4 @@ Observed: `2026-11-16T12:51:04.241019Z`
 
 | Issue | Kind | Target | Declared signal | Seed |
 |---|---|---|---|---|
-| #2059 | service | gravitee-io/gravitee-api-management | starred | `github:research-seed:gravitee-io/gravitee-api-management` |
-| #2125 | provider | https://acme.example/docs | none | `research-seed:provider:acme-ai-proof` |
-| #2130 | service | frappe/gantt | none | `github:research-seed:frappe/gantt` |
-| #2131 | provider | https://quickchart.io | none | `research-seed:provider:quickchart` |
-| #2135 | provider | https://example.com/alpha2132 | none | `research-seed:provider:alpha2132` |
-| #2136 | provider | https://example.com/beta2132 | none | `research-seed:provider:beta2132` |
-| #2138 | provider | https://example.com/gamma2137 | none | `research-seed:provider:gamma2137` |
-| #2139 | provider | https://example.com/delta2137 | none | `research-seed:provider:delta2137` |
-| #2146 | service | timerloggedout-spec/termux-monorepo | owned | `github:research-seed:timerloggedout-spec/termux-monorepo` |
-| #2206 | service | MoneyBall — decision engine and cross-domain schema expansion | none | `research-seed:service:moneyball-decision-engine` |
 

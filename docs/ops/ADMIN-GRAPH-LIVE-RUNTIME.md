@@ -50,3 +50,14 @@ The D1 database is `admin-graph-runtime-events`; its schema is versioned at
   this read projection does not replace them.
 - Missing delivery is visible as stale feed health; no synthetic pulse or
   heartbeat event is generated.
+
+
+## Walkthrough
+
+A narrated implementation preview is published in the public video library:
+[Admin Interaction Graph — live runtime walkthrough](https://timerloggedout-spec.github.io/videos.html).
+The video is an explanatory motion-graphics walkthrough, not a screen recording of
+a production-active dashboard. It describes the workflow/job event path, metadata
+boundary, API verification, D1 projection, dashboard polling and health semantics.
+Production activation remains conditional on merge, deployment and live-event
+verification.

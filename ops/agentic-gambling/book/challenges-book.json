@@ -24,9 +24,9 @@
   "status_at_registration": "VERIFIED CLEAN 2026-11-03 — marker scan (EGM / instance-#2 / test-stamp) over book + feed + ledger + lane.json = 0 hits; no instance-#2 item in subjects, ledger, positions or queue (positions 0; subject intake = challenge manager list + C12 only)"
  },
  "ledger_of_record": {
-  "note": "MoneyBall v2 is the scoring surface (positions' basis + settlement scoring reference), NOT the ledger. Neon is the fleet telemetry/lane-events store, NOT this ledger. The ledger of record is the append-only in-repo ledger below (git history = the private record).",
-  "positions": "ops/agentic-gambling/book/ledger.jsonl (append-only, in-repo)",
-  "store": "in-repo git (termux-monorepo, private fleet record)"
+  "note": "MoneyBall v2 is the scoring surface (positions' basis + settlement scoring reference), NOT the ledger. Neon is the fleet telemetry/lane-events store, NOT this ledger. The append-only in-repo ledger is a public accounting/evidence record for non-sensitive fields only; participant-specific bidding/ante strategies, wallet-management scripts and trading specifics remain in an access-controlled private store.",
+  "positions": "ops/agentic-gambling/book/ledger.jsonl (append-only public accounting record; sensitive participant strategies excluded)",
+  "store": "in-repo git (termux-monorepo, public append-only accounting metadata; not private strategy storage)"
  },
  "opened": "2026-11-02 (owner directive via main)",
  "participants": "gambler (canonical participant class per naming-collapse registry, AGENT-MONIKERS.md #3828/#3830); aliases speculator/bettor/wagerer resolve to gambler at the listing layer only — records stay per-class",

@@ -47,6 +47,10 @@ jobs:
         if: always()
         run: python3 -B -m unittest discover -s tests -p 'test_orbit_provider_population.py' -v
 
+      - name: Provider invoke control plane contract tests
+        if: always()
+        run: python3 -B -m unittest discover -s tests -p 'test_provider_invoke_control_plane.py' -v
+
       - name: Core smoke (required)
         run: python3 scripts/ci/termux_smoke.py
 

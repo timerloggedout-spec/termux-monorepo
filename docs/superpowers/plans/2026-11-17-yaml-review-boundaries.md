@@ -36,3 +36,19 @@ real mapping/flow boundaries restore it. Preserve existing independent callers.
 
 No workflows, generated catalogs, provider invocations, paid infrastructure,
 credential/permission edits, device-side claims, or unrelated cleanup.
+
+## Successor review — compact nested sequences
+
+Devin finding 4597018474 on `b15037b4d2a986b3a993552aa1c4f4ce19403a75`
+demonstrates that `- - first` records the outer sequence indentation, hiding
+genuine quoted inner siblings. Track every initial compact sequence indicator;
+retain the last dash's column for a sequence value and the following node's
+column for a compact mapping. Keep greater-indentation prose continuations plain.
+
+- Add parser-backed siblings at depths two through four, both quote styles,
+  multiline tag-looking payload, and quoted mapping keys. Observe RED before
+  changing production: 18 valid sibling subcases failed. Correct three invalid
+  mapping-continuation oracle fixtures by indenting them past the mapping parent.
+- Extend only the existing parent-indent calculation in `repo_gate.py`.
+- GREEN: 64 repo-gate tests and 8 automation tests pass. Run the same local
+  dual gates, commit with AR-32, push without rewriting, and bind CI to the new SHA.

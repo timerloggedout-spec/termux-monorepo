@@ -175,6 +175,41 @@ class BlockScalarFaultTests(unittest.TestCase):
 class BlockScalarScanTests(unittest.TestCase):
     """The scan itself, so a regression names the property it broke."""
 
+    def test_compact_nested_sequence_sibling_boundaries(self) -> None:
+        for depth in (2, 3, 4):
+            prefix = "  " + "- " * depth
+            sibling = " " * (2 + 2 * (depth - 1))
+            for quote in ('"', "'"):
+                sources = (
+                    f'items:\n{prefix}first\n{sibling}- {quote}second\\n more{quote}\n',
+                    f'items:\n{prefix}first\n{sibling}- {quote}second\n'
+                    f'{sibling}  if: !(false)\n{sibling}  more{quote}\n',
+                    f'items:\n{prefix}name: first\n'
+                    f'{sibling}  {quote}other\\n key{quote}: value\n',
+                )
+                for source in sources:
+                    with self.subTest(depth=depth, quote=quote, source=source):
+                        if yaml is not None:
+                            yaml.safe_load(source)
+                        self.assertEqual(repo_gate.yaml_structure_faults(source), [])
+                        found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                        self.assertEqual(len(found), 1, found)
+                        self.assertIn("scans as a tag", found[0])
+
+    def test_compact_nested_plain_continuation_remains_plain(self) -> None:
+        for depth in (2, 3, 4):
+            prefix = "  " + "- " * depth
+            continuation = " " * (2 + 2 * depth)
+            for value in ("first", "name: first"):
+                indent = continuation + ("  " if value.startswith("name:") else "")
+                source = f'items:\n{prefix}{value}\n{indent}? "unfinished\n'
+                with self.subTest(depth=depth, value=value):
+                    if yaml is not None:
+                        yaml.safe_load(source)
+                    found = repo_gate.yaml_structure_faults(source + "if: !(false)\n")
+                    self.assertEqual(len(found), 1, found)
+                    self.assertIn("scans as a tag", found[0])
+
     def test_empty_scalar_leading_blanks_preserve_whitespace(self) -> None:
         # Dedent erases whitespace-only lines, so pass these raw to both scanners.
         for header in ("|", ">-", "|2"):

@@ -221,11 +221,15 @@ def literal_escape_fault(
     continued_plain = parent_indent >= 0 and line_indent > parent_indent
     scalar_start = not (in_single or in_double or continued_plain)
     plain_content = continued_plain
-    # A sequence entry shifts the parent mapping's indentation past its dash.
+    # Compact sequences may have several dashes: the final scalar belongs to
+    # the innermost sequence, or to a mapping starting after its last dash.
     node_indent = line_indent
-    dash = re.match(r"[ \t]*-([ \t]+)", line)
-    if dash and re.match(r"[ \t]*-[ \t]+[^:]+:(?:[ \t]|$)", line):
-        node_indent += 1 + len(dash.group(1))
+    sequence = re.match(r"[ \t]*(?:-[ \t]+)+", line)
+    if sequence:
+        dashes = list(re.finditer(r"-[ \t]+", sequence.group(0)))
+        node_indent = dashes[-1].start()
+        if re.match(r"[^:]+:(?:[ \t]|$)", line[sequence.end():]):
+            node_indent = sequence.end()
     if not continued_plain:
         parent_indent = node_indent
     flow_depth = flow_state[0] if flow_state is not None else 0

@@ -215,3 +215,12 @@ console.log(JSON.stringify({
     assert res["amd17_pctR"] == amd["window_pct"]["remaining"]
     assert abs(res["amd17_frac"] - amd["window_pct"]["consumed"]) < 0.15
     assert res["d23_consumedX"] is None and res["d23_pctR"] is None
+
+
+def test_page_identity_and_subject_count_copy_are_feed_driven():
+    html = _html()
+    assert "<title>Wagertome — Wagering Book" in html
+    assert "<h1>The Wagertome book, published</h1>" in html
+    assert "every subject in the loaded source feed" in html
+    assert "all 23 subjects" not in html
+    assert 'FEED.book.subjects' in html

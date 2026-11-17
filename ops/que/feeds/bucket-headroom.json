@@ -1,6 +1,6 @@
 {
  "schema": "bucket-headroom/v1",
- "generated_at": "2026-11-17T10:41:01Z",
+ "generated_at": "2026-11-17T19:25:54Z",
  "poll_interval_min": 10,
  "buckets": [
   {
@@ -14,7 +14,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -25,28 +25,28 @@
   {
    "bucket": "github-token",
    "kind": "github_token",
-   "state": "ok",
+   "state": "alert",
    "read": {
     "bucket": "github-token",
     "kind": "github_token",
     "source": "workflow-github-token",
     "limit": 5000,
-    "used": 472,
-    "remaining": 4528,
-    "reset": 1794915359,
-    "read_ts": 1794912059,
-    "read_at": "2026-11-17T10:40:59Z"
+    "used": 5000,
+    "remaining": 0,
+    "reset": 1794944199,
+    "read_ts": 1794943553,
+    "read_at": "2026-11-17T19:25:53Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 4528,
+    "value": 0,
     "unit": "requests",
-    "as_of": "2026-11-17T10:40:59Z",
-    "valid_until": "2026-11-17T11:35:59Z"
+    "as_of": "2026-11-17T19:25:53Z",
+    "valid_until": "2026-11-17T19:36:39Z"
    },
    "probe_episode": {
-    "episode_id": "github-token@2026-11-17T10:40:59Z",
+    "episode_id": "github-token@2026-11-17T19:25:53Z",
     "probed": false
    }
   },
@@ -61,22 +61,22 @@
     "kind": "app_installation",
     "source": "sec03-mint",
     "limit": 5000,
-    "used": 49,
-    "remaining": 4951,
-    "reset": 1794912496,
-    "read_ts": 1794912059,
-    "read_at": "2026-11-17T10:40:59Z"
+    "used": 18,
+    "remaining": 4982,
+    "reset": 1794946106,
+    "read_ts": 1794943553,
+    "read_at": "2026-11-17T19:25:53Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 4951,
+    "value": 4982,
     "unit": "requests",
-    "as_of": "2026-11-17T10:40:59Z",
-    "valid_until": "2026-11-17T10:48:16Z"
+    "as_of": "2026-11-17T19:25:53Z",
+    "valid_until": "2026-11-17T20:08:26Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-collector@2026-11-17T10:40:59Z",
+    "episode_id": "app-termux-fleet-collector@2026-11-17T19:25:53Z",
     "probed": false
    }
   },
@@ -93,7 +93,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -114,7 +114,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -135,7 +135,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -156,7 +156,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -175,22 +175,22 @@
     "kind": "app_installation",
     "source": "swarm-mint",
     "limit": 12500,
-    "used": 9822,
-    "remaining": 2678,
-    "reset": 1794913157,
-    "read_ts": 1794912059,
-    "read_at": "2026-11-17T10:40:59Z"
+    "used": 1962,
+    "remaining": 10538,
+    "reset": 1794945666,
+    "read_ts": 1794943553,
+    "read_at": "2026-11-17T19:25:53Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 2678,
+    "value": 10538,
     "unit": "requests",
-    "as_of": "2026-11-17T10:40:59Z",
-    "valid_until": "2026-11-17T10:59:17Z"
+    "as_of": "2026-11-17T19:25:53Z",
+    "valid_until": "2026-11-17T20:01:06Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-swarm@2026-11-17T10:40:59Z",
+    "episode_id": "app-termux-fleet-swarm@2026-11-17T19:25:53Z",
     "probed": false
    }
   },
@@ -207,20 +207,20 @@
     "limit": 5000,
     "used": 0,
     "remaining": 5000,
-    "reset": 1794915660,
-    "read_ts": 1794912059,
-    "read_at": "2026-11-17T10:40:59Z"
+    "reset": 1794947154,
+    "read_ts": 1794943553,
+    "read_at": "2026-11-17T19:25:53Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
     "value": 5000,
     "unit": "requests",
-    "as_of": "2026-11-17T10:40:59Z",
-    "valid_until": "2026-11-17T11:41:00Z"
+    "as_of": "2026-11-17T19:25:53Z",
+    "valid_until": "2026-11-17T20:25:54Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-crossreference@2026-11-17T10:40:59Z",
+    "episode_id": "app-termux-fleet-crossreference@2026-11-17T19:25:53Z",
     "probed": false
    }
   },
@@ -237,7 +237,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -258,7 +258,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -279,11 +279,32 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-17T10:41:01Z",
+    "as_of": "2026-11-17T19:25:54Z",
     "valid_until": null
    },
    "probe_episode": {
     "episode_id": "app-termux-fleet-delphioracle@unknown-1794540997",
+    "probed": false
+   }
+  },
+  {
+   "bucket": "app-termux-fleet-understudy",
+   "kind": "app_installation",
+   "app_id": 5803279,
+   "slug": "termux-fleet-understudy",
+   "state": "unreadable",
+   "unreadable_reason": "sec03_unprovisioned",
+   "read": null,
+   "projection": null,
+   "headroom": {
+    "kind": "unknown",
+    "value": null,
+    "unit": "requests",
+    "as_of": "2026-11-17T19:25:54Z",
+    "valid_until": null
+   },
+   "probe_episode": {
+    "episode_id": "app-termux-fleet-understudy@unknown-1794943554",
     "probed": false
    }
   },
@@ -311,5 +332,7 @@
    }
   }
  ],
- "alerting": []
+ "alerting": [
+  "github-token"
+ ]
 }

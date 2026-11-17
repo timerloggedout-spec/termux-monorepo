@@ -8,6 +8,8 @@
 | CCEL-004 | P1 | executing | Define event-driven awareness and GitHub-native trigger mapping. | PR/push/release/issues/workflow events map to existing paths; events are primary; bounded cursor reconciliation is fallback; no weekly discovery scheduler. |
 | CCEL-005 | P1 | queued | Define DoE campaign admission, execution, analysis and promotion evidence. | Shared cohort/configuration identity, immutable run evidence, randomization/blocking, interaction analysis, uncertainty, costs and fail-closed promotion specified. |
 | CCEL-006 | P1 | queued | Document FOSS template inspiration, benefit compounding and evolutionary reuse. | Candidates have disposition and source provenance; reuse/combination measured; Pareto trade-offs and maintenance/security costs visible. |
+| CCEL-007 | P1 | executing | Implement ORBIT dual-accumulator arbitration over the existing provider/model endpoint population and specialist execution lanes. | Existing provider registries/catalogs remain authoritative; provider×model endpoint identity is distinct from agents/adapters; hard eligibility gates precede benefit/risk scoring; SELECT/DEFER/VETO is deterministic; observe-only integration preserves existing execution routing; catalog-only/unverified endpoints cannot be invoked. |
+| CCEL-008 | P1 | executing | Implement SHIELD bounded context capsules and selective admission for active tasks. | Pure policy classifies admit/quarantine/defer/escalate; secrets are denied; untrusted instructions are quarantined; context budgets and source provenance are enforced; existing context-store/graph remain persistence owners; no new memory store. |
 
 ## Validation
 

@@ -24,10 +24,15 @@ frame — no new governor constants). Binding on this build's landing.
    `stall_ceiling_breach` stall event on its exception escalation.
 2. **Claim classes** come from the filing's own stamp: an explicit
    `claim-class:` line wins, then a named `executor of record:`,
-   then the SWARM-DISPATCH route (`build-dispatch` → executor class,
-   claimant `dispatch-executor`; `project-task-dispatch` → the
-   QDesk seat queue, claimant `qdesk-seat-queue`). No stamp naming a
-   class = unplaceable.
+   then a SWARM-DISPATCH route stamp. `build-dispatch` maps to
+   executor / `dispatch-executor`; `project-task-dispatch` maps to
+   seat-queue / `qdesk-seat-queue`. The project-task intake workflow's
+   `[MUSEai]@{role:{project-task-dispatch}}` routing receipt and its
+   SWARM-admission comment's `route: project-task-dispatch.yml` are
+   explicit route stamps, including when they appear in comments.
+   New project-task receipts also write `claim-class: seat-queue`
+   and `claimant: qdesk-seat-queue`. No stamp naming a class =
+   unplaceable.
 3. **The claim is the claim_task.py effect** — a PRODUCER CLAIM
    comment naming the machine as claimant of record + the
    `dispatch-claimed` label in the same motion, with the

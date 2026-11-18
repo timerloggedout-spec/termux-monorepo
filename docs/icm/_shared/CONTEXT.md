@@ -6,15 +6,16 @@ One job: hold stable rules and blank starters used by the `maintenance/` pipelin
 
 - Root map contract: [`../CONTEXT.md`](../CONTEXT.md)
 - Maintenance pipeline: [`../maintenance/CONTEXT.md`](../maintenance/CONTEXT.md)
+- Repository operating contract: [`../../../../CLAUDE.md`](../../../../CLAUDE.md)
 
 ## Contents
 
 | File | Use |
 |---|---|
-| [`maintenance-rules.md`](maintenance-rules.md) | Scope, canonical-source, one-way-reference, and no-code-refactor rules. |
+| [`maintenance-rules.md`](maintenance-rules.md) | Scope, canonical-source, one-way-reference, FA-ADE execution, and human-only permission boundaries. |
 | [`source-inventory-template.md`](source-inventory-template.md) | Blank inventory copied into `01_inventory/output/` for each update. |
-| [`verification-checklist.md`](verification-checklist.md) | Stable walk-test and verification conditions used in `03_verify`. |
+| [`verification-checklist.md`](verification-checklist.md) | Deterministic structure, source, scope, and repository-gate checks used in `03_verify`. |
 
-## Human check
+## Maintenance
 
-Edit this shelf only when a rule or blank template should apply to future maintenance runs. Put run-specific decisions in a stage `output/` file instead.
+Edit this shelf only when a rule or blank template should apply to future maintenance runs. Put run-specific evidence and decisions in a stage `output/` file. Normal factory edits proceed through the authorized proposal and repository validation flow; no separate human approval ritual is added by ICM.

@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-18T10:08:13Z` UTC  
+**Generated:** `2026-11-18T15:42:00Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 289 docs-lane branch(es)
+**Count:** 291 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -141,6 +141,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/hex-non-ai-trial-lane`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hex-non-ai-trial-lane) | `252dae071c8d` | — | — | orphan lane |
 | [`docs/historical-corpus-explorer-proposal`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/historical-corpus-explorer-proposal) | `63ed3f22745c` | — | `Manus` | registered; no open PR |
 | [`docs/hyperforge-gemini-plan-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/hyperforge-gemini-plan-rebased) | `424d83bc01b7` | — | — | orphan lane |
+| [`docs/icm-faa-de-maintenance-adaptation-20261118`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/icm-faa-de-maintenance-adaptation-20261118) | `21248416d096` | — | — | orphan lane |
+| [`docs/icm-faa-de-maintenance-adaptation-20261118-r2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/icm-faa-de-maintenance-adaptation-20261118-r2) | `ede96d45f325` | [#5638](https://github.com/timerloggedout-spec/termux-monorepo/pull/5638)→`master` | — | PR without registry link |
 | [`docs/image-asset-pipeline-ates-placeholder`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/image-asset-pipeline-ates-placeholder) | `b25d07a9b9ab` | — | — | orphan lane |
 | [`docs/infrastructure-registry-design-1654`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/infrastructure-registry-design-1654) | `b773c13a967b` | — | — | orphan lane |
 | [`docs/intake-backfill-doctrine`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/intake-backfill-doctrine) | `2ffd15fcd93e` | — | — | orphan lane |

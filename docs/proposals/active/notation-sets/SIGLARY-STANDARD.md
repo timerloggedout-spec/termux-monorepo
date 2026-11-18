@@ -204,3 +204,10 @@ advisory phases — each binding step receipted on QUE #5116.
 §4 Cost gains a **token** axis. Compression is reported in tokens per target tokenizer, as well as characters ∧ messages. Census of record: 🧾 [`SIGLARY-TOKEN-COST.md`](SIGLARY-TOKEN-COST.md) · 🧾 [`data/siglary-token-cost.json`](data/siglary-token-cost.json).
 
 Finding: CHORDS ∧ GLYPHS cost more tokens than their plain expansions (A2A stamp +38% on o200k_base). OPERATORS are near parity ∧ carry scope. Proposed for Linguist ruling: the A2A machine register = OPERATORS ∧ plain words, ∧ CHORDS ∧ GLYPHS are kept to the display register. Skill: `.agents/skills/siglary-a2a/SKILL.md`.
+
+
+## Amendment — DO-first Linguist / expanded operator register (2026-11-18)
+
+The Notation Matrice amendment dated 2026-11-18 registers ⇔ ∉ ≡ ≠ ≤ ≥ ⊕ ⊗ ↳ ∴ ∵ ⊢ ⊬ ⊥ ⏸ ▶ ✓ ✗ as OPERATORS. `⤴` remains a GLYPH; `∆` remains the canonical delta operator. The new operators retain fixed meanings and remain subject to class correctness, accuracy-first review, and token-cost measurement.
+
+The DO-first authoring profile applies to repo skill files, ICM, `*.SKILLS` / `SKILLS.md`, `CLAUDE.md`, and DoE-dispatched participants: `CHAT := STATE-CHANGE ∨ OVERSIGHT`; use CAVEMAN-6; lead with concrete DO verbs; state scope, owner, condition, expected state, and receipt. Prefer affirmative operational controls; use `¬` for essential logical negation. Preserve exact code literals and quotations. The profile does not alter the N∅ chat-only/data-null boundary or any approval and authority boundary.

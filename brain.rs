@@ -543,10 +543,10 @@ impl<B: StageBackend, P: PolicyGate> Brain<B, P> {
                     .map(|report| report.evidence_refs.clone())
                     .unwrap_or_default(),
             }
-        } else if validation
-            .as_ref()
-            .is_some_and(|report| report.evidence_refs.is_empty())
-        {
+        } else if validation.as_ref().is_some_and(|report| {
+            report.evidence_refs.is_empty()
+                || report.evidence_refs.iter().any(|reference| reference.trim().is_empty())
+        }) {
             PolicyDecision {
                 status: DecisionStatus::NeedEvidence,
                 reason: "validation must reference canonical evidence before handoff".into(),
@@ -658,8 +658,9 @@ fn select_context(
     let mut tokens_used = 0usize;
 
     for item in candidates {
-        if tokens_used.saturating_add(item.estimated_tokens) <= token_budget {
-            tokens_used = tokens_used.saturating_add(item.estimated_tokens);
+        let remaining_budget = token_budget.saturating_sub(tokens_used);
+        if item.estimated_tokens <= remaining_budget {
+            tokens_used += item.estimated_tokens;
             selected_ids.push(item.id.clone());
             selected.push(item.clone());
         } else {

@@ -42,7 +42,7 @@ It cannot dispatch experiments, mutate proposal state, or promote a method.
 
 ## Boundaries
 
-- Brain coordinates typed reasoning stages and returns a plan plus policy decision. Adaptive is the default mode and selects Fast, Standard or Deep depth from the intent-stage complexity assessment; explicit modes remain available.
+- Brain coordinates typed reasoning stages and returns a policy decision; an execution plan and plan-validation report are optional and appear only when `ExecutionDesign` produces a plan. Fast and Simple Adaptive runs return stage records and a decision without a plan or plan-validation report. Adaptive is the default mode and selects Fast, Standard or Deep depth from the intent-stage complexity assessment; explicit modes remain available.
 - StageBackend may reason; it must not execute tools or persist memory.
 - PolicyGate receives context provenance, stage records and degraded status, then delegates to existing capability/decision/completion policy. There is no allow-all default.
 - Context is bounded and excludes Restricted, Secret and Unknown classifications.

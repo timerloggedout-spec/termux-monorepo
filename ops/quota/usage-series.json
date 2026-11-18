@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-18T17:11:19Z",
+ "generated_at": "2026-11-18T17:32:36Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-18T17:07:47Z",
   "ops/tracking/nested-family.json": "2026-11-18T17:08:16Z"
@@ -1925,12 +1925,12 @@
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 30,
+  "routed_calls": 31,
   "usage_stamped": 3,
-  "unstamped": 27,
-  "unstamped_share": 0.9,
+  "unstamped": 28,
+  "unstamped_share": 0.9032,
   "causes": {
-   "no-usage-record": 27,
+   "no-usage-record": 28,
    "no-usage-surface": 0
   },
   "by_provider": {
@@ -1984,6 +1984,12 @@
    },
    "unorouter": {
     "provider": "unorouter",
+    "calls": 1,
+    "stamped": 0,
+    "unstamped": 1
+   },
+   "cerebras": {
+    "provider": "cerebras",
     "calls": 1,
     "stamped": 0,
     "unstamped": 1

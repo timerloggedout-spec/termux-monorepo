@@ -105,7 +105,7 @@ The glyphs retain their established meanings in mathematical, programming-langua
 | Rule ID | Mandate | Enforcement surface |
 |---|---|---|
 | SG001 | Chat carries `STATE-CHANGE`, `OVERSIGHT`, or `BLOCKED` | Templates, review checklist |
-| SG002 | Directives use positive `DO` statements; authored directive prose follows `⊘` vocabulary policy | Custom prose linter |
+| SG002 | Reject authored directive openings from the `⊘` avoidance vocabulary; review positive imperative quality against the `DO` statement template | Existing DO Statement Style checker (negative-form directive detection) |
 | SG003 | Use necessary facts, one statement per fact, and delta-only updates | Templates, review checklist |
 | SG004 | Every message carries a scope key; out-of-scope material enters triage | Templates, issue/PR forms |
 | SG005 | Route execution to QUE/machinery; chat reports execution evidence and state | Workflow documentation |

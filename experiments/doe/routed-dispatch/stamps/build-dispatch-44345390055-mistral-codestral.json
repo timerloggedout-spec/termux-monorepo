@@ -1,0 +1,85 @@
+{
+  "arm": "mistral-codestral",
+  "arm_id": "mistral-codestral",
+  "arm_state": "unknown",
+  "context": "build-dispatch multi-arm (#5151)",
+  "cumulative_n": 1,
+  "dispatch_id": "build-dispatch-44345390055-mistral-codestral",
+  "endpoint": "mistral::codestral-2508",
+  "entry": "issue-5309",
+  "harness": "generic-agent-loop",
+  "instance": {
+    "context": "build-dispatch multi-arm (#5151)",
+    "model": "codestral-2508",
+    "moniker": "providers-dispatch-fix",
+    "provider": "mistral",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+      "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+    },
+    "tools": {
+      "ref": "scripts/ops/build_arm_harness.py#tools",
+      "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+    }
+  },
+  "instance_key": "a8592c05372aaa739b81c9a9c64df409cd51213e716784d9f72386e08f3bbfd0",
+  "model": "codestral-2508",
+  "model_version": "codestral-2508@codestral-2508",
+  "moniker": "providers-dispatch-fix",
+  "origin": "live",
+  "outcome": {
+    "artifact": "actions run 44345390055",
+    "confirmed": null,
+    "corroboration_state": "single-leg",
+    "evidence_ref": "actions run 44345390055",
+    "gate_call": null,
+    "origin": "live",
+    "status": "failed",
+    "summary": "completion verification: failed"
+  },
+  "provider": "mistral",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "mistral",
+    "slice": "escalation"
+  },
+  "quota_class": "escalation",
+  "role": "builder",
+  "rotation_attempts": [
+    {
+      "arm_id": "mistral-codestral",
+      "status": "quota_terminal"
+    }
+  ],
+  "route_endpoint_id": "mistral::codestral-2508",
+  "run": {
+    "run_id": "44345390055",
+    "session_id": null,
+    "workflow": "build-dispatch.yml"
+  },
+  "run_id": "44345390055",
+  "schema": "build-dispatch-stamp/v1",
+  "selection": {
+    "arm": "mistral-codestral",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5309"
+  },
+  "selection_reason": "explicit-request",
+  "set_index": 1,
+  "task_class": "entry-build",
+  "task_ref": "timerloggedout-spec/termux-monorepo#5309",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-18T16:19:40Z",
+  "usage": {
+    "bucket_slice_id": "mistral-codestral:escalation",
+    "cost": null,
+    "latency_ms": null,
+    "retries": 0,
+    "status": "not_established",
+    "tokens": null,
+    "tokens_in": null,
+    "tokens_out": null
+  }
+}

@@ -74,6 +74,16 @@ class MechanismCatalogTests(unittest.TestCase):
         data["updated_at"] = "2026-11-16T00:00:00+00:00"
         self.assertEqual(validate(data), [])
 
+    def test_lowercase_rfc3339_delimiters_are_accepted(self):
+        data = copy.deepcopy(self.data)
+        data["updated_at"] = "2026-11-16t00:00:00z"
+        self.assertEqual(validate(data), [])
+
+    def test_rfc3339_timestamp_without_seconds_is_rejected(self):
+        data = copy.deepcopy(self.data)
+        data["updated_at"] = "2026-11-16T00:00Z"
+        self.assertTrue(any("ISO 8601" in error for error in validate(data)))
+
     def test_malformed_lifecycle_type_is_rejected_without_crashing(self):
         data = copy.deepcopy(self.data)
         data["mechanisms"][0]["lifecycle_state"] = ["validated"]

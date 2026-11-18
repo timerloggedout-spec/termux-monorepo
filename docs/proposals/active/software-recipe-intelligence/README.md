@@ -51,15 +51,15 @@ No new Brain, graph database, memory store, experiment ledger, orchestrator, not
 
 ## Initial work sequence
 
-1. Name/collision register and system-wide ownership census.
-2. Existing recipe and adjacent-system overlap map.
-3. Neutral Software Recipe Model specification and schema.
-4. Read-only extraction and provenance fixtures.
-5. Deterministic classification baseline.
-6. Separate evaluation of classification, similarity, retrieval, impact analysis, and composition.
-7. CRG/registry/DoE adapters only where their owners approve the contracts.
-8. Bounded experiments with explicit stop states and independent evaluation.
-9. Separate safety admission before any untrusted recipe execution.
+1. Versioned name competition and collision register, run independently of the technical architecture experiments.\n2. System-wide ownership and deployment census.
+3. Existing recipe and adjacent-system overlap map.
+4. Neutral Software Recipe Model specification and schema.
+5. Read-only extraction and provenance fixtures.
+6. Deterministic classification baseline.
+7. Separate evaluation of classification, similarity, retrieval, impact analysis, and composition.
+8. CRG/registry/DoE adapters only where their owners approve the contracts.
+9. Bounded experiments with explicit stop states and independent evaluation.
+10. Separate safety admission before any untrusted recipe execution.
 
 ## Non-goals
 
@@ -69,4 +69,4 @@ No new Brain, graph database, memory store, experiment ledger, orchestrator, not
 - No autonomous execution, secret access, external writes, provider spending, merge, deploy, or production routing.
 - No claim that a candidate name is trademark-, package-, domain-, or repository-cleared.
 
-See [NAME-COLLISION-REGISTER.md](NAME-COLLISION-REGISTER.md), [ARCHITECTURE-RECON.md](ARCHITECTURE-RECON.md), and [SOURCE-ADOPTION-MATRIX.md](SOURCE-ADOPTION-MATRIX.md).
+See [NAME-COLLISION-REGISTER.md](NAME-COLLISION-REGISTER.md), [NAME-COMPETITION.md](NAME-COMPETITION.md), [NAME-CANDIDATE-MATRIX.json](NAME-CANDIDATE-MATRIX.json), [ARCHITECTURE-RECON.md](ARCHITECTURE-RECON.md), and [SOURCE-ADOPTION-MATRIX.md](SOURCE-ADOPTION-MATRIX.md).

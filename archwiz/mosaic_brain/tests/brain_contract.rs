@@ -3,7 +3,7 @@ use mosaic_brain::{
     MosaicBrain, MosaicRequest, RecommendationOutcome, RecommendationReason, ReviewVerdict,
     ValidationError,
 };
-use termux_brain::{BrainExtension, ExtensionContext, RunIdentity};
+use termux_brain::{invoke_extension, BrainExtension, ExtensionContext, RunIdentity};
 
 fn identity() -> MethodIdentity {
     MethodIdentity {
@@ -236,7 +236,7 @@ fn root_brain_invokes_mosaic_through_the_shared_extension_contract() {
         snapshot: snapshot(),
     };
 
-    let response = extension.invoke(&context, &request).unwrap();
+    let response = invoke_extension(&extension, &context, &request).unwrap();
 
     assert_eq!(response.identity, expected_identity);
     assert_eq!(

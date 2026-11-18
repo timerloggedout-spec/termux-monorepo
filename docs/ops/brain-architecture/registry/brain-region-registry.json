@@ -221,13 +221,15 @@
       "region": "Corpus callosum",
       "network": "Integration",
       "function": "Coordinate information transfer between specialized subsystems.",
-      "system": "Shared event schemas, evidence envelopes, artifact contracts, agent handoffs",
+      "system": "Existing shared event schemas plus proposed metadata-only Synaptic Bus v1 contract",
       "status": "partial",
       "evidence": [
         "docs/ops/ACTION-EFFECT-EVENT.schema.json",
-        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "docs/ops/brain-architecture/contracts/SYNAPTIC-BUS-CONTRACT.md",
+        "docs/ops/brain-architecture/contracts/SYNAPTIC-BUS-ENVELOPE.schema.json"
       ],
-      "gap": "Version and validate inter-agent messages, handoff acknowledgements, and schema compatibility."
+      "gap": "Implement validated source adapters and an idempotent append-only consumer; retain canonical domain-record ownership and verify evidence references."
     },
     {
       "id": "visual-cortex",

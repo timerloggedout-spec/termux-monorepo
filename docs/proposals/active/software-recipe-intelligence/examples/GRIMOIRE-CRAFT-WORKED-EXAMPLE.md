@@ -44,6 +44,19 @@ The graph describes a candidate procedure. No commands, spells, APIs, scripts, o
 6. **Record:** keep the recipe as a candidate SRM artifact. The worked example prepares a human-review reference to the canonical PR; it does not create a new registry record.
 7. **Serve:** any later experiment/run must use existing DoE/orchestration evidence contracts, not a new Cauldron ledger.
 
+## Authoring-time validation snapshot (2026-11-18)
+
+<badge>PASS — bounded checks</badge>
+
+- JSON parsing: passed.
+- SRM required top-level fields: all 11 present.
+- Referenced local schema definitions and nested object properties used by this example: checked.
+- Operation graph: 7 operations; all declared dependencies resolve.
+- Dataflow: every operation input and output resolves to an ingredient, operation output, or declared recipe output.
+- Review handoff output: present.
+
+This was a bounded authoring-time structural checker, not a full Draft 2020-12 validator. It did not establish all JSON Schema keyword semantics, run the repository CI suite, execute the recipe, or create a canonical DoE/orchestration receipt. The recipe evaluation field therefore remains `not-run`.
+
 ## Evidence and digest conventions
 
 - The example's `revision` is SHA-256 over canonical JSON of the recipe object with the `revision` property omitted; keys are sorted, separators are compact, and UTF-8 is used.

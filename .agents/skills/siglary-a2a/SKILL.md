@@ -11,7 +11,7 @@ Standard: `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md`. Register (N
 This skill defines no chords. Every chord it cites resolves in the named Shorthand Domains of the Matrice (`shorthand_repo`, `shorthand_quota`, …).
 
 ## Classes (keep distinct; mixing them is a HARD violation)
-- **OPERATORS**: ∧ ¬ ∨ ⇒ · ∀ ∃ · ∅ ∈ · ∆ · `++` (postfix step-up once) · ≅ (conforming; proof-gated in the math register).
+- **OPERATORS**: ∧ ¬ ∨ ⇒ ⇔ · ∀ ∃ · ∅ ∈ ∉ · ∆ · ≡ ≠ ≤ ≥ · ⊕ ⊗ · ↳ · ∴ ∵ · ⊢ ⊬ ⊥ · ⏸ ▶ ✓ ✗ · `++` (postfix step-up once) · ≅ (conforming; proof-gated in the math register).
 - **GLYPHS**: issued set only (👁 🧐 🧾 ❄ ⚖ ⛔ 👆 ⤴ 🟢 🔴 🟡).
 - **CHORDS**: letter codes that resolve in-domain only.
 
@@ -41,3 +41,7 @@ dispatch {from}→{to} · {task} · gate: {scope} · receipt {refs} · ∆ ask: 
 
 ## Re-measure
 `pip install tiktoken && python3 scripts/notation/siglary_token_cost.py`. Re-run it when the register changes ∨ when the target model's tokenizer changes.
+
+## DO-first communication contract
+
+Use `CHAT := STATE-CHANGE ∨ OVERSIGHT`. Write directives as `DO <verb> <target> ∧ <scope> ⇒ <expected state> · receipt <ref>`. Prefer affirmative controls and concrete verbs; reserve `¬` for essential logical negation. Keep OPERATORS, GLYPHS, and CHORDS distinct. `⤴` remains the dispatch GLYPH; `∆` remains the canonical delta operator. Apply the repo-wide [Linguist / Siglary mandate](../../../docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md).

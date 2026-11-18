@@ -19,6 +19,8 @@ done-evidence.
 """
 from __future__ import annotations
 
+import math
+
 import re
 from datetime import datetime, timedelta, timezone
 
@@ -176,6 +178,23 @@ def lease_release_comment(*, claim_class, claimant, now) -> str:
     )
 
 
+
+def _numeric_score(value) -> float:
+    """Normalize QUE #5283 structured and legacy score values.
+
+    Invalid telemetry is non-fatal and receives the neutral fallback
+    0.0; booleans are rejected explicitly because bool is an int subclass.
+    """
+    if isinstance(value, dict):
+        value = value.get("score")
+    if value is None or isinstance(value, bool):
+        return 0.0
+    try:
+        score = float(value)
+    except (TypeError, ValueError, OverflowError):
+        return 0.0
+    return score if math.isfinite(score) else 0.0
+
 def plan(candidates, now):
     """Plan one watchdog pass. candidates: [{issue, comments,
     verdict, score_row}] where score_row carries the #5283 rank
@@ -218,10 +237,11 @@ def plan(candidates, now):
                                "kind": "rejected"})
             continue
         scored = dict(cand["score_row"])
+        score_value = _numeric_score(scored.get("score"))
         claims.append({"issue": issue["number"], "claim_class": claim_class,
                        "claimant": claimant,
                        "trigger": "escalation" if escalated else "wall-admission",
-                       "score": scored.get("score")})
+                       "score": score_value})
     claims.sort(key=lambda c: (-(c["score"] or 0), c["issue"]))
     for rank, claim in enumerate(claims, start=1):
         claim["rank"] = rank

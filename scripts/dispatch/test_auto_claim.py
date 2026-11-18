@@ -134,3 +134,26 @@ def test_gap_records_and_feed_counts():
     assert feed["gap_class"] == "escalation-stall"
     assert feed["counts_this_cycle"]["auto_claimed"] == 1
     assert feed["counts_this_cycle"]["placement_failed"] == 1
+
+
+def test_plan_normalizes_structured_and_malformed_scores():
+    candidates = [
+        cand(number=20, body=SWARM_BUILD,
+             score={"score": 900, "components": {"wall": 1000}}),
+        cand(number=21, body=SWARM_BUILD, score=50),
+        cand(number=22, body=SWARM_BUILD,
+             score={"score": float("nan"), "components": {}}),
+        cand(number=23, body=SWARM_BUILD, score=float("inf")),
+        cand(number=24, body=SWARM_BUILD, score=True),
+        cand(number=25, body=SWARM_BUILD, score="not-a-score"),
+        cand(number=26, body=SWARM_BUILD, score=None),
+    ]
+    result = ac.plan(candidates, NOW)
+    assert [item["issue"] for item in result["claims"]] == [
+        20, 21, 22, 23, 24, 25, 26
+    ]
+    scores = {item["issue"]: item["score"] for item in result["claims"]}
+    assert scores == {
+        20: 900.0, 21: 50.0, 22: 0.0, 23: 0.0,
+        24: 0.0, 25: 0.0, 26: 0.0,
+    }

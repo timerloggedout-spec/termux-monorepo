@@ -16,7 +16,7 @@ related_proposals:
   - agent-contributor-provenance
 related_prs: []
 related_branches:
-  - feat/l3verage-department-delivery
+  - feat/l3verage-department-final
 gates_required:
   - proposal-lifecycle
   - repo-gate

@@ -1,19 +1,18 @@
-name: QUE auto-claim regression
+name: QUE BRR and self-repair regression
 
-# #5546 gate 3: run the auto-claim decision suite (scripts/dispatch/test_auto_claim.py)
-# ∧ the BRR companion suite (#5552) on every change to the dispatch/QUE planes.
-# Linked from orchestration-regression-guard.yml (step "Run QUE auto-claim regression").
+# #5552: run BRR companion and QDesk self-repair policy tests.
+# Auto-claim remains owned by orchestration-regression-guard.yml to avoid duplicate quota.
 
 on:
   push:
     branches: [master]
     paths:
-      - 'scripts/dispatch/**'
       - 'scripts/que/**'
+      - 'tests/test_que_self_repair.py'
+      - 'tests/test_que_self_repair.py'
       - '.github/workflows/que-auto-claim-regression.yml'
   pull_request:
     paths:
-      - 'scripts/dispatch/**'
       - 'scripts/que/**'
       - '.github/workflows/que-auto-claim-regression.yml'
   workflow_dispatch:
@@ -23,7 +22,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: que-auto-claim-regression-${{ github.ref }}
+  group: que-brr-self-repair-regression-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -37,9 +36,7 @@ jobs:
           fetch-depth: 1
       - name: Install pytest
         run: python3 -m pip install --quiet --disable-pip-version-check 'pytest>=8,<9'
-      - name: Run auto-claim decision suite (#5286 ∧ #5546 gate 3)
-        run: python3 -m pytest -q scripts/dispatch/test_auto_claim.py
-      - name: Run BRR companion suite (#5552)
-        run: python3 -m pytest -q scripts/que/test_brr_companion_suite.py
-      - name: Emit gate-3 receipt
-        run: echo "::notice title=que-gate-3::auto-claim ∧ brr-companion suites ✓ at $GITHUB_SHA"
+      - name: Run BRR companion and QDesk policy suites (#5552)
+        run: python3 -m pytest -q scripts/que/test_brr_companion_suite.py tests/test_que_self_repair.py
+      - name: Emit regression receipt
+        run: echo "::notice title=que-brr-regression::BRR companion ∧ QDesk policy suites ✓ at $GITHUB_SHA"

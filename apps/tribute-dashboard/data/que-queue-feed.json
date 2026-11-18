@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-17T19:56:03Z",
+ "generated_at": "2026-11-18T02:12:35Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -11,7 +11,7 @@
    "1": {
     "tier": 1,
     "queued": 6,
-    "in_progress": 1,
+    "in_progress": 0,
     "oldest_queued_at": "2026-11-11T20:34:15Z",
     "by_workflow_queued": {
      "repo gate": 4,
@@ -20,12 +20,10 @@
    },
    "2": {
     "tier": 2,
-    "queued": 1,
-    "in_progress": 1,
-    "oldest_queued_at": "2026-11-17T19:54:50Z",
-    "by_workflow_queued": {
-     "tribute-dashboard-deploy": 1
-    }
+    "queued": 0,
+    "in_progress": 0,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    },
    "3": {
     "tier": 3,
@@ -36,23 +34,18 @@
    },
    "4": {
     "tier": 4,
-    "queued": 29,
-    "in_progress": 18,
+    "queued": 22,
+    "in_progress": 14,
     "oldest_queued_at": "2026-11-11T20:34:15Z",
     "by_workflow_queued": {
-     "Agent Throughput Evidence": 1,
-     "quota-served-probe": 1,
-     "hitl-control-plane-verify": 3,
+     "lane events recorder": 1,
+     "Quota Dispatch Tree": 3,
      "termux smoke": 3,
-     "graph-matrix-probe": 3,
-     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 3,
-     "quota-usage-series-refresh": 1,
-     "DO Statement Style": 1,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-     "Workflow Surface Policy": 1,
      "repo-tracking-collect": 2,
      "Foresight Evidence Spine": 2,
-     "Quota Dispatch Tree": 2,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
+     "graph-matrix-probe": 2,
+     "hitl-control-plane-verify": 2,
      "Context Relationship + Lead/Lag Audit": 2,
      "Sweep Accountability": 2,
      "doe-nc1-continuous-log": 1
@@ -60,8 +53,8 @@
    }
   },
   "totals": {
-   "queued": 36,
-   "in_progress": 20
+   "queued": 28,
+   "in_progress": 14
   },
   "wedged_ancient": [
    {

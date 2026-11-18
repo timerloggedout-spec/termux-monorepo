@@ -13,13 +13,16 @@ The model abbreviation **SRM** means Software Recipe Model. It names the data mo
 
 | Candidate | Proposed expansion / rationale | Initial collision signal | Disposition |
 |---|---|---|---|
-| **RIE** | Recipe Intelligence & Evolution. | RIE Technology Corp. is listed as a software/content-cloud integration company; exact category proximity needs primary-source confirmation. | Active competition arm; moderate/unverified collision risk |\n| **RISE** | Recipe Intelligence & Systems Evolution. | Existing RISE MCP/product SDK project in software/agent tooling. | Active competition arm; high/unverified collision risk |\n| **RIME** | Recipe Intelligence, Methods & Evolution. | Rime AI voice company; prior Robust Intelligence software-security mark application reported abandoned; other RIME marks exist. | Active high-risk comparison arm; not cleared |
+| **RIE** | Recipe Intelligence & Evolution. | RIE Technology Corp. is listed as a software/content-cloud integration company; exact category proximity needs primary-source confirmation. | Active competition arm; moderate/unverified collision risk |
+| **RISE** | Recipe Intelligence & Systems Evolution. | Existing RISE MCP/product SDK project in software/agent tooling. | Active competition arm; high/unverified collision risk |
+| **RIME** | Recipe Intelligence, Methods & Evolution. | Rime AI voice company; prior Robust Intelligence software-security mark application reported abandoned; other RIME marks exist. | Active high-risk comparison arm; not cleared |
 | **RAXI** | Recipe Architecture eXchange & Intelligence. | Existing Raxi mobility/social-search app, RAXI LLC, and registered RAXI word mark for downloadable mobile software/trading-platform-related services. | Collision; exclude |
 | **TARSIER** | Technique And Recipe Synthesis, Intelligence, Evaluation & Reuse. | Existing Tarsier vision utilities for web-interaction agents, Tarsier video-language models, and Tarsier desktop/UI automation projects. | Collision; exclude |
 | **BRACE** | Blueprint, Recipe Architecture, Composition & Evolution. | Existing Brace applied-AI lab, Brace software development/AI automation provider, and BRACE agent-security framework. | Collision; exclude |
 | **RAXIS** | Recipe Architecture eXchange & Intelligence System. | Near-name derivative of RAXI; do not use as a workaround for the RAXI collision. | Exclude |
 | **RACE** | Recipe Analysis, Composition & Evolution. Clear expansion, but a common acronym/word. | High generic acronym ambiguity; likely search noise. | Hold |
-| **SRI** | Software Recipe Intelligence. Closest to the user's preferred phrase. | **High collision:** SRI International / Stanford Research Institute and Siri-origin association. | Do not use as public acronym |\n| **SRAI** | Software Recipe and Artificial Intelligence (possible expansion). | Existing Society of Research Administrators International and an existing Statistics, Reasoning & AI ecosystem. | Avoid; near-acronym confusion |
+| **SRI** | Software Recipe Intelligence. Closest to the user's preferred phrase. | **High collision:** SRI International / Stanford Research Institute and Siri-origin association. | Do not use as public acronym |
+| **SRAI** | Software Recipe and Artificial Intelligence (possible expansion). | Existing Society of Research Administrators International and an existing Statistics, Reasoning & AI ecosystem. | Avoid; near-acronym confusion |
 | **SRM** | Software Recipe Model. | Correct and useful as a schema/model abbreviation, but too narrow for the whole system identity. | Retain for model only |
 
 ## Collision watchlist — avoid or hold
@@ -54,7 +57,12 @@ The model abbreviation **SRM** means Software Recipe Model. It names the data mo
 ### External collision evidence
 
 - SRI's official Siri history: https://www.sri.com/hoi/siri/ — SRI says the Siri technology arose from its AI research and that SRI spun off Siri, Inc. in 2007.
-- SRI's official CALO history: https://www.sri.com/hoi/artificial-intelligence-calo/\n- RIE Technology Corp. software listing: https://www.crunchbase.com/organization/rie-technology-corp (secondary company profile; verify primary source before final disposition)\n- RISE MCP/product SDK: https://github-wiki-see.page/m/SyberLabs/RISE/wiki/RISE-SDK\n- Rime AI voice products: https://rime.ai/\n- RIME Robust Intelligence application, reported abandoned: https://www.trademarkelite.com/trademark/trademark-detail/97058795/RIME\n- RIME cosmetics application: https://www.trademarkia.com/rime-98851316
+- SRI's official CALO history: https://www.sri.com/hoi/artificial-intelligence-calo/
+- RIE Technology Corp. software listing: https://www.crunchbase.com/organization/rie-technology-corp (secondary company profile; verify primary source before final disposition)
+- RISE MCP/product SDK: https://github-wiki-see.page/m/SyberLabs/RISE/wiki/RISE-SDK
+- Rime AI voice products: https://rime.ai/
+- RIME Robust Intelligence application, reported abandoned: https://www.trademarkelite.com/trademark/trademark-detail/97058795/RIME
+- RIME cosmetics application: https://www.trademarkia.com/rime-98851316
 - BRACE applied-AI lab: https://brace.so/; BRACE agent-security ecosystem: https://braceframework.org/; Brace software/AI automation provider: https://www.bracedevelopers.com/en
 - TARSIER web-agent vision utilities: https://github.com/reworkd/tarsier; Tarsier video-language models: https://github.com/bytedance/tarsier
 - RAXI mobility/social-search app: https://apps.apple.com/us/app/raxi/id1229385775; RAXI LLC registered mark: https://trademarks.justia.com/792/39/raxi-79239511.html

@@ -155,10 +155,12 @@ pub fn validate_identity(identity: &MethodIdentity) -> Result<(), ValidationErro
 
 fn evidence_is_valid(evidence: &EvidenceRef) -> bool {
     let uri = evidence.source_uri.trim();
-    let repo_path_is_valid = uri.strip_prefix("repo://").is_some_and(|path| {
-        let path = path.split('#').next().unwrap_or_default();
-        !path.is_empty() && !path.starts_with('/') && !path.chars().any(char::is_whitespace)
-    });
+    let repo_path_is_valid = uri
+        .strip_prefix("repo://")
+        .is_some_and(|path| {
+            let path = path.split('#').next().unwrap_or_default();
+            !path.is_empty() && !path.starts_with('/') && !path.chars().any(char::is_whitespace)
+        });
     let https_authority_is_valid = uri.strip_prefix("https://").is_some_and(|rest| {
         let authority = rest.split('/').next().unwrap_or_default();
         let host = authority.rsplit_once(':').map_or(authority, |(host, port)| {

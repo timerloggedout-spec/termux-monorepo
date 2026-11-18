@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-18T18:00:31Z",
+ "generated_at": "2026-11-18T18:43:57Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 36,
-   "records_used": 36
+   "records_read": 38,
+   "records_used": 38
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 35,
+   "records_read": 37,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 36,
+   "records_read": 38,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 61,
+   "records_read": 63,
    "records_used": 17
   }
  ],
@@ -43,7 +43,7 @@
   "denominator": "ops/quota/registry.json \u00b7 lane=model \u00b7 distinct provider",
   "registry_records": 98,
   "registry_providers": 96,
-  "with_dispatches": 8,
+  "with_dispatches": 9,
   "zero_dispatch": [
    "agentrouter",
    "aion",
@@ -131,8 +131,7 @@
    "siliconflow",
    "typhoon",
    "xfyun",
-   "xkiro",
-   "zai"
+   "xkiro"
   ],
   "unregistered_dispatch_providers": [
    "Jules",
@@ -147,22 +146,22 @@
   ]
  },
  "summary": {
-  "providers": 18,
-  "models": 25,
+  "providers": 19,
+  "models": 26,
   "roles": 6,
-  "tasks": 57,
-  "dispatches": 40,
+  "tasks": 59,
+  "dispatches": 42,
   "registry_providers": 96,
-  "zero_dispatch_providers": 88,
+  "zero_dispatch_providers": 87,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
-   "passed": 25,
-   "failed": 7,
+   "passed": 26,
+   "failed": 8,
    "observed": 4
   },
   "by_source": {
    "desk-usage": 17,
-   "records": 36,
+   "records": 38,
    "campaign-records": 4
   }
  },
@@ -2110,9 +2109,10 @@
       "optimizations-assurance"
      ],
      "contexts": [
-      "provider-invoke mode=catalog"
+      "provider-invoke mode=catalog",
+      "provider-invoke mode=invoke"
      ],
-     "task_count": 1,
+     "task_count": 2,
      "tasks": [
       {
        "task_class": "inference-invoke",
@@ -2141,6 +2141,85 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-41408357473.json"
+      },
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-44366819765",
+       "run_id": 44366819765,
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-18T18:24:45Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-44366819765.json"
+      }
+     ]
+    }
+   ],
+   "model_count": 1,
+   "task_count": 2,
+   "zero_dispatch": false
+  },
+  {
+   "provider": "zai",
+   "models": [
+    {
+     "model": "NOT_ESTABLISHED",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "optimizations-assurance"
+     ],
+     "contexts": [
+      "provider-invoke mode=invoke"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "inference-invoke",
+       "role": "builder",
+       "moniker": "optimizations-assurance",
+       "context": "provider-invoke mode=invoke",
+       "dispatch_id": "provider-invoke-44366774843",
+       "run_id": 44366774843,
+       "workflow": "provider-invoke.yml",
+       "session_id": null,
+       "ts": "2026-11-18T18:14:33Z",
+       "outcome": {
+        "status": "passed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": null,
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "role": "stamps",
+        "moniker": "stamps",
+        "context": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/provider-invoke-44366774843.json"
       }
      ]
     }
@@ -2753,13 +2832,6 @@
   },
   {
    "provider": "xkiro",
-   "models": [],
-   "model_count": 0,
-   "task_count": 0,
-   "zero_dispatch": true
-  },
-  {
-   "provider": "zai",
    "models": [],
    "model_count": 0,
    "task_count": 0,

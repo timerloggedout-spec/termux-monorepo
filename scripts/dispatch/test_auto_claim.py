@@ -73,6 +73,11 @@ def test_explicit_claim_class_comment_overrides_project_task_route():
         ("executor", "dispatch-executor")
 
 
+def test_unmarked_route_text_is_not_claim_authority():
+    text_only = comment("The project-task-dispatch.yml route is under review.")
+    assert ac.claim_class_of(issue(46), [text_only]) == (None, None)
+
+
 def test_project_task_receipt_emits_explicit_claim_class():
     fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
               "done-evidence": "tests pass",

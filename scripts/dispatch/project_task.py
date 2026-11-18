@@ -80,6 +80,7 @@ def receipt_comment(issue_number: int, fields: dict) -> str:
         f"- target repo: {fields.get('target-repo', '')}\n"
         "- selection: system across all wired providers "
         "(no provider is named at intake, by design)\n"
+        "- route: project-task-dispatch.yml\n"
         "- instance stamps: pending — filled post-hoc after execution "
         "{resolved provider x model · session/run ids · outcomes}\n\n"
         "Status: `dispatch-queued` — NOT owned until claimed.\n\n"

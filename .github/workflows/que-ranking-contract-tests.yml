@@ -1,0 +1,55 @@
+name: QUE dispatch contract tests
+
+on:
+  pull_request:
+    paths:
+      - "scripts/que/task_ranking.py"
+      - "scripts/que/que_feed_collect.py"
+      - "scripts/que/test_task_ranking.py"
+      - "scripts/que/test_que_upgrade_1118.py"
+      - "scripts/dispatch/auto_claim.py"
+      - "scripts/dispatch/project_task.py"
+      - "scripts/dispatch/test_auto_claim.py"
+      - "scripts/dispatch/test_project_task.py"
+      - ".github/workflows/dispatch-watchdog.yml"
+      - "docs/ops/QUE-TASK-RANKING.md"
+      - "docs/ops/QUE-AUTO-CLAIM.md"
+      - ".github/workflows/que-ranking-contract-tests.yml"
+      - ".github/workflows/que-feed-collect.yml"
+  push:
+    branches: [master]
+    paths:
+      - "scripts/que/task_ranking.py"
+      - "scripts/que/que_feed_collect.py"
+      - "scripts/que/test_task_ranking.py"
+      - "scripts/que/test_que_upgrade_1118.py"
+      - "scripts/dispatch/auto_claim.py"
+      - "scripts/dispatch/project_task.py"
+      - "scripts/dispatch/test_auto_claim.py"
+      - "scripts/dispatch/test_project_task.py"
+      - ".github/workflows/dispatch-watchdog.yml"
+      - ".github/workflows/que-feed-collect.yml"
+      - "docs/ops/QUE-TASK-RANKING.md"
+      - ".github/workflows/que-ranking-contract-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: que-ranking-contract-tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: python -m pip install --disable-pip-version-check pytest
+      - name: Run QUE ranking contract tests
+        run: python -m pytest -q scripts/que/test_task_ranking.py scripts/que/test_que_upgrade_1118.py scripts/dispatch/test_auto_claim.py scripts/dispatch/test_project_task.py

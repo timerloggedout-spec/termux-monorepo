@@ -56,6 +56,8 @@ jobs:
           test "$ec" = "0"
       - name: Commit the dispatch-state feed (only on change)
         if: success() && inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ steps.swarm.outputs.token }}
         run: |
           git config user.name "termux-fleet-swarm[bot]"
           git config user.email "termux-fleet-swarm[bot]@users.noreply.github.com"
@@ -95,6 +97,9 @@ jobs:
             git commit -m "dispatch-state feed: watchdog stamp [skip ci]"
             if git push origin HEAD:master; then
               echo "feed stamp pushed (attempt $attempt)"
+              gh api "repos/${GITHUB_REPOSITORY}/dispatches" \
+                -f event_type=dispatch-feed-updated
+              echo "QUE collector handoff dispatched"
               exit 0
             fi
             echo "push raced (attempt $attempt) — retrying on latest master"

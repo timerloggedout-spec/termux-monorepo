@@ -6,6 +6,7 @@ on:
       - 'README.md'
       - 'docs/**/*.md'
       - '.github/**/*.md'
+      - 'scripts/ci/check_do_statement_style.py'
       - '.vale.ini'
       - '.markdownlint-cli2.jsonc'
       - '.github/workflows/prose-quality.yml'

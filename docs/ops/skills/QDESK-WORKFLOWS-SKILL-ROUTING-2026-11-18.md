@@ -3,7 +3,7 @@
 ## Decisions (/confirm, 2026-11-18)
 
 - ✓ Placement: `vendor/skills-mirror/` (Siglary §6.5 E2 scope). Rejected: `skills/` (Siglary §1 binds `skills/**` at HARD).
-- ⏸ Notation template (8 glyphs outside the issued set: ⨯ ⌘ ⤵ § ⊩ ⟁ ∎ ⋈ ↻ ⧖ ⌖): hold until Linguist ratifies. Siglary §6.1 HARD check fails until then.
+- ⏸ Notation template: nine glyphs outside the issued set (⊩ ≟ ∎ ⋈ ↻ ⧖ ⌖ ⤵ §). Hold until Linguist ratifies. Siglary §6.1 HARD check fails until then.
 
 ## Export integrity
 

@@ -54,7 +54,7 @@ The comparison command is read-only:
       --control-instance-key <control-instance-key> \
       --treatment-instance-key <treatment-instance-key> \
       --outcome-key <frozen-outcome-metric> --outcome-direction higher \
-      --cost-key <measured-cost-metric> --cost-unit USD \
+      --cost-key <measured-cost-metric> --cost-unit USD --cost-status measured \
       --min-pairs 12 --guardrail 'quality_floor>=0.95'
 
 Placeholders must be replaced by actual design values; this example is not executable as written. A ratio is not produced when incremental cost is zero/negative, any guardrail fails, or evidence is incomplete.

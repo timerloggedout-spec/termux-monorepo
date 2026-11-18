@@ -1,0 +1,1934 @@
+{
+  "schema": "inference-availability-ledger/v1",
+  "generated_at": "2026-11-18T09:10:44.044951Z",
+  "target_calls_day": 7500,
+  "measured_calls_24h": 0,
+  "target_met": false,
+  "gap_calls_day": 7500,
+  "best_measured_day": {
+    "date": "2026-11-02",
+    "calls": 52
+  },
+  "measured_calls_all_time": 63,
+  "sources": {
+    "ops/3l0/intake.jsonl": 25,
+    "experiments/doe/routed-dispatch/records": 11,
+    "experiments/doe/routed-dispatch/stamps": 24,
+    "ops/quota/quota-probe-ledger.jsonl": 3
+  },
+  "providers_with_recent_ok": 0,
+  "endpoints": [
+    {
+      "endpoint": "github.copilot.free",
+      "provider": "github",
+      "limit": null,
+      "unit": "requests/month",
+      "window": "monthly",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "openrouter.free_models",
+      "provider": "openrouter",
+      "limit": null,
+      "unit": "requests/day (dynamic tier; endpoint supplies limit)",
+      "window": "daily UTC",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "gemini.api_free",
+      "provider": "google",
+      "limit": null,
+      "unit": "per-model",
+      "window": "daily (RPD)",
+      "measured_24h": 0,
+      "measured_total": 5,
+      "last_ok": "2026-11-13T22:44:41Z",
+      "last_seen": "2026-11-13T22:44:41Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.vendors",
+      "provider": "gpt4free/cliproxyapi/chapito/ai-manus",
+      "limit": null,
+      "unit": "unmetered / unknown",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "aion.free_tokens",
+      "provider": "aion",
+      "limit": 20000,
+      "unit": "tokens/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "cerebras.free_tokens",
+      "provider": "cerebras",
+      "limit": 1000000,
+      "unit": "tokens/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "cloudflare.workers_ai",
+      "provider": "cloudflare",
+      "limit": 10000,
+      "unit": "Neurons/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "cohere.trial_calls",
+      "provider": "cohere",
+      "limit": 1000,
+      "unit": "API calls/month",
+      "window": "monthly",
+      "measured_24h": 0,
+      "measured_total": 7,
+      "last_ok": "2026-11-02T02:10:16Z",
+      "last_seen": "2026-11-02T02:10:16Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "felo.api_credits",
+      "provider": "felo",
+      "limit": 200,
+      "unit": "credits/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "groq.free_tier",
+      "provider": "groq",
+      "limit": null,
+      "unit": "per-model requests/tokens",
+      "window": "per minute/day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "huggingface.inference_providers",
+      "provider": "huggingface",
+      "limit": null,
+      "unit": "monthly credits",
+      "window": "monthly",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "kilo.free_models",
+      "provider": "kilo",
+      "limit": 200,
+      "unit": "requests/hour",
+      "window": "hourly",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "llm7.free_token",
+      "provider": "llm7",
+      "limit": 100000,
+      "unit": "tokens/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "mistral.free_mode",
+      "provider": "mistral",
+      "limit": null,
+      "unit": "included usage (per model, in-account)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 6,
+      "last_ok": "2026-11-11T03:32:54Z",
+      "last_seen": "2026-11-11T03:32:54Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "modelscope.api_inference",
+      "provider": "modelscope",
+      "limit": 2000,
+      "unit": "requests/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "nvidia.api_catalog",
+      "provider": "nvidia",
+      "limit": null,
+      "unit": "per-model credits/limits (in-account)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "omni.gateway",
+      "provider": "omni",
+      "limit": null,
+      "unit": "n/a (aggregates upstream free tiers)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "ovhcloud.ai_endpoints",
+      "provider": "ovhcloud",
+      "limit": 2,
+      "unit": "requests/minute",
+      "window": "per minute",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "requesty.free_models",
+      "provider": "requesty",
+      "limit": 200,
+      "unit": "requests/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "routeway.free_models",
+      "provider": "routeway",
+      "limit": 200,
+      "unit": "requests/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "sambanova.free_tier",
+      "provider": "sambanova",
+      "limit": 20,
+      "unit": "requests/day per model",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "sealion.api",
+      "provider": "sealion",
+      "limit": 10,
+      "unit": "requests/minute per user",
+      "window": "per minute",
+      "measured_24h": 0,
+      "measured_total": 12,
+      "last_ok": "2026-11-02T01:19:03Z",
+      "last_seen": "2026-11-14T12:32:44Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "siliconflow.free_models",
+      "provider": "siliconflow",
+      "limit": null,
+      "unit": "requests/minute + tokens/minute (per model)",
+      "window": "per minute/day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "typhoon.api",
+      "provider": "typhoon",
+      "limit": 200,
+      "unit": "requests/minute",
+      "window": "per minute",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "unorouter.free_models",
+      "provider": "unorouter",
+      "limit": 1,
+      "unit": "requests/minute per free model per user",
+      "window": "per minute",
+      "measured_24h": 0,
+      "measured_total": 2,
+      "last_ok": "2026-11-02T07:46:55Z",
+      "last_seen": "2026-11-02T07:46:55Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "xfyun.spark",
+      "provider": "xfyun",
+      "limit": null,
+      "unit": "unknown",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "xkiro.free_models",
+      "provider": "xkiro",
+      "limit": 500000,
+      "unit": "tokens/day",
+      "window": "daily",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "zai.free_models",
+      "provider": "zai",
+      "limit": null,
+      "unit": "per-account (unpublished)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.agenttools",
+      "provider": "g4f/agenttools",
+      "limit": 250,
+      "unit": "units",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.airforce",
+      "provider": "g4f/airforce",
+      "limit": 1000,
+      "unit": "requests",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.antigravity",
+      "provider": "g4f/antigravity",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.arena",
+      "provider": "g4f/arena",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.bingcreateimages",
+      "provider": "g4f/bingcreateimages",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.blackforestlabs_flux1dev",
+      "provider": "g4f/blackforestlabs_flux1dev",
+      "limit": 2,
+      "unit": "minutes of GPU time",
+      "window": "per day, resets exactly 24 hours after first GPU usage",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.blackforestlabs_flux1kontextdev",
+      "provider": "g4f/blackforestlabs_flux1kontextdev",
+      "limit": 2,
+      "unit": "minutes of GPU time",
+      "window": "per day, resets exactly 24 hours after first GPU usage",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.blackboxpro",
+      "provider": "g4f/blackboxpro",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.bravesearch",
+      "provider": "g4f/bravesearch",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.cachedsearch",
+      "provider": "g4f/cachedsearch",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.cerebras",
+      "provider": "g4f/cerebras",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.chatgpt",
+      "provider": "g4f/chatgpt",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.claude",
+      "provider": "g4f/claude",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.cloudflare",
+      "provider": "g4f/cloudflare",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.cohereforai_c4ai_command",
+      "provider": "g4f/cohereforai_c4ai_command",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.copilot",
+      "provider": "g4f/copilot",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.copilotapp",
+      "provider": "g4f/copilotapp",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.deepinfra",
+      "provider": "g4f/deepinfra",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.deepseek",
+      "provider": "g4f/deepseek",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.elevenlabs",
+      "provider": "g4f/elevenlabs",
+      "limit": 10000,
+      "unit": "credits",
+      "window": "per month",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.g4fspace",
+      "provider": "g4f/g4fspace",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.glm",
+      "provider": "g4f/glm",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.gemini",
+      "provider": "g4f/gemini",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.geminicli",
+      "provider": "g4f/geminicli",
+      "limit": 1000,
+      "unit": "requests",
+      "window": "per user per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.geminipro",
+      "provider": "g4f/geminipro",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.githubcopilot",
+      "provider": "g4f/githubcopilot",
+      "limit": 50,
+      "unit": "premium requests (all chat interactions count as premium requests)",
+      "window": "per month",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.googleaimode",
+      "provider": "g4f/googleaimode",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.googlesearch",
+      "provider": "g4f/googlesearch",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.grok",
+      "provider": "g4f/grok",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.groq",
+      "provider": "g4f/groq",
+      "limit": 1000,
+      "unit": "requests per day (RPD) for openai/gpt-oss-120b",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.hailuoai",
+      "provider": "g4f/hailuoai",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.huggingchat",
+      "provider": "g4f/huggingchat",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.huggingface",
+      "provider": "g4f/huggingface",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.huggingfacemedia",
+      "provider": "g4f/huggingfacemedia",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.huggingspace",
+      "provider": "g4f/huggingspace",
+      "limit": 2,
+      "unit": "GPU-minutes (ZeroGPU)",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.kilocode",
+      "provider": "g4f/kilocode",
+      "limit": 200,
+      "unit": "requests",
+      "window": "per hour per IP",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.llm7",
+      "provider": "g4f/llm7",
+      "limit": 100000,
+      "unit": "tokens (input + output)",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.markitdown",
+      "provider": "g4f/markitdown",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.metaai",
+      "provider": "g4f/metaai",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.metaaiaccount",
+      "provider": "g4f/metaaiaccount",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.microsoftdesigner",
+      "provider": "g4f/microsoftdesigner",
+      "limit": 15,
+      "unit": "boosts (fast AI creations/edits)",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.nvidia",
+      "provider": "g4f/nvidia",
+      "limit": 1000,
+      "unit": "API credits",
+      "window": "on sign-up (one-time trial grant)",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.ollama",
+      "provider": "g4f/ollama",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.omniroute",
+      "provider": "g4f/omniroute",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.openaifm",
+      "provider": "g4f/openaifm",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.openrouterfree",
+      "provider": "g4f/openrouterfree",
+      "limit": 50,
+      "unit": "requests",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.operaaria",
+      "provider": "g4f/operaaria",
+      "limit": 5,
+      "unit": "images",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.perplexity",
+      "provider": "g4f/perplexity",
+      "limit": 3,
+      "unit": "Pro Searches",
+      "window": "per day",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.pi",
+      "provider": "g4f/pi",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.pollinations",
+      "provider": "g4f/pollinations",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.pollinationsaudio",
+      "provider": "g4f/pollinationsaudio",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.pollinationsimage",
+      "provider": "g4f/pollinationsimage",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.puter",
+      "provider": "g4f/puter",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.qwen",
+      "provider": "g4f/qwen",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.relayrouter",
+      "provider": "g4f/relayrouter",
+      "limit": 2000000,
+      "unit": "tokens",
+      "window": "per account total, with daily sub-caps resetting 00:00 UTC",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.stabilityai_sd35large",
+      "provider": "g4f/stabilityai_sd35large",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.teachanything",
+      "provider": "g4f/teachanything",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.whiterabbitneo",
+      "provider": "g4f/whiterabbitneo",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.you",
+      "provider": "g4f/you",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "g4f.yqcloud",
+      "provider": "g4f/yqcloud",
+      "limit": null,
+      "unit": "unmetered / unknown (NOT ESTABLISHED)",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "meta.model_api",
+      "provider": "meta",
+      "limit": null,
+      "unit": "tokens (metered, public preview)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "meta.muse_code",
+      "provider": "meta",
+      "limit": null,
+      "unit": "tasks (subscription or Meta Model API PAYG)",
+      "window": "monthly (subscription) / metered (PAYG)",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "meta.llama_api",
+      "provider": "meta",
+      "limit": 0,
+      "unit": "requests",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "deepinfra.api",
+      "provider": "deepinfra",
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "novita.api",
+      "provider": "novita",
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "friendli.api",
+      "provider": "friendli",
+      "limit": null,
+      "unit": "USD balance (prepaid)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "baseten.api",
+      "provider": "baseten",
+      "limit": null,
+      "unit": "USD credits (prepaid)",
+      "window": "n/a",
+      "measured_24h": 0,
+      "measured_total": 2,
+      "last_ok": null,
+      "last_seen": "2026-11-02T01:54:34Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "claude.seat_runtime",
+      "provider": "claude",
+      "limit": null,
+      "unit": "dispatches (consumption NOT ESTABLISHED)",
+      "window": "seat plan window (not exposed)",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "deepseek.api",
+      "provider": "deepseek",
+      "limit": null,
+      "unit": "requests/tokens (NOT ESTABLISHED)",
+      "window": "provider-side (not established)",
+      "measured_24h": 0,
+      "measured_total": 12,
+      "last_ok": "2026-11-02T09:14:42Z",
+      "last_seen": "2026-11-02T09:14:42Z",
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "agentrouter.models",
+      "provider": "agentrouter",
+      "limit": null,
+      "unit": "provider-defined",
+      "window": "unknown",
+      "measured_24h": 0,
+      "measured_total": 0,
+      "last_ok": null,
+      "last_seen": null,
+      "measured_scope": "provider (shared across that provider's endpoints)"
+    },
+    {
+      "endpoint": "muse.unregistered",
+      "provider": "muse",
+      "limit": null,
+      "unit": null,
+      "window": null,
+      "measured_24h": 0,
+      "measured_total": 6,
+      "last_ok": "2026-11-02T01:24:02Z",
+      "last_seen": "2026-11-02T01:24:02Z",
+      "measured_scope": "provider (∉ registry lane=model)"
+    },
+    {
+      "endpoint": "unattributed.unregistered",
+      "provider": "unattributed",
+      "limit": null,
+      "unit": null,
+      "window": null,
+      "measured_24h": 0,
+      "measured_total": 11,
+      "last_ok": "2026-11-11T03:32:54Z",
+      "last_seen": "2026-11-11T03:32:54Z",
+      "measured_scope": "provider (∉ registry lane=model)"
+    }
+  ],
+  "next_allocation": [
+    {
+      "endpoint": "github.copilot.free",
+      "provider": "github",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "openrouter.free_models",
+      "provider": "openrouter",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "gemini.api_free",
+      "provider": "google",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.vendors",
+      "provider": "gpt4free/cliproxyapi/chapito/ai-manus",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "aion.free_tokens",
+      "provider": "aion",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "cerebras.free_tokens",
+      "provider": "cerebras",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "cloudflare.workers_ai",
+      "provider": "cloudflare",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "cohere.trial_calls",
+      "provider": "cohere",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "felo.api_credits",
+      "provider": "felo",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "groq.free_tier",
+      "provider": "groq",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "huggingface.inference_providers",
+      "provider": "huggingface",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "kilo.free_models",
+      "provider": "kilo",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "llm7.free_token",
+      "provider": "llm7",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "mistral.free_mode",
+      "provider": "mistral",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "modelscope.api_inference",
+      "provider": "modelscope",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "nvidia.api_catalog",
+      "provider": "nvidia",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "omni.gateway",
+      "provider": "omni",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "ovhcloud.ai_endpoints",
+      "provider": "ovhcloud",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "requesty.free_models",
+      "provider": "requesty",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "routeway.free_models",
+      "provider": "routeway",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "sambanova.free_tier",
+      "provider": "sambanova",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "sealion.api",
+      "provider": "sealion",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "siliconflow.free_models",
+      "provider": "siliconflow",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "typhoon.api",
+      "provider": "typhoon",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "unorouter.free_models",
+      "provider": "unorouter",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "xfyun.spark",
+      "provider": "xfyun",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "xkiro.free_models",
+      "provider": "xkiro",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "zai.free_models",
+      "provider": "zai",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.agenttools",
+      "provider": "g4f/agenttools",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.airforce",
+      "provider": "g4f/airforce",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.antigravity",
+      "provider": "g4f/antigravity",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.arena",
+      "provider": "g4f/arena",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.bingcreateimages",
+      "provider": "g4f/bingcreateimages",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.blackforestlabs_flux1dev",
+      "provider": "g4f/blackforestlabs_flux1dev",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.blackforestlabs_flux1kontextdev",
+      "provider": "g4f/blackforestlabs_flux1kontextdev",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.blackboxpro",
+      "provider": "g4f/blackboxpro",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.bravesearch",
+      "provider": "g4f/bravesearch",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.cachedsearch",
+      "provider": "g4f/cachedsearch",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.cerebras",
+      "provider": "g4f/cerebras",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.chatgpt",
+      "provider": "g4f/chatgpt",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.claude",
+      "provider": "g4f/claude",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.cloudflare",
+      "provider": "g4f/cloudflare",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.cohereforai_c4ai_command",
+      "provider": "g4f/cohereforai_c4ai_command",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.copilot",
+      "provider": "g4f/copilot",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.copilotapp",
+      "provider": "g4f/copilotapp",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.deepinfra",
+      "provider": "g4f/deepinfra",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.deepseek",
+      "provider": "g4f/deepseek",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.elevenlabs",
+      "provider": "g4f/elevenlabs",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.g4fspace",
+      "provider": "g4f/g4fspace",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.glm",
+      "provider": "g4f/glm",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.gemini",
+      "provider": "g4f/gemini",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.geminicli",
+      "provider": "g4f/geminicli",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.geminipro",
+      "provider": "g4f/geminipro",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.githubcopilot",
+      "provider": "g4f/githubcopilot",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.googleaimode",
+      "provider": "g4f/googleaimode",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.googlesearch",
+      "provider": "g4f/googlesearch",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.grok",
+      "provider": "g4f/grok",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.groq",
+      "provider": "g4f/groq",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.hailuoai",
+      "provider": "g4f/hailuoai",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.huggingchat",
+      "provider": "g4f/huggingchat",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.huggingface",
+      "provider": "g4f/huggingface",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.huggingfacemedia",
+      "provider": "g4f/huggingfacemedia",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.huggingspace",
+      "provider": "g4f/huggingspace",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.kilocode",
+      "provider": "g4f/kilocode",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.llm7",
+      "provider": "g4f/llm7",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.markitdown",
+      "provider": "g4f/markitdown",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.metaai",
+      "provider": "g4f/metaai",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.metaaiaccount",
+      "provider": "g4f/metaaiaccount",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.microsoftdesigner",
+      "provider": "g4f/microsoftdesigner",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.nvidia",
+      "provider": "g4f/nvidia",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.ollama",
+      "provider": "g4f/ollama",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.omniroute",
+      "provider": "g4f/omniroute",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.openaifm",
+      "provider": "g4f/openaifm",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.openrouterfree",
+      "provider": "g4f/openrouterfree",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.operaaria",
+      "provider": "g4f/operaaria",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.perplexity",
+      "provider": "g4f/perplexity",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.pi",
+      "provider": "g4f/pi",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.pollinations",
+      "provider": "g4f/pollinations",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.pollinationsaudio",
+      "provider": "g4f/pollinationsaudio",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.pollinationsimage",
+      "provider": "g4f/pollinationsimage",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.puter",
+      "provider": "g4f/puter",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.qwen",
+      "provider": "g4f/qwen",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.relayrouter",
+      "provider": "g4f/relayrouter",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.stabilityai_sd35large",
+      "provider": "g4f/stabilityai_sd35large",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.teachanything",
+      "provider": "g4f/teachanything",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.whiterabbitneo",
+      "provider": "g4f/whiterabbitneo",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.you",
+      "provider": "g4f/you",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "g4f.yqcloud",
+      "provider": "g4f/yqcloud",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "meta.model_api",
+      "provider": "meta",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "meta.muse_code",
+      "provider": "meta",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "meta.llama_api",
+      "provider": "meta",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "deepinfra.api",
+      "provider": "deepinfra",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "novita.api",
+      "provider": "novita",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "friendli.api",
+      "provider": "friendli",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "baseten.api",
+      "provider": "baseten",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "claude.seat_runtime",
+      "provider": "claude",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "deepseek.api",
+      "provider": "deepseek",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "agentrouter.models",
+      "provider": "agentrouter",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "muse.unregistered",
+      "provider": "muse",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    },
+    {
+      "endpoint": "unattributed.unregistered",
+      "provider": "unattributed",
+      "budget_calls_day": 1,
+      "basis": "probe-only (∄ success ≤72h)",
+      "delta_vs_prior": null
+    }
+  ],
+  "allocation_budget_total": 100,
+  "prior_generated_at": null,
+  "policy": {
+    "measured_not_quoted": true,
+    "limit_null_means_unknown": true,
+    "feeds": [
+      "#5576",
+      "#5546"
+    ]
+  }
+}

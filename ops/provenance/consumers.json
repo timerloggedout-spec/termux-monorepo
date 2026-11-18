@@ -1,0 +1,30 @@
+{
+  "schema": "provenance-consumer-registry/v1",
+  "standard": "#5306 delta ledger ∧ consumer registration ∧ ≥1 demonstrated read",
+  "representations": [
+    {
+      "id": "provenance-export-record/v1",
+      "producer": "scripts/provenance/ingest_exports.py",
+      "workflow": ".github/workflows/provenance-export-ingest.yml",
+      "store_path": "timerloggedout-spec/muse-vm-workspace-backup:provenance/<source_ns>/run-<run_id>/records.jsonl",
+      "source_classes": ["message", "thinking"],
+      "classifiers": ["chat_intent (scripts/classifiers/chat_intent.py)", "ml.pipelines.lanes.classify (PR-bearing records)"],
+      "comparison": "Actions run evidence via head_sha ∨ head_branch ∨ PR number",
+      "consumers": [
+        {
+          "id": "provenance.export-digest/v1",
+          "reader": "scripts/provenance/export_digest.py",
+          "read_receipts": "provenance/<source_ns>/run-<run_id>/consumer-reads.jsonl (store) ∧ workflow notice",
+          "status": "registered"
+        },
+        {"id": "observatory", "issue": "#5298", "status": "named-consumer (read owed)"},
+        {"id": "doe", "status": "named-consumer (read owed)"},
+        {"id": "3l0", "status": "named-consumer (read owed)"}
+      ],
+      "sources_of_record": [
+        {"source_ns": "jules-harvest/2026-11-17", "class": "thinking", "sessions": 417, "origin": "Muse VM batch export (repo-exports / jules-harvest)", "store_state": "publish owed (∉ store main as of 2026-11-18)"},
+        {"source_ns": "muse-side-chat/<date>", "class": "message", "origin": "Muse side-chat cloned exports (message-export class)", "store_state": "publish owed"}
+      ]
+    }
+  ]
+}

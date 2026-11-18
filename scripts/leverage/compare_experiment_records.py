@@ -76,13 +76,13 @@ def compare_records(
     records: list[dict[str, Any]], *, experiment_id: str, cohort: str,
     control_arm: str, treatment_arm: str, control_instance_key: str,
     treatment_instance_key: str, outcome_key: str, outcome_direction: str,
-    cost_key: str, cost_unit: str, min_pairs: int,
+    cost_key: str, cost_unit: str, cost_status: str, min_pairs: int,
     guardrails: list[tuple[str, float]],
 ) -> dict[str, Any]:
     if control_arm == treatment_arm:
         raise ComparisonError("control and treatment arms must differ")
-    if control_instance_key == treatment_instance_key:
-        raise ComparisonError("control and treatment configured-instance keys must differ")
+    if not guardrails:
+        raise ComparisonError("at least one explicit quality guardrail is required")
     control = _selected(records, experiment_id, cohort, control_arm, control_instance_key)
     treatment = _selected(records, experiment_id, cohort, treatment_arm, treatment_instance_key)
 
@@ -119,6 +119,24 @@ def compare_records(
         raise ComparisonError(f"insufficient matched repetitions: {len(repetitions)} < preregistered minimum {min_pairs}")
 
     outcome_sign = 1.0 if outcome_direction == "higher" else -1.0
+    if cost_status not in {"measured", "estimated"}:
+        raise ComparisonError("cost_status must be measured or estimated")
+
+    def cost_value(row: dict[str, Any], label: str) -> float:
+        if cost_key == "usage.value":
+            usage = row.get("usage")
+            if not isinstance(usage, dict):
+                raise ComparisonError(f"{label}: usage metadata is required for usage.value")
+            if usage.get("status") != cost_status:
+                raise ComparisonError(f"{label}: usage.status does not match declared cost_status")
+            if usage.get("unit") != cost_unit:
+                raise ComparisonError(f"{label}: usage.unit does not match declared cost_unit")
+            value = usage.get("value")
+            if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+                raise ComparisonError(f"{label}: usage.value must be a finite number")
+            return float(value)
+        return _number(row, cost_key, label)
+
     outcome_control: list[float] = []
     outcome_treatment: list[float] = []
     cost_control: list[float] = []
@@ -133,8 +151,8 @@ def compare_records(
                 raise ComparisonError(f"{label}: control and treatment must share a non-empty {fingerprint}")
         co = _number(c[repetition], outcome_key, f"control {label}")
         to = _number(t[repetition], outcome_key, f"treatment {label}")
-        cc = _number(c[repetition], cost_key, f"control {label}")
-        tc = _number(t[repetition], cost_key, f"treatment {label}")
+        cc = cost_value(c[repetition], f"control {label}")
+        tc = cost_value(t[repetition], f"treatment {label}")
         if cc < 0 or tc < 0:
             raise ComparisonError(f"{label}: resource cost cannot be negative")
         outcome_control.append(co)
@@ -156,6 +174,8 @@ def compare_records(
     ratio_reason = None
     if not guardrails_pass:
         ratio_reason = "one or more treatment guardrails failed"
+    elif cost_status != "measured":
+        ratio_reason = "resource cost is estimated; realized leverage ratio requires measured cost"
     elif incremental_cost <= 0:
         ratio_reason = "incremental resource cost is zero or negative; ratio is not computable"
     else:
@@ -179,7 +199,7 @@ def compare_records(
             "oriented_incremental_mean": outcome_delta,
         },
         "resource_cost": {
-            "metric": cost_key, "unit": cost_unit,
+            "metric": cost_key, "unit": cost_unit, "measurement_status": cost_status,
             "control_mean": mean(cost_control), "treatment_mean": mean(cost_treatment),
             "incremental_mean": incremental_cost,
         },
@@ -211,6 +231,8 @@ def main() -> int:
     parser.add_argument("--outcome-direction", choices=("higher", "lower"), required=True)
     parser.add_argument("--cost-key", required=True, help="numeric resource-cost key in EXPERIMENT metrics")
     parser.add_argument("--cost-unit", required=True)
+    parser.add_argument("--cost-status", choices=("measured", "estimated"), required=True,
+                        help="measurement status; estimated values never produce a realized leverage ratio")
     parser.add_argument("--min-pairs", type=int, required=True, help="pre-registered minimum matched repetitions")
     parser.add_argument("--guardrail", action="append", type=parse_guardrail, default=[], metavar="METRIC>=MIN")
     args = parser.parse_args()
@@ -223,7 +245,8 @@ def main() -> int:
             control_instance_key=args.control_instance_key,
             treatment_instance_key=args.treatment_instance_key,
             outcome_key=args.outcome_key, outcome_direction=args.outcome_direction,
-            cost_key=args.cost_key, cost_unit=args.cost_unit, min_pairs=args.min_pairs,
+            cost_key=args.cost_key, cost_unit=args.cost_unit, cost_status=args.cost_status,
+            min_pairs=args.min_pairs,
             guardrails=args.guardrail,
         )
     except (OSError, ComparisonError) as exc:

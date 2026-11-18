@@ -42,7 +42,7 @@ python3 scripts/leverage/compare_experiment_records.py --help
 python3 scripts/proposals/validate_registry.py
 python3 scripts/ci/repo_gate.py
 
-Termux smoke is optional platform evidence, not a required L3VERAGE gate.
+Termux smoke is not a required gate for this documentation/catalog/tooling PR. Any future production promotion remains subject to repository-wide hard rules.
 ```
 
 The GitHub connector can write repository objects but cannot run the local checkout. CI results must be observed on the PR's immutable head SHA; queued/running is not a pass.

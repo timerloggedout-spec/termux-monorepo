@@ -41,6 +41,10 @@ _CLAIM_CLASS_RE = re.compile(r"claim-class:\s*(executor|seat-queue|named:\s*\S+)
                              re.I)
 _EXECUTOR_OF_RECORD_RE = re.compile(r"executor of record:\s*([^\n·|]+)", re.I)
 _SWARM_ROUTE_RE = re.compile(r'"route":\s*"([^"]+)"')
+_PROJECT_TASK_ROUTE_RE = re.compile(
+    r"^\s*route:\s*project-task-dispatch(?:\.yml)?\s*$", re.I | re.M)
+_SWARM_ADMISSION_ROLE = "[MUSEai]@{role:{swarm-admission}}"
+_PROJECT_TASK_ROLE = "[MUSEai]@{role:{project-task-dispatch}}"
 _LEASE_RE = re.compile(r"^- auto-claim: class=(\S+) claimant=(\S+) "
                        r"lease_expires=(\S+)", re.M)
 
@@ -85,12 +89,18 @@ def claim_class_of(issue, comments):
         m = _EXECUTOR_OF_RECORD_RE.search(body)
         if m:
             return "named-executor", m.group(1).strip()
-    body = issue.get("body") or ""
-    m = _SWARM_ROUTE_RE.search(body)
-    if m:
-        if m.group(1) == "build-dispatch":
-            return "executor", "dispatch-executor"
-        return "seat-queue", "qdesk-seat-queue"
+    for body in _bodies(issue, comments):
+        m = _SWARM_ROUTE_RE.search(body)
+        if m:
+            route = m.group(1)
+            if route == "build-dispatch":
+                return "executor", "dispatch-executor"
+            if route == "project-task-dispatch":
+                return "seat-queue", "qdesk-seat-queue"
+        if _SWARM_ADMISSION_ROLE in body and _PROJECT_TASK_ROUTE_RE.search(body):
+            return "seat-queue", "qdesk-seat-queue"
+        if _PROJECT_TASK_ROLE in body:
+            return "seat-queue", "qdesk-seat-queue"
     return None, None
 
 

@@ -1,3 +1,5 @@
+use std::cell::Cell;
+
 use termux_brain::{
     BrainExtension, ExtensionContext, ExtensionContractError, ExtensionDescriptor,
     invoke_extension, ExtensionInvocationError, RunIdentity, BRAIN_EXTENSION_CONTRACT_VERSION,
@@ -6,6 +8,7 @@ use termux_brain::{
 struct EchoExtension {
     descriptor: ExtensionDescriptor,
     fail: bool,
+    calls: Cell<usize>,
 }
 
 impl BrainExtension for EchoExtension {
@@ -22,6 +25,7 @@ impl BrainExtension for EchoExtension {
         context: &ExtensionContext,
         request: &Self::Request,
     ) -> Result<Self::Response, Self::Error> {
+        self.calls.set(self.calls.get() + 1);
         if self.fail {
             return Err("specialist fixture failure");
         }
@@ -83,6 +87,7 @@ fn invocation_rejects_missing_run_identity_before_evaluation() {
     let extension = EchoExtension {
         descriptor: descriptor(),
         fail: true,
+        calls: Cell::new(0),
     };
     let mut invalid = context();
     invalid.identity.attempt_id.clear();
@@ -93,6 +98,7 @@ fn invocation_rejects_missing_run_identity_before_evaluation() {
             ExtensionContractError::MissingIdentityField("attempt_id")
         ))
     );
+    assert_eq!(extension.calls.get(), 0);
 }
 
 #[test]
@@ -105,7 +111,7 @@ fn invocation_rejects_domain_mismatch_before_evaluation() {
     invalid.domain_id = "another_domain".into();
 
     assert_eq!(
-        extension.invoke(&invalid, &"request".into()),
+        invoke_extension(&extension, &invalid, &"request".into()),
         Err(ExtensionInvocationError::Contract(
             ExtensionContractError::DomainMismatch {
                 expected: "test_echo",
@@ -113,6 +119,7 @@ fn invocation_rejects_domain_mismatch_before_evaluation() {
             }
         ))
     );
+    assert_eq!(extension.calls.get(), 0);
 }
 
 #[test]
@@ -120,6 +127,7 @@ fn invocation_preserves_orchestration_cycle_and_attempt_identity() {
     let extension = EchoExtension {
         descriptor: descriptor(),
         fail: false,
+        calls: Cell::new(0),
     };
     let expected = context().identity;
 
@@ -137,7 +145,7 @@ fn specialist_errors_remain_distinct_from_contract_errors() {
     };
 
     assert_eq!(
-        extension.invoke(&context(), &"hello".into()),
+        invoke_extension(&extension, &context(), &"hello".into()),
         Err(ExtensionInvocationError::Evaluation(
             "specialist fixture failure"
         ))

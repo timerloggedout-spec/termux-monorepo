@@ -21,7 +21,7 @@ This is a **dependency pointer**, not a source-file pointer:
 - MOSAIC's Cargo package depends on the root Brain facade by a local Cargo path dependency.
 - The host/composition owner depends on both `termux-brain` and `mosaic-brain`.
 - The root Brain package does not depend on `mosaic-brain`.
-- Use the existing root kernel directly; skip `#[path]` inclusion, symlinks, Git submodules, copied source and any second root kernel.
+- Neither crate should include the other crate's source files. Preserve the existing Brain facade's `#[path = "../../brain.rs"]` reference to the single root source; MOSAIC must consume Brain through the `termux-brain` Cargo path dependency. Do not add symlinks, Git submodules, copied source or a second root kernel.
 - The actual host crate and serialization bridge remain an explicit recon item until their current owner contract is verified.
 
 The existing MOSAIC design's location is retained. The root Brain's current seven reasoning stages are retained. MOSAIC is an optional specialist extension, not an eighth mandatory reasoning stage and not a new orchestration plane.
@@ -37,7 +37,7 @@ The existing MOSAIC design's location is retained. The root Brain's current seve
 | Add a new root capability registry? | **No** | Reuse the existing capability/integration registries and host's static wiring. |
 | Add a new queue, ledger, scheduler or graph? | **No** | Existing QUE, DoE, CRG, proposal, evidence and FA-ADE owners remain canonical. |
 | Run MOSAIC automatically on every Brain request? | **No** | Route only explicit methodology-intelligence tasks; preserve cost and scope bounds. |
-| Is runtime connection complete now? | **No** | The two PRs currently describe separate lines; the contract and host wiring are not yet implemented or validated. |
+| Is runtime connection complete now? | **No** | The ledger entry, typed contract, pure adapter and cross-crate tests are present in source. Same-head validation is pending, and the production host/bridge is not yet verified or wired. |
 
 ---
 
@@ -140,14 +140,19 @@ Two viable shapes require a focused design choice during MOS-007 implementation:
 pub trait BrainExtension {
     type Request;
     type Response;
+    type Error;
 
     fn descriptor(&self) -> ExtensionDescriptor;
 
     fn evaluate(
         &self,
+        context: &ExtensionContext,
         request: &Self::Request,
-    ) -> Result<Self::Response, ExtensionError>;
+    ) -> Result<Self::Response, Self::Error>;
 }
+
+// The shared library exposes invoke_extension(...) to validate the descriptor,
+// domain and orchestration/cycle/attempt identity before calling evaluate(...).
 ```
 
 This keeps the core standard-library-only, avoids inventing a universal serialization format, and lets `mosaic-brain` return its native strongly typed `Recommendation`. The composition host owns the concrete request and response types.
@@ -494,7 +499,7 @@ Coordinate with existing MOS-003/MOS-004; do not duplicate their work.
 3. Run Rust formatting, `cargo check --all-targets`, tests and Clippy with warnings denied for both crates.
 4. Test package builds from clean checkout using the committed path dependency.
 5. Run the existing CRG scope tests, proposal lifecycle validator, repo-gate and Termux smoke.
-6. Re-fetch all workflow runs and logs until terminal.
+6. Follow the repository adaptive-wait contract for pending checks. Stop when the configured wait budget expires; record `PENDING` for any required job still queued or in progress. Before classifying a later result, re-fetch authoritative workflow evidence for the exact watched SHA.
 7. Record PASS/FAIL/CANCELLED/PENDING/NOT_RUN per gate and exact immutable SHA.
 
 **Acceptance:** all required gates pass on the same PR head; no historical or different-SHA result is used as proof.
@@ -624,14 +629,11 @@ The following are not part of MOS-007 unless a separate evidence-backed proposal
 
 ## 14. Immediate next actions
 
-1. Add MOS-007 to the CEEL work ledger and keep it proposed until independent review.
-2. Reconcile PR #5492 and #5502 against live master; record the dependency order.
-3. Inspect the real host and determine whether the composition boundary is Rust or JSONL.
-4. Implement and test the generic root extension contract.
-5. Implement MOSAIC's adapter and cross-crate tests.
-6. Complete the existing MOS-003 CRG scope and MOS-004 ICM navigation work without editing generated artifacts directly.
-7. Run the full same-SHA validation matrix and record results.
-8. Keep runtime shadow-only until separately authorized.
+1. The MOS-007 ledger entry, root extension contract, MOSAIC adapter and cross-crate tests are present in source; keep them marked unvalidated until same-head CI and review evidence is complete.
+2. Run the full same-SHA validation matrix and record PASS/FAIL/CANCELLED/PENDING/NOT_RUN per gate.
+3. Inspect the real host and verify whether the composition boundary is Rust or JSONL; confirm host ownership and bridge schema before wiring.
+4. Complete the existing MOS-003 CRG scope and MOS-004 ICM navigation work without editing generated artifacts directly.
+5. Keep any eventual integration shadow-only until the required owners approve it separately.
 
 **No code relocation is proposed. The right first move is to create a stable contract pointer and an acyclic composition path, then prove it with cross-crate tests.**
 
@@ -640,14 +642,14 @@ The following are not part of MOS-007 unless a separate evidence-backed proposal
 ## 15. Source references
 
 - Root Brain kernel and ownership proposal: [PR #5492](https://github.com/timerloggedout-spec/termux-monorepo/pull/5492)
-- Root Brain source-inspected ownership map: [TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md)
-- Root Brain 21-family taxonomy: [TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
-- Root Brain package facade: [brain/src/lib.rs](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/brain/src/lib.rs)
-- Root Brain ICM card: [brain-kernel.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/icm/objects/operations/brain-kernel.md)
+- Root Brain source-inspected ownership map: [TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
+- Root Brain 21-family taxonomy: [TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
+- Root Brain package facade: [brain/src/lib.rs](https://github.com/timerloggedout-spec/termux-monorepo/blob/4517ad2e48fe7046c34eae7ca9f452790997b808/brain/src/lib.rs)
+- Root Brain ICM card: [brain-kernel.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/4517ad2e48fe7046c34eae7ca9f452790997b808/docs/icm/objects/operations/brain-kernel.md)
 - MOSAIC design and implementation proposal: [PR #5502](https://github.com/timerloggedout-spec/termux-monorepo/pull/5502)
-- MOSAIC specialist RFP: [MOSAIC-BRAIN-RFP.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/mosaic-meta-methodology-20261116/docs/proposals/active/continuous-capability-evolution-lab/MOSAIC-BRAIN-RFP.md)
-- MOSAIC design: [2026-11-16-mosaic-brain-design.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/mosaic-meta-methodology-20261116/docs/superpowers/specs/2026-11-16-mosaic-brain-design.md)
-- MOSAIC implementation plan: [2026-11-16-mosaic-brain-implementation.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/mosaic-meta-methodology-20261116/docs/superpowers/plans/2026-11-16-mosaic-brain-implementation.md)
+- MOSAIC specialist RFP: [MOSAIC-BRAIN-RFP.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/c68566462bfa786f4679c0bcc47e0b9a0dc907d0/docs/proposals/active/continuous-capability-evolution-lab/MOSAIC-BRAIN-RFP.md)
+- MOSAIC design: [2026-11-16-mosaic-brain-design.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/c68566462bfa786f4679c0bcc47e0b9a0dc907d0/docs/superpowers/specs/2026-11-16-mosaic-brain-design.md)
+- MOSAIC implementation plan: [2026-11-16-mosaic-brain-implementation.md](https://github.com/timerloggedout-spec/termux-monorepo/blob/c68566462bfa786f4679c0bcc47e0b9a0dc907d0/docs/superpowers/plans/2026-11-16-mosaic-brain-implementation.md)
 - QUE/QDesk Brain RFP: [issue #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)
 
 **Evidence note:** This proposal is based on the pinned branch sources above. PR #5525 now contains the shared typed extension contract, the pure `mosaic-brain` crate, its `BrainExtension` adapter, and cross-crate tests. GitHub Actions validation is tracked on the exact PR head. The host runtime route and operational activation remain unimplemented and are not asserted. The CRG scope metadata and ICM route cards are included in this PR; generated graph artifacts remain publisher-owned. The current source collector parses Python only, so Rust source-file graph indexing remains a separate CRG-owned gap.

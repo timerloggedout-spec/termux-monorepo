@@ -12,9 +12,12 @@ rows reproduces the new ranking exactly.
 Hard boundary (filing): ranking orders; it never admits, defers,
 merges, or claims. Admission thresholds and governor deferral rules
 are Cadence custody and are not touched here. Claim order derived
-from rank is ADVISORY until a QDesk/Desk decision stamp on #5283
-binds it; the delta vs age-order is published every cycle so the
-difference is visible before it binds.
+from rank is BINDING under the QDesk decision on #5283 (comment 6843024949),
+effective on Desk's merge of PR #5287 (merge
+44291b9fec8957349b4e05bc573b93d556a1497f; verified by QDesk
+comment 6843048261). DoE countersigned the v1 method in comment
+6844540381. The delta vs age-order remains published every cycle;
+any claim-order deviation requires a reason stamp.
 
 Dispatch score components (all derived from the row itself):
 - tier: priority_timebox tier index x 20 (BASE 0 .. FINAL 4).
@@ -124,20 +127,33 @@ def rank_dispatches(rows):
     order = sorted(annotated, key=lambda r: (-r["score"], r.get("issue") or 0))
     for rank, entry in enumerate(order, start=1):
         entry["rank"] = rank
+        entry["rank_method"] = METHOD
     unclaimed = [e for e in order if e.get("state") != "claimed"]
     claim_order = [e.get("issue") for e in unclaimed]
     age_order_rows = sorted(unclaimed,
                             key=lambda r: (-(r.get("age_min") or 0), r.get("issue") or 0))
     age_rank = {e.get("issue"): i + 1 for i, e in enumerate(age_order_rows)}
+    claim_rank = {e.get("issue"): i + 1 for i, e in enumerate(unclaimed)}
     delta = []
-    for pos, entry in enumerate(unclaimed, start=1):
-        if age_rank.get(entry.get("issue")) != pos:
-            delta.append({"issue": entry.get("issue"), "rank": pos,
-                          "age_rank": age_rank.get(entry.get("issue")),
-                          "delta": age_rank.get(entry.get("issue")) - pos})
+    for entry in annotated:
+        issue = entry.get("issue")
+        if entry.get("state") == "claimed":
+            entry.update({"claim_rank": None, "age_rank": None,
+                          "claim_delta_vs_age": None})
+            continue
+        pos = claim_rank.get(issue)
+        age_pos = age_rank.get(issue)
+        diff = age_pos - pos if pos is not None and age_pos is not None else None
+        entry.update({"claim_rank": pos, "age_rank": age_pos,
+                      "claim_delta_vs_age": diff})
+        if diff:
+            delta.append({"issue": issue, "rank": pos,
+                          "age_rank": age_pos, "delta": diff})
     summary = {
         "method": METHOD,
-        "advisory": True,  # binds only on the QDesk/Desk stamp (#5283 point 4)
+        "advisory": False,
+        "binding": True,
+        "binding_basis": "QDesk #6843024949 + Desk PR #5287 merge #6843031136; verified #6843048261; DoE v1 countersign #6844540381",
         "claim_order": claim_order,
         "age_order": [e.get("issue") for e in age_order_rows],
         "delta_vs_age_order": delta,

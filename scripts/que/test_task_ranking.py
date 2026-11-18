@@ -50,7 +50,16 @@ def test_claim_order_excludes_claimed_and_delta_vs_age():
     delta = {d["issue"]: d for d in summary["delta_vs_age_order"]}
     assert delta[3]["rank"] == 1 and delta[3]["age_rank"] == 2
     assert summary["moved"] == 2
-    assert summary["method"] == "que-task-rank/v1" and summary["advisory"] is True
+    assert summary["method"] == "que-task-rank/v1"
+    assert summary["advisory"] is False and summary["binding"] is True
+    assert by_issue[3]["claim_rank"] == 1
+    assert by_issue[3]["age_rank"] == 2
+    assert by_issue[3]["claim_delta_vs_age"] == 1
+    assert by_issue[1]["claim_rank"] == 2
+    assert by_issue[1]["age_rank"] == 1
+    assert by_issue[1]["claim_delta_vs_age"] == -1
+    assert by_issue[2]["claim_rank"] is None
+    assert by_issue[3]["rank_method"] == "que-task-rank/v1"
     # input rows are not mutated
     assert "score" not in rows_in[0]
 

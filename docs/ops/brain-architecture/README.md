@@ -11,7 +11,7 @@
 **Diagram source:** [../diagrams/ade-synapse-brain.mmd](../diagrams/ade-synapse-brain.mmd)  
 **Synaptic Bus contract:** [contracts/SYNAPTIC-BUS-CONTRACT.md](contracts/SYNAPTIC-BUS-CONTRACT.md)  
 **Envelope schema:** [contracts/SYNAPTIC-BUS-ENVELOPE.schema.json](contracts/SYNAPTIC-BUS-ENVELOPE.schema.json)  
-**Compatibility matrix:** [contracts/BUS-COMPATIBILITY.md](contracts/BUS-COMPATIBILITY.md)
+**Compatibility matrix:** [contracts/BUS-COMPATIBILITY.md](contracts/BUS-COMPATIBILITY.md)  \n**Orchestration receipt projection:** [tools/ade_synapse/orchestration_receipt_adapter.py](../../../tools/ade_synapse/orchestration_receipt_adapter.py)
 
 ## What is ADE-SYNAPSE?
 

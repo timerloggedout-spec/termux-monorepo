@@ -13,6 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/icm-architect-submodule
+  - docs/icm-faa-de-maintenance-adaptation-20261118-r2
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -54,6 +55,11 @@ This change introduces the user-owned fork of **ICM Architect** as a pinned, sha
 
 - Disposition: accepted for execution.
 - Notes: The operator clarified that ICM is being applied to the monorepo itself. `icm-cctv_fork` and `content-agent-routing-promptbase_fork` are shallow, optional reference inputs under `refTemplates/smods/`; the monorepo’s own `docs/icm/` contracts remain operative. The BLU B160V/free-services envelope is documented as an operator constraint only. No Termux MCP/device access, service-account operation, network deployment, application-code refactor, or visual renderer startup is authorized by this scope.
+
+### 2026-11-18 — ICM-08 FA-ADE maintenance adaptation
+
+- Disposition: accepted for execution under the existing operator-authorized ICM integration.
+- Notes: Corrected the imported maintenance Pipeline so inventory, design, verification, WAIT/WATCH, and promotion advance on repository-native evidence rather than routine human evaluations. Preserved HITL only for the human-only permission boundaries in root `CLAUDE.md` and `docs/proposals/AGENTIC-PERMISSIONS.md`. Aligned the map navigation, stage contracts, stable templates, and method-coverage record with the live dual-gate and FA-ADE policy. Documentation-only scope; no application code, workflow, device, credential, or branch-protection changes.
 
 ## Checklist (process)
 

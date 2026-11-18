@@ -1,6 +1,6 @@
 # termux-monorepo ICM System Map — Context
 
-This is a **system map**, not a replacement architecture specification or an automated pipeline. Its job is to help a later editor answer **what is this component** and **what else moves if I change it** without loading the whole repository.
+This is a **system map**, not a replacement architecture specification. The nested maintenance Pipeline is agent-executed and evidence-gated under the repository's FA-ADE contract. Its job is to help a later editor answer **what is this component** and **what else moves if I change it** without loading the whole repository.
 
 ## Inputs
 
@@ -35,6 +35,6 @@ This is a **system map**, not a replacement architecture specification or an aut
 | `hub_mcp` | The policy and validation boundary for structured jobs, not a generic interactive remote shell. |
 | system map | This linked edit map; it is distinct from generated `workspace/llm_map` outputs. |
 
-## Human check
+## Cold-walk acceptance
 
-A reviewer should be able to read `CLAUDE.md` plus one card and answer where the source of truth lives, what is in scope, and the first-order impact before any code or configuration is changed.
+A fresh agent should be able to read `CLAUDE.md` plus one card and identify the source of truth, scope, and first-order impact. Validate this navigation contract through link/source checks; it is not a mandatory human approval checkpoint.

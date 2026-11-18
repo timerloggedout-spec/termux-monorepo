@@ -1,28 +1,27 @@
 ---
 id: qdesk-self-repair
-title: "QDesk self-repair loop (SIE ⇒ Desk QUE) with branch reconciliation intake"
-author: ChatGPT
-posted_at: 2026-11-16
-source: "Existing QDesk self-repair proposal and operator directive to integrate BRR into QUE"
+title: "QDesk self-repair loop: detect, fix, merge, measure"
+author: termux-ops
+posted_at: 2026-11-12
+source: PROPOSAL.md
 status: executing
 priority: P1
 reviewers:
-  - id: timerloggedout-spec
-    role: operator-authorizer
-    status: requested
-  - id: ChatGPT
-    role: author+executor
-    status: executing
-related_issues: []
-related_prs: []
-related_branches:
-  - feat/que-brr-clean-integration-2026-11-16
-gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
+  - {id: timerloggedout-spec, role: operator-authorizer, status: accepted}
+  - {id: ChatGPT, role: author+executor, status: executing}
+related_issues: [5214]
+related_prs: [5207, 5523]
+related_branches: [feat/que-brr-clean-integration-2026-11-16]
+gates_required: [repo-gate, proposal-lifecycle, termux-smoke]
 ---
 
 # MANIFEST — qdesk-self-repair
 
 ## Summary
+
+Self-repair loop for QDesk (.github/workflows/qdesk-self-repair.yml). Spec: `PROPOSAL.md`. Kill switch: repo variable QDESK_LOOP_ENABLED=false (docs/ops/QDESK-KILL-SWITCH.md).
+
+## Branch reconciliation (BRR) integration
 
 Operate QDesk as the single scheduled execution plane for branch reconciliation. BRR observes the repository, produces a complete branch inventory, and projects actionable evidence into the existing QUE issue intake. QUE retains its existing ranking, claim, lease, reclaim, escalation and Desk surfaces.
 

@@ -2,18 +2,18 @@
 
 > Canonical data: `workspace/llm_map/graph/edges.jsonl` + `graph-index.json`, derived by `scripts/graph/cross_plane_link.py` from the plane indexes. This is a view over existing planes, never a source of truth; signals are research signals, never adoption orders.
 
-Observed (repository index): `2026-11-12T13:14:25.053926Z` · Edges: **25329**
+Observed (repository index): `2026-11-17T13:30:36.043677Z` · Edges: **26375**
 
 ## Edges by type
 
-- **about_topic:** 12076
-- **in_domain:** 5266
-- **authored_by:** 3776
-- **starred:** 3280
-- **owned:** 756
+- **about_topic:** 12633
+- **in_domain:** 5465
+- **authored_by:** 3917
+- **starred:** 3420
+- **owned:** 764
 - **watching:** 128
 - **mentions_repo:** 17
-- **submitted_to:** 14
+- **submitted_to:** 15
 - **organizes:** 10
 - **upstream:** 2
 - **competes_in:** 1
@@ -67,6 +67,7 @@ Tracked participant records in coordinator.json: **1** — distinct from the fie
 | `challenge:project:D4/kiroween-variant-frankenstein` | submitted_to | `challenge:event:D4` | project_of_event |
 | `challenge:project:D4/kiroween-variant-resurrection` | submitted_to | `challenge:event:D4` | project_of_event |
 | `challenge:project:D4/kiroween-variant-skeleton-crew` | submitted_to | `challenge:event:D4` | project_of_event |
+| `challenge:project:D5/c1-ideainbox` | submitted_to | `challenge:event:D5` | project_of_event |
 | `challenge:project:STRANDS-DECIDER/delphi-oracle-strands-decider-proposal-package` | submitted_to | `challenge:event:STRANDS-DECIDER` | project_of_event |
 | `github:repository:timerloggedout-spec/gravitee-api-management_fork` | fork_of | `github:repository:gravitee-io/gravitee-api-management` | seed_local_fork+fork_parent |
 | `github:research-seed:frappe/gantt` | in_domain | `domain:developer-experience` | classification_domains |

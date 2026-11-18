@@ -33,6 +33,15 @@ def gh(method: str, path: str, token: str):
         return json.loads(raw) if raw else {}
 
 
+def load_exclusions(path: str = "ops/queue/exclusions.json") -> set[int]:
+    """Run ids under permanent exclusion (queue.exclusions/v1)."""
+    try:
+        doc = json.load(open(path))
+    except (OSError, ValueError):
+        return set()
+    return {int(r["run_id"]) for r in doc.get("runs", []) if r.get("run_id")}
+
+
 def plan(runs: list[dict], policy: dict) -> dict:
     """Pure decision step (unit-tested): what to cancel ∧ what to suggest."""
     supersede = set(policy.get("supersede", []))
@@ -79,6 +88,11 @@ def main() -> int:
         runs += batch
         if len(batch) < 100:
             break
+    # Permanent exclusions (ops/queue/exclusions.json): ghost runs the
+    # API refuses to cancel (409) leave the census ∧ the cancel plan.
+    excluded_ids = load_exclusions()
+    excluded = [r.get("id") for r in runs if r.get("id") in excluded_ids]
+    runs = [r for r in runs if r.get("id") not in excluded_ids]
     decision = plan(runs, policy)
     done = failed = 0
     for rid in decision["cancel"]:
@@ -90,7 +104,7 @@ def main() -> int:
         except urllib.error.HTTPError:
             failed += 1
     out = {**decision, "cancel": len(decision["cancel"]), "cancelled": done,
-           "cancel_failed": failed, "apply": a.apply}
+           "cancel_failed": failed, "apply": a.apply, "excluded": excluded}
     print(json.dumps(out))
     for w in decision["suggest_supersede"]:
         print(f"::notice title=pitcrew suggest::{w} has >= {policy.get('amplifier_threshold')} queued; review for supersede/coalesce")

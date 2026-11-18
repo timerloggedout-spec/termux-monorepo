@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "68abc679662469a08f5d406cf0abc9d87c094bb63bbc3bc92eeea03e2c2181e5",
-  "workflow_count": 314,
+  "source_fingerprint": "b4bac75c5276e196cfb304494b88686acdeb9cd1df624071464b721ef1332f97",
+  "workflow_count": 317,
   "workflows": [
     {
       "action_pins": [],
@@ -2812,6 +2812,36 @@
       ]
     },
     {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hark-vm-backup-bootstrap cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "bootstrap"
+      ],
+      "name": "hark-vm-backup-bootstrap",
+      "path": ".github/workflows/hark-vm-backup-bootstrap.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hark-vm-backup-publicize cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "publicize"
+      ],
+      "name": "hark-vm-backup-publicize",
+      "path": ".github/workflows/hark-vm-backup-publicize.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
@@ -3177,6 +3207,22 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: mesh-request-append cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "mesh-request",
+      "path": ".github/workflows/mesh-request.yml",
+      "schedules": [],
+      "triggers": [
+        "issues",
         "workflow_dispatch"
       ]
     },

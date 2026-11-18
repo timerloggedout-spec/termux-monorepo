@@ -1,25 +1,28 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-16T09:25:55Z",
+ "generated_at": "2026-11-18T08:55:03Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 8,
+   "queued": 5,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-11T20:23:55Z",
+   "oldest_queued_at": "2026-11-18T08:53:13Z",
    "by_workflow_queued": {
-    "repo gate": 4,
-    "Orchestration Regression Guard": 2,
+    "Orchestration Regression Guard": 1,
+    "repo gate": 2,
     "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
-   "in_progress": 3,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 2,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-18T08:52:27Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -30,68 +33,49 @@
   },
   "4": {
    "tier": 4,
-   "queued": 47,
-   "in_progress": 12,
-   "oldest_queued_at": "2026-11-11T20:23:55Z",
+   "queued": 91,
+   "in_progress": 18,
+   "oldest_queued_at": "2026-11-18T08:51:38Z",
    "by_workflow_queued": {
-    "tribute-status-refresh": 1,
-    "Gemini review after peers": 1,
-    "repo-tracking-collect": 3,
-    "Foresight Evidence Spine": 2,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
-    "graph-matrix-probe": 2,
-    "termux smoke": 3,
-    "Quota Dispatch Tree": 3,
-    "hitl-control-plane-verify": 2,
+    "repo-tracking-collect": 1,
+    "hark-vm-backup-bootstrap": 1,
     "Context Relationship + Lead/Lag Audit": 3,
-    "Sweep Accountability": 3,
-    "doe-nc1-continuous-log": 1,
-    "Repository development evaluation": 1,
-    "Agent PR Jules Handoff": 1,
-    "CellCog review": 1,
+    "DO Statement Style": 5,
+    "termux smoke": 3,
+    "Automation Documentation Continuous Refresh": 1,
+    "hitl-control-plane-verify": 2,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Foresight Evidence Spine": 1,
+    "Operations Cadence Audit": 1,
+    "Historical Evaluation Correlation": 1,
+    "graph-matrix-probe": 1,
+    "Repository development evaluation": 2,
     "Lane matrix event-driven inventory": 2,
-    "PR Change Effectiveness Ledger": 2,
-    "Workflow Surface Policy": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "Action Effectiveness Ledger": 2,
-    "\ud83d\udd00 Gemini Dispatch (free-tier agentic)": 1,
-    "Peer review orchestrator": 2,
-    "RECON INTEL discovery": 2,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Agent Throughput Evidence": 26,
+    "lane events recorder": 6,
+    "n8n SHE bridge": 1,
+    "Agent review \u2192 auto Jules": 3,
     "PR evidence evaluation": 2,
-    "PR production ledger": 2
+    "Agent feedback \u2192 Linear subtasks": 2,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 3,
+    "PR production ledger": 6,
+    "Workflow Surface Policy": 1,
+    "RECON INTEL discovery": 1,
+    "Sweep Accountability": 4,
+    "PR Change Effectiveness Ledger": 1,
+    "Peer review orchestrator": 2,
+    "Action Effectiveness Ledger": 3,
+    "Agent Readability Source Contract": 1,
+    "archwiz dangle check": 2,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "Reviewer metrics collect": 1
    }
   }
  },
  "totals": {
-  "queued": 55,
-  "in_progress": 16
+  "queued": 98,
+  "in_progress": 20
  },
- "wedged_ancient": [
-  {
-   "id": 41422211036,
-   "workflow": "PR scope guard",
-   "created_at": "2026-11-02T09:37:37Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/41422211036"
-  },
-  {
-   "id": 37655538554,
-   "workflow": "Merge Promotion Queue",
-   "created_at": "2026-10-07T16:57:32Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/37655538554"
-  },
-  {
-   "id": 36803855107,
-   "workflow": "PR production ledger",
-   "created_at": "2026-10-01T02:01:22Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803855107"
-  },
-  {
-   "id": 36803852632,
-   "workflow": "Peer review orchestrator",
-   "created_at": "2026-10-01T02:01:19Z",
-   "url": "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/36803852632"
-  }
- ],
+ "wedged_ancient": [],
  "wedged_excluded_from_counts": true
 }

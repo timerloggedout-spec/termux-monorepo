@@ -1,0 +1,41 @@
+name: que-cadence-kick
+# Redundant producer trigger (Owner order 2026-11-18 QUE FIX⊕UPGRADE ①③).
+# Schedules drop under queue saturation ⇒ que-feed-collect (*/10) ∧
+# dispatch-watchdog (*/15) ran ≈ every 6–9h. This kick fires on its own
+# cron ∧ on master pushes (push events ¬drop) ∧ dispatches each producer
+# whose newest run is older than its bound (12m QF · 15m DSF), single-flight.
+# Feed commits stay out of the push trigger (paths-ignore) ⇒ ¬self-loop.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  push:
+    branches: [master]
+    paths-ignore:
+      - "ops/que/**"
+      - "ops/challenge/dispatch-state-feed.json"
+      - "apps/tribute-dashboard/data/**"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: que-cadence-kick
+  cancel-in-progress: true
+
+jobs:
+  kick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/que
+      - name: Kick stale QUE producers
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: python3 scripts/que/cadence_kick.py

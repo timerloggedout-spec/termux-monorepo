@@ -1326,23 +1326,26 @@ proposals:
       - repo-gate
 
   - id: qdesk-self-repair
-    title: "QDesk self-repair loop (SIE ⇒ Desk QUE) with branch reconciliation intake"
-    author: ChatGPT
+    title: 'QDesk self-repair loop: detect, fix, merge, measure (lane termux-ops)'
+    author: termux-ops
     status: executing
     priority: P1
     path: active/qdesk-self-repair/
     reviewers:
       - id: timerloggedout-spec
         role: operator-authorizer
-        status: requested
+        status: accepted
       - id: ChatGPT
         role: author+executor
         status: executing
-    related_issues: []
-    related_prs: []
+    related_issues:
+      - 5214
+    related_prs:
+      - 5207
+      - 5523
     related_branches:
       - feat/que-brr-clean-integration-2026-11-16
     gates_required:
-      - proposal-lifecycle
       - repo-gate
+      - proposal-lifecycle
       - termux-smoke

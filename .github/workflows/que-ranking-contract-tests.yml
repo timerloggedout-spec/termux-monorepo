@@ -11,6 +11,8 @@ on:
       - "scripts/dispatch/project_task.py"
       - "scripts/dispatch/test_auto_claim.py"
       - "scripts/dispatch/test_project_task.py"
+      - "scripts/dispatch/dispatch_watchdog.py"
+      - "scripts/dispatch/test_dispatch_watchdog.py"
       - ".github/workflows/dispatch-watchdog.yml"
       - "docs/ops/QUE-TASK-RANKING.md"
       - "docs/ops/QUE-AUTO-CLAIM.md"
@@ -27,6 +29,8 @@ on:
       - "scripts/dispatch/project_task.py"
       - "scripts/dispatch/test_auto_claim.py"
       - "scripts/dispatch/test_project_task.py"
+      - "scripts/dispatch/dispatch_watchdog.py"
+      - "scripts/dispatch/test_dispatch_watchdog.py"
       - ".github/workflows/dispatch-watchdog.yml"
       - ".github/workflows/que-feed-collect.yml"
       - "docs/ops/QUE-TASK-RANKING.md"
@@ -52,4 +56,4 @@ jobs:
       - name: Install pytest
         run: python -m pip install --disable-pip-version-check pytest
       - name: Run QUE ranking contract tests
-        run: python -m pytest -q scripts/que/test_task_ranking.py scripts/que/test_que_upgrade_1118.py scripts/dispatch/test_auto_claim.py scripts/dispatch/test_project_task.py
+        run: python -m pytest -q scripts/que/test_task_ranking.py scripts/que/test_que_upgrade_1118.py scripts/dispatch/test_auto_claim.py scripts/dispatch/test_project_task.py scripts/dispatch/test_dispatch_watchdog.py

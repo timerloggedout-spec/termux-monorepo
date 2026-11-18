@@ -2,12 +2,18 @@ name: que-feed-collect
 # QUE producer: queue-by-tier · priority windows · governor
 # feeds + the T1 measurement-plane transition events
 # (ops/que/). Single-flight on a 10-minute cadence; commits
-# land via the Termux Fleet Swarm App so downstream
-# consumers trigger on the push.
+# land via the Termux Fleet Swarm App. Source-feed pushes also
+# trigger this collector; its own outputs are excluded to avoid loops.
 on:
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "ops/challenge/dispatch-state-feed.json"
+      - "ops/que/feeds/stall-gap-feed.json"
+      - "ops/challenge/desk-feed.json"
 permissions:
   contents: write
 concurrency:

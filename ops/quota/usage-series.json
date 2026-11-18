@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-18T16:15:16Z",
+ "generated_at": "2026-11-18T16:23:33Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-16T11:12:24Z",
   "ops/tracking/nested-family.json": "2026-11-18T14:27:06Z"
@@ -1651,6 +1651,21 @@
     "last_point_at": "2026-11-11T03:32:54Z"
    },
    {
+    "key": "codestral-2508",
+    "title": "mistral - codestral-2508 - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-18T16:19:40Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-18T16:19:40Z"
+   },
+   {
     "key": "mistral-small-latest",
     "title": "mistral - mistral-small-latest - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1851,17 +1866,17 @@
   "providers_total": 96,
   "providers_populated": 4,
   "providers_gap": 94,
-  "model_series": 13,
-  "model_populated": 13
+  "model_series": 14,
+  "model_populated": 14
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 26,
+  "routed_calls": 27,
   "usage_stamped": 2,
-  "unstamped": 24,
-  "unstamped_share": 0.9231,
+  "unstamped": 25,
+  "unstamped_share": 0.9259,
   "causes": {
-   "no-usage-record": 24,
+   "no-usage-record": 25,
    "no-usage-surface": 0
   },
   "by_provider": {
@@ -1870,6 +1885,12 @@
     "calls": 7,
     "stamped": 2,
     "unstamped": 5
+   },
+   "mistral": {
+    "provider": "mistral",
+    "calls": 4,
+    "stamped": 0,
+    "unstamped": 4
    },
    "gemini-cli": {
     "provider": "gemini-cli",
@@ -1888,12 +1909,6 @@
     "calls": 4,
     "stamped": 0,
     "unstamped": 4
-   },
-   "mistral": {
-    "provider": "mistral",
-    "calls": 3,
-    "stamped": 0,
-    "unstamped": 3
    },
    "deepseek": {
     "provider": "deepseek",

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c7ad825b5e452116e9ff4dddeaa239c8722e01c8ea0670fd432dd8de105a6115",
-  "workflow_count": 319,
+  "source_fingerprint": "10f60603b95614eb526a113f2e0a28715e656bab36c230e1151c21e4cb2e36b7",
+  "workflow_count": 320,
   "workflows": [
     {
       "action_pins": [],
@@ -3239,6 +3239,24 @@
       "schedules": [],
       "triggers": [
         "issues",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: mesh-tailnet-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "probe"
+      ],
+      "name": "mesh-tailnet-probe",
+      "path": ".github/workflows/mesh-tailnet-probe.yml",
+      "schedules": [
+        "17 */2 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

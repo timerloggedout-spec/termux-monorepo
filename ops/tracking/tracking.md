@@ -1,10 +1,10 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-18T11:48:33Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-18T14:27:06Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-18T11:48:32Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`81321` read_at=`2026-11-18T11:48:32Z`
+Sources: PR feed read_at=`2026-11-18T14:27:05Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`83042` read_at=`2026-11-18T14:27:05Z`
 
-Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknown=8
+Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
 | domain | lane | project | state | last-merge | next |
 |---|---|---|---|---|---|
@@ -20,7 +20,7 @@ Rows: 22 · by_state: active=2 · closed=1 · in-flight=10 · landed=1 · unknow
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5191 `ba12d157e732` 2026-11-12T04:42:17Z | land/close PR #5609 — feat(lab): add clf-lab bootstrap workflow ∧ DoE harness templates |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| marketing | `marketing` | FB Pages MVT + challenge promo | active | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | NOT_ESTABLISHED |
+| marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5630 — fix(que): harden BRR regression evidence and promotion boundary |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #2235 — chore(osint): refresh coverage + page snapshots |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |

@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-18T16:36:47Z",
+ "generated_at": "2026-11-18T16:58:59Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-16T11:12:24Z",
   "ops/tracking/nested-family.json": "2026-11-18T14:27:06Z"
@@ -1656,6 +1656,21 @@
     "last_point_at": "2026-11-02T11:21:00Z"
    },
    {
+    "key": "gemini-3.5-flash-lite",
+    "title": "google - gemini-3.5-flash-lite - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-18T16:57:44Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-18T16:57:44Z"
+   },
+   {
     "key": "NOT_ESTABLISHED",
     "title": "mistral - NOT_ESTABLISHED - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1905,17 +1920,17 @@
   "providers_total": 96,
   "providers_populated": 5,
   "providers_gap": 93,
-  "model_series": 16,
-  "model_populated": 16
+  "model_series": 17,
+  "model_populated": 17
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 29,
+  "routed_calls": 30,
   "usage_stamped": 3,
-  "unstamped": 26,
-  "unstamped_share": 0.8966,
+  "unstamped": 27,
+  "unstamped_share": 0.9,
   "causes": {
-   "no-usage-record": 26,
+   "no-usage-record": 27,
    "no-usage-surface": 0
   },
   "by_provider": {
@@ -1936,6 +1951,12 @@
     "calls": 5,
     "stamped": 1,
     "unstamped": 4
+   },
+   "google": {
+    "provider": "google",
+    "calls": 1,
+    "stamped": 0,
+    "unstamped": 1
    },
    "gemini-cli": {
     "provider": "gemini-cli",

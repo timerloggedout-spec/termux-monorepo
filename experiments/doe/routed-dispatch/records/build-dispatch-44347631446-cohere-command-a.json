@@ -1,0 +1,67 @@
+{
+  "baseline_sha": "c56dc3595737d7c694e1cd66f78701428e0ed973",
+  "candidate_sha": "c56dc3595737d7c694e1cd66f78701428e0ed973",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44347631446"
+  ],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": 1,
+    "dispatch_status": "failed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": "explicit-request",
+    "set_index": 1,
+    "task_class": "entry-build"
+  },
+  "observed_at": "2026-11-18T16:31:28Z",
+  "origin": "live",
+  "outcome": "completion verification: failed",
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": {
+    "arm": "cohere-command-a",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5309"
+  },
+  "session_id": null,
+  "status": "failed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "cohere",
+    "instance": {
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "5989508502402517b648d34d034d9b806f52c7ddc3029b79cb260814b90b54e5",
+      "model": "command-a-03-2025",
+      "moniker": "providers-dispatch-fix",
+      "provider": "cohere",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+        "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+      },
+      "tools": {
+        "ref": "scripts/ops/build_arm_harness.py#tools",
+        "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "command-a-03-2025",
+    "provider": "cohere"
+  },
+  "usage": {
+    "source": null,
+    "status": "measured",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

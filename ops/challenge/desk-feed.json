@@ -4273,6 +4273,23 @@
           },
           "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
           "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "cohere",
+          "via": "build-dispatch.yml",
+          "session_id": null,
+          "state": "failed",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch build-dispatch-44347631446-cohere-command-a: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "measured"
+          },
+          "model": "command-a-03-2025",
+          "phrases": "NOT_ESTABLISHED"
         }
       ],
       "stages": {

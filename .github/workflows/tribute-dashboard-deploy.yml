@@ -208,7 +208,7 @@ jobs:
           commit_message: "deploy(tribute+matrix): ${{ github.sha }}"
       - name: Prune orphaned files from owned subtrees
         env:
-          PAT_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           # keep_files:true on the publish step overlays the artifact but
@@ -281,7 +281,7 @@ jobs:
         # has historically been the GitHub Pages source. Keep it exactly aligned
         # with main using a non-force update so publication cannot lag the mirror.
         env:
-          SYNC_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN || secrets.PAT_TOKEN }}
+          SYNC_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.ARCHWIZ_GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           if [ -z "${SYNC_TOKEN:-}" ]; then

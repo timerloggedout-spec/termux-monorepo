@@ -1,7 +1,7 @@
 {
   "schema_version": "software_recipe_model.v1",
   "recipe_id": "software-recipe/grimoire/craft-inventory",
-  "revision": "sha256:125b5706841a59ee3a64860679ab0d75e2f4309cee5d0fd4b41df0ba9ca28e2e",
+  "revision": "sha256:87f99ab1878981300ad10df3208b9b6d1251e3388d2d01a45785b12356326a9c",
   "kind": "analysis",
   "title": "Read-only Grimoire craft vocabulary inventory",
   "summary": "Extract and cross-check existing Grimoire vocabulary without executing spells or mutating repository state.",
@@ -142,6 +142,40 @@
         "cross-check-meanings"
       ],
       "effect_class": "pure"
+    },
+    {
+      "op_id": "validate-candidate",
+      "type": "validate",
+      "intent": "Check the candidate SRM record against the declared schema and verify operation dependency/dataflow references; report unsupported schema features as unverified.",
+      "inputs": [
+        "term-consistency-report",
+        "name-forge-role"
+      ],
+      "outputs": [
+        "candidate-validation-result"
+      ],
+      "depends_on": [
+        "cross-check-meanings",
+        "classify-name-forge"
+      ],
+      "effect_class": "pure"
+    },
+    {
+      "op_id": "prepare-review-handoff",
+      "type": "emit",
+      "intent": "Prepare a human-review handoff reference to the canonical proposal PR; do not create a new registry record or trigger execution.",
+      "inputs": [
+        "craft-inventory-report",
+        "candidate-validation-result"
+      ],
+      "outputs": [
+        "review-handoff-reference"
+      ],
+      "depends_on": [
+        "emit-report",
+        "validate-candidate"
+      ],
+      "effect_class": "pure"
     }
   ],
   "environment": {
@@ -162,6 +196,18 @@
         "No spell or command is executed",
         "No undocumented meaning is invented",
         "Claims link to immutable source evidence"
+      ],
+      "side_effects": []
+    },
+    {
+      "id": "review-handoff-reference",
+      "type": "review-reference",
+      "contract": "A link to the canonical open proposal PR and the immutable candidate recipe path for human review.",
+      "required": true,
+      "invariants": [
+        "Handoff is advisory",
+        "No automatic admission or execution",
+        "Reviewer can inspect exact source and candidate revision"
       ],
       "side_effects": []
     }

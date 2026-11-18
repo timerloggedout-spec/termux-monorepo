@@ -13,7 +13,7 @@ EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
 NEGATIVE_FIRST = re.compile(
-    r"^\\s*(?:(?:[-*]\\s*)|(?:#+\\s*))?(?:do not|don't|never|no\\b|not\\b|avoid\\b)",
+    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
     re.IGNORECASE,
 )
 IMPERATIVE = {
@@ -59,7 +59,7 @@ def inspect_git_range(base: str, head: str) -> None:
             current_path = line[6:]
             in_fence_by_path[current_path] = False
         elif line.startswith("@@"):
-            match = re.search(r"\\+(\\d+)", line)
+            match = re.search(r"\+(\d+)", line)
             if match:
                 new_line = int(match.group(1))
         elif line.startswith("+") and not line.startswith("+++"):

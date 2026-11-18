@@ -94,6 +94,17 @@ fn same_owner_evaluation_is_held() {
 }
 
 #[test]
+fn padded_same_owner_evaluation_is_held() {
+    let mut input = snapshot();
+    input.evaluator_id = "  doe-owner  ".into();
+    let result = recommend(&identity(), &input).unwrap();
+    assert_eq!(result.outcome, RecommendationOutcome::Hold);
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::EvaluatorNotIndependent));
+}
+
+#[test]
 fn owner_identity_mismatch_is_held() {
     let mut input = snapshot();
     input.method_owner_id = "other-owner".into();

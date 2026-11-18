@@ -1,0 +1,121 @@
+# DO bootstrap the Hark sandbox export mirror (Muse #5549/#5550 pattern).
+# Owner gate 2026-11-18 00:41 PST: create repo ∧ mint 1 age key. Idempotent ∧ append-only.
+# Custody: age identity ⇒ secret HARK_AGE_IDENTITY on the NEW repo only; ¬ print ∧ ¬ commit.
+name: hark-vm-backup-bootstrap
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: owner/repo of the mirror
+        default: timerloggedout-spec/hark-vm-workspace-backup
+permissions:
+  contents: read
+concurrency:
+  group: hark-vm-backup-bootstrap
+  cancel-in-progress: false
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+      TARGET: ${{ inputs.target }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Check operator token
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "::error::OPERATOR_GITHUB_TOKEN ∧ OPERATOR_TOKEN ∄"; exit 1; fi
+          gh api user --jq '"::notice title=operator::login=" + .login' || { echo "::error::operator token rejected"; exit 1; }
+      - name: Install age
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq age >/dev/null && age --version
+      - name: Create private repo (skip if exists)
+        run: |
+          if gh api "repos/$TARGET" >/dev/null 2>&1; then
+            echo "::notice title=repo::exists $TARGET"
+          else
+            gh repo create "$TARGET" --private --description "Hark sandbox export mirror · append-only provenance ledger" \
+              || { echo "::error title=repo::create refused (scope?)"; exit 1; }
+            echo "::notice title=repo::created $TARGET"
+          fi
+          test "$(gh api "repos/$TARGET" --jq .private)" = "true" || { echo "::error::repo ¬ private"; exit 1; }
+      - name: Mint age identity (skip if secret exists)
+        id: key
+        run: |
+          set -euo pipefail
+          umask 077
+          if gh secret list --repo "$TARGET" --json name --jq '.[].name' | grep -qx HARK_AGE_IDENTITY; then
+            echo "minted=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=key::HARK_AGE_IDENTITY exists; reuse committed recipient"
+          else
+            age-keygen -o "$RUNNER_TEMP/id.age" 2>/dev/null
+            age-keygen -y "$RUNNER_TEMP/id.age" > "$RUNNER_TEMP/recipient.txt"
+            gh secret set HARK_AGE_IDENTITY --repo "$TARGET" < "$RUNNER_TEMP/id.age"
+            shred -u "$RUNNER_TEMP/id.age"
+            echo "minted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice title=key::HARK_AGE_IDENTITY set (value withheld)"
+          fi
+      - name: Seed append-only tree
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/mirror"; rm -rf "$work"
+          gh repo clone "$TARGET" "$work" -- -q 2>/dev/null || { mkdir -p "$work"; git -C "$work" init -q -b main; git -C "$work" remote add origin "https://github.com/$TARGET.git"; }
+          cd "$work"
+          gh auth setup-git
+          git config user.name hark-ops; git config user.email hark-ops@users.noreply.github.com
+          git checkout -q -B "$(git symbolic-ref --short HEAD 2>/dev/null || echo main)"
+          mkdir -p keys repo-exports provenance
+          if [ ! -s keys/hark.age.pub ]; then
+            test -s "$RUNNER_TEMP/recipient.txt" || { echo "::error::recipient ∄ ∧ identity ∃ ⇒ owner re-key ruling"; exit 1; }
+            cp "$RUNNER_TEMP/recipient.txt" keys/hark.age.pub
+          fi
+          RCP="$(cat keys/hark.age.pub)"
+          [ -s README.md ] || cat > README.md <<'MD'
+          # hark-vm-workspace-backup
+          Hark sandbox export mirror (Muse #5549/#5550 pattern). Append-only: default branch blocks deletion ∧ non-fast-forward.
+          - `keys/hark.age.pub`: age recipient. Identity lives only in Actions secret `HARK_AGE_IDENTITY`.
+          - `repo-exports/REGISTRY.json`: v2 registry, section `hark`.
+          - `repo-exports/REQUESTS.jsonl`: request queue (append-only).
+          - `provenance/ledger.jsonl`: one line per event {ts, kind, ref, sha256, payload(age, armored)}; plaintext index, encrypted payload.
+          MD
+          sed -i 's/^          //' README.md
+          [ -s repo-exports/REGISTRY.json ] || python3 - <<'PY'
+          import json
+          json.dump({"version": 2, "sections": {"hark": {"node": "hark sandbox", "provides": ["provenance ledger", "workspace manifest export"], "transport": "GitHub API only", "limits": ["ephemeral", "single node", "¬ failover-proven"], "store": "provenance/ledger.jsonl", "requests": "repo-exports/REQUESTS.jsonl"}}}, open("repo-exports/REGISTRY.json", "w"), indent=2, ensure_ascii=False)
+          PY
+          touch repo-exports/REQUESTS.jsonl provenance/ledger.jsonl
+          if [ ! -s provenance/ledger.jsonl ]; then
+            TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            PLAIN="$(printf '{"event":"bootstrap","run":"%s","source_sha":"%s"}' "$RUN_URL" "$GITHUB_SHA")"
+            SHA="$(printf '%s' "$PLAIN" | sha256sum | cut -d' ' -f1)"
+            CT="$(printf '%s' "$PLAIN" | age -r "$RCP" -a | base64 -w0)"
+            python3 -c 'import json,sys; print(json.dumps({"ts":sys.argv[1],"kind":"bootstrap","ref":sys.argv[2],"sha256":sys.argv[3],"payload":sys.argv[4]}))' "$TS" "$RUN_URL" "$SHA" "$CT" >> provenance/ledger.jsonl
+          fi
+          git add -A
+          if git diff --cached --quiet; then echo "::notice title=seed::tree current"; else
+            git commit -q -m "chore(mirror): seed append-only export tree [skip render]"
+            git push -q origin HEAD
+            echo "::notice title=seed::pushed $(git rev-parse --short HEAD)"
+          fi
+      - name: Apply append-only ruleset (skip if exists)
+        run: |
+          set -euo pipefail
+          if gh api "repos/$TARGET/rulesets" --jq '.[].name' | grep -qx append-only; then
+            echo "::notice title=ruleset::append-only exists"
+          else
+            gh api -X POST "repos/$TARGET/rulesets" --input - >/dev/null <<'JSON'
+          {"name":"append-only","target":"branch","enforcement":"active",
+           "conditions":{"ref_name":{"include":["~DEFAULT_BRANCH"],"exclude":[]}},
+           "rules":[{"type":"deletion"},{"type":"non_fast_forward"}]}
+          JSON
+            echo "::notice title=ruleset::append-only created"
+          fi
+      - name: Read back
+        run: |
+          set -euo pipefail
+          P="$(gh api "repos/$TARGET" --jq .private)"; B="$(gh api "repos/$TARGET" --jq .default_branch)"
+          R="$(gh api "repos/$TARGET/rulesets" --jq '[.[].name]|join(",")')"
+          S="$(gh secret list --repo "$TARGET" --json name --jq '[.[].name]|join(",")')"
+          L="$(gh api "repos/$TARGET/contents/provenance/ledger.jsonl?ref=$B" --jq .content | base64 -d | head -1 | python3 -c 'import json,sys; d=json.loads(sys.stdin.read()); print(d["kind"], d["ts"], d["sha256"][:12])')"
+          H="$(gh api "repos/$TARGET/commits/$B" --jq .sha)"
+          echo "::notice title=readback::private=$P branch=$B head=${H:0:7} rulesets=$R secrets=$S ledger1=[$L]"
+          [ "$P" = true ] && echo "$R" | grep -q append-only && echo "$S" | grep -q HARK_AGE_IDENTITY && [ -n "$L" ]

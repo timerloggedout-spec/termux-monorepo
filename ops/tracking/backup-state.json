@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-18T10:45:19Z",
+ "generated_at": "2026-11-18T11:48:33Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -10,21 +10,57 @@
   {
    "id": "relays",
    "path": "ops/tracking/backup-relays.jsonl",
-   "records": 1466
+   "records": 1469
   },
   {
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
    "status": "error:HTTPError: HTTP Error 404: Not Found",
-   "read_at": "2026-11-18T10:45:19Z"
+   "read_at": "2026-11-18T11:48:33Z"
   }
  ],
  "marker": {
-  "state_hash": "d54df789197cc2e7448e76511ab7a1805090c1ed6b4fd9013453a89e4d1e1b8b",
-  "export_id": "exp-20261118T101341Z-e9f1a5",
+  "state_hash": "0efcfbc6e0a2af4bbafd2da84d102c64f509cae14786707b07613fea492b3c1b",
+  "export_id": "exp-20261118T112834Z-1b686e",
   "source": "relay"
  },
  "exports": [
+  {
+   "id": "exp-20261118T112834Z-1b686e",
+   "at": "2026-11-18T11:28:34Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "6c5a3c1419b9bf4df2b541167b460aa186b7fb04",
+   "state_hash": "0efcfbc6e0a2af4bbafd2da84d102c64f509cae14786707b07613fea492b3c1b"
+  },
+  {
+   "id": "exp-20261118T111333Z-d0e0b3",
+   "at": "2026-11-18T11:18:41Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "c5c10bbd6367f353a505927d72e2be1a43dd1f9f",
+   "state_hash": "63d8b33d44dbf879c633dcf1bdc1532f2e04f095a245be426fd9214b6558ffab"
+  },
+  {
+   "id": "exp-20261118T105846Z-90058c",
+   "at": "2026-11-18T11:04:01Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "6b75941eabd473e7b435f71e43fa79e454a177d0",
+   "state_hash": "c9a1f28c4bf292efe89a557a164e8701b2244fbe6313120394b5b26187cd9c90"
+  },
   {
    "id": "exp-20261118T101341Z-e9f1a5",
    "at": "2026-11-18T10:18:58Z",
@@ -17334,14 +17370,14 @@
   }
  ],
  "summary": {
-  "exports": 1417,
+  "exports": 1420,
   "drills": 1,
   "failed_attempts": 47,
-  "last_export_at": "2026-11-18T10:18:58Z",
-  "last_export_id": "exp-20261118T101341Z-e9f1a5",
+  "last_export_at": "2026-11-18T11:28:34Z",
+  "last_export_id": "exp-20261118T112834Z-1b686e",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-18T10:45:19Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-18T11:48:33Z): data may be stale; relays remain live"
  ]
 }

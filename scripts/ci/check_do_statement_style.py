@@ -46,6 +46,17 @@ def inspect_text(label: str, value: str) -> None:
         if not exempt and NEGATIVE_FIRST.match(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
+def exempt_line_numbers(path: Path) -> set[int]:
+    exempt: set[int] = set()
+    in_fence = False
+    if not path.is_file():
+        return exempt
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        ignored, in_fence = is_exempt_line(line, in_fence)
+        if ignored:
+            exempt.add(number)
+    return exempt
+
 def inspect_git_range(base: str, head: str) -> None:
     diff = subprocess.run(
         ["git", "diff", "--unified=0", f"{base}...{head}", "--", *STYLE_PATHS],
@@ -53,25 +64,21 @@ def inspect_git_range(base: str, head: str) -> None:
     ).stdout
     current_path = "changed-file"
     new_line = 0
-    in_fence_by_path: dict[str, bool] = {}
+    exempt_by_path: dict[str, set[int]] = {}
     for line in diff.splitlines():
         if line.startswith("+++ b/"):
             current_path = line[6:]
-            in_fence_by_path[current_path] = False
+            exempt_by_path[current_path] = exempt_line_numbers(Path(current_path))
         elif line.startswith("@@"):
             match = re.search(r"\+(\d+)", line)
             if match:
                 new_line = int(match.group(1))
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
-            exempt, state = is_exempt_line(added, in_fence_by_path.get(current_path, False))
-            in_fence_by_path[current_path] = state
-            if not exempt and NEGATIVE_FIRST.match(added):
+            if new_line not in exempt_by_path.get(current_path, set()) and NEGATIVE_FIRST.match(added):
                 errors.append(f"{current_path}: lead with the intended DO action: {added.strip()}")
             new_line += 1
         elif line.startswith(" "):
-            _, state = is_exempt_line(line[1:], in_fence_by_path.get(current_path, False))
-            in_fence_by_path[current_path] = state
             new_line += 1
 
     subjects = subprocess.run(

@@ -2,7 +2,7 @@
 
 Standalone, dependency-free Rust crate facade over the monorepo-root brain.rs source. This crate is the **typed reasoning kernel**, not the entire Termux monorepo Brain.
 
-The repository-wide Brain is the cognitive coordination layer spanning 21 subsystem families. Its complete target taxonomy is in [TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md](../docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md); the source-inspected owner and integration boundaries are in [TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md](../docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md). The QUE/Delphi architecture RFP is [qdesk.brain-rs #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501).
+The repository-wide Brain is the cognitive coordination layer spanning 21 subsystem families. The QUE/Delphi architecture RFP, [qdesk.brain-rs #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501), indexes the subsystem taxonomy and ownership map; those canonical map files are not present in this checkout.
 
 ## Use from another Rust crate
 

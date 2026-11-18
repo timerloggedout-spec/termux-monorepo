@@ -1,11 +1,11 @@
 {
   "counts": {
     "open_issues": 699,
-    "open_prs": 462,
+    "open_prs": 466,
     "pr_classes": {
-      "CANDIDATE": 246,
+      "CANDIDATE": 245,
       "EXTRACT": 13,
-      "NEED_EVIDENCE": 203,
+      "NEED_EVIDENCE": 208,
       "SUPERSEDE": 0
     }
   },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 68,
-      "prs": 456,
+      "prs": 460,
       "unlabelled_numbers": [
         308,
         388,
@@ -127,7 +127,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-18T08:56:59Z",
+  "generated_at": "2026-11-18T09:17:29Z",
   "issues_unlabelled": [
     308,
     388,
@@ -201,10 +201,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "not_reported",
-      "smoke": "not_reported"
+      "hygiene": "queued",
+      "smoke": "queued"
     },
-    "sha": "a43563e047"
+    "sha": "b5e935fd27"
   },
   "prs": [
     {
@@ -1135,20 +1135,6 @@
       "number": 2261,
       "title": "Add Merged Branch Audit & Timing Quota Governance Engine",
       "updated_at": "2026-10-28T22:38:27Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "a04534a6b4",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 2263,
-      "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-18T08:53:08Z"
     },
     {
       "class": "CANDIDATE",
@@ -3265,7 +3251,7 @@
       },
       "head_sha": "58293c23a4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5426,
       "title": "feat(waf): add AMD Academy discovery-only provider",
       "updated_at": "2026-11-14T16:59:02Z"
@@ -3713,20 +3699,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "e2ed2aa659",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5523,
-      "title": "feat(que): integrate branch reconciliation with QDesk",
-      "updated_at": "2026-11-17T13:33:00Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "adedeb9169",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3799,7 +3771,7 @@
       },
       "head_sha": "a6c6a8feec",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5533,
       "title": "fix(que): normalize structured auto-claim ranking scores",
       "updated_at": "2026-11-17T13:41:57Z"
@@ -3813,7 +3785,7 @@
       },
       "head_sha": "283b35a131",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5545,
       "title": "fix(que): normalize structured auto-claim ranking scores",
       "updated_at": "2026-11-17T17:10:48Z"
@@ -3845,6 +3817,20 @@
       "number": 5563,
       "title": "marketing: D5 promo HELD \u2014 D5-SPOT declined 2026-11-16, beats never fire on event claim",
       "updated_at": "2026-11-17T14:38:05Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "4cd64f8fd9",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5599,
+      "title": "feat(mesh): hark-vm compute node availability [skip render]",
+      "updated_at": "2026-11-18T09:14:19Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4382,15 +4368,29 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "success",
+        "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "ef7f169c88",
+      "head_sha": "d71b091538",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 2263,
+      "title": "chore(delphi): refresh delphi-ledger-feed.json",
+      "updated_at": "2026-11-18T09:14:42Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "1d6f7d5756",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-18T08:53:32Z"
+      "updated_at": "2026-11-18T09:13:08Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5029,12 +5029,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "0fcb44f810",
+      "head_sha": "2e9b79f84e",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-18T08:53:52Z"
+      "updated_at": "2026-11-18T09:00:52Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5043,12 +5043,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "a49697fe8b",
+      "head_sha": "45909544f5",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-18T08:53:48Z"
+      "updated_at": "2026-11-18T09:11:21Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -6625,6 +6625,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "510ba7afa3",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5523,
+      "title": "feat(que): wire branch reconciliation into QDesk",
+      "updated_at": "2026-11-18T09:14:36Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "d6b1f8d665",
       "labels": [],
       "mergeable_state": "unknown",
@@ -6683,10 +6697,52 @@
       },
       "head_sha": "eba84cd660",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5592,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-17T21:03:56Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
+      "head_sha": "9f0a909b24",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5597,
+      "title": "feat(que): add mandate 2026-11-18 \u2227 wire auto-claim regression into CI",
+      "updated_at": "2026-11-18T09:14:28Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "in_progress"
+      },
+      "head_sha": "b97ddfde6c",
+      "labels": [],
+      "mergeable_state": "unstable",
+      "number": 5600,
+      "title": "feat(provenance): add export ingest pipeline \u2227 inference availability ledger",
+      "updated_at": "2026-11-18T09:13:17Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "queued",
+        "smoke": "queued"
+      },
+      "head_sha": "b61fd7504f",
+      "labels": [],
+      "mergeable_state": "blocked",
+      "number": 5601,
+      "title": "ci(que): add cadence kick, source freshness, claim scoring, fan-out guard, ghost exclusion",
+      "updated_at": "2026-11-18T09:15:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

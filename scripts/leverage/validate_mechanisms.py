@@ -28,7 +28,7 @@ EVIDENCE_KINDS = {
 }
 ID_RE = re.compile(r"^L3V-[A-Z0-9-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-RFC3339_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
+RFC3339_RE = re.compile(r"^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[Zz]|[+-]\d{2}:\d{2})$")
 
 
 def validate(data: object) -> list[str]:
@@ -47,7 +47,8 @@ def validate(data: object) -> list[str]:
         try:
             if not RFC3339_RE.fullmatch(data["updated_at"]):
                 raise ValueError("timestamp must include seconds and a UTC offset")
-            datetime.fromisoformat(data["updated_at"].replace("Z", "+00:00"))
+            normalized = data["updated_at"].replace("t", "T").replace("z", "Z").replace("Z", "+00:00")
+            datetime.fromisoformat(normalized)
         except ValueError:
             errors.append("updated_at must be an ISO 8601 timestamp")
     mechanisms = data.get("mechanisms")

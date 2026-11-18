@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 699,
-    "open_prs": 466,
+    "open_issues": 700,
+    "open_prs": 464,
     "pr_classes": {
       "CANDIDATE": 245,
       "EXTRACT": 13,
-      "NEED_EVIDENCE": 208,
+      "NEED_EVIDENCE": 206,
       "SUPERSEDE": 0
     }
   },
@@ -53,8 +53,8 @@
       "unlabelled_numbers": []
     },
     "unlabelled": {
-      "issues": 68,
-      "prs": 460,
+      "issues": 69,
+      "prs": 458,
       "unlabelled_numbers": [
         308,
         388,
@@ -123,11 +123,12 @@
         5510,
         5514,
         5528,
-        5546
+        5546,
+        5603
       ]
     }
   },
-  "generated_at": "2026-11-18T09:17:29Z",
+  "generated_at": "2026-11-18T09:32:01Z",
   "issues_unlabelled": [
     308,
     388,
@@ -196,7 +197,8 @@
     5510,
     5514,
     5528,
-    5546
+    5546,
+    5603
   ],
   "master": {
     "functional_gate": "NOT ESTABLISHED",
@@ -204,7 +206,7 @@
       "hygiene": "queued",
       "smoke": "queued"
     },
-    "sha": "b5e935fd27"
+    "sha": "c4a883f33f"
   },
   "prs": [
     {
@@ -3771,7 +3773,7 @@
       },
       "head_sha": "a6c6a8feec",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5533,
       "title": "fix(que): normalize structured auto-claim ranking scores",
       "updated_at": "2026-11-17T13:41:57Z"
@@ -3797,20 +3799,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "4cc7be4f2b",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5547,
-      "title": "fix(qdesk): registry entry (#5214 S1) + QDESK_LOOP_ENABLED kill switch",
-      "updated_at": "2026-11-17T11:01:36Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "6166721c7d",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3827,10 +3815,24 @@
       },
       "head_sha": "4cd64f8fd9",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5599,
       "title": "feat(mesh): hark-vm compute node availability [skip render]",
       "updated_at": "2026-11-18T09:14:19Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "b97ddfde6c",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5600,
+      "title": "feat(provenance): add export ingest pipeline \u2227 inference availability ledger",
+      "updated_at": "2026-11-18T09:28:33Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4371,12 +4373,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "d71b091538",
+      "head_sha": "af3365bfbe",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-18T09:14:42Z"
+      "updated_at": "2026-11-18T09:29:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4385,12 +4387,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "1d6f7d5756",
+      "head_sha": "b609fa1d15",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-18T09:13:08Z"
+      "updated_at": "2026-11-18T09:27:59Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5043,12 +5045,12 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "45909544f5",
+      "head_sha": "4ad20a83a3",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 3916,
       "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-18T09:11:21Z"
+      "updated_at": "2026-11-18T09:29:47Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -6622,15 +6624,15 @@
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "queued",
+        "smoke": "queued"
       },
-      "head_sha": "510ba7afa3",
+      "head_sha": "a48cd13744",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5523,
       "title": "feat(que): wire branch reconciliation into QDesk",
-      "updated_at": "2026-11-18T09:14:36Z"
+      "updated_at": "2026-11-18T09:29:04Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -6711,38 +6713,10 @@
       },
       "head_sha": "9f0a909b24",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5597,
       "title": "feat(que): add mandate 2026-11-18 \u2227 wire auto-claim regression into CI",
       "updated_at": "2026-11-18T09:14:28Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "in_progress"
-      },
-      "head_sha": "b97ddfde6c",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5600,
-      "title": "feat(provenance): add export ingest pipeline \u2227 inference availability ledger",
-      "updated_at": "2026-11-18T09:13:17Z"
-    },
-    {
-      "class": "NEED_EVIDENCE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "queued",
-        "smoke": "queued"
-      },
-      "head_sha": "b61fd7504f",
-      "labels": [],
-      "mergeable_state": "blocked",
-      "number": 5601,
-      "title": "ci(que): add cadence kick, source freshness, claim scoring, fan-out guard, ghost exclusion",
-      "updated_at": "2026-11-18T09:15:06Z"
     }
   ],
   "schema": "operator-matrix/v1",

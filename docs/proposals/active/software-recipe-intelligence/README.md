@@ -51,7 +51,8 @@ No new Brain, graph database, memory store, experiment ledger, orchestrator, not
 
 ## Initial work sequence
 
-1. Versioned name competition and collision register, run independently of the technical architecture experiments.\n2. System-wide ownership and deployment census.
+1. Versioned name competition and collision register, run independently of the technical architecture experiments.
+2. System-wide ownership and deployment census.
 3. Existing recipe and adjacent-system overlap map.
 4. Neutral Software Recipe Model specification and schema.
 5. Read-only extraction and provenance fixtures.

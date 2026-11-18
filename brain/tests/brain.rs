@@ -424,7 +424,10 @@ fn context_budget_does_not_accept_saturating_overflow() {
     .unwrap();
 
     assert_eq!(result.context.selected_ids, vec!["huge".to_string()]);
-    assert_eq!(result.context.omitted_by_budget, vec!["over-budget".to_string()]);
+    assert_eq!(
+        result.context.omitted_by_budget,
+        vec!["over-budget".to_string()]
+    );
 }
 
 #[test]

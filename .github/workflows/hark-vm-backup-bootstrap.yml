@@ -97,6 +97,8 @@ jobs:
             echo "::notice title=seed::pushed $(git rev-parse --short HEAD)"
           fi
       - name: Apply append-only ruleset (skip if exists)
+        # Private repo on GitHub Free ⇒ rulesets 403 (Pro ∨ public). Soft-fail ⇒ readback reports ruleset state.
+        continue-on-error: true
         run: |
           set -euo pipefail
           if gh api "repos/$TARGET/rulesets" --jq '.[].name' | grep -qx append-only; then
@@ -113,9 +115,10 @@ jobs:
         run: |
           set -euo pipefail
           P="$(gh api "repos/$TARGET" --jq .private)"; B="$(gh api "repos/$TARGET" --jq .default_branch)"
-          R="$(gh api "repos/$TARGET/rulesets" --jq '[.[].name]|join(",")')"
+          R="$(gh api "repos/$TARGET/rulesets" --jq '[.[].name]|join(",")' 2>/dev/null || echo none)"
           S="$(gh secret list --repo "$TARGET" --json name --jq '[.[].name]|join(",")')"
           L="$(gh api "repos/$TARGET/contents/provenance/ledger.jsonl?ref=$B" --jq .content | base64 -d | head -1 | python3 -c 'import json,sys; d=json.loads(sys.stdin.read()); print(d["kind"], d["ts"], d["sha256"][:12])')"
           H="$(gh api "repos/$TARGET/commits/$B" --jq .sha)"
           echo "::notice title=readback::private=$P branch=$B head=${H:0:7} rulesets=$R secrets=$S ledger1=[$L]"
-          [ "$P" = true ] && echo "$R" | grep -q append-only && echo "$S" | grep -q HARK_AGE_IDENTITY && [ -n "$L" ]
+          echo "$R" | grep -q append-only || echo "::warning title=ruleset::append-only ∄ ⇒ owner action: GitHub Pro ∨ accept convention-only append"
+          [ "$P" = true ] && echo "$S" | grep -q HARK_AGE_IDENTITY && [ -n "$L" ]

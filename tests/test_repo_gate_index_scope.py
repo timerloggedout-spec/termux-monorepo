@@ -257,5 +257,23 @@ class IndexScopeTests(unittest.TestCase):
         self.assertIn("python-syntax", output)
 
 
+class IcmCctvPublicationTests(unittest.TestCase):
+    def test_static_board_and_published_navigation_are_wired(self):
+        sys.path.insert(0, str(ROOT))
+        from scripts.build_icm_cctv_board import build
+
+        rendered = build(ROOT / "docs/icm/_tv/screens", "gate-test-sha")
+        route = "https://timerloggedout-spec.github.io/tribute/icm-cctv.html"
+        nav = (ROOT / "apps/tribute-dashboard/site-nav.js").read_text(encoding="utf-8")
+        sitemap = (ROOT / "apps/tribute-dashboard/sitemap.xml").read_text(encoding="utf-8")
+        hub = (ROOT / "apps/project-pages-hub/index.html").read_text(encoding="utf-8")
+        self.assertIn("ICM CCTV", rendered)
+        self.assertIn("Jake Van Clief", rendered)
+        self.assertIn("gate-test-sha", rendered)
+        self.assertIn('["ICM CCTV", origin + "/tribute/icm-cctv.html", "icm-cctv"]', nav)
+        self.assertIn(route, sitemap)
+        self.assertIn(route, hub)
+
+
 if __name__ == "__main__":
     unittest.main()

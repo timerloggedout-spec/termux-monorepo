@@ -8,6 +8,12 @@ on:
     branches: [master]
     paths:
       - "apps/tribute-dashboard/**"
+      - "docs/icm/_tv/screens/**"
+      - "docs/icm/_tv/README.md"
+      - "docs/icm/objects/knowledge/cost-of-remembering.md"
+      - "docs/ops/ICM-CCTV.md"
+      - "scripts/build_icm_cctv_board.py"
+      - "tests/test_icm_cctv_board.py"
       # LC-002 (lane-compounding, verified LC-001): status data is read
       # raw from master at page load, so status pushes no longer need a
       # redeploy. The generated files stay out of the trigger set and a
@@ -149,6 +155,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build and test static ICM CCTV board
+        run: |
+          set -euo pipefail
+          python3 scripts/build_icm_cctv_board.py --source-sha "$GITHUB_SHA"
+          python3 tests/test_icm_cctv_board.py
       - name: Validate Publishing dashboard JavaScript syntax
         run: node --check apps/tribute-dashboard/publishing.js
       - name: Verify Publishing dashboard evidence panels

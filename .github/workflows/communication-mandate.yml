@@ -1,0 +1,38 @@
+name: Communication Mandate
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+      - '.github/**/*.md'
+      - 'scripts/ci/validate_communication_mandate.py'
+      - '.vale.ini'
+      - '.markdownlint-cli2.jsonc'
+      - '.github/workflows/communication-mandate.yml'
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - '.github/**/*.md'
+      - 'scripts/ci/validate_communication_mandate.py'
+      - '.vale.ini'
+      - '.markdownlint-cli2.jsonc'
+      - '.github/workflows/communication-mandate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --global markdownlint-cli2
+      - run: markdownlint-cli2
+      - uses: errata-ai/vale-action@v2
+        with:
+          files: 'docs/**/*.md .github/**/*.md'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/ci/validate_communication_mandate.py

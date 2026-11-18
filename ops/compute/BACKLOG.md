@@ -24,4 +24,6 @@ One registry for the fleet's compute backlog, gathered from the scattered surfac
 
 | 17 | ADE-SYNAPSE brain architecture integration: rebase + land the diverged package, wire the brain-region registry into the #5588 family wiring | branch feat/ade-synapse-brain-architecture (head 67a6435129ba; owner-quoted 240812da5d59 in history) | DIVERGED ahead 22 / behind 167 - 15 files all-additive - status proposed_architecture - unlanded | QUE machinery |
 
+| 18 | CompactifAI window (owner ruling 2026-11-18): burn the pre-Dec-2 post-usage window on bulk inference - endpoints-db alias reconciliation (3,443 unmapped rows) + System-1 intake classification; arm-agnostic wiring (OpenAI-compatible), own arms after Dec 2 | api.compactif.ai (carina-60b $0.022/1M in - quasar-1-2-358b 1M ctx) | Window OPEN until 2026-12-02 (pre-paid wallet flip; no top-up route under no-CC) - account billing state NOT ESTABLISHED, verify before volume | Pool arm via provider machinery |
+
 Rules: a backlog item leaves this registry only with done-evidence (receipt + landed state). New compute work registers here at intake.

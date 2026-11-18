@@ -65,3 +65,10 @@ RECON → PLAN / MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → 
 ```
 
 Do not treat queued/in-progress as success. Preserve provenance and keep promotion separate from execution and validation.
+
+
+## Repo-wide Linguist / Siglary mandate
+
+- Canonical contract: [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md).
+- Apply DO-first CAVEMAN-6 and `CHAT := STATE-CHANGE ∨ OVERSIGHT` to repository chat, skills, comments, commits, PRs, issues, and workflow directives.
+- Keep OPERATORS / GLYPHS / CHORDS distinct; resolve chords in named domains; preserve technical literals and approval boundaries.

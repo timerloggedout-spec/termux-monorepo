@@ -128,10 +128,10 @@ The four-chunk ceiling is a project readability heuristic inspired by the cognit
 | Surface | Mechanism | Status |
 |---|---|---|
 | Markdown documents | Vale + markdownlint | CI configured by this proposal |
-| Mandate-specific directive language | SG002 custom validator | CI configured by this proposal |
-| Commit subjects | Conventional scope + imperative-positive review | Initial policy; automated commit validation is follow-on |
-| Issue/PR templates | Fixed statement frame and scope field | Follow-on integration |
-| PR/issue comments | Review checklist and comment-event workflow | Follow-on integration |
+| Mandate-specific directive language | Existing DO Statement Style workflow and shared checker | Existing workflow covers PR/issue/discussion text, comments, changed instruction files, and commit subjects; this proposal adds the governance directory to its scan paths |
+| Commit subjects | Existing DO Statement Style workflow | Automated imperative-verb check on push and pull-request commits |
+| Issue/PR titles and bodies | Existing DO Statement Style workflow | Existing event coverage validates authored title/body text; fixed-frame templates remain follow-on |
+| PR/issue/discussion comments | Existing DO Statement Style workflow | Existing comment-event coverage checks authored comment text |
 | Chat handoffs | Assistant/operator process using this contract | Process-level; repository CI cannot lint private chat transcripts |
 
 A repo-wide claim applies only to surfaces with an installed enforcement path. The table records the current coverage and the remaining integration work explicitly.

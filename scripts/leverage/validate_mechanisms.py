@@ -28,6 +28,7 @@ EVIDENCE_KINDS = {
 }
 ID_RE = re.compile(r"^L3V-[A-Z0-9-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+RFC3339_RE = re.compile(r"^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$")
 
 
 def validate(data: object) -> list[str]:
@@ -44,8 +45,8 @@ def validate(data: object) -> list[str]:
         errors.append("updated_at must be a non-empty timestamp string")
     else:
         try:
-            if "T" not in data["updated_at"] and "t" not in data["updated_at"]:
-                raise ValueError("timestamp requires a time component")
+            if not RFC3339_RE.fullmatch(data["updated_at"]):
+                raise ValueError("timestamp must include seconds and a UTC offset")
             datetime.fromisoformat(data["updated_at"].replace("Z", "+00:00"))
         except ValueError:
             errors.append("updated_at must be an ISO 8601 timestamp")

@@ -9,7 +9,7 @@ on:
       - "tests/test_leverage*.py"
       - ".github/workflows/l3verage-contracts.yml"
   push:
-    branches: [master]
+    branches: [master, feat/l3verage-department-foundation]
     paths:
       - "docs/leverage/**"
       - "scripts/leverage/**"

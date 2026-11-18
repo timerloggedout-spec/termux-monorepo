@@ -25,6 +25,7 @@ A small domain-specific mechanism catalog is justified because an intervention (
 ## Acceptance and verification
 
 - Catalog JSON parses and contains unique stable IDs.
+- The focused L3VERAGE contract workflow runs the catalog validator, Python regression suites, and comparator CLI check independently of the generic repo gate.
 - Lifecycle, class, resource dimensions and evidence references are validated.
 - Validated/promoted/monitored claims require experiment identity and evidence references.
 - Seed hypotheses remain discovered and have no fabricated execution evidence.

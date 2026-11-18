@@ -28,6 +28,8 @@ flowchart TD
     C --> E[Classify Name Forge capability]
     D --> F[Emit source-linked inventory]
     E --> F
+    F --> G[Validate SRM and dependency/dataflow references]
+    G --> H[Prepare human review handoff]
 ```
 
 The graph describes a candidate procedure. No commands, spells, APIs, scripts, or repository mutations are executed by this worked example.
@@ -38,8 +40,9 @@ The graph describes a candidate procedure. No commands, spells, APIs, scripts, o
 2. **Scry:** inspect exact source rows and code; attach immutable source references and Git blob IDs.
 3. **Prepare:** reject missing required source references. Do not fill absent definitions from model memory.
 4. **Compose:** represent extraction, source classification, cross-checking, and report emission as typed SRM operations with explicit dependencies.
-5. **Probe:** review required invariants: every term has a source row; conflicts remain visible; no source is modified; no spell is cast.
-6. **Record:** keep the recipe as a candidate SRM artifact. A later actual experiment/run would be recorded through the existing canonical DoE/orchestration evidence contracts, not a new Cauldron ledger.
+5. **Probe:** validate the SRM structure and operation dependency/dataflow references; review invariants: every term has a source row; conflicts remain visible; no source is modified; no spell is cast.
+6. **Record:** keep the recipe as a candidate SRM artifact. The worked example prepares a human-review reference to the canonical PR; it does not create a new registry record.
+7. **Serve:** any later experiment/run must use existing DoE/orchestration evidence contracts, not a new Cauldron ledger.
 
 ## Evidence and digest conventions
 
@@ -59,9 +62,9 @@ These references do not create a new treatment, receipt, experiment, or runtime 
 
 ## What this proves—and does not prove
 
-**Demonstrated:** the existing Grimoire sources can be represented as ingredients in a provenance-aware SRM candidate; their definitions can be composed into a read-only procedure; Name Forge can be accurately scoped from its source.
+**Demonstrated:** the existing Grimoire sources can be represented as ingredients in a provenance-aware SRM candidate; their definitions can be composed into a read-only procedure; operation dependencies/dataflow can be checked; a human-review handoff can point to the existing PR; Name Forge can be accurately scoped from its source.
 
-**Not demonstrated:** a deployed Cauldron, automated parser, runtime execution, CI validation of SRM, owner approval, name clearance, performance benefit, or permission to execute recipes.
+**Not demonstrated:** a deployed Cauldron, automated parser, runtime execution, full JSON Schema conformance suite or CI validation of SRM, owner approval, name clearance, performance benefit, or permission to execute recipes.
 
 ## Review questions
 

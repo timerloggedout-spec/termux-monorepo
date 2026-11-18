@@ -1,8 +1,8 @@
 use std::cell::Cell;
 
 use termux_brain::{
-    BrainExtension, ExtensionContext, ExtensionContractError, ExtensionDescriptor,
-    invoke_extension, ExtensionInvocationError, RunIdentity, BRAIN_EXTENSION_CONTRACT_VERSION,
+    invoke_extension, BrainExtension, ExtensionContext, ExtensionContractError,
+    ExtensionDescriptor, ExtensionInvocationError, RunIdentity, BRAIN_EXTENSION_CONTRACT_VERSION,
 };
 
 struct EchoExtension {

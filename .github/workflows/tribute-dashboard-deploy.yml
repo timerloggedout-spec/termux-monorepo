@@ -106,6 +106,8 @@ jobs:
           mkdir -p _site/data
           cp apps/project-pages-hub/index.html _site/index.html
           cp apps/project-pages-hub/index.md _site/index.md
+          mkdir -p _site/brain-ops
+          cp apps/project-pages-hub/brain-ops/index.html _site/brain-ops/index.html
           cp apps/tribute-dashboard/matrix.html _site/matrix.html
           cp apps/tribute-dashboard/matrix.md _site/matrix.md
           cp apps/tribute-dashboard/dashboard.css _site/dashboard.css

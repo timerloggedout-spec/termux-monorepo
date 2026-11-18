@@ -27,7 +27,7 @@ IMPERATIVE = {
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
-    "docs/ops", "docs/proposals",
+    "docs/ops", "docs/proposals", "docs/governance",
 ]
 
 errors: list[str] = []

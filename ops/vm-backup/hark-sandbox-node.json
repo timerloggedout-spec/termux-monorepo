@@ -1,0 +1,16 @@
+{
+  "schema": "resiliency-node/v1",
+  "node": "hark sandbox",
+  "class": "available-alternative",
+  "parent": "#5549 resiliency-map successor (extension of the mesh)",
+  "provides": ["provenance ledger", "workspace manifest export"],
+  "transport": "GitHub API only (¬ sshd ∧ ¬ Tailscale)",
+  "store": "timerloggedout-spec/hark-vm-workspace-backup",
+  "registry": "repo-exports/REGISTRY.json (v2, section hark)",
+  "requests": "repo-exports/REQUESTS.jsonl",
+  "ledger": "provenance/ledger.jsonl (append-only; plaintext index {ts, kind, ref, sha256}; age payload)",
+  "key_custody": "Actions secret HARK_AGE_IDENTITY on the store repo; public recipient keys/hark.age.pub",
+  "bootstrap": ".github/workflows/hark-vm-backup-bootstrap.yml",
+  "limits": ["ephemeral", "single node", "¬ failover-proven"],
+  "registered": "2026-11-18"
+}

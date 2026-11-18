@@ -1,12 +1,12 @@
-# Lane matrix status (2026-11-18T15:00:28Z)
+# Lane matrix status (2026-11-18T15:03:09Z)
 
-- Master: `770841cd1df39ae0bfa3e55806a6684e4490dcd0`
-- Open PRs: **466**
+- Master: `4497d6e61d64608d71c62aaf8ddd9acfe7bab986`
+- Open PRs: **467**
 - Oldest: #47 (104.97d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
-| CANDIDATE | 155 |
+| CANDIDATE | 156 |
 | EXTRACT | 6 |
 | NEED_EVIDENCE | 132 |
 | SUPERSEDE | 173 |
@@ -14,7 +14,7 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 120 |
+| fresh | 121 |
 | mid | 248 |
 | stale | 71 |
 
@@ -29,20 +29,20 @@
 | #4898 | 14.1 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 12.0 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 104.97 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
-| #81 | 102.71 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
+| #81 | 102.72 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 101.58 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
-| #527 | 64.29 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
+| #527 | 64.3 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 60.88 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 58.86 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 56.31 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 48.21 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 48.22 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 47.35 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 46.09 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 30.24 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
 | #1441 | 28.3 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
 | #1469 | 28.08 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
-| #1470 | 28.07 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
-| #1495 | 27.52 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
+| #1470 | 28.08 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
+| #1495 | 27.53 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 27.28 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 27.28 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 27.28 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
@@ -55,8 +55,8 @@
 | #1626 | 25.37 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 24.61 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 24.53 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 22.56 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
-| #1734 | 22.15 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
+| #1694 | 22.57 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1734 | 22.16 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
 | #1735 | 22.15 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 21.42 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
 | #2456 | 19.25 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |

@@ -8,6 +8,8 @@
 - [Work ledger](../proposals/active/l3verage-department/ITEMS.md)
 - [Mechanism schema](MECHANISM.schema.json)
 - [Mechanism hypothesis catalog](mechanisms.json)
+- [Measurement integration contract](INTEGRATION.md)
+- [Pilot 001 — provenance-aware context reuse](pilots/L3V-PILOT-001-context-reuse.md)
 - [Implementation plan](../superpowers/plans/2026-11-16-l3verage-department.md)
 
 ## Operating model
@@ -51,6 +53,8 @@ The Leverage Opportunity Index prioritizes hypotheses by expected impact, effort
 A mechanism's presence in this catalog is not evidence of execution. Discovered, designed, admitted, experimenting, validated, promoted and monitored are distinct states. Seed entries are hypotheses. Validation and promotion require evidence references and existing approval/gate outcomes.
 
 ## Validate
+
+The comparison adapter reads canonical DoE experiment JSONL only; it does not write records or promote mechanisms. See [INTEGRATION.md](INTEGRATION.md) for its contract and CLI. A pilot design is not an admitted campaign or a run result.
 
 ```bash
 python3 scripts/leverage/validate_mechanisms.py

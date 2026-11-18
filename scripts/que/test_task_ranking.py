@@ -45,6 +45,7 @@ def test_claim_order_excludes_claimed_and_delta_vs_age():
                disp(2, state="claimed", tier=4, age_min=8000),
                disp(3, state="escalated", tier=2, age_min=100)]
     rows, summary = tr.rank_dispatches(rows_in)
+    by_issue = {row["issue"]: row for row in rows}
     assert summary["claim_order"] == [3, 1]          # rank order, claimed out
     assert summary["age_order"] == [1, 3]            # age-only order
     delta = {d["issue"]: d for d in summary["delta_vs_age_order"]}

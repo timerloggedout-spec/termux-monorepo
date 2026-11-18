@@ -8,6 +8,12 @@ import re
 import unittest
 from pathlib import Path
 
+try:
+    from jsonschema import Draft202012Validator, FormatChecker
+except ImportError:  # The focused CI workflow installs this optional validator.
+    Draft202012Validator = None
+    FormatChecker = None
+
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT = ROOT / "docs" / "ops" / "brain-architecture" / "contracts"
 SCHEMA_PATH = CONTRACT / "SYNAPTIC-BUS-ENVELOPE.schema.json"
@@ -23,6 +29,29 @@ class TestSynapticBusContract(unittest.TestCase):
             for line in FIXTURE_PATH.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
+
+    @unittest.skipIf(Draft202012Validator is None, "jsonschema is installed in focused CI")
+    def test_schema_and_examples_validate_as_draft_2020_12(self):
+        Draft202012Validator.check_schema(self.schema)
+        validator = Draft202012Validator(self.schema, format_checker=FormatChecker())
+        for event in self.events:
+            with self.subTest(event_id=event["event_id"]):
+                self.assertEqual(list(validator.iter_errors(event)), [])
+
+    @unittest.skipIf(Draft202012Validator is None, "jsonschema is installed in focused CI")
+    def test_schema_rejects_secret_and_missing_handoff_contract(self):
+        validator = Draft202012Validator(self.schema, format_checker=FormatChecker())
+        secret_event = json.loads(json.dumps(self.events[0]))
+        secret_event["privacy"]["contains_secret"] = True
+        self.assertTrue(list(validator.iter_errors(secret_event)))
+
+        handoff_event = json.loads(json.dumps(self.events[1]))
+        del handoff_event["handoff"]
+        self.assertTrue(list(validator.iter_errors(handoff_event)))
+
+        unknown_field = json.loads(json.dumps(self.events[0]))
+        unknown_field["payload"] = {"unbounded": "data"}
+        self.assertTrue(list(validator.iter_errors(unknown_field)))
 
     def test_schema_is_draft_2020_12_and_closed(self):
         self.assertEqual(

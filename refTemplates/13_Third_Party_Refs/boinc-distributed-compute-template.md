@@ -1,6 +1,6 @@
-# BOINC — the distributed-compute TEMPLATE of record
+# BOINC — one distributed-compute template in the fleet set
 
-Owner ruling 2026-11-18: in fleet architecture, **BOINC names the template** for distributed compute BETWEEN our own surfaces — work distribution across the VMs and devices, shared-RAM-style pooling, volunteer-host work units. The donations lane (idle compute to public science projects) is a SEPARATE, already-noted program and never the referent of "BOINC" in architecture text.
+Owner ruling 2026-11-18 (refined same day): in fleet architecture, **BOINC names one template** for distributed compute BETWEEN our own surfaces — a member of the template set, never the sole route; the set also holds the mesh-RFP pattern, Temporal workflow chaining, and Actions slice chaining — work distribution across the VMs and devices, shared-RAM-style pooling, volunteer-host work units. The donations lane (idle compute to public science projects) is a SEPARATE, already-noted program and never the referent of "BOINC" in architecture text.
 
 ## The template (what we copy)
 
@@ -19,4 +19,4 @@ Owner ruling 2026-11-18: in fleet architecture, **BOINC names the template** for
 
 ## Status
 
-Template of record from 2026-11-18. First adoption target: the registry cadence jobs (pool refresh - endpoints-db - BRR delta) expressed as work units any surface can execute.
+Template in the set from 2026-11-18. First adoption target: the registry cadence jobs (pool refresh - endpoints-db - BRR delta) expressed as work units any surface can execute.

@@ -159,7 +159,6 @@ pub trait BrainExtension {
         context: &ExtensionContext,
         request: &Self::Request,
     ) -> Result<Self::Response, Self::Error>;
-
 }
 
 /// Validate an extension invocation before entering specialist code.

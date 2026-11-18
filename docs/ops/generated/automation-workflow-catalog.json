@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "618a033edd24f785f5382d9fe25ef0082139ce7290e515e1cd5f0b1f6425a41a",
-  "workflow_count": 316,
+  "source_fingerprint": "b4bac75c5276e196cfb304494b88686acdeb9cd1df624071464b721ef1332f97",
+  "workflow_count": 317,
   "workflows": [
     {
       "action_pins": [],
@@ -3207,6 +3207,22 @@
       "schedules": [],
       "triggers": [
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "bounded-state-write",
+      "concurrency": "group: mesh-request-append cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "intake"
+      ],
+      "name": "mesh-request",
+      "path": ".github/workflows/mesh-request.yml",
+      "schedules": [],
+      "triggers": [
+        "issues",
         "workflow_dispatch"
       ]
     },

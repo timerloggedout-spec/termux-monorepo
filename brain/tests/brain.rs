@@ -261,6 +261,22 @@ fn validation_without_evidence_references_requires_evidence() {
 }
 
 #[test]
+fn validation_with_blank_evidence_reference_requires_evidence() {
+    let mut map = outputs();
+    map.insert(
+        BrainStage::Validation,
+        execution(StageOutput::Validation(ValidationReport {
+            passed: true,
+            checks: vec![],
+            blocking_issues: vec![],
+            evidence_refs: vec!["   ".into()],
+        })),
+    );
+    let result = run(map, None, BrainMode::Standard, DecisionStatus::Ready);
+    assert_eq!(result.decision.status, DecisionStatus::NeedEvidence);
+}
+
+#[test]
 fn context_selection_excludes_sensitive_items_and_obeys_budget() {
     let mut request = input(BrainMode::Fast);
     request.context_budget_tokens = 5;

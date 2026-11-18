@@ -1,27 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-18T18:44:32Z",
+ "generated_at": "2026-11-18T19:11:40Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 8,
-   "in_progress": 0,
+   "queued": 4,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 3,
-    "repo gate": 4,
-    "PR scope guard": 1
+    "repo gate": 2,
+    "Orchestration Regression Guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T18:44:03Z",
+   "queued": 1,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-18T19:09:47Z",
    "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
+    "pages build and deployment": 1
    }
   },
   "3": {
@@ -33,39 +31,37 @@
   },
   "4": {
    "tier": 4,
-   "queued": 39,
-   "in_progress": 17,
+   "queued": 52,
+   "in_progress": 15,
    "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
+    "n8n SHE bridge": 3,
+    "lane events recorder": 8,
+    "Agent Throughput Evidence": 9,
+    "Gemini review after peers": 1,
+    "Agent review \u2192 auto Jules": 2,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "PR evidence evaluation": 2,
+    "Peer review orchestrator": 1,
     "Agent Readability Source Contract": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 3,
-    "quota-served-probe": 1,
-    "graph-matrix-probe": 3,
-    "hitl-control-plane-verify": 3,
-    "DO Statement Style": 2,
-    "que-cadence-kick": 1,
-    "quota-analysis": 1,
-    "termux smoke": 3,
-    "n8n SHE bridge": 1,
-    "CellCog review": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "Agent PR Jules Handoff": 1,
-    "PR production ledger": 1,
-    "Lane matrix event-driven inventory": 1,
-    "RECON INTEL discovery": 1,
+    "Sweep Accountability": 3,
+    "Context Relationship + Lead/Lag Audit": 3,
     "PR Change Effectiveness Ledger": 1,
-    "Quota Dispatch Tree": 3,
+    "PR production ledger": 1,
+    "Agent PR Jules Handoff": 1,
     "repo-tracking-collect": 2,
     "Foresight Evidence Spine": 2,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "Sweep Accountability": 2,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
+    "graph-matrix-probe": 2,
+    "termux smoke": 2,
+    "Quota Dispatch Tree": 2,
+    "hitl-control-plane-verify": 2,
     "doe-nc1-continuous-log": 1
    }
   }
  },
  "totals": {
-  "queued": 49,
+  "queued": 57,
   "in_progress": 18
  },
  "wedged_ancient": [
@@ -86,13 +82,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 8,
+   "1": 5,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 11,
-  "default_t4": 56,
+  "explicit_total": 8,
+  "default_t4": 67,
   "unmatched": 0,
   "ancient_excluded": 2,
   "operator_excluded": 1

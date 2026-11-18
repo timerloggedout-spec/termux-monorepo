@@ -386,6 +386,48 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
 }
 
 #[test]
+fn context_budget_does_not_accept_saturating_overflow() {
+    let mut request = input(BrainMode::Fast);
+    request.context_budget_tokens = usize::MAX;
+    request.context = vec![
+        ContextItem {
+            id: "huge".into(),
+            source_ref: "huge".into(),
+            content: "huge".into(),
+            relevance_bps: 10_000,
+            estimated_tokens: usize::MAX,
+            classification: ContextClassification::Public,
+            evidence: EvidenceStatus::Verified,
+        },
+        ContextItem {
+            id: "over-budget".into(),
+            source_ref: "small".into(),
+            content: "small".into(),
+            relevance_bps: 9_000,
+            estimated_tokens: 1,
+            classification: ContextClassification::Public,
+            evidence: EvidenceStatus::Verified,
+        },
+    ];
+    let result = Brain::new(
+        FixtureBackend {
+            outputs: outputs(),
+            failure: None,
+        },
+        FixturePolicy(DecisionStatus::Ready),
+        BrainConfig {
+            max_context_tokens: usize::MAX,
+            max_plan_steps: 10,
+        },
+    )
+    .run(request)
+    .unwrap();
+
+    assert_eq!(result.context.selected_ids, vec!["huge".to_string()]);
+    assert_eq!(result.context.omitted_by_budget, vec!["over-budget".to_string()]);
+}
+
+#[test]
 fn plan_cycles_and_missing_dependencies_are_rejected() {
     let plan = ExecutionPlan {
         steps: vec![

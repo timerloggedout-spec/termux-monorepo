@@ -330,3 +330,50 @@ def test_stall_events_round_trip_through_the_feed_collector():
     events = stall_events_of(comments)
     assert [e["kind"] for e in events] == ["flag", "escalation"]
     assert events[0]["at"] == "2026-11-03T10:00:00Z"
+
+
+
+def test_auto_claim_accepts_structured_task_ranking_result(monkeypatch):
+    import dispatch_watchdog as dw
+
+    calls = []
+    monkeypatch.setattr(
+        dw.task_ranking, "nearest_wall", lambda _tb, _now: (None, None))
+    monkeypatch.setattr(
+        dw.task_ranking, "score_dispatch",
+        lambda _row: {"score": 321, "components": {"wall": 400}})
+    monkeypatch.setattr(
+        dw, "_request",
+        lambda method, url, token, payload=None:
+            calls.append((method, url, payload)) or {})
+
+    issue = {
+        "number": 77,
+        "body": ('<!-- SWARM-DISPATCH {"schema": "issue-dispatch/v1", '
+                 '"route": "build-dispatch", "entry": "x", "tier": 3} -->'),
+        "labels": [],
+        "user": {"login": "filer"},
+    }
+    context = {
+        "issue": issue,
+        "comments": [],
+        "verdict": {
+            "state": "escalated", "action": "escalate",
+            "age_min": 20.0, "tier": "BASE", "entry": None,
+        },
+    }
+    gap_records = []
+
+    dw._run_auto_claim(
+        "owner/repo", "token", NOW, [context], {}, gap_records)
+
+    assert context["verdict"]["state"] == "claimed"
+    assert context["verdict"]["action"] == "auto-claimed"
+    claim_posts = [
+        payload["body"] for method, _url, payload in calls
+        if method == "POST" and payload and "body" in payload
+        and "PRODUCER CLAIM" in payload["body"]
+    ]
+    assert len(claim_posts) == 1
+    assert "score 321.0" in claim_posts[0]
+    assert gap_records[0]["kind"] == "auto_claimed"

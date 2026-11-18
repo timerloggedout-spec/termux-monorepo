@@ -545,7 +545,10 @@ impl<B: StageBackend, P: PolicyGate> Brain<B, P> {
             }
         } else if validation.as_ref().is_some_and(|report| {
             report.evidence_refs.is_empty()
-                || report.evidence_refs.iter().any(|reference| reference.trim().is_empty())
+                || report
+                    .evidence_refs
+                    .iter()
+                    .any(|reference| reference.trim().is_empty())
         }) {
             PolicyDecision {
                 status: DecisionStatus::NeedEvidence,

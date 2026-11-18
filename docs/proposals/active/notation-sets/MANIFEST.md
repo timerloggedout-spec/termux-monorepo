@@ -129,3 +129,8 @@ This lane records concepts, audience/register-specific labels, evidence sources,
 - Research source ledger: [`nomenclature-matrix/RESEARCH-SOURCES.md`](./nomenclature-matrix/RESEARCH-SOURCES.md).
 - Candidate seed expanded with lexical-label, controlled-vocabulary, colloquial-to-formal mapping, and near-synonymy concepts; sources include W3C SKOS, Wolfram, DARIAH-Campus, Getty, Europe PMC/BioHackrXiv, and scholarly mapping research.
 - Label and mapping semantics remain separate. Wikipedia is orientation-only; no source-discovery result independently promotes a candidate mapping.
+
+
+## Communication mandate and Siglary evolution (2026-11-18)
+
+The repo-wide positive-form communication contract, fixed statement frame, force tiers, operator families, SG001–SG008 rule registry, and reader-side performance budget are defined in [`docs/governance/COMMUNICATION-MANDATE.md`](../../../../governance/COMMUNICATION-MANDATE.md). The contract explicitly separates project-local glyph meanings from BQN syntax, project force tiers from RFC 2119/8174 normative keywords, and the four-chunk heuristic from universal cognitive-science claims. Vale, markdownlint, and the SG002 validator provide the first persisted-document enforcement layer; issue/PR comment, commit, and chat integrations remain separately scoped follow-on work.

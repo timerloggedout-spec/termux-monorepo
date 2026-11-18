@@ -60,7 +60,7 @@ Run from a repository checkout:
       --cost-key <numeric-resource-metrics-key> \
       --cost-unit <unit> \
       --min-pairs <preregistered-count> \
-      --guardrail <quality-metric>">=<minimum>
+      --guardrail 'quality_floor>=0.95'
 
 The adapter fails closed when either selected arm has no matching records for the explicit configured-instance key; a run is not terminal; a metric is missing/non-numeric; cost is negative; selected arms differ in suite, baseline SHA, candidate SHA, or matched repetition set; a repetition lacks matching non-empty task and environment fingerprints; repetitions are duplicated; or the preregistered minimum pair count is not met.
 

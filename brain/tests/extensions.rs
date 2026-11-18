@@ -1,6 +1,6 @@
 use termux_brain::{
     BrainExtension, ExtensionContext, ExtensionContractError, ExtensionDescriptor,
-    ExtensionInvocationError, RunIdentity, BRAIN_EXTENSION_CONTRACT_VERSION,
+    invoke_extension, ExtensionInvocationError, RunIdentity, BRAIN_EXTENSION_CONTRACT_VERSION,
 };
 
 struct EchoExtension {
@@ -88,7 +88,7 @@ fn invocation_rejects_missing_run_identity_before_evaluation() {
     invalid.identity.attempt_id.clear();
 
     assert_eq!(
-        extension.invoke(&invalid, &"request".into()),
+        invoke_extension(&extension, &invalid, &"request".into()),
         Err(ExtensionInvocationError::Contract(
             ExtensionContractError::MissingIdentityField("attempt_id")
         ))
@@ -123,7 +123,7 @@ fn invocation_preserves_orchestration_cycle_and_attempt_identity() {
     };
     let expected = context().identity;
 
-    let (identity, response) = extension.invoke(&context(), &"hello".into()).unwrap();
+    let (identity, response) = invoke_extension(&extension, &context(), &"hello".into()).unwrap();
 
     assert_eq!(identity, expected);
     assert_eq!(response, "hello");

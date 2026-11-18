@@ -150,3 +150,16 @@ Use validated outcome/evidence dimensions to compare orchestration policies. Thr
 - Workflow duration is sourced from Actions timestamps, not deprecated timing endpoints.
 - All observations remain traceable to run attempt + SHA where available.
 - Quality verification is itself a visible Actions check.
+
+## Flywheel Compounding Efficiency (FCE) — shadow observation
+
+flywheel-compounding-efficiency/v1 adds a quality-adjusted integrated-value-per-normalized-cost observation beside (not inside) ATES. It includes verified outcome, downstream unlock, recurrence eliminated, realized reuse, reliability/risk reduction, evidence confidence, and normalized execution/time/context/feedback/conflict-retry/human-intervention/provider costs.
+
+- Canonical method and schema: FLYWHEEL-COMPOUNDING-EFFICIENCY.md and FLYWHEEL-COMPOUNDING-EFFICIENCY.schema.json.
+- Reducer: scripts/que/flywheel_compounding_efficiency.py.
+- Task-rank v3 consumes the reducer as a shadow-only candidate; v1 remains binding.
+- ATES remains its existing throughput composite. FCE does not replace WTCV, TCV, TPV, RPI, parallel yield, or ATES and does not create a merge threshold.
+- FCE is eligible only with a positive total normalized cost and complete source/cohort/evidence provenance. Missing values remain missing.
+- A compounding ratio is emitted only for a source-pinned baseline with the same task, cohort, task contract, environment, validation suite, cohort manifest, and cost-normalization basis.
+
+FCE is a derived efficiency observation, not an outcome verifier. The fixed validation suite and Action→Effect evidence continue to determine correctness and realization.

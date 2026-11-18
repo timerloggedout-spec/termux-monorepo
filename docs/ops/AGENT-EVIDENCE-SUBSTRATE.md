@@ -390,3 +390,9 @@ The daily briefing now has explicit evidence contracts for three previously impl
 - `docs/ops/MANAGER-TOURNAMENT.schema.json` binds manager-policy comparison to a pinned task cohort, environment fingerprint, policy hashes, repetitions, and evaluation contract.
 
 These are observational/evaluation contracts. They do not replace correctness gates, create a vendor source of truth, or infer missing values.
+
+## FCE evidence extension
+
+flywheel-compounding-efficiency/v1 is an optional derived L3 observation. Its immutable source record carries cohort/task/policy identity, source SHA/ref, task/environment/validation/cohort fingerprints, the frozen cost-normalization ID, six benefit dimensions, seven cost dimensions, realization, and hashed evidence references. Link it from canonical JSONL/Action→Effect records by fce_observation_id; do not copy payloads between surfaces.
+
+FCE remains observational. It does not replace the L2 action/effect record, the L3 ATES metrics, the provenance graph, or the correctness/promotion gates. A missing or incomparable baseline leaves fce_vs_baseline unavailable.

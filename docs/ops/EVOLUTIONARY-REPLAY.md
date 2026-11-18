@@ -137,3 +137,9 @@ Once a sufficient history pool exists, manager candidates can be screened offlin
 history revision → incumbent + candidates → replay → raw evidence → existing reducers → fresh online cohort
 
 Do not rank managers on replay score alone. The online comparison must include integrated correctness/outcome, resource use, feedback cycles, conflicts, retries, and human intervention. A candidate that wins replay but loses the real task remains a failed candidate; a candidate that changes cost without changing outcome remains measurable rather than being collapsed into a single opaque agent score.
+
+## Flywheel Compounding Efficiency in replay
+
+Replay may calculate FCE from immutable observation features, but must preserve raw benefit dimensions, normalized cost dimensions, realization, source refs/SHAs, normalization ID, cohort identity, and baseline identity. The replay candidate score is an experiment feature; it is not an intelligence claim or a substitute for online verification.
+
+A baseline comparison is valid only on the same frozen task/cohort/contract/environment/validation/cohort-manifest/cost-normalization basis. Keep incomparable observations visible without a ratio. The incumbent remains in every generation, and any replay winner must pass a fresh online cohort and the existing WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE loop before promotion.

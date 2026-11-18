@@ -152,3 +152,9 @@ The feeds land first, against this spec; the pages re-render from them:
 Until that re-render lands, the mvt.html sections cannot render from
 the separated feeds. That is the known, intended handoff state of this
 spec — not a defect in the feeds.
+
+## FCE record ownership
+
+An FCE observation has one canonical home: the append-only FCE observation record under flywheel-compounding-efficiency/v1. ATES, Action→Effect, replay, Moneyball, and SHE may carry a reference (fce_observation_id) and a label, not copied FCE payloads. The DoE row owns treatment/baseline assignment and cites the observation. This preserves the existing ATES ⊂ DoE family relationship and prevents duplicate counting or a second score ledger.
+
+No FCE campaign is admitted or executed by this contract-only change.

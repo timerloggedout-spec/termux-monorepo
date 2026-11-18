@@ -113,6 +113,17 @@ class: self-repair · workflow: `{item['path']}` · signature: `{item['sig']}` �
 """
 
 
+def is_branch_reconciliation_issue(issue: dict | None) -> bool:
+    """BRR issues are evidence-only; they must never enter generic self-promotion."""
+    if not issue:
+        return False
+    body = issue.get("body") or ""
+    labels = {label if isinstance(label, str) else label.get("name") for label in issue.get("labels", [])}
+    return ("class: `branch-reconciliation`" in body
+            or "## Branch reconciliation" in body
+            or "class:branch-reconciliation" in labels)
+
+
 def promote_decision(files: list[dict], checks: list[dict], candidates: int,
                      doe_pass_by: list[str], pr_author: str) -> dict:
     """Decide self-merge vs Owner packet vs wait for one self-repair PR."""
@@ -298,6 +309,10 @@ def promote(gh: GH, dry: bool) -> list[str]:
         m = re.search(r"#(\d+)", detail.get("body") or "")
         candidates, doe = 0, []
         if m:
+            linked_issue = gh.get(f"/repos/{REPO}/issues/{m.group(1)}")
+            if is_branch_reconciliation_issue(linked_issue):
+                log.append(f"#{n} wait BRR read-only authority boundary")
+                continue
             cm = gh.get(f"/repos/{REPO}/issues/{m.group(1)}/comments?per_page=100")
             candidates = len({re.search(r"pr=#(\d+)", c["body"]).group(1) for c in cm
                               if CAND_MARK in (c.get("body") or "") and re.search(r"pr=#(\d+)", c["body"])})

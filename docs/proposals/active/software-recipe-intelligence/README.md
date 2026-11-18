@@ -53,6 +53,14 @@ No new Brain, graph database, memory store, experiment ledger, orchestrator, not
 - Linguist, Siglary, Grimoire, and the existing Name Forge for terminology and notation governance.
 - Existing Brain kernels, planners, Kahn DAG, and orchestration systems only after their actual contracts and boundaries are mapped.
 
+## Worked example
+
+A read-only Grimoire craft inventory is now expressed as a candidate SRM recipe, with a companion walkthrough and dependency graph:
+- [SRM recipe JSON](examples/grimoire-craft-inventory.srm.json)
+- [Worked example and source evidence](examples/GRIMOIRE-CRAFT-WORKED-EXAMPLE.md)
+
+This is a descriptive candidate, not an executed workflow or deployed Cauldron. Its source references and effect boundaries are explicit; evaluation remains `not-run`.
+
 ## Initial work sequence
 
 1. Versioned name competition and collision register, run independently of the technical architecture experiments.

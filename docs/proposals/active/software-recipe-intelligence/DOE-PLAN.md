@@ -3,7 +3,13 @@
 **Status:** candidate experiment design; not preregistered or dispatched.  
 **Canonical run record:** `docs/ops/corpus/EXPERIMENT.schema.json`
 
-## Independent naming experiment — NAME-DOE-001\n\nNaming is a separate experiment over a frozen capability brief. Candidate names are treatment labels, not technical forks. The initial arms are RIE, RISE, and RIME; SRI and RACE are negative controls; RAXI, BRACE, and TARSIER are collision controls. Protocol, scoring dimensions, blinding, collision gates, and stop/decision rules are defined in [NAME-COMPETITION.md](NAME-COMPETITION.md). Candidate identity is not selected by the technical performance arms below.\n\nThe naming experiment is not preregistered or run. No name is approved, issued, or cleared.\n\n## Research question
+## Independent naming experiment — NAME-DOE-001
+
+Naming is a separate experiment over a frozen capability brief. Candidate names are treatment labels, not technical forks. The initial arms are RIE, RISE, and RIME; SRI and RACE are negative controls; RAXI, BRACE, and TARSIER are collision controls. Protocol, scoring dimensions, blinding, collision gates, and stop/decision rules are defined in [NAME-COMPETITION.md](NAME-COMPETITION.md). Candidate identity is not selected by the technical performance arms below.
+
+The naming experiment is not preregistered or run. No name is approved, issued, or cleared.
+
+## Research question
 
 Does a neutral, provenance-aware software recipe representation improve capability discovery, classification, retrieval, similarity, impact analysis, composition recommendations, and reproducibility over existing repository search and specialized recipe systems?
 

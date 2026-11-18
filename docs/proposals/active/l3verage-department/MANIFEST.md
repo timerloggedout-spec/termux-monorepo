@@ -107,7 +107,7 @@ The seed catalog contains hypotheses only:
 - reusable templates and validated capability combinations;
 - automated evidence reconciliation and drift detection.
 
-No seed entry is represented as deployed, measured, validated, or promoted by this proposal.
+Keep every seed entry in discovered status until a separately reviewed experiment establishes otherwise.
 
 ## Safety and quality invariants
 
@@ -116,8 +116,8 @@ No seed entry is represented as deployed, measured, validated, or promoted by th
 - Preserve attribution confidence, source provenance, freshness, and immutable run identity.
 - Prefer reversible, bounded, idempotent experiments with explicit stop/rollback conditions.
 - Keep unknown, stale, contradictory, and missing evidence visible.
-- No raw prompts, completions, private traces, credentials, session stores, or restricted customer data in the catalog.
-- No automatic production routing, external writes, paid calls, or deployment from a catalog state transition.
+- Exclude raw prompts, completions, private traces, credentials, session stores, and restricted customer data from the catalog.
+- Require separate operator authorization for production routing, external writes, paid calls, or deployment; a catalog state transition never performs them.
 - Human-only permission edges remain governed by AGENTIC-PERMISSIONS.md.
 
 ## Rollout

@@ -8,6 +8,7 @@
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
+| **Repo-wide Linguist / Siglary mandate** | [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) |
 | Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
 | Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
@@ -65,3 +66,8 @@ RECON → PLAN / MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → 
 ```
 
 Do not treat queued/in-progress as success. Preserve provenance and keep promotion separate from execution and validation.
+
+
+## Linguist / Siglary communication contract
+
+Load `docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md` for repo-wide DO-first writing, CAVEMAN-6, and the expanded registered operator set. Keep OPERATORS / GLYPHS / CHORDS distinct and preserve `N∅` as chat-only.

@@ -9,7 +9,7 @@ verified_at: 2026-11-16
 
 # Monorepo Brain Kernel
 
-The shared, provider-neutral reasoning kernel. It produces typed stage records, a bounded execution plan, and an injected policy decision. It does not execute tools, persist memory, own policy, schedule work, or promote changes.
+The shared, provider-neutral reasoning kernel. It produces typed stage records, an optional bounded execution plan when ExecutionDesign produces one, and an injected policy decision. Fast and Simple Adaptive runs return stage records and a decision without an execution plan or plan-validation report. It does not execute tools, persist memory, own policy, schedule work, or promote changes.
 
 ## Source
 

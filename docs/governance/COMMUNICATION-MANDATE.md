@@ -30,7 +30,7 @@ A message carries a state change or an oversight checkpoint. Each statement carr
 | `OVERSIGHT` | Verify work, inspect evidence, assess risk, or report progress | Scope frame + evidence + status + next checkpoint |
 | `BLOCKED` | Record a dependency that prevents progress | Scope frame + blocking dependency + owner/action + resume condition |
 
-The conversation carries decisions and oversight. Execution routes to the repository workflow, QUE, or the designated machinery. Chat reports the resulting evidence and state.
+The conversation carries decisions, oversight, and blocked-state handoffs. Execution routes to the repository workflow, QUE, or the designated machinery. Chat reports the resulting evidence and state.
 
 ## Positive-form language
 
@@ -104,7 +104,7 @@ The glyphs retain their established meanings in mathematical, programming-langua
 
 | Rule ID | Mandate | Enforcement surface |
 |---|---|---|
-| SG001 | Chat carries `STATE-CHANGE` or `OVERSIGHT` | Templates, review checklist |
+| SG001 | Chat carries `STATE-CHANGE`, `OVERSIGHT`, or `BLOCKED` | Templates, review checklist |
 | SG002 | Directives use positive `DO` statements; authored directive prose follows `⊘` vocabulary policy | Custom prose linter |
 | SG003 | Use necessary facts, one statement per fact, and delta-only updates | Templates, review checklist |
 | SG004 | Every message carries a scope key; out-of-scope material enters triage | Templates, issue/PR forms |
@@ -132,7 +132,7 @@ The four-chunk ceiling is a project readability heuristic inspired by the cognit
 | Commit subjects | Existing DO Statement Style workflow | Automated imperative-verb check on push and pull-request commits |
 | Issue/PR titles and bodies | Existing DO Statement Style workflow | Existing event coverage validates authored title/body text; fixed-frame templates remain follow-on |
 | PR/issue/discussion comments | Existing DO Statement Style workflow | Existing comment-event coverage checks authored comment text |
-| Chat handoffs | Assistant/operator process using this contract | Process-level; repository CI cannot lint private chat transcripts |
+| Private chat handoffs | Assistant/operator process using this contract | Process-level; private chat transcripts remain outside repository CI |
 
 A repo-wide claim applies only to surfaces with an installed enforcement path. The table records the current coverage and the remaining integration work explicitly.
 

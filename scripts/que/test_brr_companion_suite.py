@@ -36,6 +36,13 @@ def test_baseline_failure_ignored_and_green():
     assert s.regression_verdict({"lint": "success", "unit": "success", "flaky": "failure"}, BASE)["verdict"] == "green"
 
 
+def test_skipped_or_neutral_baseline_success_never_goes_green():
+    for conclusion in ("skipped", "neutral"):
+        v = s.regression_verdict({"lint": "success", "unit": conclusion}, BASE)
+        assert v["verdict"] == "untestable"
+        assert v["untestable_checks"] == [{"check": "unit", "baseline": "success", "tip": conclusion}]
+
+
 def test_untestable_is_first_class():
     v = s.regression_verdict(None, BASE)
     assert v["verdict"] == "untestable" and v["reason"]
@@ -48,14 +55,27 @@ def test_perf_verdicts():
     assert s.perf_verdict({"t": {"baseline": 100, "tip": 102}}) == "flat"
 
 
+def test_invalid_benchmark_measurements_are_no_benchmark():
+    assert s.perf_verdict({"t": {"baseline": None, "tip": None}}) == "no-benchmark"
+    assert s.perf_verdict({"t": {"baseline": 0, "tip": 2}}) == "no-benchmark"
+    assert s.perf_verdict({"t": {"baseline": "100", "tip": 90}}) == "no-benchmark"
+    assert s.perf_verdict({"bad": None}) == "no-benchmark"
+
+
+def test_mixed_valid_and_invalid_benchmarks_use_valid_measurement():
+    assert s.perf_verdict({"bad": {"baseline": None, "tip": 2},
+                           "good": {"baseline": 100, "tip": 80}}) == "improved"
+
+
 def test_overlap_components_union_shared_paths():
     comps = s.overlap_components({"a": ["x.py"], "b": ["x.py", "y.py"], "c": ["z.py"]})
     assert comps["a"] == comps["b"] != comps["c"]
 
 
-def test_build_map_delta_and_tip_mismatch():
+def test_build_map_delta_and_tip_mismatch_and_missing_sha():
     checks = {"feat/a-x": {"tip_sha": "a1", "checks": {"lint": "success", "unit": "success"}},
-              "feat/b-y": {"tip_sha": "OLD", "checks": {"lint": "success", "unit": "success"}}}
+              "feat/b-y": {"tip_sha": "OLD", "checks": {"lint": "success", "unit": "success"}},
+              "fix/c": {"checks": {"lint": "success", "unit": "success"}}}
     prior = {"rows": [{"branch": "feat/a-x", "sha": "a1", "verdict": "regressed"}]}
     m = s.build_map(REG, checks, BASE, prior=prior, now="2026-11-18T00:00:00Z")
     by = {r["branch"]: r for r in m["rows"]}
@@ -65,6 +85,14 @@ def test_build_map_delta_and_tip_mismatch():
     assert m["verdict_counts"] == {"green": 1, "untestable": 2}
     assert m["no_benchmark_share"] == 1.0
     assert m["policy"]["read_only"] is True
+
+
+def test_performance_change_is_in_prior_cycle_delta():
+    checks = {"feat/a-x": {"tip_sha": "a1", "checks": {"lint": "success", "unit": "success"}}}
+    prior = {"rows": [{"branch": "feat/a-x", "sha": "a1", "verdict": "green", "perf": "improved"}]}
+    result = s.build_map(REG, checks, BASE, prior=prior,
+                         bench={"feat/a-x": {"latency": {"baseline": 100, "tip": 130}}}, now="t")
+    assert result["rows"][0]["delta"] == "perf:improved→regressed"
 
 
 def test_build_map_deterministic():

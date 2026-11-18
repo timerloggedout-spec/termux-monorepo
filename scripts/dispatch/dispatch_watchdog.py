@@ -645,7 +645,7 @@ def write_gap_feed(feed: dict) -> bool:
         with open(path, encoding="utf-8") as fh:
             existing = json.load(fh)
     if existing is not None and \
-            _feed_fingerprint(existing) == _feed_fingerprint(feed):
+            feed_fingerprint(existing) == feed_fingerprint(feed):
         return False
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:

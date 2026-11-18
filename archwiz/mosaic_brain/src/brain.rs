@@ -45,6 +45,8 @@ pub enum ReviewVerdict {
 /// Bounded facts used to evaluate one immutable method version.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EvaluationSnapshot {
+    /// Full immutable identity of the method version this snapshot evaluates.
+    pub method_identity: MethodIdentity,
     pub evaluator_id: String,
     pub method_owner_id: String,
     pub review_verdict: ReviewVerdict,
@@ -60,6 +62,7 @@ pub enum ValidationError {
     EmptyField(&'static str),
     InvalidSourceCommit,
     InvalidArtifactSha256,
+    SnapshotIdentityMismatch,
 }
 
 impl fmt::Display for ValidationError {
@@ -76,6 +79,9 @@ impl fmt::Display for ValidationError {
                     f,
                     "artifact_sha256 must be exactly 64 hexadecimal characters"
                 )
+            }
+            Self::SnapshotIdentityMismatch => {
+                write!(f, "evaluation snapshot does not match the requested method identity")
             }
         }
     }
@@ -192,6 +198,10 @@ pub fn recommend(
     snapshot: &EvaluationSnapshot,
 ) -> Result<Recommendation, ValidationError> {
     validate_identity(identity)?;
+
+    if snapshot.method_identity != *identity {
+        return Err(ValidationError::SnapshotIdentityMismatch);
+    }
 
     if snapshot.review_verdict == ReviewVerdict::Refuted {
         return Ok(Recommendation {

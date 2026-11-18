@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "10f60603b95614eb526a113f2e0a28715e656bab36c230e1151c21e4cb2e36b7",
-  "workflow_count": 320,
+  "source_fingerprint": "a9a31d9094e95f40a79883d477bd053314636878574c01e253c07fc0ab0ed127",
+  "workflow_count": 322,
   "workflows": [
     {
       "action_pins": [],
@@ -672,6 +672,26 @@
       "path": ".github/workflows/bifrost-006-smoke.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: brain-rust-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "rust"
+      ],
+      "name": "Root Brain Rust core",
+      "path": ".github/workflows/brain-rust.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "workflow_dispatch"
       ]
     },
@@ -3328,6 +3348,25 @@
       "triggers": [
         "pull_request",
         "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [
+        "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
+      ],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: mosaic-brain-rust-${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "rust"
+      ],
+      "name": "MOSAIC Brain Rust specialist",
+      "path": ".github/workflows/mosaic-brain.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
         "workflow_dispatch"
       ]
     },

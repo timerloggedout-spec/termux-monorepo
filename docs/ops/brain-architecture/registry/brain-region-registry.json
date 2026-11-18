@@ -1,0 +1,345 @@
+{
+  "schema_version": "1.0.0",
+  "architecture": "ADE-SYNAPSE",
+  "title": "Synthetic Neuro-Architecture for Planning, Adaptation, Navigation, Sensing, and Evolution",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "status": "proposed_architecture",
+  "interpretation": "Functional engineering analogies only; no claim of biological equivalence or consciousness.",
+  "status_vocabulary": [
+    "existing",
+    "partial",
+    "proposed",
+    "research"
+  ],
+  "regions": [
+    {
+      "id": "executive-pfc",
+      "region": "Prefrontal cortex",
+      "network": "Executive control",
+      "function": "Goal representation, task decomposition, planning, sequencing, stopping rules.",
+      "system": "Manager / Team Conductor",
+      "status": "existing",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Make plans, constraints, and stop conditions machine-readable across all orchestration entry points."
+    },
+    {
+      "id": "frontoparietal-control",
+      "region": "Frontoparietal control network",
+      "network": "Executive control",
+      "function": "Flexible coordination, resource allocation, switching between strategies and parallel work.",
+      "system": "Manager policy + dependency-phase admission routing",
+      "status": "existing",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Add explicit cross-run coordination and budget-aware policy comparison."
+    },
+    {
+      "id": "cingulo-opercular-acc",
+      "region": "Anterior cingulate / cingulo-opercular network",
+      "network": "Control and monitoring",
+      "function": "Conflict monitoring, error detection, sustained task-set control, escalation signals.",
+      "system": "Review gates, repo-gate, tests, conflict and retry accounting",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "docs/ops/SHE-INTEGRATION-FINDINGS.md"
+      ],
+      "gap": "Unify conflict, uncertainty, and intervention events into one review/escalation contract."
+    },
+    {
+      "id": "salience-insula",
+      "region": "Anterior insula / salience network",
+      "network": "Attention",
+      "function": "Detect salient changes and prioritize which signal deserves control resources.",
+      "system": "Triage, incident detection, provider availability and task prioritization",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Define a cross-domain salience score with explicit false-positive and missed-event measurements."
+    },
+    {
+      "id": "default-mode",
+      "region": "Default mode network",
+      "network": "Internal simulation",
+      "function": "Offline synthesis, scenario generation, reflection, connecting distant concepts.",
+      "system": "Research, retrospective synthesis, idea generation and architecture proposal lane",
+      "status": "proposed",
+      "evidence": [
+        "docs/ops/brain-architecture/research/neuro-inspired-patterns.md"
+      ],
+      "gap": "Create a bounded research mode that produces hypotheses, not autonomous production changes."
+    },
+    {
+      "id": "dorsal-attention",
+      "region": "Dorsal attention network",
+      "network": "Attention",
+      "function": "Sustained goal-directed attention and targeted retrieval.",
+      "system": "Repository watchers, targeted context queries, scheduled observation",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/SHE-INTEGRATION-FINDINGS.md",
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Formalize watch subscriptions, freshness windows, and attention budgets."
+    },
+    {
+      "id": "ventral-attention",
+      "region": "Ventral attention network",
+      "network": "Attention",
+      "function": "Interrupt and reorient when unexpected high-priority events occur.",
+      "system": "Unexpected CI failures, security alerts, provider outages, review blockers",
+      "status": "proposed",
+      "evidence": [
+        "docs/ops/brain-architecture/research/neuro-inspired-patterns.md"
+      ],
+      "gap": "Implement event severity, deduplication, suppression, and escalation policy."
+    },
+    {
+      "id": "hippocampal-memory",
+      "region": "Hippocampal formation",
+      "network": "Memory",
+      "function": "Bind episodes, entities, events, and context into retrievable relationships.",
+      "system": "Context Relationship Graph / Historical Corpus",
+      "status": "existing",
+      "evidence": [
+        "archwiz/context_relationships/",
+        "config/context_relationships/scope_registry.json",
+        "docs/ops/SHE-INTEGRATION-FINDINGS.md"
+      ],
+      "gap": "Improve recency, provenance, retrieval confidence, and explicit forgetting/retention policy."
+    },
+    {
+      "id": "temporal-semantic",
+      "region": "Temporal association cortex",
+      "network": "Knowledge",
+      "function": "Semantic concepts, durable facts, labels, and conceptual relationships.",
+      "system": "Documentation, notation registries, schemas, provider and agent catalogs",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "docs/ops/3L0-PLANE.md"
+      ],
+      "gap": "Introduce a versioned concept registry with aliases, owners, source evidence, and deprecation state."
+    },
+    {
+      "id": "thalamic-relay",
+      "region": "Thalamus",
+      "network": "Routing and relay",
+      "function": "Gate and relay signals between sensing, control, memory, and action systems.",
+      "system": "ICM / MCP gateway / provider and tool dispatch",
+      "status": "partial",
+      "evidence": [
+        "README.md",
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Standardize typed routing envelopes, capability checks, deadlines, and trace correlation."
+    },
+    {
+      "id": "basal-ganglia-selection",
+      "region": "Basal ganglia",
+      "network": "Action selection",
+      "function": "Select one action or policy among competing candidates; inhibit unsafe or redundant actions.",
+      "system": "Admission control, manager policy, specialist eligibility and workflow selection",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Make policy selection explainable and retain rejected alternatives with reasons."
+    },
+    {
+      "id": "premotor-motor",
+      "region": "Premotor and motor systems",
+      "network": "Execution",
+      "function": "Translate selected plans into bounded actions.",
+      "system": "Agent execution adapters, Termux cockpit, GitHub Actions and repository tooling",
+      "status": "existing",
+      "evidence": [
+        "README.md",
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Use a common action envelope with preconditions, idempotency, scope, and postconditions."
+    },
+    {
+      "id": "cerebellar-loop",
+      "region": "Cerebellum",
+      "network": "Feedback and calibration",
+      "function": "Compare intended and observed effects; refine timing and error correction.",
+      "system": "RECON → PLAN → ACT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → RECORD",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/SHE-INTEGRATION-FINDINGS.md",
+        "docs/ops/ACTION-EFFECT-EVENT.schema.json"
+      ],
+      "gap": "Close the loop from outcome deltas to policy updates without automatic retry or unsafe self-modification."
+    },
+    {
+      "id": "interoceptive-homeostasis",
+      "region": "Insular interoceptive system",
+      "network": "Homeostasis",
+      "function": "Monitor internal state, resource pressure, latency, availability, and operational health.",
+      "system": "SHE, ATES, WTCV, 3L0, runtime and resource telemetry",
+      "status": "existing",
+      "evidence": [
+        "docs/ops/3L0-PLANE.md",
+        "docs/ops/SHE-DASHBOARD-PRD.md",
+        "docs/ops/AGENT-THROUGHPUT-METRICS.md"
+      ],
+      "gap": "Add a unified health vector with provenance and alert thresholds that never substitute for quality gates."
+    },
+    {
+      "id": "threat-protection",
+      "region": "Amygdala / hypothalamic functions",
+      "network": "Protection and regulation",
+      "function": "Prioritize threat response, preserve boundaries, regulate resource use.",
+      "system": "Security controls, secret handling, permissions, quotas, device resource guardrails",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "config/context_relationships/scope_registry.json"
+      ],
+      "gap": "Map threat classes to explicit deny/contain/escalate responses and auditable authority."
+    },
+    {
+      "id": "brainstem-arousal",
+      "region": "Brainstem / reticular activating system",
+      "network": "Runtime continuity",
+      "function": "Maintain basic readiness, liveness, scheduling, and wake-up signals.",
+      "system": "Workflow schedules, runtime heartbeat, Termux MCP availability and service health",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/SHE-INTEGRATION-FINDINGS.md",
+        "README.md"
+      ],
+      "gap": "Define liveness/readiness contracts, stale-run detection, and graceful degradation."
+    },
+    {
+      "id": "corpus-callosum",
+      "region": "Corpus callosum",
+      "network": "Integration",
+      "function": "Coordinate information transfer between specialized subsystems.",
+      "system": "Shared event schemas, evidence envelopes, artifact contracts, agent handoffs",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/ACTION-EFFECT-EVENT.schema.json",
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Version and validate inter-agent messages, handoff acknowledgements, and schema compatibility."
+    },
+    {
+      "id": "visual-cortex",
+      "region": "Visual cortex",
+      "network": "Perception and presentation",
+      "function": "Convert structured state into visual patterns for human inspection.",
+      "system": "SHE dashboard, Mermaid architecture diagrams, generated automation documentation",
+      "status": "existing",
+      "evidence": [
+        "docs/ops/SHE-DASHBOARD-PRD.md",
+        "docs/ops/SHE-DASHBOARD-ARCHITECTURE.mmd",
+        "scripts/ci/automation_docs.py"
+      ],
+      "gap": "Ensure every visualization exposes source SHA, freshness, coverage, and partial-state markers."
+    },
+    {
+      "id": "auditory-cortex",
+      "region": "Auditory / language processing systems",
+      "network": "Input interpretation",
+      "function": "Interpret incoming language and event streams.",
+      "system": "Issues, PR discussions, review feedback, CLI input and structured tool results",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json"
+      ],
+      "gap": "Normalize input provenance and distinguish quoted/untrusted instructions from authorized commands."
+    },
+    {
+      "id": "parietal-spatial",
+      "region": "Parietal association cortex",
+      "network": "Relational modeling",
+      "function": "Represent relationships, dependencies, ordering, and task topology.",
+      "system": "Dependency DAGs, context graph topology, file/symbol relationship maps",
+      "status": "partial",
+      "evidence": [
+        "archwiz/context_relationships/",
+        "config/context_relationships/scope_registry.json"
+      ],
+      "gap": "Connect dependency, ownership, risk, and evidence graphs without conflating candidate edges with verified facts."
+    },
+    {
+      "id": "reward-learning",
+      "region": "VTA / nucleus accumbens reward circuitry",
+      "network": "Learning and evaluation",
+      "function": "Assign outcome value and reinforce effective policies over repeated evidence.",
+      "system": "Moneyball / 3L0 / ATES and manager tournaments",
+      "status": "existing",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+        "docs/ops/3L0-PLANE.md",
+        "she/metrics/agent_throughput.py"
+      ],
+      "gap": "Keep reward multi-objective, quality-constrained, uncertainty-aware, and resistant to metric gaming."
+    },
+    {
+      "id": "social-cognition",
+      "region": "Medial prefrontal / temporoparietal social cognition",
+      "network": "Multi-agent coordination",
+      "function": "Model roles, perspectives, capability boundaries, and disagreement between collaborators.",
+      "system": "Agent roster, contributor provenance, specialist/manager role model",
+      "status": "partial",
+      "evidence": [
+        "docs/ops/AGENT-TEAM-ORCHESTRATION.md"
+      ],
+      "gap": "Build capability-aware handoff and disagreement protocols; do not infer identity from GitHub actor alone."
+    },
+    {
+      "id": "sleep-consolidation",
+      "region": "Sleep-dependent memory consolidation (functional analogy)",
+      "network": "Consolidation",
+      "function": "Compress durable learning, reconcile duplicates, decay stale context, and preserve important episodes.",
+      "system": "Proposed knowledge consolidation and context hygiene lane",
+      "status": "proposed",
+      "evidence": [
+        "docs/ops/brain-architecture/research/neuro-inspired-patterns.md"
+      ],
+      "gap": "Design deterministic, reversible summarization with source links, retention limits, and no silent deletion."
+    },
+    {
+      "id": "olfactory-novelty",
+      "region": "Olfactory bulb / piriform novelty analogy",
+      "network": "Novelty detection",
+      "function": "Detect unusual combinations or weak signals that do not match existing categories.",
+      "system": "Proposed novelty and anomaly candidate generator",
+      "status": "research",
+      "evidence": [
+        "docs/ops/brain-architecture/research/neuro-inspired-patterns.md"
+      ],
+      "gap": "Test novelty recall and false-positive burden on historical repository events before creating alerts."
+    },
+    {
+      "id": "metaplasticity",
+      "region": "Synaptic plasticity / metaplasticity",
+      "network": "Architecture evolution",
+      "function": "Adjust how quickly policies and routing rules learn from evidence; control adaptation rate.",
+      "system": "Proposed policy evolution controller over manager tournaments",
+      "status": "proposed",
+      "evidence": [
+        "docs/ops/brain-architecture/roadmap/evolution-roadmap.md"
+      ],
+      "gap": "Add bounded promotion criteria, rollback, experiment cohorts, and immutable evaluation receipts."
+    }
+  ],
+  "global_invariants": [
+    "A mapping is an analogy, not evidence of biological equivalence.",
+    "Missing telemetry remains unknown/null; never fabricate zero.",
+    "Correctness, security, authorization, and human approval outrank reward or throughput.",
+    "A declared route receives no execution credit until invocation evidence exists.",
+    "A failed action is an observation; retry requires an explicit policy decision.",
+    "Candidate graph relationships must never be represented as verified.",
+    "Secrets, prompts, completions, and arbitrary tool payloads are excluded from shared evidence unless a separate approved contract explicitly permits them.",
+    "Proposed lanes remain non-production until tested and explicitly promoted."
+  ]
+}

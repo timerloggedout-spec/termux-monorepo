@@ -27,7 +27,7 @@ MOSAIC is the methodology-intelligence specialist within the Continuous Capabili
 - Method identity binds method ID, version, owner, scope, source commit and artifact SHA-256.
 - Evidence is represented by source IDs and URIs; source bodies remain in canonical records.
 - A distinct evaluator, independent verified review, evidence, practical gain, no critical regression, passing required gates and rollback readiness are all required for PromotionCandidate.
-- Refutation or critical regression yields Revise; missing, malformed, unknown, incomplete or non-independent facts yield Hold.
+- Method identity is validated first; an empty required identity field returns `ValidationError::EmptyField` before snapshot classification. For a valid identity, refutation or critical regression yields Revise before the remaining snapshot checks; missing, malformed, unknown, incomplete or non-independent facts yield Hold.
 
 ## Authority and non-goals
 

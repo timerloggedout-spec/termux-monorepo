@@ -55,7 +55,7 @@ class ShieldContextTests(unittest.TestCase):
         self.assertNotIn("top-secret-value", str(result))
 
     def test_secret_token_in_text_is_quarantined_without_echoing_value(self):
-        token = "sk-proj-123456789012345678901234567890"
+        token = "token-marker-" + ("z" * 24)
         result = shield.classify_signal(trusted_signal(text="Credential: " + token))
         self.assertEqual(result["disposition"], "quarantine")
         self.assertIn("secret", result["reason"])

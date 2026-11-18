@@ -1,6 +1,6 @@
 {
  "schema": "bucket-headroom/v1",
- "generated_at": "2026-11-18T01:48:44Z",
+ "generated_at": "2026-11-18T09:24:35Z",
  "poll_interval_min": 10,
  "buckets": [
   {
@@ -14,7 +14,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -25,28 +25,28 @@
   {
    "bucket": "github-token",
    "kind": "github_token",
-   "state": "ok",
+   "state": "alert",
    "read": {
     "bucket": "github-token",
     "kind": "github_token",
     "source": "workflow-github-token",
     "limit": 5000,
-    "used": 1818,
-    "remaining": 3182,
-    "reset": 1794969447,
-    "read_ts": 1794966523,
-    "read_at": "2026-11-18T01:48:43Z"
+    "used": 5000,
+    "remaining": 0,
+    "reset": 1794994724,
+    "read_ts": 1794993874,
+    "read_at": "2026-11-18T09:24:34Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 3182,
+    "value": 0,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:43Z",
-    "valid_until": "2026-11-18T02:37:27Z"
+    "as_of": "2026-11-18T09:24:34Z",
+    "valid_until": "2026-11-18T09:38:44Z"
    },
    "probe_episode": {
-    "episode_id": "github-token@2026-11-18T01:48:43Z",
+    "episode_id": "github-token@2026-11-18T09:24:34Z",
     "probed": false
    }
   },
@@ -61,22 +61,22 @@
     "kind": "app_installation",
     "source": "sec03-mint",
     "limit": 5000,
-    "used": 25,
-    "remaining": 4975,
-    "reset": 1794969199,
-    "read_ts": 1794966523,
-    "read_at": "2026-11-18T01:48:43Z"
+    "used": 27,
+    "remaining": 4973,
+    "reset": 1794995413,
+    "read_ts": 1794993874,
+    "read_at": "2026-11-18T09:24:34Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 4975,
+    "value": 4973,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:43Z",
-    "valid_until": "2026-11-18T02:33:19Z"
+    "as_of": "2026-11-18T09:24:34Z",
+    "valid_until": "2026-11-18T09:50:13Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-collector@2026-11-18T01:48:43Z",
+    "episode_id": "app-termux-fleet-collector@2026-11-18T09:24:34Z",
     "probed": false
    }
   },
@@ -93,7 +93,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -114,7 +114,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -135,7 +135,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -156,7 +156,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -175,22 +175,22 @@
     "kind": "app_installation",
     "source": "swarm-mint",
     "limit": 12500,
-    "used": 4882,
-    "remaining": 7618,
-    "reset": 1794967448,
-    "read_ts": 1794966523,
-    "read_at": "2026-11-18T01:48:43Z"
+    "used": 2882,
+    "remaining": 9618,
+    "reset": 1794996312,
+    "read_ts": 1794993874,
+    "read_at": "2026-11-18T09:24:34Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
-    "value": 7618,
+    "value": 9618,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:43Z",
-    "valid_until": "2026-11-18T02:04:08Z"
+    "as_of": "2026-11-18T09:24:34Z",
+    "valid_until": "2026-11-18T10:05:12Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-swarm@2026-11-18T01:48:43Z",
+    "episode_id": "app-termux-fleet-swarm@2026-11-18T09:24:34Z",
     "probed": false
    }
   },
@@ -207,20 +207,20 @@
     "limit": 5000,
     "used": 0,
     "remaining": 5000,
-    "reset": 1794970124,
-    "read_ts": 1794966523,
-    "read_at": "2026-11-18T01:48:43Z"
+    "reset": 1794997475,
+    "read_ts": 1794993874,
+    "read_at": "2026-11-18T09:24:34Z"
    },
    "projection": null,
    "headroom": {
     "kind": "exact",
     "value": 5000,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:43Z",
-    "valid_until": "2026-11-18T02:48:44Z"
+    "as_of": "2026-11-18T09:24:34Z",
+    "valid_until": "2026-11-18T10:24:35Z"
    },
    "probe_episode": {
-    "episode_id": "app-termux-fleet-crossreference@2026-11-18T01:48:43Z",
+    "episode_id": "app-termux-fleet-crossreference@2026-11-18T09:24:34Z",
     "probed": false
    }
   },
@@ -237,7 +237,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -258,7 +258,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -279,7 +279,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -300,7 +300,7 @@
     "kind": "unknown",
     "value": null,
     "unit": "requests",
-    "as_of": "2026-11-18T01:48:44Z",
+    "as_of": "2026-11-18T09:24:35Z",
     "valid_until": null
    },
    "probe_episode": {
@@ -332,5 +332,7 @@
    }
   }
  ],
- "alerting": []
+ "alerting": [
+  "github-token"
+ ]
 }

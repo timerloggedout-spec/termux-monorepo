@@ -15,11 +15,11 @@ verified_at: 2026-11-01
 
 # Change and Validate
 
-A tracked monorepo change moves from an active, itemized request to a `master`-based feature branch, focused implementation, validation evidence, and human-reviewed integration.
+A tracked monorepo change moves from an active, itemized request to a `master`-based feature branch, focused implementation, automated dual-gate evidence, adaptive WAIT, and FA-ADE promotion when the outcome is verified.
 
 ## Input → Movement → Output
 
-A request and its work item are the input. The implementer branches from `master`, makes only the scoped change, cites the item ID, and runs the required checks. The output is a reviewable branch or pull request with evidence and any known baseline blockers recorded.
+A request and its work item are the input. The agent branches from `master` (or `master-staging` only when root policy says that lane is active), makes only the scoped change, cites the item ID, runs both required gates, watches current-head CI to terminal state, and verifies the task outcome. The output is promoted when FA-ADE conditions pass, or remains a reviewable blocked branch/PR with exact evidence.
 
 ## Why this shape
 
@@ -31,7 +31,7 @@ Skipping registration, branching without a registered item, or treating unrelate
 2. Create a feature branch from `master` (a `master-staging` base only when that lane is active). Cite `CLAUDE.md:56` and `CLAUDE.md:72-74`.
 3. Implement only the item scope and record the `Implements: <ITEM-ID>` reference in the commit or pull request. Cite `CLAUDE.md:60-61`.
 4. Run `python3 scripts/ci/repo_gate.py` and `python3 scripts/ci/termux_smoke.py`; separate pre-existing failures from branch changes. Cite `CLAUDE.md:57-59`.
-5. Present the branch and evidence for review; do not merge, force-push, rotate credentials, or change protected settings without explicit operator authority. Cite `docs/proposals/AGENTIC-PERMISSIONS.md:9-27`.
+5. Re-fetch the exact head SHA and inspect checks, jobs, steps, logs, and artifacts. Auto-promote when both required gates are green and the task outcome is verified, subject to configured repository protections. Stop for explicit authorization only at the human-only edges in `docs/proposals/AGENTIC-PERMISSIONS.md`; do not force-push, rotate credentials, or change protected settings without that authority.
 
 ## If you change this
 
@@ -42,10 +42,10 @@ Skipping registration, branching without a registered item, or treating unrelate
 
 | Surface | Role |
 |---|---|
-| Operator | Authorizes human-only edges and approves review decisions. |
+| Operator | Authorizes only the human-only edges reserved by repository policy. |
 | Implementer | Performs the scoped edit and records evidence. |
 | Proposal registry | Provides the item and status record. |
-| Repository and smoke gates | Report promotion readiness or specific blockers. |
+| Repository and smoke gates | Provide automated promotion evidence and specific blockers. |
 
 ## See
 

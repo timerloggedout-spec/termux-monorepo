@@ -87,6 +87,12 @@ jobs:
           fi
           echo "CLAUDE.md FA-ADE markers OK"
 
+      - name: Run QUE auto-claim regression (#5546 gate 3; full suite in que-auto-claim-regression.yml)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --disable-pip-version-check 'pytest>=8,<9'
+          python3 -m pytest -q scripts/dispatch/test_auto_claim.py
+
       - name: Emit progression receipt
         run: |
           echo "Progression guard passed for $GITHUB_SHA"

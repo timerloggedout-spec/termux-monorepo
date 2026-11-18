@@ -46,7 +46,7 @@ The graph describes a candidate procedure. No commands, spells, APIs, scripts, o
 
 ## Authoring-time validation snapshot (2026-11-18)
 
-<badge>PASS — bounded checks</badge>
+**Result: PASS — bounded checks**
 
 - JSON parsing: passed.
 - SRM required top-level fields: all 11 present.

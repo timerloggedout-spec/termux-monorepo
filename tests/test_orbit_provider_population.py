@@ -32,20 +32,20 @@ class OrbitProviderPopulationTests(unittest.TestCase):
                                     }
                                 }
                             },
-                        }
-                    },
-                    "compounding": {
-                        "g4f_verified_pool": {
-                            "inference_ok_pairs": 160,
-                            "of_universe_pairs": 9588,
-                            "actions_verified": {
-                                "inference_ok": 83,
-                                "attempted": 160,
-                                "run": 41457191473,
-                                "artifact": 13154370032,
-                                "providers_ok": {"Gemini": 18, "AnyProvider": 29},
-                            },
-                        }
+                        },
+                        "compounding": {
+                            "g4f_verified_pool": {
+                                "inference_ok_pairs": 160,
+                                "of_universe_pairs": 9588,
+                                "actions_verified": {
+                                    "inference_ok": 83,
+                                    "attempted": 160,
+                                    "run": 41457191473,
+                                    "artifact": 13154370032,
+                                    "providers_ok": {"Gemini": 18, "AnyProvider": 29},
+                                },
+                            }
+                        },
                     },
                     "endpoint_census": {"verified_floor": 7341, "counted_at": "2026-11-01"},
                 }

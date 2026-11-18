@@ -1,25 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-18T21:20:20Z",
+ "generated_at": "2026-11-18T21:45:54Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T21:20:09Z",
-   "by_workflow_queued": {
-    "Orchestration Regression Guard": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T21:18:53Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -30,29 +26,17 @@
   },
   "4": {
    "tier": 4,
-   "queued": 13,
-   "in_progress": 18,
-   "oldest_queued_at": "2026-11-18T21:18:53Z",
+   "queued": 1,
+   "in_progress": 9,
+   "oldest_queued_at": "2026-11-18T21:45:00Z",
    "by_workflow_queued": {
-    "lane events recorder": 1,
-    "n8n SHE bridge": 1,
-    "quota-allocation-planner": 1,
-    "Agent Throughput Evidence": 1,
-    "Agent Readability Source Contract": 1,
-    "graph-matrix-probe": 1,
-    "Foresight Evidence Spine": 1,
-    "quota-served-probe": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "hitl-control-plane-verify": 1,
-    "quota-analysis": 1,
-    "DO Statement Style": 1,
-    "PR production ledger": 1
+    "Quota Dispatch Tree": 1
    }
   }
  },
  "totals": {
-  "queued": 15,
-  "in_progress": 20
+  "queued": 1,
+  "in_progress": 13
  },
  "wedged_ancient": [
   {
@@ -216,7 +200,7 @@
    "4": 0
   },
   "explicit_total": 4,
-  "default_t4": 31,
+  "default_t4": 10,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

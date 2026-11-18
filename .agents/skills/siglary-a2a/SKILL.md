@@ -41,3 +41,10 @@ dispatch {from}→{to} · {task} · gate: {scope} · receipt {refs} · ∆ ask: 
 
 ## Re-measure
 `pip install tiktoken && python3 scripts/notation/siglary_token_cost.py`. Re-run it when the register changes ∨ when the target model's tokenizer changes.
+
+## Mandate 2026-11-18 (Owner, repo-wide: chat ∧ comments ∧ commits)
+- Write DO statements; negate with ¬ inside the DO line (No/Not-led prose ⇒ DO + ¬).
+- MAX operators where scope stays exact: ⇔ ∉ ≈ ≡ ⊕ ⊗ ⤴ ↳ ∴ ∵ ⊢ ⊬ ⊥ ⏸ ▶ ✓ ✗ (plus ∧ ∨ ¬ ⇒ ∀ ∃ ∅ ∈ ∆).
+- Keep CHAT := STATE-CHANGE ∨ OVERSIGHT; ¬fluff ∧ ¬repetition; MAX(signal/token) · CAVEMAN-6 · SIGLARY++.
+- Write commit subjects verb-first after scope (add ∨ fix ∨ wire ∨ register ∨ record …; list in `scripts/ci/check_do_statement_style.py`).
+- Standard of record: `docs/proposals/active/notation-sets/SIGLARY-STANDARD.md` §4.2.

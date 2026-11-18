@@ -204,3 +204,16 @@ advisory phases — each binding step receipted on QUE #5116.
 §4 Cost gains a **token** axis. Compression is reported in tokens per target tokenizer, as well as characters ∧ messages. Census of record: 🧾 [`SIGLARY-TOKEN-COST.md`](SIGLARY-TOKEN-COST.md) · 🧾 [`data/siglary-token-cost.json`](data/siglary-token-cost.json).
 
 Finding: CHORDS ∧ GLYPHS cost more tokens than their plain expansions (A2A stamp +38% on o200k_base). OPERATORS are near parity ∧ carry scope. Proposed for Linguist ruling: the A2A machine register = OPERATORS ∧ plain words, ∧ CHORDS ∧ GLYPHS are kept to the display register. Skill: `.agents/skills/siglary-a2a/SKILL.md`.
+
+### 4.2 Mandate 2026-11-18 (Owner, repo-wide — append-only)
+
+Scope := {chat ∧ comments ∧ commits ∧ PR bodies ∧ issue bodies}.
+
+- Write DO statements: lead every instruction with the intended action verb.
+- Express negation with the ¬ operator inside a DO line (e.g. `Keep branch read-only (¬ merge ∧ ¬ delete)`); No/Not-led prose ⇒ rewrite as DO + ¬.
+- Maximise operators per line where scope stays exact: ∧ ∨ ¬ ⇒ ⇔ ∀ ∃ ∅ ∈ ∉ ≈ ≡ ≠ ≤ ≥ ⊕ ⊗ ⤴ ↳ ∴ ∵ ⊢ ⊬ ⊥ ⏸ ▶ ✓ ✗ ∆.
+- Keep CHAT := STATE-CHANGE ∨ OVERSIGHT; ¬fluff ∧ ¬repetition ∧ ¬ceremony; MAX(signal/token) · CAVEMAN-6.
+- Keep §4 Accuracy > compression: an operator that blurs scope ⇒ expand to plain words.
+- Enforce commit subjects verb-first after scope (`scripts/ci/check_do_statement_style.py`).
+
+Operator glossary (additions): ⇔ iff · ∉ ¬member · ≈ approx · ≡ equiv · ⊕ combine · ⊗ constrained combine · ⤴ route/dispatch · ↳ child/sub-item · ∴ therefore · ∵ because · ⊢ proven (receipt attached) · ⊬ unproven · ⊥ invalid/contradiction · ⏸ hold/gate · ▶ execute · ✓ pass · ✗ fail.

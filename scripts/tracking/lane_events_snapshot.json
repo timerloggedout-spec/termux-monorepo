@@ -1,9 +1,36 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-18T01:25:00Z",
+ "read_at": "2026-11-18T01:27:15Z",
  "status": "ok",
- "count": 78478,
+ "count": 78481,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "84bd25fb5824a5526e5feda32869490b06c1e08f",
+   "occurred_at": "2026-11-18 01:26:19+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "84bd25fb5824a5526e5feda32869490b06c1e08f",
+   "occurred_at": "2026-11-18 01:25:56+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "485833b3ee8344a49cbabd696c7450fb2b052940",
+   "occurred_at": "2026-11-18 01:25:34+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -78,7 +105,7 @@
   },
   {
    "lane": "she",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "n8n SHE bridge",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -87,7 +114,7 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
+   "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -1776,33 +1803,6 @@
    "subject_url": null,
    "head_sha": "187cf231a162332bca4620dd76dec0c566e6ae6e",
    "occurred_at": "2026-11-18 00:12:02+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "187cf231a162332bca4620dd76dec0c566e6ae6e",
-   "occurred_at": "2026-11-18 00:11:53+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "937bf9612543f8ae5a75749e2c23822a6fe6ba83",
-   "occurred_at": "2026-11-18 00:11:45+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "187cf231a162332bca4620dd76dec0c566e6ae6e",
-   "occurred_at": "2026-11-18 00:11:41+00"
   }
  ]
 }

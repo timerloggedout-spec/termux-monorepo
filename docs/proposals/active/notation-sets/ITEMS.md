@@ -183,3 +183,19 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+
+## NSE-024 — Positive-form communication and Siglary governance
+
+**Status:** proposed; implementation and enforcement integration under review in PR #5635.
+
+Define a repository-wide communication contract with the positional statement frame `⌖scope → ▶action → ⊗constraint → ⤵output → ~state`, the `STATE-CHANGE` / `OVERSIGHT` / `BLOCKED` message modes, project-local force tiers, and the Logic / Evidence / Flow / State / Scope Siglary families.
+
+Acceptance criteria:
+
+- SG001–SG008 are registered with a clear scope, evidence basis, and enforcement surface.
+- Positive-form directive policy distinguishes authored instructions from quoted evidence, code, and historical records.
+- Existing DO Statement Style automation remains the canonical enforcement path for PR/issue/discussion text, comments, commit subjects, and changed instruction files.
+- Vale and markdownlint validate the intended documentation surface with reproducible tool versions, pinned Actions, and bounded changed-file execution.
+- Documentation links resolve, all proposal integrations cite this item, and review findings receive explicit dispositions.
+- The proposal remains distinct from BCP 14 normative keywords and from the native operator semantics of languages such as BQN.

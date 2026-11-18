@@ -65,12 +65,17 @@ pub enum ValidationError {
 impl fmt::Display for ValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::EmptyField(field) => write!(f, "method identity field must not be empty: {field}"),
+            Self::EmptyField(field) => {
+                write!(f, "method identity field must not be empty: {field}")
+            }
             Self::InvalidSourceCommit => {
                 write!(f, "source_commit must be exactly 40 hexadecimal characters")
             }
             Self::InvalidArtifactSha256 => {
-                write!(f, "artifact_sha256 must be exactly 64 hexadecimal characters")
+                write!(
+                    f,
+                    "artifact_sha256 must be exactly 64 hexadecimal characters"
+                )
             }
         }
     }
@@ -128,7 +133,10 @@ pub fn validate_identity(identity: &MethodIdentity) -> Result<(), ValidationErro
     }
 
     if identity.source_commit.len() != 40
-        || !identity.source_commit.bytes().all(|byte| byte.is_ascii_hexdigit())
+        || !identity
+            .source_commit
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
     {
         return Err(ValidationError::InvalidSourceCommit);
     }
@@ -179,15 +187,11 @@ pub fn recommend(
 
     let mut reasons = Vec::new();
 
-    if snapshot.evaluator_id.trim().is_empty()
-        || snapshot.evaluator_id == identity.owner_id
-    {
+    if snapshot.evaluator_id.trim().is_empty() || snapshot.evaluator_id == identity.owner_id {
         reasons.push(RecommendationReason::EvaluatorNotIndependent);
     }
 
-    if snapshot.method_owner_id.trim().is_empty()
-        || snapshot.method_owner_id != identity.owner_id
-    {
+    if snapshot.method_owner_id.trim().is_empty() || snapshot.method_owner_id != identity.owner_id {
         reasons.push(RecommendationReason::MethodOwnerMismatch);
     }
 
@@ -201,7 +205,11 @@ pub fn recommend(
 
     if snapshot.evidence.is_empty() {
         reasons.push(RecommendationReason::EvidenceMissing);
-    } else if snapshot.evidence.iter().any(|item| !evidence_is_valid(item)) {
+    } else if snapshot
+        .evidence
+        .iter()
+        .any(|item| !evidence_is_valid(item))
+    {
         reasons.push(RecommendationReason::EvidenceReferenceInvalid);
     }
 

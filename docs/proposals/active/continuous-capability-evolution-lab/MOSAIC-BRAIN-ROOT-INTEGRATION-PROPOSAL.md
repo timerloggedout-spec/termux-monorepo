@@ -21,7 +21,7 @@ This is a **dependency pointer**, not a source-file pointer:
 - MOSAIC's Cargo package depends on the root Brain facade by a local Cargo path dependency.
 - The host/composition owner depends on both `termux-brain` and `mosaic-brain`.
 - The root Brain package does not depend on `mosaic-brain`.
-- No `#[path]` inclusion, symlink, Git submodule, copied source, or second root kernel is needed.
+- Use the existing root kernel directly; skip `#[path]` inclusion, symlinks, Git submodules, copied source and any second root kernel.
 - The actual host crate and serialization bridge remain an explicit recon item until their current owner contract is verified.
 
 The existing MOSAIC design's location is retained. The root Brain's current seven reasoning stages are retained. MOSAIC is an optional specialist extension, not an eighth mandatory reasoning stage and not a new orchestration plane.
@@ -120,7 +120,7 @@ Add the generic extension contract as a sibling module in the existing `brain/` 
 - `brain/src/extensions.rs`
 - export it from `brain/src/lib.rs`
 - keep the existing `brain.rs` kernel source as the source of truth during the first integration slice
-- do not extract all seven stages or create empty placeholder modules as part of MOS-007
+- keep MOS-007 scoped to the adapter; defer extraction of the seven stages and skip empty placeholder modules
 
 The contract should be small and stable. It should contain only concepts that are genuinely shared by independent domain extensions:
 
@@ -173,7 +173,7 @@ The implementation should not force MOSAIC's domain types into the root kernel. 
 
 ### 3.4 Composition and registration
 
-Do not create a second extension registry.
+Reuse the single existing extension registry.
 
 - Use the existing capability/integration inventory to describe the extension and its owner.
 - Use static construction in the existing host if there is one configured specialist.
@@ -364,7 +364,7 @@ The host supplies:
 - caller and authorization context as opaque, non-secret references;
 - resource budget and deadline, if the existing host contract supplies them.
 
-Do not pass secrets, raw credentials, full PR/issue/review bodies, raw prompts, private traces or restricted user data into the pure engine.
+Pass only redacted, bounded inputs into the pure engine; keep secrets, raw credentials, full PR/issue/review bodies, raw prompts, private traces and restricted user data outside it.
 
 ### 6.3 Extension result
 

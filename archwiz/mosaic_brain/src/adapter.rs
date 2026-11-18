@@ -3,7 +3,7 @@ use termux_brain::{
     BRAIN_EXTENSION_CONTRACT_VERSION,
 };
 
-use crate::{recommend, MethodIdentity, Recommendation, ValidationError, EvaluationSnapshot};
+use crate::{recommend, EvaluationSnapshot, MethodIdentity, Recommendation, ValidationError};
 
 /// Stateless methodology specialist. The host decides when to invoke it.
 #[derive(Debug, Clone, Copy, Default)]

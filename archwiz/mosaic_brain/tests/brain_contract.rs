@@ -1,7 +1,7 @@
 use mosaic_brain::{
-    recommend, validate_identity, EvidenceKind, EvidenceRef, EvaluationSnapshot, MethodIdentity,
-    RecommendationOutcome, RecommendationReason, ReviewVerdict, ValidationError, MosaicBrain,
-    MosaicRequest,
+    recommend, validate_identity, EvaluationSnapshot, EvidenceKind, EvidenceRef, MethodIdentity,
+    MosaicBrain, MosaicRequest, RecommendationOutcome, RecommendationReason, ReviewVerdict,
+    ValidationError,
 };
 use termux_brain::{BrainExtension, ExtensionContext, RunIdentity};
 
@@ -88,7 +88,9 @@ fn same_owner_evaluation_is_held() {
     input.evaluator_id = "doe-owner".into();
     let result = recommend(&identity(), &input).unwrap();
     assert_eq!(result.outcome, RecommendationOutcome::Hold);
-    assert!(result.reasons.contains(&RecommendationReason::EvaluatorNotIndependent));
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::EvaluatorNotIndependent));
 }
 
 #[test]
@@ -97,7 +99,9 @@ fn owner_identity_mismatch_is_held() {
     input.method_owner_id = "other-owner".into();
     let result = recommend(&identity(), &input).unwrap();
     assert_eq!(result.outcome, RecommendationOutcome::Hold);
-    assert!(result.reasons.contains(&RecommendationReason::MethodOwnerMismatch));
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::MethodOwnerMismatch));
 }
 
 #[test]
@@ -106,7 +110,9 @@ fn missing_evidence_is_held() {
     input.evidence.clear();
     let result = recommend(&identity(), &input).unwrap();
     assert_eq!(result.outcome, RecommendationOutcome::Hold);
-    assert!(result.reasons.contains(&RecommendationReason::EvidenceMissing));
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::EvidenceMissing));
 }
 
 #[test]
@@ -115,12 +121,18 @@ fn malformed_evidence_reference_is_held() {
     input.evidence[0].source_uri.clear();
     let result = recommend(&identity(), &input).unwrap();
     assert_eq!(result.outcome, RecommendationOutcome::Hold);
-    assert!(result.reasons.contains(&RecommendationReason::EvidenceReferenceInvalid));
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::EvidenceReferenceInvalid));
 }
 
 #[test]
 fn incomplete_review_is_held() {
-    for verdict in [ReviewVerdict::Partial, ReviewVerdict::Pending, ReviewVerdict::Unknown] {
+    for verdict in [
+        ReviewVerdict::Partial,
+        ReviewVerdict::Pending,
+        ReviewVerdict::Unknown,
+    ] {
         let mut input = snapshot();
         input.review_verdict = verdict;
         let result = recommend(&identity(), &input).unwrap();
@@ -181,7 +193,10 @@ fn critical_regression_precedes_other_missing_evidence_and_yields_revise() {
     input.critical_regression = Some(true);
     let result = recommend(&identity(), &input).unwrap();
     assert_eq!(result.outcome, RecommendationOutcome::Revise);
-    assert_eq!(result.reasons, vec![RecommendationReason::CriticalRegression]);
+    assert_eq!(
+        result.reasons,
+        vec![RecommendationReason::CriticalRegression]
+    );
 }
 
 #[test]

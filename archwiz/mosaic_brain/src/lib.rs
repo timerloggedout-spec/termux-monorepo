@@ -11,7 +11,6 @@ mod brain;
 
 pub use adapter::{MosaicBrain, MosaicRequest, MosaicResponse};
 pub use brain::{
-    recommend, validate_identity, EvidenceKind, EvidenceRef, EvaluationSnapshot,
-    MethodIdentity, Recommendation, RecommendationOutcome, RecommendationReason,
-    ReviewVerdict, ValidationError,
+    recommend, validate_identity, EvaluationSnapshot, EvidenceKind, EvidenceRef, MethodIdentity,
+    Recommendation, RecommendationOutcome, RecommendationReason, ReviewVerdict, ValidationError,
 };

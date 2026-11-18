@@ -155,18 +155,26 @@ pub fn validate_identity(identity: &MethodIdentity) -> Result<(), ValidationErro
 
 fn evidence_is_valid(evidence: &EvidenceRef) -> bool {
     let uri = evidence.source_uri.trim();
-    let has_supported_shape = uri
-        .strip_prefix("repo://")
-        .is_some_and(|path| !path.is_empty() && !path.starts_with('/') && !path.chars().any(char::is_whitespace))
-        || uri.strip_prefix("https://").is_some_and(|rest| {
-            let authority = rest.split('/').next().unwrap_or_default();
-            !authority.is_empty()
-                && !authority.starts_with('.')
-                && !authority.ends_with('.')
-                && !authority.chars().any(char::is_whitespace)
+    let repo_path_is_valid = uri.strip_prefix("repo://").is_some_and(|path| {
+        let path = path.split('#').next().unwrap_or_default();
+        !path.is_empty() && !path.starts_with('/') && !path.chars().any(char::is_whitespace)
+    });
+    let https_authority_is_valid = uri.strip_prefix("https://").is_some_and(|rest| {
+        let authority = rest.split('/').next().unwrap_or_default();
+        let host = authority.rsplit_once(':').map_or(authority, |(host, port)| {
+            if port.bytes().all(|byte| byte.is_ascii_digit()) {
+                host
+            } else {
+                authority
+            }
         });
+        !host.is_empty()
+            && !host.starts_with('.')
+            && !host.ends_with('.')
+            && !host.chars().any(char::is_whitespace)
+    });
 
-    !evidence.source_id.trim().is_empty() && has_supported_shape
+    !evidence.source_id.trim().is_empty() && (repo_path_is_valid || https_authority_is_valid)
 }
 
 /// Deterministically classify a method evaluation without performing side effects.
@@ -199,7 +207,9 @@ pub fn recommend(
 
     let mut reasons = Vec::new();
 
-    if snapshot.evaluator_id.trim().is_empty() || snapshot.evaluator_id == identity.owner_id {
+    if snapshot.evaluator_id.trim().is_empty()
+        || snapshot.evaluator_id.trim() == identity.owner_id.trim()
+    {
         reasons.push(RecommendationReason::EvaluatorNotIndependent);
     }
 

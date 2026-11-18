@@ -1,6 +1,6 @@
 {
  "schema": "tribute-outcomes/v1",
- "generated_at": "2026-11-18T17:05:44Z",
+ "generated_at": "2026-11-18T17:36:13Z",
  "source": "live:search-api",
  "author": "timerloggedout-spec",
  "query": "is:pr author:timerloggedout-spec -user:timerloggedout-spec (merged | closed-unmerged | open)",
@@ -9,8 +9,12 @@
   "status": "FAIL",
   "failures": [
    {
+    "code": "zero_real_merges",
+    "detail": "0 real foreign merges in the last 30d"
+   },
+   {
     "code": "real_merge_rate_below",
-    "detail": "real merge rate 2.6% < 10% over 38 decided PRs (30d)"
+    "detail": "real merge rate 0.0% < 10% over 37 decided PRs (30d)"
    },
    {
     "code": "real_merge_drought",
@@ -27,7 +31,7 @@
     "detail": "35 PRs closed without merge in 30d (counted as failures)"
    }
   ],
-  "outcome_failures": 37,
+  "outcome_failures": 38,
   "thresholds": {
    "min_real_merge_rate": 0.1,
    "min_decided": 10,
@@ -63,14 +67,14 @@
    "weighted_score": -1.0
   },
   "30d": {
-   "real_merges": 1,
+   "real_merges": 0,
    "stake_only_merges": 2,
    "self_merges_excluded": 0,
    "closed_unmerged": 35,
    "opened_still_open": 0,
-   "decided": 38,
-   "real_merge_rate": 0.0263,
-   "weighted_score": -34.0
+   "decided": 37,
+   "real_merge_rate": 0.0,
+   "weighted_score": -35.0
   },
   "90d": {
    "real_merges": 2,

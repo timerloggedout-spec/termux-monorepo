@@ -169,6 +169,17 @@ fn malformed_evidence_reference_is_held() {
 }
 
 #[test]
+fn whitespace_in_evidence_fragment_is_held() {
+    let mut input = snapshot();
+    input.evidence[0].source_uri = "repo://docs/result.json#run 17".into();
+    let result = recommend(&identity(), &input).unwrap();
+    assert_eq!(result.outcome, RecommendationOutcome::Hold);
+    assert!(result
+        .reasons
+        .contains(&RecommendationReason::EvidenceReferenceInvalid));
+}
+
+#[test]
 fn incomplete_review_is_held() {
     for verdict in [
         ReviewVerdict::Partial,

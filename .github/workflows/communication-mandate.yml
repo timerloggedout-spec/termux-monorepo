@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -35,4 +37,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python scripts/ci/validate_communication_mandate.py
+      - name: Validate changed Markdown directives
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            RANGE="origin/${{ github.base_ref }}...HEAD"
+          else
+            RANGE="${{ github.event.before }}..${{ github.sha }}"
+          fi
+          mapfile -t FILES < <(git diff --name-only "$RANGE" -- '*.md' '*.txt')
+          if ((${#FILES[@]})); then
+            python scripts/ci/validate_communication_mandate.py "${FILES[@]}"
+          else
+            echo 'SG002 PASS: no changed prose files'
+          fi

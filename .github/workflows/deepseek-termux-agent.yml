@@ -34,7 +34,7 @@ jobs:
   agent:
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@deepseek')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@deepseek') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) ||
       (github.event_name == 'issues' && github.event.action == 'assigned') ||
       (github.event_name == 'pull_request' && github.event.action == 'assigned')
     runs-on: ubuntu-latest

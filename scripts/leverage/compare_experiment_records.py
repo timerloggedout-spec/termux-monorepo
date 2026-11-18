@@ -126,6 +126,11 @@ def compare_records(
     guardrail_results: list[dict[str, Any]] = []
     for repetition in repetitions:
         label = f"repetition {repetition}"
+        for fingerprint in ("task_fingerprint", "environment_fingerprint"):
+            control_fp = c[repetition].get("metrics", {}).get(fingerprint)
+            treatment_fp = t[repetition].get("metrics", {}).get(fingerprint)
+            if not isinstance(control_fp, str) or not control_fp or control_fp != treatment_fp:
+                raise ComparisonError(f"{label}: control and treatment must share a non-empty {fingerprint}")
         co = _number(c[repetition], outcome_key, f"control {label}")
         to = _number(t[repetition], outcome_key, f"treatment {label}")
         cc = _number(c[repetition], cost_key, f"control {label}")

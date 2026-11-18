@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brain Operations · Termux Monorepo</title>
+<meta name="description" content="Live GitHub Actions health and source-grounded implementation coverage for the Termux Monorepo Brain.">
+<link rel="stylesheet" href="../dashboard.css">
+<style>
+.hero{align-items:start}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}.metric{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:12px;padding:1rem}.metric .value{font-size:1.7rem}.metric small{display:block;color:var(--muted)}.run{display:grid;grid-template-columns:minmax(180px,1.4fr) 1fr auto auto;gap:.7rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}.run small{color:var(--muted)}.status{font-size:.72rem;border:1px solid var(--line);padding:.18rem .5rem;border-radius:999px}.status.success{color:var(--ok)}.status.failure{color:var(--bad)}.status.queued,.status.in_progress{color:var(--gold)}.table-wrap{overflow-x:auto}.inventory{width:100%;border-collapse:collapse;font-size:.88rem}.inventory th,.inventory td{text-align:left;vertical-align:top;padding:.55rem;border-bottom:1px solid var(--line)}.inventory th{color:var(--muted)}.tag{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:.12rem .45rem;font-size:.72rem}.callout{border-left:3px solid var(--gold);padding:.6rem .9rem;background:var(--panel)}.muted{color:var(--muted)}@media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.run{grid-template-columns:1fr auto}.run .detail{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header><div class="hero"><div><div class="eyebrow">System observability · GitHub Actions evidence</div><h1>Brain <span>Operations</span></h1><p class="lede">CI health, execution performance and implementation coverage for the repository Brain stack. GitHub Actions data refreshes every two minutes.</p></div><div><strong id="connection">Connecting to GitHub…</strong><small id="updated" class="muted">Awaiting first sample</small></div></div></header>
+<main>
+<section class="metrics">
+<div class="metric"><div class="label">Brain CI success</div><div class="value" id="success-rate">—</div><small id="success-sub">Last 30 completed runs</small></div>
+<div class="metric"><div class="label">Median workflow duration</div><div class="value" id="median-duration">—</div><small>Completed Brain workflows</small></div>
+<div class="metric"><div class="label">Latest run state</div><div class="value" id="latest-state">—</div><small id="latest-sub">Brain-related workflows</small></div>
+<div class="metric"><div class="label">Recent failed runs</div><div class="value" id="failure-count">—</div><small>Failed or cancelled in returned history</small></div>
+</section>
+<section><div class="head"><h2>Workflow execution history</h2><div class="links"><a class="button" href="https://github.com/timerloggedout-spec/termux-monorepo/actions">All Actions</a><button class="button" id="refresh" type="button">Refresh</button></div></div><div class="card"><div id="runs"><p class="empty">Loading workflow runs…</p></div></div></section>
+<section><div class="head"><h2>Implementation inventory</h2><span class="note">Source-grounded · 21 taxonomy families</span></div>
+<div class="callout"><strong>Specialist count:</strong> 1 source-visible specialist package (MOSAIC). The root Rust kernel is shared infrastructure, not a specialist. The architecture does not define a required number of additional domain brains; additional specialists depend on domain ownership and admission. The production host route for MOSAIC remains unwired.</div>
+<div class="card table-wrap"><table class="inventory"><thead><tr><th>#</th><th>Subsystem family</th><th>Integration status</th><th>Canonical boundary / next proof</th></tr></thead><tbody>
+<tr><td>00</td><td>Identity &amp; intent</td><td><span class="tag">External owner</span></td><td>Existing identity/intake contracts; verify actor scope and authority freshness.</td></tr>
+<tr><td>01</td><td>Perception &amp; ingestion</td><td><span class="tag">Adapter needed</span></td><td>GitHub, events, QUE feeds, CRG and provider catalogs.</td></tr>
+<tr><td>02</td><td>Context assembly</td><td><span class="tag">Kernel partial</span></td><td>Bounded context exists; ICM/CRG provenance, freshness and sensitivity adapters remain.</td></tr>
+<tr><td>03</td><td>Knowledge &amp; memory</td><td><span class="tag">External owner</span></td><td>Existing memory stores own persistence; implement read adapter and governed write-candidate boundary.</td></tr>
+<tr><td>04</td><td>Repository ontology</td><td><span class="tag">Adapter needed</span></td><td>ICM/CRG own knowledge graph and relationships.</td></tr>
+<tr><td>05</td><td>Research intelligence</td><td><span class="tag">Reference / adapter</span></td><td>refTemplates and research lanes own source records; qualify evidence and pins.</td></tr>
+<tr><td>06</td><td>Capability discovery</td><td><span class="tag">Adapter needed</span></td><td>hub_mcp, provider catalog, skills and workflow registries own capability records.</td></tr>
+<tr><td>07</td><td>Reasoning &amp; synthesis</td><td><span class="tag">Kernel live</span></td><td>Rust <code>termux-brain</code> typed reasoning stages and injected backend contract.</td></tr>
+<tr><td>08</td><td>Decomposition &amp; planning</td><td><span class="tag">Kernel partial</span></td><td>Optional plan design/validation; QUE and scheduler own admission and execution.</td></tr>
+<tr><td>09</td><td>Simulation &amp; prediction</td><td><span class="tag">External owner</span></td><td>DoE, decision engines and ForeSight; adapter and benchmark evidence required.</td></tr>
+<tr><td>10</td><td>Policy, safety &amp; authority</td><td><span class="tag">External owner</span></td><td>hub_mcp and owner controls remain authoritative; verify injected policy integration.</td></tr>
+<tr><td>11</td><td>Orchestration coordination</td><td><span class="tag">Proposed</span></td><td>Shadow QUE/QDesk handoff and stable correlation IDs; no second queue.</td></tr>
+<tr><td>12</td><td>Execution interface</td><td><span class="tag">External owner</span></td><td>Harness/Hands/MCP/Actions execute; Brain observes and requests admitted handoff.</td></tr>
+<tr><td>13</td><td>Verification &amp; evidence</td><td><span class="tag">Adapter needed</span></td><td>Bind authoritative receipts and distinguish task outcome from workflow state.</td></tr>
+<tr><td>14</td><td>Observability &amp; explainability</td><td><span class="tag">CI only</span></td><td>This page measures CI; runtime traces, latency, cost and intervention telemetry remain uninstrumented.</td></tr>
+<tr><td>15</td><td>Adaptation &amp; learning</td><td><span class="tag">External owner</span></td><td>Delphi, DoE and memory owners govern evaluation and persistence.</td></tr>
+<tr><td>16</td><td>Resilience &amp; resources</td><td><span class="tag">External owner</span></td><td>Quota, adaptive-wait and SHE; verify retry, cancellation and recovery contracts.</td></tr>
+<tr><td>17</td><td>Security &amp; adversarial defense</td><td><span class="tag">External owner</span></td><td>Existing security, policy and sandbox boundaries; integrate trust/provenance signals.</td></tr>
+<tr><td>18</td><td>Multi-agent / swarm cognition</td><td><span class="tag">External owner</span></td><td>Existing swarm admission and agent-team control plane.</td></tr>
+<tr><td>19</td><td>Domain cognition</td><td><span class="tag">1 specialist package</span></td><td>MOSAIC crate is present; host invocation and domain registry remain unverified.</td></tr>
+<tr><td>20</td><td>Owner experience</td><td><span class="tag">Projection only</span></td><td>Project hub/dashboard explain status; owner pause/revoke controls stay with canonical owners.</td></tr>
+</tbody></table></div>
+</section>
+<section><div class="head"><h2>Measurement boundary</h2></div><div class="card"><p><strong>Measured:</strong> GitHub Actions workflow state, completed-run pass rate and wall-clock duration from workflow start to update.</p><p><strong>Unmeasured:</strong> production invocation volume, end-to-end latency, model quality/calibration, token cost, specialist utilization, recommendation acceptance, host uptime and task-level verified completion.</p><p class="muted">This dashboard reads public GitHub metadata. It does not call the Brain runtime or claim private telemetry access. The inventory is a reconciliation view of the subsystem taxonomy and ownership proposal, not a claim that each row is a separate sub-brain.</p></div></section>
+<footer>Sources: <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/brain/README.md">Root Brain README</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/issues/5501">Brain RFP #5501</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md">Subsystem map proposal</a> · <a href="https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md">Ownership map proposal</a> · <a href="../">Project hub</a></footer>
+</main>
+<script src="../site-nav.js"></script>
+<script>
+(function(){
+"use strict";
+var api="https://api.github.com/repos/timerloggedout-spec/termux-monorepo/actions/runs?per_page=100";
+var $=function(id){return document.getElementById(id)};
+var fmt=function(ms){if(!Number.isFinite(ms)||ms<0)return "—";var s=Math.round(ms/1000);return s<60?s+"s":Math.floor(s/60)+"m "+(s%60)+"s"};
+var when=function(v){return v?new Date(v).toLocaleString():"—"};
+var isBrain=function(r){return /brain|mosaic/i.test((r.name||"")+" "+(r.path||""))};
+var state=function(r){return r.conclusion||r.status||"unknown"};
+function render(runs){
+var all=runs.filter(isBrain).sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at)});
+var completed=all.filter(function(r){return r.status==="completed"&&r.run_started_at&&r.updated_at}).slice(0,30);
+var passed=completed.filter(function(r){return r.conclusion==="success"}).length;
+var failed=all.filter(function(r){return r.status==="completed"&&(r.conclusion==="failure"||r.conclusion==="cancelled")}).length;
+var durations=completed.map(function(r){return new Date(r.updated_at)-new Date(r.run_started_at)}).filter(function(n){return n>=0}).sort(function(a,b){return a-b});
+var median=durations.length?durations[Math.floor(durations.length/2)]:null;
+$("success-rate").textContent=completed.length?Math.round(100*passed/completed.length)+"%":"—";
+$("success-sub").textContent=completed.length?passed+" / "+completed.length+" successful completed runs":"No completed Brain runs found";
+$("median-duration").textContent=median===null?"—":fmt(median);
+$("latest-state").textContent=all.length?state(all[0]).replace("_"," "):"No data";
+$("latest-sub").textContent=all.length?all[0].name+" · "+when(all[0].created_at):"No Brain workflow matched";
+$("failure-count").textContent=String(failed);
+$("connection").textContent="GitHub API connected";
+$("updated").textContent="Updated "+new Date().toLocaleTimeString();
+var host=$("runs");host.innerHTML="";
+all.slice(0,12).forEach(function(r){
+var row=document.createElement("div");row.className="run";
+var name=document.createElement("div");var a=document.createElement("a");a.href=r.html_url;a.textContent=r.name+" #"+r.run_number;a.target="_blank";a.rel="noopener";name.appendChild(a);
+var sub=document.createElement("small");sub.textContent=" · "+when(r.created_at);name.appendChild(sub);
+var detail=document.createElement("small");detail.className="detail";detail.textContent=(r.head_branch||"")+" · "+(r.event||"")+" · "+(r.head_sha||"").slice(0,8);
+var badge=document.createElement("span");badge.className="status "+state(r).replace(/[^a-z_]/g,"");badge.textContent=state(r);
+var dur=document.createElement("small");dur.textContent=r.run_started_at&&r.updated_at?fmt(new Date(r.updated_at)-new Date(r.run_started_at)):"duration pending";
+row.append(name,detail,badge,dur);host.appendChild(row);
+});
+if(!all.length)host.innerHTML='<p class="empty">No Brain-related workflow runs were returned by GitHub.</p>';
+}
+async function refresh(){
+$("connection").textContent="Refreshing…";
+try{var response=await fetch(api,{headers:{"Accept":"application/vnd.github+json"}});if(!response.ok)throw new Error("GitHub API HTTP "+response.status);var data=await response.json();render(data.workflow_runs||[])}
+catch(e){$("connection").textContent="Data unavailable";$("updated").textContent=e.message}
+}
+$("refresh").addEventListener("click",refresh);refresh();setInterval(refresh,120000);
+})();
+</script>
+</body>
+</html>

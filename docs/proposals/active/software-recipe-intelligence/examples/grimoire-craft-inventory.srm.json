@@ -1,0 +1,236 @@
+{
+  "schema_version": "software_recipe_model.v1",
+  "recipe_id": "software-recipe/grimoire/craft-inventory",
+  "revision": "sha256:121898d1d5e5cc0d7594ae1180774a07da7c9ae92716e3aac0635dec8f97551b",
+  "kind": "analysis",
+  "title": "Read-only Grimoire craft vocabulary inventory",
+  "summary": "Extract and cross-check existing Grimoire vocabulary without executing spells or mutating repository state.",
+  "intent": "Produce a provenance-bearing inventory of documented Grimoire craft terms and report missing or ambiguous references.",
+  "owner": null,
+  "status": "candidate",
+  "ingredients": [
+    {
+      "id": "grimoire-dictionary",
+      "type": "source",
+      "role": "required",
+      "reference": "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+      "digest": "b804ea0645a77d5d75d320a1889540b041b95aa1",
+      "sensitivity": "public",
+      "evidence": {
+        "class": "extracted",
+        "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/fdee8baf7e09c7ca4d140bcf8ad127154288134b2/harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+        "immutable_ref": "fdee8baf7e09c7ca4d140bcf8ad127154288134b2",
+        "digest": "b804ea0645a77d5d75d320a1889540b041b95aa1",
+        "extractor": "manual-source-inspection/v1",
+        "confidence": 1
+      }
+    },
+    {
+      "id": "grimoire-protocol-dictionary",
+      "type": "source",
+      "role": "required",
+      "reference": "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+      "version": "v2.0",
+      "digest": "427362c2bf4b47104335b3bfd192b0f25c41613f",
+      "sensitivity": "public",
+      "evidence": {
+        "class": "extracted",
+        "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/fdee8baf7e09c7ca4d140bcf8ad127154288134b2/harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+        "immutable_ref": "fdee8baf7e09c7ca4d140bcf8ad127154288134b2",
+        "digest": "427362c2bf4b47104335b3bfd192b0f25c41613f",
+        "extractor": "manual-source-inspection/v1",
+        "confidence": 1
+      }
+    },
+    {
+      "id": "name-forge-source",
+      "type": "source",
+      "role": "optional",
+      "reference": "archwiz/name_forge.py",
+      "digest": "fcdb27bff30f99ff92be03e0fe2c07af919c801d",
+      "sensitivity": "public",
+      "evidence": {
+        "class": "extracted",
+        "source": "https://github.com/timerloggedout-spec/termux-monorepo/blob/fdee8baf7e09c7ca4d140bcf8ad127154288134b2/archwiz/name_forge.py",
+        "immutable_ref": "fdee8baf7e09c7ca4d140bcf8ad127154288134b2",
+        "digest": "fcdb27bff30f99ff92be03e0fe2c07af919c801d",
+        "extractor": "manual-source-inspection/v1",
+        "confidence": 1
+      }
+    }
+  ],
+  "preparation": [
+    {
+      "op_id": "check-source-refs",
+      "type": "validate",
+      "intent": "Confirm required source paths and immutable revision references.",
+      "inputs": [
+        "grimoire-dictionary",
+        "grimoire-protocol-dictionary"
+      ],
+      "outputs": [
+        "source-reference-status"
+      ],
+      "depends_on": [],
+      "effect_class": "read",
+      "policy_ref": null
+    }
+  ],
+  "procedure": [
+    {
+      "op_id": "extract-terms",
+      "type": "read",
+      "intent": "Extract only terms and definitions explicitly present in the Grimoire dictionaries.",
+      "inputs": [
+        "grimoire-dictionary",
+        "grimoire-protocol-dictionary"
+      ],
+      "outputs": [
+        "term-inventory"
+      ],
+      "depends_on": [
+        "check-source-refs"
+      ],
+      "effect_class": "read",
+      "policy_ref": null
+    },
+    {
+      "op_id": "classify-name-forge",
+      "type": "read",
+      "intent": "Inspect Name Forge source and classify its role without executing it.",
+      "inputs": [
+        "name-forge-source"
+      ],
+      "outputs": [
+        "name-forge-role"
+      ],
+      "depends_on": [
+        "check-source-refs"
+      ],
+      "effect_class": "read",
+      "policy_ref": null
+    },
+    {
+      "op_id": "cross-check-meanings",
+      "type": "validate",
+      "intent": "Compare overlapping terms and flag differences without silently reconciling them.",
+      "inputs": [
+        "term-inventory"
+      ],
+      "outputs": [
+        "term-consistency-report"
+      ],
+      "depends_on": [
+        "extract-terms"
+      ],
+      "effect_class": "pure"
+    },
+    {
+      "op_id": "emit-report",
+      "type": "emit",
+      "intent": "Emit a source-linked review report; do not update registries or source files.",
+      "inputs": [
+        "term-inventory",
+        "name-forge-role",
+        "term-consistency-report"
+      ],
+      "outputs": [
+        "craft-inventory-report"
+      ],
+      "depends_on": [
+        "classify-name-forge",
+        "cross-check-meanings"
+      ],
+      "effect_class": "pure"
+    }
+  ],
+  "environment": {
+    "runtime": "human-reviewed repository inspection",
+    "language": "Markdown/JSON/Python source inspection",
+    "network_policy": "No external writes; use pinned source snapshot",
+    "resource_profile": "low",
+    "reproducibility_level": "R2"
+  },
+  "outputs": [
+    {
+      "id": "craft-inventory-report",
+      "type": "markdown-report",
+      "contract": "Source-linked inventory preserving original Grimoire terminology and distinguishing facts from inference.",
+      "required": true,
+      "invariants": [
+        "No source file is modified",
+        "No spell or command is executed",
+        "No undocumented meaning is invented",
+        "Claims link to immutable source evidence"
+      ],
+      "side_effects": []
+    }
+  ],
+  "evaluation": {
+    "status": "not-run",
+    "criteria": [
+      "All source refs resolve at recorded revision",
+      "Every term traces to a source row",
+      "Missing/conflicting definitions remain explicit",
+      "Name Forge classified by source inspection only",
+      "No external side effects"
+    ],
+    "records": [],
+    "limitations": [
+      "Descriptive candidate recipe, not executable.",
+      "No runtime, CI, or sandbox execution performed."
+    ]
+  },
+  "provenance": {
+    "source": "timerloggedout-spec/termux-monorepo",
+    "immutable_ref": "fdee8baf7e09c7ca4d140bcf8ad127154288134b2",
+    "paths": [
+      "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+      "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+      "archwiz/name_forge.py"
+    ],
+    "author": "repository inspection",
+    "extraction": "manual-source-inspection/v1",
+    "extracted_at": "2026-11-18T15:32:00Z",
+    "evidence": []
+  },
+  "lineage": {
+    "derived_from": [
+      "harmony_hub/config/GRIMOIRE_DICTIONARY.md",
+      "harmony_hub/config/grimoire/1337_D1CT10N4RY.md",
+      "archwiz/name_forge.py"
+    ],
+    "supersedes": [],
+    "change_reason": "First read-only SRM example composed from existing Grimoire sources."
+  },
+  "contract_refs": [
+    {
+      "kind": "other",
+      "uri": "docs/proposals/active/software-recipe-intelligence/SRM-SCHEMA.json",
+      "revision": "1ca7c798ca6af076a1dee759d12c2bf6b7806ccb",
+      "role": "authoritative",
+      "evidence": []
+    },
+    {
+      "kind": "other",
+      "uri": "docs/ops/ORCHESTRATION-TREATMENT.schema.json",
+      "revision": "e58f01a9636b41707afb61deb6dfb3f53cce2ac4",
+      "role": "reference",
+      "evidence": []
+    },
+    {
+      "kind": "other",
+      "uri": "docs/ops/ORCHESTRATION-RECEIPT.schema.json",
+      "revision": "e6556f54ceddc5e40b37c650af8ce95e8cb0b21a",
+      "role": "reference",
+      "evidence": []
+    },
+    {
+      "kind": "experiment-record",
+      "uri": "docs/ops/corpus/EXPERIMENT.schema.json",
+      "revision": "522ba728d559bf503e5bb733d9ed65b6c84d8868",
+      "role": "reference",
+      "evidence": []
+    }
+  ]
+}

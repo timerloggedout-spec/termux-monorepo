@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 15
     strategy:
       fail-fast: false
+      # Two jobs per eligible PR/manual run; no scheduled trigger. Shared Brain
+      # changes intentionally also exercise the root-kernel matrix (four jobs total).
       matrix:
         rust: ["1.85.0", "1.100.0"]
     steps:

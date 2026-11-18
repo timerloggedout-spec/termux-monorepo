@@ -64,6 +64,15 @@ def test_project_task_route_stamps_in_comments_map_to_seat_queue():
         ("seat-queue", "qdesk-seat-queue")
 
 
+def test_explicit_claim_class_comment_overrides_project_task_route():
+    route = comment(
+        "[MUSEai]@{role:{swarm-admission}} DISPATCH ADMITTED\n"
+        "route: project-task-dispatch.yml")
+    explicit = comment("claim-class: executor")
+    assert ac.claim_class_of(issue(45), [route, explicit]) == \\
+        ("executor", "dispatch-executor")
+
+
 def test_project_task_receipt_emits_explicit_claim_class():
     fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
               "done-evidence": "tests pass",

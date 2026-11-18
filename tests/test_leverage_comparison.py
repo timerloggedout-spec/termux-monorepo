@@ -32,6 +32,8 @@ def record(arm, instance_key, repetition, outcome, cost, quality=1.0):
             "outcome_score": outcome,
             "resource_cost": cost,
             "quality_floor": quality,
+            "task_fingerprint": f"task-{repetition}",
+            "environment_fingerprint": "env-fixed-v1",
         },
     }
 
@@ -114,6 +116,11 @@ class CompareExperimentRecordsTests(unittest.TestCase):
     def test_duplicate_repetition_is_rejected(self):
         self.rows.append(record("control", CONTROL_KEY, 2, 0.75, 10))
         with self.assertRaisesRegex(ComparisonError, "duplicate repetition"):
+            compare(self.rows)
+
+    def test_task_fingerprint_mismatch_is_rejected(self):
+        self.rows[-1]["metrics"]["task_fingerprint"] = "different-task"
+        with self.assertRaisesRegex(ComparisonError, "task_fingerprint"):
             compare(self.rows)
 
     def test_source_sha_mismatch_is_rejected(self):

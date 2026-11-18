@@ -1,7 +1,7 @@
 # L3VERAGE Department — implementation plan
 
 **Proposal:** l3verage-department  
-**Work items:** L3V-001 through L3V-006  
+**Work items:** L3V-001 through L3V-007  
 **Branch:** feat/l3verage-department-foundation  
 **Base:** master
 

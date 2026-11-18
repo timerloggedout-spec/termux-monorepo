@@ -1,24 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-18T23:22:08Z",
+ "generated_at": "2026-11-18T23:49:20Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-18T23:21:53Z",
+   "queued": 6,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-18T23:48:36Z",
    "by_workflow_queued": {
-    "repo gate": 1
+    "PR scope guard": 3,
+    "repo gate": 2,
+    "Orchestration Regression Guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T23:21:25Z",
+   "oldest_queued_at": "2026-11-18T23:48:13Z",
    "by_workflow_queued": {
-    "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
    }
   },
@@ -31,18 +32,44 @@
   },
   "4": {
    "tier": 4,
-   "queued": 2,
-   "in_progress": 15,
-   "oldest_queued_at": "2026-11-18T23:21:57Z",
+   "queued": 55,
+   "in_progress": 19,
+   "oldest_queued_at": "2026-11-18T23:47:53Z",
    "by_workflow_queued": {
+    "Quota Dispatch Tree": 1,
+    "repo-tracking-collect": 1,
+    "lane events recorder": 12,
+    "n8n SHE bridge": 1,
+    "DO Statement Style": 3,
+    "termux smoke": 2,
+    "DeepSeek CI \u2013 Agentic Automation": 2,
     "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "\u2699\ufe0f Dispatch Executor (admitted -> claim + fire)": 1
+    "PR production ledger": 3,
+    "Action Effectiveness Ledger": 3,
+    "Agent PR Jules Handoff": 2,
+    "Sweep Accountability": 3,
+    "Repository development evaluation": 1,
+    "Context Relationship + Lead/Lag Audit": 3,
+    "CellCog review": 2,
+    "PR evidence evaluation": 2,
+    "Peer review orchestrator": 1,
+    "Lane matrix event-driven inventory": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "RECON INTEL discovery": 1,
+    "Agent Readability Source Contract": 1,
+    "que-cadence-kick": 1,
+    "quota-analysis": 1,
+    "graph-matrix-probe": 1,
+    "quota-served-probe": 1,
+    "Agent Throughput Evidence": 2,
+    "delphi-rfp-feed-collect": 1,
+    "delphi-ledger-feed-collect": 1
    }
   }
  },
  "totals": {
-  "queued": 5,
-  "in_progress": 18
+  "queued": 62,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -200,13 +227,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
-   "2": 3,
+   "1": 7,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 17,
+  "explicit_total": 9,
+  "default_t4": 74,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -55,5 +55,14 @@ class IcmCctvBoardTests(unittest.TestCase):
             self.assertIn("&lt;script&gt;", rendered)
 
 
+    def test_production_and_preview_publishers_generate_board_before_manifests(self) -> None:
+        deploy = (ROOT / ".github/workflows/tribute-dashboard-deploy.yml").read_text(encoding="utf-8")
+        preview = (ROOT / ".github/workflows/tribute-dashboard-preview.yml").read_text(encoding="utf-8")
+        self.assertNotIn("apps/project-pages-hub/brain-ops/index.html", deploy)
+        self.assertIn("python3 scripts/build_icm_cctv_board.py --source-sha", deploy)
+        self.assertIn("python3 tooling/scripts/build_icm_cctv_board.py --cards-dir production/docs/icm/_tv/screens", preview)
+        self.assertIn("python3 tooling/scripts/build_icm_cctv_board.py --cards-dir source/docs/icm/_tv/screens", preview)
+
+
 if __name__ == "__main__":
     unittest.main()

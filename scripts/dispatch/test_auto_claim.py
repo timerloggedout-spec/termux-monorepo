@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import auto_claim as ac  # noqa: E402
+import project_task as pt  # noqa: E402
 
 NOW = datetime(2026, 11, 13, 12, 0, 0, tzinfo=timezone.utc)
 TS = "%Y-%m-%dT%H:%M:%SZ"
@@ -49,6 +50,30 @@ def test_claim_classes_from_stamps():
     override = issue(body=SWARM_BUILD + "\nclaim-class: seat-queue")
     assert ac.claim_class_of(override, [])[0] == "seat-queue"
     assert ac.claim_class_of(issue(body="no stamps at all"), []) == (None, None)
+
+
+def test_project_task_route_stamps_in_comments_map_to_seat_queue():
+    admitted = comment(
+        "[MUSEai]@{role:{swarm-admission}} DISPATCH ADMITTED\n"
+        "route: project-task-dispatch.yml")
+    assert ac.claim_class_of(issue(42), [admitted]) == \\
+        ("seat-queue", "qdesk-seat-queue")
+    receipt = comment(
+        "[MUSEai]@{role:{project-task-dispatch}} ROUTING RECEIPT")
+    assert ac.claim_class_of(issue(43), [receipt]) == \\
+        ("seat-queue", "qdesk-seat-queue")
+
+
+def test_project_task_receipt_emits_explicit_claim_class():
+    fields = {"entry": "D1", "task": "task", "scope": "scripts/**",
+              "done-evidence": "tests pass",
+              "target-repo": "timerloggedout-spec/termux-monorepo"}
+    body = pt.receipt_comment(44, fields)
+    assert "claim-class: seat-queue" in body
+    assert "claimant: qdesk-seat-queue" in body
+    assert "route: project-task-dispatch.yml" in body
+    assert ac.claim_class_of(issue(44), [comment(body)]) == \\
+        ("seat-queue", "qdesk-seat-queue")
 
 
 def test_gated_never_claimed():

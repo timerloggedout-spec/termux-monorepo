@@ -46,5 +46,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Test action-first subject rules
+        run: python -m unittest discover -s tests -p 'test_do_statement_style.py' -v
       - name: Check DO statements, PR text, comments, and commit subjects
         run: python scripts/ci/check_do_statement_style.py

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,18 +11,9 @@ from pathlib import Path
 EVENT_PATH = os.environ.get("GITHUB_EVENT_PATH", "")
 EVENT_NAME = os.environ.get("GITHUB_EVENT_NAME", "")
 BASE_REF = os.environ.get("GITHUB_BASE_REF", "")
-NEGATIVE_FIRST = re.compile(
-    r"^\s*(?:(?:[-*]\s*)|(?:#+\s*))?(?:do not|don't|never|no\b|not\b|avoid\b)",
-    re.IGNORECASE,
-)
-IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
-    "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
-    "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
-    "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
-    "replace", "require", "restore", "route", "run", "set", "snapshot", "split", "sync",
-    "test", "update", "use", "validate", "verify", "wire", "collect", "generate", "regenerate", "rebuild",
-}
+# Compatibility pin: "guard" remains a registered action in the shared vocabulary.
+from do_statement_style_rules import is_imperative_subject, is_negative_first_line
+
 STYLE_PATHS = [
     "AGENTS.md", "moniker.md", "CLAUDE.md", "GEMINI.md", "SKILLS.md",
     ".agents/skills", ".github/skills", ".github/workflows",
@@ -35,7 +25,7 @@ errors: list[str] = []
 
 def inspect_text(label: str, value: str) -> None:
     for number, line in enumerate(value.splitlines(), 1):
-        if NEGATIVE_FIRST.match(line):
+        if is_negative_first_line(line):
             errors.append(f"{label}:{number}: lead with the intended DO action")
 
 
@@ -50,7 +40,7 @@ def inspect_git_range(base: str, head: str) -> None:
             current_path = line[6:]
         elif line.startswith("+") and not line.startswith("+++"):
             added = line[1:]
-            if NEGATIVE_FIRST.match(added):
+            if is_negative_first_line(added):
                 errors.append(
                     f"{current_path}: lead with the intended DO action: {added.strip()}"
                 )
@@ -65,9 +55,7 @@ def inspect_git_range(base: str, head: str) -> None:
     ).stdout
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
-        verb = first[0].lower() if first else ""
-        if verb not in IMPERATIVE:
+        if not is_imperative_subject(subject):
             errors.append(
                 f"commit subject requires an imperative action verb after its scope: {subject}"
             )

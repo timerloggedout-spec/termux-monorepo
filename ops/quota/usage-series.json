@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-18T17:32:36Z",
+ "generated_at": "2026-11-18T17:37:07Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-18T17:07:47Z",
-  "ops/tracking/nested-family.json": "2026-11-18T17:08:16Z"
+  "ops/tracking/nested-family.json": "2026-11-18T17:36:42Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -1543,6 +1543,21 @@
    },
    {
     "key": "NOT_ESTABLISHED",
+    "title": "cerebras - NOT_ESTABLISHED - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-18T17:31:28Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-18T17:31:28Z"
+   },
+   {
+    "key": "NOT_ESTABLISHED",
     "title": "cohere - NOT_ESTABLISHED - dispatches (cumulative)",
     "unit": "dispatches",
     "kind": "activity-proxy",
@@ -1920,8 +1935,8 @@
   "providers_total": 96,
   "providers_populated": 5,
   "providers_gap": 93,
-  "model_series": 17,
-  "model_populated": 17
+  "model_series": 18,
+  "model_populated": 18
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
@@ -1982,14 +1997,14 @@
     "stamped": 0,
     "unstamped": 1
    },
-   "unorouter": {
-    "provider": "unorouter",
+   "cerebras": {
+    "provider": "cerebras",
     "calls": 1,
     "stamped": 0,
     "unstamped": 1
    },
-   "cerebras": {
-    "provider": "cerebras",
+   "unorouter": {
+    "provider": "unorouter",
     "calls": 1,
     "stamped": 0,
     "unstamped": 1

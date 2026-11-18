@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-18T16:26:36Z",
+ "generated_at": "2026-11-18T16:36:47Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-16T11:12:24Z",
   "ops/tracking/nested-family.json": "2026-11-18T14:27:06Z"
@@ -114,6 +114,21 @@
     "last_point_at": "2026-10-31T06:17:14Z"
    },
    {
+    "key": "cohere::consumption",
+    "title": "cohere - consumption (cumulative, per-call usage of record)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-18T16:31:28Z",
+      "v": 56727
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-18T16:31:28Z"
+   },
+   {
     "key": "sealion::consumption",
     "title": "sealion - consumption (cumulative, per-call usage of record)",
     "unit": "tokens",
@@ -185,16 +200,6 @@
    {
     "key": "cloudflare",
     "title": "cloudflare - no stamped usage yet (gap)",
-    "unit": null,
-    "kind": "gap",
-    "metric": null,
-    "points": [],
-    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
-    "last_point_at": null
-   },
-   {
-    "key": "cohere",
-    "title": "cohere - no stamped usage yet (gap)",
     "unit": null,
     "kind": "gap",
     "metric": null,
@@ -1575,6 +1580,21 @@
     "last_point_at": "2026-11-02T02:10:16Z"
    },
    {
+    "key": "command-a-03-2025",
+    "title": "cohere - command-a-03-2025 - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-18T16:31:28Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-18T16:31:28Z"
+   },
+   {
     "key": "NOT_ESTABLISHED",
     "title": "deepseek - NOT_ESTABLISHED - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1794,6 +1814,21 @@
     ],
     "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
     "last_point_at": "2026-11-14T12:32:44Z"
+   },
+   {
+    "key": "command-a-03-2025::consumption",
+    "title": "cohere - command-a-03-2025 - consumption (cumulative)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-18T16:31:28Z",
+      "v": 56727
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-18T16:31:28Z"
    }
   ],
   "events": [
@@ -1868,17 +1903,17 @@
  },
  "coverage": {
   "providers_total": 96,
-  "providers_populated": 4,
-  "providers_gap": 94,
-  "model_series": 14,
-  "model_populated": 14
+  "providers_populated": 5,
+  "providers_gap": 93,
+  "model_series": 16,
+  "model_populated": 16
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 28,
-  "usage_stamped": 2,
+  "routed_calls": 29,
+  "usage_stamped": 3,
   "unstamped": 26,
-  "unstamped_share": 0.9286,
+  "unstamped_share": 0.8966,
   "causes": {
    "no-usage-record": 26,
    "no-usage-surface": 0
@@ -1896,6 +1931,12 @@
     "stamped": 0,
     "unstamped": 4
    },
+   "cohere": {
+    "provider": "cohere",
+    "calls": 5,
+    "stamped": 1,
+    "unstamped": 4
+   },
    "gemini-cli": {
     "provider": "gemini-cli",
     "calls": 1,
@@ -1907,12 +1948,6 @@
     "calls": 3,
     "stamped": 0,
     "unstamped": 3
-   },
-   "cohere": {
-    "provider": "cohere",
-    "calls": 4,
-    "stamped": 0,
-    "unstamped": 4
    },
    "deepseek": {
     "provider": "deepseek",

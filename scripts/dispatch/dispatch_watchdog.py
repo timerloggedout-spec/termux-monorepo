@@ -407,8 +407,11 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                      {"body": auto_claim.lease_release_comment(
                          claim_class=rel["claim_class"],
                          claimant=rel["claimant"], now=now)})
-            _request("DELETE", f"{base}/labels/dispatch-claimed",
-                     token)
+            try:
+                _request("DELETE", f"{base}/labels/dispatch-claimed",
+                         token)
+            except Exception:
+                pass  # label may not be present; the release stands
             ctx["verdict"]["action"] = "lease-released"
         except Exception as exc:
             ctx["verdict"]["action"] = f"ERROR: {exc}"

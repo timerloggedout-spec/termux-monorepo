@@ -9,7 +9,7 @@ verified_at: 2026-11-01
 
 # Change Control
 
-**Change Control** is the monorepo’s governed path from a registered work item through a `master`-based feature branch, required validation, and human-reviewed integration.
+**Change Control** is the monorepo’s governed path from a registered work item through a `master`-based feature branch, required automated validation, adaptive WAIT, and evidence-backed FA-ADE promotion.
 
 ## Why this shape
 
@@ -19,7 +19,7 @@ The repository separates implementation from promotion so new work is traceable 
 
 - Root `CLAUDE.md` requires integration work to target `master` (a `master-staging` base only when that lane is active), names the repository and Termux smoke gates, and requires item citations in commits or pull requests.
 - The proposal process registers work, itemizes it, records review/acceptance, and couples completion to gate evidence.
-- Human-only edges include credential rotation, history rewrite, protected-branch rules, device state, and interactive provider login.
+- Human-only edges are limited to those enumerated in `docs/proposals/AGENTIC-PERMISSIONS.md`, including credential rotation/provider login, destructive history rewrite, protected-branch or app-permission changes, and device-side state. Routine implementation, validation, review evidence collection, and promotion are agent-executable when repository policy permits.
 
 Citations: `CLAUDE.md:42-52`, `CLAUDE.md:56-61`, `docs/proposals/PROCESS.md:1-36`, `docs/proposals/AGENTIC-PERMISSIONS.md:3-27`.
 
@@ -39,10 +39,10 @@ Citations: `CLAUDE.md:42-52`, `CLAUDE.md:56-61`, `docs/proposals/PROCESS.md:1-36
 
 | Surface | Role |
 |---|---|
-| Operator | Authorizes protected, credential, device, and review edges. |
+| Operator | Authorizes protected, credential, device, and other explicitly human-only edges. |
 | Agent or developer | Implements a scoped item on a feature branch and records evidence. |
 | Proposal registry | States work status and active item ownership. |
-| Gates | Provide required repository and Termux validation evidence. |
+| Gates | Provide required automated repository and Termux validation evidence. |
 
 ## See
 

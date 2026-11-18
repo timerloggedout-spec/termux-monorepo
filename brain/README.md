@@ -18,21 +18,10 @@ Implement StageBackend for the selected model/deterministic provider and PolicyG
 ## Specialist extensions
 
 The `extensions` module defines a small, statically typed contract for domain-owned
-specialists. A specialist crate implements `BrainExtension`; the existing host
-composes that crate with `termux-brain` and routes an explicit domain request.
-The root kernel does not depend on a specialist, dynamically load plugins, or
-create a second capability registry.
-
-The invocation context carries the existing orchestration/cycle/attempt identity.
-Descriptor, contract-version, identity and domain checks fail closed before the
-specialist is called. A specialist's evaluation error remains distinct from a
-contract error.
-
-## Specialist extensions
-
-The `extensions` module defines a small, statically typed contract for domain-owned
-specialists. A specialist crate implements `BrainExtension`; the existing host
-composes that crate with `termux-brain` and routes an explicit domain request.
+specialists. A specialist crate implements `BrainExtension`; a future production
+host is intended to compose that crate with `termux-brain` and route an explicit
+domain request. The production host route is not wired in this change; host
+ownership and the bridge contract still require verification.
 The root kernel does not depend on a specialist, dynamically load plugins, or
 create a second capability registry.
 
@@ -44,8 +33,10 @@ contract error.
 ## MOSAIC specialist
 
 The `mosaic-brain` crate lives at `archwiz/mosaic_brain/` and depends on
-`termux-brain` through a local Cargo path. The host composes both crates;
-the root kernel never imports MOSAIC. MOSAIC consumes evidence references and
+`termux-brain` through a local Cargo path. Its typed contract and pure adapter
+are present, but the production host route is not wired; host ownership and the
+bridge contract remain to be verified. The root kernel never imports MOSAIC.
+MOSAIC consumes evidence references and
 returns advisory `PromotionCandidate`, `Hold` or `Revise` recommendations.
 It cannot dispatch experiments, mutate proposal state, or promote a method.
 

@@ -1,16 +1,24 @@
 {
   "schema": "resiliency-node/v1",
   "node": "hark sandbox",
+  "node_id": "hark-vm",
   "class": "available-alternative",
   "parent": "#5549 resiliency-map successor (extension of the mesh)",
-  "provides": ["provenance ledger", "workspace manifest export"],
+  "provides": ["provenance ledger", "workspace manifest export", "compute: pytest eval suites", "request-queue registry drain", "hygiene: scratch export ∧ prune"],
+  "capacity": {"cpu": 2, "arch": "aarch64", "ram_gib": 7.8, "disk": "JuiceFS /workspace (shared)", "quota": "independent of Actions minutes"},
+  "cadence": {"cron": "15 */2 * * *", "tz": "America/Los_Angeles", "task": "0f4c2bd2", "max_requests_per_pass": 5},
+  "allowlist": ["eval", "export", "hygiene", "probe"],
+  "intake": "append a line {id, ts_utc, from, target: hark-vm|any, kind, ref, args, priority} to repo-exports/REQUESTS.jsonl in the store; results land in repo-exports/DONE.jsonl",
   "transport": "GitHub API only (¬ sshd ∧ ¬ Tailscale)",
   "store": "timerloggedout-spec/hark-vm-workspace-backup",
   "registry": "repo-exports/REGISTRY.json (v2, section hark)",
   "requests": "repo-exports/REQUESTS.jsonl",
+  "results": "repo-exports/DONE.jsonl",
   "ledger": "provenance/ledger.jsonl (append-only; plaintext index {ts, kind, ref, sha256}; age payload)",
+  "eval_ledger": "ledger/eval.jsonl ∧ ledger/heartbeat.jsonl",
   "key_custody": "Actions secret HARK_AGE_IDENTITY on the store repo; public recipient keys/hark.age.pub",
   "bootstrap": ".github/workflows/hark-vm-backup-bootstrap.yml",
-  "limits": ["ephemeral", "single node", "¬ failover-proven"],
-  "registered": "2026-11-18"
+  "limits": ["ephemeral processes (runs only on scheduled wake)", "single node", "¬ failover-proven", "allowlisted kinds only; ¬ arbitrary shell"],
+  "registered": "2026-11-18",
+  "compute_enabled": "2026-11-18"
 }

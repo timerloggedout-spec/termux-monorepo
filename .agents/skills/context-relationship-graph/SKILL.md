@@ -21,7 +21,7 @@ Its `manifest.json`, `nodes.jsonl`, `edges.jsonl`, `matrix.json`, reports, and c
 
 ## Operating sequence
 
-1. Read the repository’s agent instructions, proposal registry, and scope registry before collection. Use the existing canonical index only when its manifest/ref is current.
+1. Read root `CLAUDE.md` first, then the proposal registry/active ITEMS, permissions, current gate policy, and the ICM route for the target subsystem. Root `AGENTS.md` is deprecated in this repository; do not use it as an entrypoint. Read the owning scope registry before collection. Use the existing canonical index only when its manifest/ref is current.
 2. Query a narrow root first. Prefer `file:relative/path.py`, `symbol:relative/path.py:Qualname:line`, `pr:123`, `issue:123`, `label:name`, `scope:id`, or an exact GitHub issue/comment/review permalink. Use plain terms only when an exact root is unavailable.
 3. Treat GitHub `cross-referenced` timeline events as **verified** `MENTIONS` relationships from the referencing issue or PR to the timeline target. Retain event metadata and evidence URL; never retain event, issue, review, or comment body text.
 4. Treat exact local GitHub permalinks for `#issuecomment-`, `#pullrequestreview-`, and `#discussion_r` as verified references. Resolve the target node and its parent issue/PR when it exists; report a missing target precisely rather than guessing.

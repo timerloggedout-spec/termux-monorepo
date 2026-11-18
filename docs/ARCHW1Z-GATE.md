@@ -1,7 +1,7 @@
 # ArchW1z Gate Spine
 
 > **Status:** LIVE
-> **Branches:** `master-staging` (hygiene) · `termux-smoke` (runtime surface)
+> **Workflow triggers (verified 2026-11-15):** both gates run on pull requests; repo-gate also runs on pushes to `master` and `master-staging`; termux-smoke runs on pushes to `master`, `master-staging`, and `termux-smoke`. See the workflow YAML for the executable trigger contract.
 
 ## Two gates, one constitution
 
@@ -19,7 +19,7 @@ Every change that wants to reach `master` should survive both gates.
 
 ---
 
-## Gate 1 — repo-gate (on `master-staging`)
+## Gate 1 — repo-gate
 
 ```bash
 python3 scripts/ci/repo_gate.py
@@ -53,7 +53,7 @@ Lower debt with: `python3 scripts/ci/repo_gate.py --write-baseline`
 
 ---
 
-## Gate 2 — termux-smoke (on `termux-smoke`)
+## Gate 2 — termux-smoke
 
 ```bash
 python3 scripts/ci/termux_smoke.py
@@ -102,10 +102,11 @@ P2  DeepForge ↔ Rust protocol
 
 ## How to land work
 
-1. Branch off `master-staging` or `termux-smoke`.
-2. Smallest atomic change that preserves invariants.
-3. Push → both gates run on PR.
-4. Green on both → candidate for `master`.
+1. Read root `CLAUDE.md` and current `docs/ops/LANE-MATRIX.md` before selecting a base.
+2. Branch from live `master` unless an active lane explicitly requires `master-staging` or another named integration branch.
+3. Smallest atomic change that preserves invariants; open/update the PR against the lane-authorized base.
+4. Both gate workflows run on pull requests; verify named jobs on the exact candidate SHA.
+5. Green gates plus verified task outcome and mergeability authorize promotion under current policy.
 
 Do **not** treat `master` as the integration point for large TER-*
 branches.
@@ -117,3 +118,8 @@ branches.
 - `tracked_browser_profile_files` → 0
 - `tracked_backup_files` → 0
 - Reduce `device_absolute_symlinks`
+
+
+## Current-source note
+
+This document describes gate commands and test intent. Exact workflow triggers are owned by `.github/workflows/repo-gate.yml` and `.github/workflows/termux-smoke.yml`; PR disposition/promotion rules are owned by the current `docs/ops/LANE-MATRIX.md` and root `CLAUDE.md`. Do not infer that either gate is restricted to a single branch from this document's historical branch names.

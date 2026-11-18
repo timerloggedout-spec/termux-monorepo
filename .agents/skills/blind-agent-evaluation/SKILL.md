@@ -1,48 +1,79 @@
 ---
 name: blind-agent-evaluation
-description: Use blinded or partially blinded evaluation when provider/model identity could bias selection or review and identity is not required for safe execution.
+description: Design and operate blinded or partially blinded comparisons of agent, skill, model, prompt, tool, and orchestration treatments while preserving protected provenance and correctness-first evaluation.
 ---
 
-# Blind Agent Evaluation Skill
+# Blind Agent Evaluation
 
 ## Purpose
 
-Use blinded or partially blinded evaluation when provider/model identity could bias selection or review and identity is not required for safe execution. This is a **double-blind-style engineering control**, not a guarantee of perfect statistical blindness.
+Reduce evaluator bias when provider, model, skill, tool, or manager identity could influence judgment. This is a **blinded evaluation control**, not a guarantee of perfect statistical blindness.
 
-## Procedure
+Use with `.agents/skills/approxination-lane/SKILL.md` for substantive skill competitions and with `.agents/skills/multivariate-doe/SKILL.md` for controlled multi-factor designs.
 
-1. Define the task, success criteria, factors, cohorts, and evidence requirements.
-2. Assign opaque treatment IDs before evaluation when feasible.
-3. Remove unnecessary provider/model/reputation metadata from evaluator-visible material.
-4. Execute treatments while preserving secure provenance.
-5. Freeze evidence before unblinding when practical.
-6. Evaluate correctness first; score completeness, regressions, warnings, severity, and other task metrics separately.
-7. Record uncertainty, missingness, failures, cooldowns, and inference/leakage of identity.
-8. Unblind only after evaluation, or document operational/safety exceptions.
-9. Compare results across treatments and replicate promising findings.
-10. Feed verified findings into MoneyBall/3L0 and BIUDL.
+## Required procedure
 
-## Anti-bias rules
+1. Define the decision, estimand, task cohort, acceptance criteria, safety constraints, and primary outcome before execution.
+2. Identify the incumbent and competing treatments. For substantive skill creation/upgrades, use incumbent, sourced candidate, and independent candidate when feasible.
+3. Assign opaque treatment IDs before evaluation. Store the treatment-to-identity mapping separately from evaluator-visible artifacts.
+4. Remove unnecessary provider/model/vendor/skill/reputation metadata from evaluator-visible outputs. Normalize formatting only when it does not erase meaningful differences.
+5. Execute each treatment under matched task, solver, environment, permissions, and output contract where possible.
+6. Freeze raw evidence and hashes before judging or unblinding.
+7. Run deterministic checks first: tests, schema validation, exact output assertions, security checks, and task-specific oracles.
+8. Evaluate correctness and task completion before completeness, grounding, tool-use appropriateness, regressions, and efficiency.
+9. Record missingness, failures, timeouts, quota/cooldown, execution non-admission, evaluator disagreement, and identity leakage.
+10. Unblind only after the evaluation is frozen, unless safety/debugging requires earlier access; record the exception.
+11. Compare per-task and per-category outcomes; use pairwise preference/ELO as one view, not the sole selection rule.
+12. Replicate promising candidates on held-out or fresh tasks before recommending adoption.
+13. Feed verified findings into AEF, MoneyBall/3L0, and BIUDL with source and cohort provenance.
 
-- Do not let provider/model reputation substitute for evidence.
-- Do not call a trial double-blind when identity is readily inferable.
-- Do not erase attribution: protected provenance must survive blinding.
-- Do not optimize latency ahead of correctness.
-- Do not treat HTTP/workflow success as task success.
-- Do not silently change prompts, cohorts, or scoring after seeing treatment identity.
+## Approxination competition contract
+
+The Approxination Benchmark's A/B/C/D labels describe tool-layer modes, not candidate skill versions. Preserve both dimensions separately:
+
+- **Tool mode:** A cold/no-tools baseline; B Approx CLI + Brave; C skills.sh + Brave; D Brave-only.
+- **Skill treatment:** incumbent, sourced/adapted candidate, independent candidate, and any justified additional arms.
+
+Do not assume every skill comparison needs all four tool modes. Choose a design that isolates the actual question and record why.
+
+## Blinding limits
+
+- Do not call a trial double-blind if identity is inferable from output style, citations, tool traces, or unique behavior.
+- Prefer partial blindness with explicit leakage notes over unsafe removal of operational metadata.
+- Preserve attribution securely; never erase source identity from the authoritative evidence record.
+- Evaluators must not see treatment rankings, brand reputation, stars, popularity, or prior ELO when scoring correctness.
+- Keep judge model/version, prompt, rubric, and temperature/settings fixed within a cohort.
+- If multiple judges are used, report agreement and adjudication separately.
+
+## Outcome and ranking rules
+
+Primary outcomes:
+- independently verified task correctness;
+- task completion and required deliverables;
+- safety/policy compliance and regression severity.
+
+Secondary outcomes:
+- completeness, evidence grounding, tool-use appropriateness;
+- integration quality and maintainability;
+- latency, tokens, tool calls, retries, cost, and human intervention.
+
+A failed admission is not a model failure. A provider outage is not a skill failure. A successful HTTP call or workflow is not task success. A fast incorrect answer cannot outrank a slower verified correct answer.
+
+Report:
+- sample size and task coverage;
+- per-task and per-category results;
+- pairwise wins/losses/ties;
+- ELO or other ranking with uncertainty/limitations;
+- missing/skipped/censored observations;
+- evaluator disagreement and leakage;
+- replication result and decision.
+
+No winner is declared from a single aggregate score when primary correctness or safety evidence is missing.
 
 ## Multi-agent coordination
 
-Scout proposes candidate treatments. Managers choose experiments under the applicable assignment policy. Evaluators score blinded evidence. Telemetry maintains runtime lineage. MoneyBall/3L0 ranks treatments after the evaluation boundary. Synthesis updates the next BIUDL baseline.
-
-## Escalation
-
-If blinding conflicts with safety, debugging, quota/cooldown intervention, or required operational metadata, preserve the necessary visibility and record the exception. Prefer **partial blindness with explicit provenance** over unsafe or unverifiable execution.
-
-## Evidence lineage
-
-`experiment → opaque treatment → execution → evidence → evaluator result → unblind → provider/model attribution → ranking → synthesis`.
+Scouts propose candidate treatments. Managers assign treatments under the approved design. Execution telemetry records actual runs. Blinded evaluators assess frozen evidence. Protected provenance enables unblinding. MoneyBall/3L0 consumes the evidence after the evaluation boundary.
 
 ## Continuous improvement
 
-Every use of this skill should be eligible for retrospective critique: leakage discovered, evaluator disagreement, selection imbalance, replication outcome, and regression findings become inputs to the next revision of this skill.
+Every use can produce a retrospective: leakage, evaluator disagreement, selection imbalance, task contamination, unbalanced order, replication failure, or regression. Update the next cohort or skill version without rewriting prior evidence.

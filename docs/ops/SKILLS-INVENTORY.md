@@ -1,6 +1,6 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Reconciled:** 2026-11-15 · **Inventory role:** navigation and role-loading guidance; verify live paths/SHAs before treating a row as exhaustive
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
@@ -21,11 +21,11 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 |------|------------|------|
 | **Admin / Grok Administrator** | `superpowers` · `evidence-led-monorepo-ops` + `adaptive-wait` + **`stepie-stepwise-ops`** + `ml-pipeline-ops` | `review-loop` · `tribute-lane` · `github-pages-operator` · `icm-cctv-ops` |
 | **Admin / Termux stewardship** | `termux-mcp-project-steward` + `adaptive-wait` | `context-relationship-graph` · `wingman-project-integration` |
-| **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` | `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
+| **Wingman adaptation** | `wingman-project-integration` | `adaptive-wait` · `context-relationship-graph` · `review-loop` · `tribute-lane` · `github-pages-operator` · `approxination-lane` |
 | **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
-| **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
+| **Evaluation / DOE** | `approxination-lane` + `multivariate-doe` + `blind-agent-evaluation` | `mvt-experiment` · `tribute-lane` |
 | **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
 
 ## `.agents/skills/` (agent loadable)
@@ -140,3 +140,12 @@ The repository-local skill maps the upstream [obra/superpowers](https://github.c
 - Normalized event schema: `docs/integrations/schemas/integration-event.schema.json`
 
 Session-local tool availability is not proof of repository adapter implementation or production access.
+
+
+## Skill source freshness and competition
+
+- Source register and per-skill reading bundles: [`SKILL-CREATION-SOURCE-REGISTER.md`](SKILL-CREATION-SOURCE-REGISTER.md).
+- Substantive skill creation/upgrades must compare the incumbent, a sourced candidate, and an independent candidate where feasible. Use Approxination discovery/benchmarking plus blind evaluation and DoE; preserve a NOT RUN state when hosted execution was not performed.
+- Approxination ranking is candidate-discovery evidence, not repository promotion authority.
+- Root `CLAUDE.md` is the entrypoint. Root `AGENTS.md` is deprecated; do not load it first.
+- The historical inventory snapshot and skill-discovery counts above are navigation evidence. Re-fetch the repository tree before claiming exact current totals.

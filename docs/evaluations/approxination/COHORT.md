@@ -1,7 +1,7 @@
 # Cohort — Approxination A/B/C/D tool-layer evaluation
 
 **Family:** Oversight / tool-augmentation (AEF)
-**Implements:** APPROX-001 … APPROX-004 (see proposal ITEMS)
+**Implements:** APPROX-001 … APPROX-004 and competition policy APPROX-008 (see proposal ITEMS); formal A/B/C/D smoke remains APPROX-006
 **Reference treatments (user-owned forks):**
 
 | Fork | Role | Default branch pin policy |
@@ -18,6 +18,10 @@
 | C | Vercel skills.sh + Brave | Public directory control |
 | D | Brave only | Web-search baseline |
 | E+ | Custom | Via upstream contribution on benchmark fork |
+
+## Two distinct treatment dimensions
+
+The fixed A/B/C/D labels below are **tool-surface modes**. They are not the three candidate skill implementations required for substantive skill upgrades. A skill competition separately identifies an incumbent, a sourced/adapted candidate, and an independent candidate when feasible. Record both dimensions explicitly; do not conflate them or imply that every skill experiment needs every tool mode.
 
 ## Admission
 

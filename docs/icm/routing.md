@@ -4,7 +4,7 @@
 
 ## Purpose and ownership
 
-`routing.md` is the ICM entry point for a **nested provider-routing resource**. Unlike the static root aliases [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md), it is intentionally maintained by the routing-resource lifecycle because its provider observations, review state, and related governance can change independently.
+`routing.md` is the ICM entry point for a **nested provider-routing resource**. Unlike the root collaborator entry [`CLAUDE.md`](../../CLAUDE.md), this resource is intentionally maintained by the routing-resource lifecycle because its provider observations, review state, and related governance can change independently. Root `AGENTS.md` is deprecated and is not a parallel alias.
 
 The canonical machine-readable runtime inputs remain in the repository’s existing provider configuration and workflow code. This ICM resource is a documentation overlay: it records authoritative inputs, observation boundaries, and human gates without copying provider credentials, model inventories, or executable rules.
 
@@ -19,7 +19,7 @@ The canonical machine-readable runtime inputs remain in the repository’s exist
 
 ## Routing rules
 
-1. **Static aliases remain static.** `CLAUDE.md` and `AGENTS.md` are byte-identical navigation aliases. This file is not an alias because it has a different owner and update cadence.
+1. **The root entrypoint remains canonical.** `CLAUDE.md` is the primary collaborator entry. Do not treat the deprecated root `AGENTS.md` as a byte-identical alias or prerequisite. This nested routing resource has a different owner and update cadence.
 2. **The runtime stays canonical elsewhere.** This resource must link to the repository’s provider configuration, workflow scope, and issue/PR evidence rather than restating them as a competing router.
 3. **Polling produces observations, not execution.** A future provider poll may append a reviewed observation record only after its source, cadence, credentials, retention, and failure behavior are approved. It cannot alter provider selection or model invocation through documentation.
 4. **Provider changes are separately gated.** Any mutation of GitHub Actions, connectors, secrets, provider APIs, model routing, telemetry, or budget logic is deferred to the later code/workflow review phase.

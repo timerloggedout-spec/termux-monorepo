@@ -2,7 +2,7 @@
 
 How multi-agent decisions become shared truth — and when **no vote** is required.
 
-Related: `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `AGENTS.md` · `docs/ARCHW1Z-GATE.md`
+Related: `CLAUDE.md` · `docs/proposals/PROCESS.md` · `docs/PR-SUMMARY-PROCESS.md` · `docs/ARCHW1Z-GATE.md`
 
 ---
 
@@ -37,7 +37,7 @@ Tier R  RAFT-STRICT  Optional profile for named irreversible subjects (see §5)
 
 Skip social consensus. Prove accuracy on a branch:
 
-1. Branch from `master-staging`
+1. Branch from live `master` unless the current lane explicitly requires `master-staging`
 2. Implement
 3. `python3 scripts/ci/repo_gate.py` / `termux_smoke.py`
 4. Open PR with honest Status

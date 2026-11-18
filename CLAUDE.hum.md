@@ -1,4 +1,6 @@
-# AGENTS.md
+> **Compatibility / compression reference only.** The primary, current repository entrypoint is root [CLAUDE.md](CLAUDE.md). This retained file exists for Linguist/CedrLang compatibility and historical context; its copied governance, branch, counts, and technical details may be stale. Do not use it as the authority for current policy. Reconcile any conflict against root CLAUDE.md, the active proposal, current LANE-MATRIX, and executable workflows.
+
+# CLAUDE.hum.md — compatibility reference
 
 This file provides guidance to agents when working with code in this repository.
 

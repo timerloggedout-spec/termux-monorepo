@@ -8,7 +8,10 @@
 **Research lane:** [research/neuro-inspired-patterns.md](research/neuro-inspired-patterns.md)  
 **Experiment lane:** [experiments/README.md](experiments/README.md)  
 **Proposal lane:** [proposals/README.md](proposals/README.md)  
-**Diagram source:** [../diagrams/ade-synapse-brain.mmd](../diagrams/ade-synapse-brain.mmd)
+**Diagram source:** [../diagrams/ade-synapse-brain.mmd](../diagrams/ade-synapse-brain.mmd)  
+**Synaptic Bus contract:** [contracts/SYNAPTIC-BUS-CONTRACT.md](contracts/SYNAPTIC-BUS-CONTRACT.md)  
+**Envelope schema:** [contracts/SYNAPTIC-BUS-ENVELOPE.schema.json](contracts/SYNAPTIC-BUS-ENVELOPE.schema.json)  
+**Compatibility matrix:** [contracts/BUS-COMPATIBILITY.md](contracts/BUS-COMPATIBILITY.md)
 
 ## What is ADE-SYNAPSE?
 
@@ -41,6 +44,7 @@ The registry records both the mapping status and the evidence paths. A mapping i
 - `research/` — biological inspiration translated into engineering hypotheses.
 - `experiments/` — controlled experiments, metrics, and result receipts.
 - `proposals/` — new subsystem proposals and unresolved design decisions.
+- `contracts/` — versioned inter-plane event envelope, schema, examples, and compatibility rules.
 - `../diagrams/` — canonical Mermaid source; rendered assets remain derived outputs.
 
 ## Core design rules

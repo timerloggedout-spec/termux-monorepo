@@ -1,27 +1,24 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-18T19:45:02Z",
+ "generated_at": "2026-11-18T20:00:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 6,
-   "in_progress": 1,
+   "queued": 4,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 3,
-    "repo gate": 3
+    "repo gate": 2,
+    "Orchestration Regression Guard": 2
    }
   },
   "2": {
    "tier": 2,
-   "queued": 2,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T19:44:13Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1,
-    "tribute-dashboard-deploy": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -32,19 +29,18 @@
   },
   "4": {
    "tier": 4,
-   "queued": 26,
-   "in_progress": 19,
+   "queued": 23,
+   "in_progress": 17,
    "oldest_queued_at": "2026-11-11T20:34:15Z",
    "by_workflow_queued": {
-    "graph-matrix-probe": 3,
-    "quota-usage-series-refresh": 1,
-    "Foresight Evidence Spine": 3,
-    "quota-served-probe": 1,
-    "DO Statement Style": 1,
-    "termux smoke": 3,
-    "que-cadence-kick": 1,
+    "n8n SHE bridge": 2,
+    "Gemini review after peers": 1,
+    "RECON INTEL discovery": 1,
     "repo-tracking-collect": 2,
+    "Foresight Evidence Spine": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 2,
+    "graph-matrix-probe": 2,
+    "termux smoke": 2,
     "Quota Dispatch Tree": 2,
     "hitl-control-plane-verify": 2,
     "Context Relationship + Lead/Lag Audit": 2,
@@ -54,8 +50,8 @@
   }
  },
  "totals": {
-  "queued": 34,
-  "in_progress": 21
+  "queued": 27,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -75,13 +71,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 7,
-   "2": 3,
+   "1": 4,
+   "2": 1,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 10,
-  "default_t4": 45,
+  "explicit_total": 5,
+  "default_t4": 40,
   "unmatched": 0,
   "ancient_excluded": 2,
   "operator_excluded": 1

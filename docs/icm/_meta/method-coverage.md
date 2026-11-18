@@ -13,7 +13,7 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Automated design and verification acceptance | [`../maintenance/02_design/CONTEXT.md`](../maintenance/02_design/CONTEXT.md) and [`../maintenance/03_verify/CONTEXT.md`](../maintenance/03_verify/CONTEXT.md) | Implemented; routine human sign-off intentionally removed under FA-ADE |
 | Source inventory before a map change | [`../maintenance/01_inventory/CONTEXT.md`](../maintenance/01_inventory/CONTEXT.md) | Implemented |
 | Verification before promotion | [`../maintenance/03_verify/CONTEXT.md`](../maintenance/03_verify/CONTEXT.md) | Implemented |
-| Master-staging validation before later master merge | [`../maintenance/04_promote/CONTEXT.md`](../maintenance/04_promote/CONTEXT.md) | Implemented |
+| Repository-native dual-gate validation and FA-ADE promotion | [`../maintenance/04_promote/CONTEXT.md`](../maintenance/04_promote/CONTEXT.md) | Implemented; `master-staging` is conditional on root policy |
 | No committed run artifacts | [`../maintenance/.gitignore`](../maintenance/.gitignore) and stage `.gitkeep` files | Implemented |
 | Canonical source and one-way-reference rules | [`../_shared/maintenance-rules.md`](../_shared/maintenance-rules.md) | Implemented |
 | Compact form-selection and restructure method | [`../../../refTemplates/smods/icm-architect_fork/SKILL.md`](../../../refTemplates/smods/icm-architect_fork/SKILL.md) | Implemented through the pinned Architect reference |

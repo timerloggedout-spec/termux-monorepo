@@ -20,6 +20,8 @@
 | provider-family-doe-observatory | P1 | executing | [active/provider-family-doe-observatory/](active/provider-family-doe-observatory/) |
 | continuous-capability-evolution-lab | P1 | executing | [active/continuous-capability-evolution-lab/](active/continuous-capability-evolution-lab/) — event-driven FOSS discovery and DoE combination evaluation |
 
+| observatory-capability-intake | P1 | posted | [active/observatory-capability-intake/](active/observatory-capability-intake/) — Observatory → CEEL → refTemplates/smods governed intake |
+
 ## Large sources / debate branches
 
 | Pointer on master | Full text branch | Notes |

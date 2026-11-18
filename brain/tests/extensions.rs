@@ -106,6 +106,7 @@ fn invocation_rejects_domain_mismatch_before_evaluation() {
     let extension = EchoExtension {
         descriptor: descriptor(),
         fail: true,
+        calls: Cell::new(0),
     };
     let mut invalid = context();
     invalid.domain_id = "another_domain".into();
@@ -142,6 +143,7 @@ fn specialist_errors_remain_distinct_from_contract_errors() {
     let extension = EchoExtension {
         descriptor: descriptor(),
         fail: true,
+        calls: Cell::new(0),
     };
 
     assert_eq!(

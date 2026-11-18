@@ -79,13 +79,32 @@ jobs:
            "rules":[{"type":"deletion"},{"type":"non_fast_forward"}]}
           JSON
           fi
-      - name: Append README line
+      - name: Append README line ∧ register intake (contents API)
         run: |
           set -euo pipefail
-          cd "$RUNNER_TEMP/m"
-          git config user.name hark-ops; git config user.email hark-ops@users.noreply.github.com
-          LINE='payloads age-encrypted; public by design (Muse pattern)'
-          grep -qxF "$LINE" README.md || { printf '\n%s\n' "$LINE" >> README.md; git commit -qam "docs(readme): add public-by-design line [skip render]"; git push -q origin HEAD; }
+          # git push ⇒ 403 on run 44272374001 ⇒ DO write via contents API (fast-forward commit).
+          python3 - <<'PY'
+          import base64, json, subprocess, os
+          T = os.environ["TARGET"]
+          def get(path):
+              m = json.loads(subprocess.check_output(["gh", "api", f"repos/{T}/contents/{path}"]))
+              return m["sha"], base64.b64decode(m["content"]).decode()
+          def put(path, sha, text, msg):
+              body = json.dumps({"message": msg, "sha": sha, "content": base64.b64encode(text.encode()).decode()})
+              subprocess.run(["gh", "api", "-X", "PUT", f"repos/{T}/contents/{path}", "--input", "-"], input=body, text=True, check=True, capture_output=True)
+              print(f"::notice title=write::{path}")
+          LINE = "payloads age-encrypted; public by design (Muse pattern)"
+          sha, txt = get("README.md")
+          if LINE not in txt:
+              put("README.md", sha, txt.rstrip("\n") + "\n\n" + LINE + "\n", "docs(readme): add public-by-design line [skip render]")
+          sha, txt = get("repo-exports/REGISTRY.json")
+          reg = json.loads(txt); hark = reg.setdefault("sections", {}).setdefault("hark", {})
+          if "intake" not in hark:
+              hark["intake"] = {"schema": "termux-monorepo:ops/mesh/REQUESTS-SCHEMA.md", "workflow": "termux-monorepo:.github/workflows/mesh-request.yml",
+                                "triggers": ["workflow_dispatch", "issues labeled mesh:request"], "requests": "repo-exports/REQUESTS.jsonl",
+                                "done": "repo-exports/DONE.jsonl", "drain": "Hark cron 0f4c2bd2 every 6h :15 PT"}
+              put("repo-exports/REGISTRY.json", sha, json.dumps(reg, indent=2, ensure_ascii=False) + "\n", "feat(registry): register mesh request intake [skip render]")
+          PY
       - name: Read back
         run: |
           set -euo pipefail

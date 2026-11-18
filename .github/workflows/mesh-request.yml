@@ -1,0 +1,107 @@
+# DO intake mesh requests ⇒ append REQUESTS.jsonl on the hark-vm store (schema ops/mesh/REQUESTS-SCHEMA.md).
+# Allowlist only; ¬ arbitrary shell. target=actions runs {probe, hygiene} inline ⇒ DONE line.
+name: mesh-request
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        options: [hark-vm, actions, codespaces, cloudshell, muse-vm, any]
+        default: hark-vm
+      kind:
+        type: choice
+        options: [probe, hygiene, eval, export]
+        default: probe
+      ref:
+        description: git ref ∨ issue ∨ path
+        default: ""
+      args:
+        description: JSON object
+        default: "{}"
+      priority:
+        type: choice
+        options: [T1, T2, T3, T4]
+        default: T4
+  issues:
+    types: [labeled]
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: mesh-request-append
+  cancel-in-progress: false
+env:
+  STORE: timerloggedout-spec/hark-vm-workspace-backup
+  MUSE_STORE: timerloggedout-spec/muse-vm-workspace-backup
+  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+jobs:
+  intake:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'mesh:request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/mesh
+      - name: Build request line
+        id: req
+        env:
+          MR_TARGET: ${{ inputs.target }}
+          MR_KIND: ${{ inputs.kind }}
+          MR_REF: ${{ inputs.ref }}
+          MR_ARGS: ${{ inputs.args }}
+          MR_PRIORITY: ${{ inputs.priority }}
+          MR_FROM: dispatch:${{ github.actor }}
+          MR_ISSUE_BODY: ${{ github.event.issue.body }}
+          MR_ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: python3 scripts/mesh/mesh_request.py > "$RUNNER_TEMP/line.json" && cat "$RUNNER_TEMP/line.json"
+      - name: Append REQUESTS line (hark-vm store)
+        id: append
+        run: |
+          set -euo pipefail
+          SHA=$(python3 scripts/mesh/append_jsonl.py "$STORE" repo-exports/REQUESTS.jsonl \
+            "chore(mesh): append request ${{ steps.req.outputs.id }} [skip render]" < "$RUNNER_TEMP/line.json")
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "::notice title=requests::id=${{ steps.req.outputs.id }} target=${{ steps.req.outputs.target }} kind=${{ steps.req.outputs.kind }} commit=${SHA:0:7}"
+      - name: Mirror to Muse VM store (target=muse-vm)
+        if: steps.req.outputs.target == 'muse-vm'
+        run: |
+          if gh api "repos/$MUSE_STORE" --jq .permissions.push 2>/dev/null | grep -qx true; then
+            SHA=$(python3 scripts/mesh/append_jsonl.py "$MUSE_STORE" repo-exports/REQUESTS.jsonl \
+              "chore(mesh): mirror request ${{ steps.req.outputs.id }} [skip render]" < "$RUNNER_TEMP/line.json")
+            echo "::notice title=muse-mirror::commit=${SHA:0:7}"
+          else
+            echo "::warning title=muse-mirror::OPERATOR push ∉ $MUSE_STORE ⇒ line stays on hark-vm store; Muse drain owed"
+          fi
+      - name: Execute inline (target=actions, allowlist)
+        if: steps.req.outputs.target == 'actions' || steps.req.outputs.target == 'codespaces' || steps.req.outputs.target == 'cloudshell'
+        run: |
+          set -euo pipefail
+          T='${{ steps.req.outputs.target }}'; K='${{ steps.req.outputs.kind }}'; ID='${{ steps.req.outputs.id }}'
+          TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          if [ "$T" = actions ] && [ "$K" = probe ]; then
+            RESULT=$(gh api rate_limit --jq '{core_remaining: .resources.core.remaining, core_limit: .resources.core.limit}')
+            STATUS=done
+          elif [ "$T" = actions ] && [ "$K" = hygiene ]; then
+            gh api "repos/$STORE/contents/repo-exports/REQUESTS.jsonl" --jq .content | base64 -d > "$RUNNER_TEMP/req.jsonl"
+            RESULT=$(python3 -c 'import json,sys; L=[l for l in open(sys.argv[1]) if l.strip()]; bad=0
+          for l in L:
+              try: json.loads(l)
+              except Exception: bad+=1
+          print(json.dumps({"lines":len(L),"invalid":bad}))' "$RUNNER_TEMP/req.jsonl")
+            STATUS=done
+          else
+            RESULT='{"note":"inline executor ∄ for target∧kind ⇒ queued for node drain"}'
+            STATUS=queued
+          fi
+          python3 -c 'import json,sys; print(json.dumps({"id":sys.argv[1],"ts_utc":sys.argv[2],"by":"actions:mesh-request","status":sys.argv[3],"result":json.loads(sys.argv[4]),"run":sys.argv[5]}))' \
+            "$ID" "$TS" "$STATUS" "$RESULT" "$RUN_URL" > "$RUNNER_TEMP/done.json"
+          SHA=$(python3 scripts/mesh/append_jsonl.py "$STORE" repo-exports/DONE.jsonl "chore(mesh): append done $ID [skip render]" < "$RUNNER_TEMP/done.json")
+          echo "::notice title=done::id=$ID status=$STATUS commit=${SHA:0:7}"
+      - name: Receipt on issue
+        if: github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment ${{ github.event.issue.number }} --repo "$GITHUB_REPOSITORY" --body "✓ mesh request ${{ steps.req.outputs.id }} ⇒ $STORE@${{ steps.append.outputs.sha }} · ${RUN_URL}"

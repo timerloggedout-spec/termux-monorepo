@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-17T15:59:27Z` UTC  
+**Generated:** `2026-11-18T10:08:13Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 287 docs-lane branch(es)
+**Count:** 289 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -93,6 +93,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/competition-import-d0-d1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/competition-import-d0-d1) | `dcb96489663f` | — | — | orphan lane |
 | [`docs/condensa-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/condensa-correction-2026-11-10) | `70b6589f0db8` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
+| [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `881c4b7294a4` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
 | [`docs/continuity-spof-census-2026-11-01`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/continuity-spof-census-2026-11-01) | `dc92a46f6878` | — | — | orphan lane |
@@ -290,6 +291,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/tribute-lane-efficacy-audit-2026-10-27`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tribute-lane-efficacy-audit-2026-10-27) | `7e1ec3029a52` | — | — | orphan lane |
 | [`docs/tribute-phase2-batch2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/tribute-phase2-batch2) | `e3561b93b638` | — | — | orphan lane |
 | [`docs/ui-surface-version-lane-map`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ui-surface-version-lane-map) | `dc4800a2ce58` | [#2978](https://github.com/timerloggedout-spec/termux-monorepo/pull/2978)→`master` (draft) | — | PR without registry link |
+| [`docs/understudy-provisioned-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/understudy-provisioned-2026-11-17) | `7f20016bbdc2` | — | — | orphan lane |
 | [`docs/vercel-alternatives-failover-plan`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/vercel-alternatives-failover-plan) | `d2a830738ca1` | [#4084](https://github.com/timerloggedout-spec/termux-monorepo/pull/4084)→`master` (draft) | — | PR without registry link |
 | [`docs/visual-architecture-versioning`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/visual-architecture-versioning) | `e48109e159ed` | [#4085](https://github.com/timerloggedout-spec/termux-monorepo/pull/4085)→`master` | — | PR without registry link |
 | [`docs/vm-workspace-backup-scoping`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/vm-workspace-backup-scoping) | `e68d1d74d874` | — | — | orphan lane |

@@ -36,9 +36,11 @@ class ProviderInvokeControlPlaneTests(unittest.TestCase):
         self.assertEqual(observation["population"]["g4f_actions_verified_pairs"], 83)
         self.assertEqual(observation["orbit"]["decision"], "DEFER")
         self.assertEqual(observation["shield"]["counts"]["quarantine"], 1)
-        self.assertEqual(observation["shield"]["signals"][0]["disposition"], "quarantine")
+        signal = observation["shield"]["signals"][0]
+        self.assertEqual(signal["disposition"], "quarantine")
+        self.assertEqual(signal.get("content"), None)
+        self.assertEqual(signal["content_chars"], len(prompt))
         self.assertNotIn(prompt, str(observation))
-        self.assertNotIn("content", str(observation))
 
     @patch("scripts.orbit_provider_population.load_population", return_value=population())
     def test_catalog_only_observation_has_empty_context_capsule(self, _load):

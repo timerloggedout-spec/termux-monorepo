@@ -295,6 +295,17 @@ def _request(method: str, url: str, token: str, payload=None):
         ) from exc
 
 
+def _delete_label_if_present(base: str, label: str, token: str) -> bool:
+    """Delete an issue label; a 404 means it was already absent."""
+    try:
+        _request("DELETE", f"{base}/labels/{label}", token)
+    except RuntimeError as exc:
+        if "-> 404:" in str(exc):
+            return False
+        raise
+    return True
+
+
 def _get_all(url: str, token: str) -> list:
     out, page = [], 1
     while True:
@@ -407,8 +418,7 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                      {"body": auto_claim.lease_release_comment(
                          claim_class=rel["claim_class"],
                          claimant=rel["claimant"], now=now)})
-            _request("DELETE", f"{base}/labels/dispatch-claimed",
-                     token)
+            _delete_label_if_present(base, "dispatch-claimed", token)
             ctx["verdict"]["action"] = "lease-released"
         except Exception as exc:
             ctx["verdict"]["action"] = f"ERROR: {exc}"
@@ -427,11 +437,7 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                          now=now, trigger=claim["trigger"])})
             _request("POST", f"{base}/labels", token,
                      {"labels": ["dispatch-claimed"]})
-            try:
-                _request("DELETE", f"{base}/labels/dispatch-escalated",
-                         token)
-            except Exception:
-                pass  # label may not be present; the claim stands
+            _delete_label_if_present(base, "dispatch-escalated", token)
             verdict["action"] = "auto-claimed"
             verdict["state"] = "claimed"
         except Exception as exc:

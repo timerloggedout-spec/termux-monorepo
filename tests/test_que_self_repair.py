@@ -38,6 +38,14 @@ ADD = [{"filename": "scripts/x.py", "status": "modified", "patch": "+print(1)"}]
 
 
 class Promote(unittest.TestCase):
+    def test_brr_reconciliation_issue_is_read_only(self):
+        self.assertTrue(sr.is_branch_reconciliation_issue({
+            "body": "class: `branch-reconciliation` · workflow: `refs/heads/feat/x`"
+        }))
+        self.assertTrue(sr.is_branch_reconciliation_issue({"body": "## Branch reconciliation\nbranch=feat/x"}))
+        self.assertFalse(sr.is_branch_reconciliation_issue({"body": "class: `self-repair`"}))
+        self.assertFalse(sr.is_branch_reconciliation_issue(None))
+
     def test_self_merge_needs_green_two_candidates_and_outside_doe(self):
         d = sr.promote_decision(ADD, GREEN, 2, ["doe-reviewer"], "swarm[bot]")
         self.assertEqual(d["action"], "self_merge")

@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c9d6ed73453c39d32d789ba7e5be4a803107af4f37f87b3138e42365a92285ca",
-  "workflow_count": 318,
+  "source_fingerprint": "c7ad825b5e452116e9ff4dddeaa239c8722e01c8ea0670fd432dd8de105a6115",
+  "workflow_count": 319,
   "workflows": [
     {
       "action_pins": [],
@@ -673,6 +673,22 @@
       "schedules": [],
       "triggers": [
         "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: branch-reconciliation-${{ github.repository }} cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "inventory"
+      ],
+      "name": "Branch reconciliation inventory",
+      "path": ".github/workflows/branch-reconciliation.yml",
+      "schedules": [],
+      "triggers": [
+        "pull_request",
+        "push"
       ]
     },
     {
@@ -4066,8 +4082,7 @@
         "41 */3 * * *"
       ],
       "triggers": [
-        "schedule",
-        "workflow_dispatch"
+        "schedule"
       ]
     },
     {

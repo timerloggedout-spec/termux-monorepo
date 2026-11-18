@@ -120,7 +120,7 @@ git add refTemplates/smods/icm-architect_fork
 git commit -m "chore(submodule): sync ICM Architect upstream"
 ```
 
-Run `git diff --submodule=log` before committing the monorepo pointer. The output identifies the precise submodule commit range being introduced. The standard repository gates still apply before a merge to `master-staging`.
+Run `git diff --submodule=log` before committing the monorepo pointer. The output identifies the precise submodule commit range being introduced. The standard repository gates apply before promotion to `master` (or `master-staging` only when root policy declares that lane active).
 
 ## Review Checklist
 
@@ -134,7 +134,7 @@ Run `git diff --submodule=log` before committing the monorepo pointer. The outpu
 
 ## Applied System Map
 
-The monorepo now applies the ICM Architect **System map** form at [`docs/icm/CLAUDE.md`](icm/CLAUDE.md). It is a linked edit map rather than a duplicate specification: its object cards cite existing architecture, navigation, tool, governance, full-methodology, and workspace-artifact sources; its process cards record the actual change-and-validation, structured-Termux-job, and workspace-artifact-triage movements; and its effect index provides only first-order routing. Start at the root `AGENTS.md` governance sequence, then open the ICM catalog and one matching card before loading deeper sources.[1] [2]
+The monorepo now applies the ICM Architect **System map** form at [`docs/icm/CLAUDE.md`](icm/CLAUDE.md). It is a linked edit map rather than a duplicate specification: its object cards cite existing architecture, navigation, tool, governance, full-methodology, and workspace-artifact sources; its process cards record the actual change-and-validation, structured-Termux-job, and workspace-artifact-triage movements; and its effect index provides only first-order routing. Start at the root `CLAUDE.md` governance sequence, then open the ICM catalog and one matching card before loading deeper sources.[1] [2]
 
 No source files, generated indexes, recovery artifacts, device state, or application code were moved or refactored to make this map. The map’s purpose is to reduce context loading while preserving canonical sources, automated evidence boundaries, and the repository's explicitly enumerated human-only permission edges.
 

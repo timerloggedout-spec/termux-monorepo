@@ -1,0 +1,20 @@
+{
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD041": false,
+    "MD046": { "style": "fenced" },
+    "MD060": false
+  },
+  "globs": [
+    "docs/**/*.md",
+    ".github/**/*.md",
+    "README.md"
+  ],
+  "ignores": [
+    "vendor/**",
+    "node_modules/**",
+    "docs/archive/**"
+  ]
+}

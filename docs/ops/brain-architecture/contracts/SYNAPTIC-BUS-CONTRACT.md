@@ -102,6 +102,12 @@ The initial implementation target is repository-native append-only artifacts and
 
 See [BUS-COMPATIBILITY.md](BUS-COMPATIBILITY.md). The compatibility layer is an adapter/profile over existing schemas, not a migration that replaces them. Schema owners retain authority over their records. New consumers must be tolerant of absent optional attribution and evidence fields while rejecting malformed required fields.
 
+## First source adapter
+
+A pure projection helper is available at `tools/ade_synapse/orchestration_receipt_adapter.py`. It maps only source receipt states with direct lifecycle correspondence (`RUNNING`, `COMPLETED`, `FAILED`) to `action.started`, `action.completed`, and `action.failed`. The caller supplies `task_id` and `emitted_at`; the adapter keeps the source `event_id` stable, uses a typed URN pointer to the canonical receipt, and carries no receipt payload or `evidence_ids` content. Unsupported states are rejected pending an explicit mapping. Focused tests cover deterministic redelivery identity, lifecycle mapping, required correlation, source identity checks, payload exclusion, and schema validation.
+
+This helper is a pure projection function. It does not publish events, persist a stream, dispatch work, or authorize actions.
+
 ## Acceptance criteria before runtime adoption
 
 - Schema validates with a Draft 2020-12 validator.
@@ -114,4 +120,4 @@ See [BUS-COMPATIBILITY.md](BUS-COMPATIBILITY.md). The compatibility layer is an 
 - A route-only event cannot be counted as an invocation or successful outcome.
 - CI test command and owning maintainers are documented before any producer is wired.
 
-**Current status:** schema, sample fixture, and contract documentation are proposed. No producer, consumer, broker, runtime dispatch, or 3L0 scoring integration has been implemented by this change.
+**Current status:** schema, sample fixture, contract documentation, and one pure orchestration-receipt projection helper are present. No runtime publisher, append-only consumer, broker, runtime dispatch, or 3L0 scoring integration has been implemented by this change.

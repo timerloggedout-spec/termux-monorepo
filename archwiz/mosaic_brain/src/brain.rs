@@ -154,7 +154,19 @@ pub fn validate_identity(identity: &MethodIdentity) -> Result<(), ValidationErro
 }
 
 fn evidence_is_valid(evidence: &EvidenceRef) -> bool {
-    !evidence.source_id.trim().is_empty() && !evidence.source_uri.trim().is_empty()
+    let uri = evidence.source_uri.trim();
+    let has_supported_shape = uri
+        .strip_prefix("repo://")
+        .is_some_and(|path| !path.is_empty() && !path.starts_with('/') && !path.chars().any(char::is_whitespace))
+        || uri.strip_prefix("https://").is_some_and(|rest| {
+            let authority = rest.split('/').next().unwrap_or_default();
+            !authority.is_empty()
+                && !authority.starts_with('.')
+                && !authority.ends_with('.')
+                && !authority.chars().any(char::is_whitespace)
+        });
+
+    !evidence.source_id.trim().is_empty() && has_supported_shape
 }
 
 /// Deterministically classify a method evaluation without performing side effects.

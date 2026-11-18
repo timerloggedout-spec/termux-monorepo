@@ -32,3 +32,10 @@ MTTR per failure class · self-merge rate · regression rate · HITL rate ⇒ 0 
 - Changes are additive only. Commit messages end `[skip render]`. ¬ merge #1249 ∨ others' PRs without Owner approval.
 - The Fleet Swarm App installation 177357774 is suspended ⇒ writes go through PAT routes only.
 - The not-established marker is for chat only, never a data value.
+
+
+## Branch reconciliation intake (BRR → QUE)
+
+BRR is an observer inside this existing SIE/QDesk cycle, not an independently scheduled workflow. The QDesk scheduled cycle builds `branch-reconciliation-registry/v1`, passes the snapshot to `scripts/que/self_repair.py --branch-inventory`, and retains the full inventory artifact for 90 days. Actionable states (`ahead-only`, `diverged`, `unresolved-local-ref`, `unrelated-or-unavailable-history`) become idempotent QUE issues keyed by branch + tip SHA + disposition. Clean/behind-only states remain inventory evidence. Existing QUE ranking, auto-claim, lease/reclaim, escalation and Desk surfaces remain the only task-plane mechanisms. No branch mutation is authorized by inventory or issue assignment. Existing QDesk/Desk, DoE, CI, review, branch-protection and owner gates remain authoritative.
+
+Acceptance: focused tests prove actionable filtering, PR base context, new-tip identity and fail-closed schema handling. A scheduled QDesk run must complete census, intake and artifact upload before the integration is described as operational.

@@ -1324,6 +1324,7 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+
   - id: qdesk-self-repair
     title: 'QDesk self-repair loop: detect, fix, merge, measure (lane termux-ops)'
     author: termux-ops
@@ -1334,10 +1335,17 @@ proposals:
       - id: timerloggedout-spec
         role: operator-authorizer
         status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
     related_issues:
       - 5214
     related_prs:
       - 5207
-    related_branches: []
+      - 5523
+    related_branches:
+      - feat/que-brr-clean-integration-2026-11-16
     gates_required:
       - repo-gate
+      - proposal-lifecycle
+      - termux-smoke

@@ -42,3 +42,7 @@ For GitHub stewardship, preserve SHA/run/job/artifact provenance and distinguish
 - `docs/ops/SKILLS-INVENTORY.md`
 - `.agents/skills/adaptive-wait/SKILL.md`
 - `.agents/skills/adaptive-feedback-cycle/SKILL.md`
+
+## Repo-wide Linguist / Siglary mandate
+
+Apply [the DO-first Linguist / Siglary mandate](../../../docs/ops/REPO-WIDE-LINGUIST-SIGLARY-MANDATE.md) to repository chat, comments, commits, PRs, issues, workflow directives, and skills. Use `CHAT := STATE-CHANGE ∨ OVERSIGHT`, CAVEMAN-6, concrete DO verbs, and registered Siglary operators. Keep OPERATORS, GLYPHS, and CHORDS distinct; resolve chords in named domains; preserve exact technical literals. State scope, owner, condition, expected state, and evidence. Preserve read-only defaults and approval boundaries.

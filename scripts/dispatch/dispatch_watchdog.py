@@ -623,6 +623,18 @@ def render_table(results: list) -> str:
 GAP_FEED_PATH = "ops/que/feeds/stall-gap-feed.json"
 
 
+def _repo_root() -> str:
+    """Repo root for this script: scripts/dispatch/ -> scripts/ -> root.
+
+    Restored 2026-11-18 (#5614): write_gap_feed called _repo_root()
+    but the definition was missing, so every watchdog run crashed
+    with NameError at the gap-feed write — after the sweep itself
+    had run — and the feed-commit step never landed.
+    """
+    return os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))
+
+
 def write_gap_feed(feed: dict) -> bool:
     """Write-on-change for the SIE stall-gap feed (QUE #5286 point
     5): same content gate as the dispatch-state feed. Returns True

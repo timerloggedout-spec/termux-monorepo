@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant M as Method version
+  participant C as Context Relationship Graph
+  participant E as Experiment records
+  participant D as Independent evaluator
+  participant B as MOSAIC Brain
+  participant G as Existing governance
+
+  M->>B: Immutable identity and scope
+  B->>C: Resolve metadata references (read-only)
+  C-->>B: Verified refs, freshness and coverage
+  B->>E: Resolve canonical run references
+  E-->>B: Run evidence references
+  B->>D: Request independent review against frozen criteria
+  D-->>B: Verdict and evidence refs
+  B->>B: Validate identity and evaluate conditions
+  B-->>G: Recommendation with reasons and evidence
+  G->>G: Apply proposal lifecycle and dual gates
+  G-->>M: Scope-bounded outcome or HOLD

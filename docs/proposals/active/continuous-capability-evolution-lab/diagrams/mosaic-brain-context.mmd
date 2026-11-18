@@ -1,0 +1,20 @@
+flowchart LR
+  subgraph Sources["Canonical repository sources"]
+    Git["Git commits, PRs, issues, reviews"]
+    CRG["Context Relationship Graph"]
+    DOE["Canonical DoE EXPERIMENT records"]
+    DELPHI["Delphi / EGM independent challenge"]
+    PROP["Proposal lifecycle and dual gates"]
+  end
+
+  Git --> CRG
+  DOE --> Evidence["Evidence references"]
+  CRG -->|"read-only metadata refs"| Evidence
+  DELPHI -->|"independent verdict"| Evidence
+  Evidence --> Brain["MOSAIC Brain\npure recommendation core"]
+  Brain -->|"PromotionCandidate / HOLD / REVISE"| Proposal["Existing proposal lifecycle"]
+  Proposal -->|"verified outcome + dual gates"| FA["Repository-managed FA-ADE"]
+  FA --> Promote["Scope-bounded promotion"]
+
+  Brain -.->|"no graph writes"| CRG
+  Brain -.->|"no direct promotion"| Promote

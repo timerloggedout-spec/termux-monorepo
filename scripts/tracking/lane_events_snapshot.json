@@ -1,9 +1,27 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-18T03:11:09Z",
+ "read_at": "2026-11-18T03:12:43Z",
  "status": "ok",
- "count": 78828,
+ "count": 78830,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "f6bc156e34c79612632a319ee97bb652cbd0cf43",
+   "occurred_at": "2026-11-18 03:11:43+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "e308e6b706d4506a5022abbc408141f5c5af5688",
+   "occurred_at": "2026-11-18 03:11:17+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -1257,7 +1275,7 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
+   "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -1266,7 +1284,7 @@
   },
   {
    "lane": "she",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "n8n SHE bridge",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
@@ -1779,30 +1797,12 @@
   },
   {
    "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "36172e0eb82bc7aeae9493677206bc75aab8a461",
-   "occurred_at": "2026-11-18 02:11:56+00"
-  },
-  {
-   "lane": "she",
    "workflow": "n8n SHE bridge",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
    "head_sha": "124670b4407357d28b1a878e03d794ecf4fe8209",
    "occurred_at": "2026-11-18 02:11:56+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "36172e0eb82bc7aeae9493677206bc75aab8a461",
-   "occurred_at": "2026-11-18 02:11:55+00"
   }
  ]
 }

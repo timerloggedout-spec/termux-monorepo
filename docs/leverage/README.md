@@ -9,6 +9,7 @@
 - [Mechanism schema](MECHANISM.schema.json)
 - [Mechanism hypothesis catalog](mechanisms.json)
 - [Measurement integration contract](INTEGRATION.md)
+- [Opportunity review and compounding protocol](OPPORTUNITY-REVIEW.md)
 - [Pilot 001 — provenance-aware context reuse](pilots/L3V-PILOT-001-context-reuse.md)
 - [Implementation plan](../superpowers/plans/2026-11-16-l3verage-department.md)
 

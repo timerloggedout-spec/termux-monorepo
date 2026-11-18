@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::sync::{Arc, Mutex};
 use termux_brain::*;
 
 struct FixtureBackend {
@@ -19,6 +20,28 @@ impl StageBackend for FixtureBackend {
             .get(&stage)
             .cloned()
             .ok_or_else(|| format!("missing fixture for {stage:?}"))
+    }
+}
+
+struct RecordingBackend {
+    inner: FixtureBackend,
+    received_context_ids: Arc<Mutex<Vec<Vec<String>>>>,
+}
+
+impl StageBackend for RecordingBackend {
+    fn run_stage(
+        &self,
+        stage: BrainStage,
+        input: &StageInput<'_>,
+    ) -> Result<StageExecution, String> {
+        self.received_context_ids.lock().unwrap().push(
+            input
+                .selected_context
+                .iter()
+                .map(|item| item.id.clone())
+                .collect(),
+        );
+        self.inner.run_stage(stage, input)
     }
 }
 
@@ -327,10 +350,14 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
             evidence: EvidenceStatus::Verified,
         },
     ];
+    let received_context_ids = Arc::new(Mutex::new(Vec::new()));
     let result = Brain::new(
-        FixtureBackend {
-            outputs: outputs(),
-            failure: None,
+        RecordingBackend {
+            inner: FixtureBackend {
+                outputs: outputs(),
+                failure: None,
+            },
+            received_context_ids: Arc::clone(&received_context_ids),
         },
         FixturePolicy(DecisionStatus::Ready),
         BrainConfig {
@@ -341,6 +368,12 @@ fn context_selection_excludes_sensitive_items_and_obeys_budget() {
     .run(request)
     .unwrap();
     assert_eq!(result.context.selected_ids, vec!["higher".to_string()]);
+    assert!(!received_context_ids.lock().unwrap().is_empty());
+    assert!(received_context_ids
+        .lock()
+        .unwrap()
+        .iter()
+        .all(|ids| ids == &vec!["higher".to_string()]));
     assert_eq!(
         result.context.excluded_by_classification,
         vec![

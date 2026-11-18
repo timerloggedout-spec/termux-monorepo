@@ -28,7 +28,7 @@ EVIDENCE_KINDS = {
 }
 ID_RE = re.compile(r"^L3V-[A-Z0-9-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-RFC3339_RE = re.compile(r"^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$")
+RFC3339_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
 
 
 def validate(data: object) -> list[str]:

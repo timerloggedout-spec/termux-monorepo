@@ -24,7 +24,7 @@ Exit criteria:
 
 Candidate work:
 - standard observation, context, action, and outcome envelopes;
-- metadata-only Synaptic Bus v1 envelope, typed event taxonomy, and canonical-record compatibility matrix (contract drafted; runtime adapters not yet implemented);
+- metadata-only Synaptic Bus v1 envelope, typed event taxonomy, and canonical-record compatibility matrix (contract and pure orchestration-receipt projection adapter implemented; no runtime publisher/consumer);
 - correlation across task, manager, provider, model, adapter, workflow run/attempt, and source SHA;
 - explicit event taxonomy for handoffs, attention shifts, conflicts, interruptions, and policy decisions;
 - privacy and schema-closure tests.
@@ -32,7 +32,7 @@ Candidate work:
 Exit criteria:
 - events are attributable and reproducible;
 - schema and positive/negative fixtures pass Draft 2020-12 validation in CI;
-- source adapters project existing canonical records without duplicating domain payloads;
+- source adapters project existing canonical records without duplicating domain payloads (first orchestration-receipt adapter has focused tests);
 - append-only consumers deduplicate by stable event ID;
 - missing values remain null/unknown;
 - no prompt, completion, secret, or arbitrary tool payload leakage;

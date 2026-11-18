@@ -96,6 +96,16 @@ def test_empty_body_is_incomplete_not_a_crash():
     assert validate(fields) == ["entry", "task", "scope", "done-evidence"]
 
 
+
+def test_watchdog_publication_dispatches_queue_collector():
+    watchdog = (ROOT / ".github" / "workflows" /
+                "dispatch-watchdog.yml").read_text()
+    collector = (ROOT / ".github" / "workflows" /
+                 "que-feed-collect.yml").read_text()
+    assert "event_type=dispatch-feed-updated" in watchdog
+    assert "repository_dispatch:" in collector
+    assert "types: [dispatch-feed-updated]" in collector
+
 def test_form_has_no_provider_field():
     # HARD RULE (issue #3577): no provider/model FIELD at intake. The
     # form prose may *mention* providers (it explains that the system

@@ -13,6 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from claim_task import claim_comment  # noqa: E402
+import dispatch_watchdog as dw  # noqa: E402
 from dispatch_watchdog import (classify, has_claim, queued_since)  # noqa: E402
 from project_task import receipt_comment  # noqa: E402
 
@@ -377,3 +378,24 @@ def test_auto_claim_accepts_structured_task_ranking_result(monkeypatch):
     assert len(claim_posts) == 1
     assert "score 321.0" in claim_posts[0]
     assert gap_records[0]["kind"] == "auto_claimed"
+
+
+def test_delete_label_if_absent_is_idempotent(monkeypatch):
+    def missing(method, url, token, payload=None):
+        raise RuntimeError("GitHub API DELETE " + url + " -> 404: label absent")
+    monkeypatch.setattr(dw, "_request", missing)
+    assert dw._delete_label_if_present("https://api.example/issues/1",
+                                       "dispatch-claimed", "token") is False
+
+
+def test_delete_label_if_present_propagates_non_404(monkeypatch):
+    def forbidden(method, url, token, payload=None):
+        raise RuntimeError("GitHub API DELETE " + url + " -> 403: forbidden")
+    monkeypatch.setattr(dw, "_request", forbidden)
+    try:
+        dw._delete_label_if_present("https://api.example/issues/1",
+                                    "dispatch-claimed", "token")
+    except RuntimeError as exc:
+        assert "-> 403:" in str(exc)
+    else:
+        raise AssertionError("non-404 API failure must remain visible")

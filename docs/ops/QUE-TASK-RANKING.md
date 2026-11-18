@@ -31,9 +31,13 @@ an external stamp, requested on #5283.
   the feed carries a `ranking` block {method, claim_order, age_order,
   delta_vs_age_order}. Counts and measurement are unchanged — ranking
   is additive, never a recount.
-- `que-feed-collect` folds score + rank into `dispatch_claims` and
-  passes the ranking block through (re-deriving it under the same
-  method for a pre-#5283 source feed, so no cycle publishes unranked).
+- `que-feed-collect` publishes every source row under
+  `dispatch_claims.ranked_dispatches`, including score, components,
+  global rank, claim rank, age rank, per-row claim delta, nearest wall,
+  wall_in_min, method, tier basis, and claim receipt. The legacy
+  `active_claims` collection remains the claimed-row subset. When a
+  pre-#5283 source feed lacks numeric scores, the collector re-derives
+  both annotated rows and the matching ranking block under v1.
 - `opportunity_cycle` feed (`ops/que/feeds/opportunity-priority.json`):
   terminal/closed opportunities leave the active ranking (published
   under `terminal_opportunities` with state, never on top); every
@@ -43,12 +47,15 @@ an external stamp, requested on #5283.
   next gate is the Dec-1 league wall; a wall inside 48h outranks any
   past-gate score. The per-opportunity score of record is unchanged.
 
-### Claim order: advisory until stamped
+### Claim order: binding
 
-Claim/escalation consumers keep their current order until a
-QDesk/Desk decision stamp on #5283 binds rank order (filing point 4).
-Until then the feed publishes rank as advisory and reports the delta
-vs age-order every cycle. A rank never auto-merges, auto-claims
-value-class work, or overrides a QDesk/Desk stamp, and nothing here
-touches admission thresholds or governor deferral rules (Cadence
-custody).
+Claim order is binding under the QDesk decision on #5283 (comment
+6843024949), effective on Desk's merge of PR #5287 (merge
+44291b9fec8957349b4e05bc573b93d556a1497f; verified by QDesk
+comment 6843048261). DoE countersigned the v1 method in comment
+6844540381. The feed therefore marks v1 as `binding: true` and
+`advisory: false`, and publishes the per-cycle delta vs age order.
+Any claim-order deviation requires a reason stamp. Ranking still
+orders; it does not admit or defer work, auto-merge, auto-claim
+value-class work, or override admission thresholds and governor
+deferral rules (Cadence custody).

@@ -45,12 +45,22 @@ def test_claim_order_excludes_claimed_and_delta_vs_age():
                disp(2, state="claimed", tier=4, age_min=8000),
                disp(3, state="escalated", tier=2, age_min=100)]
     rows, summary = tr.rank_dispatches(rows_in)
+    by_issue = {row["issue"]: row for row in rows}
     assert summary["claim_order"] == [3, 1]          # rank order, claimed out
     assert summary["age_order"] == [1, 3]            # age-only order
     delta = {d["issue"]: d for d in summary["delta_vs_age_order"]}
     assert delta[3]["rank"] == 1 and delta[3]["age_rank"] == 2
     assert summary["moved"] == 2
-    assert summary["method"] == "que-task-rank/v1" and summary["advisory"] is True
+    assert summary["method"] == "que-task-rank/v1"
+    assert summary["advisory"] is False and summary["binding"] is True
+    assert by_issue[3]["claim_rank"] == 1
+    assert by_issue[3]["age_rank"] == 2
+    assert by_issue[3]["claim_delta_vs_age"] == 1
+    assert by_issue[1]["claim_rank"] == 2
+    assert by_issue[1]["age_rank"] == 1
+    assert by_issue[1]["claim_delta_vs_age"] == -1
+    assert by_issue[2]["claim_rank"] is None
+    assert by_issue[3]["rank_method"] == "que-task-rank/v1"
     # input rows are not mutated
     assert "score" not in rows_in[0]
 

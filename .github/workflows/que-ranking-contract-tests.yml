@@ -13,6 +13,7 @@ on:
       - "docs/ops/QUE-TASK-RANKING.md"
       - "docs/ops/QUE-AUTO-CLAIM.md"
       - ".github/workflows/que-ranking-contract-tests.yml"
+      - ".github/workflows/que-feed-collect.yml"
   push:
     branches: [master]
     paths:

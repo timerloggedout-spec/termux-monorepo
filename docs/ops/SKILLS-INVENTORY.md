@@ -140,3 +140,11 @@ The repository-local skill maps the upstream [obra/superpowers](https://github.c
 - Normalized event schema: `docs/integrations/schemas/integration-event.schema.json`
 
 Session-local tool availability is not proof of repository adapter implementation or production access.
+
+
+## Linguist / Siglary mandate
+
+- Canonical authoring contract: [`REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md).
+- Canonical notation register: [`CAVEMAN-MICRO-DENSE-V2.md`](../proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md).
+- Standard and enforcement profile: [`SIGLARY-STANDARD.md`](../proposals/active/notation-sets/SIGLARY-STANDARD.md).
+- Apply to skills, comments, commits, PRs, issues, workflow directives, and agent chat; use DO-first CAVEMAN-6 and class-correct Siglary notation.

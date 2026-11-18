@@ -1,6 +1,12 @@
 import runpy
+import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,3 +61,65 @@ def test_repo_action_verbs_are_recognized_as_imperative(monkeypatch):
         "support", "pass", "prevent", "normalize", "recognize", "skip", "ignore",
     }
     assert verbs <= module["IMPERATIVE"]
+
+
+def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT):
+    """Exercise the public CLI with a real, credential-free Git commit range."""
+    def git(*args):
+        return subprocess.run(
+            ["git", *args], cwd=tmp_path, check=True, capture_output=True, text=True,
+        ).stdout.strip()
+
+    git("init", "--initial-branch=main")
+    git("config", "user.name", "Style Regression")
+    git("config", "user.email", "style-regression@example.invalid")
+    git("commit", "--allow-empty", "-m", "test: add baseline")
+    before = git("rev-parse", "HEAD")
+    path = tmp_path / "docs" / "ops" / "instructions.md"
+    path.parent.mkdir(parents=True)
+    path.write_text(instruction, encoding="utf-8")
+    git("add", "docs")
+    git("commit", "-m", subject, "-m", body)
+    after = git("rev-parse", "HEAD")
+    event = tmp_path / "push.json"
+    event.write_text(json.dumps({"before": before, "after": after}), encoding="utf-8")
+    env = os.environ.copy()
+    env.update(GITHUB_EVENT_NAME="push", GITHUB_EVENT_PATH=str(event), GITHUB_BASE_REF="")
+    return subprocess.run(
+        [sys.executable, str(script)], cwd=tmp_path, env=env,
+        capture_output=True, text=True, check=False,
+    )
+
+
+@pytest.mark.parametrize("subject", [
+    "fix(ci): correct residual YAML scalar heuristics",
+    "fix(ci): recognize explicit quoted mapping keys",
+    "test(ci): add CLI regression coverage",
+])
+def test_real_push_accepts_imperative_subjects(tmp_path, subject):
+    result = run_push_check(tmp_path, subject)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "DO-statement style: PASS" in result.stdout
+
+
+@pytest.mark.parametrize("subject", [
+    "fix(ci): corrected residual YAML scalar heuristics",
+    "fix(ci): recognized explicit quoted mapping keys",
+    "fix(ci): miscellaneous cleanup",
+])
+def test_real_push_rejects_non_imperative_subjects(tmp_path, subject):
+    result = run_push_check(tmp_path, subject)
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "commit subject requires an imperative action verb" in result.stdout
+    assert subject in result.stdout
+
+
+@pytest.mark.parametrize("location", ["body", "instruction"])
+def test_real_push_preserves_negative_first_rejection(tmp_path, location):
+    kwargs = {location: "Do not bypass validation.\n"}
+    result = run_push_check(tmp_path, "fix(ci): correct scalar boundaries", **kwargs)
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "lead with the intended DO action" in result.stdout
+    expected = "commit.body" if location == "body" else "docs/ops/instructions.md"
+    assert expected in result.stdout
+    assert "commit subject requires" not in result.stdout

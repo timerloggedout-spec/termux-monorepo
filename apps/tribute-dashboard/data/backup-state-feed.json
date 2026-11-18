@@ -1,6 +1,6 @@
 {
  "schema": "backup-state/v1",
- "generated_at": "2026-11-18T19:03:59Z",
+ "generated_at": "2026-11-18T19:08:34Z",
  "generated_by": "scripts/tracking/backup_state.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/BACKUP-STATE.md",
@@ -10,21 +10,33 @@
   {
    "id": "relays",
    "path": "ops/tracking/backup-relays.jsonl",
-   "records": 1493
+   "records": 1494
   },
   {
    "id": "snapshot",
    "path": "scripts/tracking/backup_snapshot.json",
-   "status": "error:HTTPError: HTTP Error 403: Forbidden",
-   "read_at": "2026-11-18T19:03:59Z"
+   "status": "error:HTTPError: HTTP Error 404: Not Found",
+   "read_at": "2026-11-18T19:08:34Z"
   }
  ],
  "marker": {
-  "state_hash": "bfc05a1af31213327414ca9b704df05b71e03f25e242cca8e90193fb8dc7ad90",
-  "export_id": "exp-20261118T184333Z-e16001",
+  "state_hash": "fcecb6f1c0f91afb13d12517a9983377323b9deb28fb8b59b441cd195478ec6c",
+  "export_id": "exp-20261118T185840Z-f242ad",
   "source": "relay"
  },
  "exports": [
+  {
+   "id": "exp-20261118T185840Z-f242ad",
+   "at": "2026-11-18T18:58:40Z",
+   "t0": null,
+   "t1": null,
+   "manifest_only": null,
+   "excluded": null,
+   "bytes": null,
+   "gates_pass": null,
+   "publish_commit": "c2af19570cefd62a3a8131ff6ad09b1fdfd26379",
+   "state_hash": "fcecb6f1c0f91afb13d12517a9983377323b9deb28fb8b59b441cd195478ec6c"
+  },
   {
    "id": "exp-20261118T184333Z-e16001",
    "at": "2026-11-18T18:50:04Z",
@@ -17658,14 +17670,14 @@
   }
  ],
  "summary": {
-  "exports": 1444,
+  "exports": 1445,
   "drills": 1,
   "failed_attempts": 47,
-  "last_export_at": "2026-11-18T18:50:04Z",
-  "last_export_id": "exp-20261118T184333Z-e16001",
+  "last_export_at": "2026-11-18T18:58:40Z",
+  "last_export_id": "exp-20261118T185840Z-f242ad",
   "last_drill_verdict": "fail"
  },
  "gaps": [
-  "backup snapshot refresh status=error:HTTPError: HTTP Error 403: Forbidden (read_at 2026-11-18T19:03:59Z): data may be stale; relays remain live"
+  "backup snapshot refresh status=error:HTTPError: HTTP Error 404: Not Found (read_at 2026-11-18T19:08:34Z): data may be stale; relays remain live"
  ]
 }

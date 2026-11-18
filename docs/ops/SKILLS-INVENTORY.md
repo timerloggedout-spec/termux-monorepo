@@ -140,3 +140,21 @@ The repository-local skill maps the upstream [obra/superpowers](https://github.c
 - Normalized event schema: `docs/integrations/schemas/integration-event.schema.json`
 
 Session-local tool availability is not proof of repository adapter implementation or production access.
+
+
+## AMD + NVIDIA vendor skills (2026-11-13)
+
+Import record: [AMD-NVIDIA-SKILLS-IMPORT.md](AMD-NVIDIA-SKILLS-IMPORT.md)
+
+| Vendor | Skill | Path |
+|---|---|---|
+| AMD | hyperloom-workload-optimizer | `.agents/skills/hyperloom-workload-optimizer/SKILL.md` |
+| AMD | serving-llms-on-instinct | `.agents/skills/serving-llms-on-instinct/SKILL.md` |
+| AMD | tracelens-analysis-orchestrator | `.agents/skills/tracelens-analysis-orchestrator/SKILL.md` |
+| AMD | local-ai-app-integration | `.agents/skills/local-ai-app-integration/SKILL.md` |
+| AMD | local-ai-use | `.agents/skills/local-ai-use/SKILL.md` |
+| NVIDIA | compute-sanitizer-diagnose-cuda-bugs | `.agents/skills/compute-sanitizer-diagnose-cuda-bugs/SKILL.md` |
+| NVIDIA | tilegym-improve-cutile-kernel-perf | `.agents/skills/tilegym-improve-cutile-kernel-perf/SKILL.md` |
+| NVIDIA | nemo-mbridge-perf-cuda-graphs | `.agents/skills/nemo-mbridge-perf-cuda-graphs/SKILL.md` |
+
+These are vendor-sourced skill snapshots. Upstream catalogs remain authoritative; see the import record for licenses, provenance, scope, and validation limits.

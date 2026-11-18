@@ -65,3 +65,9 @@ RECON → PLAN / MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → 
 ```
 
 Do not treat queued/in-progress as success. Preserve provenance and keep promotion separate from execution and validation.
+
+
+## Vendor GPU skill packs
+
+- AMD + NVIDIA curated skill import: [`docs/ops/AMD-NVIDIA-SKILLS-IMPORT.md`](docs/ops/AMD-NVIDIA-SKILLS-IMPORT.md)
+- Full inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)

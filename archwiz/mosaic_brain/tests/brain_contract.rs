@@ -3,7 +3,7 @@ use mosaic_brain::{
     MosaicBrain, MosaicRequest, RecommendationOutcome, RecommendationReason, ReviewVerdict,
     ValidationError,
 };
-use termux_brain::{invoke_extension, BrainExtension, ExtensionContext, RunIdentity};
+use termux_brain::{invoke_extension, ExtensionContext, RunIdentity};
 
 fn identity() -> MethodIdentity {
     MethodIdentity {

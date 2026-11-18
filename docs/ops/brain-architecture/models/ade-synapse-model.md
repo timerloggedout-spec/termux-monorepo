@@ -121,6 +121,14 @@ Record actual invocation and observed effect separately. Preserve the distinctio
 
 These states are not interchangeable. Missing evidence remains missing; failed or cancelled work remains visible.
 
+## Synaptic Bus boundary
+
+The proposed [Synaptic Bus v1 contract](../contracts/SYNAPTIC-BUS-CONTRACT.md) is the metadata-only interoperability layer between planes. It correlates existing records using event IDs, task/cycle/attempt identifiers, subject identity, and typed evidence references. It is not a new telemetry database, event broker, scoring plane, or execution router.
+
+The bus deliberately reuses existing canonical contracts: integration events, EPS events, orchestration receipts, throughput events, action/effect events, evidence envelopes, ATES traces, and the 3L0-owned immutable intake. See the [compatibility matrix](../contracts/BUS-COMPATIBILITY.md). 3L0 and MoneyBall remain separate. The bus does not score, dispatch, promote, or authorize anything.
+
+The envelope rejects arbitrary payload fields and marks raw prompts, raw completions, and secrets as forbidden. A route event is not an invocation; completion is not validation; validation is not promotion. Consumers must dereference and verify evidence records before relying on them.
+
 ## Safety and authority
 
 SYNAPSE inherits repository authority rules rather than creating a new root authority:

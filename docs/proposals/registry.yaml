@@ -1324,3 +1324,20 @@ proposals:
       - hark/que-superagent-p1
     gates_required:
       - repo-gate
+  - id: qdesk-self-repair
+    title: 'QDesk self-repair loop: detect, fix, merge, measure (lane termux-ops)'
+    author: termux-ops
+    status: executing
+    priority: P1
+    path: active/qdesk-self-repair/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+    related_issues:
+      - 5214
+    related_prs:
+      - 5207
+    related_branches: []
+    gates_required:
+      - repo-gate

@@ -25,6 +25,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   loop:
+    if: vars.QDESK_LOOP_ENABLED != 'false'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

@@ -18,4 +18,4 @@
     python3 scripts/proposals/validate_registry.py
     python3 scripts/ci/repo_gate.py
 
-Termux smoke is optional platform evidence and is not an L3VERAGE required gate. GitHub connector writes do not execute a local checkout. Commands must run in repository CI or a full checkout, and results must be re-fetched against the same immutable PR head SHA. A queued or running check is not a pass.
+Termux smoke is not a required gate for this proposal's documentation/catalog/tooling PR. Any future production promotion remains subject to repository-wide hard rules. GitHub connector writes do not execute a local checkout. Commands must run in repository CI or a full checkout, and results must be re-fetched against the same immutable PR head SHA. A queued or running check is not a pass.

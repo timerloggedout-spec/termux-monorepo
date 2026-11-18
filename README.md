@@ -5,7 +5,7 @@
 
 <img src="https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/profile-registry/assets/builder-avatar-1337.webp" />
 
-```
+```text
 +---------------------------------------------------------------------------------------------------------+
 |  ⚡ ARCHWIZ COCKPIT // TERMUX HYPER-FORGE  |  TARGET: Android/Termux  |  GATES: repo-gate + smoke |
 |  MODE: operator / supervised-autonomous |  STATE: source-of-truth bound |  THEME: Tron-capable |

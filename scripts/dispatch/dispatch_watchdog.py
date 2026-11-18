@@ -437,6 +437,33 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                 pass  # label may not be present; the claim stands
             verdict["action"] = "auto-claimed"
             verdict["state"] = "claimed"
+            if claim["claim_class"] == "executor":
+                # Claim -> execution bridge: fire the build-dispatch
+                # route for the claimed issue (its gate accepts only
+                # workflow_dispatch or a literal build comment, so an
+                # auto-claim alone engages no execution). A failed
+                # dispatch never unmakes the claim; it stamps its own
+                # receipt on the issue instead.
+                try:
+                    _request("POST",
+                             f"{API}/repos/{repo}/actions/workflows/"
+                             "build-dispatch.yml/dispatches", token,
+                             {"ref": "master",
+                              "inputs": {
+                                  "issue_number": str(claim["issue"]),
+                                  "arm": "auto",
+                                  "quota_class": "escalation"
+                                  if claim["trigger"] == "escalation"
+                                  else "primary"}})
+                except Exception as exc:
+                    try:
+                        _request("POST", f"{base}/comments", token,
+                                 {"body": "[MUSEai]@{role:{dispatch-"
+                                  "watchdog}} claim->execution bridge: "
+                                  f"build-dispatch dispatch failed: "
+                                  f"{exc}"})
+                    except Exception:
+                        pass
         except Exception as exc:
             try:
                 _request("POST", f"{base}/comments", token,

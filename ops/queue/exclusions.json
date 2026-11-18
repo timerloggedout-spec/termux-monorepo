@@ -1,0 +1,17 @@
+{
+  "schema": "queue.exclusions/v1",
+  "_doc": "Permanent run exclusions. Consumers: scripts/ci/queue_pitcrew.py (drops ids from census ∧ cancel plan) ∧ scripts/que/que_feed_collect.py (drops ids from tier counts, lists them under operator_excluded, emits one `excluded` transition). Add a row only for a run the API refuses to cancel (409) ∨ a run that never reaches a runner. Rows are append-only; log every add in ops/queue/exclusions-log.jsonl.",
+  "runs": [
+    {
+      "run_id": 37655538554,
+      "workflow": "Merge Promotion Queue",
+      "path": ".github/workflows/merge-promotion-queue.yml",
+      "event": "schedule",
+      "created_at": "2026-10-07T16:57:00Z",
+      "class": "ghost-never-queued",
+      "evidence": "status=queued since 2026-10-07; POST /actions/runs/37655538554/cancel ⇒ HTTP 409 (Owner order 2026-11-18 00:53 PST)",
+      "added_at": "2026-11-18T09:10:00Z",
+      "added_by": "hark (Owner order QUE FIX⊕UPGRADE ⑤)"
+    }
+  ]
+}

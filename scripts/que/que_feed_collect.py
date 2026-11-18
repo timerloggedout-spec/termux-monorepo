@@ -39,6 +39,20 @@ ROOT = Path(__file__).resolve().parents[2]
 FEEDS = ROOT / "ops" / "que" / "feeds"
 EVENTS = ROOT / "ops" / "que" / "events"
 WEDGED_DAYS = 7
+EXCLUSIONS = ROOT / "ops" / "queue" / "exclusions.json"
+# Declared cadences for per-source freshness (#5546 gate 1):
+# (path, cadence_min, tolerance_min, timestamp field). cadence None
+# ⇒ UNVERIFIABLE (source-specific, ¬declared). Freshness of one
+# source is never inferred from another that embeds it.
+FRESHNESS_SOURCES = {
+    "dispatch-state-feed": ("ops/challenge/dispatch-state-feed.json",
+                            15, 15, "generated_at"),
+    "stall-gap-feed": ("ops/que/feeds/stall-gap-feed.json", 15, 15,
+                       "generated_at"),
+    "opportunity-priority": ("ops/que/feeds/opportunity-priority.json",
+                             720, 0, "generated_at"),
+}
+QF_CADENCE_MIN, QF_TOLERANCE_MIN = 10, 5
 
 
 def now() -> datetime:
@@ -91,6 +105,155 @@ def classify(workflow_name: str, tiers_doc: dict) -> int:
     return 4
 
 
+def classify_basis(workflow_name: str, tiers_doc: dict) -> str:
+    """#5546 L6: explicit (a pattern matched) | default-T4 (named
+    run, ∅ pattern ⇒ default tier 4) | unmatched (∅ workflow name ⇒
+    unclassifiable)."""
+    name = (workflow_name or "").strip().lower()
+    if not name:
+        return "unmatched"
+    for tier in tiers_doc.get("tiers", []):
+        for pat in tier.get("patterns") or []:
+            if pat.lower() in name:
+                return "explicit"
+    return "default-T4"
+
+
+def tier_basis(queued, in_progress, tiers_doc, wedged_n, excluded_n=0):
+    """Actions-run population only (¬combined with dispatch issues)."""
+    out = {"population": "actions-runs (queued ∧ in_progress)",
+           "explicit": {"1": 0, "2": 0, "3": 0, "4": 0},
+           "explicit_total": 0, "default_t4": 0, "unmatched": 0,
+           "ancient_excluded": wedged_n,
+           "operator_excluded": excluded_n}
+    for run in list(queued) + list(in_progress):
+        basis = classify_basis(run.get("name"), tiers_doc)
+        if basis == "explicit":
+            out["explicit"][str(classify(run["name"], tiers_doc))] += 1
+            out["explicit_total"] += 1
+        elif basis == "default-T4":
+            out["default_t4"] += 1
+        else:
+            out["unmatched"] += 1
+    return out
+
+
+def load_exclusions(path: Path | None = None) -> dict:
+    """{run_id: row} under permanent exclusion (queue.exclusions/v1)."""
+    p = path or EXCLUSIONS
+    try:
+        doc = json.loads(p.read_text())
+    except (OSError, ValueError):
+        return {}
+    return {int(r["run_id"]): r for r in doc.get("runs", [])
+            if r.get("run_id")}
+
+
+def split_excluded(runs, excluded):
+    keep, dropped = [], []
+    for run in runs:
+        (dropped if run.get("id") in excluded else keep).append(run)
+    return keep, dropped
+
+
+def _age_min(ts, at):
+    when = task_ranking.parse_iso(ts) if isinstance(ts, str) else None
+    if when is None:
+        return None
+    return round((at - when).total_seconds() / 60.0, 1)
+
+
+def _health(age, cadence, tol):
+    if age is None:
+        return "UNVERIFIABLE"
+    if cadence is None:
+        return "UNVERIFIABLE"
+    return "FRESH" if age <= cadence + tol else "STALE"
+
+
+def source_freshness(at, prev_watermark=None, root: Path | None = None):
+    """que.source-freshness/v1 (#5546 gate 1): F(x) per source.
+    HEALTH(x) := FRESH iff age ≤ cadence + tolerance; else STALE |
+    MISSING | UNVERIFIABLE."""
+    base = root or ROOT
+    sha = os.environ.get("GITHUB_SHA")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    gap = _age_min(prev_watermark, at)
+    sources = {"que-feed-collect": {
+        "source_ref": "ops/que/feeds/que-queue-feed.json",
+        "generated_at": iso(at), "observed_at": iso(at),
+        "expected_cadence_min": QF_CADENCE_MIN,
+        "tolerance_min": QF_TOLERANCE_MIN,
+        "previous_cycle_at": prev_watermark,
+        "cycle_gap_min": gap,
+        "health": _health(gap, QF_CADENCE_MIN, QF_TOLERANCE_MIN)
+        if gap is not None else "UNVERIFIABLE",
+        "health_basis": "gap since previous cycle watermark",
+        "sha": sha, "run_id": run_id}}
+    for key, (rel, cadence, tol, field) in FRESHNESS_SOURCES.items():
+        path = base / rel
+        rec = {"source_ref": rel, "observed_at": iso(at),
+               "expected_cadence_min": cadence, "tolerance_min": tol,
+               "sha": sha}
+        if not path.exists():
+            rec.update({"generated_at": None, "age_min": None,
+                        "health": "MISSING"})
+        else:
+            try:
+                ts = json.loads(path.read_text()).get(field)
+            except ValueError:
+                ts = None
+            age = _age_min(ts, at)
+            rec.update({"generated_at": ts, "age_min": age,
+                        "health": _health(age, cadence, tol)})
+        sources[key] = rec
+    latest = None
+    for b in sorted((base / "ops" / "que" / "events").glob(
+            "governor-events-*.jsonl")):
+        for line in b.read_text().splitlines():
+            try:
+                ts = json.loads(line).get("ts") if line.strip() else None
+            except ValueError:
+                ts = None
+            when = task_ranking.parse_iso(ts) if ts else None
+            if when and (latest is None or when > latest):
+                latest = when
+    sources["governor-events"] = {
+        "source_ref": "ops/que/events/governor-events-*.jsonl",
+        "observed_at": iso(at),
+        "generated_at": iso(latest) if latest else None,
+        "age_min": _age_min(iso(latest), at) if latest else None,
+        "expected_cadence_min": None, "tolerance_min": None,
+        "health": "UNVERIFIABLE" if latest else "MISSING",
+        "health_basis": "emitter cadence ¬declared (source-specific)",
+        "sha": sha}
+    counts = {}
+    for rec in sources.values():
+        counts[rec["health"]] = counts.get(rec["health"], 0) + 1
+    return {"schema": "que.source-freshness/v1", "generated_at": iso(at),
+            "rule": "FRESH iff age ≤ cadence + tolerance; freshness(x) "
+                    "¬inferred from freshness(y)",
+            "counts": counts, "sources": sources}
+
+
+CLAIM_UNMATCHED_ENTRIES = (None, "", "Other")
+
+
+def claim_tier_basis(row: dict) -> str:
+    """Dispatch-issue population (¬combined with Actions runs):
+    unmatched (∅ registry entry resolves) | default (entry named,
+    ∅ timebox ⇒ BASE default: tier index 0 ∧ ∅ nearest_wall) |
+    explicit (timebox-derived tier). Rule inferred from the
+    watchdog's feed_row fields."""
+    if row.get("entry") in CLAIM_UNMATCHED_ENTRIES:
+        return "unmatched"
+    tier = row.get("tier") or {}
+    if not tier or ((tier.get("index") or 0) == 0
+                    and not row.get("nearest_wall")):
+        return "default"
+    return "explicit"
+
+
 def tier_feed(queued, in_progress, tiers_doc, at):
     tiers = {str(i): {"tier": i, "queued": 0, "in_progress": 0,
                       "oldest_queued_at": None,
@@ -121,7 +284,10 @@ def tier_feed(queued, in_progress, tiers_doc, at):
                        "in_progress": sum(t["in_progress"]
                                           for t in tiers.values())},
             "wedged_ancient": wedged,
-            "wedged_excluded_from_counts": True}
+            "wedged_excluded_from_counts": True,
+            "tier_basis": tier_basis(
+                [r for r in queued if parse_iso(r["created_at"]) >= cutoff],
+                in_progress, tiers_doc, len(wedged))}
 
 
 def priority_feed(tiers_doc, at):
@@ -166,19 +332,42 @@ def queue_feed(queued, in_progress, tiers_doc, at):
         # from the rows under the same method so the fold never
         # publishes an unranked cycle.
         ranking = d.get("ranking")
-        if ranking is None and d.get("dispatches"):
-            _, ranking = task_ranking.rank_dispatches(d["dispatches"])
+        rows = d.get("dispatches", [])
+        # 2026-11-18 fix: the re-derive path ranked a copy ∧ folded the
+        # raw rows ⇒ 17 claims ∧ 0 scored. Fold the annotated rows
+        # whenever any row lacks a numeric score.
+        score_basis = "producer"
+        if rows and (ranking is None or any(
+                not isinstance(r.get("score"), (int, float))
+                for r in rows)):
+            rows, derived = task_ranking.rank_dispatches(rows)
+            ranking = ranking or derived
+            score_basis = "fold-derived (que-task-rank/v1)"
         claims["ranking"] = ranking
-        for disp in d.get("dispatches", []):
+        claims["score_basis"] = score_basis
+        basis_counts = {"explicit": 0, "default": 0, "unmatched": 0}
+        for disp in rows:
             if disp.get("claim"):
+                basis = claim_tier_basis(disp)
+                basis_counts[basis] += 1
                 claims["active_claims"].append({
                     "issue": disp.get("issue"),
                     "entry": disp.get("entry"),
                     "title": disp.get("title"),
                     "state": disp.get("state"),
                     "score": disp.get("score"),
+                    "score_components": disp.get("components"),
                     "rank": disp.get("rank"),
+                    "rank_method": task_ranking.METHOD,
+                    "tier": disp.get("tier"),
+                    "tier_basis": basis,
                     "claim": disp["claim"]})
+        claims["scored"] = sum(
+            1 for c in claims["active_claims"]
+            if isinstance(c.get("score"), (int, float)))
+        claims["tier_basis"] = {
+            "population": "dispatch-issues (active claims)",
+            **basis_counts}
     return {"schema": "que-queue-feed/v1", "generated_at": iso(at),
             "provenance": {
                 "producer": "optimizations-assurance (QUE lead) "
@@ -193,7 +382,8 @@ def queue_feed(queued, in_progress, tiers_doc, at):
                 "cadence": "*/10 (que-feed-collect)"},
             "queue": {"tiers": body["tiers"],
                       "totals": body["totals"],
-                      "wedged_ancient": body["wedged_ancient"]},
+                      "wedged_ancient": body["wedged_ancient"],
+                      "tier_basis": body["tier_basis"]},
             "dispatch_claims": claims}
 
 
@@ -364,6 +554,12 @@ def main() -> int:
     queued = census(token, "queued", 25)
     in_progress = census(token, "in_progress", 5)
     completed = census(token, "completed", 1)
+    excluded = load_exclusions()
+    queued, dropped_q = split_excluded(queued, excluded)
+    in_progress, dropped_p = split_excluded(in_progress, excluded)
+    operator_excluded = [{"id": r["id"], "workflow": r.get("name"),
+                          "class": excluded[r["id"]].get("class")}
+                         for r in dropped_q + dropped_p]
     FEEDS.mkdir(parents=True, exist_ok=True)
     EVENTS.mkdir(parents=True, exist_ok=True)
     dash = ROOT / "apps" / "tribute-dashboard" / "data"
@@ -381,19 +577,37 @@ def main() -> int:
         if alias:
             (dash / alias).write_text(data)
 
-    publish("queue-by-tier.json",
-            tier_feed(queued, in_progress, tiers_doc, at))
-    publish("que-queue-feed.json",
-            queue_feed(queued, in_progress, tiers_doc, at))
+    state_path = FEEDS / "state.json"
+    state = json.loads(state_path.read_text()) \
+        if state_path.exists() else {}
+    freshness = source_freshness(at, state.get("watermark"))
+    tf = tier_feed(queued, in_progress, tiers_doc, at)
+    tf["operator_excluded"] = operator_excluded
+    tf["tier_basis"]["operator_excluded"] = len(operator_excluded)
+    publish("queue-by-tier.json", tf)
+    qf = queue_feed(queued, in_progress, tiers_doc, at)
+    qf["queue"]["operator_excluded"] = operator_excluded
+    qf["queue"]["tier_basis"]["operator_excluded"] = len(operator_excluded)
+    qf["source_freshness"] = freshness
+    publish("que-queue-feed.json", qf)
+    (FEEDS / "source-freshness.json").write_text(
+        json.dumps(freshness, indent=1) + "\n")
     publish("priority-windows.json", priority_feed(tiers_doc, at),
             alias="que-priority-windows.json")
     publish("governor.json", governor_feed(token, at),
             alias="que-governor.json")
-    state_path = FEEDS / "state.json"
-    state = json.loads(state_path.read_text()) \
-        if state_path.exists() else {}
+    # Excluded ghosts leave the differ state once, with an explicit
+    # `excluded` event (¬ a false `vanished` gap row).
+    excl_events = []
+    for rid in [k for k in state.get("active", {}) if int(k) in excluded]:
+        p = state["active"].pop(rid)
+        excl_events.append({"at": iso(at), "run_id": int(rid),
+                            "workflow": p.get("workflow"),
+                            "tier": p.get("tier"), "event": "excluded",
+                            "note": "ops/queue/exclusions.json"})
     events, new_state = transitions(
         state, queued, in_progress, completed, tiers_doc, at)
+    events = excl_events + events
     if events:
         day_file = EVENTS / f"{at.strftime('%Y-%m-%d')}.jsonl"
         with day_file.open("a") as fh:
@@ -403,6 +617,11 @@ def main() -> int:
     opp_stale = mark_opportunity_staleness(at)
     if opp_stale:
         print("::warning title=opportunity-priority::stale (>12h) — opportunity-cycle overdue")
+    stale = [k for k, v in freshness["sources"].items()
+             if v["health"] in ("STALE", "MISSING")]
+    for k in stale:
+        print(f"::warning title=que-freshness::{k} "
+              f"{freshness['sources'][k]['health']}")
     print(f"cycle ok: queued={len(queued)} "
           f"in_progress={len(in_progress)} events={len(events)}")
     return 0

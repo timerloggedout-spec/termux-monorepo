@@ -387,7 +387,10 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
         score_row = {"tier": {"index": tier_index},
                      "age_min": verdict["age_min"], "state": feed_state,
                      "wall_in_min": wall_in_min}
-        score_row["score"] = task_ranking.score_dispatch(score_row)
+        # score_dispatch returns {score, components}: fold both in so
+        # score_row["score"] stays a number (2026-11-12..18 crash:
+        # auto_claim.plan sort hit -dict ⇒ DSF stale ≈5d).
+        score_row.update(task_ranking.score_dispatch(score_row))
         candidates.append({
             "issue": ctx["issue"], "comments": ctx["comments"],
             "verdict": verdict, "score_row": score_row,

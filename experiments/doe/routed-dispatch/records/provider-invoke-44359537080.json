@@ -1,0 +1,47 @@
+{
+  "baseline_sha": "b9d065645a6a802a4d32e9b59dbec125c44ff8de",
+  "candidate_sha": "b9d065645a6a802a4d32e9b59dbec125c44ff8de",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44359537080"
+  ],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": null,
+    "dispatch_status": "completed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": null,
+    "set_index": null,
+    "task_class": "inference-invoke"
+  },
+  "observed_at": "2026-11-18T17:31:28Z",
+  "origin": "live",
+  "outcome": "provider-invoke.yml run 44359537080 result=success",
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": null,
+  "session_id": null,
+  "status": "passed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "cerebras",
+    "instance": null,
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": null,
+    "provider": "cerebras"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

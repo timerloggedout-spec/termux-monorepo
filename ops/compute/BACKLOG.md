@@ -22,4 +22,6 @@ One registry for the fleet's compute backlog, gathered from the scattered surfac
 
 | 16 | BOINC-template adoption: registry cadence jobs as cross-surface work units | refTemplates boinc-distributed-compute-template | Template of record 2026-11-18 - adoption unbuilt | VM + Hark VM hosts |
 
+| 17 | ADE-SYNAPSE brain architecture integration: rebase + land the diverged package, wire the brain-region registry into the #5588 family wiring | branch feat/ade-synapse-brain-architecture (head 67a6435129ba; owner-quoted 240812da5d59 in history) | DIVERGED ahead 22 / behind 167 - 15 files all-additive - status proposed_architecture - unlanded | QUE machinery |
+
 Rules: a backlog item leaves this registry only with done-evidence (receipt + landed state). New compute work registers here at intake.

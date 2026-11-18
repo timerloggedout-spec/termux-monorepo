@@ -69,7 +69,8 @@ class OrbitProviderPopulationTests(unittest.TestCase):
         self.assertEqual(result["endpoint_census"]["verified_floor"], 7341)
         gemini = next(item for item in result["providers"] if item["id"] == "g4f/Gemini")
         self.assertEqual(gemini["g4f_sandbox_verified_pairs"], 2)
-        self.assertTrue(gemini["invoke_route_registered"])
+        # Actions evidence is not itself an invoke-route registration.
+        self.assertFalse(gemini["invoke_route_registered"])
         self.assertEqual(result["g4f"]["sandbox_verified_pairs"], 160)
         self.assertEqual(result["g4f"]["actions_verified_pairs"], 83)
         self.assertEqual(result["g4f"]["actions_verified_attempted_pairs"], 160)

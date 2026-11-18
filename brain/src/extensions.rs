@@ -113,6 +113,24 @@ impl std::fmt::Display for ExtensionContractError {
 
 impl std::error::Error for ExtensionContractError {}
 
+impl<E: std::fmt::Display> std::fmt::Display for ExtensionInvocationError<E> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Contract(error) => write!(f, "Brain extension contract error: {error}"),
+            Self::Evaluation(error) => write!(f, "Brain extension evaluation failed: {error}"),
+        }
+    }
+}
+
+impl<E: std::error::Error + 'static> std::error::Error for ExtensionInvocationError<E> {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Contract(error) => Some(error),
+            Self::Evaluation(error) => Some(error),
+        }
+    }
+}
+
 /// Error boundary that distinguishes invalid invocation from specialist failure.
 #[derive(Debug, PartialEq, Eq)]
 pub enum ExtensionInvocationError<E> {
@@ -133,37 +151,44 @@ pub trait BrainExtension {
     fn descriptor(&self) -> ExtensionDescriptor;
 
     /// Evaluate a domain request without taking over host orchestration.
+    ///
+    /// This is an implementation hook. Callers must use invoke_extension so
+    /// descriptor, domain and run-identity validation cannot be bypassed.
     fn evaluate(
         &self,
         context: &ExtensionContext,
         request: &Self::Request,
     ) -> Result<Self::Response, Self::Error>;
 
-    /// Validate the descriptor, run identity and requested domain before calling
-    /// the specialist. Invalid context never reaches domain evaluation.
-    fn invoke(
-        &self,
-        context: &ExtensionContext,
-        request: &Self::Request,
-    ) -> Result<Self::Response, ExtensionInvocationError<Self::Error>> {
-        let descriptor = self.descriptor();
-        descriptor
-            .validate()
-            .map_err(ExtensionInvocationError::Contract)?;
-        context
-            .validate()
-            .map_err(ExtensionInvocationError::Contract)?;
+}
 
-        if context.domain_id != descriptor.domain_id {
-            return Err(ExtensionInvocationError::Contract(
-                ExtensionContractError::DomainMismatch {
-                    expected: descriptor.domain_id,
-                    actual: context.domain_id.clone(),
-                },
-            ));
-        }
+/// Validate an extension invocation before entering specialist code.
+///
+/// Keeping this function in the shared library prevents an implementation from
+/// overriding the contract checks and accidentally accepting invalid context.
+pub fn invoke_extension<E: BrainExtension>(
+    extension: &E,
+    context: &ExtensionContext,
+    request: &E::Request,
+) -> Result<E::Response, ExtensionInvocationError<E::Error>> {
+    let descriptor = extension.descriptor();
+    descriptor
+        .validate()
+        .map_err(ExtensionInvocationError::Contract)?;
+    context
+        .validate()
+        .map_err(ExtensionInvocationError::Contract)?;
 
-        self.evaluate(context, request)
-            .map_err(ExtensionInvocationError::Evaluation)
+    if context.domain_id != descriptor.domain_id {
+        return Err(ExtensionInvocationError::Contract(
+            ExtensionContractError::DomainMismatch {
+                expected: descriptor.domain_id,
+                actual: context.domain_id.clone(),
+            },
+        ));
     }
+
+    extension
+        .evaluate(context, request)
+        .map_err(ExtensionInvocationError::Evaluation)
 }

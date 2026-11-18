@@ -1,0 +1,521 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/brain-architecture/contracts/SYNAPTIC-BUS-ENVELOPE.schema.json",
+  "title": "ADE-SYNAPSE Synaptic Bus Envelope",
+  "description": "Metadata-only, versioned inter-plane event envelope. Canonical domain records remain owned by their existing subsystem schemas; this envelope carries typed references and bounded routing/handoff metadata, not duplicated source payloads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "occurred_at",
+    "emitted_at",
+    "producer",
+    "correlation",
+    "subject",
+    "status",
+    "evidence_refs",
+    "privacy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "synapse.bus.v1"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]+$"
+    },
+    "event_type": {
+      "enum": [
+        "observation.recorded",
+        "context.retrieved",
+        "plan.declared",
+        "route.resolved",
+        "action.dispatched",
+        "action.started",
+        "action.completed",
+        "action.failed",
+        "handoff.requested",
+        "handoff.accepted",
+        "handoff.rejected",
+        "attention.interrupted",
+        "validation.completed",
+        "outcome.recorded",
+        "policy.proposed",
+        "policy.promoted",
+        "memory.consolidation.completed"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "emitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "component"
+      ],
+      "properties": {
+        "system": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "component": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 80
+        }
+      }
+    },
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "orchestration_id",
+        "cycle_id"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "orchestration_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "cycle_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "attempt_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "trace_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        },
+        "parent_event_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "repository",
+            "pull_request",
+            "issue",
+            "workflow_run",
+            "agent_task",
+            "provider_endpoint",
+            "artifact",
+            "policy",
+            "context_record",
+            "other"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "repository": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "sha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "observed",
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "blocked",
+        "unknown"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "human",
+            "manager",
+            "agent",
+            "provider",
+            "adapter",
+            "system",
+            "unknown"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "adapter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        },
+        "attribution_confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "handoff_id",
+        "from_role",
+        "to_role"
+      ],
+      "properties": {
+        "handoff_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "from_role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "to_role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "acknowledgement": {
+          "enum": [
+            "pending",
+            "accepted",
+            "rejected",
+            "expired",
+            "not_required"
+          ]
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "eligibility": {
+          "enum": [
+            "eligible",
+            "ineligible",
+            "unknown"
+          ]
+        },
+        "admission_decision": {
+          "enum": [
+            "admitted",
+            "rejected",
+            "deferred",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_id",
+        "kind"
+      ],
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "enum": [
+            "plan",
+            "route",
+            "admission",
+            "approval",
+            "validation",
+            "policy",
+            "attention",
+            "other"
+          ]
+        },
+        "reason_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        },
+        "approval_state": {
+          "enum": [
+            "not_required",
+            "pending",
+            "approved",
+            "rejected",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "uri"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "integration_event",
+              "eps_event",
+              "orchestration_receipt",
+              "throughput_event",
+              "action_effect_event",
+              "evidence_envelope",
+              "ates_trace",
+              "3l0_intake",
+              "repository_artifact",
+              "other"
+            ]
+          },
+          "uri": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "schema_ref": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 512
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 280
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "contains_raw_prompt",
+        "contains_raw_completion",
+        "contains_secret"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "restricted"
+          ]
+        },
+        "contains_raw_prompt": {
+          "const": false
+        },
+        "contains_raw_completion": {
+          "const": false
+        },
+        "contains_secret": {
+          "const": false
+        },
+        "redaction_applied": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "handoff.requested",
+              "handoff.accepted",
+              "handoff.rejected"
+            ]
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "handoff"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "route.resolved",
+              "action.dispatched"
+            ]
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "routing"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "enum": [
+              "plan.declared",
+              "policy.proposed",
+              "policy.promoted",
+              "validation.completed"
+            ]
+          }
+        },
+        "required": [
+          "event_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "decision"
+        ]
+      }
+    }
+  ]
+}

@@ -17,10 +17,11 @@ A small domain-specific mechanism catalog is justified because an intervention (
 2. Add strict mechanism schema and seed hypothesis catalog with explicit discovered status.
 3. Add a deterministic Python standard-library validator and unit tests.
 4. Document measurement, leverage ratio, opportunity prioritization, guardrails and existing authority mappings.
-5. Implement a read-only comparator over canonical DoE experiment JSONL; require matched configured-instance keys, task/environment fingerprints, preregistered pairs and hard guardrails.
-6. Design Pilot 001 (context reuse) without admitting or executing it until the DoE owner freezes its cohort and design record.
-7. Run focused tests and proposal/repository gates in CI; re-fetch checks on the same PR head.
-8. Obtain independent review; admit a first pilot only through existing DoE and proposal processes.
+5. Add an opportunity review protocol with a transparent multidimensional vector, Pareto disposition, and evidence-backed compounding loop.
+6. Implement a read-only comparator over canonical DoE experiment JSONL; require matched configured-instance keys, task/environment fingerprints, preregistered pairs and hard guardrails.
+7. Design Pilot 001 (context reuse) without admitting or executing it until the DoE owner freezes its cohort and design record.
+8. Run focused tests and proposal/repository gates in CI; re-fetch checks on the same PR head.
+9. Obtain independent review; admit a first pilot only through existing DoE and proposal processes.
 
 ## Acceptance and verification
 

@@ -20,4 +20,6 @@ One registry for the fleet's compute backlog, gathered from the scattered surfac
 | 14 | ML Ops daily + HindSight census | vm-mlops-daily cron | Running daily | VM |
 | 15 | Mesh probe + availability census | #5549 | Probe-watch cron hourly - schedule starvation on the Actions leg | VM cron + Actions |
 
+| 16 | BOINC-template adoption: registry cadence jobs as cross-surface work units | refTemplates boinc-distributed-compute-template | Template of record 2026-11-18 - adoption unbuilt | VM + Hark VM hosts |
+
 Rules: a backlog item leaves this registry only with done-evidence (receipt + landed state). New compute work registers here at intake.

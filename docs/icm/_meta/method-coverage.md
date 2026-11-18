@@ -10,7 +10,7 @@ This record explains how the monorepo applies the ICM method **without refactori
 | Layer-2 folder contracts | `objects/*/CONTEXT.md`, [`processes/CONTEXT.md`](../processes/CONTEXT.md), and [`maintenance/*/CONTEXT.md`](../maintenance/CONTEXT.md) | Implemented |
 | Stable factory separated from per-run product | [`../_shared/CONTEXT.md`](../_shared/CONTEXT.md) versus `maintenance/*/output/` | Implemented |
 | Object, process, and first-order change-impact map | [`../objects/_index.md`](../objects/_index.md), [`../processes/`](../processes/), [`../effects/CONTEXT.md`](../effects/CONTEXT.md) | Implemented |
-| Explicit human review point | [`../maintenance/02_design/CONTEXT.md`](../maintenance/02_design/CONTEXT.md) | Implemented |
+| Automated design and verification acceptance | [`../maintenance/02_design/CONTEXT.md`](../maintenance/02_design/CONTEXT.md) and [`../maintenance/03_verify/CONTEXT.md`](../maintenance/03_verify/CONTEXT.md) | Implemented; routine human sign-off intentionally removed under FA-ADE |
 | Source inventory before a map change | [`../maintenance/01_inventory/CONTEXT.md`](../maintenance/01_inventory/CONTEXT.md) | Implemented |
 | Verification before promotion | [`../maintenance/03_verify/CONTEXT.md`](../maintenance/03_verify/CONTEXT.md) | Implemented |
 | Master-staging validation before later master merge | [`../maintenance/04_promote/CONTEXT.md`](../maintenance/04_promote/CONTEXT.md) | Implemented |
@@ -27,7 +27,7 @@ This record explains how the monorepo applies the ICM method **without refactori
 
 ## Form selection
 
-The monorepo uses a composition of two ICM forms. The outer **System map** form makes an existing mixed code-and-documentation repository editable through verified nouns, real movements, and first-order effects. The nested **Pipeline** form governs only future ICM-map maintenance, where inventory, design, verification, and promotion are sequential and human-reviewed.
+The monorepo uses a composition of two ICM forms. The outer **System map** form makes an existing mixed code-and-documentation repository editable through verified nouns, real movements, and first-order effects. The nested **Pipeline** form governs only future ICM-map maintenance, where inventory, design, verification, and promotion are sequential evidence stages executed under the repository's FA-ADE policy, with HITL reserved for explicit permission boundaries.
 
 The other forms are intentionally not scaffolded: this repository is not a single recurring content run (**Pipeline** at the root), a portfolio of independent ICM production lines (**Umbrella**), a growing set of uniform records (**Record library**), a standalone body of domain knowledge (**Knowledge bundle**), or an organization chart (**Context map**). A setup questionnaire is likewise unnecessary because the map is derived from repository sources rather than a user-specific factory configuration. This restraint follows ICM’s “smallest structure that carries the work” rule.
 

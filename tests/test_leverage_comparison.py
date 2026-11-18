@@ -50,6 +50,7 @@ def compare(rows, **overrides):
         "outcome_direction": "higher",
         "cost_key": "resource_cost",
         "cost_unit": "normalized_units",
+        "cost_status": "measured",
         "min_pairs": 2,
         "guardrails": [("quality_floor", 0.95)],
     }
@@ -72,6 +73,37 @@ class CompareExperimentRecordsTests(unittest.TestCase):
         self.assertAlmostEqual(result["resource_cost"]["incremental_mean"], 2.0)
         self.assertAlmostEqual(result["leverage_ratio"], 0.05)
         self.assertFalse(result["promotion_authorized"])
+
+    def test_same_configured_instance_can_be_used_by_distinct_arms(self):
+        for row in self.rows:
+            if row["treatment"]["arm"] == "treatment":
+                row["treatment"]["instance"]["instance_key"] = CONTROL_KEY
+        result = compare(self.rows, treatment_instance_key=CONTROL_KEY)
+        self.assertAlmostEqual(result["leverage_ratio"], 0.05)
+
+    def test_guardrail_is_mandatory(self):
+        with self.assertRaisesRegex(ComparisonError, "explicit quality guardrail"):
+            compare(self.rows, guardrails=[])
+
+    def test_estimated_cost_never_produces_realized_ratio(self):
+        result = compare(self.rows, cost_status="estimated")
+        self.assertIsNone(result["leverage_ratio"])
+        self.assertIn("estimated", result["leverage_ratio_reason"])
+
+    def test_usage_value_requires_matching_unit_and_status(self):
+        rows = list(self.rows)
+        for row in rows:
+            row["usage"] = {
+                "value": row["metrics"]["resource_cost"],
+                "unit": "USD",
+                "source": "provider billing receipt",
+                "status": "measured",
+            }
+        result = compare(rows, cost_key="usage.value", cost_unit="USD")
+        self.assertAlmostEqual(result["leverage_ratio"], 0.05)
+        rows[0]["usage"]["unit"] = "tokens"
+        with self.assertRaisesRegex(ComparisonError, "usage.unit"):
+            compare(rows, cost_key="usage.value", cost_unit="USD")
 
     def test_lower_is_better_reverses_delta(self):
         rows = [
@@ -125,7 +157,7 @@ class CompareExperimentRecordsTests(unittest.TestCase):
 
     def test_source_sha_mismatch_is_rejected(self):
         self.rows[-1]["candidate_sha"] = "3" * 40
-        with self.assertRaisesRegex(ComparisonError, "same suite"):
+        with self.assertRaisesRegex(ComparisonError, "source SHA changed"):
             compare(self.rows)
 
 

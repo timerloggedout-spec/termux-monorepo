@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-18T11:25:26Z",
+ "generated_at": "2026-11-18T12:25:38Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,18 +10,19 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 5,
-    "in_progress": 2,
-    "oldest_queued_at": "2026-11-18T11:23:36Z",
+    "queued": 11,
+    "in_progress": 0,
+    "oldest_queued_at": "2026-11-18T12:22:58Z",
     "by_workflow_queued": {
-     "PR scope guard": 4,
-     "repo gate": 1
+     "repo gate": 3,
+     "PR scope guard": 5,
+     "swarm-admission": 3
     }
    },
    "2": {
     "tier": 2,
     "queued": 0,
-    "in_progress": 2,
+    "in_progress": 1,
     "oldest_queued_at": null,
     "by_workflow_queued": {}
    },
@@ -34,57 +35,58 @@
    },
    "4": {
     "tier": 4,
-    "queued": 94,
-    "in_progress": 17,
-    "oldest_queued_at": "2026-11-18T11:23:36Z",
+    "queued": 183,
+    "in_progress": 18,
+    "oldest_queued_at": "2026-11-18T12:19:37Z",
     "by_workflow_queued": {
-     "lane events recorder": 22,
      "repo-tracking-collect": 1,
-     "Quota Dispatch Tree": 1,
-     "n8n SHE bridge": 1,
+     "lane events recorder": 82,
+     "Agent Throughput Evidence": 27,
+     "DO Statement Style": 14,
+     "PR production ledger": 5,
+     "Audit Cycle \u2014 Single PR Feed-Forward": 3,
      "Gemini review after peers": 2,
-     "PR production ledger": 6,
-     "Lane matrix event-driven inventory": 3,
-     "termux smoke": 2,
-     "Sweep Accountability": 5,
-     "CellCog review": 1,
-     "Repository development evaluation": 2,
-     "RECON INTEL discovery": 1,
-     "DO Statement Style": 4,
      "archwiz dangle check": 2,
+     "RECON INTEL discovery": 3,
      "Agent Readability Source Contract": 2,
-     "Agent PR Jules Handoff": 2,
-     "PR Change Effectiveness Ledger": 1,
+     "termux smoke": 2,
+     "Context Relationship + Lead/Lag Audit": 6,
+     "Sweep Accountability": 6,
+     "Lane matrix event-driven inventory": 3,
+     "Action Effectiveness Ledger": 4,
+     "Peer review orchestrator": 3,
+     "CellCog review": 1,
+     "Agent PR Jules Handoff": 1,
      "DeepSeek CI \u2013 Agentic Automation": 2,
-     "Peer review orchestrator": 4,
-     "Agent Throughput Evidence": 16,
-     "Reconcile Devin Wiki access": 1,
-     "Agent review \u2192 auto Jules": 5,
+     "Jules on Issues (label / @jules)": 3,
      "delphi-rfp-feed-collect": 1,
-     "Issue Comment Router \u2014 modular fan-out reduction": 2,
-     "Context Relationship + Lead/Lag Audit": 1,
-     "Agent feedback \u2192 Linear subtasks": 1,
-     "Issue Observatory \u2014 similarity, refinement, lifecycle evidence": 1,
-     "Action Effectiveness Ledger": 1,
-     "Audit Cycle \u2014 Single PR Feed-Forward": 1
+     "delphi-ledger-feed-collect": 1,
+     "Issue Comment Router \u2014 modular fan-out reduction": 1,
+     "Team MVT \u2014 simultaneous provider lanes": 1,
+     "Issue Lifecycle Triage (deterministic label pass)": 1,
+     "n8n SHE bridge": 1,
+     "Repository development evaluation": 1,
+     "PR Change Effectiveness Ledger": 1,
+     "Workflow Surface Policy": 1,
+     "PR evidence evaluation": 2
     }
    }
   },
   "totals": {
-   "queued": 99,
-   "in_progress": 21
+   "queued": 194,
+   "in_progress": 19
   },
   "wedged_ancient": [],
   "tier_basis": {
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
-    "1": 7,
-    "2": 2,
+    "1": 11,
+    "2": 1,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 9,
-   "default_t4": 111,
+   "explicit_total": 12,
+   "default_t4": 201,
    "unmatched": 0,
    "ancient_excluded": 0,
    "operator_excluded": 0
@@ -94,10 +96,10 @@
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
   "source_schema": "dispatch-state-feed/v1",
-  "source_generated_at": "2026-11-13T01:20:39Z",
+  "source_generated_at": "2026-11-18T11:35:06Z",
   "counts": {
-   "claimed": 20,
-   "escalated": 28,
+   "claimed": 49,
+   "escalated": 32,
    "queued": 0
   },
   "active_claims": [
@@ -106,12 +108,12 @@
     "entry": "D1",
     "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item",
     "state": "claimed",
-    "score": 95.876,
+    "score": 1469.023,
     "score_components": {
+     "age": 24.921,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 15.876,
-     "state": 0.0
+     "wall": 1364.102
     },
     "rank": 2,
     "rank_method": "que-task-rank/v1",
@@ -122,7 +124,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-03T12:41:03Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4277#issuecomment-6604037278"
     }
    },
    {
@@ -130,12 +133,12 @@
     "entry": "D1",
     "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)",
     "state": "claimed",
-    "score": 95.801,
+    "score": 1468.948,
     "score_components": {
+     "age": 24.846,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 15.801,
-     "state": 0.0
+     "wall": 1364.102
     },
     "rank": 3,
     "rank_method": "que-task-rank/v1",
@@ -146,7 +149,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-03T13:47:14Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4330#issuecomment-6605494475"
     }
    },
    {
@@ -154,12 +158,12 @@
     "entry": "D1",
     "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt",
     "state": "claimed",
-    "score": 93.164,
+    "score": 1466.311,
     "score_components": {
+     "age": 22.209,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 13.164,
-     "state": 0.0
+     "wall": 1364.102
     },
     "rank": 4,
     "rank_method": "que-task-rank/v1",
@@ -170,7 +174,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-05T03:52:49Z",
-     "by": "speculators-build"
+     "by": "speculators-build",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4965#issuecomment-6649208382"
     }
    },
    {
@@ -178,12 +183,12 @@
     "entry": "D1",
     "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA",
     "state": "claimed",
-    "score": 93.164,
+    "score": 1466.311,
     "score_components": {
+     "age": 22.209,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 13.164,
-     "state": 0.0
+     "wall": 1364.102
     },
     "rank": 5,
     "rank_method": "que-task-rank/v1",
@@ -194,7 +199,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-05T03:52:10Z",
-     "by": "speculators-build"
+     "by": "speculators-build",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/4966#issuecomment-6649199894"
     }
    },
    {
@@ -202,14 +208,14 @@
     "entry": "SYSTEM-UPGRADE \u00b7 Opportunities lanes \u2200 (owner order 2026-11-10 04:11 PT, via main)",
     "title": "QUE: SYSTEM UPGRADE \u2014 Opportunities prep-first + repo-internal self-eval loop + Delphi-selection pipeline",
     "state": "claimed",
-    "score": 4.224,
+    "score": 13.268,
     "score_components": {
+     "age": 13.268,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.224,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 35,
+    "rank": 40,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -218,7 +224,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T12:18:43Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5096#issuecomment-6767108653"
     }
    },
    {
@@ -226,14 +233,14 @@
     "entry": "SYSTEM-UPGRADE build leg of #5096 (owner order 2026-11-10 04:11 PT) \u00b7 parent claim: #5096 comment 6767108653 \u00b7 build spec: #5096 comment 6767350095",
     "title": "[task] QUE: build the #5096 opportunity self-eval loop (prep gate + QUE priority + Delphi-rubric selection)",
     "state": "claimed",
-    "score": 4.222,
+    "score": 13.267,
     "score_components": {
+     "age": 13.267,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.222,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 36,
+    "rank": 41,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -242,7 +249,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T12:32:23Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5103#issuecomment-6767407398"
     }
    },
    {
@@ -250,14 +258,14 @@
     "entry": "OWNER ORDER 2026-11-10 04:27 PT (via main): build priority \u2460 D-h pullable trigger FIRST \u00b7 parent: #5096 + fix queue #4977 Fix 5 \u00b7 source of record: timerloggedout-spec/repo-story `.github/workflows/build-dispatch.yml` (3,980 B, read firsthand 2026-11-10; proving run 41426129878 SUCCESS -> repo-story PR #6)",
     "title": "[task] QUE: port build-dispatch (D-h pullable trigger) from repo-story \u2014 Priority 1 per owner order 2026-11-10 04:27 PT",
     "state": "claimed",
-    "score": 4.215,
+    "score": 13.259,
     "score_components": {
+     "age": 13.259,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.215,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 37,
+    "rank": 42,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -266,7 +274,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T12:34:53Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5108#issuecomment-6767459046"
     }
    },
    {
@@ -274,14 +283,14 @@
     "entry": "MIGRATION \u00b7 AutonomousOpsStuff (owner order 2026-11-10 04:43 PT, via main) \u2014 extension of the continuous-operation fix {D-h #5111 \u00b7 #5096 loop #5110}. Chats reduce to spec/route/verify only; operable functions move repo-side {QUE \u00b7 workflows \u00b7 governor \u00b7 Actions}.",
     "title": "[task] QUE: MIGRATION \u2014 side-chat functions \u2192 termux-monorepo AutonomousOpsStuff (slate + tranches)",
     "state": "claimed",
-    "score": 4.201,
+    "score": 13.245,
     "score_components": {
+     "age": 13.245,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.201,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 38,
+    "rank": 43,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -290,7 +299,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T12:48:43Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5113#issuecomment-6767743178"
     }
    },
    {
@@ -298,14 +308,14 @@
     "entry": "SIGLARY ENFORCEMENT (owner order 2026-11-10 04:54 PT, via main) \u2014 Siglary ISSUED 2026-11-10 (PR #5100 merged bd9450389a89; name of the compressed-notation system: skill + Notation Matrice + glyph/chord standard).",
     "title": "[task] QUE: SIGLARY ENFORCEMENT \u2014 repo-wide enforced notation {skills \u00b7 ICM \u00b7 CLAUDE.md \u00b7 DoE dispatch} + validation/performance legs",
     "state": "claimed",
-    "score": 4.188,
+    "score": 13.232,
     "score_components": {
+     "age": 13.232,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.188,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 39,
+    "rank": 44,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -314,7 +324,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T12:56:49Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5116#issuecomment-6767911015"
     }
    },
    {
@@ -322,12 +333,12 @@
     "entry": "D3 ListingLens \u2014 L3 demo render (Clips upload leg; gate D3-CLIPS-STORAGE satisfied 2026-11-10)",
     "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)",
     "state": "claimed",
-    "score": 84.178,
+    "score": 1337.324,
     "score_components": {
+     "age": 13.222,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 4.178,
-     "state": 0.0
+     "wall": 1244.102
     },
     "rank": 6,
     "rank_method": "que-task-rank/v1",
@@ -338,7 +349,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-10T14:36:13Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5124#issuecomment-6770139424"
     }
    },
    {
@@ -346,14 +358,14 @@
     "entry": "SIGLARY LEG B \u2014 validator + performance machinery (QUE #5116; standard of record docs/proposals/active/notation-sets/SIGLARY-STANDARD.md sections 3, 4, 6).",
     "title": "[task] Siglary Leg B \u2014 validator + performance machinery, phase 1 report-only (#5116)",
     "state": "claimed",
-    "score": 4.069,
+    "score": 13.114,
     "score_components": {
+     "age": 13.114,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.069,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 40,
+    "rank": 45,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -362,7 +374,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T14:26:38Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5131#issuecomment-6769896280"
     }
    },
    {
@@ -370,14 +383,14 @@
     "entry": "MIGRATION #5113 TRANCHE 1 item 1 \u2014 DISPATCH LIVENESS (D-j / issue #4977 Fix 6). Case of record: Termux Fleet Swarm App installation suspended 2026-11-07 ~20:13-23:40Z; que-feed-collect failed at its mint step on every run for ~2.5 days and NOTHING paged (diagnosis + stamps on #5096, 2026-11-10). The existing dispatch-watchdog itself mints the Swarm App, so it dies at the same step it exists to watch.",
     "title": "[task] Migration T1.1 \u2014 dispatch liveness: mint-failure paging + build-dispatch heartbeat aging (#5113)",
     "state": "claimed",
-    "score": 4.064,
+    "score": 13.108,
     "score_components": {
+     "age": 13.108,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 4.064,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 41,
+    "rank": 46,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -386,7 +399,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T14:29:54Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5132#issuecomment-6769978295"
     }
    },
    {
@@ -394,12 +408,12 @@
     "entry": "D3 ListingLens \u2014 L3 demo render machinery build (for QUE entry #5124)",
     "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)",
     "state": "claimed",
-    "score": 83.937,
+    "score": 1337.084,
     "score_components": {
+     "age": 12.982,
+     "state": 0.0,
      "tier": 80.0,
-     "wall": 0.0,
-     "age": 3.937,
-     "state": 0.0
+     "wall": 1244.102
     },
     "rank": 7,
     "rank_method": "que-task-rank/v1",
@@ -410,7 +424,8 @@
     "tier_basis": "explicit",
     "claim": {
      "at": "2026-11-10T16:15:44Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5137#issuecomment-6772616322"
     }
    },
    {
@@ -418,14 +433,14 @@
     "entry": "Migration #5113 Tranche 1.2 \u2014 deadline fail-safes (priority_timebox-driven, no chat relay)",
     "title": "[task] Migration T1.2 \u2014 deadline fail-safes: priority_timebox-driven transitions, no chat relay (#5113)",
     "state": "claimed",
-    "score": 3.849,
+    "score": 12.893,
     "score_components": {
+     "age": 12.893,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 3.849,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 42,
+    "rank": 47,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -434,7 +449,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T17:28:16Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5140#issuecomment-6774349341"
     }
    },
    {
@@ -442,14 +458,14 @@
     "entry": "Migration #5113 Tranche 1.3 \u2014 backup-state watch class (ops/vm-backup)",
     "title": "[task] Migration T1.3 \u2014 backup-state watch: backup-state/v1 feed + scheduled watch, no chat relay (#5113)",
     "state": "claimed",
-    "score": 3.848,
+    "score": 12.892,
     "score_components": {
+     "age": 12.892,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 3.848,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 43,
+    "rank": 48,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -458,7 +474,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T17:29:06Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5141#issuecomment-6774369506"
     }
    },
    {
@@ -466,14 +483,14 @@
     "entry": "build-dispatch hardening \u2014 convert silent-empty SUCCESS into honest FAILURE in-run (evidence: false-green class, 5 silent-empty / 9 completed builds on 2026-11-10)",
     "title": "[task] build-dispatch hardening \u2014 convert silent-empty SUCCESS to honest FAILURE in-run",
     "state": "claimed",
-    "score": 3.836,
+    "score": 12.881,
     "score_components": {
+     "age": 12.881,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 3.836,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 44,
+    "rank": 49,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -482,7 +499,8 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-10T17:38:53Z",
-     "by": "optimizations-assurance"
+     "by": "optimizations-assurance",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5142#issuecomment-6774593561"
     }
    },
    {
@@ -490,14 +508,14 @@
     "entry": "DoE / provider-pool infrastructure \u2014 free inference endpoint population and quota-aware cadence",
     "title": "[task] QUE: DoE free-inference pool + quota-aware cadence (autoQuotaCadence) repair",
     "state": "claimed",
-    "score": 3.116,
+    "score": 12.16,
     "score_components": {
+     "age": 12.16,
+     "state": 0.0,
      "tier": 0.0,
-     "wall": 0.0,
-     "age": 3.116,
-     "state": 0.0
+     "wall": 0.0
     },
-    "rank": 45,
+    "rank": 50,
     "rank_method": "que-task-rank/v1",
     "tier": {
      "index": 0,
@@ -506,43 +524,713 @@
     "tier_basis": "default",
     "claim": {
      "at": "2026-11-12T15:29:04Z",
-     "by": "dispatch-executor"
+     "by": "dispatch-executor",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5160#issuecomment-6827887800"
+    }
+   },
+   {
+    "issue": 5176,
+    "entry": "admitted-dispatch-executor",
+    "title": "[task] admitted\u2192dispatch executor: convert swarm-admitted filings to claim + arm dispatch",
+    "state": "claimed",
+    "score": 11.418,
+    "score_components": {
+     "age": 11.418,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 52,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T03:49:19Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5176#issuecomment-6843243575"
+    }
+   },
+   {
+    "issue": 5177,
+    "entry": "billion-tokens-page",
+    "title": "[task] Page build: \"What can you do with a Billion Tokens\" (fleet Pages)",
+    "state": "claimed",
+    "score": 11.413,
+    "score_components": {
+     "age": 11.413,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 53,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5177#issuecomment-6974550110"
+    }
+   },
+   {
+    "issue": 5220,
+    "entry": "c15-agentic-ai-cfp",
+    "title": "[task] C15 independent completion: ARA Agentic AI CFP closeout + next-cycle packet",
+    "state": "claimed",
+    "score": 9.996,
+    "score_components": {
+     "age": 9.996,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 55,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5220#issuecomment-6974550939"
+    }
+   },
+   {
+    "issue": 5230,
+    "entry": "bucket-headroom-alerting",
+    "title": "[task] bucket-headroom alerting: scheduled bucket reads, derived thresholds, projected-exhaustion page",
+    "state": "claimed",
+    "score": 9.894,
+    "score_components": {
+     "age": 9.894,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 56,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T03:23:06Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5230#issuecomment-6842837616"
+    }
+   },
+   {
+    "issue": 5239,
+    "entry": "evaluator-flow-thresholds-ssot",
+    "title": "[task] evaluator re-pin: FLOW_THRESHOLDS conform to dispatch-tiers.json v2 SSOT (read at eval time, no embedded table)",
+    "state": "claimed",
+    "score": 9.798,
+    "score_components": {
+     "age": 9.798,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 57,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5239#issuecomment-6974551821"
+    }
+   },
+   {
+    "issue": 5254,
+    "entry": "venue-execution-machinery",
+    "title": "[task] Venue-execution machinery: per-venue requirement legs in GitHub Actions (upload \u2192 public URL + no-login verify \u2192 filing), census-driven",
+    "state": "claimed",
+    "score": 9.708,
+    "score_components": {
+     "age": 9.708,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 58,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T04:05:33Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5254#issuecomment-6843535264"
+    }
+   },
+   {
+    "issue": 5256,
+    "entry": "neo4j-relate-eval",
+    "title": "[task] Eval: Neo4j Relate (embedded Rust graph DB for agents) \u2014 fleet fit + hackathon census",
+    "state": "claimed",
+    "score": 9.684,
+    "score_components": {
+     "age": 9.684,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 59,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5256#issuecomment-6974552769"
+    }
+   },
+   {
+    "issue": 5259,
+    "entry": "github-rubicon-refcas-patterns",
+    "title": "[task] Project Rubicon teardown: Ref-CAS patterns for Repo Replay / Commit Replay + fleet push-contention advisory",
+    "state": "claimed",
+    "score": 9.675,
+    "score_components": {
+     "age": 9.675,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 61,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5259#issuecomment-6974553668"
+    }
+   },
+   {
+    "issue": 5260,
+    "entry": "que-self-migration-app-consolidation",
+    "title": "[task] QUE self-migration + AppID consolidation census: workflow classes, per-App load map, wave plan (#5113 leg)",
+    "state": "claimed",
+    "score": 9.67,
+    "score_components": {
+     "age": 9.67,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 62,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5260#issuecomment-6974554570"
+    }
+   },
+   {
+    "issue": 5261,
+    "entry": "adapter-fix-recensus",
+    "title": "[task] Adapter FIX + re-census: sealion/cohere/baseten agent-loop marker (Cohere v2 first)",
+    "state": "claimed",
+    "score": 9.663,
+    "score_components": {
+     "age": 9.663,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 63,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T03:55:21Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5261#issuecomment-6843350647"
+    }
+   },
+   {
+    "issue": 5262,
+    "entry": "CEEL \u00b7 platform adapters and qualification",
+    "title": "[task] CEEL: provider-neutral observability adapters and four-platform qualification",
+    "state": "claimed",
+    "score": 9.655,
+    "score_components": {
+     "age": 9.655,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 64,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5262#issuecomment-6974555392"
+    }
+   },
+   {
+    "issue": 5263,
+    "entry": "CEEL \u00b7 16-cell factorial design and experiment evidence",
+    "title": "[task] CEEL: register and validate the complete 2^4 platform-factorial DoE",
+    "state": "claimed",
+    "score": 9.655,
+    "score_components": {
+     "age": 9.655,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 65,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5263#issuecomment-6974556238"
+    }
+   },
+   {
+    "issue": 5264,
+    "entry": "CEEL \u00b7 event-driven Novel Feature Search and opportunity intake",
+    "title": "[task] CEEL: GitHub-native event intake, idempotent opportunity updates, and QUE admission",
+    "state": "claimed",
+    "score": 9.655,
+    "score_components": {
+     "age": 9.655,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 66,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5264#issuecomment-6974557095"
+    }
+   },
+   {
+    "issue": 5265,
+    "entry": "CEEL \u00b7 post-merge verification and CI failure classification",
+    "title": "[task] CEEL: post-merge check reconciliation and ArchWiz dangle failure diagnosis",
+    "state": "claimed",
+    "score": 9.655,
+    "score_components": {
+     "age": 9.655,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 67,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5265#issuecomment-6974558011"
+    }
+   },
+   {
+    "issue": 5271,
+    "entry": "Other \u2014 QDesk portfolio report implementation / current-master reconciliation",
+    "title": "[task] QDesk: rebase report strategy on current master + self-implement evidence-backed portfolio report",
+    "state": "claimed",
+    "score": 9.625,
+    "score_components": {
+     "age": 9.625,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 68,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5271#issuecomment-6974558917"
+    }
+   },
+   {
+    "issue": 5283,
+    "entry": "que-task-plane-prioritization",
+    "title": "[task] QUE task-plane prioritization: score + rank + claim order for the registry feed (owner: get it done)",
+    "state": "claimed",
+    "score": 8.974,
+    "score_components": {
+     "age": 8.974,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 70,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T03:30:05Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5283#issuecomment-6842940508"
+    }
+   },
+   {
+    "issue": 5285,
+    "entry": "ci-workflow-pipeline-audit",
+    "title": "[task] CI workflow pipeline audit: least-privilege tokens + offline RESPX mocks + harden-runner posture (owner Google Tasks, overdue)",
+    "state": "claimed",
+    "score": 8.896,
+    "score_components": {
+     "age": 8.896,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 71,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5285#issuecomment-6974560191"
+    }
+   },
+   {
+    "issue": 5286,
+    "entry": "que-auto-claim-resolve",
+    "title": "[task] QUE auto-claim + auto-resolve: close the escalation stall (origin: 441-min unclaimed notifications)",
+    "state": "claimed",
+    "score": 8.89,
+    "score_components": {
+     "age": 8.89,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 72,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T03:39:59Z",
+     "by": "build-seat",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5286#issuecomment-6843087979"
+    }
+   },
+   {
+    "issue": 5298,
+    "entry": "que-owner-observatory",
+    "title": "[task] Owner QUE Observatory: glanceable whole-state surface \u2014 rank+rationale, streams, validation, DoE %, Gantt-of-states, drain ETA, citations",
+    "state": "claimed",
+    "score": 8.794,
+    "score_components": {
+     "age": 8.794,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 73,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5298#issuecomment-6974560815"
+    }
+   },
+   {
+    "issue": 5302,
+    "entry": "aistudio-webwrapper",
+    "title": "[task] AI Studio webWrapper \u2014 IMMEDIATE (owner): wrapped fleet session for .APK build retrieval (ChapitoAI multi list \u2192 operational)",
+    "state": "claimed",
+    "score": 8.774,
+    "score_components": {
+     "age": 8.774,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 74,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5302#issuecomment-6974561485"
+    }
+   },
+   {
+    "issue": 5304,
+    "entry": "github-intake-coverage-gate",
+    "title": "[task] GitHub intake coverage gate: dedupe/coverage check + Provenance/Telemetry relationship stamps at filing time",
+    "state": "claimed",
+    "score": 8.744,
+    "score_components": {
+     "age": 8.744,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 75,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5304#issuecomment-6974562153"
+    }
+   },
+   {
+    "issue": 5305,
+    "entry": "tribute-outreach-truth-accuracy-audit",
+    "title": "[task] Tribute outreach truth-accuracy audit: Z3\u03c00 success metrics vs live foreign-repo state \u2227 monorepo telemetry",
+    "state": "claimed",
+    "score": 8.739,
+    "score_components": {
+     "age": 8.739,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 76,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5305#issuecomment-6974562830"
+    }
+   },
+   {
+    "issue": 5306,
+    "entry": "build-delta-ingestion-standard",
+    "title": "[task] Build \u2206-ingestion standard: every new machinery build emits a \u2206 ledger + registers its consumers (case example: #5304)",
+    "state": "claimed",
+    "score": 8.737,
+    "score_components": {
+     "age": 8.737,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 77,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5306#issuecomment-6974563451"
+    }
+   },
+   {
+    "issue": 5308,
+    "entry": "appid-marketplace-ubiquity-census",
+    "title": "[task] AppID Marketplace ubiquity census: which fleet Apps generalize to a GitHub Marketplace product?",
+    "state": "claimed",
+    "score": 8.727,
+    "score_components": {
+     "age": 8.727,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 78,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5308#issuecomment-6974564042"
+    }
+   },
+   {
+    "issue": 5310,
+    "entry": "approxination-utilization-resumption",
+    "title": "[task] Approxination utilization resumption: feedback flow + APPROX-006 + reachability/token re-verify",
+    "state": "claimed",
+    "score": 8.721,
+    "score_components": {
+     "age": 8.721,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 79,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5310#issuecomment-6974564637"
+    }
+   },
+   {
+    "issue": 5318,
+    "entry": "Other \u2014 SEO/link-surface production lane",
+    "title": "[task] seo-link-surface-lane: dedicated SEO + link-callback lane for all published surfaces \u2014 marketing taxonomy hierarchy graph, staleness=defect (quota pages first), feed-consolidation intake",
+    "state": "claimed",
+    "score": 8.493,
+    "score_components": {
+     "age": 8.493,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 80,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-13T09:56:44Z",
+     "by": "main",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5318#issuecomment-6849705238"
+    }
+   },
+   {
+    "issue": 5334,
+    "entry": "siglary-github-surface-enforcement",
+    "title": "[build] Siglary enforcement: GitHub commits, PRs, issues, comments + reviews",
+    "state": "claimed",
+    "score": 6.605,
+    "score_components": {
+     "age": 6.605,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 0.0
+    },
+    "rank": 81,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE"
+    },
+    "tier_basis": "default",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5334#issuecomment-6974565281"
+    }
+   },
+   {
+    "issue": 5580,
+    "entry": "D5 \u2014 AI Builder Day Hackathon - November 2026 \u00b7 host Aha! (aha.io) \u00b7 platform aha-io \u00b7 official https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
+    "title": "[task] D5 build dispatch \u2014 IdeaInbox (Understudy \u00b7 Aha! AI Builder Day)",
+    "state": "claimed",
+    "score": 1043.907,
+    "score_components": {
+     "age": 1.322,
+     "state": 0.0,
+     "tier": 0.0,
+     "wall": 1042.585
+    },
+    "rank": 8,
+    "rank_method": "que-task-rank/v1",
+    "tier": {
+     "index": 0,
+     "name": "BASE \u2014 BUILD START"
+    },
+    "tier_basis": "explicit",
+    "claim": {
+     "at": "2026-11-18T09:31:11Z",
+     "by": "dispatch-watchdog",
+     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5580#issuecomment-6974549453"
     }
    }
   ],
   "ranking": {
-   "method": "que-task-rank/v1",
    "advisory": true,
-   "claim_order": [
-    5001,
-    4077,
-    4655,
-    4975,
-    5129,
-    5135,
-    5136,
-    5162,
-    5172,
-    5177,
-    5183,
-    5195,
-    5220,
-    5230,
-    5231,
-    5239,
-    5254,
-    5256,
-    5257,
-    5259,
-    5260,
-    5261,
-    5262,
-    5263,
-    5264,
-    5265,
-    5271,
-    5276
-   ],
    "age_order": [
     4077,
     4655,
@@ -553,66 +1241,105 @@
     5136,
     5162,
     5172,
-    5177,
     5183,
     5195,
-    5220,
-    5230,
-    5231,
-    5239,
-    5254,
-    5256,
-    5257,
-    5259,
-    5260,
-    5261,
-    5262,
-    5263,
-    5264,
-    5265,
-    5271,
-    5276
+    5333,
+    5366,
+    5548,
+    5549,
+    5309,
+    5552,
+    5554,
+    5555,
+    5556,
+    5557,
+    5584,
+    5585,
+    5586,
+    5587,
+    5588,
+    5589,
+    5590,
+    5591,
+    5612,
+    5613,
+    5614
+   ],
+   "claim_order": [
+    5001,
+    4077,
+    4655,
+    4975,
+    5129,
+    5135,
+    5136,
+    5162,
+    5172,
+    5183,
+    5195,
+    5333,
+    5366,
+    5548,
+    5549,
+    5309,
+    5552,
+    5554,
+    5555,
+    5556,
+    5557,
+    5584,
+    5585,
+    5586,
+    5587,
+    5588,
+    5589,
+    5590,
+    5591,
+    5612,
+    5613,
+    5614
    ],
    "delta_vs_age_order": [
     {
-     "issue": 5001,
-     "rank": 1,
      "age_rank": 4,
-     "delta": 3
+     "delta": 3,
+     "issue": 5001,
+     "rank": 1
     },
     {
-     "issue": 4077,
-     "rank": 2,
      "age_rank": 1,
-     "delta": -1
+     "delta": -1,
+     "issue": 4077,
+     "rank": 2
     },
     {
-     "issue": 4655,
-     "rank": 3,
      "age_rank": 2,
-     "delta": -1
+     "delta": -1,
+     "issue": 4655,
+     "rank": 3
     },
     {
-     "issue": 4975,
-     "rank": 4,
      "age_rank": 3,
-     "delta": -1
+     "delta": -1,
+     "issue": 4975,
+     "rank": 4
     }
    ],
+   "method": "que-task-rank/v1",
    "moved": 4
   },
-  "score_basis": "fold-derived (que-task-rank/v1)",
-  "scored": 17,
+  "score_basis": "producer",
+  "scored": 45,
   "tier_basis": {
    "population": "dispatch-issues (active claims)",
-   "explicit": 6,
-   "default": 11,
+   "explicit": 7,
+   "default": 38,
    "unmatched": 0
   }
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-18T11:25:26Z",
+  "generated_at": "2026-11-18T12:25:38Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
    "STALE": 3,
@@ -622,57 +1349,57 @@
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-18T11:25:26Z",
-    "observed_at": "2026-11-18T11:25:26Z",
+    "generated_at": "2026-11-18T12:25:38Z",
+    "observed_at": "2026-11-18T12:25:38Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-18T10:43:55Z",
-    "cycle_gap_min": 41.5,
+    "previous_cycle_at": "2026-11-18T11:25:26Z",
+    "cycle_gap_min": 60.2,
     "health": "STALE",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "06352bcdf8646ef2ea7922698a5a4f2157c29dd6",
-    "run_id": "44294180166"
+    "sha": "c2f696ecf8b61d97559d56f8ea58b07738038619",
+    "run_id": "44303351533"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-18T11:25:26Z",
+    "observed_at": "2026-11-18T12:25:38Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "06352bcdf8646ef2ea7922698a5a4f2157c29dd6",
-    "generated_at": "2026-11-13T01:20:39Z",
-    "age_min": 7804.8,
+    "sha": "c2f696ecf8b61d97559d56f8ea58b07738038619",
+    "generated_at": "2026-11-18T11:35:06Z",
+    "age_min": 50.5,
     "health": "STALE"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-18T11:25:26Z",
+    "observed_at": "2026-11-18T12:25:38Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "06352bcdf8646ef2ea7922698a5a4f2157c29dd6",
-    "generated_at": "2026-11-13T03:45:00Z",
-    "age_min": 7660.4,
+    "sha": "c2f696ecf8b61d97559d56f8ea58b07738038619",
+    "generated_at": "2026-11-18T11:35:06Z",
+    "age_min": 50.5,
     "health": "STALE"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-18T11:25:26Z",
+    "observed_at": "2026-11-18T12:25:38Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "06352bcdf8646ef2ea7922698a5a4f2157c29dd6",
+    "sha": "c2f696ecf8b61d97559d56f8ea58b07738038619",
     "generated_at": "2026-11-18T08:35:38Z",
-    "age_min": 169.8,
+    "age_min": 230.0,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-18T11:25:26Z",
+    "observed_at": "2026-11-18T12:25:38Z",
     "generated_at": "2026-11-18T09:24:35Z",
-    "age_min": 120.9,
+    "age_min": 181.1,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "06352bcdf8646ef2ea7922698a5a4f2157c29dd6"
+    "sha": "c2f696ecf8b61d97559d56f8ea58b07738038619"
    }
   }
  }

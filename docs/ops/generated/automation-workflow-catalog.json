@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "b4bac75c5276e196cfb304494b88686acdeb9cd1df624071464b721ef1332f97",
-  "workflow_count": 317,
+  "source_fingerprint": "c9d6ed73453c39d32d789ba7e5be4a803107af4f37f87b3138e42365a92285ca",
+  "workflow_count": 318,
   "workflows": [
     {
       "action_pins": [],
@@ -245,7 +245,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "handoff",
@@ -280,7 +280,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "contract"
@@ -554,7 +554,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "deterministic-model"
@@ -589,7 +589,7 @@
         "actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "mvt"
@@ -699,7 +699,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -936,7 +936,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "dashboard",
@@ -1381,7 +1381,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -1420,7 +1420,7 @@
     {
       "action_pins": [],
       "authority": "bounded-state-write",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "matrix-toc"
@@ -1554,7 +1554,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "delphi-cycle"
@@ -1804,7 +1804,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "validation-security",
       "jobs": [
         "validate"
@@ -2043,7 +2043,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "acceptance"
@@ -2128,7 +2128,7 @@
     {
       "action_pins": [],
       "authority": "bounded-state-write",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "evaluate"
@@ -2177,7 +2177,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -2216,7 +2216,7 @@
         "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "unit"
@@ -2360,7 +2360,7 @@
         "actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "test"
@@ -2398,7 +2398,7 @@
         "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -2417,7 +2417,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "contract"
@@ -2846,7 +2846,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "sanitize-and-publish"
@@ -2881,7 +2881,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "contract"
@@ -2973,7 +2973,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -3283,7 +3283,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "compare"
@@ -3315,7 +3315,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -3625,7 +3625,7 @@
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8"
       ],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "guard"
@@ -3849,7 +3849,7 @@
     {
       "action_pins": [],
       "authority": "bounded-state-write",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "guard"
@@ -3880,7 +3880,7 @@
     {
       "action_pins": [],
       "authority": "writer",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "governance-relationships",
       "jobs": [
         "validate-registry",
@@ -4066,6 +4066,25 @@
         "41 */3 * * *"
       ],
       "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: que-cadence-kick cancel-in-progress: true",
+      "domain": "agentic-development",
+      "jobs": [
+        "kick"
+      ],
+      "name": "que-cadence-kick",
+      "path": ".github/workflows/que-cadence-kick.yml",
+      "schedules": [
+        "*/5 * * * *"
+      ],
+      "triggers": [
+        "push",
         "schedule",
         "workflow_dispatch"
       ]
@@ -4444,7 +4463,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "inventory-score"
@@ -4652,7 +4671,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "validate"
@@ -4689,7 +4708,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "",
+      "concurrency": "group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }} cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}",
       "domain": "agentic-development",
       "jobs": [
         "provenance"

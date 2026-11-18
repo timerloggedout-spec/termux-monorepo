@@ -23,6 +23,10 @@ A recipe is initially **descriptive and advisory**. It does not grant permission
 - Existing Repo Replay and Commit Replay already use recipe concepts for distinct provenance/reconstruction and Git-fragment composition planes. They are prior art and integration boundaries, not blank space to duplicate.
 - SRI is a useful descriptive phrase, but **SRI is not adopted as the project acronym** because it collides with SRI International, the research institute associated with Siri's origins. See the name register.
 
+## Grimoire and recipe craft
+
+Grimoire's existing vocabulary provides reusable prompts (Runes), reusable CLI procedures (Incantations), task intake (Spellbook), inspection/testing/transformation verbs, and run-history terminology. The repository inspection did not find an existing component named Cauldron. A Cauldron workbench is therefore recorded only as a candidate composition UX over SRM and existing authorities—not as a new Grimoire subsystem, scheduler, registry, or execution authority. See [Grimoire ↔ Recipe Craft — Cauldron Recon](GRIMOIRE-CAULDRON-RECON.md).
+
 ## Architectural principle
 
 **Discover first; assign ownership second.** This proposal will map existing systems, their contracts, authorities, and deployment status before recommending whether the capability should be:

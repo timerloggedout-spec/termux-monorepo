@@ -32,8 +32,8 @@ def record(arm, instance_key, repetition, outcome, cost, quality=1.0):
             "outcome_score": outcome,
             "resource_cost": cost,
             "quality_floor": quality,
-            "task_fingerprint": f"task-{repetition}",
-            "environment_fingerprint": "env-fixed-v1",
+            "task_fingerprint": f"{repetition:064x}",
+            "environment_fingerprint": "e" * 64,
         },
     }
 
@@ -136,6 +136,17 @@ class CompareExperimentRecordsTests(unittest.TestCase):
         with self.assertRaisesRegex(ComparisonError, "identical repetition sets"):
             compare(self.rows[:-1])
 
+    def test_superseded_rows_are_excluded(self):
+        self.rows.append(record("control", CONTROL_KEY, 1, 0.1, 1))
+        self.rows[-1]["status"] = "superseded"
+        result = compare(self.rows)
+        self.assertAlmostEqual(result["leverage_ratio"], 0.05)
+
+    def test_malformed_fingerprint_is_rejected(self):
+        self.rows[-1]["metrics"]["task_fingerprint"] = "placeholder"
+        with self.assertRaisesRegex(ComparisonError, "64-character lowercase-hex"):
+            compare(self.rows)
+
     def test_insufficient_pairs_are_rejected(self):
         with self.assertRaisesRegex(ComparisonError, "insufficient matched repetitions"):
             compare(self.rows, min_pairs=3)
@@ -151,7 +162,7 @@ class CompareExperimentRecordsTests(unittest.TestCase):
             compare(self.rows)
 
     def test_task_fingerprint_mismatch_is_rejected(self):
-        self.rows[-1]["metrics"]["task_fingerprint"] = "different-task"
+        self.rows[-1]["metrics"]["task_fingerprint"] = "f" * 64
         with self.assertRaisesRegex(ComparisonError, "task_fingerprint"):
             compare(self.rows)
 

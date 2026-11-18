@@ -148,3 +148,7 @@ If a typed selector or direct permalink has no exact root, return no match; do n
 ## Closeout standard
 
 Summarize the chosen root, verified timeline, relevant candidate links, evidence locations, index/history bounds, and any required follow-up. If no relationship is found, say so precisely rather than inferring one from naming similarity.
+
+## Repo-wide Linguist / Siglary mandate
+
+Apply [the DO-first Linguist / Siglary mandate](../../../docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) to graph queries, evidence reports, comments, commits, PRs, and skill updates. Use DO-first CAVEMAN-6 phrasing; keep chat to `STATE-CHANGE ∨ OVERSIGHT`. Distinguish verified facts, candidates, and unknowns. Keep OPERATORS, GLYPHS, and CHORDS distinct; use only registered operators and resolve chords in named Shorthand Domains. Attach evidence to state claims and preserve metadata-only/privacy boundaries.

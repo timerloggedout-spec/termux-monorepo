@@ -56,6 +56,12 @@ jobs:
         run: |
           python3 -B -m unittest discover -s tests -p 'test_doe_settings_register.py' -v
           python3 -B -m unittest discover -s tests -p 'test_tribute_family_integrity.py' -v
+      - name: L3VERAGE mechanism and comparison contracts
+        run: |
+          python3 -m py_compile scripts/leverage/validate_mechanisms.py scripts/leverage/compare_experiment_records.py
+          python3 scripts/leverage/validate_mechanisms.py
+          python3 -m unittest discover -s tests -p 'test_leverage*.py' -v
+          python3 scripts/leverage/compare_experiment_records.py --help
 
       - name: Run gate
         run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"

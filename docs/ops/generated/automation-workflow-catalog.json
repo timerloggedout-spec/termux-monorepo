@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "68abc679662469a08f5d406cf0abc9d87c094bb63bbc3bc92eeea03e2c2181e5",
-  "workflow_count": 314,
+  "source_fingerprint": "f110102f575ed0fcc6a7af10b94359425c527bdb08de96ed6c4641031f6e4226",
+  "workflow_count": 315,
   "workflows": [
     {
       "action_pins": [],
@@ -2808,6 +2808,21 @@
       "schedules": [],
       "triggers": [
         "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: hark-vm-backup-bootstrap cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "bootstrap"
+      ],
+      "name": "hark-vm-backup-bootstrap",
+      "path": ".github/workflows/hark-vm-backup-bootstrap.yml",
+      "schedules": [],
+      "triggers": [
         "workflow_dispatch"
       ]
     },

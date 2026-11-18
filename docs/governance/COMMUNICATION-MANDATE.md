@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Make every repository interaction easy to parse, review, route, validate, and audit. Communication carries either a state change or an oversight checkpoint. Every directive uses a positive DO statement and a fixed positional frame.
+Make every repository interaction easy to parse, review, route, validate, and audit. Communication carries a state change, an oversight checkpoint, or a blocked-state handoff. Every directive uses a positive DO statement and a fixed positional frame.
 
 ## Core contract
 
@@ -20,7 +20,7 @@ Make every repository interaction easy to parse, review, route, validate, and au
 | `⤵output` | Output | Artifact, commit, test, report, or decision expected |
 | `~state` | State | proposed, active, blocked, passed, failed, or closed |
 
-A message carries a state change or an oversight checkpoint. Each statement carries one fact or one action. Updates carry changed facts only. Every message declares a scope key; out-of-scope material enters a triage log.
+A message carries a state change, an oversight checkpoint, or a blocked-state handoff. Each statement carries one fact or one action. Updates carry changed facts only. Every message declares a scope key; out-of-scope material enters a triage log.
 
 ## Communication modes
 

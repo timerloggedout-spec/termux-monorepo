@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "c9d6ed73453c39d32d789ba7e5be4a803107af4f37f87b3138e42365a92285ca",
-  "workflow_count": 318,
+  "source_fingerprint": "8fb4ee2aa9848bd1695d174a37d4a2702824237b0d7c93ec48c3279b7bab3d15",
+  "workflow_count": 319,
   "workflows": [
     {
       "action_pins": [],
@@ -2943,6 +2943,26 @@
       "path": ".github/workflows/hygiene-sweep.yml",
       "schedules": [],
       "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "writer",
+      "concurrency": "group: inference-endpoint-probe cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "aggregate",
+        "probe",
+        "setup"
+      ],
+      "name": "QUE inference endpoint availability probe",
+      "path": ".github/workflows/inference-endpoint-probe.yml",
+      "schedules": [
+        "23 */6 * * *"
+      ],
+      "triggers": [
+        "schedule",
         "workflow_dispatch"
       ]
     },

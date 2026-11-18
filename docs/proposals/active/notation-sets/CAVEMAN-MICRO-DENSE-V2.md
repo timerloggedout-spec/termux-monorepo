@@ -303,3 +303,28 @@ as its symbolic label.
 
 Token census 🧾 [`SIGLARY-TOKEN-COST.md`](SIGLARY-TOKEN-COST.md): CHORDS (30 sampled) cost 49 tokens vs 31 for their words ∧ GLYPHS (11) cost 27 vs 12, on o200k_base. OPERATORS (11) cost 21 vs 17 on o200k_base ∧ are at parity on cl100k_base (17 vs 17).
 Proposed: the **A2A register** uses OPERATORS ∧ plain words. CHORDS ∧ GLYPHS stay in the **display register**. This map is unchanged until the Linguist rules on it.
+
+
+## Operator extension — Linguist mandate revision (2026-11-18)
+
+The following formal operators are admitted to the OPERATORS class for repository directives, task framing, and evidence statements. This amendment expands the earlier compact operator table; it preserves the existing class taxonomy, Shorthand Domains, register split, and accuracy-first principle.
+
+| Operator | Meaning | Domain |
+|---|---|---|
+| ⇔ | iff / logical equivalence | logic |
+| ∉ | non-membership | set |
+| ≡ | identity / definitional equivalence | logic / identity |
+| ≠ | inequality | comparison |
+| ≤ / ≥ | upper / lower bound | comparison |
+| ⊕ | combine | composition |
+| ⊗ | constrained combine | composition |
+| ↳ | child / derivation relation | structure |
+| ∴ / ∵ | therefore / because | reasoning |
+| ⊢ / ⊬ | entails / fails to establish | proof / evidence |
+| ⊥ | contradiction / invalid state | logic / validation |
+| ⏸ / ▶ | hold / execute | control |
+| ✓ / ✗ | pass / fail | validation |
+
+**Class boundary:** `⤴` remains the issued dispatch GLYPH. The symbols in this amendment are OPERATORS because each has a fixed formal relation or state-transition meaning. The glyph inventory remains closed to the issued set; this amendment does not add glyphs or chords. `∆` remains the canonical change operator. Use uncommon operators only where their meaning is clear from the local directive; accuracy outranks compression.
+
+**DO-first application:** `DO <VERB> <OBJECT> ∧ <SCOPE> ⇒ <EXPECTED STATE> · EVIDENCE=<RECEIPT>`. Chat remains `STATE-CHANGE ∨ OVERSIGHT`; operational controls use affirmative verbs such as REQUIRE, ENFORCE, REJECT, EXCLUDE, HOLD, and FAIL-CLOSED.

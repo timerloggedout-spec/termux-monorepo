@@ -1,9 +1,27 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-18T21:05:39Z",
+ "read_at": "2026-11-18T21:08:13Z",
  "status": "ok",
- "count": 85652,
+ "count": 85654,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "2546f0c5ec6213f22e008df006ffc9ff6bcb7525",
+   "occurred_at": "2026-11-18 21:06:15+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "342690b91890e1aa36f6cc25dd2d90f6441ebb19",
+   "occurred_at": "2026-11-18 21:05:41+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -69,20 +87,20 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "342690b91890e1aa36f6cc25dd2d90f6441ebb19",
-   "occurred_at": "2026-11-18 21:04:24+00"
-  },
-  {
-   "lane": "she",
    "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
    "head_sha": "770b8c5bd9edb998c99e09b873aa99a3652a8968",
+   "occurred_at": "2026-11-18 21:04:24+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "342690b91890e1aa36f6cc25dd2d90f6441ebb19",
    "occurred_at": "2026-11-18 21:04:24+00"
   },
   {
@@ -730,7 +748,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "d21ef52bf009bf8d0ec962489be190f722422204",
+   "head_sha": "2665aec35bba344c0afd54e582f19fb4607c9e6c",
    "occurred_at": "2026-11-18 20:56:13+00"
   },
   {
@@ -739,7 +757,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "2665aec35bba344c0afd54e582f19fb4607c9e6c",
+   "head_sha": "d21ef52bf009bf8d0ec962489be190f722422204",
    "occurred_at": "2026-11-18 20:56:13+00"
   },
   {
@@ -1270,7 +1288,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "bf9bf0fecf1f2ea4f6042f7335a29262c3c479c0",
+   "head_sha": "90432c7e93cf0fc4bb2b7110a187ae79ab3f116c",
    "occurred_at": "2026-11-18 20:50:19+00"
   },
   {
@@ -1279,7 +1297,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "90432c7e93cf0fc4bb2b7110a187ae79ab3f116c",
+   "head_sha": "bf9bf0fecf1f2ea4f6042f7335a29262c3c479c0",
    "occurred_at": "2026-11-18 20:50:19+00"
   },
   {
@@ -1320,20 +1338,20 @@
   },
   {
    "lane": "she",
-   "workflow": "n8n SHE bridge",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "eb1ddc74c0e6d98ace3b30b1f7eb3e4505bfc72f",
-   "occurred_at": "2026-11-18 20:49:57+00"
-  },
-  {
-   "lane": "she",
    "workflow": "Agent Throughput Evidence",
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
    "head_sha": "01886d02ca9875e350135541d96406b5b9fd9a06",
+   "occurred_at": "2026-11-18 20:49:57+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "eb1ddc74c0e6d98ace3b30b1f7eb3e4505bfc72f",
    "occurred_at": "2026-11-18 20:49:57+00"
   },
   {
@@ -1785,24 +1803,6 @@
    "subject_url": null,
    "head_sha": "29a00daca4f4aa101bdcfb059002ba586d4b0cbd",
    "occurred_at": "2026-11-18 20:44:36+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "29a00daca4f4aa101bdcfb059002ba586d4b0cbd",
-   "occurred_at": "2026-11-18 20:44:34+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "01886d02ca9875e350135541d96406b5b9fd9a06",
-   "occurred_at": "2026-11-18 20:44:25+00"
   }
  ]
 }

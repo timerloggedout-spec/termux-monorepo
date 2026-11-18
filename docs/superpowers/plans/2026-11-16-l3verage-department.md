@@ -17,8 +17,10 @@ A small domain-specific mechanism catalog is justified because an intervention (
 2. Add strict mechanism schema and seed hypothesis catalog with explicit discovered status.
 3. Add a deterministic Python standard-library validator and unit tests.
 4. Document measurement, leverage ratio, opportunity prioritization, guardrails and existing authority mappings.
-5. Run focused tests and proposal/repository gates in CI; re-fetch checks on the same PR head.
-6. Obtain independent review; admit a first pilot only through existing DoE and proposal processes.
+5. Implement a read-only comparator over canonical DoE experiment JSONL; require matched configured-instance keys, task/environment fingerprints, preregistered pairs and hard guardrails.
+6. Design Pilot 001 (context reuse) without admitting or executing it until the DoE owner freezes its cohort and design record.
+7. Run focused tests and proposal/repository gates in CI; re-fetch checks on the same PR head.
+8. Obtain independent review; admit a first pilot only through existing DoE and proposal processes.
 
 ## Acceptance and verification
 
@@ -33,10 +35,12 @@ A small domain-specific mechanism catalog is justified because an intervention (
 
 ```bash
 python3 scripts/leverage/validate_mechanisms.py
-python3 -m unittest discover -s tests -p 'test_leverage_mechanisms.py' -v
+python3 -m unittest discover -s tests -p 'test_leverage*.py' -v
+python3 scripts/leverage/compare_experiment_records.py --help
 python3 scripts/proposals/validate_registry.py
 python3 scripts/ci/repo_gate.py
-python3 scripts/ci/termux_smoke.py
+
+Termux smoke is optional platform evidence, not a required L3VERAGE gate.
 ```
 
 The GitHub connector can write repository objects but cannot run the local checkout. CI results must be observed on the PR's immutable head SHA; queued/running is not a pass.

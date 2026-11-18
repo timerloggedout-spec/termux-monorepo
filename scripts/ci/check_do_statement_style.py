@@ -17,7 +17,9 @@ NEGATIVE_FIRST = re.compile(
     re.IGNORECASE,
 )
 IMPERATIVE = {
-    "accept", "add", "align", "apply", "audit", "build", "bump", "check", "close",
+    "accept", "account", "allow", "add", "align", "apply", "assert", "audit", "bind", "build", "bump", "check", "clarify", "close",
+    "correct", "cover", "centralize", "export", "format", "implement", "initialize", "invoke", "isolate", "link", "normalize",
+    "parse", "pin", "recognize", "reject", "sort",
     "compare", "create", "define", "deploy", "document", "enforce", "expand", "fix", "gate",
     "include", "inspect", "keep", "measure", "migrate", "move", "open", "preserve", "guard",
     "publish", "record", "reconcile", "refresh", "refine", "register", "remove", "rename", "repair",
@@ -65,7 +67,9 @@ def inspect_git_range(base: str, head: str) -> None:
     ).stdout
     inspect_text("commit.body", bodies)
     for subject in subjects:
-        first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
+        scoped = re.match(r"^[a-z][a-z0-9-]*(?:\([^)]+\))?:\s*(.+)$", subject)
+        description = scoped.group(1) if scoped else subject
+        first = description.split(maxsplit=1)
         verb = first[0].lower() if first else ""
         if verb not in IMPERATIVE:
             errors.append(

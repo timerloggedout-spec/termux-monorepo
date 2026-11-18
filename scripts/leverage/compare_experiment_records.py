@@ -14,7 +14,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-TERMINAL = {"passed", "failed", "observed", "skipped", "blocked", "superseded"}
+TERMINAL = {"passed", "failed", "observed", "skipped", "blocked"}
+FINGERPRINT_RE = re.compile(r"^[0-9a-f]{64}$")
 GUARDRAIL_RE = re.compile(r"^([A-Za-z][A-Za-z0-9_.-]*)>=(\-?\d+(?:\.\d+)?)$")
 
 
@@ -57,6 +58,8 @@ def _selected(
             continue
         treatment = record.get("treatment")
         if not isinstance(treatment, dict) or treatment.get("arm") != arm:
+            continue
+        if record.get("status") == "superseded":
             continue
         instance = treatment.get("instance")
         if not isinstance(instance, dict) or instance.get("instance_key") != instance_key:
@@ -147,8 +150,9 @@ def compare_records(
         for fingerprint in ("task_fingerprint", "environment_fingerprint"):
             control_fp = c[repetition].get("metrics", {}).get(fingerprint)
             treatment_fp = t[repetition].get("metrics", {}).get(fingerprint)
-            if not isinstance(control_fp, str) or not control_fp or control_fp != treatment_fp:
-                raise ComparisonError(f"{label}: control and treatment must share a non-empty {fingerprint}")
+            if (not isinstance(control_fp, str) or not FINGERPRINT_RE.fullmatch(control_fp)
+                    or control_fp != treatment_fp):
+                raise ComparisonError(f"{label}: control and treatment must share a 64-character lowercase-hex {fingerprint}")
         co = _number(c[repetition], outcome_key, f"control {label}")
         to = _number(t[repetition], outcome_key, f"treatment {label}")
         cc = cost_value(c[repetition], f"control {label}")

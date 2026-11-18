@@ -9,11 +9,11 @@ on:
     paths:
       - 'scripts/que/**'
       - 'tests/test_que_self_repair.py'
-      - 'tests/test_que_self_repair.py'
       - '.github/workflows/que-auto-claim-regression.yml'
   pull_request:
     paths:
       - 'scripts/que/**'
+      - 'tests/test_que_self_repair.py'
       - '.github/workflows/que-auto-claim-regression.yml'
   workflow_dispatch:
   workflow_call:

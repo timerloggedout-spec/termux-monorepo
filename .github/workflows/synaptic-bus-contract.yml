@@ -5,6 +5,8 @@ on:
     paths:
       - "docs/ops/brain-architecture/contracts/**"
       - "tests/ops/test_synaptic_bus_contract.py"
+      - "tests/ops/test_orchestration_receipt_adapter.py"
+      - "tools/ade_synapse/**"
       - ".github/workflows/synaptic-bus-contract.yml"
   push:
     branches: [master, main]
@@ -29,4 +31,4 @@ jobs:
       - name: Install JSON Schema validator
         run: python -m pip install --disable-pip-version-check "jsonschema>=4.20,<5"
       - name: Validate Synaptic Bus schema and fixtures
-        run: python -m unittest discover -s tests/ops -p 'test_synaptic_bus_contract.py' -v
+        run: python -m unittest discover -s tests/ops -p 'test_*synaptic*.py' -v

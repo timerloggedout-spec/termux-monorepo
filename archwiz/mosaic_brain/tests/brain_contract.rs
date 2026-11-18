@@ -26,6 +26,7 @@ fn evidence() -> EvidenceRef {
 
 fn snapshot() -> EvaluationSnapshot {
     EvaluationSnapshot {
+        method_identity: identity(),
         evaluator_id: "independent-reviewer".into(),
         method_owner_id: "doe-owner".into(),
         review_verdict: ReviewVerdict::Verified,
@@ -69,6 +70,36 @@ fn malformed_artifact_hash_is_rejected() {
     assert_eq!(
         validate_identity(&invalid),
         Err(ValidationError::InvalidArtifactSha256)
+    );
+}
+
+#[test]
+fn snapshot_with_mismatched_method_version_is_rejected() {
+    let mut input = snapshot();
+    input.method_identity.version = "2.0.0".into();
+    assert_eq!(
+        recommend(&identity(), &input),
+        Err(ValidationError::SnapshotIdentityMismatch)
+    );
+}
+
+#[test]
+fn snapshot_with_mismatched_source_commit_is_rejected() {
+    let mut input = snapshot();
+    input.method_identity.source_commit = "f".repeat(40);
+    assert_eq!(
+        recommend(&identity(), &input),
+        Err(ValidationError::SnapshotIdentityMismatch)
+    );
+}
+
+#[test]
+fn snapshot_with_mismatched_artifact_hash_is_rejected() {
+    let mut input = snapshot();
+    input.method_identity.artifact_sha256 = "b".repeat(64);
+    assert_eq!(
+        recommend(&identity(), &input),
+        Err(ValidationError::SnapshotIdentityMismatch)
     );
 }
 

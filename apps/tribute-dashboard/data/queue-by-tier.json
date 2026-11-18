@@ -1,25 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-18T22:16:34Z",
+ "generated_at": "2026-11-18T22:44:22Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T22:16:31Z",
-   "by_workflow_queued": {
-    "Orchestration Regression Guard": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-18T22:16:29Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -30,22 +26,15 @@
   },
   "4": {
    "tier": 4,
-   "queued": 6,
-   "in_progress": 9,
-   "oldest_queued_at": "2026-11-18T22:16:31Z",
-   "by_workflow_queued": {
-    "quota-analysis": 1,
-    "quota-served-probe": 1,
-    "que-cadence-kick": 1,
-    "Agent Readability Source Contract": 1,
-    "hitl-control-plane-verify": 1,
-    "quota-allocation-planner": 1
-   }
+   "queued": 0,
+   "in_progress": 12,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   }
  },
  "totals": {
-  "queued": 8,
-  "in_progress": 11
+  "queued": 0,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {
@@ -203,13 +192,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
+   "1": 1,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 4,
-  "default_t4": 15,
+  "explicit_total": 3,
+  "default_t4": 12,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

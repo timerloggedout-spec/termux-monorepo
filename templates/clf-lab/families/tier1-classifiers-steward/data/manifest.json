@@ -1,0 +1,25 @@
+{
+  "schema": "clf-lab-manifest/v1",
+  "family": "tier1-classifiers-steward",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "ref": "master",
+  "pin_sha": null,
+  "task": "unit state (live ∨ dormant ∨ dead) from the steward's unit description",
+  "label_note": "gold: classifiers-feed/v1 unit `state`; classes with <3 rows drop per run (dead=2 today)",
+  "sources": [
+    {
+      "adapter": "classifiers_feed",
+      "path": "ops/classifiers/classifiers-feed.json",
+      "label_field": "state"
+    }
+  ],
+  "issue_refs": [
+    "#5605",
+    "issuecomment-6974657958"
+  ],
+  "upstream_refs": [
+    "ops/classifiers/classifiers-feed.json",
+    "docs/ops/CLASSIFIERS-FEED.md",
+    "docs/ops/TIER1-CLASSIFIER-RECON-2026-10-28.md"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "clf-lab-manifest/v1",
+  "family": "bf-1-backfill-methods",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "ref": "master",
+  "pin_sha": null,
+  "task": "chat intent v2 (request ∨ directive ∨ aside ∨ speculation ∨ question ∨ do)",
+  "label_note": "gold: 11 rows of scripts/classifiers/backfill-v1-v2.json (v2 label). The labeled chat corpus is empty upstream, so a SILVER seed is generated each run: chat_intent v2 rules (pinned commit) label sentences from nc-1 chat units ∧ PR titles of the newest live-2 snapshot. Metrics on silver measure rule distillation; `gold_acc` scores the silver-trained model on the 11 gold rows.",
+  "sources": [
+    {
+      "adapter": "chat_intent",
+      "gold": "scripts/classifiers/backfill-v1-v2.json",
+      "gold_field": "v2",
+      "rules": "scripts/classifiers/chat_intent.py",
+      "silver_sources": [
+        {
+          "kind": "units_jsonl",
+          "path": "experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl",
+          "strata": [
+            "chat",
+            "github"
+          ]
+        },
+        {
+          "kind": "pr_titles",
+          "path": "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-11-01T010229Z.json"
+        }
+      ]
+    }
+  ],
+  "issue_refs": [
+    "#5605",
+    "issuecomment-6974657958"
+  ],
+  "upstream_refs": [
+    "experiments/doe/bf-1-backfill-methods/DESIGN.json",
+    "scripts/classifiers/chat_intent.py",
+    "scripts/classifiers/backfill-v1-v2.json"
+  ]
+}

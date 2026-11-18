@@ -1,0 +1,71 @@
+# DO run one DoE improvement iteration: run_doe (batch of cells) ⇒ improve (champion ∧ next generation) ⇒ commit.
+# Then DO append one clf-doe request to the mesh store so Hark VM (2h drain) ∧ Muse claim pending cells.
+name: iterate
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      max_cells:
+        description: cells per batch (CPU-small)
+        default: "12"
+      node:
+        description: node name recorded in the ledger
+        default: actions
+permissions:
+  contents: write
+concurrency:
+  group: iterate-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  iterate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FAMILY: __FAMILY__
+      MESH_STORE: timerloggedout-spec/hark-vm-workspace-backup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Restore data ∧ feature cache
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: clf-${{ hashFiles('data/manifest.json', 'doe.yaml') }}-${{ github.run_id }}
+          restore-keys: |
+            clf-${{ hashFiles('data/manifest.json', 'doe.yaml') }}-
+            clf-
+      - name: Install
+        run: pip install -q -r requirements.txt
+      - name: Run DoE batch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python run_doe.py --node "${{ inputs.node || 'actions' }}" --max-cells "${{ inputs.max_cells || '12' }}" --budget-s 900
+      - name: Improve ⇒ champion ∧ next generation
+        run: python improve.py
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name clf-lab-bot
+          git config user.email clf-lab-bot@users.noreply.github.com
+          git add -A
+          if git diff --cached --quiet; then echo "::notice title=commit::∅ change"; exit 0; fi
+          GEN="$(python -c 'import yaml;print(yaml.safe_load(open("doe.yaml"))["generation"])')"
+          git commit -q -m "chore(lab): record DoE batch ⇒ gen ${GEN} [skip render]"
+          for i in 1 2 3 4; do
+            git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && { echo "::notice title=commit::pushed $(git rev-parse --short HEAD)"; exit 0; }
+            sleep $((i * 5))
+          done
+          echo "::error title=commit::push refused 4×"; exit 1
+      - name: Append mesh request (clf-doe)
+        env:
+          GH_TOKEN: ${{ secrets.MESH_REQUEST_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN}" ]; then echo "::warning title=mesh::MESH_REQUEST_TOKEN ∄ ⇒ request skipped"; exit 0; fi
+          python tools/request_line.py "${GITHUB_REPOSITORY}" "${FAMILY}" "$(git rev-parse HEAD)" \
+            | python tools/append_jsonl.py "${MESH_STORE}" repo-exports/REQUESTS.jsonl "chore(mesh): add clf-doe request ${FAMILY} [skip render]"

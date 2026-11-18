@@ -6,8 +6,8 @@ PR #5523; VM census rows with AHEAD/DIVERGED accepted too) as the work list.
 DO compare each feature branch's check set at tip vs the master baseline:
   regressed  := ∃ check: baseline=success ∧ tip ∈ {failure, missing}
   green      := ∀ baseline-success checks: tip=success ∧ ∃ ≥1 check observed
-  untestable := ∅ check results at tip (reason carried; ¬ counted green)
-DO emit perf verdict {improved | regressed | flat | no-benchmark} when benchmark deltas exist.
+  untestable := checks unavailable, skipped, neutral, or not tied to the registry tip
+DO emit perf verdict {improved | regressed | flat | no-benchmark} only when a metric is comparable.
 DO cluster rows deterministically: (class, feature family, file-overlap component, verdict×perf).
 DO emit the feature-progress map with Δ vs the prior cycle (append-only artifact).
 Authority: read-only — ¬ merge ∧ ¬ push ∧ ¬ close ∧ ¬ delete (BRR DO-04 preserved).
@@ -50,17 +50,22 @@ def feature_rows(registry: dict[str, Any]) -> list[dict[str, Any]]:
 def regression_verdict(tip: dict[str, str] | None, baseline: dict[str, str]) -> dict[str, Any]:
     if not tip:
         return {"verdict": "untestable", "reason": "no check results at tip", "regressed_checks": []}
-    regressed = []
+    regressed, untestable = [], []
     for name, base_conclusion in sorted(baseline.items()):
         if base_conclusion not in PASS:
             continue
         tip_conclusion = tip.get(name)
         if tip_conclusion is None:
             regressed.append({"check": name, "baseline": base_conclusion, "tip": "missing"})
-        elif tip_conclusion not in PASS | NEUTRAL:
+        elif tip_conclusion in NEUTRAL:
+            untestable.append({"check": name, "baseline": base_conclusion, "tip": tip_conclusion})
+        elif tip_conclusion not in PASS:
             regressed.append({"check": name, "baseline": base_conclusion, "tip": tip_conclusion})
     if regressed:
         return {"verdict": "regressed", "reason": f"{len(regressed)} pass→fail∨missing", "regressed_checks": regressed}
+    if untestable:
+        return {"verdict": "untestable", "reason": f"{len(untestable)} baseline-success checks did not execute successfully",
+                "regressed_checks": [], "untestable_checks": untestable}
     if not any(v in PASS for v in tip.values()):
         return {"verdict": "untestable", "reason": "tip carries ∅ passing check", "regressed_checks": []}
     return {"verdict": "green", "reason": None, "regressed_checks": []}
@@ -70,11 +75,15 @@ def perf_verdict(bench: dict[str, Any] | None) -> str:
     """bench := {metric: {"baseline": x, "tip": y, "higher_is_better": bool}}."""
     if not bench:
         return "no-benchmark"
-    worse = better = 0
+    worse = better = compared = 0
     for metric in bench.values():
-        base, tip = metric.get("baseline"), metric.get("tip")
-        if not isinstance(base, (int, float)) or not isinstance(tip, (int, float)) or base == 0:
+        if not isinstance(metric, dict):
             continue
+        base, tip = metric.get("baseline"), metric.get("tip")
+        if (not isinstance(base, (int, float)) or isinstance(base, bool)
+                or not isinstance(tip, (int, float)) or isinstance(tip, bool) or base == 0):
+            continue
+        compared += 1
         delta = (tip - base) / abs(base)
         if not metric.get("higher_is_better", False):
             delta = -delta
@@ -82,6 +91,8 @@ def perf_verdict(bench: dict[str, Any] | None) -> str:
             better += 1
         elif delta < -PERF_FLAT_BAND:
             worse += 1
+    if compared == 0:
+        return "no-benchmark"
     if worse:
         return "regressed"
     if better:
@@ -131,9 +142,12 @@ def build_map(registry: dict[str, Any], checks: dict[str, Any], baseline: dict[s
     rows = []
     for feat in feature_rows(registry):
         branch = feat["branch"]
-        tip_entry = checks.get(branch) or {}
+        tip_entry = checks.get(branch)
         tip_checks = tip_entry.get("checks") if isinstance(tip_entry, dict) else None
-        if tip_entry.get("tip_sha") and feat.get("sha") and tip_entry.get("tip_sha") != feat["sha"]:
+        if not isinstance(tip_entry, dict) or not feat.get("sha") or not tip_entry.get("tip_sha"):
+            v = {"verdict": "untestable", "reason": "check evidence missing registry-tip SHA binding",
+                 "regressed_checks": []}
+        elif tip_entry["tip_sha"] != feat["sha"]:
             v = {"verdict": "untestable", "reason": "check results ≠ registry tip sha", "regressed_checks": []}
         else:
             v = regression_verdict(tip_checks, baseline)
@@ -147,10 +161,13 @@ def build_map(registry: dict[str, Any], checks: dict[str, Any], baseline: dict[s
             delta = f"tip-moved:{before.get('verdict')}→{v['verdict']}"
         elif before.get("verdict") != v["verdict"]:
             delta = f"{before.get('verdict')}→{v['verdict']}"
+        elif before.get("perf", "no-benchmark") != perf:
+            delta = f"perf:{before.get('perf', 'no-benchmark')}→{perf}"
         else:
             delta = "unchanged"
         rows.append({**feat, "feature_family": family, "overlap_component": comp,
                      "verdict": v["verdict"], "reason": v["reason"], "regressed_checks": v["regressed_checks"],
+                     "untestable_checks": v.get("untestable_checks", []),
                      "perf": perf, "delta": delta,
                      "cluster_key": f"{feat['class']}|{family}|c{comp if comp is not None else 'x'}|{v['verdict']}x{perf}"})
     counts: dict[str, int] = {}

@@ -13,6 +13,10 @@ Start here: [Brain Architecture README](brain-architecture/README.md)
 | [Experiment lane](brain-architecture/experiments/README.md) | Controlled, reproducible evaluations |
 | [Proposal lane](brain-architecture/proposals/README.md) | New subsystem proposals and review requirements |
 | [Canonical Mermaid diagram](diagrams/ade-synapse-brain.mmd) | Editable source diagram |
+| [Synaptic Bus contract](brain-architecture/contracts/SYNAPTIC-BUS-CONTRACT.md) | Versioned metadata-only inter-plane event protocol |
+| [Bus envelope schema](brain-architecture/contracts/SYNAPTIC-BUS-ENVELOPE.schema.json) | Draft 2020-12 JSON Schema |
+| [Bus compatibility matrix](brain-architecture/contracts/BUS-COMPATIBILITY.md) | Mapping to existing canonical event/evidence systems |
+| [Contract tests](../../tests/ops/test_synaptic_bus_contract.py) | Fixture and schema contract checks |
 
 ## Naming
 

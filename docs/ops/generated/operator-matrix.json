@@ -1,11 +1,11 @@
 {
   "counts": {
-    "open_issues": 702,
-    "open_prs": 464,
+    "open_issues": 706,
+    "open_prs": 465,
     "pr_classes": {
-      "CANDIDATE": 237,
-      "EXTRACT": 21,
-      "NEED_EVIDENCE": 206,
+      "CANDIDATE": 242,
+      "EXTRACT": 16,
+      "NEED_EVIDENCE": 207,
       "SUPERSEDE": 0
     }
   },
@@ -23,12 +23,12 @@
       "unlabelled_numbers": []
     },
     "other": {
-      "issues": 436,
+      "issues": 439,
       "prs": 5,
       "unlabelled_numbers": []
     },
     "proposal": {
-      "issues": 34,
+      "issues": 35,
       "prs": 1,
       "unlabelled_numbers": []
     },
@@ -54,7 +54,7 @@
     },
     "unlabelled": {
       "issues": 69,
-      "prs": 458,
+      "prs": 459,
       "unlabelled_numbers": [
         308,
         388,
@@ -128,7 +128,7 @@
       ]
     }
   },
-  "generated_at": "2026-11-18T10:18:07Z",
+  "generated_at": "2026-11-18T11:22:26Z",
   "issues_unlabelled": [
     308,
     388,
@@ -203,10 +203,10 @@
   "master": {
     "functional_gate": "NOT ESTABLISHED",
     "gates": {
-      "hygiene": "queued",
-      "smoke": "queued"
+      "hygiene": "not_reported",
+      "smoke": "not_reported"
     },
-    "sha": "de1fe318c6"
+    "sha": "37e1ab61f3"
   },
   "prs": [
     {
@@ -250,20 +250,6 @@
       "number": 1569,
       "title": "docs(agy): establish MVT-DoE V0 validation and telemetry protocol",
       "updated_at": "2026-10-24T04:02:40Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "e7b73f7bf4",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 3916,
-      "title": "chore(reviewer-metrics): regenerate provider x context map",
-      "updated_at": "2026-11-18T10:15:40Z"
     },
     {
       "class": "EXTRACT",
@@ -342,54 +328,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "817ef3c48a",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 4646,
-      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
-      "updated_at": "2026-11-17T17:01:44Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "c7bd349123",
       "labels": [],
       "mergeable_state": "unstable",
       "number": 5009,
       "title": "fix(graph-studio): independent review and GitHub Pages release",
       "updated_at": "2026-11-05T11:14:32Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "31fa7da4e5",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5034,
-      "title": "chore(dashboards): refresh dispatch-tree feed",
-      "updated_at": "2026-11-17T16:56:05Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "eef7702c1e",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5328,
-      "title": "fix(que): normalize structured ranking scores in auto-claim",
-      "updated_at": "2026-11-17T13:41:49Z"
     },
     {
       "class": "EXTRACT",
@@ -468,20 +412,6 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "34f81bafe9",
-      "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5516,
-      "title": "feat(que): integrate agent-browser MCP tooling and enforce refTemplates/smods contracts",
-      "updated_at": "2026-11-16T10:49:55Z"
-    },
-    {
-      "class": "EXTRACT",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
       "head_sha": "0555dbb3fb",
       "labels": [],
       "mergeable_state": "unstable",
@@ -496,12 +426,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "6166721c7d",
+      "head_sha": "c138836707",
       "labels": [],
       "mergeable_state": "unstable",
-      "number": 5563,
-      "title": "marketing: D5 promo HELD \u2014 D5-SPOT declined 2026-11-16, beats never fire on event claim",
-      "updated_at": "2026-11-17T14:38:05Z"
+      "number": 5545,
+      "title": "fix(que): normalize structured auto-claim ranking scores",
+      "updated_at": "2026-11-18T11:22:13Z"
     },
     {
       "class": "CANDIDATE",
@@ -1677,6 +1607,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "8003f49a78",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 3916,
+      "title": "chore(reviewer-metrics): regenerate provider x context map",
+      "updated_at": "2026-11-18T11:20:42Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "d01e2c211e",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2181,6 +2125,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "817ef3c48a",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 4646,
+      "title": "chore(countdowns): refresh challenge-countdowns-feed.json",
+      "updated_at": "2026-11-17T17:01:44Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "a581e066ac",
       "labels": [],
       "mergeable_state": "unknown",
@@ -2481,6 +2439,20 @@
       "number": 5031,
       "title": "fix(proposals): complete AppID control-plane registry contract",
       "updated_at": "2026-11-06T05:32:12Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "31fa7da4e5",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5034,
+      "title": "chore(dashboards): refresh dispatch-tree feed",
+      "updated_at": "2026-11-17T16:56:05Z"
     },
     {
       "class": "CANDIDATE",
@@ -3049,6 +3021,20 @@
         "hygiene": "success",
         "smoke": "success"
       },
+      "head_sha": "eef7702c1e",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5328,
+      "title": "fix(que): normalize structured ranking scores in auto-claim",
+      "updated_at": "2026-11-17T13:41:49Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
       "head_sha": "07501f69e2",
       "labels": [],
       "mergeable_state": "unknown",
@@ -3121,7 +3107,7 @@
       },
       "head_sha": "b6cd800991",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5371,
       "title": "Normalize QUE auto-claim ranking scores",
       "updated_at": "2026-11-17T13:41:53Z"
@@ -3309,7 +3295,7 @@
       },
       "head_sha": "7727f87556",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5425,
       "title": "fix(ci): repair dispatch admission and DO statement gates",
       "updated_at": "2026-11-18T08:28:41Z"
@@ -3633,7 +3619,7 @@
       },
       "head_sha": "b798336101",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5511,
       "title": "docs(refTemplates): register November 15 open-source radar references",
       "updated_at": "2026-11-16T10:20:28Z"
@@ -3647,7 +3633,7 @@
       },
       "head_sha": "9e98158f1c",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5512,
       "title": "feat(security): add Codex Security research candidate",
       "updated_at": "2026-11-16T10:26:28Z"
@@ -3661,10 +3647,24 @@
       },
       "head_sha": "0047ba2ade",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5513,
       "title": "feat(mcp-hub): add public health readiness endpoint",
       "updated_at": "2026-11-16T10:27:58Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "34f81bafe9",
+      "labels": [],
+      "mergeable_state": "blocked",
+      "number": 5516,
+      "title": "feat(que): integrate agent-browser MCP tooling and enforce refTemplates/smods contracts",
+      "updated_at": "2026-11-16T10:49:55Z"
     },
     {
       "class": "CANDIDATE",
@@ -3717,24 +3717,10 @@
       },
       "head_sha": "adedeb9169",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5524,
       "title": "fix(que): normalize structured auto-claim ranking scores",
       "updated_at": "2026-11-17T09:17:48Z"
-    },
-    {
-      "class": "CANDIDATE",
-      "family": "unlabelled",
-      "gates": {
-        "hygiene": "success",
-        "smoke": "success"
-      },
-      "head_sha": "d6256e7098",
-      "labels": [],
-      "mergeable_state": "unknown",
-      "number": 5525,
-      "title": "feat(brain): extract root kernel and add typed specialist extension contract",
-      "updated_at": "2026-11-18T09:49:51Z"
     },
     {
       "class": "CANDIDATE",
@@ -3787,7 +3773,7 @@
       },
       "head_sha": "34445a4a66",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 5531,
       "title": "docs(pit-crew): whole architecture and DoE oversight tournaments",
       "updated_at": "2026-11-17T10:00:25Z"
@@ -3801,7 +3787,7 @@
       },
       "head_sha": "a6c6a8feec",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5533,
       "title": "fix(que): normalize structured auto-claim ranking scores",
       "updated_at": "2026-11-17T13:41:57Z"
@@ -3813,12 +3799,12 @@
         "hygiene": "success",
         "smoke": "success"
       },
-      "head_sha": "283b35a131",
+      "head_sha": "6166721c7d",
       "labels": [],
-      "mergeable_state": "unstable",
-      "number": 5545,
-      "title": "fix(que): normalize structured auto-claim ranking scores",
-      "updated_at": "2026-11-17T17:10:48Z"
+      "mergeable_state": "unknown",
+      "number": 5563,
+      "title": "marketing: D5 promo HELD \u2014 D5-SPOT declined 2026-11-16, beats never fire on event claim",
+      "updated_at": "2026-11-17T14:38:05Z"
     },
     {
       "class": "CANDIDATE",
@@ -3833,6 +3819,20 @@
       "number": 5600,
       "title": "feat(provenance): add export ingest pipeline \u2227 inference availability ledger",
       "updated_at": "2026-11-18T09:28:33Z"
+    },
+    {
+      "class": "CANDIDATE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "success",
+        "smoke": "success"
+      },
+      "head_sha": "ededf6b437",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5616,
+      "title": "feat(que): add shadow-only v3 compounding ranking candidate",
+      "updated_at": "2026-11-18T11:15:53Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -4373,26 +4373,26 @@
         "hygiene": "queued",
         "smoke": "queued"
       },
-      "head_sha": "6a53a52cce",
+      "head_sha": "5dcfa42741",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2263,
       "title": "chore(delphi): refresh delphi-ledger-feed.json",
-      "updated_at": "2026-11-18T10:12:46Z"
+      "updated_at": "2026-11-18T11:19:15Z"
     },
     {
       "class": "NEED_EVIDENCE",
       "family": "unlabelled",
       "gates": {
-        "hygiene": "not_reported",
-        "smoke": "not_reported"
+        "hygiene": "in_progress",
+        "smoke": "queued"
       },
-      "head_sha": "527c7dd1f6",
+      "head_sha": "7e65a5745d",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 2310,
       "title": "chore(delphi): refresh delphi-rfp-feed.json",
-      "updated_at": "2026-11-18T10:11:16Z"
+      "updated_at": "2026-11-18T11:18:18Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5031,12 +5031,12 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
-      "head_sha": "32c8a23c67",
+      "head_sha": "5463aceb84",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 3890,
       "title": "chore(telemetry): refresh HindSight+Provenance ingest",
-      "updated_at": "2026-11-18T10:12:59Z"
+      "updated_at": "2026-11-18T10:53:14Z"
     },
     {
       "class": "NEED_EVIDENCE",
@@ -5803,7 +5803,7 @@
       },
       "head_sha": "bf49565c7b",
       "labels": [],
-      "mergeable_state": "clean",
+      "mergeable_state": "unknown",
       "number": 4990,
       "title": "chore(linguist): refresh linguist-panel-feed.json",
       "updated_at": "2026-11-17T16:39:33Z"
@@ -6517,7 +6517,7 @@
       },
       "head_sha": "8c6e5526d4",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5492,
       "title": "feat(brain): build the monorepo-wide Rust cognitive kernel",
       "updated_at": "2026-11-16T10:23:05Z"
@@ -6587,7 +6587,7 @@
       },
       "head_sha": "9adaeb94cb",
       "labels": [],
-      "mergeable_state": "unknown",
+      "mergeable_state": "unstable",
       "number": 5509,
       "title": "feat(orchestration): formalize isolated agent workspaces",
       "updated_at": "2026-11-16T10:29:29Z"
@@ -6627,6 +6627,20 @@
         "hygiene": "not_reported",
         "smoke": "not_reported"
       },
+      "head_sha": "2a28564de1",
+      "labels": [],
+      "mergeable_state": "unknown",
+      "number": 5525,
+      "title": "feat(brain): extract root kernel and add typed specialist extension contract",
+      "updated_at": "2026-11-18T11:03:36Z"
+    },
+    {
+      "class": "NEED_EVIDENCE",
+      "family": "unlabelled",
+      "gates": {
+        "hygiene": "not_reported",
+        "smoke": "not_reported"
+      },
       "head_sha": "b7aaa361b2",
       "labels": [],
       "mergeable_state": "unstable",
@@ -6657,7 +6671,7 @@
       },
       "head_sha": "e3c53144ff",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5544,
       "title": "feat: add ORBIT and SHIELD cognitive control layers",
       "updated_at": "2026-11-17T10:37:35Z"
@@ -6671,7 +6685,7 @@
       },
       "head_sha": "eba84cd660",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5592,
       "title": "chore(recon): refresh pinned free-provider research",
       "updated_at": "2026-11-17T21:03:56Z"
@@ -6699,7 +6713,7 @@
       },
       "head_sha": "83c95cf124",
       "labels": [],
-      "mergeable_state": "dirty",
+      "mergeable_state": "unknown",
       "number": 5606,
       "title": "feat(inference): add QUE inference endpoint availability probe",
       "updated_at": "2026-11-18T10:05:51Z"
@@ -6713,7 +6727,7 @@
       },
       "head_sha": "9e5a228b1b",
       "labels": [],
-      "mergeable_state": "unstable",
+      "mergeable_state": "unknown",
       "number": 5609,
       "title": "feat(lab): add clf-lab bootstrap workflow \u2227 DoE harness templates",
       "updated_at": "2026-11-18T10:17:31Z"

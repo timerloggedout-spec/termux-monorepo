@@ -48,7 +48,7 @@ Every inference event carries a usage object. Usage fields include input, cached
 
 ## Project profiles
 
-`ops/projects/profile.schema.json` accepts optional `project_id` and `portfolio_id` fields. Profiles that declare either field provide both. Existing profiles remain valid without either field; inference events require both identifiers in their project context.
+`ops/projects/profile.schema.json` accepts optional `project_id` and `portfolio_id` fields. Profiles that declare either field provide both. Existing profiles remain valid when both identifiers are omitted; inference events require both identifiers in their project context.
 
 ## 3L0 linkage
 

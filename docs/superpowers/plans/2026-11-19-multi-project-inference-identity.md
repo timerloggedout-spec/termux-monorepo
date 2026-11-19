@@ -24,7 +24,7 @@
 
 - Legacy integration events retain their original validation verdict.
 - Inference events reject missing project/task/inference identity and missing attempt identity.
-- Activity-only and not-established usage reject numeric measurements and currency.
+- Activity-only and `not_established` usage require all numeric measurements and currency to remain null.
 - Project profile IDs require a complete portfolio/project pair.
 - Two projects can share a portfolio concurrency group while retaining distinct project queues.
 

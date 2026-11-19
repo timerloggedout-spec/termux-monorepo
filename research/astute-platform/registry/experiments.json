@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "platform_id": "research-astute",
+  "experiments": [
+    {
+      "experiment_id": "ultimate-computation-limits",
+      "manifest": "research/astute-computational-limits/experiment.json",
+      "lifecycle": "seeded",
+      "graph_ids": [
+        "ucl-prerequisite-v1"
+      ],
+      "path_set_ids": [
+        "ucl-alternate-paths-v1"
+      ]
+    }
+  ]
+}

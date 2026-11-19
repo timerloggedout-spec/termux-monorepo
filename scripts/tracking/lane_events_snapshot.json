@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-19T12:43:16Z",
+ "read_at": "2026-11-19T12:45:03Z",
  "status": "ok",
- "count": 90630,
+ "count": 90631,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "dfe8a161501d6fa2d96b4b69ce76159fd7cf4f2b",
+   "occurred_at": "2026-11-19 12:43:17+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -577,7 +586,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "b8fe9068d7a97e12e2020964cf79829e4a2d6ec4",
+   "head_sha": "c165a0a6196f46211c621005aabb2d140b02fa39",
    "occurred_at": "2026-11-19 12:34:02+00"
   },
   {
@@ -586,7 +595,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "c165a0a6196f46211c621005aabb2d140b02fa39",
+   "head_sha": "b8fe9068d7a97e12e2020964cf79829e4a2d6ec4",
    "occurred_at": "2026-11-19 12:34:02+00"
   },
   {
@@ -1468,7 +1477,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "480b7438f73b9f9ddba2066d677685bc919f5c84",
+   "head_sha": "1ad36ee8b9bbadaffc69db00f844b41eff50a1d3",
    "occurred_at": "2026-11-19 12:20:42+00"
   },
   {
@@ -1477,7 +1486,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "1ad36ee8b9bbadaffc69db00f844b41eff50a1d3",
+   "head_sha": "480b7438f73b9f9ddba2066d677685bc919f5c84",
    "occurred_at": "2026-11-19 12:20:42+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "049f9eeb02663310036da5486929d6d51d2b8df9",
    "occurred_at": "2026-11-19 12:12:23+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "049f9eeb02663310036da5486929d6d51d2b8df9",
-   "occurred_at": "2026-11-19 12:12:22+00"
   }
  ]
 }

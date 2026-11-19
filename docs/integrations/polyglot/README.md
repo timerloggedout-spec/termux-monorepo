@@ -15,7 +15,7 @@ This directory defines the additive, versioned exchange boundary for PolyGlot sp
 
 PolyGlot specialists research reference technologies and publish evidence. Linguist owns canonical semantic representation and mappings. Matrice owns evaluation methodology and result aggregation. Repository permissions and review policy govern writes.
 
-The contracts are metadata-only. They carry references, digests, metrics and provenance; they do not carry credentials, private source contents or executable instructions.
+The contracts are metadata-only. They carry references, digests, metrics and provenance. Keep credentials, private source contents and executable instructions outside these records.
 
 ## Versioning
 

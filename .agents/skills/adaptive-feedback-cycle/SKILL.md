@@ -144,3 +144,33 @@ Represent task outcome as `PASS / FAIL + notes` when verification is possible, w
 12. **LOOP — repeat until the desired outcome is confirmed**, running multiple validation cycles and continuing to improve rather than stopping at the first green-looking signal.
 
 The skill is a living operational contract, not a frozen tutorial.
+
+
+## 2026-11-19 implementation feedback
+
+### Evidence separation
+
+- Record service health, scheduled activity, workflow execution, task outcome, benchmark resolution, and promotion as separate states.
+- Treat Temporal's Muse service health and its empty workflow list as separate observations; retain the Actions N5 acceptance as its own execution surface.
+- Treat a HindSight port and export as service/export evidence. Use retain, index/stats, and recall receipts to establish memory population and consumption.
+- Preserve owner-reported runtime history beside dated host receipts. Resolve conflicts through stable host, workflow, and run IDs.
+
+### Automation efficiency
+
+- Gate high-frequency PR comment scans on an explicit pending-work label. Create the label after trusted-source and idempotency checks; clear it after the mutation receipt.
+- Pin workflow actions by immutable commit SHA and add focused contract tests to the repository gate.
+- Classify provider/API quota failures separately from code failures. Reduce request fan-out before retrying and preserve the reset timestamp in the receipt.
+
+### Runtime durability
+
+- Fit work slices inside the observed host replacement window and checkpoint long-running jobs under durable home storage.
+- Prefer one-shot state-diff probes under existing scheduled guardians when session-bound background processes show relaunch fragility.
+- Admit work using current memory headroom, host identity, lease, and reachability receipts.
+
+### Compounding measurement
+
+Measure verified downstream value per unit of compute and evidence-capture cost. Track evidence reuse, provenance completeness, retain/read yield, durable execution yield, queue health, benchmark coverage, template reuse, and automation API cost through existing ledgers and receipts.
+
+### Loop integration
+
+Use `LOOPS.md` CYCLE-001 as the bounded execution sequence and `adaptive-wait` for the immutable-SHA wait cycle. Keep each batch small, perform disjoint RECON while authoritative checks progress, and close with a source-backed decision receipt.

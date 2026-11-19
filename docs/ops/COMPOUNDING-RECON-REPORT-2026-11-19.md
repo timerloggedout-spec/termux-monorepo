@@ -92,37 +92,43 @@ Join the available DeepSeek session store, Termux Origin exports, Repo Replay ob
 - Workers/Deno/Lambda/Cloud Run to request-shaped slices.
 - The inference pool to model inference.
 
-**VERIFIED — daily ML Ops receipts exist through November 19.**  
-`ops/ml/local-runs.jsonl` contains:
+**VERIFIED — Muse daily ML Ops and HindSight census job runs.**  
+`ops/ml/local-runs.jsonl` records:
 - `vm-mlops-daily-20261117-055414`: `ml-ops-smoke` result `pass`.
 - `vm-mlops-daily-20261118-055414`: `unchanged`.
 - `vm-mlops-daily-20261119-055414`: `unchanged`.
 
-`ops/compute/BACKLOG.md` records `vm-mlops-daily` as running daily and places the hourly mesh probe on VM cron + Actions. An `unchanged` result is a valid idempotent terminal state; it confirms job execution and adds zero new model-quality evidence.
+The private Muse memory record `t0/memory/2026-11-19.md` adds the 05:54 PST job detail: ML Ops smoke was `UNCHANGED` and skipped by the change gate (0/0 tests); HindSight ran a census only; `~/workspace/hindsight-local-test/RESULTS.md` retained its 2026-11-03 timestamp. This proves the daily job and census ran, while current ML Ops tests and HindSight retain/recall activity require separate receipts.
+
+**VERIFIED — the Muse workspace backup exported successfully on November 19.**  
+The latest private `muse-vm-workspace-backup/EXPORT.json` reports `export_id=exp-20261119T145835Z-881e42`, exported at `2026-11-19T15:00:49Z`, with T0=698, T1=92,637, manifest-only=37, excluded=71, split=3, vanished=0, and 124,474,904 bytes. Inventory, denylist, and content-scrub gates all pass. T1 remains manifest-only in this phase. The backup operator record uses the `vm-backup-state-watch` state-change poll and exporter; this workspace backup cycle is separate from the owner-reported HindSight cron export.
 
 **OWNER-REPORTED — Temporal, HindSight, and ML Ops have executed on Muse.**  
-The owner confirms these workloads have run on Muse; one earlier test consumed GitHub compute quota. HindSight and ML Ops align with the Muse allocation and daily ML Ops receipts. Temporal placement remains a surface-attribution reconciliation: the allocation card lists Muse staging/index jobs, while the canonical Delphi operator record identifies ephemeral GitHub Actions as the repeatable workflow home. Preserve the owner-reported Muse execution and the Actions operator record together until a current host/workflow receipt identifies each surface.
+The owner confirms prior Muse execution; one earlier test consumed GitHub compute quota. The current Muse Temporal service and daily ML Ops/census receipts provide additional runtime context. Current workload activity is tracked separately from service health and historical tests.
+
+**VERIFIED — Muse Temporal self-host is live and currently idle.**  
+Issue #2028's 2026-11-19T12:59:33Z living snapshot reports `temporal-selfhost` + `temporal-relay` active, gRPC at `localhost:7233`, Web UI at `localhost:8233` returning HTTP 200, relay `0.0.0.0:7234 → 127.0.0.1:7233`, a 983,040-byte SQLite DB, daily integrity-checked snapshots, and a 15-minute keepalive. The same record reports seven unit repairs after platform image replacements reset `/etc`. The workflow list is empty. Issue #5632 records zero executions and zero schedules that day, one namespace, and the continuity probe as the first live load. The service is healthy; the fleet-workflow lane remains to be wired and receipted.
+
+**VERIFIED — Temporal N5 durable-execution acceptance is complete on the Actions engagement surface.**  
+`docs/ops/TEMPORAL-DELPHI-CYCLE.md` and `ADDENDUM-2026-10-28-N5.json` record worker 1 SIGKILL, worker 2 resume, hash-gate rejection of incomplete/mismatched round-two evidence, four exactly-once ledger payloads, replay returning `already_posted`, and zero workflow/script parity diffs. GitHub runs 40758279842 (`delphi-cycle`) and 40759800247 (`engagement`) completed successfully, with artifacts 12845449786 and 12846223845. This proves the Actions engagement path and complements the active Muse self-host; each surface keeps its own workflow receipts.
+
+**GAP — Temporal workload operationalization on Muse.**  
+The 2026-10-28 migration record preserves the owner rule that the VM serves as a sandbox/evaluation surface. The 2026-11-19 living record shows the self-host active again for bounded staging/continuity work, with an empty workflow list. Issue #5632 is the registered path to score continuous-server versus per-batch arms, register QUE/VM producers, add workers, migrate schedules lane-by-lane, and capture the first fleet workflow receipt. Preserve the N5 Actions proof and use a separate Muse receipt for any Muse workflow.
 
 **OWNER-REPORTED — HindSight runs on a Muse VM port with cron export.**  
-The exact port, listener health, cron command, last successful export timestamp, output digest, and mapping to `HINDSIGHT_BASE_URL` require a current Muse-side receipt. Keep this daily Muse VM cron separate from the weekly `telemetry-ingest.yml` Actions workflow and from the older Fly/Koyeb deployment workflows.
+The exact port, listener health, cron command, last successful export timestamp, output digest, and mapping to `HINDSIGHT_BASE_URL` require a current Muse-side receipt. Keep this HindSight job separate from the weekly `telemetry-ingest.yml` Actions workflow and from the workspace backup state-watch exporter.
 
-**VERIFIED — the previous hosted HindSight population path has a material sink gap.**  
-The 2026-11-01/02 `CONTINUITY-SPOF-CENSUS` recorded 326 ingest + 62 density retain attempts failing with HTTP 402 (insufficient credits); the density receipt records 62/62 failed. The later `ops/telemetry/ingest-receipt.json` (generated 2026-11-02T13:36:34Z) contains 336 buffered HindSight payloads and 336 provenance records, while `live_retain` records `attempted: 0` with `skipped_reason: not requested`. This confirms buffered evidence and source lineage; a current retain+recall canary establishes memory population. The census also found Fly/Koyeb configuration divergence, a shared extraction-credit pool, Koyeb authentication awaiting configuration, and failover awaiting a verified drill. These are historical hosted-sink findings and may represent a separate surface from the owner-reported Muse VM port.
+**VERIFIED — HindSight's data path remains the highest-value P0 closure.**  
+The 2026-11-19 Muse memory record reports 326 payloads blocked at exit #5553 and a written-but-unread attribution layer. Issue #5553 remains open for multi-arm extraction and replay of the 326 payloads; issue #5555 remains open for full message/thinking/Actions provenance ingestion and registered consumer reads. The prior hosted-sink census recorded 326 ingest + 62 density retain attempts returning HTTP 402; the later 2026-11-02 ingest receipt holds 336 payloads and 336 provenance records with `live_retain.attempted=0` because the retain stage was skipped. A Muse port and cron export establish service/export presence; a successful retain, stats, and recall canary establish a working memory path. The prior Fly/Koyeb census also found configuration divergence, a shared extraction-credit pool, Koyeb authentication awaiting configuration, and failover awaiting a verified drill.
+
+**VERIFIED — Muse VM replacement and resource constraints shape compute placement.**  
+The private VM memory record reports platform image replacement every 1h44–2h15; home state persists while `/etc` and running processes reset. The mesh probe measured 7.75 GB total RAM with 0.42–0.53 GB available across consecutive early-day readings, then 0.95 GB after the 02:49 PT replacement/recovery. The observer design uses a 60-second local state loop and a 15-minute guardian; its `setsid/nohup` relaunch repeatedly died on session teardown, with a tracked background-exec workaround used. Prefer checkpointed/chunked work under the replacement window and a one-shot, state-diff observer that records only material transitions.
 
 **GAP — runtime receipt unification.**  
-Use a common run envelope across Muse cron, Temporal workflow history, Actions runs, and HindSight export. Each daily job should emit a small receipt with `job_id`, `run_id`, `started_at`, `ended_at`, `host_id`, `source_sha`, `workflow_id`, `status`, `input_digest`, `output_digest`, `export_uri`, and `health_probe`. Keep host secrets and raw private session content outside the public repo.
+Use a common run envelope across Muse cron, Temporal workflow history, Actions runs, Hark requests, and HindSight exports. Each job should emit `job_id`, `run_id`, `started_at`, `ended_at`, `host_id`, `source_sha`, `workflow_id`, `status`, `input_digest`, `output_digest`, `export_uri`, and `health_probe`. Keep host secrets and raw private session content outside the public repo.
 
-**STALE / CONFLICTED — Hark capacity card.**  
-The current `ops/compute/ALLOCATION.md` describes Hark as the same class as Muse (4 vCPU EPYC / ~8 GB RAM), while the previously inspected Hark node evidence describes a 2 vCPU ARM64 host with approximately 7.8 GiB RAM. A current node probe will resolve host identity and capacity before allocation. The allocation file also carries a Hark seat cap ending 2026-11-19 00:46 PT; a fresh receipt will establish current lease status.
-
-**VERIFIED — Temporal N5 kill/resume acceptance is complete.**  
-`docs/ops/TEMPORAL-DELPHI-CYCLE.md` and `docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-28-N5.json` record a passing DelphiCycle workflow proof: worker 1 received SIGKILL during implementation; worker 2 resumed; round-two ballots with missing or mismatched equalized-evidence hashes were rejected; four ledger payloads were emitted exactly once; reinvocation returned `already_posted`; and workflow/script parity passed with zero diffs. GitHub runs 40758279842 (`delphi-cycle`) and 40759800247 (`engagement`) are completed/success, with retained artifacts 12845449786 and 12846223845.
-
-**VERIFIED — the Temporal operating surface changed after the original VM proof.**  
-`docs/ops/TEMPORAL-DELPHI-CYCLE.md` records the repeatable workflow on ephemeral GitHub Actions engagements, with a job-scoped Temporal server at `localhost:7233`. `docs/ops/TEMPORAL-SELF-HOST.md` marks the previous VM self-host as retired after migration. The N5 proof establishes single-job worker recovery and exactly-once emission; it establishes a strong single-node durable-execution baseline.
-
-**GAP — reconcile the reported Muse Temporal execution.**  
-The current allocation card lists Muse Temporal staging/index jobs, and the owner reports Temporal execution on Muse. The canonical Delphi workflow's operator record identifies the Actions engagement surface. Join the Muse runs to `surface_id`, host ID, Temporal workflow/run ID, and receipt. This will distinguish a Muse-hosted staging/registry job from the canonical Delphi workflow, or identify a later deployment change. Re-run N5 only on a confirmed new surface; retain the existing Actions proof as complete.
+**STALE / CONFLICTED — Hark capacity and reachability.**  
+The current `ops/compute/ALLOCATION.md` describes Hark as the same class as Muse (4 vCPU EPYC / ~8 GB RAM), while the previously inspected Hark node evidence describes a 2 vCPU ARM64 host with approximately 7.8 GiB RAM. The Muse memory record lists Hark at ~8.3 GB owner-stated and reports Hark absent from the tailnet peer list. The tailnet probe workflow was manually disabled during the 2026-11-19 window. A current node receipt and owner decision on the probe cadence will establish Hark placement and reachability.
 
 **VERIFIED — current compute backlog has real queued work.**  
 `ops/compute/BACKLOG.md` records the first provider stress-test wave fired across eight providers, clf-lab Tier 1 replicated on Muse at 12/12 cells, 3,443 unmapped endpoint DB rows measured, daily ML Ops/HindSight census, and probe-watch cadence. Other items occupy queued, stalled, and unbuilt states. This is an active portfolio with measurable execution evidence.

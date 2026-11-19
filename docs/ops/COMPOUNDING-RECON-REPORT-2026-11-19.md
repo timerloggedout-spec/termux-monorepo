@@ -157,6 +157,16 @@ The highest-value integration is one job/attempt identity and one status project
 **VERIFIED — retry and recovery controls already have a strong baseline.**  
 Temporal N5 proves worker-loss recovery and exactly-once emission for the Delphi workflow. Extend the common receipt/attempt identity to other workloads, and reconcile unknown side effects before retry. Link every retry to its parent attempt and require a verifier or business receipt for terminal success.
 
+### 3.6 Jules automation and API efficiency
+
+The supplied Jules workflow guide describes issue delegation, PR review, setup actions, and reusable skill patterns. The repository already has a more governed implementation: `.github/workflows/agent-jules-on-issues.yml`, `.github/workflows/agent-pr-jules-handoff.yml`, reviewer automation, and `docs/ops/AGENT-JULES-HANDOFF.md`. The existing issue workflow pins GitHub Actions by immutable SHA, verifies trusted actors and source context, and uses the Jules API/GitHub App path. `tests/test_agent_jules_on_issues.py` explicitly protects the current design from legacy `google-labs-code/jules-action` and `jules-invoke` patterns. Preserve this integration instead of adding a parallel generic Jules action.
+
+**VERIFIED — the PR handoff path exposed a high-frequency API cost.**  
+PR #5664's `Agent PR Jules Handoff` mutation job received a GitHub App installation API rate-limit response while listing PR comments. The workflow was scanning comments on every PR synchronization event, including ordinary PRs with no Jules delegation.
+
+**IMPLEMENTED IN DRAFT PR #5665 — pending-label API gate.**  
+The new branch pins `actions/github-script` to its immutable v7.1.0 commit, adds a `jules-handoff-pending` label only after trusted-source and idempotency checks, gates mutation comment pagination on that label, records `MUTATION_OBSERVED`, and clears the label after the receipt. A focused Python test covers actor gating, action pins, label lifecycle, deduplication, and exact-SHA receipt fields. This reduces API reads across ordinary PR sync events while preserving the existing handoff state machine.
+
 ## 4. What exists beyond SWE
 
 SWE-bench measures software issue-to-patch resolution. Build the broader agent portfolio around distinct capabilities: terminal execution, MCP tools, browser and desktop interaction, policy-constrained workflows, memory, mobile, ML engineering, security, and multi-agent coordination. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` records the families, native score semantics, adapter states, and admission sequence.
@@ -349,6 +359,8 @@ Repository:
 - [Temporal Delphi cycle operator record](TEMPORAL-DELPHI-CYCLE.md)
 - [Temporal N5 acceptance addendum](../proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-28-N5.json)
 - [Temporal self-host migration / retirement record](TEMPORAL-SELF-HOST.md)
+- [Jules handoff evidence contract](AGENT-JULES-HANDOFF.md)
+- [Jules handoff API-load guard PR #5665](https://github.com/timerloggedout-spec/termux-monorepo/pull/5665)
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
 - [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
 - [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master

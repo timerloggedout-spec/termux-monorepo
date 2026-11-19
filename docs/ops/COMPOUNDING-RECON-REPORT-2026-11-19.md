@@ -259,6 +259,24 @@ This is a projection architecture: each consumer reads a shared evidence identit
 7. **Promote replicated gains.** Require preregistration, multiple seeds/replicates, blinded evaluation where practical, independent verification, and green deterministic internal controls.
 8. **Make schedules idempotent.** Stable job keys, leases, run IDs, output digests, and unchanged receipts reduce redundant work and make recurring systems self-maintaining.
 
+### 5.4 Compounding scorecard
+
+Measure compounding through the existing source ledgers and receipts. Keep this scorecard as a read-only projection; 3L0, MoneyBall, AEF, benchmark verifiers, the wallet ledger, and HindSight retain their existing authorities.
+
+| Metric | Calculation | Current evidence | Next measurable gain |
+|---|---|---|---|
+| Evidence reuse ratio | Distinct verified consumers per canonical evidence unit | Session-history, workflow, DoE, benchmark, and provenance consumers already share source records | Link each consumed artifact to its downstream consumer IDs and count reuse |
+| Provenance completeness | Runs with stable session/task/dispatch/actor/source-SHA/outcome joins ÷ total runs | 614 session-history records; 599 backfilled as observational; actor and outcome gaps remain | Join Termux Origin and DeepSeek session pointers; increase confirmed outcome coverage |
+| HindSight population yield | Successful retains, indexed payloads, and recall hits per eligible payload | 326 payloads await extraction/replay; prior hosted retain attempts returned 402; current Muse daily job ran census only | Pass a 3-unit retain → stats → recall canary, then replay the 326 payloads with source IDs |
+| Durable execution yield | Verified terminal outcomes ÷ workflow attempts, with retry and duplicate-effect rates | Actions N5 proof passed worker recovery and exactly-once emission; Muse self-host currently has zero workflow executions/schedules | Record the first Muse fleet workflow and scheduled run under #5632 |
+| Compute efficiency | Verified outcomes per vCPU-hour and token/cost unit, stratified by surface | Muse export passed; Muse memory headroom and ~2-hour image replacement constrain long work | Route by live headroom; checkpoint each slice inside the replacement window |
+| Queue health | Queue age, lease expiry, retry rate, stale-work reclaim, and receipt latency | QUE and pull-based VM request paths exist; Hark lease/reachability needs a fresh receipt | Publish one shared job/attempt projection from existing queue and worker receipts |
+| Benchmark coverage | Candidate → wired → executed → resolved counts by family, with native metric | SWE lanes exist; TDQS is wired; MCPMark, DynamicMCPBench, and Terminal-Bench 4.1 are next candidates | Add adapters and receipts in family order; preserve score semantics and seed lineage |
+| Template reuse | Active lane/agent instantiations per template version and downstream source consumers | Agentic Wallet + MergeEarn source registration is in draft PR #5664 | Record instantiation IDs and template version in provisioning receipts |
+| Automation efficiency | API calls and compute minutes per verified state transition | Jules handoff scan was rate-limited on an ordinary PR sync; label-gated guard is in draft PR #5666 | Keep comment pagination restricted to pending handoffs; track API reads per dispatch |
+
+The scorecard's primary optimization target is **verified downstream value per unit of compute and evidence-capture cost**. Reuse one validated artifact across every eligible consumer, while preserving each consumer's own acceptance test and authority.
+ 
 ## 6. Recommended execution roadmap
 
 ### P0 — continuity and integrity

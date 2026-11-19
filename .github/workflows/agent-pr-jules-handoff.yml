@@ -25,7 +25,7 @@ jobs:
       (startsWith(github.event.comment.body, '@jules') || startsWith(github.event.comment.body, '@Jules'))
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const n = context.payload.issue.number, id = context.payload.comment.id;
@@ -42,10 +42,12 @@ jobs:
             const ref = (pr.head.ref||'head').replace(/[^a-zA-Z0-9-_]/g,'').slice(0,40);
             await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:n,body:[marker,'## Jules handoff receipt','- state: **DISPATCHED**','- target_agent: **jules**',`- initiated_by: **${source.user?.login||context.actor}**`,`- context_key: \`pr-${n}-${ref}\``,`- branch: \`${pr.head.ref}\``,`- baseline_head_sha: \`${pr.head.sha}\``,`- base_sha: \`${pr.base.sha}\``,`- source_comment_id: \`${id}\``,'','Delegation is not completion. Require a later head mutation, fresh exact-SHA gates, review disposition, and independent verification.'].join('\n')});
   mutation:
-    if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+    if: >-
+      github.event_name == 'pull_request' && github.event.action == 'synchronize' &&
+      contains(github.event.pull_request.labels.*.name, 'jules-handoff-pending')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const pr=context.payload.pull_request;

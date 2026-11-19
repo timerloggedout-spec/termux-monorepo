@@ -79,5 +79,56 @@ class Learn(unittest.TestCase):
         self.assertNotIn("builder", w["w"])
 
 
+
+class ApiBudget(unittest.TestCase):
+    class Response:
+        headers = {
+            "X-RateLimit-Remaining": "4999",
+            "X-RateLimit-Limit": "5000",
+            "X-RateLimit-Reset": "1795100000",
+            "X-RateLimit-Resource": "core",
+            "X-GitHub-Request-Id": "TEST:REQUEST",
+        }
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return b"{}"
+
+    def test_budget_counts_calls_and_stops_before_overrun(self):
+        from unittest.mock import patch
+        gh = sr.GH("test-token", max_calls=1)
+        with patch("urllib.request.urlopen", return_value=self.Response()):
+            self.assertEqual(gh.get("/repos/example/project/actions/runs/123/jobs"), {})
+            with self.assertRaises(sr.ApiBudgetExceeded):
+                gh.get("/repos/example/project/actions/runs/124/jobs")
+        metrics = gh.metrics()
+        self.assertEqual(metrics["api_calls"], 1)
+        self.assertEqual(metrics["budget_remaining"], 0)
+        self.assertEqual(metrics["http_statuses"], {"200": 1})
+        self.assertEqual(metrics["route_calls"], {
+            "/repos/example/project/actions/runs/{run_id}/jobs": 1
+        })
+        self.assertEqual(metrics["rate_limit"]["remaining"], "4999")
+        self.assertGreaterEqual(metrics["latency_ms"]["count"], 1)
+
+    def test_budget_has_a_positive_floor(self):
+        gh = sr.GH("", max_calls=0)
+        self.assertEqual(gh.max_calls, 1)
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_promote_candidate_rotation_is_fair_and_bounded():
+    candidates = [{"number": n} for n in range(1, 13)]
+    assert [p["number"] for p in sr.rotate_candidates(candidates, 5, 0)] == [1, 2, 3, 4, 5]
+    assert [p["number"] for p in sr.rotate_candidates(candidates, 5, 1)] == [6, 7, 8, 9, 10]
+    assert [p["number"] for p in sr.rotate_candidates(candidates, 5, 2)] == [11, 12, 1, 2, 3]
+    assert sr.rotate_candidates(candidates, 0, 0) == []

@@ -22,6 +22,11 @@ The computational-limits experiment is one tenant of this platform. Its current 
 
 ## Platform layout
 
+- `registry/experiments.json` — machine-readable experiment catalogue used by validation and the viewer.
+- `registry/relation-types.json` — central typed relation vocabulary and algebraic mapping semantics.
+- `schemas/` — experiment, graph, path-set, and source-registry contracts.
+- `viewer/` — shared interactive graph viewer with alternate-path overlay and comparison.
+
 ```text
 research/
 ├── astute-platform/
@@ -39,7 +44,7 @@ research/
     └── SOURCES.md
 ```
 
-New experiments receive their own directory and manifest. Shared platform definitions live outside experiment directories.
+New experiments receive their own directory and manifest. Shared platform definitions live outside experiment directories. `registry/experiments.yaml` is the human-readable catalogue; `registry/experiments.json` is the machine-readable registry of record.
 
 ## Current repository integration
 
@@ -54,7 +59,7 @@ New experiments receive their own directory and manifest. Shared platform defini
 1. Establish the shared experiment, graph, path, evidence, and provenance contracts.
 2. Register the computational-limits work as the first experiment package.
 3. Adapt the existing DAG, dependency-phase, Bayesian, and Markov modules through typed interfaces.
-4. Define the shared interactive visualization contract.
+4. Define and implement the shared interactive visualization surface.
 5. Add experiment intake and validation to the existing research workflow family.
-6. Implement the viewer and compare alternate paths across experiment snapshots.
+6. Provision the standalone `timerloggedout-spec/research-astute` repository through the authenticated bootstrap workflow.
 7. Add bounded continuous research loops with explicit terminal states and receipts.

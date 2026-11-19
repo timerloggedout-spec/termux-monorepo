@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-19T20:45:22Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-19T20:54:15Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-19T20:45:21Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`93442` read_at=`2026-11-19T20:45:21Z`
+Sources: PR feed read_at=`2026-11-19T20:54:14Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`93466` read_at=`2026-11-19T20:54:14Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -23,7 +23,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5630 — fix(que): harden BRR regression evidence and promotion boundary |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #2235 — chore(osint): refresh coverage + page snapshots |
-| providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #5670 — chore(recon): refresh pinned free-provider research |
+| providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5617 `4138579e33f9` 2026-11-18T11:18:08Z | land/close PR #5034 — chore(dashboards): refresh dispatch-tree feed |

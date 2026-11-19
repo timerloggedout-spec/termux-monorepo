@@ -34,8 +34,11 @@ def cards_from(root: Path) -> list[dict[str, str]]:
         if source.is_absolute() or ".." in source.parts:
             raise ValueError(f"{path}: source must stay inside docs/icm")
         source_file = (canonical_root / Path(*source.parts)).resolve()
-        if root.resolve().is_relative_to(canonical_root) and not source_file.is_file():
-            raise ValueError(f"{path}: canonical source does not exist: {fields['source']}")
+        if root.resolve().is_relative_to(canonical_root):
+            if canonical_root not in source_file.parents:
+                raise ValueError(f"{path}: canonical source must stay under docs/icm")
+            if not source_file.is_file():
+                raise ValueError(f"{path}: canonical source is missing: {fields['source']}")
         fields["body"] = body.strip()
         fields["path"] = (path.relative_to(ROOT) if path.is_relative_to(ROOT) else path.relative_to(root)).as_posix()
         fields["stage"] = fields.get("stage", "999")
@@ -44,7 +47,7 @@ def cards_from(root: Path) -> list[dict[str, str]]:
         cards.append(fields)
     cards.sort(key=lambda c: (int(c["stage"]) if c["stage"].isdigit() else 999, c["id"]))
     if not cards:
-        raise ValueError(f"No cards found under {root}")
+        raise ValueError(f"Card directory is empty: {root}")
     ids = [card["id"] for card in cards]
     if len(ids) != len(set(ids)):
         raise ValueError("Card identifiers must be unique across the board")

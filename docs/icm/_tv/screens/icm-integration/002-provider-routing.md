@@ -6,6 +6,6 @@ status: blocked
 source: routing/CONTEXT.md
 ---
 
-**Provider routing is documented, not executed.** Existing OpenRouter, Omni, and Gemini configuration and GitHub governance are indexed in the nested routing resource. No provider poller, secret, schedule, workflow, or model-selection change is enabled in this ICM phase.
+**Provider routing remains documentation-only.** Existing OpenRouter, Omni, and Gemini configuration and GitHub governance are indexed in the nested routing resource. Provider poller, secret, schedule, workflow, and model-selection change remain unconfigured in this ICM phase.
 
 **Human checkpoint:** Complete the ICM/master-cleanup review before authorizing any Actions or application-code update. A later provider observer requires an approved source, cadence, credentials model, redaction rule, failure behavior, and human reviewer.

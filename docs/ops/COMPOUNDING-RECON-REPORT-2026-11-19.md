@@ -276,7 +276,7 @@ The programme is complete when:
 |---|---|---|
 | Benchmark family registry | **IMPLEMENTED on this branch** | `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md`; PR CI and review remain |
 | Detailed compounding RECON report | **IMPLEMENTED on this branch** | This document; refresh after runtime probes |
-| MergeEarn refTemplates lineage | **IMPLEMENTED on PR #4737 branch** | SOURCE.txt, wallet README, SOURCE-MAP updated; PR remains unmerged |
+| MergeEarn refTemplates lineage | **IMPLEMENTED on fresh current-base PR #5664** | Agentic Wallet README, SPEC, SOURCE, index, family README, and SOURCE-MAP; draft PR pending CI/review. Original PR #4737 remains open but diverges and is 13,613 commits behind master. |
 | DeepSeek Termux-origin join | **GAP / planned** | Recover historical branch/commit/session records and map eligible records |
 | Muse port + cron receipt | **OWNER-REPORTED + partially corroborated** | Daily ML Ops receipts exist; exact listener/cron health receipt remains |
 | Hark capacity reconciliation | **STALE / CONFLICTED** | Current node probe required |
@@ -298,7 +298,8 @@ Repository:
 - [ML Ops local receipts](../../ops/ml/local-runs.jsonl)
 - [Temporal durable execution RECON](../rfps/temporal-durable-execution/RECON.md)
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
-- [Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737)
+- [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
+- [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master
 - [DeepSeek web-wrapper session commit / PR #174](https://github.com/timerloggedout-spec/termux-monorepo/commit/40683687b1bf50d70c74d6eb2426767f1f8836f8)
 - [Canonical session provenance commit / PR #3453](https://github.com/timerloggedout-spec/termux-monorepo/commit/6050e1975ae5dabdb3b5751af7a8ad6ac016b5de)
 - [DeepCLI session-store origin commit / PR #3625](https://github.com/timerloggedout-spec/termux-monorepo/commit/1e898b4606cbe1de01fa6f848e2ad6a3f10e4309)
@@ -308,4 +309,4 @@ External benchmark sources are collected in [BENCHMARK-FAMILY-REGISTRY.md](../ev
 
 ## 10. Decision summary
 
-The best compounding path is to turn the repository's existing work into one evidence-linked lifecycle. The first concrete additions are the benchmark-family registry, the detailed operating report, and MergeEarn's explicit source registration in the existing Agentic Wallet PR. The next engineering slices are provenance continuity, Muse runtime receipts, Terminal-Bench 4.1, and a common job/attempt envelope. Existing authorities remain intact; new adapters increase the number of useful consumers per verified execution.
+The best compounding path is to turn the repository's existing work into one evidence-linked lifecycle. The first concrete additions are the benchmark-family registry, the detailed operating report, and MergeEarn's explicit source registration in fresh current-base PR #5664. Original PR #4737 remains preserved as lineage, with its divergence called out for maintainer disposition. The next engineering slices are provenance continuity, Muse runtime receipts, Terminal-Bench 4.1, and a common job/attempt envelope. Existing authorities remain intact; new adapters increase the number of useful consumers per verified execution.

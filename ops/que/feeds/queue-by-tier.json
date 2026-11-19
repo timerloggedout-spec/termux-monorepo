@@ -1,19 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T06:16:16Z",
+ "generated_at": "2026-11-19T06:45:17Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 0,
+   "queued": 3,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-19T06:45:08Z",
+   "by_workflow_queued": {
+    "repo gate": 1,
+    "PR scope guard": 2
+   }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 3,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -26,15 +29,33 @@
   },
   "4": {
    "tier": 4,
-   "queued": 0,
-   "in_progress": 14,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 17,
+   "in_progress": 18,
+   "oldest_queued_at": "2026-11-19T06:45:08Z",
+   "by_workflow_queued": {
+    "n8n SHE bridge": 1,
+    "Sweep Accountability": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "DO Statement Style": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "archwiz dangle check": 1,
+    "Agent PR Jules Handoff": 1,
+    "Action Effectiveness Ledger": 1,
+    "termux smoke": 1,
+    "Lane matrix event-driven inventory": 1,
+    "PR production ledger": 1,
+    "Agent Readability Source Contract": 1,
+    "RECON INTEL discovery": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "PR evidence evaluation": 1,
+    "Quota Dispatch Tree": 1
+   }
   }
  },
  "totals": {
-  "queued": 0,
-  "in_progress": 18
+  "queued": 20,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -192,13 +213,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 1,
-   "2": 3,
+   "1": 4,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 4,
-  "default_t4": 14,
+  "explicit_total": 6,
+  "default_t4": 35,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

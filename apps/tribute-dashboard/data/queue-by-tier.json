@@ -1,16 +1,14 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T13:10:26Z",
+ "generated_at": "2026-11-19T13:45:02Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 0,
-   "oldest_queued_at": "2026-11-19T13:10:20Z",
-   "by_workflow_queued": {
-    "Orchestration Regression Guard": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
@@ -28,20 +26,20 @@
   },
   "4": {
    "tier": 4,
-   "queued": 4,
-   "in_progress": 14,
-   "oldest_queued_at": "2026-11-19T13:10:20Z",
+   "queued": 6,
+   "in_progress": 16,
+   "oldest_queued_at": "2026-11-19T13:44:39Z",
    "by_workflow_queued": {
-    "que-cadence-kick": 1,
-    "hitl-control-plane-verify": 1,
-    "Agent Readability Source Contract": 1,
-    "quota-analysis": 1
+    "lane events recorder": 1,
+    "Agent Throughput Evidence": 3,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "Agent feedback \u2192 Linear subtasks": 1
    }
   }
  },
  "totals": {
-  "queued": 5,
-  "in_progress": 16
+  "queued": 6,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -199,13 +197,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 1,
+   "1": 0,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 3,
-  "default_t4": 18,
+  "explicit_total": 2,
+  "default_t4": 22,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -4,7 +4,7 @@
 
 ## Migration gate
 
-Transfer repositories only after an explicit organizational decision and an approved rehearsal. This document records preparation work; it does not authorize or execute an ownership transfer.
+Transfer repositories after an explicit organizational decision and an approved rehearsal. This document records preparation work and establishes the readiness checklist; repository ownership remains with the current organization until the authorized cutover.
 
 ## Inventory checklist
 

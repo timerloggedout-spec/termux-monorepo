@@ -436,6 +436,25 @@ proposals:
     gates_required:
       - repo-gate
       - termux-smoke
+  - id: polyglot-linguist-federation
+    title: PolyGlot–Linguist capability federation and Matrice transport competition
+    author: ChatGPT
+    status: posted
+    priority: P1
+    path: active/polyglot-linguist-federation/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: requested
+      - id: ChatGPT
+        role: author
+        status: posted
+    related_prs: []
+    related_branches:
+      - feat/polyglot-linguist-federation
+    gates_required:
+      - repo-gate
+      - termux-smoke
   - id: linguist-machine-parity
     title: Linguist README machine-parity enhancement
     author: Manus AI

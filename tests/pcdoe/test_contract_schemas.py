@@ -42,6 +42,26 @@ class ContractSchemaTests(unittest.TestCase):
             "owner_ref", "acceptance", "evidence", "approval_class"
         }.issubset(set(schema["required"])))
 
+    def test_do_statement_instance_validates(self):
+        schema = self.load_schema("DO-STATEMENT.schema.json")
+        instance = {
+            "schema_version": "pcdoe.do-statement.v1",
+            "statement_id": "fixture-001",
+            "scope": "tests/pcdoe",
+            "action": "Run the isolated PCDOE test suite",
+            "constraints": ["Read-only fixture inputs", "Existing CI permissions only"],
+            "output": "JUnit-compatible test result",
+            "state": "proposed",
+            "owner_ref": "PCDOE-008",
+            "acceptance": ["All contract tests pass"],
+            "evidence": [{"kind": "test-result", "required": True}],
+            "approval_class": "preauthorized_low_risk",
+            "created_at": "2026-11-19T00:00:00Z",
+            "updated_at": "2026-11-19T00:00:00Z",
+            "version": 1
+        }
+        Draft202012Validator(self.load_schema("DO-STATEMENT.schema.json")).validate(instance)
+
     def test_autoapprove_schema_encodes_formal_approval_boundary(self):
         schema = self.load_schema("AUTOAPPROVE-POLICY.schema.json")
         formal = schema["properties"]["formal_approval_classes"]["const"]
@@ -50,6 +70,29 @@ class ContractSchemaTests(unittest.TestCase):
             "credential", "permission", "security_policy", "destructive_data",
             "external_commitment"
         }.issubset(set(formal)))
+        instance = {
+            "schema_version": "pcdoe.autoapprove.v1",
+            "policy_id": "fixture-autoapprove",
+            "version": 1,
+            "status": "proposed",
+            "owner_ref": "PCDOE-008",
+            "allowlist": [{
+                "action_id": "run-tests",
+                "resource_pattern": "repo://fixture/task-1",
+                "actor_class": "ci-runner",
+                "max_scope": "task-1-tests",
+                "max_cost": 1.0,
+                "timeout_seconds": 120,
+                "idempotency_proof": "repeatable test command",
+                "compensation": "discard isolated runner",
+                "evidence_contract": "test-result",
+                "owner_ref": "PCDOE-008",
+                "expires_at": "2026-12-01T00:00:00Z"
+            }],
+            "formal_approval_classes": formal,
+            "decision_record": ["decision", "reason", "evidence"]
+        }
+        Draft202012Validator(schema).validate(instance)
 
     def test_policy_catalog_matches_schema_treatments(self):
         catalog = json.loads((SCHEMA_DIR / "PRIORITIZATION-POLICIES.json").read_text())

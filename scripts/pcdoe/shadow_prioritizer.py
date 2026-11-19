@@ -48,7 +48,7 @@ def evaluate_policy(policy: dict, tasks: list[dict], risk_limit: float) -> dict:
         age = number(task, "age")
         risk = number(task, "risk")
         adjusted_value = value * confidence if value is not None and confidence is not None else None
-        efficiency = 1.0 / max(effort, 0.01) if effort is not None else None
+        efficiency = 1.0 - effort if effort is not None else None
         treatment = policy["treatment_type"]
         components: dict[str, float | None] = {}
         if treatment == "incumbent":

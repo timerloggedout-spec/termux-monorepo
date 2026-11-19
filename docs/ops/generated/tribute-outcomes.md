@@ -1,10 +1,10 @@
 ## Tribute outcome SLO: **FAIL** (30d window)
 
-real merges **0** · stake-only merges **2** (weight 0) · closed-unmerged **34** · real merge rate **0.0** · open now **7** · days since real merge **30.8**
+real merges **0** · stake-only merges **2** (weight 0) · closed-unmerged **34** · real merge rate **0.0** · open now **7** · days since real merge **31.0**
 
 - FAIL `zero_real_merges`: 0 real foreign merges in the last 30d
 - FAIL `real_merge_rate_below`: real merge rate 0.0% < 10% over 36 decided PRs (30d)
-- FAIL `real_merge_drought`: last real merge 30.8d ago (> 21d)
+- FAIL `real_merge_drought`: last real merge 31.0d ago (> 21d)
 - WARN `stake_only_merges_weight_0`: 2 stake-only merges in 30d counted at weight 0
 - WARN `closed_unmerged`: 34 PRs closed without merge in 30d (counted as failures)
 
@@ -13,6 +13,6 @@ System 1 threads 208: yielded 62 · retired 61 · dropped 3 · placeholder merge
 | window | real | stake (w0) | self (excl) | closed-unmerged | rate |
 |---|---|---|---|---|---|
 | 7d | 0 | 0 | 0 | 0 | None |
-| 14d | 0 | 0 | 0 | 1 | 0.0 |
+| 14d | 0 | 0 | 0 | 0 | None |
 | 30d | 0 | 2 | 0 | 34 | 0.0 |
 | 90d | 2 | 14 | 0 | 98 | 0.0175 |

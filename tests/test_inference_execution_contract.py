@@ -110,3 +110,9 @@ def test_parallel_project_events_keep_project_queues_and_portfolio_group_distinc
     assert project_a["project"]["project_id"] != project_b["project"]["project_id"]
     assert project_a["inference"]["queue_id"] != project_b["inference"]["queue_id"]
     assert project_a["inference"]["concurrency_group_id"] == project_b["inference"]["concurrency_group_id"]
+
+
+def test_inference_event_requires_explicit_usage_observation():
+    event = base_event()
+    event["inference"].pop("usage")
+    assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(event))

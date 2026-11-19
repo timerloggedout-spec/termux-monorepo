@@ -49,7 +49,7 @@
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; confirm the inference fields and paired project IDs fail against the current schemas.
 - [ ] Extend the event schema with project, task, inference, usage, queue, concurrency, and priority properties; require the identity objects for `inference.*` events.
 - [ ] Extend the project profile schema with paired optional `portfolio_id` and `project_id` fields.
-- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 7 passing tests.
+- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 8 passing tests.
 - [ ] Document identity, retries, parallel queues, privacy, and 3L0 mapping in `docs/integrations/INFERENCE-IDENTITY.md`.
 - [ ] Link the contract from `docs/integrations/README.md` and register item `IIS-002`.
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`.

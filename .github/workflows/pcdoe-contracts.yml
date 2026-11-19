@@ -7,6 +7,8 @@ on:
       - "docs/ops/PCDOE-008-COMPOUNDING-PRODUCTION-PRIORITIZATION.md"
       - "scripts/pcdoe/**"
       - "tests/pcdoe/**"
+      - "docs/ops/corpus/EXPERIMENT.schema.json"
+      - "docs/ops/MANAGER-TOURNAMENT.schema.json"
       - ".github/workflows/pcdoe-contracts.yml"
   push:
     branches: ["**"]
@@ -14,6 +16,8 @@ on:
       - "docs/ops/pcdoe/**"
       - "scripts/pcdoe/**"
       - "tests/pcdoe/**"
+      - "docs/ops/corpus/EXPERIMENT.schema.json"
+      - "docs/ops/MANAGER-TOURNAMENT.schema.json"
       - ".github/workflows/pcdoe-contracts.yml"
 
 permissions:

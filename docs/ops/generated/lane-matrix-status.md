@@ -1,8 +1,8 @@
-# Lane matrix status (2026-11-19T15:22:20Z)
+# Lane matrix status (2026-11-19T15:24:37Z)
 
-- Master: `c655993c7538f629f8d596c988187ca6e9a23ec1`
+- Master: `17228d917f21244231cfd2256968abeedfb103c3`
 - Open PRs: **473**
-- Oldest: #47 (105.98d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
+- Oldest: #47 (105.99d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
 | Lane | Count |
 |------|------:|
@@ -14,27 +14,27 @@
 | Age bucket | Count |
 |------------|------:|
 | ancient | 27 |
-| fresh | 116 |
-| mid | 243 |
+| fresh | 114 |
+| mid | 245 |
 | stale | 87 |
 
 ## Tip lanes (EXTRACT / CANDIDATE / NEED_EVIDENCE first)
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #1436 | 29.36 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #1436 | 29.37 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 18.96 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 16.46 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 15.77 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
-| #4898 | 15.11 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
+| #4898 | 15.12 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
 | #5034 | 13.02 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
-| #47 | 105.98 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
+| #47 | 105.99 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 103.73 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
 | #103 | 102.6 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 65.31 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
-| #605 | 61.89 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
+| #605 | 61.9 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 59.87 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
-| #769 | 57.32 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
+| #769 | 57.33 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 49.23 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 48.37 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 47.1 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
@@ -47,9 +47,9 @@
 | #1515 | 28.29 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 28.29 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 28.28 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 28.26 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1537 | 28.27 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 27.6 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
-| #1614 | 26.51 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
+| #1614 | 26.52 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 26.51 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 26.5 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 26.38 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |

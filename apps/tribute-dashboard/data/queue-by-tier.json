@@ -1,6 +1,6 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T06:04:04Z",
+ "generated_at": "2026-11-19T06:16:16Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
@@ -13,7 +13,7 @@
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 3,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -27,14 +27,14 @@
   "4": {
    "tier": 4,
    "queued": 0,
-   "in_progress": 10,
+   "in_progress": 14,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   }
  },
  "totals": {
   "queued": 0,
-  "in_progress": 12
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -193,12 +193,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 1,
-   "2": 1,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 2,
-  "default_t4": 10,
+  "explicit_total": 4,
+  "default_t4": 14,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

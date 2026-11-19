@@ -148,3 +148,12 @@ Session-local tool availability is not proof of repository adapter implementatio
 - Canonical notation register: [`CAVEMAN-MICRO-DENSE-V2.md`](../proposals/active/notation-sets/CAVEMAN-MICRO-DENSE-V2.md).
 - Standard and enforcement profile: [`SIGLARY-STANDARD.md`](../proposals/active/notation-sets/SIGLARY-STANDARD.md).
 - Apply DO-first CAVEMAN-6 and class-correct Siglary notation across repository-authored instructions and skills.
+
+
+## Reusable loop library — 2026-11-19
+
+| Loop | Path | Purpose |
+|------|------|---------|
+| CYCLE-001 — Compounding RECON and Delivery | [`LOOPS.md`](../../LOOPS.md) | Bounded scope → preflight → evidence reconstruction → implementation → adaptive WAIT → verification → compounding → closeout |
+
+CYCLE-001 composes the canonical `adaptive-wait`, `adaptive-feedback-cycle`, `evidence-led-monorepo-ops`, and `context-relationship-graph` skills. Repository-native QUE, Temporal, Adaptive Dispatch, and existing evidence ledgers remain execution authorities.

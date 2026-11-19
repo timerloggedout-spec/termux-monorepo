@@ -101,7 +101,7 @@ Join the available DeepSeek session store, Termux Origin exports, Repo Replay ob
 `ops/compute/BACKLOG.md` records `vm-mlops-daily` as running daily and places the hourly mesh probe on VM cron + Actions. An `unchanged` result is a valid idempotent terminal state; it confirms job execution and adds zero new model-quality evidence.
 
 **OWNER-REPORTED — Temporal, HindSight, and ML Ops have executed on Muse.**  
-The owner confirms that these workloads have run on Muse; one earlier test consumed GitHub compute quota. The current allocation and daily receipts corroborate the existing workload context. This report treats these workloads as operating systems to reconcile and compound.
+The owner confirms these workloads have run on Muse; one earlier test consumed GitHub compute quota. HindSight and ML Ops align with the Muse allocation and daily ML Ops receipts. Temporal placement remains a surface-attribution reconciliation: the allocation card lists Muse staging/index jobs, while the canonical Delphi operator record identifies ephemeral GitHub Actions as the repeatable workflow home. Preserve the owner-reported Muse execution and the Actions operator record together until a current host/workflow receipt identifies each surface.
 
 **OWNER-REPORTED — HindSight runs on a Muse VM port with cron export.**  
 The exact port, listener health, cron command, last successful export timestamp, output digest, and mapping to `HINDSIGHT_BASE_URL` require a current Muse-side receipt. Keep this daily Muse VM cron separate from the weekly `telemetry-ingest.yml` Actions workflow and from the older Fly/Koyeb deployment workflows.

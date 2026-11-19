@@ -1,19 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T16:19:16Z",
+ "generated_at": "2026-11-19T16:37:43Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 0,
-   "in_progress": 0,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 1,
+   "in_progress": 1,
+   "oldest_queued_at": "2026-11-19T16:37:37Z",
+   "by_workflow_queued": {
+    "Orchestration Regression Guard": 1
+   }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -26,18 +28,28 @@
   },
   "4": {
    "tier": 4,
-   "queued": 2,
-   "in_progress": 10,
-   "oldest_queued_at": "2026-11-19T16:18:43Z",
+   "queued": 24,
+   "in_progress": 12,
+   "oldest_queued_at": "2026-11-19T16:36:36Z",
    "by_workflow_queued": {
-    "n8n SHE bridge": 1,
-    "Quota Dispatch Tree": 1
+    "quota-allocation-planner": 1,
+    "Foresight Evidence Spine": 1,
+    "quota-analysis": 1,
+    "quota-served-probe": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Agent Readability Source Contract": 1,
+    "que-cadence-kick": 1,
+    "termux smoke": 1,
+    "hitl-control-plane-verify": 1,
+    "graph-matrix-probe": 1,
+    "Agent Throughput Evidence": 2,
+    "lane events recorder": 12
    }
   }
  },
  "totals": {
-  "queued": 2,
-  "in_progress": 11
+  "queued": 25,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {
@@ -195,13 +207,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 0,
-   "2": 1,
+   "1": 2,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 1,
-  "default_t4": 12,
+  "explicit_total": 4,
+  "default_t4": 36,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

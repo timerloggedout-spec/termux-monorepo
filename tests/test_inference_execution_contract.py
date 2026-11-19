@@ -110,12 +110,13 @@ def test_parallel_project_events_keep_project_queues_and_portfolio_group_distinc
     project_b["project"]["project_id"] = "research-lab"
     project_b["task"]["task_id"] = "task-84"
     project_b["inference"]["inference_id"] = "inf-84"
-    project_b["inference"]["attempt_id"] = "attempt-1"
+    project_b["inference"]["attempt_id"] = "attempt-84"
     project_b["inference"]["queue_id"] = "project-research"
     jsonschema.validate(project_a, EVENT_SCHEMA)
     jsonschema.validate(project_b, EVENT_SCHEMA)
     assert project_a["project"]["project_id"] != project_b["project"]["project_id"]
     assert project_a["inference"]["queue_id"] != project_b["inference"]["queue_id"]
+    assert project_a["inference"]["attempt_id"] != project_b["inference"]["attempt_id"]
     assert project_a["inference"]["concurrency_group_id"] == project_b["inference"]["concurrency_group_id"]
 
 

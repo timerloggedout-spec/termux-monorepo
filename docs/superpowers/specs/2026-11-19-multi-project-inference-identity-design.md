@@ -31,7 +31,7 @@ Define a provider-neutral identity contract for inference work executed concurre
 
 ## Architecture
 
-Use `(portfolio_id, project_id)` as the owning scope. A task belongs to one project. A logical `inference_id` may have multiple execution attempts; every attempt receives a unique `attempt_id`. Each event retains its own `event_id` and idempotency key.
+Use `(portfolio_id, project_id)` as the owning scope. A task belongs to one project. A logical `inference_id` may have multiple execution attempts; every attempt receives a globally unique `attempt_id`. Each event retains its own `event_id` and idempotency key.
 
 Project queues use `queue_id`; portfolio-level shared capacity uses `concurrency_group_id`; scheduling priority uses `priority_class`. These are descriptive contract fields for future orchestration. Existing routing and quota owners retain execution authority.
 

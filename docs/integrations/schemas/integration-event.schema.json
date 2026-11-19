@@ -349,7 +349,8 @@
         "attempt_id": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 200
+          "maxLength": 200,
+          "description": "Globally unique identity for one provider execution attempt; maps to 3l0-intake/v1 dispatch_id."
         },
         "attempt_number": {
           "type": "integer",

@@ -25,6 +25,7 @@ portfolio_id
 - Keep `project_id` stable and unique within its portfolio.
 - Keep task and inference lineage within the owning project.
 - Reuse `inference_id` across retries; issue a new `attempt_id` for each provider execution.
+- Keep `attempt_id` globally unique across provider dispatches; map it directly to 3L0 `dispatch_id`.
 - Increment `attempt_number` for each retry when the source reports the sequence.
 - Keep `event_id` and `idempotency_key` unique per captured event.
 - Preserve `model: null` and null usage values when the source leaves them unknown.

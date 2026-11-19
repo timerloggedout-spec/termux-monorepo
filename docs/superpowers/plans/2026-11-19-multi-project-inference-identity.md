@@ -15,7 +15,7 @@
 - Keep the existing event `schema_version` at `1.0.0` and preserve legacy event validity.
 - Require `project`, `task`, and `inference` on `inference.*` events.
 - Require `portfolio_id` and `project_id` together on project profiles that declare either.
-- Use stable `inference_id` across retries and unique `attempt_id` per execution attempt.
+- Use stable `inference_id` across retries and globally unique `attempt_id` per execution attempt.
 - Preserve unknown usage as null and preserve explicit measurement/attribution states.
 - Reuse the existing Integration Intelligence event envelope and `3l0-intake/v1` mapping.
 - Keep prompts, completions, raw tool payloads, secrets, and private transcripts outside telemetry records.

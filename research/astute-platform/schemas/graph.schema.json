@@ -1,49 +1,166 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://research-astute.example/schemas/graph.schema.json",
+  "$id": "schemas/graph.schema.json",
   "title": "Research Astute Typed Graph",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "graph_id", "experiment_id", "graph_type", "nodes", "edges"],
+  "required": [
+    "schema_version",
+    "graph_id",
+    "experiment_id",
+    "graph_type",
+    "nodes",
+    "edges"
+  ],
   "properties": {
-    "schema_version": {"type": "string"},
-    "graph_id": {"type": "string"},
-    "experiment_id": {"type": "string"},
-    "graph_type": {"enum": ["prerequisite_dag", "markov_transition", "bayesian_evidence", "lineage", "concept_map"]},
-    "directed": {"type": "boolean"},
-    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
-    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
-    "metadata": {"type": "object", "additionalProperties": true}
+    "schema_version": {
+      "type": "string"
+    },
+    "graph_id": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "graph_type": {
+      "enum": [
+        "prerequisite_dag",
+        "markov_transition",
+        "bayesian_evidence",
+        "lineage",
+        "concept_map"
+      ]
+    },
+    "directed": {
+      "type": "boolean"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
   },
   "$defs": {
     "node": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["node_id", "concept_id", "label", "node_type"],
+      "required": [
+        "node_id",
+        "concept_id",
+        "label",
+        "node_type"
+      ],
       "properties": {
-        "node_id": {"type": "string"},
-        "concept_id": {"type": "string"},
-        "label": {"type": "string"},
-        "node_type": {"enum": ["concept", "claim", "capability", "artifact", "phase", "state", "milestone"]},
-        "status": {"type": "string"},
-        "evidence_ids": {"type": "array", "items": {"type": "string"}},
-        "metadata": {"type": "object", "additionalProperties": true}
+        "node_id": {
+          "type": "string"
+        },
+        "concept_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "node_type": {
+          "enum": [
+            "concept",
+            "claim",
+            "capability",
+            "artifact",
+            "phase",
+            "state",
+            "milestone"
+          ]
+        },
+        "status": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
       }
     },
     "edge": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["edge_id", "from", "to", "relation_type"],
+      "required": [
+        "edge_id",
+        "from",
+        "to",
+        "relation_type"
+      ],
       "properties": {
-        "edge_id": {"type": "string"},
-        "from": {"type": "string"},
-        "to": {"type": "string"},
-        "relation_type": {"type": "string"},
-        "weight": {"type": "number"},
-        "probability": {"type": "number", "minimum": 0, "maximum": 1},
-        "assumptions": {"type": "array", "items": {"type": "string"}},
-        "evidence_ids": {"type": "array", "items": {"type": "string"}},
-        "provenance": {"type": "object", "additionalProperties": true}
+        "edge_id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "relation_type": {
+          "enum": [
+            "identity",
+            "equivalence",
+            "prerequisite",
+            "derivation",
+            "composition",
+            "decomposition",
+            "membership",
+            "containment",
+            "representation",
+            "transformation",
+            "state_transition",
+            "supports",
+            "contradicts",
+            "qualifies",
+            "derived_from",
+            "supersedes",
+            "records"
+          ]
+        },
+        "weight": {
+          "type": "number"
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        }
       }
     }
   }

@@ -31,6 +31,13 @@ portfolio_id
 - Preserve `model: null` and null usage values when the source leaves them unknown.
 - Use the configured `instance_key` as configured-instance identity; retain provider/model labels as separate descriptors.
 
+Identity uniqueness scopes:
+
+- `portfolio_id` identifies one portfolio.
+- `project_id` is unique within its portfolio.
+- `task_id` and `inference_id` are unique within their owning project.
+- `attempt_id` is globally unique across provider dispatches and maps directly to 3L0 `dispatch_id`.
+
 ## Parallel execution dimensions
 
 - `queue_id` separates project queues.

@@ -47,6 +47,12 @@ lanes:
     orgs: [termux-monorepo, Research-Astute]
     inputs: [ARM64, Android, Termux, llama.cpp, llama.cpp-Vulkan-deferred, Needle, quantization, memory, thermal, energy]
 
+  - lane_id: research-astute-platform
+    orgs: [termux-monorepo, Research-Astute]
+    inputs: [experiment-manifests, typed-graphs, alternate-paths, evidence-provenance, shared-visualization, bounded-research-loops]
+    adapters: [she/orchestration/dag.py, scripts/agentic/dependency_phase_engine.py, scripts/bayesian_routing.py, experiments/archwiz-markov-lane]
+    status: preliminary
+
   - lane_id: ultimate-computation-limits
     orgs: [termux-monorepo, Research-Astute]
     inputs: [mathematics, information-theory, thermodynamics, quantum-mechanics, quantum-information, general-relativity, black-hole-thermodynamics, holography, quantum-gravity, technology-dependencies]

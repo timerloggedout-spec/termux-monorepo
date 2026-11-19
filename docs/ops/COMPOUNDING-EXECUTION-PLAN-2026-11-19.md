@@ -17,8 +17,22 @@ This plan composes the existing QUE, Temporal, compute mesh, DoE, provenance, AE
 - Benchmark-native metrics and scoring authorities remain separate.
 - Manual dispatch is an entry path; it does not own recurring operation.
 - PRs remain reviewable and unmerged until their checks, provenance, and required approvals are complete.
+- Reuse `.agents/skills/adaptive-wait/SKILL.md`, `.agents/skills/adaptive-feedback-cycle/SKILL.md`, and `.agents/skills/evidence-led-monorepo-ops/SKILL.md` as the operating controller; keep this programme inside the established loop.
 
-## 2. Workstream plan
+## 2. Bounded compounding loop
+
+Each cycle uses the six-step loop already compatible with the repository's adaptive-wait and adaptive-feedback skills:
+
+1. **Observe** — re-fetch immutable branch/SHA, queue, workflow, job, artifact, and runtime state.
+2. **Choose** — select the highest-value in-scope action using evidence, risk, resource fit, and dependency readiness.
+3. **Act** — make one bounded, reversible change or run one admitted task cohort.
+4. **Verify** — run the same acceptance check under recorded conditions; inspect terminal job/step/artifact evidence.
+5. **Record** — append run/effect/provenance receipt and update the owning registry.
+6. **Repeat or stop** — continue while measurable progress exists; stop at `success`, `clean-no-op`, `blocked`, `approval-required`, `exhausted`, or `stagnated`.
+
+WAIT is an evidence-collection phase. Re-fetch after material changes, back off on unchanged live state, and continue disjoint work while checks run. Retry only when an evidence-backed change exists. The user-supplied Loopy API skill's bounded-loop pattern is treated as a design reference; this programme reuses repo-native controllers and makes no claim that a separate Loopy catalog or `LOOPS.md` entry is installed.
+
+## 3. Workstream plan
 
 | ID | Priority | Workstream | Implementation | Acceptance evidence | State |
 |---|---|---|---|---|---|
@@ -28,8 +42,9 @@ This plan composes the existing QUE, Temporal, compute mesh, DoE, provenance, AE
 | CEX-004 | P0 | Common job/attempt identity | Define a crosswalk from QUE item/lease, Temporal workflow/run/activity, cron run, Actions run/job, and Hark request/DONE receipt | One synthetic lifecycle test with admission → placement → retry → resume → terminal receipt | **DESIGN READY** |
 | CEX-005 | P0 | Temporal kill/resume proof | Execute the existing Temporal RFP's worker-kill/resume harness on the current Muse execution surface; preserve uncertain side-effect handling | One exactly-once terminal receipt after worker termination and resume; unknown outcome is reconciled before retry | **EXECUTION REQUIRED** |
 | CEX-006 | P1 | Terminal-Bench 4.1 adapter | Pin Harbor, benchmark/task revision, RewardKit/verifier revision, resource profile, agent harness; execute a small CPU slice in isolated workers | Task-level receipt, verifier integrity tests, artifact regrade lineage, repeated-trial statistics | **CANDIDATE** |
-| CEX-007 | P1 | Tool-use adapter | Add BFCL v4 task-level mapping and ToolSandbox stateful tasks; annotate benchmark quality issues | Function name/argument correctness, state transitions, abstention, multi-turn outcome, version pins | **CANDIDATE** |
-| CEX-008 | P1 | Browser adapter | Use BrowserGym as the shared harness for WebArena / WebArena-Verified; synthetic users and seeded data | Reproducible environment reset, DOM/screenshot trace, state-based verifier, no production accounts | **CANDIDATE** |
+| CEX-007 | P0 | MCP task adapter | Reuse TDQS as the static tool-definition preflight; implement MCPMark with curated initial state and programmatic verifier; then DynamicMCPBench on synthetic fleet-owned MCP servers with effect checkpoints | TDQS evidence hash + task-level receipt + pass@1/pass^4 or pass^3 semantics + state-effect verification + sandbox reset | **CANDIDATE; TDQS IN-REPO** |
+| CEX-016 | P1 | MCP discovery / cross-server cohort | Add MCP-Atlas, MCPAgentBench, and MCP-Bench after CEX-007; test tool discovery, distractors, multi-server coordination, and intermediate-result grounding | Tool-selection diagnostics, per-server identity, cross-tool trajectory, claims/effect receipt, version pins | **CANDIDATE**
+| CEX-008 | P1 | Browser adapter | Use BrowserGym as the shared harness for WebArena / WebArena-Verified; retain WebArena-Pro as research; synthetic users and seeded data | Reproducible environment reset, DOM/screenshot trace, state-based verifier, no production accounts | **CANDIDATE** |
 | CEX-009 | P1 | Benchmark envelope | Add the canonical benchmark/run fields to the existing experiment/receipt contract; preserve native score schema | Schema validation, migration notes, backward-compatible fixture, one end-to-end run | **DESIGN READY** |
 | CEX-010 | P2 | Memory evaluation | Add LongMemEval / V2 against HindSight/ForeSight retrieval and memory projections | Accuracy, temporal reasoning, update, abstention, latency, privacy/retention checks | **CANDIDATE** |
 | CEX-011 | P2 | GUI/mobile evaluation | Add OSWorld and AndroidWorld using dedicated disposable VM/emulator surfaces | State reset, device/environment fingerprint, app-level task receipts, resource cap | **RESOURCE GATED** |
@@ -38,7 +53,7 @@ This plan composes the existing QUE, Temporal, compute mesh, DoE, provenance, AE
 | CEX-014 | P2 | MergeEarn template lineage | Review the source-map and wallet-template registration on PR #4737 | Approved refTemplates registration; fleet ledger remains the internal record of record | **IMPLEMENTED ON PR BRANCH** |
 | CEX-015 | P3 | Verified treatment promotion | Promote only replicated DoE winners into runtime routing/templates/skills | Preregistered arm, independent scorer, replicated outcomes, regression pass, governance sign-off | **CONTINUOUS** |
 
-## 3. First execution batch
+## 4. First execution batch
 
 Run the following as one bounded P0 batch:
 
@@ -51,7 +66,7 @@ Run the following as one bounded P0 batch:
 
 The batch produces a decision packet for CEX-001 through CEX-005. It does not change routing weights or delete/overwrite history.
 
-## 4. Benchmark execution batch
+## 5. Benchmark execution batch
 
 The first benchmark wave should be deliberately narrow:
 
@@ -61,7 +76,7 @@ The first benchmark wave should be deliberately narrow:
 
 For each wave, run a small calibration cohort, inspect every failure and verifier artifact, then expand task coverage. Keep benchmark family scores separate. Compare treatments within each family and use the DoE design to test interactions across provider, model, prompt, toolset, manager, and compute surface.
 
-## 5. Shared run envelope
+## 6. Shared run envelope
 
 The implementation should map, not duplicate, the existing canonical sources:
 
@@ -88,7 +103,7 @@ native_outcome + verifier_version + artifact_refs + cost/latency/tokens
 
 Every projection carries the canonical run/dispatch reference. Each consumer applies its own schema and authority. The raw artifact is stored once under the owning evidence system.
 
-## 6. Automation and cadence
+## 7. Automation and cadence
 
 | Cycle | System owner | Cadence / trigger | Output |
 |---|---|---|---|
@@ -103,7 +118,7 @@ Every projection carries the canonical run/dispatch reference. Each consumer app
 
 Cadence changes require current schedule and host receipts. This plan adds no second daily AI schedule or duplicate cron.
 
-## 7. Required test and safety matrix
+## 8. Required test and safety matrix
 
 | Scenario | Expected behavior |
 |---|---|
@@ -121,7 +136,7 @@ Cadence changes require current schedule and host receipts. This plan adds no se
 | Benchmark verifier executes untrusted code | Run in isolated process/container; trusted verifier retains reward authority |
 | Benchmark task version changes | New task/version identity; retain prior result and compare only under valid protocol |
 
-## 8. Completion and promotion
+## 9. Completion and promotion
 
 A workstream is complete only when:
 - its acceptance evidence is linked to a commit or immutable artifact;
@@ -134,7 +149,7 @@ A workstream is complete only when:
 A PR being open, mergeable, or green at an intermediate point is not promotion. Merge authority remains with the repository's established review and governance process.
 
 
-## 9. Current review branches
+## 10. Current review branches
 
 - [#5663 — compounding RECON, benchmark registry, and execution plan](https://github.com/timerloggedout-spec/termux-monorepo/pull/5663): draft; CI and review pending.
 - [#5664 — current-base Agentic Wallet + MergeEarn refTemplates registration](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664): draft; CI and review pending.

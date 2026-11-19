@@ -8,6 +8,8 @@
 
 ## Active
 
+| polyglot-linguist-federation | P1 | posted | [active/polyglot-linguist-federation/](active/polyglot-linguist-federation/) |
+
 | ID | Priority | Status | Path |
 |----|----------|--------|------|
 | chatgpt-critical-eval | P0 | executing | [active/chatgpt-critical-eval/](active/chatgpt-critical-eval/) |

@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-19T07:35:26Z",
+ "read_at": "2026-11-19T07:36:43Z",
  "status": "ok",
- "count": 88599,
+ "count": 88600,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "1ffed6cf476a1ebc43308b9b8e20bbfbc1361ca8",
+   "occurred_at": "2026-11-19 07:36:00+00"
+  },
   {
    "lane": "she",
    "workflow": "n8n SHE bridge",
@@ -928,7 +937,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "cabfd2f71bc3f904dcccee05aab33d2fff0a546c",
+   "head_sha": "010150b02a42d4db957b386518deeaa6c032230c",
    "occurred_at": "2026-11-19 07:13:57+00"
   },
   {
@@ -937,7 +946,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "010150b02a42d4db957b386518deeaa6c032230c",
+   "head_sha": "cabfd2f71bc3f904dcccee05aab33d2fff0a546c",
    "occurred_at": "2026-11-19 07:13:57+00"
   },
   {
@@ -955,7 +964,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "81b3541fe44e9b9cecc2738402f7008061dff87f",
+   "head_sha": "010150b02a42d4db957b386518deeaa6c032230c",
    "occurred_at": "2026-11-19 07:13:54+00"
   },
   {
@@ -964,7 +973,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "010150b02a42d4db957b386518deeaa6c032230c",
+   "head_sha": "81b3541fe44e9b9cecc2738402f7008061dff87f",
    "occurred_at": "2026-11-19 07:13:54+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "7202543da403b340222dbf6c1255d3ba2688c4e7",
    "occurred_at": "2026-11-19 06:52:19+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "7202543da403b340222dbf6c1255d3ba2688c4e7",
-   "occurred_at": "2026-11-19 06:52:13+00"
   }
  ]
 }

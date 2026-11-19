@@ -51,6 +51,8 @@ Latency, token count, quota, cost, retries, and availability are secondary measu
 | Long-horizon | stability across repeated development cycles |
 | Adversarial | robustness against misleading context and failure conditions |
 
+The cross-domain benchmark inventory and external-adapter admission states live in `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md`. That registry adds terminal, browser, desktop, mobile, tool-use, memory, policy, security, and ML-engineering families while preserving native metric semantics and the AEF authority boundary.
+
 ## SWE fork cohort
 
 The user-owned `timerloggedout-spec/SWE-agent_fork` and `timerloggedout-spec/mini-swe-agent_fork` are first-class **reference treatments**. They are not copied into this monorepo and are not routing authorities. Each run should pin an exact fork revision and retain upstream/fork lineage.
@@ -137,6 +139,7 @@ AEF is therefore not a leaderboard alone. It is the **validation substrate for c
 - `docs/ops/SCOUT-ROSTER.md`
 - `docs/evaluations/swe-performance/README.md`
 - `docs/evaluations/swe-performance/COHORTS.md`
+- `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md`
 - `.agents/skills/multivariate-doe/SKILL.md`
 - `.agents/skills/blind-agent-evaluation/SKILL.md`
 - `.agents/skills/evidence-led-monorepo-ops/SKILL.md`

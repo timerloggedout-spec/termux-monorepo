@@ -1,14 +1,15 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T06:59:23Z",
+ "generated_at": "2026-11-19T07:12:58Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T06:59:18Z",
+   "queued": 2,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-19T07:12:41Z",
    "by_workflow_queued": {
+    "Orchestration Regression Guard": 1,
     "repo gate": 1
    }
   },
@@ -16,9 +17,9 @@
    "tier": 2,
    "queued": 1,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-19T06:58:54Z",
+   "oldest_queued_at": "2026-11-19T07:12:11Z",
    "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
+    "pages build and deployment": 1
    }
   },
   "3": {
@@ -30,26 +31,28 @@
   },
   "4": {
    "tier": 4,
-   "queued": 10,
-   "in_progress": 13,
-   "oldest_queued_at": "2026-11-19T06:59:18Z",
+   "queued": 29,
+   "in_progress": 12,
+   "oldest_queued_at": "2026-11-19T07:10:23Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 1,
+    "Agent Throughput Evidence": 11,
+    "Quota Dispatch Tree": 1,
+    "repo-tracking-collect": 1,
+    "Sweep Accountability": 1,
     "Agent Readability Source Contract": 1,
-    "quota-allocation-planner": 1,
     "termux smoke": 1,
-    "graph-matrix-probe": 1,
-    "que-cadence-kick": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
     "quota-analysis": 1,
-    "hitl-control-plane-verify": 1,
-    "DO Statement Style": 1
+    "quota-served-probe": 1,
+    "lane events recorder": 8,
+    "n8n SHE bridge": 1,
+    "PR production ledger": 1,
+    "Agent review \u2192 auto Jules": 1
    }
   }
  },
  "totals": {
-  "queued": 12,
-  "in_progress": 16
+  "queued": 32,
+  "in_progress": 14
  },
  "wedged_ancient": [
   {
@@ -213,7 +216,7 @@
    "4": 0
   },
   "explicit_total": 5,
-  "default_t4": 23,
+  "default_t4": 41,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

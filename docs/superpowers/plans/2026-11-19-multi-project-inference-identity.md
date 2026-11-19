@@ -36,6 +36,7 @@
 - Modify: `docs/integrations/schemas/integration-event.schema.json`
 - Modify: `ops/projects/profile.schema.json`
 - Create: `tests/test_inference_execution_contract.py`
+- Modify: `.github/workflows/integration-portfolio.yml`
 - Create: `docs/integrations/INFERENCE-IDENTITY.md`
 - Modify: `docs/integrations/README.md`
 - Modify: `docs/integrations/registry.json`
@@ -52,9 +53,10 @@
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; confirm the inference fields and paired project IDs fail against the current schemas.
 - [ ] Extend the event schema with project, task, inference, usage, queue, concurrency, and priority properties; require the identity objects for `inference.*` events.
 - [ ] Extend the project profile schema with paired optional `portfolio_id` and `project_id` fields.
-- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 9 passing tests.
+- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 10 passing tests.
 - [ ] Document identity, retries, parallel queues, privacy, and 3L0 mapping in `docs/integrations/INFERENCE-IDENTITY.md`.
 - [ ] Register Codex OTel and ChatGPT Desktop with discovered/planned states; align the human catalog and portfolio date.
+- [ ] Run the focused contract suite in the Integration Portfolio workflow using the repository's jsonschema 3.2.0 compatibility baseline.
 - [ ] Link the contract from `docs/integrations/README.md` and register item `IIS-002`.
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`.
 - [ ] Run `python3 scripts/proposals/validate_registry.py`.

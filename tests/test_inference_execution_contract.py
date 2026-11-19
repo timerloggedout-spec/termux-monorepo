@@ -2,7 +2,14 @@
 import json
 from pathlib import Path
 
-import jsonschema
+import pytest
+
+jsonschema = pytest.importorskip("jsonschema")
+
+
+def validator(schema):
+    """Use Draft 7-compatible keywords across jsonschema 3.x and 4.x."""
+    return jsonschema.Draft7Validator(schema)
 
 ROOT = Path(__file__).resolve().parents[1]
 EVENT_SCHEMA = json.loads((ROOT / "docs/integrations/schemas/integration-event.schema.json").read_text())
@@ -38,23 +45,23 @@ def base_event():
 
 def test_inference_event_requires_project_task_and_attempt_identity():
     event = base_event()
-    jsonschema.validate(event, EVENT_SCHEMA)
+    validator(EVENT_SCHEMA).validate(event)
     for key in ("project", "task", "inference"):
         candidate = dict(event)
         candidate.pop(key)
-        assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(candidate)), key
+        assert list(validator(EVENT_SCHEMA).iter_errors(candidate)), key
     candidate = base_event()
     candidate["inference"].pop("attempt_id")
-    assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(candidate))
+    assert list(validator(EVENT_SCHEMA).iter_errors(candidate))
 
 
 def test_inference_usage_preserves_unknown_as_null_and_rejects_negative_counts():
     event = base_event()
     event["inference"]["usage"]["credits"] = None
     event["inference"]["usage"]["estimated_cost"] = None
-    jsonschema.validate(event, EVENT_SCHEMA)
+    validator(EVENT_SCHEMA).validate(event)
     event["inference"]["usage"]["input_tokens"] = -1
-    assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(event))
+    assert list(validator(EVENT_SCHEMA).iter_errors(event))
 
 
 def test_legacy_integration_event_remains_valid_without_inference_fields():
@@ -62,7 +69,7 @@ def test_legacy_integration_event_remains_valid_without_inference_fields():
     for key in ("project", "task", "inference"):
         event.pop(key)
     event["event_type"] = "integration.observed"
-    jsonschema.validate(event, EVENT_SCHEMA)
+    validator(EVENT_SCHEMA).validate(event)
 
 
 def test_project_profile_accepts_stable_project_and_portfolio_ids():
@@ -72,7 +79,7 @@ def test_project_profile_accepts_stable_project_and_portfolio_ids():
         "surfaces": ["github-repo"], "portfolio_id": "core-platform",
         "project_id": "termux-monorepo"
     }
-    jsonschema.validate(profile, PROJECT_SCHEMA)
+    validator(PROJECT_SCHEMA).validate(profile)
 
 
 def test_project_profile_identity_requires_portfolio_pair():
@@ -81,7 +88,7 @@ def test_project_profile_identity_requires_portfolio_pair():
         "scope": {"repos": ["timerloggedout-spec/termux-monorepo"], "issue_classes": [], "lanes": [], "artifact_stores": []},
         "surfaces": ["github-repo"], "project_id": "termux-monorepo"
     }
-    assert list(jsonschema.Draft202012Validator(PROJECT_SCHEMA).iter_errors(profile))
+    assert list(validator(PROJECT_SCHEMA).iter_errors(profile))
 
 
 def test_activity_only_usage_requires_null_numeric_measurements():
@@ -89,10 +96,10 @@ def test_activity_only_usage_requires_null_numeric_measurements():
     usage = event["inference"]["usage"]
     usage["measurement_status"] = "activity_only"
     usage["input_tokens"] = 100
-    assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(event))
+    assert list(validator(EVENT_SCHEMA).iter_errors(event))
     for key in ("input_tokens", "cached_input_tokens", "output_tokens", "credits", "estimated_cost", "currency"):
         usage[key] = None
-    jsonschema.validate(event, EVENT_SCHEMA)
+    validator(EVENT_SCHEMA).validate(event)
 
 
 def test_parallel_project_events_keep_project_queues_and_portfolio_group_distinct():
@@ -115,7 +122,7 @@ def test_parallel_project_events_keep_project_queues_and_portfolio_group_distinc
 def test_inference_event_requires_explicit_usage_observation():
     event = base_event()
     event["inference"].pop("usage")
-    assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(event))
+    assert list(validator(EVENT_SCHEMA).iter_errors(event))
 
 
 def test_codex_and_desktop_capture_integrations_are_registered():
@@ -124,3 +131,8 @@ def test_codex_and_desktop_capture_integrations_are_registered():
     assert "codex-otel" in ids
     assert "chatgpt-desktop" in ids
     assert base_event()["integration_id"] in ids
+
+
+def test_contract_schemas_validate_with_the_draft7_compatible_keyword_subset():
+    validator(EVENT_SCHEMA).check_schema(EVENT_SCHEMA)
+    validator(PROJECT_SCHEMA).check_schema(PROJECT_SCHEMA)

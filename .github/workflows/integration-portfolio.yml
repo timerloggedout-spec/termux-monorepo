@@ -38,6 +38,10 @@ jobs:
           python-version: "3.12"
       - name: Validate integration registry, catalog, and documentation navigation
         run: python3 scripts/integrations/validate_portfolio.py
+      - name: Install inference contract test dependencies
+        run: python3 -m pip install --quiet 'jsonschema==3.2.0' pytest
+      - name: Validate multi-project inference identity contract
+        run: python3 -m pytest tests/test_inference_execution_contract.py -q
       - name: Validate CEEL capability graph and provenance links
         run: python3 scripts/integrations/validate_capability_graph.py
       - name: Test CEEL graph validation invariants

@@ -50,13 +50,15 @@ test('unrelated backlog does not suppress a quiet lane', () => {
 // suppresses it with reason lane_cap and names the saturated workflow.
 test('target-lane backlog suppresses with lane_cap', () => {
   const r = evaluateAdmission({
-    pressure: P({ 'context-relationship-backfill': 2 }), force: false,
+    pressure: P({ 'context-relationship-backfill': 1 }), force: false,
   });
-  const hourly = r.records.find((x) => x.lane === 'dispatch_hourly');
-  assert.equal(hourly.admitted, false);
-  assert.equal(hourly.reason, 'lane_cap');
-  assert.equal(hourly.saturated_workflow, 'context-relationship-backfill');
-  assert.equal(hourly.lane_inflight, 2); // standard cap = 2
+  const backfill = r.records.find((x) => x.lane === 'dispatch_context_backfill');
+  assert.equal(backfill.admitted, false);
+  assert.equal(backfill.reason, 'lane_cap');
+  assert.equal(backfill.saturated_workflow, 'context-relationship-backfill');
+  assert.equal(backfill.lane_inflight, 1); // single-writer heavy cap = 1
+  assert.deepEqual(OUTPUT_LANES.dispatch_context_backfill, ['context-relationship-backfill']);
+  assert.equal(OUTPUT_LANES.dispatch_hourly.includes('context-relationship-backfill'), false);
   // heavy class cap = 1: a single in-flight tribute-execute saturates hw_execute
   const r2 = evaluateAdmission({ pressure: P({ 'tribute-execute': 1 }), force: false });
   const exec = r2.records.find((x) => x.lane === 'dispatch_hw_execute');
@@ -110,6 +112,33 @@ test('stale-critical lane preempts lane and global caps', () => {
     staleness: { dispatch_q6: { stale_min: 1000, threshold_min: 720 } },
   });
   assert.equal(r3.records.find((x) => x.lane === 'dispatch_q6').admitted, false);
+});
+
+// Context graph backfill uses its own success/attempt staleness signal.
+// A 3x stale lane can recover through both lane and global pressure caps.
+test('stale context backfill preempts lane and global caps', () => {
+  const r = evaluateAdmission({
+    pressure: P({ 'context-relationship-backfill': 1 }),
+    force: false,
+    staleness: { dispatch_context_backfill: { stale_min: 180, threshold_min: 90 } },
+  });
+  const backfill = r.records.find((x) => x.lane === 'dispatch_context_backfill');
+  assert.equal(backfill.admitted, true);
+  assert.equal(backfill.reason, 'stale_critical_override');
+  assert.equal(backfill.saturated_workflow, 'context-relationship-backfill');
+});
+
+test('context backfill has an independent staleness-driven dispatcher output', () => {
+  const workflow = readFileSync(
+    new URL('../.github/workflows/quota-dispatch-tree.yml', import.meta.url),
+    'utf8',
+  );
+  assert.match(workflow, /dispatch_context_backfill:/);
+  assert.match(workflow, /contextBackfillStaleMin > contextBackfillThresholdMin/);
+  assert.match(workflow, /conclusion === 'success'/);
+  assert.match(workflow, /context-relationship-backfill/);
+  assert.match(workflow, /run: \$\{\{ needs\.decide\.outputs\.dispatch_context_backfill \}\}/);
+  assert.match(workflow, /dispatch_context_backfill: \{ stale_min: contextBackfillStaleMin, threshold_min: contextBackfillThresholdMin \}/);
 });
 
 // 6. Force override: "all" admits everything regardless of pressure.

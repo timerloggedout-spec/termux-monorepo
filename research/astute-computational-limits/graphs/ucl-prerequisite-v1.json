@@ -1,0 +1,982 @@
+{
+  "schema_version": "1.0",
+  "graph_id": "ucl-prerequisite-v1",
+  "experiment_id": "ultimate-computation-limits",
+  "graph_type": "prerequisite_dag",
+  "directed": true,
+  "nodes": [
+    {
+      "node_id": "LOGIC",
+      "concept_id": "ucl:logic",
+      "label": "Logic and proof",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "ALG",
+      "concept_id": "ucl:alg",
+      "label": "Abstract algebra",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "LIN",
+      "concept_id": "ucl:lin",
+      "label": "Linear algebra",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "ANALYSIS",
+      "concept_id": "ucl:analysis",
+      "label": "Real and complex analysis",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "PROB",
+      "concept_id": "ucl:prob",
+      "label": "Probability and measure theory",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "INFO",
+      "concept_id": "ucl:info",
+      "label": "Information theory",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "GRAPH",
+      "concept_id": "ucl:graph",
+      "label": "Graph theory",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "DIFF",
+      "concept_id": "ucl:diff",
+      "label": "Differential geometry",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P0",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "BOOL",
+      "concept_id": "ucl:bool",
+      "label": "Boolean circuits",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P1",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "STAT",
+      "concept_id": "ucl:stat",
+      "label": "Statistical mechanics",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P1",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "LAN",
+      "concept_id": "ucl:lan",
+      "label": "Landauer principle",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P1",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "REV",
+      "concept_id": "ucl:rev",
+      "label": "Reversible computation",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P1",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "COMP",
+      "concept_id": "ucl:comp",
+      "label": "Computational complexity",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P1",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "HILBERT",
+      "concept_id": "ucl:hilbert",
+      "label": "Hilbert spaces and operators",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P2",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "QM",
+      "concept_id": "ucl:qm",
+      "label": "Quantum mechanics",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P2",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "QINFO",
+      "concept_id": "ucl:qinfo",
+      "label": "Quantum information",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P2",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "QEC",
+      "concept_id": "ucl:qec",
+      "label": "Quantum error correction",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P2",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "QSL",
+      "concept_id": "ucl:qsl",
+      "label": "Quantum speed limits",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P2",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "SR",
+      "concept_id": "ucl:sr",
+      "label": "Special relativity",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "GR",
+      "concept_id": "ucl:gr",
+      "label": "General relativity",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "QFT",
+      "concept_id": "ucl:qft",
+      "label": "Quantum field theory",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "CURVED",
+      "concept_id": "ucl:curved",
+      "label": "QFT on curved spacetime",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "BHT",
+      "concept_id": "ucl:bht",
+      "label": "Black-hole thermodynamics",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "BHENT",
+      "concept_id": "ucl:bhent",
+      "label": "Bekenstein–Hawking entropy",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "BOUND",
+      "concept_id": "ucl:bound",
+      "label": "Entropy and information bounds",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P3",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "HOLO",
+      "concept_id": "ucl:holo",
+      "label": "Holographic principle",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P4",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "ADS",
+      "concept_id": "ucl:ads",
+      "label": "AdS/CFT correspondence",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P4",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "QG",
+      "concept_id": "ucl:qg",
+      "label": "Quantum gravity",
+      "node_type": "concept",
+      "status": "ACTIVE_RESEARCH",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P4",
+        "evidence_class": "ACTIVE_RESEARCH"
+      }
+    },
+    {
+      "node_id": "HAWK",
+      "concept_id": "ucl:hawk",
+      "label": "Hawking radiation",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P4",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "INFOX",
+      "concept_id": "ucl:infox",
+      "label": "Black-hole information problem",
+      "node_type": "concept",
+      "status": "ACTIVE_RESEARCH",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P4",
+        "evidence_class": "ACTIVE_RESEARCH"
+      }
+    },
+    {
+      "node_id": "DEV",
+      "concept_id": "ucl:dev",
+      "label": "Quantum device platforms",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P5",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "CONTROL",
+      "concept_id": "ucl:control",
+      "label": "Quantum control, readout and metrology",
+      "node_type": "concept",
+      "status": "ESTABLISHED",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P5",
+        "evidence_class": "ESTABLISHED"
+      }
+    },
+    {
+      "node_id": "FAULT",
+      "concept_id": "ucl:fault",
+      "label": "Fault-tolerant logical processors",
+      "node_type": "concept",
+      "status": "SUPPORTED_MODEL",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P5",
+        "evidence_class": "SUPPORTED_MODEL"
+      }
+    },
+    {
+      "node_id": "BHC",
+      "concept_id": "ucl:bhc",
+      "label": "Programmable black-hole computer hypothesis",
+      "node_type": "concept",
+      "status": "SPECULATIVE",
+      "evidence_ids": [],
+      "metadata": {
+        "phase": "P5",
+        "evidence_class": "SPECULATIVE"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "ucl-e-001",
+      "from": "LOGIC",
+      "to": "BOOL",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-002",
+      "from": "LOGIC",
+      "to": "ALG",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-003",
+      "from": "ALG",
+      "to": "LIN",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-004",
+      "from": "LIN",
+      "to": "HILBERT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-005",
+      "from": "ANALYSIS",
+      "to": "HILBERT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-006",
+      "from": "PROB",
+      "to": "STAT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-007",
+      "from": "PROB",
+      "to": "INFO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-008",
+      "from": "INFO",
+      "to": "LAN",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-009",
+      "from": "STAT",
+      "to": "LAN",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-010",
+      "from": "LAN",
+      "to": "REV",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-011",
+      "from": "GRAPH",
+      "to": "INFO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-012",
+      "from": "HILBERT",
+      "to": "QM",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-013",
+      "from": "QM",
+      "to": "QINFO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-014",
+      "from": "INFO",
+      "to": "QINFO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-015",
+      "from": "QINFO",
+      "to": "QEC",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-016",
+      "from": "QM",
+      "to": "QSL",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-017",
+      "from": "COMP",
+      "to": "REV",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-018",
+      "from": "DIFF",
+      "to": "GR",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-019",
+      "from": "SR",
+      "to": "GR",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-020",
+      "from": "QM",
+      "to": "QFT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-021",
+      "from": "GR",
+      "to": "CURVED",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-022",
+      "from": "QFT",
+      "to": "CURVED",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-023",
+      "from": "CURVED",
+      "to": "HAWK",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-024",
+      "from": "GR",
+      "to": "BHT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-025",
+      "from": "STAT",
+      "to": "BHT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-026",
+      "from": "HAWK",
+      "to": "BHT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-027",
+      "from": "BHT",
+      "to": "BHENT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-028",
+      "from": "INFO",
+      "to": "BOUND",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-029",
+      "from": "BHENT",
+      "to": "BOUND",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-030",
+      "from": "BHENT",
+      "to": "HOLO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-031",
+      "from": "QINFO",
+      "to": "HOLO",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-032",
+      "from": "HOLO",
+      "to": "ADS",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-033",
+      "from": "GR",
+      "to": "QG",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-034",
+      "from": "QM",
+      "to": "QG",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-035",
+      "from": "HOLO",
+      "to": "QG",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-036",
+      "from": "HAWK",
+      "to": "INFOX",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-037",
+      "from": "QINFO",
+      "to": "INFOX",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-038",
+      "from": "QG",
+      "to": "INFOX",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-039",
+      "from": "QINFO",
+      "to": "DEV",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-040",
+      "from": "DEV",
+      "to": "CONTROL",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-041",
+      "from": "CONTROL",
+      "to": "FAULT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-042",
+      "from": "QEC",
+      "to": "FAULT",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-043",
+      "from": "QG",
+      "to": "BHC",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-044",
+      "from": "INFOX",
+      "to": "BHC",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-045",
+      "from": "QSL",
+      "to": "BHC",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    },
+    {
+      "edge_id": "ucl-e-046",
+      "from": "BOUND",
+      "to": "BHC",
+      "relation_type": "prerequisite",
+      "assumptions": [],
+      "evidence_ids": [],
+      "provenance": {
+        "review_status": "unassessed",
+        "source_graph": "dependency-graph.json"
+      }
+    }
+  ],
+  "metadata": {
+    "status": "preliminary",
+    "edge_direction": "prerequisite_to_dependent",
+    "notes": [
+      "Edges encode prerequisite claims only; historical influence and causal claims use separate relations.",
+      "The graph is an initial hypothesis map and requires per-edge source review.",
+      "Phase numbers are research work ordering, not a claim that all discoveries followed a single linear chronology.",
+      "The black-hole computer node is speculative and carries explicit unresolved engineering dependencies."
+    ],
+    "validation_policy": "acyclic"
+  }
+}

@@ -132,3 +132,10 @@ A workstream is complete only when:
 - the report and registry state are updated from those receipts.
 
 A PR being open, mergeable, or green at an intermediate point is not promotion. Merge authority remains with the repository's established review and governance process.
+
+
+## 9. Current review branches
+
+- [#5663 — compounding RECON, benchmark registry, and execution plan](https://github.com/timerloggedout-spec/termux-monorepo/pull/5663): draft; CI and review pending.
+- [#5664 — current-base Agentic Wallet + MergeEarn refTemplates registration](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664): draft; CI and review pending.
+- [#4737 — original Agentic Wallet template lineage](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737): preserved; branch diverges from current `master` and is 13,613 commits behind. Review #5664 as the fresh current-base registration path; maintainer disposition of #4737 remains open.

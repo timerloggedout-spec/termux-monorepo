@@ -29,6 +29,7 @@ def validate() -> list[str]:
     examples = BASE / "examples"
     capability = load(examples / "capability.json")
     targets_doc = load(examples / "technology-targets.json")
+    mapping = load(examples / "mapping-quic-streams.json")
     if not REQUIRED["capability"] <= set(capability):
         errors.append("capability example: required fields missing")
     if capability.get("schema_version") != "1.0.0":
@@ -59,6 +60,17 @@ def validate() -> list[str]:
         for source in target.get("sources", []):
             if not str(source.get("uri", "")).startswith(("https://", "http://")):
                 errors.append(f"technology target {target_id}: source URI must be HTTP(S)")
+    if mapping.get("schema_version") != "1.0.0":
+        errors.append("mapping example: unsupported schema_version")
+    if mapping.get("capability_id") != capability.get("capability_id"):
+        errors.append("mapping example: capability_id does not resolve")
+    if mapping.get("target_id") not in seen:
+        errors.append("mapping example: target_id does not resolve")
+    if mapping.get("loss_profile") not in {"lossless", "conditionally_lossless", "lossy", "uncharacterized"}:
+        errors.append("mapping example: invalid loss_profile")
+    coverage = mapping.get("coverage")
+    if not isinstance(coverage, dict) or not isinstance(coverage.get("supported"), list) or not isinstance(coverage.get("unsupported"), list):
+        errors.append("mapping example: coverage requires supported and unsupported arrays")
     return errors
 
 def main() -> int:

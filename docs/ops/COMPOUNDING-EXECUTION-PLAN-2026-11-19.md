@@ -36,7 +36,7 @@ WAIT is an evidence-collection phase. Re-fetch after material changes, back off 
 
 | ID | Priority | Workstream | Implementation | Acceptance evidence | State |
 |---|---|---|---|---|---|
-| CEX-001 | P0 | DeepSeek / Termux Origin provenance continuity | Recover historical commits, branches, device export receipts, and session IDs; join to `chat-provenance/v1` using stable IDs; preserve original route/actor evidence; emit only missing records | Commit/branch references, duplicate-free feed delta, source-to-canonical join receipt, actor-confidence report, outcome classification | **READY FOR EXECUTION** |
+| CEX-001 | P0 | DeepSeek / Termux Origin provenance continuity | Reuse DeepSeek webWrapper/session-store history and the owner-original Repo Replay / RevWright Session Provenance extraction model. Recover available exports, session/message/block pointers, hashes, and surviving Git history; classify missing origin state with the documented gap taxonomy; join to `chat-provenance/v1` idempotently | Source-to-canonical join receipt; duplicate-free feed delta; 1:N reverse index; actor-confidence report; gap classes `never_in_chat/lost_at_origin_capture/unharvested_provider/drifted_final_edit/UNRESOLVED`; outcome remains observational until confirmed | **PROVENANCE MACHINERY EXISTS; ORIGIN CAPTURE PARTIAL; JOIN REQUIRED** |
 | CEX-002 | P0 | Muse HindSight runtime + population receipt | Map the owner-reported Muse VM port to the actual `HINDSIGHT_BASE_URL`/export target; extend the existing cron receipt with host/process/listener health, port identity, input/output digests, and a bounded 3-unit retain + recall canary. Keep this distinct from the weekly Actions ingest workflow and historical Fly/Koyeb sinks | Current Muse host/cron receipt; 3/3 proof retains; stats + recall canary; output digest; no secret values. Reconcile historical 402/zero-retain receipts and shared credit pool | **OWNER-REPORTED SERVICE; CURRENT POPULATION SUCCESS UNVERIFIED** |
 | CEX-003 | P0 | Hark/Muse capacity reconciliation | Probe each host; reconcile CPU architecture, vCPU, RAM, seat lease, disk, and current process pressure against `ops/compute/ALLOCATION.md` | Timestamped node receipts; allocation card updated from live measurements | **CONFLICTED CARD** |
 | CEX-004 | P0 | Common job/attempt identity | Define a crosswalk from QUE item/lease, Temporal workflow/run/activity, cron run, Actions run/job, and Hark request/DONE receipt | One synthetic lifecycle test with admission → placement → retry → resume → terminal receipt | **DESIGN READY** |
@@ -57,7 +57,7 @@ WAIT is an evidence-collection phase. Re-fetch after material changes, back off 
 
 Run the following as one bounded P0 batch:
 
-1. Recover DeepSeek and Termux Origin history without modifying the canonical feed.
+1. Recover DeepSeek and Termux Origin history using the existing RevWright/session provenance method without modifying the canonical feed.
 2. Generate a join report keyed by session ID, message/turn ID, workflow run ID, source commit, timestamp, route, and actor evidence.
 3. Probe Muse and Hark, capturing host IDs and resource cards.
 4. Capture the Muse HindSight port/listener/cron/export receipt.

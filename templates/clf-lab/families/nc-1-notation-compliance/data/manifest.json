@@ -1,0 +1,24 @@
+{
+  "schema": "clf-lab-manifest/v1",
+  "family": "nc-1-notation-compliance",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "ref": "master",
+  "pin_sha": null,
+  "task": "notation compliance (drift ∨ compliant) per corpus unit",
+  "label_note": "gold: nc-1 corpus units.jsonl `label` (50 units; prose_about_notation=2 drops per run)",
+  "sources": [
+    {
+      "adapter": "notation_units",
+      "path": "experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl",
+      "label_field": "label"
+    }
+  ],
+  "issue_refs": [
+    "#5605",
+    "issuecomment-6974657958"
+  ],
+  "upstream_refs": [
+    "experiments/doe/nc-1-notation-compliance/DESIGN.json",
+    "experiments/doe/nc-1-notation-compliance/records/corpus/units.jsonl"
+  ]
+}

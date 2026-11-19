@@ -1,0 +1,33 @@
+{
+  "schema": "clf-lab-manifest/v1",
+  "family": "live-2-prlane-tuning",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "ref": "master",
+  "pin_sha": null,
+  "task": "PR lane (CANDIDATE ∨ EXTRACT ∨ NEED_EVIDENCE ∨ SUPERSEDE) from title ∧ PR metadata tokens",
+  "label_note": "gold: lane recorded by vocab-v2 classify_pr in 8 frozen pr-lane-feed snapshots; dedup layer keeps the newest row per PR text",
+  "sources": [
+    {
+      "adapter": "pr_lane_snapshots",
+      "paths": [
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-28T230234Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-28T231701Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-28T233736Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-29T005615Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-29T114228Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-30T113448Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-10-31T111001Z.json",
+        "experiments/doe/live-2-prlane-tuning/snapshots/feed-2026-11-01T010229Z.json"
+      ]
+    }
+  ],
+  "issue_refs": [
+    "#5605",
+    "issuecomment-6974657958"
+  ],
+  "upstream_refs": [
+    "experiments/doe/live-2-prlane-tuning/DESIGN.json",
+    "ml/pipelines/lanes/classify.py",
+    "ml/pipelines/production_classify.py"
+  ]
+}

@@ -1,0 +1,82 @@
+# DO bootstrap one public classifier-experiment repo per family (#5605 Classifiers suite).
+# Idempotent ∧ additive: create repo iff ∄, seed files iff ∄ (contents API), set MESH_REQUEST_TOKEN iff ∄, dispatch iterate once.
+# Custody: MESH_REQUEST_TOKEN moves secret-to-secret from OPERATOR_GITHUB_TOKEN; values stay masked ∧ unprinted.
+name: clf-lab-bootstrap
+on:
+  workflow_dispatch:
+    inputs:
+      family:
+        description: classifier family
+        type: choice
+        options:
+          - tier1-classifiers-steward
+          - live-2-prlane-tuning
+          - nc-1-notation-compliance
+          - bf-1-backfill-methods
+      dispatch_iterate:
+        description: dispatch the first iterate run
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: clf-lab-bootstrap-${{ inputs.family }}
+  cancel-in-progress: false
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+      FAMILY: ${{ inputs.family }}
+      TARGET: timerloggedout-spec/clf-lab-${{ inputs.family }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            templates/clf-lab
+            scripts/mesh
+      - name: Check operator token
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "::error::OPERATOR_GITHUB_TOKEN ∧ OPERATOR_TOKEN ∄"; exit 1; fi
+          gh api user --jq '"::notice title=operator::login=" + .login' || { echo "::error::operator token rejected"; exit 1; }
+      - name: Create public repo (skip if exists)
+        run: |
+          if gh api "repos/$TARGET" >/dev/null 2>&1; then
+            echo "::notice title=repo::exists $TARGET"
+          else
+            gh repo create "$TARGET" --public --description "clf-lab · $FAMILY · automated DoE classifier iterations (termux-monorepo #5605)" \
+              || { echo "::error title=repo::create refused (scope?)"; exit 1; }
+            echo "::notice title=repo::created $TARGET"
+          fi
+          test "$(gh api "repos/$TARGET" --jq .private)" = "false" || { echo "::error::repo ¬ public"; exit 1; }
+      - name: Seed harness via contents API (create-only)
+        run: python3 scripts/mesh/seed_repo_contents.py "$TARGET" "$FAMILY" templates/clf-lab
+      - name: Set MESH_REQUEST_TOKEN (skip if exists)
+        run: |
+          set -euo pipefail
+          if gh secret list --repo "$TARGET" --json name --jq '.[].name' | grep -qx MESH_REQUEST_TOKEN; then
+            echo "::notice title=secret::MESH_REQUEST_TOKEN exists"
+          else
+            printf '%s' "$GH_TOKEN" | gh secret set MESH_REQUEST_TOKEN --repo "$TARGET"
+            echo "::notice title=secret::MESH_REQUEST_TOKEN set (value withheld)"
+          fi
+      - name: Dispatch first iterate run
+        if: ${{ inputs.dispatch_iterate }}
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5 6; do
+            if gh workflow run iterate.yml --repo "$TARGET" -f max_cells=12 -f node=actions 2>/dev/null; then break; fi
+            sleep 10
+          done
+          sleep 8
+          RUN="$(gh run list --repo "$TARGET" --workflow iterate.yml --limit 1 --json databaseId,url --jq '.[0] | "\(.databaseId) \(.url)"' || true)"
+          echo "::notice title=iterate::first run ${RUN:-pending}"
+      - name: Read back
+        run: |
+          set -euo pipefail
+          B="$(gh api "repos/$TARGET" --jq .default_branch)"
+          H="$(gh api "repos/$TARGET/commits/$B" --jq .sha)"
+          N="$(gh api "repos/$TARGET/git/trees/$B?recursive=1" --jq '[.tree[] | select(.type=="blob")] | length')"
+          S="$(gh secret list --repo "$TARGET" --json name --jq '[.[].name]|join(",")')"
+          echo "::notice title=readback::$TARGET public branch=$B head=${H:0:7} files=$N secrets=$S"

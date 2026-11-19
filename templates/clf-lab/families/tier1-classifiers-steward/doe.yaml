@@ -1,0 +1,214 @@
+schema: clf-lab-doe/v1
+family: tier1-classifiers-steward
+generation: 0
+data_sha: null
+design: fractional-factorial
+design_note: '1/3 fraction: (feature_idx + layer_idx) mod 3 = model_idx mod 3'
+batch_size: 12
+eval:
+  folds: 5
+  repeats: 2
+  seed: 7
+  aug_copies: 1
+  metric: macro_f1
+improve:
+  top_k: 3
+  explore: 2
+  min_delta: 0.005
+factors:
+  model:
+    levels:
+    - logreg
+    - linear-svm
+    - nb
+    - small-gbm
+    params:
+      logreg:
+        C:
+          values:
+          - 0.3
+          - 1.0
+          - 3.0
+          min: 0.001
+          max: 1000
+      linear-svm:
+        C:
+          values:
+          - 0.1
+          - 0.5
+          - 2.0
+          min: 0.001
+          max: 1000
+      nb:
+        alpha:
+          values:
+          - 0.1
+          - 0.5
+          - 1.0
+          min: 0.001
+          max: 10
+      small-gbm:
+        lr:
+          values:
+          - 0.05
+          - 0.1
+          - 0.2
+          min: 0.005
+          max: 0.5
+        max_iter:
+          values:
+          - 50
+          - 100
+          - 200
+          min: 20
+          max: 300
+          int: true
+        svd:
+          values:
+          - 32
+          - 64
+          - 96
+          min: 8
+          max: 128
+          int: true
+  features:
+    levels:
+    - tfidf-word
+    - tfidf-char
+    - hashing
+    params:
+      tfidf-word:
+        ngram_max:
+          values:
+          - 1
+          - 2
+          - 3
+          min: 1
+          max: 4
+          int: true
+      tfidf-char:
+        ngram_max:
+          values:
+          - 4
+          - 5
+          - 6
+          min: 3
+          max: 7
+          int: true
+      hashing:
+        log2_features:
+          values:
+          - 14
+          - 16
+          - 18
+          min: 12
+          max: 18
+          int: true
+  layer:
+    levels:
+    - raw
+    - dedup
+    - augmented
+cells:
+- model: logreg
+  model_level:
+    C: 1.0
+  features: tfidf-word
+  features_level:
+    ngram_max: 2
+  layer: raw
+  id: g0-logreg-tfidf-word-raw-5dea5c
+- model: logreg
+  model_level:
+    C: 1.0
+  features: tfidf-char
+  features_level:
+    ngram_max: 5
+  layer: augmented
+  id: g0-logreg-tfidf-char-augmented-d494cc
+- model: logreg
+  model_level:
+    C: 1.0
+  features: hashing
+  features_level:
+    log2_features: 16
+  layer: dedup
+  id: g0-logreg-hashing-dedup-029b5c
+- model: linear-svm
+  model_level:
+    C: 0.5
+  features: tfidf-word
+  features_level:
+    ngram_max: 2
+  layer: dedup
+  id: g0-linear-svm-tfidf-word-dedup-297093
+- model: linear-svm
+  model_level:
+    C: 0.5
+  features: tfidf-char
+  features_level:
+    ngram_max: 5
+  layer: raw
+  id: g0-linear-svm-tfidf-char-raw-813c27
+- model: linear-svm
+  model_level:
+    C: 0.5
+  features: hashing
+  features_level:
+    log2_features: 16
+  layer: augmented
+  id: g0-linear-svm-hashing-augmented-57cee7
+- model: nb
+  model_level:
+    alpha: 0.5
+  features: tfidf-word
+  features_level:
+    ngram_max: 2
+  layer: augmented
+  id: g0-nb-tfidf-word-augmented-0d0b9e
+- model: nb
+  model_level:
+    alpha: 0.5
+  features: tfidf-char
+  features_level:
+    ngram_max: 5
+  layer: dedup
+  id: g0-nb-tfidf-char-dedup-aa0e35
+- model: nb
+  model_level:
+    alpha: 0.5
+  features: hashing
+  features_level:
+    log2_features: 16
+  layer: raw
+  id: g0-nb-hashing-raw-48a81a
+- model: small-gbm
+  model_level:
+    lr: 0.1
+    max_iter: 100
+    svd: 64
+  features: tfidf-word
+  features_level:
+    ngram_max: 2
+  layer: raw
+  id: g0-small-gbm-tfidf-word-raw-8fc39a
+- model: small-gbm
+  model_level:
+    lr: 0.1
+    max_iter: 100
+    svd: 64
+  features: tfidf-char
+  features_level:
+    ngram_max: 5
+  layer: augmented
+  id: g0-small-gbm-tfidf-char-augmented-e6885e
+- model: small-gbm
+  model_level:
+    lr: 0.1
+    max_iter: 100
+    svd: 64
+  features: hashing
+  features_level:
+    log2_features: 16
+  layer: dedup
+  id: g0-small-gbm-hashing-dedup-1b6ce5

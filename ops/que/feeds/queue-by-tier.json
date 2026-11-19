@@ -1,22 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T20:20:55Z",
+ "generated_at": "2026-11-19T20:48:18Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 2,
-   "oldest_queued_at": "2026-11-19T20:20:45Z",
+   "queued": 2,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-19T20:46:51Z",
    "by_workflow_queued": {
-    "repo gate": 1
+    "repo gate": 2
    }
   },
   "2": {
    "tier": 2,
    "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T20:20:23Z",
+   "oldest_queued_at": "2026-11-19T20:45:28Z",
    "by_workflow_queued": {
     "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
@@ -31,19 +31,39 @@
   },
   "4": {
    "tier": 4,
-   "queued": 3,
-   "in_progress": 14,
-   "oldest_queued_at": "2026-11-19T20:19:46Z",
+   "queued": 44,
+   "in_progress": 20,
+   "oldest_queued_at": "2026-11-19T20:45:28Z",
    "by_workflow_queued": {
-    "quota-allocation-planner": 1,
+    "Agent Throughput Evidence": 5,
+    "n8n SHE bridge": 2,
+    "Issue Comment Router \u2014 modular fan-out reduction": 1,
     "DO Statement Style": 1,
-    "Quota Dispatch Tree": 1
+    "Peer review orchestrator": 2,
+    "PR production ledger": 2,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Gemini review after peers": 1,
+    "repo-tracking-collect": 1,
+    "lane events recorder": 12,
+    "quota-allocation-planner": 1,
+    "Foresight Evidence Spine": 2,
+    "Agent Readability Source Contract": 2,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Repository development evaluation": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "RECON INTEL discovery": 2,
+    "Agent PR Jules Handoff": 1,
+    "Lane matrix event-driven inventory": 1,
+    "Sweep Accountability": 1,
+    "DeepSeek CI \u2013 Agentic Automation": 1,
+    "PR evidence evaluation": 1,
+    "Action Effectiveness Ledger": 1
    }
   }
  },
  "totals": {
-  "queued": 6,
-  "in_progress": 17
+  "queued": 48,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -201,13 +221,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 3,
+   "1": 2,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 6,
-  "default_t4": 17,
+  "explicit_total": 5,
+  "default_t4": 64,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

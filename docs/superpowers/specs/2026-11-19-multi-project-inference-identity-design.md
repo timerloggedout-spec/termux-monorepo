@@ -34,7 +34,7 @@ Use `(portfolio_id, project_id)` as the owning scope. A task belongs to one proj
 
 Project queues use `queue_id`; portfolio-level shared capacity uses `concurrency_group_id`; scheduling priority uses `priority_class`. These are descriptive contract fields for future orchestration. Existing routing and quota owners retain execution authority.
 
-The event schema adds optional `project`, `task`, and `inference` objects. `inference.*` events require those objects. Project profiles accept `project_id` and `portfolio_id` as an optional pair. Usage values remain nullable and carry explicit measurement and attribution states.
+The event schema adds optional `project`, `task`, and `inference` objects. `inference.*` events require those objects. Project profiles accept `project_id` and `portfolio_id` as an optional pair. Every inference event carries a usage object; usage values remain nullable and carry explicit measurement and attribution states.
 
 Completed attempts map to `3l0-intake/v1` using the attempt as dispatch identity and the existing provider, model, endpoint, instance, run, usage, and outcome fields. 3L0's confirmed/corroborated scoring rules remain authoritative.
 

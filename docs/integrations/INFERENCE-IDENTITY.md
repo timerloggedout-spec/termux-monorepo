@@ -43,7 +43,7 @@ These fields describe execution and attribution. The contract does not implement
 
 The existing `integration-event.schema.json` remains the shared event envelope. The extension adds optional `project`, `task`, and `inference` objects. Events whose `event_type` begins with `inference.` require all three objects and require stable `inference_id`, `attempt_id`, and provider identity.
 
-Usage fields include input, cached-input, output tokens, credits, estimated cost, currency, measurement status, and attribution. Use `measured`, `estimated`, `activity_only`, or `not_established` as the measurement status. For activity-only and not-established observations, every numeric usage value and currency remain null. Preserve estimates as estimates and provider-reported measurements as provider-reported.
+Every inference event carries a usage object. Usage fields include input, cached-input, output tokens, credits, estimated cost, currency, measurement status, and attribution; source-unknown values remain null. Use `measured`, `estimated`, `activity_only`, or `not_established` as the measurement status. For activity-only and not-established observations, every numeric usage value and currency remain null. Preserve estimates as estimates and provider-reported measurements as provider-reported.
 
 ## Project profiles
 

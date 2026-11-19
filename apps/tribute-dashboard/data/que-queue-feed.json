@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-19T04:42:23Z",
+ "generated_at": "2026-11-19T04:58:13Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,17 +10,23 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 0,
+    "queued": 5,
     "in_progress": 1,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "oldest_queued_at": "2026-11-19T04:56:16Z",
+    "by_workflow_queued": {
+     "Orchestration Regression Guard": 2,
+     "repo gate": 1,
+     "PR scope guard": 2
+    }
    },
    "2": {
     "tier": 2,
-    "queued": 0,
-    "in_progress": 3,
-    "oldest_queued_at": null,
-    "by_workflow_queued": {}
+    "queued": 1,
+    "in_progress": 1,
+    "oldest_queued_at": "2026-11-19T04:57:18Z",
+    "by_workflow_queued": {
+     "tribute-dashboard-deploy": 1
+    }
    },
    "3": {
     "tier": 3,
@@ -31,21 +37,37 @@
    },
    "4": {
     "tier": 4,
-    "queued": 21,
-    "in_progress": 16,
-    "oldest_queued_at": "2026-11-19T04:40:38Z",
+    "queued": 56,
+    "in_progress": 18,
+    "oldest_queued_at": "2026-11-19T04:52:53Z",
     "by_workflow_queued": {
-     "repo-tracking-collect": 1,
-     "lane events recorder": 8,
-     "Agent Throughput Evidence": 9,
-     "Context Relationship + Lead/Lag Audit": 1,
+     "Quota Dispatch Tree": 1,
+     "n8n SHE bridge": 1,
+     "Agent Throughput Evidence": 20,
+     "Foresight Evidence Spine": 1,
+     "que-cadence-kick": 1,
+     "hitl-control-plane-verify": 1,
      "termux smoke": 1,
-     "Gemini review after peers": 1
+     "quota-analysis": 1,
+     "Agent Readability Source Contract": 3,
+     "quota-allocation-planner": 1,
+     "DO Statement Style": 1,
+     "graph-matrix-probe": 1,
+     "lane events recorder": 8,
+     "Sweep Accountability": 2,
+     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+     "Context Relationship + Lead/Lag Audit": 2,
+     "Lane matrix event-driven inventory": 2,
+     "RECON INTEL discovery": 2,
+     "Peer review orchestrator": 2,
+     "Action Effectiveness Ledger": 1,
+     "PR production ledger": 1,
+     "PR evidence evaluation": 2
     }
    }
   },
   "totals": {
-   "queued": 21,
+   "queued": 62,
    "in_progress": 20
   },
   "wedged_ancient": [
@@ -203,13 +225,13 @@
   "tier_basis": {
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
-    "1": 1,
-    "2": 3,
+    "1": 6,
+    "2": 2,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 4,
-   "default_t4": 37,
+   "explicit_total": 8,
+   "default_t4": 74,
    "unmatched": 0,
    "ancient_excluded": 25,
    "operator_excluded": 1
@@ -225,7 +247,7 @@
  "dispatch_claims": {
   "source": "ops/challenge/dispatch-state-feed.json",
   "source_schema": "dispatch-state-feed/v1",
-  "source_generated_at": "2026-11-19T04:35:55Z",
+  "source_generated_at": "2026-11-19T04:51:04Z",
   "counts": {
    "claimed": 54,
    "escalated": 36,
@@ -237,12 +259,12 @@
     "entry": "D1",
     "title": "[task] RFP-D1-7 award batch \u2014 13 verified findings, one build item",
     "state": "claimed",
-    "score": 1487.217,
+    "score": 1487.488,
     "score_components": {
-     "age": 26.102,
+     "age": 26.12,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1381.115
+     "wall": 1381.368
     },
     "rank": 2,
     "rank_method": "que-task-rank/v1",
@@ -262,12 +284,12 @@
     "entry": "D1",
     "title": "[task] RFP-D1-8 set 2 \u2014 scheduler integrity + web contract fixes (6 findings)",
     "state": "claimed",
-    "score": 1487.142,
+    "score": 1487.413,
     "score_components": {
-     "age": 26.027,
+     "age": 26.045,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1381.115
+     "wall": 1381.368
     },
     "rank": 3,
     "rank_method": "que-task-rank/v1",
@@ -287,12 +309,12 @@
     "entry": "D1",
     "title": "[task] D1 host-B endpoint contract alignment \u2014 /model retired \u2192 /health + /plan + always-receipt",
     "state": "claimed",
-    "score": 1484.505,
+    "score": 1484.776,
     "score_components": {
-     "age": 23.39,
+     "age": 23.408,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1381.115
+     "wall": 1381.368
     },
     "rank": 4,
     "rank_method": "que-task-rank/v1",
@@ -312,12 +334,12 @@
     "entry": "D1",
     "title": "[task] D1 FIT SLICE (FIRED) \u2014 next_order / typed check-in in core / phase-by-session-count / A2 constants as DATA",
     "state": "claimed",
-    "score": 1484.505,
+    "score": 1484.776,
     "score_components": {
-     "age": 23.39,
+     "age": 23.408,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1381.115
+     "wall": 1381.368
     },
     "rank": 5,
     "rank_method": "que-task-rank/v1",
@@ -337,9 +359,9 @@
     "entry": "SYSTEM-UPGRADE \u00b7 Opportunities lanes \u2200 (owner order 2026-11-10 04:11 PT, via main)",
     "title": "QUE: SYSTEM UPGRADE \u2014 Opportunities prep-first + repo-internal self-eval loop + Delphi-selection pipeline",
     "state": "claimed",
-    "score": 14.45,
+    "score": 14.467,
     "score_components": {
-     "age": 14.45,
+     "age": 14.467,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -362,9 +384,9 @@
     "entry": "SYSTEM-UPGRADE build leg of #5096 (owner order 2026-11-10 04:11 PT) \u00b7 parent claim: #5096 comment 6767108653 \u00b7 build spec: #5096 comment 6767350095",
     "title": "[task] QUE: build the #5096 opportunity self-eval loop (prep gate + QUE priority + Delphi-rubric selection)",
     "state": "claimed",
-    "score": 14.448,
+    "score": 14.466,
     "score_components": {
-     "age": 14.448,
+     "age": 14.466,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -387,9 +409,9 @@
     "entry": "OWNER ORDER 2026-11-10 04:27 PT (via main): build priority \u2460 D-h pullable trigger FIRST \u00b7 parent: #5096 + fix queue #4977 Fix 5 \u00b7 source of record: timerloggedout-spec/repo-story `.github/workflows/build-dispatch.yml` (3,980 B, read firsthand 2026-11-10; proving run 41426129878 SUCCESS -> repo-story PR #6)",
     "title": "[task] QUE: port build-dispatch (D-h pullable trigger) from repo-story \u2014 Priority 1 per owner order 2026-11-10 04:27 PT",
     "state": "claimed",
-    "score": 14.441,
+    "score": 14.458,
     "score_components": {
-     "age": 14.441,
+     "age": 14.458,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -412,9 +434,9 @@
     "entry": "MIGRATION \u00b7 AutonomousOpsStuff (owner order 2026-11-10 04:43 PT, via main) \u2014 extension of the continuous-operation fix {D-h #5111 \u00b7 #5096 loop #5110}. Chats reduce to spec/route/verify only; operable functions move repo-side {QUE \u00b7 workflows \u00b7 governor \u00b7 Actions}.",
     "title": "[task] QUE: MIGRATION \u2014 side-chat functions \u2192 termux-monorepo AutonomousOpsStuff (slate + tranches)",
     "state": "claimed",
-    "score": 14.427,
+    "score": 14.445,
     "score_components": {
-     "age": 14.427,
+     "age": 14.445,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -437,9 +459,9 @@
     "entry": "SIGLARY ENFORCEMENT (owner order 2026-11-10 04:54 PT, via main) \u2014 Siglary ISSUED 2026-11-10 (PR #5100 merged bd9450389a89; name of the compressed-notation system: skill + Notation Matrice + glyph/chord standard).",
     "title": "[task] QUE: SIGLARY ENFORCEMENT \u2014 repo-wide enforced notation {skills \u00b7 ICM \u00b7 CLAUDE.md \u00b7 DoE dispatch} + validation/performance legs",
     "state": "claimed",
-    "score": 14.414,
+    "score": 14.431,
     "score_components": {
-     "age": 14.414,
+     "age": 14.431,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -462,12 +484,12 @@
     "entry": "D3 ListingLens \u2014 L3 demo render (Clips upload leg; gate D3-CLIPS-STORAGE satisfied 2026-11-10)",
     "title": "[task] QUE: D3 L3 \u2014 ListingLens demo render (video-render machinery)",
     "state": "claimed",
-    "score": 1355.518,
+    "score": 1355.789,
     "score_components": {
-     "age": 14.403,
+     "age": 14.421,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1261.115
+     "wall": 1261.368
     },
     "rank": 6,
     "rank_method": "que-task-rank/v1",
@@ -487,9 +509,9 @@
     "entry": "SIGLARY LEG B \u2014 validator + performance machinery (QUE #5116; standard of record docs/proposals/active/notation-sets/SIGLARY-STANDARD.md sections 3, 4, 6).",
     "title": "[task] Siglary Leg B \u2014 validator + performance machinery, phase 1 report-only (#5116)",
     "state": "claimed",
-    "score": 14.295,
+    "score": 14.313,
     "score_components": {
-     "age": 14.295,
+     "age": 14.313,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -512,9 +534,9 @@
     "entry": "MIGRATION #5113 TRANCHE 1 item 1 \u2014 DISPATCH LIVENESS (D-j / issue #4977 Fix 6). Case of record: Termux Fleet Swarm App installation suspended 2026-11-07 ~20:13-23:40Z; que-feed-collect failed at its mint step on every run for ~2.5 days and NOTHING paged (diagnosis + stamps on #5096, 2026-11-10). The existing dispatch-watchdog itself mints the Swarm App, so it dies at the same step it exists to watch.",
     "title": "[task] Migration T1.1 \u2014 dispatch liveness: mint-failure paging + build-dispatch heartbeat aging (#5113)",
     "state": "claimed",
-    "score": 14.29,
+    "score": 14.308,
     "score_components": {
-     "age": 14.29,
+     "age": 14.308,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -537,12 +559,12 @@
     "entry": "D3 ListingLens \u2014 L3 demo render machinery build (for QUE entry #5124)",
     "title": "[task] D3 video-render machinery \u2014 ListingLens demo MP4 from real run (#5124)",
     "state": "claimed",
-    "score": 1355.278,
+    "score": 1355.549,
     "score_components": {
-     "age": 14.163,
+     "age": 14.181,
      "state": 0.0,
      "tier": 80.0,
-     "wall": 1261.115
+     "wall": 1261.368
     },
     "rank": 7,
     "rank_method": "que-task-rank/v1",
@@ -562,9 +584,9 @@
     "entry": "Migration #5113 Tranche 1.2 \u2014 deadline fail-safes (priority_timebox-driven, no chat relay)",
     "title": "[task] Migration T1.2 \u2014 deadline fail-safes: priority_timebox-driven transitions, no chat relay (#5113)",
     "state": "claimed",
-    "score": 14.075,
+    "score": 14.092,
     "score_components": {
-     "age": 14.075,
+     "age": 14.092,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -587,9 +609,9 @@
     "entry": "Migration #5113 Tranche 1.3 \u2014 backup-state watch class (ops/vm-backup)",
     "title": "[task] Migration T1.3 \u2014 backup-state watch: backup-state/v1 feed + scheduled watch, no chat relay (#5113)",
     "state": "claimed",
-    "score": 14.074,
+    "score": 14.092,
     "score_components": {
-     "age": 14.074,
+     "age": 14.092,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -612,9 +634,9 @@
     "entry": "build-dispatch hardening \u2014 convert silent-empty SUCCESS into honest FAILURE in-run (evidence: false-green class, 5 silent-empty / 9 completed builds on 2026-11-10)",
     "title": "[task] build-dispatch hardening \u2014 convert silent-empty SUCCESS to honest FAILURE in-run",
     "state": "claimed",
-    "score": 14.062,
+    "score": 14.08,
     "score_components": {
-     "age": 14.062,
+     "age": 14.08,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -637,9 +659,9 @@
     "entry": "DoE / provider-pool infrastructure \u2014 free inference endpoint population and quota-aware cadence",
     "title": "[task] QUE: DoE free-inference pool + quota-aware cadence (autoQuotaCadence) repair",
     "state": "claimed",
-    "score": 13.342,
+    "score": 13.359,
     "score_components": {
-     "age": 13.342,
+     "age": 13.359,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -662,9 +684,9 @@
     "entry": "admitted-dispatch-executor",
     "title": "[task] admitted\u2192dispatch executor: convert swarm-admitted filings to claim + arm dispatch",
     "state": "claimed",
-    "score": 12.6,
+    "score": 12.617,
     "score_components": {
-     "age": 12.6,
+     "age": 12.617,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -687,9 +709,9 @@
     "entry": "billion-tokens-page",
     "title": "[task] Page build: \"What can you do with a Billion Tokens\" (fleet Pages)",
     "state": "claimed",
-    "score": 12.594,
+    "score": 12.612,
     "score_components": {
-     "age": 12.594,
+     "age": 12.612,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -712,9 +734,9 @@
     "entry": "c15-agentic-ai-cfp",
     "title": "[task] C15 independent completion: ARA Agentic AI CFP closeout + next-cycle packet",
     "state": "claimed",
-    "score": 11.178,
+    "score": 11.195,
     "score_components": {
-     "age": 11.178,
+     "age": 11.195,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -737,9 +759,9 @@
     "entry": "bucket-headroom-alerting",
     "title": "[task] bucket-headroom alerting: scheduled bucket reads, derived thresholds, projected-exhaustion page",
     "state": "claimed",
-    "score": 11.076,
+    "score": 11.094,
     "score_components": {
-     "age": 11.076,
+     "age": 11.094,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -762,9 +784,9 @@
     "entry": "evaluator-flow-thresholds-ssot",
     "title": "[task] evaluator re-pin: FLOW_THRESHOLDS conform to dispatch-tiers.json v2 SSOT (read at eval time, no embedded table)",
     "state": "claimed",
-    "score": 10.979,
+    "score": 10.997,
     "score_components": {
-     "age": 10.979,
+     "age": 10.997,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -787,9 +809,9 @@
     "entry": "venue-execution-machinery",
     "title": "[task] Venue-execution machinery: per-venue requirement legs in GitHub Actions (upload \u2192 public URL + no-login verify \u2192 filing), census-driven",
     "state": "claimed",
-    "score": 10.89,
+    "score": 10.907,
     "score_components": {
-     "age": 10.89,
+     "age": 10.907,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -812,9 +834,9 @@
     "entry": "neo4j-relate-eval",
     "title": "[task] Eval: Neo4j Relate (embedded Rust graph DB for agents) \u2014 fleet fit + hackathon census",
     "state": "claimed",
-    "score": 10.866,
+    "score": 10.883,
     "score_components": {
-     "age": 10.866,
+     "age": 10.883,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -837,9 +859,9 @@
     "entry": "github-rubicon-refcas-patterns",
     "title": "[task] Project Rubicon teardown: Ref-CAS patterns for Repo Replay / Commit Replay + fleet push-contention advisory",
     "state": "claimed",
-    "score": 10.856,
+    "score": 10.874,
     "score_components": {
-     "age": 10.856,
+     "age": 10.874,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -862,9 +884,9 @@
     "entry": "que-self-migration-app-consolidation",
     "title": "[task] QUE self-migration + AppID consolidation census: workflow classes, per-App load map, wave plan (#5113 leg)",
     "state": "claimed",
-    "score": 10.851,
+    "score": 10.869,
     "score_components": {
-     "age": 10.851,
+     "age": 10.869,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -887,9 +909,9 @@
     "entry": "adapter-fix-recensus",
     "title": "[task] Adapter FIX + re-census: sealion/cohere/baseten agent-loop marker (Cohere v2 first)",
     "state": "claimed",
-    "score": 10.844,
+    "score": 10.862,
     "score_components": {
-     "age": 10.844,
+     "age": 10.862,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -912,9 +934,9 @@
     "entry": "CEEL \u00b7 platform adapters and qualification",
     "title": "[task] CEEL: provider-neutral observability adapters and four-platform qualification",
     "state": "claimed",
-    "score": 10.837,
+    "score": 10.854,
     "score_components": {
-     "age": 10.837,
+     "age": 10.854,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -937,9 +959,9 @@
     "entry": "CEEL \u00b7 16-cell factorial design and experiment evidence",
     "title": "[task] CEEL: register and validate the complete 2^4 platform-factorial DoE",
     "state": "claimed",
-    "score": 10.837,
+    "score": 10.854,
     "score_components": {
-     "age": 10.837,
+     "age": 10.854,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -962,9 +984,9 @@
     "entry": "CEEL \u00b7 event-driven Novel Feature Search and opportunity intake",
     "title": "[task] CEEL: GitHub-native event intake, idempotent opportunity updates, and QUE admission",
     "state": "claimed",
-    "score": 10.837,
+    "score": 10.854,
     "score_components": {
-     "age": 10.837,
+     "age": 10.854,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -987,9 +1009,9 @@
     "entry": "CEEL \u00b7 post-merge verification and CI failure classification",
     "title": "[task] CEEL: post-merge check reconciliation and ArchWiz dangle failure diagnosis",
     "state": "claimed",
-    "score": 10.836,
+    "score": 10.854,
     "score_components": {
-     "age": 10.836,
+     "age": 10.854,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1012,9 +1034,9 @@
     "entry": "Other \u2014 QDesk portfolio report implementation / current-master reconciliation",
     "title": "[task] QDesk: rebase report strategy on current master + self-implement evidence-backed portfolio report",
     "state": "claimed",
-    "score": 10.807,
+    "score": 10.824,
     "score_components": {
-     "age": 10.807,
+     "age": 10.824,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1037,9 +1059,9 @@
     "entry": "que-task-plane-prioritization",
     "title": "[task] QUE task-plane prioritization: score + rank + claim order for the registry feed (owner: get it done)",
     "state": "claimed",
-    "score": 10.156,
+    "score": 10.173,
     "score_components": {
-     "age": 10.156,
+     "age": 10.173,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1062,9 +1084,9 @@
     "entry": "ci-workflow-pipeline-audit",
     "title": "[task] CI workflow pipeline audit: least-privilege tokens + offline RESPX mocks + harden-runner posture (owner Google Tasks, overdue)",
     "state": "claimed",
-    "score": 10.078,
+    "score": 10.095,
     "score_components": {
-     "age": 10.078,
+     "age": 10.095,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1087,9 +1109,9 @@
     "entry": "que-auto-claim-resolve",
     "title": "[task] QUE auto-claim + auto-resolve: close the escalation stall (origin: 441-min unclaimed notifications)",
     "state": "claimed",
-    "score": 10.071,
+    "score": 10.089,
     "score_components": {
-     "age": 10.071,
+     "age": 10.089,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1112,9 +1134,9 @@
     "entry": "que-owner-observatory",
     "title": "[task] Owner QUE Observatory: glanceable whole-state surface \u2014 rank+rationale, streams, validation, DoE %, Gantt-of-states, drain ETA, citations",
     "state": "claimed",
-    "score": 9.976,
+    "score": 9.993,
     "score_components": {
-     "age": 9.976,
+     "age": 9.993,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1137,9 +1159,9 @@
     "entry": "aistudio-webwrapper",
     "title": "[task] AI Studio webWrapper \u2014 IMMEDIATE (owner): wrapped fleet session for .APK build retrieval (ChapitoAI multi list \u2192 operational)",
     "state": "claimed",
-    "score": 9.955,
+    "score": 9.973,
     "score_components": {
-     "age": 9.955,
+     "age": 9.973,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1162,9 +1184,9 @@
     "entry": "github-intake-coverage-gate",
     "title": "[task] GitHub intake coverage gate: dedupe/coverage check + Provenance/Telemetry relationship stamps at filing time",
     "state": "claimed",
-    "score": 9.925,
+    "score": 9.943,
     "score_components": {
-     "age": 9.925,
+     "age": 9.943,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1187,9 +1209,9 @@
     "entry": "tribute-outreach-truth-accuracy-audit",
     "title": "[task] Tribute outreach truth-accuracy audit: Z3\u03c00 success metrics vs live foreign-repo state \u2227 monorepo telemetry",
     "state": "claimed",
-    "score": 9.92,
+    "score": 9.938,
     "score_components": {
-     "age": 9.92,
+     "age": 9.938,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1212,9 +1234,9 @@
     "entry": "build-delta-ingestion-standard",
     "title": "[task] Build \u2206-ingestion standard: every new machinery build emits a \u2206 ledger + registers its consumers (case example: #5304)",
     "state": "claimed",
-    "score": 9.919,
+    "score": 9.937,
     "score_components": {
-     "age": 9.919,
+     "age": 9.937,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1237,9 +1259,9 @@
     "entry": "appid-marketplace-ubiquity-census",
     "title": "[task] AppID Marketplace ubiquity census: which fleet Apps generalize to a GitHub Marketplace product?",
     "state": "claimed",
-    "score": 9.909,
+    "score": 9.926,
     "score_components": {
-     "age": 9.909,
+     "age": 9.926,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1262,9 +1284,9 @@
     "entry": "rate-limit-aggregator-consolidation",
     "title": "[task] Rate-limit scheduled-aggregator consolidation \u2014 #5219 next leg",
     "state": "claimed",
-    "score": 2.493,
+    "score": 2.51,
     "score_components": {
-     "age": 2.493,
+     "age": 2.51,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1287,9 +1309,9 @@
     "entry": "approxination-utilization-resumption",
     "title": "[task] Approxination utilization resumption: feedback flow + APPROX-006 + reachability/token re-verify",
     "state": "claimed",
-    "score": 9.902,
+    "score": 9.92,
     "score_components": {
-     "age": 9.902,
+     "age": 9.92,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1312,9 +1334,9 @@
     "entry": "Other \u2014 SEO/link-surface production lane",
     "title": "[task] seo-link-surface-lane: dedicated SEO + link-callback lane for all published surfaces \u2014 marketing taxonomy hierarchy graph, staleness=defect (quota pages first), feed-consolidation intake",
     "state": "claimed",
-    "score": 9.674,
+    "score": 9.692,
     "score_components": {
-     "age": 9.674,
+     "age": 9.692,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1337,9 +1359,9 @@
     "entry": "siglary-github-surface-enforcement",
     "title": "[build] Siglary enforcement: GitHub commits, PRs, issues, comments + reviews",
     "state": "claimed",
-    "score": 7.786,
+    "score": 7.804,
     "score_components": {
-     "age": 7.786,
+     "age": 7.804,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1362,12 +1384,12 @@
     "entry": "D5 \u2014 AI Builder Day Hackathon - November 2026 \u00b7 host Aha! (aha.io) \u00b7 platform aha-io \u00b7 official https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026",
     "title": "[task] D5 build dispatch \u2014 IdeaInbox (Understudy \u00b7 Aha! AI Builder Day)",
     "state": "claimed",
-    "score": 1059.101,
+    "score": 1059.373,
     "score_components": {
-     "age": 2.503,
+     "age": 2.521,
      "state": 0.0,
      "tier": 20.0,
-     "wall": 1036.598
+     "wall": 1036.852
     },
     "rank": 8,
     "rank_method": "que-task-rank/v1",
@@ -1387,9 +1409,9 @@
     "entry": "Endpoint transacting stress test \u2014 the wired-to-transacting gap as a deliberate test (owner order 2026-11-17 09:33 PT via main: \"FIX! ... Make this its own stress test\").",
     "title": "[task] Endpoint transacting stress test \u2014 wired-to-transacting gap",
     "state": "claimed",
-    "score": 2.432,
+    "score": 2.45,
     "score_components": {
-     "age": 2.432,
+     "age": 2.45,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1412,9 +1434,9 @@
     "entry": "brain.rs integration \u2014 get the kernel FUNCTIONING with its 20+ subsystems (owner order 2026-11-17 09:39 PT via main).",
     "title": "[task] brain.rs integration \u2014 kernel functioning with its 20+ subsystems",
     "state": "claimed",
-    "score": 2.423,
+    "score": 2.441,
     "score_components": {
-     "age": 2.423,
+     "age": 2.441,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1437,9 +1459,9 @@
     "entry": "PR #5518 (AWS Emulator adoption + agent-built fidelity loop, draft since 2026-11-16) - owner order 2026-11-18 08:45 PT: pull it forward NOW.",
     "title": "[task] Pull forward PR #5518 - AWS Emulator adoption (rebase + fix + merge)",
     "state": "claimed",
-    "score": 0.819,
+    "score": 0.836,
     "score_components": {
-     "age": 0.819,
+     "age": 0.836,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1462,9 +1484,9 @@
     "entry": "Owner order 2026-11-18 08:47 PT: BRR + commits exports + the Regression suite (#5552) wired in immediately, joined with the graph surfaces that already started (context-relationship-graph family + cross-plane graph + graph-studio #5007). Wire into the existing starts - do not fork new surfaces.",
     "title": "[task] Wire BRR + commits + Regressions + comment/context graph (existing starts)",
     "state": "claimed",
-    "score": 0.815,
+    "score": 0.833,
     "score_components": {
-     "age": 0.815,
+     "age": 0.833,
      "state": 0.0,
      "tier": 0.0,
      "wall": 0.0
@@ -1613,7 +1635,7 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-19T04:42:23Z",
+  "generated_at": "2026-11-19T04:58:13Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
    "STALE": 1,
@@ -1623,57 +1645,57 @@
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-19T04:42:23Z",
-    "observed_at": "2026-11-19T04:42:23Z",
+    "generated_at": "2026-11-19T04:58:13Z",
+    "observed_at": "2026-11-19T04:58:13Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-19T04:16:54Z",
-    "cycle_gap_min": 25.5,
+    "previous_cycle_at": "2026-11-19T04:42:23Z",
+    "cycle_gap_min": 15.8,
     "health": "STALE",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "878b4d931831c79e36770b6cd6fefbae4e4618de",
-    "run_id": "44460095770"
+    "sha": "006334ffbddb0a8dc65a3c7b0321817df38f3bdc",
+    "run_id": "44461867546"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-19T04:42:23Z",
+    "observed_at": "2026-11-19T04:58:13Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "878b4d931831c79e36770b6cd6fefbae4e4618de",
-    "generated_at": "2026-11-19T04:35:55Z",
-    "age_min": 6.5,
+    "sha": "006334ffbddb0a8dc65a3c7b0321817df38f3bdc",
+    "generated_at": "2026-11-19T04:51:04Z",
+    "age_min": 7.2,
     "health": "FRESH"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-19T04:42:23Z",
+    "observed_at": "2026-11-19T04:58:13Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "878b4d931831c79e36770b6cd6fefbae4e4618de",
-    "generated_at": "2026-11-19T04:35:55Z",
-    "age_min": 6.5,
+    "sha": "006334ffbddb0a8dc65a3c7b0321817df38f3bdc",
+    "generated_at": "2026-11-19T04:51:04Z",
+    "age_min": 7.2,
     "health": "FRESH"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-19T04:42:23Z",
+    "observed_at": "2026-11-19T04:58:13Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "878b4d931831c79e36770b6cd6fefbae4e4618de",
+    "sha": "006334ffbddb0a8dc65a3c7b0321817df38f3bdc",
     "generated_at": "2026-11-18T21:28:17Z",
-    "age_min": 434.1,
+    "age_min": 449.9,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-19T04:42:23Z",
+    "observed_at": "2026-11-19T04:58:13Z",
     "generated_at": "2026-11-19T00:31:44Z",
-    "age_min": 250.7,
+    "age_min": 266.5,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "878b4d931831c79e36770b6cd6fefbae4e4618de"
+    "sha": "006334ffbddb0a8dc65a3c7b0321817df38f3bdc"
    }
   }
  }

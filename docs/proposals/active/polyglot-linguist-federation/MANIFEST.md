@@ -10,7 +10,7 @@
 
 Establish a federated research, mapping, implementation and evaluation architecture. PolyGlot specialists study reference technologies and extract capabilities; Linguist provides canonical capability identities and language mappings; Matrice evaluates parity, performance and cross-domain advantage. A repository federation distributes work while preserving provenance, versioned contracts and reproducible evidence.
 
-This proposal extends existing Linguist, COMMS-MATRICES, capability-opportunity graph, proposal lifecycle and Polyglot/CRG work. It does not replace those systems or establish a second canonical graph.
+This proposal extends existing Linguist, COMMS-MATRICES, capability-opportunity graph, proposal lifecycle and PolyGlot/CRG work. It preserves those systems and their canonical graph boundaries.
 
 ## Decision requested
 
@@ -52,7 +52,7 @@ The canonical CRG remains authoritative for its existing graph domain. The feder
 
 A PolyGlot is a specialist research and mapping worker for one reference technology or coherent technology family. Examples include Rust, C++, C, Fortran, Zig, Go, Python, Java, Lua, Cangjie, LLVM, GCC, WebAssembly, Linux, Android, QUIC, TCP, UDP, HTTP/3, MASQUE, WebTransport, optical transport, modems, fax transmission, Base64, CBOR, Protocol Buffers, Zstandard, Brotli, arithmetic coding, ANS, A2A and MCP.
 
-The initial competitor set is an opening cohort, not a closed catalogue. New targets enter through discovery and prioritization.
+The initial competitor set is an opening cohort; the catalogue expands through discovery and prioritization.
 
 Each specialist:
 - records upstream source, version, revision and license;
@@ -185,11 +185,11 @@ GitHub comments and webpages can expose a public Linguist reading layer through 
 
 derpWiki may provide an optional collaborative discovery layer. Experimental invisible-character encodings belong only in clearly labelled, opt-in test fixtures. Public `llms.txt`, Agent Ready checks and ordinary agent discovery should use explicit, documented metadata and standards-compliant content. Baseline tests run with derpWiki features disabled and verify the ordinary published surface.
 
-Versioned publishing includes source hash, language version, mapping version, surface ID, visibility and access policy. Private material must remain behind actual access controls; obscurity or hidden characters do not provide confidentiality.
+Versioned publishing includes source hash, language version, mapping version, surface ID, visibility and access policy. Protect private material with explicit access controls; treat obscurity and hidden characters as presentation experiments rather than confidentiality controls.
 
 ### 10. Future Research Astute migration
 
-Research Astute is the intended future organizational home. Migration is a future governance milestone, not part of this implementation.
+Research Astute is the intended future organizational home. Schedule migration as a future governance milestone after readiness review and explicit approval.
 
 Before transfer, prepare:
 - repository inventory and ownership decision;

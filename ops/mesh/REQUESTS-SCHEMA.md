@@ -6,7 +6,7 @@ DO route work to mesh nodes through an append-only `REQUESTS.jsonl`; executors a
 `{"id": uuid4, "ts_utc": "YYYY-MM-DDTHH:MM:SSZ", "from": "dispatch|issue#N|<node>", "target": T, "kind": K, "ref": "<git ref ∨ issue ∨ path>", "args": {object ≤2000 chars}, "priority": "T1".."T4"}`
 
 - target ∈ {hark-vm, actions, codespaces, cloudshell, muse-vm, any}
-- kind ∈ {eval, export, hygiene, probe} · allowlist only · ¬ arbitrary shell
+- kind ∈ {eval, export, hygiene, probe, clf-doe} · allowlist only · ¬ arbitrary shell
 - priority default T4
 
 ## DONE line
@@ -24,3 +24,4 @@ DO route work to mesh nodes through an append-only `REQUESTS.jsonl`; executors a
 - `workflow_dispatch` on `mesh-request.yml` {target, kind, ref, args, priority}
 - issue labeled `mesh:request`, body lines `target: …`, `kind: …`, `ref: …`, `args: {…}`, `priority: T#`
 - Writes: contents API fast-forward append (`scripts/mesh/append_jsonl.py`), ¬ force; store default branch ruleset `append-only` {deletion, non_fast_forward}.
+- `clf-doe`: DO run one clf-lab DoE iteration for `args.repo` (a `timerloggedout-spec/clf-lab-<family>` repo seeded by `clf-lab-bootstrap.yml`, #5605).

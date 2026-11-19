@@ -44,14 +44,26 @@ jobs:
         run: |
           python3 scripts/branch_reconciliation_registry.py \
             --repo "${GITHUB_REPOSITORY}" \
-            --default-branch "${{ github.event.repository.default_branch }}"
+            --default-branch "${{ github.event.repository.default_branch }}" \
+            --max-api-pages 10
       - name: Observe ∧ promote ∧ learn
         env:
           GH_TOKEN: ${{ steps.app.outputs.token || github.token }}
           QUE_SR_WINDOW_HOURS: "6"
+          QUE_SR_MAX_API_CALLS: "80"
+          QUE_SR_MAX_FAILING_GROUPS: "8"
+          QUE_SR_MAX_PROMOTIONS: "5"
+          QUE_SR_TOKEN_SOURCE: ${{ steps.app.outcome == 'success' && 'swarm-app' || 'github-token' }}
         run: |
-          echo "token_source=${{ steps.app.outcome == 'success' && 'swarm-app' || 'github-token' }}"
-          python3 scripts/que/self_repair.py --branch-inventory artifacts/branch-reconciliation/inventory.json
+          python3 scripts/que/self_repair.py --branch-inventory artifacts/branch-reconciliation/inventory.json --max-api-calls "$QUE_SR_MAX_API_CALLS" --max-failing-groups "$QUE_SR_MAX_FAILING_GROUPS" --max-promotions "$QUE_SR_MAX_PROMOTIONS"
+      - name: Retain QDesk cycle receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qdesk-cycle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/qdesk-self-repair/receipt.json
+          if-no-files-found: warn
+          retention-days: 90
       - name: Retain BRR evidence
         uses: actions/upload-artifact@v4
         with:

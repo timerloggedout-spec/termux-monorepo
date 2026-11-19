@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/polyglot/technology-target.schema.json",
+  "title": "PolyGlot technology target",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "target_id",
+    "name",
+    "domain",
+    "target_kind",
+    "lifecycle_state",
+    "sources",
+    "specialist"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_kind": {
+      "enum": [
+        "language",
+        "encoding",
+        "codec",
+        "compiler",
+        "kernel",
+        "runtime",
+        "transport",
+        "physical_medium",
+        "protocol",
+        "application_format",
+        "agent_protocol",
+        "knowledge_surface",
+        "other"
+      ]
+    },
+    "lifecycle_state": {
+      "enum": [
+        "discovered",
+        "researching",
+        "mapped",
+        "implemented",
+        "verified",
+        "benchmarked",
+        "retired"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "uri",
+          "source_type"
+        ],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "source_type": {
+            "enum": [
+              "specification",
+              "official_documentation",
+              "source_repository",
+              "paper",
+              "benchmark",
+              "other"
+            ]
+          },
+          "revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "observed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "specialist": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

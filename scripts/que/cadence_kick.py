@@ -41,9 +41,13 @@ def decide(runs: list[dict], max_age_min: float, now: datetime) -> dict:
     live = [r for r in runs if r.get("status") in IN_FLIGHT]
     if live:
         oldest = min(parse_iso(r["created_at"]) for r in live)
+        queued = [r for r in live if r.get("status") in {"queued", "requested", "pending"}]
+        queued_wait = max(((now - parse_iso(r["created_at"])).total_seconds()
+                           for r in queued), default=None)
         return {"action": "skip", "reason": "in-flight",
                 "in_flight": len(live),
-                "oldest_in_flight_min": round((now - oldest).total_seconds() / 60, 1)}
+                "oldest_in_flight_min": round((now - oldest).total_seconds() / 60, 1),
+                "oldest_queued_wait_s": round(queued_wait, 1) if queued_wait is not None else None}
     if not runs:
         return {"action": "kick", "reason": "∅ runs", "age_min": None}
     newest = max(parse_iso(r["created_at"]) for r in runs)

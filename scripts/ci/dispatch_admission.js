@@ -41,8 +41,8 @@ const GLOBAL_CAP = 6;
 const STALE_FACTOR = 2;
 
 // Workflow file base name (without .yml) -> admission class.
-// heavy = lanes that spend or execute (the tree's Node F1 comment class);
-// everything else managed is standard.
+// heavy = lanes that spend/execute or serialize a single-writer artifact;
+// context graph backfill is heavy because it publishes the canonical index.
 const LANE_CLASSES = {
   'tribute-followup': 'heavy',
   'tribute-scout': 'heavy',

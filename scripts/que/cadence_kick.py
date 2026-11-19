@@ -151,7 +151,7 @@ def main() -> int:
     out = {"schema": "que.cadence-kick/v2", "state": state, "at": stamp, "targets": report,
            "repo": repo, "sha": os.environ.get("GITHUB_SHA", "unknown"),
            "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
-           "api": {"api_calls": API_CALLS, "http_statuses": API_STATUSES,
+           "api": {"api_calls": API_CALLS, "api_call_budget": API_CALL_BUDGET, "http_statuses": API_STATUSES,
                    "route_calls": API_ROUTES, "latency_ms": {
                        "count": len(ordered),
                        "p50": round(statistics.median(ordered), 2) if ordered else None,

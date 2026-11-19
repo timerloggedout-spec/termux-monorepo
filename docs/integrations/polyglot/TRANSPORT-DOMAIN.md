@@ -39,4 +39,4 @@ Run both controlled network emulation and real-network observations. Label them 
 
 ## Comparison rule
 
-Fax, a 14.4 kbps modem, optical links, TCP and QUIC solve different parts of the transport problem. Compare technologies within meaningful layers and evaluate complete stacks separately. A faster physical medium does not prove a better transport protocol; a better protocol does not increase the capacity of a constrained physical channel.
+Fax, a 14.4 kbps modem, optical links, TCP and QUIC solve different parts of the transport problem. Compare technologies within meaningful layers and evaluate complete stacks separately. Evaluate physical-medium capacity independently from transport-protocol behavior.

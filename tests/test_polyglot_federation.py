@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import tempfile
 import subprocess
 import sys
 import unittest
@@ -30,6 +32,25 @@ class PolyglotFederationTests(unittest.TestCase):
         self.assertEqual(mapping["capability_id"], "transport.stream.multiplexing")
         quic = next(item for item in data["targets"] if item["target_id"] == "quic")
         self.assertEqual(quic["domain"], "transport")
+
+    def test_feed_builder_emits_content_addressed_records(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output = Path(temp_dir) / "feed.json"
+            command = [
+                sys.executable, str(ROOT / "scripts" / "polyglot" / "build_feed.py"),
+                "--repository", "timerloggedout-spec/termux-monorepo",
+                "--revision", "0123456789abcdef0123456789abcdef01234567",
+                "--generated-at", "2026-11-19T00:00:00Z",
+                "--output", str(output),
+            ]
+            result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            feed = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(feed["schema_version"], "1.0.0")
+            self.assertGreaterEqual(len(feed["records"]), 7)
+            canonical = json.dumps(feed["records"], sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            self.assertEqual(feed["artifact_digest"], "sha256:" + hashlib.sha256(canonical).hexdigest())
+            self.assertTrue(all(record["content_digest"].startswith("sha256:") for record in feed["records"]))
 
     def test_validator_passes(self):
         result = subprocess.run(

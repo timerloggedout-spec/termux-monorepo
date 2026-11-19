@@ -156,6 +156,11 @@ def main() -> int:
                 failed += 1
                 limited = e.code == 429 or e.headers.get("X-RateLimit-Remaining") == "0"
                 state = "DEFERRED_RATE_LIMIT" if limited else "DEFERRED_PERMISSION" if e.code == 403 else "PARTIAL"
+            except (urllib.error.URLError, http.client.IncompleteRead, TimeoutError, OSError) as e:
+                d["dispatched"] = None
+                d["error"] = type(e).__name__
+                failed += 1
+                state = "PARTIAL"
         report.append({"workflow": wf, **d})
         print(f"::notice title=que-kick {wf}::{d['action']} · {d['reason']}"
               + (" · ⤴ dispatched" if d.get("dispatched") else ""))

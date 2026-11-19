@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - "docs/research/**"
+      - "research/astute-platform/**"
+      - "research/astute-computational-limits/**"
+      - "scripts/research/validate_astute.py"
       - "config/foresight_digest_sources.json"
       - "scripts/briefing/validate_research_registry.py"
   push:
@@ -31,3 +34,5 @@ jobs:
         run: python3 scripts/briefing/validate_research_registry.py docs/research/resource-registry.example.json
       - name: Validate standing digest source registry
         run: python3 -m json.tool config/foresight_digest_sources.json >/dev/null
+      - name: Validate Research Astute experiment contracts
+        run: python3 scripts/research/validate_astute.py

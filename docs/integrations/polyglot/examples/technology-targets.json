@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0.0",
+  "targets": [
+    {
+      "target_id": "rust",
+      "name": "Rust",
+      "domain": "programming-language",
+      "target_kind": "language",
+      "lifecycle_state": "researching",
+      "sources": [
+        {
+          "uri": "https://www.rust-lang.org/",
+          "source_type": "official_documentation",
+          "revision": null,
+          "observed_at": "2026-11-19T00:00:00Z"
+        }
+      ],
+      "specialist": "polyglot-rust",
+      "capability_ids": [],
+      "notes": [
+        "Initial competition cohort"
+      ]
+    },
+    {
+      "target_id": "cpp",
+      "name": "C++",
+      "domain": "programming-language",
+      "target_kind": "language",
+      "lifecycle_state": "researching",
+      "sources": [
+        {
+          "uri": "https://isocpp.org/",
+          "source_type": "official_documentation",
+          "revision": null,
+          "observed_at": "2026-11-19T00:00:00Z"
+        }
+      ],
+      "specialist": "polyglot-cpp",
+      "capability_ids": [],
+      "notes": [
+        "Initial competition cohort"
+      ]
+    },
+    {
+      "target_id": "base64",
+      "name": "Base64",
+      "domain": "encoding",
+      "target_kind": "encoding",
+      "lifecycle_state": "researching",
+      "sources": [
+        {
+          "uri": "https://www.rfc-editor.org/rfc/rfc4648",
+          "source_type": "specification",
+          "revision": "RFC 4648",
+          "observed_at": "2026-11-19T00:00:00Z"
+        }
+      ],
+      "specialist": "polyglot-base64",
+      "capability_ids": [],
+      "notes": [
+        "Initial competition cohort"
+      ]
+    },
+    {
+      "target_id": "fortran",
+      "name": "Fortran",
+      "domain": "programming-language",
+      "target_kind": "language",
+      "lifecycle_state": "researching",
+      "sources": [
+        {
+          "uri": "https://fortran-lang.org/",
+          "source_type": "official_documentation",
+          "revision": null,
+          "observed_at": "2026-11-19T00:00:00Z"
+        }
+      ],
+      "specialist": "polyglot-fortran",
+      "capability_ids": [],
+      "notes": [
+        "Initial competition cohort"
+      ]
+    },
+    {
+      "target_id": "quic",
+      "name": "QUIC",
+      "domain": "transport",
+      "target_kind": "transport",
+      "lifecycle_state": "researching",
+      "sources": [
+        {
+          "uri": "https://www.rfc-editor.org/rfc/rfc9000",
+          "source_type": "specification",
+          "revision": "RFC 9000",
+          "observed_at": "2026-11-19T00:00:00Z"
+        },
+        {
+          "uri": "https://www.rfc-editor.org/rfc/rfc9114",
+          "source_type": "specification",
+          "revision": "RFC 9114 (HTTP/3)",
+          "observed_at": "2026-11-19T00:00:00Z"
+        }
+      ],
+      "specialist": "polyglot-quic",
+      "capability_ids": [
+        "transport.stream.multiplexing"
+      ],
+      "notes": [
+        "Initial transport competition cohort"
+      ]
+    }
+  ]
+}

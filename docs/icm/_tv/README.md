@@ -29,7 +29,7 @@ This directory owns the monorepo's **file-backed ICM visual review layer**. Mark
 2. Every mirror card uses a repository-relative `source:` path under `docs/icm/`.
 3. The publisher validates each canonical source path and card identifier before rendering.
 4. Humans own future layout metadata; card authors update the canonical Markdown cards.
-5. Interactive response files stay under `_tv/responses/<screen>/<id>.md` and require a named consuming process, accepted values, human authority, and a defined no-response behavior.
+5. Interactive response files stay under `_tv/responses/<screen>/<id>.md` and require a named consuming process, accepted values, human authority, and a defined timeout behavior.
 6. A blocked checkpoint routes the next step to its named human reviewer and preserves the canonical ICM evidence trail.
 
 ## Static publication

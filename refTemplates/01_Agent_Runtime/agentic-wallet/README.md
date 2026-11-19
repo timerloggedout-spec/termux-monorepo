@@ -37,3 +37,12 @@ rulings. Paper/test rails only; the unit of account is
 
 Sources: see `SOURCE.txt` for the internal ledger/spec lineage
 and the registered MergeEarn comparator.
+
+
+## Operational contract
+
+- Use the in-house hash-chained wallet ledger for every balance and event read.
+- Record provisioning, spend-control snapshots, revocation, ante, and sweep effects as ledger events with their source receipts.
+- Store MergeEarn references in comparator/evidence fields; preserve the fleet ledger as the fleet's accounting authority.
+- Route external payout, custody, and chain integrations through a separate owner-approved design and review gate.
+- Keep this template on paper/test rails with `soft_quota_token` until a distinct authorization record changes that boundary.

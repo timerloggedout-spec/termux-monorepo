@@ -1,9 +1,18 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-19T23:28:29Z",
+ "read_at": "2026-11-19T23:29:01Z",
  "status": "ok",
  "count": 94132,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "70c2233eaab56a2748961a52abdc6e930c0ab531",
+   "occurred_at": "2026-11-19 23:28:17+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -64,7 +73,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "7652a0781ede85f93900df1218cf80d45b7140d4",
+   "head_sha": "c3c3830f79e8d481c4236690b49cd9902085c059",
    "occurred_at": "2026-11-19 23:27:14+00"
   },
   {
@@ -73,7 +82,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "c3c3830f79e8d481c4236690b49cd9902085c059",
+   "head_sha": "7652a0781ede85f93900df1218cf80d45b7140d4",
    "occurred_at": "2026-11-19 23:27:14+00"
   },
   {
@@ -1765,7 +1774,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "44a5aeaac81f97ec7d0b4095326446896ab7e407",
+   "head_sha": "f2979fb173bac18daab9913b81c4136d0f559728",
    "occurred_at": "2026-11-19 22:39:02+00"
   },
   {
@@ -1774,7 +1783,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "f2979fb173bac18daab9913b81c4136d0f559728",
+   "head_sha": "44a5aeaac81f97ec7d0b4095326446896ab7e407",
    "occurred_at": "2026-11-19 22:39:02+00"
   },
   {
@@ -1794,15 +1803,6 @@
    "subject_url": null,
    "head_sha": "f2979fb173bac18daab9913b81c4136d0f559728",
    "occurred_at": "2026-11-19 22:38:46+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "f2979fb173bac18daab9913b81c4136d0f559728",
-   "occurred_at": "2026-11-19 22:38:45+00"
   }
  ]
 }

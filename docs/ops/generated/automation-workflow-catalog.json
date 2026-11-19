@@ -28,8 +28,8 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "5f35c8c2d499e9ebf83c7ec32324af16ff80a2cc7d301e16efcfd12df5abbb55",
-  "workflow_count": 322,
+  "source_fingerprint": "123b19010224ebda6f37b89b6c08229e0a3bcbeab72d7473f381b431eea9dbd0",
+  "workflow_count": 323,
   "workflows": [
     {
       "action_pins": [],
@@ -1090,6 +1090,21 @@
       ],
       "name": "classifier-trial-dispatch",
       "path": ".github/workflows/classifier-trial-dispatch.yml",
+      "schedules": [],
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "action_pins": [],
+      "authority": "read-only-or-advisory",
+      "concurrency": "group: clf-lab-bootstrap-${{ inputs.family }} cancel-in-progress: false",
+      "domain": "agentic-development",
+      "jobs": [
+        "bootstrap"
+      ],
+      "name": "clf-lab-bootstrap",
+      "path": ".github/workflows/clf-lab-bootstrap.yml",
       "schedules": [],
       "triggers": [
         "workflow_dispatch"

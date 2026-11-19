@@ -1,9 +1,27 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-19T00:01:56Z",
+ "read_at": "2026-11-19T00:02:29Z",
  "status": "ok",
- "count": 86565,
+ "count": 86567,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "ac161e20fd6ca7571034a2403217a9644cc71fa3",
+   "occurred_at": "2026-11-19 00:01:48+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "ac161e20fd6ca7571034a2403217a9644cc71fa3",
+   "occurred_at": "2026-11-19 00:01:47+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -127,7 +145,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "9385df4620ae6ba356d9e9935abc881f61960865",
+   "head_sha": "5bf5051acb602e3626f54d29cec26295d0573b23",
    "occurred_at": "2026-11-18 23:58:30+00"
   },
   {
@@ -136,7 +154,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "5bf5051acb602e3626f54d29cec26295d0573b23",
+   "head_sha": "9385df4620ae6ba356d9e9935abc881f61960865",
    "occurred_at": "2026-11-18 23:58:30+00"
   },
   {
@@ -1785,24 +1803,6 @@
    "subject_url": null,
    "head_sha": "96005e8ef81959c9ef8a781f852a03c1449895c0",
    "occurred_at": "2026-11-18 23:29:24+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "08ae9011d334d965fe629e4b0dc7011573b6bfe0",
-   "occurred_at": "2026-11-18 23:29:03+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "08ae9011d334d965fe629e4b0dc7011573b6bfe0",
-   "occurred_at": "2026-11-18 23:28:56+00"
   }
  ]
 }

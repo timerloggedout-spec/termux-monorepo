@@ -13,22 +13,34 @@ from scripts.build_icm_cctv_board import build, cards_from
 
 
 class IcmCctvBoardTests(unittest.TestCase):
-    def test_repository_cards_render_with_source_links_and_research_lineage(self) -> None:
+    def test_repository_cards_render_with_valid_source_links_and_research_lineage(self) -> None:
         rendered = build(ROOT / "docs/icm/_tv/screens", "test-source-sha")
         self.assertIn("ICM CCTV", rendered)
         self.assertIn("PR #232 master rebuild", rendered)
         self.assertIn("Provider routing evidence", rendered)
         self.assertIn("blocked", rendered)
         self.assertIn("docs/icm/_meta/master-rebuild-integration-evidence.md", rendered)
+        self.assertIn("docs/icm/routing/CONTEXT.md", rendered)
+        self.assertNotIn("blob/master/docs/icm/routing.md", rendered)
         self.assertIn("Jake Van Clief", rendered)
         self.assertIn("test-source-sha", rendered)
+
+    def test_board_exposes_search_status_filter_and_stage_navigation(self) -> None:
+        rendered = build(ROOT / "docs/icm/_tv/screens", "test-source-sha")
+        self.assertIn('id="card-search"', rendered)
+        self.assertIn('id="status-filter"', rendered)
+        self.assertIn('aria-label="Jump to stage"', rendered)
+        self.assertIn('id="result-count"', rendered)
+        self.assertIn('data-status="blocked"', rendered)
+        self.assertIn('data-stage="1"', rendered)
+        self.assertIn('id="empty-state"', rendered)
 
     def test_published_navigation_and_sitemap_reference_canonical_route(self) -> None:
         route = "https://timerloggedout-spec.github.io/tribute/icm-cctv.html"
         nav = (ROOT / "apps/tribute-dashboard/site-nav.js").read_text(encoding="utf-8")
         sitemap = (ROOT / "apps/tribute-dashboard/sitemap.xml").read_text(encoding="utf-8")
         hub = (ROOT / "apps/project-pages-hub/index.html").read_text(encoding="utf-8")
-        self.assertIn('["ICM CCTV", origin + "/tribute/icm-cctv.html", "icm-cctv"]', nav)
+        self.assertIn('[\"ICM CCTV\", origin + \"/tribute/icm-cctv.html\", \"icm-cctv\"]', nav)
         self.assertIn(route, sitemap)
         self.assertIn(route, hub)
 
@@ -37,6 +49,17 @@ class IcmCctvBoardTests(unittest.TestCase):
             root = Path(directory)
             card = root / "stage.md"
             card.write_text("# Missing metadata\n", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                cards_from(root)
+
+    def test_card_parser_rejects_source_path_traversal(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            card = root / "stage.md"
+            card.write_text(
+                "---\nid: safe\ntitle: Safe\nstage: 1\nstatus: done\nsource: ../outside.md\n---\n\nBody\n",
+                encoding="utf-8",
+            )
             with self.assertRaises(ValueError):
                 cards_from(root)
 
@@ -54,6 +77,16 @@ class IcmCctvBoardTests(unittest.TestCase):
             self.assertNotIn("<script>payload</script>", rendered)
             self.assertIn("&lt;script&gt;", rendered)
 
+    def test_markdown_lists_render_as_safe_html(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            card = root / "stage.md"
+            card.write_text(
+                "---\nid: safe\ntitle: Safe\nstage: 1\nstatus: done\nsource: source.md\n---\n\n- First item\n- **Second item**\n",
+                encoding="utf-8",
+            )
+            rendered = build(root, "sha")
+            self.assertIn("<ul><li>First item</li><li><strong>Second item</strong></li></ul>", rendered)
 
     def test_production_and_preview_publishers_generate_board_before_manifests(self) -> None:
         deploy = (ROOT / ".github/workflows/tribute-dashboard-deploy.yml").read_text(encoding="utf-8")
@@ -62,6 +95,14 @@ class IcmCctvBoardTests(unittest.TestCase):
         self.assertIn("python3 scripts/build_icm_cctv_board.py --source-sha", deploy)
         self.assertIn("python3 tooling/scripts/build_icm_cctv_board.py --cards-dir production/docs/icm/_tv/screens", preview)
         self.assertIn("python3 tooling/scripts/build_icm_cctv_board.py --cards-dir source/docs/icm/_tv/screens", preview)
+
+    def test_publication_contracts_describe_the_live_static_board(self) -> None:
+        board = (ROOT / "docs/icm/_tv/README.md").read_text(encoding="utf-8")
+        review = (ROOT / "docs/icm/objects/operations/optional-visual-review.md").read_text(encoding="utf-8")
+        routing = (ROOT / "docs/icm/routing/CONTEXT.md").read_text(encoding="utf-8")
+        self.assertIn("Published page", board)
+        self.assertIn("publishes the static board", review)
+        self.assertIn("Enabled for the static ICM card board", routing)
 
 
 if __name__ == "__main__":

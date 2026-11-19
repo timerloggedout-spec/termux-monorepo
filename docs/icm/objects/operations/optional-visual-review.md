@@ -6,27 +6,33 @@
 | Cluster | operations |
 | Universe | live |
 | Status | initiated |
-| Entity | A file-backed visual review surface for ICM artifacts and human checkpoints |
+| Entity | A published, file-backed visual review surface for ICM artifacts and human checkpoints |
 
 ## What this is
 
-The repository’s ICM maintenance Pipeline remains file and Markdown first. Its initiated visual-review surface lives at [`../../_tv/README.md`](../../_tv/README.md): it mirrors named repository-native ICM artifacts as card files and reserves a caged response location for future human checkpoints.
+The repository's ICM maintenance Pipeline remains file and Markdown first. Its visual-review surface mirrors named repository-native ICM artifacts as card files and reserves a caged response location for future human checkpoints.
 
-The ICM CCTV fork remains the reviewed reference input. The monorepo now has canonical card artifacts, but does not start, deploy, require, or modify the CCTV renderer. The card files are usable as a future static mobile board source; a later GitHub Pages or equivalent publication requires its own reviewed workflow/deployment scope.
+The monorepo publishes the static board at [ICM CCTV · Tribute](https://timerloggedout-spec.github.io/tribute/icm-cctv.html). The existing Tribute publisher builds the page from `docs/icm/_tv/screens/` and publishes the generated HTML with the shared navigation and site assets.
+
+The ICM CCTV fork remains the reviewed reference input. The monorepo owns its canonical card artifacts and static-board generator. The reference renderer, local file watcher, and WebSocket loop remain separate capabilities with their own review and deployment scope.
 
 ## Routing rule
 
-Use this card only when a human-visible review checkpoint improves an already defined repository-native ICM process. Preserve the stage output under the monorepo’s own ICM path as the source of truth. A visual card may point to that output; it must not become a parallel canonical document.
+Use this card when a human-visible review checkpoint improves an already defined repository-native ICM process. Preserve each stage output under the monorepo's own ICM path as the source of truth. A visual card links to that output and mirrors its reviewed state.
 
-Interactive response files must stay in [`../../_tv/responses/CONTEXT.md`](../../_tv/responses/CONTEXT.md)'s declared caged location and be consumed only by a named process after a human decision. Do not start a renderer, expose a localhost-only visual server, assume a second device, configure GitHub Pages, or create a permanent service from this reference pattern in the documentation-only phase.
+Interactive response files stay in the declared caged location under `_tv/responses/`. A consuming process declares the card identifier, accepted response values, canonical source artifact, human authority, and no-response behavior before it reads a response.
 
 ## First-order impact
 
-**Hits:** the ICM maintenance Pipeline, human checkpoint design, file-backed CCTV artifacts, future mobile-static publication review, and the BLU B160V/free-services envelope.
-**Does not hit:** default ICM maintenance behavior, provider polling, GitHub Actions, Termux MCP/device access, network deployment, or application code automatically.
+**Hits:** the ICM maintenance Pipeline, human checkpoint design, file-backed CCTV artifacts, static Tribute publication, shared navigation, sitemap, and Project Hub route.
+
+**Preserves:** Markdown-first maintenance, canonical ICM ownership, the existing provider-routing governance, and the separate BLU B160V/free-services envelope.
+
+**Separate scope:** live renderer execution, provider polling, response consumption, device access, runtime routing changes, and application behavior each require their own reviewed proposal.
 
 ## Evidence
 
-[1] [`refTemplates/smods/icm-cctv_fork/README.md`](../../../../refTemplates/smods/icm-cctv_fork/README.md) defines the optional visual layer, file-backed stage mirror, and checkpoint-response model.
-[2] [`../../_tv/README.md`](../../_tv/README.md) is the repository-native card-artifact contract.
-[3] [`../../maintenance/CLAUDE.md`](../../maintenance/CLAUDE.md) is the repository-native source-of-truth maintenance Pipeline.
+[1] [ICM CCTV reference fork](../../../../refTemplates/smods/icm-cctv_fork/README.md) defines the optional visual layer, file-backed stage mirror, and checkpoint-response model.  
+[2] [ICM CCTV board contract](../../_tv/README.md) defines canonical card ownership and static publication.  
+[3] [ICM maintenance Pipeline](../../maintenance/CLAUDE.md) defines the repository-native source-of-truth process.  
+[4] [Tribute publisher](../../../../.github/workflows/tribute-dashboard-deploy.yml) builds and publishes the static board.

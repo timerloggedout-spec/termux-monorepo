@@ -17,6 +17,7 @@ class ContractSchemaTests(unittest.TestCase):
             "DO-STATEMENT.schema.json",
             "AUTOAPPROVE-POLICY.schema.json",
             "PRIORITIZATION-POLICY.schema.json",
+            "OPTION-POSTERIOR-OBSERVATION.schema.json",
         ):
             with self.subTest(schema=name):
                 schema = self.load_schema(name)
@@ -26,6 +27,52 @@ class ContractSchemaTests(unittest.TestCase):
                 self.assertTrue(schema["required"])
                 self.assertTrue(schema["properties"])
                 Draft202012Validator.check_schema(schema)
+
+    def test_human_review_is_a_provenance_preserving_posterior_observation(self):
+        schema = self.load_schema("OPTION-POSTERIOR-OBSERVATION.schema.json")
+        observation = {
+            "schema_version": "pcdoe.option-posterior-observation.v1",
+            "observation_id": "human-review-001",
+            "observation_type": "human_doe_review",
+            "option_id": "priority-balanced",
+            "option_version": 1,
+            "assessment": {
+                "dimension": "design_validity",
+                "finding": "mixed",
+                "rationale": "Blocking is plausible; replication assumptions need calibration."
+            },
+            "confidence": 0.65,
+            "reviewer_ref": "reviewer://doe-independent",
+            "reviewer_role": "independent_doe_reviewer",
+            "cohort_ref": "cohort://fixture",
+            "snapshot_ref": "snapshot://fixture",
+            "observed_at": "2026-11-19T15:00:00Z",
+            "evidence_refs": ["artifact://design-review"],
+            "posterior_use": "pending_calibration"
+        }
+        Draft202012Validator(schema).validate(observation)
+
+    def test_posterior_inclusion_requires_calibrated_likelihood_model(self):
+        schema = self.load_schema("OPTION-POSTERIOR-OBSERVATION.schema.json")
+        observation = {
+            "schema_version": "pcdoe.option-posterior-observation.v1",
+            "observation_id": "human-review-002",
+            "observation_type": "human_doe_review",
+            "option_id": "priority-balanced",
+            "option_version": 1,
+            "assessment": {"dimension": "overall", "finding": "supports"},
+            "confidence": 0.8,
+            "reviewer_ref": "reviewer://doe-independent",
+            "reviewer_role": "independent_doe_reviewer",
+            "snapshot_ref": "snapshot://fixture",
+            "observed_at": "2026-11-19T15:00:00Z",
+            "evidence_refs": [],
+            "posterior_use": "included"
+        }
+        with self.assertRaises(Exception):
+            Draft202012Validator(schema).validate(observation)
+        observation["likelihood_model_ref"] = "calibration://human-review-v1"
+        Draft202012Validator(schema).validate(observation)
 
     def test_policy_catalog_validates_against_prioritization_schema(self):
         schema = self.load_schema("PRIORITIZATION-POLICY.schema.json")

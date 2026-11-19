@@ -49,6 +49,7 @@ const LANE_CLASSES = {
   'tribute-execute': 'heavy',
   'tribute-llm-assist': 'heavy',
   'tribute-system1': 'heavy',
+  'context-relationship-backfill': 'heavy',
 };
 
 // Verdict output -> member workflow base names (mirrors the dispatch
@@ -65,8 +66,9 @@ const OUTPUT_LANES = {
     'merge-promotion-queue-v3', 'agent-continuous-ops',
     'cellcog-engineering-health', 'issue-observatory',
     'reconciliation-engine', 'historical-evaluation-correlation',
-    'vercel-batch-deploy', 'context-relationship-backfill',
+    'vercel-batch-deploy',
   ],
+  dispatch_context_backfill: ['context-relationship-backfill'],
   dispatch_repochange: [
     'automation-docs-continuous-refresh', 'context-relationship-audit',
   ],

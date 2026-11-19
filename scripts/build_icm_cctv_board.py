@@ -108,16 +108,20 @@ def build(root: Path, sha: str) -> str:
         title = html.escape(card["title"], quote=True)
         ident = html.escape(card["id"], quote=True)
         source = html.escape(card["source"], quote=True)
+        source_url = html.escape(card["source_url"], quote=True)
         path = html.escape(card["path"], quote=True)
         search_text = html.escape(" ".join((card["title"], card["id"], card["status"], card["stage"], card["body"])), quote=True)
         rendered.append(f"""<article class="card" id="card-{ident}" data-status="{status_slug}" data-stage="{stage}" data-search="{search_text}">
 <div class="top"><span>Stage {stage}</span><span class="status {status_slug}">{status}</span></div>
 <h3>{title}</h3><code>{ident}</code>{render_body(card["body"])}
-<dl><dt>Canonical source</dt><dd><a href="{card["source_url"]}">{source}</a></dd>
+<dl><dt>Canonical source</dt><dd><a href="{source_url}">{source}</a></dd>
 <dt>Card file</dt><dd><a href="{REPO}/blob/master/{path}">{path}</a></dd></dl></article>""")
 
     stage_nav = "".join(f'<a class="stage-link" href="#stage-{html.escape(stage, quote=True)}">Stage {html.escape(stage)}</a>' for stage in sorted(stages, key=lambda value: int(value) if value.isdigit() else 999))
-    status_options = "".join(f'<option value="{html.escape(status.lower(), quote=True)}">{html.escape(status)} ({counts[status]})</option>' for status in statuses)
+    status_options = "".join(
+        f'<option value="{re.sub(r"[^a-z0-9-]+", "-", status.lower()).strip("-")}">{html.escape(status)} ({counts[status]})</option>'
+        for status in statuses
+    )
     stage_sections = []
     for stage in sorted(stages, key=lambda value: int(value) if value.isdigit() else 999):
         stage_cards = "".join(

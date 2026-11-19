@@ -1,0 +1,26 @@
+name: research-astute-validate
+
+on:
+  pull_request:
+    paths:
+      - "research/astute-platform/**"
+      - "research/astute-computational-limits/**"
+      - "scripts/research/validate_astute.py"
+  push:
+    branches: [main, master]
+    paths:
+      - "research/astute-platform/**"
+      - "research/astute-computational-limits/**"
+      - "scripts/research/validate_astute.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate experiment manifests, typed graphs, sources, and alternate paths
+        run: python3 scripts/research/validate_astute.py

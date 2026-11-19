@@ -48,7 +48,7 @@ class IcmCctvBoardTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             card = root / "stage.md"
-            card.write_text("# Missing metadata\\n", encoding="utf-8")
+            card.write_text("# Missing metadata\n", encoding="utf-8")
             with self.assertRaises(ValueError):
                 cards_from(root)
 
@@ -57,7 +57,7 @@ class IcmCctvBoardTests(unittest.TestCase):
             root = Path(directory)
             card = root / "stage.md"
             card.write_text(
-                "---\\nid: safe\\ntitle: Safe\\nstage: 1\\nstatus: done\\nsource: ../outside.md\\n---\\n\\nBody\\n",
+                "---\nid: safe\ntitle: Safe\nstage: 1\nstatus: done\nsource: ../outside.md\n---\n\nBody\n",
                 encoding="utf-8",
             )
             with self.assertRaises(ValueError):
@@ -68,14 +68,25 @@ class IcmCctvBoardTests(unittest.TestCase):
             root = Path(directory)
             card = root / "stage.md"
             card.write_text(
-                "---\\nid: safe\\ntitle: <script>alert(1)</script>\\nstage: 3\\n"
-                "status: done\\nsource: source.md\\n---\\n\\n<script>payload</script>\\n",
+                "---\nid: safe\ntitle: <script>alert(1)</script>\nstage: 3\n"
+                "status: done\nsource: source.md\n---\n\n<script>payload</script>\n",
                 encoding="utf-8",
             )
             rendered = build(root, "sha")
             self.assertNotIn("<script>alert(1)</script>", rendered)
             self.assertNotIn("<script>payload</script>", rendered)
             self.assertIn("&lt;script&gt;", rendered)
+
+    def test_markdown_lists_render_as_safe_html(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            card = root / "stage.md"
+            card.write_text(
+                "---\nid: safe\ntitle: Safe\nstage: 1\nstatus: done\nsource: source.md\n---\n\n- First item\n- **Second item**\n",
+                encoding="utf-8",
+            )
+            rendered = build(root, "sha")
+            self.assertIn("<ul><li>First item</li><li><strong>Second item</strong></li></ul>", rendered)
 
     def test_production_and_preview_publishers_generate_board_before_manifests(self) -> None:
         deploy = (ROOT / ".github/workflows/tribute-dashboard-deploy.yml").read_text(encoding="utf-8")

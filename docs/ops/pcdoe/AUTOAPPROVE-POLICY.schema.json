@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/timerloggedout-spec/termux-monorepo/blob/master/docs/ops/pcdoe/AUTOAPPROVE-POLICY.schema.json",
+  "title": "PCDOE Bounded AutoApprove Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "version", "status", "owner_ref", "allowlist", "formal_approval_classes", "decision_record"],
+  "properties": {
+    "schema_version": { "const": "pcdoe.autoapprove.v1" },
+    "policy_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["proposed", "shadow", "authorized", "suspended", "retired"] },
+    "owner_ref": { "type": "string", "minLength": 1 },
+    "allowlist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["action_id", "resource_pattern", "actor_class", "max_scope", "max_cost", "timeout_seconds", "idempotency_proof", "compensation", "evidence_contract", "owner_ref", "expires_at"],
+        "properties": {
+          "action_id": { "type": "string", "minLength": 1 },
+          "resource_pattern": { "type": "string", "minLength": 1 },
+          "actor_class": { "type": "string", "minLength": 1 },
+          "max_scope": { "type": "string", "minLength": 1 },
+          "max_cost": { "type": "number", "minimum": 0 },
+          "timeout_seconds": { "type": "integer", "minimum": 1 },
+          "idempotency_proof": { "type": "string", "minLength": 1 },
+          "compensation": { "type": "string", "minLength": 1 },
+          "evidence_contract": { "type": "string", "minLength": 1 },
+          "owner_ref": { "type": "string", "minLength": 1 },
+          "expires_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "formal_approval_classes": {
+      "type": "array",
+      "const": ["github_review", "merge", "release", "production_promotion", "credential", "permission", "security_policy", "destructive_data", "external_commitment"]
+    },
+    "decision_record": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+  }
+}

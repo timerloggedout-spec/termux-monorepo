@@ -55,6 +55,7 @@ WAIT is an evidence-collection phase. Re-fetch after material changes, back off 
 | CEX-018 | P0 | Muse VM observer durability | Replace the session-bound 60-second observer loop with an idempotent one-shot state-diff probe under the existing 15-minute guardian. Persist the prior fingerprint under durable home storage; capture boot ID, machine ID, `/etc` fingerprint, process/port state, and memory headroom; emit only material transitions | Two image-replacement cycles produce one receipt each; state survives `/etc` reset; guardian runs complete; duplicate transition alerts collapse by boot ID | **RELAUNCH FRAGILITY OBSERVED; FIX DESIGN READY** |
 | CEX-019 | P2 | Jules handoff API load guard | Gate PR mutation comment pagination on a `jules-handoff-pending` label, attach it after trusted dispatch/idempotency checks, clear it after mutation receipt, and pin github-script by SHA | Ordinary PR sync events skip comment pagination; trusted handoff adds label; mutation emits one exact-SHA receipt and clears label; duplicate receipt cleanup is idempotent | **IMPLEMENTED ON DRAFT PR #5666; CI PENDING** |
 | CEX-020 | P2 | Compounding scorecard | Build a read-only projection from existing source ledgers and receipts: evidence reuse, provenance completeness, HindSight population yield, durable execution yield, compute efficiency, queue health, benchmark coverage, template reuse, and automation API cost | Every metric binds to canonical source IDs and native authority; scorecard exposes gaps and trends without creating a new scoring plane | **SPECIFIED; IMPLEMENTATION READY AFTER P0 RECEIPTS** |
+| CEX-021 | P1 | Termux device preflight + job registry reconciliation | Connect the Termux MCP, capture `get_device_info` and pending-job inventory, reconcile existing jobs 43107–43109 with the repo registry, and reuse the existing snapshot/sentinel scripts. Confirm the daily report time with the user before scheduling | Timestamped device snapshot; pending-job list; current job IDs and cadence; duplicate-free install receipt; daily report schedule matches user-selected time | **REPOSITORY READY; DEVICE CONNECTOR REQUIRED** |
 
 ## 4. First execution batch
 
@@ -62,7 +63,7 @@ Run the following as one bounded P0 batch:
 
 1. Recover DeepSeek and Termux Origin history using the existing RevWright/session provenance method; preserve the canonical feed during reconciliation.
 2. Generate a join report keyed by session ID, message/turn ID, workflow run ID, source commit, timestamp, route, and actor evidence.
-3. Probe Muse and Hark, capturing host IDs, resource cards, memory headroom, and tailnet visibility.
+3. Probe Muse and Hark, capturing host IDs, resource cards, memory headroom, and tailnet visibility. Capture the Termux device snapshot and pending-job list when the Termux MCP is connected.
 4. Capture the Muse HindSight port/listener/cron/export receipt, then run the 3-unit retain → stats → recall canary and reconcile the 326-payload replay.
 5. Activate one registered Muse Temporal fleet workflow under #5632; retain the completed Actions N5 proof and capture the Muse workflow/host receipt.
 6. Re-fetch all generated receipts and compare against the previous known state.
@@ -160,4 +161,5 @@ A PR reaches promotion after terminal checks, evidence review, and the repositor
 - [#5664 — current-base Agentic Wallet + MergeEarn refTemplates registration](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664): draft; CI and review pending.
 - [#5666 — Jules handoff API-load guard](https://github.com/timerloggedout-spec/termux-monorepo/pull/5666): draft; CI and review pending.
 - CEX-020 compounding scorecard reuses the existing canonical receipts after the P0 runtime joins land.
+- CEX-021 Termux device schedule reconciliation reuses the existing local sentinel and daily steward scripts after device preflight.
 - [#4737 — original Agentic Wallet template lineage](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737): preserved; branch diverges from current `master` and is 13,613 commits behind. Review #5664 as the fresh current-base registration path; maintainer disposition of #4737 remains open.

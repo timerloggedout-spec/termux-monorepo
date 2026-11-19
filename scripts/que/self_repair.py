@@ -446,13 +446,13 @@ def main(argv: list[str] | None = None) -> int:
     receipt = {
         "schema": "qdesk-self-repair-cycle/v2", "state": state, "reason": reason,
         "stage": gh.stage, "completed_stages": completed_stages,
-        "deferred_work_count": 1 if state.startswith("DEFERRED_") else 0,
+        "deferred_work_count": None if state.startswith("DEFERRED_") else 0,
         "repo": REPO, "ref": os.environ.get("GITHUB_REF", "unknown"),
         "sha": os.environ.get("GITHUB_SHA", "unknown"),
         "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
         "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "unknown"),
         "observed_at": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "summary": summary, "api": gh.metrics(),
+        "summary": summary, "api": {**gh.metrics(), "token_bucket": os.environ.get("QUE_SR_TOKEN_SOURCE", "unknown")},
     }
     receipt_path = Path(os.environ.get("QUE_SR_RECEIPT_PATH", "artifacts/qdesk-self-repair/receipt.json"))
     receipt_path.parent.mkdir(parents=True, exist_ok=True)

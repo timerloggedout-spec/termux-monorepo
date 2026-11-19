@@ -41,6 +41,41 @@ class ShadowPrioritizerTests(unittest.TestCase):
             self.assertFalse(rows["task-high-risk"]["eligible"])
             self.assertIn("risk_unknown_or_above_snapshot_limit", rows["task-high-risk"]["eligibility_reason"])
 
+
+    def test_catalog_weights_drive_policy_scores(self):
+        policy = next(p for p in CATALOG["policies"] if p["treatment_type"] == "balanced")
+        task = SNAPSHOT["tasks"][0]
+        baseline = evaluate_snapshot({"policies": [policy]}, dict(SNAPSHOT, tasks=[task]))
+        changed = json.loads(json.dumps(policy))
+        changed["factors"][0]["weight"] = 0.9
+        changed["factors"][1]["weight"] = 0.01
+        changed["factors"][2]["weight"] = 0.01
+        changed["factors"][3]["weight"] = 0.01
+        changed["factors"][4]["weight"] = 0.01
+        changed["factors"][5]["weight"] = 0.01
+        altered = evaluate_snapshot({"policies": [changed]}, dict(SNAPSHOT, tasks=[task]))
+        self.assertNotEqual(
+            baseline["policies"][0]["recommendations"][0]["score"],
+            altered["policies"][0]["recommendations"][0]["score"],
+        )
+
+    def test_unknown_factors_reduce_confidence_without_becoming_zero_inputs(self):
+        result = evaluate_snapshot(CATALOG, SNAPSHOT)
+        balanced = next(p for p in result["policies"] if p["policy_id"] == "priority-balanced")
+        row = next(x for x in balanced["recommendations"] if x["task_id"] == "task-unknown-risk")
+        self.assertIn("dependency_unlock", row["unknown_inputs"])
+        self.assertIn("blocked_time_reduction", row["unknown_inputs"])
+        self.assertLess(row["confidence"], 1.0)
+        self.assertIsNone(row["components"]["dependency_unlock"])
+
+    def test_all_missing_policy_factors_produce_unknown_score(self):
+        task = {"task_id": "task-empty", "risk": 0.1}
+        result = evaluate_snapshot(CATALOG, dict(SNAPSHOT, tasks=[task]))
+        for policy in result["policies"]:
+            if policy["policy_id"] != "priority-incumbent":
+                self.assertIsNone(policy["recommendations"][0]["score"])
+                self.assertEqual(policy["recommendations"][0]["confidence"], 0.0)
+
     def test_live_snapshot_mode_is_rejected(self):
         live = dict(SNAPSHOT, mode="live")
         with self.assertRaisesRegex(ValueError, "read_only_shadow"):

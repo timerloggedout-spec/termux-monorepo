@@ -64,12 +64,17 @@ class JulesPrHandoffWorkflowTests(unittest.TestCase):
     def test_mutation_receipt_clears_pending_label_after_observation(self) -> None:
         mutation = self.job_block("mutation")
         comment = mutation.index("issues.createComment")
-        clear = mutation.index("issues.removeLabel")
+        clear = mutation.rindex("issues.removeLabel")
         self.assertLess(comment, clear)
         self.assertIn("MUTATION_OBSERVED", mutation)
         self.assertIn("observed_head_sha", mutation)
         self.assertEqual(mutation.count("issues.removeLabel"), 2)
         self.assertIn("error.status !== 404", mutation)
+        duplicate = mutation.index("if(cs.some(c=>")
+        first_clear = mutation.index("issues.removeLabel", duplicate)
+        duplicate_return = mutation.index("return;", first_clear)
+        self.assertLess(duplicate, first_clear)
+        self.assertLess(first_clear, duplicate_return)
 
     def test_receipts_remain_idempotent_and_source_gated(self) -> None:
         handoff = self.job_block("handoff")

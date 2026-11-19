@@ -133,7 +133,17 @@ def main() -> int:
         report.append({"workflow": wf, **d})
         print(f"::notice title=que-kick {wf}::{d['action']} · {d['reason']}"
               + (" · ⤴ dispatched" if d.get("dispatched") else ""))
-    out = {"schema": "que.cadence-kick/v1", "at": stamp, "targets": report}
+    ordered = sorted(API_LATENCIES_MS)
+    p95 = ordered[min(len(ordered) - 1, max(0, int(0.95 * len(ordered) + 0.999) - 1))] if ordered else None
+    out = {"schema": "que.cadence-kick/v2", "at": stamp, "targets": report,
+           "repo": repo, "sha": os.environ.get("GITHUB_SHA", "unknown"),
+           "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
+           "api": {"api_calls": API_CALLS, "http_statuses": API_STATUSES,
+                   "route_calls": API_ROUTES, "latency_ms": {
+                       "count": len(ordered),
+                       "p50": round(statistics.median(ordered), 2) if ordered else None,
+                       "p95": p95, "max": max(ordered) if ordered else None},
+                   "rate_limit": RATE_LIMIT}}
     print(json.dumps(out))
     summ = os.environ.get("GITHUB_STEP_SUMMARY")
     if summ:

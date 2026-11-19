@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-19T15:17:50Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-19T16:18:44Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-19T15:17:50Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`91629` read_at=`2026-11-19T15:17:50Z`
+Sources: PR feed read_at=`2026-11-19T16:18:43Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`92226` read_at=`2026-11-19T16:18:43Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -18,15 +18,15 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5661 — feat(pcdoe): add compounding production prioritization companion |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5665 — feat(pcdoe): add compounding production prioritization companion |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5630 — fix(que): harden BRR regression evidence and promotion boundary |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #2235 — chore(osint): refresh coverage + page snapshots |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
-| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5617 `4138579e33f9` 2026-11-18T11:18:08Z | land/close PR #5034 — chore(dashboards): refresh dispatch-tree feed |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #5663 — docs: compound evaluation, provenance, and compute operations |
+| quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5617 `4138579e33f9` 2026-11-18T11:18:08Z | land/close PR #5666 — ci(jules): gate PR handoff scans to pending delegations |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
 | webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #4069 — chore(dashboards): refresh surface feeds |

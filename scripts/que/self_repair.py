@@ -23,6 +23,8 @@ import json
 import os
 import re
 import sys
+import statistics
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -171,12 +173,33 @@ def learn(weights: dict, closed_items: list[dict]) -> tuple[dict, list[str]]:
 
 
 # ---------------------------------------------------------------- GitHub I/O
+class ApiBudgetExceeded(RuntimeError):
+    pass
+
+
 class GH:
-    def __init__(self, token: str):
+    def __init__(self, token: str, max_calls: int = 80):
         self.token = token
+        self.max_calls = max(1, max_calls)
+        self.calls = 0
+        self.stage = "initialize"
+        self.statuses: dict[str, int] = {}
+        self.routes: dict[str, int] = {}
+        self.latencies_ms: list[float] = []
+        self.rate_limit = {"remaining": None, "limit": None, "reset_epoch": None,
+                           "retry_after": None, "resource": None, "request_id": None}
 
     def req(self, method: str, path: str, body: Any = None) -> Any:
+        if self.calls >= self.max_calls:
+            raise ApiBudgetExceeded(f"cycle API budget exhausted ({self.calls}/{self.max_calls})")
         url = path if path.startswith("http") else API + path
+        route = urllib.parse.urlsplit(path).path
+        route = re.sub(r"(/actions/runs)/\d+", r"\1/{run_id}", route)
+        route = re.sub(r"(/check-runs)/\d+", r"\1/{check_run_id}", route)
+        route = re.sub(r"(/issues)/\d+", r"\1/{issue_number}", route)
+        route = re.sub(r"(/pulls)/\d+", r"\1/{pull_number}", route)
+        route = re.sub(r"(/workflows)/\d+", r"\1/{workflow_id}", route)
+        route = re.sub(r"(/commits)/[0-9a-f]{7,40}", r"\1/{sha}", route)
         data = None if body is None else json.dumps(body).encode()
         r = urllib.request.Request(url, data=data, method=method, headers={
             "Accept": "application/vnd.github+json", "User-Agent": "que-self-repair",
@@ -184,15 +207,53 @@ class GH:
             **({"Authorization": f"Bearer {self.token}"} if self.token else {})})
         if data is not None:
             r.add_header("Content-Type", "application/json")
-        with urllib.request.urlopen(r, timeout=40) as resp:
-            raw = resp.read()
-            return json.loads(raw) if raw else {}
+        self.calls += 1
+        started = time.perf_counter()
+        try:
+            with urllib.request.urlopen(r, timeout=40) as resp:
+                raw = resp.read()
+                self._record(resp.headers, resp.status, route, started)
+                return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as exc:
+            self._record(exc.headers, exc.code, route, started)
+            raise
+        except urllib.error.URLError:
+            self._record(None, 0, route, started)
+            raise
+
+    def _record(self, headers: Any, status: int, route: str, started: float) -> None:
+        key = str(status)
+        self.statuses[key] = self.statuses.get(key, 0) + 1
+        self.routes[route] = self.routes.get(route, 0) + 1
+        self.latencies_ms.append(round((time.perf_counter() - started) * 1000, 2))
+        if headers is not None:
+            for header, field in (("X-RateLimit-Remaining", "remaining"),
+                                  ("X-RateLimit-Limit", "limit"),
+                                  ("X-RateLimit-Reset", "reset_epoch"),
+                                  ("Retry-After", "retry_after"),
+                                  ("X-RateLimit-Resource", "resource"),
+                                  ("X-GitHub-Request-Id", "request_id")):
+                value = headers.get(header)
+                if value is not None:
+                    self.rate_limit[field] = value
+
+    def metrics(self) -> dict:
+        values = sorted(self.latencies_ms)
+        p95 = values[min(len(values) - 1, max(0, int(0.95 * len(values) + 0.999) - 1))] if values else None
+        return {"api_calls": self.calls, "api_call_budget": self.max_calls,
+                "budget_remaining": max(0, self.max_calls - self.calls),
+                "http_statuses": dict(sorted(self.statuses.items())),
+                "route_calls": dict(sorted(self.routes.items())),
+                "latency_ms": {"count": len(values),
+                               "p50": round(statistics.median(values), 2) if values else None,
+                               "p95": p95, "max": max(values) if values else None},
+                "rate_limit": self.rate_limit}
 
     def get(self, path: str) -> Any:
         return self.req("GET", path)
 
 
-def failing_groups(gh: GH, window_h: int) -> list[dict]:
+def failing_groups(gh: GH, window_h: int, max_groups: int = 8) -> list[dict]:
     since = (now() - timedelta(hours=window_h)).strftime("%Y-%m-%dT%H:%M:%SZ")
     runs = gh.get(f"/repos/{REPO}/actions/runs?branch=master&status=failure&per_page=100&created=%3E%3D{since}")
     groups: dict[str, list[dict]] = {}
@@ -214,13 +275,16 @@ def failing_groups(gh: GH, window_h: int) -> list[dict]:
                 message = (msgs[0] if msgs else "")[:300]
                 break
         except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
             message = f"jobs unreadable: HTTP {e.code}"
         wf_id = latest.get("workflow_id")
         total = len(rs)
         try:
             total = gh.get(f"/repos/{REPO}/actions/workflows/{wf_id}/runs?branch=master&per_page=1&created=%3E%3D{since}").get("total_count", total)
-        except urllib.error.HTTPError:
-            pass
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
         sig = signature(f"{step} {message}")
         out.append({
             "path": path, "name": latest["name"], "room": room, "step": step, "message": message,
@@ -229,7 +293,7 @@ def failing_groups(gh: GH, window_h: int) -> list[dict]:
             "receipts": [{"url": r["html_url"], "sha": r["head_sha"]} for r in sorted(rs, key=lambda r: r["created_at"], reverse=True)],
         })
     # Bootstrap order: branch gates first, then priority.
-    return sorted(out, key=lambda g: (Path(g["path"]).name not in BRANCH_GATES, -g["priority"]))
+    return sorted(out, key=lambda g: (Path(g["path"]).name not in BRANCH_GATES, -g["priority"]))[:max_groups]
 
 
 def stale_feeds(gh: GH) -> list[dict]:
@@ -238,7 +302,9 @@ def stale_feeds(gh: GH) -> list[dict]:
     for f in reg.get("feeds", []):
         try:
             c = gh.get(f"/repos/{REPO}/commits?path={urllib.parse.quote(f['path'])}&sha=master&per_page=1")
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
             continue
         if not c:
             continue
@@ -293,10 +359,10 @@ def file_items(gh: GH, groups: list[dict], dry: bool, cap: int) -> list[str]:
     return log
 
 
-def promote(gh: GH, dry: bool) -> list[str]:
+def promote(gh: GH, dry: bool, max_prs: int = 5) -> list[str]:
     log = []
     prs = gh.get(f"/repos/{REPO}/issues?labels={urllib.parse.quote(LABEL)}&state=open&per_page=50")
-    for pr in [p for p in prs if p.get("pull_request")]:
+    for pr in [p for p in prs if p.get("pull_request")][:max_prs]:
         n = pr["number"]
         detail = gh.get(f"/repos/{REPO}/pulls/{n}")
         files = gh.get(f"/repos/{REPO}/pulls/{n}/files?per_page=100")
@@ -345,29 +411,60 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--window-hours", type=int, default=int(os.environ.get("QUE_SR_WINDOW_HOURS", "6")))
     ap.add_argument("--max-new", type=int, default=int(os.environ.get("QUE_SR_MAX_NEW", "5")))
+    ap.add_argument("--max-api-calls", type=int, default=int(os.environ.get("QUE_SR_MAX_API_CALLS", "80")))
+    ap.add_argument("--max-failing-groups", type=int, default=int(os.environ.get("QUE_SR_MAX_FAILING_GROUPS", "8")))
+    ap.add_argument("--max-promotions", type=int, default=int(os.environ.get("QUE_SR_MAX_PROMOTIONS", "5")))
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--branch-inventory", default=None)
     a = ap.parse_args(argv)
-    gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "")
+    gh = GH(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "", a.max_api_calls)
     summary = {"observe": [], "promote": [], "learn": []}
+    completed_stages = []
+    state, reason = "COMPLETED", None
     try:
-        groups = failing_groups(gh, a.window_hours) + stale_feeds(gh)
+        gh.stage = "observe"
+        groups = failing_groups(gh, a.window_hours, a.max_failing_groups) + stale_feeds(gh)
         if a.branch_inventory:
             groups += branch_reconciliation_groups(a.branch_inventory)
         summary["observe"] = file_items(gh, groups, a.dry_run, a.max_new)
-        summary["promote"] = promote(gh, a.dry_run)
+        completed_stages.append("observe")
+        gh.stage = "promote"
+        summary["promote"] = promote(gh, a.dry_run, a.max_promotions)
+        completed_stages.append("promote")
+        gh.stage = "learn"
         summary["learn"] = run_learn(gh, a.dry_run)
+        completed_stages.append("learn")
+    except ApiBudgetExceeded as e:
+        state, reason = "DEFERRED_BUDGET", str(e)
     except urllib.error.HTTPError as e:
-        if e.code in (403, 429):
-            print(f"::warning::self-repair deferred: HTTP {e.code} (rate limit or permission)")
-            return 0
-        raise
-    out = json.dumps(summary, indent=1)
+        detail = e.read(500).decode("utf-8", "replace")
+        limited = e.code == 429 or str(gh.rate_limit["remaining"]) == "0" or "rate limit" in detail.lower()
+        state = "DEFERRED_RATE_LIMIT" if limited else "DEFERRED_PERMISSION"
+        reason = f"HTTP {e.code}: {detail[:240]}"
+    except urllib.error.URLError as e:
+        state, reason = "DEFERRED_TRANSPORT", str(e.reason)[:240]
+    receipt = {
+        "schema": "qdesk-self-repair-cycle/v2", "state": state, "reason": reason,
+        "stage": gh.stage, "completed_stages": completed_stages,
+        "deferred_work_count": None if state.startswith("DEFERRED_") else 0,
+        "repo": REPO, "ref": os.environ.get("GITHUB_REF", "unknown"),
+        "sha": os.environ.get("GITHUB_SHA", "unknown"),
+        "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
+        "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "unknown"),
+        "observed_at": now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "summary": summary, "api": {**gh.metrics(), "token_bucket": os.environ.get("QUE_SR_TOKEN_SOURCE", "unknown")},
+    }
+    receipt_path = Path(os.environ.get("QUE_SR_RECEIPT_PATH", "artifacts/qdesk-self-repair/receipt.json"))
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out = json.dumps(receipt, indent=1)
     print(out)
     step = os.environ.get("GITHUB_STEP_SUMMARY")
     if step:
         with open(step, "a", encoding="utf-8") as f:
-            f.write("### QDesk self-repair\n```json\n" + out + "\n```\n")
+            f.write("### QDesk self-repair: " + state + "\n```json\n" + out + "\n```\n")
+    if state.startswith("DEFERRED_"):
+        print(f"::warning::QDesk cycle {state}: {reason}")
     return 0
 
 

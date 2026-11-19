@@ -62,11 +62,16 @@ class ShadowPrioritizerTests(unittest.TestCase):
     def test_unknown_factors_reduce_confidence_without_becoming_zero_inputs(self):
         result = evaluate_snapshot(CATALOG, SNAPSHOT)
         balanced = next(p for p in result["policies"] if p["policy_id"] == "priority-balanced")
-        row = next(x for x in balanced["recommendations"] if x["task_id"] == "task-unknown-risk")
-        self.assertIn("dependency_unlock", row["unknown_inputs"])
-        self.assertIn("blocked_time_reduction", row["unknown_inputs"])
-        self.assertLess(row["confidence"], 1.0)
-        self.assertIsNone(row["components"]["dependency_unlock"])
+        balanced_row = next(x for x in balanced["recommendations"] if x["task_id"] == "task-unknown-risk")
+        self.assertIn("dependency_unlock", balanced_row["unknown_inputs"])
+        self.assertLess(balanced_row["confidence"], 1.0)
+        self.assertIsNone(balanced_row["components"]["dependency_unlock"])
+
+        unlock = next(p for p in result["policies"] if p["policy_id"] == "priority-unlock")
+        unlock_row = next(x for x in unlock["recommendations"] if x["task_id"] == "task-unknown-risk")
+        self.assertIn("blocked_time_reduction", unlock_row["unknown_inputs"])
+        self.assertLess(unlock_row["confidence"], 1.0)
+        self.assertIsNone(unlock_row["components"]["blocked_time_reduction"])
 
     def test_all_missing_policy_factors_produce_unknown_score(self):
         task = {"task_id": "task-empty", "risk": 0.1}

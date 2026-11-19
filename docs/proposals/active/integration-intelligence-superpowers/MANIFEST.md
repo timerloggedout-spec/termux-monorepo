@@ -64,4 +64,4 @@ This is a documentation-and-contract foundation. It does not claim that external
 - Operator directive: implement the additive multi-project inference identity contract as `IIS-002`.
 - Design: [multi-project inference identity](../../../superpowers/specs/2026-11-19-multi-project-inference-identity-design.md).
 - Plan: [implementation plan](../../../superpowers/plans/2026-11-19-multi-project-inference-identity.md).
-- Scope: event/profile contracts, tests, and documentation; provider adapters and runtime scheduling remain follow-on work.
+- Scope: event/profile contracts, source registry/catalog/portfolio entries, tests, and documentation; provider adapters and runtime scheduling remain follow-on work.

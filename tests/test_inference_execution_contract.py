@@ -116,3 +116,11 @@ def test_inference_event_requires_explicit_usage_observation():
     event = base_event()
     event["inference"].pop("usage")
     assert list(jsonschema.Draft202012Validator(EVENT_SCHEMA).iter_errors(event))
+
+
+def test_codex_and_desktop_capture_integrations_are_registered():
+    registry = json.loads((ROOT / "docs/integrations/registry.json").read_text())
+    ids = {entry["id"] for entry in registry["integrations"]}
+    assert "codex-otel" in ids
+    assert "chatgpt-desktop" in ids
+    assert base_event()["integration_id"] in ids

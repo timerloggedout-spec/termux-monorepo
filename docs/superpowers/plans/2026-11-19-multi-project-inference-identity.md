@@ -38,6 +38,9 @@
 - Create: `tests/test_inference_execution_contract.py`
 - Create: `docs/integrations/INFERENCE-IDENTITY.md`
 - Modify: `docs/integrations/README.md`
+- Modify: `docs/integrations/registry.json`
+- Modify: `docs/integrations/INTEGRATION-REGISTRY.md`
+- Modify: `docs/integrations/INTEGRATION-PORTFOLIO.md`
 - Modify: `docs/proposals/active/integration-intelligence-superpowers/ITEMS.md`
 - Modify: `docs/proposals/active/integration-intelligence-superpowers/MANIFEST.md`
 
@@ -49,11 +52,13 @@
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; confirm the inference fields and paired project IDs fail against the current schemas.
 - [ ] Extend the event schema with project, task, inference, usage, queue, concurrency, and priority properties; require the identity objects for `inference.*` events.
 - [ ] Extend the project profile schema with paired optional `portfolio_id` and `project_id` fields.
-- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 8 passing tests.
+- [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`; expect 9 passing tests.
 - [ ] Document identity, retries, parallel queues, privacy, and 3L0 mapping in `docs/integrations/INFERENCE-IDENTITY.md`.
+- [ ] Register Codex OTel and ChatGPT Desktop with discovered/planned states; align the human catalog and portfolio date.
 - [ ] Link the contract from `docs/integrations/README.md` and register item `IIS-002`.
 - [ ] Run `python3 -m pytest tests/test_inference_execution_contract.py -q`.
 - [ ] Run `python3 scripts/proposals/validate_registry.py`.
+- [ ] Run `python3 scripts/integrations/validate_portfolio.py`.
 - [ ] Run `python3 scripts/ci/repo_gate.py`.
 - [ ] Run `python3 scripts/ci/termux_smoke.py`.
 - [ ] Commit with `Implements: IIS-002` in the commit context.

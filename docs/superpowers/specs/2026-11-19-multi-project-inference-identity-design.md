@@ -13,6 +13,7 @@ Define a provider-neutral identity contract for inference work executed concurre
 - Give inference events stable task, inference, and attempt identities.
 - Represent project queues and shared concurrency groups as attribution metadata.
 - Preserve provider/model/configured-instance identity, usage provenance, unknown values, and legacy event compatibility.
+- Register Codex OTel and ChatGPT Desktop as discovered utilization sources with planned adapters and explicit coverage boundaries.
 - Map completed attempts into the existing `3l0-intake/v1` contract.
 
 ## Non-goals
@@ -34,7 +35,7 @@ Use `(portfolio_id, project_id)` as the owning scope. A task belongs to one proj
 
 Project queues use `queue_id`; portfolio-level shared capacity uses `concurrency_group_id`; scheduling priority uses `priority_class`. These are descriptive contract fields for future orchestration. Existing routing and quota owners retain execution authority.
 
-The event schema adds optional `project`, `task`, and `inference` objects. `inference.*` events require those objects. Project profiles accept `project_id` and `portfolio_id` as an optional pair. Every inference event carries a usage object; usage values remain nullable and carry explicit measurement and attribution states.
+The event schema adds optional `project`, `task`, and `inference` objects. The canonical registry records Codex OTel and ChatGPT Desktop as discovered sources with planned adapters, preserving the difference between documented capabilities and verified runtime ingestion. `inference.*` events require those objects. Project profiles accept `project_id` and `portfolio_id` as an optional pair. Every inference event carries a usage object; usage values remain nullable and carry explicit measurement and attribution states.
 
 Completed attempts map to `3l0-intake/v1` using the attempt as dispatch identity and the existing provider, model, endpoint, instance, run, usage, and outcome fields. 3L0's confirmed/corroborated scoring rules remain authoritative.
 

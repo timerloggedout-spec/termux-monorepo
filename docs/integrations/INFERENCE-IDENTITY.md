@@ -41,7 +41,7 @@ These fields describe execution and attribution. The contract does not implement
 
 ## Event contract
 
-The existing `integration-event.schema.json` remains the shared event envelope. The extension adds optional `project`, `task`, and `inference` objects. Events whose `event_type` begins with `inference.` require all three objects and require stable `inference_id`, `attempt_id`, and provider identity.
+The existing `integration-event.schema.json` remains the shared event envelope. The `integration_id` must match a canonical registry entry; `codex-otel` and `chatgpt-desktop` are registered as discovered sources with planned repository adapters. The extension adds optional `project`, `task`, and `inference` objects. Events whose `event_type` begins with `inference.` require all three objects and require stable `inference_id`, `attempt_id`, and provider identity.
 
 Every inference event carries a usage object. Usage fields include input, cached-input, output tokens, credits, estimated cost, currency, measurement status, and attribution; source-unknown values remain null. Use `measured`, `estimated`, `activity_only`, or `not_established` as the measurement status. For activity-only and not-established observations, every numeric usage value and currency remain null. Preserve estimates as estimates and provider-reported measurements as provider-reported.
 

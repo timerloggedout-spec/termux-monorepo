@@ -13,6 +13,7 @@ reviewers:
 related_prs: []
 related_branches:
   - feat/integration-intelligence-superpowers
+  - feat/multi-project-inference-identity
 gates_required: [repo-gate, termux-smoke]
 ---
 
@@ -45,7 +46,8 @@ This is a documentation-and-contract foundation. It does not claim that external
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
-- [ ] PR cites `Implements: IIS-001`
+- [ ] PR cites `Implements: IIS-001` for the foundation item
+- [ ] PR cites `Implements: IIS-002` for the inference identity item
 - [ ] repo-gate and termux-smoke green on the same head
 - [ ] Non-author review and current check disposition recorded
 - [ ] Close and move to `closed/` only when all gates are terminal
@@ -55,3 +57,11 @@ This is a documentation-and-contract foundation. It does not claim that external
 - ITEMS: ./ITEMS.md
 - Design: ../../../superpowers/specs/2026-11-02-integration-intelligence-design.md
 - Plan: ../../../superpowers/plans/2026-11-02-integration-intelligence.md
+
+
+## 2026-11-19 — Multi-project inference identity extension
+
+- Operator directive: implement the additive multi-project inference identity contract as `IIS-002`.
+- Design: [multi-project inference identity](../../../superpowers/specs/2026-11-19-multi-project-inference-identity-design.md).
+- Plan: [implementation plan](../../../superpowers/plans/2026-11-19-multi-project-inference-identity.md).
+- Scope: event/profile contracts, tests, and documentation; provider adapters and runtime scheduling remain follow-on work.

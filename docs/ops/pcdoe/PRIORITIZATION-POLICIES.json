@@ -29,13 +29,29 @@
       "treatment_type": "incumbent",
       "hypothesis": "The captured QUE/QDesk incumbent ranking provides the comparison baseline.",
       "factors": [
-        {"factor_id": "incumbent_rank", "direction": "maximize", "weight": 1.0, "source_ref": "QUE/QDesk canonical rank"}
+        {
+          "factor_id": "incumbent_rank",
+          "direction": "maximize",
+          "weight": 1,
+          "source_ref": "QUE/QDesk canonical rank"
+        }
       ],
-      "constraints": ["Preserve the incumbent ranking implementation and configuration for the full comparison window."],
+      "constraints": [
+        "Preserve the incumbent ranking implementation and configuration for the full comparison window."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["Preserve incumbent tie-break behavior."],
-      "outcomes": ["validated_value_per_effort", "correctness", "lead_time", "rework", "risk"],
-      "owner_ref": "QUE/QDesk"
+      "tie_breaks": [
+        "Preserve incumbent tie-break behavior."
+      ],
+      "outcomes": [
+        "validated_value_per_effort",
+        "correctness",
+        "lead_time",
+        "rework",
+        "risk"
+      ],
+      "owner_ref": "QUE/QDesk",
+      "schema_version": "pcdoe.priority-policy.v1"
     },
     {
       "policy_id": "priority-value-density",
@@ -43,14 +59,37 @@
       "treatment_type": "value_density",
       "hypothesis": "Confidence-adjusted validated value per constrained effort improves return under fixed capacity.",
       "factors": [
-        {"factor_id": "value_confidence_adjusted", "direction": "maximize", "weight": 0.7, "source_ref": "Existing MoneyBall / 3L0 value-of-record"},
-        {"factor_id": "effort_efficiency", "direction": "maximize", "weight": 0.3, "source_ref": "Admitted task estimate and capacity snapshot"}
+        {
+          "factor_id": "value_confidence_adjusted",
+          "direction": "maximize",
+          "weight": 0.7,
+          "source_ref": "Existing MoneyBall / 3L0 value-of-record"
+        },
+        {
+          "factor_id": "effort_efficiency",
+          "direction": "maximize",
+          "weight": 0.3,
+          "source_ref": "Admitted task estimate and capacity snapshot"
+        }
       ],
-      "constraints": ["Honor existing urgency, dependency, risk, and approval constraints as eligibility gates."],
+      "constraints": [
+        "Honor existing urgency, dependency, risk, and approval constraints as eligibility gates."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["Higher confidence", "Lower constrained effort", "Earlier admission timestamp"],
-      "outcomes": ["validated_value_per_effort", "correctness", "lead_time", "rework", "risk"],
-      "owner_ref": "PCDOE-008 / DoE"
+      "tie_breaks": [
+        "Higher confidence",
+        "Lower constrained effort",
+        "Earlier admission timestamp"
+      ],
+      "outcomes": [
+        "validated_value_per_effort",
+        "correctness",
+        "lead_time",
+        "rework",
+        "risk"
+      ],
+      "owner_ref": "PCDOE-008 / DoE",
+      "schema_version": "pcdoe.priority-policy.v1"
     },
     {
       "policy_id": "priority-critical-path",
@@ -58,14 +97,36 @@
       "treatment_type": "critical_path",
       "hypothesis": "Critical-path and deadline ordering reduces end-to-end completion time.",
       "factors": [
-        {"factor_id": "critical_path_position", "direction": "maximize", "weight": 0.55, "source_ref": "Ballet dependency graph"},
-        {"factor_id": "urgency", "direction": "maximize", "weight": 0.45, "source_ref": "Admitted task deadline and delay-cost evidence"}
+        {
+          "factor_id": "critical_path_position",
+          "direction": "maximize",
+          "weight": 0.55,
+          "source_ref": "Ballet dependency graph"
+        },
+        {
+          "factor_id": "urgency",
+          "direction": "maximize",
+          "weight": 0.45,
+          "source_ref": "Admitted task deadline and delay-cost evidence"
+        }
       ],
-      "constraints": ["Preserve risk and approval classes as hard eligibility constraints."],
+      "constraints": [
+        "Preserve risk and approval classes as hard eligibility constraints."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["Higher dependency confidence", "Lower effort", "Earlier admission timestamp"],
-      "outcomes": ["end_to_end_lead_time", "time_to_unblock", "validated_value_per_effort", "risk"],
-      "owner_ref": "PCDOE-008 / DoE"
+      "tie_breaks": [
+        "Higher dependency confidence",
+        "Lower effort",
+        "Earlier admission timestamp"
+      ],
+      "outcomes": [
+        "end_to_end_lead_time",
+        "time_to_unblock",
+        "validated_value_per_effort",
+        "risk"
+      ],
+      "owner_ref": "PCDOE-008 / DoE",
+      "schema_version": "pcdoe.priority-policy.v1"
     },
     {
       "policy_id": "priority-unlock",
@@ -73,14 +134,36 @@
       "treatment_type": "dependency_unlock",
       "hypothesis": "Prioritizing work that unlocks dependent tasks improves portfolio throughput.",
       "factors": [
-        {"factor_id": "dependency_unlock", "direction": "maximize", "weight": 0.75, "source_ref": "Ballet dependency graph"},
-        {"factor_id": "blocked_time_reduction", "direction": "maximize", "weight": 0.25, "source_ref": "QUE/QDesk lifecycle observations"}
+        {
+          "factor_id": "dependency_unlock",
+          "direction": "maximize",
+          "weight": 0.75,
+          "source_ref": "Ballet dependency graph"
+        },
+        {
+          "factor_id": "blocked_time_reduction",
+          "direction": "maximize",
+          "weight": 0.25,
+          "source_ref": "QUE/QDesk lifecycle observations"
+        }
       ],
-      "constraints": ["Require a traceable dependency edge and measurable downstream work."],
+      "constraints": [
+        "Require a traceable dependency edge and measurable downstream work."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["More downstream tasks unblocked", "Higher confidence", "Lower effort"],
-      "outcomes": ["dependency_throughput", "blocked_time", "validated_value_per_effort", "rework"],
-      "owner_ref": "PCDOE-008 / DoE"
+      "tie_breaks": [
+        "More downstream tasks unblocked",
+        "Higher confidence",
+        "Lower effort"
+      ],
+      "outcomes": [
+        "dependency_throughput",
+        "blocked_time",
+        "validated_value_per_effort",
+        "rework"
+      ],
+      "owner_ref": "PCDOE-008 / DoE",
+      "schema_version": "pcdoe.priority-policy.v1"
     },
     {
       "policy_id": "priority-risk-adjusted",
@@ -88,15 +171,43 @@
       "treatment_type": "risk_adjusted",
       "hypothesis": "Discounting expected value by uncertainty and recovery exposure improves reliable production value.",
       "factors": [
-        {"factor_id": "value_confidence_adjusted", "direction": "maximize", "weight": 0.6, "source_ref": "Existing MoneyBall / 3L0 value-of-record"},
-        {"factor_id": "uncertainty", "direction": "minimize", "weight": 0.2, "source_ref": "Evidence quality and estimate dispersion"},
-        {"factor_id": "recovery_cost", "direction": "minimize", "weight": 0.2, "source_ref": "Task rollback and compensation contract"}
+        {
+          "factor_id": "value_confidence_adjusted",
+          "direction": "maximize",
+          "weight": 0.6,
+          "source_ref": "Existing MoneyBall / 3L0 value-of-record"
+        },
+        {
+          "factor_id": "uncertainty",
+          "direction": "minimize",
+          "weight": 0.2,
+          "source_ref": "Evidence quality and estimate dispersion"
+        },
+        {
+          "factor_id": "recovery_cost",
+          "direction": "minimize",
+          "weight": 0.2,
+          "source_ref": "Task rollback and compensation contract"
+        }
       ],
-      "constraints": ["Risk thresholds and approval classes remain hard gates independent of score."],
+      "constraints": [
+        "Risk thresholds and approval classes remain hard gates independent of score."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["Higher evidence confidence", "Lower recovery cost", "Lower effort"],
-      "outcomes": ["validated_value_per_effort", "incident_rate", "rollback_rate", "rework", "correctness"],
-      "owner_ref": "PCDOE-008 / DoE"
+      "tie_breaks": [
+        "Higher evidence confidence",
+        "Lower recovery cost",
+        "Lower effort"
+      ],
+      "outcomes": [
+        "validated_value_per_effort",
+        "incident_rate",
+        "rollback_rate",
+        "rework",
+        "correctness"
+      ],
+      "owner_ref": "PCDOE-008 / DoE",
+      "schema_version": "pcdoe.priority-policy.v1"
     },
     {
       "policy_id": "priority-balanced",
@@ -104,18 +215,65 @@
       "treatment_type": "balanced",
       "hypothesis": "A prespecified balanced score improves portfolio value and flow without violating quality or safety guardrails.",
       "factors": [
-        {"factor_id": "value_confidence_adjusted", "direction": "maximize", "weight": 0.3, "source_ref": "Existing MoneyBall / 3L0 value-of-record"},
-        {"factor_id": "urgency", "direction": "maximize", "weight": 0.2, "source_ref": "Admitted task deadline and delay-cost evidence"},
-        {"factor_id": "dependency_unlock", "direction": "maximize", "weight": 0.2, "source_ref": "Ballet dependency graph"},
-        {"factor_id": "effort_efficiency", "direction": "maximize", "weight": 0.15, "source_ref": "Admitted task estimate and capacity snapshot"},
-        {"factor_id": "reversibility", "direction": "maximize", "weight": 0.1, "source_ref": "Rollback and compensation contract"},
-        {"factor_id": "age", "direction": "maximize", "weight": 0.05, "source_ref": "QUE/QDesk admission timestamp"}
+        {
+          "factor_id": "value_confidence_adjusted",
+          "direction": "maximize",
+          "weight": 0.3,
+          "source_ref": "Existing MoneyBall / 3L0 value-of-record"
+        },
+        {
+          "factor_id": "urgency",
+          "direction": "maximize",
+          "weight": 0.2,
+          "source_ref": "Admitted task deadline and delay-cost evidence"
+        },
+        {
+          "factor_id": "dependency_unlock",
+          "direction": "maximize",
+          "weight": 0.2,
+          "source_ref": "Ballet dependency graph"
+        },
+        {
+          "factor_id": "effort_efficiency",
+          "direction": "maximize",
+          "weight": 0.15,
+          "source_ref": "Admitted task estimate and capacity snapshot"
+        },
+        {
+          "factor_id": "reversibility",
+          "direction": "maximize",
+          "weight": 0.1,
+          "source_ref": "Rollback and compensation contract"
+        },
+        {
+          "factor_id": "age",
+          "direction": "maximize",
+          "weight": 0.05,
+          "source_ref": "QUE/QDesk admission timestamp"
+        }
       ],
-      "constraints": ["Risk remains a hard eligibility constraint and separately reported outcome.", "Quality and safety guardrails remain non-compensating."],
+      "constraints": [
+        "Risk remains a hard eligibility constraint and separately reported outcome.",
+        "Quality and safety guardrails remain non-compensating."
+      ],
       "missing_data": "preserve_unknown_and_reduce_confidence",
-      "tie_breaks": ["Higher evidence confidence", "Higher validated value", "Lower effort", "Earlier admission timestamp"],
-      "outcomes": ["validated_value_per_effort", "correctness", "lead_time", "blocked_time", "rework", "incident_rate", "owner_intervention"],
-      "owner_ref": "PCDOE-008 / DoE"
+      "tie_breaks": [
+        "Higher evidence confidence",
+        "Higher validated value",
+        "Lower effort",
+        "Earlier admission timestamp"
+      ],
+      "outcomes": [
+        "validated_value_per_effort",
+        "correctness",
+        "lead_time",
+        "blocked_time",
+        "rework",
+        "incident_rate",
+        "owner_intervention"
+      ],
+      "owner_ref": "PCDOE-008 / DoE",
+      "schema_version": "pcdoe.priority-policy.v1"
     }
   ]
 }

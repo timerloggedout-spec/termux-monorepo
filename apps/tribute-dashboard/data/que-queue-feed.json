@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-19T23:44:20Z",
+ "generated_at": "2026-11-19T23:52:05Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -18,7 +18,7 @@
    "2": {
     "tier": 2,
     "queued": 0,
-    "in_progress": 1,
+    "in_progress": 2,
     "oldest_queued_at": null,
     "by_workflow_queued": {}
    },
@@ -31,17 +31,15 @@
    },
    "4": {
     "tier": 4,
-    "queued": 1,
-    "in_progress": 11,
-    "oldest_queued_at": "2026-11-19T23:43:31Z",
-    "by_workflow_queued": {
-     "Quota Dispatch Tree": 1
-    }
+    "queued": 0,
+    "in_progress": 4,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    }
   },
   "totals": {
-   "queued": 1,
-   "in_progress": 13
+   "queued": 0,
+   "in_progress": 7
   },
   "wedged_ancient": [
    {
@@ -199,12 +197,12 @@
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
     "1": 1,
-    "2": 1,
+    "2": 2,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 2,
-   "default_t4": 12,
+   "explicit_total": 3,
+   "default_t4": 4,
    "unmatched": 0,
    "ancient_excluded": 25,
    "operator_excluded": 1
@@ -1608,67 +1606,66 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-19T23:44:20Z",
+  "generated_at": "2026-11-19T23:52:05Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
-   "STALE": 1,
-   "FRESH": 3,
+   "FRESH": 4,
    "UNVERIFIABLE": 1
   },
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-19T23:44:20Z",
-    "observed_at": "2026-11-19T23:44:20Z",
+    "generated_at": "2026-11-19T23:52:05Z",
+    "observed_at": "2026-11-19T23:52:05Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-19T23:11:54Z",
-    "cycle_gap_min": 32.4,
-    "health": "STALE",
+    "previous_cycle_at": "2026-11-19T23:44:20Z",
+    "cycle_gap_min": 7.8,
+    "health": "FRESH",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "20f890a3cedb72dbb87b8cf24a7e87424b070f82",
-    "run_id": "44640113888"
+    "sha": "8482898aec5f953e20ea2daf4878686407393f77",
+    "run_id": "44641155209"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-19T23:44:20Z",
+    "observed_at": "2026-11-19T23:52:05Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "20f890a3cedb72dbb87b8cf24a7e87424b070f82",
+    "sha": "8482898aec5f953e20ea2daf4878686407393f77",
     "generated_at": "2026-11-19T23:36:45Z",
-    "age_min": 7.6,
+    "age_min": 15.3,
     "health": "FRESH"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-19T23:44:20Z",
+    "observed_at": "2026-11-19T23:52:05Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "20f890a3cedb72dbb87b8cf24a7e87424b070f82",
+    "sha": "8482898aec5f953e20ea2daf4878686407393f77",
     "generated_at": "2026-11-19T23:36:45Z",
-    "age_min": 7.6,
+    "age_min": 15.3,
     "health": "FRESH"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-19T23:44:20Z",
+    "observed_at": "2026-11-19T23:52:05Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "20f890a3cedb72dbb87b8cf24a7e87424b070f82",
+    "sha": "8482898aec5f953e20ea2daf4878686407393f77",
     "generated_at": "2026-11-19T21:38:09Z",
-    "age_min": 126.2,
+    "age_min": 133.9,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-19T23:44:20Z",
+    "observed_at": "2026-11-19T23:52:05Z",
     "generated_at": "2026-11-19T17:12:51Z",
-    "age_min": 391.5,
+    "age_min": 399.2,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "20f890a3cedb72dbb87b8cf24a7e87424b070f82"
+    "sha": "8482898aec5f953e20ea2daf4878686407393f77"
    }
   }
  }

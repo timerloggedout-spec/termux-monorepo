@@ -63,6 +63,15 @@ def test_repo_action_verbs_are_recognized_as_imperative(monkeypatch):
     assert verbs <= module["IMPERATIVE"]
 
 
+def test_preserves_baseline_action_verbs(monkeypatch):
+    # Master 069a774cd0ab06bc6ea6f8c51bd9e97ca3b895fd accepts these verbs.
+    module = load_style_module(monkeypatch)
+    assert {
+        "account", "bind", "clarify", "export", "format", "guard", "implement",
+        "initialize", "invoke", "isolate", "link", "parse", "pin", "sort",
+    } <= module["IMPERATIVE"]
+
+
 def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT):
     """Exercise the public CLI with a real, credential-free Git commit range."""
     def git(*args):
@@ -73,6 +82,7 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     git("init", "--initial-branch=main")
     git("config", "user.name", "Style Regression")
     git("config", "user.email", "style-regression@example.invalid")
+    git("config", "commit.gpgSign", "false")
     git("commit", "--allow-empty", "-m", "test: add baseline")
     before = git("rev-parse", "HEAD")
     path = tmp_path / "docs" / "ops" / "instructions.md"
@@ -95,6 +105,7 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     "fix(ci): correct residual YAML scalar heuristics",
     "fix(ci): recognize explicit quoted mapping keys",
     "test(ci): add CLI regression coverage",
+    "fix(ci): guard dispatch admission",
 ])
 def test_real_push_accepts_imperative_subjects(tmp_path, subject):
     result = run_push_check(tmp_path, subject)
@@ -106,6 +117,7 @@ def test_real_push_accepts_imperative_subjects(tmp_path, subject):
     "fix(ci): corrected residual YAML scalar heuristics",
     "fix(ci): recognized explicit quoted mapping keys",
     "fix(ci): miscellaneous cleanup",
+    "fix(ci): guarded dispatch admission",
 ])
 def test_real_push_rejects_non_imperative_subjects(tmp_path, subject):
     result = run_push_check(tmp_path, subject)
@@ -123,3 +135,17 @@ def test_real_push_preserves_negative_first_rejection(tmp_path, location):
     expected = "commit.body" if location == "body" else "docs/ops/instructions.md"
     assert expected in result.stdout
     assert "commit subject requires" not in result.stdout
+
+
+def test_real_push_ignores_ambient_commit_signing(tmp_path, monkeypatch):
+    config = tmp_path / "global.config"
+    config.write_text(
+        "[commit]\n gpgSign = true\n[gpg]\n program = /bin/false\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(config))
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    result = run_push_check(repo, "test(ci): add unsigned fixture coverage")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert config.read_text(encoding="utf-8").startswith("[commit]\n gpgSign = true")

@@ -47,7 +47,7 @@ This is a documentation-and-contract foundation. It does not claim that external
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
 - [ ] PR cites `Implements: IIS-001` for the foundation item
-- [ ] PR cites `Implements: IIS-002` for the inference identity item
+- [x] PR #5656 cites `Implements: IIS-002` for the inference identity item
 - [ ] repo-gate and termux-smoke green on the same head
 - [ ] Non-author review and current check disposition recorded
 - [ ] Close and move to `closed/` only when all gates are terminal

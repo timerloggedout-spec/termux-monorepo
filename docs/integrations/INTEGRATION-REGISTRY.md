@@ -39,7 +39,7 @@
 | EmpirioLabs AI | P1 | Connector tools exposed in this session | Planned | Model and agent research/benchmarking |
 | tldraw | P1 | Connector namespace and repository skill guidance available | Planned | Visual architecture and research collaboration |
 | Cache Stats | P1 | Skill installed; no live telemetry tool exposed | Planned | Local prompt-cache/context efficiency evidence |
-| OpenAI Codex OTel | P1 | Official OTel metrics documented; opt-in export remains unobserved in this repository | Planned; discovered | Local agent API/tool execution telemetry |
+| OpenAI Codex OTel | P1 | Official OTel metrics documented; opt-in export awaits runtime observation | Planned; discovered | Local agent API/tool execution telemetry |
 | ChatGPT Desktop Usage | P1 | Desktop Usage & Billing documented; ingestion/export path remains unverified | Planned; discovered | Work/Codex usage analytics and cost/credit context |
 | Alloy | P2 | Mission/device and Mesh Storage tools exposed | Planned | Robotics/edge mission and device evidence |
 | Klaviyo | P3 | Connector tools exposed in this session | Planned; deferred pending explicit consent-based use case | Consent-based research/release communications |

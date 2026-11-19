@@ -4,7 +4,7 @@
 
 ## Intent
 
-Define a provider-neutral identity contract for inference work executed concurrently across multiple projects. Attribute each observation to a portfolio, project, task, logical inference, and individual attempt so project isolation and portfolio-level utilization can coexist.
+Define a provider-neutral identity contract for inference work executed concurrently across multiple projects. Attribute each observation to a portfolio, project, task, logical inference, and individual attempt so project isolation and portfolio-level utilization work together.
 
 ## Goals
 

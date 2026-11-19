@@ -516,11 +516,11 @@
       "category": "agent-efficiency-observability",
       "priority": "P1",
       "discovery_state": "discovered",
-      "session_evidence": "Official Codex documentation describes opt-in OpenTelemetry metrics for API requests, streaming, WebSocket activity, tool calls, and durations; repository runtime export has not been enabled or observed.",
+      "session_evidence": "Official Codex documentation describes opt-in OpenTelemetry metrics for API requests, streaming, WebSocket activity, tool calls, and durations; repository runtime export remains unenabled and unobserved.",
       "repo_skill_path": null,
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "local-agent-execution-observation",
-      "write_boundary": "Opt-in telemetry export to a controlled collector; keep prompt logging disabled and exclude raw tool arguments/results, credentials, and session contents; require retention and access policy before ingestion.",
+      "write_boundary": "Export redacted telemetry metadata to a controlled collector; keep prompt logging disabled and retain raw tool arguments/results, credentials, and session contents in approved source systems; apply retention and access policy before ingestion.",
       "next_step": "Implement a bounded OTel adapter from sanitized fixtures; verify metric names, resource metadata, idempotency, and redaction before enabling local export.",
       "sensitivity": "aggregate-execution-and-usage-metadata"
     },
@@ -530,11 +530,11 @@
       "category": "agent-efficiency-observability",
       "priority": "P1",
       "discovery_state": "discovered",
-      "session_evidence": "Official Desktop Usage & Billing documentation describes Work/Codex credit, token, model, reasoning, speed, skill, plugin, and chat-level views; Personal Analytics has workspace eligibility conditions; a supported ingestion/export interface remains unverified.",
+      "session_evidence": "Official Desktop Usage & Billing documentation describes Work/Codex credit, token, model, reasoning, speed, skill, plugin, and chat-level views; Personal Analytics has workspace eligibility conditions; supported ingestion/export interface verification remains pending.",
       "repo_skill_path": null,
       "repo_adapter_state": "repo_adapter_planned",
       "authority": "read-only-desktop-usage-observation",
-      "write_boundary": "Use supported user-visible usage evidence; preserve Work/Codex versus regular Chat coverage boundaries; avoid chat content and personal analytics outside eligible authorized workspaces.",
+      "write_boundary": "Limit ingestion to approved usage summaries; preserve Work/Codex versus regular Chat coverage boundaries; keep chat content in its source system and apply workspace eligibility and user authorization.",
       "next_step": "Verify a supported export/API or user-approved report ingestion path; record coverage, estimate limitations, refresh time, and source attribution before adapter implementation.",
       "sensitivity": "personal-usage-and-activity-metadata"
     }

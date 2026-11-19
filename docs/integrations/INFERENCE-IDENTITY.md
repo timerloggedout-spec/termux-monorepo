@@ -28,7 +28,7 @@ portfolio_id
 - Increment `attempt_number` for each retry when the source reports the sequence.
 - Keep `event_id` and `idempotency_key` unique per captured event.
 - Preserve `model: null` and null usage values when the source leaves them unknown.
-- Preserve the configured `instance_key`; provider/model labels alone do not identify a configured instance.
+- Use the configured `instance_key` as configured-instance identity; retain provider/model labels as separate descriptors.
 
 ## Parallel execution dimensions
 
@@ -37,7 +37,7 @@ portfolio_id
 - `priority_class` supports critical, normal, background, and experiment work.
 - Project isolation remains the default ownership boundary. Cross-project work requires an explicitly authorized handoff and a separately attributable target-project task.
 
-These fields describe execution and attribution. The contract does not implement a scheduler, queue service, quota enforcer, provider router, or budget controller.
+These fields describe execution and attribution. Existing scheduler, queue, quota, provider-routing, and budget-control owners retain runtime execution.
 
 ## Event contract
 
@@ -70,7 +70,7 @@ Populate only fields supported by source evidence. Carry unknown values as null 
 - Store IDs, metadata, counts, statuses, hashes, and opaque evidence references.
 - Keep prompts, completions, raw tool arguments/results, credentials, and private session transcripts in their approved source systems.
 - Record provider, capture method, model, adapter version, and attribution class through the existing provenance envelope.
-- Treat provider observations as evidence inputs, not repository authority.
+- Use provider observations as evidence inputs; keep repository state canonical.
 
 ## Compatibility
 

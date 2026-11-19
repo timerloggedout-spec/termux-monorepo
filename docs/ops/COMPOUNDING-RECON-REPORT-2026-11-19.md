@@ -129,56 +129,51 @@ The current allocation card lists Muse Temporal staging/index jobs, and the owne
 
 ### 3.4 Reference templates and MergeEarn
 
-**VERIFIED — PR #4737 already contains the fleet-native Agentic Wallet template.**  
-Original PR #4737, `feat/agentic-wallet-template`, remains open as lineage; its branch diverges and is 13,613 commits behind current master. It adds:
-- `refTemplates/00_Index/README.md` registration,
-- `refTemplates/01_Agent_Runtime/README.md` family registration,
-- `refTemplates/01_Agent_Runtime/agentic-wallet/README.md`,
-- `SPEC.md`, and
-- `SOURCE.txt`.
+**VERIFIED — the fleet-native Agentic Wallet template already has a complete spec proposal.**  
+Original PR #4737, `feat/agentic-wallet-template`, introduced the wallet template files and family/index registration. Its branch diverges from current master and is 13,613 commits behind, so it remains lineage evidence.
 
-The spec uses the existing hash-chained wallet ledger, provisioning set, and `scripts/moneyball/wallet_ledger.py` fold/verify/sweep tooling. It specifies `soft_quota_token` as observational and explicitly excludes chain/mainnet legs, key custody, and real-money authority.
+The spec uses the existing hash-chained wallet ledger, provisioning set, and `scripts/moneyball/wallet_ledger.py` fold/verify/sweep tooling. It specifies `soft_quota_token` as observational and records explicit paper/test boundaries for chain, key custody, and real-money authority.
 
 **OWNER-REPORTED — MergeEarn has already informed wallet-template use.**  
-This is recorded as owner-reported prior use. The upstream MergeEarn repository and PR #76 provide external product/contribution and bounty-flow context; PR #76 itself is open and unmerged at the inspected snapshot. The upstream interaction provides product context; the fleet template records MergeEarn as a comparator and preserves the in-house ledger as settlement authority.
+The owner reports prior MergeEarn use in wallet-template design. The upstream repository and PR #76 provide external product/contribution and bounty-flow context. The fleet template registers MergeEarn as a comparator while preserving the in-house wallet ledger as balance and settlement authority.
 
-**IMPLEMENTED ON PR BRANCH — MergeEarn source registration.**  
-This session adds MergeEarn to the Agentic Wallet `SOURCE.txt`, README, and `refTemplates/00_Index/SOURCE-MAP.md` on the existing PR #4737 branch. The wording registers it as an external bounty/work-funding/payout-flow comparator and explicitly preserves the fleet wallet ledger as the internal source of record. The PR branch remains unmerged; registration becomes part of master only after review and merge.
+**IMPLEMENTED — fresh current-base registration is available in draft PR #5664.**  
+PR #5664 carries the complete Agentic Wallet `README.md`, `SPEC.md`, and `SOURCE.txt`, plus index/family registration and the MergeEarn entry in `SOURCE-MAP.md`. The original PR #4737 remains open as lineage; #5664 is the current-base review path.
 
 ### 3.5 Compute and automation operating model
 
 **VERIFIED — system-managed work already exists.**  
-The repository has QUE intake/admission machinery, Temporal proposal and staging references, Muse VM daily jobs, Hark request/receipt stores, Actions orchestration, scheduled telemetry ingest, and the `adaptive-wait` / `production-reconciliation` skill discipline. The proper lifecycle is system-managed scheduling, admission, dispatch, placement, retry, checkpointing, export, and recovery. Manual dispatch is an entry mechanism.
+The generated automation catalog `docs/ops/generated/automation-workflow-catalog.md` lists 323 workflows. `docs/ops/ADAPTIVE-DISPATCH.md` defines event-driven wakes from PR lifecycle, selected lane completion, and canonical source-record pushes, plus a 30-minute cadence clock for 30-minute and hourly/modulo 3h/4h/6h/12h slots. The central dispatcher uses event and cadence triggers; the authenticated `/quota force all` issue command provides an auditable human override within the existing gates. QUE admission, Temporal workflows, Muse cron, Hark request/receipt stores, Actions orchestration, and scheduled telemetry ingest already form the operating substrate.
 
 **GAP — cross-surface scheduler/receipt join.**  
-The repository has multiple schedules and stores. The highest-value integration is a common job/attempt identity and one status projection across QUE, Temporal, Muse/Hark cron, Actions, and output exports. Implement this as adapters into existing machinery.
+The highest-value integration is one job/attempt identity and one status projection across QUE, Temporal, Muse/Hark cron, Actions, and output exports. Implement this as adapters into existing machinery.
 
-**GAP — retry/recovery semantics must remain side-effect aware.**  
-The Temporal proposal explicitly calls out worker death and unknown side effects. A started-but-unrecorded side effect must be reconciled before retry. Every retry must link to its parent attempt, and a terminal success must have a verifier or business receipt.
+**VERIFIED — retry and recovery controls already have a strong baseline.**  
+Temporal N5 proves worker-loss recovery and exactly-once emission for the Delphi workflow. Extend the common receipt/attempt identity to other workloads, and reconcile unknown side effects before retry. Link every retry to its parent attempt and require a verifier or business receipt for terminal success.
 
 ## 4. What exists beyond SWE
 
-SWE-bench measures software issue-to-patch resolution. It cannot stand in for all agent capability. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` registers the broader portfolio and native score semantics.
+SWE-bench measures software issue-to-patch resolution. Build the broader agent portfolio around distinct capabilities: terminal execution, MCP tools, browser and desktop interaction, policy-constrained workflows, memory, mobile, ML engineering, security, and multi-agent coordination. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` records the families, native score semantics, adapter states, and admission sequence.
 
-**The most important new insight is that MCP has its own mature benchmark family.** The repository already has an in-house TDQS tool-definition quality lane and named priority cohorts. Extend that foundation with a high-return sequence: static schema quality via TDQS, deterministic task correctness via MCPMark, then live effect-based evaluation via DynamicMCPBench.
+**MCP is the highest-fit extension for this repository.** TDQS already provides static MCP tool-definition quality and server-coherence signals. Add MCPMark for deterministic task outcomes, then DynamicMCPBench for trace-grounded effects on synthetic fleet-owned servers. MCP-Atlas, MCPAgentBench, and MCP-Bench extend coverage to cross-server discovery, distractor handling, and multi-step orchestration.
 
 The highest-leverage additions are:
 
-- **Terminal-Bench 4.1:** terminal-native work and systems tasks; immediate next adapter. The 4.1 release is verifier-focused: it re-grades stored 4.0 trials with more robust reward-hack resistance and correctness. Preserve 4.0 observations and 4.1 regrades as linked records.
+- **Terminal-Bench 4.1:** terminal-native work and systems tasks; immediate next terminal adapter. Its 4.1 release re-grades saved 4.0 trials with hardened verifiers and reward-hack resistance. Preserve 4.0 observations and 4.1 regrades as linked records.
 - **MCPMark:** 127 curated MCP tasks with programmatic verification and controlled initial state; strongest first benchmark for CRUD, multi-turn, and stateful MCP workflows.
 - **DynamicMCPBench:** trace-grounded, effect-scored framework for live MCP servers; ideal for synthetic versions of the fleet's own MCP servers, with pass^3 reliability and intermediate state-effect checks.
 - **MCP-Atlas / MCPAgentBench / MCP-Bench:** cross-server tool discovery, distractor handling, multi-step orchestration, and intermediate-result grounding. These complement local TDQS and MCPMark.
-- **BFCL v4 + ToolSandbox:** function-call accuracy, schema/argument correctness, multi-turn stateful tools, and intermediate/final state validation. BFCL's independent audit found defects in 24 of 50 sampled tasks; attach task-level quality annotations and pair its aggregate with an independent local sanity set.
-- **BrowserGym + WebArena / WebArena-Verified / WorkArena:** browser and web-app workflows with self-hosted task state; WebArena-Pro is a recent multimodal research candidate.
-- **OSWorld / OSWorld-MCP:** desktop and cross-application computer-use tasks; separate VM/GUI environment required.
+- **BFCL v4 + ToolSandbox:** function-call accuracy, schema/argument correctness, multi-turn stateful tools, and intermediate/final state validation. BFCL's independent audit identified defects in 24 of 50 sampled tasks; attach task-level quality annotations and pair its aggregate with an independent local sanity set.
+- **BrowserGym + WebArena / WebArena-Verified / WorkArena:** browser and web-app workflows with self-hosted task state; WebArena-Pro adds a recent multimodal research direction.
+- **OSWorld / OSWorld-MCP:** desktop and cross-application computer-use tasks; allocate a dedicated disposable VM/GUI environment.
 - **τ²-bench:** user-agent-tool interactions under policy and changing backend state, with text and voice variants.
-- **LongMemEval / V2:** memory retrieval, temporal reasoning, knowledge updates, abstention, and query latency; especially relevant to HindSight and ForeSight.
+- **LongMemEval / V2:** memory retrieval, temporal reasoning, knowledge updates, abstention, and query latency; directly relevant to HindSight and ForeSight.
 - **AndroidWorld:** mobile workflows on an Android emulator; relevant to Termux and device-agent work.
 - **MLE-bench:** 75 Kaggle ML engineering competitions. Official setup recommends 3 seeds and 24 hours on 36 vCPU, 440 GB RAM, and one 24 GB A10 GPU; the Lite/Low split has 22 competitions. Dataset terms are separate from the code license, and upstream leaderboard submissions remain paused per the official 2026-04-24 notice. Place full-suite runs on a dedicated 36-vCPU/440-GB/24-GB-A10 surface; use Muse for orchestration and preprocessing.
-- **AgentDojo:** prompt-injection and defense evaluations; security-isolated.
+- **AgentDojo:** prompt-injection and defense evaluations in isolated synthetic environments.
 - **GAIA / AgentBench / Terminal-Bench-Science:** broad assistant, multi-environment, and scientific workflow coverage.
 
-These families should enter the registry as **CANDIDATE** or **RESEARCH**, then graduate to **WIRED** and **EXECUTED** only with pinned environments, adapter tests, and receipts. The registry explicitly records score semantics and version/regrade constraints.
+Register each family as **CANDIDATE** or **RESEARCH**, then graduate it to **WIRED** and **EXECUTED** through pinned environments, adapter tests, and receipts. Preserve native metrics and version/regrade lineage.
 
 ## 5. Compounding architecture
 

@@ -1,22 +1,23 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T13:57:35Z",
+ "generated_at": "2026-11-19T14:11:39Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T13:56:31Z",
+   "queued": 3,
+   "in_progress": 2,
+   "oldest_queued_at": "2026-11-19T14:11:25Z",
    "by_workflow_queued": {
-    "repo gate": 1
+    "repo gate": 1,
+    "PR scope guard": 2
    }
   },
   "2": {
    "tier": 2,
    "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T13:56:31Z",
+   "oldest_queued_at": "2026-11-19T14:08:40Z",
    "by_workflow_queued": {
     "pages build and deployment": 1,
     "tribute-dashboard-deploy": 1
@@ -31,23 +32,34 @@
   },
   "4": {
    "tier": 4,
-   "queued": 22,
+   "queued": 62,
    "in_progress": 14,
-   "oldest_queued_at": "2026-11-19T13:55:10Z",
+   "oldest_queued_at": "2026-11-19T14:07:22Z",
    "by_workflow_queued": {
     "lane events recorder": 9,
-    "Agent Throughput Evidence": 8,
-    "repo-tracking-collect": 1,
-    "n8n SHE bridge": 1,
-    "quota-usage-series-refresh": 1,
-    "Sweep Accountability": 1,
+    "PR production ledger": 3,
+    "Workflow Surface Policy": 1,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "Sweep Accountability": 4,
+    "Agent PR Jules Handoff": 2,
+    "Repository development evaluation": 1,
+    "termux smoke": 1,
+    "Lane matrix event-driven inventory": 2,
+    "DO Statement Style": 2,
+    "CellCog review": 1,
+    "Action Effectiveness Ledger": 3,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Peer review orchestrator": 1,
+    "PR evidence evaluation": 2,
+    "Agent Throughput Evidence": 24,
+    "Gemini review after peers": 3,
     "RECON INTEL discovery": 1
    }
   }
  },
  "totals": {
-  "queued": 25,
-  "in_progress": 16
+  "queued": 67,
+  "in_progress": 17
  },
  "wedged_ancient": [
   {
@@ -205,13 +217,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
+   "1": 5,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 36,
+  "explicit_total": 8,
+  "default_t4": 76,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "registry_id": "termux-monorepo.integration-intelligence",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-19",
   "authority": "repository-maintained-inventory",
   "capability_scope": "Session-scoped audit of explicitly requested integrations; see INTEGRATION-PORTFOLIO.md for observed access, blockers, and next validation steps. CEEL candidate integrations are inventory-only until independently validated.",
   "integrations": [
@@ -509,6 +509,34 @@
       "write_boundary": "No dataset upload, prompt/completion transfer, scoring mutation or deployment until data classification, retention, scopes and cost ceiling are approved.",
       "next_step": "Verify dataset/version lineage, scorer reproducibility, experiment export and cost controls using sanitized fixtures.",
       "sensitivity": "evaluation-dataset-and-score-metadata"
+    },
+    {
+      "id": "codex-otel",
+      "name": "OpenAI Codex OTel",
+      "category": "agent-efficiency-observability",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Codex documentation describes opt-in OpenTelemetry metrics for API requests, streaming, WebSocket activity, tool calls, and durations; repository runtime export remains unenabled and unobserved.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "local-agent-execution-observation",
+      "write_boundary": "Export redacted telemetry metadata to a controlled collector; keep prompt logging disabled and retain raw tool arguments/results, credentials, and session contents in approved source systems; apply retention and access policy before ingestion.",
+      "next_step": "Implement a bounded OTel adapter from sanitized fixtures; verify metric names, resource metadata, idempotency, and redaction before enabling local export.",
+      "sensitivity": "aggregate-execution-and-usage-metadata"
+    },
+    {
+      "id": "chatgpt-desktop",
+      "name": "ChatGPT Desktop Usage",
+      "category": "agent-efficiency-observability",
+      "priority": "P1",
+      "discovery_state": "discovered",
+      "session_evidence": "Official Desktop Usage & Billing documentation describes Work/Codex credit, token, model, reasoning, speed, skill, plugin, and chat-level views; Personal Analytics has workspace eligibility conditions; supported ingestion/export interface verification remains pending.",
+      "repo_skill_path": null,
+      "repo_adapter_state": "repo_adapter_planned",
+      "authority": "read-only-desktop-usage-observation",
+      "write_boundary": "Limit ingestion to approved usage summaries; preserve Work/Codex versus regular Chat coverage boundaries; keep chat content in its source system and apply workspace eligibility and user authorization.",
+      "next_step": "Verify a supported export/API or user-approved report ingestion path; record coverage, estimate limitations, refresh time, and source attribution before adapter implementation.",
+      "sensitivity": "personal-usage-and-activity-metadata"
     }
   ]
 }

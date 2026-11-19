@@ -5,11 +5,13 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| **Reusable bounded loop library** | [`LOOPS.md`](LOOPS.md) — CYCLE-001 Compounding RECON and Delivery |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
 | Superpowers engineering workflow | `.agents/skills/superpowers/SKILL.md` |
-| Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` |
+| Adaptive wait / feedback | `.agents/skills/adaptive-feedback-cycle/SKILL.md` + `.agents/skills/adaptive-wait/SKILL.md` |
+| Loop execution | `LOOPS.md` CYCLE-001 |
 | Admin ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
 | ML keep-alive | `.agents/skills/ml-pipeline-ops/SKILL.md` |
 | ML command-center / repo SSOT | `.agents/skills/ml-command-center/SKILL.md` |
@@ -64,7 +66,7 @@ Agent-Identity: Grok (Administrator)
 RECON → PLAN / MEASURE → ACT → COMMIT → WAIT → WATCH → VALIDATE → RE-FETCH → COMPARE → CLASSIFY → RECORD → REPEAT
 ```
 
-Do not treat queued/in-progress as success. Preserve provenance and keep promotion separate from execution and validation.
+Treat queued/in-progress as pending. Preserve provenance and keep promotion separate from execution and validation.
 
 
 ## Repo-wide Linguist / Siglary mandate
@@ -72,3 +74,10 @@ Do not treat queued/in-progress as success. Preserve provenance and keep promoti
 - Canonical contract: [`docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md`](docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md).
 - Apply DO-first CAVEMAN-6 and `CHAT := STATE-CHANGE ∨ OVERSIGHT` to repository chat, skills, comments, commits, PRs, issues, and workflow directives.
 - Keep OPERATORS / GLYPHS / CHORDS distinct; resolve chords in named domains; preserve technical literals and approval boundaries.
+
+
+## Reusable loop library
+
+- Canonical library: [LOOPS.md](LOOPS.md).
+- CYCLE-001: Compounding RECON and Delivery — scope, preflight, reconstruct, prioritize, plan, implement, validate, WAIT, adapt, compound, publish, close.
+- Use [adaptive-wait](.agents/skills/adaptive-wait/SKILL.md) for immutable-SHA cadence and [adaptive-feedback-cycle](.agents/skills/adaptive-feedback-cycle/SKILL.md) for regression learning.

@@ -29,7 +29,7 @@ def validate() -> list[str]:
     examples = BASE / "examples"
     capability = load(examples / "capability.json")
     targets_doc = load(examples / "technology-targets.json")
-    if set(capability) < REQUIRED["capability"]:
+    if not REQUIRED["capability"] <= set(capability):
         errors.append("capability example: required fields missing")
     if capability.get("schema_version") != "1.0.0":
         errors.append("capability example: unsupported schema_version")
@@ -59,15 +59,13 @@ def validate() -> list[str]:
         for source in target.get("sources", []):
             if not str(source.get("uri", "")).startswith(("https://", "http://")):
                 errors.append(f"technology target {target_id}: source URI must be HTTP(S)")
-    if capability.get("capability_id") not in {capability.get("capability_id")}:
-        errors.append("capability identity consistency failure")
     return errors
 
 def main() -> int:
+    global ROOT, BASE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT, help="repository root")
     args = parser.parse_args()
-    global ROOT, BASE
     ROOT = args.root.resolve()
     BASE = ROOT / "docs" / "integrations" / "polyglot"
     try:

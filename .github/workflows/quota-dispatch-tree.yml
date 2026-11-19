@@ -71,6 +71,7 @@ jobs:
       dispatch_hw_execute: ${{ steps.tree.outputs.dispatch_hw_execute }}
       dispatch_hw_assist: ${{ steps.tree.outputs.dispatch_hw_assist }}
       dispatch_hourly: ${{ steps.tree.outputs.dispatch_hourly }}
+      dispatch_context_backfill: ${{ steps.tree.outputs.dispatch_context_backfill }}
       dispatch_repochange: ${{ steps.tree.outputs.dispatch_repochange }}
       dispatch_q3: ${{ steps.tree.outputs.dispatch_q3 }}
       dispatch_q4: ${{ steps.tree.outputs.dispatch_q4 }}
@@ -119,7 +120,7 @@ jobs:
                 'dispatch_stall_watch', 'dispatch_bridge', 'dispatch_probe',
                 'dispatch_eval', 'dispatch_recon', 'dispatch_hw_refresh',
                 'dispatch_hw_pair', 'dispatch_hw_execute', 'dispatch_hw_assist',
-                'dispatch_hourly', 'dispatch_repochange', 'dispatch_q3',
+                'dispatch_hourly', 'dispatch_context_backfill', 'dispatch_repochange', 'dispatch_q3',
                 'dispatch_q4', 'dispatch_q6', 'dispatch_vantage'
               ]) core.setOutput(name, 'false');
               core.info('Duplicate force request: no dispatch fan-out');
@@ -255,6 +256,34 @@ jobs:
             // wakes evaluate demand/staleness but never replay hourly/3h/4h slots.
             const firstCycle = context.eventName === 'schedule' && new Date().getUTCMinutes() < 10;
             const eventDemand = ['pull_request_target', 'workflow_run', 'push'].includes(context.eventName);
+            // Node G1b: context graph history backfill has its own success/attempt
+            // age guard. The lane is a single writer and recovers from missed
+            // hourly phase windows without waking the rest of the hourly tranche.
+            const contextBackfillThresholdMin = 90;
+            let contextBackfillStaleMin = 1e9;
+            let contextBackfillAttemptAgeMin = 1e9;
+            let contextBackfillSuccessAgeMin = 1e9;
+            let contextBackfillActive = false;
+            try {
+              const backfillRuns = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id: 'context-relationship-backfill.yml', per_page: 10
+              });
+              const runs = backfillRuns.data.workflow_runs || [];
+              contextBackfillActive = runs.some(run => run.status === 'queued' || run.status === 'in_progress');
+              const lastAttempt = runs[0];
+              if (lastAttempt) {
+                contextBackfillAttemptAgeMin = (Date.now() - new Date(lastAttempt.updated_at || lastAttempt.created_at).getTime()) / 60000;
+              }
+              const lastSuccess = runs.find(run => run.status === 'completed' && run.conclusion === 'success');
+              if (lastSuccess) {
+                contextBackfillSuccessAgeMin = (Date.now() - new Date(lastSuccess.updated_at || lastSuccess.created_at).getTime()) / 60000;
+              }
+              contextBackfillStaleMin = contextBackfillActive
+                ? 0
+                : Math.min(contextBackfillAttemptAgeMin, contextBackfillSuccessAgeMin);
+              core.info(`context-backfill active=${contextBackfillActive} attempt_age=${Math.round(contextBackfillAttemptAgeMin)}m success_age=${Math.round(contextBackfillSuccessAgeMin)}m effective_stale=${Math.round(contextBackfillStaleMin)}m threshold=${contextBackfillThresholdMin}m`);
+            } catch (_) { /* unreadable run history = treat as stale; admission still gates pressure */ }
             // Raw verdicts. Node A admission is applied after Node G1,
             // when every staleness signal exists. stall-watch and
             // hw-refresh stay admission-exempt, exactly as they were
@@ -273,6 +302,7 @@ jobs:
             // firstCycle arithmetic; repo-state lanes reuse Node E's watermark
             // check. Zero additional API calls.
             verdicts.dispatch_hourly = (firstCycle || force);
+            verdicts.dispatch_context_backfill = (firstCycle || contextBackfillStaleMin > contextBackfillThresholdMin || force);
             verdicts.dispatch_repochange = ((repoChanged && (slow || eventDemand)) || force);
             // Tranche 2 (Tier 3, issue #1573): hour-mod cadences at firstCycle.
             // Same firstCycle arithmetic as Node F, different modulus offsets.
@@ -325,7 +355,8 @@ jobs:
                 dispatch_hw_pair: { stale_min: hwPairStaleMin, threshold_min: 150 },
                 dispatch_hw_execute: { stale_min: hwExecuteStaleMin, threshold_min: 300 },
                 dispatch_hw_assist: { stale_min: hwAssistStaleMin, threshold_min: 450 },
-                dispatch_q6: { stale_min: paStaleMin, threshold_min: paThresholdMin }
+                dispatch_q6: { stale_min: paStaleMin, threshold_min: paThresholdMin },
+                dispatch_context_backfill: { stale_min: contextBackfillStaleMin, threshold_min: contextBackfillThresholdMin }
               }
             });
             const ADMISSION_EXEMPT = new Set(['dispatch_stall_watch', 'dispatch_hw_refresh']);
@@ -359,6 +390,7 @@ jobs:
                 ['F hw-execute', 'hour % 4 == 3 || stale > 300m', String((firstCycle && hour % 4 === 3) || hwExecuteStaleMin > 300)],
                 ['F hw-assist', 'hour % 6 == 5 || stale > 450m', String((firstCycle && hour % 6 === 5) || hwAssistStaleMin > 450)],
                 ['G tier3-hourly', 'hourly cycle && admission', String(finals.dispatch_hourly)],
+                ['G1b context-backfill', 'hourly cycle || last attempt/success stale > 90m', String(finals.dispatch_context_backfill)],
                 ['G tier3-repochange', 'commits since watermark && slow-cycle', String(finals.dispatch_repochange)],
                 ['G q3', 'firstCycle && hour % 3 == 1', String(finals.dispatch_q3)],
                 ['G q4', 'firstCycle && hour % 4 == 1', String(finals.dispatch_q4)],
@@ -518,7 +550,7 @@ jobs:
             sweep: 'false'
             advance_watermark: 'false'
           - lane: context-relationship-backfill
-            run: ${{ needs.decide.outputs.dispatch_hourly }}
+            run: ${{ needs.decide.outputs.dispatch_context_backfill }}
             inputs_json: ''
             advance_watermark: 'false'
           - lane: tribute-system1

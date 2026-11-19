@@ -1,0 +1,71 @@
+{
+  "mode": "read_only_shadow",
+  "snapshot_ref": "fixture://pcdoe-008/cohort-alpha",
+  "risk_limit": 0.7,
+  "tasks": [
+    {
+      "task_id": "task-value",
+      "incumbent_rank": 2,
+      "value": 0.95,
+      "value_confidence": 0.9,
+      "effort": 0.25,
+      "urgency": 0.4,
+      "dependency_unlock": 0.2,
+      "critical_path": 0.1,
+      "blocked_time_reduction": 0.1,
+      "uncertainty": 0.1,
+      "recovery_cost": 0.1,
+      "reversibility": 0.9,
+      "age": 0.3,
+      "risk": 0.2
+    },
+    {
+      "task_id": "task-unblock",
+      "incumbent_rank": 1,
+      "value": 0.55,
+      "value_confidence": 0.8,
+      "effort": 0.5,
+      "urgency": 0.9,
+      "dependency_unlock": 1.0,
+      "critical_path": 0.95,
+      "blocked_time_reduction": 0.95,
+      "uncertainty": 0.2,
+      "recovery_cost": 0.2,
+      "reversibility": 0.7,
+      "age": 0.8,
+      "risk": 0.3
+    },
+    {
+      "task_id": "task-unknown-risk",
+      "incumbent_rank": 3,
+      "value": 0.7,
+      "value_confidence": 0.6,
+      "effort": 0.4,
+      "urgency": 0.5,
+      "dependency_unlock": null,
+      "critical_path": 0.2,
+      "blocked_time_reduction": null,
+      "uncertainty": 0.6,
+      "recovery_cost": 0.4,
+      "reversibility": 0.4,
+      "age": 0.5,
+      "risk": null
+    },
+    {
+      "task_id": "task-high-risk",
+      "incumbent_rank": 4,
+      "value": 0.9,
+      "value_confidence": 0.9,
+      "effort": 0.3,
+      "urgency": 0.8,
+      "dependency_unlock": 0.4,
+      "critical_path": 0.7,
+      "blocked_time_reduction": 0.2,
+      "uncertainty": 0.1,
+      "recovery_cost": 0.2,
+      "reversibility": 0.8,
+      "age": 0.6,
+      "risk": 0.95
+    }
+  ]
+}

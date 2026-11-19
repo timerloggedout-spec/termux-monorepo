@@ -227,9 +227,11 @@ python scripts/pcdoe/shadow_prioritizer.py \
   --output /tmp/pcdoe-shadow-result.json
 ```
 
-The fixture is synthetic and verifies deterministic policy behavior, missing-risk handling, and risk eligibility. It is a software test, not a production observation or a DoE result. Live canonical snapshots require their existing owner to authorize access and supply the snapshot through an approved read-only seam.
+The fixture is synthetic and verifies deterministic policy behavior, catalog-driven factor weights, unknown-input confidence, missing-risk handling, and risk eligibility. Missing factors remain null; the evaluator scores the known weighted factors and reports factor-coverage confidence. It is a software test, not a production observation or a DoE result. Live canonical snapshots require their existing owner to authorize access and supply the snapshot through an approved read-only seam.
 
 The companion `scripts/pcdoe/autoapprove_shadow.py` evaluates the allowlist, actor, resource, scope, budget, timeout, expiry, identity, permission, risk, freshness, idempotency, compensation, and evidence predicates. It returns an eligibility decision only. Its tests assert that formal review, merge, release, promotion, and credential classes remain routed to formal approval and that the evaluator performs no requested action.
+
+The compatibility suite validates a six-policy manager cohort against the existing `MANAGER-TOURNAMENT.schema.json` and validates a policy identity mapped to `treatment.manager_policy_id` against the existing `EXPERIMENT.schema.json`. These are in-memory schema fixtures only; the test emits and persists no experiment observation or tournament result.
 
 ## 8. Rollout sequence
 
@@ -263,8 +265,8 @@ The companion `scripts/pcdoe/autoapprove_shadow.py` evaluates the allowlist, act
 | PCDOE-008.2 | DO-statement contract | Proposed in this companion |
 | PCDOE-008.3 | Bounded AutoApprove policy and approval boundary | Proposed in this companion |
 | PCDOE-008.4 | DoE design and outcome contract | Proposed in this companion |
-| PCDOE-008.5 | Static validators, fixtures and tests | Implemented on companion branch; CI validation pending |
-| PCDOE-008.6 | Offline fixture evaluator and shadow contract | Implemented on companion branch; canonical snapshot integration pending owner authorization |
+| PCDOE-008.5 | Static validators, canonical-schema compatibility fixtures and tests | Implemented on companion branch; exact-head CI pending |
+| PCDOE-008.6 | Catalog-driven offline evaluator and shadow contract | Implemented on companion branch; canonical snapshot integration pending owner authorization |
 | PCDOE-008.7 | Preregistered experiment and independent analysis | Pending DoE review |
 | PCDOE-008.8 | Live cohort and adoption recommendation | Pending explicit Operator authorization |
 

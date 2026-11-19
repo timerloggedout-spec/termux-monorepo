@@ -67,7 +67,7 @@ The following is a prioritized portfolio for the next adapters. Each row is a ca
 | P0 | **Terminal-Bench 4.1** | Real terminal work across software, science, ML, operations, security, hardware, and media tasks | Task resolution rate with trial-level outcomes and confidence intervals | Primary complement to SWE-bench for terminal-native agent work; pin 4.1 tasks, Harbor image, verifier SHA, resource profile, and trial artifacts | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **SWE-bench Pro / SWE-bench-Live** | More demanding and/or continuously refreshed software engineering tasks | Dataset-specific patch resolution | Add as distinct cohorts beside Full/Lite/Verified; preserve task release and contamination window | **RESEARCH / CANDIDATE** |
 | P0 | **MCPMark** | Realistic MCP tasks with curated initial state and programmatic verification across CRUD and multi-step interactions | pass@1 and pass^4 | Highest-fit external MCP workflow benchmark; build a local/synthetic server cohort from the 127-task suite and preserve programmatic effect checks | **CANDIDATE — adapter not located in current repo search** |
-| P0 | **DynamicMCPBench** | Live MCP server workflows, trace-grounded effect checkpoints, and multi-step tool execution | pass^3 over independent attempts; task effects rather than final-answer matching | Best candidate for repeatable evaluation of the fleet's own MCP servers; start with sandbox servers and synthetic data | **CANDIDATE — adapter not located in current repo search** |
+| P0 | **DynamicMCPBench** | Live MCP server workflows, trace-grounded effect checkpoints, and multi-step tool execution; paper reports 24 models, 121 servers, and 750 tasks across 15 categories | pass^3 over independent attempts; task effects rather than final-answer matching | Best candidate for repeatable evaluation of the fleet's own MCP servers; start with sandbox servers and synthetic data | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **MCP-Atlas** | Real MCP servers/tools with natural-language tasks requiring multi-server discovery and orchestration | Claims-based partial credit plus tool discovery, parameterization, syntax, recovery, and efficiency diagnostics | Cross-server orchestration and tool-selection benchmark; use public subset first | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **MCPAgentBench** | Real-world MCP definitions with simulated tools and distractor tool lists | Task completion and execution efficiency | Tool discovery/selection and difficulty-aware evaluation without depending on live external servers | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **MCP-Bench** | Multi-step tasks across live MCP servers and complementary tools | Multi-faceted tool/schema, planning, and task-completion score | Cross-domain tool coordination and intermediate-output grounding | **CANDIDATE — adapter not located in current repo search** |
@@ -207,7 +207,8 @@ A treatment is eligible for promotion only after replicated, independently verif
 - MCP-Atlas: https://arxiv.org/abs/2602.00933
 - MCPAgentBench: https://aclanthology.org/2026.realm-1.51/
 - MCP-Bench: https://github.com/Accenture/mcp-bench
-- OSWorld-MCP: https://openreview.net/forum?id=91303321154efd692e9af4570fc166b9d9b43efe
+- OSWorld-MCP: https://openreview.net/pdf/91303321154efd692e9af4570fc166b9d9b43efe.pdf
+- WebArena-Pro: https://arxiv.org/abs/2611.17955
 - TDQS: https://tdqs.dev/spec
 - BFCL v4 independent quality review: https://epoch.ai/benchmarks/berkeley-function-calling-leaderboard/review
 - OSWorld: https://os-world.github.io/

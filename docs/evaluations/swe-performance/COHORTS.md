@@ -4,6 +4,8 @@
 
 This registry is deliberately separate from the repository-local development-performance score. SWE-bench-style resolution is a **treatment signal**, not a substitute for integrated repository correctness.
 
+The cross-domain portfolio now lives in [Benchmark Family Registry](../BENCHMARK-FAMILY-REGISTRY.md). It extends the SWE cohorts with terminal, browser, desktop, tool/API, policy, memory, mobile, ML-engineering, and security families. Each external adapter remains a candidate until its task/version/verifier contract and execution receipt are linked.
+
 ## User-owned fork cohort
 
 | Cohort | Repository | Role | Evidence policy |

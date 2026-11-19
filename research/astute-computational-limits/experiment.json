@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "ultimate-computation-limits",
+  "title": "Ultimate Computational Limits",
+  "summary": "A thought experiment mapping mathematical, informational, physical, and engineering dependencies toward theoretical computational limits.",
+  "research_question": "Which prerequisite models, discoveries, physical constraints, and technological capabilities shape the theoretical limits of computation?",
+  "scope": {
+    "mode": "thought_experiment",
+    "claim_policy": "map_dependencies_without_asserting_feasibility",
+    "seed_graph": "dependency-graph.json"
+  },
+  "domains": [
+    "mathematics",
+    "computation",
+    "information-theory",
+    "thermodynamics",
+    "quantum-mechanics",
+    "relativity",
+    "black-hole-physics",
+    "quantum-gravity",
+    "engineering"
+  ],
+  "lifecycle": "seeded",
+  "hypotheses": [
+    {
+      "hypothesis_id": "H-BLACK-HOLE-COMPUTER",
+      "statement": "A black-hole-based computational system can be analyzed as a theoretical endpoint under physical information and computation bounds.",
+      "status": "candidate",
+      "assumptions": [
+        "Physical bounds apply under their stated assumptions.",
+        "A controlled information encoding and output mechanism would be required."
+      ],
+      "evidence_ids": [
+        "SRC-LLOYD-2000",
+        "SRC-MARGOLUS-LEVITIN-1998",
+        "SRC-BEKENSTEIN-1973",
+        "SRC-HAWKING-1975"
+      ]
+    }
+  ],
+  "sources": [
+    "SRC-LLOYD-2000",
+    "SRC-MARGOLUS-LEVITIN-1998",
+    "SRC-LANDAUER-1961",
+    "SRC-BEKENSTEIN-1973",
+    "SRC-BEKENSTEIN-1981",
+    "SRC-HAWKING-1975",
+    "SRC-THOOFT-1993",
+    "SRC-SUSSKIND-1995",
+    "SRC-MALDACENA-1997",
+    "SRC-JORDAN-2017",
+    "SRC-MANN-2026"
+  ],
+  "graphs": [
+    "ucl-prerequisite-v1"
+  ],
+  "path_sets": [
+    "ucl-alternate-paths-v1"
+  ],
+  "owners": [
+    "Research Astute"
+  ],
+  "created_at": "2026-11-19T00:00:00Z",
+  "updated_at": "2026-11-19T00:00:00Z",
+  "current_snapshot": "ucl-seed-v1"
+}

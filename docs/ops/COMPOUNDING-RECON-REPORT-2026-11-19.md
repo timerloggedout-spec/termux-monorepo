@@ -164,7 +164,7 @@ The supplied Jules workflow guide describes issue delegation, PR review, setup a
 **VERIFIED — the PR handoff path exposed a high-frequency API cost.**  
 PR #5664's `Agent PR Jules Handoff` mutation job received a GitHub App installation API rate-limit response while listing PR comments. The workflow was scanning comments on every PR synchronization event, including ordinary PRs with no Jules delegation.
 
-**IMPLEMENTED IN DRAFT PR #5665 — pending-label API gate.**  
+**IMPLEMENTED IN DRAFT PR #5666 — pending-label API gate.**  
 The new branch pins `actions/github-script` to its immutable v7.1.0 commit, adds a `jules-handoff-pending` label only after trusted-source and idempotency checks, gates mutation comment pagination on that label, records `MUTATION_OBSERVED`, and clears the label after the receipt. A focused Python test covers actor gating, action pins, label lifecycle, deduplication, and exact-SHA receipt fields. This reduces API reads across ordinary PR sync events while preserving the existing handoff state machine.
 
 ## 4. What exists beyond SWE
@@ -360,7 +360,7 @@ Repository:
 - [Temporal N5 acceptance addendum](../proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-28-N5.json)
 - [Temporal self-host migration / retirement record](TEMPORAL-SELF-HOST.md)
 - [Jules handoff evidence contract](AGENT-JULES-HANDOFF.md)
-- [Jules handoff API-load guard PR #5665](https://github.com/timerloggedout-spec/termux-monorepo/pull/5665)
+- [Jules handoff API-load guard PR #5666](https://github.com/timerloggedout-spec/termux-monorepo/pull/5666)
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
 - [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
 - [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master

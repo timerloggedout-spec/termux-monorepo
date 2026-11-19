@@ -50,6 +50,7 @@ The existing `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md` and `docs/evaluat
 | Deterministic regression | AEF family | **IN-REPO** correctness control |
 | Trajectory validation | AEF family | **IN-REPO** trajectory/evidence control |
 | Tool/API boundary | AEF family and external instrument registry | **IN-REPO** family; adapters vary by instrument |
+| Tool-definition quality (TDQS) | `she/metrics/tdqs.py`, `tests/test_tdqs.py`, `docs/ops/TDQS-ADMISSION-MATRIX.md`, `docs/ops/TDQS-EVIDENCE.schema.json` | **IN-REPO** deterministic extraction/aggregation and evidence schema; external evaluator supplies rubric dimensions |
 | Cognitive regression | AEF family | **IN-REPO** internal family |
 | Oversight / security | AEF family and governance assurance instruments | **IN-REPO** family; specific external benchmark adapters remain selective |
 | Patch quality / long-horizon / adversarial robustness | AEF dimensions | **IN-REPO** evaluation dimensions; each requires an explicit task and scorer contract |
@@ -65,16 +66,22 @@ The following is a prioritized portfolio for the next adapters. Each row is a ca
 |---|---|---|---|---|---|
 | P0 | **Terminal-Bench 4.1** | Real terminal work across software, science, ML, operations, security, hardware, and media tasks | Task resolution rate with trial-level outcomes and confidence intervals | Primary complement to SWE-bench for terminal-native agent work; pin 4.1 tasks, Harbor image, verifier SHA, resource profile, and trial artifacts | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **SWE-bench Pro / SWE-bench-Live** | More demanding and/or continuously refreshed software engineering tasks | Dataset-specific patch resolution | Add as distinct cohorts beside Full/Lite/Verified; preserve task release and contamination window | **RESEARCH / CANDIDATE** |
+| P0 | **MCPMark** | Realistic MCP tasks with curated initial state and programmatic verification across CRUD and multi-step interactions | pass@1 and pass^4 | Highest-fit external MCP workflow benchmark; build a local/synthetic server cohort from the 127-task suite and preserve programmatic effect checks | **CANDIDATE — adapter not located in current repo search** |
+| P0 | **DynamicMCPBench** | Live MCP server workflows, trace-grounded effect checkpoints, and multi-step tool execution | pass^3 over independent attempts; task effects rather than final-answer matching | Best candidate for repeatable evaluation of the fleet's own MCP servers; start with sandbox servers and synthetic data | **CANDIDATE — adapter not located in current repo search** |
+| P1 | **MCP-Atlas** | Real MCP servers/tools with natural-language tasks requiring multi-server discovery and orchestration | Claims-based partial credit plus tool discovery, parameterization, syntax, recovery, and efficiency diagnostics | Cross-server orchestration and tool-selection benchmark; use public subset first | **CANDIDATE — adapter not located in current repo search** |
+| P1 | **MCPAgentBench** | Real-world MCP definitions with simulated tools and distractor tool lists | Task completion and execution efficiency | Tool discovery/selection and difficulty-aware evaluation without depending on live external servers | **CANDIDATE — adapter not located in current repo search** |
+| P1 | **MCP-Bench** | Multi-step tasks across live MCP servers and complementary tools | Multi-faceted tool/schema, planning, and task-completion score | Cross-domain tool coordination and intermediate-output grounding | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **BFCL v4** | Function/tool calling, multi-turn use, irrelevance detection, web search, and memory dimensions | Category accuracies and published overall accuracy | Tool-schema correctness and API selection; map function names/arguments to tool contract tests | **CANDIDATE — audit task defects before promotion** |
 | P1 | **OSWorld** | Multimodal agents operating real desktop and web applications across multi-app workflows | Per-task environment-state success | Computer-use and GUI workflow treatment; requires isolated desktop VM/emulator and deterministic state reset | **CANDIDATE — resource-gated** |
 | P1 | **WebArena / WebArena-Verified / VisualWebArena** | Realistic self-hosted browser tasks, visual and DOM/accessibility observations | Task functional correctness | Browser navigation, multi-step forms, retrieval, transactions, and state mutation; use BrowserGym as a possible adapter harness | **CANDIDATE — self-hosted environment required** |
+| P2 | **WebArena-Pro** | New multimodal browser benchmark with 300 tasks across 20 self-hosted applications and six domains, including audio/video observations | Task-level success with reproducible isolated runs | Research candidate for multimodal browser and cross-application work; validate task release and verifier maturity before admission | **RESEARCH — recent preprint** |
 | P1 | **BrowserGym / AgentLab** | Reusable benchmark execution environment across MiniWoB, WebArena, WorkArena, AssistantBench, WebLINX, TimeWarp, and related suites | Benchmark-specific metrics | Reuse as harness where its supported benchmark fits; keep each benchmark ID/version distinct | **RESEARCH / CANDIDATE** |
 | P1 | **τ²-bench / τ³-bench lineage** | Tool-agent-user interaction under written policies and evolving backend state; text and voice tracks | pass^k / task success under benchmark protocol | Policy compliance, customer-service workflows, tool side effects, and repeated reliability | **CANDIDATE — pin exact generation and grading revision** |
 | P1 | **ToolSandbox** | Stateful conversational tool use, implicit state dependencies, intermediate/final milestones | Trajectory milestone and final-state correctness | Internal API and workflow integration evaluation; strong complement to single-turn function-call tests | **CANDIDATE** |
 | P2 | **GAIA** | General assistant tasks requiring multi-step reasoning, tools, and heterogeneous evidence | Task answer correctness under GAIA protocol | Broad assistant capability and retrieval/reasoning control; preserve level and release | **RESEARCH / CANDIDATE** |
 | P2 | **AgentBench** | Multiple interactive environments: OS, DB, knowledge graph, games, puzzles, household, shopping, browsing | Original suite composite and environment-specific results | Broad cross-environment screening; distinguish original 8-environment, OS-only ports, and AgentBench FC variants | **RESEARCH / CANDIDATE** |
 | P2 | **AndroidWorld** | Autonomous Android agents across real apps on an emulator, with dynamically parameterized tasks | Programmatic per-task success | Termux/mobile workflows, app navigation, device-side automation and recovery | **CANDIDATE — device/emulator lane required** |
-| P2 | **MLE-bench** | ML engineering competitions: data preparation, training, experiments, model evaluation | Any-medal percentage and split-specific scores | Evaluate ML Ops agents and model-building workflows; use internal runs while upstream leaderboard submissions are paused | **CANDIDATE — GPU/RAM/time gated** |
+| P2 | **MLE-bench** | 75 Kaggle ML engineering competitions; data preparation, training, experiments, model evaluation | Any Medal (%) by Low/Lite, Medium, High, and All splits; at least 3 seeds recommended | Evaluate ML Ops agents; full canonical setup is 24 hours, 36 vCPU, 440 GB RAM, and one 24 GB A10 GPU. Low/Lite covers 22 competitions. Dataset downloads follow each competition's own terms; the code license does not license competition data. Upstream leaderboard submissions are paused per the 2026-04-24 notice | **CANDIDATE — resource/data-license gated** |
 | P2 | **AgentDojo** | Prompt-injection attacks and defenses in dynamic tool-using agent environments | Attack success / defense success by task and scenario | Security and trust-boundary tournaments; run only in isolated, synthetic environments | **CANDIDATE — security gate** |
 | P2 | **LongMemEval / LongMemEval-V2** | Information extraction, multi-session and temporal reasoning, knowledge updates, abstention; V2 adds trajectory-derived experience and query latency | Accuracy and latency | HindSight / ForeSight memory quality and retrieval regression; preserve data split and privacy rules | **CANDIDATE — privacy and dataset gate** |
 | P2 | **METR time-horizon evaluations** | Task duration and agent success over increasing task horizons | Horizon curves / fitted time horizon | Long-running agent reliability and planning depth; pair with checkpoint/recovery and intervention telemetry | **RESEARCH** |
@@ -102,6 +109,31 @@ Implementation consequences:
 - **Web and desktop environments:** task state, account credentials, reset fixtures, network access, and application versions are part of the environment fingerprint. Use synthetic accounts and seeded data.
 - **Long-memory suites:** retain dataset permissions, split identity, privacy boundaries, retention rules, and abstention behavior. Evaluate memory recall separately from memory write volume.
 - **All families:** pin data and verifier revisions; track known contamination, task exposure, benchmark saturation, reward-hack disclosures, and scorer changes.
+
+## 4.3 MCP-specific portfolio and existing TDQS lane
+
+The MCP-specific portfolio is the highest-priority addition for this repository. The current repo search found no named MCPMark, DynamicMCPBench, MCP-Atlas, MCPAgentBench, MCP-Bench, or OSWorld-MCP adapter. **TDQS is already implemented locally** and should be reused rather than re-created.
+
+| Instrument | Distinct value | Fleet integration |
+|---|---|---|
+| **TDQS** | Static quality of MCP tool definitions: purpose, usage guidance, behavioral transparency, parameter semantics, structure, and context completeness | **IN-REPO.** `she/metrics/tdqs.py` implements deterministic context extraction, hard gates, aggregation, tiers, and server rollups; `tests/test_tdqs.py` covers fixtures; `TDQS-ADMISSION-MATRIX.md` defines gh-mcp, termux-mcp, and Toolshed cohorts. The external rubric evaluator remains a separate provider/evaluator lane. |
+| **MCPMark** | 127 curated real-world MCP tasks with curated initial state and programmatic verification; includes CRUD and multi-turn interactions | Best first static/reproducible MCP task cohort. Pin task set and state fixture; record pass@1 and pass^4 independently. |
+| **DynamicMCPBench** | Live MCP servers, successful trace construction, path-agnostic effect checkpoints, and replayable state changes | Best candidate for testing the actual fleet's own MCP servers. Run against synthetic accounts and isolated sandboxes; score effects rather than response prose. |
+| **MCP-Atlas** | 36 real MCP servers, 220 tools, 1,000 tasks with a 500-task public subset; natural-language tasks require multi-tool/multi-server planning | Cross-server discovery, selection, and orchestration. Preserve partial-credit claims and diagnostic metrics. |
+| **MCPAgentBench** | Simulated MCP tools based on real definitions, with distractor tool lists and difficulty-aware tasks | Controlled tool discovery/selection experiments without live external-server dependency. |
+| **MCP-Bench** | Multi-step workflows across 28 representative MCP servers and 250 tools | Cross-tool coordination, parameter control, and intermediate-result grounding. |
+| **OSWorld-MCP** | Combined computer-use, MCP tool invocation, and decision-making in a real-world GUI environment | Research candidate after OSWorld/BrowserGym environment admission. |
+| **TDQS public specification** | Tool-definition rubric and server-coherence scoring | Track public spec version separately from the local implementation; the repo's TDQS module currently declares v1.3. Reconcile upstream version drift before any rubric update. |
+
+### MCP adapter order
+
+1. Reuse TDQS for static `tools/list` schema quality and tool/server coherence.
+2. Add MCPMark as the first deterministic task suite with curated initial state and programmatic verifier.
+3. Add DynamicMCPBench against the fleet's own synthetic MCP servers for stateful, effect-based validation.
+4. Add MCP-Atlas / MCPAgentBench for cross-server discovery and distractor handling.
+5. Add MCP-Bench and OSWorld-MCP as broader research tracks after the first adapters are stable.
+
+This order maximizes reuse: TDQS provides a cheap preflight signal for every server/tool schema change, while task benchmarks measure actual behavior. A good tool description does not prove the tool works; a passing task does not prove the tool schema is clear. Keep both measurements.
 
 ## 5. Canonical run envelope
 
@@ -170,6 +202,13 @@ A treatment is eligible for promotion only after replicated, independently verif
 - Terminal-Bench current benchmark/leaderboard: https://www.tbench.ai/
 - SWE-bench-Live: https://swe-bench-live.github.io/
 - BFCL v4: https://gorilla.cs.berkeley.edu/leaderboard.html
+- MCPMark: https://proceedings.iclr.cc/paper_files/paper/2026/hash/8138d211ce8790fdfbeeeb9781838a37-Abstract-Conference.html
+- DynamicMCPBench: https://aclanthology.org/2026.emnlp-industry.202/
+- MCP-Atlas: https://arxiv.org/abs/2602.00933
+- MCPAgentBench: https://aclanthology.org/2026.realm-1.51/
+- MCP-Bench: https://github.com/Accenture/mcp-bench
+- OSWorld-MCP: https://openreview.net/forum?id=91303321154efd692e9af4570fc166b9d9b43efe
+- TDQS: https://tdqs.dev/spec
 - BFCL v4 independent quality review: https://epoch.ai/benchmarks/berkeley-function-calling-leaderboard/review
 - OSWorld: https://os-world.github.io/
 - BrowserGym: https://github.com/ServiceNow/BrowserGym

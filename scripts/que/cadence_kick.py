@@ -62,9 +62,26 @@ def gh(method, path, token, body=None):
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "termux-monorepo-que-cadence-kick"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        raw = r.read()
-        return json.loads(raw) if raw else {}
+    started = time.perf_counter()
+    route = path.split("?", 1)[0]
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read()
+            API_STATUSES[str(r.status)] = API_STATUSES.get(str(r.status), 0) + 1
+            API_ROUTES[route] = API_ROUTES.get(route, 0) + 1
+            API_LATENCIES_MS.append(round((time.perf_counter() - started) * 1000, 2))
+            for header in ("X-RateLimit-Remaining", "X-RateLimit-Limit", "X-RateLimit-Reset", "Retry-After", "X-RateLimit-Resource"):
+                if r.headers.get(header) is not None:
+                    RATE_LIMIT[header.lower()] = r.headers.get(header)
+            return json.loads(raw) if raw else {}
+    except urllib.error.HTTPError as e:
+        API_STATUSES[str(e.code)] = API_STATUSES.get(str(e.code), 0) + 1
+        API_ROUTES[route] = API_ROUTES.get(route, 0) + 1
+        API_LATENCIES_MS.append(round((time.perf_counter() - started) * 1000, 2))
+        for header in ("X-RateLimit-Remaining", "X-RateLimit-Limit", "X-RateLimit-Reset", "Retry-After", "X-RateLimit-Resource"):
+            if e.headers.get(header) is not None:
+                RATE_LIMIT[header.lower()] = e.headers.get(header)
+        raise
 
 
 def upstash_stamp(key: str, value: str) -> str:

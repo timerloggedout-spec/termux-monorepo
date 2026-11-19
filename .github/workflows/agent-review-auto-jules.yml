@@ -11,6 +11,10 @@ name: Agent review → auto Jules
 # encrypted session_store from #120). Never store Class 3/4 secrets.
 # Continue-only: prefer existing Jules session for the same context_key.
 # Disposition-first: act on open review threads, not analysis-chain probes.
+#
+# Relay gate (2026-11-19): the detect job runs only when repository variable
+# JULES_RELAY is set to '1'. Unset or any other value leaves the relay idle.
+# Jules has been offline since 2026-11-01.
 
 on:
   pull_request_review:
@@ -30,6 +34,7 @@ jobs:
   detect-bot-feedback:
     timeout-minutes: 15
     if: |
+      vars.JULES_RELAY == '1' &&
       (
         github.event_name == 'pull_request_review' &&
         github.event.review.state != 'approved' &&

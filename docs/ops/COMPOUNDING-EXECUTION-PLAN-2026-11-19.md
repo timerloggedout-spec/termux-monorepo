@@ -37,13 +37,13 @@ WAIT is an evidence-collection phase. Re-fetch after material changes, back off 
 | ID | Priority | Workstream | Implementation | Acceptance evidence | State |
 |---|---|---|---|---|---|
 | CEX-001 | P0 | DeepSeek / Termux Origin provenance continuity | Reuse DeepSeek webWrapper/session-store history and the owner-original Repo Replay / RevWright Session Provenance extraction model. Recover available exports, session/message/block pointers, hashes, and surviving Git history; classify missing origin state with the documented gap taxonomy; join to `chat-provenance/v1` idempotently | Source-to-canonical join receipt; duplicate-free feed delta; 1:N reverse index; actor-confidence report; gap classes `never_in_chat/lost_at_origin_capture/unharvested_provider/drifted_final_edit/UNRESOLVED`; outcome remains observational until confirmed | **PROVENANCE MACHINERY EXISTS; ORIGIN CAPTURE PARTIAL; JOIN REQUIRED** |
-| CEX-002 | P0 | Muse HindSight runtime + population receipt | Map the owner-reported Muse VM port to the actual `HINDSIGHT_BASE_URL`/export target; extend the existing cron receipt with host/process/listener health, port identity, input/output digests, and a bounded 3-unit retain + recall canary. Keep this distinct from the weekly Actions ingest workflow and historical Fly/Koyeb sinks | Current Muse host/cron receipt; 3/3 proof retains; stats + recall canary; output digest; redacted receipt fields. Reconcile historical 402/zero-retain receipts and shared credit pool | **OWNER-REPORTED SERVICE; CURRENT POPULATION SUCCESS UNVERIFIED** |
-| CEX-003 | P0 | Hark/Muse capacity reconciliation | Probe each host; reconcile CPU architecture, vCPU, RAM, seat lease, disk, and current process pressure against `ops/compute/ALLOCATION.md` | Timestamped node receipts; allocation card updated from live measurements | **CONFLICTED CARD** |
+| CEX-002 | P0 | Muse HindSight runtime + population receipt | Map the owner-reported Muse VM port to the actual `HINDSIGHT_BASE_URL`/export target; extend the existing cron receipt with host/process/listener health, port identity, input/output digests, and a bounded 3-unit retain + recall canary. Reconcile the daily census-only run, stale local RESULTS.md, 326 blocked payloads, and issues #5553/#5555. Keep this distinct from the weekly Actions ingest workflow and workspace backup state-watch exporter | Current Muse host/cron receipt; 3/3 proof retains; stats + recall canary; output digest; redacted receipt fields; replay receipt for the 326 payloads | **OWNER-REPORTED SERVICE; POPULATION/READ PATH UNVERIFIED** |
+| CEX-003 | P0 | Hark/Muse capacity reconciliation | Probe each host; reconcile CPU architecture, vCPU, RAM, seat lease, disk, and current process pressure against `ops/compute/ALLOCATION.md`; include Muse's sub-1-GB available-memory readings and Hark's current tailnet visibility | Timestamped node receipts; allocation card updated from live measurements; placement thresholds match the measured host | **CONFLICTED CARD / MUSE MEMORY PRESSURE / HARK REACHABILITY GAP** |
 | CEX-004 | P0 | Common job/attempt identity | Define a crosswalk from QUE item/lease, Temporal workflow/run/activity, cron run, Actions run/job, and Hark request/DONE receipt | One synthetic lifecycle test with admission → placement → retry → resume → terminal receipt | **DESIGN READY** |
-| CEX-005 | P0 | Temporal topology attribution | Preserve the existing N5 kill/resume PASS on Actions; join owner-reported Muse Temporal staging runs to host ID, surface ID, workflow/run ID, and receipt. Re-run the harness only if Muse is confirmed as a distinct deployed surface | Existing Actions runs 40758279842 + 40759800247 and artifacts 12845449786 + 12846223845 remain linked; Muse receipt resolves the surface; any new surface proves worker-loss recovery and exactly-once effect | **N5 PASS ON ACTIONS; MUSE SURFACE UNVERIFIED** |
+| CEX-005 | P0 | Temporal Muse workflow activation | Preserve the N5 kill/resume PASS on Actions; use the live Muse self-host from #2028 as a bounded staging surface; execute the first registered fleet workflow and schedule under #5632; capture producer, worker, task queue, workflow ID, run ID, and host receipt | Existing Actions runs 40758279842 + 40759800247 and artifacts 12845449786 + 12846223845 remain linked; Muse shows one scheduled execution with a terminal receipt and a current workflow list | **MUSE SELF-HOST LIVE / IDLE; FIRST FLEET WORKFLOW PENDING** |
 | CEX-006 | P0 | Terminal-Bench 4.1 adapter | Pin Harbor, benchmark/task revision, RewardKit/verifier revision, resource profile, agent harness; execute a small CPU slice in isolated workers | Task-level receipt, verifier integrity tests, artifact regrade lineage, repeated-trial statistics | **CANDIDATE** |
 | CEX-007 | P0 | MCP task adapter | Reuse TDQS as the static tool-definition preflight; implement MCPMark with curated initial state and programmatic verifier; then DynamicMCPBench on synthetic fleet-owned MCP servers with effect checkpoints | TDQS evidence hash + task-level receipt + pass@1/pass^4 or pass^3 semantics + state-effect verification + sandbox reset | **CANDIDATE; TDQS IN-REPO** |
-| CEX-016 | P1 | MCP discovery / cross-server cohort | Add MCP-Atlas, MCPAgentBench, and MCP-Bench after CEX-007; test tool discovery, distractors, multi-server coordination, and intermediate-result grounding | Tool-selection diagnostics, per-server identity, cross-tool trajectory, claims/effect receipt, version pins | **CANDIDATE**
+| CEX-016 | P1 | MCP discovery / cross-server cohort | Add MCP-Atlas, MCPAgentBench, and MCP-Bench after CEX-007; test tool discovery, distractors, multi-server coordination, and intermediate-result grounding | Tool-selection diagnostics, per-server identity, cross-tool trajectory, claims/effect receipt, version pins | **CANDIDATE** |
 | CEX-008 | P1 | Browser adapter | Use BrowserGym as the shared harness for WebArena / WebArena-Verified; retain WebArena-Pro as research; synthetic users and seeded data | Reproducible environment reset, DOM/screenshot trace, state-based verifier, synthetic accounts only | **CANDIDATE** |
 | CEX-009 | P1 | Benchmark envelope | Add the canonical benchmark/run fields to the existing experiment/receipt contract; preserve native score schema | Schema validation, migration notes, backward-compatible fixture, one end-to-end run | **DESIGN READY** |
 | CEX-010 | P2 | Memory evaluation | Add LongMemEval / V2 against HindSight/ForeSight retrieval and memory projections | Accuracy, temporal reasoning, update, abstention, latency, privacy/retention checks | **CANDIDATE** |
@@ -51,7 +51,8 @@ WAIT is an evidence-collection phase. Re-fetch after material changes, back off 
 | CEX-012 | P2 | Policy / adversarial evaluation | Add τ²-bench and AgentDojo in synthetic isolated environments | Policy compliance, tool-state correctness, prompt-injection defense, side-effect containment | **CANDIDATE** |
 | CEX-013 | P2 | ML engineering evaluation | Add MLE-bench lite/internal subset when GPU/RAM/time are admitted | Resource receipt, Any-Medal metric, split breakdown, internal-vs-official status label | **RESOURCE GATED** |
 | CEX-014 | P2 | MergeEarn template lineage | Review the source-map and wallet-template registration on fresh current-base PR #5664 | Approved refTemplates registration; fleet ledger remains the internal record of record | **IMPLEMENTED ON CURRENT-BASE DRAFT PR** |
-| CEX-015 | P3 | Verified treatment promotion | Promote only replicated DoE winners into runtime routing/templates/skills | Preregistered arm, independent scorer, replicated outcomes, regression pass, governance sign-off | **CONTINUOUS** |
+| CEX-015 | P3 | Verified treatment promotion | Promote replicated DoE winners into runtime routing/templates/skills | Preregistered arm, independent scorer, replicated outcomes, regression pass, governance sign-off | **CONTINUOUS** |
+| CEX-018 | P0 | Muse VM observer durability | Replace the session-bound 60-second observer loop with an idempotent one-shot state-diff probe under the existing 15-minute guardian. Persist the prior fingerprint under durable home storage; capture boot ID, machine ID, `/etc` fingerprint, process/port state, and memory headroom; emit only material transitions | Two image-replacement cycles produce one receipt each; state survives `/etc` reset; guardian runs complete; duplicate transition alerts collapse by boot ID | **RELAUNCH FRAGILITY OBSERVED; FIX DESIGN READY** |
 
 ## 4. First execution batch
 
@@ -59,12 +60,12 @@ Run the following as one bounded P0 batch:
 
 1. Recover DeepSeek and Termux Origin history using the existing RevWright/session provenance method; preserve the canonical feed during reconciliation.
 2. Generate a join report keyed by session ID, message/turn ID, workflow run ID, source commit, timestamp, route, and actor evidence.
-3. Probe Muse and Hark, capturing host IDs and resource cards.
-4. Capture the Muse HindSight port/listener/cron/export receipt.
-5. Reconcile Temporal topology: retain the completed Actions N5 proof; join the owner-reported Muse Temporal staging run to its host/workflow receipt; execute a new kill/resume proof only if that is a distinct deployed surface.
+3. Probe Muse and Hark, capturing host IDs, resource cards, memory headroom, and tailnet visibility.
+4. Capture the Muse HindSight port/listener/cron/export receipt, then run the 3-unit retain → stats → recall canary and reconcile the 326-payload replay.
+5. Activate one registered Muse Temporal fleet workflow under #5632; retain the completed Actions N5 proof and capture the Muse workflow/host receipt.
 6. Re-fetch all generated receipts and compare against the previous known state.
 
-The batch produces a decision packet for CEX-001 through CEX-005 while preserving routing weights and historical records.
+The batch produces a decision packet for CEX-001 through CEX-005 and CEX-018 while preserving routing weights and historical records.
 
 ## 5. Benchmark execution batch
 
@@ -109,8 +110,8 @@ Every projection carries the canonical run/dispatch reference. Each consumer app
 | Cycle | System owner | Cadence / trigger | Output |
 |---|---|---|---|
 | Queue discovery and admission | QUE / QDesk + Adaptive Dispatch | PR/lane-completion/canonical-record event wakes plus the existing 30-minute cadence clock | Eligible work, lease, queue state; central dispatcher remains event-driven with an authenticated issue override |
-| Durable execution | Temporal: Actions engagement for DelphiCycle; Muse staging surface pending host receipt | Workflow policy | History, checkpoint, activity receipt with surface/host identity |
-| Daily HindSight + ML Ops | Muse VM cron | Existing daily schedule | Health receipt, export digest, run result |
+| Durable execution | Temporal: Actions engagement for DelphiCycle; Muse self-host live/idle pending first fleet workflow | Workflow policy | History, checkpoint, activity receipt with surface/host identity |
+| Daily HindSight + ML Ops | Muse VM cron | Existing daily schedule; latest job ran ML Ops smoke as unchanged and HindSight census only | Health receipt, export digest, run result, retain/recall canary |
 | Bounded isolated export/hygiene | Hark VM | Existing registry/request cadence | REQUESTS → DONE receipt |
 | CI validation and bounded orchestration | GitHub Actions | Push / PR / scheduled events; 323 workflows catalogued in generated automation index | Run/job/step/artifact receipt |
 | Provenance ingest | Telemetry ingest workflow + VM-side emitters | Existing schedule and source availability | Append-only canonical feed and mapping receipt |
@@ -129,9 +130,9 @@ Cadence changes require current schedule and host receipts. Preserve the existin
 | Worker dies during unknown side effect | State becomes reconciliation-required; replay waits for side-effect check |
 | Worker resumes from checkpoint | Exactly one terminal receipt; parent/child attempt lineage retained |
 | Provider rate limit | Backoff and requeue under the current lease policy; attach consumer identity at requisition time and preserve unknown attribution states |
-| Host capacity pressure | Admission defers or reallocates to a compatible surface |
+| Host capacity pressure | Admission defers or reallocates to a compatible surface; chunk work under the observed ~2-hour VM replacement window |
 | Export has same digest | Record `unchanged`; retain last-known good export reference |
-| Export digest changes | Record new artifact and source SHA; verify scrub and restore |
+| VM image replacement | One-shot observer records boot ID and state fingerprint from durable home; work resumes from a checkpoint |\n| Export digest changes | Record new artifact and source SHA; verify scrub and restore |
 | Verifier regrade | Create a new observation linked to the old run; preserve historical score |
 | Missing actor/outcome | Retain null/observational state; keep 3L0 weight at zero until corroborated |
 | Secret-shaped payload | Scrub before hashing/writing; record redaction count |

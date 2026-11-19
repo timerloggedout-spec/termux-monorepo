@@ -8,13 +8,13 @@ The resource documents routing governance. Executable routing configuration, wor
 
 ## Canonical-source hierarchy
 
-| Question | Canonical source | This resource may do | This resource must not do |
+| Question | Canonical source | This resource may do | This resource boundary |
 |---|---|---|---|
-| Which provider records exist? | `.github/connectors/llm-peers.yaml` | Link and summarize source identity. | Duplicate a runtime model catalog as authoritative. |
-| Which workflow chooses or invokes a provider? | Current `.github/workflows/` and their reviewed PR history | Link scope and review state. | Change a workflow, secret, trigger, or permission. |
-| Which strategy and unresolved tasks apply? | Related GitHub issues and pull requests | Maintain a reviewed evidence index. | Treat an issue as approval to execute. |
-| What did an approved observer find? | `providers/observation-log.md` | Record a redacted observation with timestamp and reviewer. | Store tokens, raw secret-bearing payloads, or route-changing instructions. |
-| What should the mobile board show? | Canonical card files under `../_tv/screens/` | Mirror the approved routing state. | Become a write path to runtime configuration. |
+| Which provider records exist? | `.github/connectors/llm-peers.yaml` | Link and summarize source identity. | Keep the runtime model catalog authoritative. |
+| Which workflow chooses or invokes a provider? | Current `.github/workflows/` and their reviewed PR history | Link scope and review state. | Preserve workflow, secret, trigger, and permission ownership in their runtime contracts. |
+| Which strategy and unresolved tasks apply? | Related GitHub issues and pull requests | Maintain a reviewed evidence index. | Preserve explicit human approval as the execution gate. |
+| What did an approved observer find? | `providers/observation-log.md` | Record a redacted observation with timestamp and reviewer. | Keep tokens and raw secret-bearing payloads in approved secret-management systems. |
+| What should the mobile board show? | Canonical card files under `../_tv/screens/` | Mirror the approved routing state. | Keep the card board read-only and runtime configuration canonical. |
 
 ## Lifecycle
 
@@ -38,6 +38,6 @@ The resource documents routing governance. Executable routing configuration, wor
 
 ## Safety and privacy
 
-Provider polling remains a future integration that requires explicit human approval. The static board presents reviewed Markdown state and canonical links. The publication workflow generates HTML from repository files and does not add a provider polling path, runtime service, device operation, or routing mutation.
+Provider polling remains a future integration that requires explicit human approval. The static board presents reviewed Markdown state and canonical links. The publication workflow generates HTML from repository files and preserves a separate provider execution boundary.
 
 Any provider observer proposal declares its source, query, cadence, credentials model, redaction rule, retention, failure behavior, and human reviewer before implementation.

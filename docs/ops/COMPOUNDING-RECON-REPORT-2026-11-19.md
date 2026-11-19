@@ -175,6 +175,18 @@ The repository already contains `scripts/termux-resource-snapshot.sh`, `scripts/
 
 **Execution boundary:** this pass made repository changes and opened draft PRs through GitHub. Device-level schedules, Termux notifications, and local job definitions remain unchanged. The next device step is a live `get_device_info` plus `termux-job-scheduler --pending` snapshot, followed by a user-selected daily report time where a schedule change is required.
 
+### 3.8 Context relationship graph freshness
+
+The current repository skill is the supplied v2 design: native GitHub cross-reference timeline events, exact issue/comment/review permalinks, bounded file-review timelines, historical page backfill, and read-only Linear freshness. The older uploaded v1 is superseded by the repository's current v2 skill at `.agents/skills/context-relationship-graph/SKILL.md`.
+
+The current canonical index contains 35,221 nodes, 57,358 merged edges, 52,416 verified edges, and 4,942 candidate edges. Its GitHub collector observed 50 PRs, 50 issues, 490 PR comments, 83 review comments, 59 reviews, 39 timeline cross-references, 94 explicit references, and 20 permalink references in 323 requests.
+
+**GAP — the index snapshot is stale and history coverage remains partial.**  
+The manifest's latest observation is 2026-10-26T13:04:26Z at source SHA `dca94781d2660899d920d6888781c1b664d5103f`. It records `history_coverage=PARTIAL_CONTINUATION_REQUIRED`, `next_start_page=2`, and `checkpoint_eligible=false`. The context-graph skill directs operators to use the canonical index only when its manifest/ref is current. This RECON therefore used direct GitHub evidence for current PRs and runtime issues.
+
+**NEXT — refresh the index and continue bounded historical backfill.**  
+Rebuild against current master, continue the explicit page-2 history window while `next_start_page` remains non-null, preserve the existing checkpoint, then run the read-only Linear freshness comparison as a separate evidence stream. Keep GitHub freshness and Linear freshness on independent clocks; retain metadata and evidence URLs only.
+
 ## 4. What exists beyond SWE
 
 SWE-bench measures software issue-to-patch resolution. Build the broader agent portfolio around distinct capabilities: terminal execution, MCP tools, browser and desktop interaction, policy-constrained workflows, memory, mobile, ML engineering, security, and multi-agent coordination. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` records the families, native score semantics, adapter states, and admission sequence.
@@ -349,6 +361,7 @@ The programme is complete when:
 | Muse VM observer | **RELIABILITY GAP** | ~2h image replacement; /etc resets; 60s observer relaunch failed across exec-session teardown; move to one-shot state-diff probe |
 | Hark capacity / reachability | **STALE / CONFLICTED** | Allocation and prior node probe disagree; Hark absent from current tailnet peer list; obtain current node receipt |
 | Termux device stewardship | **REPOSITORY MACHINERY EXISTS; DEVICE PREFLIGHT BLOCKED** | Snapshot/sentinel/install scripts and stewardship contract exist; current device info and pending-job inventory require the Termux MCP connector |
+| Context relationship graph | **IMPLEMENTED / STALE INDEX** | 35,221 nodes, 57,358 edges; last indexed Oct 26; history page 2 pending; refresh current master and continue backfill |
 | Terminal-Bench 4.1 adapter | **CANDIDATE / P0** | Add adapter and isolated verifier harness |
 | MCPMark + DynamicMCPBench | **CANDIDATE / P0** | Reuse TDQS; implement deterministic task and effect-based MCP adapters |
 | Tool/browser/GUI/memory/mobile adapters | **CANDIDATE** | Sequence by P1/P2 roadmap |

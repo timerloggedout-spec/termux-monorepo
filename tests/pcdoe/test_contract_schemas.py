@@ -1,5 +1,7 @@
 import json
 import unittest
+
+from jsonschema import Draft202012Validator
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,6 +25,15 @@ class ContractSchemaTests(unittest.TestCase):
                 self.assertFalse(schema["additionalProperties"])
                 self.assertTrue(schema["required"])
                 self.assertTrue(schema["properties"])
+                Draft202012Validator.check_schema(schema)
+
+    def test_policy_catalog_validates_against_prioritization_schema(self):
+        schema = self.load_schema("PRIORITIZATION-POLICY.schema.json")
+        catalog = json.loads((SCHEMA_DIR / "PRIORITIZATION-POLICIES.json").read_text())
+        validator = Draft202012Validator(schema)
+        for policy in catalog["policies"]:
+            with self.subTest(policy=policy["policy_id"]):
+                validator.validate(policy)
 
     def test_do_statement_requires_mandate_and_acceptance(self):
         schema = self.load_schema("DO-STATEMENT.schema.json")

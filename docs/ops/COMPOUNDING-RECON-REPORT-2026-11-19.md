@@ -187,6 +187,12 @@ The manifest's latest observation is 2026-10-26T13:04:26Z at source SHA `dca9478
 **NEXT — refresh the index and continue bounded historical backfill.**  
 Rebuild against current master, continue the explicit page-2 history window while `next_start_page` remains non-null, preserve the existing checkpoint, then run the read-only Linear freshness comparison as a separate evidence stream. Keep GitHub freshness and Linear freshness on independent clocks; retain metadata and evidence URLs only.
 
+### 3.9 Wait-cycle skills and loop-library evolution
+
+The canonical `.agents/skills/adaptive-wait/SKILL.md` now carries a 2026-11-19 session receipt with the three draft PRs, exact head SHAs, current Muse/Hark state, Termux access boundary, context-graph freshness, and next authoritative checks. Its docs mirror is refreshed. `.agents/skills/adaptive-feedback-cycle/SKILL.md` now records the service-health/task-activity distinction, HindSight retain/read proof, API-quota-aware gating, VM replacement resilience, and compounding metrics.
+
+The supplied Loopy API Loop Library JSON is adopted as a schema pattern in root `LOOPS.md` CYCLE-001. The loop defines trigger, inputs, bounded steps, WAIT subcycle, stop conditions, outputs, and safety boundaries. It composes repository-native QUE, Temporal, Adaptive Dispatch, adaptive-wait, and adaptive-feedback-cycle; it adds no parallel scheduler.
+
 ## 4. What exists beyond SWE
 
 SWE-bench measures software issue-to-patch resolution. Build the broader agent portfolio around distinct capabilities: terminal execution, MCP tools, browser and desktop interaction, policy-constrained workflows, memory, mobile, ML engineering, security, and multi-agent coordination. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` records the families, native score semantics, adapter states, and admission sequence.
@@ -362,6 +368,7 @@ The programme is complete when:
 | Hark capacity / reachability | **STALE / CONFLICTED** | Allocation and prior node probe disagree; Hark absent from current tailnet peer list; obtain current node receipt |
 | Termux device stewardship | **REPOSITORY MACHINERY EXISTS; DEVICE PREFLIGHT BLOCKED** | Snapshot/sentinel/install scripts and stewardship contract exist; current device info and pending-job inventory require the Termux MCP connector |
 | Context relationship graph | **IMPLEMENTED / STALE INDEX** | 35,221 nodes, 57,358 edges; last indexed Oct 26; history page 2 pending; refresh current master and continue backfill |
+| Adaptive wait / feedback skills | **UPDATED ON THIS BRANCH** | New 2026-11-19 session receipt, docs mirror refresh, feedback-cycle lessons, and root LOOPS.md CYCLE-001 |
 | Terminal-Bench 4.1 adapter | **CANDIDATE / P0** | Add adapter and isolated verifier harness |
 | MCPMark + DynamicMCPBench | **CANDIDATE / P0** | Reuse TDQS; implement deterministic task and effect-based MCP adapters |
 | Tool/browser/GUI/memory/mobile adapters | **CANDIDATE** | Sequence by P1/P2 roadmap |
@@ -401,6 +408,9 @@ Repository:
 - [Temporal self-host migration / retirement record](TEMPORAL-SELF-HOST.md)
 - [Jules handoff evidence contract](AGENT-JULES-HANDOFF.md)
 - [Jules handoff API-load guard PR #5666](https://github.com/timerloggedout-spec/termux-monorepo/pull/5666)
+- [Reusable loop library](../../LOOPS.md)
+- [Adaptive wait skill](../../.agents/skills/adaptive-wait/SKILL.md)
+- [Adaptive feedback cycle skill](../../.agents/skills/adaptive-feedback-cycle/SKILL.md)
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
 - [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
 - [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master

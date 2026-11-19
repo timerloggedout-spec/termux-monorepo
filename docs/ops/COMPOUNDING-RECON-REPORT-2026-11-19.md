@@ -336,3 +336,13 @@ External benchmark sources are collected in [BENCHMARK-FAMILY-REGISTRY.md](../ev
 ## 10. Decision summary
 
 The best compounding path is to turn the repository's existing work into one evidence-linked lifecycle. The first concrete additions are the benchmark-family registry, the detailed operating report, and MergeEarn's explicit source registration in fresh current-base PR #5664. Original PR #4737 remains preserved as lineage, with its divergence called out for maintainer disposition. The next engineering slices are provenance continuity, Muse runtime receipts, Terminal-Bench 4.1, and a common job/attempt envelope. Existing authorities remain intact; new adapters increase the number of useful consumers per verified execution.
+
+
+## 11. RECON refresh protocol
+
+- Re-fetch each canonical source at the start of a new cycle and record the source SHA, observation time, and scope.
+- Append a dated delta when a runtime, receipt, branch, workflow, or benchmark status changes; preserve prior evidence snapshots.
+- Join records through stable IDs and hashes; keep source-specific lineage and uncertainty beside every projection.
+- Re-run the smallest relevant verifier after each implementation slice, then inspect the full PR check set and artifact receipts.
+- Reconcile stale or conflicting surfaces through a fresh host/run receipt before changing allocation, routing, or promotion state.
+- Close each cycle with a decision record: promote, retain, cull, defer, or request the missing evidence.

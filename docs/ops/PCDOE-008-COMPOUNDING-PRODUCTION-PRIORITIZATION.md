@@ -68,7 +68,7 @@ The first comparison keeps the candidate set, task contracts, execution chassis,
 | Policy ID | Treatment | Primary hypothesis | Main trade-off |
 |---|---|---|---|
 | priority-incumbent | Existing QUE/QDesk rank, captured as control | Existing ranking provides a strong operational baseline | Baseline behavior may leave value or dependency gains unrealized |
-| priority-value-density | Expected validated value divided by constrained effort, adjusted for confidence | Selects high-return work efficiently | Can defer urgent or enabling work |
+| priority-value-density | Confidence-adjusted validated value and effort-efficiency composite | Selects high-return work efficiently | Can defer urgent or enabling work |
 | priority-critical-path | Deadline and dependency criticality first, with risk and effort constraints | Reduces end-to-end completion time | Can underweight standalone high-value work |
 | priority-unlock | Downstream dependency unlock and portfolio unblock value first | Increases parallel throughput and reduces blocked work | Can favor infrastructure with weak direct outcomes |
 | priority-risk-adjusted | Expected value discounted by uncertainty, exposure, and recovery cost | Improves reliable value and reduces costly reversals | Can become overly conservative |

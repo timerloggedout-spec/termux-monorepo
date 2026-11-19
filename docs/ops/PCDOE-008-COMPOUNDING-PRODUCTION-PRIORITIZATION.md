@@ -184,7 +184,7 @@ Which prioritization policy produces the greatest validated production value und
 - Chassis: hold Pit Crew seed, QUE/QDesk admission, executor, tool configuration, environment, acceptance contract, and evidence collection constant unless one is explicitly preregistered as a factor.
 - Analysis: report uncertainty intervals, effect sizes, missingness, deviations, censored observations, and interactions. Preserve inconclusive outcomes.
 
-DoE owns the design, randomization, analysis, and independent recommendation. The production operator authorizes any live treatment assignment that changes execution. A separate Operator decision governs adoption or promotion.
+DoE owns the design, randomization, analysis, and independent recommendation. Human DoE review is captured as a timestamped observation against the option and evidence snapshot under review; it informs option-posterior analysis alongside measured observations. The review observation itself is not a production authorization or promotion gate. The production operator authorizes any live treatment assignment that changes execution. A separate Operator decision governs adoption or promotion.
 
 ### 7.3 Outcomes
 
@@ -233,13 +233,29 @@ The companion `scripts/pcdoe/autoapprove_shadow.py` evaluates the allowlist, act
 
 The compatibility suite validates a six-policy manager cohort against the existing `MANAGER-TOURNAMENT.schema.json` and validates a policy identity mapped to `treatment.manager_policy_id` against the existing `EXPERIMENT.schema.json`. These are in-memory schema fixtures only; the test emits and persists no experiment observation or tournament result.
 
+### 7.6 Human DoE review as an option-posterior observation
+
+A human DoE review is a point-in-time observation about a specific option, version, cohort, and evidence snapshot. Record it as `observation_type=human_doe_review` using `docs/ops/pcdoe/OPTION-POSTERIOR-OBSERVATION.schema.json`.
+
+Each observation preserves:
+- option identity and immutable version;
+- reviewer reference and reviewer role;
+- assessment dimension and finding (supports, opposes, mixed, inconclusive, or insufficient evidence);
+- confidence, rationale, evidence references, and observed_at;
+- snapshot reference/hash and cohort/run references where available;
+- posterior_use state and likelihood_model_ref when included.
+
+Human assessments remain typed observations alongside measured outcomes, operational observations, and independent audits. Preserve each source separately for provenance and sensitivity analysis. A reviewer confidence value records the reviewer's stated confidence; it does not itself define a likelihood or posterior weight. Set `posterior_use=pending_calibration` until an explicit, validated likelihood model maps that observation class to posterior evidence. An included observation requires `likelihood_model_ref`; an excluded observation carries an exclusion reason. Preserve conflicting, inconclusive, and superseded observations rather than silently overwriting them.
+
+The option-posterior analysis may compare prior and updated distributions, evidence-source contributions, calibration quality, and sensitivity to human-review inclusion. A human review snapshot can inform the posterior without becoming a release approval, an experiment result, or an execution event. Formal review and production authority remain with their existing owners.
+
 ## 8. Rollout sequence
 
 | Stage | Deliverable | Gate |
 |---|---|---|
 | P0 | Contract, policy definitions, allowlist schema, fixtures and validator | Static validation and boundary tests |
 | P1 | Shadow recommendations against read-only snapshots | Reproducible outputs; zero lifecycle side effects |
-| P2 | Preregistered offline/replay DoE | Comparable cohorts, power/variance plan, independent review |
+| P2 | Preregistered offline/replay DoE | Comparable cohorts, power/variance plan, timestamped human-review observations, calibrated posterior-use rules |
 | P3 | One bounded live cohort | Explicit Operator authorization, existing QUE/QDesk execution, stop and rollback evidence |
 | P4 | Fresh holdout and replication | Guardrails pass; independent DoE recommendation |
 | P5 | Policy adoption proposal | Separate Operator decision and existing production gates |
@@ -267,7 +283,7 @@ The compatibility suite validates a six-policy manager cohort against the existi
 | PCDOE-008.4 | DoE design and outcome contract | Proposed in this companion |
 | PCDOE-008.5 | Static validators, canonical-schema compatibility fixtures and tests | Implemented on companion branch; exact-head CI pending |
 | PCDOE-008.6 | Catalog-driven offline evaluator and shadow contract | Implemented on companion branch; canonical snapshot integration pending owner authorization |
-| PCDOE-008.7 | Preregistered experiment and independent analysis | Pending DoE review |
+| PCDOE-008.7 | Preregistered experiment, human-review observation capture, and option-posterior analysis | Pending preregistration, calibration, and analysis |
 | PCDOE-008.8 | Live cohort and adoption recommendation | Pending explicit Operator authorization |
 
 **Current state:** design artifact only. This document does not assert that a policy has run, that AutoApprove has executed an action, that validation has passed, or that production policy has changed.

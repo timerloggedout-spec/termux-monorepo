@@ -26,6 +26,7 @@ TARGETS = [
 ]
 IN_FLIGHT = {"queued", "in_progress", "waiting", "requested", "pending"}
 API_CALLS = 0
+API_CALL_BUDGET = 4
 API_STATUSES = {}
 API_ROUTES = {}
 API_LATENCIES_MS = []
@@ -59,6 +60,8 @@ def decide(runs: list[dict], max_age_min: float, now: datetime) -> dict:
 
 def gh(method, path, token, body=None):
     global API_CALLS
+    if API_CALLS >= API_CALL_BUDGET:
+        raise RuntimeError(f"cadence-kick API budget exhausted ({API_CALLS}/{API_CALL_BUDGET})")
     API_CALLS += 1
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(API + path, data=data, method=method, headers={
@@ -113,6 +116,7 @@ def main() -> int:
     now = datetime.now(timezone.utc)
     stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     failed = 0
+    state = "COMPLETED"
     report = []
     for t in TARGETS:
         wf = t["workflow"]
@@ -122,6 +126,10 @@ def main() -> int:
         except urllib.error.HTTPError as e:
             print(f"::warning title=que-kick {wf}::runs read ✗ HTTP {e.code}")
             failed += 1
+            state = "DEFERRED_RATE_LIMIT" if e.code == 429 else "DEFERRED_PERMISSION" if e.code == 403 else "PARTIAL"
+            report.append({"workflow": wf, "action": "defer", "reason": f"HTTP {e.code}"})
+            if state.startswith("DEFERRED_"):
+                break
             continue
         d = decide(runs, t["max_age_min"], now)
         if d["action"] == "kick":
@@ -134,12 +142,13 @@ def main() -> int:
                 d["dispatched"] = False
                 d["error"] = f"HTTP {e.code}"
                 failed += 1
+                state = "DEFERRED_RATE_LIMIT" if e.code == 429 else "DEFERRED_PERMISSION" if e.code == 403 else "PARTIAL"
         report.append({"workflow": wf, **d})
         print(f"::notice title=que-kick {wf}::{d['action']} · {d['reason']}"
               + (" · ⤴ dispatched" if d.get("dispatched") else ""))
     ordered = sorted(API_LATENCIES_MS)
     p95 = ordered[min(len(ordered) - 1, max(0, int(0.95 * len(ordered) + 0.999) - 1))] if ordered else None
-    out = {"schema": "que.cadence-kick/v2", "at": stamp, "targets": report,
+    out = {"schema": "que.cadence-kick/v2", "state": state, "at": stamp, "targets": report,
            "repo": repo, "sha": os.environ.get("GITHUB_SHA", "unknown"),
            "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
            "api": {"api_calls": API_CALLS, "http_statuses": API_STATUSES,

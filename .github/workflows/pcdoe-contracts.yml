@@ -1,0 +1,48 @@
+name: PCDOE Contract Validation
+
+on:
+  pull_request:
+    paths:
+      - "docs/ops/pcdoe/**"
+      - "docs/ops/PCDOE-008-COMPOUNDING-PRODUCTION-PRIORITIZATION.md"
+      - "scripts/pcdoe/**"
+      - "tests/pcdoe/**"
+      - "docs/ops/corpus/EXPERIMENT.schema.json"
+      - "docs/ops/MANAGER-TOURNAMENT.schema.json"
+      - ".github/workflows/pcdoe-contracts.yml"
+  push:
+    branches: ["**"]
+    paths:
+      - "docs/ops/pcdoe/**"
+      - "scripts/pcdoe/**"
+      - "tests/pcdoe/**"
+      - "docs/ops/corpus/EXPERIMENT.schema.json"
+      - "docs/ops/MANAGER-TOURNAMENT.schema.json"
+      - ".github/workflows/pcdoe-contracts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  contracts-and-shadow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JSON Schema validator
+        run: python -m pip install "jsonschema>=4.20,<5"
+      - name: Validate schemas and policy catalog
+        run: python -m unittest tests.pcdoe.test_contract_schemas -v
+      - name: Test shadow policy evaluator and AutoApprove boundaries
+        run: python -m unittest tests.pcdoe.test_shadow_prioritizer tests.pcdoe.test_autoapprove_shadow -v
+      - name: Run complete PCDOE test suite
+        run: python -m unittest discover -s tests/pcdoe -v
+      - name: Execute read-only shadow fixture
+        run: |
+          python scripts/pcdoe/shadow_prioritizer.py \
+            --policies docs/ops/pcdoe/PRIORITIZATION-POLICIES.json \
+            --snapshot tests/pcdoe/fixtures/shadow-snapshot.json \
+            --output /tmp/pcdoe-shadow-result.json
+          python -c "import json; p=json.load(open('/tmp/pcdoe-shadow-result.json')); assert p['recommendations_only'] and p['side_effects'] == [] and len(p['policies']) == 6"

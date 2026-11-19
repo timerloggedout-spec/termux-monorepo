@@ -1,39 +1,147 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://research-astute.example/schemas/experiment.schema.json",
+  "$id": "schemas/experiment.schema.json",
   "title": "Research Astute Experiment Manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "experiment_id", "title", "research_question", "lifecycle", "domains", "graphs", "path_sets"],
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "title",
+    "research_question",
+    "lifecycle",
+    "domains",
+    "graphs",
+    "path_sets"
+  ],
   "properties": {
-    "schema_version": {"type": "string"},
-    "experiment_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
-    "title": {"type": "string", "minLength": 1},
-    "summary": {"type": "string"},
-    "research_question": {"type": "string", "minLength": 1},
-    "scope": {"type": "object", "additionalProperties": true},
-    "domains": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "lifecycle": {"enum": ["proposed", "scoped", "seeded", "research_active", "under_review", "published", "archived", "blocked", "paused", "superseded"]},
-    "hypotheses": {"type": "array", "items": {"$ref": "#/$defs/hypothesis"}},
-    "sources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "graphs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "path_sets": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "owners": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "created_at": {"type": "string", "format": "date-time"},
-    "updated_at": {"type": "string", "format": "date-time"},
-    "current_snapshot": {"type": "string"}
+    "schema_version": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string"
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "lifecycle": {
+      "enum": [
+        "proposed",
+        "scoped",
+        "seeded",
+        "research_active",
+        "under_review",
+        "published",
+        "archived",
+        "blocked",
+        "paused",
+        "superseded"
+      ]
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hypothesis"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "graphs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "path_sets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "current_snapshot": {
+      "type": "string"
+    }
   },
   "$defs": {
     "hypothesis": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["hypothesis_id", "statement", "status"],
+      "required": [
+        "hypothesis_id",
+        "statement",
+        "status"
+      ],
       "properties": {
-        "hypothesis_id": {"type": "string"},
-        "statement": {"type": "string"},
-        "status": {"enum": ["candidate", "active", "supported", "challenged", "rejected", "superseded"]},
-        "assumptions": {"type": "array", "items": {"type": "string"}},
-        "evidence_ids": {"type": "array", "items": {"type": "string"}}
+        "hypothesis_id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "active",
+            "supported",
+            "challenged",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     }
   }

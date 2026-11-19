@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-19T11:26:29Z",
+ "generated_at": "2026-11-19T12:14:13Z",
  "inputs_generated_at": {
-  "ops/quota/quota-usage.json": "2026-11-18T17:07:47Z",
-  "ops/tracking/nested-family.json": "2026-11-19T11:25:28Z"
+  "ops/quota/quota-usage.json": "2026-11-19T12:14:13Z",
+  "ops/tracking/nested-family.json": "2026-11-19T12:13:21Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -1316,10 +1316,14 @@
      {
       "t": "2026-11-16",
       "v": 40
+     },
+     {
+      "t": "2026-11-19",
+      "v": 0
      }
     ],
     "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
-    "last_point_at": "2026-11-16"
+    "last_point_at": "2026-11-19"
    },
    {
     "key": "github.actions",
@@ -1499,10 +1503,14 @@
      {
       "t": "2026-11-16",
       "v": 9
+     },
+     {
+      "t": "2026-11-19",
+      "v": 0
      }
     ],
     "provenance": "ops/quota/quota-usage.json series3_actions (Actions run volume \u2014 reconstructed corpus (daily increments))",
-    "last_point_at": "2026-11-16"
+    "last_point_at": "2026-11-19"
    },
    {
     "key": "vultr.instances",

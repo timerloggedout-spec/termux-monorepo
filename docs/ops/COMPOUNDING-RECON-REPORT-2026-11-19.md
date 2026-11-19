@@ -304,13 +304,18 @@ The programme is complete when:
 | Benchmark family registry | **IMPLEMENTED on this branch** | `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md`; PR CI and review remain |
 | TDQS tool-definition lane | **IN-REPO** | `she/metrics/tdqs.py`, `tests/test_tdqs.py`, TDQS admission matrix and evidence schema; reuse for MCP static quality |
 | Detailed compounding RECON report | **IMPLEMENTED on this branch** | This document; refresh after runtime probes |
-| MergeEarn refTemplates lineage | **IMPLEMENTED on fresh current-base PR #5664** | Agentic Wallet README, SPEC, SOURCE, index, family README, and SOURCE-MAP; draft PR pending CI/review. Original PR #4737 remains open but diverges and is 13,613 commits behind master. |
-| DeepSeek Termux-origin join | **GAP / planned** | Recover historical branch/commit/session records and map eligible records |
-| Muse port + cron receipt | **OWNER-REPORTED + partially corroborated** | Daily ML Ops receipts exist; exact listener/cron health receipt remains |
-| Hark capacity reconciliation | **STALE / CONFLICTED** | Current node probe required |
-| Terminal-Bench 4.1 adapter | **CANDIDATE** | Add adapter and isolated verifier harness |
+| MergeEarn refTemplates lineage | **IMPLEMENTED on fresh current-base PR #5664** | Agentic Wallet README, SPEC, SOURCE, index, family README, and SOURCE-MAP; draft PR pending CI/review. Original PR #4737 remains open as lineage and diverges from current master. |
+| DeepSeek / Termux Origin provenance | **MACHINERY VERIFIED; ORIGIN CAPTURE PARTIAL; JOIN GAP** | DeepCLI session store, Termux capture docs, Repo Replay RevWright pipeline, and canonical chat-provenance feed exist; recover source mappings and append missing canonical IDs |
+| Muse workspace export | **EXECUTED / GATES PASS** | 2026-11-19 private export: T0=698, T1=92,637, 37 manifest-only, 71 excluded, 3 split; T1 content remains manifest-only |
+| Muse Temporal service | **LIVE / IDLE** | #2028 reports active units, ports 7233/8233/7234, healthy CLI/UI, and empty workflow list; #5632 tracks first fleet workflow and schedule |
+| Temporal N5 acceptance | **PASS ON ACTIONS** | Runs 40758279842 and 40759800247; worker kill/resume, hash gate, exactly-once ledger emission, and parity passed |
+| HindSight Muse port + cron | **OWNER-REPORTED SERVICE; POPULATION GAP** | Daily job performed census only; local test results stale since Nov 3; 326 payloads blocked at #5553; #5553/#5555 remain open for extraction and provenance |
+| Muse VM observer | **RELIABILITY GAP** | ~2h image replacement; /etc resets; 60s observer relaunch failed across exec-session teardown; move to one-shot state-diff probe |
+| Hark capacity / reachability | **STALE / CONFLICTED** | Allocation and prior node probe disagree; Hark absent from current tailnet peer list; obtain current node receipt |
+| Terminal-Bench 4.1 adapter | **CANDIDATE / P0** | Add adapter and isolated verifier harness |
+| MCPMark + DynamicMCPBench | **CANDIDATE / P0** | Reuse TDQS; implement deterministic task and effect-based MCP adapters |
 | Tool/browser/GUI/memory/mobile adapters | **CANDIDATE** | Sequence by P1/P2 roadmap |
-| Unified runtime scheduler identity | **GAP** | Extend QUE/Temporal receipts and preserve the existing scheduler authorities |
+| Unified runtime job identity | **GAP** | Extend QUE/Temporal receipts and preserve existing scheduler authorities |
 
 ## 9. Evidence references
 
@@ -327,6 +332,14 @@ Repository:
 - [Telemetry ingest operator record](TELEMETRY-INGEST.md)
 - [HindSight ingest receipt](../../ops/telemetry/ingest-receipt.json)
 - [HindSight density retain receipt](../../ops/telemetry/hindsight-retain-density.json)
+- [Temporal living status issue #2028](https://github.com/timerloggedout-spec/termux-monorepo/issues/2028)
+- [Temporal operationalization issue #5632](https://github.com/timerloggedout-spec/termux-monorepo/issues/5632)
+- [HindSight extraction exit issue #5553](https://github.com/timerloggedout-spec/termux-monorepo/issues/5553)
+- [Full Provenance ingestion issue #5555](https://github.com/timerloggedout-spec/termux-monorepo/issues/5555)
+- [Muse VM compute request issue #5603](https://github.com/timerloggedout-spec/termux-monorepo/issues/5603)
+- [Muse VM backup export](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/main/EXPORT.json)
+- [Muse daily runtime memory receipt](https://github.com/timerloggedout-spec/muse-vm-workspace-backup/blob/main/t0/memory/2026-11-19.md)
+- [VM workspace backup operator record](../../ops/vm-backup/README.md)
 - [Adaptive dispatch](ADAPTIVE-DISPATCH.md)
 - [Generated workflow catalog](generated/automation-workflow-catalog.md)
 - [TDQS architecture](../architecture/TOOL-DEFINITION-QUALITY-SCORE.md)
@@ -354,7 +367,7 @@ External benchmark sources are collected in [BENCHMARK-FAMILY-REGISTRY.md](../ev
 
 ## 10. Decision summary
 
-The best compounding path is to turn the repository's existing work into one evidence-linked lifecycle. The first concrete additions are the benchmark-family registry, the detailed operating report, and MergeEarn's explicit source registration in fresh current-base PR #5664. Original PR #4737 remains preserved as lineage, with its divergence called out for maintainer disposition. The next engineering slices are provenance continuity, Muse runtime receipts, Terminal-Bench 4.1, and a common job/attempt envelope. Existing authorities remain intact; new adapters increase the number of useful consumers per verified execution.
+The best compounding path is to turn the repository's existing work into one evidence-linked lifecycle. The first concrete additions are the benchmark-family registry, the detailed operating report, and MergeEarn's explicit source registration in fresh current-base PR #5664. Original PR #4737 remains preserved as lineage, with its divergence called out for maintainer disposition. The next engineering slices are HindSight retain/read recovery, Temporal's first Muse fleet workflow, VM observer durability, DeepSeek/Termux provenance continuity, Terminal-Bench 4.1, MCPMark/DynamicMCPBench, and a common job/attempt envelope. Existing authorities remain intact; new adapters increase the number of useful consumers per verified execution.
 
 
 ## 11. RECON refresh protocol

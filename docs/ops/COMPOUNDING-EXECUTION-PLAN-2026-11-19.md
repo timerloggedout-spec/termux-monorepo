@@ -1,0 +1,134 @@
+# Compounding Systems — execution plan
+
+**Date:** 2026-11-19  
+**Companion:** [RECON report](COMPOUNDING-RECON-REPORT-2026-11-19.md)  
+**Benchmark catalogue:** [Benchmark Family Registry](../evaluations/BENCHMARK-FAMILY-REGISTRY.md)
+
+This plan composes the existing QUE, Temporal, compute mesh, DoE, provenance, AEF, 3L0, MoneyBall, ForeSight/HindSight, and reference-template systems. It is an implementation queue, not a replacement architecture.
+
+## 1. Execution policy
+
+- System schedules own recurring discovery and execution.
+- QUE owns admission, leases, and work identity.
+- Temporal owns durable workflow state, retries, and checkpoints where the deployed integration is verified.
+- Muse/Hark/Actions/pool own placement according to the current allocation card and live capacity receipt.
+- Every dispatched unit emits one immutable run receipt and one DoE experiment record.
+- Each retry or regrade links to its parent; uncertain side effects enter reconciliation before replay.
+- Benchmark-native metrics and scoring authorities remain separate.
+- Manual dispatch is an entry path; it does not own recurring operation.
+- PRs remain reviewable and unmerged until their checks, provenance, and required approvals are complete.
+
+## 2. Workstream plan
+
+| ID | Priority | Workstream | Implementation | Acceptance evidence | State |
+|---|---|---|---|---|---|
+| CEX-001 | P0 | DeepSeek / Termux Origin provenance continuity | Recover historical commits, branches, device export receipts, and session IDs; join to `chat-provenance/v1` using stable IDs; preserve original route/actor evidence; emit only missing records | Commit/branch references, duplicate-free feed delta, source-to-canonical join receipt, actor-confidence report, outcome classification | **READY FOR EXECUTION** |
+| CEX-002 | P0 | Muse HindSight runtime receipt | Extend the existing `vm-mlops-daily` / cron export to publish a compact host-health and run receipt: job/run IDs, listener health, port identity, process health, export digest, source SHA, and output URI | Current Muse host probe + cron receipt + export digest + restore/recall smoke | **OWNER-REPORTED RUNTIME; RECEIPT GAP** |
+| CEX-003 | P0 | Hark/Muse capacity reconciliation | Probe each host; reconcile CPU architecture, vCPU, RAM, seat lease, disk, and current process pressure against `ops/compute/ALLOCATION.md` | Timestamped node receipts; allocation card updated from live measurements | **CONFLICTED CARD** |
+| CEX-004 | P0 | Common job/attempt identity | Define a crosswalk from QUE item/lease, Temporal workflow/run/activity, cron run, Actions run/job, and Hark request/DONE receipt | One synthetic lifecycle test with admission → placement → retry → resume → terminal receipt | **DESIGN READY** |
+| CEX-005 | P0 | Temporal kill/resume proof | Execute the existing Temporal RFP's worker-kill/resume harness on the current Muse execution surface; preserve uncertain side-effect handling | One exactly-once terminal receipt after worker termination and resume; unknown outcome is reconciled before retry | **EXECUTION REQUIRED** |
+| CEX-006 | P1 | Terminal-Bench 4.1 adapter | Pin Harbor, benchmark/task revision, RewardKit/verifier revision, resource profile, agent harness; execute a small CPU slice in isolated workers | Task-level receipt, verifier integrity tests, artifact regrade lineage, repeated-trial statistics | **CANDIDATE** |
+| CEX-007 | P1 | Tool-use adapter | Add BFCL v4 task-level mapping and ToolSandbox stateful tasks; annotate benchmark quality issues | Function name/argument correctness, state transitions, abstention, multi-turn outcome, version pins | **CANDIDATE** |
+| CEX-008 | P1 | Browser adapter | Use BrowserGym as the shared harness for WebArena / WebArena-Verified; synthetic users and seeded data | Reproducible environment reset, DOM/screenshot trace, state-based verifier, no production accounts | **CANDIDATE** |
+| CEX-009 | P1 | Benchmark envelope | Add the canonical benchmark/run fields to the existing experiment/receipt contract; preserve native score schema | Schema validation, migration notes, backward-compatible fixture, one end-to-end run | **DESIGN READY** |
+| CEX-010 | P2 | Memory evaluation | Add LongMemEval / V2 against HindSight/ForeSight retrieval and memory projections | Accuracy, temporal reasoning, update, abstention, latency, privacy/retention checks | **CANDIDATE** |
+| CEX-011 | P2 | GUI/mobile evaluation | Add OSWorld and AndroidWorld using dedicated disposable VM/emulator surfaces | State reset, device/environment fingerprint, app-level task receipts, resource cap | **RESOURCE GATED** |
+| CEX-012 | P2 | Policy / adversarial evaluation | Add τ²-bench and AgentDojo in synthetic isolated environments | Policy compliance, tool-state correctness, prompt-injection defense, side-effect containment | **CANDIDATE** |
+| CEX-013 | P2 | ML engineering evaluation | Add MLE-bench lite/internal subset when GPU/RAM/time are admitted | Resource receipt, Any-Medal metric, split breakdown, internal-vs-official status label | **RESOURCE GATED** |
+| CEX-014 | P2 | MergeEarn template lineage | Review the source-map and wallet-template registration on PR #4737 | Approved refTemplates registration; fleet ledger remains the internal record of record | **IMPLEMENTED ON PR BRANCH** |
+| CEX-015 | P3 | Verified treatment promotion | Promote only replicated DoE winners into runtime routing/templates/skills | Preregistered arm, independent scorer, replicated outcomes, regression pass, governance sign-off | **CONTINUOUS** |
+
+## 3. First execution batch
+
+Run the following as one bounded P0 batch:
+
+1. Recover DeepSeek and Termux Origin history without modifying the canonical feed.
+2. Generate a join report keyed by session ID, message/turn ID, workflow run ID, source commit, timestamp, route, and actor evidence.
+3. Probe Muse and Hark, capturing host IDs and resource cards.
+4. Capture the Muse HindSight port/listener/cron/export receipt.
+5. Exercise Temporal worker-loss/resume on a small deterministic workload.
+6. Re-fetch all generated receipts and compare against the previous known state.
+
+The batch produces a decision packet for CEX-001 through CEX-005. It does not change routing weights or delete/overwrite history.
+
+## 4. Benchmark execution batch
+
+The first benchmark wave should be deliberately narrow:
+
+- **Wave A:** Terminal-Bench 4.1 CPU tasks, one pinned agent treatment, multiple seeds, isolated verifier.
+- **Wave B:** BFCL v4 and ToolSandbox, tool-call and stateful interaction tracks.
+- **Wave C:** BrowserGym/WebArena, seeded synthetic web applications and reset receipts.
+
+For each wave, run a small calibration cohort, inspect every failure and verifier artifact, then expand task coverage. Keep benchmark family scores separate. Compare treatments within each family and use the DoE design to test interactions across provider, model, prompt, toolset, manager, and compute surface.
+
+## 5. Shared run envelope
+
+The implementation should map, not duplicate, the existing canonical sources:
+
+```text
+experiment_id + arm_id + instance_key + seed
+    ↓
+QUE item_id + lease_id + dispatch_id
+    ↓
+Temporal workflow_id + run_id + activity_id
+    OR cron run_id / Actions run_id / Hark request_id
+    ↓
+attempt_id + parent_attempt_id + checkpoint_id
+    ↓
+benchmark_id + version + task_id + task_fingerprint
+    ↓
+provider + model + endpoint + prompt_hash + tool_hash
+    ↓
+host_id + surface_id + environment_digest + resource_profile
+    ↓
+native_outcome + verifier_version + artifact_refs + cost/latency/tokens
+    ↓
+3L0 / MoneyBall / ForeSight / HindSight / failure corpus projections
+```
+
+Every projection carries the canonical run/dispatch reference. Each consumer applies its own schema and authority. The raw artifact is stored once under the owning evidence system.
+
+## 6. Automation and cadence
+
+| Cycle | System owner | Cadence / trigger | Output |
+|---|---|---|---|
+| Queue discovery and admission | QUE / QDesk | Existing schedule and event triggers | Eligible work, lease, queue state |
+| Durable execution | Temporal on Muse | Workflow policy | History, checkpoint, activity receipt |
+| Daily HindSight + ML Ops | Muse VM cron | Existing daily schedule | Health receipt, export digest, run result |
+| Bounded isolated export/hygiene | Hark VM | Existing registry/request cadence | REQUESTS → DONE receipt |
+| CI validation and bounded orchestration | GitHub Actions | Push / PR / scheduled events | Run/job/step/artifact receipt |
+| Provenance ingest | Telemetry ingest workflow + VM-side emitters | Existing schedule and source availability | Append-only canonical feed and mapping receipt |
+| Evaluation | AEF/DoE adapters | Queue admission and registered cohort cadence | Native benchmark result + experiment record |
+| Promotion review | Governance/3L0/MoneyBall | After evidence thresholds | Promote, retain, cull, or request more evidence |
+
+Cadence changes require current schedule and host receipts. This plan adds no second daily AI schedule or duplicate cron.
+
+## 7. Required test and safety matrix
+
+| Scenario | Expected behavior |
+|---|---|
+| Duplicate schedule tick | Stable job key deduplicates or returns existing run receipt |
+| Worker dies before activity start | Lease expires safely; task re-enters eligible queue |
+| Worker dies during unknown side effect | State becomes reconciliation-required; replay waits for side-effect check |
+| Worker resumes from checkpoint | Exactly one terminal receipt; parent/child attempt lineage retained |
+| Provider rate limit | Backoff and requeue under the current lease policy; no quota identity inference |
+| Host capacity pressure | Admission defers or reallocates to a compatible surface |
+| Export has same digest | Record `unchanged`; retain last-known good export reference |
+| Export digest changes | Record new artifact and source SHA; verify scrub and restore |
+| Verifier regrade | Create a new observation linked to the old run; preserve historical score |
+| Missing actor/outcome | Retain null/observational state; keep 3L0 weight at zero until corroborated |
+| Secret-shaped payload | Scrub before hashing/writing; record redaction count |
+| Benchmark verifier executes untrusted code | Run in isolated process/container; trusted verifier retains reward authority |
+| Benchmark task version changes | New task/version identity; retain prior result and compare only under valid protocol |
+
+## 8. Completion and promotion
+
+A workstream is complete only when:
+- its acceptance evidence is linked to a commit or immutable artifact;
+- the smallest relevant deterministic test passes;
+- `git diff --check` and repository hygiene gates pass;
+- CI reaches terminal states and all required jobs are inspected;
+- the final branch SHA is re-fetched and compared;
+- the report and registry state are updated from those receipts.
+
+A PR being open, mergeable, or green at an intermediate point is not promotion. Merge authority remains with the repository's established review and governance process.

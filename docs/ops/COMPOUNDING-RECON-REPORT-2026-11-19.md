@@ -167,6 +167,14 @@ PR #5664's `Agent PR Jules Handoff` mutation job received a GitHub App installat
 **IMPLEMENTED IN DRAFT PR #5666 — pending-label API gate.**  
 The new branch pins `actions/github-script` to its immutable v7.1.0 commit, adds a `jules-handoff-pending` label only after trusted-source and idempotency checks, gates mutation comment pagination on that label, records `MUTATION_OBSERVED`, and clears the label after the receipt. A focused Python test covers actor gating, action pins, label lifecycle, deduplication, and exact-SHA receipt fields. This reduces API reads across ordinary PR sync events while preserving the existing handoff state machine.
 
+### 3.7 Termux device stewardship and schedule state
+
+The uploaded Termux Project Steward skill requires a live Termux MCP preflight and `get_device_info` before device-level work. This session's connected tool set contains no Termux device connector, so device memory, storage, swap, Android state, and pending job inventory remain pending direct device evidence.
+
+The repository already contains `scripts/termux-resource-snapshot.sh`, `scripts/termux-resource-sentinel.sh`, `scripts/termux/devices/install-device-jobs.sh`, and `docs/ops/TERMUX_MCP_PROJECT_STEWARD.md`. The stewardship contract describes a six-hour local resource sentinel and a daily read-only project report at a user-selected time. `docs/ops/DEVICE-ACCESS-DIRECTORY.md` carries an older 2026-10-21 observation that device jobs 43107–43109 were unverified. Reuse the existing scripts and job registry after a fresh device snapshot; compare current pending jobs before any install or update.
+
+**Execution boundary:** this pass made repository changes and opened draft PRs through GitHub. Device-level schedules, Termux notifications, and local job definitions remain unchanged. The next device step is a live `get_device_info` plus `termux-job-scheduler --pending` snapshot, followed by a user-selected daily report time where a schedule change is required.
+
 ## 4. What exists beyond SWE
 
 SWE-bench measures software issue-to-patch resolution. Build the broader agent portfolio around distinct capabilities: terminal execution, MCP tools, browser and desktop interaction, policy-constrained workflows, memory, mobile, ML engineering, security, and multi-agent coordination. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` records the families, native score semantics, adapter states, and admission sequence.
@@ -340,6 +348,7 @@ The programme is complete when:
 | HindSight Muse port + cron | **OWNER-REPORTED SERVICE; POPULATION GAP** | Daily job performed census only; local test results stale since Nov 3; 326 payloads blocked at #5553; #5553/#5555 remain open for extraction and provenance |
 | Muse VM observer | **RELIABILITY GAP** | ~2h image replacement; /etc resets; 60s observer relaunch failed across exec-session teardown; move to one-shot state-diff probe |
 | Hark capacity / reachability | **STALE / CONFLICTED** | Allocation and prior node probe disagree; Hark absent from current tailnet peer list; obtain current node receipt |
+| Termux device stewardship | **REPOSITORY MACHINERY EXISTS; DEVICE PREFLIGHT BLOCKED** | Snapshot/sentinel/install scripts and stewardship contract exist; current device info and pending-job inventory require the Termux MCP connector |
 | Terminal-Bench 4.1 adapter | **CANDIDATE / P0** | Add adapter and isolated verifier harness |
 | MCPMark + DynamicMCPBench | **CANDIDATE / P0** | Reuse TDQS; implement deterministic task and effect-based MCP adapters |
 | Tool/browser/GUI/memory/mobile adapters | **CANDIDATE** | Sequence by P1/P2 roadmap |

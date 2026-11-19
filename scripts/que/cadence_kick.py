@@ -146,12 +146,14 @@ def main() -> int:
         report.append({"workflow": wf, **d})
         print(f"::notice title=que-kick {wf}::{d['action']} · {d['reason']}"
               + (" · ⤴ dispatched" if d.get("dispatched") else ""))
+        if state.startswith("DEFERRED_"):
+            break
     ordered = sorted(API_LATENCIES_MS)
     p95 = ordered[min(len(ordered) - 1, max(0, int(0.95 * len(ordered) + 0.999) - 1))] if ordered else None
     out = {"schema": "que.cadence-kick/v2", "state": state, "at": stamp, "targets": report,
            "repo": repo, "sha": os.environ.get("GITHUB_SHA", "unknown"),
            "run_id": os.environ.get("GITHUB_RUN_ID", "unknown"),
-           "api": {"api_calls": API_CALLS, "api_call_budget": API_CALL_BUDGET, "http_statuses": API_STATUSES,
+           "api": {"token_bucket": "github-token", "api_calls": API_CALLS, "api_call_budget": API_CALL_BUDGET, "http_statuses": API_STATUSES,
                    "route_calls": API_ROUTES, "latency_ms": {
                        "count": len(ordered),
                        "p50": round(statistics.median(ordered), 2) if ordered else None,

@@ -1,24 +1,20 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T04:58:13Z",
+ "generated_at": "2026-11-19T05:12:33Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 5,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T04:56:16Z",
-   "by_workflow_queued": {
-    "Orchestration Regression Guard": 2,
-    "repo gate": 1,
-    "PR scope guard": 2
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
    "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T04:57:18Z",
+   "oldest_queued_at": "2026-11-19T05:08:51Z",
    "by_workflow_queued": {
     "tribute-dashboard-deploy": 1
    }
@@ -32,38 +28,23 @@
   },
   "4": {
    "tier": 4,
-   "queued": 56,
-   "in_progress": 18,
-   "oldest_queued_at": "2026-11-19T04:52:53Z",
+   "queued": 32,
+   "in_progress": 15,
+   "oldest_queued_at": "2026-11-19T05:08:25Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1,
-    "n8n SHE bridge": 1,
-    "Agent Throughput Evidence": 20,
-    "Foresight Evidence Spine": 1,
-    "que-cadence-kick": 1,
-    "hitl-control-plane-verify": 1,
+    "lane events recorder": 17,
+    "Agent Throughput Evidence": 9,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "n8n SHE bridge": 2,
     "termux smoke": 1,
-    "quota-analysis": 1,
-    "Agent Readability Source Contract": 3,
-    "quota-allocation-planner": 1,
-    "DO Statement Style": 1,
-    "graph-matrix-probe": 1,
-    "lane events recorder": 8,
-    "Sweep Accountability": 2,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "Lane matrix event-driven inventory": 2,
-    "RECON INTEL discovery": 2,
-    "Peer review orchestrator": 2,
-    "Action Effectiveness Ledger": 1,
     "PR production ledger": 1,
-    "PR evidence evaluation": 2
+    "telemetry-ingest": 1
    }
   }
  },
  "totals": {
-  "queued": 62,
-  "in_progress": 20
+  "queued": 33,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -221,13 +202,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 6,
+   "1": 2,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 8,
-  "default_t4": 74,
+  "explicit_total": 4,
+  "default_t4": 47,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

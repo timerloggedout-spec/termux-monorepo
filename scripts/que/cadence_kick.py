@@ -13,6 +13,8 @@ from __future__ import annotations
 import json
 import os
 import sys
+import time
+import statistics
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -23,6 +25,11 @@ TARGETS = [
     {"workflow": "dispatch-watchdog.yml", "max_age_min": 15},
 ]
 IN_FLIGHT = {"queued", "in_progress", "waiting", "requested", "pending"}
+API_CALLS = 0
+API_STATUSES = {}
+API_ROUTES = {}
+API_LATENCIES_MS = []
+RATE_LIMIT = {}
 
 
 def parse_iso(s):
@@ -47,6 +54,8 @@ def decide(runs: list[dict], max_age_min: float, now: datetime) -> dict:
 
 
 def gh(method, path, token, body=None):
+    global API_CALLS
+    API_CALLS += 1
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(API + path, data=data, method=method, headers={
         "Authorization": f"Bearer {token}",

@@ -107,12 +107,13 @@ Every projection carries the canonical run/dispatch reference. Each consumer app
 
 | Cycle | System owner | Cadence / trigger | Output |
 |---|---|---|---|
-| Queue discovery and admission | QUE / QDesk | Existing schedule and event triggers | Eligible work, lease, queue state |
+| Queue discovery and admission | QUE / QDesk + Adaptive Dispatch | PR/lane-completion/canonical-record event wakes plus the existing 30-minute cadence clock | Eligible work, lease, queue state; central dispatcher remains event-driven and has no generic workflow-dispatch entry point |
 | Durable execution | Temporal on Muse | Workflow policy | History, checkpoint, activity receipt |
 | Daily HindSight + ML Ops | Muse VM cron | Existing daily schedule | Health receipt, export digest, run result |
 | Bounded isolated export/hygiene | Hark VM | Existing registry/request cadence | REQUESTS → DONE receipt |
-| CI validation and bounded orchestration | GitHub Actions | Push / PR / scheduled events | Run/job/step/artifact receipt |
+| CI validation and bounded orchestration | GitHub Actions | Push / PR / scheduled events; 323 workflows catalogued in generated automation index | Run/job/step/artifact receipt |
 | Provenance ingest | Telemetry ingest workflow + VM-side emitters | Existing schedule and source availability | Append-only canonical feed and mapping receipt |
+| Tool-definition quality | TDQS local lane | Tool-schema capture / registry update | Deterministic input hash, context signals, evaluator evidence, server-coherence receipt |
 | Evaluation | AEF/DoE adapters | Queue admission and registered cohort cadence | Native benchmark result + experiment record |
 | Promotion review | Governance/3L0/MoneyBall | After evidence thresholds | Promote, retain, cull, or request more evidence |
 

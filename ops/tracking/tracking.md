@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-19T09:35:31Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-19T10:29:34Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-19T09:35:31Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`89291` read_at=`2026-11-19T09:35:31Z`
+Sources: PR feed read_at=`2026-11-19T10:29:33Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`89709` read_at=`2026-11-19T10:29:33Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -29,7 +29,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5617 `4138579e33f9` 2026-11-18T11:18:08Z | land/close PR #5034 — chore(dashboards): refresh dispatch-tree feed |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | #5130 `748b3ef6a18c` 2026-11-10T14:26:48Z | land/close PR #4069 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #4069 — chore(dashboards): refresh surface feeds |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
@@ -73,4 +73,4 @@ Campaigns: 18 · joined: 2 · distinct instances: 17 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 115/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)

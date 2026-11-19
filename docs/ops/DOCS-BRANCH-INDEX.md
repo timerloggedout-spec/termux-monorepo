@@ -2,7 +2,7 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-18T15:42:00Z` UTC  
+**Generated:** `2026-11-19T15:49:46Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
 **Count:** 291 docs-lane branch(es)
@@ -93,7 +93,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/competition-import-d0-d1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/competition-import-d0-d1) | `dcb96489663f` | — | — | orphan lane |
 | [`docs/condensa-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/condensa-correction-2026-11-10) | `70b6589f0db8` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
-| [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `881c4b7294a4` | — | — | orphan lane |
+| [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `1a8f61b35e42` | — | — | orphan lane |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
 | [`docs/continuity-spof-census-2026-11-01`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/continuity-spof-census-2026-11-01) | `dc92a46f6878` | — | — | orphan lane |

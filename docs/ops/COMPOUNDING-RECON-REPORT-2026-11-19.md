@@ -53,6 +53,9 @@ GitHub search and fetch were used for the paths and PRs cited below. External be
 **VERIFIED — 3L0 and MoneyBall remain separate.**  
 `docs/ops/3L0-PLANE.md` defines the scoring plane for agents/models/providers/scouts/orchestrators/collaborators and consumes committed telemetry. `docs/ops/MONEYBALL-PLANE.md` defines a separate economic valuation plane. The documented 3L0 weighting relationship may consume MoneyBall-derived quota multipliers, but the two records and authorities are not merged.
 
+**VERIFIED — TDQS is already integrated locally.**
+The repo has `she/metrics/tdqs.py`, `tests/test_tdqs.py`, `docs/ops/TDQS-ADMISSION-MATRIX.md`, and `docs/ops/TDQS-EVIDENCE.schema.json`. The deterministic module handles context signals, hard gates, aggregation, tiers, and server rollups without network/model calls; the six rubric dimensions come from a separately recorded evaluator. The admission matrix already names `gh-mcp`, `termux-mcp`, and `mcp-toolshed_fork` as priority scoring cohorts. Reuse this lane for static tool-definition quality; add task-level MCP benchmarks for behavior. The local implementation declares TDQS v1.3, so keep public rubric-version drift explicit.
+
 ### 3.2 Session and execution provenance
 
 **VERIFIED — canonical chat provenance is implemented.**  
@@ -139,16 +142,21 @@ The Temporal proposal explicitly calls out worker death and unknown side effects
 
 SWE-bench measures software issue-to-patch resolution. It cannot stand in for all agent capability. The new `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md` registers the broader portfolio and native score semantics.
 
+**The most important new insight is that MCP has its own mature benchmark family.** The repository already has an in-house TDQS tool-definition quality lane and named priority cohorts, but the current repo search did not find adapters for MCPMark, DynamicMCPBench, MCP-Atlas, MCPAgentBench, or MCP-Bench. That creates a clear high-return sequence: static schema quality via TDQS, deterministic task correctness via MCPMark, then live effect-based evaluation via DynamicMCPBench.
+
 The highest-leverage additions are:
 
 - **Terminal-Bench 4.1:** terminal-native work and systems tasks; immediate next adapter. The 4.1 release is verifier-focused: it re-grades stored 4.0 trials with more robust reward-hack resistance and correctness. Preserve 4.0 observations and 4.1 regrades as linked records.
-- **BFCL v4 + ToolSandbox:** function-call accuracy, schema/argument correctness, multi-turn stateful tools, and intermediate/final state validation.
-- **BrowserGym + WebArena / WebArena-Verified / WorkArena:** browser and web-app workflows with self-hosted task state.
-- **OSWorld:** desktop and cross-application computer-use tasks; separate VM/GUI environment required.
+- **MCPMark:** 127 curated MCP tasks with programmatic verification and controlled initial state; strongest first benchmark for CRUD, multi-turn, and stateful MCP workflows.
+- **DynamicMCPBench:** trace-grounded, effect-scored framework for live MCP servers; ideal for synthetic versions of the fleet's own MCP servers, with pass^3 reliability and intermediate state-effect checks.
+- **MCP-Atlas / MCPAgentBench / MCP-Bench:** cross-server tool discovery, distractor handling, multi-step orchestration, and intermediate-result grounding. These complement local TDQS and MCPMark.
+- **BFCL v4 + ToolSandbox:** function-call accuracy, schema/argument correctness, multi-turn stateful tools, and intermediate/final state validation. BFCL's independent audit found defects in 24 of 50 sampled tasks, so keep task-level quality annotations and do not promote on its aggregate alone.
+- **BrowserGym + WebArena / WebArena-Verified / WorkArena:** browser and web-app workflows with self-hosted task state; WebArena-Pro is a recent multimodal research candidate.
+- **OSWorld / OSWorld-MCP:** desktop and cross-application computer-use tasks; separate VM/GUI environment required.
 - **τ²-bench:** user-agent-tool interactions under policy and changing backend state, with text and voice variants.
 - **LongMemEval / V2:** memory retrieval, temporal reasoning, knowledge updates, abstention, and query latency; especially relevant to HindSight and ForeSight.
 - **AndroidWorld:** mobile workflows on an Android emulator; relevant to Termux and device-agent work.
-- **MLE-bench:** ML engineering competitions; relevant to ML Ops, but resource-intensive and with upstream leaderboard submissions paused in the cited April 2026 update.
+- **MLE-bench:** 75 Kaggle ML engineering competitions. Official setup recommends 3 seeds and 24 hours on 36 vCPU, 440 GB RAM, and one 24 GB A10 GPU; the Lite/Low split has 22 competitions. Dataset terms are separate from the code license, and upstream leaderboard submissions remain paused per the official 2026-04-24 notice. Muse's CPU-only 4-vCPU/8-GB surface is not the right full-suite host.
 - **AgentDojo:** prompt-injection and defense evaluations; security-isolated.
 - **GAIA / AgentBench / Terminal-Bench-Science:** broad assistant, multi-environment, and scientific workflow coverage.
 
@@ -275,6 +283,7 @@ The programme is complete when:
 | Work item | State in this pass | Evidence / next step |
 |---|---|---|
 | Benchmark family registry | **IMPLEMENTED on this branch** | `docs/evaluations/BENCHMARK-FAMILY-REGISTRY.md`; PR CI and review remain |
+| TDQS tool-definition lane | **IN-REPO** | `she/metrics/tdqs.py`, `tests/test_tdqs.py`, TDQS admission matrix and evidence schema; reuse for MCP static quality |
 | Detailed compounding RECON report | **IMPLEMENTED on this branch** | This document; refresh after runtime probes |
 | MergeEarn refTemplates lineage | **IMPLEMENTED on fresh current-base PR #5664** | Agentic Wallet README, SPEC, SOURCE, index, family README, and SOURCE-MAP; draft PR pending CI/review. Original PR #4737 remains open but diverges and is 13,613 commits behind master. |
 | DeepSeek Termux-origin join | **GAP / planned** | Recover historical branch/commit/session records and map eligible records |

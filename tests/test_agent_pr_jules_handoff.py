@@ -27,7 +27,7 @@ class JulesPrHandoffWorkflowTests(unittest.TestCase):
 
     def test_github_script_actions_use_immutable_commit_pins(self) -> None:
         uses = re.findall(
-            r"^\s+uses:\s+([^\s#]+)",
+            r"^\s*-\s+uses:\s+([^\s#]+)",
             self.workflow,
             flags=re.MULTILINE,
         )

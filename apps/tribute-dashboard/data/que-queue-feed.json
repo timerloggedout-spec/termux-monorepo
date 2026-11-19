@@ -1,6 +1,6 @@
 {
  "schema": "que-queue-feed/v1",
- "generated_at": "2026-11-19T17:53:28Z",
+ "generated_at": "2026-11-19T18:07:08Z",
  "provenance": {
   "producer": "optimizations-assurance (QUE lead) via que-feed-collect",
   "design_input": "Stagefoil \u2014 the desk-flow template brand (Registry issuance PR #4817) \u2014 agent-browser-clerk pattern (D2 candidate B learnings); the Desk as interactive-flow + routing template, agent-operated",
@@ -10,21 +10,17 @@
   "tiers": {
    "1": {
     "tier": 1,
-    "queued": 1,
-    "in_progress": 1,
-    "oldest_queued_at": "2026-11-19T17:52:54Z",
-    "by_workflow_queued": {
-     "Orchestration Regression Guard": 1
-    }
+    "queued": 0,
+    "in_progress": 2,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    },
    "2": {
     "tier": 2,
-    "queued": 1,
+    "queued": 0,
     "in_progress": 2,
-    "oldest_queued_at": "2026-11-19T17:52:53Z",
-    "by_workflow_queued": {
-     "pages build and deployment": 1
-    }
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    },
    "3": {
     "tier": 3,
@@ -35,23 +31,15 @@
    },
    "4": {
     "tier": 4,
-    "queued": 26,
-    "in_progress": 16,
-    "oldest_queued_at": "2026-11-19T17:52:12Z",
-    "by_workflow_queued": {
-     "lane events recorder": 5,
-     "Agent Throughput Evidence": 12,
-     "Agent Readability Source Contract": 2,
-     "termux smoke": 1,
-     "Context Relationship + Lead/Lag Audit": 3,
-     "Sweep Accountability": 1,
-     "Issue Comment Router \u2014 modular fan-out reduction": 2
-    }
+    "queued": 0,
+    "in_progress": 10,
+    "oldest_queued_at": null,
+    "by_workflow_queued": {}
    }
   },
   "totals": {
-   "queued": 28,
-   "in_progress": 19
+   "queued": 0,
+   "in_progress": 14
   },
   "wedged_ancient": [
    {
@@ -209,12 +197,12 @@
    "population": "actions-runs (queued \u2227 in_progress)",
    "explicit": {
     "1": 2,
-    "2": 3,
+    "2": 2,
     "3": 0,
     "4": 0
    },
-   "explicit_total": 5,
-   "default_t4": 42,
+   "explicit_total": 4,
+   "default_t4": 10,
    "unmatched": 0,
    "ancient_excluded": 25,
    "operator_excluded": 1
@@ -1618,7 +1606,7 @@
  },
  "source_freshness": {
   "schema": "que.source-freshness/v1",
-  "generated_at": "2026-11-19T17:53:28Z",
+  "generated_at": "2026-11-19T18:07:08Z",
   "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
   "counts": {
    "FRESH": 4,
@@ -1627,57 +1615,57 @@
   "sources": {
    "que-feed-collect": {
     "source_ref": "ops/que/feeds/que-queue-feed.json",
-    "generated_at": "2026-11-19T17:53:28Z",
-    "observed_at": "2026-11-19T17:53:28Z",
+    "generated_at": "2026-11-19T18:07:08Z",
+    "observed_at": "2026-11-19T18:07:08Z",
     "expected_cadence_min": 10,
     "tolerance_min": 5,
-    "previous_cycle_at": "2026-11-19T17:40:14Z",
-    "cycle_gap_min": 13.2,
+    "previous_cycle_at": "2026-11-19T17:53:28Z",
+    "cycle_gap_min": 13.7,
     "health": "FRESH",
     "health_basis": "gap since previous cycle watermark",
-    "sha": "fc8929521de933f72e1fb227828949b4f442342f",
-    "run_id": "44581906862"
+    "sha": "5a3f134e073cde80d1d43cf20b5c23e25c613989",
+    "run_id": "44584319239"
    },
    "dispatch-state-feed": {
     "source_ref": "ops/challenge/dispatch-state-feed.json",
-    "observed_at": "2026-11-19T17:53:28Z",
+    "observed_at": "2026-11-19T18:07:08Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "fc8929521de933f72e1fb227828949b4f442342f",
+    "sha": "5a3f134e073cde80d1d43cf20b5c23e25c613989",
     "generated_at": "2026-11-19T17:50:49Z",
-    "age_min": 2.7,
+    "age_min": 16.3,
     "health": "FRESH"
    },
    "stall-gap-feed": {
     "source_ref": "ops/que/feeds/stall-gap-feed.json",
-    "observed_at": "2026-11-19T17:53:28Z",
+    "observed_at": "2026-11-19T18:07:08Z",
     "expected_cadence_min": 15,
     "tolerance_min": 15,
-    "sha": "fc8929521de933f72e1fb227828949b4f442342f",
+    "sha": "5a3f134e073cde80d1d43cf20b5c23e25c613989",
     "generated_at": "2026-11-19T17:50:49Z",
-    "age_min": 2.7,
+    "age_min": 16.3,
     "health": "FRESH"
    },
    "opportunity-priority": {
     "source_ref": "ops/que/feeds/opportunity-priority.json",
-    "observed_at": "2026-11-19T17:53:28Z",
+    "observed_at": "2026-11-19T18:07:08Z",
     "expected_cadence_min": 720,
     "tolerance_min": 0,
-    "sha": "fc8929521de933f72e1fb227828949b4f442342f",
+    "sha": "5a3f134e073cde80d1d43cf20b5c23e25c613989",
     "generated_at": "2026-11-19T08:50:43Z",
-    "age_min": 542.8,
+    "age_min": 556.4,
     "health": "FRESH"
    },
    "governor-events": {
     "source_ref": "ops/que/events/governor-events-*.jsonl",
-    "observed_at": "2026-11-19T17:53:28Z",
+    "observed_at": "2026-11-19T18:07:08Z",
     "generated_at": "2026-11-19T17:12:51Z",
-    "age_min": 40.6,
+    "age_min": 54.3,
     "expected_cadence_min": null,
     "tolerance_min": null,
     "health": "UNVERIFIABLE",
     "health_basis": "emitter cadence \u00acdeclared (source-specific)",
-    "sha": "fc8929521de933f72e1fb227828949b4f442342f"
+    "sha": "5a3f134e073cde80d1d43cf20b5c23e25c613989"
    }
   }
  }

@@ -20,7 +20,7 @@ The ICM CCTV fork remains the reviewed reference input. The monorepo owns its ca
 
 Use this card when a human-visible review checkpoint improves an already defined repository-native ICM process. Preserve each stage output under the monorepo's own ICM path as the source of truth. A visual card links to that output and mirrors its reviewed state.
 
-Interactive response files stay in the declared caged location under `_tv/responses/`. A consuming process declares the card identifier, accepted response values, canonical source artifact, human authority, and no-response behavior before it reads a response.
+Interactive response files stay in the declared caged location under `_tv/responses/`. A consuming process declares the card identifier, accepted response values, canonical source artifact, human authority, and timeout behavior before it reads a response.
 
 ## First-order impact
 

@@ -214,6 +214,23 @@ Quality and safety are guardrails, not compensating terms in a scalar score. A t
 - A completed task is not independently verified until its acceptance evidence is present.
 - A measured result is not a promotion decision.
 
+### 7.5 Offline shadow evaluator
+
+The companion implementation at `scripts/pcdoe/shadow_prioritizer.py` evaluates the six policy treatments against a frozen JSON snapshot whose mode is `read_only_shadow`. It produces ranked recommendations, component contributions, unknown-input annotations, risk eligibility, policy hashes, and a snapshot hash. Its result declares `recommendations_only=true` and an empty `side_effects` list.
+
+Run the fixture evaluation with:
+
+```bash
+python scripts/pcdoe/shadow_prioritizer.py \
+  --policies docs/ops/pcdoe/PRIORITIZATION-POLICIES.json \
+  --snapshot tests/pcdoe/fixtures/shadow-snapshot.json \
+  --output /tmp/pcdoe-shadow-result.json
+```
+
+The fixture is synthetic and verifies deterministic policy behavior, missing-risk handling, and risk eligibility. It is a software test, not a production observation or a DoE result. Live canonical snapshots require their existing owner to authorize access and supply the snapshot through an approved read-only seam.
+
+The companion `scripts/pcdoe/autoapprove_shadow.py` evaluates the allowlist, actor, resource, scope, budget, timeout, expiry, identity, permission, risk, freshness, idempotency, compensation, and evidence predicates. It returns an eligibility decision only. Its tests assert that formal review, merge, release, promotion, and credential classes remain routed to formal approval and that the evaluator performs no requested action.
+
 ## 8. Rollout sequence
 
 | Stage | Deliverable | Gate |
@@ -246,8 +263,8 @@ Quality and safety are guardrails, not compensating terms in a scalar score. A t
 | PCDOE-008.2 | DO-statement contract | Proposed in this companion |
 | PCDOE-008.3 | Bounded AutoApprove policy and approval boundary | Proposed in this companion |
 | PCDOE-008.4 | DoE design and outcome contract | Proposed in this companion |
-| PCDOE-008.5 | Static validators, fixtures and tests | Pending implementation |
-| PCDOE-008.6 | Shadow evaluation against canonical snapshots | Pending authorization and implementation |
+| PCDOE-008.5 | Static validators, fixtures and tests | Implemented on companion branch; CI validation pending |
+| PCDOE-008.6 | Offline fixture evaluator and shadow contract | Implemented on companion branch; canonical snapshot integration pending owner authorization |
 | PCDOE-008.7 | Preregistered experiment and independent analysis | Pending DoE review |
 | PCDOE-008.8 | Live cohort and adoption recommendation | Pending explicit Operator authorization |
 

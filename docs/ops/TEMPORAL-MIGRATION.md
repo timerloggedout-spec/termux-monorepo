@@ -113,3 +113,10 @@ brief's amended substrate target requires:
   disk as runtime data (never repo content, by design). The
   Actions engagement surface is the operational home; dispatch
   either workflow to run Temporal work.
+
+
+## Current-state addendum — 2026-11-19
+
+The 2026-10-28 migration record describes retirement of the prior Muse self-host instance and the move of the canonical DelphiCycle engagement to ephemeral GitHub Actions. The 2026-11-19 living runtime record in issue [#2028](https://github.com/timerloggedout-spec/termux-monorepo/issues/2028) observes a bounded Muse Temporal self-host active again: gRPC 7233, UI 8233, relay 7234, 15-minute keepalive, and daily integrity-checked SQLite snapshots.
+
+The current workflow list is empty; issue [#5632](https://github.com/timerloggedout-spec/termux-monorepo/issues/5632) tracks the first registered fleet workflow and schedule. The earlier retirement remains the history of the prior instance. Use [TEMPORAL-SELF-HOST.md](TEMPORAL-SELF-HOST.md) as the current runtime addendum and preserve the Actions N5 acceptance as its own execution surface.

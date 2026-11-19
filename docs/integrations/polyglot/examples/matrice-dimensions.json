@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "dimensions": [
+    {
+      "id": "EXPRESS",
+      "description": "Expressiveness and capability coverage",
+      "kind": "shared"
+    },
+    {
+      "id": "EXEC",
+      "description": "Execution performance",
+      "kind": "shared"
+    },
+    {
+      "id": "COMPILE",
+      "description": "Compilation and optimization",
+      "kind": "shared"
+    },
+    {
+      "id": "MEMORY",
+      "description": "Runtime memory and resource efficiency",
+      "kind": "shared"
+    },
+    {
+      "id": "COMPRESS",
+      "description": "Representation and transmission cost",
+      "kind": "shared"
+    },
+    {
+      "id": "ADAPT",
+      "description": "Predictive adaptation and learning",
+      "kind": "shared"
+    },
+    {
+      "id": "INTEROP",
+      "description": "Cross-language, runtime and protocol compatibility",
+      "kind": "shared"
+    },
+    {
+      "id": "VERIFY",
+      "description": "Correctness, safety and reproducibility; correctness gate",
+      "kind": "gate"
+    },
+    {
+      "id": "DEVEX",
+      "description": "Tooling and developer productivity",
+      "kind": "shared"
+    },
+    {
+      "id": "COMPOSE",
+      "description": "Composability across capabilities and domains",
+      "kind": "shared"
+    }
+  ],
+  "aggregation": {
+    "levels": [
+      "local",
+      "domain",
+      "federation"
+    ],
+    "rule": "Domain-specific metrics remain separately visible; cross-domain aggregates retain metric identity and never collapse incomparable units into one raw score."
+  }
+}

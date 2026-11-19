@@ -51,12 +51,14 @@ class JulesPrHandoffWorkflowTests(unittest.TestCase):
     def test_trusted_handoff_arms_label_before_comment_inventory(self) -> None:
         handoff = self.job_block("handoff")
         trusted = handoff.index("if (!trustedSource) return;")
+        inventory = handoff.index("github.paginate(github.rest.issues.listComments")
         arm = handoff.index("issues.createLabel")
         attach = handoff.index("issues.addLabels")
-        inventory = handoff.index("github.paginate(github.rest.issues.listComments")
-        self.assertLess(trusted, arm)
+        receipt = handoff.index("issues.createComment")
+        self.assertLess(trusted, inventory)
+        self.assertLess(inventory, arm)
         self.assertLess(arm, attach)
-        self.assertLess(attach, inventory)
+        self.assertLess(attach, receipt)
         self.assertIn("jules-handoff-pending", handoff)
 
     def test_mutation_receipt_clears_pending_label_after_observation(self) -> None:
@@ -66,6 +68,8 @@ class JulesPrHandoffWorkflowTests(unittest.TestCase):
         self.assertLess(comment, clear)
         self.assertIn("MUTATION_OBSERVED", mutation)
         self.assertIn("observed_head_sha", mutation)
+        self.assertEqual(mutation.count("issues.removeLabel"), 2)
+        self.assertIn("error.status !== 404", mutation)
 
     def test_receipts_remain_idempotent_and_source_gated(self) -> None:
         handoff = self.job_block("handoff")

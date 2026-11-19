@@ -37,7 +37,7 @@ def main() -> int:
     service_worker = SERVICE_WORKER.read_text(encoding="utf-8")
     sitemap = SITEMAP.read_text(encoding="utf-8")
     robots = ROBOTS.read_text(encoding="utf-8")
-    required_nav = ('["Tribute", tribute, "tribute"]', '["Lane matrix", origin + "/matrix/", "matrix"]', '["Version comparison", tribute + "versioning.html", "versioning"]')
+    required_nav = ('["Tribute", tribute, "tribute"]', '["Lane matrix", origin + "/matrix/", "matrix"]', '["Version comparison", tribute + "versioning.html", "versioning"]', '["Publishing", tribute + "publishing.html", "publishing"]')
     missing_nav = [item for item in required_nav if item not in nav]
     if missing_nav:
         raise SystemExit("shared navigation is missing required destinations: " + ", ".join(missing_nav))

@@ -42,7 +42,9 @@ def inspect_text(label: str, value: str) -> None:
 
 
 def subject_verb(subject: str) -> str:
-    first = subject.rsplit(": ", 1)[-1].split(maxsplit=1)
+    scoped = re.match(r"^[a-z][a-z0-9-]*(?:\([^)]+\))?:\s*(.+)$", subject)
+    description = scoped.group(1) if scoped else subject
+    first = description.split(maxsplit=1)
     return first[0].lower() if first else ""
 
 

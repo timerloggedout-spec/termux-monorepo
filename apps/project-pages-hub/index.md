@@ -1,7 +1,7 @@
 ---
 title: Termux Monorepo — Project Hub
 description: A thin project navigation hub for the termux-monorepo, with links to the authoritative source repository, operations documentation, dashboards, and project surfaces.
-last_updated: 2026-11-13
+last_updated: 2026-11-18
 ---
 
 # Termux Monorepo — Project Hub
@@ -12,6 +12,7 @@ last_updated: 2026-11-13
 
 - [Marketing and referrals](https://timerloggedout-spec.github.io/)
 - [Tribute operations dashboard](https://timerloggedout-spec.github.io/tribute/)
+- [Brain Operations dashboard](https://timerloggedout-spec.github.io/termux-monorepo/brain-ops/) — live CI health, performance and specialist coverage
 - [LANE-MATRIX live board](https://timerloggedout-spec.github.io/matrix/)
 - [Termux Monorepo source repository](https://github.com/timerloggedout-spec/termux-monorepo)
 - [Vercel preview portal](https://termux-monorepo.vercel.app/)
@@ -20,6 +21,8 @@ last_updated: 2026-11-13
 
 Implementation authority lives in the source repository and its commit, pull-request, and workflow history.
 
+- [Brain subsystem architecture proposal](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-SUBSYSTEM-MAP.md)
+- [Brain ownership map proposal](https://github.com/timerloggedout-spec/termux-monorepo/blob/feat/root-brain-rust-core-final/docs/architecture/TERMUX-MONOREPO-BRAIN-OWNERSHIP-MAP.md)
 - [Operations documentation](https://github.com/timerloggedout-spec/termux-monorepo/tree/master/docs/ops)
 - [GitHub Actions workflows](https://github.com/timerloggedout-spec/termux-monorepo/tree/master/.github/workflows)
 - [Issues](https://github.com/timerloggedout-spec/termux-monorepo/issues)

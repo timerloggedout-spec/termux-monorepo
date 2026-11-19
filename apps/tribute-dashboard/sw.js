@@ -4,7 +4,7 @@
    when the network is unreachable (shell + icons + last-good page). */
 var CACHE = "tribute-v1";
 var SHELL = ["./", "./index.html", "./dashboard.css", "./manifest.webmanifest",
-             "./versioning.js", "./site-nav.js", "./version-manifest.json",
+             "./versioning.js", "./site-nav.js", "./publishing.html", "./publishing.js", "./publishing.md", "./version-manifest.json",
              "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); })

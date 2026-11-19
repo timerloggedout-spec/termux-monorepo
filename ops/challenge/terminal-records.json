@@ -1,0 +1,34 @@
+{
+  "schema": "que.terminal-records/v1",
+  "doc": "Terminal ∧ archived opportunity records for the QUE registry feed (ops/que/feeds/opportunity-priority.json). terminal_records override a live coordinator row's state once its wall has passed; archived holds pre-registry candidates C1-C10 (previously prose only in docs/ops/CHALLENGE-ENTRIES-LOG.md §3). Additive; written 2026-11-15 by termux-ops (registry-feed repair). Outcomes stay NOT_ESTABLISHED until a platform confirmation is on record.",
+  "terminal_records": [
+    {
+      "id": "D1",
+      "state": "complete — submitted (published 2026-11-03); edit-window freeze 2026-11-04T23:59:00-08:00 passed",
+      "terminal_at": "2026-11-04T23:59:00-08:00",
+      "final_state": "submitted",
+      "outcome": "NOT_ESTABLISHED (results not on record)",
+      "evidence": "ops/challenge/coordinator.json events[D1].status; docs/ops/CHALLENGE-ENTRIES-LOG.md §4 D1"
+    },
+    {
+      "id": "D2",
+      "state": "closed — wall 2026-11-08T15:00:00-08:00 passed",
+      "terminal_at": "2026-11-08T15:00:00-08:00",
+      "final_state": "wall passed; submission NOT_ESTABLISHED (no platform confirmation on record)",
+      "outcome": "NOT_ESTABLISHED",
+      "evidence": "ops/challenge/coordinator.json events[D2] (pick B Quarantine Browser Clerk, build started 2026-11-03); docs/ops/CHALLENGE-ENTRIES-LOG.md §4 D2"
+    }
+  ],
+  "archived": [
+    {"id": "C1", "name": "Strands SDK: Workshop to Ship", "host": "AWS Builder Center", "aliases": ["Strands", "AWS"], "state": "promoted ⇒ D1", "promoted_to": "D1", "final_state": "promoted to entry D1 (submitted 2026-11-03)", "outcome": "see D1"},
+    {"id": "C2", "name": "Vultr Agent Rush Hackathon", "host": "Vultr x lablab.ai", "aliases": ["Vultr", "lablab.ai", "Agent Rush"], "state": "promoted ⇒ D2", "promoted_to": "D2", "final_state": "promoted to entry D2 (wall 2026-11-08 passed)", "outcome": "see D2"},
+    {"id": "C3", "name": "Builder.io Agent-Native Hackathon", "host": "Builder.io", "aliases": ["Builder.io", "Agent-Native"], "state": "promoted ⇒ D3", "promoted_to": "D3", "final_state": "promoted to entry D3 (closed unsubmitted 2026-11-09)", "outcome": "not submitted"},
+    {"id": "C4", "name": "Kiroween 2026", "host": "Devpost (Kiro)", "aliases": ["Kiro", "Kiroween", "AWS"], "state": "promoted ⇒ D4", "promoted_to": "D4", "final_state": "promoted to entry D4 (active)", "outcome": "see D4"},
+    {"id": "C5", "name": "PayPal AI Hackathon 2026", "host": "Devpost (PayPal)", "aliases": ["PayPal"], "state": "lapsed — not pursued; deadline 2026-11-12T12:00:00-08:00 passed", "final_state": "not entered", "outcome": "none"},
+    {"id": "C6", "name": "AWS Builder Center Weekend Challenge (November)", "host": "AWS Builder Center", "aliases": ["AWS", "Weekend Challenge"], "state": "archived — theme never published at check (2026-10-26); unassigned", "final_state": "not entered", "outcome": "none"},
+    {"id": "C7", "name": "Lexsi AI Safety & Alignment Hackathon", "host": "Lexsi Labs x Cohere Labs", "aliases": ["Lexsi", "Cohere"], "state": "archived — weak fit, unassigned (window Nov 1–21 UNVERIFIED)", "final_state": "not entered", "outcome": "none"},
+    {"id": "C8", "name": "Codegeist 2026", "host": "Devpost (Atlassian)", "aliases": ["Atlassian", "Forge", "Codegeist"], "state": "archived — unassigned candidate (Repo+Story fit I1); window closes 2026-12-22 15:00 ET", "final_state": "not slated", "outcome": "none"},
+    {"id": "C9", "name": "Gemma 4 Developer Agent Competition", "host": "Google DeepMind x Kaggle", "aliases": ["Gemma", "Kaggle", "Google", "DeepMind"], "state": "archived — unassigned candidate; entry by 2026-11-25 23:59 UTC", "final_state": "not slated", "outcome": "none"},
+    {"id": "C10", "name": "Agentware", "host": "Hackathon Raptors", "aliases": ["Agentware", "Raptors"], "state": "archived — unassigned candidate; build 2026-11-27–30, close 2026-12-07 18:00 UTC", "final_state": "not slated", "outcome": "none"}
+  ]
+}

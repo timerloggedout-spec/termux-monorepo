@@ -1,0 +1,85 @@
+{
+  "arm": "cohere-command-a",
+  "arm_id": "cohere-command-a",
+  "arm_state": "unknown",
+  "context": "build-dispatch multi-arm (#5151)",
+  "cumulative_n": 1,
+  "dispatch_id": "build-dispatch-44347631446-cohere-command-a",
+  "endpoint": "cohere::command-a-03-2025",
+  "entry": "issue-5309",
+  "harness": "generic-agent-loop",
+  "instance": {
+    "context": "build-dispatch multi-arm (#5151)",
+    "model": "command-a-03-2025",
+    "moniker": "providers-dispatch-fix",
+    "provider": "cohere",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+      "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+    },
+    "tools": {
+      "ref": "scripts/ops/build_arm_harness.py#tools",
+      "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+    }
+  },
+  "instance_key": "e4a560fea964cbaa4cbf22317d69d127db075fa21df8bf5ed10b06c27821aa53",
+  "model": "command-a-03-2025",
+  "model_version": "command-a-03-2025@command-a-03-2025",
+  "moniker": "providers-dispatch-fix",
+  "origin": "live",
+  "outcome": {
+    "artifact": "actions run 44347631446",
+    "confirmed": null,
+    "corroboration_state": "single-leg",
+    "evidence_ref": "actions run 44347631446",
+    "gate_call": null,
+    "origin": "live",
+    "status": "failed",
+    "summary": "completion verification: failed"
+  },
+  "provider": "cohere",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "cohere",
+    "slice": "escalation"
+  },
+  "quota_class": "escalation",
+  "role": "builder",
+  "rotation_attempts": [
+    {
+      "arm_id": "cohere-command-a",
+      "status": "completed"
+    }
+  ],
+  "route_endpoint_id": "cohere::command-a-03-2025",
+  "run": {
+    "run_id": "44347631446",
+    "session_id": null,
+    "workflow": "build-dispatch.yml"
+  },
+  "run_id": "44347631446",
+  "schema": "build-dispatch-stamp/v1",
+  "selection": {
+    "arm": "cohere-command-a",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5309"
+  },
+  "selection_reason": "explicit-request",
+  "set_index": 1,
+  "task_class": "entry-build",
+  "task_ref": "timerloggedout-spec/termux-monorepo#5309",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-18T16:31:28Z",
+  "usage": {
+    "bucket_slice_id": "cohere-command-a:escalation",
+    "cost": null,
+    "latency_ms": 27455,
+    "retries": 0,
+    "status": "measured",
+    "tokens": null,
+    "tokens_in": 55636,
+    "tokens_out": 1091
+  }
+}

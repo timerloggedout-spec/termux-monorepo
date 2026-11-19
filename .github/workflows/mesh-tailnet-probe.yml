@@ -1,0 +1,99 @@
+name: mesh-tailnet-probe
+
+# Probe the Hark -> Muse hop over the tailnet (tailf2ee94.ts.net).
+# Join as an ephemeral tag:mesh node, ping muse, run a read-only SSH command.
+# Emit names-only ::notice annotations; keep secret values masked.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Tailnet host to probe"
+        required: false
+        default: "muse"
+      ssh_user:
+        description: "SSH user on the target"
+        required: false
+        default: "root"
+  schedule:
+    - cron: "17 */2 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mesh-tailnet-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TARGET: ${{ github.event.inputs.target || 'muse' }}
+      SSH_USER: ${{ github.event.inputs.ssh_user || 'root' }}
+    steps:
+      - name: Join tailnet as tag:mesh
+        uses: tailscale/github-action@v4
+        with:
+          authkey: ${{ secrets.TS_AUTHKEY }}
+          tags: tag:mesh
+
+      - name: Inspect tailnet peer
+        id: peer
+        shell: bash
+        run: |
+          set +e
+          tailscale status
+          tailscale status --json > /tmp/ts.json
+          python3 - <<'PY'
+          import json, os
+          d = json.load(open("/tmp/ts.json"))
+          target = os.environ["TARGET"]
+          hit = None
+          for p in (d.get("Peer") or {}).values():
+              name = (p.get("HostName") or "").lower()
+              dns = (p.get("DNSName") or "").split(".")[0].lower()
+              if target.lower() in (name, dns):
+                  hit = p
+                  break
+          if hit is None:
+              print(f"::notice title=peer::target={target} found=0")
+          else:
+              ssh_keys = len(hit.get("sshHostKeys") or [])
+              tags = ",".join(hit.get("Tags") or [])
+              print(f"::notice title=peer::target={target} found=1 online={hit.get('Online')} os={hit.get('OS') or '-'} tags={tags or '-'} ts_ssh_hostkeys={ssh_keys} relay={hit.get('Relay') or '-'}")
+          PY
+
+      - name: Ping target
+        shell: bash
+        run: |
+          set +e
+          timeout 60 tailscale ping -c 3 "$TARGET" | tee /tmp/ping.txt
+          rc=${PIPESTATUS[0]}
+          via=$(grep -oE 'via [^ ]+' /tmp/ping.txt | tail -n1 | tr ' ' '=')
+          echo "::notice title=ping::target=$TARGET rc=$rc ${via:-via=-}"
+
+      - name: Run read-only SSH command
+        shell: bash
+        run: |
+          set +e
+          cmd='uname -a; echo NPROC=$(nproc); free -m | awk "/^Mem:/{print \"MEM_MB=\"\$2}"; uptime'
+          timeout 90 tailscale ssh "$SSH_USER@$TARGET" -- "$cmd" > /tmp/ssh.out 2> /tmp/ssh.err < /dev/null
+          rc=$?
+          lane=tailscale-ssh
+          if [ "$rc" -ne 0 ]; then
+            echo "tailscale ssh rc=$rc; retry with OpenSSH over tailnet"
+            sed -n '1,20p' /tmp/ssh.err
+            timeout 60 ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=20 "$SSH_USER@$TARGET" "$cmd" > /tmp/ssh.out 2> /tmp/ssh2.err < /dev/null
+            rc2=$?
+            sed -n '1,20p' /tmp/ssh2.err
+            lane=openssh
+            [ "$rc2" -eq 0 ] && rc=0 || rc="$rc/$rc2"
+          fi
+          cat /tmp/ssh.out
+          nproc_v=$(grep -oE 'NPROC=[0-9]+' /tmp/ssh.out | cut -d= -f2)
+          mem_v=$(grep -oE 'MEM_MB=[0-9]+' /tmp/ssh.out | cut -d= -f2)
+          kern=$(head -n1 /tmp/ssh.out | awk '{print $1"-"$3"-"$(NF-1)}')
+          err=$(head -n1 /tmp/ssh.err | tr -cd '[:alnum:] ._:-' | cut -c1-120)
+          echo "::notice title=ssh::target=$TARGET user=$SSH_USER lane=$lane rc=$rc nproc=${nproc_v:--} mem_mb=${mem_v:--} kernel=${kern:--} err=${err:--}"

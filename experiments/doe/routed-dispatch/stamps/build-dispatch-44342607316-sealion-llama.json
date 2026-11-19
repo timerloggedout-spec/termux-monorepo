@@ -1,0 +1,85 @@
+{
+  "arm": "sealion-llama",
+  "arm_id": "sealion-llama",
+  "arm_state": "unknown",
+  "context": "build-dispatch multi-arm (#5151)",
+  "cumulative_n": 1,
+  "dispatch_id": "build-dispatch-44342607316-sealion-llama",
+  "endpoint": "sealion::aisingapore/Llama-SEA-LION-v3-70B-IT",
+  "entry": "issue-5309",
+  "harness": "generic-agent-loop",
+  "instance": {
+    "context": "build-dispatch multi-arm (#5151)",
+    "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+    "moniker": "providers-dispatch-fix",
+    "provider": "sealion",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+      "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+    },
+    "tools": {
+      "ref": "scripts/ops/build_arm_harness.py#tools",
+      "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+    }
+  },
+  "instance_key": "ba88d572cf93035a469546d4bd60f3c5d3d24e4f28965ba072175de08f206b9e",
+  "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+  "model_version": "aisingapore/Llama-SEA-LION-v3-70B-IT@aisingapore/Llama-SEA-LION-v3-70B-IT",
+  "moniker": "providers-dispatch-fix",
+  "origin": "live",
+  "outcome": {
+    "artifact": "actions run 44342607316",
+    "confirmed": null,
+    "corroboration_state": "single-leg",
+    "evidence_ref": "actions run 44342607316",
+    "gate_call": null,
+    "origin": "live",
+    "status": "failed",
+    "summary": "completion verification: failed"
+  },
+  "provider": "sealion",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "sealion",
+    "slice": "primary"
+  },
+  "quota_class": "primary",
+  "role": "builder",
+  "rotation_attempts": [
+    {
+      "arm_id": "sealion-llama",
+      "status": "failed"
+    }
+  ],
+  "route_endpoint_id": "sealion::aisingapore/Llama-SEA-LION-v3-70B-IT",
+  "run": {
+    "run_id": "44342607316",
+    "session_id": null,
+    "workflow": "build-dispatch.yml"
+  },
+  "run_id": "44342607316",
+  "schema": "build-dispatch-stamp/v1",
+  "selection": {
+    "arm": "sealion-llama",
+    "basis": "rotation: first eligible free-tier arm (registry order)",
+    "manager": "build-dispatch",
+    "request": "5309"
+  },
+  "selection_reason": "rotation: first eligible free-tier arm (registry order)",
+  "set_index": 1,
+  "task_class": "entry-build",
+  "task_ref": "timerloggedout-spec/termux-monorepo#5309",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-18T16:07:51Z",
+  "usage": {
+    "bucket_slice_id": "sealion-llama:primary",
+    "cost": null,
+    "latency_ms": null,
+    "retries": 0,
+    "status": "not_established",
+    "tokens": null,
+    "tokens_in": null,
+    "tokens_out": null
+  }
+}

@@ -1,0 +1,15 @@
+# Prespecified analysis — [version/date]
+- Primary response, estimand, contrast and units:
+- Model formula and coded-to-natural mapping:
+- Fixed/random effects and assignment-level error structure:
+- Variance/effect assumptions and precision/power basis:
+- Transformation/link and hierarchy:
+- Alpha, sidedness and multiplicity:
+- Missing outcomes, failed runs, exclusions and deviations:
+- Residual/influence/order diagnostics:
+- Lack-of-fit feasibility and pure-error basis:
+- Exploratory analyses labeled separately:
+- Optimization feasible region and candidate classification:
+- Independent confirmation design and acceptance criteria:
+- Software, versions, seeds, immutable input hashes:
+- Reviewer and sign-off:

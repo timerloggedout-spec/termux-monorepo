@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "que-eval-decision/v1",
+  "title": "QUE admission Decision",
+  "type": "object",
+  "required": ["schema", "decision", "thread", "trigger_ids", "policy_version", "strength", "reason"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "que-eval-decision/v1"},
+    "decision": {"enum": ["accept", "stop", "ignore", "unavailable"]},
+    "thread": {"type": "string", "description": "issue or PR number on its Source"},
+    "trigger_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "description": "the batch merged into this Eval"},
+    "policy_version": {"type": "string"},
+    "strength": {"enum": ["explicit", "inferred", "not-admitted"]},
+    "matched_rules": {"type": "array", "items": {"type": "string"}},
+    "would_accept": {"type": "boolean", "description": "shadow mode: a positive assessment recorded as ignore"},
+    "ignored_from_card": {"type": "boolean"},
+    "ticket": {"type": ["string", "null"], "description": "created (accept) or stopped (stop) item"},
+    "reason": {"type": "string", "minLength": 1},
+    "unavailable_cause": {"enum": ["timeout", "assessment-error", "policy-changed", null]}
+  },
+  "allOf": [
+    {"if": {"properties": {"decision": {"const": "accept"}}}, "then": {"required": ["ticket", "matched_rules"]}},
+    {"if": {"properties": {"decision": {"const": "unavailable"}}}, "then": {"required": ["unavailable_cause"]}}
+  ]
+}

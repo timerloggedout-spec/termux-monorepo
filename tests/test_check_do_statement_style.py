@@ -106,6 +106,8 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     "fix(ci): recognize explicit quoted mapping keys",
     "test(ci): add CLI regression coverage",
     "fix(ci): guard dispatch admission",
+    "fix(ci): preserve labels: miscellaneous metadata",
+    "fix(ci):guard dispatch admission",
 ])
 def test_real_push_accepts_imperative_subjects(tmp_path, subject):
     result = run_push_check(tmp_path, subject)
@@ -118,6 +120,7 @@ def test_real_push_accepts_imperative_subjects(tmp_path, subject):
     "fix(ci): recognized explicit quoted mapping keys",
     "fix(ci): miscellaneous cleanup",
     "fix(ci): guarded dispatch admission",
+    "fix(ci): miscellaneous metadata: guard dispatch admission",
 ])
 def test_real_push_rejects_non_imperative_subjects(tmp_path, subject):
     result = run_push_check(tmp_path, subject)

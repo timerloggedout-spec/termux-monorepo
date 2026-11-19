@@ -72,3 +72,15 @@ Command: `PYTHONPATH=/home/user/style-test-deps python3 -m pytest -q
 tests/test_check_do_statement_style.py` on the same described review working tree:
 `16 passed`. Required gates must run on the staged follow-up and remote results
 must be tied to the resulting commit separately, not inherited from 7727f8755.
+
+### Current-master reconciliation
+
+GitHub reports the review head conflicted with master. Non-mutating merge-tree
+confirmed conflicts in the checker vocabulary and dispatch test comment.
+Merge master `ab54688a5ba9995c2ba57fae384d68ca7c3c6e51` without rewriting history:
+retain the union vocabulary and the PR import-safe entry point; preserve master's
+scope-prefix parsing (including colon-containing descriptions) in `subject_verb`.
+Dispatch test matches master exactly; its concurrency assertion is already upstream.
+Add three real-CLI cases for nested colons and scope-without-space parsing.
+Upstream files carried by the merge are not newly authored lane changes; validate
+the resulting five-file diff against the merged master before push.

@@ -1,0 +1,67 @@
+{
+  "baseline_sha": "dc70f518f5dcd138a668fe34c69df2fe0271d152",
+  "candidate_sha": "dc70f518f5dcd138a668fe34c69df2fe0271d152",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44342607316"
+  ],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": 1,
+    "dispatch_status": "failed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": "rotation: first eligible free-tier arm (registry order)",
+    "set_index": 1,
+    "task_class": "entry-build"
+  },
+  "observed_at": "2026-11-18T16:07:51Z",
+  "origin": "live",
+  "outcome": "completion verification: failed",
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": {
+    "arm": "sealion-llama",
+    "basis": "rotation: first eligible free-tier arm (registry order)",
+    "manager": "build-dispatch",
+    "request": "5309"
+  },
+  "session_id": null,
+  "status": "failed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "sealion",
+    "instance": {
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "a1d2b5ece4e273228cdfb2872783e65cc549d17d74f1c2651b879998bf2a6b87",
+      "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+      "moniker": "providers-dispatch-fix",
+      "provider": "sealion",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+        "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+      },
+      "tools": {
+        "ref": "scripts/ops/build_arm_harness.py#tools",
+        "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+    "provider": "sealion"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

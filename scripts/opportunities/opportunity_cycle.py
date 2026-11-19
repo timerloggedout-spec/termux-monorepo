@@ -55,6 +55,25 @@ GATE_KEYS = [
     "initial_proposal_due",
 ]
 
+# Timebox wall anchor (registry-feed repair, 2026-11-15): the wall is
+# the SUBMISSION deadline, never a results date (winners_at /
+# judging_end). D5 bug: wall=winners_at put escalation after the
+# deadline. Ranking's next_gate (GATE_KEYS) is unchanged.
+WALL_KEYS = [
+    "deadline",
+    "submission_deadline",
+    "preliminary_due",
+    "proposal_due",
+    "initial_proposal_due",
+    "final_due",
+    "build_end",
+    "reg_close",
+]
+STALE_AFTER_HOURS = 12.0
+TERMINAL_RECORDS_PATH = "ops/challenge/terminal-records.json"
+_ALIAS_STOP = {"the", "and", "for", "with", "your", "2026", "2027", "hackathon",
+               "challenge", "call", "proposals", "program", "via", "from"}
+
 CENSUS_CLASSES = {"automatable", "fleet-executable", "owner-hand"}
 COMPLETION_LEGS = ["tournament-update", "moneyball-update", "osint-refresh"]
 
@@ -176,6 +195,43 @@ def find_next_gate(record: dict):
     if t is not None:
         return t, "deadline"
     return None, None
+
+
+def find_wall(record: dict):
+    """(instant, source_key) of the submission wall (WALL_KEYS order)."""
+    dates = record.get("dates") or {}
+    if isinstance(dates, dict):
+        for key in WALL_KEYS:
+            if key in dates:
+                t = parse_instant(dates[key])
+                if t is not None:
+                    return t, f"dates.{key}"
+    t = parse_instant(record.get("deadline"))
+    if t is not None:
+        return t, "deadline"
+    return None, None
+
+
+def search_aliases(record: dict, extra=None):
+    """(host, aliases, search_terms) so a registry row is findable by
+    its sponsor/brand words (AMD, kiroween) without asking."""
+    host = record.get("host")
+    raw = [record.get("name"), host, record.get("platform")]
+    raw += [o.get("name") for o in (record.get("organizers") or []) if isinstance(o, dict)]
+    raw += list(record.get("aliases") or [])
+    raw += list(extra or [])
+    aliases, seen = [], set()
+    for a in raw:
+        if isinstance(a, str) and a.strip() and a.strip().lower() not in seen:
+            seen.add(a.strip().lower())
+            aliases.append(a.strip())
+    terms = []
+    for a in aliases:
+        for tok in re.split(r"[^A-Za-z0-9.!+-]+", a):
+            t = tok.strip(".!-+").lower()
+            if len(t) >= 3 and t not in _ALIAS_STOP and not t.isdigit() and t not in terms:
+                terms.append(t)
+    return host, aliases, terms
 
 
 def resolve_slug(entries_dir: Path, opp_id: str):
@@ -586,6 +642,13 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
     coordinator = load_json(root / "ops/challenge/coordinator.json") or {}
     ledger = load_json(root / "ops/challenge/opportunity_ledger.json")
     desk_feed = load_json(root / "ops/challenge/desk-feed.json")
+    term_doc = load_json(root / TERMINAL_RECORDS_PATH) or {}
+    term_over = {str(r.get("id")): r for r in term_doc.get("terminal_records", [])}
+    archived = list(term_doc.get("archived", []))
+    promoted = {}
+    for a in archived:
+        if a.get("promoted_to"):
+            promoted.setdefault(str(a["promoted_to"]), []).append(str(a.get("id")))
     timeboxes = deskfeed_timeboxes(desk_feed)
     tiers_doc = load_json(root / "ops/quota/dispatch-tiers.json") or {}
     chain_entries = {str(c.get("entry", "")).lower()
@@ -624,13 +687,18 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
         opp_id = str(record.get("id"))
         slug, slug_dir = resolve_slug(entries_dir, opp_id)
         gate_at, gate_src = find_next_gate(record)
+        wall_at, wall_src = find_wall(record)
+        wall_anchor = wall_at or gate_at
         pt = timeboxes.get(opp_id)
         if pt is not None:
-            timebox = normalize_timebox(pt, gate_at)
-        elif gate_at is not None:
-            timebox = derive_timebox(gate_at)
+            timebox = normalize_timebox(pt, wall_anchor)
+        elif wall_anchor is not None:
+            timebox = derive_timebox(wall_anchor)
         else:
             timebox = None
+        if isinstance(timebox, dict):
+            timebox["wall_source"] = ("verbatim" if pt is not None and parse_instant(pt.get("wall"))
+                                      else (wall_src or gate_src))
         snap = snap_by_event.get(opp_id)
         records.append({
             "id": opp_id,
@@ -645,7 +713,7 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
                 "id": opp_id,
                 "kind": kind,
                 "name": record.get("name"),
-                "state": record.get("status"),
+                "state": (term_over.get(opp_id) or {}).get("state") or record.get("status"),
                 "source": "ops/challenge/coordinator.json",
                 "source_sha256": canonical_sha(record),
                 "ingested_at": iso(clock.stamp()),
@@ -723,6 +791,11 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
             "prep_state": rec["prep_gate"]["state"],
             "verdict": None,  # filled in phase 4
         })
+        host, aliases, terms = search_aliases(rec["record"], promoted.get(rec["id"]))
+        feed_opps[-1].update({"name": rec["record"].get("name"), "host": host,
+                              "aliases": aliases, "search_terms": terms})
+        if rec["id"] in term_over:
+            feed_opps[-1]["terminal_record"] = term_over[rec["id"]]
         rec["feed_row"] = feed_opps[-1]
 
     # ---- phase 4: selection + stages 5-7 + tier actions (gated-in only)
@@ -836,13 +909,57 @@ def run_cycle(root: Path, *, cycles_dir: Path, cycle_ledger: Path, feed_out: Pat
         feed_opps,
         {rec["id"]: rec["ingest"]["state"] for rec in records},
         gates_by_id, now_ref)
+    # Registry completeness: closed events, screened-out candidates and
+    # archived pre-registry rows (C1-C10) are terminal rows too, so the
+    # feed is the one place to look an opportunity up.
+    seen_ids = {r["id"] for r in ranked_opps["active"] + ranked_opps["terminal"]}
+    extra_terminal = []
+    for kind, coll in (("event", coordinator.get("events", [])),
+                       ("candidate", coordinator.get("candidate_events", []))):
+        for record in coll:
+            rid = str(record.get("id"))
+            if rid in seen_ids:
+                continue
+            host, aliases, terms = search_aliases(record, promoted.get(rid))
+            extra_terminal.append({"id": rid, "kind": kind, "name": record.get("name"),
+                                   "host": host, "aliases": aliases, "search_terms": terms,
+                                   "state": record.get("status"), "rank": None, "active": False,
+                                   "source": "ops/challenge/coordinator.json"})
+            seen_ids.add(rid)
+    for a in archived:
+        rid = str(a.get("id"))
+        if rid in seen_ids:
+            continue
+        host, aliases, terms = search_aliases(a)
+        row = dict(a)
+        row.update({"kind": "archived", "host": host, "aliases": aliases,
+                    "search_terms": terms, "rank": None, "active": False,
+                    "source": TERMINAL_RECORDS_PATH})
+        extra_terminal.append(row)
+        seen_ids.add(rid)
+    desk_gen = parse_instant((desk_feed or {}).get("generated_at")) if desk_feed else None
+    desk_age = round((finished - desk_gen).total_seconds() / 3600.0, 1) if desk_gen else None
     feed = {
         "schema": "que.opportunity-priority/v1",
         "generated_at": iso(finished),
+        "stale_after_hours": STALE_AFTER_HOURS,
+        "fresh_until": iso(finished + timedelta(hours=STALE_AFTER_HOURS)),
+        "stale": False,
+        "sources": {
+            "coordinator": "ops/challenge/coordinator.json",
+            "terminal_records": TERMINAL_RECORDS_PATH,
+            "desk_feed": {
+                "path": "ops/challenge/desk-feed.json",
+                "generated_at": iso(desk_gen) if desk_gen else NOT_ESTABLISHED,
+                "age_hours": desk_age,
+                "stale": bool(desk_age is None or desk_age > STALE_AFTER_HOURS),
+                "role": "deprecated: verbatim priority_timebox walls only; live state = this feed",
+            },
+        },
         "run_id": run_id,
         "rank_method": task_ranking.METHOD,
         "opportunities": ranked_opps["active"],
-        "terminal_opportunities": ranked_opps["terminal"],
+        "terminal_opportunities": ranked_opps["terminal"] + extra_terminal,
         "gate_rows": ranked_opps["gate_rows"],
     }
 

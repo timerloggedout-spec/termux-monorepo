@@ -16,6 +16,7 @@ ID_OVERRIDES = {
 TITLE_OVERRIDES = {
     "index.html": "Tribute Home",
     "versioning.html": "Version Comparison",
+    "publishing.html": "Publishing Reconciliation",
     "3l0.html": "3L0",
     "ates.html": "ATES",
     "doe.html": "DoE",

@@ -1,6 +1,6 @@
 {
  "schema": "quota.swarm-feed/v1",
- "generated_at": "2026-11-14T15:06:15Z",
+ "generated_at": "2026-11-19T08:18:59Z",
  "generated_by": "scripts/quota_swarm_feed.py",
  "spec": {
   "doc": "docs/ops/PROVIDER-DISPATCH-CAPABILITY.md",
@@ -22,12 +22,12 @@
   {
    "id": "readings",
    "path": "docs/ops/generated/quota-status.json",
-   "generated_at": "2026-11-04T01:59:43.471356+00:00"
+   "generated_at": "2026-11-18T17:06:56.121328+00:00"
   },
   {
    "id": "usage-series",
    "path": "ops/quota/usage-series.json",
-   "generated_at": "2026-11-14T15:06:15Z"
+   "generated_at": "2026-11-19T08:18:59Z"
   },
   {
    "id": "rate-limit-events",
@@ -81,7 +81,7 @@
       "status": "unknown",
       "used": null,
       "remaining": null,
-      "evidence_status": "early_signal",
+      "evidence_status": "attributed_claim",
       "horizon": "H1",
       "observed_at": null
      },
@@ -2562,10 +2562,10 @@
       "remaining": null,
       "evidence_status": "confirmed",
       "horizon": "H0",
-      "observed_at": "2026-11-04T01:59:43.471356+00:00"
+      "observed_at": "2026-11-18T17:06:56.121328+00:00"
      },
      "usage_series": null,
-     "populated": "2026-11-04T01:59:43.471356+00:00"
+     "populated": "2026-11-18T17:06:56.121328+00:00"
     }
    ]
   },

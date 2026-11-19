@@ -37,36 +37,121 @@
     {
       "id": "archwiz",
       "title": "ArchWiz operational tooling",
-      "path_globs": ["archwiz/**/*.py", "archwiz/**/*.md"],
-      "aliases": ["archwiz", "cockpit", "forensic tooling"],
+      "path_globs": [
+        "archwiz/**/*.py",
+        "archwiz/**/*.md"
+      ],
+      "aliases": [
+        "archwiz",
+        "cockpit",
+        "forensic tooling"
+      ],
       "labels": []
     },
     {
       "id": "knowledge-indexes",
       "title": "Knowledge indexes and source maps",
-      "path_globs": ["workspace/llm_map/**", "mapper_graph.py", "central_mapper_v420.py"],
-      "aliases": ["llm map", "mapper", "index", "source map"],
+      "path_globs": [
+        "workspace/llm_map/**",
+        "mapper_graph.py",
+        "central_mapper_v420.py"
+      ],
+      "aliases": [
+        "llm map",
+        "mapper",
+        "index",
+        "source map"
+      ],
       "labels": []
     },
     {
       "id": "github-automation",
       "title": "Repository automation and validation",
-      "path_globs": [".github/workflows/**", "scripts/ci/**", "scripts/proposals/**"],
-      "aliases": ["github actions", "workflow", "ci", "automation"],
+      "path_globs": [
+        ".github/workflows/**",
+        "scripts/ci/**",
+        "scripts/proposals/**"
+      ],
+      "aliases": [
+        "github actions",
+        "workflow",
+        "ci",
+        "automation"
+      ],
       "labels": []
     },
     {
       "id": "development-performance",
       "title": "Repository development-performance evidence",
-      "path_globs": ["docs/evaluations/**", ".github/workflows/*development*evaluation*.yml", ".github/workflows/swe-reference-evaluation.yml", "scripts/ci/*development*evaluation*.py", "scripts/ci/swe_evaluation_contract.py", "tests/test_*development*evaluation*.py", "tests/test_swe_evaluation_contract.py", "tests/test_development_performance_workflows.py"],
-      "aliases": ["development performance", "repository evaluation", "SWE reference", "evaluation manifests"],
+      "path_globs": [
+        "docs/evaluations/**",
+        ".github/workflows/*development*evaluation*.yml",
+        ".github/workflows/swe-reference-evaluation.yml",
+        "scripts/ci/*development*evaluation*.py",
+        "scripts/ci/swe_evaluation_contract.py",
+        "tests/test_*development*evaluation*.py",
+        "tests/test_swe_evaluation_contract.py",
+        "tests/test_development_performance_workflows.py"
+      ],
+      "aliases": [
+        "development performance",
+        "repository evaluation",
+        "SWE reference",
+        "evaluation manifests"
+      ],
       "labels": []
     },
     {
       "id": "context-relationships",
       "title": "Context relationship graph implementation",
-      "path_globs": ["archwiz/context_relationships/**", "config/context_relationships/**", "workspace/llm_map/context_relationships/**"],
-      "aliases": ["context graph", "relationship graph", "scope index", "relationship matrix"],
+      "path_globs": [
+        "archwiz/context_relationships/**",
+        "config/context_relationships/**",
+        "workspace/llm_map/context_relationships/**"
+      ],
+      "aliases": [
+        "context graph",
+        "relationship graph",
+        "scope index",
+        "relationship matrix"
+      ],
+      "labels": []
+    },
+    {
+      "id": "root-brain",
+      "title": "Shared repository Brain kernel and extension contracts",
+      "path_globs": [
+        "brain.rs",
+        "brain/**",
+        ".github/workflows/brain-rust.yml",
+        "docs/icm/objects/operations/brain-kernel.md"
+      ],
+      "aliases": [
+        "root brain",
+        "termux-brain",
+        "cognitive kernel",
+        "brain extension contract"
+      ],
+      "labels": []
+    },
+    {
+      "id": "mosaic-brain",
+      "title": "MOSAIC methodology-intelligence specialist",
+      "path_globs": [
+        "archwiz/mosaic_brain/**",
+        ".github/workflows/mosaic-brain.yml",
+        "docs/proposals/active/continuous-capability-evolution-lab/MOSAIC-BRAIN-*.md",
+        "docs/proposals/active/continuous-capability-evolution-lab/diagrams/mosaic-brain-*.mmd",
+        "docs/superpowers/specs/2026-11-16-mosaic-brain-design.md",
+        "docs/superpowers/plans/2026-11-16-mosaic-brain-implementation.md",
+        "docs/icm/objects/operations/mosaic-brain.md"
+      ],
+      "aliases": [
+        "MOSAIC",
+        "methodology intelligence",
+        "methodology brain",
+        "methodology optimization"
+      ],
       "labels": []
     }
   ]

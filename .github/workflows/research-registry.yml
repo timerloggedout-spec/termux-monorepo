@@ -16,6 +16,12 @@ on:
 permissions:
   contents: read
 
+# QUE fan-out guard (Owner order 2026-11-18): PR events coalesce per PR;
+# every other event keeps a unique group (run_id) ⇒ ¬coalesced.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest

@@ -136,6 +136,8 @@ jobs:
         env:
           LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
           TITLE: ${{ github.event.issue.title }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           python3 scripts/ops/swarm_admission.py \
             --templates-dir .github/ISSUE_TEMPLATE \
@@ -144,6 +146,8 @@ jobs:
             --feeds-dir ops/que/feeds \
             --issue-labels "$LABELS" \
             --issue-title "$TITLE" \
+            --issue-author "$AUTHOR" \
+            --issue-number "$ISSUE_NUMBER" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             --comment-out "$RUNNER_TEMP/stamp.md" \
             --github-output "$GITHUB_OUTPUT"

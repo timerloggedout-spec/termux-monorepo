@@ -10,6 +10,7 @@
     : origin + "/tribute/";
   var links = [
     ["Marketing", origin + "/", "marketing"],
+    ["Videos", origin + "/videos.html", "videos"],
     ["Tribute", tribute, "tribute"],
     ["Lane matrix", origin + "/matrix/", "matrix"],
     ["Quota", tribute + "quota.html", "quota"],
@@ -37,10 +38,12 @@
     ["Delphi ledger", tribute + "delphi-ledger.html", "delphi-ledger"],
     ["Classifiers", tribute + "classifiers.html", "classifiers"],
     ["PR lanes", tribute + "pr-lanes.html", "pr-lanes"],
+    ["Publishing", tribute + "publishing.html", "publishing"],
     ["Proposals", tribute + "proposals.html", "proposals"],
     ["Referrals", tribute + "referrals.html", "referrals"],
     ["Marketing Gantt", tribute + "marketing-gantt.html", "marketing-gantt"],
     ["Telemetry", tribute + "telemetry.html", "telemetry"],
+    ["ICM CCTV", origin + "/tribute/icm-cctv.html", "icm-cctv"],
     ["Desk", tribute + "desk.html", "desk"],
     ["Tracking", tribute + "tracking.html", "tracking"],
     ["Family", tribute + "family.html", "family"],

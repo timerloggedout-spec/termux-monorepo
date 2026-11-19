@@ -1,17 +1,17 @@
 {
  "schema": "repo-tracking/v1",
- "generated_at": "2026-11-14T15:04:43Z",
+ "generated_at": "2026-11-19T08:18:08Z",
  "generated_by": "scripts/tracking/repo_tracking.py via repo-tracking-collect.yml (single-writer)",
  "sources": {
   "pr_feed": {
-   "read_at": "2026-11-14T15:04:43Z",
+   "read_at": "2026-11-19T08:18:07Z",
    "merged": 150,
    "open": 200
   },
   "lane_events": {
-   "read_at": "2026-11-14T15:04:43Z",
+   "read_at": "2026-11-19T08:18:07Z",
    "status": "ok",
-   "count": 54162,
+   "count": 88794,
    "events_in_snapshot": 200
   },
   "records": [
@@ -46,10 +46,10 @@
   },
   "by_state": {
    "closed": 1,
-   "active": 3,
-   "in-flight": 9,
+   "unknown": 8,
+   "in-flight": 11,
    "landed": 1,
-   "unknown": 8
+   "active": 1
   }
  },
  "rows": [
@@ -67,20 +67,15 @@
     "coordinator event D0 status=closed",
     "desk-feed traversal D0 pr=#1702"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-d1",
    "project": "D1 StudySprint (Workshop to Ship)",
    "domain": "challenges",
    "project_id": "d1-studysprint",
-   "state": "active",
-   "last_merge": {
-    "pr": 5006,
-    "sha": "2c4589646f44",
-    "at": "2026-11-05T06:42:09Z",
-    "title": "chore(studysprint): regenerate web state at 0.5.2 (#5001 follow-through)"
-   },
+   "state": "unknown",
+   "last_merge": null,
    "next": "SUBMITTED 2026-11-03 (confirmation_ref in submission) \u00b7 open line to the wall: v1.0.0 cut on the richest green tree \u00b7 article currency edit \u00b7 frozen-state verification at the freeze \u00b7 $5,000 AT_RISK (OC-003) resolves at event close",
    "next_basis": "record",
    "evidence": [
@@ -88,7 +83,7 @@
     "coordinator event D1 status=submitted - PUBLISHED 2026-11-03; in edit window until the Nov 4 23:59 PT freeze",
     "desk-feed traversal D1 pr=#2626"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-d2",
@@ -104,7 +99,7 @@
     "coordinator event D2 status=registered - PICK DECIDED (B Quarantine Browser Clerk); build sequence firing 2026-11-04; landing Nov 7, wall Nov 8 15:00 PT",
     "open PRs: #5035"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-d3",
@@ -124,7 +119,7 @@
     "desk-feed traversal D3 pr=#2616",
     "open PRs: #5252"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-d4",
@@ -139,19 +134,26 @@
     "coordinator submission=none",
     "coordinator event D4 status=registering"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-d5",
    "project": "D5 Aha! AI Builder Day",
    "domain": "challenges",
    "project_id": "d5-aha",
-   "state": "unknown",
-   "last_merge": null,
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "state": "in-flight",
+   "last_merge": {
+    "pr": 5582,
+    "sha": "c4159225e3da",
+    "at": "2026-11-17T16:29:57Z",
+    "title": "D5 AppID landed: Termux Fleet Understudy 5803279"
+   },
+   "next": "kickoff 2026-11-17 09:00 PT \u00b7 on Registry issuance \u21d2 repo+AppID dispatch (AppID lane 7075f9c0) \u21d2 spec \u21d2 Desk QUE filing \u21d2 Swarm build (claim-free construction; submission claim OFF \u2014 ruling issued; reinstatement pre-wall re-opens it; appeal in flight) \u00b7 landing Nov 18 EOD \u00b7 wall 2026-11-19 12:00 PT SUBMIT-ONCE (claim gated) \u00b7 awards 2026-11-20 11:30 PT",
+   "next_basis": "record",
+   "evidence": [
+    "open PRs: #5563"
+   ],
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries-amd",
@@ -170,9 +172,9 @@
    "evidence": [
     "coordinator submission=none",
     "coordinator event C11 status=active",
-    "open PRs: #5403, #5406, #5405, #5327"
+    "open PRs: #5429, #5428, #5426, #5327"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "challenge-entries",
@@ -181,17 +183,17 @@
    "project_id": "challenge-osint",
    "state": "in-flight",
    "last_merge": {
-    "pr": 5110,
-    "sha": "0ee3c56df289",
-    "at": "2026-11-10T12:41:41Z",
-    "title": "[task] #5103 opportunity self-eval loop \u2014 prep gate + QUE priority + Delphi-rubric selection (#5096)"
+    "pr": 5558,
+    "sha": "bca4313025b0",
+    "at": "2026-11-17T14:18:40Z",
+    "title": "docs(registry): opportunity moniker issuance \u2014 A/C/D remap register (QUE #5556)"
    },
    "next": "land/close PR #2235 \u2014 chore(osint): refresh coverage + page snapshots",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #2235, #5051, #4526, #4573, #4023"
+    "open PRs: #2235, #5051"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "quota",
@@ -200,18 +202,18 @@
    "project_id": "quota-system",
    "state": "in-flight",
    "last_merge": {
-    "pr": 5258,
-    "sha": "87dd55c618fd",
-    "at": "2026-11-13T05:47:31Z",
-    "title": "feat(ops): #5160 autoQuotaCadence \u2014 deterministic pool generation + cadence derivation"
+    "pr": 5617,
+    "sha": "4138579e33f9",
+    "at": "2026-11-18T11:18:08Z",
+    "title": "test: preserve quota dispatcher cancellation contract"
    },
    "next": "land/close PR #5034 \u2014 chore(dashboards): refresh dispatch-tree feed",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=172",
-    "open PRs: #5034, #5387, #5370, #5326, #5323"
+    "open PRs: #5034, #5505, #5493, #5478, #5459"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "doe",
@@ -225,13 +227,13 @@
     "at": "2026-11-12T04:42:17Z",
     "title": "feat(ceel): continuous capability discovery and DoE evolution"
    },
-   "next": "land/close PR #5409 \u2014 feat(delphic): current-master Observatory Graph Lab and DoE adapter",
+   "next": "land/close PR #5643 \u2014 feat(pcdoe): add compounding production prioritization companion",
    "next_basis": "open-pr",
    "evidence": [
     "doe DESIGN.json campaigns=18",
-    "open PRs: #5409, #5408, #5388, #5198, #5244"
+    "open PRs: #5643, #5609, #5531, #5529, #5517"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "doe-nc1",
@@ -243,7 +245,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "tier-1",
@@ -255,7 +257,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "contribution-desk",
@@ -272,9 +274,9 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [
-    "desk-feed traversals=12 generated_at=2026-11-04T10:26:53Z"
+    "desk-feed traversals=13 generated_at=2026-11-17T14:36:00Z"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "web-design-viz",
@@ -288,29 +290,31 @@
     "at": "2026-11-10T14:26:48Z",
     "title": "docs(swarm): append \u00a726 \u2014 D-h pullable trigger + self-eval loop landing"
    },
-   "next": "land/close PR #5337 \u2014 Trigger Pages deployment after merged dashboard-source PRs",
+   "next": "land/close PR #4069 \u2014 chore(dashboards): refresh surface feeds",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #5337, #4069, #4904, #4898, #4621"
+    "open PRs: #4069, #5337"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "marketing",
    "project": "FB Pages MVT + challenge promo",
    "domain": "marketing",
    "project_id": "marketing-fb-mvt",
-   "state": "active",
+   "state": "in-flight",
    "last_merge": {
-    "pr": 5208,
-    "sha": "9f75e4263357",
-    "at": "2026-11-12T13:17:02Z",
-    "title": "feat(que): QDesk self-repair loop \u2014 intake, promote gate, learn ledger [skip render]"
+    "pr": 5456,
+    "sha": "dacd20c4c57c",
+    "at": "2026-11-15T13:42:20Z",
+    "title": "feat(tribute): add public publishing and promotion surfaces"
    },
-   "next": "NOT_ESTABLISHED",
-   "next_basis": "none",
-   "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "next": "land/close PR #5630 \u2014 fix(que): harden BRR regression evidence and promotion boundary",
+   "next_basis": "open-pr",
+   "evidence": [
+    "open PRs: #5630"
+   ],
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "marketing-social",
@@ -322,7 +326,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "swarm",
@@ -339,9 +343,9 @@
    "next": "land/close PR #1470 \u2014 feat(swarms): publish Kye parity adapters, research lanes, and remote validation",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #1470, #5222, #4758"
+    "open PRs: #1470, #5222"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "providers",
@@ -349,19 +353,14 @@
    "domain": "providers",
    "project_id": "providers-registry",
    "state": "in-flight",
-   "last_merge": {
-    "pr": 5020,
-    "sha": "a07d479c493f",
-    "at": "2026-11-06T01:54:38Z",
-    "title": "feat: AgentRouter catalog and unified provider observability index"
-   },
+   "last_merge": null,
    "next": "land/close PR #3916 \u2014 chore(reviewer-metrics): regenerate provider x context map",
    "next_basis": "open-pr",
    "evidence": [
     "quota registry services=172",
-    "open PRs: #3916, #5382, #5378, #5376, #3209"
+    "open PRs: #3916, #5644, #3209, #5544, #5592"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "providers-phrases",
@@ -373,7 +372,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "repo-replay",
@@ -385,7 +384,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "ops",
@@ -397,7 +396,7 @@
    "next": "NOT_ESTABLISHED",
    "next_basis": "none",
    "evidence": [],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   },
   {
    "lane": "telemetry",
@@ -405,28 +404,25 @@
    "domain": "providers",
    "project_id": "telemetry-ingest",
    "state": "in-flight",
-   "last_merge": {
-    "pr": 5069,
-    "sha": "a60dd2b068f5",
-    "at": "2026-11-07T19:30:33Z",
-    "title": "fix(ates): emit provenance receipts for non-success source runs"
-   },
+   "last_merge": null,
    "next": "land/close PR #3890 \u2014 chore(telemetry): refresh HindSight+Provenance ingest",
    "next_basis": "open-pr",
    "evidence": [
-    "open PRs: #3890, #5404"
+    "open PRs: #3890, #5600, #5427"
    ],
-   "updated_at": "2026-11-14T15:04:43Z"
+   "updated_at": "2026-11-19T08:18:08Z"
   }
  ],
  "doe_join": {
   "summary": {
    "campaigns": 18,
    "campaigns_joined": 2,
-   "distinct_instances": 13,
+   "distinct_instances": 17,
    "providers": [
     "Muse",
     "cohere",
+    "google",
+    "mistral",
     "openrouter",
     "sealion"
    ]
@@ -720,6 +716,8 @@
     "providers": [
      "Muse",
      "cohere",
+     "google",
+     "mistral",
      "sealion"
     ],
     "join_state": "joined",
@@ -753,6 +751,48 @@
       }
      },
      {
+      "provider": "cohere",
+      "model_at_version": "command-a-03-2025",
+      "role": "builder",
+      "prompt": "scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3",
+      "moniker": "providers-dispatch-fix",
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "5989508502402517b648d34d034d9b806f52c7ddc3029b79cb260814b90b54e5",
+      "occurrences": {
+       "plan": 0,
+       "record": 1,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "google",
+      "model_at_version": "gemini-3.5-flash-lite",
+      "role": "builder",
+      "prompt": "scripts/ops/build_arm_harness.py#system-prompt#NOT_ESTABLIS",
+      "moniker": "providers-dispatch-fix",
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "ed64aec90f3b08b16a653864909bb94f4c20fd3dd9d5e611dd6cdb77cee43b65",
+      "occurrences": {
+       "plan": 0,
+       "record": 2,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "mistral",
+      "model_at_version": "codestral-2508",
+      "role": "builder",
+      "prompt": "scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3",
+      "moniker": "providers-dispatch-fix",
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "b39313a3a380133e6376eb78d09ff010420cf3e5126ff4520eb16c34b7432e84",
+      "occurrences": {
+       "plan": 0,
+       "record": 1,
+       "dispatch": 0
+      }
+     },
+     {
       "provider": "sealion",
       "model_at_version": "aisingapore/Llama-SEA-LION-v3-70B-IT",
       "role": "builder",
@@ -763,6 +803,20 @@
       "occurrences": {
        "plan": 0,
        "record": 3,
+       "dispatch": 0
+      }
+     },
+     {
+      "provider": "sealion",
+      "model_at_version": "aisingapore/Llama-SEA-LION-v3-70B-IT",
+      "role": "builder",
+      "prompt": "scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3",
+      "moniker": "providers-dispatch-fix",
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "a1d2b5ece4e273228cdfb2872783e65cc549d17d74f1c2651b879998bf2a6b87",
+      "occurrences": {
+       "plan": 0,
+       "record": 2,
        "dispatch": 0
       }
      },
@@ -795,8 +849,8 @@
       }
      }
     ],
-    "experiment_records": 30,
-    "experiment_records_with_instance": 9
+    "experiment_records": 39,
+    "experiment_records_with_instance": 15
    },
    {
     "campaign": "util-1-provider-rotation",
@@ -845,6 +899,6 @@
   ]
  },
  "gaps": [
-  "merged PRs unclassified by seed match rules: 120/150 (extend ops/tracking/projects.json match rules)"
+  "merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)"
  ]
 }

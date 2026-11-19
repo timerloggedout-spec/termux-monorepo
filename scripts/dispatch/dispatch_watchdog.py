@@ -387,7 +387,10 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
         score_row = {"tier": {"index": tier_index},
                      "age_min": verdict["age_min"], "state": feed_state,
                      "wall_in_min": wall_in_min}
-        score_row["score"] = task_ranking.score_dispatch(score_row)
+        # score_dispatch returns {score, components}: fold both in so
+        # score_row["score"] stays a number (2026-11-12..18 crash:
+        # auto_claim.plan sort hit -dict ⇒ DSF stale ≈5d).
+        score_row.update(task_ranking.score_dispatch(score_row))
         candidates.append({
             "issue": ctx["issue"], "comments": ctx["comments"],
             "verdict": verdict, "score_row": score_row,
@@ -404,8 +407,11 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                      {"body": auto_claim.lease_release_comment(
                          claim_class=rel["claim_class"],
                          claimant=rel["claimant"], now=now)})
-            _request("DELETE", f"{base}/labels/dispatch-claimed",
-                     token)
+            try:
+                _request("DELETE", f"{base}/labels/dispatch-claimed",
+                         token)
+            except Exception:
+                pass  # label may not be present; the release stands
             ctx["verdict"]["action"] = "lease-released"
         except Exception as exc:
             ctx["verdict"]["action"] = f"ERROR: {exc}"
@@ -431,6 +437,33 @@ def _run_auto_claim(repo: str, token: str, now: datetime,
                 pass  # label may not be present; the claim stands
             verdict["action"] = "auto-claimed"
             verdict["state"] = "claimed"
+            if claim["claim_class"] == "executor":
+                # Claim -> execution bridge: fire the build-dispatch
+                # route for the claimed issue (its gate accepts only
+                # workflow_dispatch or a literal build comment, so an
+                # auto-claim alone engages no execution). A failed
+                # dispatch never unmakes the claim; it stamps its own
+                # receipt on the issue instead.
+                try:
+                    _request("POST",
+                             f"{API}/repos/{repo}/actions/workflows/"
+                             "build-dispatch.yml/dispatches", token,
+                             {"ref": "master",
+                              "inputs": {
+                                  "issue_number": str(claim["issue"]),
+                                  "arm": "auto",
+                                  "quota_class": "escalation"
+                                  if claim["trigger"] == "escalation"
+                                  else "primary"}})
+                except Exception as exc:
+                    try:
+                        _request("POST", f"{base}/comments", token,
+                                 {"body": "[MUSEai]@{role:{dispatch-"
+                                  "watchdog}} claim->execution bridge: "
+                                  f"build-dispatch dispatch failed: "
+                                  f"{exc}"})
+                    except Exception:
+                        pass
         except Exception as exc:
             try:
                 _request("POST", f"{base}/comments", token,
@@ -620,6 +653,18 @@ def render_table(results: list) -> str:
 GAP_FEED_PATH = "ops/que/feeds/stall-gap-feed.json"
 
 
+def _repo_root() -> str:
+    """Repo root for this script: scripts/dispatch/ -> scripts/ -> root.
+
+    Restored 2026-11-18 (#5614): write_gap_feed called _repo_root()
+    but the definition was missing, so every watchdog run crashed
+    with NameError at the gap-feed write — after the sweep itself
+    had run — and the feed-commit step never landed.
+    """
+    return os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.abspath(__file__))))
+
+
 def write_gap_feed(feed: dict) -> bool:
     """Write-on-change for the SIE stall-gap feed (QUE #5286 point
     5): same content gate as the dispatch-state feed. Returns True
@@ -630,7 +675,7 @@ def write_gap_feed(feed: dict) -> bool:
         with open(path, encoding="utf-8") as fh:
             existing = json.load(fh)
     if existing is not None and \
-            _feed_fingerprint(existing) == _feed_fingerprint(feed):
+            feed_fingerprint(existing) == feed_fingerprint(feed):
         return False
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:

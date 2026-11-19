@@ -1,0 +1,60 @@
+{
+  "package": "design-of-experiments",
+  "version": "1.0.0",
+  "unit_test_count": 14,
+  "unit_test_exit_code": 0,
+  "unit_test_log": "test_audit_schema (test_designs.Designs.test_audit_schema) ... ok\ntest_bad_generator (test_designs.Designs.test_bad_generator) ... ok\ntest_box_behnken (test_designs.Designs.test_box_behnken) ... ok\ntest_ccd (test_designs.Designs.test_ccd) ... ok\ntest_factorial (test_designs.Designs.test_factorial) ... ok\ntest_fraction (test_designs.Designs.test_fraction) ... ok\ntest_fraction_interactions_fail (test_designs.Designs.test_fraction_interactions_fail) ... ok\ntest_invalid_ranges (test_designs.Designs.test_invalid_ranges) ... ok\ntest_natural_corruption (test_designs.Designs.test_natural_corruption) ... ok\ntest_quadratic_factorial_fails (test_designs.Designs.test_quadratic_factorial_fails) ... ok\ntest_reproducibility (test_designs.Designs.test_reproducibility) ... ok\ntest_saturated_design (test_designs.Designs.test_saturated_design) ... ok\ntest_signed_fraction (test_designs.Designs.test_signed_fraction) ... ok\ntest_wrong_counts (test_designs.Designs.test_wrong_counts) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.321s\n\nOK\n",
+  "local_integrity_exit_code": 0,
+  "local_integrity_result": {
+    "frontmatter": "pass",
+    "skill_references": "pass",
+    "name": "design-of-experiments"
+  },
+  "cli_smoke_tests": [
+    {
+      "example": "factorial",
+      "generation_exit": 0,
+      "validation_exit": 0,
+      "n_runs": 19,
+      "rank": 7,
+      "release_ready": true
+    },
+    {
+      "example": "fractional",
+      "generation_exit": 0,
+      "validation_exit": 0,
+      "n_runs": 19,
+      "rank": 5,
+      "release_ready": true
+    },
+    {
+      "example": "ccd",
+      "generation_exit": 0,
+      "validation_exit": 0,
+      "n_runs": 19,
+      "rank": 10,
+      "release_ready": true
+    },
+    {
+      "example": "box-behnken",
+      "generation_exit": 0,
+      "validation_exit": 0,
+      "n_runs": 17,
+      "rank": 10,
+      "release_ready": true
+    }
+  ],
+  "behavioral_evaluations": {
+    "authored": 10,
+    "executed": 0
+  },
+  "external_agent_skills_validator": "not run",
+  "target_host_import": "not tested",
+  "limitations": [
+    "No independent statistical peer review",
+    "No full dependency lockfile",
+    "No blocked/split-plot/mixture/optimal-design numerical generators",
+    "No response-fitting or general power CLI",
+    "Numerical release gate is not scientific or safety approval"
+  ]
+}

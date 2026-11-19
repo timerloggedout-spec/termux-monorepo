@@ -1,7 +1,7 @@
 # DO Phrasing and Framing Framework
 
-**Status:** proposed repository-wide writing and task-intake standard  
-**Scope:** user requests, agent prompts, work briefs, issues, PR descriptions, research tasks, operational handoffs, and retrospectives  
+**Status:** proposed repository-wide writing and task-intake standard
+**Scope:** user requests, agent prompts, work briefs, issues, PR descriptions, research tasks, operational handoffs, and retrospectives
 **Authority boundary:** this is a phrasing layer. It does not replace the dependency-phase engine, schemas, approval rules, review gates, or source-of-truth documents.
 
 ## 1. Discovery and terminology
@@ -149,3 +149,12 @@ Before handing off a substantial task, confirm:
 - [BIUDL Execution and Provenance](BIUDL-EXECUTION-AND-PROVENANCE.md)
 - [Production Reconciliation Skill](../../.github/skills/production-reconciliation/SKILL.md)
 - [Collaborator entry](../../SKILLS.md)
+
+
+## Repo-wide Linguist / Siglary mandate
+
+Apply [the DO-first Linguist / Siglary mandate](REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md) to project chat, repository documentation, code comments, commits, PRs, issues, review comments, workflow directives, agent prompts, and skills.
+
+`CHAT := STATE-CHANGE ∨ OVERSIGHT`
+
+Use DO-first CAVEMAN-6: action first; one claim per line; concrete verbs; explicit state; adjacent proof; safe compression. Preserve exact technical literals and quoted evidence. Keep OPERATORS, GLYPHS, and CHORDS distinct; resolve chords in named Shorthand Domains. Apply the registered 2026-11-18 operator extension in the Notation Matrice. Keep `⤴` as the dispatch GLYPH and `∆` as the canonical delta operator. Preserve N∅ as chat-only and preserve approval boundaries.

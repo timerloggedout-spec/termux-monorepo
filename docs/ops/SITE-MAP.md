@@ -7,6 +7,7 @@
 ```text
 https://timerloggedout-spec.github.io/                 MARKETING / REFERRALS
 https://timerloggedout-spec.github.io/tribute/     OPS DASHBOARD (canonical UI)
+https://timerloggedout-spec.github.io/tribute/icm-cctv.html  ICM CCTV (static card board)
   sitemap → /help-wanted/sitemap.xml
   robots → /help-wanted/robots.txt
 https://timerloggedout-spec.github.io/termux-monorepo/  PROJECT HUB (thin)
@@ -32,6 +33,7 @@ https://github.com/timerloggedout-spec/termux-monorepo SOURCE
 | Marketing | `/tribute/` | Public ops transparency / operator entry |
 | Marketing | Vercel portal | Product demo |
 | `/termux-monorepo/` | `/tribute/` | Project Pages is hub, not product twin |
+| Dashboard | `/tribute/icm-cctv.html` | Static ICM card review and human checkpoints |
 | Dashboard | `/tribute/sitemap.xml` | Machine-readable public discovery |
 | Dashboard | `/help-wanted/robots.txt` | Crawler policy |
 

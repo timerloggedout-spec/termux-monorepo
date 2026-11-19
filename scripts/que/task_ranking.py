@@ -33,7 +33,8 @@ METHOD = "que-task-rank/v1"
 WALL_IMMINENT_H = 48.0
 STATE_POINTS = {"escalated": 40.0, "queued": 10.0, "claimed": 0.0}
 TERMINAL_STATE_PREFIXES = ("closed", "complete", "landed", "done",
-                           "terminal", "cancel", "withdraw")
+                           "terminal", "cancel", "withdraw",
+                           "screened", "archived", "lapsed", "promoted")
 
 
 def parse_iso(value):

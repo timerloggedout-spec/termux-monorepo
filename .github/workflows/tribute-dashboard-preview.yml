@@ -57,6 +57,7 @@ jobs:
           SOURCE_SHA="$(git -C source rev-parse HEAD)"
 
           cp -a production/apps/tribute-dashboard/. _production/
+          python3 tooling/scripts/build_icm_cctv_board.py --cards-dir production/docs/icm/_tv/screens --output _production/icm-cctv.html --source-sha "$PRODUCTION_SHA"
           python3 tooling/scripts/build_dashboard_manifest.py \
             --root _production \
             --channel production \
@@ -71,6 +72,7 @@ jobs:
           cp -a _production/. _user_site/help-wanted/
 
           cp -a source/apps/tribute-dashboard/. _preview/
+          python3 tooling/scripts/build_icm_cctv_board.py --cards-dir source/docs/icm/_tv/screens --output _preview/icm-cctv.html --source-sha "$SOURCE_SHA"
           python3 tooling/scripts/build_dashboard_manifest.py \
             --root _preview \
             --channel preview \

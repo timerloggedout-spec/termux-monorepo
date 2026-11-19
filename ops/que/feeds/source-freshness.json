@@ -1,0 +1,65 @@
+{
+ "schema": "que.source-freshness/v1",
+ "generated_at": "2026-11-19T08:14:57Z",
+ "rule": "FRESH iff age \u2264 cadence + tolerance; freshness(x) \u00acinferred from freshness(y)",
+ "counts": {
+  "FRESH": 4,
+  "UNVERIFIABLE": 1
+ },
+ "sources": {
+  "que-feed-collect": {
+   "source_ref": "ops/que/feeds/que-queue-feed.json",
+   "generated_at": "2026-11-19T08:14:57Z",
+   "observed_at": "2026-11-19T08:14:57Z",
+   "expected_cadence_min": 10,
+   "tolerance_min": 5,
+   "previous_cycle_at": "2026-11-19T08:01:50Z",
+   "cycle_gap_min": 13.1,
+   "health": "FRESH",
+   "health_basis": "gap since previous cycle watermark",
+   "sha": "aed1822b2e68b6879c25ff9373a497298d876e78",
+   "run_id": "44485871689"
+  },
+  "dispatch-state-feed": {
+   "source_ref": "ops/challenge/dispatch-state-feed.json",
+   "observed_at": "2026-11-19T08:14:57Z",
+   "expected_cadence_min": 15,
+   "tolerance_min": 15,
+   "sha": "aed1822b2e68b6879c25ff9373a497298d876e78",
+   "generated_at": "2026-11-19T08:05:28Z",
+   "age_min": 9.5,
+   "health": "FRESH"
+  },
+  "stall-gap-feed": {
+   "source_ref": "ops/que/feeds/stall-gap-feed.json",
+   "observed_at": "2026-11-19T08:14:57Z",
+   "expected_cadence_min": 15,
+   "tolerance_min": 15,
+   "sha": "aed1822b2e68b6879c25ff9373a497298d876e78",
+   "generated_at": "2026-11-19T08:05:28Z",
+   "age_min": 9.5,
+   "health": "FRESH"
+  },
+  "opportunity-priority": {
+   "source_ref": "ops/que/feeds/opportunity-priority.json",
+   "observed_at": "2026-11-19T08:14:57Z",
+   "expected_cadence_min": 720,
+   "tolerance_min": 0,
+   "sha": "aed1822b2e68b6879c25ff9373a497298d876e78",
+   "generated_at": "2026-11-18T21:28:17Z",
+   "age_min": 646.7,
+   "health": "FRESH"
+  },
+  "governor-events": {
+   "source_ref": "ops/que/events/governor-events-*.jsonl",
+   "observed_at": "2026-11-19T08:14:57Z",
+   "generated_at": "2026-11-19T07:58:01Z",
+   "age_min": 16.9,
+   "expected_cadence_min": null,
+   "tolerance_min": null,
+   "health": "UNVERIFIABLE",
+   "health_basis": "emitter cadence \u00acdeclared (source-specific)",
+   "sha": "aed1822b2e68b6879c25ff9373a497298d876e78"
+  }
+ }
+}

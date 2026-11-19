@@ -11,7 +11,7 @@ See `docs/ops/TRIBUTE-DASHBOARD.md` and workflow `help-wanted-dashboard-deploy.y
 
 ## Pages
 
-`index.html` (Tribute control surface), `quota.html` (quota & limits),
+`index.html` (Tribute control surface), `icm-cctv.html` (generated static ICM card board), `quota.html` (quota & limits),
 `matrix.html` (lane matrix), `free-tier-value.html` (paid-equivalent value of validated free-tier sessions, PR #1589), `oracle.html` (Delphi Oracle Panel), the surface pages `3l0.html`, `moneyball.html`, `mvt.html`, `doe.html`, and `admin.html` — the admin control panel over
 the whole web inventory: Delphic Oracle Method (live `ops/delphi/panel.json`
 config, cycle stages, ledger/dispatch links), systems inventory, privileged

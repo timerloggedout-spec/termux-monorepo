@@ -27,7 +27,7 @@ Run:
 
 ```sh
 python3 scripts/polyglot/validate_federation.py
-python3 -m unittest tests.test_polyglot_federation
+python3 -m unittest discover -s tests -p 'test_polyglot_federation.py' -v
 ```
 
 The validator uses Python standard-library JSON and performs deterministic structural and cross-reference checks. Full JSON Schema validation may be added in a separate optional CI lane.

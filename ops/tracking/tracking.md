@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-19T14:07:48Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-19T15:13:14Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-19T14:07:48Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`90962` read_at=`2026-11-19T14:07:48Z`
+Sources: PR feed read_at=`2026-11-19T15:13:13Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`91548` read_at=`2026-11-19T15:13:13Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -18,7 +18,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5654 — feat(pcdoe): add compounding production prioritization companion |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5661 — feat(pcdoe): add compounding production prioritization companion |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5630 — fix(que): harden BRR regression evidence and promotion boundary |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |

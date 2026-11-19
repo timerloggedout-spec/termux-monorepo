@@ -62,6 +62,7 @@ This is a documentation-and-contract foundation. It does not claim that external
 ## 2026-11-19 — Multi-project inference identity extension
 - Branch reconciliation: merged master `ea3c75f4955af7de0253f845cf9cfe7c634f9c44` through merge commit `5888a36249b30b501b3132be3002aafe4d0cba27`; compare state `ahead`, `behind=0`.
 - Branch reconciliation: merged master `cc8a87fd242ef8cc0784e6e8217a2a63dd332949` through merge commit `f46f6383d8ecdb190218b344cb77d7bd2e501a3a`; compare state `ahead`, `behind=0`.
+- Branch reconciliation: merged master `d8e973825db98d6cda6cfbd37d8b1350fe1ebea2` through merge commit `36b5838a50f2ac2d1cc8263b1fd19ad3bd5998f8`; compare state `ahead`, `behind=0`.
 
 
 - Operator directive: implement the additive multi-project inference identity contract as `IIS-002`.

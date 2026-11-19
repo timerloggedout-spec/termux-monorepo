@@ -4,13 +4,13 @@
 **Authority:** Agent Evaluation Framework (AEF) + this family registry  
 **Purpose:** register comparable task families, preserve native metric semantics, and route every run through the existing DoE / QUE / compute / provenance / 3L0 / MoneyBall planes.
 
-This registry extends the existing AEF and SWE cohort registry. It does not replace them, create a second scoring authority, or imply that a listed benchmark has an in-repository adapter.
+This registry extends the existing AEF and SWE cohort registry while preserving their scoring authorities and recording adapter admission state.
 
 ## 1. Operating rule
 
-A benchmark family is a task-and-verifier contract, not a leaderboard number. Every adapter MUST bind an immutable benchmark version, task set, environment image/digest, verifier version, source revision, agent treatment, and execution receipt. Every dispatched task instance produces one run record and one DoE experiment record.
+A benchmark family is a task-and-verifier contract with native score semantics. Every adapter MUST bind an immutable benchmark version, task set, environment image/digest, verifier version, source revision, agent treatment, and execution receipt. Every dispatched task instance produces one run record and one DoE experiment record.
 
-**Comparability rule:** keep native metrics native. SWE-bench resolution, Terminal-Bench resolution rate, BFCL function-call accuracy, τ-bench pass^k, OSWorld task success, MLE-bench medal rate, and memory accuracy/latency are distinct measures. The fleet may compare treatments within a family and build a multi-axis portfolio view; it MUST NOT average raw family scores into a single unqualified leaderboard.
+**Comparability rule:** keep native metrics native. SWE-bench resolution, Terminal-Bench resolution rate, BFCL function-call accuracy, τ-bench pass^k, OSWorld task success, MLE-bench medal rate, and memory accuracy/latency are distinct measures. The fleet compares treatments within each family and builds a multi-axis portfolio view; raw family scores retain their native scales.
 
 **Authority separation:**
 - AEF owns the evaluation taxonomy and treatment contracts.
@@ -19,8 +19,8 @@ A benchmark family is a task-and-verifier contract, not a leaderboard number. Ev
 - `chat-provenance/v1` and execution receipts own attribution evidence.
 - DoE owns preregistration, arm assignment, repetitions, and stopping rules.
 - 3L0 consumes confirmed dispatch outcomes for agent/provider suitability.
-- MoneyBall remains a separate valuation plane; it may consume verified artifacts but does not rewrite 3L0 or benchmark-native scores.
-- ForeSight / HindSight consume evidence projections; they do not become the result authority.
+- MoneyBall remains a separate valuation plane and consumes verified artifacts under its own authority; 3L0 and benchmark-native scores retain their own records.
+- ForeSight / HindSight project evidence while AEF and benchmark verifiers retain result authority.
 
 ## 2. Status vocabulary
 
@@ -29,12 +29,12 @@ A benchmark family is a task-and-verifier contract, not a leaderboard number. Ev
 | **IN-REPO** | A canonical registry, adapter, or contract exists in the current repository. |
 | **EXECUTED** | A run receipt proves a specific execution. This status is scoped to that run and version. |
 | **WIRED** | An automated trigger or adapter is present; execution still requires receipts. |
-| **CANDIDATE** | Evaluated for adoption; no production adapter claim. |
+| **CANDIDATE** | Evaluated for adoption; production adapter admission awaits a verified run receipt. |
 | **RESEARCH** | External benchmark or instrument retained for comparison. |
 | **GATED** | A specific access, safety, resource, or verifier condition blocks admission. |
 | **UNVERIFIED** | Evidence is insufficient to assign a stronger state. |
 
-A repository mention is not an adapter. A workflow dispatch is not an execution. An execution is not a resolved benchmark result. A green infrastructure check is not a benchmark pass.
+Repository mentions, workflow dispatches, task executions, and benchmark resolutions are four distinct states. Infrastructure checks and benchmark passes also retain separate evidence.
 
 ## 3. Current in-repository baseline
 
@@ -56,7 +56,7 @@ The existing `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md` and `docs/evaluat
 | Patch quality / long-horizon / adversarial robustness | AEF dimensions | **IN-REPO** evaluation dimensions; each requires an explicit task and scorer contract |
 | Orchestration / provider-model / manager-team policy / scout selection | AEF dimensions | **IN-REPO** treatment dimensions; evaluate with matched tasks and recorded dispatch lineage |
 
-The existing mini-SWE adapter is a bounded reference implementation, not a general autonomous fleet scheduler. Its benchmark-resolution field remains distinct from task execution. The full SWE-agent fork remains a candidate reference treatment until its adapter and independent scorer are verified.
+The existing mini-SWE adapter is a bounded reference implementation; QUE and Temporal remain the fleet scheduling authorities. Its benchmark-resolution field remains distinct from task execution. The full SWE-agent fork remains a candidate reference treatment pending its adapter and independent scorer.
 
 ## 4. External benchmark portfolio
 
@@ -64,12 +64,12 @@ The following is a prioritized portfolio for the next adapters. Each row is a ca
 
 | Priority | Family / instrument | What it measures | Native result semantics | Proposed fleet use | Admission state |
 |---|---|---|---|---|---|
-| P0 | **Terminal-Bench 4.1** | Real terminal work across software, science, ML, operations, security, hardware, and media tasks | Task resolution rate with trial-level outcomes and confidence intervals | Primary complement to SWE-bench for terminal-native agent work; pin 4.1 tasks, Harbor image, verifier SHA, resource profile, and trial artifacts | **CANDIDATE — adapter not located in current repo search** |
+| P0 | **Terminal-Bench 4.1** | Real terminal work across software, science, ML, operations, security, hardware, and media tasks | Task resolution rate with trial-level outcomes and confidence intervals | Primary complement to SWE-bench for terminal-native agent work; pin 4.1 tasks, Harbor image, verifier SHA, resource profile, and trial artifacts | **CANDIDATE — local adapter implementation pending** |
 | P1 | **SWE-bench Pro / SWE-bench-Live** | More demanding and/or continuously refreshed software engineering tasks | Dataset-specific patch resolution | Add as distinct cohorts beside Full/Lite/Verified; preserve task release and contamination window | **RESEARCH / CANDIDATE** |
 | P0 | **MCPMark** | Realistic MCP tasks with curated initial state and programmatic verification across CRUD and multi-step interactions | pass@1 and pass^4 | Highest-fit external MCP workflow benchmark; build a local/synthetic server cohort from the 127-task suite and preserve programmatic effect checks | **CANDIDATE — adapter not located in current repo search** |
 | P0 | **DynamicMCPBench** | Live MCP server workflows, trace-grounded effect checkpoints, and multi-step tool execution; paper reports 24 models, 121 servers, and 750 tasks across 15 categories | pass^3 over independent attempts; task effects rather than final-answer matching | Best candidate for repeatable evaluation of the fleet's own MCP servers; start with sandbox servers and synthetic data | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **MCP-Atlas** | Real MCP servers/tools with natural-language tasks requiring multi-server discovery and orchestration | Claims-based partial credit plus tool discovery, parameterization, syntax, recovery, and efficiency diagnostics | Cross-server orchestration and tool-selection benchmark; use public subset first | **CANDIDATE — adapter not located in current repo search** |
-| P1 | **MCPAgentBench** | Real-world MCP definitions with simulated tools and distractor tool lists | Task completion and execution efficiency | Tool discovery/selection and difficulty-aware evaluation without depending on live external servers | **CANDIDATE — adapter not located in current repo search** |
+| P1 | **MCPAgentBench** | Real-world MCP definitions with simulated tools and distractor tool lists | Task completion and execution efficiency | Tool discovery/selection and difficulty-aware evaluation using simulated tool execution | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **MCP-Bench** | Multi-step tasks across live MCP servers and complementary tools | Multi-faceted tool/schema, planning, and task-completion score | Cross-domain tool coordination and intermediate-output grounding | **CANDIDATE — adapter not located in current repo search** |
 | P1 | **BFCL v4** | Function/tool calling, multi-turn use, irrelevance detection, web search, and memory dimensions | Category accuracies and published overall accuracy | Tool-schema correctness and API selection; map function names/arguments to tool contract tests | **CANDIDATE — audit task defects before promotion** |
 | P1 | **OSWorld** | Multimodal agents operating real desktop and web applications across multi-app workflows | Per-task environment-state success | Computer-use and GUI workflow treatment; requires isolated desktop VM/emulator and deterministic state reset | **CANDIDATE — resource-gated** |
@@ -94,7 +94,7 @@ Terminal-Bench 4.1 is the immediate next terminal benchmark. Its November 9, 202
 Implementation consequences:
 
 1. Store benchmark version `terminal-bench/4.1`, task ID, task revision, environment digest, Harbor version, RewardKit/verifier revision, agent harness revision, and artifact URI.
-2. Keep the original 4.0 result and 4.1 regrade as two linked observations; never overwrite historical scores.
+2. Preserve the original 4.0 result and 4.1 regrade as linked immutable observations.
 3. Preserve the published 4.0 confidence interval when a saved artifact is regraded; record score deltas and the release's measurement-discrepancy class.
 4. Execute untrusted candidate code in an isolated worker/process/container; the trusted verifier owns the reward file and grading state.
 5. Capture full trajectory artifacts under the benchmark's policy and scrub secrets before any fleet telemetry projection.
@@ -105,14 +105,14 @@ Implementation consequences:
 
 - **BFCL v4:** its official leaderboard describes tool-call, multi-turn, and agentic categories. An external September 2026 audit sampled 50 tasks and reported defects affecting 24. Use task-level issue annotations and an independent local sanity set before treating its composite as a high-confidence decision input.
 - **MLE-bench:** upstream's GitHub page stated on April 24, 2026 that new leaderboard submissions were paused while submission fairness was improved. Internal use remains possible subject to its license and setup requirements; label results as internal reproductions rather than official leaderboard submissions.
-- **AgentBench:** distinguish the original eight-environment benchmark, the OS-only `inspect_evals` port, and the newer AgentBench FC variant. A result from one is not a full-suite AgentBench score.
+- **AgentBench:** distinguish the original eight-environment benchmark, the OS-only `inspect_evals` port, and the newer AgentBench FC variant. Label each port and suite separately; preserve the original full-suite AgentBench metric semantics.
 - **Web and desktop environments:** task state, account credentials, reset fixtures, network access, and application versions are part of the environment fingerprint. Use synthetic accounts and seeded data.
 - **Long-memory suites:** retain dataset permissions, split identity, privacy boundaries, retention rules, and abstention behavior. Evaluate memory recall separately from memory write volume.
 - **All families:** pin data and verifier revisions; track known contamination, task exposure, benchmark saturation, reward-hack disclosures, and scorer changes.
 
 ## 4.3 MCP-specific portfolio and existing TDQS lane
 
-The MCP-specific portfolio is the highest-priority addition for this repository. The current repo search found no named MCPMark, DynamicMCPBench, MCP-Atlas, MCPAgentBench, MCP-Bench, or OSWorld-MCP adapter. **TDQS is already implemented locally** and should be reused rather than re-created.
+The MCP-specific portfolio is the highest-priority addition for this repository. The current repo search identifies MCPMark, DynamicMCPBench, MCP-Atlas, MCPAgentBench, MCP-Bench, and OSWorld-MCP as external candidates awaiting adapter registration. **TDQS is already implemented locally** and forms the static quality preflight.
 
 | Instrument | Distinct value | Fleet integration |
 |---|---|---|
@@ -133,11 +133,11 @@ The MCP-specific portfolio is the highest-priority addition for this repository.
 4. Add MCP-Atlas / MCPAgentBench for cross-server discovery and distractor handling.
 5. Add MCP-Bench and OSWorld-MCP as broader research tracks after the first adapters are stable.
 
-This order maximizes reuse: TDQS provides a cheap preflight signal for every server/tool schema change, while task benchmarks measure actual behavior. A good tool description does not prove the tool works; a passing task does not prove the tool schema is clear. Keep both measurements.
+This order maximizes reuse: TDQS provides a cheap preflight signal for every server/tool schema change, while task benchmarks measure actual behavior. A good tool description measures schema clarity; a passing task measures behavior. Keep both complementary measurements.
 
 ## 5. Canonical run envelope
 
-Every benchmark adapter MUST emit or join the following envelope. Existing schemas may supply fields; this table is the target crosswalk, not a mandate to duplicate canonical data stores.
+Every benchmark adapter MUST emit or join the following envelope. Existing schemas may supply fields; this table is the target crosswalk to canonical data stores.
 
 | Field | Purpose |
 |---|---|
@@ -162,13 +162,13 @@ The benchmark portfolio uses the existing system-managed execution path:
 
 - Schedules discover eligible work; QUE owns admission and leases.
 - Temporal owns durable long-running workflow history, retry policy, and checkpoint/recovery where its deployed integration is proven.
-- GitHub Actions owns event triggers, bounded orchestration, and CI gates; Actions minutes are not the default bulk compute substrate.
+- GitHub Actions owns event triggers, bounded orchestration, and CI gates; route bulk compute to allocated VM/worker surfaces.
 - Muse owns existing daily/long-running orchestration and ML Ops/HindSight workloads as recorded in the allocation registry.
 - Hark owns bounded, isolated evaluation/export/hygiene slices when its current lease and capacity are verified.
-- The inference pool supplies model inference; it is not a substitute for benchmark execution or a result ledger.
+- The inference pool supplies model inference; benchmark execution and result ledgers remain separate authorities.
 - Retries are idempotent by `dispatch_id + task_fingerprint + attempt_id`; an uncertain side effect is reconciled before replay.
 - Checkpoints and receipts allow unclaimed work to be safely reallocated after host loss.
-- Manual dispatch remains an authorized entry point; it does not own recurring operation.
+- Schedules and QUE own recurring operation; manual dispatch remains an authorized entry point.
 
 ## 7. Prioritized adapter sequence
 
@@ -194,7 +194,7 @@ A benchmark adapter becomes **WIRED** only after:
 7. Native score semantics and confidence/repetition requirements are documented.
 8. The adapter is added to the registry with exact commit and test evidence.
 
-A treatment is eligible for promotion only after replicated, independently verified outcomes and a separate governance review. Benchmark scores remain evidence, not authorization to alter production routing, credentials, spending, or safety boundaries.
+Promote a treatment after replicated, independently verified outcomes and a separate governance review. Benchmark scores inform decisions within existing routing, credential, spending, and safety controls.
 
 ## 9. External source register
 
@@ -224,4 +224,4 @@ A treatment is eligible for promotion only after replicated, independently verif
 - LongMemEval: https://proceedings.iclr.cc/paper_files/paper/2025/hash/d813d324dbf0598bbdc9c8e79740ed01-Abstract-Conference.html
 - LongMemEval-V2: https://github.com/xiaowu0162/LongMemEval-V2
 
-**Snapshot caveat:** external benchmark releases and leaderboards evolve. Re-check upstream release notes and licenses at adapter admission; this registry is a dated source map, not a frozen ranking.
+**Snapshot:** external benchmark releases and leaderboards evolve. Refresh upstream release notes and licenses at adapter admission; this registry is a dated source map.

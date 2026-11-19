@@ -9,11 +9,11 @@ keywords: ["integrations", "connectors", "MCP", "documentation", "readiness", "p
 
 This portfolio records the current evidence for the tools and services named in the integration stewardship request. It separates what is visible in this assistant session from what is implemented in the repository, what is authenticated, and what has passed an end-to-end runtime check.
 
-**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-11. Connector, account, and scan observations are a dated snapshot, not a claim of current live readiness.
+**Audit performed:** 2026-11-06. **Registry update date:** 2026-11-19. Connector, account, and scan observations retain their audit dates and stated evidence scope.
 
 ## Executive status
 
-The existing Integration Intelligence foundation is established by merged PR #4009. The current registry contained eight integrations. This expansion adds the requested portfolio as 24 separately tracked entries, including two distinct DeepWiki surfaces.
+The existing Integration Intelligence foundation is established by merged PR #4009. The registry currently contains 38 integration entries, including the 24-item portfolio expansion, four CEEL candidates, and two utilization sources added in this update.
 
 The repository remains the source of truth. Session connectors and installed skills are capabilities of this assistant environment, not automatic capabilities of GitHub Actions, Termux, other collaborators, or production.
 
@@ -45,6 +45,8 @@ The repository remains the source of truth. Session connectors and installed ski
 | Agent Ready | Live scan completed | Convert source-level findings into a reviewed remediation work item |
 | Inductive Bio | Public LogD, acidic pKa, and basic pKa model catalog retrieved | Preserve model IDs and versions if a scientific prediction lane is built |
 | Superpowers | Skill installed; repository-local skill already exists | Continue using the repository policy bridge |
+| OpenAI Codex OTel | Official documentation defines opt-in metrics for API, streaming, WebSocket, tool-call, and duration activity; collector observation remains pending | Build a redacted, fixture-tested OTel adapter before enabling export |
+| ChatGPT Desktop Usage | Desktop Usage & Billing exposes Work/Codex usage summaries; Personal Analytics has workspace eligibility and aggregation boundaries | Verify a supported export/API or approved report-ingestion path before automation |
 | Temporal | Developer skill installed; no Temporal server connector exposed | Reconcile with existing `temporal-langsmith-adapter` proposal |
 | SiteTriage | Diagnostic tools exposed | Keep diagnostics read-only by default |
 | AI Task Brief Builder | Task brief extraction tool exposed | Use for evidence-separated requirements and acceptance criteria |
@@ -91,7 +93,7 @@ The following actions were deliberately not taken:
 
 ## Phased adoption
 
-1. **Foundation:** maintain the registry, adapter contract, event schema, and Mintlify navigation.
+1. **Foundation:** maintain the registry, adapter contract, event schema, and Mintlify navigation; keep Codex OTel and Desktop usage adapters in planned status until their runtime paths are validated.
 2. **Documentation quality:** remediate Agent Ready findings from supported source files; re-scan after CI and deployment.
 3. **High-value engineering:** integrate Context7 and AI Task Brief Builder with version-pinned evidence and proposal IDs.
 4. **Research and orchestration:** add Consensus, Context.dev, Temporal, Opscotch, and Manus through bounded adapters.
@@ -103,7 +105,7 @@ The following actions were deliberately not taken:
 
 Every adapter must pass the existing [adapter contract](ADAPTER-CONTRACT.md): least privilege, read-only default, redaction, idempotency, cost bounds, source provenance, schema validation, bounded retries, and evidence-backed promotion.
 
-The normalized [integration event schema](schemas/integration-event.schema.json) remains unchanged. No provider-specific payload becomes canonical repository state.
+The [integration event schema](schemas/integration-event.schema.json) remains the canonical envelope and gains additive project/task/inference identity fields. Legacy event records retain their validation shape; provider-specific payloads remain outside canonical repository state.
 
 
 ## Follow-up verification — 2026-11-06

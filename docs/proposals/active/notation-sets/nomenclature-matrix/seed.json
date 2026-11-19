@@ -1495,6 +1495,78 @@
         "owner-order-caveman-v2-2026-11-04",
         "issue-320"
       ]
+    },
+    {
+      "concept_id": "comms_matrix.quic_transport",
+      "domain_id": "comms_matrix",
+      "preferred_label": "QUIC transport",
+      "definition": "Transport of record for the Comms Matrices transport row (worked example): UDP-based, per-stream multiplexing, no transport-level head-of-line blocking, transport+TLS 1.3 handshake combined (1-RTT; 0-RTT on resumption), connection migration by connection ID. RFC 9000/9001/9002; HTTP/3 = RFC 9114.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "comms_matrix.tcp_tls_baseline",
+      "domain_id": "comms_matrix",
+      "preferred_label": "TCP+TLS baseline",
+      "definition": "The incumbent transport cell: TCP's single ordered byte stream (head-of-line blocking across everything multiplexed on it) + TLS handshake stacked on the TCP handshake (extra RTTs before first byte).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "comms_matrix.repo_rendezvous",
+      "domain_id": "comms_matrix",
+      "preferred_label": "repo-rendezvous channel",
+      "definition": "The fleet's incumbent comms pattern: asynchronous rendezvous through the repo (issues/PRs/comments/Actions) — store-and-forward, latency = poll/dispatch cadence, not a transport protocol; sits above any transport.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "comms_matrix.head_of_line_blocking",
+      "domain_id": "comms_matrix",
+      "preferred_label": "head-of-line blocking",
+      "definition": "The defect the transport row is scored on: one lost/delayed unit stalls all later units behind it (TCP: global; QUIC: confined to the affected stream).",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "comms_matrix.connection_migration",
+      "domain_id": "comms_matrix",
+      "preferred_label": "connection migration",
+      "definition": "QUIC property: a connection survives network-path change (Wi-Fi→cellular, NAT rebinding) because identity = connection ID, not the 4-tuple.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
+    },
+    {
+      "concept_id": "comms_matrix.zero_rtt_resumption",
+      "domain_id": "comms_matrix",
+      "preferred_label": "0-RTT resumption",
+      "definition": "QUIC resumption: early data on a resumed connection with no handshake round trip; carries replay risk — acceptable only for idempotent early data.",
+      "status": "candidate",
+      "version": 1,
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19",
+        "issue-320"
+      ]
     }
   ],
   "labels": [
@@ -4023,6 +4095,30 @@
       "evidence_note": "⚖✓ is ⚖ plus discharge: same judgment, its owed action closed. Composition of glyphs mirrors composition of states.",
       "source_ids": [
         "owner-order-caveman-v2-2026-11-04"
+      ]
+    },
+    {
+      "mapping_id": "map-comms-quic-succeeds-tcptls",
+      "source_concept_id": "comms_matrix.quic_transport",
+      "target_concept_id": "comms_matrix.tcp_tls_baseline",
+      "relation": "supersedes",
+      "status": "candidate",
+      "confidence": 0.9,
+      "evidence_note": "For HTTP-class traffic QUIC is the established successor: multiplexing without transport HoL blocking + combined handshake (RFC 9000/9114). TCP+TLS remains the fallback where UDP is blocked.",
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19"
+      ]
+    },
+    {
+      "mapping_id": "map-comms-rendezvous-above-transport",
+      "source_concept_id": "comms_matrix.repo_rendezvous",
+      "target_concept_id": "comms_matrix.quic_transport",
+      "relation": "related_match",
+      "status": "candidate",
+      "confidence": 0.8,
+      "evidence_note": "Different layers: rendezvous is an application pattern that rides any transport; QUIC does not replace it — it would only speed the legs underneath it.",
+      "source_ids": [
+        "owner-order-comms-matrices-2026-11-19"
       ]
     }
   ]

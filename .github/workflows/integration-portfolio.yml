@@ -8,6 +8,8 @@ on:
       - "sitemap.md"
       - "scripts/integrations/**"
       - "tests/test_capability_opportunity_graph.py"
+      - "tests/test_inference_execution_contract.py"
+      - "ops/projects/profile.schema.json"
       - ".github/workflows/integration-portfolio.yml"
   push:
     branches: [master, master-staging]
@@ -17,6 +19,8 @@ on:
       - "sitemap.md"
       - "scripts/integrations/**"
       - "tests/test_capability_opportunity_graph.py"
+      - "tests/test_inference_execution_contract.py"
+      - "ops/projects/profile.schema.json"
   workflow_dispatch:
 
 permissions:

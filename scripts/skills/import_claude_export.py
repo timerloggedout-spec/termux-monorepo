@@ -125,8 +125,18 @@ def main() -> None:
                 raise SystemExit(f"Missing, duplicate, or invalid archive path: {raw}")
             if source.stat().st_size != int(row["bytes"]):
                 raise SystemExit(f"Byte count mismatch: {raw}")
-            if digest(source) != row["sha1"].strip().lower():
-                raise SystemExit(f"SHA-1 mismatch: {raw}")
+            actual_sha1 = digest(source)
+            exported_sha1 = row["sha1"].strip().lower()
+            # Claude's CSV exporter serialized only the first 12 SHA-1 hex
+            # characters. Treat that field as a prefix check, then record the
+            # independently recomputed full digest as the canonical hash.
+            if len(exported_sha1) != 12 or not actual_sha1.startswith(exported_sha1):
+                raise SystemExit(
+                    f"SHA-1 prefix mismatch: {raw}; "
+                    f"exported={exported_sha1}; actual={actual_sha1}"
+                )
+            row["exported_sha1_prefix"] = exported_sha1
+            row["sha1"] = actual_sha1
             by_path[key] = (row, source)
 
         archive_skills = {
@@ -142,18 +152,24 @@ def main() -> None:
         for key, (row, source) in by_path.items():
             target = MIRROR / key
             target.parent.mkdir(parents=True, exist_ok=True)
-            if target.exists() and digest(target) != row["sha1"].strip().lower():
+            if target.exists() and digest(target) != row["sha1"]:
                 raise SystemExit(f"Existing mirror file differs; review before overwrite: {target}")
             if not target.exists():
                 shutil.copy2(source, target)
 
-    # Preserve source inventories byte-for-byte.
+    # Preserve original exports byte-for-byte; publish a corrected derived CSV.
     for src in (skills_csv, skills_jsonl, plugins_csv, checksums):
         dst = SOURCE / src.name
         if dst.exists() and digest(dst, "sha256") != digest(src, "sha256"):
             raise SystemExit(f"Existing source inventory differs; review before overwrite: {dst}")
         if not dst.exists():
             shutil.copy2(src, dst)
+
+    verified_csv = SOURCE / "skills-inventory-verified.csv"
+    with verified_csv.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0].keys()))
+        writer.writeheader()
+        writer.writerows(rows)
 
     entries = []
     tags: dict[str, set[str]] = defaultdict(set)
@@ -171,6 +187,7 @@ def main() -> None:
             "path": (Path("vendor/skills-mirror") / rel).as_posix(),
             "bytes": int(row["bytes"]),
             "sha1": row["sha1"].lower(),
+            "exported_sha1_prefix": row["exported_sha1_prefix"],
         })
         terms = set(re.findall(r"[a-z0-9][a-z0-9+.#_-]{1,}", " ".join(
             (row["namespace"], row["plugin_dir"], row["name"], row["description"])
@@ -208,7 +225,9 @@ def main() -> None:
     (REGISTRY / "index.json").write_text(json.dumps({
         "schema_version": "1.0.0",
         "generated_at": stamp,
-        "source": {"archive": archive.name, "archive_sha256": archive_sha},
+        "source": {"archive": archive.name, "archive_sha256": archive_sha,
+                   "inventory_hash_defect": "CSV SHA-1 values truncated to 12 hex characters",
+                   "canonical_hashes": "recomputed from archive payload"},
         "skill_count": len(entries),
         "skills": entries,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -234,6 +253,8 @@ def main() -> None:
         "schema_version": "1.0.0",
         "archive": archive.name,
         "archive_sha256": archive_sha,
+        "inventory_sha1_defect": "all 1,299 exported SHA-1 values contain 12-character prefixes",
+        "verified_inventory": "skills-inventory-verified.csv",
         "skills": len(entries),
         "plugin_inventory_rows": len(plugin_rows),
         "canonical_root": "vendor/skills-mirror",

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://timerloggedout-spec.github.io/termux-monorepo/polyglot/feed-envelope.schema.json",
+  "title": "PolyGlot federation feed envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "feed_id",
+    "producer",
+    "repository",
+    "revision",
+    "generated_at",
+    "records",
+    "artifact_digest"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "feed_id": {
+      "type": "string"
+    },
+    "producer": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 7
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "record_type",
+          "record_id",
+          "path"
+        ],
+        "properties": {
+          "record_type": {
+            "enum": [
+              "capability",
+              "technology_target",
+              "mapping",
+              "benchmark_result"
+            ]
+          },
+          "record_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "artifact_digest": {
+      "type": "string",
+      "pattern": "^(sha256:)?[a-fA-F0-9]{64}$"
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

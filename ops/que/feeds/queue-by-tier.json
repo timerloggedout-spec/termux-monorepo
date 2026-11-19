@@ -1,21 +1,19 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T04:16:54Z",
+ "generated_at": "2026-11-19T04:42:23Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T04:16:43Z",
-   "by_workflow_queued": {
-    "repo gate": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 2,
+   "in_progress": 3,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -28,17 +26,22 @@
   },
   "4": {
    "tier": 4,
-   "queued": 1,
+   "queued": 21,
    "in_progress": 16,
-   "oldest_queued_at": "2026-11-19T04:16:43Z",
+   "oldest_queued_at": "2026-11-19T04:40:38Z",
    "by_workflow_queued": {
-    "DO Statement Style": 1
+    "repo-tracking-collect": 1,
+    "lane events recorder": 8,
+    "Agent Throughput Evidence": 9,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "termux smoke": 1,
+    "Gemini review after peers": 1
    }
   }
  },
  "totals": {
-  "queued": 2,
-  "in_progress": 19
+  "queued": 21,
+  "in_progress": 20
  },
  "wedged_ancient": [
   {
@@ -196,13 +199,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
-   "2": 2,
+   "1": 1,
+   "2": 3,
    "3": 0,
    "4": 0
   },
   "explicit_total": 4,
-  "default_t4": 17,
+  "default_t4": 37,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

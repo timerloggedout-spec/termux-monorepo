@@ -310,6 +310,9 @@ Repository:
 - [TDQS admission matrix](TDQS-ADMISSION-MATRIX.md)
 - [ML Ops local receipts](../../ops/ml/local-runs.jsonl)
 - [Temporal durable execution RECON](../rfps/temporal-durable-execution/RECON.md)
+- [Temporal Delphi cycle operator record](TEMPORAL-DELPHI-CYCLE.md)
+- [Temporal N5 acceptance addendum](../proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-28-N5.json)
+- [Temporal self-host migration / retirement record](TEMPORAL-SELF-HOST.md)
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
 - [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
 - [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master

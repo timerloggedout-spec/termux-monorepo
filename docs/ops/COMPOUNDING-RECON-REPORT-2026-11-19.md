@@ -316,6 +316,9 @@ Repository:
 - [Reference template consolidation](REFTEMPLATES-CONSOLIDATION.md)
 - [Fresh current-base Agentic Wallet + MergeEarn registration PR #5664](https://github.com/timerloggedout-spec/termux-monorepo/pull/5664)
 - [Original Agentic Wallet template PR #4737](https://github.com/timerloggedout-spec/termux-monorepo/pull/4737) — retained for lineage; diverged and 13,613 commits behind current master
+- [DeepSeek capture pipeline](../DEEPSEEK-CAPTURE-PIPELINE.md)
+- [Repo Replay consumer record](REPO-REPLAY.md)
+- [Owner-original Repo Replay system](https://github.com/timerloggedout-spec/repo-replay)
 - [DeepSeek web-wrapper session commit / PR #174](https://github.com/timerloggedout-spec/termux-monorepo/commit/40683687b1bf50d70c74d6eb2426767f1f8836f8)
 - [Canonical session provenance commit / PR #3453](https://github.com/timerloggedout-spec/termux-monorepo/commit/6050e1975ae5dabdb3b5751af7a8ad6ac016b5de)
 - [DeepCLI session-store origin commit / PR #3625](https://github.com/timerloggedout-spec/termux-monorepo/commit/1e898b4606cbe1de01fa6f848e2ad6a3f10e4309)

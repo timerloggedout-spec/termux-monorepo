@@ -275,13 +275,16 @@ def failing_groups(gh: GH, window_h: int, max_groups: int = 8) -> list[dict]:
                 message = (msgs[0] if msgs else "")[:300]
                 break
         except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
             message = f"jobs unreadable: HTTP {e.code}"
         wf_id = latest.get("workflow_id")
         total = len(rs)
         try:
             total = gh.get(f"/repos/{REPO}/actions/workflows/{wf_id}/runs?branch=master&per_page=1&created=%3E%3D{since}").get("total_count", total)
-        except urllib.error.HTTPError:
-            pass
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
         sig = signature(f"{step} {message}")
         out.append({
             "path": path, "name": latest["name"], "room": room, "step": step, "message": message,
@@ -299,7 +302,9 @@ def stale_feeds(gh: GH) -> list[dict]:
     for f in reg.get("feeds", []):
         try:
             c = gh.get(f"/repos/{REPO}/commits?path={urllib.parse.quote(f['path'])}&sha=master&per_page=1")
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):
+                raise
             continue
         if not c:
             continue

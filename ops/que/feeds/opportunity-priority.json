@@ -1,27 +1,94 @@
 {
   "schema": "que.opportunity-priority/v1",
-  "generated_at": "2026-11-19T08:50:43Z",
+  "generated_at": "2026-11-19T21:38:09Z",
   "stale_after_hours": 12.0,
-  "fresh_until": "2026-11-19T20:50:43Z",
-  "stale": true,
+  "fresh_until": "2026-11-20T09:38:09Z",
+  "stale": false,
   "sources": {
     "coordinator": "ops/challenge/coordinator.json",
     "terminal_records": "ops/challenge/terminal-records.json",
     "desk_feed": {
       "path": "ops/challenge/desk-feed.json",
       "generated_at": "2026-11-17T14:36:00Z",
-      "age_hours": 42.2,
+      "age_hours": 55.0,
       "stale": true,
       "role": "deprecated: verbatim priority_timebox walls only; live state = this feed"
     }
   },
-  "run_id": "44490888812",
+  "run_id": "44620597609",
   "rank_method": "que-task-rank/v1",
   "opportunities": [
     {
+      "id": "C13",
+      "slug": "c13",
+      "rank": 1,
+      "tier": 3,
+      "score": 110.0,
+      "basis": [
+        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.9",
+        "prep incomplete -> prep_term 0.2",
+        "tier 3 (default build class)"
+      ],
+      "next_gate": "2026-11-21T11:59:00Z",
+      "days_to_gate": 1.6,
+      "priority_timebox": {
+        "wall": "2026-11-21T11:59:00Z",
+        "landing": "2026-11-20T11:59:00Z",
+        "cushion": "2026-11-18T11:59:00Z",
+        "escalation": "2026-11-20T23:59:00Z",
+        "final": "2026-11-21T11:29:00Z",
+        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
+        "verbatim": null,
+        "wall_source": "dates.proposal_due"
+      },
+      "prep_state": "PREP_INCOMPLETE",
+      "verdict": "PREP_INCOMPLETE",
+      "name": "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
+      "host": "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
+      "aliases": [
+        "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
+        "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
+        "Skipso application form (dp.skipso.com)"
+      ],
+      "search_terms": [
+        "integrating",
+        "digital",
+        "public",
+        "goods",
+        "advance",
+        "ai-enabled",
+        "formative",
+        "assessment",
+        "rfp",
+        "k-12",
+        "infrastructure",
+        "promise",
+        "learning",
+        "data",
+        "insights",
+        "massive",
+        "institute",
+        "georgetown",
+        "drivendata",
+        "catalyst",
+        "penn",
+        "gse",
+        "skipso",
+        "application",
+        "form",
+        "dp.skipso.com"
+      ],
+      "state": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call",
+      "nearest_wall_hours": 38.36,
+      "wall_48h": true,
+      "sub_gates": 1,
+      "rank_method": "que-task-rank/v1",
+      "active": true
+    },
+    {
       "id": "C14",
       "slug": "c14",
-      "rank": 1,
+      "rank": 2,
       "tier": 3,
       "score": 110.0,
       "basis": [
@@ -30,7 +97,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-11-21T07:59:00Z",
-      "days_to_gate": 1.96,
+      "days_to_gate": 1.43,
       "priority_timebox": {
         "wall": "2026-11-21T07:59:00Z",
         "landing": "2026-11-20T07:59:00Z",
@@ -62,7 +129,7 @@
         "forms"
       ],
       "state": "HOLD / parked (watch) per opportunity evaluation via Manager 2026-11-03 \u2014 no action; revisit only on an evaluation change",
-      "nearest_wall_hours": 47.04,
+      "nearest_wall_hours": 34.32,
       "wall_48h": true,
       "sub_gates": 1,
       "rank_method": "que-task-rank/v1",
@@ -71,7 +138,7 @@
     {
       "id": "D5",
       "slug": "d5",
-      "rank": 2,
+      "rank": 3,
       "tier": 3,
       "score": 110.0,
       "basis": [
@@ -80,7 +147,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-11-20T19:30:00Z",
-      "days_to_gate": 1.44,
+      "days_to_gate": 0.91,
       "priority_timebox": {
         "wall": "2026-11-19T20:00:00Z",
         "landing": "2026-11-18T20:00:00Z",
@@ -155,7 +222,7 @@
         "aha-io"
       ],
       "state": "registering - SPOT DECLINED 2026-11-17 (Aha! cancellation, Gmail 1a1e770287389fb9); Manager ruling ISSUED 2026-11-17: claim OFF unless Aha! support reinstates pre-wall (appeal fired by D5 seat); construction proceeds claim-free; concept frozen C1 IdeaInbox; moniker Understudy issued (PR #5560)",
-      "nearest_wall_hours": -39.84,
+      "nearest_wall_hours": -52.63,
       "wall_48h": true,
       "sub_gates": 5,
       "rank_method": "que-task-rank/v1",
@@ -164,7 +231,7 @@
     {
       "id": "C12",
       "slug": "c12-receipts-vault",
-      "rank": 3,
+      "rank": 4,
       "tier": 3,
       "score": 80.0,
       "basis": [
@@ -173,7 +240,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-12-01T07:45:00Z",
-      "days_to_gate": 11.95,
+      "days_to_gate": 11.42,
       "priority_timebox": {
         "wall": "2026-11-16T07:45:00Z",
         "landing": "2026-11-14T00:00:00Z",
@@ -234,7 +301,7 @@
         "ugreenhackathon.devpost.com"
       ],
       "state": "graduated \u2014 ON SLATE (Manager, 2026-11-03); Round 1 in execution prep",
-      "nearest_wall_hours": -680.84,
+      "nearest_wall_hours": -693.63,
       "wall_48h": true,
       "sub_gates": 5,
       "rank_method": "que-task-rank/v1",
@@ -243,7 +310,7 @@
     {
       "id": "D4",
       "slug": "d4",
-      "rank": 4,
+      "rank": 5,
       "tier": 3,
       "score": 35.0,
       "basis": [
@@ -252,7 +319,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2027-01-29T21:00:00Z",
-      "days_to_gate": 71.51,
+      "days_to_gate": 70.97,
       "priority_timebox": {
         "wall": "2026-12-04T22:00:00Z",
         "landing": "2026-12-03T22:00:00Z",
@@ -340,76 +407,9 @@
         "kiro"
       ],
       "state": "registering",
-      "nearest_wall_hours": -881.34,
+      "nearest_wall_hours": -894.13,
       "wall_48h": true,
       "sub_gates": 8,
-      "rank_method": "que-task-rank/v1",
-      "active": true
-    },
-    {
-      "id": "C13",
-      "slug": "c13",
-      "rank": 5,
-      "tier": 3,
-      "score": 110.0,
-      "basis": [
-        "next_gate 2026-11-21T11:59:00Z via dates.proposal_due -> gate_term 0.9",
-        "prep incomplete -> prep_term 0.2",
-        "tier 3 (default build class)"
-      ],
-      "next_gate": "2026-11-21T11:59:00Z",
-      "days_to_gate": 2.13,
-      "priority_timebox": {
-        "wall": "2026-11-21T11:59:00Z",
-        "landing": "2026-11-20T11:59:00Z",
-        "cushion": "2026-11-18T11:59:00Z",
-        "escalation": "2026-11-20T23:59:00Z",
-        "final": "2026-11-21T11:29:00Z",
-        "source": "derived offsets {landing wall-24h, cushion wall-72h, escalation wall-12h, final wall-30m}",
-        "verbatim": null,
-        "wall_source": "dates.proposal_due"
-      },
-      "prep_state": "PREP_INCOMPLETE",
-      "verdict": "PREP_INCOMPLETE",
-      "name": "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
-      "host": "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
-      "aliases": [
-        "Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment \u2014 RFP (K-12 AI Infrastructure Program)",
-        "K-12 AI Infrastructure Program (Digital Promise \u00b7 Learning Data Insights \u00b7 Massive Data Institute Georgetown \u00b7 DrivenData \u00b7 Catalyst @ Penn GSE)",
-        "Skipso application form (dp.skipso.com)"
-      ],
-      "search_terms": [
-        "integrating",
-        "digital",
-        "public",
-        "goods",
-        "advance",
-        "ai-enabled",
-        "formative",
-        "assessment",
-        "rfp",
-        "k-12",
-        "infrastructure",
-        "promise",
-        "learning",
-        "data",
-        "insights",
-        "massive",
-        "institute",
-        "georgetown",
-        "drivendata",
-        "catalyst",
-        "penn",
-        "gse",
-        "skipso",
-        "application",
-        "form",
-        "dp.skipso.com"
-      ],
-      "state": "candidate \u2014 VIABLE, eligibility CONFIRMED (as-if-competed screen completed 2026-11-03); awaiting Manager/owner slate call",
-      "nearest_wall_hours": 51.12,
-      "wall_48h": false,
-      "sub_gates": 1,
       "rank_method": "que-task-rank/v1",
       "active": true
     },
@@ -425,7 +425,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-12-01T19:00:00Z",
-      "days_to_gate": 12.42,
+      "days_to_gate": 11.89,
       "priority_timebox": {
         "wall": "2026-12-01T19:00:00Z",
         "landing": "2026-11-30T19:00:00Z",
@@ -451,7 +451,7 @@
         "lablab.ai"
       ],
       "state": "active",
-      "nearest_wall_hours": 298.08,
+      "nearest_wall_hours": 285.36,
       "wall_48h": false,
       "sub_gates": 1,
       "rank_method": "que-task-rank/v1",
@@ -505,7 +505,7 @@
         "tier 2 (dispatch-tiers chain entry)"
       ],
       "next_gate": "2026-11-05T07:59:00Z",
-      "days_to_gate": -14.04,
+      "days_to_gate": -14.57,
       "priority_timebox": {
         "wall": "2026-11-05T07:59:00Z",
         "landing": "2026-11-04T07:59:00Z",
@@ -599,7 +599,7 @@
         "evidence": "ops/challenge/coordinator.json events[D1].status; docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a74 D1"
       },
       "state": "complete \u2014 submitted (published 2026-11-03); edit-window freeze 2026-11-04T23:59:00-08:00 passed",
-      "nearest_wall_hours": -529.84,
+      "nearest_wall_hours": -542.63,
       "wall_48h": true,
       "sub_gates": 4,
       "rank_method": "que-task-rank/v1",
@@ -617,7 +617,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-11-08T23:00:00Z",
-      "days_to_gate": -10.41,
+      "days_to_gate": -10.94,
       "priority_timebox": {
         "wall": "2026-11-08T23:00:00Z",
         "landing": "2026-11-07T23:00:00Z",
@@ -708,7 +708,7 @@
         "evidence": "ops/challenge/coordinator.json events[D2] (pick B Quarantine Browser Clerk, build started 2026-11-03); docs/ops/CHALLENGE-ENTRIES-LOG.md \u00a74 D2"
       },
       "state": "closed \u2014 wall 2026-11-08T15:00:00-08:00 passed",
-      "nearest_wall_hours": -377.84,
+      "nearest_wall_hours": -390.63,
       "wall_48h": true,
       "sub_gates": 3,
       "rank_method": "que-task-rank/v1",
@@ -726,7 +726,7 @@
         "tier 3 (default build class)"
       ],
       "next_gate": "2026-11-13T00:00:00Z",
-      "days_to_gate": -6.37,
+      "days_to_gate": -6.9,
       "priority_timebox": {
         "wall": "2026-11-10T07:59:00Z",
         "landing": "2026-11-09T07:59:00Z",
@@ -805,7 +805,7 @@
         "builder-io"
       ],
       "state": "closed - wall 2026-11-09 passed unsubmitted; Clips demo published post-wall 2026-11-12; late-submit rejected by the closed form (terminal record 2026-11-12)",
-      "nearest_wall_hours": -553.84,
+      "nearest_wall_hours": -566.63,
       "wall_48h": true,
       "sub_gates": 5,
       "rank_method": "que-task-rank/v1",
@@ -1179,233 +1179,232 @@
       "id": "D4",
       "gate": "dates.reg_open",
       "at": "2026-10-13T15:30:00Z",
-      "hours_to": -881.34,
+      "hours_to": -894.13,
       "rank": 1
     },
     {
       "id": "C12",
       "gate": "dates.register_build",
       "at": "2026-10-22T00:00:00Z",
-      "hours_to": -680.84,
+      "hours_to": -693.63,
       "rank": 2
     },
     {
       "id": "D3",
       "gate": "dates.build_start",
       "at": "2026-10-27T07:00:00Z",
-      "hours_to": -553.84,
+      "hours_to": -566.63,
       "rank": 3
     },
     {
       "id": "D3",
       "gate": "dates.submissions_open",
       "at": "2026-10-27T07:00:00Z",
-      "hours_to": -553.84,
+      "hours_to": -566.63,
       "rank": 4
     },
     {
       "id": "D1",
       "gate": "dates.build_start",
       "at": "2026-10-28T07:00:00Z",
-      "hours_to": -529.84,
+      "hours_to": -542.63,
       "rank": 5
     },
     {
       "id": "D1",
       "gate": "dates.submissions_open",
       "at": "2026-10-28T07:00:00Z",
-      "hours_to": -529.84,
+      "hours_to": -542.63,
       "rank": 6
     },
     {
       "id": "D4",
       "gate": "dates.build_start",
       "at": "2026-10-30T16:00:00Z",
-      "hours_to": -472.84,
+      "hours_to": -485.63,
       "rank": 7
     },
     {
       "id": "D4",
       "gate": "dates.submissions_open",
       "at": "2026-10-30T16:00:00Z",
-      "hours_to": -472.84,
+      "hours_to": -485.63,
       "rank": 8
     },
     {
       "id": "D2",
       "gate": "dates.build_start",
       "at": "2026-11-03T15:00:00Z",
-      "hours_to": -377.84,
+      "hours_to": -390.63,
       "rank": 9
     },
     {
       "id": "D1",
       "gate": "dates.build_end",
       "at": "2026-11-05T07:59:00Z",
-      "hours_to": -336.85,
+      "hours_to": -349.64,
       "rank": 10
     },
     {
       "id": "D1",
       "gate": "dates.deadline",
       "at": "2026-11-05T07:59:00Z",
-      "hours_to": -336.85,
+      "hours_to": -349.64,
       "rank": 11
     },
     {
       "id": "D2",
       "gate": "dates.build_end",
       "at": "2026-11-08T22:00:00Z",
-      "hours_to": -250.84,
+      "hours_to": -263.63,
       "rank": 12
     },
     {
       "id": "D2",
       "gate": "dates.deadline",
       "at": "2026-11-08T23:00:00Z",
-      "hours_to": -249.84,
+      "hours_to": -262.63,
       "rank": 13
     },
     {
       "id": "D3",
       "gate": "dates.build_end",
       "at": "2026-11-10T07:59:00Z",
-      "hours_to": -216.85,
+      "hours_to": -229.64,
       "rank": 14
     },
     {
       "id": "D3",
       "gate": "dates.deadline",
       "at": "2026-11-10T07:59:00Z",
-      "hours_to": -216.85,
+      "hours_to": -229.64,
       "rank": 15
     },
     {
       "id": "D3",
       "gate": "dates.winners_at",
       "at": "2026-11-13T00:00:00Z",
-      "hours_to": -152.84,
+      "hours_to": -165.63,
       "rank": 16
     },
     {
       "id": "C12",
       "gate": "dates.preliminary_due",
       "at": "2026-11-16T07:45:00Z",
-      "hours_to": -73.09,
+      "hours_to": -85.88,
       "rank": 17
     },
     {
       "id": "D5",
       "gate": "dates.build_start",
       "at": "2026-11-17T17:00:00Z",
-      "hours_to": -39.84,
+      "hours_to": -52.63,
       "rank": 18
     },
     {
       "id": "D5",
       "gate": "dates.submissions_open",
       "at": "2026-11-17T17:00:00Z",
-      "hours_to": -39.84,
+      "hours_to": -52.63,
       "rank": 19
     },
     {
       "id": "D5",
       "gate": "dates.build_end",
       "at": "2026-11-19T20:00:00Z",
-      "hours_to": 11.16,
+      "hours_to": -1.63,
       "rank": 20
     },
     {
       "id": "D5",
       "gate": "dates.deadline",
       "at": "2026-11-19T20:00:00Z",
-      "hours_to": 11.16,
+      "hours_to": -1.63,
       "rank": 21
     },
     {
       "id": "D5",
       "gate": "dates.winners_at",
       "at": "2026-11-20T19:30:00Z",
-      "hours_to": 34.66,
+      "hours_to": 21.87,
       "rank": 22
     },
     {
       "id": "C12",
       "gate": "dates.finalists_announced",
       "at": "2026-11-21T00:00:00Z",
-      "hours_to": 39.16,
+      "hours_to": 26.37,
       "rank": 23
     },
     {
       "id": "C14",
       "gate": "dates.initial_proposal_due",
       "at": "2026-11-21T07:59:00Z",
-      "hours_to": 47.15,
+      "hours_to": 34.36,
       "rank": 24
     },
     {
       "id": "C13",
       "gate": "dates.proposal_due",
       "at": "2026-11-21T11:59:00Z",
-      "hours_to": 51.15,
+      "hours_to": 38.36,
       "rank": 25
     },
     {
       "id": "C12",
       "gate": "dates.final_due",
       "at": "2026-12-01T07:45:00Z",
-      "hours_to": 286.91,
+      "hours_to": 274.12,
       "rank": 26
     },
     {
       "id": "C11",
       "gate": "deadline",
       "at": "2026-12-01T19:00:00Z",
-      "hours_to": 298.16,
+      "hours_to": 285.37,
       "rank": 27
     },
     {
       "id": "D4",
       "gate": "dates.build_end",
       "at": "2026-12-04T22:00:00Z",
-      "hours_to": 373.16,
+      "hours_to": 360.37,
       "rank": 28
     },
     {
       "id": "D4",
       "gate": "dates.deadline",
       "at": "2026-12-04T22:00:00Z",
-      "hours_to": 373.16,
+      "hours_to": 360.37,
       "rank": 29
     },
     {
       "id": "D4",
       "gate": "dates.reg_close",
       "at": "2026-12-04T22:00:00Z",
-      "hours_to": 373.16,
+      "hours_to": 360.37,
       "rank": 30
     },
     {
       "id": "C12",
       "gate": "dates.winners",
       "at": "2026-12-06T00:00:00Z",
-      "hours_to": 399.16,
+      "hours_to": 386.37,
       "rank": 31
     },
     {
       "id": "D4",
       "gate": "dates.judging_end",
       "at": "2027-01-29T21:00:00Z",
-      "hours_to": 1716.16,
+      "hours_to": 1703.37,
       "rank": 32
     },
     {
       "id": "D4",
       "gate": "dates.winners_at",
       "at": "2027-02-03T17:00:00Z",
-      "hours_to": 1832.16,
+      "hours_to": 1819.37,
       "rank": 33
     }
-  ],
-  "stale_checked_at": "2026-11-19T21:01:22Z"
+  ]
 }

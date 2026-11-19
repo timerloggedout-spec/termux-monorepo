@@ -42,7 +42,7 @@ These uploaded packages are **session evidence, not repository SSOT**. They shou
 
 ## External candidate references supplied with this session
 
-- **Loopy API / Loop Library Skill** — describes bounded Observe -> Choose -> Act -> Verify -> Record -> Repeat workflows, explicit terminal states, and run receipts. Candidate adaptation only; no repository adoption is implied.
+- **Loopy API / Loop Library Skill** — its bounded loop schema is adopted as root `LOOPS.md` CYCLE-001, using repository-native controllers, adaptive-wait, and adaptive-feedback-cycle; the supplied JSON remains the design provenance.
 - **Google Jules skill/workflow references** — supplied material describes `skills/<skill-name>/SKILL.md`, issue automation, PR review, test-driven development, and subagent-driven development. Candidate ecosystem evidence only; no external policy is imported automatically.
 
 ## Adoption rule
@@ -54,7 +54,7 @@ Use the smallest repository-native skill that fills the evidence gap. If an exte
 - `termux-mcp-project-steward.skill` → adopted as `.agents/skills/termux-mcp-project-steward/SKILL.md`.
 - `context-relationship-graph_2.skill` → current repository relationship-graph contract.
 - The older duplicate `context-relationship-graph.skill` remains reference-only.
-- Loopy bounded Observe → Choose → Act → Verify → Record → Repeat semantics are adapted into the repository-native WAIT loop.
+- `skill-loopy-api-loop-library-skill.json` → root `LOOPS.md` CYCLE-001; bounded Observe → Choose → Act → Verify → Record → Repeat semantics compose the repository-native WAIT loop.
 - `timerloggedout-spec/Wingman_fork` is pinned at `a6d5cea2d48009b5555e138c8d6b8f620388fb1b` as a reference/customization/template resource.
 
 ## Current operating chain
@@ -73,4 +73,4 @@ Promotion remains downstream of current-SHA task-outcome verification and the re
 | Orchestration contract | treatment schema | `docs/ops/ORCHESTRATION-TREATMENT.schema.json` | source/strategy/wait/retry/evidence/validation contract |
 | Orchestration contract | receipt schema | `docs/ops/ORCHESTRATION-RECEIPT.schema.json` | shared execution-state/outcome/promotion projection |
 
-External loop/framework material remains candidate pattern evidence until explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.
+Adopt external loop/framework patterns after explicit schema mapping, bounded implementation, deterministic validation, evidence capture, and promotion.

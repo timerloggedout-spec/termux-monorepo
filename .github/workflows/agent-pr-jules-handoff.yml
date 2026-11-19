@@ -77,6 +77,10 @@ jobs:
             const initiator=receipt.body.match(/- initiated_by: \*\*([^*]+)\*\*/)?.[1]||source.user?.login||'unknown';
             if(!base||base===pr.head.sha)return;
             const marker=`<!-- agent-pr-jules-mutation:${pr.head.sha} -->`;
-            if(cs.some(c=>c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker))) {\n              try { await github.rest.issues.removeLabel({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,name:'jules-handoff-pending'}); }\n              catch (error) { if (error.status !== 404) throw error; }\n              return;\n            }
+            if(cs.some(c=>c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker))) {
+              try { await github.rest.issues.removeLabel({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,name:'jules-handoff-pending'}); }
+              catch (error) { if (error.status !== 404) throw error; }
+              return;
+            }
             await github.rest.issues.createComment({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,body:[marker,'## Jules handoff cross-check','- state: **MUTATION_OBSERVED**',`- initiated_by: **${initiator}**`,`- baseline_head_sha: \`${base}\``,`- observed_head_sha: \`${pr.head.sha}\``,`- head_actor: **${pr.user?.login||'unknown'}**`,'','Verify fresh exact-SHA gates and independent review before recording VERIFIED.'].join('\n')});
             try { await github.rest.issues.removeLabel({owner:context.repo.owner,repo:context.repo.repo,issue_number:pr.number,name:'jules-handoff-pending'}); }\n            catch (error) { if (error.status !== 404) throw error; }

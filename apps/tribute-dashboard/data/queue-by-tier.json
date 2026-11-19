@@ -1,23 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-19T05:12:33Z",
+ "generated_at": "2026-11-19T05:43:25Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 0,
-   "in_progress": 2,
+   "in_progress": 1,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
   "2": {
    "tier": 2,
-   "queued": 1,
-   "in_progress": 1,
-   "oldest_queued_at": "2026-11-19T05:08:51Z",
-   "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
-   }
+   "queued": 0,
+   "in_progress": 2,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -28,23 +26,15 @@
   },
   "4": {
    "tier": 4,
-   "queued": 32,
-   "in_progress": 15,
-   "oldest_queued_at": "2026-11-19T05:08:25Z",
-   "by_workflow_queued": {
-    "lane events recorder": 17,
-    "Agent Throughput Evidence": 9,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
-    "n8n SHE bridge": 2,
-    "termux smoke": 1,
-    "PR production ledger": 1,
-    "telemetry-ingest": 1
-   }
+   "queued": 0,
+   "in_progress": 11,
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   }
  },
  "totals": {
-  "queued": 33,
-  "in_progress": 18
+  "queued": 0,
+  "in_progress": 14
  },
  "wedged_ancient": [
   {
@@ -202,13 +192,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
+   "1": 1,
    "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 4,
-  "default_t4": 47,
+  "explicit_total": 3,
+  "default_t4": 11,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

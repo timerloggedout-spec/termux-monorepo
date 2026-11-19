@@ -10,10 +10,10 @@ parameterization is `SPEC.md` in this directory.
 **Family placement: `01_Agent_Runtime`.** The template
 parameterizes an agent-runtime capability — a wallet is
 provisioned as part of an agent's runtime spin-up and its
-controls bind at runtime. It is not an infrastructure/deploy
-pattern (`10_`), and it is not a third-party research scaffold
-(`15_`): it is fleet-native, authored from the fleet's own
-MoneyBall design record.
+controls bind at runtime. It is fleet-native, authored from
+the fleet's own MoneyBall design record. It is separate from
+infrastructure/deploy patterns and third-party research
+scaffolds.
 
 **Instantiation in one line:** pick the target lane/agent →
 its spin-up appends a provisioning event to the wallet-ledger
@@ -21,11 +21,21 @@ of record → declare the control parameters as stamped
 snapshots → enable the optional modules the work needs. The
 genesis rule is cited in the spec, never re-derived.
 
+**External comparator registration — MergeEarn:** the owner
+reports prior use of MergeEarn in wallet-template design.
+MergeEarn is registered here as an external bounty/work-funding
+and payout-flow comparator:
+https://github.com/Saidur-droid/MergeEarn
+The referenced upstream PR #76 is a product/contribution
+interaction record, not proof of code adoption or settlement
+correctness. The fleet wallet ledger remains the sole source
+of record for fleet wallet balances and events.
+
 **Hard exclusions (stamped, not optional):** ∅ chain/mainnet
 legs · ∅ key custody · real money is a separate owner gate —
 Solana/mainnet legs stay behind the chain-wiring + key-custody
 rulings. Paper/test rails only; the unit of account is
 `soft_quota_token` (observational).
 
-Sources: see `SOURCE.txt` (moneyball DESIGN §11 ∧
-RESEARCH-6REA7 layered record ∧ SWARMS_WALLET_RESEARCH.md).
+Sources: see `SOURCE.txt` for the internal ledger/spec lineage
+and the registered MergeEarn comparator.

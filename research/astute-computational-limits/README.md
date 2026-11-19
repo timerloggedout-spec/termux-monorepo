@@ -31,6 +31,16 @@ The linked video introduces a black-hole-computer thought experiment through:
 
 The video is an explanatory entry point. Primary papers and current reviews govern scientific claims. Numerical claims in the video remain candidates for independent derivation and unit checking.
 
+## Platform registration
+
+This thought experiment is the first registered project in the shared [Research Astute platform](../astute-platform/README.md). Its manifest, normalized typed graph, source registry, and alternate path set provide the initial platform integration:
+
+- [Experiment manifest](experiment.json)
+- [Normalized prerequisite graph](graphs/ucl-prerequisite-v1.json)
+- [Source registry](sources.json)
+- [Alternate path hypotheses](paths/ucl-alternate-paths-v1.json)
+- [Shared graph and path interaction contract](../astute-platform/visualization/INTERACTION-CONTRACT.md)
+
 ## Research files
 
 | File | Purpose |

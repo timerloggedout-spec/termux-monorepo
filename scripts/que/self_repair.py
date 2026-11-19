@@ -260,7 +260,11 @@ def failing_groups(gh: GH, window_h: int, max_groups: int = 8) -> list[dict]:
     for r in runs.get("workflow_runs", []):
         groups.setdefault(r.get("path") or r["name"], []).append(r)
     out = []
-    for path, rs in groups.items():
+    ordered_groups = sorted(
+        groups.items(),
+        key=lambda pair: (Path(pair[0]).name not in BRANCH_GATES, -len(pair[1]))
+    )[:max_groups]
+    for path, rs in ordered_groups:
         latest = max(rs, key=lambda r: r["created_at"])
         room = owner_room(latest["name"], path)
         step, message = "", ""

@@ -4,6 +4,8 @@ This directory defines the additive, versioned exchange boundary for PolyGlot sp
 
 ## Contract set
 
+- `scripts/polyglot/build_feed.py`: deterministic content-addressed feed builder.
+
 - `schemas/capability.schema.json`: technology-neutral capability identity and semantics.
 - `schemas/technology-target.schema.json`: reference technology and upstream provenance.
 - `schemas/mapping.schema.json`: Linguist mapping and conformance coverage.
@@ -27,6 +29,7 @@ Run:
 
 ```sh
 python3 scripts/polyglot/validate_federation.py
+python3 scripts/polyglot/build_feed.py --repository timerloggedout-spec/termux-monorepo --revision <commit-sha> --generated-at 2026-11-19T00:00:00Z --output build/polyglot-feed.json
 python3 -m unittest discover -s tests -p 'test_polyglot_federation.py' -v
 ```
 

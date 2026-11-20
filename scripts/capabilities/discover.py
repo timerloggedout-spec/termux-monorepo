@@ -289,20 +289,27 @@ def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
         identity = item.get("id")
         if not identity:
             continue
-        name = item.get("name") or item.get("slug") or identity
-        source = item.get("source") or item.get("_curated_owner") or ""
+        raw_name = item.get("name") or item.get("slug") or identity
+        raw_source = item.get("source") or item.get("_curated_owner") or ""
+        raw_detail_url = item.get("url") or ""
+        raw_install_url = item.get("installUrl") or ""
+        raw_metadata = json.dumps(item, sort_keys=True, separators=(",", ":"))
+        quarantined = bool(SECRET_RE.search(raw_metadata))
+        safe_identity = redact_sensitive(str(identity))
+        name = redact_sensitive(str(raw_name))
+        source = redact_sensitive(str(raw_source))
+        detail_url = redact_sensitive(str(raw_detail_url))
+        install_url = redact_sensitive(str(raw_install_url))
         installs = item.get("installs")
         duplicate = bool(item.get("isDuplicate", False))
-        detail_url = item.get("url") or ""
-        install_url = item.get("installUrl") or ""
-        description = (
+        description = redact_sensitive(
             f"skills.sh candidate; source={source}; installs={installs}; "
             f"duplicate={duplicate}; searchType={search_type}; "
             f"url={detail_url}; install={install_url}"
         )
-        metadata = json.dumps(item, sort_keys=True, separators=(",", ":")).encode()
+        metadata = raw_metadata.encode()
         rows.append({
-            "id": "skills-sh:" + identity,
+            "id": "skills-sh:" + safe_identity,
             "kind": "skill",
             "source_id": "skills-sh",
             "locator": detail_url or identity,
@@ -313,12 +320,12 @@ def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
             "domain": "agentic",
             "function": "skill-discovery",
             "facets": ["external", "skill", "vendor" if source else "community"],
-            "trust": "community-reference",
+            "trust": "quarantined" if quarantined else "community-reference",
             "lifecycle": "discovered",
             "version_ref": item.get("hash"),
             "aliases": [],
             "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((query + " " + str(name) + " " + source).lower())))[:80],
+            "tags": sorted(set(TOKEN_RE.findall((query + " " + name + " " + source).lower())))[:80],
         })
     return rows, "ok"
 

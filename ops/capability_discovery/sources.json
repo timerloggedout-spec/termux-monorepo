@@ -35,6 +35,15 @@
       "import_mode": "metadata-only"
     },
     {
+      "id": "repo-plugin-manifests",
+      "kind": "repository-plugin-tool-manifest",
+      "locator": "**/plugin.json, **/marketplace.json, **/.mcp.json, **/mcp.json, **/tools.json, **/tool-manifest.json",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Index manifest names, descriptions, versions and entry counts only. Keep MCP server configs, tool schemas, endpoints and credentials in their owning source; hydrate selected manifest/schema only after permission review."
+    },
+    {
       "id": "repo-vendor-skills",
       "kind": "repository",
       "locator": "vendor/**/SKILL.md, vendor/**/SKILLS.md, vendor/**/*.skill",

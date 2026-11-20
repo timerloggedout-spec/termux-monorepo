@@ -10,4 +10,4 @@ Optional free-form notes. Prefer short bullets. Binding decisions → VOTES.md +
 ### 2026-09-23 — extract onto master
 
 - PR #69 stayed dirty on `feature/proposal-vote-promote`.
-- Dock files extracted onto live master without touching deprecated AGENTS.md.
+- Dock files extracted onto live master without touching the retired generic guidance file.

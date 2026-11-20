@@ -3,7 +3,8 @@
  "calendar_binding": {
   "forecast_rule": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) — calendar anchors are DATA ON THE SUBJECT, not a new participant class",
   "register": "deadline-reminders/v1 (~/workspace/tracking/deadline-reminders-register.json, Tracking lane d6c12f3a; primary calendar, America/Los_Angeles)",
-  "scheme": "A CUSHION-3d · B CUSHION/landing · C WALL-day · D ESCALATION (wall-4h) · E FINAL (wall-30m); anchors carry {cushion[], landing, wall, final} mapped from the register stages per subject"
+  "scheme": "A CUSHION-3d · B CUSHION/landing · C WALL-day · D ESCALATION (wall-4h) · E FINAL (wall-30m); anchors carry {cushion[], landing, wall, final} mapped from the register stages per subject",
+  "provisional_timebox_note": "C18/C19 desk-feed priority_timebox values are operational escalation projections derived from official Devpost walls; they remain separate from deadline-reminders/v1 calendar anchors. Subject anchors stay null until Tracking register items are bound."
  },
  "conformity": {
   "B1_one_record_per_subject": "each subject carries exactly ONE expectation record (Bayesian shape); positions cite the subject record; no per-position re-estimates, no parallel numbers on views/ledger lines",
@@ -38,7 +39,7 @@
  "priority_timebox_linkage": {
   "checkpoint_rule": "at each tier boundary for a subject: (1) review/revise its ONE expectation record — evidence legs appended, posterior updated per B1 (no parallel numbers); (2) first entries open at a checkpoint only with basis cited per B2 + the subject record cited; (3) settlement still ONLY from record_of_record at knowable (B3), tiers never settle",
   "relation": "the book subjects are the same slate viewed as stakes; the desk-feed tier boundaries are this book expectation checkpoints",
-  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 7 traversals carry it, walls match this book subjects)",
+  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 9 traversals carry it; C18/C19 desk-feed timeboxes are official-wall projections pending Tracking register binding, walls match this book subjects)",
   "tier_anchor_map": {
    "BASE": "window open — before the first cushion anchor",
    "CUSHION": "subject anchors.cushion (register stages A/B)",
@@ -68,7 +69,7 @@
      }
     ],
     "posterior": {
-     "value": 1.0,
+     "value": 1,
      "range": [
       1,
       1
@@ -983,11 +984,19 @@
    "anchors": null,
    "anchors_note": "NOT_ESTABLISHED — no register item for C12 (register built 2026-11-02; C12 graduated 2026-11-03); buffer landing Nov 14 per manager",
    "expectation_record": {
-    "evidence": [],
+    "evidence": [
+     {
+      "ref": "Authenticated Devpost project and event membership record, observed 2026-11-20",
+      "note": "Receipts Vault is published; submitted_at 2026-11-16T01:16:33.300-05:00 (Nov 15 22:16:33 PT), before the Nov 15 23:45 PT Round 1 wall."
+     }
+    ],
     "posterior": {
-     "n_evidence": 0,
-     "range": null,
-     "value": null
+     "value": 1,
+     "range": [
+      1,
+      1
+     ],
+     "n_evidence": 1
     },
     "prior": {
      "basis": null,
@@ -998,11 +1007,11 @@
    "group": "C12 (graduated 2026-11-03)",
    "id": "C12-24-r1-submission",
    "knowable": "2026-11-15",
-   "record_of_record": "coordinator + C12 record",
+   "record_of_record": "Devpost project record + event membership submission timestamp",
    "settle": {
-    "field": "place earned / official outcome",
-    "source": "coordinator + C12 record",
-    "value": null
+    "field": "R1 submission landed by wall",
+    "source": "Devpost project record + event membership submitted_at; registration snapshot ops/challenge/devpost-registration-snapshot.json",
+    "value": "Y — SUBMITTED-PUBLISHED 2026-11-16T01:16:33.300-05:00 · confirmation_ref https://devpost.com/software/receipts-vault"
    },
    "subject": "R1 submission landed by wall Nov 15 23:45 PT {Y/N}",
    "window": {
@@ -1529,9 +1538,73 @@
     "window_start_basis": "book listing (intake) date",
     "wall": "2026-12-31T23:59:59-08:00"
    }
+  },
+  {
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no deadline-reminders/v1 Tracking register item is bound. Desk-feed priority_timebox is an internal escalation projection from the official Devpost wall, not an external calendar reminder; landing/final calendar anchors remain unbound.",
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": null
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "group": "C18 Cloud9 × JetBrains (registered 2026-11-20)",
+   "id": "C18-27-submission-landed",
+   "knowable": "2027-01-12T11:00:00-08:00",
+   "record_of_record": "Devpost official project submission record",
+   "settle": {
+    "field": "submission published by official deadline",
+    "source": "Devpost official project submission record",
+    "value": null
+   },
+   "subject": "Cloud9 × JetBrains project submitted by Jan 12, 2027 11:00 AM PST wall {Y/N}",
+   "window": {
+    "window_start": "2026-11-17T11:00:00-08:00",
+    "window_start_basis": "official Devpost submissions-open instant; exact registration join instant unavailable",
+    "wall": "2027-01-12T11:00:00-08:00"
+   }
+  },
+  {
+   "anchors": null,
+   "anchors_note": "NOT_ESTABLISHED — no deadline-reminders/v1 Tracking register item is bound. Desk-feed priority_timebox is an internal escalation projection from the official Devpost wall, not an external calendar reminder; landing/final calendar anchors remain unbound.",
+   "expectation_record": {
+    "quantity": "P(subject resolves Y)",
+    "prior": {
+     "value": null,
+     "basis": null
+    },
+    "evidence": [],
+    "posterior": {
+     "value": null,
+     "range": null,
+     "n_evidence": 0
+    }
+   },
+   "group": "C19 Learn AR with SPECS (registered 2026-11-20)",
+   "id": "C19-28-submission-landed",
+   "knowable": "2026-12-07T14:00:00-08:00",
+   "record_of_record": "Devpost official project submission record",
+   "settle": {
+    "field": "submission published by official deadline",
+    "source": "Devpost official project submission record",
+    "value": null
+   },
+   "subject": "Learn AR with SPECS project submitted by Dec 7, 2026 2:00 PM PST wall {Y/N}",
+   "window": {
+    "window_start": "2026-11-10T09:00:00-08:00",
+    "window_start_basis": "official Devpost submissions-open instant; exact registration join instant unavailable",
+    "wall": "2026-12-07T14:00:00-08:00"
+   }
   }
  ],
- "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 — subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26) + Speculators card-performance addition (owner eligibility ruling 2026-11-03 via Web3 seat; moneyball DESIGN section 10 PR #16: speculators = first-class speculation subjects; 12 configured instances of campaign token-strategies-1 per WALLETS.json PR #4640; RoR = campaign run records)",
+ "subjects_source": "challenge-entries-manager (9cb1c873) authoritative list 2026-11-02 — subject, settles-by, knowable; walls/landings per buffer rule; placement dates unpublished = NOT_ESTABLISHED + C12 addition (challenge-entries-manager 2026-11-03: subjects 24-26) + Speculators card-performance addition (owner eligibility ruling 2026-11-03 via Web3 seat; moneyball DESIGN section 10 PR #16: speculators = first-class speculation subjects; 12 configured instances of campaign token-strategies-1 per WALLETS.json PR #4640; RoR = campaign run records) + Devpost registrations C18 (Cloud9 × JetBrains) and C19 (Learn AR with SPECS), observed 2026-11-20; official submission windows recorded; Tracking anchors remain NOT_ESTABLISHED until register items are bound",
  "window_note": "window anchors (owner Gantt build via main 2026-11-03): every subject carries {window_start, window_start_basis, wall}. Starts are the earliest honest date of record (register stage A/B anchor, or intake/graduation date where no register item exists) — never invented. pct_consumed/pct_remaining are computed at FEED build time in book-feed.json (computed_at stamped), never hand-entered, and never in the book itself.",
  "positions": [
   {
@@ -1656,6 +1729,14 @@
    "value": "Y — SUBMITTED-PUBLISHED 2026-11-03T10:01:00-08:00 · confirmation_ref https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint",
    "settled_at": "2026-11-03",
    "source": "record of record: entries confirmation_ref + coordinator record (ops/challenge/coordinator.json @master, stamped PR #4658 merged aea6201d87ed; content of record = corrected version, D1 re-read PASS 2026-11-03 10:56 PT)",
+   "positions_affected": "none open on this subject"
+  },
+  {
+   "subject_id": "C12-24-r1-submission",
+   "outcome": "Y",
+   "value": "Y — SUBMITTED-PUBLISHED 2026-11-16T01:16:33.300-05:00 · confirmation_ref https://devpost.com/software/receipts-vault",
+   "settled_at": "2026-11-15",
+   "source": "Devpost project record + event membership submitted_at; registration snapshot ops/challenge/devpost-registration-snapshot.json",
    "positions_affected": "none open on this subject"
   }
  ]

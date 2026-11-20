@@ -118,7 +118,11 @@
     "docs/ops/TOOL-ACQUISITION-ROUTES.md",
     "docs/ops/AGENT-SUBSTRATE-ACTIVATION.md",
     "docs/ops/MVT-DOE-ATES-SEPARATION.md",
-    "docs/ops/AGENT-THROUGHPUT-PHASE-B.md"
+    "docs/ops/AGENT-THROUGHPUT-PHASE-B.md",
+    "scripts/dashboards/surface_feeds.py",
+    "apps/tribute-dashboard/doe.html",
+    "tests/test_surface_feeds.py",
+    "docs/ops/DASHBOARD-SURFACE-FEEDS.md"
   ],
   "automation": {
     "status": "not_implemented",
@@ -136,7 +140,8 @@
     "docs/ops/ORCHESTRATION-CONTRACTS.md",
     "docs/ops/MVT-DOE-ATES-SEPARATION.md",
     "docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md",
-    "docs/ops/SECRET-NAMING-CONVENTION.md"
+    "docs/ops/SECRET-NAMING-CONVENTION.md",
+    "docs/ops/DASHBOARD-SURFACE-FEEDS.md"
   ],
   "provenance": "Session tool/skill snapshots captured 2026-11-19. Re-capture before any experiment dispatch and bind the exact catalog hashes in the run records.",
   "constraints": [
@@ -185,5 +190,8 @@
     "reviewer_composition",
     "agent_specialization"
   ],
-  "efficiency_policy_ref": "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md#offload-and-efficiency-policy"
+  "efficiency_policy_ref": "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md#offload-and-efficiency-policy",
+  "generated_outputs": [
+    "apps/tribute-dashboard/data/doe-feed.json"
+  ]
 }

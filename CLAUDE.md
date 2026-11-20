@@ -2,9 +2,9 @@
 
 **Primary Collaborator entry for this repository.** Load this first.
 
-Root `AGENTS.md` is **deprecated** (Linguist / CedrLang / Jules compression stub only). Do not start from it. All hard rules and routing live here and in the governance sequence below.
+Repository governance and hard rules live in this file and the governance sequence below.
 
-Collaborators are addressed by **Role**, **Name**, and **Moniker** — not by a generic `AGENTS.md` catalog.
+Collaborators are addressed by **Role**, **Name**, and **Moniker**.
 
 ## Posture — Fully Automated Agentic Development Environment (FA-ADE)
 
@@ -107,7 +107,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | FA-ADE / auto-promote | `docs/ops/REFTEMPLATES-CONSOLIDATION.md` |
 | Session SSOT schema | `docs/schemas/session-ssot.md` |
 | Provider caps | `docs/schemas/provider-capabilities.md` |
-| Linguist / CedrLang / Jules stub only | `AGENTS.md` (deprecated redirect) |
+| Linguist / CedrLang reference | `CLAUDE.hum.md` |
 
 ## ICM + RinDig reference pins (smods)
 
@@ -132,7 +132,7 @@ Credential rotation and history rewrite require Operator (human) authorization. 
 **Style:** BIUDL · Continuous Fully Automated Agentic Development (FA-ADE) · agent auto-promote on dual-gate + task outcome · adaptive-wait · evidence-led
 **Status change (2026-09-24):** FA-ADE realign — agents execute to completion; dual-gate is automated evidence; HITL only on AGENTIC-PERMISSIONS edges.
 **Status change (2026-09-25):** Collaborator / Role / Name / Moniker vocabulary affirmed; dependency-phase nav + #184 Projects note linked from `docs/agentic/`.
-**Prior (2026-09-21):** Root `AGENTS.md` folded into this file and marked deprecated.
+**Prior (2026-09-21):** Repository governance consolidated into this file.
 
 ## Tool acquisition routes (owner, 2026-11-01)
 

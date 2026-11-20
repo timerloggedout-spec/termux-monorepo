@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-20T04:10:41Z)
+# Lane matrix status (2026-11-20T04:11:59Z)
 
-- Master: `207f40ec4364fc78c35c1788226591cb603026a6`
+- Master: `eecd557420b97a2bf0047d5966ef31865ee9dd23`
 - Open PRs: **480**
 - Oldest: #47 (106.52d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -45,15 +45,15 @@
 | #1495 | 29.07 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
 | #1513 | 28.83 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 28.83 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
-| #1516 | 28.82 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
-| #1531 | 28.81 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
+| #1516 | 28.83 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
+| #1531 | 28.82 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
 | #1537 | 28.8 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 28.13 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 27.05 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 27.04 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 27.04 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 26.92 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
-| #1645 | 26.15 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
+| #1645 | 26.16 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
 | #1650 | 26.08 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
 | #1694 | 24.11 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 23.7 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |

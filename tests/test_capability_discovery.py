@@ -111,7 +111,11 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             changed_taxonomy = {**rows[0], "taxonomy_sha256": "a" * 64}
             reclassified = upsert(con, [changed_taxonomy])
             self.assertEqual(reclassified["changed"], 1)
-            event = con.execute("SELECT event FROM discovery_event ORDER BY recorded_at DESC LIMIT 1").fetchone()
+            event = con.execute("SELECT event FROM discovery_event ORDER BY rowid DESC LIMIT 1").fetchone()
+            self.assertEqual(event[0], "reclassified")
+            trust_change = {**changed_taxonomy, "trust": "quarantined"}
+            upsert(con, [trust_change])
+            event = con.execute("SELECT event FROM discovery_event ORDER BY rowid DESC LIMIT 1").fetchone()
             self.assertEqual(event[0], "reclassified")
 
     def test_quarantined_records_are_hidden_from_default_search(self):

@@ -62,7 +62,7 @@ jobs:
           echo "selected_specialist=$(jq -r '.selected_specialist // empty' route.json)" >> "$GITHUB_OUTPUT"
           echo "manager_policy=$(jq -r '.manager_policy' route.json)" >> "$GITHUB_OUTPUT"
           if [ "$APPLY" = "true" ] && [ -z "$(jq -r '.selected_specialist // empty' route.json)" ]; then
-            echo "No available execution adapter for the manager-approved route." >&2
+            echo "The manager-approved route has zero available execution adapters." >&2
             exit 1
           fi
 

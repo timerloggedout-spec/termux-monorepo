@@ -421,7 +421,7 @@ triggered the apps.
 
 | Job | Primary | Peers / backup | Saturated? |
 |---|---|---|---|
-| Coding (write code) | Evidence-driven active provider pool in `docs/schemas/agent-roster.yaml` | Tembo, Mistral Vibe, Gemini, OpenRouter and other candidates subject to adapter readiness | Google Jules is retired; local role skills do not act as an execution provider |
+| Coding (write code) | Evidence-driven active provider pool in `docs/schemas/agent-roster.yaml` | Tembo, Mistral Vibe, Gemini, OpenRouter and other candidates subject to adapter readiness | Google Jules is retired; local role skills supply guidance while execution uses separate live adapters |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
 | CI / checks | GitHub Actions (201 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only), github-advanced-security CodeQL suites (new 2026-10-23, code scanning) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |

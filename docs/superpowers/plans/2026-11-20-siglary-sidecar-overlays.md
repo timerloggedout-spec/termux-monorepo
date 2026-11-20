@@ -14,7 +14,7 @@
 **Work**
 - Add NSE-021 with the bounded ICM/LLM Markdown and syntax-aware code-comment scope.
 - Link NSE-020, ICM-08, DoE family, and MVT/ATES separation.
-- Record historical migration commits and the current CLAUDE projection drift as an inventory finding.
+- Record historical migration commits and classify each current CLAUDE/AGENTS path relationship explicitly; preserve README-declared root roles.
 
 **Verification**
 - Run proposal registry validation and item/manifest consistency checks.
@@ -29,7 +29,7 @@
 **Work**
 - Enumerate all `docs/icm/**/*.md` and `workspace/llm_map/**/*.md` paths.
 - Classify canonical, generated, historical/sealed, captured, stale, and excluded content.
-- Trace all current and historical `CLAUDE.md`, `CLAUDE.hum.md`, `AGENTS.md`, and `AGENTS.hum.md` paths through Git history.
+- Trace all current and historical `CLAUDE.md`, `CLAUDE.hum.md`, `AGENTS.md`, and `AGENTS.hum.md` paths through Git history. Classify each relationship as direct projection, compatibility alias, historical rename, or independent entry.
 - Record aliases, rename commits, source/projection hashes, renderer version, and fixture IDs.
 - Discover code-comment files through authoritative ICM/LLM source references, then inventory parser-supported comment nodes.
 

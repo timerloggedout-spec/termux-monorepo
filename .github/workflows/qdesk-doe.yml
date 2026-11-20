@@ -1,0 +1,12 @@
+name: QDesk DOE Workflow
+on:
+  push:
+    branches: [quota-upgrade]
+jobs:
+  doe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run DOE placeholder
+        run: |
+          echo "Running DOE workflow placeholder"

@@ -6,7 +6,7 @@
 Playground UI (`aistudio.google.com`), signed in as the owner account,
 `No API key selected` throughout — UI-free use, ∅ key creation,
 ∅ billing setup · **Contributor moniker:** `geminiMesh`
-(AGENT-MONIKERS.md, non-callable display) · **Target brief:**
+(COLLABORATOR-MONIKERS.md, non-callable display) · **Target brief:**
 #1802 google-ai-studio · **Method:** Delphi — 2 independent panelists,
 identical brief, no cross-read; synthesis = this file.
 

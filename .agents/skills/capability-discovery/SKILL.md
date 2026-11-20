@@ -38,7 +38,7 @@ Optional session exports are metadata-only inputs: `--plugin-skills-json` and `-
 - Keep local canonical skills, external candidates, session-observed plugins and tool actions in distinct trust classes.
 - Keep vendor and community packages quarantined until source and permission review.
 - Require explicit approval before installation, credential provisioning, write-capable tool use, scheduling, publishing or external communication.
-- Never store credentials, raw private prompts, full completions, or complete tool schemas in the index.
+- Store metadata only; exclude credentials, raw private prompts, full completions and complete tool schemas from the index.
 - Treat a catalog result as a lead; require source inspection, version pinning, deterministic evaluation and independent validation before adoption.
 - Keep skill quality, TDQS, runtime effectiveness and integrated outcomes as separate measurements.
 

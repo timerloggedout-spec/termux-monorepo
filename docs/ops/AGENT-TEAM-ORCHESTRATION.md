@@ -112,7 +112,7 @@ The intended behavior is cooperative orchestration:
 6. integrate once
 7. escalate only when the team lacks a needed capability
 
-"Fallback" should not mean a permanent hierarchy such as Gemini-primary → OpenRouter-secondary → Jules. It should mean **dynamic recovery from unavailable capacity or an unmet capability**.
+"Fallback" means **dynamic recovery from unavailable capacity or an unmet capability** across the current provider pool; the manager re-evaluates readiness and policy for each admission.
 
 The conductor must prevent duplicate work, conflicting writers, stale-SHA work, needless parallel prompt consumption, and quota waste.
 

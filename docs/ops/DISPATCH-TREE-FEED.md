@@ -24,7 +24,7 @@ PR #1815).
   `.github/workflows/quota-dispatch-tree.yml`, whether the rule is
   admission-gated (`!paused`), its lane-age staleness threshold where the
   workflow defines one (refresh 75m, pair 150m, execute 300m, assist
-  450m, q6 dynamic — see below), the measured age the tree itself would
+  450m, reconciliation 75m, context backfill 75m, q6 dynamic — see below), the measured age the tree itself would
   use, latest + recent runs, and `due_at_read` (`null` for phase-only
   lanes — no staleness threshold exists to be due against).
 - **`admission`** — Node A: the guard threshold (6, parsed from the
@@ -75,6 +75,16 @@ Carried in the feed itself (`honesty_rules`); the load-bearing ones:
   success on observed runs, and the REST endpoint answers — but anon
   SELECT returns no rows (insert-only RLS, per the workflow's own
   comment), so row contents are not a feed source.
+
+## Hourly reconciliation recovery
+
+`reconciliation-engine` and `context-relationship-backfill` each have an
+independent 75-minute staleness threshold. The dispatcher measures each
+workflow's own latest run. A queued or in-progress latest run counts as fresh
+to prevent duplicate wakeups; missing or unreadable history is treated as
+stale and remains subject to lane/global admission. Each workflow therefore
+recovers independently after schedule jitter, while the weekly bounded full
+refresh remains a separate anti-entropy pass.
 
 ## The q6 dynamic threshold
 

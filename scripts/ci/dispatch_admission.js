@@ -64,9 +64,10 @@ const OUTPUT_LANES = {
   dispatch_hourly: [
     'merge-promotion-queue-v3', 'agent-continuous-ops',
     'cellcog-engineering-health', 'issue-observatory',
-    'reconciliation-engine', 'historical-evaluation-correlation',
-    'vercel-batch-deploy', 'context-relationship-backfill',
+    'historical-evaluation-correlation', 'vercel-batch-deploy',
   ],
+  dispatch_reconciliation: ['reconciliation-engine'],
+  dispatch_context_backfill: ['context-relationship-backfill'],
   dispatch_repochange: [
     'automation-docs-continuous-refresh', 'context-relationship-audit',
   ],
@@ -82,6 +83,16 @@ const OUTPUT_LANES = {
 
 const GATED_OUTPUTS = Object.keys(OUTPUT_LANES);
 const MANAGED_WORKFLOWS = [...new Set(Object.values(OUTPUT_LANES).flat())];
+
+// Latest active runs suppress duplicate dispatch. Missing history is stale so
+// a never-run lane receives its first scheduled opportunity.
+function workflowAgeMinutes(latestRun, nowMs = Date.now()) {
+  if (!latestRun) return 1e9;
+  if (latestRun.status !== 'completed') return 0;
+  const completedAt = Date.parse(latestRun.updated_at || latestRun.created_at || '');
+  if (!Number.isFinite(completedAt)) return 1e9;
+  return Math.max(0, (nowMs - completedAt) / 60000);
+}
 
 function laneCap(workflowBase) {
   return CLASS_CAPS[LANE_CLASSES[workflowBase] || 'standard'];
@@ -164,5 +175,5 @@ function evaluateAdmission(input) {
 
 module.exports = {
   CLASS_CAPS, GLOBAL_CAP, STALE_FACTOR, LANE_CLASSES, OUTPUT_LANES,
-  GATED_OUTPUTS, MANAGED_WORKFLOWS, laneCap, bucketRuns, evaluateAdmission,
+  GATED_OUTPUTS, MANAGED_WORKFLOWS, laneCap, workflowAgeMinutes, bucketRuns, evaluateAdmission,
 };

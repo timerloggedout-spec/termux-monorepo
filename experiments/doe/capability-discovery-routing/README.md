@@ -1,7 +1,7 @@
 # Capability Discovery Routing — design-only DoE candidate
 
 **Campaign:** `capability-discovery-routing`  
-**State:** proposal-only / not admitted  
+**State:** proposal-only / admission pending  
 **Design:** [DESIGN.json](DESIGN.json)  
 **DoE matrix:** [dimensions 41–48](../../../docs/ops/DOE-QUESTIONS-MATRIX.md)  
 **Capability contract:** [discovery and activation](../../../docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md)
@@ -24,4 +24,4 @@ Eight fixed tasks × eight arms = 64 planned observations, blocked by task famil
 
 Each executed run emits one record under `docs/ops/corpus/EXPERIMENT.schema.json`. Pin the configured instance, base/candidate SHAs, catalog hashes, task cohort, evaluator and assignment. Preserve failed, blocked, missing and partial observations.
 
-The indexer and CI evidence build are implementation work. They do not dispatch this campaign. External catalog calls require their own configured credentials and approved budget. Installation, write actions and production promotion remain outside the discovery experiment.
+The indexer and CI evidence build remain separate from campaign dispatch. External catalog calls require their own configured credentials and approved budget. Installation, write actions and production promotion remain outside the discovery experiment.

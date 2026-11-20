@@ -246,6 +246,90 @@
       "reference_urls": [
         "https://github.com/github/awesome-copilot"
       ]
+    },
+    {
+      "id": "anthropic-official-plugins",
+      "kind": "vendor-plugin-marketplace",
+      "locator": "https://github.com/anthropics/claude-plugins-official",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Anthropic-owned plugins only; repository README says third-party marketplace submissions are moving to claude.ai/directory/manage and warns that plugins may include MCP servers/files/software Anthropic does not control. Verify plugin provenance and permissions.",
+      "reference_urls": [
+        "https://github.com/anthropics/claude-plugins-official"
+      ]
+    },
+    {
+      "id": "anthropic-knowledge-work-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/anthropics/knowledge-work-plugins",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Role-oriented plugins bundle skills, connectors, slash commands and subagents. Inspect connector scopes and role-specific workflow instructions.",
+      "reference_urls": [
+        "https://github.com/anthropics/knowledge-work-plugins"
+      ]
+    },
+    {
+      "id": "google-agents-cli",
+      "kind": "vendor-cli-skill-repository",
+      "locator": "https://github.com/google/agents-cli",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Google CLI and skills for building/evaluating agents on the Gemini platform.",
+      "reference_urls": [
+        "https://github.com/google/agents-cli"
+      ]
+    },
+    {
+      "id": "google-gemini-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/google-gemini/gemini-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Gemini API, SDK and model-interaction skills; inspect evaluation claims against task-specific independent fixtures.",
+      "reference_urls": [
+        "https://github.com/google-gemini/gemini-skills"
+      ]
+    },
+    {
+      "id": "microsoft-azure-skills-plugin",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/microsoft/azure-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Azure skills plugin combines skill guidance and MCP-backed execution; inspect the tool scopes and environment before authorizing actions.",
+      "reference_urls": [
+        "https://github.com/microsoft/azure-skills"
+      ]
+    },
+    {
+      "id": "microsoft-power-platform-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/microsoft/power-platform-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Power Platform plugins include build, update and publish workflows. Preserve preview/approval boundaries before environment mutations.",
+      "reference_urls": [
+        "https://github.com/microsoft/power-platform-skills"
+      ]
+    },
+    {
+      "id": "aws-agent-toolkit",
+      "kind": "vendor-agent-toolkit",
+      "locator": "https://github.com/aws/agent-toolkit-for-aws",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "AWS agent toolkit supplies tools, knowledge and guardrails for AWS build/deploy/manage workflows; review IAM and account scopes before enabling write actions.",
+      "reference_urls": [
+        "https://github.com/aws/agent-toolkit-for-aws"
+      ]
     }
   ]
 }

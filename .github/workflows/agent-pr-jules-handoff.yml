@@ -74,6 +74,7 @@ jobs:
                 '- source_comment_id: ' + id,
                 '- local_role_guidance: .agents/skills/jules-doe-role-adapter/SKILL.md',
                 '- role_register: docs/ops/DOE-ROLES-EPOCH-2026-11-03.md',
+                '- active_provider_roster: docs/schemas/agent-roster.yaml',
                 '',
                 'This receipt records the legacy request. Route implementation through the active provider roster and a verified adapter; preserve independent exact-head review before completion.',
               ].join('\n'),

@@ -69,7 +69,7 @@ The SQLite database uses FTS5 when available and a LIKE fallback otherwise. Skil
 
 The source registry declares local, vendor, external-catalog and session-snapshot sources. It records the ingestion mode and auth constraints.
 
-- **skills.sh** exposes paginated leaderboard, fuzzy/semantic search, curated vendor skills, detail/file-tree and partner security-audit endpoints. Search accepts `q` (minimum two characters) and `limit` (1–200); multiword queries use semantic search. The API uses Vercel OIDC bearer authentication, with a documented 600 requests/minute per team/project limit. Detail records include a stable ID and content hash; use that hash for cache invalidation. Audit returns partner results from Gen Agent Trust Hub, Socket, Snyk, Runlayer and ZeroLeaks; a 404 means no audit is available yet. The documented CLI install form is `npx skills add <owner/repo>`; its anonymous telemetry includes skill name, skill files and timestamp by default, with `DISABLE_TELEMETRY=1` as opt-out. Search/audit before install; popularity is not a security review. ([API](https://www.skills.sh/docs/api), [CLI](https://www.skills.sh/docs/cli))
+- **skills.sh** exposes paginated leaderboard, fuzzy/semantic search, curated vendor skills, detail/file-tree and partner security-audit endpoints. Search accepts `q` (minimum two characters) and `limit` (1–200); multiword queries use semantic search. The API uses short-lived Vercel OIDC bearer authentication, with a documented 600 requests/minute per team/project limit. Read a fresh request-scoped token, refresh expired local tokens, and keep the token out of the repository and ledger. Detail records include a stable ID and content hash; use that hash for cache invalidation. Audit returns partner results from Gen Agent Trust Hub, Socket, Snyk, Runlayer and ZeroLeaks; a 404 means no audit is available yet. The documented CLI install form is `npx skills add <owner/repo>`; its anonymous telemetry includes skill name, skill files and timestamp by default, with `DISABLE_TELEMETRY=1` as opt-out. Search/audit before install; popularity is not a security review. ([API](https://www.skills.sh/docs/api), [CLI](https://www.skills.sh/docs/cli))
 - **Approxination** complements skills.sh with ranked skill search, generation and execution feedback. Its A/B/C/D tool-layer cohort is already governed by `approxination-lane`; hosted calls require the provisioned token and explicit budget. Reuse its lane rather than building a second ranking service.
 - **Anthropic** — `anthropics/skills` is Anthropic's reference implementation. Inspect each skill's license individually; the repository has mixed licensing, including proprietary document skills. ([Repository](https://github.com/anthropics/skills))
 - **Microsoft** — `microsoft/skills` includes Azure SDK/AI Foundry skills, agents, AGENTS.md and MCP configurations. Its README labels the repository work in progress; select individual skills rather than loading the entire deep tree. ([Repository](https://github.com/microsoft/skills))
@@ -125,7 +125,10 @@ python3 scripts/capabilities/discover.py scan --root . \
 python3 scripts/capabilities/discover.py find "task intent" --limit 8
 
 # Optional read-only skills.sh catalog search (requires a short-lived Vercel OIDC token)
-python3 scripts/capabilities/discover.py find "database agent skills" --skills-sh --limit 8
+python3 scripts/capabilities/discover.py find "database agent skills" --skills-sh --owner microsoft --limit 8
+
+# Search the official first-party curated catalog
+python3 scripts/capabilities/discover.py find "cloud security" --skills-sh-curated --limit 8
 
 # Focused contract tests
 python3 -m unittest tests.test_capability_discovery -v

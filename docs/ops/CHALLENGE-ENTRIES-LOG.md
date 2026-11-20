@@ -68,6 +68,9 @@ from `notifications@builder.aws.com` (message IDs cited). R4's evidence is
 its on-screen confirmation (cited in its row); its review email has not
 landed yet. R5/R6 evidence = on-platform confirmation + post-join event
 state, read firsthand by the executing lane at join time (cited per row).
+R7–R9 evidence = authenticated Devpost registration list observed
+2026-11-20 and preserved in `ops/challenge/devpost-registration-snapshot.json`;
+R9's submission is independently confirmed by the public project record.
 
 | # | Event | Window (PT) | Joined (PT) | Role{Moniker} | Evidence |
 |---|-------|-------------|-------------|---------------|----------|
@@ -77,6 +80,9 @@ state, read firsthand by the executing lane at join time (cited per row).
 | R4 | AI Builder Day Hackathon (Aha.io) | Kickoff Nov 17 9:00 AM PT; build Nov 17–19; awards Nov 20 | 2026-10-27 23:34 | `entrant{n0nAha}[platform:aha-io]` | On-screen confirmation 2026-10-27: "Thanks for registering! We will review your registration and email you to confirm your spot" — **spot PENDING REVIEW**; no platform ID issued. See packet D5 |
 | R5 | Vultr Agent Rush Hackathon (lablab.ai) | Build Nov 3–8; submissions end Nov 8 3:00 PM PST | 2026-10-29 20:16 | `entrant{Rap1dZ3nith}[platform:lablab-ai]` (handle issued 2026-10-30; at join the platform-assigned handle was `timerloggedout63215`) | Screening form submitted 2026-10-29: on-screen "Thank You! / Your survey responses have been successfully submitted." + toast "Submission Successful"; event page state after = **Enrolled** (organizer email confirmation pending). See packet D2 |
 | R6 | AMD AI League — AMD × lablab.ai (event slug: amd-lablab-ai-academy-challenge) | League Sep 1 – Dec 1, 2026; **submission deadline Dec 1, 2026, 11:00 AM PST** (event page, post-join read 2026-10-30) | 2026-10-30 16:31 | `entrant{Rap1dZ3nith}[platform:lablab-ai]` | Owner order via main 2026-10-30; joined via "JOIN THE LEAGUE" (AMD SSO, no new prompt). Platform notification verbatim: "You've been approved for the hackathon"; event state after = **Approved** (participant counter displayed 6287). **No screening form exists for this event** — no screening fields were presented or values submitted. See C11 |
+| R7 | Cloud9 × JetBrains: Sky's The Limit Hackathon 2026 (Devpost) | Nov 17, 2026 11:00 AM – Jan 12, 2027 11:00 AM PST (submission window) | Registered; observed 2026-11-20 (exact join instant unavailable) | `entrant{n0nDevpost}[platform:devpost]` | Authenticated Devpost registration snapshot `ops/challenge/devpost-registration-snapshot.json`; event slug `cloud9` |
+| R8 | Learn AR with SPECS (Devpost) | Nov 10, 2026 9:00 AM – Dec 7, 2026 2:00 PM PST (submission window) | Registered; observed 2026-11-20 (exact join instant unavailable) | `entrant{n0nDevpost}[platform:devpost]` | Authenticated Devpost registration snapshot `ops/challenge/devpost-registration-snapshot.json`; event slug `learn-specs` |
+| R9 | UGREEN Hackathon 2026 on AI NAS (Devpost) | Oct 22, 2026 9:15 AM PDT – Nov 15, 2026 11:45 PM PST (Round 1) | Registered; observed 2026-11-20 (exact join instant unavailable) | `entrant{n0nDevpost}[platform:devpost]` | Authenticated Devpost registration snapshot `ops/challenge/devpost-registration-snapshot.json`; Receipts Vault published 2026-11-16 01:16:33 -05:00; `https://devpost.com/software/receipts-vault` |
 
 Account creation itself is also verified: "Welcome to the AWS Builder Center
 community", 2026-10-23 17:20 PT (Gmail msg `1a16b477c91e5b07`). The complete
@@ -84,11 +90,20 @@ set of Builder Center emails in the mailbox is five — welcome, the three join
 confirmations above, and one "ends soon" reminder for R2 (2026-10-25 13:00 PT,
 msg `1a174a6e288f140a`). There are no others.
 
-## 2. Submission status — none verified
+## 2. Submission status — historical and current reconciliation
 
-As of 2026-10-26, **zero submissions are verified for any of the three
-registrations**, including R1 and R2, whose windows have closed. Sources
-checked:
+**Current reconciliation (2026-11-20):** two submissions are verified fleet-wide:
+D1 StudySprint (published 2026-11-03) and C12 Receipts Vault (published
+2026-11-16). The authenticated Devpost account lists three registrations:
+C12 UGREEN (R1 submitted), C18 Cloud9 × JetBrains (no project returned),
+and C19 Learn AR with SPECS (no project returned). Exact Devpost join
+instants for R7–R9 are unavailable; 2026-11-20 is the first live observation
+preserved in the snapshot. The two newer registrations remain registered,
+with submissions open.
+
+**Historical snapshot (2026-10-26):** zero submissions were verified for the
+three registrations known at that time, including R1 and R2, whose windows
+had closed. Sources checked:
 
 - **Gmail** — the full Builder Center set (above) contains join, welcome, and
   reminder mail only. No submission-confirmation, project-published, or
@@ -155,6 +170,9 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C9 | Gemma 4 Developer Agent Competition — Google DeepMind × Kaggle | Entry by **Nov 25, 2026, 23:59 UTC**; main submit Dec 2, 23:59 UTC; Paper Track Nov 12, 23:59 UTC (official-derived guide, checked 2026-10-30) | Post-train Gemma 4 → offline coding agent (main) ∨ paper/resource on parsing/embedding/reasoning over complex code repos (Paper Track) | Free; Kaggle account | I1 △ — context-engine = Paper Track resource angle only; main leaderboard = bug-fixing agent ≠ story |
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
+| C12 | UGREEN Hackathon 2026 on AI NAS — **REGISTERED; Round 1 published 2026-11-16; awaiting finalist selection Nov 21.** | Round 1 wall **Nov 15, 2026, 11:45 PM PST**; finalist selection Nov 21; conditional Round 2 final Nov 30 11:45 PM PST | Round 1: proposal PDF (≤1 MB, 10 items, ≤500 words) + pre-test Skill Package ZIP per Uliya standard; Round 2 only if finalist: assigned remote-NAS testing day + final ZIP + public YouTube demo ≤3 min | Free; Devpost registration confirmed; Round 2 invitation conditional | $46,000 cash pool; Receipts Vault published: https://devpost.com/software/receipts-vault |
+| C18 | Cloud9 × JetBrains: Sky's The Limit Hackathon 2026 — **REGISTERED 2026-11-20.** | Submissions open Nov 17, 2026 11:00 AM PST; close **Jan 12, 2027, 11:00 AM PST** | Build or significantly update a working app with at least one JetBrains tool; choose one of three categories; public source repo with OS license; working demo/judge-accessible build; methodology write-up; public YouTube demo ≤3 min; optional AI workflow story bonus | Free; submission attestations: age of majority, eligible jurisdiction, no sponsor/administrator conflict | $25,000 cash pool plus Cloud9/JetBrains/GDC benefits; no linked project yet |
+| C19 | Learn AR with SPECS — **REGISTERED 2026-11-20.** | Submissions open Nov 10, 2026 9:00 AM PST; close **Dec 7, 2026, 2:00 PM PST** | New Lens project started in-window; plan with Devpost Learn skill pack; build via CLAD in Lens Studio; pass Lens Studio preview; repo with planning docs; public YouTube demo <3 min | Free; submission attestations: age of majority, eligible jurisdiction, no Snap/Devpost conflict | $2,500 cash pool; no linked project yet |
 
 ### Idea bank (unassigned concepts)
 
@@ -707,6 +725,51 @@ PR #1970 merged 2e99fadd).
   official Contest Rules state verbatim: "Each team must submit a video
   recording demonstrating your application no later than **Thursday,
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
+
+
+### C12 — UGREEN Hackathon 2026 on AI NAS — R1 SUBMITTED / PUBLISHED; ROUND 2 CONDITIONAL
+
+<!-- countdown-data:C12 opens=2026-10-22T09:15:00-07:00 closes=2026-11-21T23:59:00-08:00 -->
+<!-- submission-data:C12 state=SUBMITTED at=2026-11-15T22:16:33.300-08:00 ref=https://devpost.com/software/receipts-vault -->
+<!-- countdown:C12 -->⏳ closes in 1d 15h (computed 2026-11-20 08:52 PT)<!-- /countdown:C12 -->
+
+`entrant{n0nDevpost}[platform:devpost]`
+
+- **Registration:** authenticated Devpost registration list confirms `ugreenhackathon` joined (observed 2026-11-20; exact join instant unavailable).
+- **Submission:** Receipts Vault is **PUBLISHED** at https://devpost.com/software/receipts-vault. Devpost records `submitted_at=2026-11-16T01:16:33.300-05:00` (Nov 15 22:16:33 PST), before the Round 1 wall of Nov 15 23:45 PST.
+- **Round 1:** proposal PDF + pre-test Skill Package ZIP per Uliya Skill Development Standard. The package is documentation-only; no scripts/binaries/manifests; no repo/video required for R1.
+- **Next checkpoint:** finalist selection Nov 21. Round 2 exists only if invited: one assigned remote-NAS testing day Nov 22–28 and final ZIP + public YouTube demo ≤3 min by Nov 30 23:45 PST.
+- **Identity:** Devpost platform identity `entrant{n0nDevpost}[platform:devpost]`; project AppID/repo provisioning remains deferred under the 2026-11-03 owner ruling. The public submission points to the monorepo's `entries/c12-receipts-vault` artifacts.
+
+### C18 — Cloud9 × JetBrains: Sky's The Limit Hackathon 2026 — REGISTERED / SUBMISSIONS OPEN
+
+<!-- countdown-data:C18 opens=2026-11-17T11:00:00-08:00 closes=2027-01-12T11:00:00-08:00 -->
+<!-- countdown:C18 -->⏳ closes in 53d 2h (computed 2026-11-20 08:52 PT)<!-- /countdown:C18 -->
+
+`entrant{n0nDevpost}[platform:devpost]`
+
+- **Registration:** authenticated Devpost account list confirms `cloud9` joined (observed 2026-11-20; exact join instant unavailable). No linked Cloud9 project appeared in the current project listing.
+- **Submission wall:** Jan 12, 2027, 11:00 AM PST. Official window opened Nov 17, 2026, 11:00 AM PST.
+- **Build gate:** build or significantly update a working application with at least one JetBrains tool; choose one of three categories (VAL/GC scouting, LoL macro scouting/draft management, or Cloud9 event mini-game).
+- **Deliverables:** public GitHub/GitLab/Bitbucket repository with an open-source license; working demo or judge-accessible build; project description naming JetBrains tools and their roles; methodology write-up; public YouTube demo up to 3 minutes. Optional AI-powered workflow story bonus.
+- **Required submission attestations:** age of majority, eligible jurisdiction, and no sponsor/administrator employee or agent conflict. These attestations remain owner-check gates until submission.
+- **Prizes:** $25,000 total cash awards across three category winners ($6,000 each), three runners-up ($2,000 each), and the $1,000 AI-powered workflow-story bonus; additional Cloud9/JetBrains/GDC benefits on specified awards.
+- **Escalation timebox:** cushion Jan 9 11:00 PST (−72h); internal landing Jan 10 11:00 PST (−48h); wall-day Jan 12 00:00 PST; ESCALATION Jan 12 07:00 PST (−4h); FINAL Jan 12 10:30 PST (−30m). Desk-feed is the current projection; Tracking reminder-register binding and calendar events remain pending.
+
+### C19 — Learn AR with SPECS — REGISTERED / SUBMISSIONS OPEN
+
+<!-- countdown-data:C19 opens=2026-11-10T09:00:00-08:00 closes=2026-12-07T14:00:00-08:00 -->
+<!-- countdown:C19 -->⏳ closes in 17d 5h (computed 2026-11-20 08:52 PT)<!-- /countdown:C19 -->
+
+`entrant{n0nDevpost}[platform:devpost]`
+
+- **Registration:** authenticated Devpost account list confirms `learn-specs` joined (observed 2026-11-20; exact join instant unavailable). No linked Learn AR project appeared in the current project listing.
+- **Submission wall:** Dec 7, 2026, 2:00 PM PST (5:00 PM EST). Official window opened Nov 10, 2026, 9:00 AM PST.
+- **Build gates:** new Lens project started during the submission period (old ideas allowed; old code may not be reused); plan with the Devpost Learn skill pack and include its planning docs in the repository's `devpost/` folder; build through CLAD in Lens Studio using the CLAD plugin and Lens Studio MCP; verify the Lens in Lens Studio preview. SPECS glasses are not required.
+- **Deliverables:** public YouTube demo under 3 minutes with Lens Studio preview recording; GitHub/GitLab/Bitbucket repo (private GitHub/GitLab repo must be shared with `testing@devpost.com` and `jholmes@devpost.com` before the wall); short project description.
+- **Required submission attestations:** age of majority, eligible jurisdiction, and no Snap/Devpost employee, representative, agent, household-member, or judge conflict. These attestations remain owner-check gates until submission.
+- **Prizes:** $2,500 cash — $1,250 first, $750 second, $500 third.
+- **Escalation timebox:** cushion Dec 4 2:00 PM PST (−72h); internal landing Dec 5 2:00 PM PST (−48h); wall-day Dec 7 00:00 PST; ESCALATION Dec 7 10:00 AM PST (−4h); FINAL Dec 7 1:30 PM PST (−30m). Desk-feed is the current projection; Tracking reminder-register binding and calendar events remain pending.
 
 ## 5. Sweep sources
 

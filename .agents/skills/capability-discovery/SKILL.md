@@ -12,7 +12,7 @@ Load `CLAUDE.md`, `SKILLS.md`, this skill, `docs/ops/CAPABILITY-DISCOVERY-AND-AC
 ## Procedure
 
 1. Classify the task into a domain, function, scope, risk and required outcome.
-2. Search local first across `SKILL.md`, `SKILLS.md`, `*.SKILLS`, `*.skill`, nested workspace paths, CI skill paths, documentation mirrors and declared vendor roots.
+2. Search local first across `SKILL.md`, `SKILLS.md`, `*.SKILLS`, `*.skill`, plugin/MCP/tool manifests, nested workspace paths, CI skill paths, documentation mirrors and declared vendor roots. Include `workspace/llm_map/_TOOL_TAXONOMY/all_tools.jsonl` as the legacy Termux tool-catalog baseline; its records are historical and unverified for current availability.
 3. Search external catalogs only when local coverage is insufficient. Use source adapters declared in `ops/capability_discovery/sources.json`; preserve source, immutable revision, timestamp and retrieval method.
 4. Tag hierarchically: one primary domain/function; add cross-cutting facets, trust state and lifecycle state separately.
 5. Deduplicate using source locator + package/skill/action identity + content hash. Keep aliases and candidate relationships as edges; preserve distinct versions and forks.
@@ -20,7 +20,7 @@ Load `CLAUDE.md`, `SKILLS.md`, this skill, `docs/ops/CAPABILITY-DISCOVERY-AND-AC
 7. Evaluate by type: skill definitions → Skill Evaluation; MCP tool definitions → TDQS; runtime execution → ATES/WTCV/TCV; integrated outcome → MoneyBall/3L0.
 8. Load progressively: return metadata and top-ranked references first. Read full instructions or tool schemas only after a candidate is selected.
 9. Route eligible candidates into DoE when competing search, tagging, dedupe, ranking or context-loading treatments can be compared. Cite registered DoE matrix dimensions and use the canonical experiment record schema.
-10. Record and refresh the discovery ledger and SQLite projection. Preserve failures, stale sources, duplicates and unknowns as evidence.
+10. Record and refresh the discovery ledger and SQLite projection. Preserve failures, stale sources, duplicates and unknowns as evidence. Treat `_TOOL_TAXONOMY/TOOL_TAXONOMY.json`, `TAG_INDEX.json`, `categories/`, `roles/`, `python3/` and `delta/` as derived views; keep `state/` metadata-only. Treat `build_tool_taxonomy.sh` as a Termux-local generator and use the committed snapshot in CI.
 
 ## Commands
 

@@ -6,10 +6,18 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from scripts.capabilities.discover import connect, import_session_json, scan_repository, search, search_skills_sh, upsert
+from scripts.capabilities.discover import connect, import_session_json, load_taxonomy, scan_repository, search, search_skills_sh, upsert, validate_classification
 
 
 class CapabilityDiscoveryTests(unittest.TestCase):
+    def test_classifier_output_is_constrained_by_versioned_taxonomy(self):
+        taxonomy = load_taxonomy()
+        self.assertEqual(validate_classification("testing", "testing", taxonomy), ("testing", "testing"))
+        self.assertEqual(
+            validate_classification("unknown-domain", "unknown-function", taxonomy),
+            ("agentic", "capability-discovery"),
+        )
+
     def test_nested_vendor_skill_is_classified_as_unverified(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

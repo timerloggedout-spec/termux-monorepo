@@ -54,6 +54,12 @@ sources, honesty_rules, data, gaps}`.
   Delphi cycle IMPLEMENTATION record is presented in full as
   `executed_comparisons`, labeled `owner_surface: delphi` (required
   presentation — not DoE results).
+  The collector preserves each design's declared `status`: proposal-only
+  statuses remain pending admission, `member_kind: register` entries stay
+  in family navigation as registers, and registers remain separate from the
+  campaign-results list. Run records paired with a proposal-only status emit
+  `unapproved_execution_detected` and an integrity gap; the feed withholds
+  those records from executed-result rendering.
 - **ATES** — `docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md` §MVT (the seven
   invariants), the benchmark and run-receipt workflows, the
   experiment-loop workflow as execution vehicle,
@@ -107,6 +113,9 @@ the collect.
 
 ## Rules
 
+- A committed design file establishes discovery; its declared status establishes admission; run records establish execution. The collector carries all three states separately.
+- Preserve `proposal_only_not_admitted` and `proposed_not_admitted` as pending states. A run record paired with either state raises `unapproved_execution_detected`, emits an integrity gap, and stays outside executed-result rendering.
+- Route `member_kind: register` into family navigation as a register; keep comparison registers outside the campaign-results list.
 - Pages consume their feed and nothing else (pinned by
   `tests/test_surface_pages.py`); feed content is never hand-edited —
   refresh by re-running the collector (by hand or via the collect

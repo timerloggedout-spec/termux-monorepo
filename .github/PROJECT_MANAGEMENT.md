@@ -360,8 +360,8 @@ Connector logs are stored in `.github/connectors/logs/`:
 
 ### Workflows
 
-- [`.github/workflows/agent-review-auto-jules.yml`](../.github/workflows/agent-review-auto-jules.yml) - Auto-resolve with Jules
-- [`.github/workflows/agent-jules-on-issues.yml`](../.github/workflows/agent-jules-on-issues.yml) - Jules on issues
+- [`.github/workflows/agent-review-auto-jules.yml`](../.github/workflows/agent-review-auto-jules.yml) - Legacy Jules review relay; retirement tracked in PR #5683 / #5647
+- [`.github/workflows/agent-jules-on-issues.yml`](../.github/workflows/agent-jules-on-issues.yml) - Legacy Google Jules issue dispatcher; retirement tracked in PR #5683
 - [`.github/workflows/publish-wiki.yml`](../.github/workflows/publish-wiki.yml) - Publish wiki
 
 ## 🎉 Success Metrics

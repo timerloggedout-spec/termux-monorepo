@@ -32,6 +32,7 @@ class JulesPrRetirementReceiptTests(unittest.TestCase):
     def test_hosted_jules_execution_route_is_retired(self) -> None:
         self.assertNotIn("JULES_API_KEY", self.workflow)
         self.assertNotIn("jules.googleapis.com", self.workflow)
+        self.assertNotIn("google-labs-code/jules-action@", self.workflow)
         self.assertNotIn("google-labs-code/jules-invoke", self.workflow)
         self.assertNotIn("target_agent: **jules**", self.workflow)
         self.assertNotIn("@jules Please", self.workflow)

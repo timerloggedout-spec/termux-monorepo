@@ -73,7 +73,7 @@ Labels are the repo's categorization source of truth. Families in use:
   ledger #1489.
 - **Hark:** `hark:queue`, `hark:done`, `hark:deferred`,
   `hark:blocked:config`, `hark:blocked:rate_limit`.
-- **Agent:** `jules`, `gemini`, `deepseek` (implementation/review routing).
+- **Agent:** `gemini`, `deepseek` (implementation/review routing); `jules` is a legacy retirement-receipt signal.
 - **Legacy / programme:** `BIUDL` (26), `` `gh`ActionsWorkflows `` (27),
   `MoneyBall`, `FORENSICS`, `Roster:Teams:Games:Players`, and a long tail of
   one-programme labels. These are provenance, not noise; this lane does not

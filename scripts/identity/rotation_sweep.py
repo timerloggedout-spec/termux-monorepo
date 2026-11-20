@@ -117,8 +117,6 @@ def score_fixtures(rotation_map: dict) -> dict:
     arms = []
     for levels in itertools.product((False, True), repeat=len(FACTORS)):
         enabled = tuple(key for key, on in zip(FACTORS, levels) if on)
-        if not enabled:
-            continue
         tp = fp = tn = fn = 0
         for fixture in fixtures:
             votes = classify_line(fixture["path"], fixture["line"], rotation_entries)

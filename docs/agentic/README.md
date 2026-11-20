@@ -140,7 +140,7 @@ The dispatcher records claims only when an approved specialist has a verified li
 | Secret (name only — #184) | Required by | Purpose |
 |---|---|---|
 | `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_GITHUB_TOKEN`, or `OPERATOR_TOKEN` | Live evaluation, Project synchronization, and dispatch revalidation | First configured Operator credential wins; `GITHUB_TOKEN` is final fallback. Selected credential needs Issues + Projects access on the user-owned Project. |
-| Jules execution | Retired | Google Jules is read-only after 2026-11-11; the local Jules-derived DoE role bundle supplies guidance, not execution. |
+| Jules execution | Retired | Google Jules is read-only after 2026-11-11; the local Jules-derived DoE role bundle supplies guidance only. |
 
 The validation workflow has no secrets and remains read-only. The evaluator is scheduled daily and can be manually run; it uploads derived artifacts rather than committing them. Project sync is manual and dry-run by default. Dispatch is manual or a controlled repository event, never a pull-request event from untrusted code.
 

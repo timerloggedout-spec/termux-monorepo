@@ -182,7 +182,8 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
         safe_name = redact_sensitive(str(name))
         safe_description = redact_sensitive(str(description))
         safe_locator = redact_sensitive(str(locator))
-        domain, function, facets = infer_tags(safe_name, safe_description, safe_locator, manifest_tags)
+        safe_manifest_tags = redact_sensitive(str(manifest_tags))
+        domain, function, facets = infer_tags(safe_name, safe_description, safe_locator, safe_manifest_tags)
         domain, function = validate_classification(domain, function, taxonomy)
         if source_id == "repo-vendor-skills":
             facets.append("vendor")
@@ -203,9 +204,10 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             "description": safe_description[:1200], "content_sha256": digest(raw),
             "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
-            "trust": trust, "lifecycle": "classified", "version_ref": manifest_data.get("version"),
+            "trust": trust, "lifecycle": "classified",
+            "version_ref": redact_sensitive(str(manifest_data.get("version") or "")) or None,
             "aliases": [], "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((safe_name + " " + safe_description + " " + safe_locator + " " + manifest_tags).lower())))[:80]
+            "tags": sorted(set(TOKEN_RE.findall((safe_name + " " + safe_description + " " + safe_locator + " " + safe_manifest_tags).lower())))[:80]
         })
     return rows
 
@@ -227,7 +229,7 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         description = item.get("activation_description") or item.get("summary") or item.get("description") or ""
         locator = item.get("uri") or item.get("name") or str(name)
         raw_metadata = str(name) + " " + str(description) + " " + str(locator)
-        quarantined = bool(SECRET_RE.search(raw_metadata))
+        quarantined = bool(SECRET_RE.search(raw_metadata) or SECRET_RE.search(query))
         safe_name = redact_sensitive(str(name))
         safe_description = redact_sensitive(str(description))
         safe_locator = redact_sensitive(str(locator))
@@ -256,6 +258,9 @@ def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
     """Read-only skills.sh search. Requires a fresh Vercel OIDC token."""
     if len(query.strip()) < 2:
         return [], "query_too_short"
+    if SECRET_RE.search(query):
+        return [], "query_quarantined"
+    safe_query = redact_sensitive(query)
     token = os.environ.get("VERCEL_OIDC_TOKEN")
     if not token:
         return [], "auth_required"
@@ -334,10 +339,10 @@ def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
             "facets": ["external", "skill", "vendor" if source else "community"],
             "trust": "quarantined" if quarantined else "community-reference",
             "lifecycle": "discovered",
-            "version_ref": item.get("hash"),
+            "version_ref": redact_sensitive(str(item.get("hash") or "")) or None,
             "aliases": [],
             "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((query + " " + name + " " + source).lower())))[:80],
+            "tags": sorted(set(TOKEN_RE.findall((safe_query + " " + name + " " + source).lower())))[:80],
         })
     return rows, "ok"
 

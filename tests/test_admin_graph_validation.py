@@ -86,6 +86,12 @@ def test_graph_search_is_keyboard_accessible_and_view_only():
     assert 'if(rerender&&window.matchMedia&&window.matchMedia("(max-width:1080px)").matches)setMobileInspectorOpen(true)' in html
     assert 'document.getElementById("mbInspect").addEventListener("click"' in html
     assert 'document.getElementById("closeInspector").addEventListener("click"' in html
+    assert 'id="mobileInspector"' in html and 'id="closeInspector"' in html
+    assert '.mobile-inspector.open{display:block;position:fixed' in html
+    assert 'function setMobileInspectorOpen(open)' in html
+    assert 'setMobileInspectorOpen(true);if(rerender)render();' in html
+    assert 'document.getElementById("mbInspect").addEventListener("click"' in html
+    assert 'document.getElementById("closeInspector").addEventListener("click"' in html
     assert 'id="graphSearch"' in html
     assert 'aria-label="Search graph nodes"' in html
     assert 'aria-keyshortcuts="/"' in html

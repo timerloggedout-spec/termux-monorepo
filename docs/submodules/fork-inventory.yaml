@@ -1,0 +1,64 @@
+version: 1
+updated_at: "2026-08-15T00:00:00Z"
+updated_by: "Manus"
+status: reviewed
+candidates:
+  - id: termux-mcp-server_fork
+    repository: timerloggedout-spec/termux-mcp-server_fork
+    source_url: https://github.com/timerloggedout-spec/termux-mcp-server_fork.git
+    revision: fc96806e135b3f82b46bf114734efa529ce6dcbf
+    branch: master
+    target_path: refTemplates/smods/termux-mcp-server_fork
+    intended_role: canonical_device_mcp_server
+    runtime: Python 3 and Termux:API
+    license: unverified_no_license_file_at_review
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      The standard Python MCP implementation is the canonical device-side handler.
+      It is invoked on demand through authenticated OpenSSH and is subject to the
+      hub capability policy.
+
+  - id: mcp-android-ssh_fork
+    repository: timerloggedout-spec/mcp-android-ssh_fork
+    source_url: https://github.com/timerloggedout-spec/mcp-android-ssh_fork.git
+    revision: bc49fc87ea45bd94c7eb75fc5691457837a59e9d
+    branch: main
+    target_path: refTemplates/smods/mcp-android-ssh_fork
+    intended_role: ssh_adapter_and_reference
+    runtime: Rust
+    license: MIT
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      This is retained as an adapter/reference implementation. It does not become
+      a second unrestricted device-control endpoint; host-key verification and its
+      command model remain subject to the central policy review.
+
+  - id: term_mcp_deepseek_fork
+    repository: timerloggedout-spec/term_mcp_deepseek_fork-
+    source_url: https://github.com/timerloggedout-spec/term_mcp_deepseek_fork-.git
+    revision: 884a44563f96bdb2859ce635c0ab589906cc1813
+    branch: main
+    target_path: refTemplates/smods/term_mcp_deepseek_fork
+    intended_role: deepseek_compatibility_adapter
+    runtime: Python and optional Docker development environment
+    license: MIT
+    nested_submodules: false
+    status: approved_for_submodule
+    notes: >-
+      DeepSeek compatibility is preserved as a template/adapter. Its persistent
+      shell behavior must not bypass the canonical hub policy or execute arbitrary
+      unreviewed jobs.
+
+exclusions:
+  - category: generated_or_sensitive_state
+    rule: >-
+      Never import .env files, session stores, browser profiles, cached credentials,
+      PID files, or generated logs from a candidate fork into the superproject.
+
+validation:
+  - verify each pinned revision resolves at the declared user-owned fork remote
+  - initialize only these modules, shallowly, in automated checks
+  - scan each module before every pin update
+  - require an explicit pull request for any pin advance

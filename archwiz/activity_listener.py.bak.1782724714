@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""Listener – auto‑exec assistant code blocks, per‑block tracking."""
+import json, os, re, time, subprocess, sys, hashlib
+from pathlib import Path
+from datetime import datetime, timezone
+
+HOME = Path.home()
+SESSION_ID = os.environ.get('ARCHWIZ_SESSION', '417ddd6d-9711-465d-ab90-c92cc04aeabf')
+CACHE = HOME / f'.deepcli/session_store/{SESSION_ID}.json'
+SANDBOX = HOME / 'sandbox/activity_listener'
+EXECUTED = HOME / 'archwiz/executed_blocks.txt'
+AUTOEXEC = HOME / 'archwiz/autoexec.log'
+
+def fetch():
+    sys.path.insert(0, str(HOME / 'deepcli'))
+    from deepcli.core import get_token, get_history
+    return get_history(get_token(), SESSION_ID, force_refresh=False)
+
+def is_shell(code):
+    l = code.split('\n')[0].strip()
+    return bool(re.match(r'^(python3|bash|~/|cd |ls |grep |sed|awk|export|mkdir|cat|chmod|echo|pkill|nano|tail|head|find|wc|stat|pgrep|sleep|> )', l)) or '<<' in l
+
+def run_code(code):
+    SANDBOX.mkdir(parents=True, exist_ok=True)
+    ext = '.sh' if is_shell(code) else '.py'
+    script = SANDBOX / f'block_{datetime.now().strftime("%H%M%S")}{ext}'
+    script.write_text(code); script.chmod(0o755)
+    res = subprocess.run(['bash', str(script)] if ext == '.sh' else ['python3', str(script)],
+                         capture_output=True, text=True, timeout=60, cwd=str(SANDBOX), stdin=subprocess.DEVNULL)
+    return res.stdout + res.stderr
+
+
+def send_chat(text):
+    """Send a message using curl_cffi session, exactly like the TUI."""
+    try:
+        sys.path.insert(0, str(HOME / 'deepcli'))
+        from deepcli.core import get_token, get_session, solve_pow, get_pow_challenge
+        import json as _json
+
+        token = get_token()
+        # Load cookie from config if available
+        cfg_path = HOME / '.deepcli/config.json'
+        cookie = None
+        if cfg_path.exists():
+            cfg = _json.loads(cfg_path.read_text())
+            cookie = cfg.get('cookie')
+        sess = get_session(token, cookie=cookie)
+
+        challenge = get_pow_challenge(token, '/api/v0/chat/completion')
+        pow_header = solve_pow(challenge)
+
+        headers = sess.headers.copy()
+        headers['X-Ds-Pow-Response'] = pow_header
+        headers['Content-Type'] = 'application/json'
+        headers['Accept'] = 'text/event-stream'
+
+        payload = {
+            'chat_session_id': SESSION_ID,
+            'parent_message_id': None,
+            'prompt': text,
+            'ref_file_ids': [],
+            'thinking_enabled': False,
+            'search_enabled': False,
+            'stream': True,
+        }
+
+        resp = sess.post(
+            'https://chat.deepseek.com/api/v0/chat/completion',
+            json=payload, headers=headers, stream=True
+        )
+
+        if resp.status_code != 200:
+            print(f"Send failed (status {resp.status_code})")
+            return
+
+        # Read the SSE stream and print text
+        raw = resp.content.decode('utf-8', errors='replace')
+        for line in raw.split('\n'):
+            if line.startswith('data:'):
+                try:
+                    data = _json.loads(line[5:].strip())
+                    chunk = data.get('v') or data.get('content')
+                    if chunk and chunk != 'FINISHED':
+                        print(chunk, end='')
+                except:
+                    pass
+        print()
+    except Exception as e:
+        print(f"Send error: {e}")
+
+# Track executed blocks by msg_id + code hash
+executed = set()
+if EXECUTED.exists():
+    executed = set(l.strip() for l in EXECUTED.read_text().splitlines() if l.strip())
+
+last_msg_id = None
+while True:
+    try:
+        msgs = fetch()
+        if not msgs: time.sleep(15); continue
+        cur = str(msgs[-1].get('message_id', ''))
+        if cur == last_msg_id: time.sleep(5); continue
+        last_msg_id = cur
+
+        for m in reversed(msgs):
+            if m.get('role', '').lower() != 'assistant': continue
+            mid = str(m.get('message_id', ''))
+            content = m.get('content', '')
+            for match in re.finditer(r'```(?:[a-z]*\n)?(.*?)```', content, re.DOTALL):
+                code = match.group(1).strip()
+                if len(code) < 30 or 'activity_listener' in code: continue
+                # Per‑block tracking
+                block_key = mid + ':' + hashlib.md5(code[:80].encode()).hexdigest()[:12]
+                if block_key in executed: continue
+
+                print(f"\n⚡ Auto‑executing...")
+                out = run_code(code)
+                print(out)
+                with open(AUTOEXEC, 'a') as f: f.write(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] {code[:50]}...\n{out}\n")
+                executed.add(block_key)
+                EXECUTED.write_text('\n'.join(executed))
+                send_chat(out)
+                break
+            break
+    except KeyboardInterrupt: break
+    except Exception as e:
+        with open(AUTOEXEC, 'a') as f: f.write(f"[{datetime.now().strftime('%H:%M:%S')}] ❌ {e}\n")
+        time.sleep(10)

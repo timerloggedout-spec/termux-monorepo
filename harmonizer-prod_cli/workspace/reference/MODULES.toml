@@ -1,0 +1,41 @@
+# Harmonizer Module Registry – all subordinate workspaces
+[modules.deepcli]
+path = "~/deepcli"
+workspace = "~/deepcli/workspace"
+provides = ["chat_backend", "get_token", "create_session", "stream_completion"]
+
+[modules.deepcli_tui]
+path = "~/deepcli-tui"
+workspace = "~/deepcli-tui/workspace"
+provides = ["tui", "session_tree", "message_selector"]
+
+[modules.termux_multi_agent]
+path = "~/termux-multi-agent"
+workspace = "~/termux-multi-agent/workspace"
+provides = ["refactor_pipeline", "orchestrator", "ast_grep_integration"]
+
+[modules.deepseek_harvest_work]
+path = "~/deepseek_harvest_work"
+workspace = "~/deepseek_harvest_work/workspace"
+provides = ["code_extraction", "dedup", "harvest_pipeline"]
+
+[modules.deepseek_cli]
+path = "~/deepseek-cli"
+workspace = "~/deepseek-cli/workspace"
+provides = ["browser_automation", "puppeteer_tests", "cookies"]
+
+[modules.synthegration_cli]
+path = "~/synthegration-cli"
+workspace = "~/synthegration-cli/workspace"
+provides = ["rust_cli_v1", "30_commands"]
+
+[modules.cli_synthegration]
+path = "~/cli-synthegration"
+workspace = "~/cli-synthegration/workspace"
+provides = ["integration_scripts", "sync", "search", "export", "auth"]
+
+[modules.harmonizer]
+path = "~/harmonizer-prod_cli"
+workspace = "~/harmonizer-prod_cli/workspace"
+provides = ["unified_binary", "rust_ports", "orchestration"]
+status = "building"

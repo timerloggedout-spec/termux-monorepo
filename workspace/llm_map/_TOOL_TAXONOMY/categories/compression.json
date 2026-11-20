@@ -1,0 +1,641 @@
+{
+  "category": "compression",
+  "tools": [
+    {
+      "name": "znew",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/znew",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "7za",
+      "package": "p7zip",
+      "path": "/data/data/com.termux/files/usr/bin/7za",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^p7zip$|^p7zip-",
+      "category": "compression",
+      "description": "Command-line version of the 7zip compressed file archiver"
+    },
+    {
+      "name": "zmore",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zmore",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "zip",
+      "package": "zip",
+      "path": "/data/data/com.termux/files/usr/bin/zip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "zipcloak",
+      "package": "zip",
+      "path": "/data/data/com.termux/files/usr/bin/zipcloak",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^zip$|^zip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "zipnote",
+      "package": "zip",
+      "path": "/data/data/com.termux/files/usr/bin/zipnote",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^zip$|^zip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "lzop",
+      "package": "lzop",
+      "path": "/data/data/com.termux/files/usr/bin/lzop",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "File compressor using lzo lib."
+    },
+    {
+      "name": "zfgrep",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zfgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "bzip2",
+      "package": "bzip2",
+      "path": "/data/data/com.termux/files/usr/bin/bzip2",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Tools for working with bzip2 compression"
+    },
+    {
+      "name": "tar",
+      "package": "tar",
+      "path": "/data/data/com.termux/files/usr/bin/tar",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "GNU tar for manipulating tar archives"
+    },
+    {
+      "name": "bsdcat",
+      "package": "bsdtar",
+      "path": "/data/data/com.termux/files/usr/bin/bsdcat",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bsdtar$|^bsdtar-",
+      "category": "compression",
+      "description": "The tar(1) and cpio(1) programs from FreeBSD, using libarchive"
+    },
+    {
+      "name": "xz",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xz",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "7z",
+      "package": "p7zip",
+      "path": "/data/data/com.termux/files/usr/bin/7z",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^p7zip$|^p7zip-",
+      "category": "compression",
+      "description": "Command-line version of the 7zip compressed file archiver"
+    },
+    {
+      "name": "zipgrep",
+      "package": "unzip",
+      "path": "/data/data/com.termux/files/usr/bin/zipgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^unzip$|^unzip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "zforce",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zforce",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "arj",
+      "package": "arj",
+      "path": "/data/data/com.termux/files/usr/bin/arj",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Open-source version of arj archiver"
+    },
+    {
+      "name": "zgrep",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "bzip2recover",
+      "package": "bzip2",
+      "path": "/data/data/com.termux/files/usr/bin/bzip2recover",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bzip2$|^bzip2-",
+      "category": "compression",
+      "description": "Tools for working with bzip2 compression"
+    },
+    {
+      "name": "rearj",
+      "package": "arj",
+      "path": "/data/data/com.termux/files/usr/bin/rearj",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^arj$|^arj-",
+      "category": "compression",
+      "description": "Open-source version of arj archiver"
+    },
+    {
+      "name": "lzip",
+      "package": "lzip",
+      "path": "/data/data/com.termux/files/usr/bin/lzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Lossless data compressor similar to gzip and bzip2"
+    },
+    {
+      "name": "bzgrep",
+      "package": "bzip2",
+      "path": "/data/data/com.termux/files/usr/bin/bzgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bzip2$|^bzip2-",
+      "category": "compression",
+      "description": "Tools for working with bzip2 compression"
+    },
+    {
+      "name": "xzdec",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xzdec",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "zegrep",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zegrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "bzmore",
+      "package": "bzip2",
+      "path": "/data/data/com.termux/files/usr/bin/bzmore",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bzip2$|^bzip2-",
+      "category": "compression",
+      "description": "Tools for working with bzip2 compression"
+    },
+    {
+      "name": "gzip",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/gzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "xzmore",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xzmore",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "funzip",
+      "package": "unzip",
+      "path": "/data/data/com.termux/files/usr/bin/funzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^unzip$|^unzip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "unzip",
+      "package": "unzip",
+      "path": "/data/data/com.termux/files/usr/bin/unzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "bsdtar",
+      "package": "bsdtar",
+      "path": "/data/data/com.termux/files/usr/bin/bsdtar",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "The tar(1) and cpio(1) programs from FreeBSD, using libarchive"
+    },
+    {
+      "name": "xzless",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xzless",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "zcat",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zcat",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "cpio",
+      "package": "cpio",
+      "path": "/data/data/com.termux/files/usr/bin/cpio",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "CPIO implementation from the GNU project"
+    },
+    {
+      "name": "unrar",
+      "package": "unrar",
+      "path": "/data/data/com.termux/files/usr/bin/unrar",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^unrar$|^unrar-",
+      "category": "compression",
+      "description": "Tool for extracting files from .rar archives"
+    },
+    {
+      "name": "zstdless",
+      "package": "zstd",
+      "path": "/data/data/com.termux/files/usr/bin/zstdless",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^zstd$|^zstd-",
+      "category": "compression",
+      "description": "Zstandard compression"
+    },
+    {
+      "name": "unzipsfx",
+      "package": "unzip",
+      "path": "/data/data/com.termux/files/usr/bin/unzipsfx",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^unzip$|^unzip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    },
+    {
+      "name": "xzgrep",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xzgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "lzmadec",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/lzmadec",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "brotli",
+      "package": "brotli",
+      "path": "/data/data/com.termux/files/usr/bin/brotli",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^brotli$|^brotli-",
+      "category": "compression",
+      "description": "lossless compression algorithm and format (command line utility)"
+    },
+    {
+      "name": "xzdiff",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/xzdiff",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "bsdcpio",
+      "package": "bsdtar",
+      "path": "/data/data/com.termux/files/usr/bin/bsdcpio",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bsdtar$|^bsdtar-",
+      "category": "compression",
+      "description": "The tar(1) and cpio(1) programs from FreeBSD, using libarchive"
+    },
+    {
+      "name": "bzdiff",
+      "package": "bzip2",
+      "path": "/data/data/com.termux/files/usr/bin/bzdiff",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bzip2$|^bzip2-",
+      "category": "compression",
+      "description": "Tools for working with bzip2 compression"
+    },
+    {
+      "name": "zstd",
+      "package": "zstd",
+      "path": "/data/data/com.termux/files/usr/bin/zstd",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "category": "compression",
+      "description": "Zstandard compression"
+    },
+    {
+      "name": "lzmainfo",
+      "package": "xz-utils",
+      "path": "/data/data/com.termux/files/usr/bin/lzmainfo",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^xz$|^xz-",
+      "category": "compression",
+      "description": "XZ-format compression tools"
+    },
+    {
+      "name": "zdiff",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zdiff",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "arj-register",
+      "package": "arj",
+      "path": "/data/data/com.termux/files/usr/bin/arj-register",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^arj$|^arj-",
+      "category": "compression",
+      "description": "Open-source version of arj archiver"
+    },
+    {
+      "name": "lz4",
+      "package": "lz4",
+      "path": "/data/data/com.termux/files/usr/bin/lz4",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^lz4$|^lz4-",
+      "category": "compression",
+      "description": "Fast LZ compression algorithm tool"
+    },
+    {
+      "name": "zstdgrep",
+      "package": "zstd",
+      "path": "/data/data/com.termux/files/usr/bin/zstdgrep",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^zstd$|^zstd-",
+      "category": "compression",
+      "description": "Zstandard compression"
+    },
+    {
+      "name": "arjdisp",
+      "package": "arj",
+      "path": "/data/data/com.termux/files/usr/bin/arjdisp",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^arj$|^arj-",
+      "category": "compression",
+      "description": "Open-source version of arj archiver"
+    },
+    {
+      "name": "gunzip",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/gunzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "gzexe",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/gzexe",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "zcmp",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/zcmp",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "uncompress",
+      "package": "gzip",
+      "path": "/data/data/com.termux/files/usr/bin/uncompress",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^gzip$|^gzip-",
+      "category": "compression",
+      "description": "Standard GNU file compression utilities"
+    },
+    {
+      "name": "bsdunzip",
+      "package": "bsdtar",
+      "path": "/data/data/com.termux/files/usr/bin/bsdunzip",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^bsdtar$|^bsdtar-",
+      "category": "compression",
+      "description": "The tar(1) and cpio(1) programs from FreeBSD, using libarchive"
+    },
+    {
+      "name": "zipsplit",
+      "package": "zip",
+      "path": "/data/data/com.termux/files/usr/bin/zipsplit",
+      "source": "apt",
+      "tags": [
+        "compression"
+      ],
+      "auto_tag_source": "auto:^zip$|^zip-",
+      "category": "compression",
+      "description": "Tools for working with zip files"
+    }
+  ]
+}

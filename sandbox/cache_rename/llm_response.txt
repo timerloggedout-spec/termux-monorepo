@@ -1,0 +1,7 @@
+Here are the SEARCH[35m/[0mREPLACE patches to rename `.deepcli[35m/[0m[95mc[0mache` to `session_cache` throughout the codebase.
+
+**Assumptions:**  
+- The directory `.deepcli[35m/[0m[95mc[0mache` is currently stored as a string literal or built via `os.path.join`.  
+- Variable[35m/[0mattribute names may include `cache_dir`, `cache_path`, etc.  
+- I will change the **directory name** in paths, not necessarily variable names unless the variable name is tightly coupled.  
+- If `session_c

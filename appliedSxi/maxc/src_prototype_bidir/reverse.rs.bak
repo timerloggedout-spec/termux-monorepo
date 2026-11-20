@@ -1,0 +1,123 @@
+use scraper::{Html, Node};
+use ego_tree::NodeRef;
+use std::collections::HashMap;
+
+fn tag_to_token(tag: &str) -> Option<String> {
+    let m = HashMap::from([
+        ("a", "@"),
+        ("img", "%"),
+        ("table", "^"),
+        ("td", "`"),
+        ("tr", "|"),
+        ("div", ";"),
+        ("span", ":"),
+        ("script", "{"),
+        ("style", "["),
+        ("input", "?"),
+        ("form", "?="),
+        ("ul", "("),
+        ("li", "-"),
+        ("h1", "#"),
+        ("em", "*"),
+        ("i", "_"),
+        ("blockquote", ">"),
+        ("section", "!"),
+        ("aside", "$"),
+        ("link", "&"),
+        ("button", "+"),
+        ("textarea", "~"),
+        ("label", "'"),
+        ("p", "p"),
+        ("br", "/"),
+    ]);
+    m.get(tag).map(|s| s.to_string())
+}
+
+fn is_block(tag: &str) -> bool {
+    matches!(
+        tag,
+        "div"
+            | "section"
+            | "article"
+            | "nav"
+            | "aside"
+            | "header"
+            | "footer"
+            | "ul"
+            | "ol"
+            | "table"
+            | "form"
+    )
+}
+
+pub fn reverse_compile(html: &str) -> String {
+    let document = Html::parse_document(html);
+    let mut out = String::new();
+    // Walk the root element's children
+    for child in document.root_element().children() {
+        emit_node(&child, 0, &mut out);
+    }
+    out
+}
+
+fn emit_node(node: &scraper::NodeRef<Node>, indent: usize, out: &mut String) {
+    match node.value() {
+        scraper::node::NodeData::Element(el) => {
+            let tag_name = el.name();
+            let token = tag_to_token(tag_name).unwrap_or_else(|| tag_name.to_string());
+
+            // Build attribute string, with class/id special handling
+            let mut attr_str = String::new();
+            for (k, v) in el.attrs() {
+                match k {
+                    "class" => attr_str.push_str(&format!(".{}", v.replace(' ', "."))),
+                    "id" => attr_str.push_str(&format!("#{}", v)),
+                    _ => attr_str.push_str(&format!(" {}=\"{}\"", k, v)),
+                }
+            }
+
+            let children: Vec<_> = node.children().collect::<Vec<_>>();
+            let has_elem = children
+                .iter()
+                .any(|c| matches!(c.value(), scraper::node::NodeData::Element(_)));
+            let text_concat: String = children
+                .iter()
+                .filter_map(|c| match c.value() {
+                    scraper::node::NodeData::Text(t) => Some(t.text.trim().to_string()),
+                    _ => None,
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+
+            let void_elems = [
+                "br", "hr", "img", "input", "link", "meta", "area", "base", "col", "embed",
+                "source", "track", "wbr",
+            ];
+            if void_elems.contains(&tag_name) {
+                push_line(out, indent, &format!("{}{}/", token, attr_str));
+            } else if children.is_empty() {
+                push_line(out, indent, &format!("{}{}", token, attr_str));
+            } else if !has_elem && !text_concat.is_empty() {
+                push_line(out, indent, &format!("{} \"{}\"", token, text_concat));
+            } else {
+                push_line(out, indent, &format!("{}{}", token, attr_str));
+                for child in children {
+                    emit_node(child, indent + 2, out);
+                }
+            }
+        }
+        scraper::node::NodeData::Text(t) => {
+            let text = t.text.trim().to_string();
+            if !text.is_empty() {
+                push_line(out, indent, &text);
+            }
+        }
+        _ => {}
+    }
+}
+
+fn push_line(out: &mut String, indent: usize, content: &str) {
+    out.push_str(&" ".repeat(indent));
+    out.push_str(content);
+    out.push('\n');
+}

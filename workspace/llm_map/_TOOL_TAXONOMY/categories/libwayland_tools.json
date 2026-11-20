@@ -1,0 +1,17 @@
+{
+  "category": "libwayland_tools",
+  "tools": [
+    {
+      "name": "wayland-scanner",
+      "package": "libwayland",
+      "path": "/data/data/com.termux/files/usr/bin/wayland-scanner",
+      "source": "apt",
+      "tags": [
+        "libwayland_tools"
+      ],
+      "auto_tag_source": "auto:^libwayland$|^libwayland-",
+      "category": "libwayland_tools",
+      "description": "Wayland protocol library"
+    }
+  ]
+}

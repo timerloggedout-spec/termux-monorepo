@@ -1,0 +1,1 @@
+echo "🔁 Auto‑feedback is live at $(date) – this will appear in chat"

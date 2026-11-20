@@ -1,0 +1,87 @@
+{
+  "debugger": {
+    "desc": "Debugging, reverse engineering, and binary analysis",
+    "includes_tags": [
+      "debugging",
+      "binary_analysis",
+      "hashing"
+    ],
+    "tool_names": [
+      "gdb",
+      "lldb",
+      "strace",
+      "ltrace",
+      "valgrind",
+      "perf",
+      "rr",
+      "radare2",
+      "rizin",
+      "iaito",
+      "frida",
+      "objdump",
+      "readelf",
+      "strings",
+      "nm",
+      "xxhsum",
+      "sha256sum",
+      "binwalk",
+      "gdbserver"
+    ]
+  },
+  "ast_hash_agent": {
+    "desc": "AST analysis, linting, hashing, and structural code intelligence",
+    "includes_tags": [
+      "ast_tools",
+      "hashing",
+      "python",
+      "rust",
+      "javascript"
+    ],
+    "includes_roles": [
+      "debugger"
+    ],
+    "tool_names": [
+      "ast-grep",
+      "tree-sitter",
+      "tiktoken",
+      "ruff",
+      "clang-format",
+      "clang-tidy",
+      "cppcheck",
+      "shellcheck",
+      "black",
+      "mypy",
+      "pyright"
+    ]
+  },
+  "archwiz": {
+    "desc": "Master Architect-Wizard: surgically edits code, enforces structural precision, and assembles agent toolchains.",
+    "includes_tags": [
+      "ast_tools",
+      "hashing",
+      "text_processing",
+      "development",
+      "llm_orchestration",
+      "reverse_engineering",
+      "debugging"
+    ],
+    "includes_roles": [
+      "ast_hash_agent",
+      "debugger"
+    ],
+    "tool_names": [
+      "python3",
+      "ruff",
+      "ast-grep",
+      "sed",
+      "awk",
+      "jq",
+      "git",
+      "bash",
+      "taxtool",
+      "taxfind",
+      "taxapply",
+      "taxdiff"
+    ]
+  }
+}

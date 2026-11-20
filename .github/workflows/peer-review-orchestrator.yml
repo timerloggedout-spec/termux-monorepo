@@ -1,0 +1,254 @@
+name: Peer review orchestrator
+
+# Hold free-tier agentic Gemini until external review bots finish, then
+# auto-trigger CodeRabbit Autofix (same path as the UI checkbox).
+#
+# CodeRabbit only honors @coderabbitai autofix from accounts with repo
+# write/admin. Pass secrets.OPERATOR_GITHUB_TOKEN via with.github-token.
+#
+# Devin Apply Suggestions: enable Auto-Fix in Devin Settings (no public click API).
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+concurrency:
+  group: peer-orch-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  orchestrate:
+    if: |
+      github.event.pull_request.head.repo.fork == false &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: read
+    outputs:
+      ready: ${{ steps.wait.outputs.ready }}
+      peer_summary: ${{ steps.wait.outputs.peer_summary }}
+      autofix_posted: ${{ steps.autofix.outputs.posted }}
+      pr_number: ${{ github.event.pull_request.number }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Wait for peer reviewers + collect summary
+        id: wait
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          MAX_WAIT_SEC: '480'
+          POLL_SEC: '30'
+          PR_UPDATED_AT: ${{ github.event.pull_request.updated_at }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA;
+            const maxWait = Number(process.env.MAX_WAIT_SEC) || 480;
+            const pollSec = Number(process.env.POLL_SEC) || 30;
+            const isPeer = (login) => /coderabbit|devin-ai|aikido|sentry|copilot-pull-request/.test((login || '').toLowerCase());
+            const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+            // Prefer PR event timestamp over commit metadata (trusted server-side)
+            let activityAfter = process.env.PR_UPDATED_AT
+              ? new Date(process.env.PR_UPDATED_AT).getTime() - 5 * 60 * 1000
+              : 0;
+            try {
+              const { data: commit } = await github.rest.repos.getCommit({
+                owner: context.repo.owner, repo: context.repo.repo, ref: headSha,
+              });
+              const ct = new Date(commit.commit.committer?.date || commit.commit.author?.date || 0).getTime();
+              if (ct) activityAfter = Math.max(activityAfter, ct - 60_000);
+            } catch (e) {
+              core.info('getCommit skip: ' + e.message);
+            }
+
+            const started = Date.now();
+            let lastSummary = 'none';
+            let coderabbitSeen = false;
+            let anyPeerSeen = false;
+
+            while (Date.now() - started < maxWait * 1000) {
+              const reviewPages = await github.paginate(github.rest.pulls.listReviews, {
+                owner: context.repo.owner, repo: context.repo.repo,
+                pull_number: prNumber, per_page: 50,
+              });
+              // Strict: only reviews with commit_id matching current head
+              const peerReviews = reviewPages.filter(r =>
+                isPeer(r.user?.login) && r.commit_id === headSha
+              );
+              if (peerReviews.some(r => (r.user?.login || '').toLowerCase().includes('coderabbit'))) {
+                coderabbitSeen = true;
+              }
+              if (peerReviews.length > 0) anyPeerSeen = true;
+
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, per_page: 100,
+              });
+              const peerComments = comments.filter(c => {
+                if (!isPeer(c.user?.login)) return false;
+                if (!activityAfter) return true;
+                return new Date(c.created_at).getTime() >= activityAfter;
+              });
+              if (peerComments.some(c => (c.user?.login || '').toLowerCase().includes('coderabbit'))) {
+                coderabbitSeen = true;
+              }
+              if (peerComments.length > 0) anyPeerSeen = true;
+
+              try {
+                const { data: checks } = await github.rest.checks.listForRef({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  ref: headSha, per_page: 50,
+                });
+                const peerChecks = (checks.check_runs || []).filter(c => {
+                  const n = ((c.name || '') + (c.app?.slug || '')).toLowerCase();
+                  return /aikido|sentry|coderabbit|devin|snyk|semgrep/.test(n);
+                });
+                if (peerChecks.length && peerChecks.every(c => c.status === 'completed')) {
+                  anyPeerSeen = true;
+                }
+              } catch (e) {
+                core.info('checks.listForRef skip: ' + e.message);
+              }
+
+              const lines = [];
+              for (const r of peerReviews.slice(-8)) {
+                lines.push(`review @${r.user.login} state=${r.state} sha=${(r.commit_id || '').slice(0, 7)}`);
+              }
+              for (const c of peerComments.slice(-6)) {
+                lines.push(`comment @${c.user.login}: ${(c.body || '').replace(/\s+/g, ' ').slice(0, 120)}`);
+              }
+              lastSummary = lines.join(' | ') || 'no peer activity yet';
+
+              const elapsed = (Date.now() - started) / 1000;
+              if (coderabbitSeen && elapsed >= 45) break;
+              if (anyPeerSeen && elapsed >= 180) break;
+              core.info(`Waiting peers… elapsed=${Math.floor(elapsed)}s cr=${coderabbitSeen} any=${anyPeerSeen}`);
+              await sleep(pollSec * 1000);
+            }
+
+            const timedOut = (Date.now() - started) >= maxWait * 1000;
+            core.setOutput('ready', anyPeerSeen || coderabbitSeen ? 'true' : 'false');
+            core.setOutput('peer_summary', lastSummary.slice(0, 2000));
+            core.setOutput('coderabbit_seen', coderabbitSeen ? 'true' : 'false');
+            core.setOutput('timed_out', timedOut ? 'true' : 'false');
+            core.setOutput('any_peer_seen', anyPeerSeen ? 'true' : 'false');
+
+      - name: Auto-trigger CodeRabbit Autofix (operator token)
+        id: autofix
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          CR_SEEN: ${{ steps.wait.outputs.coderabbit_seen }}
+          HAS_OPERATOR_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN != '' }}
+        with:
+          github-token: ${{ secrets.OPERATOR_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA;
+            const marker = '<!-- peer-orch-coderabbit-autofix -->';
+            const hasOp = process.env.HAS_OPERATOR_TOKEN === 'true';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, per_page: 100,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
+              core.info('Autofix already requested for this SHA');
+              core.setOutput('posted', 'false');
+              return;
+            }
+            // 45m throttle: ignore our own per-SHA marker comments so new SHAs can still request
+            const recentAutofix = comments.some(c => {
+              if (!c.body) return false;
+              if (c.body.includes(marker)) return false;
+              const body = c.body.toLowerCase();
+              if (!body.includes('@coderabbitai') || !body.includes('autofix')) return false;
+              return (Date.now() - new Date(c.created_at).getTime()) < 45 * 60 * 1000;
+            });
+            if (recentAutofix) {
+              core.setOutput('posted', 'false');
+              return;
+            }
+            if (process.env.CR_SEEN !== 'true') {
+              core.info('CodeRabbit not seen — skip autofix');
+              core.setOutput('posted', 'false');
+              return;
+            }
+            const note = hasOp
+              ? '_Posted via OPERATOR_GITHUB_TOKEN (write user) so CodeRabbit accepts Autofix._'
+              : '_Posted via GITHUB_TOKEN — add OPERATOR_GITHUB_TOKEN if CR rejects write._';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                `sha: ${headSha}`,
+                '',
+                '@coderabbitai autofix',
+                '',
+                note,
+                'Apply unresolved CodeRabbit findings to this branch. Minimal diffs; respect AGENTS.md.',
+              ].join('\n'),
+            });
+            core.setOutput('posted', 'true');
+
+      - name: Brief settle after autofix request
+        if: steps.autofix.outputs.posted == 'true'
+        run: sleep 90
+        shell: bash
+
+      - name: Publish peer-review-ready marker
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SUMMARY: ${{ steps.wait.outputs.peer_summary }}
+          AUTOFIX: ${{ steps.autofix.outputs.posted }}
+          TIMED_OUT: ${{ steps.wait.outputs.timed_out }}
+          READY: ${{ steps.wait.outputs.ready }}
+        with:
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA;
+            const marker = '<!-- peer-review-ready -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, per_page: 100,
+            });
+            if (comments.some(c => c.body && c.body.includes(marker) && c.body.includes(headSha))) {
+              core.info('peer-review-ready already posted for this SHA');
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: [
+                marker,
+                `head_sha: ${headSha}`,
+                `ready: ${process.env.READY}`,
+                `autofix_requested: ${process.env.AUTOFIX}`,
+                `timed_out: ${process.env.TIMED_OUT}`,
+                '',
+                '### Peer review gate (ready for second-pass agents)',
+                '',
+                'External reviewers polled: CodeRabbit, Devin, Aikido, Sentry, Copilot.',
+                'Autofix (if any) was requested in a separate comment on this SHA.',
+                '',
+                '**Peer activity (truncated):**',
+                '```',
+                (process.env.SUMMARY || 'none').slice(0, 1500),
+                '```',
+                '',
+                'Downstream: `gemini-after-peers`. Jules: `agent-review-auto-jules`.',
+              ].join('\n'),
+            });

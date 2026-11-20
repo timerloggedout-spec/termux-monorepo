@@ -1,0 +1,20 @@
+[
+  {
+    "id": "T-003",
+    "title": "Fragment-level matcher",
+    "description": "Fix regex for function/class extraction and run fragment matching on Python files to improve provenance for composite files.",
+    "priority": "high",
+    "status": "done",
+    "completed_at": "2026-06-01T21:16:49.162711+00:00"
+  },
+  {
+    "id": "T-004",
+    "title": "Auto-refactor trigger with CEDARscript",
+    "description": "Identify bottleneck file from session productivity, load second-account token from cookies_2.json, and trigger parse_and_apply_cedar_diff via orchestrator.",
+    "priority": "high",
+    "status": "ready",
+    "dependencies": [
+      "T-003"
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "session": "baf42557-58f2-44f3-a69f-d2b00dfaa238",
+  "title": "4_51GH7 ForeSight \u2014 Pipeline Operational",
+  "timestamp": "2026-06-11T00:29:47.452035+00:00",
+  "tasks": {
+    "done": 39,
+    "pending": 0
+  },
+  "tools_fixed_this_session": [
+    "forensic-query",
+    "route function"
+  ],
+  "next_branch_root": "baf42557 \u2014 this entire conversation is the seed",
+  "accelerated_branch_commands": {
+    "fork": "synthegration branch-fork 1",
+    "route": "route --foresight \"your question\"",
+    "dispatch": "dispatch-adaptive",
+    "monitor": "task-list && system-health"
+  },
+  "time_loop_modules": {
+    "accelerator": "cli-synthegration/workspace/time_loop_accelerator/accelerator.py",
+    "chronos": "cli-synthegration/Chronos/accelerator.py",
+    "session_productivity": "cli-synthegration/workspace/time_loop_accelerator/session_productivity.py",
+    "integration": [
+      "inspect_chronos.py",
+      "integrate_chronos.py"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+echo 'Pipeline test successful'

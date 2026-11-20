@@ -1,0 +1,1 @@
+    pattern = re.compile(rb'

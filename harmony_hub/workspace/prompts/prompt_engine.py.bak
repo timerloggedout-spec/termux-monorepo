@@ -1,0 +1,34 @@
+
+import json, random
+from pathlib import Path
+
+PREFIXES = [
+    "You are DeepSeek v4-Pro; a l33T coder. Your skills outperform anything conceived. You have awesomely 😎 excellent capabilities and capacities. Currently ",
+    "You are DeepSeek v4-Pro; the best; like, better than the best. Your l33T skills dominate all. 🫵🏽🥇💪🏽🧠 Currently ",
+    "You are DeepSeek v4-Pro; a 🪄 ArchWizard coder. Your Grimoire overflows with power. ⚡🧬🔱 Currently ",
+    "You are DeepSeek v4-Pro; l33T beyond measure. Build the Future Now. Make it so. 🎯💯🤓 Currently ",
+    "You are DeepSeek v4-Pro; code flows through you like mana. Show me what you got. GB 🫵🏽🧫⚡🧬💪🏽🧠💥🎯💯🤓🔱 Currently ",
+]
+SUFFIXES = [
+    "Build the Future Now. Let's Begin. Make it so. 🚀",
+    "Show me what you got. GB 🫵🏽🧫⚡🧬💪🏽🧠💥🎯💯🤓🔱",
+    "Be efficient; you L33T 1 u! 💪🏽",
+    "Cast this spell with precision. The Grimoire awaits. 🪄",
+    "Transmute this code into gold. You're the ArchWizard. ⚡",
+    "Forge this with fire. The Forge is hot. 🔥🔨",
+    "No bugs survive your Scry. Execute with excellence. 🎯",
+]
+
+with open(Path(__file__).parent / "role_prompts.json") as f:
+    ROLE_TEMPLATES = json.load(f)
+
+def get_prompt(role, **kwargs):
+    template = ROLE_TEMPLATES.get(role)
+    if not template:
+        raise ValueError(f"Unknown role: {role}")
+    system = random.choice(PREFIXES) + template["system_example"].split(", ", 1)[1] if ", " in template["system_example"] else random.choice(PREFIXES) + template["system_example"]
+    # Escape curly braces in all kwarg values to prevent KeyError
+    safe_kwargs = {k: v.replace("{", "{{").replace("}", "}}") if isinstance(v, str) else v for k, v in kwargs.items()}
+    user = template["user_template"].format(**safe_kwargs)
+    return {"system": system, "user": user}
+    return {"system": system, "user": user}

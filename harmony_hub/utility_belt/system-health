@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "=== System Health ==="
+echo "Reliability DB: $(python3 -c "import sqlite3; c=sqlite3.connect('$HOME/workspace/llm_map/reliability.db'); print(c.execute('SELECT COUNT(*) FROM reliability_series').fetchone()[0])") rows"
+echo "Metrics log: $(wc -l < $HOME/workspace/llm_map/metrics_log.jsonl) entries"
+echo "Session store: $(ls $HOME/.deepcli/session_store/*.json 2>/dev/null | wc -l) files"
+echo "Staged files: $(jq '.readiness.staged_files_count' $HOME/workspace/llm_map/foresight_state.json)"
+echo "Pending tasks: $(jq '[.[] | select(.status=="pending")] | length' $HOME/workspace/llm_map/master_tasks.json)"

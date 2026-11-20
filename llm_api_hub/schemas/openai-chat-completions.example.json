@@ -1,0 +1,31 @@
+{
+  "request": {
+    "model": "wrapper/deepseek",
+    "messages": [
+      {"role": "system", "content": "You are a concise coding agent."},
+      {"role": "user", "content": "List three Termux-safe test steps."}
+    ],
+    "temperature": 0.4,
+    "stream": false
+  },
+  "response": {
+    "id": "chatcmpl-example",
+    "object": "chat.completion",
+    "model": "wrapper/deepseek",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "1) …\n2) …\n3) …"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0
+    }
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "package": "cedarscript_editor",
+  "location": "/data/data/com.termux/files/usr/lib/python3.13/site-packages/cedarscript_editor",
+  "version": "0.2.14",
+  "classes": [
+    {
+      "name": "CEDARScriptASTParser",
+      "doc": "",
+      "constructor": "()",
+      "methods": [
+        {
+          "name": "find_first_by_field_name",
+          "signature": "(node: <built-in function any>, field_names)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "find_first_by_type",
+          "signature": "(nodes: collections.abc.Sequence[any], child_type)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "find_primitive",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_case_action",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.CaseAction",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.CaseAction'>",
+          "doc": "Parse a THEN clause in a CASE statement"
+        },
+        {
+          "name": "parse_case_stmt",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.CaseStatement",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.CaseStatement'>",
+          "doc": "Parse a CASE statement"
+        },
+        {
+          "name": "parse_case_when",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.CaseWhen",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.CaseWhen'>",
+          "doc": "Parse a WHEN clause in a CASE statement"
+        },
+        {
+          "name": "parse_command",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_content",
+          "signature": "(self, node) -> str | tuple[cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment, int | None] | None",
+          "returns": "str | tuple[cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment, int | None] | None",
+          "doc": ""
+        },
+        {
+          "name": "parse_content_from_segment_clause",
+          "signature": "(self, node) -> tuple[cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment, int | None]",
+          "returns": "tuple[cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment, int | None]",
+          "doc": ""
+        },
+        {
+          "name": "parse_content_literal",
+          "signature": "(self, node) -> str",
+          "returns": "<class 'str'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_create_command",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_delete_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_ed_stmt",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.EdScript",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.EdScript'>",
+          "doc": "Parse an ED script statement"
+        },
+        {
+          "name": "parse_identifier_from_file",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_insert_clause",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.InsertClause",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.InsertClause'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_line_filter",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.LineFilter",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.LineFilter'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_marker",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.Marker",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.Marker'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_move_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_multiline_string",
+          "signature": "(node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_mv_file_command",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_region",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment",
+          "returns": "cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment",
+          "doc": ""
+        },
+        {
+          "name": "parse_relative_indent_block",
+          "signature": "(self, node) -> str",
+          "returns": "<class 'str'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_relative_indentation",
+          "signature": "(self, node) -> int | None",
+          "returns": "int | None",
+          "doc": ""
+        },
+        {
+          "name": "parse_replace_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_rm_file_command",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_script",
+          "signature": "(self, code_text: str) -> tuple[collections.abc.Sequence[cedarscript_ast_parser.cedarscript_ast_parser.Command], collections.abc.Sequence[cedarscript_ast_parser.cedarscript_ast_parser.ParseError]]",
+          "returns": "tuple[collections.abc.Sequence[cedarscript_ast_parser.cedarscript_ast_parser.Command], collections.abc.Sequence[cedarscript_ast_parser.cedarscript_ast_parser.ParseError]]",
+          "doc": "Parses the CEDARScript code and returns a tuple containing:\n- A list of Command objects if parsing is successful.\n- A list of ParseError objects if there are parsing errors."
+        },
+        {
+          "name": "parse_segment",
+          "signature": "(self, node) -> cedarscript_ast_parser.cedarscript_ast_parser.Segment",
+          "returns": "<class 'cedarscript_ast_parser.cedarscript_ast_parser.Segment'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_singlefile_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_string",
+          "signature": "(node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_to_value_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_update_action",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_update_command",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_update_target",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "parse_where_clause",
+          "signature": "(self, node)",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "CEDARScriptEditor",
+      "doc": "",
+      "constructor": "(root_path)",
+      "methods": [
+        {
+          "name": "apply_commands",
+          "signature": "(self, commands: collections.abc.Sequence[cedarscript_ast_parser.cedarscript_ast_parser.Command])",
+          "returns": "<class 'inspect._empty'>",
+          "doc": ""
+        },
+        {
+          "name": "find_identifier",
+          "signature": "(self, source_info: tuple[str, str | collections.abc.Sequence[str]], marker: cedarscript_ast_parser.cedarscript_ast_parser.Marker) -> text_manipulation.range_spec.IdentifierBoundaries",
+          "returns": "<class 'text_manipulation.range_spec.IdentifierBoundaries'>",
+          "doc": ""
+        },
+        {
+          "name": "find_index_range_for_region",
+          "signature": "(self, region: cedarscript_ast_parser.cedarscript_ast_parser.BodyOrWhole | cedarscript_ast_parser.cedarscript_ast_parser.Marker | cedarscript_ast_parser.cedarscript_ast_parser.Segment | cedarscript_ast_parser.cedarscript_ast_parser.RelativeMarker, lines: collections.abc.Sequence[str], identifier_resolver: Callable[[cedarscript_ast_parser.cedarscript_ast_parser.Marker], text_manipulation.range_spec.IdentifierBoundaries], search_range: text_manipulation.range_spec.RangeSpec | text_manipulation.range_spec.IdentifierBoundaries | None = None) -> text_manipulation.range_spec.RangeSpec",
+          "returns": "<class 'text_manipulation.range_spec.RangeSpec'>",
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "find_commands",
+      "signature": "(content: str)",
+      "returns": "<class 'inspect._empty'>",
+      "doc": ""
+    }
+  ]
+}

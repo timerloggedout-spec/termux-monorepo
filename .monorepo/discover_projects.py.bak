@@ -1,0 +1,70 @@
+#!/data/data/com.termux/files/usr/bin/python3
+import os, json, fnmatch
+HOME = os.environ['HOME']
+EXCLUDE_FILE = os.path.join(HOME, '.monorepo', 'exclude_patterns.txt')
+WHITELIST_FILE = os.path.join(HOME, '.monorepo', 'whitelist.txt')
+OUTPUT_FILE = os.path.join(HOME, '.monorepo', 'projects.json')
+
+def load_patterns(fname):
+    with open(fname) as f:
+        return [line.strip() for line in f if line.strip() and not line.startswith('#')]
+
+def is_excluded(path, pats):
+    rel = os.path.relpath(path, HOME)
+    for pat in pats:
+        if '/' in pat:
+            # Match against relative path
+            if fnmatch.fnmatch(rel, pat):
+                return True
+        else:
+            # Match against each component
+            for part in rel.split(os.sep):
+                if fnmatch.fnmatch(part, pat):
+                    return True
+    return False
+
+def has_scripts(dirpath):
+    script_exts = ('.sh', '.py', '.js', '.pl', '.rb', '.go', '.rs', '.c', '.cpp', '.java')
+    for f in os.listdir(dirpath):
+        if os.path.isfile(os.path.join(dirpath, f)):
+            if any(f.endswith(ext) for ext in script_exts):
+                return True
+    return False
+
+def discover():
+    exclude_pats = load_patterns(EXCLUDE_FILE)
+    whitelist = load_patterns(WHITELIST_FILE)
+    projects = []
+
+    if '.' in whitelist or HOME in whitelist:
+        if has_scripts(HOME):
+            projects.append({'path': HOME, 'type': 'script', 'name': 'home-scripts'})
+
+    for root, dirs, files in os.walk(HOME):
+        # Prune hidden dirs (except HOME itself)
+        if root != HOME:
+            dirs[:] = [d for d in dirs if not d.startswith('.')]
+        # Prune excluded dirs
+        dirs[:] = [d for d in dirs if not is_excluded(os.path.join(root, d), exclude_pats)]
+
+        if is_excluded(root, exclude_pats):
+            continue
+        if root == HOME:
+            continue
+        if not any(w in root or w in os.path.basename(root) for w in whitelist):
+            continue
+
+        manifest = None
+        if 'package.json' in files: manifest = 'npm'
+        elif 'Cargo.toml' in files: manifest = 'cargo'
+        elif 'go.mod' in files: manifest = 'go'
+        elif 'setup.py' in files or 'pyproject.toml' in files: manifest = 'python'
+        if manifest:
+            projects.append({'path': root, 'type': manifest, 'name': os.path.basename(root)})
+
+    with open(OUTPUT_FILE, 'w') as f:
+        json.dump(projects, f, indent=2)
+    print(f"Found {len(projects)} projects in whitelist.")
+
+if __name__ == '__main__':
+    discover()

@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "repository": "timerloggedout-spec/termux-monorepo",
+  "exclusions": {
+    "path_globs": [
+      ".git/**",
+      ".deepcli/**",
+      "sandbox/**",
+      "synthegration_exports/**",
+      "deepseek_harvest_work/**",
+      "termux-multi-agent/workspace/**",
+      "workspace/maxc/**",
+      "refTemplates/**",
+      "**/session_store/**",
+      "**/browser-data/**",
+      "**/browser-data-*/**",
+      "**/browser-profile*/**",
+      "**/chrome-profile*/**",
+      "**/chromium-profile*/**",
+      "**/.env",
+      "**/*.env",
+      "**/*token*",
+      "**/*credential*",
+      "**/*api_key*",
+      "**/*.pem",
+      "**/*.key",
+      "node_modules/**",
+      "**/node_modules/**",
+      "**/__pycache__/**",
+      "target/**",
+      "dist/**",
+      "build/**"
+    ],
+    "max_file_bytes": 500000
+  },
+  "scopes": [
+    {
+      "id": "archwiz",
+      "title": "ArchWiz operational tooling",
+      "path_globs": ["archwiz/**/*.py", "archwiz/**/*.md"],
+      "aliases": ["archwiz", "cockpit", "forensic tooling"],
+      "labels": []
+    },
+    {
+      "id": "knowledge-indexes",
+      "title": "Knowledge indexes and source maps",
+      "path_globs": ["workspace/llm_map/**", "mapper_graph.py", "central_mapper_v420.py"],
+      "aliases": ["llm map", "mapper", "index", "source map"],
+      "labels": []
+    },
+    {
+      "id": "github-automation",
+      "title": "Repository automation and validation",
+      "path_globs": [".github/workflows/**", "scripts/ci/**", "scripts/proposals/**"],
+      "aliases": ["github actions", "workflow", "ci", "automation"],
+      "labels": []
+    },
+    {
+      "id": "context-relationships",
+      "title": "Context relationship graph implementation",
+      "path_globs": ["archwiz/context_relationships/**", "config/context_relationships/**", "workspace/llm_map/context_relationships/**"],
+      "aliases": ["context graph", "relationship graph", "scope index", "relationship matrix"],
+      "labels": []
+    }
+  ]
+}

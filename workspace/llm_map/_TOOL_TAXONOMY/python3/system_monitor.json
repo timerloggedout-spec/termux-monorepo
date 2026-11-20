@@ -1,0 +1,137 @@
+{
+  "category": "system_monitor",
+  "tools": [
+    {
+      "name": "ps",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/ps",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "vmstat",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/vmstat",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "top",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/top",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "free",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/free",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "htop",
+      "package": "htop",
+      "path": "/data/data/com.termux/files/usr/bin/htop",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "procs",
+      "package": "procs",
+      "path": "/data/data/com.termux/files/usr/bin/procs",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "uptime",
+      "package": "procps",
+      "path": "/data/data/com.termux/files/usr/bin/uptime",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "lsof",
+      "package": "lsof",
+      "path": "/data/data/com.termux/files/usr/bin/lsof",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "dmesg",
+      "package": "util-linux",
+      "path": "/data/data/com.termux/files/usr/bin/dmesg",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "strace",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strace",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "kill",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/kill",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    },
+    {
+      "name": "dmesg",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/dmesg",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "System tool"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>author</key><string>ArchW1z &amp; ArchM@#73πs</string>
+    <key>name</key><string>MaxUp FoxFire</string>
+    <key>comment</key><string>Dark theme for MaxUp - 🖮🔥👍</string>
+    <key>settings</key>
+    <array>
+        <dict>
+            <key>settings</key>
+            <key>background</key><string>#0D0D10</string>
+            <key>caret</key><string>#FF9500</string>
+            <key>foreground</key><string>#D0D0D0</string>
+            <key>gutter</key><string>#0D0D10</string>
+            <key>gutterForeground</key><string>#666666</string>
+            <key>lineHighlight</key><string>#1A1A1A</string>
+            <key>selection</key><string>#303A20</string>
+            <key>selectionBorder</key><string>#FF9500</string>
+            <key>invisibles</key><string>#333333</string>
+        </dict>
+    </array>
+    <key>gutterSettings</key>
+    <dict>
+        <key>background</key><string>#0D0D10</string>
+    </dict>
+    <key>scopes</key>
+    <array>
+        <dict>
+            <key>name</key><string>Element Tokens</string>
+            <key>scope</key><string>keyword.operator.element.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#FF9500</string>
+                <key>fontStyle</key><string>bold</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>SVG Tokens</string>
+            <key>scope</key><string>keyword.operator.svg.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#E69696</string>
+                <key>fontStyle</key><string>bold</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Classes</string>
+            <key>scope</key><string>entity.other.attribute-name.class.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#D7D787</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Attributes</string>
+            <key>scope</key><string>meta.attribute.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#FFA446</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Quoted Strings</string>
+            <key>scope</key><string>string.quoted.double.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#83A598</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Interpolation</string>
+            <key>scope</key><string>meta.interpolation.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>background</key><string>#2A2A20</string>
+                <key>foreground</key><string>#65B8DD</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Interpolation Variable</string>
+            <key>scope</key><string>variable.other.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#FF9500</string>
+                <key>fontStyle</key><string>italic</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Control Keywords</string>
+            <key>scope</key><string>keyword.control.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#B46B96</string>
+                <key>fontStyle</key><string>bold</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Fences</string>
+            <key>scope</key><string>punctuation.section.fence.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#FF9500</string>
+                <key>fontStyle</key><string>bold</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Comments</string>
+            <key>scope</key><string>comment.line.double-slash.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#666666</string>
+                <key>fontStyle</key><string>italic</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>name</key><string>Interpolation Delimiters</string>
+            <key>scope</key><string>punctuation.section.interpolation, begin.maxup, punctuation.section.interpolation, end.maxup, punctuation.section.logic, begin.maxup, punctuation.section.logic, end.maxup</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key><string>#FF9500</string>
+                <key>fontStyle</key><string>bold</string>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,0 +1,11 @@
+# Dependabot remains enabled as a monitor for the repository's GitHub Actions
+# dependencies. Version-update pull requests are deliberately suppressed; any
+# exception is reviewed through the repository's normal agent and operator flow.
+# Security updates continue to use GitHub's Dependabot security-update settings.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0

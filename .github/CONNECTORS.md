@@ -60,8 +60,9 @@ github:
     secret_env: "GITHUB_WEBHOOK_SECRET"
   agents:
     jules:
-      enabled: true
-      api_key_env: "JULES_API_KEY"
+      enabled: false
+      status: "retired_read_only_after_2026-11-11"
+      api_key_env: null
     coderabbit:
       enabled: true
       api_key_env: "CODERABBIT_API_KEY"

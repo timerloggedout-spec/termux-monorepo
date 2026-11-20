@@ -12,7 +12,7 @@ This is the bounded owner authorization for PFDO-001 through PFDO-004 on the fea
 
 - `docs/ops/DOE-FAMILY.md` — configured-instance identity and DoE version/settings register.
 - `docs/ops/NESTED-FAMILY.md` — `nested-family/v1`, dispatch joins, provenance and the `instance_key` non-enrichment rule.
-- `docs/ops/AGENT-MONIKERS.md` — moniker identity boundary.
+- `docs/ops/COLLABORATOR-MONIKERS.md` — moniker identity boundary.
 - `scripts/doe/instance_key.py` — canonical configured-instance key.
 - `scripts/tracking/nested_family.py` — existing collector and single-writer contract.
 - `.github/workflows/repo-tracking-collect.yml` — Nested Family refresh workflow.

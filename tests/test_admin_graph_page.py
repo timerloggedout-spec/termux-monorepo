@@ -7,7 +7,7 @@ APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "admin-graph.html"
 NAV_LINK = ('<a href="https://timerloggedout-spec.github.io/tribute/'
             'admin-graph.html">Admin Graph</a>')
-NAV_PAGES = ["index.html", "quota.html", "matrix.html", "admin.html",
+NAV_PAGES = ["index.html", "quota.html", "admin.html",
              "oracle.html", "moneyball.html", "3l0.html", "mvt.html",
              "doe.html", "ates.html", "free-tier-value.html",
              "countdowns.html", "delphi-ledger.html", "delphi-rfp.html",
@@ -35,6 +35,11 @@ class AdminGraphPageContractTests(unittest.TestCase):
         for name in NAV_PAGES:
             with self.subTest(page=name):
                 self.assertIn(NAV_LINK, (APP / name).read_text(encoding="utf-8"))
+
+    def test_matrix_uses_shared_navigation(self):
+        matrix = (APP / "matrix.html").read_text(encoding="utf-8")
+        self.assertIn('id="site-primary-nav"', matrix)
+        self.assertIn('site-nav.js', matrix)
 
     def test_in_sitemap(self):
         self.assertIn("tribute/admin-graph.html",

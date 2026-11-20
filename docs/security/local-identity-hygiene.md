@@ -37,6 +37,6 @@ path) — not credentials, not names.
 - [ ] No `*_api_key`, `*.pem`, session JSON under tracked trees
 - [ ] Pre-commit scanner itself is either generic or gitignored
 
-Related: AGENTS.md · SECURITY.md · #94 egg-brush · repository hygiene PRs.
+Related: CLAUDE.md · SECURITY.md · #94 egg-brush · repository hygiene PRs.
 
 Signed-off-by: Grok <grok@x.ai>

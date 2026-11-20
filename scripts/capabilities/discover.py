@@ -190,8 +190,8 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
         rows.append({
             "id": f"repo:{locator}",
             "kind": kind,
-            "source_id": source_id, "locator": locator, "name": str(name)[:240],
-            "description": str(description)[:1200], "content_sha256": digest(raw),
+            "source_id": source_id, "locator": safe_locator, "name": safe_name[:240],
+            "description": safe_description[:1200], "content_sha256": digest(raw),
             "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
             "trust": trust, "lifecycle": "classified", "version_ref": manifest_data.get("version"),

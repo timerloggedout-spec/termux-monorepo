@@ -17,7 +17,7 @@ Source skills:
 - `automate-github-issues`
 - `local-action-verification`
 
-This adapter preserves useful workflow patterns as local role guidance. It is a skill bundle, not an agent runtime, provider adapter, or Jules session client.
+This adapter preserves useful workflow patterns as local role guidance. Provider execution and Jules session clients remain separate runtime capabilities.
 
 Google Jules became read-only after 2026-11-11. The source skill's `@google/jules-sdk` calls and `JULES_API_KEY` dependency remain historical reference material. The source's sequential PR merge phase remains outside this adapter; repository merge authority stays with the governed merge process.
 

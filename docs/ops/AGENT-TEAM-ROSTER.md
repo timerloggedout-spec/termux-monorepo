@@ -8,7 +8,7 @@ This roster distinguishes **observed repository collaborators** from merely conf
 | OpenRouter / OX Alpha | experimental model lane | live catalog + MVT receipts | selectable experimental player during verified quota window |
 | Felo | provider/model catalog + experimental lane | `FELO_AI_API` + live `/models` observation | automatic lane only for observed free/zero candidates; paid/unknown requires explicit experiment |
 | OmniRoute | peer provider lane | existing routing work + MVT lane | independent peer when credential/capacity is available |
-| Jules / google-labs-jules | bounded builder/escalation | historical Jules branches/workflows | admit when expected marginal value exceeds another peer pass; not default review sink |
+| Jules-derived DoE skill bundle | local issue-analysis and action-verification guidance | pinned skill fork plus local role adapters | guide task planning through the DoE role register; route execution through active providers and verified adapters |
 | CodeRabbit | review/autofix collaborator | repository branches + #300/#95 | review signal must be classified as disposition/probe/status before feeding forward |
 | Devin | implementation specialist | repository `devin/*` branches + prior integration work | bounded task worker; attribution remains provenance-based |
 | Mistral / Vibe | provider/CLI collaborator | repository `vibe/mistralai-*` history | candidate specialist; availability must be observed |

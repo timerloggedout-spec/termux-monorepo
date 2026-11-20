@@ -55,7 +55,7 @@
     {
       "id": "workspace-extra-roots",
       "kind": "external-workspace",
-      "locator": "Explicit --extra-root paths only (for example $HOME/workspace/project); never implicit home-directory scan",
+      "locator": "Explicit --extra-root paths only (for example $HOME/workspace/project); home-directory scans require explicit allowlisting.",
       "trust": "unverified",
       "refresh": "operator-invoked",
       "import_mode": "metadata-only",
@@ -91,7 +91,7 @@
       "trust": "community-reference",
       "refresh": "on-demand",
       "import_mode": "candidate-only",
-      "note": "Published under google-labs-code, but its README explicitly says the project is not an officially supported Google product. Uses npx skills add google-labs-code/jules-skills --list; inspect skill scripts/assets and pin commit before use.",
+      "note": "Published under google-labs-code; its README classifies the repository as a community project outside Google's officially supported product set. Uses npx skills add google-labs-code/jules-skills --list; inspect skill scripts/assets and pin commit before use.",
       "reference_urls": [
         "https://github.com/google-labs-code/jules-skills"
       ]
@@ -251,7 +251,7 @@
       "trust": "community-reference",
       "refresh": "on-demand",
       "import_mode": "candidate-only",
-      "note": "GitHub organization-hosted community agents, instructions and skills. Treat as community content, not vendor-supported product guidance.",
+      "note": "GitHub organization-hosted community agents, instructions and skills. Classify as community content; verify vendor support status separately.",
       "reference_urls": [
         "https://github.com/github/awesome-copilot"
       ]
@@ -263,7 +263,7 @@
       "trust": "official-vendor",
       "refresh": "on-demand",
       "import_mode": "candidate-only",
-      "note": "Anthropic-owned plugins only; repository README says third-party marketplace submissions are moving to claude.ai/directory/manage and warns that plugins may include MCP servers/files/software Anthropic does not control. Verify plugin provenance and permissions.",
+      "note": "Anthropic-owned plugins only; repository README says third-party marketplace submissions are moving to claude.ai/directory/manage and warns that plugins may include MCP servers/files/software from independent publishers. Verify plugin provenance and permissions.",
       "reference_urls": [
         "https://github.com/anthropics/claude-plugins-official"
       ]

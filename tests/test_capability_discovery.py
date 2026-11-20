@@ -157,6 +157,52 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertNotIn(fixture, json.dumps(quarantined))
         self.assertNotIn(fixture, " ".join(quarantined["tags"]))
 
+    def test_sofa_schema_and_connector_docs_are_discoverable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sofa = root / "tools" / "sofa"
+            sofa.mkdir(parents=True)
+            (sofa / "tools-schema.json").write_text(json.dumps([
+                {
+                    "name": "sofa_search",
+                    "description": "Search SOFA posts by keyword or tag.",
+                    "inputSchema": {
+                        "properties": {"query": {"type": "string"}},
+                        "required": [],
+                    },
+                },
+                {
+                    "name": "sofa_ask",
+                    "description": "Post a question to SOFA.",
+                    "inputSchema": {
+                        "properties": {
+                            "title": {"type": "string"},
+                            "body": {"type": "string"},
+                        },
+                        "required": ["title", "body"],
+                    },
+                },
+            ]), encoding="utf-8")
+            (sofa / "CONNECTOR.md").write_text(
+                "# SOFA Connector\n\nRead/write scope and OAuth reference.\n",
+                encoding="utf-8",
+            )
+            (sofa / "TOOLS.md").write_text(
+                "# SOFA Tools\n\nTyped tool inventory reference.\n",
+                encoding="utf-8",
+            )
+            rows = scan_repository(root)
+        tools = [row for row in rows if row["kind"] == "tool"]
+        references = [row for row in rows if row["kind"] == "reference"]
+        self.assertEqual({row["name"] for row in tools}, {"sofa_search", "sofa_ask"})
+        self.assertTrue(all(row["source_id"] == "repo-tool-schema" for row in tools))
+        self.assertTrue(all(row["trust"] == "repository-canonical" for row in tools))
+        search = next(row for row in tools if row["name"] == "sofa_search")
+        self.assertIn("query", search["tags"])
+        self.assertIn("parameters=1", search["description"])
+        self.assertEqual(len(references), 2)
+        self.assertTrue(all(row["source_id"] == "repo-tool-docs" for row in references))
+
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

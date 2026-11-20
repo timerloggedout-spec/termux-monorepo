@@ -20,7 +20,8 @@ MAX_SKILL_BYTES = 2_000_000
 MAX_TOOL_CATALOG_BYTES = 20_000_000
 SKILL_NAMES = {"SKILL.md", "SKILLS.md"}
 SKILL_SUFFIXES = {".skills", ".skill"}
-MANIFEST_NAMES = {"plugin.json", "marketplace.json", ".mcp.json", "mcp.json", "tools.json", "tool-manifest.json"}
+MANIFEST_NAMES = {"plugin.json", "marketplace.json", ".mcp.json", "mcp.json", "tools.json", "tool-manifest.json", "tools-schema.json"}
+REFERENCE_NAMES = {"CONNECTOR.md", "TOOLS.md"}
 SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".mypy_cache", ".pytest_cache", "dist", "build"}
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9+._-]{1,}", re.I)
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
@@ -55,6 +56,10 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
         return "workspace-external", "unverified"
     if "vendor" in parts:
         return "repo-vendor-skills", "unverified"
+    if path.name in REFERENCE_NAMES:
+        return "repo-tool-docs", "repository-canonical"
+    if path.name.lower() == "tools-schema.json":
+        return "repo-tool-schema", "repository-canonical"
     if path.name.lower() in MANIFEST_NAMES or "plugins" in parts or ".claude-plugin" in parts or ".codex-plugin" in parts:
         return "repo-plugin-manifests", "repository-canonical"
     if parts[0] == ".agents":
@@ -97,7 +102,8 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
         ("delivery", "ci-cd", ("github action", "workflow", "deploy", "release", "ci/cd")),
         ("research", "vendor-discovery", ("research", "discover", "search", "catalog", "source")),
         ("data", "analytics", ("data", "database", "analytics", "sql", "observability")),
-        ("agentic", "skill-discovery", ("skill", "agent", "tool", "mcp", "orchestrat", "context")),
+        ("agentic", "tool-discovery", ("tool", "mcp", "tool schema", "tool action")),
+        ("agentic", "skill-discovery", ("skill", "agent", "orchestrat", "context")),
         ("design", "product-design", ("design", "ux", "ui", "figma", "visual")),
         ("operations", "workflow-automation", ("ops", "automation", "schedule", "incident", "termux")),
     ]
@@ -112,6 +118,91 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
                 facets.append("workflow")
             return domain, function, sorted(set(facets))
     return "agentic", "capability-discovery", ["skill"]
+
+def import_tool_schema_json(path: Path, root: Path, external: bool = False) -> list[dict]:
+    """Index tool names/descriptions from a schema snapshot; keep full schemas in source."""
+    if path.stat().st_size > MAX_TOOL_CATALOG_BYTES:
+        return []
+    raw_file = path.read_bytes()
+    snapshot_sha = digest(raw_file)
+    try:
+        payload = json.loads(raw_file.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return []
+    if isinstance(payload, dict):
+        payload = payload.get("tools", [])
+    if not isinstance(payload, list):
+        return []
+    taxonomy = load_taxonomy()
+    taxonomy_sha = taxonomy_hash(taxonomy)
+    source_id = "workspace-external" if external else "repo-tool-schema"
+    rows = []
+    for item in payload:
+        if not isinstance(item, dict) or not item.get("name"):
+            continue
+        raw_metadata = json.dumps(item, sort_keys=True, separators=(",", ":"))
+        sensitive_scan_text = " ".join(
+            f"{key} {value}" for key, value in item.items()
+        )
+        trust = "quarantined" if SECRET_RE.search(sensitive_scan_text) else (
+            "unverified" if external else "repository-canonical"
+        )
+        safe_name = redact_sensitive(str(item.get("name") or ""))
+        safe_description = redact_sensitive(str(item.get("description") or ""))
+        input_schema = item.get("inputSchema", {})
+        if not isinstance(input_schema, dict):
+            input_schema = {}
+        properties = input_schema.get("properties", {})
+        if not isinstance(properties, dict):
+            properties = {}
+        required = input_schema.get("required", [])
+        if not isinstance(required, list):
+            required = []
+        relative = path.relative_to(root).as_posix()
+        locator = (
+            f"external:{root.name}/{relative}#{safe_name}"
+            if external else f"{relative}#{safe_name}"
+        )
+        safe_locator = redact_sensitive(locator)
+        summary = (
+            f"{safe_description}; parameters={len(properties)}; "
+            f"required_parameters={len(required)}"
+        )
+        domain, function, facets = infer_tags(
+            safe_name, summary, safe_locator, "MCP tool action"
+        )
+        domain, function = validate_classification(domain, function, taxonomy)
+        facets = [facet for facet in facets if facet != "skill"]
+        facets.extend(["tool", "mcp", "reference-only"])
+        if external:
+            facets.append("external")
+        parameter_tags = [
+            redact_sensitive(str(name)) for name in properties
+        ]
+        identity = digest(f"{source_id}\0{safe_locator}".encode())[:24]
+        rows.append({
+            "id": f"{source_id}:{identity}",
+            "kind": "tool",
+            "source_id": source_id,
+            "locator": safe_locator,
+            "name": safe_name[:240],
+            "description": redact_sensitive(summary)[:1200],
+            "content_sha256": digest(raw_metadata.encode()),
+            "taxonomy_sha256": taxonomy_sha,
+            "domain": domain,
+            "function": function,
+            "facets": sorted(set(facets)),
+            "trust": trust,
+            "lifecycle": "classified",
+            "version_ref": snapshot_sha,
+            "aliases": [],
+            "permissions": [],
+            "tags": sorted(set(TOKEN_RE.findall(
+                " ".join([safe_name, safe_description, *parameter_tags]).lower()
+            )))[:80],
+        })
+    return rows
+
 
 def import_tool_taxonomy_jsonl(path: Path, root: Path, external: bool = False) -> list[dict]:
     """Import the legacy Termux tool catalogue as unverified metadata records."""
@@ -202,10 +293,15 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
         is_skill_file = path.name in SKILL_NAMES or path.suffix.lower() in SKILL_SUFFIXES
         is_manifest_file = path.name.lower() in MANIFEST_NAMES
         is_tool_catalog = path.name == "all_tools.jsonl" and path.parent.name == "_TOOL_TAXONOMY"
+        is_tool_schema = path.name.lower() == "tools-schema.json"
+        is_reference_file = path.name in REFERENCE_NAMES
         if is_tool_catalog:
             rows.extend(import_tool_taxonomy_jsonl(path, root, external=external))
             continue
-        if not is_skill_file and not is_manifest_file:
+        if is_tool_schema:
+            rows.extend(import_tool_schema_json(path, root, external=external))
+            continue
+        if not is_skill_file and not is_manifest_file and not is_reference_file:
             continue
         relative = path.relative_to(root).as_posix()
         locator = f"external:{root.name}/{relative}" if external else relative
@@ -255,6 +351,12 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             if isinstance(skills, (list, dict)):
                 description += f"; skill entries={len(skills)}"
             manifest_tags = " ".join(str(key) for key in manifest_data.keys())
+        elif is_reference_file:
+            heading = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
+            body_lines = [line.strip() for line in text.splitlines() if line.strip() and not line.startswith("#")]
+            name = heading or path.stem
+            description = next((line for line in body_lines if not line.startswith("[")), "")
+            manifest_tags = "mcp tool connector reference"
         else:
             frontmatter = parse_frontmatter(text)
             heading = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
@@ -279,7 +381,8 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
         if path.name == "SKILLS.md" or path.suffix.lower() == ".skills":
             facets.append("index")
         kind = "manifest" if is_manifest_file else (
-            "skill" if path.name == "SKILL.md" or path.suffix.lower() == ".skill" else "reference"
+            "reference" if is_reference_file else
+            ("skill" if path.name == "SKILL.md" or path.suffix.lower() == ".skill" else "reference")
         )
         rows.append({
             "id": f"repo:{locator}",

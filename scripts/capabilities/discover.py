@@ -17,6 +17,7 @@ from pathlib import Path
 
 VERSION = "1.2"
 MAX_SKILL_BYTES = 2_000_000
+MAX_TOOL_CATALOG_BYTES = 20_000_000
 SKILL_NAMES = {"SKILL.md", "SKILLS.md"}
 SKILL_SUFFIXES = {".skills", ".skill"}
 MANIFEST_NAMES = {"plugin.json", "marketplace.json", ".mcp.json", "mcp.json", "tools.json", "tool-manifest.json"}
@@ -114,6 +115,8 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
 
 def import_tool_taxonomy_jsonl(path: Path, root: Path, external: bool = False) -> list[dict]:
     """Import the legacy Termux tool catalogue as unverified metadata records."""
+    if path.stat().st_size > MAX_TOOL_CATALOG_BYTES:
+        return []
     raw_file = path.read_bytes()
     snapshot_sha = digest(raw_file)
     taxonomy = load_taxonomy()

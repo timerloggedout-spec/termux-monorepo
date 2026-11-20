@@ -138,7 +138,7 @@ Relevant references and their bounded QDesk roles:
 | `GPTmetrics_fork` | Multi-model assessment and response comparison | Research input; no automatic collaborator trust score |
 | `lego_fork` | Compose complete sets from available capability pieces | Selection/compatibility model; no partial set promoted as complete |
 
-Other pinned `smods` repositories remain candidates until a task maps them to a QDesk capability contract. At implementation time, read exact gitlink object SHAs from the repository tree and record source URL, commit, license, last verification, role and runtime/reference status. `.gitmodules` alone establishes URLs and tracking configuration, not the checked-out commit identity. Keep pins unchanged in this proposal.
+Other pinned `smods` repositories remain candidates until a task maps them to a QDesk capability contract. Section 3.1 records the exact gitlink object SHAs for the mapped QDesk references, observed directly from the repository tree. Record source URL, commit, license, last verification, role and runtime/reference status when any reference is promoted into an implementation dependency. `.gitmodules` establishes URLs and tracking configuration; the Git tree establishes the checked-out commit identity. Keep pins unchanged in this proposal.
 
 ## 3.1. Exact relevant `refTemplates/smods` gitlink pins
 

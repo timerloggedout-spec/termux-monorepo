@@ -162,7 +162,8 @@ def check_identity_registry(path: Path) -> dict:
 
 def scan_repository(root: Path, rotation_map: dict) -> dict:
     rotation_entries = entries(rotation_map)
-    findings, path_hits = [], []\n    historical_paths = set(rotation_map.get("historical_reference_paths", []))
+    findings, path_hits = [], []
+    historical_paths = set(rotation_map.get("historical_reference_paths", []))
     for file_path in list_files(root):
         try:
             rel = file_path.relative_to(root).as_posix()

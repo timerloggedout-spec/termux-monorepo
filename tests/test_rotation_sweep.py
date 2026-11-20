@@ -62,7 +62,7 @@ class RotationSweepTests(unittest.TestCase):
         result = score_fixtures(self.rotation_map)
         self.assertEqual(result["design"], "full_factorial_2^5")
         self.assertEqual(result["fixture_count"], 8)
-        self.assertEqual(len(result["arms"]), 31)
+        self.assertEqual(len(result["arms"]), 32)
         self.assertTrue(all(0.0 <= arm["accuracy"] <= 1.0
                             for arm in result["arms"]))
 
@@ -71,6 +71,9 @@ class RotationSweepTests(unittest.TestCase):
             root = Path(tmp)
             (root / "CLAUDE.md").write_text("governance")
             (root / "GEMINI-MESH.md").write_text("profile")
+            (root / "docs/ops").mkdir(parents=True)
+            (root / "docs/ops/COLLABORATOR-MONIKERS.md").write_text("roster")
+            (root / "docs/ops/COLLABORATOR-IDENTITY.md").write_text("identity")
             errors = validate_mapping(root, self.rotation_map)
             self.assertEqual(errors, [])
 

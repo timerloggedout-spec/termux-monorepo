@@ -1,5 +1,5 @@
 version: 1
-updated_at: '2026-11-11T00:00:00Z'
+updated_at: '2026-11-20'
 updated_by: ChatGPT
 proposals:
 
@@ -1348,4 +1348,26 @@ proposals:
     gates_required:
       - repo-gate
       - proposal-lifecycle
+      - termux-smoke
+
+  - id: agent-stack-48-intake
+    title: "Agent Stack 48 — LabLab hackathon source intake and OSINT watch"
+    author: ChatGPT
+    status: executing
+    priority: P1
+    path: active/agent-stack-48-intake/
+    reviewers:
+      - id: timerloggedout-spec
+        role: operator-authorizer
+        status: accepted
+      - id: ChatGPT
+        role: author+executor
+        status: executing
+    related_issues: []
+    related_prs: []
+    related_branches:
+      - feat/agent-stack-48-intake-20261120
+    gates_required:
+      - proposal-lifecycle
+      - repo-gate
       - termux-smoke

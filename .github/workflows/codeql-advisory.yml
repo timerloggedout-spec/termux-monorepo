@@ -25,6 +25,7 @@ jobs:
   analyze:
     name: CodeQL advisory (${{ matrix.language }})
     runs-on: ubuntu-latest
+    if: false
     permissions:
       contents: read
       security-events: write

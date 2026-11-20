@@ -36,6 +36,8 @@ class JulesRetirementReceiptWorkflowTests(unittest.TestCase):
         self.assertNotIn("Fallback Jules App request", self.workflow)
         self.assertNotIn("sourceContext", self.workflow)
         self.assertNotIn("automationMode", self.workflow)
+        receipt_body = self.workflow.split("body: [", 1)[1]
+        self.assertNotIn("@jules", receipt_body)
 
     def test_receipt_is_idempotent_and_points_to_local_doe_role_guidance(self) -> None:
         self.assertIn("<!-- google-jules-retirement-receipt -->", self.workflow)

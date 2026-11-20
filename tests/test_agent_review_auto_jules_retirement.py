@@ -26,6 +26,7 @@ class JulesReviewRetirementReceiptTests(unittest.TestCase):
         self.assertNotIn("JULES_AUTO_INVOKE", self.workflow)
         self.assertNotIn("JULES_API_KEY", self.workflow)
         self.assertNotIn("jules.googleapis.com", self.workflow)
+        self.assertNotIn("google-labs-code/jules-action@", self.workflow)
         self.assertNotIn("invoke-jules-api", self.workflow)
         self.assertNotIn("@jules", self.workflow)
 

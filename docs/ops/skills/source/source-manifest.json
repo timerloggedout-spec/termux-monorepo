@@ -10,5 +10,25 @@
   "discovery_root": ".agents/skills",
   "registry": ".skills/index.json",
   "tags": ".skills/tags.json",
-  "generated_at": "2026-11-19T16:27:44.998077+00:00"
+  "generated_at": "2026-11-19T16:27:44.998077+00:00",
+  "checksum_verification": {
+    "status": "UNVERIFIED",
+    "verified_files": [],
+    "missing_listed_files": [
+      "skills-part-00.tgzpart",
+      "skills-part-01.tgzpart",
+      "skills-part-02.tgzpart",
+      "skills-part-03.tgzpart",
+      "skills-part-04.tgzpart"
+    ],
+    "unchecksummed_inputs": [
+      "plugins-inventory.csv",
+      "skills-inventory.csv",
+      "skills-inventory.jsonl",
+      "skills-SKILL-md-all.tar.gz"
+    ],
+    "checksum_entry_count": 5
+  },
+  "jsonl_origin": "downloaded; 1,299 rows compared field-for-field with skills-inventory.csv",
+  "inventory_consistency": "CSV and JSONL records match exactly; source SHA-1 values remain 12-character prefixes"
 }

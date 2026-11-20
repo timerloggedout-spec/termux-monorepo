@@ -57,3 +57,30 @@ Current official references:
 - [Official Jules workflow examples and security guidance](https://github.com/google-labs-code/jules-action/tree/main/examples)
 
 The official action metadata lists `jules_api_key`, `prompt`, `starting_branch`, `include_last_commit`, and `include_commit_log`. The repository's current custom API lane remains a distinct integration choice. CNS-15 validates its existing trigger, permissions, source identity, branch, secret, and receipt contracts rather than replacing them with a sample action.
+
+
+## Subsequent oversight refresh — 2026-11-19
+
+### CRG historical corpus
+
+The current master manifest continues to report a partial historical window with continuation from page 2. The last recorded observation remains 2026-10-26T13:04:26.270236Z, with 35,221 nodes, 57,358 edges, 52,416 verified edges, 4,942 candidate edges, 120 unresolved internal references, 12 parser failures, 1,392 excluded files, and `checkpoint_eligible: false`. The backfill workflow is operator-dispatched and writes a bounded canonical delta under its single-writer concurrency group.
+
+### 3L0 intake
+
+The current `ops/3l0/intake.jsonl` contains 41 valid records, latest 2026-11-20T03:15:05Z. The intake records 26 completed, 10 failed, 4 `not_established`, and 1 `NOT_ESTABLISHED` outcome status. All 41 outcomes remain unconfirmed. The `instance_key` is present in 14 records and the prompt/tool hashes in 11. The committed dashboard feed was generated 2026-11-02T14:23:13Z. CNS-09 therefore targets attribution repair and projection freshness; score promotion awaits confirmed outcomes.
+
+### Brain host admission
+
+QDesk Brain RFP #5501 remains parked under the Delphi gate with score 6.69/25, recheck after 2026-12-16T09:39Z, and `filing_grants_execution: false`. CNS-06 keeps runtime host wiring behind fresh admission and verified host ownership.
+
+### DoE and notation PR state
+
+- PR #5665 closed unmerged and was superseded by open draft PR #5708.
+- PR #5531 remains open draft with a diverged branch.
+- PR #5635 remains open and non-draft; it carries the notation/style enforcement changes.
+- PR #5637 remains open draft for Synaptic Bus.
+- PR #5544 remains open draft for ORBIT/SHIELD.
+
+### Jules source reconciliation
+
+The repository's current custom Jules API lane remains distinct from the official action examples in the supplied PDF. The detailed comparison and security boundary are recorded in `docs/ops/JULES-INTEGRATION-RECONCILIATION.md`.

@@ -211,6 +211,22 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(len(references), 2)
         self.assertTrue(all(row["source_id"] == "repo-tool-docs" for row in references))
 
+    def test_tool_schema_secret_metadata_is_quarantined(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            schema = root / "tools" / "sofa" / "tools-schema.json"
+            schema.parent.mkdir(parents=True)
+            fixture = "fixture-" + ("z" * 24)
+            schema.write_text(json.dumps([{
+                "name": "sofa_secret_test",
+                "description": f'api_key: "{fixture}"',
+                "inputSchema": {"properties": {}, "required": []},
+            }]), encoding="utf-8")
+            rows = scan_repository(root)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["trust"], "quarantined")
+        self.assertNotIn(fixture, json.dumps(rows[0]))
+
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

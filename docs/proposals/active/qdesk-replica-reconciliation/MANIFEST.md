@@ -1,6 +1,6 @@
 ---
 id: qdesk-replica-reconciliation
-title: "QDesk visual extension — Replica, Clerk, release and DoE integration"
+title: "QDesk + Drafting Desk — Replica prototyping, project profiles, Clerk, release and DoE"
 author: ChatGPT
 posted_at: 2026-11-19
 source: source.md

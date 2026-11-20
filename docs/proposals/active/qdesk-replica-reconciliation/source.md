@@ -103,6 +103,22 @@ The design record `docs/ops/ARCHWIZ-CONCEPT-MAP.md` describes the next project-p
 
 Project-profile identity and lifecycle remain monorepo-owned. The current project-profile/v1 schema defines name, class, scope and surfaces but no dedicated profile_id or version property. Until the profile S2 contract adds explicit fields, use the canonical repository-relative profile file path as the stable reference and the containing Git commit/blob SHA as its immutable revision; do not invent a second identifier. The Drafting Desk stores that reference/revision with every candidate and stores only draft/candidate metadata and links to source artifacts. Project scope, allowed repositories, issue classes, lanes, artifact stores, encryption policy and surface bindings resolve from the monorepo profile. A user may create or revise a profile only through the monorepo's reviewed profile-management workflow. Replica receives a resolved, least-privilege working context; it does not write the canonical profile, widen scope, or retain independent project settings.
 
+
+### S2 registry/resolver contract (proposed)
+
+S2 is the canonical project-profile registry and resolver dependency. Keep the registry as the governed instance set under `.config/llm_map/profiles/projects/`; derive the catalog from validated profile files in deterministic repository-relative path order rather than adding a second independent catalog. Keep existing scan profiles under `.config/llm_map/profiles/` separate.
+
+- **Profile reference:** canonical repository-relative path under the S2 directory; the path is the stable identity until the schema owner approves a dedicated identity field.
+- **Revision:** Git blob SHA for the exact profile file, paired with the repository commit SHA that supplied the tree. Candidate and filing provenance retain both.
+- **Resolver input:** profile reference, repository root, and optional expected revision. The resolver accepts only paths inside the S2 directory and resolves against the checked-out repository tree.
+- **Resolver output:** schema ID, profile reference/revision, repository commit, validated profile document, and resolved scope/surface metadata. Preserve the schema's existing class, scope, surface, Obsidian, spaced-repetition and encryption semantics.
+- **Validation:** validate every instance against `project-profile/v1`; enforce required secret-exclusion patterns inherited from the mapper scope-safety rule; reject unknown properties, duplicate/ambiguous profile references, path traversal, symlink escape, malformed documents and revision mismatch.
+- **Determinism:** enumerate by normalized relative path; emit stable JSON; report invalid instances as explicit validation failures with path and reason; never silently omit them from a profile catalog.
+- **Authority:** resolver is read-only and repository-local. It performs no network calls, credential lookup, environment-secret expansion, file writes, issue creation, dispatch, encryption or permission changes.
+- **Tests:** cover all five schema classes, conditional Obsidian requirements, SR/encryption declarations, scope-axis validation, secret exclusions, path containment, symlink handling, duplicate references, deterministic ordering, revision pinning and fail-closed behavior.
+
+S2 scope ends at validated profile discovery/resolution. Issue-template selection and auto-labels belong to S3; issue-opened dispatch and routing receipts belong to S4; profile-body encryption belongs to S6. QDesk and Replica consume resolver output and retain only candidate/profile provenance. This contract is a proposal pending operator review and acceptance.
+
 The filing contract should carry the selected profile reference/revision and selected candidate reference as provenance fields while retaining the existing required project-task headings. The issue form currently exposes Entry, Task / spec, Scope, Done-evidence, Target repo and post-hoc Instance stamps; it does not yet expose a project-profile selector. Add profile-aware fields only through the profile S2 + issue-template integration work, and preserve the existing dispatch block, QUE admission, provider selection and post-hoc instance-stamp semantics.
 
 ## 3. refTemplates/smods reconciliation

@@ -2271,7 +2271,7 @@
   {
    "id": "C18",
    "name": "Cloud9 × JetBrains: Sky's The Limit Hackathon 2026",
-   "host": "Cloud9 × JetBrains",
+   "host": "Cloud9",
    "platform": "devpost",
    "official_url": "https://cloud9.devpost.com/",
    "status": "registered — submissions open; project selection pending",
@@ -2285,42 +2285,57 @@
     "winners": "2027-02-08T12:00:00-08:00"
    },
    "dates_basis": "Official Devpost event dates, overview, submission requirements, and prize data read 2026-11-20; event local time normalized to America/Los_Angeles.",
-   "constraints": "Build or significantly update a working application using at least one JetBrains tool; choose one of three categories (VAL/GC scouting, LoL macro scouting/draft management, or Cloud9 event mini-game). Submit a public GitHub/GitLab/Bitbucket repo with an open-source license, working demo or judge-accessible build, project description naming JetBrains tools and their roles, methodology write-up, and public YouTube demo up to 3 minutes. Optional AI-powered workflow-story bonus. Required submission attestations: age of majority, eligible jurisdiction, and not a sponsor/administrator employee or agent.",
+   "constraints": "Build or significantly update a working project after the submission window opens using at least one JetBrains tool (JetBrains IDE, JetBrains Air, or Junie); bug fixes or documentation-only changes do not qualify. Choose one of three categories: VAL/GC tactical scouting; LoL macro scouting/draft management; or Cloud9 event mini-game. Individuals, teams and organizations may enter; no team or company is required, and a team/organization must appoint an authorized representative. Submit a public GitHub/GitLab/Bitbucket repo with an open-source license, working demo or judge-accessible build, project description naming JetBrains tools and their roles, methodology write-up, and public YouTube demo under 3 minutes. Optional AI-powered workflow-story bonus requires a write-up of JetBrains IDE/Junie/Air usage. Project must be available free and without restriction for judging/testing through the judging period; private websites require credentials. Materials must be in English or include English translations. Required submission attestations: age of majority, eligible jurisdiction, and no promotion-entity/judge conflict.",
    "gates": [
+    {
+     "id": "C18-PROJECT-AGE",
+     "state": "open",
+     "text": "Create the project during the submission period or significantly update a pre-existing project after Nov 17, 2026 11:00 AM PST; bug fixes/documentation-only updates do not qualify."
+    },
     {
      "id": "C18-JETBRAINS",
      "state": "open",
-     "text": "Use at least one JetBrains tool in the project; capture the specific tool and its role in the submission."
+     "text": "Use at least one JetBrains IDE, JetBrains Air, or Junie; explain its role in the project description."
     },
     {
      "id": "C18-CATEGORY",
      "state": "open",
-     "text": "Select one eligible category and satisfy its category-specific requirements."
+     "text": "Select one eligible category: VAL/GC tactical scouting, LoL macro scouting/draft management, or Cloud9 event mini-game."
     },
     {
      "id": "C18-REPO",
      "state": "open",
-     "text": "Public source repository with an open-source license at the repository root."
+     "text": "Public GitHub/GitLab/Bitbucket repository containing source, assets, run instructions, and a visible open-source license."
     },
     {
      "id": "C18-DEMO",
      "state": "open",
-     "text": "Working demo or judge-accessible build, methodology write-up, and public YouTube demo up to 3 minutes."
+     "text": "Working demo or judge-accessible build, methodology write-up, and public YouTube demo under 3 minutes showing the project functioning."
+    },
+    {
+     "id": "C18-TESTING",
+     "state": "open",
+     "text": "Keep the project available free of charge and without restriction for judging/testing through the end of the judging period; private websites require test credentials."
+    },
+    {
+     "id": "C18-LANGUAGE",
+     "state": "open",
+     "text": "Submission materials must be in English or include English translations."
     },
     {
      "id": "C18-AGE",
      "state": "owner-check",
-     "text": "Required submission self-attestation: all entrants are at least the age of majority where they reside."
+     "text": "Required submission attestation: entrant is above the age of majority in their country of residence."
     },
     {
      "id": "C18-JURISDICTION",
      "state": "owner-check",
-     "text": "Required submission self-attestation: all entrants are from an eligible jurisdiction."
+     "text": "Required submission attestation: residence is eligible; excluded jurisdictions include Brazil, Crimea, Cuba, Iran, North Korea, Quebec, and Russia."
     },
     {
      "id": "C18-NONSPONSOR",
      "state": "owner-check",
-     "text": "Required submission self-attestation: entrants are not sponsor/administrator employees, representatives, or agents."
+     "text": "Required submission attestation: no disqualifying relationship with Cloud9, Devpost, JetBrains, GRID, their promotion entities, immediate family/household, judges or judge employers, parent/subsidiary/affiliate entities, or any actual/apparent conflict."
     }
    ],
    "prizes": {
@@ -2366,13 +2381,23 @@
    },
    "organizers": [
     {
-     "name": "Cloud9",
-     "role": "host",
+     "name": "Cloud9 Esports, Inc.",
+     "role": "sponsor",
+     "source_url": "https://cloud9.devpost.com/"
+    },
+    {
+     "name": "Devpost, Inc.",
+     "role": "administrator",
      "source_url": "https://cloud9.devpost.com/"
     },
     {
      "name": "JetBrains",
-     "role": "sponsor",
+     "role": "promotion entity",
+     "source_url": "https://cloud9.devpost.com/"
+    },
+    {
+     "name": "GRID",
+     "role": "promotion entity",
      "source_url": "https://cloud9.devpost.com/"
     }
    ],
@@ -2381,7 +2406,8 @@
     "observed_at": "2026-11-20T16:52:00Z",
     "evidence": [
      "Authenticated Devpost account registration list returned hackathon slug cloud9 as registered on 2026-11-20."
-    ]
+    ],
+    "benefits": "One All Products Pack code and one AI Ultimate code per registrant while supplies last. AI Ultimate activation requires an eligible JetBrains IDE license, All Products Pack license, trial, or EAP; student licenses are excluded."
    },
    "submission": {
     "state": "none",
@@ -2393,12 +2419,36 @@
    "participants": [],
    "judges": [],
    "moneyball": {},
-   "graduation": "Registered on Devpost 2026-11-20; project selection/build not started."
+   "graduation": "Registered on Devpost 2026-11-20; project selection/build not started.",
+   "sponsor": "Cloud9 Esports, Inc.",
+   "administrator": "Devpost, Inc.",
+   "eligibility": {
+    "age_requirement": "Above legal age of majority in country of residence",
+    "geographic_eligibility": "All countries/territories except Brazil, Crimea, Cuba, Iran, North Korea, Quebec, and Russia",
+    "excluded_jurisdictions": [
+     "Brazil",
+     "Crimea",
+     "Cuba",
+     "Iran",
+     "North Korea",
+     "Quebec",
+     "Russia"
+    ],
+    "individuals_teams_organizations": true,
+    "team_required": false,
+    "company_required": false,
+    "representative_required_for_team_or_organization": true,
+    "disqualifications": "Promotion-entity employees, representatives, agents, their immediate family/household; individuals involved in hackathon design/production/promotion/execution/distribution and their immediate family/household; judges and their employers; parent companies, subsidiaries and affiliates; any actual/apparent conflict."
+   },
+   "judging": {
+    "stage_one": "Pass/fail: project fits the theme and reasonably applies required JetBrains tools.",
+    "stage_two": "Equal-weight criteria: technological implementation; design; potential impact; quality of idea; presentation."
+   }
   },
   {
    "id": "C19",
    "name": "Learn AR with SPECS",
-   "host": "Devpost",
+   "host": "Snap Inc.",
    "platform": "devpost",
    "official_url": "https://learn-specs.devpost.com/",
    "status": "registered — submissions open; project selection pending",
@@ -2412,7 +2462,7 @@
     "winners": "2026-12-15T11:00:00-08:00"
    },
    "dates_basis": "Official Devpost event dates, overview, submission requirements, and prize data read 2026-11-20; event's Eastern-time dates normalized to America/Los_Angeles.",
-   "constraints": "Build a new Lens project started during the submission period. Plan with the Devpost Learn skill pack and include its planning documents in the repository's devpost/ folder. Build with CLAD through Lens Studio and the Lens Studio MCP; the Lens must run in Lens Studio preview. Submit a public YouTube demo under 3 minutes showing the Lens Studio preview, a GitHub/GitLab/Bitbucket repository (private GitHub/GitLab repos must be shared with testing@devpost.com and jholmes@devpost.com before the deadline), and a short project description. Required submission attestations: age of majority, eligible jurisdiction, and no sponsor/Devpost employee or judge conflict.",
+   "constraints": "Build a new Lens project started during the submission period; old ideas may be reused, old code may not. Plan with the Devpost Learn skill pack and include its planning documents in the repository's devpost/ folder. Build with CLAD through Lens Studio and the Lens Studio MCP; the Lens must run in Lens Studio preview. SPECS glasses are not required. Submit a public YouTube demo under 3 minutes showing the Lens Studio preview, a GitHub/GitLab/Bitbucket repository (private GitHub/GitLab repos must be shared with testing@devpost.com and jholmes@devpost.com before the deadline), and a short project description. Individuals, teams and organizations may enter; no team or company is required, and a team/organization must appoint an authorized representative. Project must be available free and without restriction for judging/testing through the judging period; private websites require credentials. Materials must be in English or include English translations. Required submission attestations: age of majority, eligible jurisdiction, and no Snap/Devpost promotion-entity or judge conflict.",
    "gates": [
     {
      "id": "C19-NEW-PROJECT",
@@ -2445,19 +2495,29 @@
      "text": "Publish a YouTube demo under 3 minutes with a Lens Studio preview screen recording."
     },
     {
+     "id": "C19-TESTING",
+     "state": "open",
+     "text": "Keep the project available free of charge and without restriction for judging/testing through the end of the judging period; private websites require test credentials."
+    },
+    {
+     "id": "C19-LANGUAGE",
+     "state": "open",
+     "text": "Submission materials must be in English or include English translations."
+    },
+    {
      "id": "C19-AGE",
      "state": "owner-check",
-     "text": "Required submission self-attestation: entrant is at least the age of majority where they reside."
+     "text": "Required submission attestation: entrant is above the age of majority in their country of residence."
     },
     {
      "id": "C19-JURISDICTION",
      "state": "owner-check",
-     "text": "Required submission self-attestation: entrant resides in an eligible jurisdiction."
+     "text": "Required submission attestation: residence is eligible; excluded jurisdictions include Brazil, Crimea, Cuba, Iran, North Korea, Quebec, and Russia."
     },
     {
      "id": "C19-NONSPONSOR",
      "state": "owner-check",
-     "text": "Required submission self-attestation: entrant is not a Snap/Devpost employee, representative, agent, household member, or judge."
+     "text": "Required submission attestation: no disqualifying relationship with Snap or Devpost promotion entities, immediate family/household, judges or judge employers, parent/subsidiary/affiliate entities, or any actual/apparent conflict."
     }
    ],
    "prizes": {
@@ -2479,17 +2539,19 @@
       "award": "$500 cash",
       "source_url": "https://learn-specs.devpost.com/prizes"
      }
-    ]
+    ],
+    "participation": "Devpost Learn badge on the Devpost profile and a special role in the Devpost Discord.",
+    "multiple_prize_rule": "Each project is eligible for one cash prize and one participation prize."
    },
    "organizers": [
     {
-     "name": "Devpost",
-     "role": "host",
+     "name": "Snap Inc.",
+     "role": "sponsor",
      "source_url": "https://learn-specs.devpost.com/"
     },
     {
-     "name": "Snap Inc.",
-     "role": "sponsor",
+     "name": "Devpost, Inc.",
+     "role": "administrator",
      "source_url": "https://learn-specs.devpost.com/"
     }
    ],
@@ -2510,7 +2572,31 @@
    "participants": [],
    "judges": [],
    "moneyball": {},
-   "graduation": "Registered on Devpost 2026-11-20; project selection/build not started."
+   "graduation": "Registered on Devpost 2026-11-20; project selection/build not started.",
+   "sponsor": "Snap Inc.",
+   "administrator": "Devpost, Inc.",
+   "eligibility": {
+    "age_requirement": "Above legal age of majority in country of residence",
+    "geographic_eligibility": "All countries/territories except Brazil, Crimea, Cuba, Iran, North Korea, Quebec, and Russia",
+    "excluded_jurisdictions": [
+     "Brazil",
+     "Crimea",
+     "Cuba",
+     "Iran",
+     "North Korea",
+     "Quebec",
+     "Russia"
+    ],
+    "individuals_teams_organizations": true,
+    "team_required": false,
+    "company_required": false,
+    "representative_required_for_team_or_organization": true,
+    "disqualifications": "Snap/Devpost promotion-entity employees, representatives, agents, their immediate family/household; individuals involved in hackathon design/production/promotion/execution/distribution and their immediate family/household; judges and their employers; parent companies, subsidiaries and affiliates; any actual/apparent conflict."
+   },
+   "judging": {
+    "stage_one": "Pass/fail: project applies required developer tools and meets project/submission requirements.",
+    "stage_two": "Equal-weight criteria: design; technical implementation using CLAD, Lens Studio, and Lens Studio MCP; innovation/idea; presentation."
+   }
   }
  ],
  "derived": {

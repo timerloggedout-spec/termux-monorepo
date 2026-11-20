@@ -28,7 +28,7 @@ The repository scan recognizes:
 
 The recursive scan scopes itself to selected roots, skips symlinks and generated/cache directories, and keeps home and sibling workspaces outside the default scope. External roots enter through an explicit allowlist. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it persists metadata only while full instructions, tool schemas, prompts, credentials and completions stay in their source systems.
 
-At the current master baseline `57559c9100f9df2868398603410e6ba28783a942`, the recursive tree contained 45 `SKILL.md` paths, one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The scanner broadens future discovery to all nested forms; it derives the census from the checked-out tree for reproducible counts.
+At the current master recon SHA `29d1ad867f88b73c54967479f4055b4e038a5cf6` (2026-11-20), the recursive tree contains 45 `SKILL.md` paths across `.agents/` (32), `.claude/` (1), `.github/` (10) and `docs/` (2), one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The PR branch adds the capability-discovery skill, bringing its branch count to 46. The scanner broadens future discovery to all nested forms; it derives the census from the checked-out tree for reproducible counts.
 
 ## Existing Termux tool-taxonomy baseline
 

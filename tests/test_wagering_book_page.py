@@ -110,6 +110,8 @@ def test_anchor_derivations():
     c12 = by["C12-24-r1-submission"]
     assert c12["settlement"]["value"].startswith("Y — SUBMITTED-PUBLISHED")
     assert c12["knowable"]["at"] == "2026-11-15T23:45:00-08:00"
+    assert c12["wall_at"] is None and c12["landing_at"] is None
+    assert "no register item" in c12["anchors_note"]
     for eid, wall in (("C18-27-submission-landed", "2027-01-12T11:00:00-08:00"),
                       ("C19-28-submission-landed", "2026-12-07T14:00:00-08:00")):
         event = by[eid]

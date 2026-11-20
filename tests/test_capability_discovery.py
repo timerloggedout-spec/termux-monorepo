@@ -63,10 +63,14 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             }), encoding="utf-8")
             tools_file = root / "plugins" / "demo" / "tools.json"
             tools_file.write_text(json.dumps([{"name": "query-db", "description": "Query database"}]), encoding="utf-8")
+            vendor_manifest = root / "vendor" / "external-plugin" / "plugin.json"
+            vendor_manifest.parent.mkdir(parents=True)
+            vendor_manifest.write_text(json.dumps({"name": "external-plugin"}), encoding="utf-8")
             rows = scan_repository(root)
-            self.assertEqual(len(rows), 2)
-            plugin_row = next(row for row in rows if row["locator"].endswith("plugin.json"))
+            self.assertEqual(len(rows), 3)
+            plugin_row = next(row for row in rows if row["locator"].endswith("plugin.json") and row["trust"] == "repository-canonical")
             tools_row = next(row for row in rows if row["locator"].endswith("tools.json"))
+            vendor_row = next(row for row in rows if "vendor/" in row["locator"])
             self.assertEqual(plugin_row["kind"], "manifest")
             self.assertEqual(plugin_row["source_id"], "repo-plugin-manifests")
             self.assertIn("MCP servers=1", plugin_row["description"])
@@ -74,6 +78,7 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(plugin_row["version_ref"], "1.2.0")
             self.assertEqual(tools_row["kind"], "manifest")
             self.assertIn("tool entries=1", tools_row["description"])
+            self.assertEqual(vendor_row["trust"], "unverified")
 
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:

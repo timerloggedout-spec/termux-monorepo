@@ -1,5 +1,7 @@
 # Quota Expansion — Gap Analysis
 
+> **Jules retirement amendment (2026-11-20):** This 2026-10-20 quota study remains a historical snapshot. Google Jules became read-only after 2026-11-11; the custom.jules connector is now an archive-only GET surface through 2026-12-31. The local DoE skill bundle is the new-work guidance. Remove Jules task quotas from active routing and quota panels.
+
 **Date checked:** 2026-10-20 (America/Los_Angeles) · **Status:** STAGED ONLY — not committed, no GitHub writes made.
 **Rule applied throughout:** documented vendor entitlements only, URL cited per limit. Never invent a balance or a limit. Where a vendor does not publish a limit, this file says exactly that.
 
@@ -192,12 +194,12 @@ Distinct provider strings: 13. Providers in the registry with **no** correspondi
 - **Suggested ids (unpopulated):** `tailscale.personal_users`, `tailscale.personal_devices`, `tailscale.api_rate` — all null / not verified.
 - **Confidence:** None claimed — explicit gap, 2026-10-20.
 
-### 3.8 Jules API (custom connector `custom.jules`) — ABSENT
+### 3.8 Jules API (custom connector `custom.jules`) — RETIRED (historical quota snapshot)
 - **API rate limit: no API-specific quota is published** on the Jules API documentation (the only numeric limit there is max 3 API keys at a time) — https://developers.google.com/jules/api
 - **Plan task limits ARE published (product limits, not an API rate limit — do not re-label):** Free 15 tasks/rolling 24 h, 3 concurrent; Google AI Pro 100/day, 15 concurrent; Google AI Ultra 300/day, 60 concurrent. At the limit, new tasks block until the rolling window frees; limits are not pooled across family plans.
 - **Source:** https://jules.google/docs/usage-limits
-- **Suggested id:** `jules.tasks_free` (15 tasks/rolling 24 h, 3 concurrent).
-- **Confidence:** Official vendor page High, 2026-10-20. **Trap flagged:** a stale beta-era mirror (`jules-documentation.web.app`, 5 tasks/day, 2 concurrent) contradicts the official page — do not use it.
+- **Historical suggestion:** `jules.tasks_free` (15 tasks/rolling 24 h, 3 concurrent), recorded from the official vendor page on 2026-10-20.
+- **Current status:** retired from live quota routing after the 2026-11-11 read-only cutoff; preserve the historical quota observation for audit only.
 
 ---
 
@@ -239,7 +241,7 @@ The remaining 43 system-connector catalog entries (63 total − 20 connected) �
 
 ## 7. Recommended registry additions, in priority order
 
-1. `jules.tasks_free` — the steering lane actually consumes this daily; currently invisible to the panel.
+1. `jules.tasks_free` — historical only; exclude from the active quota panel and live provider routing.
 2. `vercel.fast_data_transfer` + `vercel.function_invocations` — the deploy cap already bit once; bandwidth/invocations are the next caps to trip silently.
 3. `google_gmail.api_quota_units`, `google_drive.api_quota_units`, `google_sheets.api_write_requests` — the Workspace APIs the connectors exercise most.
 4. `notion.api_rate_per_connection`, `linear.api_requests`, `todoist.sync_partial_rate`, `figma.api_rate_tier1` — dev-lane APIs with hard 429 behaviour.

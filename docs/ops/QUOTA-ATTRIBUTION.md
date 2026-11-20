@@ -1,5 +1,7 @@
 # Quota Attribution — the requisition × actor join
 
+> **Jules attribution amendment (2026-11-20):** Jules session-to-PR mappings below are historical provenance. Google Jules became read-only after 2026-11-11; custom.jules remains a GET-only archive through 2026-12-31. Historical session counts remain useful for attribution and audit, while live routing uses local DoE role skills and verified provider adapters.
+
 `[MUSEai]@{role:{quota-specialist}}` · Owner demand 2026-10-30 (via `viz-dispatch-tree`): provider/model attribution for code + requisitions, per-entry usage rendered in `desk.html`. Evidence class refs per #1734; notation per #320.
 
 ## The join problem
@@ -15,7 +17,7 @@ Requisitions are visible per service (readings, bucket walls, lane-events). Acto
 |---|---|---|
 | `app_id` | GitHub App principals (collector 5535733, publisher 5537873, reviewer/gate/lifecycle as provisioned) | exact — own bucket per installation, `<slug>[bot]` authorship |
 | `workflow_name` | GitHub Actions runs (`GITHUB_TOKEN` bucket, 1000/h/repo) | exact per workflow |
-| `session_id` | Jules sessions ⇒ PRs (`google-labs-jules[bot]`) | exact link; consumption units ∅ exposed (see below) |
+| `session_id` | Historical Google Jules sessions ⇒ PRs (`google-labs-jules[bot]`) | exact provenance link; consumption units remain unexposed |
 | `lane_role` | signed artifacts `[MUSEai]@{role:{…}}` + helper-stamped requisitions | exact where stamped; dark where unstamped |
 | `null` | everything else | honest blank, never estimated |
 
@@ -24,7 +26,7 @@ Requisitions are visible per service (readings, bucket walls, lane-events). Acto
 - `github.api.app_*` — per-installation rate headers: calls consumed per window = measurable per app.
 - `github.actions` — run counts/durations per workflow = measurable; token split per run = ∅.
 - `github.api.user_token` — aggregate bucket only; per-consumer split = ∅ from GitHub; self-stamped ledger (below) is the only route.
-- `jules` — session state + activity feed per session; per-session consumption units (tokens/calls) = ∅ exposed by the API. Activity counts are activity, ≠ consumption.
+- `jules` — historical archive session state + activity feed; per-session consumption units remain unexposed. Activity counts remain activity evidence, separate from consumption.
 - All other registry providers — per-consumer consumption NOT_ESTABLISHED unless the provider's own usage surface names the consumer key.
 
 ## `usage{}` field shape (desk-feed contract)
@@ -50,7 +52,7 @@ Fill rules (match or silence):
 - `note` — the caveat line when `match = activity-proxy`, or the darkness reason when `value = null`.
 - No match ⇒ `value = null` + `note` carries the reason. Estimates are never rendered as usage.
 
-Worked state at landing: every current desk entry is honestly `value = null` EXCEPT keyed activity (e.g. a Jules-backed entry: `unit = sessions, match = activity-proxy, value = <session count>`), because no provider yet exposes per-entry consumption units to our surfaces.
+Worked state at landing: every current desk entry is honestly `value = null` EXCEPT keyed activity (e.g. a historical Jules-backed entry: `unit = sessions, match = activity-proxy, value = <session count>`), because no provider yet exposes per-entry consumption units to our surfaces.
 
 ## Instrumentation (how numbers start existing)
 
@@ -87,7 +89,7 @@ Every requisition record carries the full key tuple. The identity atom is the CO
 ```json
 "keys": {
   "provider": "<registry provider id>",
-  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. Jules)",
+  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. historical Jules entry)",
   "system_prompt_ref": "<ref per the DoE scheme; encoding NOT ESTABLISHED until the DoE seat names it — adopted verbatim when named>",
   "tools_ref": "<ref per the DoE scheme; same status as system_prompt_ref>",
   "moniker": "<fleet moniker from the signed identity>",

@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      needs_jules: ${{ steps.classify.outputs.needs_jules }}
       needs_ledger: ${{ steps.classify.outputs.needs_ledger }}
       needs_gemini: ${{ steps.classify.outputs.needs_gemini }}
     steps:
@@ -33,21 +32,13 @@ jobs:
             const labels = (context.payload.issue.labels || []).map(l => l.name);
 
             // Early filters to avoid unnecessary downstream starts
-            const needs_jules = !isBot && (body.includes('@jules') || labels.includes('jules'));
             const needs_ledger = isPR && body.includes('Implements:');
             const needs_gemini = !isBot && (body.includes('@gemini') || labels.includes('gemini'));
 
-            core.setOutput('needs_jules', needs_jules);
             core.setOutput('needs_ledger', needs_ledger);
             core.setOutput('needs_gemini', needs_gemini);
 
-            console.log(`Classification: jules=${needs_jules}, ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
-
-      - name: Route to Jules (if matched)
-        if: steps.classify.outputs.needs_jules == 'true'
-        run: |
-          echo "Dispatching Jules handoff (placeholder for workflow_call or existing job extract)"
-          # In full implementation: uses: ./.github/workflows/agent-jules-on-issues.yml or extract job
+            console.log(`Classification: ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
 
       - name: Route to Ledger (if matched)
         if: steps.classify.outputs.needs_ledger == 'true'

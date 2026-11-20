@@ -1,8 +1,10 @@
 # Provider Dispatch Capability — the 89-provider bench vs the dispatch funnel
 
+> **Jules retirement amendment (2026-11-20):** This 2026-11-01 dispatch census is historical. Google Jules became read-only after 2026-11-11; the issue route now records a retirement receipt, custom.jules is a GET-only archive, and new work uses local DoE role skills plus verified active provider adapters.
+
 Owner order 2026-11-01 (provider utilization FIX — "USE THEM ALL"): desk
-dispatch ran through a 4-lane funnel {Jules, Gemini, DeepSeek,
-command-dispatch} while the registry carries **89 distinct model-lane
+the 2026-11-01 census covered a 4-lane funnel {Jules, Gemini, DeepSeek,
+command-dispatch}; Jules is now retired from live routing while the registry carries **89 distinct model-lane
 providers** (91 records; firsthand count @master 2026-11-01). This doc is
 the capability map of record for widening: every registry model provider
 classified by dispatch state, from registry + workflows @master, with
@@ -15,7 +17,7 @@ wiring · **(d)** inference-only, with the wiring that would promote it.
 
 | Surface | Trigger | Roster | Run evidence @2026-11-01 |
 |---|---|---|---|
-| `agent-jules-on-issues.yml` | issue label | Jules (build arm; registry `jules.build_sessions`, lane ci) | 405 successful runs, last 2026-11-01 |
+| `agent-jules-on-issues.yml` | legacy issue signal | retirement receipt; historical registry `jules.build_sessions` | 405 historical successful runs, last 2026-11-01; hosted dispatch retired |
 | `gemini-dispatch.yml` (+ `gemini-after-peers.yml`) | issues / issue_comment | google (Gemini) | dispatch successes 2026-11-01; after-peers 1,158 successes. Standalone `gemini-invoke/triage/review` = 0 successful runs — the router is the proven entry, the legs are not independently proven |
 | `deepseek-ci.yml` + `deepseek-termux-agent.yml` | events + dispatch | DeepSeek (registry `deepseek.build_dispatch`, lane ci) | successes 2026-11-01; termux-agent 22 successes |
 | `provider-batch.yml` | dispatch | 24-provider inference roster (below) | 249 runs, 138 successful at first census. **Gate state: GREEN — #2672 RESOLVED + CLOSED 2026-11-01 (fix chain PRs #3126/#3128/#3130/#3138); proof run 41308987754 (workflow_dispatch, head 87453e9c) SUCCESS: contracts ✓, operational_providers ✓ — the first operational evidence leg executed; the earlier blocked-by-#2672 state (observation jobs gated on the red `contracts` job) is historical** |
@@ -113,7 +115,7 @@ exercise.
 ## Funnel arithmetic
 
 Proven dispatch today reaches 2/89 registry model providers directly
-(plus the Jules/DeepSeek build arms, which live outside the model
+(plus the historical Jules and current DeepSeek build-arm records, which live outside the model
 lane). The batch surface nominally covers 24 more, of which 9 carry a
 no-credential or route-dead/blocked flag — the cheapest widening is
 therefore: provision the 8 no-credential batch members (cerebras,

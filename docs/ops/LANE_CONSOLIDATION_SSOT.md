@@ -1,9 +1,11 @@
 # lane-consolidation-ssot — Master Coordination & Production Improvements Map
 
 **Date:** 2026-10-16
-**Status:** ACTIVE
-**Orchestration Profile:** Grok / Jules Automated Operations
+**Status:** ACTIVE — Jules sections are historical after 2026-11-11
+**Orchestration Profile:** Grok / current evidence-driven agent router
 **Authority Level:** Production Consolidated SSOT
+
+> **Jules retirement amendment (2026-11-20):** Google Jules became read-only after 2026-11-11. All `@jules` summons, quota assumptions, and API execution references in this document are historical. The local Jules-derived DoE role skill pack supplies workflow guidance only; live execution routes through the current agent roster and verified adapters.
 
 ---
 
@@ -143,7 +145,7 @@ To keep work highly organized, all development is segregated into five independe
 - **Core Guardrails:**
   - Configuration directory MUST be `0o700` and config files/cached session files MUST be `0o600`.
   - Recursive directory-walking permissions adjusters MUST explicitly skip symlinks (`path.is_symlink()`) to prevent symlink traversal hijacking vulnerabilities.
-  - Security-sensitive environments checks (e.g. `JULES_API_KEY`) must remain strictly boolean-only (no storage or console exposure).
+  - Security-sensitive environment checks use boolean readiness signals and preserve secret values outside storage and console output.
 - **Active Agent:** Sentinel.
 
 ### Lane 3: Reactive UX & Client Portals (Palette)
@@ -162,14 +164,14 @@ To keep work highly organized, all development is segregated into five independe
   - Agent Mail relies on the Rust-based composite action mailbox under `.github/actions/mcp-agent-mail/action.yml`.
 - **Active Agent:** MoneyBall Scout / Betting Arena.
 
-### Lane 5: Peer Routing, Context, & Workflows (Grok / Jules)
+### Lane 5: Peer Routing, Context, & Workflows (Grok / current agent router)
 - **Primary Scope:** `scripts/model_router.py`, `agent-review-auto-jules.yml`, `peer-review-orchestrator.yml`, `agent-continuous-ops.yml`, `calculate_lag_index.py`.
 - **Core Guardrails:**
   - To prevent import-time crashes on environments lacking `rich` or third-party curl binaries (e.g., Termux NDK), CLI entrypoints MUST wrap checks in try-except fallbacks, and tests MUST handle gracefully.
   - Fallbacks for `curl_cffi` MUST override requests `__init__` and strip out custom `impersonate` keyword arguments.
   - Programmatic Jules runs use stable context keys (`pr-<number>-<branch>`) loaded/saved via `.github/actions/agent-context-store`.
   - Enforce dual-quota capacities (3 concurrent active runs, 15 runs per rolling 24-hour period).
-- **Active Agent:** Grok / Jules.
+- **Active Agent:** Grok / current agent router; Google Jules is retired.
 
 ---
 

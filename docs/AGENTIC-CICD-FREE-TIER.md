@@ -6,7 +6,7 @@ This document describes the free-tier-only autonomous / agentic development CI/C
 
 | Component | Role | Status | Free tier notes |
 |-----------|------|--------|-----------------|
-| **Jules** (Google Labs) | Async autonomous coding agent (fix bugs, features, tests) | Integrated (`.Jules/`, `agent-review-auto-jules.yml`, `agent-jules-on-issues.yml`) | Introductory daily task limits |
+| **Jules-derived DoE role pack** | Issue analysis, task planning, evidence custody, local verification guidance | Local skill bundle at `.agents/skills/jules-doe-role-adapter/SKILL.md`; Google hosted execution retired | Role guidance only; provider execution follows the active roster and verified adapters |
 | **CodeRabbit** | AI PR review + autofix | Integrated (`.coderabbit.yaml`) | Free summaries + limited reviews; full free for public/OSS |
 | **Gemini CLI GitHub Action** | Issue triage, PR review, `@gemini-cli` on-demand teammate; one optimized candidate in the shared routing pool | Integrated | Google AI Studio free quota — observed/managed by routing and availability evidence |
 | **GitHub MCP Server** | Tool access for agents (issues/PRs/code) | Usable via Gemini settings | Fully free / OSS |
@@ -16,28 +16,28 @@ This document describes the free-tier-only autonomous / agentic development CI/C
 
 1. Issue opened → Gemini triage (labels, priority, duplicate check).
 2. PR opened → CodeRabbit review + Gemini review comment.
-3. Bot feedback (CodeRabbit/Devin/…) → existing `agent-review-auto-jules.yml` posts `@jules` and optionally invokes Jules API.
+3. Bot feedback (CodeRabbit/Devin/…) → capture review findings and route through the active reviewer pool; the Google Jules relay is retired.
 4. Human or bot comments `@gemini-cli <request>` → Gemini on-demand invoke (👀 ack).
-5. Human comments `@jules <task>` or labels `jules` → Jules on-issues workflow + App path.
-6. Jules works asynchronously in a Cloud VM and opens/updates PRs for review.
-7. **Coordination**: both Jules and Gemini prompts receive an inventory of open agent PRs and must avoid overlapping files; they post `<!-- agent-claim -->` markers when claiming work.
+5. Legacy `@jules` comments and `jules` labels → retirement receipt with a link to the local DoE role guidance.
+6. A selected active provider executes through its verified adapter and opens a reviewable PR; the Jules-derived skill pack supplies task-planning guidance.
+7. **Coordination**: active provider prompts receive an inventory of open agent PRs and preserve exclusive file ownership through `<!-- agent-claim -->` receipts.
 
-All pieces above have a free tier. Paid upgrades (Google AI Pro/Ultra for higher Jules limits, CodeRabbit Pro, etc.) are optional.
+Active provider quotas follow their own plans. Google Jules became read-only after 2026-11-11 and is retired from hosted execution.
 
 ## Required secrets / variables (user action)
 
 - `GEMINI_API_KEY` — Google AI Studio free key (required for Gemini workflows)
-- `JULES_API_KEY` — optional; enables structured `jules-invoke` (App + `@jules` comment still work without it)
+- Google Jules session dispatch is retired; the local Jules-derived skill bundle provides role guidance only.
 - Workflow permissions: Read and write for GITHUB_TOKEN (Settings → Actions → General)
 
 ## Activation note
 
-GitHub only runs `issues` / `issue_comment` workflows from the **default branch** (`master`). The agentic workflow files must exist there for `@jules` / `@gemini-cli` mentions to respond.
+GitHub only runs `issues` / `issue_comment` workflows from the **default branch** (`master`). The agentic workflow files must exist there for supported `@gemini-cli` mentions to respond; legacy Jules mentions produce retirement receipts.
 
 ## Security notes
 
 - Gemini workflows restrict `@gemini-cli` comment triggers to OWNER/MEMBER/COLLABORATOR.
-- Jules mention triggers similarly restricted.
+- Legacy Jules labels and mentions are handled by the retirement receipt path.
 - Fork PRs are excluded from automatic review triggers.
 - GEMINI.md encodes the same hard rules as AGENTS.md (no secrets in git, master-staging, gates) plus coordination rules.
 
@@ -45,10 +45,10 @@ GitHub only runs `issues` / `issue_comment` workflows from the **default branch*
 
 See issues **#272** and **#175**.
 
-- Gemini, OmniRoute, OpenRouter, Jules, CodeRabbit, and other enabled contributors participate in a **shared candidate pool**; no provider/model is designated primary or secondary.
+- Gemini, OmniRoute, OpenRouter, CodeRabbit, and other enabled contributors participate in a **shared candidate pool**; Google Jules is retired. The local Jules-derived DoE skill pack contributes role guidance.
 - Admission uses capability, credential, live catalog, health, quota, task independence, freshness, and policy gates before scoring.
 - Selection is evidence-driven using role suitability, local 3L0/Moneyball observations, integrated outcome, context/time cost, retries, conflicts, and human intervention.
 - Topology is a first-class experiment variable: `single | series | dynamic | parallel | nested | co-working | volley`.
 - A capacity failure causes re-admission against the current candidate set; it does not trigger a fixed provider chain.
 - Quota skips remain explicit evidence; CI behavior is controlled separately from routing semantics.
-- Jules is an eligible async builder among the candidate pool, not a universal sink; Gemini is an eligible review/triage/invoke contributor, not a permanently privileged route.
+- Builder execution follows the active candidate pool and verified adapter readiness; the Jules-derived role pack supports planning and verification guidance. Gemini remains an eligible review/triage/invoke contributor under the active route policy.

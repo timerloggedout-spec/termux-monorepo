@@ -14,7 +14,8 @@ Probe budget 24 (brief cap).
 Selection provenance (corrected form, owner FIX 2026-10-31): basis =
 Scout-roster rationale (discovery layer, no routing authority);
 Provider Index build-arm evidence = NOT_ESTABLISHED (commissioned);
-the jules label = trigger mechanics only. Evaluator (Gemini) dispatch
-HELD until the Jules build-arm entry exists in the Index. Builder =
-Jules (issues route). No production route before verdict.
+the legacy jules label = retirement receipt only. The local DoE role
+skill pack guides task planning; implementation uses an active provider
+roster candidate after verified adapter readiness. Gemini remains an
+evidence-only evaluator under the campaign's verdict gate.
 Design: DESIGN.json.

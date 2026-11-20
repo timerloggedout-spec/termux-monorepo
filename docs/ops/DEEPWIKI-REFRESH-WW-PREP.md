@@ -1,5 +1,7 @@
 # DeepWiki.com refresh — webWrapper campaign prep
 
+> **Jules retirement amendment (2026-11-20):** The Google Jules builder arm is retired after the 2026-11-11 read-only cutoff. The local DoE skill bundle supplies task-planning guidance; execution requires a live provider-roster candidate and verified adapter.
+
 `[MUSEai]@{role:{optimizations-assurance}}` · Owner requirement (2026-11-01, "FIX → AUTOMATE" for the DeepWiki workstream; promotion recorded in `docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md` §18).
 
 ## Requirement
@@ -25,8 +27,8 @@ Continuous = (a) every campaign dispatch, and (b) an episodic staleness check: a
 ## Builder wiring (what fires it)
 
 - Dispatch target: the campaign issue **[webWrapper] DeepWiki.com continuous refresh — ww-deepwiki** (session brief embedded in the issue body).
-- Builder arms: **distributed, never hard-selected** (owner dispatch principle, 2026-11-01; swarm record §20). On arm recovery, refresh probes run as cross-arm sets (Jules / Gemini build_dispatch / command-dispatch / DeepSeek when restored) with per-instance stamps, so the recovery emits comparative 3L0/DoE signal. Builder ≠ evaluator per set (evaluator = a different arm, evidence-only, verifying stamps against the live page state).
-- Execution is **arm-gated**: the wave is held at the builder layer until arms recover (tally at prep time: Jules created 3 / completed 0 / errored 3; Gemini CLI out; DeepSeek tunnel down; command-dispatch live). This prep wires everything repo-side so the first recovered arms fire immediately.
+- Builder arms: distributed through the live provider roster (owner dispatch principle, 2026-11-01; swarm record §20). Refresh probes run across Gemini build_dispatch, command-dispatch, and DeepSeek when restored, with per-instance stamps for comparative 3L0/DoE signal. The local DoE role skill pack guides task planning. Builder and evaluator remain separate roles; evaluators verify stamps against live page state.
+- Execution remains arm-gated until a non-Jules adapter is verified. Historical census: Jules created 3 / completed 0 / errored 3; Gemini CLI out; DeepSeek tunnel down; command-dispatch live. This prep wires the local role guidance and provider admission evidence for the next verified adapter.
 
 ## Boundaries
 
@@ -42,5 +44,5 @@ Continuous = (a) every campaign dispatch, and (b) an episodic staleness check: a
 | This prep (targets, flow, cadence, evidence format) | ✅ wired |
 | Campaign issue with embedded session brief | ✅ wired |
 | Evaluator pattern (Gemini, evidence-only) | ✅ wired (DoE pattern) |
-| Builder execution | ⏳ waits on Jules arm recovery (probe completion) |
+| Builder execution | ⏳ awaits a verified non-Jules adapter; local DoE role skills provide task guidance |
 | Devin API automation | ⏳ waits on provisioning gate (leg 1) |

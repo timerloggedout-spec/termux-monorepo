@@ -24,7 +24,7 @@ Policy for issue #184. **Never commit secret values.** Rotate expired tokens off
 | `DEEPSEEK_API_KEY` | classic PAT name collision | unused | Name is not an API key store in-repo |
 
 ## App classes (non-gate)
-CodeRabbit, Qodo, Devin, Jules, Copilot, Vercel, Linear, Grok GitHub App are review/deploy adapters. Dual-gate remains `repo-gate` + `termux-smoke` on the candidate SHA.
+CodeRabbit, Qodo, Devin, Copilot, Vercel, Linear, and the Grok GitHub App are active review/deploy adapters. Google Jules hosted execution is retired; custom.jules remains a read-only archive and the local DoE skill bundle supplies role guidance. Dual-gate remains `repo-gate` + `termux-smoke` on the candidate SHA.
 
 ## Rotation checklist
 1. Confirm last-used class from GitHub settings UI (do not paste tokens).

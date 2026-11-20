@@ -52,7 +52,7 @@ After a successful **upstream-pr** (or on fallback only):
 | 0 | `archW1z` | OPERATOR / Grok |
 | 1 | `l337S33k` | Full-scope PAT (intended) |
 | 2 | `opsSweep` | GHA + OPERATOR_GITHUB_TOKEN |
-| 3 | `heyVern` | `@jules` |
+| 3 | `heyVern` | local DoE role guidance (`jules-doe-role-adapter`; legacy `@jules` requests create receipts) |
 | 4 | `sparkFlux` | `@gemini-cli` |
 | 5–7 | `deepCore` / `codeHound` / `peerGate` | review / contract |
 

@@ -27,7 +27,7 @@ Token sources refer to the inventory in #184. Least privilege: prefer a new fine
 | termux-monorepo | `REPOSITORY_OBSERVATORY_TOKEN` | no | gitlab_cicd-w+org_view (read:org, repo) or NEW fine-grained read-only | repository-observatory |
 | termux-monorepo | `DEEPSEEK_API_KEY` | no | DeepSeek platform API key (NOT the GitHub classic PAT also named DEEPSEEK_API_KEY) | deepseek-ci |
 | termux-monorepo | `LINEAR_API_KEY` | no | Linear API key | agent-feedback-linear-sync, context-relationship-linear-freshness |
-| termux-monorepo | `JULES_API_KEY` | no | Jules API key | agent-jules-on-issues, agent-review-auto-jules |
+
 
 ## Notes
 - `gh-aw_fork` and `gh-aw-mcpg_fork` run upstream github/gh-aw schedules (268 scheduled `.lock.yml`). Until required secrets are set, `provision-secrets.sh pause-forks` disables them reversibly; `resume-forks` restores exactly that list.

@@ -20,7 +20,7 @@ Each agent’s commits and PR actions show **that agent’s** identity in `git l
 ## Preferred rollout
 
 1. **Now:** enforce agent **author** name/email on all agent commits; keep trailers.
-2. **Next:** one GitHub App (or machine user) per long-lived agent (Grok, Jules, Gemini) with least-privilege tokens in Actions secrets.
+2. **Next:** one GitHub App (or machine user) per long-lived execution agent (Grok, Gemini) with least-privilege tokens in Actions secrets. The Jules-derived DoE skill pack is a local role capability; provider identity remains with the active execution adapter.
 3. **Document** Operator paste of prior research here when available.
 
 ## Security

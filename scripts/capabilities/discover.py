@@ -471,19 +471,36 @@ def search(con: sqlite3.Connection, query: str, limit: int = 8,
     if not terms:
         return []
     match = " OR ".join('"' + term.replace('"', '""') + '"' for term in terms)
+    columns = """c.id,c.kind,c.source_id,c.name,c.description,c.locator,c.domain,c.function,
+        c.facets,c.trust,c.lifecycle,c.version_ref,c.aliases,c.permissions,c.tags,
+        c.content_sha256,c.taxonomy_sha256,c.record_sha256"""
     try:
-        hits = con.execute("""SELECT c.id,c.kind,c.name,c.description,c.locator,c.domain,c.function,c.trust,c.lifecycle,bm25(capability_fts) AS rank
+        hits = con.execute(f"""SELECT {columns},bm25(capability_fts) AS rank
           FROM capability_fts f JOIN capability c ON c.id=f.id WHERE capability_fts MATCH ?
           AND (? OR c.trust != 'quarantined') ORDER BY rank LIMIT ?""",
           (match,1 if include_quarantined else 0,limit)).fetchall()
     except sqlite3.OperationalError:
         pattern = "%" + terms[0] + "%"
-        hits = con.execute("""SELECT id,kind,name,description,locator,domain,function,trust,lifecycle,0
+        hits = con.execute("""SELECT id,kind,source_id,name,description,locator,domain,function,
+          facets,trust,lifecycle,version_ref,aliases,permissions,tags,
+          content_sha256,taxonomy_sha256,record_sha256,0
           FROM capability WHERE (name LIKE ? OR description LIKE ? OR tags LIKE ?)
           AND (? OR trust != 'quarantined') LIMIT ?""",
           (pattern,pattern,pattern,1 if include_quarantined else 0,limit)).fetchall()
-    fields = ["id","kind","name","description","locator","domain","function","trust","lifecycle","rank"]
-    return [dict(zip(fields,row)) for row in hits]
+    fields = ["id","kind","source_id","name","description","locator","domain","function",
+              "facets","trust","lifecycle","version_ref","aliases","permissions","tags",
+              "content_sha256","taxonomy_sha256","record_sha256","rank"]
+    results = []
+    for row in hits:
+        item = dict(zip(fields,row))
+        for key in ("facets","aliases","permissions"):
+            try:
+                item[key] = json.loads(item[key] or "[]")
+            except (TypeError,json.JSONDecodeError):
+                item[key] = []
+        item["tags"] = (item["tags"] or "").split()
+        results.append(item)
+    return results
 
 def export_ledger(con: sqlite3.Connection, path: Path) -> int:
     path.parent.mkdir(parents=True,exist_ok=True)

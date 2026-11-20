@@ -19,7 +19,7 @@ Source skills, adapted locally:
 
 This adapter preserves useful workflow patterns as local role guidance. Provider execution and Jules session clients remain separate runtime capabilities.
 
-Google Jules became read-only after 2026-11-11. The source skill's `@google/jules-sdk` calls and `JULES_API_KEY` dependency remain historical reference material. The source's sequential PR merge phase remains outside this adapter; repository merge authority stays with the governed merge process.
+Google Jules became read-only after 2026-11-11. The source skill's `@google/jules-sdk` calls and `JULES_API_KEY` dependency remain historical reference material. The ecosystem brief's `google-labs-code/jules-action@v1` and PR Reviewer action also launch hosted Jules execution; this local bundle adopts skill patterns only. The source's sequential PR merge phase remains outside this adapter; repository merge authority stays with the governed merge process.
 
 ## Canonical DoE role bindings
 

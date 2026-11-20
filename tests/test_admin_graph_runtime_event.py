@@ -95,6 +95,27 @@ class RuntimeEventTests(unittest.TestCase):
         self.assertEqual(route_events[0]["id"], "route:6001:9010")
         self.assertEqual(route_events[0]["payload"]["dispatch_id"], "dispatch-6001")
 
+    def test_runtime_snapshot_orders_route_before_later_run_event(self):
+        payload = {
+            "workflow_runs": [{
+                "id": 124, "run_attempt": 1, "name": "dispatch-executor",
+                "status": "in_progress", "created_at": "2026-11-19T12:10:00Z"
+            }],
+            "issue_comments": [{
+                "id": 9012,
+                "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/6003",
+                "created_at": "2026-11-19T12:05:00Z",
+                "user": {"login": "producer-bot"},
+                "body": ("[MUSEai]@{role:{worker}} PRODUCER CLAIM\n"
+                         "- resolved provider: provider-x\n")
+            }]
+        }
+        events = MODULE.build_events(payload, "runtime_snapshot", {
+            "run_id": "12349", "run_attempt": "1"
+        })
+        self.assertEqual(events[0]["kind"], "route")
+        self.assertEqual(events[1]["kind"], "workflow")
+
     def test_dispatch_watchdog_auto_claim_emits_route_pulse(self):
         payload = {
             "workflow_runs": [],

@@ -142,5 +142,7 @@ def test_admin_graph_keeps_existing_tribute_pwa_and_release_lane():
     assert 'cp -a apps/tribute-dashboard/. _tribute/' in publish
     assert 'cp -a _tribute/. _user_site/tribute/' in publish
     assert 'publish_dir: _user_site' in publish
+    assert 'node --check apps/tribute-dashboard/install.js' in publish
+    assert 'node --check apps/tribute-dashboard/sw.js' in publish
     assert 'beforeinstallprompt' in install_js and './sw.js' in install_js
     assert 'addEventListener("fetch"' in service_worker

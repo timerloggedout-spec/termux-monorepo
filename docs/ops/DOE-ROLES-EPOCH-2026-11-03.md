@@ -186,7 +186,7 @@ Role bindings preserve the canonical DoE classes:
 - **steward** — preserves append-only task, claim, and evidence receipts, including task-to-file ownership and execution provenance.
 - **reviewer** — independently verifies the exact candidate head with repository gates and local Actions verification where supported.
 - **participant** — represents each admitted task or worker execution as a bounded unit with its own claim and result.
-- **gambler** — retains the existing forecast duty: record a cited prediction about an experiment outcome and score it against the observed result; the skill bundle supplies no substitute for that duty.
+- **gambler** — retains the existing forecast duty: record a cited prediction about an experiment outcome and score it against the observed result; the skill bundle leaves that duty with the gambler role.
 
 The upstream issue automation scripts call `@google/jules-sdk` and `JULES_API_KEY`; those provider calls remain reference material. Google's Jules service became read-only after 2026-11-11. The upstream sequential merge stage is excluded from this role binding; repository merge authority and independent review remain unchanged.
 

@@ -1,17 +1,4 @@
-"""Admin Graph page contract (2026-10-30).
-
-The Admin Interaction Graph is a self-contained canonical-model admin UI:
-the model is rendered deterministically, every node/edge carries a
-repoSource, and statuses follow docs/DEPLOYMENT-LANES.md (SSOT) with
-repo-delta markers where the repo's own docs disagree. These tests pin
-the page's wiring into the published dashboard set:
-
-* the page is present and carries its honesty markers (simulated pulses,
-  prepared-not-sent dispatch, pull-to-refresh suppression);
-* the unified nav of every published dashboard page links to it;
-* it is in the sitemap.
-"""
-import re
+"""Admin Graph page contract and live routing-pulse integration."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,29 +21,26 @@ def _html():
 def test_page_present_and_self_contained():
     html = _html()
     assert "Admin Interaction Graph" in html
-    # no credential-bearing or live API calls from the page
     assert "api.github.com" not in html
     assert "raw.githubusercontent" not in html
 
 
-def test_honesty_markers_present():
+def test_live_route_pulse_contract():
     html = _html()
-    for marker in ("SIMULATED PULSES", "PREPARED", "pull-to-refresh",
-                   "DEPLOYMENT-LANES"):
+    for marker in ("LIVE ROUTE PULSES", "LIVE_FEED_URL", "task_routed",
+                   "routing-orch", "after_seq", "PREPARED",
+                   "pull-to-refresh", "DEPLOYMENT-LANES"):
         assert marker in html, marker
 
 
 def test_nav_link_on_every_published_page():
     for name in NAV_PAGES:
-        text = (APP / name).read_text(encoding="utf-8")
-        assert NAV_LINK in text, name
+        assert NAV_LINK in (APP / name).read_text(encoding="utf-8")
 
 
 def test_in_sitemap():
-    sitemap = (APP / "sitemap.xml").read_text(encoding="utf-8")
-    assert "help-wanted/admin-graph.html" in sitemap
+    assert "help-wanted/admin-graph.html" in (APP / "sitemap.xml").read_text(encoding="utf-8")
 
 
 def test_admin_systems_inventory_row():
-    admin = (APP / "admin.html").read_text(encoding="utf-8")
-    assert "<td>Admin Interaction Graph</td>" in admin
+    assert "<td>Admin Interaction Graph</td>" in (APP / "admin.html").read_text(encoding="utf-8")

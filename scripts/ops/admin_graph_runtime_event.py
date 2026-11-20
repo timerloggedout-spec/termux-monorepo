@@ -72,7 +72,7 @@ def _route_event(payload: dict[str, Any], context: dict[str, Any]) -> dict[str, 
     run_id = int(context["run_id"])
     run_attempt = int(context.get("run_attempt") or 1)
     if not route_role:
-        raise ValueError("task claim comment is missing its route role")
+        return None
 
     provider = arm_id = model = dispatch_id = None
     source = "producer_claim"

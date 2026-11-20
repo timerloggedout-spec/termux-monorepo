@@ -62,7 +62,7 @@ jobs:
                 '**Google Jules routing is retired.** The hosted service became read-only after 2026-11-11.',
                 'Use the local Jules-derived DoE role guidance at `.agents/skills/jules-doe-role-adapter/SKILL.md`.',
                 'Execution requires a currently available provider adapter selected through `docs/schemas/agent-roster.yaml`.',
-              ].join('\\n'),
+              ].join('\n'),
             });
 
       - name: Route to Ledger (if matched)

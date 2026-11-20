@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-20T16:12:08Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-20T16:37:00Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-20T16:12:07Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`100674` read_at=`2026-11-20T16:12:07Z`
+Sources: PR feed read_at=`2026-11-20T16:36:59Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`100895` read_at=`2026-11-20T16:36:59Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -33,7 +33,7 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
-Campaigns: 18 · joined: 2 · distinct instances: 18 · providers: Muse, baseten, cohere, google, mistral, openrouter, sealion
+Campaigns: 19 · joined: 2 · distinct instances: 18 · providers: Muse, baseten, cohere, google, mistral, openrouter, sealion
 
 | campaign | provider | model@version | role | prompt (ref#sha12) | moniker | context | instance_key | plan | recorded | dispatched |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -67,6 +67,7 @@ Campaigns: 18 · joined: 2 · distinct instances: 18 · providers: Muse, baseten
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `a1d2b5ece4e2…` | 0 | 2 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#296e7d97d139 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `41d1eb546dbd…` | 0 | 1 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#b87aa0cd1ef9 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `a7b03570542f…` | 0 | 1 | 0 |
+| rust-zero-drift-evolution | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | util-1-provider-rotation | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-1-duckduckgo | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | ww-2-brave | NOT_ESTABLISHED (design_only) | | | | | | | | | |

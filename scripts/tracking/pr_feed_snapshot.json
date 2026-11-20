@@ -1,6 +1,6 @@
 {
  "schema": "tracking-pr-feed-snapshot/v1",
- "read_at": "2026-11-20T16:12:07Z",
+ "read_at": "2026-11-20T16:36:59Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "merged": [
   {
@@ -1956,38 +1956,25 @@
  ],
  "open": [
   {
-   "number": 3890,
-   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "number": 3916,
+   "title": "chore(reviewer-metrics): regenerate provider x context map",
    "merged_at": null,
-   "updated_at": "2026-11-20T16:11:07Z",
-   "created_at": "2026-11-02T13:39:06Z",
-   "merge_commit_sha": "30125761958d56a96b7eb2e2e9e18e5e740069d9",
-   "head_ref": "telemetry-ingest/refresh",
-   "author": "github-actions[bot]",
+   "updated_at": "2026-11-20T16:35:24Z",
+   "created_at": "2026-11-02T13:54:36Z",
+   "merge_commit_sha": "af30c8f9bd5d7deec2377409442e1eb873d88995",
+   "head_ref": "reviewer-metrics/refresh",
+   "author": "termux-fleet-swarm[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
-   "merged": false
-  },
-  {
-   "number": 2263,
-   "title": "chore(delphi): refresh delphi-ledger-feed.json",
-   "merged_at": null,
-   "updated_at": "2026-11-20T16:11:00Z",
-   "created_at": "2026-10-28T22:37:18Z",
-   "merge_commit_sha": "e728c33016722a14e79510fbce60e8f923c3836b",
-   "head_ref": "delphi-ledger-feed/refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
    "merged": false
   },
   {
    "number": 2310,
    "title": "chore(delphi): refresh delphi-rfp-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-20T16:10:51Z",
+   "updated_at": "2026-11-20T16:32:06Z",
    "created_at": "2026-10-29T05:02:25Z",
-   "merge_commit_sha": "66ac5f74061cbd5805210bad416653fcdf83b520",
+   "merge_commit_sha": "dabc377fc1f1f00482e09647e2c3723fba751516",
    "head_ref": "delphi-rfp-feed/refresh",
    "author": "github-actions[bot]",
    "labels": [],
@@ -1995,16 +1982,68 @@
    "merged": false
   },
   {
-   "number": 3916,
-   "title": "chore(reviewer-metrics): regenerate provider x context map",
+   "number": 2263,
+   "title": "chore(delphi): refresh delphi-ledger-feed.json",
    "merged_at": null,
-   "updated_at": "2026-11-20T16:10:06Z",
-   "created_at": "2026-11-02T13:54:36Z",
-   "merge_commit_sha": "205f6c6fa05dcc7bb292f4dc107b15acb268df5a",
-   "head_ref": "reviewer-metrics/refresh",
-   "author": "termux-fleet-swarm[bot]",
+   "updated_at": "2026-11-20T16:28:04Z",
+   "created_at": "2026-10-28T22:37:18Z",
+   "merge_commit_sha": "25ac548ae8ec60a99e3e09499e33096df068abca",
+   "head_ref": "delphi-ledger-feed/refresh",
+   "author": "github-actions[bot]",
    "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3916",
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/2263",
+   "merged": false
+  },
+  {
+   "number": 3890,
+   "title": "chore(telemetry): refresh HindSight+Provenance ingest",
+   "merged_at": null,
+   "updated_at": "2026-11-20T16:23:33Z",
+   "created_at": "2026-11-02T13:39:06Z",
+   "merge_commit_sha": "a806fb7a6b64e15f85501918811a9c83cee49d06",
+   "head_ref": "telemetry-ingest/refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/3890",
+   "merged": false
+  },
+  {
+   "number": 1760,
+   "title": "ops(tribute): participation refresh",
+   "merged_at": null,
+   "updated_at": "2026-11-20T16:21:42Z",
+   "created_at": "2026-10-27T12:35:35Z",
+   "merge_commit_sha": "9b27bdb75be09d450b4b4cd3a15600aca61da8eb",
+   "head_ref": "tribute-participation/auto-refresh",
+   "author": "github-actions[bot]",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1760",
+   "merged": false
+  },
+  {
+   "number": 5687,
+   "title": "docs(temporal): record Muse VM runtime reactivation",
+   "merged_at": null,
+   "updated_at": "2026-11-20T16:19:36Z",
+   "created_at": "2026-11-20T07:02:36Z",
+   "merge_commit_sha": "98ad0c9b5a8618298b753d7d35afb605f7445481",
+   "head_ref": "docs/temporal-muse-vm-reactivation-20261119",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5687",
+   "merged": false
+  },
+  {
+   "number": 5718,
+   "title": "feat(re-taxonomy): register REA-Argonaut across target families",
+   "merged_at": null,
+   "updated_at": "2026-11-20T16:18:59Z",
+   "created_at": "2026-11-20T16:14:42Z",
+   "merge_commit_sha": "f19e3bfaf3785cb8b6ce344475cdc875876cb8fa",
+   "head_ref": "feat/re-taxonomy-rea-argonaut-current",
+   "author": "timerloggedout-spec",
+   "labels": [],
+   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5718",
    "merged": false
   },
   {
@@ -2112,19 +2151,6 @@
    "merged": false
   },
   {
-   "number": 5687,
-   "title": "docs(temporal): record Muse VM runtime reactivation",
-   "merged_at": null,
-   "updated_at": "2026-11-20T07:05:36Z",
-   "created_at": "2026-11-20T07:02:36Z",
-   "merge_commit_sha": "98ad0c9b5a8618298b753d7d35afb605f7445481",
-   "head_ref": "docs/temporal-muse-vm-reactivation-20261119",
-   "author": "timerloggedout-spec",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5687",
-   "merged": false
-  },
-  {
    "number": 5683,
    "title": "feat(accessibility): integrate pinned agents and reconcile drift",
    "merged_at": null,
@@ -2226,19 +2252,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5670",
-   "merged": false
-  },
-  {
-   "number": 1760,
-   "title": "ops(tribute): participation refresh",
-   "merged_at": null,
-   "updated_at": "2026-11-19T16:46:14Z",
-   "created_at": "2026-10-27T12:35:35Z",
-   "merge_commit_sha": null,
-   "head_ref": "tribute-participation/auto-refresh",
-   "author": "github-actions[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/1760",
    "merged": false
   },
   {
@@ -2494,7 +2507,7 @@
    "merged_at": null,
    "updated_at": "2026-11-18T16:10:00Z",
    "created_at": "2026-11-18T14:44:54Z",
-   "merge_commit_sha": "b5781222bb6bdcd6881a726b7e66076f8acfe6c6",
+   "merge_commit_sha": "413a82e3a5e168f1b167f75ff13b9d0f88844278",
    "head_ref": "governance/positive-form-siglary-v1",
    "author": "timerloggedout-spec",
    "labels": [],
@@ -4548,19 +4561,6 @@
    "author": "github-actions[bot]",
    "labels": [],
    "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5052",
-   "merged": false
-  },
-  {
-   "number": 5046,
-   "title": "\ud83d\udee1\ufe0f Sentinel: [HIGH] Fix path traversal, symlink hijacking, and permissions in ConversationDAG",
-   "merged_at": null,
-   "updated_at": "2026-11-07T08:51:17Z",
-   "created_at": "2026-11-07T08:25:29Z",
-   "merge_commit_sha": "c9533030b14f01a179305775b07423d992fbfccc",
-   "head_ref": "jules-16239446616825067960-4761d4fc",
-   "author": "google-labs-jules[bot]",
-   "labels": [],
-   "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/pull/5046",
    "merged": false
   }
  ],

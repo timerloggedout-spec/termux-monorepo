@@ -1,6 +1,6 @@
 {
   "schema": "challenge-countdowns-feed/v1.3",
-  "generated_at": "2026-11-07T17:12:50Z",
+  "generated_at": "2026-11-20T16:52:00Z",
   "source": "docs/ops/CHALLENGE-ENTRIES-LOG.md",
   "prizes_source": "ops/challenge/coordinator.json",
   "entries": [
@@ -249,6 +249,45 @@
       "event_url": "https://www.aha.io/academy/events/ai-builder-day-hackathon-november-2026"
     },
     {
+      "id": "C12",
+      "title": "UGREEN Hackathon 2026 on AI NAS",
+      "status": "ACTIVE",
+      "event_url": "https://ugreenhackathon.devpost.com/",
+      "opens": "2026-10-22T09:15:00-07:00",
+      "closes": "2026-11-21T23:59:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$46,000 cash",
+        "tiers": [
+          {
+            "place": "Grand Prize",
+            "award": "$20,000 cash",
+            "source_url": "https://ugreenhackathon.devpost.com/"
+          },
+          {
+            "place": "2nd Place",
+            "award": "$10,000 cash",
+            "source_url": "https://ugreenhackathon.devpost.com/"
+          },
+          {
+            "place": "3rd Place",
+            "award": "$6,000 cash",
+            "source_url": "https://ugreenhackathon.devpost.com/"
+          },
+          {
+            "place": "Most Creative (two awards)",
+            "award": "$5,000 cash each",
+            "source_url": "https://ugreenhackathon.devpost.com/"
+          }
+        ]
+      },
+      "submission": {
+        "state": "SUBMITTED",
+        "at": "2026-11-15T22:16:33.300-08:00",
+        "ref": "https://devpost.com/software/receipts-vault"
+      }
+    },
+    {
       "id": "C17",
       "title": "Game Off 2026 (candidate; owner review pending)",
       "status": "ACTIVE",
@@ -259,6 +298,86 @@
         "status": "ESTABLISHED",
         "pool": "No cash or physical prizes; winning games are featured on the GitHub Blog and GitHub social channels; bragging rights.",
         "tiers": []
+      },
+      "submission": null
+    },
+    {
+      "id": "C18",
+      "title": "Cloud9 × JetBrains: Sky's The Limit Hackathon 2026",
+      "status": "ACTIVE",
+      "event_url": "https://cloud9.devpost.com/",
+      "opens": "2026-11-17T11:00:00-08:00",
+      "closes": "2027-01-12T11:00:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$25,000 total cash awards plus Cloud9/JetBrains/GDC benefits",
+        "tiers": [
+          {
+            "place": "Best of Category 1 (VAL/GC)",
+            "award": "$6,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack + one GDC ticket + paid round-trip economy airfare and standard hotel for one individual",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Runner-up Category 1 (VAL/GC)",
+            "award": "$2,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Best of Category 2 (LoL)",
+            "award": "$6,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack + one GDC ticket + paid round-trip economy airfare and standard hotel for one individual",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Runner-up Category 2 (LoL)",
+            "award": "$2,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Best of Category 3 (Event Mini Game)",
+            "award": "$6,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack + one GDC ticket + paid round-trip economy airfare and standard hotel for one individual",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Runner-up Category 3 (Event Mini Game)",
+            "award": "$2,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          },
+          {
+            "place": "Bonus Prize: Best AI-Powered Workflow Story",
+            "award": "$1,000 cash + $100 Cloud9 Store gift card + 1-year JetBrains All Products Pack",
+            "source_url": "https://cloud9.devpost.com/prizes"
+          }
+        ]
+      },
+      "submission": null
+    },
+    {
+      "id": "C19",
+      "title": "Learn AR with SPECS",
+      "status": "ACTIVE",
+      "event_url": "https://learn-specs.devpost.com/",
+      "opens": "2026-11-10T09:00:00-08:00",
+      "closes": "2026-12-07T14:00:00-08:00",
+      "prizes": {
+        "status": "ESTABLISHED",
+        "pool": "$2,500 cash",
+        "tiers": [
+          {
+            "place": "First Place",
+            "award": "$1,250 cash",
+            "source_url": "https://learn-specs.devpost.com/prizes"
+          },
+          {
+            "place": "Second Place",
+            "award": "$750 cash",
+            "source_url": "https://learn-specs.devpost.com/prizes"
+          },
+          {
+            "place": "Third Place",
+            "award": "$500 cash",
+            "source_url": "https://learn-specs.devpost.com/prizes"
+          }
+        ]
       },
       "submission": null
     }

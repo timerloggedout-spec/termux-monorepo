@@ -1,6 +1,6 @@
 # CNS Integration Map
 
-**Source ref:** `master@939ecc225675541d1ad5b829b427c7ac77ac2642`
+**Source ref:** `master@82d4adb804d1b5f990954b29b101bd1ad10eee8b`
 **Legend:** solid = verified/derived relationship; dashed = proposed; dotted = feedback/projection; unresolved = evidence or owner pending.
 
 ```mermaid
@@ -27,42 +27,45 @@ flowchart TD
   EXPLORER[Historical Corpus Explorer]
   LEARN[Skill and Manager evolution]
 
-  GOV --> ICM
-  GOV --> MGR
-  ICM --> CRG
-  CRG --> BRAIN
-  CRG -. context pointers .-> PTR
-  CRG --> MGR
-  BRAIN -. typed reasoning handoff .-> MGR
-  MGR --> QUE
-  QUE --> BALLET
-  BALLET --> ROUTER
-  ROUTER -. observe-only arbitration .-> ORBIT
-  ORBIT -. eligible decision evidence .-> EXEC
-  ROUTER --> EXEC
-  EXEC --> ATES
-  EXEC --> WATCH
-  WATCH --> ATES
-  ATES --> THREE
-  ATES --> MONEY
-  CRG --> DOE
-  THREE --> DOE
-  MONEY --> DOE
-  DOE -. measured policy candidates .-> LEARN
-  ATES --> SHE
-  CRG --> SHE
-  THREE --> SHE
-  MONEY --> SHE
-  SHE --> EXPLORER
-  SHE -. operator visibility .-> MGR
-  LEARN -. governed policy updates .-> MGR
-  EXEC -. typed event references .-> BUS
-  BUS -. canonical record references .-> OWNERS
+  GOV -->|verified| ICM
+  GOV -->|verified| MGR
+  ICM -->|verified| CRG
+  CRG -->|verified| BRAIN
+  CRG -.->|proposed| PTR
+  CRG -->|verified| MGR
+  BRAIN -.->|proposed| MGR
+  MGR -->|verified| QUE
+  QUE -->|verified| BALLET
+  BALLET -->|verified| ROUTER
+  ROUTER -.->|proposed| ORBIT
+  ORBIT -.->|proposed| EXEC
+  ROUTER -->|verified| EXEC
+  EXEC -->|verified| ATES
+  EXEC -->|verified| WATCH
+  WATCH -->|derived| ATES
+  ATES -->|verified| THREE
+  ATES -->|verified| MONEY
+  CRG -->|derived| DOE
+  THREE -->|verified| DOE
+  MONEY -->|verified| DOE
+  DOE -.->|proposed| LEARN
+  ATES -->|derived| SHE
+  CRG -->|derived| SHE
+  THREE -->|derived| SHE
+  MONEY -->|derived| SHE
+  SHE -->|derived| EXPLORER
+  SHE -.->|proposed| MGR
+  LEARN -.->|proposed| MGR
+  EXEC -.->|proposed| BUS
+  BUS -.->|proposed| OWNERS
 
   classDef verified fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef derived fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
   classDef proposed fill:#fff8e1,stroke:#f9a825,color:#6d4c00
+  classDef unresolved fill:#ffebee,stroke:#c62828,color:#b71c1c
   class GOV,ICM,CRG,MGR,QUE,BALLET,ROUTER,EXEC,ATES,WATCH,THREE,MONEY,DOE,SHE class verified
-  class PTR,ORBIT,BUS,EXPLORER,LEARN class proposed
+  class EXPLORER class derived
+  class PTR,ORBIT,BUS,LEARN class proposed
 ```
 
 ## Edge evidence classification
@@ -72,4 +75,4 @@ flowchart TD
 - **Proposed:** open PR, proposal, or integration contract awaiting promotion and runtime proof.
 - **Unresolved:** relationship whose owner or evidence is currently unestablished.
 
-This map is an architecture projection. Each edge requires a source reference in the organ registry or a linked implementation record. The dashed edges remain proposals until exact-head checks and runtime evidence establish them.
+Every Mermaid edge carries its evidence classification in the edge label. Proposed edges remain visibly dashed and remain advisory until exact-head checks and runtime evidence establish their integration.

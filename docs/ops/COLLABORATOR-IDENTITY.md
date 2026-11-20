@@ -58,7 +58,7 @@ Persona files are optional, independently revisioned resources:
 
 Execution files are independently revisioned:
 
-- `CLAUDE.md`, `GEMINI.md`, `CODEX.md`, or another collaborator-named entrypoint.
+- `CLAUDE.md`, `GEMINI-CLI.md`, `CODEX.md`, or another collaborator-named entrypoint.
 - Skill manifests and skill content.
 - Tool/connector manifests and capability declarations.
 - Permission profiles and workflow bindings.

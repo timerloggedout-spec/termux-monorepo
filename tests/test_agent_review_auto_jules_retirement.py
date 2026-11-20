@@ -40,6 +40,9 @@ class JulesReviewRetirementReceiptTests(unittest.TestCase):
             self.assertIn(provider, self.workflow)
         self.assertIn("actor.type !== 'Bot'", self.workflow)
         self.assertIn("source.state === 'approved'", self.workflow)
+        self.assertIn("checkboxTrigger", self.workflow)
+        self.assertIn("codeRabbitCooldown", self.workflow)
+        self.assertIn("providerCapacityNotice", self.workflow)
 
     def test_receipt_is_idempotent_and_sha_bound(self) -> None:
         self.assertIn("jules-retired-review:", self.workflow)

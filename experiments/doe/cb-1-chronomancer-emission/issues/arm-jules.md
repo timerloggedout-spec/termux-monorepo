@@ -1,7 +1,7 @@
 <!-- campaign: cb-1-chronomancer-emission | arm: arm-jules | framing: live-1 A-implement-only (held) -->
 <!-- Legacy route: the `jules` label records a retirement receipt. Use the local DoE role skills and active provider roster for execution admission. Stamp sha256[:12] of this title+body in the campaign record at dispatch. -->
 
-**Implement** a ChronoMancer record emitter in `scripts/doe/chronomancer_emitter.py`, with tests in `tests/test_chronomancer_emitter.py`. Change NO other files.
+**Implement** a ChronoMancer record emitter in `scripts/doe/chronomancer_emitter.py`, with tests in `tests/test_chronomancer_emitter.py`. Scope: modify only the two files named in this task.
 
 - **Target:** `run_history` SQLite DBs written by `harmony_hub/workspace/agent/chronomancer.py` (read it on master first). Its schema: `session_id, account, timestamp, validated, target_file, attempt_number, patch_content, verdict`. Fork rows are inserted with `target_file='chronomancer-fork'`, `verdict='time_loop'`, `validated=1`, and `session_id` = the NEW forked session id.
 - **Outcome:** running the emitter over such a DB produces one EXPERIMENT record (per `docs/ops/corpus/EXPERIMENT.schema.json`) per fork event plus one per continuation, deterministically.

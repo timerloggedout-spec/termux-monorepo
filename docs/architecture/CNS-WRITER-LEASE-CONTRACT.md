@@ -69,6 +69,8 @@ Providers with direct credentials that bypass the lease gateway remain outside t
 
 ## 7. Required receipt states
 
+The machine-readable envelope is defined in `docs/schemas/cns-writer-lease-receipt.schema.json`.
+
 `acquired`, `renewed`, `released`, `expired`, `rejected`, `recovered`.
 
 Each receipt binds:

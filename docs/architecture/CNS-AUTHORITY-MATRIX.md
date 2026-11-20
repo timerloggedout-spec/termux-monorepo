@@ -28,6 +28,7 @@ The CNS coordinates independently governed organs. Each mutable domain retains o
 | Credentials and secrets | Existing repository secret and permission owners | CNS stores names and references only | Credential values stay in approved secret stores |
 | Review and merge | GitHub branch protection / repository governance | CNS reports state and evidence | Dual gates and authorized promotion path |
 | Release and deployment | Existing release/deployment owners | CNS observes deployment receipts | Deployment permission and provenance remain canonical |
+| Writer lease | Unassigned enforcement authority (proposed) | Would gate revision-bound corrective writes | Global provider enforcement remains unimplemented and unverified |
 
 ## Authority rules
 

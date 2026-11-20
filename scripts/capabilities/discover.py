@@ -14,7 +14,8 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-VERSION = "1.0"
+VERSION = "1.1"
+MAX_SKILL_BYTES = 2_000_000
 SKILL_NAMES = {"SKILL.md", "SKILLS.md"}
 SKILL_SUFFIXES = {".skills", ".skill"}
 SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".mypy_cache", ".pytest_cache", "dist", "build"}
@@ -90,8 +91,13 @@ def scan_repository(root: Path) -> list[dict]:
                                and ".." not in Path(n).parts]
                     if len(members) != 1:
                         continue
+                    info = archive.getinfo(members[0])
+                    if info.file_size > MAX_SKILL_BYTES:
+                        continue
                     raw = archive.read(members[0])
             else:
+                if path.stat().st_size > MAX_SKILL_BYTES:
+                    continue
                 raw = path.read_bytes()
             text = raw.decode("utf-8")
         except (OSError, UnicodeDecodeError, zipfile.BadZipFile):
@@ -215,8 +221,14 @@ def connect(db: Path) -> sqlite3.Connection:
       event_id TEXT PRIMARY KEY, capability_id TEXT NOT NULL, event TEXT NOT NULL,
       content_sha256 TEXT, source_id TEXT NOT NULL, recorded_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
+    con.execute("""CREATE TABLE IF NOT EXISTS capability_edge (
+      edge_id TEXT PRIMARY KEY, from_id TEXT NOT NULL, to_id TEXT NOT NULL,
+      relation TEXT NOT NULL, evidence_sha256 TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(from_id,to_id,relation)
+    )""")
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_domain ON capability(domain,function)")
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_trust ON capability(trust,lifecycle)")
+    con.execute("CREATE INDEX IF NOT EXISTS idx_capability_edge_from ON capability_edge(from_id,relation)")
     return con
 
 def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
@@ -243,8 +255,19 @@ def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
             con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,source_id) VALUES (?,?,?,?,?)",
                         (event_id,row["id"],event,row["content_sha256"],row["source_id"]))
             changed += 1
+    con.execute("DELETE FROM capability_edge WHERE relation='content_identical'")
+    duplicates = con.execute("""SELECT a.id,b.id,a.content_sha256
+        FROM capability a JOIN capability b
+        ON a.content_sha256=b.content_sha256 AND a.id < b.id
+        WHERE a.content_sha256 IS NOT NULL""").fetchall()
+    for left,right,fingerprint in duplicates:
+        edge_id = digest(f"{left}|{right}|content_identical|{fingerprint}".encode())
+        con.execute("""INSERT OR IGNORE INTO capability_edge
+            (edge_id,from_id,to_id,relation,evidence_sha256) VALUES (?,?,?,?,?)""",
+            (edge_id,left,right,"content_identical",fingerprint))
     con.commit()
     return {"scanned":len(rows),"changed":changed,
+            "relationships":con.execute("SELECT count(*) FROM capability_edge").fetchone()[0],
             "total":con.execute("SELECT count(*) FROM capability").fetchone()[0]}
 
 def search(con: sqlite3.Connection, query: str, limit: int = 8) -> list[dict]:

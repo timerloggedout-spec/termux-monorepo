@@ -22,7 +22,7 @@
 
 Both Jules and Gemini workflows inject an inventory of **open agent PRs** into their prompts.
 
-Rules encoded in `GEMINI-CLI.md` and Jules invoke prompts:
+Rules encoded in `GEMINI-MESH.md` and Jules invoke prompts:
 
 1. Scan open PRs from Jules / Devin / CodeRabbit / related issue links before editing.
 2. Do not modify files already in another open agent PR for the same issue.

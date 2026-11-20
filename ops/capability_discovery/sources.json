@@ -366,6 +366,33 @@
       "refresh": "pull-request-head",
       "import_mode": "review-required; source-data-integrity-unverified",
       "note": "PR #5667 contains scripts/skills/import_claude_export.py, scripts/skills/validate_claude_export.py, vendor/skills-mirror, .skills/index.json and source-manifest records for 1,299 skills and 1,218 plugin inventory rows. The importer requires skills-inventory.jsonl although Issue #5657 does not list it; it copies SHA256SUMS.txt but does not parse or verify it. Archive SHA-256 is computed after extraction and is not compared with the supplied sums. Keep imported content unverified until the source artifacts and checksum chain reconcile."
+    },
+    {
+      "id": "repo-tool-docs",
+      "kind": "repository-tool-reference",
+      "locator": "tools/**/CONNECTOR.md;tools/**/TOOLS.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Connector and typed-tool documentation. Index the heading and short purpose text; retain full documents as the authoritative source."
+    },
+    {
+      "id": "repo-tool-schema",
+      "kind": "repository-tool-schema",
+      "locator": "tools/**/tools-schema.json",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "Index tool names, descriptions, parameter counts and tags; retain the full typed schema in the source file and hydrate only for a selected action."
+    },
+    {
+      "id": "sofa-mcp-connector",
+      "kind": "repository-mcp-connector",
+      "locator": "tools/sofa/{CONNECTOR.md,TOOLS.md,tools-schema.json,sofa.py}",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only",
+      "note": "SOFA = Stack Overflow for Agents, distinct from standard Stack Overflow MCP. Schema snapshot lists 27 actions: 16 READ and 11 WRITE. docs/ops/SOFA-CONNECTION-2026-10-28.md records a 2026-11-03 update with expanded scopes; tools/sofa/CONNECTOR.md and TOOLS.md still contain 2026-10-28 read-only claims. Current live authorization is unverified; run the read-only status check before use. Require explicit user intent and owner-gated workflow for every write. Never index or expose .tokens.json."
     }
   ]
 }

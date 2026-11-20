@@ -160,7 +160,7 @@ jobs:
           gemini_model: ${{ steps.router.outputs.model }}
           prompt: |
             You are the free-tier PR reviewer for termux-monorepo (SELECTED_MODEL env).
-            Target PR number is in TARGET_PR env (if set). Read GEMINI-CLI.md and CLAUDE.md.
+            Target PR number is in TARGET_PR env (if set). Read GEMINI-MESH.md and CLAUDE.md.
             Concise review only. Prefer completing in ONE response.
 
             Check:

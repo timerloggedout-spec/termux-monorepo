@@ -13,7 +13,7 @@
 - [Session plugin skill catalog](session-plugin-skill-catalog.json): 545 references / 74 packages.
 - [Session tool action catalog](session-tool-action-catalog.json): 4,716 actions / 123 MCP namespaces.
 
-Catalogs are compact session-scoped metadata snapshots captured 2026-11-19. They are not account entitlement, connection, or production access claims. Live tool descriptors remain authoritative for complete schemas and permissions.
+Catalogs are compact session-scoped metadata snapshots captured 2026-11-19. Treat them as session discovery records; verify account entitlement, connection and production access independently. Live tool descriptors remain authoritative for complete schemas and permissions.
 
 ## Prioritized portfolio
 

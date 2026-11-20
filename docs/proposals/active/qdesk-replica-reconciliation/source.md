@@ -1,0 +1,237 @@
+# Source Record — qdesk-replica-reconciliation
+
+## 1. Scope and authority
+
+Target repository: `timerloggedout-spec/termux-monorepo`.
+
+Reference project: `timerloggedout-spec/replica_fork`, a fork of `github/replica`.
+
+The intended product is a unified QDesk control-plane view branded `Q^∆3sk`. It combines existing Contribution Desk and Admin Graph material with a new Browser Quarantine Clerk proposal/access-risk surface and stronger release/preview evidence. The initial deliverable is a design and read-only shell. Domain state remains owned by existing repository contracts.
+
+Authority map:
+
+| Concern | Existing canonical owner | QDesk role |
+|---|---|---|
+| Proposal intent/status | `docs/proposals/registry.yaml`, proposal MANIFEST/ITEMS/PROCESS | Read-only proposal index and navigation |
+| Dependency lifecycle | `docs/agentic/dependency-phases.json`, approvals, deterministic phase engine | Show phase state and evidence |
+| Contribution/build traversal | `ops/challenge/desk-feed.json`, desk feed contract | Reuse existing desk projection |
+| Admin relationships | `apps/tribute-dashboard/admin-graph.html` plus its source feeds | Reuse selected graph excerpts |
+| Page/build identity | `apps/tribute-dashboard/version-manifest.json`, `versioning.js` | Extend current comparison |
+| DoE campaigns | `docs/ops/DOE-FAMILY.md`, `DOE-TAXONOMY.md`, `EXPERIMENT.schema.json` | Display campaign references and results |
+| Integrations/capabilities | `docs/integrations/registry.json`, adapter/event contracts, capability opportunity graph | Show source-linked integration status |
+| Collaborator identity/provenance | `docs/ops/AGENT-MONIKERS.md`, `BIUDL-EXECUTION-AND-PROVENANCE.md`, session SSOT and capability contracts | Display attributed, confidence-labelled evidence |
+| Visual review | Native ICM `docs/icm/_tv/` artifacts and optional-visual-review card | Optional visual projection; source files remain canonical |
+
+QDesk must not introduce another scheduler, phase engine, proposal registry, agent identity registry, experiment ledger, telemetry store, credential store or merge authority.
+
+## 2. Replica native behavior to preserve
+
+The fork README describes an open-source AI prototyping tool built around team design-system guidance, starter apps, a local Copilot canvas, optional hosted Replica Hub for publishing/feedback, and a GitHub build action for Hub publication.
+
+The upstream workflow separates:
+- Local prototyping from hosted publication.
+- Starter creation from adapting an existing repository.
+- Guidance drafting, review and activation.
+- Source repository sharing from publishing a Hub Build.
+- Preview availability from proof that the current session loaded the canvas.
+
+Native starter catalog:
+- `minimal`: small React/TanStack Router app with no component library.
+- `coreai`: React Router app with CoreAI components and a Foundry-style shell.
+
+Preserve the app's own router, dependencies, conventions and design-system guidance. Inspect before adapting. Existing files, Git history and remotes remain intact. Local prototyping does not require Hub, Docker, a domain or GitHub repository access. Hosted publishing remains optional and separately authorized.
+
+Replica's shared workflow includes local preview preflight, component mapping, rendered review, test/build checks and explicit publishing steps. Use the Replica canvas when available; a supported local browser preview is a fallback when the host lacks canvas support. Plugin installation, source migration and publishing remain separate authority edges.
+
+License/provenance: the Replica README states MIT. Preserve upstream attribution and license notices; verify bundled asset/font notices before copying individual assets. The fork's README identifies GitHub Design and Microsoft CoreAI Design as creators.
+
+## 3. refTemplates/smods reconciliation
+
+The monorepo's root `CLAUDE.md`, `docs/ops/REFTEMPLATES-CONSOLIDATION.md` and `docs/icm/objects/knowledge/reference-inputs.md` define `refTemplates/smods/` as a narrow, shallow, metadata-first reference lane. References inform the monorepo; they do not operate it or override its governance. Full recursive materialization is explicit and selective.
+
+Relevant references and their bounded QDesk roles:
+
+| Reference | Adoptable pattern | Boundary |
+|---|---|---|
+| `icm-architect_fork` | Six workspace forms, form selection, restructure audit, file-role classification, walk test | Method/template input; monorepo ICM remains operative |
+| `interpretable-context-methodology_fork` | Stage folders, local CONTEXT contracts, small routing catalogs | Use existing ICM paths; avoid duplicate workspace roots |
+| `content-agent-routing-promptbase_fork` | Layer 0–3 selective routing, canonical source ownership, one-way dependencies | Adopt routing discipline, not the content business payload |
+| `cost-of-remembering_fork` | Filesystem-backed context and cost measurement | Reference evidence only; benchmark claims remain scoped to their study |
+| `icm-cctv_fork` | File-backed visual cards, mirror links, separate response artifacts | Optional projection; native files remain authoritative; no renderer/deployment dependency by default |
+| `AuditEngine_fork` | Assessment and ethics review patterns | Research input; no live psychometric classification or provider-key custody |
+| `GPTmetrics_fork` | Multi-model assessment and response comparison | Research input; no automatic collaborator trust score |
+| `lego_fork` | Compose complete sets from available capability pieces | Selection/compatibility model; no partial set promoted as complete |
+
+Other pinned `smods` repositories remain candidates until a task maps them to a QDesk capability contract. At implementation time, read exact gitlink object SHAs from the repository tree and record source URL, commit, license, last verification, role and runtime/reference status. `.gitmodules` alone establishes URLs and tracking configuration, not the checked-out commit identity. Keep pins unchanged in this proposal.
+
+## 4. Existing UI and versioning facts
+
+Verified current repository paths:
+- `apps/tribute-dashboard/desk.html` exists.
+- `apps/tribute-dashboard/admin-graph.html` exists (lowercase filename).
+- `apps/tribute-dashboard/versioning.html` exists.
+- `apps/tribute-dashboard/versioning.js` exists.
+- `apps/tribute-dashboard/version-manifest.json` exists.
+- `ops/challenge/desk-feed.json` exists.
+- `apps/tribute-dashboard/data/desk-feed.json` exists.
+
+The Contribution Desk page declares itself a read-only projection of `desk-feed/v1.3` plus `dispatch-state-feed/v1`; dispatch opens a GitHub intake issue. The page says it mutates nothing and does not present internal metrics as win odds. Its pipeline is spec → desk → builder → PR → CI → merge → sync. Preserve these boundaries.
+
+The Admin Graph page is a repository-owned source surface. Its comments describe prepared-not-sent dispatch payloads and visual-only graph pulse. Reuse excerpts/links; do not duplicate its model or imply that visual animation executes work.
+
+The current versioning code:
+- Uses stable page IDs.
+- Loads a local build manifest and a production manifest.
+- Displays version/channel/source SHA.
+- Compares page content hashes.
+- Shows links to preview and production pages.
+- Links source SHAs through GitHub compare when both are present.
+- Labels missing hashes as `HASH UNAVAILABLE` and missing source SHAs as unavailable.
+
+The current tracked `version-manifest.json` is `dev+unbuilt`, channel `development`, has empty `source_sha`, `built_at: null`, and null per-page `content_sha256` values. Therefore the comparison surface exists, but this checked-in development manifest does not establish a completed build or comparable preview hashes.
+
+The current comparison is hash/source comparison, not a full screenshot/visual regression, route/interaction, accessibility, API/schema or security comparison. The surface map also records pages such as `admin-graph.html` as feed-timestamp/stale-chip only, with no dedicated per-surface release line. Extend the existing manifest/versioning path and release map; do not create a competing release registry.
+
+## 5. QDesk target architecture
+
+Brand: `Q^∆3sk`. Proposed page: `apps/tribute-dashboard/Q^∆3sk.html` (subject to URL/path compatibility checks). Stable machine ID: `qdesk`.
+
+QDesk is a read-only shell with deep links or embedded read-only regions:
+1. Overview and attention queue.
+2. Existing Contribution Desk / traversal state.
+3. Proposal catalog and public available proposals.
+4. Browser Quarantine Clerk.
+5. Admin Graph excerpts and provenance drawer.
+6. Release Observatory / preview comparison.
+7. DoE and automation competition index.
+8. Source, freshness and validation evidence.
+
+Start with existing feeds and links. Add a new QDesk index/read-model schema only if the existing feed contracts cannot support the required navigation. Any new read model references canonical object IDs, source paths, source SHAs and generated timestamps; it does not duplicate domain payloads or own lifecycle transitions.
+
+The UI must distinguish observed, derived, inferred and unavailable data. Partial/stale/unverified states remain explicit. It must work as a credential-free static projection and degrade gracefully when optional Replica Hub/canvas is absent.
+
+## 6. Browser Quarantine Clerk threat model
+
+Treat every collaborator as a potential threat actor regardless of permission level or access duration. This is a threat-model assumption, not an accusation about an individual. Read-only, low-privilege and temporary access still carry exposure.
+
+Keep separate:
+- Principal identity and attribution confidence.
+- Granted capability and resource scope.
+- Access duration, expiry and review cadence.
+- Risk assessment and residual risk.
+- Quarantine state and disposition.
+
+Proposed access record fields (design only):
+`grant_id`, `principal_ref`, `resource_scope`, `capabilities[]`, `granted_by`, `approved_by`, `granted_at`, `expires_at`, `review_due_at`, `status`, `policy_version`, `evidence_refs[]`.
+
+Proposed risk record fields:
+`risk_id`, `subject_ref`, `threat_model_version`, `attack_surface`, `likelihood`, `impact`, `exposure`, `confidence`, `controls[]`, `residual_risk`, `assessed_at`, `evidence_refs[]`.
+
+Proposed quarantine case fields:
+`case_id`, `subject_ref`, `trigger_ref`, `restriction_scope`, `opened_at`, `review_due_at`, `disposition`, `actor_ref`, `evidence_refs[]`.
+
+Public proposal cards expose only approved/sanitized fields: title, purpose, requested capability, proposed access tier, declared duration, risk band, review state and evidence links cleared for public access. Private identities, credentials, browser profiles, session contents and restricted evidence stay out of public feeds.
+
+The Clerk initially observes and recommends. Permission grant/revocation, account changes, browser isolation and quarantine enforcement require their existing authoritative mechanisms and explicit policy/approval. The UI itself does not grant permissions. Use least privilege, short-lived grants, expiry, periodic review, revocation evidence and append-only transition records. Never infer trust from GitHub actor identity alone.
+
+## 7. Release and preview comparison refinement
+
+Reuse `version-manifest.json`, `versioning.js`, `versioning.html`, current deploy workflows and the existing visual-architecture versioning work (PR #4085).
+
+A candidate release should bind:
+- stable surface/page ID;
+- schema version;
+- source ref and full commit SHA;
+- build ID/channel/time;
+- artifact URI and SHA-256;
+- page content SHA-256;
+- dependency/template pins;
+- test/check evidence;
+- preview URL and capture metadata;
+- comparison result against a named production baseline.
+
+Comparison layers:
+1. Source/manifest/hash diff.
+2. Screenshot/visual diff at fixed viewport and state.
+3. Route and interaction regression.
+4. Accessibility regression.
+5. API/schema compatibility.
+6. Security/permission delta.
+7. Build/test/runtime evidence.
+
+Missing production or preview evidence is `UNAVAILABLE`, not `SAME`. A successful build is not a release. A preview is not production. A tag is not promotion evidence by itself.
+
+Keep schema SemVer, template pin identity and release/build identity separate. A template update creates a new immutable template revision; an experiment treatment change creates a new cohort/version; a release candidate references the exact template and schema versions it used. Preserve superseded manifests and release receipts.
+
+Suggested lifecycle:
+`DRAFT → VERSIONED → PREVIEW_BUILT → PREVIEW_COMPARED → VALIDATED → REVIEWED → RELEASE_CANDIDATE → PROMOTED → MONITORED`.
+Failure, rejection, supersession and rollback are separate recorded outcomes.
+
+## 8. DoE and automation competition fit
+
+Use the existing DoE family and taxonomy:
+- DoE is the umbrella design discipline.
+- MVT is a member nested under DoE.
+- ATES is the execution harness/measurement layer nested within the family.
+- One dispatched/executed run produces one immutable record conforming to `docs/ops/corpus/EXPERIMENT.schema.json`.
+- Full factorial and Taguchi L9 generators are implemented; other design classes retain their documented status.
+- Quality/correctness precedes time and throughput; ATES is observational and never a merge gate.
+
+Do not compare unlike automation categories as if they were direct competitors. Classify candidates by capability contract and existing monorepo taxonomy:
+- intake/proposal lifecycle;
+- orchestration/dispatch;
+- build/fix execution;
+- review/quality/security;
+- CI/workflow reliability;
+- runtime watching/reconciliation;
+- telemetry/evidence;
+- context/memory/routing;
+- templates/composition;
+- visual/dashboard projection;
+- release/deployment;
+- integration/adapters;
+- DoE/evaluation.
+
+Use the existing DEVOPS-REGISTER categories, DOE-FAMILY, DOE-TAXONOMY, Integration Intelligence registry and SURFACES-MAP as source taxonomies. Keep one primary placement with cross-membership facets; do not create a new parallel taxonomy. QDesk itself is a visualization/control surface, not a replacement automation engine.
+
+Proposed bounded factorial design (design-only; no runs claimed):
+- Factor A — context routing: existing routing vs ICM selective routing.
+- Factor B — visual review: existing page-only review vs file-backed CCTV card projection.
+- Factor C — release comparison: current manifest/hash comparison vs manifest + visual + route/interaction evidence.
+- Factor D — access review: existing proposal/issue review vs Clerk access/risk/expiry workflow (synthetic fixtures only until an enforcement adapter is separately authorized).
+
+A 2^4 full-factorial design has 16 treatment combinations and matches the implemented generator. Block by task family (proposal intake, collaborator review, release review, graph navigation); randomize order within blocks; use independent tasks for task replication and identify repeated measures separately. Freeze baseline/candidate SHAs, templates, feeds, evaluator, task set and runtime. Set replication count from pilot variance and a predeclared minimum practical effect; do not invent significance from a small pilot.
+
+Primary outcome: verified task completion against a predeclared acceptance rubric. Secondary outcomes: correctness, evidence completeness, permission-scope errors, false-positive/false-negative risk flags, regression rate, time-to-verified, human interventions, retries, context/token use and maintenance burden. Report uncertainty and missingness. Do not use a weighted black-box score or activity volume as the winner criterion. Compare Pareto tradeoffs; ATES remains diagnostic.
+
+Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite, cohort, treatment/policy, configured-instance identity when applicable, status, outcome, metrics, provenance, confidence and evidence refs. Pre-register design in the existing DoE family before execution. A cherry-picked customization becomes a new version/cohort, never a silent amendment to a running arm.
+
+## 9. Implementation sequence and gates
+
+1. Finish source/authority inventory and resolve open questions.
+2. Review and accept this proposal; itemize dependencies.
+3. Define the smallest QDesk read-only IA and page-level contract.
+4. Reuse existing feeds; implement Clerk as a sanitized read-only proposal/access-risk view.
+5. Extend current version-manifest comparison and per-surface release evidence.
+6. Pre-register the DoE campaign and automation cohort.
+7. Implement focused tests and preview.
+8. Validate exact candidate SHA with repo-gate and termux-smoke; inspect preview, source hashes, artifacts and runtime receipts.
+9. Promote only when required gates and task outcome are verified.
+
+Do not:
+- initialize every submodule or advance any pin as a side effect;
+- install Replica Hub or require it for local prototyping;
+- add a new scheduler, proposal registry, event ledger or permission authority;
+- publish collaborator-private data or raw browser/session material;
+- allow dashboard cards or generated graphs to become canonical state;
+- infer an agent identity from a GitHub actor;
+- treat a preview, queued run, successful build or ATES value as release acceptance.
+
+## 10. Open evidence items
+
+- Verify exact gitlink commit SHAs for the relevant `refTemplates/smods/` entries from the Git tree before any pin or source update.
+- Inspect current `versioning.js` deploy/build workflow and production manifest to establish which production fields are actually populated.
+- Inspect the complete desk/admin graph feeds and their owning collectors before composing QDesk.
+- Verify the active release automation and existing visual-architecture versioning PR #4085 disposition before changing that contract.
+- Confirm the preferred public brand/filename: `Q^∆3sk.html` vs a stable `qdesk.html` URL with `Q^∆3sk` visible branding.
+- Identify any existing access-grant/quarantine contract before defining a new schema; the Clerk's initial read-only projection can proceed without one.

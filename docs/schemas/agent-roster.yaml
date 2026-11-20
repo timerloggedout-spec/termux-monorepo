@@ -468,6 +468,9 @@ skill_bundles:
     skills:
       - automate-github-issues
       - local-action-verification
+    local_adaptations:
+      - .agents/skills/automate-github-issues/SKILL.md
+      - .agents/skills/local-action-verification/SKILL.md
     role_bindings:
       observer: "Issue census, metadata capture, and current-state reporting"
       scout: "Candidate triage and task decomposition proposals"

@@ -43,7 +43,7 @@ Long-lived feature branches accumulate **unrelated commits**. When the branch is
 
 - `.github/workflows/gemini-*.yml`
 - `.github/workflows/agent-jules-on-issues.yml`
-- `GEMINI-CLI.md`, `docs/AGENTIC-CICD-FREE-TIER.md`, `docs/AGENTIC-BUILDERS-VS-REVIEWERS.md`
+- `GEMINI-MESH.md`, `docs/AGENTIC-CICD-FREE-TIER.md`, `docs/AGENTIC-BUILDERS-VS-REVIEWERS.md`
 - CE-22 row in `docs/proposals/active/chatgpt-critical-eval/ITEMS.md`
 - Scope discipline docs (this file + `PR42-SCOPE-RESOLUTION.md`) via PR #67
 

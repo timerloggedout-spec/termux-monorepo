@@ -121,6 +121,39 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["lifecycle"], "discovered")
         self.assertNotIn("SKILL.md contents", rows[0]["description"])
 
+    def test_skills_sh_curated_catalog_flattens_publishers_and_filters_query(self):
+        with patch.dict("os.environ", {"VERCEL_OIDC_TOKEN": "test-token"}):
+            class Response:
+                def __enter__(self):
+                    return self
+                def __exit__(self, *args):
+                    return False
+                def read(self):
+                    return json.dumps({"data": [{
+                        "owner": "microsoft",
+                        "skills": [{
+                            "id": "microsoft/skills/azure-sdk",
+                            "name": "Azure SDK",
+                            "source": "microsoft/skills",
+                            "installs": 77,
+                            "url": "https://skills.sh/microsoft/skills/azure-sdk",
+                        }],
+                    }]}).encode()
+            with patch("urllib.request.urlopen", return_value=Response()):
+                rows, status = search_skills_sh("azure sdk", curated=True)
+        self.assertEqual(status, "ok")
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["id"], "skills-sh:microsoft/skills/azure-sdk")
+        self.assertIn("searchType=curated", rows[0]["description"])
+
+    def test_skills_sh_rejects_short_query_before_network(self):
+        with patch.dict("os.environ", {"VERCEL_OIDC_TOKEN": "test-token"}):
+            with patch("urllib.request.urlopen") as request:
+                rows, status = search_skills_sh("x")
+        self.assertEqual(rows, [])
+        self.assertEqual(status, "query_too_short")
+        request.assert_not_called()
+
     def test_session_catalog_import_preserves_session_scope(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "skills.json"

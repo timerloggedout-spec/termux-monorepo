@@ -17,7 +17,7 @@ Compare four representations—English control, operator-first, dense registered
 - Every overlay pins source blob SHA, SHA-256, stable anchor, notation version, renderer version, and provenance.
 - Executable code token streams remain identical across comment-overlay materialization.
 - Markdown structure and protected technical spans remain byte-identical.
-- `CLAUDE.md` → `CLAUDE.hum.md` mappings retain all historical `AGENTS.hum.md` aliases and migration commit provenance.
+- Root `CLAUDE.md` and `CLAUDE.hum.md` retain their README-declared primary-entry and Linguist/tooling-compatibility roles; historical `AGENTS.md` / `AGENTS.hum.md` projection aliases and rename provenance remain traceable.
 - Quality, semantic recovery, parse validity, and comprehension floors gate token/latency optimization.
 
 ## Deliverables

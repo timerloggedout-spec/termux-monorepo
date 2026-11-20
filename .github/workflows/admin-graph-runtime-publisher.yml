@@ -114,6 +114,19 @@ jobs:
           TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           set -euo pipefail
+          curl --fail --silent --show-error \
+            "https://admin-graph-live.timerloggedout.workers.dev/health" \
+            -o worker-health.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          health = json.loads(Path("worker-health.json").read_text(encoding="utf-8"))
+          capabilities = health.get("capabilities", {})
+          required = ("route_events", "cursor_reads", "source_comment_verification", "public_payload_allowlist")
+          missing = [name for name in required if capabilities.get(name) is not True]
+          if health.get("ok") is not True or missing:
+              raise SystemExit("Admin Graph Worker deployment gate pending: " + ", ".join(missing))
+          PY
           python3 - <<'PY'
           import json
           from pathlib import Path

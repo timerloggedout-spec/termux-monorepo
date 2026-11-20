@@ -279,6 +279,8 @@ def main() -> int:
     parser.add_argument("--record", type=Path, default=Path("rotation-sweep-experiment.json"))
     args = parser.parse_args()
     report = run(args.root.resolve(), args.base_sha, args.candidate_sha)
+    args.report.parent.mkdir(parents=True, exist_ok=True)
+    args.record.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     args.record.write_text(json.dumps(report["experiment_record"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({

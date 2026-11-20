@@ -38,8 +38,10 @@ def parse_frontmatter(text: str) -> dict:
         result[key.strip()] = value.strip().strip('"').strip("'")
     return result
 
-def path_surface(path: Path, root: Path) -> tuple[str, str]:
+def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, str]:
     parts = path.relative_to(root).as_posix().split("/")
+    if external:
+        return "workspace-external", "unverified"
     if parts[0] == ".agents":
         return "repo-agent-skills", "repository-canonical"
     if parts[0] == ".github":
@@ -90,16 +92,17 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
             return domain, function, sorted(set(facets))
     return "agentic", "capability-discovery", ["skill"]
 
-def scan_repository(root: Path) -> list[dict]:
+def scan_repository(root: Path, external: bool = False) -> list[dict]:
     rows = []
     taxonomy = load_taxonomy(root)
     for path in sorted(root.rglob("*")):
-        if not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
+        if path.is_symlink() or not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue
         if path.name not in SKILL_NAMES and path.suffix.lower() not in SKILL_SUFFIXES:
             continue
-        locator = path.relative_to(root).as_posix()
-        source_id, trust = path_surface(path, root)
+        relative = path.relative_to(root).as_posix()
+        locator = f"external:{root.name}/{relative}" if external else relative
+        source_id, trust = path_surface(path, root, external)
         try:
             if path.suffix.lower() == ".skill":
                 with zipfile.ZipFile(path) as archive:
@@ -129,6 +132,8 @@ def scan_repository(root: Path) -> list[dict]:
         domain, function = validate_classification(domain, function, taxonomy)
         if source_id == "repo-vendor-skills":
             facets.append("vendor")
+        if source_id == "workspace-external":
+            facets.append("external")
         if path.name == "SKILLS.md" or path.suffix.lower() == ".skills":
             facets.append("index")
         rows.append({
@@ -329,6 +334,7 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command",required=True)
     scan = sub.add_parser("scan",help="Index local skills and optional session metadata exports")
     scan.add_argument("--root",default=".")
+    scan.add_argument("--extra-root",action="append",default=[],help="Explicit additional workspace root; repeat to add more")
     scan.add_argument("--db",default=".cache/capability-index.sqlite")
     scan.add_argument("--ledger",default=".cache/capability-discovery-ledger.jsonl")
     scan.add_argument("--plugin-skills-json")
@@ -343,6 +349,12 @@ def main() -> int:
     if args.command == "scan":
         root = Path(args.root).resolve()
         rows = scan_repository(root)
+        seen_roots = {root}
+        for raw_root in args.extra_root:
+            extra_root = Path(raw_root).expanduser().resolve()
+            if extra_root.is_dir() and extra_root not in seen_roots:
+                rows.extend(scan_repository(extra_root, external=True))
+                seen_roots.add(extra_root)
         if args.plugin_skills_json:
             rows.extend(import_session_json(Path(args.plugin_skills_json),"plugin-skill"))
         if args.tool_actions_json:

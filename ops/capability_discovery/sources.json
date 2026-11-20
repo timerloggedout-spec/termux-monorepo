@@ -225,14 +225,15 @@
       "id": "openai-legacy-skills",
       "kind": "deprecated-vendor-repository",
       "locator": "https://github.com/openai/skills",
-      "trust": "deprecated",
+      "trust": "official-vendor",
       "refresh": "on-demand",
       "import_mode": "reference-only",
       "note": "README explicitly marks this repository deprecated and directs users to openai/plugins and current Codex plugin/skill documentation.",
       "reference_urls": [
         "https://github.com/openai/skills",
         "https://github.com/openai/plugins"
-      ]
+      ],
+      "lifecycle": "deprecated"
     },
     {
       "id": "github-awesome-copilot",

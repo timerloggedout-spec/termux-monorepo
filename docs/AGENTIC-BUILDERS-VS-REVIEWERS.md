@@ -42,9 +42,9 @@ pr: #
 ## Jules on issues (operational)
 
 1. Create label `jules` on the repo if missing (Issues → Labels).
-2. On any issue: add label **`jules`** → Jules App + workflow respond.
-3. Or comment **`@jules <what to do>`** as OWNER/MEMBER/COLLABORATOR.
-4. Optional: set `JULES_API_KEY` for `google-labs-code/jules-invoke` (stronger structured prompts).
+2. Route build work through the active agent roster and verified adapter-readiness gates.
+3. Use `.agents/skills/jules-doe-role-adapter/SKILL.md` for the local Jules-derived DoE role patterns.
+4. Google Jules labels, mentions, API keys, and hosted session dispatch are retired.
 
 **Workflows must live on the default branch (`master`) for `issue_comment` / `issues` events to fire.**
 

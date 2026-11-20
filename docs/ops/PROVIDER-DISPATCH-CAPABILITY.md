@@ -1,5 +1,7 @@
 # Provider Dispatch Capability — the 89-provider bench vs the dispatch funnel
 
+> **Jules retirement amendment (2026-11-20):** This 2026-11-01 dispatch census is historical. Google Jules became read-only after 2026-11-11; the issue route now records a retirement receipt, custom.jules is a GET-only archive, and new work uses local DoE role skills plus verified active provider adapters.
+
 Owner order 2026-11-01 (provider utilization FIX — "USE THEM ALL"): desk
 dispatch ran through a 4-lane funnel {Jules, Gemini, DeepSeek,
 command-dispatch} while the registry carries **89 distinct model-lane

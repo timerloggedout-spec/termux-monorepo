@@ -1,0 +1,96 @@
+name: Provenance export ingest
+
+# #5555: ingest message ∧ thinking exports from the private store (source of record:
+# VM batch export ⇒ timerloggedout-spec/muse-vm-workspace-backup), classify on ingest,
+# join to Actions run evidence, publish records back to the store (append-only path)
+# ∧ an aggregate digest (registered consumer provenance.export-digest/v1).
+# Absent source ⇒ ::notice source-absent ∧ exit 0 (degraded, receipted).
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ns:
+        description: "Store path / namespace (e.g. jules-harvest/2026-11-17)"
+        required: true
+        default: "jules-harvest/2026-11-17"
+  workflow_call:
+    inputs:
+      source_ns:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: provenance-export-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOURCE_NS: ${{ inputs.source_ns }}
+      STORE_REPO: timerloggedout-spec/muse-vm-workspace-backup
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Fetch source from private store (sparse)
+        id: src
+        env:
+          STORE_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          case "$SOURCE_NS" in *..*|/*) echo "::error::invalid source_ns"; exit 1;; esac
+          if [ -z "${STORE_TOKEN:-}" ]; then echo "::notice title=provenance-ingest::store-token-absent"; echo "present=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git clone -q --depth=1 --filter=blob:none --sparse "https://x-access-token:${STORE_TOKEN}@github.com/${STORE_REPO}.git" "$RUNNER_TEMP/store"
+          git -C "$RUNNER_TEMP/store" sparse-checkout set "$SOURCE_NS"
+          if [ -d "$RUNNER_TEMP/store/$SOURCE_NS" ] || [ -f "$RUNNER_TEMP/store/$SOURCE_NS" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice title=provenance-ingest::source-absent ns=${SOURCE_NS} (VM-side publish owed)"
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Collect Actions run evidence (comparison baseline)
+        if: steps.src.outputs.present == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100&created=>=$(date -u -d '-21 days' +%F)" \
+            --jq '.workflow_runs[] | {id, name, conclusion, status, event, created_at, head_sha, head_branch, html_url, pull_requests: [.pull_requests[] | {number}]}' \
+            | python3 -c 'import sys,json; print(json.dumps([json.loads(l) for l in sys.stdin if l.strip()]))' > "$RUNNER_TEMP/runs.json"
+      - name: Ingest ⊕ classify ⊕ join
+        if: steps.src.outputs.present == 'true'
+        run: |
+          set -euo pipefail
+          python3 scripts/provenance/ingest_exports.py --source-ns "$SOURCE_NS" --input "$RUNNER_TEMP/store/$SOURCE_NS" \
+            --runs "$RUNNER_TEMP/runs.json" --out "$RUNNER_TEMP/out/records.jsonl"
+          python3 scripts/provenance/export_digest.py --records "$RUNNER_TEMP/out/records.jsonl" \
+            --out "$RUNNER_TEMP/out/digest.json" --reads "$RUNNER_TEMP/out/consumer-reads.jsonl"
+      - name: Publish records ∧ digest to store (append-only path)
+        if: steps.src.outputs.present == 'true'
+        env:
+          STORE_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          dest="provenance/${SOURCE_NS}/run-${GITHUB_RUN_ID}"
+          cd "$RUNNER_TEMP/store"
+          git sparse-checkout add "provenance/${SOURCE_NS}"
+          mkdir -p "$dest" && cp "$RUNNER_TEMP"/out/* "$dest"/
+          git add "$dest"
+          git -c user.name=termux-monorepo-provenance -c user.email=timerloggedout-spec@users.noreply.github.com \
+            commit -q -m "feat(provenance): add ingest ${SOURCE_NS} run ${GITHUB_RUN_ID} [skip render]"
+          for i in 1 2 3; do git pull -q --rebase origin HEAD && git push -q origin HEAD && break; sleep 5; done
+          echo "::notice title=provenance-ingest::published ${dest}"
+      - name: Upload digest (aggregates only)
+        if: steps.src.outputs.present == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: provenance-digest
+          path: ${{ runner.temp }}/out/digest.json
+          retention-days: 90

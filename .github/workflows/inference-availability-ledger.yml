@@ -1,0 +1,54 @@
+name: Inference availability ledger
+
+# QUE/QDesk #5546 ∧ #5576: measure per-endpoint {limit, measured, last_ok} from committed
+# call evidence, compare vs target 7,500 measured calls/day, ∧ derive next-cycle allocation.
+# Cycle state persists on branch `inference-ledger` (prior cycle ⇒ allocation Δ); master copy = seed.
+
+on:
+  schedule:
+    - cron: '23 13 * * *'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Measured calls/day target"
+        required: false
+        default: "7500"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: inference-availability-ledger
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+      - name: Carry prior cycle from inference-ledger branch
+        run: |
+          set -euo pipefail
+          if git fetch -q --depth=1 origin inference-ledger 2>/dev/null; then
+            git show FETCH_HEAD:ops/inference/availability-ledger.json > ops/inference/availability-ledger.json || true
+            git show FETCH_HEAD:ops/inference/availability-ledger.jsonl > ops/inference/availability-ledger.jsonl || true
+            echo "prior=branch"
+          else
+            echo "prior=master-seed"
+          fi
+      - name: Build ledger (measured ≠ quoted)
+        run: python3 scripts/inference/availability_ledger.py --root . --target "${{ inputs.target || '7500' }}"
+      - name: Record cycle on inference-ledger branch
+        run: |
+          set -euo pipefail
+          tmp="$RUNNER_TEMP/ledger" && mkdir -p "$tmp" && cp ops/inference/availability-ledger.json ops/inference/availability-ledger.jsonl "$tmp"/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin inference-ledger 2>/dev/null; then git checkout -q -B inference-ledger FETCH_HEAD; else git checkout -q --orphan inference-ledger && git rm -rfq . ; fi
+          mkdir -p ops/inference && cp "$tmp"/* ops/inference/
+          git add ops/inference
+          git commit -q -m "chore(inference): record availability ledger cycle ${GITHUB_RUN_ID} [skip render]" || { echo "∅ Δ"; exit 0; }
+          git push -q origin HEAD:inference-ledger

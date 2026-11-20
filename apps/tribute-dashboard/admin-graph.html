@@ -242,7 +242,10 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
       <button class="btn small" id="modeConnect" type="button" aria-pressed="false">Connect</button>
       <button class="btn small" id="modePan" type="button" aria-pressed="false">Pan</button>
       <span class="sep"></span>
-      <input id="graphSearch" type="text" autocomplete="off" spellcheck="false" aria-label="Search graph nodes" aria-keyshortcuts="/" placeholder="Search nodes · /" style="width:190px;min-height:44px;padding:7px 9px"/>
+      <input id="graphSearch" type="text" autocomplete="off" spellcheck="false" aria-label="Search graph nodes" aria-keyshortcuts="/" placeholder="Search nodes" style="width:190px;min-height:44px;padding:7px 9px"/>
+      <button class="btn small" id="searchPrev" type="button" aria-label="Previous search result" title="Previous result">↑</button>
+      <button class="btn small" id="searchNext" type="button" aria-label="Next search result" title="Next result">↓</button>
+      <button class="btn small" id="searchClear" type="button" aria-label="Clear graph search" title="Clear search">×</button>
       <span class="lbl" id="searchStatus" role="status" aria-live="polite">All nodes</span>
       <button class="btn small" id="zoomOut" type="button" aria-label="Zoom out">−</button>
       <span class="lbl" id="zoomLabel">100%</span>
@@ -442,6 +445,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 </div>
 <div class="mobile-bar" role="group" aria-label="Primary actions">
   <button class="btn primary" id="mbPulse" type="button">↻ QUE</button>
+  <button class="btn" id="mbSearch" type="button">⌕ Find</button>
   <button class="btn" id="mbFocus" type="button" aria-pressed="false">◎ Focus</button>
   <button class="btn" id="mbFit" type="button">Fit</button>
   <button class="btn" id="mbNode" type="button">+ Node</button>
@@ -971,8 +975,14 @@ function selectNode(id,rerender){var _n0=byId(id);if(_n0&&collapsedGroups[groupO
   document.getElementById("inspDelta").textContent=n.repoDelta||"—";
   buildFieldEditor(n);if(typeof setStageForNode==="function")setStageForNode(id);if(rerender)render();}
 function focusGraphSearchResult(){if(!searchMatches.length)return;var n=searchMatches[searchIndex];if(!n)return;if(focusGroup&&groupOf(n)!==focusGroup)exitFocus();if(n.layer==="satellite"&&!showSat){showSat=true;document.getElementById("satToggle").checked=true;}if(collapsedGroups[groupOf(n)])delete collapsedGroups[groupOf(n)];selectNode(n.id,true);applyFit({minX:n.x-n.w/2-70,minY:n.y-55,maxX:n.x+n.w/2+70,maxY:n.y+nodeH(n)+55});log("Graph search selected: "+n.title+" ("+n.id+").");}
+function stepGraphSearch(direction){if(!searchMatches.length)return;searchIndex=searchIndex<0?(direction>0?0:searchMatches.length-1):(searchIndex+direction+searchMatches.length)%searchMatches.length;focusGraphSearchResult();render();}
+function clearGraphSearch(blur){var field=document.getElementById("graphSearch");field.value="";graphSearchQuery="";searchIndex=-1;render();if(blur)field.blur();}
 document.getElementById("graphSearch").addEventListener("input",function(ev){graphSearchQuery=ev.target.value;searchIndex=-1;render();});
-document.getElementById("graphSearch").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();if(searchMatches.length){searchIndex=searchIndex<0?0:(searchIndex+(ev.shiftKey?-1:1)+searchMatches.length)%searchMatches.length;focusGraphSearchResult();render();}}else if(ev.key==="Escape"){ev.preventDefault();ev.target.value="";graphSearchQuery="";searchIndex=-1;render();ev.target.blur();}});
+document.getElementById("graphSearch").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();stepGraphSearch(ev.shiftKey?-1:1);}else if(ev.key==="Escape"){ev.preventDefault();clearGraphSearch(true);}});
+document.getElementById("searchPrev").addEventListener("click",function(){stepGraphSearch(-1);});
+document.getElementById("searchNext").addEventListener("click",function(){stepGraphSearch(1);});
+document.getElementById("searchClear").addEventListener("click",function(){clearGraphSearch(false);document.getElementById("graphSearch").focus();});
+document.getElementById("mbSearch").addEventListener("click",function(){var field=document.getElementById("graphSearch");field.scrollIntoView({block:"center",behavior:"smooth"});field.focus();});
 window.addEventListener("keydown",function(ev){var target=ev.target;if(ev.key==="/"&&!(target&&(/INPUT|TEXTAREA|SELECT/.test(target.tagName)||target.isContentEditable))){ev.preventDefault();var field=document.getElementById("graphSearch");field.focus();field.select();}});
 function buildFieldEditor(n){var box=document.getElementById("fieldEditor");box.innerHTML="";n.fields.forEach(function(f,i){var row=document.createElement("div");row.className="frow-edit";
   [["name",f.name],["type",f.type],["note",f.note]].forEach(function(pair){var inp=document.createElement("input");inp.type="text";inp.value=pair[1];inp.setAttribute("aria-label","Field "+pair[0]);inp.addEventListener("input",function(){f[pair[0]]=inp.value;renderCanvasOnly();});row.appendChild(inp);});

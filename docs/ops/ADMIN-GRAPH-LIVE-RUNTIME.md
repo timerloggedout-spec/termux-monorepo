@@ -11,9 +11,9 @@ The pulse represents an observed routing transition. It does not represent succe
 ## Producers
 
 - PRODUCER CLAIM comments emitted by scripts/dispatch/claim_task.py.
-- DISPATCH EXECUTOR CLAIM comments emitted by scripts/ops/dispatch_executor.py.
+- PRODUCER CLAIM comments emitted by scripts/ops/dispatch_executor.py; the dispatch-executor role and arm/dispatch fields identify this route class.
 
-The observer filters for these exact claim markers. It extracts only task reference, route role, provider or arm/model, dispatch ID, comment ID, timestamp, and actor identity. Producer labels, session identifiers, comment bodies, prompts, completions, tool arguments, credentials, and logs remain outside the event store.
+The observer filters for these exact claim markers. It extracts only task reference, route role, provider or arm/model, dispatch ID, comment ID, timestamp, and actor identity for provenance verification. Actor identity and comment content remain outside the stored route payload. Producer labels, session identifiers, prompts, completions, tool arguments, credentials, and logs remain outside the event store.
 
 ## Event lifecycle
 

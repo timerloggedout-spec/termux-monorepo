@@ -18,7 +18,7 @@ on:
         required: false
         type: string
       apply:
-        description: "Record claim and invoke configured agent (default: dry-run)"
+        description: "Record claim after verified adapter routing (default: dry-run)"
         required: true
         default: false
         type: boolean

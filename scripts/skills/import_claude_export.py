@@ -256,7 +256,13 @@ def main() -> None:
             raise SystemExit(f"Existing source inventory differs; review before overwrite: {jsonl_source}")
         if not jsonl_source.exists():
             shutil.copy2(skills_jsonl, jsonl_source)
-    elif not jsonl_source.exists():
+    elif jsonl_source.exists():
+        with jsonl_source.open(encoding="utf-8-sig") as stream:
+            existing_jsonl_rows = [json.loads(line) for line in stream if line.strip()]
+        if existing_jsonl_rows != jsonl_rows:
+            raise SystemExit("Existing source JSONL differs from the CSV-derived inventory")
+        jsonl_origin = "derived-from-skills-inventory.csv; existing source JSONL matches"
+    else:
         jsonl_source.write_text(
             "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in jsonl_rows),
             encoding="utf-8",

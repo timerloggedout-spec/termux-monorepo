@@ -1,26 +1,124 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"capability-discovery-record/v1",
-  "title":"Capability discovery index record",
-  "type":"object",
-  "required":["id","kind","source_id","locator","name","description","content_sha256","domain","function","facets","trust","lifecycle"],
-  "properties":{
-    "id":{"type":"string","minLength":1},
-    "kind":{"enum":["skill","tool","plugin-skill","workflow","manifest","reference"]},
-    "source_id":{"type":"string","minLength":1},
-    "locator":{"type":"string","minLength":1},
-    "name":{"type":"string","minLength":1},
-    "description":{"type":"string"},
-    "content_sha256":{"type":["string","null"],"pattern":"^[0-9a-f]{64}$"},
-    "domain":{"type":"string"},
-    "function":{"type":"string"},
-    "facets":{"type":"array","uniqueItems":true,"items":{"type":"string"}},
-    "trust":{"enum":["repository-canonical","official-vendor","verified-upstream","community-reference","session-observed","unverified","quarantined"]},
-    "lifecycle":{"enum":["discovered","classified","deduplicated","evaluated","eligible","approved","adopted","deprecated","rejected"]},
-    "version_ref":{"type":["string","null"]},
-    "aliases":{"type":"array","items":{"type":"string"}},
-    "permissions":{"type":"array","items":{"type":"string"}},
-    "tags":{"type":"array","items":{"type":"string"}}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capability-discovery-record/v1",
+  "title": "Capability discovery index record",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "source_id",
+    "locator",
+    "name",
+    "description",
+    "content_sha256",
+    "domain",
+    "function",
+    "facets",
+    "trust",
+    "lifecycle"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "skill",
+        "tool",
+        "plugin-skill",
+        "workflow",
+        "manifest",
+        "reference"
+      ]
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "content_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "function": {
+      "type": "string"
+    },
+    "facets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "trust": {
+      "enum": [
+        "repository-canonical",
+        "official-vendor",
+        "verified-upstream",
+        "community-reference",
+        "session-observed",
+        "unverified",
+        "quarantined"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "discovered",
+        "classified",
+        "deduplicated",
+        "evaluated",
+        "eligible",
+        "approved",
+        "adopted",
+        "deprecated",
+        "rejected"
+      ]
+    },
+    "version_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "taxonomy_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
   },
-  "additionalProperties":false
+  "additionalProperties": false
 }

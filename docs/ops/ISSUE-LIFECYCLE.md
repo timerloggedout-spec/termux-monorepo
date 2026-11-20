@@ -151,12 +151,7 @@ the URL.
 
 ## 5. Implementation — from triaged issue to change
 
-- **Jules lane:** `agent-jules-on-issues.yml` (24,886 runs, overwhelmingly
-  skipped comment events) starts a bounded Jules session when a trusted
-  operator applies the `jules` label or opens a comment with `@jules`.
-  It verifies the actor's repo permission, never checks out or merges,
-  and produces PRs through the Jules GitHub App. `agent-pr-jules-handoff.yml`
-  is the PR-side equivalent.
+- **Legacy Jules lane:** `agent-jules-on-issues.yml` now records an idempotent retirement receipt for trusted `jules` labels or `@jules` issue comments. Google Jules became read-only after 2026-11-11. The local DoE skill bundle supplies issue-analysis and verification guidance; implementation routes through the active provider roster and a verified adapter. `agent-pr-jules-handoff.yml` records PR-scoped legacy requests, while `agent-review-auto-jules.yml` records review feedback.
 - **Lane lanes:** most issues are implemented by the owning side-chat lane
   directly (branch → PR → dual-gate merge, per repo `CLAUDE.md`), with the
   PR body/comment carrying the issue reference. The `Implements:` marker

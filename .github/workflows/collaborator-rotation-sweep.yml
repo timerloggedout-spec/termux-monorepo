@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
           submodules: false
@@ -64,7 +64,7 @@ jobs:
             --base-sha "${{ steps.refs.outputs.base_sha }}" \
             --candidate-sha "${{ steps.refs.outputs.candidate_sha }}" \
             --report rotation-sweep-report.json \
-            --record rotation-sweep-experiment.json
+            --record "experiments/doe/collaborator-rotation-sweep/records/rotation-sweep-${{ github.run_id }}.json"
 
       - name: Proposal registry contract
         run: python3 scripts/proposals/validate_registry.py
@@ -77,11 +77,11 @@ jobs:
 
       - name: Upload sweep and DoE evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: collaborator-rotation-doe-${{ github.run_id }}
           path: |
             rotation-sweep-report.json
-            rotation-sweep-experiment.json
+            experiments/doe/collaborator-rotation-sweep/records/rotation-sweep-*.json
           if-no-files-found: ignore
           retention-days: 60

@@ -1,0 +1,85 @@
+{
+  "arm": "baseten-gpt-oss",
+  "arm_id": "baseten-gpt-oss",
+  "arm_state": "unknown",
+  "context": "build-dispatch multi-arm (#5151)",
+  "cumulative_n": 1,
+  "dispatch_id": "build-dispatch-44665351524-baseten-gpt-oss",
+  "endpoint": "baseten::openai/gpt-oss-120b",
+  "entry": "issue-5553",
+  "harness": "generic-agent-loop",
+  "instance": {
+    "context": "build-dispatch multi-arm (#5151)",
+    "model": "openai/gpt-oss-120b",
+    "moniker": "providers-dispatch-fix",
+    "provider": "baseten",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+      "sha256": "04de4332afa3f9cb5a5d78a2afc0b28f8cea06c766880e0da63d74eb871b4173"
+    },
+    "tools": {
+      "ref": "scripts/ops/build_arm_harness.py#tools",
+      "sha256": "b574ab8982c7c12119dc378285937711f0a879e3c32cd8ce866d31eaecd9a6d9"
+    }
+  },
+  "instance_key": "d63b9ef1ed18addd21c672bfe5523fe081cdd8d7a0266f5f1e23cc4311a302de",
+  "model": "openai/gpt-oss-120b",
+  "model_version": "openai/gpt-oss-120b@openai/gpt-oss-120b",
+  "moniker": "providers-dispatch-fix",
+  "origin": "live",
+  "outcome": {
+    "artifact": "actions run 44665351524",
+    "confirmed": null,
+    "corroboration_state": "single-leg",
+    "evidence_ref": "actions run 44665351524",
+    "gate_call": null,
+    "origin": "live",
+    "status": "not_established",
+    "summary": "completion verification: not_established"
+  },
+  "provider": "baseten",
+  "quota": {
+    "cost_class": "credit-funded",
+    "pool": "baseten",
+    "slice": "primary"
+  },
+  "quota_class": "primary",
+  "role": "builder",
+  "rotation_attempts": [
+    {
+      "arm_id": "baseten-gpt-oss",
+      "status": "completed"
+    }
+  ],
+  "route_endpoint_id": "baseten::openai/gpt-oss-120b",
+  "run": {
+    "run_id": "44665351524",
+    "session_id": null,
+    "workflow": "build-dispatch.yml"
+  },
+  "run_id": "44665351524",
+  "schema": "build-dispatch-stamp/v1",
+  "selection": {
+    "arm": "baseten-gpt-oss",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5553"
+  },
+  "selection_reason": "explicit-request",
+  "set_index": 1,
+  "task_class": "entry-build",
+  "task_ref": "timerloggedout-spec/termux-monorepo#5553",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-20T03:09:30Z",
+  "usage": {
+    "bucket_slice_id": "baseten-gpt-oss:primary",
+    "cost": null,
+    "latency_ms": 1077,
+    "retries": 0,
+    "status": "measured",
+    "tokens": null,
+    "tokens_in": 2697,
+    "tokens_out": 76
+  }
+}

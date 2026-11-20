@@ -4375,6 +4375,23 @@
           },
           "model": "gemini-3.5-flash-lite",
           "phrases": "NOT_ESTABLISHED"
+        },
+        {
+          "provider": "baseten",
+          "via": "build-dispatch.yml",
+          "session_id": null,
+          "state": "not_established",
+          "usage": {
+            "value": null,
+            "unit": null,
+            "source": null,
+            "window": null,
+            "match": null,
+            "note": "dispatch build-dispatch-44665351524-baseten-gpt-oss: routed stamp fan-out (swarm-routing/v2); consumption per usage.status.",
+            "status": "measured"
+          },
+          "model": "openai/gpt-oss-120b",
+          "phrases": "NOT_ESTABLISHED"
         }
       ],
       "stages": {

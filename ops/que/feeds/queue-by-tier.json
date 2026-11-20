@@ -1,22 +1,22 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T14:12:19Z",
+ "generated_at": "2026-11-20T14:46:29Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 4,
-   "in_progress": 1,
+   "queued": 2,
+   "in_progress": 2,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 3,
-    "repo gate": 1
+    "repo gate": 1,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -29,38 +29,31 @@
   },
   "4": {
    "tier": 4,
-   "queued": 55,
-   "in_progress": 15,
+   "queued": 16,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "n8n SHE bridge": 4,
     "repo-tracking-collect": 1,
     "Quota Dispatch Tree": 1,
-    "Agent Throughput Evidence": 9,
-    "lane events recorder": 12,
-    "Dependency Phase Evaluate": 1,
-    "Gemini review after peers": 2,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "RECON INTEL discovery": 2,
-    "PR evidence evaluation": 2,
-    "Sweep Accountability": 4,
-    "archwiz dangle check": 1,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "Repository development evaluation": 2,
-    "Agent PR Jules Handoff": 1,
-    "CellCog review": 2,
-    "termux smoke": 1,
-    "DO Statement Style": 2,
     "Action Effectiveness Ledger": 1,
-    "Peer review orchestrator": 2,
+    "Sweep Accountability": 1,
+    "Agent PR Jules Handoff": 1,
+    "PR production ledger": 1,
+    "Lane matrix event-driven inventory": 1,
     "Context Relationship + Lead/Lag Audit": 1,
-    "Lane matrix event-driven inventory": 1
+    "CellCog review": 1,
+    "Repository development evaluation": 1,
+    "Workflow Surface Policy": 1,
+    "DO Statement Style": 2,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "PR Change Effectiveness Ledger": 1,
+    "Peer review orchestrator": 1
    }
   }
  },
  "totals": {
-  "queued": 59,
-  "in_progress": 17
+  "queued": 18,
+  "in_progress": 16
  },
  "wedged_ancient": [
   {
@@ -218,13 +211,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 5,
-   "2": 1,
+   "1": 4,
+   "2": 2,
    "3": 0,
    "4": 0
   },
   "explicit_total": 6,
-  "default_t4": 70,
+  "default_t4": 28,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

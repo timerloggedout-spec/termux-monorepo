@@ -178,6 +178,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <div class="history-actions">
     <button class="btn primary" id="inspectHistoryBtn" type="button">Inspect historical routes</button>
     <button class="btn" id="liveHistoryBtn" type="button">Return to live</button>
+    <button class="btn" id="historyShareBtn" type="button">Copy inspection link</button>
     <span id="historyState" class="history-state" aria-live="polite">Live stream active · choose a time range to inspect stored routes</span>
   </div>
   <div id="historyResults" class="history-results" aria-live="polite"></div>
@@ -1336,7 +1337,7 @@ async function pollRuntimeEvents(){
   log("Runtime pulse feed unavailable: "+String(err.message||err));
  }finally{livePollBusy=false;if(more)window.setTimeout(pollRuntimeEvents,0);}
 }
-var historicalMode=false,historyEvents=[];
+var historicalMode=false,historyAnimating=false,historyEvents=[];
 function localDateTimeValue(date){var pad=function(n){return String(n).padStart(2,"0");};return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());}
 function setHistoryState(message){var el=document.getElementById("historyState");if(el)el.textContent=message;}
 function renderHistoryResults(events){
@@ -1347,9 +1348,9 @@ function renderHistoryResults(events){
   var button=document.createElement("button");button.type="button";button.className="history-result";
   var at=new Date(ev.occurred_at).toLocaleString();button.textContent=at+" · "+eventLabel(ev);
   button.addEventListener("click",function(){
-   if(liveAnimating||liveQueue.length){setHistoryState("Live pulse queue is draining · select the route again shortly");return;}
-   setHistoryState("Inspecting "+at+" · "+eventLabel(ev));
-   animateRuntimeEvent(ev,function(){setHistoryState("Selected route inspected · "+at);});
+   if(liveAnimating||liveQueue.length||historyAnimating){setHistoryState("A pulse is active · select the route again shortly");return;}
+   historyAnimating=true;setHistoryState("Inspecting "+at+" · "+eventLabel(ev));
+   animateRuntimeEvent(ev,function(){historyAnimating=false;setHistoryState("Selected route inspected · "+at);});
   });
   root.appendChild(button);
  });
@@ -1378,6 +1379,14 @@ async function inspectRouteHistory(){
 function returnToLiveHistory(){historicalMode=false;document.getElementById("historyResults").replaceChildren();setHistoryState("Live stream active · "+historyEvents.length+" historical events inspected");pollRuntimeEvents();}
 document.getElementById("inspectHistoryBtn").addEventListener("click",inspectRouteHistory);
 document.getElementById("liveHistoryBtn").addEventListener("click",returnToLiveHistory);
+document.getElementById("historyShareBtn").addEventListener("click",async function(){
+ var fromValue=document.getElementById("historyFrom").value,toValue=document.getElementById("historyTo").value;
+ if(!fromValue||!toValue){setHistoryState("Choose a time range before copying its link");return;}
+ var shareUrl=new URL(window.location.href);shareUrl.searchParams.set("view","history");
+ shareUrl.searchParams.set("from",new Date(fromValue).toISOString());shareUrl.searchParams.set("to",new Date(toValue).toISOString());
+ try{await navigator.clipboard.writeText(shareUrl.href);setHistoryState("Shareable historical inspection URL copied");}
+ catch(error){setHistoryState("Copy unavailable · use this URL: "+shareUrl.href);}
+});
 var historyNow=new Date();document.getElementById("historyTo").value=localDateTimeValue(historyNow);document.getElementById("historyFrom").value=localDateTimeValue(new Date(historyNow.getTime()-24*60*60*1000));
 var historyParams=new URLSearchParams(window.location.search);
 if(historyParams.has("from")&&historyParams.has("to")){

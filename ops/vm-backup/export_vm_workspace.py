@@ -45,7 +45,8 @@ SPLIT_AT = 4 * 1024 * 1024  # single-blob body cap for the surrogate
 # as ordinary blobs and restore reassembles them (byte-exact,
 # whole-file sha256).
 T0_ROOT_FILES = ["CLAUDE.md", "MEMORY.md", "USER.md", "IDENTITY.md",
-                 "SOUL.md", "PROACTIVE_PREFERENCES.md", "AGENTS.md", "TOOLS.md"]
+                 "SOUL.md", "PROACTIVE_PREFERENCES.md", "MUSE-VM.md", "TOOLS.md"]
+T0_REQUIRED_ROOT_FILES = ["CLAUDE.md", "MUSE-VM.md"]
 T0_TREES = ["memory", "workspace/goals", "workspace/custom-connectors",
             "workspace/custom-skills", "hooks", "workspace/user"]
 T0_WS_DIRS = {"goals", "custom-connectors", "custom-skills", "user"}
@@ -660,6 +661,10 @@ def main(argv=None):
         home / "workspace/scratch/vm-backup-export"
     marker = Path(args.marker) if args.marker else \
         home / "workspace/vm-backup/.last-export-state"
+
+    missing_required = [name for name in T0_REQUIRED_ROOT_FILES if not (home / name).is_file()]
+    if missing_required:
+        raise SystemExit("required named collaborator profiles missing from Muse VM home: " + ", ".join(missing_required))
 
     export_id = "exp-" + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) \
         + "-" + hashlib.sha256(os.urandom(16)).hexdigest()[:6]

@@ -139,7 +139,7 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             except json.JSONDecodeError:
                 continue
             name = manifest_data.get("name") or manifest_data.get("id") or path.parent.name or path.stem
-            description = manifest_data.get("description") or manifest_data.get("displayName") or ""
+            description = str(manifest_data.get("description") or manifest_data.get("displayName") or "")
             mcp_servers = manifest_data.get("mcpServers", {})
             plugins = manifest_data.get("plugins", [])
             tools = manifest_data.get("tools", [])

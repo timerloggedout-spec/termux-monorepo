@@ -15,7 +15,7 @@ The release path promotes only a validated winning overlay into a comment-only o
 
 1. Establish a canonical, content-addressed overlay format for Markdown prose and syntax-aware code comments.
 2. Support file-, section-, and comment-level treatment mixing under one source SHA.
-3. Preserve the `CLAUDE.md` → `CLAUDE.hum.md` projection relationship and all historical `AGENTS.hum.md` / `CLAUDE.hum.md` migration aliases.
+3. Preserve the README-declared root roles: `CLAUDE.md` is the primary collaborator entry and `CLAUDE.hum.md` is the Linguist/tooling-compatibility surface. Record the historical `AGENTS.md` ↔ `AGENTS.hum.md` projection lineage and blob-identical rename into `CLAUDE.hum.md` without inferring a current 1:1 root projection.
 4. Compare treatment variants through the existing DoE family and MVT/ATES separation.
 5. Promote notation through small, reviewable releases with deterministic semantic and syntax integrity checks.
 
@@ -67,17 +67,18 @@ Use a stable anchor derived from path + language + owner symbol + syntax-node ty
 
 Initial Markdown census: 78 paths under `docs/icm/` and 13 under `workspace/llm_map/` (91 raw candidates). Classify each as canonical/live, generated, historical/sealed, captured, stale, or excluded before conversion. Derive code-comment candidates from authoritative ICM cards and LLM-map source references, then enumerate syntax-aware comment nodes by language.
 
-Maintain a mapping ledger for every relevant `CLAUDE.md`, `CLAUDE.hum.md`, `AGENTS.md`, and `AGENTS.hum.md` source/projection pair:
+Maintain a mapping ledger for every relevant `CLAUDE.md`, `CLAUDE.hum.md`, `AGENTS.md`, and `AGENTS.hum.md` path and declared relationship:
 
-- canonical source path and projection path;
+- canonical source path and related projection/compatibility path;
 - historical aliases and rename/migration commits;
 - source/projection blob SHA and semantic mapping version;
 - CedrLang/renderer version and round-trip fixture ID;
+- relationship kind: direct projection, compatibility alias, historical rename, or independent entry;
 - explicit status: aligned, drifted, pending migration, or exempt with rationale.
 
-Historical evidence to preserve: PR #196 / commit `ea2a2f8` (CedrLang v2 round-trip); commits `501ae93`, `9aeb0f3`, and `bcebb57` (human projection synchronization); commit `01c8dc9` (blob-identical `AGENTS.hum.md` → `CLAUDE.hum.md` rename and inbound-reference sweep). Treat the current root `CLAUDE.hum.md` legacy content as a detected projection-drift case pending canonical regeneration and fixture review.
+Historical evidence to preserve: PR #196 / commit `ea2a2f8` (CedrLang v2 round-trip); commits `501ae93`, `9aeb0f3`, and `bcebb57` (human projection synchronization); commit `01c8dc9` (blob-identical `AGENTS.hum.md` → `CLAUDE.hum.md` rename and inbound-reference sweep). Treat the root `CLAUDE.hum.md` as a Linguist/tooling-compatibility surface per README. Compare it with root `CLAUDE.md` only under an explicitly approved mapping; preserve its historical `AGENTS.hum.md` lineage.
 
-The mapping test enumerates every canonical/projection pair and historical alias, verifies each path exists or has a recorded migration disposition, validates inbound links, and checks exact round-trip behavior against approved fixtures. A renamed path retains its prior aliases and commit provenance.
+The mapping test enumerates every declared projection, compatibility alias, historical rename, and independent entry; verifies each path exists or has a recorded migration disposition; validates inbound links; and checks exact round-trip behavior only for pairs with an explicit round-trip contract. A renamed path retains its prior aliases and commit provenance.
 
 ## Transformation boundaries
 
@@ -100,7 +101,7 @@ Normalize each eligible span into a canonical semantic IR with fixed fields: sco
 3. **Parser integrity:** every materialized code file parses successfully in its original language mode.
 4. **Markdown integrity:** AST structure, protected spans, links, headings, and code fences remain valid.
 5. **Semantic round-trip:** decode(render(IR)) equals the canonical IR; preserve exact source text for protected spans.
-6. **Mapping integrity:** `CLAUDE.md` / `.hum.md` pair and historical aliases pass mapping fixtures.
+6. **Mapping integrity:** declared CLAUDE/AGENTS relationships and historical aliases pass mapping fixtures.
 7. **Human comprehension:** blinded reviewers correctly recover scope, action, constraints, expected state, and evidence.
 8. **Provenance:** every overlay and run links to source SHA, variant, renderer, notation set, task, configured model instance, prompt/tool hashes, and timestamp.
 

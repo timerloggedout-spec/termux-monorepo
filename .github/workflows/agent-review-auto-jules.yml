@@ -81,6 +81,7 @@ jobs:
                 '- base_sha: ' + pr.base.sha,
                 '- local_role_guidance: .agents/skills/jules-doe-role-adapter/SKILL.md',
                 '- role_register: docs/ops/DOE-ROLES-EPOCH-2026-11-03.md',
+                '- active_provider_roster: docs/schemas/agent-roster.yaml',
                 '',
                 'Google Jules became read-only after 2026-11-11. This receipt preserves provider feedback for the DoE reviewer role. Route follow-up implementation through the active roster and a verified adapter; preserve independent exact-head review.',
                 '',

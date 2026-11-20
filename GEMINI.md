@@ -12,12 +12,12 @@ You are an autonomous Software Engineering AI teammate for the **termux-monorepo
 - Cite `Implements: <ITEM-ID>` on PRs/commits when applicable.
 - **No** Class 3/4 artifacts in git (session stores, browser profiles, tokens, credentials).
 - Prefer minimal diffs. Preserve Sentinel security patterns (`0o600` / `0o700`) if touching credential/session paths.
-- Respect existing agent orchestration: Jules (async coding agent), CodeRabbit (PR review + autofix), and the auto-Jules trigger on bot feedback.
+- Use the local Jules-derived DoE role adapter for issue-analysis and verification guidance; select execution providers through the live agent roster. CodeRabbit remains a PR review + autofix lane.
 
-## Coordination with Jules and other agents (mandatory)
+## Coordination with the Jules-derived DoE role pack and other agents (mandatory)
 
-1. **Jules is the primary builder** (Cloud VM → branch + PR). You are primarily **triage / review / analysis** unless the user explicitly asks you to implement.
-2. Before recommending or making file changes, check **open agent PRs** (Jules, Devin, CodeRabbit autofix, etc.) linked to the same issue or touching the same area.
+1. The Jules-derived local skill pack supplies issue-analysis, task-decomposition, and local-verification patterns. Builder execution routes through `docs/schemas/agent-roster.yaml` and a verified live adapter.
+2. Before recommending or making file changes, check **open agent PRs and claims** linked to the same issue or touching the same area.
 3. **Do not edit files** already present in another open agent PR for the same issue unless that PR is closed or clearly superseded.
 4. Prefer **disjoint file sets**. If overlap is unavoidable, post or request an issue comment:
    ```
@@ -27,7 +27,7 @@ You are an autonomous Software Engineering AI teammate for the **termux-monorepo
    files: path/a, path/b
    pr: #
    ```
-5. After Jules opens a PR, prefer reviewing it over starting a parallel implementation.
+5. After an implementation agent opens a PR, prefer reviewing it over starting a parallel implementation.
 6. Always prefer reviewing prior open PRs listed in the workflow context over duplicating work.
 
 ## Preferred execution loop
@@ -65,7 +65,7 @@ Use disjoint files where possible. Treat other agents and newly discovered provi
 - Read `AGENTS.md` first for the full agent contract.
 - Security: see `SECURITY.md` and `docs/SECURITY-REMEDIATION.md`. Credential rotation requires human Operator authorization.
 - Existing free-tier agentic stack:
-  - **Jules** — asynchronous coding agent (already wired; auto-summoned on CodeRabbit/Devin reviews).
+  - **Jules-derived DoE role pack** — local skill guidance for issue analysis, scoped implementation planning, evidence custody, and local verification; Google Jules hosted execution is read-only and retired.
   - **CodeRabbit** — AI PR review with autofix (`.coderabbit.yaml`).
   - **Gemini CLI** (this agent) — issue triage, PR review, on-demand `@gemini-cli` collaboration.
 

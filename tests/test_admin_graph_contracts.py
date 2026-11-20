@@ -2,8 +2,8 @@
 
 The source contract modules expose plain test functions so they remain easy to
 run from local tooling. This adapter makes the mobile/PWA checks discoverable
-by the repository's portable unittest gate. Node-only syntax probes stay in
-the deployment-side PWA test path.
+by the repository's portable unittest gate. Node-only syntax probes run as explicit node --check steps in the existing
+Tribute publisher.
 """
 from __future__ import annotations
 

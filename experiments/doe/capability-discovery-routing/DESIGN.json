@@ -208,7 +208,10 @@
     "workspace/llm_map/graph/**",
     "workspace/llm_map/repositories/**",
     "workspace/llm_map/social/**",
-    "workspace/llm_map/_TOOL_TAXONOMY/roles_custom.json"
+    "workspace/llm_map/_TOOL_TAXONOMY/roles_custom.json",
+    "tools/sofa/**",
+    "docs/ops/SOFA-CONNECTION-2026-10-28.md",
+    "docs/ops/archive/SOFA-SEARCH-FINDINGS-2026-10-28.md"
   ],
   "automation": {
     "status": "local-indexer-implemented; CI integration added; experiment-runner-pending",
@@ -221,7 +224,8 @@
     "Keep credentials, private prompts, full tool schemas and completion content outside the index.",
     "All treatment arms retain identical safety and authorization gates.",
     "Treat workspace/llm_map/_TOOL_TAXONOMY as a historical generated Termux tool-catalog baseline: its JSONL has 3,388 valid records while README claims 3,387; never equate its catalog rows with current installed tools.",
-    "Treat taxonomy categories/roles/python3/delta as generated projections and state/ as local package-state evidence; keep state content out of default model context and do not run the Termux-specific taxonomy builder in CI."
+    "Treat taxonomy categories/roles/python3/delta as generated projections and state/ as local package-state evidence; keep state content out of default model context and do not run the Termux-specific taxonomy builder in CI.",
+    "Treat SOFA tools-schema.json as a dated 27-action snapshot: index names/descriptions/parameter counts only, hydrate the full schema on selection, and re-check live authorization before each action; connector documentation conflicts on the last recorded scope state."
   ],
   "external_reference_inputs": [
     {

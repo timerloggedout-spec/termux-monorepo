@@ -18,12 +18,12 @@ The observer filters for these exact claim markers. It extracts only task refere
 ## Event lifecycle
 
 1. A routing producer posts its claim comment.
-2. GitHub emits issue_comment.created.
+2. GitHub emits issue_comment.created for app-authored claim comments; the scheduled API reconciliation also scans recent issue comments to capture GITHUB_TOKEN-authored claims.
 3. admin-graph-runtime-publisher.yml normalizes the claim into task_routed.
 4. The Worker verifies the publisher run and retrieves the source issue comment through the GitHub API.
 5. D1 inserts the event under deterministic ID route:{issue_number}:{comment_id}.
 6. The graph polls by monotonic D1 row cursor, persists the last sequence in browser local storage, and animates every newly observed event after the saved position.
-7. GitHub workflow_job events and bounded run snapshots supply execution-state pulses.
+7. GitHub workflow_job events and bounded run snapshots supply execution-state pulses. The scheduled reconciliation uses a 15-minute overlap and deterministic comment IDs to recover token-suppressed webhook events.
 
 Repeated webhook deliveries resolve to the same event ID. The event reader uses after_seq pagination so bursts preserve event order across poll windows.
 

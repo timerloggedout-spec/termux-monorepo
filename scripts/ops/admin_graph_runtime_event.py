@@ -106,7 +106,7 @@ def build_event(payload: dict[str, Any], event_name: str,
     if event_name == "issue_comment":
         event = _route_event(payload, context or {})
         if event is None:
-            raise ValueError("issue comment does not contain a recognized task claim")
+            raise ValueError("issue comment is outside the task-claim event set")
         return event
     return _workflow_event(payload, event_name)
 

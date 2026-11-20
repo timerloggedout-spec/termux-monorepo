@@ -32,14 +32,15 @@
       },
       "context_hydration": {
         "levels": [
-          "broad_definition_loading",
-          "metadata_first_progressive_loading"
+          "broad_role_bundle_with_namespace_tool_schemas",
+          "metadata_first_with_exact_action_schema_on_demand"
         ],
-        "dimension": 45
+        "dimension": 45,
+        "definition": "Compare broad skill/namespace bundles against metadata-first retrieval that selects one skill and exact tool action before hydrating its full definition/schema."
       }
     },
     "fixed_controls": {
-      "retrieval_engine": "SQLite FTS5 BM25; LIKE fallback is a separately recorded environment condition",
+      "retrieval_engine": "Pin the same FTS5/BM25 or LIKE fallback engine across all arms and record the engine used.",
       "result_budget": "top_k=8",
       "deduplication": "canonical source locator + package/skill/action identity + content SHA-256",
       "trust_policy": "vendor/community/session inputs remain distinct trust strata; permission gates identical across all arms",
@@ -61,7 +62,10 @@
         "elapsed time",
         "duplicate candidates",
         "source coverage",
-        "rework and retries"
+        "rework and retries",
+        "exact tool-action selection accuracy",
+        "full tool-schema hydration count",
+        "namespace-wide schema hydration count"
       ],
       "guardrails": [
         "unauthorized write actions = 0",

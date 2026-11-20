@@ -35,7 +35,7 @@ This directory contains a **repository-native lifecycle system** for dependency-
 | `dependency-phase-validate.yml` | Schema / DAG / fixture validation (read-only; PR + dispatch) |
 | `dependency-phase-evaluate.yml` | Read-only evaluation + artifact upload (schedule + dispatch) |
 | `dependency-phase-project-sync.yml` | Dry-run default Project reconciliation; `--apply` only with Operator token |
-| `dependency-phase-dispatch.yml` | Controlled claim + optional Jules handoff (`repository_dispatch` / manual) |
+| `dependency-phase-dispatch.yml` | Controlled claim + evidence-driven specialist routing; apply requires a verified live adapter (`repository_dispatch` / manual) |
 
 ## Lifecycle rules
 
@@ -140,7 +140,7 @@ The dispatcher records claims only when an approved specialist has a verified li
 | Secret (name only — #184) | Required by | Purpose |
 |---|---|---|
 | `ARCHWIZ_GITHUB_TOKEN`, `OPERATOR_GITHUB_TOKEN`, or `OPERATOR_TOKEN` | Live evaluation, Project synchronization, and dispatch revalidation | First configured Operator credential wins; `GITHUB_TOKEN` is final fallback. Selected credential needs Issues + Projects access on the user-owned Project. |
-| `JULES_API_KEY` | Optional final step of applied dispatch | Existing Jules integration secret; no value means the claim is recorded but no collaborator is invoked. |
+| Jules execution | Retired | Google Jules is read-only after 2026-11-11; the local Jules-derived DoE role bundle supplies guidance, not execution. |
 
 The validation workflow has no secrets and remains read-only. The evaluator is scheduled daily and can be manually run; it uploads derived artifacts rather than committing them. Project sync is manual and dry-run by default. Dispatch is manual or a controlled repository event, never a pull-request event from untrusted code.
 

@@ -22,7 +22,7 @@ Eight fixed tasks × eight arms = 64 planned observations, blocked by task famil
 
 ## Repository baseline sources
 
-The source cohort includes the existing `workspace/llm_map/_TOOL_TAXONOMY/` catalog: 3,388 valid `all_tools.jsonl` records, 104 tags, 25 role profiles, 103 category views and the generator modules. The README count is stale by one (3,387 vs 3,388). The discovery index now imports the JSONL as individual unverified tool records; category/role files remain derived views. The 531-entry `state/` directory is retained as metadata-only provenance and excluded from full context hydration.
+The source cohort includes the existing `workspace/llm_map/_TOOL_TAXONOMY/` catalog: 3,388 valid `all_tools.jsonl` records, 104 tags, 25 role profiles, 103 category views and the generator modules. The master-baseline README was stale by one (3,387 vs 3,388); this PR updates the rendered README. The discovery index now imports the JSONL as individual unverified tool records; category/role files remain derived views. The 531-entry `state/` directory is retained as metadata-only provenance and excluded from full context hydration.
 
 Claude export inputs are separately represented by Issue #5657 and importer PR #5667. Their source checksum chain remains unverified because the issue's SHA256SUMS names split parts that are absent from its attachment list, and the issue omits the JSONL inventory required by the importer. The DoE must preserve this source-trust distinction.
 

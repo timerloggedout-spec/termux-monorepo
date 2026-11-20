@@ -26,10 +26,15 @@ def digest(records: list[dict[str, Any]]) -> dict[str, Any]:
         key = f"{r.get('source_ns')}|{r.get('export_class')}"
         g = groups.setdefault(key, {"source_ns": r.get("source_ns"), "export_class": r.get("export_class"),
                                     "records": 0, "classified": 0, "labels": {}, "actions_verdicts": {},
-                                    "credential_shapes": 0, "sessions": set()})
+                                    "credential_shapes": 0, "sessions": set(), "discovery_terms": {}, "discovery_schemas": {}})
         g["records"] += 1
         g["sessions"].add(r.get("session"))
         g["credential_shapes"] += len(r.get("credentials") or [])
+        schema = r.get("discovery_schema")
+        if schema:
+            g["discovery_schemas"][schema] = g["discovery_schemas"].get(schema, 0) + 1
+        for term in r.get("discovery_terms") or []:
+            g["discovery_terms"][term] = g["discovery_terms"].get(term, 0) + 1
         if any(c.get("label") for c in r.get("classifications") or []):
             g["classified"] += 1
         for c in r.get("classifications") or []:

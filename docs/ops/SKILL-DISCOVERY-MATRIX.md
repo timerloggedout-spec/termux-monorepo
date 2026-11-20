@@ -20,7 +20,7 @@
 | Replay | evolutionary-replay | `.agents/skills/evolutionary-replay/SKILL.md` | bounded policy replay with preserved history |
 | Evaluation | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` | current-SHA evidence quality |
 | Evaluation | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` | controlled experiment lane |
-| Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
+| Discovery | capability-discovery | `.agents/skills/capability-discovery/SKILL.md` | nested tagged discovery, trust classification, dedupe and progressive loading |\n| Discovery | find-skills | `.agents/skills/find-skills/SKILL.md` | external skill discovery/install guidance |
 
 ## Other repository-native skill files
 

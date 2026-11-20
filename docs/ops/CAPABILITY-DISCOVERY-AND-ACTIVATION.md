@@ -75,7 +75,7 @@ The source registry declares local, vendor, external-catalog and session-snapsho
 - **Loopy** is a bounded-loop skill candidate. The supplied JSON describes Discover, Find, Audit, Adapt, Craft, Run, Debrief, Save and Publish routes, with Observe → Choose → Act → Verify → Record → Repeat and explicit terminal states. Its catalog host is a placeholder in the supplied file; resolve the actual upstream catalog before any live Find/Publish integration.
 - **Vendor folders and imported archives** remain untrusted data. Inspect provenance, license, scripts, network access, requested permissions, secret patterns and maintenance before install or execution.
 
-Session plugin/tool exports are session-observed snapshots. They do not prove account entitlement, connected status in another runtime, or repository adapter availability. The tool host's live schema remains authoritative.
+The 2026-11-19 session snapshot contains 545 plugin skill references across 74 packages and 4,716 callable actions (4,706 MCP actions across 123 MCP namespaces, plus core tools). Compact indexes live at `docs/integrations/session-plugin-skill-catalog.json` and `docs/integrations/session-tool-action-catalog.json`. These snapshots intentionally omit full tool schemas and truncate descriptions to compact activation summaries.\n\nSession plugin/tool exports are session-observed snapshots. They do not prove account entitlement, connected status in another runtime, or repository adapter availability. The tool host's live schema remains authoritative.
 
 ## Evaluation routing
 

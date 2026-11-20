@@ -1,5 +1,5 @@
 <!-- campaign: cb-1-chronomancer-emission | arm: arm-jules | framing: live-1 A-implement-only (held) -->
-<!-- Route: apply label `jules` after creation. Stamp sha256[:12] of this title+body in the campaign record at dispatch. -->
+<!-- Legacy route: the `jules` label records a retirement receipt. Use the local DoE role skills and active provider roster for execution admission. Stamp sha256[:12] of this title+body in the campaign record at dispatch. -->
 
 **Implement** a ChronoMancer record emitter in `scripts/doe/chronomancer_emitter.py`, with tests in `tests/test_chronomancer_emitter.py`. Change NO other files.
 

@@ -4,7 +4,7 @@
 
 ## Purpose and ownership
 
-`routing.md` is the ICM entry point for a **nested provider-routing resource**. Unlike the static root aliases [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md), it is intentionally maintained by the routing-resource lifecycle because its provider observations, review state, and related governance can change independently.
+`routing.md` is the ICM entry point for a **nested provider-routing resource**. Unlike the repository governance entrypoint [`CLAUDE.md`](../../CLAUDE.md), it is intentionally maintained by the routing-resource lifecycle because its provider observations, review state, and related governance can change independently.
 
 The canonical machine-readable runtime inputs remain in the repository’s existing provider configuration and workflow code. This ICM resource is a documentation overlay: it records authoritative inputs, observation boundaries, and human gates without copying provider credentials, model inventories, or executable rules.
 

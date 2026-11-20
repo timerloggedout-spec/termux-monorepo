@@ -43,6 +43,8 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
     parts = path.relative_to(root).as_posix().split("/")
     if external:
         return "workspace-external", "unverified"
+    if "vendor" in parts:
+        return "repo-vendor-skills", "unverified"
     if path.name.lower() in MANIFEST_NAMES or "plugins" in parts or ".claude-plugin" in parts or ".codex-plugin" in parts:
         return "repo-plugin-manifests", "repository-canonical"
     if parts[0] == ".agents":
@@ -51,8 +53,6 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
         return "repo-github-skills", "repository-canonical"
     if parts[0] == ".claude":
         return "repo-claude-skills", "repository-canonical"
-    if "vendor" in parts:
-        return "repo-vendor-skills", "unverified"
     return "repo-nested-skills", "repository-canonical"
 
 def load_taxonomy() -> dict:

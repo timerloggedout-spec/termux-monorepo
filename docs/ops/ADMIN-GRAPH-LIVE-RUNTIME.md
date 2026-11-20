@@ -13,7 +13,7 @@ The pulse certifies the observed routing transition. Execution, provider complet
 - PRODUCER CLAIM comments emitted by scripts/dispatch/claim_task.py and scripts/dispatch/dispatch_watchdog.py auto-claim effects.
 - PRODUCER CLAIM comments emitted by scripts/ops/dispatch_executor.py; the dispatch-executor role and arm/dispatch fields identify this route class.
 
-The observer filters for these exact claim markers. It extracts only task reference, route role, provider or arm/model, dispatch ID, comment ID, timestamp, and actor identity for provenance verification. Actor identity and comment content remain outside the stored route payload. Workflow/job actor and workflow-path provenance remain in D1 and stay outside the public feed projection. Producer labels, session identifiers, prompts, completions, tool arguments, credentials, and logs remain outside the event store.
+The observer filters for these exact claim markers. It extracts only task reference, route role, provider or arm/model, dispatch ID, comment ID, timestamp, and actor identity for provenance verification. Actor identity and comment content remain outside the stored route payload. Workflow/job actor and workflow-path provenance remain in D1 and stay outside the public feed projection. Route events expose only the explicit safeRoutePayload allowlist. Producer labels, session identifiers, prompts, completions, tool arguments, credentials, and logs remain outside the event store.
 
 ## Event lifecycle
 

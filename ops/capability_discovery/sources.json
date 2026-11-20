@@ -339,6 +339,33 @@
       "reference_urls": [
         "https://github.com/aws/agent-toolkit-for-aws"
       ]
+    },
+    {
+      "id": "termux-tool-taxonomy-snapshot",
+      "kind": "repository-generated-tool-catalog",
+      "locator": "workspace/llm_map/_TOOL_TAXONOMY/{README.md,TOOL_TAXONOMY.json,TAG_INDEX.json,all_tools.jsonl,auto_tag_rules.json,categories/**,roles/**,modules/**,python3/**,delta/**,state/**}",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only; snapshot not live inventory",
+      "note": "Existing Termux/ArchWiz taxonomy baseline. all_tools.jsonl contains 3,388 valid JSONL tool records, 243 package/source groups and 104 tags; TOOL_TAXONOMY.json reports 25 roles. README claims 3,387 tools and embeds unrendered shell substitutions. categories/ and roles/ are derived views; modules/ are the generator; python3/ and delta/ are generated projections; state/ is a 531-entry device/package-state snapshot excluded from default content hydration. REPO_INFO declares NO_REMOTE. Treat tool availability as unverified until a current device scan confirms it; do not execute build_tool_taxonomy.sh in CI because it invokes Termux package and local-environment scanners."
+    },
+    {
+      "id": "claude-export-issue-5657",
+      "kind": "external-vendor-export",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5657",
+      "trust": "unverified",
+      "refresh": "issue-attachment-reconciliation",
+      "import_mode": "candidate-only; metadata-only after source-integrity reconciliation",
+      "note": "Issue lists SHA256SUMS.txt, plugins-inventory.csv, skills-inventory.csv and skills-SKILL-md-all.tar.gz. The supplied SHA256SUMS content lists five skills-part-00..04.tgzpart files, not the combined archive or CSV/JSONL files; the issue body supplies no skills-inventory.jsonl or split-part attachments. Do not infer checksum verification from the generated source-manifest archive hash."
+    },
+    {
+      "id": "claude-export-import-pr-5667",
+      "kind": "repository-import-adapter",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17@42eb1b061740",
+      "trust": "repository-canonical",
+      "refresh": "pull-request-head",
+      "import_mode": "review-required; source-data-integrity-unverified",
+      "note": "PR #5667 contains scripts/skills/import_claude_export.py, scripts/skills/validate_claude_export.py, vendor/skills-mirror, .skills/index.json and source-manifest records for 1,299 skills and 1,218 plugin inventory rows. The importer requires skills-inventory.jsonl although Issue #5657 does not list it; it copies SHA256SUMS.txt but does not parse or verify it. Archive SHA-256 is computed after extraction and is not compared with the supplied sums. Keep imported content unverified until the source artifacts and checksum chain reconcile."
     }
   ]
 }

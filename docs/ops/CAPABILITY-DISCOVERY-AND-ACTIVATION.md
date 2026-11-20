@@ -46,7 +46,7 @@ The repository already contains a substantial, generated Termux/ArchWiz tool cat
 | `delta/` | 18 historical snapshots | Historical change evidence |
 | `state/` | 531 package/device-state entries | Metadata-only provenance; exclude content from default context |
 
-The README currently claims 3,387 tools and contains unrendered shell substitutions for its rebuild timestamp, role table and tags. The machine-readable taxonomy and JSONL both report 3,388. The `REPO_INFO` file declares `NO_REMOTE`; source provenance is therefore the tracked repository snapshot, not a verified live remote or current Termux device scan.
+At the inspected master baseline, the README claimed 3,387 tools and contained unrendered shell substitutions for its rebuild timestamp, role table and tags. This PR refreshes the README with the machine-readable 3,388 count, rendered role table and rendered tag list. The machine-readable taxonomy and JSONL both report 3,388. The `REPO_INFO` file declares `NO_REMOTE`; source provenance is therefore the tracked repository snapshot, not a verified live remote or current Termux device scan.
 
 The discovery scanner indexes `all_tools.jsonl` as metadata-only tool records. It retains source/category/package tags, uses the whole-file SHA-256 as the snapshot version, and marks the tool records `unverified` because the snapshot does not establish current availability. Category and role files remain generated views rather than duplicate tool records.
 

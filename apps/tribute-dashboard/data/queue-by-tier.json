@@ -1,19 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T00:45:42Z",
+ "generated_at": "2026-11-20T01:01:50Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 0,
-   "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "queued": 1,
+   "in_progress": 0,
+   "oldest_queued_at": "2026-11-20T01:01:46Z",
+   "by_workflow_queued": {
+    "Orchestration Regression Guard": 1
+   }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -26,17 +28,22 @@
   },
   "4": {
    "tier": 4,
-   "queued": 1,
-   "in_progress": 8,
-   "oldest_queued_at": "2026-11-20T00:44:47Z",
+   "queued": 6,
+   "in_progress": 11,
+   "oldest_queued_at": "2026-11-20T01:01:46Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1
+    "quota-allocation-planner": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "Agent Readability Source Contract": 1,
+    "que-cadence-kick": 1,
+    "hitl-control-plane-verify": 1,
+    "Foresight Evidence Spine": 1
    }
   }
  },
  "totals": {
-  "queued": 1,
-  "in_progress": 10
+  "queued": 7,
+  "in_progress": 13
  },
  "wedged_ancient": [
   {
@@ -195,12 +202,12 @@
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
    "1": 1,
-   "2": 1,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 2,
-  "default_t4": 9,
+  "explicit_total": 3,
+  "default_t4": 17,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

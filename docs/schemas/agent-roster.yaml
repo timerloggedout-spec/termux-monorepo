@@ -96,33 +96,17 @@ agents:
     fallback_when_exhausted: human
 
   - id: jules
-    handle: "@jules"
-    alt_handles: ["@google-labs-jules"]
-    name: Jules (Google Labs)
-    role: [build, implement, fix, auto_resolve]
-    platform: google-labs-code/jules-invoke
-    quota:
-      model: daily_session
-      daily_limit: 15
-      concurrent: 3
-    commands:
-      - flag: "@jules"
-        effect: invoke builder / auto-resolve bot feedback
-      - flag: "@google-labs-jules"
-        effect: same (alt handle)
-    integrations:
-      - id: cloud_vm_session
-        name: Jules Cloud VM session
-        type: session
-        commands:
-          - "span multiple PR revisions in one session"
-      - id: gha_auto_jules
-        name: agent-review-auto-jules workflow
-        type: workflow
-        commands:
-          - "auto-ping on bot review comments"
-    fallback_when_exhausted: tembo
-
+    handle: null
+    alt_handles: []
+    name: Jules (Google Labs — retired)
+    role: [historical_build, historical_fix]
+    platform: Google Jules hosted service
+    status: read_only_retired
+    retired_at: "2026-11-12"
+    commands: []
+    integrations: []
+    notes: "Historical attribution only. Google Jules became read-only after 2026-11-11; this identity is excluded from all live routing and invocation."
+    
   - id: gemini
     handle: "@gemini-cli"
     name: Gemini CLI
@@ -192,7 +176,7 @@ agents:
       - flag: "@mistral-vibe"
         effect: invoke on issue/PR
     integrations: []
-    fallback_when_exhausted: jules
+    fallback_when_exhausted: human
 
   - id: grok
     handle: "@timerloggedout-spec"  # posts as operator; agent identity in commit trailer
@@ -222,8 +206,8 @@ etiquette:
   - "Before burning a review slot: @coderabbitai rate limit"
   - "On cooldown: do not @coderabbitai full review; wait or use always-on agents"
   - "Gemini skip comments are green CI; re-run optimized admission across the candidate pool"
-  - "Tembo credit exhaustion → human or Jules; do not re-ping Tembo"
-  - "Auto-jules workflow already pings @jules on bot feedback — avoid duplicate pings"
+  - "Tembo credit exhaustion → human or re-evaluate the active candidate pool"
+  - "Legacy Jules triggers are retired; use the current role router for new work"
 
 routing:
   invariant: "No provider/model is primary or secondary. Selection is evidence-driven and topology-aware."
@@ -237,9 +221,9 @@ routing:
     review:
       candidate_pool: [gemini, coderabbit, devin, copilot, openrouter, felo]
     build:
-      candidate_pool: [jules, tembo, mistral_vibe, gemini, openrouter]
+      candidate_pool: [tembo, mistral_vibe, gemini, openrouter]
     fix:
-      candidate_pool: [jules, tembo, grok, gemini, openrouter]
+      candidate_pool: [tembo, grok, gemini, openrouter]
     orchestration:
       candidate_pool: [grok, tembo, gemini, openrouter]
 
@@ -470,3 +454,30 @@ contributor_role_vocabulary:
   - experiment_design
   - topology
   - coordination
+
+
+# Local role-skill bundles are capability templates, not execution adapters.
+skill_bundles:
+  - id: jules-derived-doe-role-pack
+    name: Jules-derived DoE role skill bundle
+    source_repository: timerloggedout-spec/jules-skills_fork
+    source_revision: "7a76d3bfcf4258ee437d65b5d12e54b51c395de5"
+    license: Apache-2.0
+    status: local_skill_reference
+    execution_adapter: null
+    skills:
+      - automate-github-issues
+      - local-action-verification
+    role_bindings:
+      observer: "Issue census, metadata capture, and current-state reporting"
+      scout: "Candidate triage and task decomposition proposals"
+      builder: "Implementation planning and scoped change proposals"
+      operator: "Admission and dispatch only through an independently configured live adapter"
+      steward: "Append-only task, claim, and evidence receipts"
+      reviewer: "Independent local verification with repository gates and act where supported"
+      participant: "A bounded task or worker execution instance"
+    controls:
+      - "The upstream automate-github-issues scripts call @google/jules-sdk and JULES_API_KEY; they remain reference material."
+      - "The upstream sequential merge stage is excluded; merge authority remains with repository governance."
+      - "The bundle itself does not create sessions, invoke providers, or prove adapter availability."
+      - "Provider routing requires a separate live adapter readiness signal and a concrete execution step."

@@ -15,7 +15,7 @@ Requisitions are visible per service (readings, bucket walls, lane-events). Acto
 |---|---|---|
 | `app_id` | GitHub App principals (collector 5535733, publisher 5537873, reviewer/gate/lifecycle as provisioned) | exact — own bucket per installation, `<slug>[bot]` authorship |
 | `workflow_name` | GitHub Actions runs (`GITHUB_TOKEN` bucket, 1000/h/repo) | exact per workflow |
-| `session_id` | Jules sessions ⇒ PRs (`google-labs-jules[bot]`) | exact link; consumption units ∅ exposed (see below) |
+| `session_id` | Historical Google Jules sessions ⇒ PRs (`google-labs-jules[bot]`) | exact provenance link; consumption units remain unexposed |
 | `lane_role` | signed artifacts `[MUSEai]@{role:{…}}` + helper-stamped requisitions | exact where stamped; dark where unstamped |
 | `null` | everything else | honest blank, never estimated |
 

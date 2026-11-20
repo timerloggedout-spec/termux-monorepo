@@ -25,7 +25,7 @@ class AdminGraphPageContractTests(unittest.TestCase):
     def test_live_route_pulse_contract(self):
         html = PAGE.read_text(encoding="utf-8")
         markers = ("LIVE ROUTE PULSES", "LIVE_FEED_URL", "task_routed",
-                   "routing-orch", "after_seq", "LIVE_CURSOR_KEY", "localStorage", "PREPARED",
+                   "routing-orch", "after_seq", "LIVE_CURSOR_KEY", "localStorage", "var reverse=false", "PREPARED",
                    "pull-to-refresh", "DEPLOYMENT-LANES")
         for marker in markers:
             with self.subTest(marker=marker):

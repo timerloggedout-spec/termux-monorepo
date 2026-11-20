@@ -22,7 +22,7 @@ The observer filters for these exact claim markers. It extracts only task refere
 3. admin-graph-runtime-publisher.yml normalizes the claim into task_routed.
 4. The Worker verifies the publisher run and retrieves the source issue comment through the GitHub API.
 5. D1 inserts the event under deterministic ID route:{issue_number}:{comment_id}.
-6. The graph polls by monotonic D1 row cursor and animates every newly observed event.
+6. The graph polls by monotonic D1 row cursor, persists the last sequence in browser local storage, and animates every newly observed event after the saved position.
 7. GitHub workflow_job events and bounded run snapshots supply execution-state pulses.
 
 Repeated webhook deliveries resolve to the same event ID. The event reader uses after_seq pagination so bursts preserve event order across poll windows.

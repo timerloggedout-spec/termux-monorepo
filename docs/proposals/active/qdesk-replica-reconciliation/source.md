@@ -124,6 +124,24 @@ Relevant references and their bounded QDesk roles:
 
 Other pinned `smods` repositories remain candidates until a task maps them to a QDesk capability contract. At implementation time, read exact gitlink object SHAs from the repository tree and record source URL, commit, license, last verification, role and runtime/reference status. `.gitmodules` alone establishes URLs and tracking configuration, not the checked-out commit identity. Keep pins unchanged in this proposal.
 
+## 3.1. Exact relevant `refTemplates/smods` gitlink pins
+
+Observed directly from the recursive Git tree for `master` at commit `35f40296d1bd3881b18a212c668e0f5951e09542` on 2026-11-20. These are gitlink object SHAs (the pinned submodule commit identities), not file blob SHAs.
+
+| Reference | Repository path | Gitlink SHA | Bounded QDesk role |
+|---|---|---|---|
+| ICM Architect | `refTemplates/smods/icm-architect_fork` | `e16cafe6a664dcf6d787a726b452adba77d913f4` | ICM forms and restructure-audit reference |
+| ICM methodology | `refTemplates/smods/interpretable-context-methodology_fork` | `02ba5d85c7871b75c7c702a2d8da6524723d53d4` | Stage/context contract and routing reference |
+| Selective routing | `refTemplates/smods/content-agent-routing-promptbase_fork` | `fc41a3d718bcd16a9e0db9e7e6176a8063d7d2c9` | Layered context-routing reference |
+| Cost of remembering | `refTemplates/smods/cost-of-remembering_fork` | `14c6f74a877a2f7b94b332c03395b4793158942e` | Context-cost measurement reference |
+| ICM CCTV | `refTemplates/smods/icm-cctv_fork` | `787a66cb8d3d7f19231359a4aa47c83c92c1ba61` | Optional file-backed visual-card projection |
+| AuditEngine | `refTemplates/smods/AuditEngine_fork` | `4b8313fcd9198b0cdc266014ee002828ac79a7b2` | Assessment/ethics review reference |
+| GPTmetrics | `refTemplates/smods/GPTmetrics_fork` | `c767850b9fa70a649f0834f279c95b8e642fb46c` | Multi-model response-comparison reference |
+
+The source inventory also names `lego_fork` as a composition reference, but the inspected `master` tree contains no `refTemplates/smods/lego_fork` gitlink. Its pin therefore remains unverified and outside this QDesk pin set. The remaining smods entries are unmapped candidates and stay outside the current QDesk integration scope.
+
+Verification method: inspect Git tree entries with `type=commit` under `refTemplates/smods/`; record the entry SHA exactly. The tree snapshot is pinned above so later branch movement does not silently change this evidence. No submodule was initialized recursively and no gitlink was changed.
+
 ## 4. Existing UI and versioning facts
 
 Verified current repository paths:

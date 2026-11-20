@@ -35,7 +35,7 @@ def _routing_table(text: str) -> dict[str, list[str]]:
         routing.group("body"),
     )
     if not roles:
-        raise RouteError("agent roster routing section has no roles map")
+        raise RouteError("agent roster routing section is missing its roles map")
 
     routes: dict[str, list[str]] = {}
     for block in re.finditer(

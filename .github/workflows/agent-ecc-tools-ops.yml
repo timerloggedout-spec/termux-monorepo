@@ -1,8 +1,8 @@
 name: ECC Tools demand-driven ops
 
 # SCOPE: ECC Tools App only (/ecc-tools …).
-# Does NOT post @coderabbitai, @jules, or other app commands.
-# continuous-ops owns CodeRabbit; jules workflows own @jules; operator token lanes stay separate.
+# Posts only the ECC Tools command surface; CodeRabbit and operator token lanes stay separate.
+# Google Jules triggers are retired; local DoE skill guidance is separate from provider execution.
 #
 # Actions posts lean /ecc-tools comments; ECC Tools GitHub App executes.
 # Dual-gate remains merge authority. Never auto-merge App PRs.

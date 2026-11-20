@@ -41,7 +41,7 @@ This proposal extends the existing contracts; it does not create a new orchestra
 - `CLAUDE.md`, `docs/proposals/registry.yaml`, and `docs/proposals/PROCESS.md`
 - `docs/ops/AGENT-EVIDENCE-SUBSTRATE.md`
 - `docs/ops/AGENT-TEAM-ORCHESTRATION.md`
-- `docs/ops/AGENT-MONIKERS.md` and `docs/ops/AGENT-TEAM-ROSTER.md`
+- `docs/ops/COLLABORATOR-MONIKERS.md` and `docs/ops/AGENT-TEAM-ROSTER.md`
 - `docs/architecture/AGENT-EVALUATION-FRAMEWORK.md`
 - `docs/ops/AGENT-THROUGHPUT-EVENT.schema.json`
 - `docs/briefing/DAILY-DIGEST-SPEC.md`, `docs/research/BRIEFING-INGEST.md`, `docs/research/FOSS-PROCUREMENT-MATRIX.md`, `docs/research/FORESIGHT-RADAR.md`

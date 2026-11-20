@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from scripts.identity.rotation_sweep import (
-    classify_line, check_identity_registry, score_fixtures, validate_mapping,
+    classify_line, check_identity_registry, score_fixtures, validate_mapping, scan_repository,
 )
 
 
@@ -113,6 +113,25 @@ class RotationSweepTests(unittest.TestCase):
         maintenance = root / "docs/icm/maintenance/ICM-MAP-MAINTENANCE.md"
         self.assertTrue(maintenance.is_file())
         self.assertFalse((root / "docs/icm/maintenance/AGENTS.md").exists())
+
+
+    def test_historical_allowlist_preserves_provenance_without_active_debt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            archive = root / "archive"
+            archive.mkdir()
+            (archive / "record.md").write_text(
+                "The old AGENTS.md reference is historical evidence.",
+                encoding="utf-8",
+            )
+            rotation_map = {
+                "entries": [{"source": "AGENTS.md", "target": "CLAUDE.md"}],
+                "historical_reference_paths": ["archive/record.md"],
+            }
+            report = scan_repository(root, rotation_map)
+            self.assertEqual(len(report["historical_refs"]), 1)
+            self.assertEqual(report["active_refs"], [])
+            self.assertEqual(report["ambiguous_refs"], [])
 
 
 if __name__ == "__main__":

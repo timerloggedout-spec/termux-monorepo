@@ -13,6 +13,10 @@ on:
         description: "GitHub issue used for the idempotent claim"
         required: true
         type: string
+      specialist:
+        description: "Explicit manager selection from the live candidate pool"
+        required: false
+        type: string
       apply:
         description: "Record claim and invoke configured agent (default: dry-run)"
         required: true
@@ -40,6 +44,7 @@ jobs:
       GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
       PHASE_ID: ${{ github.event.client_payload.phase_id || inputs.phase_id }}
       ISSUE_NUMBER: ${{ github.event.client_payload.issue_number || inputs.issue_number }}
+      SELECTED_SPECIALIST: ${{ github.event.client_payload.selected_specialist || inputs.specialist }}
       APPLY: ${{ github.event_name == 'repository_dispatch' || inputs.apply }}
       # Evaluate live adapter readiness separately from credential presence.
       ROUTE_JULES_ADAPTER_READY: 'false'
@@ -56,13 +61,20 @@ jobs:
         id: route
         run: |
           set -euo pipefail
-          python3 scripts/agentic/dependency_phase_route.py \
-            --plan docs/agentic/dependency-phases.json \
-            --phase-id "$PHASE_ID" | tee route.json
+          route_args=(--plan docs/agentic/dependency-phases.json --phase-id "$PHASE_ID")
+          if [ -n "$SELECTED_SPECIALIST" ]; then
+            route_args+=(--selected-specialist "$SELECTED_SPECIALIST")
+          fi
+          python3 scripts/agentic/dependency_phase_route.py "${route_args[@]}" | tee route.json
           echo "selected_specialist=$(jq -r '.selected_specialist // empty' route.json)" >> "$GITHUB_OUTPUT"
           echo "manager_policy=$(jq -r '.manager_policy' route.json)" >> "$GITHUB_OUTPUT"
           if [ "$APPLY" = "true" ] && [ -z "$(jq -r '.selected_specialist // empty' route.json)" ]; then
-            echo "The manager-approved route has zero available execution adapters." >&2
+            state=$(jq -r '.state' route.json)
+            if [ "$state" = "manager_selection_required" ]; then
+              echo "Multiple live adapters are available; pass the specialist input for explicit manager selection." >&2
+            else
+              echo "The manager-approved route has zero available execution adapters." >&2
+            fi
             exit 1
           fi
 

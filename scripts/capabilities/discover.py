@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sqlite3
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -340,7 +341,36 @@ def connect(db: Path) -> sqlite3.Connection:
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_domain ON capability(domain,function)")
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_trust ON capability(trust,lifecycle)")
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_edge_from ON capability_edge(from_id,relation)")
+    con.execute("""CREATE TABLE IF NOT EXISTS catalog_cache (
+      cache_key TEXT PRIMARY KEY, source TEXT NOT NULL, payload TEXT NOT NULL,
+      expires_at REAL NOT NULL, cached_at REAL DEFAULT (unixepoch())
+    )""")
     return con
+
+def cached_skills_sh_search(con: sqlite3.Connection, query: str, limit: int = 8,
+                               owner: str | None = None, curated: bool = False) -> tuple[list[dict], str]:
+    normalized = " ".join(query.lower().split())
+    cache_key = digest(json.dumps(
+        [normalized,limit,owner,curated],separators=(",",":")
+    ).encode())
+    cached = con.execute(
+        "SELECT payload,expires_at FROM catalog_cache WHERE cache_key=?",
+        (cache_key,),
+    ).fetchone()
+    now = time.time()
+    if cached and cached[1] > now:
+        return json.loads(cached[0]), "cached"
+    rows,status = search_skills_sh(query,limit,owner=owner,curated=curated)
+    if status == "ok":
+        ttl = 300 if curated else 45
+        con.execute("""INSERT INTO catalog_cache(cache_key,source,payload,expires_at,cached_at)
+            VALUES (?,?,?,?,?) ON CONFLICT(cache_key) DO UPDATE SET
+            source=excluded.source,payload=excluded.payload,
+            expires_at=excluded.expires_at,cached_at=excluded.cached_at""",
+            (cache_key,"skills.sh:curated" if curated else "skills.sh:search",
+             json.dumps(rows,separators=(",",":")),now+ttl,now))
+        con.commit()
+    return rows,status
 
 def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
     changed = 0
@@ -460,7 +490,7 @@ def main() -> int:
     con = connect(Path(args.db))
     external_status = "not_requested"
     if args.skills_sh or args.skills_sh_curated:
-        remote_rows, external_status = search_skills_sh(args.query,args.limit,owner=args.owner,curated=args.skills_sh_curated)
+        remote_rows, external_status = cached_skills_sh_search(con,args.query,args.limit,owner=args.owner,curated=args.skills_sh_curated)
         if remote_rows:
             upsert(con,remote_rows)
             export_ledger(con,Path(args.ledger))

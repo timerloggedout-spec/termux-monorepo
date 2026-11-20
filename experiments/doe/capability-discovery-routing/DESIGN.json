@@ -177,6 +177,30 @@
       "role": "Termux/GitHub stewardship skill reference",
       "trust": "session-supplied; repository canonical skill takes precedence",
       "use": "source-specific scope and operational permission context"
+    },
+    {
+      "file": "context-relationship-graph.skill (supplied ZIP)",
+      "role": "repository relationship and provenance graph skill",
+      "trust": "session-supplied; compare with repository canonical skill",
+      "use": "narrow-root discovery, verified-vs-candidate edges, evidence URLs, bounded collection and read-only graph operations"
+    },
+    {
+      "file": "Diagnose Routing Architecture.txt (supplied text)",
+      "role": "agent-team orchestration and routing methodology",
+      "trust": "user-supplied design reference; conceptual claims require repository evidence",
+      "use": "manager/player separation, integrated outcome metrics, provider attribution and context/time/retry/human-intervention cost dimensions"
+    },
+    {
+      "file": "Implement GitLab Sync Diagnosis.txt (supplied text)",
+      "role": "cross-platform integration and tool-permission diagnosis",
+      "trust": "user-supplied diagnostic reference; credential values excluded",
+      "use": "least-privilege token topology, single-writer coordination, source-pair identity and explicit authorization boundaries"
+    },
+    {
+      "file": "Notation Registry Proposal.txt (supplied text; filename/content mismatch)",
+      "role": "WAIT/WATCH/RE-FETCH runtime evidence and reconciliation methodology",
+      "trust": "user-supplied operational report; not a notation registry proposal",
+      "use": "runtime state separation, observer-only watchers, immutable SHA binding, failure preservation and evidence-led loops"
     }
   ]
 }

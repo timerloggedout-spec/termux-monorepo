@@ -1,23 +1,21 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T20:50:40Z",
+ "generated_at": "2026-11-20T21:18:02Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 8,
-   "in_progress": 2,
+   "queued": 1,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Orchestration Regression Guard": 1,
-    "PR scope guard": 5,
-    "repo gate": 2
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 0,
-   "in_progress": 1,
+   "in_progress": 2,
    "oldest_queued_at": null,
    "by_workflow_queued": {}
   },
@@ -30,46 +28,17 @@
   },
   "4": {
    "tier": 4,
-   "queued": 58,
-   "in_progress": 21,
+   "queued": 1,
+   "in_progress": 8,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "delphi-ledger-feed-collect": 1,
-    "DO Statement Style": 10,
-    "delphi-rfp-feed-collect": 1,
-    "graph-matrix-probe": 1,
-    "que-cadence-kick": 1,
-    "termux smoke": 2,
-    "Agent Readability Source Contract": 3,
-    "quota-analysis": 1,
-    "quota-allocation-planner": 1,
-    "hitl-control-plane-verify": 1,
-    "n8n SHE bridge": 1,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "quota-served-probe": 1,
-    "Team MVT \u2014 simultaneous provider lanes": 1,
-    "repo-tracking-collect": 1,
-    "Quota Dispatch Tree": 1,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 2,
-    "Lane matrix event-driven inventory": 2,
-    "Sweep Accountability": 2,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "RECON INTEL discovery": 1,
-    "PR production ledger": 4,
-    "Action Effectiveness Ledger": 4,
-    "archwiz dangle check": 2,
-    "Repository development evaluation": 2,
-    "CellCog review": 1,
-    "Agent PR Jules Handoff": 2,
-    "PR Change Effectiveness Ledger": 2,
-    "Peer review orchestrator": 2,
-    "PR evidence evaluation": 2
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 66,
-  "in_progress": 24
+  "queued": 2,
+  "in_progress": 11
  },
  "wedged_ancient": [
   {
@@ -227,13 +196,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 10,
-   "2": 1,
+   "1": 2,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 11,
-  "default_t4": 79,
+  "explicit_total": 4,
+  "default_t4": 9,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

@@ -57,7 +57,7 @@ Use the role names from `docs/ops/DOE-ROLES-EPOCH-2026-11-03.md`.
 
 ## Local verification
 
-Use the source skill's `local-action-verification` pattern as a reusable builder/reviewer capability:
+Use `.agents/skills/local-action-verification/SKILL.md` as the reusable builder/reviewer capability:
 
 - identify the relevant workflow and job;
 - run the supported local action job with `act` when the Docker/runtime prerequisites are available;

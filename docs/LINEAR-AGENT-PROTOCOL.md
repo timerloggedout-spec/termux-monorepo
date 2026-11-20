@@ -1,194 +1,53 @@
-# Linear Agent Protocol
+# Linear Adapter Protocol
 
-**Status:** binding for all coding agents (Grok, Claude, Codex, Devin, ChatGPT, local runners).
+**Status:** optional integration; degraded availability recorded 2026-11-19.
 
-Linear is the **operational tracker** for work that ships. Proposal process (`docs/proposals/PROCESS.md`) remains the debate/consensus layer; Linear tracks execution state, ownership, and git branch linkage.
+Linear is an execution-state mirror when its API is available. Repository scope, priority, and acceptance evidence remain governed by `CLAUDE.md`, `docs/proposals/registry.yaml`, active proposal `ITEMS.md` files, GitHub, and the repository gates.
 
-Team: **Termux-monorepo_linear** (key prefix `TER-`)
-Project: **termux-monorepo hardening**
+## Authority and priority
 
----
+1. Platform safety and explicit operator direction.
+2. Current user objective and repository entry point: `CLAUDE.md`.
+3. Active proposal and item scope.
+4. GitHub branch, commit, pull request, review, and check evidence.
+5. Linear issue metadata and status, when reachable.
 
-## 0. Branch model (binding)
+Adaptive Dynamic Awareness selects the next action from current priority, risk, dependencies, blockers, freshness, and the ability to verify progress. Linear availability is one input to routing, not a repository-wide admission condition.
 
-```
-feature/*  ──PR──►  master-staging   ← permanent integration spine
-                        │
-                        │  selective cherry-pick / focused promotion PRs only
-                        │  NEVER merge master-staging → master wholesale
-                        ▼
-                     master          ← stable, green, protected
-```
+## Healthy integration path
 
-- **`master-staging` is a permanent gate**, not a temporary buffer.
-- Agent “done” = merged to **`master-staging`** (not necessarily to `master`).
-- Promotion to `master` is **selective** only. Operator note (TER-14): *"master-staging is for selective merge to master meaning master-staging is meant to never merge to master completely."*
+When Linear is reachable and a matching issue exists:
 
----
+- Reuse the existing `TER-*` issue.
+- Keep its state aligned with actual work.
+- Link the proposal item, branch, commit, and pull request.
+- Mark completion only after the corresponding repository evidence exists.
 
-## 1. Hard rules (agents MUST)
+Create an issue only when the integration accepts writes and no existing issue covers the work. Preserve the repository item as the durable scope record.
 
-1. **Every non-trivial agent action** that creates a branch, opens a PR, or closes work **must** reference a Linear issue (`TER-N`).
-2. Prefer **updating an existing TER-*** over creating a new one. Create only when no issue covers the work.
-3. PR title or body **must** include `Implements: TER-N` (and proposal item IDs when applicable).
-4. Branch names **should** match Linear’s suggested `gitBranchName` when starting from an issue (e.g. `timerloggedout/ter-14-…`).
-5. On start of work → set Linear state to **In Progress**.
-6. On PR open → comment on Linear issue with PR URL (or attach link).
-7. On merge to **`master-staging`** (or explicit completion) → set Linear state to **Done** (or leave In Progress if residual).
-8. Do **not** invent work outside Linear + `docs/proposals/active/*/ITEMS.md`. If needed, create Linear issue **and** ITEMS row.
-9. Do **not** open a PR that merges all of `master-staging` into `master`. Promotion PRs must be selective (specific commits or a narrow feature already on staging).
+## Degraded or unavailable path
 
-Unposted chat is not Linear state. If it is not on the issue, it did not happen for tracking purposes.
+When Linear search, issue creation, or updates fail:
 
----
+1. Continue from the accepted repository proposal and its `ITEMS.md` scope.
+2. Record the failure mode, date, and evidence in `docs/ops/INTEGRATION-DRIFT-2026-11-19.md`.
+3. Use GitHub branches, commits, pull requests, reviews, and checks for execution evidence.
+4. Keep proposal status and item status synchronized with verified repository state.
+5. Mark Linear synchronization as pending; reconcile metadata when the integration becomes healthy.
 
-## 2. State machine
+A missing `TER-*` issue, workspace issue cap, API outage, or stale Linear record does not invalidate an already accepted repository scope. Agents must not fabricate issue identifiers or report synchronization that has not been verified.
 
-| Linear state | When agents set it |
-|--------------|--------------------|
-| **Backlog** | Parked / not started |
-| **Todo** | Ready to pick |
-| **In Progress** | Agent started branch / PR |
-| **Done** | Merged to **`master-staging`** or explicitly completed |
-| **Canceled** | Won’t do (with reason in description) |
-| **Duplicate** | Point to canonical TER-N |
-
-Priority map: P0 → Urgent (1), P1 → High (2), P2 → Medium (3), P3 → Low (4).
-
----
-
-## 3. Action → Linear hooks
-
-| Agent action | Linear hook |
-|--------------|-------------|
-| Pick work | `list_issues` filter Todo/Backlog; claim via assignee if available |
-| Start implementation | `save_issue` → state **In Progress**; ensure `gitBranchName` used |
-| Open PR | Comment on issue with PR URL; body `Implements: TER-N`; base = **`master-staging`** |
-| Push significant commits | Optional short comment (milestone only; avoid noise) |
-| PR merged to **`master-staging`** | state **Done**; append evidence (PR/commit) to description |
-| Selective promote to `master` | Separate narrow PR; do not close staging; optional Linear comment |
-| Blocked (human-only) | Comment + leave **In Progress** or move **Backlog**; cite `AGENTIC-PERMISSIONS.md` |
-| New work discovered | `save_issue` create; link parent if sub-task; add ITEMS row |
-| Close proposal | Ensure related TER-* are Done/Canceled; comment cross-ref |
-
-### MCP tools (Grok / connected agents)
+## Branch model
 
 ```
-linear___list_issues          # discover / filter
-linear___get_issue            # full detail
-linear___save_issue           # create or update (id=TER-N)
-linear___list_comments        # thread
-linear___list_issue_statuses  # state names for team
-linear___save_document        # optional long-form on issue/project
+feature/* ──PR──► master-staging ──focused promotion──► master
 ```
 
-### On-device / CI (no MCP)
+- `master-staging` is the permanent integration spine.
+- A pull request targets `master-staging`.
+- Promotion to `master` remains selective and reviewable.
+- Repository gates and required reviews govern merge readiness.
 
-```bash
-export LINEAR_API_KEY="lin_api_..."
-python3 archwiz/linear_sync.py --dry-run   # report
-python3 archwiz/linear_sync.py             # push local taDone → Linear states
-python3 -m archwiz.linear_client status TER-14
-python3 -m archwiz.linear_client start TER-14
-python3 -m archwiz.linear_client done TER-14 --pr 16
-```
+## Evidence contract
 
-See `archwiz/linear_client.py`.
-
----
-
-## 4. Create vs update template
-
-**Create (only if no existing TER-* fits):**
-
-```text
-Title: <imperative, scoped>
-Team: Termux-monorepo_linear
-Project: termux-monorepo hardening
-Priority: 1–4
-Description:
-  ## Goal
-  ...
-  ## Context
-  ...
-  ## Acceptance
-  - [ ] ...
-  Implements proposal item: <ITEM-ID> (if any)
-```
-
-**Update on start:**
-
-```text
-id: TER-N
-state: In Progress
-```
-
-**Update on complete (merged to master-staging):**
-
-```text
-id: TER-N
-state: Done
-# description append: Evidence: PR #X merged to master-staging YYYY-MM-DD
-```
-
----
-
-## 5. Relationship to proposal process
-
-```text
-registry.yaml / ITEMS.md     ← consensus & itemization (PROCESS.md)
-        ↕ must cite each other
-Linear TER-*                 ← execution board (this protocol)
-        ↕ Implements: TER-N
-GitHub PR → master-staging   ← code (integration spine)
-        ↕ selective only
-GitHub PR → master           ← promotion of ready slices
-```
-
-- Proposal **ITEMS** may map 1:1 or N:1 to TER-*.
-- PR must cite **both** when both exist: `Implements: TER-14, M-02`.
-- Closing a proposal does not auto-close Linear; agents close TER-* explicitly.
-
----
-
-## 6. TER-14 scope
-
-**TER-14** = Sentry multi-project + Linear GraphQL bridge + **this protocol** + branch-model clarification.
-
-Related:
-- TER-5 (dispatch logging) — observability adjacent
-- TER-2 (tools connected) — Done; MCP available
-- Manus PR #13 — path norm + mock bridge (superseded for Linear by PR #16)
-
-When Sentry+Linear PR merges to **`master-staging`**, mark **TER-14 Done**.
-
----
-
-## 7. Checklist (paste into agent runbooks)
-
-```text
-[ ] Read AGENTS.md + this protocol
-[ ] list_issues — pick or create TER-N
-[ ] save_issue → In Progress
-[ ] Branch from master-staging (prefer Linear gitBranchName)
-[ ] Implement; commits reference TER-N
-[ ] PR → master-staging with Implements: TER-N
-[ ] Comment on Linear issue with PR URL
-[ ] Gates green; merge to master-staging
-[ ] save_issue → Done + evidence
-[ ] Update ITEMS.md if proposal-linked
-[ ] Never open wholesale master-staging → master merge
-```
-
----
-
-## 8. Failure modes
-
-| Symptom | Action |
-|---------|--------|
-| No LINEAR_API_KEY on device | Use MCP tools only; or dry-run `linear_sync.py` |
-| MCP write denied | Fall back to GitHub issue comment + request Operator grant |
-| Orphan PR (no TER-*) | Open/link TER-* before merge; do not merge orphan P0 |
-| Duplicate TER-* | Mark Duplicate; point to canonical |
-| PR base is `master` for feature work | Retarget to `master-staging` |
-| Wholesale staging→master PR | Reject; split into selective promotion |
+Every material state claim names its evidence: proposal item, branch, commit, pull request, workflow run, or test result. Linear URLs and identifiers supplement that evidence. External tracker state never substitutes for repository verification.

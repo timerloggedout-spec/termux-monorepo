@@ -48,7 +48,8 @@ def test_dispatch_executor_claim_preserves_arm_and_dispatch_identity():
     assert event["payload"]["route_role"] == "dispatch-executor"
     assert event["payload"]["arm_id"] == "gemini-cli"
     assert event["payload"]["model"] == "gemini-2.5-pro"
-    assert event["payload"]["dispatch_id"] == "dispatch-abc-123"\n    assert event["payload"]["source"] == "dispatch_executor_claim"
+    assert event["payload"]["dispatch_id"] == "dispatch-abc-123"
+    assert event["payload"]["source"] == "dispatch_executor_claim"
 
 
 def test_unrelated_issue_comment_emits_no_route_event():

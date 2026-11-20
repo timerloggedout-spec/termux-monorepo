@@ -20,6 +20,21 @@ Canonical chart: [`docs/architecture/AGENT-TEAM-CONTROL-PLANE.md`](docs/architec
 
 Regression guard: `.github/workflows/orchestration-regression-guard.yml` asserts FA-ADE markers in this file remain aligned.
 
+## Product delivery priority — MOBILE 📱 FIRST
+
+**MOBILE FIRST is a repository-wide product requirement.** Every web, PWA, dashboard, admin, and operator surface starts with phone use as its primary acceptance target. Desktop is the responsive enhancement.
+
+- Design and validate phone layouts first: 320–430 CSS px, portrait and landscape, safe-area insets, and on-screen keyboard behavior.
+- Make every primary action touch-operable, visible, and reachable; use 44 CSS px minimum touch targets and thumb-reachable navigation.
+- Make core workflows complete with touch input, on-screen keyboards, and assistive technology; treat hardware-keyboard shortcuts as optional accelerators.
+- Validate graph, canvas, inspector, search, forms, dialogs, and navigation at phone widths before desktop polish.
+- Keep mobile performance, readable density, focus visibility, and accessible labels in the acceptance criteria.
+- Preserve each surface's established PWA identity, publication route, deployment lane, and release workflow. Record lane changes in the owning deployment SSOT and ship them through that lane.
+
+**Admin Graph publication contract:** apps/tribute-dashboard/admin-graph.html is served at /tribute/admin/admin-graph.html inside the installable Tribute PWA scope. Its publication follows .github/workflows/tribute-dashboard-deploy.yml and the existing Tribute Pages/user-site lanes. Preserve apps/tribute-dashboard/manifest.webmanifest, sw.js, and install.js as the PWA install contract. The graph page remains self-contained; page-level PWA shell tags stay governed by tests/test_pwa_install.py.
+
+Mobile-first regression contract: tests/test_admin_graph_validation.py.
+
 ## BIUDL — operating motion
 
 **BIUDL = Broad → Integrate → Validate → Develop → Learn.**

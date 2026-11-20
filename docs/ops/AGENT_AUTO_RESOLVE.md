@@ -10,6 +10,6 @@ Workflows on **default branch `master`** so `pull_request_review` / review_comme
 | Same | Linear subtask under `PR #N agent feedback rollup` + `agent-feedback` |
 | CodeRabbit | `.coderabbit.yaml` autofix enabled |
 
-Secrets: `LINEAR_API_KEY` (subtasks), optional `JULES_API_KEY`.
+Secrets: `LINEAR_API_KEY` (subtasks). Google Jules invocation is retired.
 
 Signed-off-by: Grok <grok@x.ai>

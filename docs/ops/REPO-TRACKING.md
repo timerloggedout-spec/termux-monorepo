@@ -45,7 +45,7 @@ Scope boundaries are deliberate:
 | Surface feeds | `scripts/dashboards/surface_feeds.py` → `apps/tribute-dashboard/data/*-feed.json` (3L0/MoneyBall/MVT/DoE/ATES) | **KEEP — pattern of record**: stamped observation snapshots, collector never calls network, honesty rules, refresh automation. Per-surface only. |
 | Dispatch-tree feed | `scripts/dashboards/dispatch_tree_feed.py` | KEEP — quota cadence/admission only. |
 | Domain boards | challenge-osint / countdowns, `ops/quota/*.json`, operator-matrix, reviewer-metrics, telemetry-ingest | KEEP — each is its domain's record; none spans domains. |
-| Monikers/roster | `docs/ops/AGENT-MONIKERS.md`, `AGENT-TEAM-ROSTER.md` | KEEP — lane identity source. |
+| Monikers/roster | `docs/ops/COLLABORATOR-MONIKERS.md`, `AGENT-TEAM-ROSTER.md` | KEEP — lane identity source. |
 
 **Historical gap statement (before this surface):** no single surface joined
 `lane × project × state × last-merge × next` across

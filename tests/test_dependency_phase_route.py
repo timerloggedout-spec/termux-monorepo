@@ -12,17 +12,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "agentic"))
 from dependency_phase_route import resolve_route  # noqa: E402
 
 
-ROSTER = """
-routing:
-  invariant: "Selection is evidence-driven."
-  policy:
-    objective: "maximize integrated outcome"
-  roles:
-    build:
-      candidate_pool: [tembo, mistral_vibe, gemini, openrouter]
-    fix:
-      candidate_pool: [tembo, grok, gemini, openrouter]
-"""
+ROSTER = (ROOT / "docs" / "schemas" / "agent-roster.yaml").read_text(encoding="utf-8")
 
 
 def plan(preferred_agent=None):

@@ -44,7 +44,7 @@ jobs:
       - name: Probe arms / apply winning arm
         if: ${{ github.event.inputs.action == 'apply' || github.event.inputs.action == 'probe-all' }}
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
           GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -132,7 +132,7 @@ jobs:
       - name: Restart only
         if: ${{ github.event.inputs.action == 'restart' }}
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
         run: |
           fly machine restart -a hindsight-termux
           sleep 30
@@ -141,7 +141,7 @@ jobs:
       - name: Status
         if: ${{ github.event.inputs.action == 'status' }}
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
         run: |
           fly status -a hindsight-termux
           curl -sS -m 30 -o /dev/null -w 'health: %{http_code} in %{time_total}s\n' \

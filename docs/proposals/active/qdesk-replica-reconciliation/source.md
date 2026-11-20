@@ -81,6 +81,30 @@ The eventual user-facing model selector should expose only catalogued, capabilit
 
 Quota ownership follows the credential owner. User-owned BYOK usage is attributed to that user's provider account; organization-owned credentials consume the organization's quota. Keep per-principal credential boundaries, usage attribution, rate-limit state and billing records isolated so an individual user's quota exhaustion leaves the shared organization pool's health unchanged. Keep all API keys outside browser storage, public feeds, issue bodies and prototype source. The user selection contract, credential custody and billing attribution require a dedicated provider-routing review before runtime wiring.
 
+
+## 2.2. Drafting Desk and monorepo-owned project profiles
+
+Add a distinct `apps/tribute-dashboard/drafting-desk.html` surface for prototype iteration. Keep `apps/tribute-dashboard/desk.html` as the operational Contribution Desk and filing/dispatch entry point. The Drafting Desk owns draft exploration and candidate comparison; the Contribution Desk owns filing and dispatch. The two surfaces link to each other through stable candidate and issue references.
+
+The Drafting Desk sequence is:
+
+1. Select a monorepo-managed project profile.
+2. Load the profile's declared project scope, repositories, issue classes, lanes, artifact stores and selected surfaces.
+3. Load the profile-approved templates, starter choices, design guidance and allowed integration references.
+4. Open Replica's local Copilot canvas against a local working copy or isolated prototype workspace; preserve the target repository's router, dependencies, conventions and design system.
+5. Iterate alternate drafts as separately versioned candidates, each with source revision, profile reference, template/source pins, preview/build evidence and change summary.
+6. Compare candidate versions side-by-side using the existing versioning/release evidence path; record visual, behavior, accessibility, schema/API, security and task-outcome evidence.
+7. Select a candidate with an explicit rationale and acceptance criteria; then create a project-task filing draft populated from the selected profile and candidate.
+8. Hand the reviewed filing draft to the existing Contribution Desk / GitHub issue form. Filing invokes the existing `issue-dispatch/v1` route and QUE admission. A candidate selection alone creates no issue and triggers no dispatch.
+
+The canonical project-profile schema already exists at `ops/projects/profile.schema.json`, with schema ID `project-profile/v1`. Its scope axes are `repos`, `issue_classes`, `lanes` and `artifact_stores`; its surface set can include `obsidian`, `github-repo`, `github-issues`, `github-pages`, `vercel`, `artifact-store`, `local-device` and `external-linked`. Its project classes include `custom-project`, `challenge`, `certification`, `user-project` and `artifact`. Optional Obsidian, spaced-repetition and encryption declarations remain governed by that schema.
+
+The design record `docs/ops/ARCHWIZ-CONCEPT-MAP.md` describes the next project-profile implementation step as S2: instances under `.config/llm_map/profiles/projects/`, a resolver at `scripts/projects/profile_resolve.py`, and schema/secret-exclusion tests. Current `.config/llm_map/profiles/*.json` files such as `archwiz.json` and `mapper.json` are existing device/workspace scan scopes with `include[]`/`exclude[]`; they are distinct from project profiles. The project-profile S2 instances and resolver were absent from the paths/search inspected for this proposal. Therefore, QDesk consumes the canonical schema and waits for the project-profile registry/resolver contract; it does not reinterpret scan profiles or create a competing profile catalog.
+
+Project-profile identity and lifecycle remain monorepo-owned. The Drafting Desk stores a stable profile reference and immutable profile revision with every candidate; it stores only draft/candidate metadata and links to source artifacts. Project scope, allowed repositories, issue classes, lanes, artifact stores, encryption policy and surface bindings resolve from the monorepo profile. A user may create or revise a profile only through the monorepo's reviewed profile-management workflow. Replica receives a resolved, least-privilege working context; it does not write the canonical profile, widen scope, or retain independent project settings.
+
+The filing contract should carry the selected profile reference/revision and selected candidate reference as provenance fields while retaining the existing required project-task headings. The issue form currently exposes Entry, Task / spec, Scope, Done-evidence, Target repo and post-hoc Instance stamps; it does not yet expose a project-profile selector. Add profile-aware fields only through the profile S2 + issue-template integration work, and preserve the existing dispatch block, QUE admission, provider selection and post-hoc instance-stamp semantics.
+
 ## 3. refTemplates/smods reconciliation
 
 The monorepo's root `CLAUDE.md`, `docs/ops/REFTEMPLATES-CONSOLIDATION.md` and `docs/icm/objects/knowledge/reference-inputs.md` define `refTemplates/smods/` as a narrow, shallow, metadata-first reference lane. References inform the monorepo; they do not operate it or override its governance. Full recursive materialization is explicit and selective.
@@ -275,21 +299,23 @@ Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite,
 
 ## 9. Implementation sequence and gates
 
-1. **Reconcile active ownership.** Inspect #5145, #5197, #5199, #5330, #5376, #5622 and the current issue/dispatch/provider contracts. Record file ownership, dependency edges, accepted overlap, supersession candidates and the exact integration point for each feature.
-2. **Accept and version the proposal.** Complete operator and independent review, register dependencies, assign item owners, and freeze the accepted scope and baseline commit.
-3. **Verify source and provider contracts.** Record exact refTemplates/smods gitlink SHAs and licenses; inspect Replica's pinned source revision; map the current project-task issue form, dispatch route, model router, provider catalog, credential ownership and quota attribution.
-4. **Define the QDesk shell and Gantt integration.** Specify the read-only information architecture, stable surface IDs, responsive/accessibility states, deep links, Gantt milestones, dependencies, version-selection controls and source/freshness receipts.
-5. **Build the guided issue-filing portal.** Mirror the canonical issue-dispatch/v1 project-task form, provide validation and a reviewable issue preview, then route confirmed submissions through the native GitHub issue form or a separately approved GitHub App/API adapter. Return the created issue and idempotent intake receipt.
+1. **Reconcile active ownership.** Inspect #5145, #5197, #5199, #5330, #5376, #5622 and the current project-profile, issue/dispatch and provider contracts. Record file ownership, dependency edges, accepted overlap, supersession candidates and the exact integration point for each feature.
+2. **Verify source and profile foundations.** Record exact refTemplates/smods gitlink SHAs and licenses before acceptance; inspect Replica's pinned source revision; verify `project-profile/v1`, distinguish it from scan profiles, and establish the S2 profile-instance/resolver dependency. Map the project-task form, QUE admission route, model router, provider catalog, credential ownership and quota attribution.
+3. **Accept and version the proposal.** Complete operator and independent review, register dependencies, assign item owners, and freeze the accepted scope and baseline commit after step 2 evidence is complete.
+4. **Define the two-desk architecture and Gantt integration.** Specify Drafting Desk prototype/candidate flows separately from Contribution Desk filing/dispatch; define profile-bound workspaces, stable candidate IDs, responsive/accessibility states, Gantt milestones, dependencies, version selection and source/freshness receipts.
+5. **Build profile-aware issue filing.** Mirror the canonical issue-dispatch/v1 project-task form, hydrate Entry/Scope/Target repo and template choices from the selected monorepo profile, show a reviewable issue preview, then route confirmed submissions through GitHub issue creation and the existing QUE admission path. Return the created issue and idempotent intake receipt.
 6. **Define model choice and quota isolation.** Separate Replica Copilot sessions from repository workflow dispatch. Specify Automatic, Organization provider pool, My provider (BYOK) and eligible specific provider/model choices; bind each choice to its credential owner, authorization, quota, billing attribution, fallback policy and post-run instance stamp.
-7. **Implement Clerk and release comparison.** Reuse canonical proposal/access records for sanitized Clerk cards. Extend the existing version-manifest/versioning path with source/build/artifact hashes, visual captures, route/interaction, accessibility, schema/API, security and runtime evidence. Record candidate selection, completion criteria, migration and retirement as explicit version transitions.
+7. **Implement Clerk and candidate comparison.** Reuse canonical proposal/access records for sanitized Clerk cards. Extend the existing version-manifest/versioning path with source/build/artifact hashes, visual captures, route/interaction, accessibility, schema/API, security and runtime evidence. Compare alternate drafts against the same profile and baseline; record selection, completion criteria, migration and retirement.
 8. **Pre-register the DoE and automation comparison.** Submit the bounded 2^4 campaign through the existing DoE owner, freeze baseline/candidate versions and cohort, define blocking/randomization/replication/outcomes, and classify candidates within existing capability families.
-9. **Implement the smallest accepted vertical slice.** Compose existing feeds and authorities into the read-only QDesk shell; deliver portal and provider adapters only after their separate security and permission reviews; use synthetic fixtures for Clerk risk scenarios.
-10. **Validate the exact candidate.** Run focused contract/security/accessibility tests, build the Replica/local preview, compare preview against the selected baseline, inspect issue receipts, source hashes, artifacts and runtime evidence, and pass repo-gate plus termux-smoke on the exact candidate SHA.
-11. **Select, promote and phase out.** Compare completed candidates against the predeclared acceptance criteria; record the selected version and rationale; migrate consumers in bounded batches; retain rollback and lineage receipts; retire superseded versions after consumer migration and post-promotion monitoring.
+9. **Implement the smallest accepted vertical slice.** Build the Drafting Desk as a profile-consuming Replica workspace and candidate comparison surface; compose QDesk read-only feeds; deliver profile resolver, filing and provider adapters only through their owning reviewed workstreams; use synthetic fixtures for Clerk risk scenarios.
+10. **Validate the exact candidate.** Run profile-schema/resolver, issue-form/admission, security, accessibility and candidate-comparison tests; build the Replica/local preview; inspect issue receipts, source hashes, artifacts and runtime evidence; pass repo-gate plus termux-smoke on the exact candidate SHA.
+11. **Select, promote and phase out.** Compare completed candidates against predeclared acceptance criteria; record the selected version and rationale; migrate consumers in bounded batches; retain rollback and lineage receipts; retire superseded versions after consumer migration and post-promotion monitoring.
 
 ## 9.1. Execution guardrails
 
 - Keep Replica local prototyping independent from optional Hub hosting and publication.
+- Keep `ops/projects/profile.schema.json` and the monorepo-managed project-profile registry/resolver as the authority; keep existing device scan profiles in their separate directory and semantics.
+- Keep Drafting Desk draft/candidate metadata separate from Contribution Desk issue filing and QUE admission.
 - Reuse the existing proposal, scheduler, admission, claim, dispatch, provider, quota, DoE and release authorities.
 - Keep static visual surfaces credential-free and source-linked.
 - Keep collaborator-private data, credentials and browser/session material within their authorized stores.
@@ -338,3 +364,6 @@ Blob SHAs identify the exact file contents fetched; they are distinct from the c
 - Design a user-authenticated GitHub App/API filing adapter, installation scope, payload validation, idempotency and audit receipt.
 - Define per-user BYOK credential custody, quota accounting, rate-limit isolation, cost disclosure and billing attribution; current workflow quota controls establish repository workflow credentials, not a per-user quota service.
 - Confirm the explicit mapping from a user-selected model preference to the project-task provider-dispatch owner.
+- Complete the project-profile S2 implementation or verify its accepted profile-instance/resolver contract before wiring the Drafting Desk; current scan profiles are not project profiles.
+- Define stable profile identity/revision semantics and profile-aware issue-form fields without changing the existing dispatch block or admission behavior.
+- Confirm Replica workspace isolation and the candidate artifact/version format before enabling multiple concurrent draft iterations.

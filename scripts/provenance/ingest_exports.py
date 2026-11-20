@@ -36,7 +36,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts" / "classifiers"))
 
 SCHEMA = "provenance-export-record/v1"
-INGEST_VERSION = "provenance-ingest v1"
+INGEST_VERSION = "provenance-ingest v1"\nMUSE_DISCOVERY_VERSION = "muse-side-chat-discovery v1"\nMUSE_DISCOVERY_PATTERNS = (\n    ("moniker", re.compile(r"\\bmonikers?\\b", re.I)),\n    ("collision", re.compile(r"\\bcollisions?\\b", re.I)),\n    ("marketing", re.compile(r"\\bmarketing\\b", re.I)),\n    ("naming", re.compile(r"\\bnaming\\b", re.I)),\n    ("anon", re.compile(r"\\banon(?:ymous|ymity)?\\b", re.I)),\n    ("4n0nSEC", re.compile(r"(?<![A-Za-z0-9_])4n0nsec(?![A-Za-z0-9_])", re.I)),\n    ("4n∅N", re.compile(r"(?<![A-Za-z0-9_])4n∅n(?![A-Za-z0-9_])", re.I)),\n    ("4n∅nSEC", re.compile(r"(?<![A-Za-z0-9_])4n∅nsec(?![A-Za-z0-9_])", re.I)),\n    ("profiles", re.compile(r"\\bprofiles?\\b", re.I)),\n)
 SECRET_SHAPES = re.compile(
     r"(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_\-]{20,}|AIza[0-9A-Za-z_\-]{30,}|"
     r"xox[abpr]-[A-Za-z0-9\-]{10,}|hf_[A-Za-z0-9]{20,})")
@@ -87,7 +87,7 @@ CHAT_INTENT, CHAT_INTENT_VERSION = _chat_intent()
 CLASSIFY_PR, CLASSIFY_PR_VERSION = _pr_lane()
 
 
-def classify_record(text: str, pull_request: dict[str, Any] | None) -> list[dict[str, Any]]:
+def muse_discovery_terms(text: str, source_ns: str) -> list[str]:\n    """Return privacy-safe topic labels only for Muse side-chat exports."""\n    if not source_ns.startswith("muse-side-chat/"):\n        return []\n    return [label for label, pattern in MUSE_DISCOVERY_PATTERNS if pattern.search(text or "")]\n\n\ndef classify_record(text: str, pull_request: dict[str, Any] | None, source_ns: str | None = None) -> list[dict[str, Any]]:
     out = []
     if CHAT_INTENT is not None and text:
         res = CHAT_INTENT.classify(text[:4000])
@@ -241,7 +241,7 @@ def ingest(path: Path, source_ns: str, runs: list[dict[str, Any]] | None = None,
                 "session": unit["session"], "native_id": unit["native_id"], "ts": unit["ts"],
                 "text_sha256": hashlib.sha256(text.encode()).hexdigest(), "text_chars": len(text),
                 "excerpt": text[:280], "credentials": creds,
-                "classifications": classify_record(text, unit["pull_request"]),
+                "classifications": classify_record(text, unit["pull_request"], source_ns),
                 "actions": join_actions(text, unit["pull_request"], idx), "ingested_at": stamp,
             })
     return out

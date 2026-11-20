@@ -12,7 +12,7 @@
       "comparison": "Actions run evidence via head_sha ∨ head_branch ∨ PR number",
       "consumers": [
         {
-          "id": "provenance.export-digest/v1",
+          "id": "provenance.export-digest/v2",
           "reader": "scripts/provenance/export_digest.py",
           "read_receipts": "provenance/<source_ns>/run-<run_id>/consumer-reads.jsonl (store) ∧ workflow notice",
           "status": "registered"

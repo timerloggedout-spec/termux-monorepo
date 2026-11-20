@@ -163,6 +163,22 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["lifecycle"], "discovered")
         self.assertNotIn("SKILL.md contents", rows[0]["description"])
 
+    def test_tool_actions_receive_domain_and_tool_facets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "actions.json"
+            path.write_text(json.dumps({
+                "snapshot": {"captured_at": "2026-11-19"},
+                "actions": [{
+                    "name": "mcp__Finances__get_credit_score",
+                    "summary": "Retrieve credit score information",
+                }],
+            }), encoding="utf-8")
+            rows = import_session_json(path, "tool")
+        self.assertEqual(rows[0]["domain"], "specialized")
+        self.assertEqual(rows[0]["function"], "finance")
+        self.assertIn("tool", rows[0]["facets"])
+        self.assertIn("mcp", rows[0]["facets"])
+
     def test_session_import_quarantines_and_redacts_secret_like_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "tools.json"

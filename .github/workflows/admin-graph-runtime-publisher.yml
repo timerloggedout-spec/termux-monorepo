@@ -129,7 +129,7 @@ jobs:
           PY
           shopt -s nullglob
           batches=(event-batches/*.json)
-          for batch in ${batches[@]}; do
+          for batch in "${batches[@]}"; do
             curl --fail --silent --show-error --retry 3 --retry-all-errors \
               -X POST "https://admin-graph-live.timerloggedout.workers.dev/ingest" \
               -H "Authorization: Bearer $TOKEN" \

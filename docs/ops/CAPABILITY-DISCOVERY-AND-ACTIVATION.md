@@ -20,11 +20,11 @@ The repository scan recognizes:
 - `.github/**/SKILL.md` — automation and production skills;
 - `.claude/**/SKILL.md` — harness-specific skills;
 - `docs/**/SKILL.md` — documentation mirrors and operational companions;
-- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;
+- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;\n- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
 - `vendor/**` skill definitions, classified as unverified vendor inputs;
 - optional JSON exports of session plugin skills and tool actions.
 
-The recursive scan excludes common generated/cache directories. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it stores no complete instruction body, tool schema, prompt, credential or completion.
+The recursive scan excludes common generated/cache directories and skips symlinks. External roots are opt-in; the scanner does not walk the home directory or sibling workspaces implicitly. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it stores no complete instruction body, tool schema, prompt, credential or completion.
 
 At the current master baseline `57559c9100f9df2868398603410e6ba28783a942`, the recursive tree contained 45 `SKILL.md` paths, one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The scanner broadens future discovery to all nested forms; its result is generated from the checked-out tree, not a manually maintained count.
 
@@ -102,7 +102,7 @@ The campaign is proposal-only until DoE-expert admission, an automation path and
 
 ```bash
 # Build/update local SQLite index and deterministic event-ledger projection
-python3 scripts/capabilities/discover.py scan --root .
+python3 scripts/capabilities/discover.py scan --root .\n\n# Explicitly add selected sibling workspaces; each remains unverified\npython3 scripts/capabilities/discover.py scan --root . --extra-root "$HOME/workspace/project-a" --extra-root "$HOME/workspace/project-b"
 
 # Import session-scoped, metadata-only JSON exports when explicitly supplied
 python3 scripts/capabilities/discover.py scan --root . \

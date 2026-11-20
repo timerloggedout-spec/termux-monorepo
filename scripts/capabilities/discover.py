@@ -155,7 +155,7 @@ def import_tool_taxonomy_jsonl(path: Path, root: Path, external: bool = False) -
         )
         domain, function = validate_classification(domain, function, taxonomy)
         facets = [facet for facet in facets if facet != "skill"]
-        facets.extend(["tool", "cli"])
+        facets.extend(["tool", "local"])
         if external:
             facets.append("external")
         identity = digest(

@@ -12,7 +12,7 @@ My evaluation has resulted in a novel work branch `manus/novel-work` (PR #13) wh
 
 | Branch | Status | Purpose |
 | :--- | :--- | :--- |
-| `master` | 🟡 Stale | Currently lacks the root `AGENTS.md` and the latest gate logic. |
+| `master` | 🟡 Stale | Currently lacks the canonical `CLAUDE.md` entrypoint and the latest gate logic. |
 | `master-staging` | 🟢 Active | The canonical integration target. All PRs should target this branch. |
 | `termux-smoke` | ✅ Merged | Successfully integrated the second gate (PR #11). |
 | `agent/repository-hygiene` | 🟡 Blocked | Contains critical security fixes but requires history remediation. |

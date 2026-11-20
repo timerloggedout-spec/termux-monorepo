@@ -23,7 +23,15 @@ MANIFEST_NAMES = {"plugin.json", "marketplace.json", ".mcp.json", "mcp.json", "t
 SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".mypy_cache", ".pytest_cache", "dist", "build"}
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9+._-]{1,}", re.I)
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
-SECRET_RE = re.compile(r"(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|(?i:api[_-]?key|token|password|secret)\s*[:=]\s*['\"][^'\"]{12,}['\"])")
+LONG_TOKEN_RE = re.compile(r"\b(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{30,})\b")
+SECRET_VALUE_RE = re.compile(r"""(?i)(["']?(?:api[_-]?key|token|password|secret|client[_-]?secret|access[_-]?token|refresh[_-]?token|private[_-]?key)["']?\s*[:=]\s*["'])([^"']{8,})(["'])""")
+BEARER_RE = re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]{12,}")
+SECRET_RE = re.compile(r"(?:\b(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{30,})\b|(?:[\"']?(?:api[_-]?key|token|password|secret|client[_-]?secret|access[_-]?token|refresh[_-]?token|private[_-]?key)[\"']?\s*[:=]\s*[\"'][^\"']{8,}[\"'])|\bBearer\s+[A-Za-z0-9._~+/=-]{12,})",re.I)
+
+def redact_sensitive(value: str) -> str:
+    value = SECRET_VALUE_RE.sub(lambda match: match.group(1) + "[REDACTED]" + match.group(3), value)
+    value = BEARER_RE.sub("Bearer [REDACTED]", value)
+    return LONG_TOKEN_RE.sub("[REDACTED]", value)
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -162,7 +170,10 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             manifest_tags = frontmatter.get("tags", "")
         if SECRET_RE.search(text):
             trust = "quarantined"
-        domain, function, facets = infer_tags(name, description, locator, manifest_tags)
+        safe_name = redact_sensitive(str(name))
+        safe_description = redact_sensitive(str(description))
+        safe_locator = redact_sensitive(str(locator))
+        domain, function, facets = infer_tags(safe_name, safe_description, safe_locator, manifest_tags)
         domain, function = validate_classification(domain, function, taxonomy)
         if source_id == "repo-vendor-skills":
             facets.append("vendor")
@@ -185,7 +196,7 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             "domain": domain, "function": function, "facets": sorted(set(facets)),
             "trust": trust, "lifecycle": "classified", "version_ref": manifest_data.get("version"),
             "aliases": [], "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((str(name) + " " + str(description) + " " + locator + " " + manifest_tags).lower())))[:80]
+            "tags": sorted(set(TOKEN_RE.findall((safe_name + " " + safe_description + " " + safe_locator + " " + manifest_tags).lower())))[:80]
         })
     return rows
 
@@ -206,20 +217,25 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
             continue
         description = item.get("activation_description") or item.get("summary") or item.get("description") or ""
         locator = item.get("uri") or item.get("name") or str(name)
-        domain, function, facets = infer_tags(str(name), str(description), str(locator))
+        raw_metadata = str(name) + " " + str(description) + " " + str(locator)
+        quarantined = bool(SECRET_RE.search(raw_metadata))
+        safe_name = redact_sensitive(str(name))
+        safe_description = redact_sensitive(str(description))
+        safe_locator = redact_sensitive(str(locator))
+        domain, function, facets = infer_tags(safe_name, safe_description, safe_locator)
         domain, function = validate_classification(domain, function, taxonomy)
         facets.extend(["session", "plugin" if kind == "plugin-skill" else "tool"])
-        fingerprint = digest((str(name) + "\0" + str(description)).encode())
+        fingerprint = digest((safe_name + "\0" + safe_description).encode())
         rows.append({
-            "id": f"session:{kind}:{name}", "kind": kind if kind == "plugin-skill" else "tool",
-            "source_id": source_id, "locator": str(locator), "name": str(name)[:240],
-            "description": str(description)[:1200], "content_sha256": item.get("sha256") or fingerprint,
+            "id": f"session:{kind}:{safe_name}", "kind": kind if kind == "plugin-skill" else "tool",
+            "source_id": source_id, "locator": safe_locator, "name": safe_name[:240],
+            "description": safe_description[:1200], "content_sha256": item.get("sha256") or fingerprint,
             "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
-            "trust": "session-observed", "lifecycle": "discovered",
+            "trust": "quarantined" if quarantined else "session-observed", "lifecycle": "discovered",
             "version_ref": data.get("snapshot", {}).get("captured_at"),
             "aliases": [], "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((str(name) + " " + str(description)).lower())))[:80]
+            "tags": sorted(set(TOKEN_RE.findall((safe_name + " " + safe_description).lower())))[:80]
         })
     return rows
 

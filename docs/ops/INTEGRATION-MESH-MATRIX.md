@@ -97,7 +97,7 @@ Grouped by the service each name serves (the mesh's wiring diagram in one table)
 | Fleet GitHub Apps (AppID family, NEW) | `TERMUX_FLEET_COLLECTOR_PRIVATE_KEY`, `TERMUX_FLEET_SWARM_PRIVATE_KEY`, `TERMUX_FLEET_CROSSREFERENCE_PRIVATE_KEY` |
 | GitLab | `GITLAB_TOKEN`, `GITLAB_ADMIN_TOKEN`, `OPERATOR_GITLAB_TOKEN` |
 | Model providers | `DEEPSEEK_API_KEY`, `DEEPSEEK_AGENT_TOKEN`, `DEEPSEEK_AGENT_URL`, `DEEPSEEK_AWS_WAF_TOKEN`, `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `OPENROUTER_API_KEY`, `FELO_AI_API`, `AION_API_KEY`, `BASETEN_API_KEY`, `COHERE_API_KEY`, `DEEPINFRA_API_KEY`, `FRIENDLI_API_KEY`, `GROQ_API_KEY`, `HUGGINGFACE_TOKEN`, `LLM7_API_TOKEN`, `MISTRAL_API_KEY`, `NOVITA_API_KEY`, `NVIDIA_API_KEY`, `NVIDIA_NIM_API_KEY`, `OLLAMA_API_KEY`, `ROUTEWAY_API_KEY`, `SAMBANOVA_API_KEY`, `SEALION_API_KEY`, `SILICONFLOW_API_KEY`, `UNOROUTER_API_KEY`, `XKIRO_API_KEY`, `ZAI_API_KEY` |
-| Agent platforms | `JULES_API_KEY`, `CELLCOG_API_KEY`, `LIKECLAW_A2A_GH_ACTIONS`, `MANUS_SSH_HOST`, `MANUS_SSH_KEY`, `MANUS_SSH_PORT` |
+| Agent platforms | `CELLCOG_API_KEY`, `LIKECLAW_A2A_GH_ACTIONS`, `MANUS_SSH_HOST`, `MANUS_SSH_KEY`, `MANUS_SSH_PORT` |
 | Telemetry / memory / data | `HINDSIGHT_API_KEY`, `HINDSIGHT_BANK_ID`, `HINDSIGHT_BASE_URL`, `HINDSIGHT_TENANT_ID`, `HEX_ALSO_USEDBY_CELLCOG`, `NEON_API_KEY`, `LANE_EVENTS_DATABASE_URL`, `PINECONE_API_KEY` |
 | PM / deploy / coverage | `LINEAR_API_KEY`, `VERCEL_TOKEN`, `VERCEL_GITHUB_AND_TANKA`, `FLY_IO_ORG_TOKEN`, `CODECOV_TOKEN`, `SUPABASE_KEY` |
 | Vault | `TMX_VAULT_AGE_KEY` |
@@ -189,7 +189,7 @@ the repo's heavy automation mostly switched on after the snapshot.
 | Factory Droid | Factory-AI | Never | none | Dormant coding agent |
 | Gitar Bot | gitarcode | ≤5 mo | **Active** — suites on 30/30 heads, 42/2,000 comments | Review + validated-fix lane |
 | GitHub Codespaces | github | Never | 3 codespaces exist (§1) | Off-device compute lane (§9 C2) |
-| Google Labs Jules | google-labs-code | ≤1 wk | **Active, primary coding agent** — **284 of all 1,342 PRs authored**, 240 contributions, 6/2,000 comments | Bolt ⚡ lane; Muse steers via `custom.jules` no-HITL (MAP §B1) |
+| Google Labs Jules | google-labs-code | retired 2026-11-12 | Historical census: **284 of 1,342 PRs authored**, 240 contributions, 6/2,000 comments | Hosted service read-only after 2026-11-11; local DoE role-skill bundle is guidance only |
 | Graphite App | withgraphite | ≤1 wk | **Active** — suites on 30/30 heads | Stacked-PR lane |
 | Grok (by xAI) | xai-org | ≤1 wk | none via App — Grok works in its own app, lands via owner PAT (MAP §B5) | App is a sign-in grant; work lane is PAT-based |
 | HackerOne Code | PullRequestInc | Never | none | Dormant security review |
@@ -241,7 +241,7 @@ are GitHub's; slug forms are given where the census uses them.
 | FalconerAI | **No — installed-only** | none observed | New to the matrix with this screenshot; no GitHub-side activity in the Oct-21 census and no assigned role yet — assign-or-park (§9 C6 pattern) |
 | Gitar Bot | Yes | **Active** — suites 30/30, 42/2,000 comments (as `gitar-bot`) | — |
 | GitHub Copilot for Linear | **No — installed-only** | none observed on the hub repo | New to the matrix; by name a Copilot↔Linear bridge — no check/comment/review footprint in the census, so any use is off-hub or not yet exercised |
-| Google Labs Jules | Yes | **Active, primary coding agent** — authored 279 of 1,292 PRs | Also installed on Research-Astute (§5A) |
+| Google Labs Jules | Yes | Historical app installation; hosted service read-only after 2026-11-11 | Retain the installation record as historical inventory; exclude from live execution routing |
 | Graphite App | Yes | **Active** — suites 30/30 | — |
 | Grok (by xAI) | Yes | none via App | Works in its own app; lands via owner PAT (§4) |
 | HackerOne Code | Yes | none | Dormant (§9 C6) |
@@ -413,7 +413,7 @@ triggered the apps.
 | Surface | Its integration set | Reach |
 |---|---|---|
 | Muse (this agent) | 63 system connectors on disk, **20 confirmed connected** (Google Workspace, Dropbox, Notion, Todoist, Vercel, Figma, Linear, Canva, Zoom, Meta, Lovable, Klaviyo, Replit, Tailscale…) + **2 custom** (`custom.github-pat`, `custom.jules`) + 54 skills | Directly promptable; system connectors card-gated on writes, custom connectors are not |
-| Jules | Own MCPs: **Linear, v0, Render, Neon** connected (Neon verified 2026-10-20 23:35 PDT); **Supabase still open**; Stitch, Tinybird available-not-connected | Prompt Jules; Muse steers via `custom.jules` |
+| Google Jules (retired) | Historical MCP inventory: **Linear, v0, Render, Neon**; prior Supabase work remained open in the 2026-10 snapshot | Hosted service is read-only; the local DoE role-skill bundle carries reusable workflow guidance |
 | Model providers (repo) | **27 quota families** on master (aion, cerebras, cloudflare, cohere, felo, gemini, groq, huggingface, kilo, llm7, mistral, modelscope, nvidia, ollama, omni, openrouter, ovhcloud, sambanova, siliconflow, zai, requesty, routeway, sealion, typhoon, unorouter, xfyun, xkiro); passive adapters implemented for groq, huggingface, ollama, openrouter, sambanova, siliconflow | Inference only — never platform tooling (MAP §C master rule) |
 | Hark / Manus / Grok / Claude / ChatGPT | Own surfaces, own connections (Hark's set not enumerated Muse-side) | Work lands via owner PAT; Provenance/HindSight is the attribution layer |
 
@@ -421,7 +421,7 @@ triggered the apps.
 
 | Job | Primary | Peers / backup | Saturated? |
 |---|---|---|---|
-| Coding (write code) | Jules (Bolt ⚡) | Cursor, Devin, Copilot SWE (unused), Kilo, Factory (dormant) | No — one primary, rest review-weighted |
+| Coding (write code) | Evidence-driven active provider pool in `docs/schemas/agent-roster.yaml` | Tembo, Mistral Vibe, Gemini, OpenRouter and other candidates subject to adapter readiness | Google Jules is retired; local role skills do not act as an execution provider |
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
 | CI / checks | GitHub Actions (201 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only), github-advanced-security CodeQL suites (new 2026-10-23, code scanning) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
@@ -459,7 +459,7 @@ parallel quota threads, each reconciling its own cap before its own dispatch.
 
 | # | Move | Unlock |
 |---|---|---|
-| C1 | Finish Jules ↔ Supabase (last open Jules MCP) | Completes Jules' DB pair (Neon done); Stitch + Tinybird after, same pattern |
+| C1 | Retire the Jules ↔ Supabase dependency | Move any required data operations to a separately admitted, live provider adapter |
 | C2 | Use the 3 Codespaces + 7 Codespaces secrets as the heavy-build lane | Offloads BLU B160V; prebuilds stay owner-gated per CE-001 |
 | C3 | Org-level shared secrets for `Research-Astute` / `search-astute-ly` when their repos start Actions work | Today org stores are empty structure; replicate only the shared telemetry/inference names (HindSight, OpenRouter) — owner-approved credential move, names-first |
 | C4 | Put environment secrets behind the 14 existing environments **only when** a deploy actually needs env-scoped credentials | Environments are currently pure structure; don't pre-fill |

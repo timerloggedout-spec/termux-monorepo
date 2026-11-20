@@ -255,7 +255,7 @@ def run(root: Path, base_sha: str, candidate_sha: str) -> dict:
             "active_refs": len(sweep["active_refs"]),
             "historical_refs": len(sweep["historical_refs"]),
             "ambiguous_refs": len(unresolved), "mapping_errors": len(mapping_errors),
-            "moniker_collisions": len(identity["trigger_collisions"]) + len(identity["duplicate_monikers"]),\n            "external_username_inventory_established": 0,
+            "moniker_collisions": len(identity["trigger_collisions"]) + len(identity["duplicate_monikers"]),
             "external_username_inventory_established": 0,
         },
         "evidence_refs": [

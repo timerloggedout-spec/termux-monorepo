@@ -38,7 +38,7 @@ Related active work: PR #5145 (Observatory + Delphi + DoE pipeline), #5197 (port
 ### 2026-11-19 — ChatGPT
 
 - Disposition: draft submitted
-- Notes: Verified Replica README/setup, current desk/admin-graph/versioning surfaces, refTemplates reference-input contract, DoE family/taxonomy, experiment schema and proposal/dependency authority. See source.md and ITEMS.md. Current preview-manifest completeness and exact submodule gitlink SHAs remain implementation-time verification items.
+- Notes: Verified Replica README/setup, current desk/admin-graph/versioning surfaces, refTemplates reference-input contract, DoE family/taxonomy, experiment schema and proposal/dependency authority. See source.md and ITEMS.md. Current preview-manifest completeness remains an implementation-time verification item. Exact relevant submodule gitlink SHAs are an explicit pre-acceptance gate and must be recorded in step 2 before proposal acceptance in step 3.
 
 ## Checklist (process)
 

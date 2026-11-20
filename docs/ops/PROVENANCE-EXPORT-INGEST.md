@@ -5,7 +5,7 @@ DO treat the VM batch export as the source of record: Jules corpus = 417 session
 ## Pipeline
 1. Route: VM `~/workspace/repo-exports/REQUESTS.jsonl` request line (#5549 drain) ⇒ VM publishes `jules-harvest/2026-11-17/` to the store.
 2. Run `.github/workflows/provenance-export-ingest.yml` (`source_ns=jules-harvest/2026-11-17`).
-3. `scripts/provenance/ingest_exports.py` explodes sessions ⇒ records {prompt ∨ plan ∨ agent message ∨ progress ∨ user turn}; classifies each AT ingestion: `{classifier_id, classifier_version, label, confidence, rule}` (chat_intent ∀ text records; `ml/pipelines/lanes/classify.py` ∀ PR-bearing records; `muse_side_chat_discovery` only for `muse-side-chat/` namespaces).
+3. `scripts/provenance/ingest_exports.py` explodes sessions ⇒ records {prompt ∨ plan ∨ agent message ∨ progress ∨ user turn}; classifies each AT ingestion: `{classifier_id, classifier_version, label, confidence, rule}` (chat_intent ∀ text records; `ml/pipelines/lanes/classify.py` ∀ PR-bearing records; `muse_side_chat_seo` only for `muse-side-chat/` namespaces).
 4. Join to Actions runs (21-day window) by head_sha ∨ head_branch ∨ PR number ⇒ verdict {consistent ∨ claim-unevidenced ∨ no-claim}.
 5. Publish records ⊕ digest ⊕ consumer-read receipt to the store at `provenance/<source_ns>/run-<run_id>/` (append-only).
 6. `scripts/provenance/export_digest.py` = registered consumer (`ops/provenance/consumers.json`); its read receipt ⊢ utilization.

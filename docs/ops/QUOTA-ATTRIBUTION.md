@@ -24,7 +24,7 @@ Requisitions are visible per service (readings, bucket walls, lane-events). Acto
 - `github.api.app_*` — per-installation rate headers: calls consumed per window = measurable per app.
 - `github.actions` — run counts/durations per workflow = measurable; token split per run = ∅.
 - `github.api.user_token` — aggregate bucket only; per-consumer split = ∅ from GitHub; self-stamped ledger (below) is the only route.
-- `jules` — session state + activity feed per session; per-session consumption units (tokens/calls) = ∅ exposed by the API. Activity counts are activity, ≠ consumption.
+- `jules` — historical archive session state + activity feed; per-session consumption units remain unexposed. Activity counts remain activity evidence, separate from consumption.
 - All other registry providers — per-consumer consumption NOT_ESTABLISHED unless the provider's own usage surface names the consumer key.
 
 ## `usage{}` field shape (desk-feed contract)

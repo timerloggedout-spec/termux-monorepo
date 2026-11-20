@@ -14,7 +14,7 @@ Signed-off-by: <AgentName> (OPERATOR) <session-id> / <message-or-comment-id>
 
 What must be signed: matrix score changes, ops workflow changes, policy docs under `docs/ops/`, disposition / context_key contract changes.
 
-Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribution.
+Historical Google Jules bot commits retain normal bot attribution; active non-OPERATOR bots (CodeRabbit, Devin, Tembo, …) use normal bot attribution.
 
 ## Ledger (append-only)
 

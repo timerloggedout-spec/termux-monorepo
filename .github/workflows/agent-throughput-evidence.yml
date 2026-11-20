@@ -20,6 +20,8 @@ on:
       - "tribute scout"
       - "Peer review orchestrator"
       - "Jules on Issues (label / @jules)"
+      - "Legacy Google Jules Requests — Retirement Receipt"
+      - "Legacy Google Jules PR Requests — Retirement Receipt"
       - "Agent review → auto Jules"
       - "Legacy Google Jules Review Feedback — Retirement Receipt"
       - "Gemini review after peers"
@@ -171,6 +173,8 @@ jobs:
               { needle: 'tribute scout', agentId: 'tribute-scout', provider: null, role: 'scout', kind: 'scout', confidence: 0.65 },
               { needle: 'Peer review orchestrator', agentId: 'peer-review-orchestrator', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
               { needle: 'Jules on Issues', agentId: 'jules', provider: 'google-labs', role: 'builder', kind: 'agent', confidence: 0.80 },
+              { needle: 'Legacy Google Jules Requests', agentId: 'doe-issue-triage', provider: 'local-doe', role: 'operator', kind: 'agent', confidence: 0.80 },
+              { needle: 'Legacy Google Jules PR Requests', agentId: 'doe-pr-handoff', provider: 'local-doe', role: 'operator', kind: 'agent', confidence: 0.80 },
               { needle: 'Agent review', agentId: 'agent-review-auto-jules', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
               { needle: 'Legacy Google Jules Review Feedback', agentId: 'doe-reviewer', provider: 'local-doe', role: 'reviewer', kind: 'agent', confidence: 0.80 },
               { needle: 'Gemini review after peers', agentId: 'gemini-peer-review', provider: 'google', role: 'reviewer', kind: 'agent', confidence: 0.80 }

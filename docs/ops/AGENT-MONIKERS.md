@@ -3,12 +3,11 @@
 Creative **display** call-signs for high-performance agent orchestration.
 
 **Critical:** Do **not** `@`-mention monikers that collide with real GitHub usernames.
-Use backticks or plain text for display. Live triggers remain the original handles
-(plus approved aliases registered in the matching workflow).
+Use backticks or plain text for display. Live triggers appear only in rows with a callable handle; historical entries use NONE.
 
 | Role | Display moniker | Live trigger (callable) | Notes |
 |------|-----------------|-------------------------|-------|
-| Jules (implementation) | `h3yVern` | `@jules` | App only reacts to `@jules` · v2 graduated 2026-11-01 (v1 `heyVern`; see Graduations of record) |
+| Jules (Google Labs; retired) | `h3yVern` (historical) | NONE | Hosted service read-only after 2026-11-11; local DoE role guidance lives at `.agents/skills/jules-doe-role-adapter/SKILL.md` · v2 moniker graduation remains historical |
 | Gemini CLI (RETIRED 2026-11-12) | `sparkFlux` (historical only) | NONE — dispatch retired | `@gemini-cli` / `@sparkFlux` are no longer callable routes; use QUE governor + registered peer orchestration. Reviewer unavailable is not a pass. |
 | DeepSeek CI (review/invoke) | `deepCore` | `@deepseek` / `@deepseek-ci` | Workflow also accepts case-insensitive `@deepCore`; labels `deepseek-ci`, `deepseek`, `deepCore` |
 | CodeRabbit (review) | `c0deHound` | `@coderabbitai` | Reviewer identity unchanged · v2 graduated 2026-11-01 (v1 `codeHound`; see Graduations of record) |

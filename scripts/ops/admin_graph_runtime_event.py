@@ -59,7 +59,15 @@ def _route_event(payload: dict[str, Any], context: dict[str, Any]) -> dict[str, 
     if not producer_claim and not executor_claim:
         return None
     issue = payload.get("issue") or {}
-    issue_number = int(issue["number"])
+    issue_url = issue.get("html_url")
+    if issue.get("number") is not None:
+        issue_number = int(issue["number"])
+    else:
+        issue_match = re.search(r"/issues/(\d+)$", str(comment.get("issue_url") or ""))
+        if not issue_match:
+            return None
+        issue_number = int(issue_match.group(1))
+        issue_url = "https://github.com/" + REPO + "/issues/" + str(issue_number)
     comment_id = int(comment["id"])
     run_id = int(context["run_id"])
     run_attempt = int(context.get("run_attempt") or 1)
@@ -89,7 +97,7 @@ def _route_event(payload: dict[str, Any], context: dict[str, Any]) -> dict[str, 
             "step": (provider or arm_id or "route selected")[:160],
             "repo": (payload.get("repository") or {}).get("full_name") or REPO,
             "run_id": run_id, "run_attempt": run_attempt,
-            "head_sha": context.get("head_sha"), "url": issue.get("html_url"),
+            "head_sha": context.get("head_sha"), "url": issue_url,
             "occurred_at": occurred, "actor": (payload.get("sender") or {}).get("login"),
             "payload": route_payload}
 
@@ -110,6 +118,26 @@ def build_events(payload: dict[str, Any], event_name: str,
             raise ValueError("workflow snapshot must contain at most 100 runs")
         return [_workflow_event({"repository": {"full_name": REPO}, "workflow_run": run}, "workflow_run")
                 for run in runs]
+    if event_name == "runtime_snapshot":
+        runs = payload.get("workflow_runs") or []
+        comments = payload.get("issue_comments") or []
+        if not isinstance(runs, list) or len(runs) > 100:
+            raise ValueError("runtime snapshot must contain at most 100 workflow runs")
+        if not isinstance(comments, list) or len(comments) > 2000:
+            raise ValueError("runtime snapshot must contain at most 2000 issue comments")
+        events = [_workflow_event({"repository": {"full_name": REPO}, "workflow_run": run}, "workflow_run")
+                  for run in runs]
+        for comment in comments:
+            user = comment.get("user") or {}
+            wrapper = {
+                "repository": {"full_name": REPO},
+                "sender": {"login": user.get("login")},
+                "comment": comment,
+            }
+            route_event = _route_event(wrapper, context or {})
+            if route_event:
+                events.append(route_event)
+        return events
     if event_name == "issue_comment":
         try:
             return [build_event(payload, event_name, context)]
@@ -131,7 +159,7 @@ def main() -> int:
     args = parser.parse_args()
     payload = json.loads(Path(args.event_file).read_text(encoding="utf-8"))
     context = {"run_id": args.run_id, "run_attempt": args.run_attempt, "head_sha": args.head_sha}
-    if args.event_name == "issue_comment" and not args.run_id:
+    if args.event_name in {"issue_comment", "runtime_snapshot"} and not args.run_id:
         raise SystemExit("issue_comment normalization requires the observer workflow run id")
     events = build_events(payload, args.event_name, context)
     if any(event["repo"] != REPO for event in events):

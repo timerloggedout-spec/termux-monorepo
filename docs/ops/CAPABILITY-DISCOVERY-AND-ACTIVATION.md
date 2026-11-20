@@ -109,8 +109,11 @@ python3 scripts/capabilities/discover.py scan --root . \
   --plugin-skills-json /path/to/plugin-skills.json \
   --tool-actions-json /path/to/tool-actions.json
 
-# Return a compact shortlist
+# Return a compact local shortlist
 python3 scripts/capabilities/discover.py find "task intent" --limit 8
+
+# Optional read-only skills.sh catalog search (requires a short-lived Vercel OIDC token)
+python3 scripts/capabilities/discover.py find "database agent skills" --skills-sh --limit 8
 
 # Focused contract tests
 python3 -m unittest tests.test_capability_discovery -v

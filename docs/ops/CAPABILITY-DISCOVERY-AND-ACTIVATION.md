@@ -10,7 +10,7 @@
 
 Discover the broad capability universe while keeping model context small. Search nested repository workspaces, all supported skill file forms, vendor directories, external skill catalogs, plugin skill catalogs and tool-action exports. Classify and deduplicate candidates before loading full instructions or tool schemas.
 
-The index is a metadata projection, not a new source of truth. Canonical files and providers retain ownership of their definitions, permissions, versions and runtime state.
+The index is a metadata projection, not a new source of truth. Plugin manifests are indexed without copying server commands, endpoint credentials or complete tool schemas. Canonical files and providers retain ownership of their definitions, permissions, versions and runtime state.
 
 ## Nested discovery coverage
 
@@ -20,7 +20,7 @@ The repository scan recognizes:
 - `.github/**/SKILL.md` — automation and production skills;
 - `.claude/**/SKILL.md` — harness-specific skills;
 - `docs/**/SKILL.md` — documentation mirrors and operational companions;
-- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;\n- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
+- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;\n- plugin/tool manifests: `plugin.json`, `marketplace.json`, `.mcp.json`, `mcp.json`, `tools.json` and `tool-manifest.json`; only manifest identity, description, version and entry counts are indexed;\n- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
 - `vendor/**` skill definitions, classified as unverified vendor inputs;
 - optional JSON exports of session plugin skills and tool actions.
 

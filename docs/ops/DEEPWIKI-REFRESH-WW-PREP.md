@@ -44,5 +44,5 @@ Continuous = (a) every campaign dispatch, and (b) an episodic staleness check: a
 | This prep (targets, flow, cadence, evidence format) | ✅ wired |
 | Campaign issue with embedded session brief | ✅ wired |
 | Evaluator pattern (Gemini, evidence-only) | ✅ wired (DoE pattern) |
-| Builder execution | ⏳ waits on Jules arm recovery (probe completion) |
+| Builder execution | ⏳ awaits a verified non-Jules adapter; local DoE role skills provide task guidance |
 | Devin API automation | ⏳ waits on provisioning gate (leg 1) |

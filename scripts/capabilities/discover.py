@@ -343,7 +343,7 @@ def connect(db: Path) -> sqlite3.Connection:
     con.execute("CREATE INDEX IF NOT EXISTS idx_capability_edge_from ON capability_edge(from_id,relation)")
     con.execute("""CREATE TABLE IF NOT EXISTS catalog_cache (
       cache_key TEXT PRIMARY KEY, source TEXT NOT NULL, payload TEXT NOT NULL,
-      expires_at REAL NOT NULL, cached_at REAL DEFAULT (unixepoch())
+      expires_at REAL NOT NULL, cached_at REAL NOT NULL
     )""")
     return con
 

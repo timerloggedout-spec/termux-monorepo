@@ -1,8 +1,8 @@
 # Repo tracking — lane × project × state × last-merge × next
 
-Generated: `2026-11-20T02:54:05Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
+Generated: `2026-11-20T06:48:40Z` · schema `repo-tracking/v1` · single-writer: `repo-tracking-collect.yml` — **do not hand-edit** (contract: [REPO-TRACKING.md](../../docs/ops/REPO-TRACKING.md))
 
-Sources: PR feed read_at=`2026-11-20T02:54:04Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`95031` read_at=`2026-11-20T02:54:04Z`
+Sources: PR feed read_at=`2026-11-20T06:48:39Z` (merged 150 · open 200) · lane-events(Neon) status=`ok` count=`97460` read_at=`2026-11-20T06:48:39Z`
 
 Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknown=8
 
@@ -11,29 +11,29 @@ Rows: 22 · by_state: active=1 · closed=1 · in-flight=11 · landed=1 · unknow
 | challenges | `challenge-entries` | D0 Delphi Oracle | closed | NOT_ESTABLISHED | IN UPGRADE MAINTENANCE (owner correction 2026-11-03, D0 seat): the 4/4 close was the UPGRADE program's, ¬ the entry's maintenance life · production owner = Optimizations (Swarm seat) · PAIR CLOSED 2026-11-03: repo ✓ (2026-10-31) + per-entry AppID ✓ (App 5602904 · install 178358203, delphi-oracle ONLY; record PR #4659) · adoption (workflow mint steps in delphi-oracle) = follow-on PRs via Optimizations · winners capture leg #4547 unchanged |
 | challenges | `challenge-entries-amd` | C11 AMD AI League / Academy | in-flight | #5312 `ec92552eced8` 2026-11-13T07:05:43Z | Routes after M3 or when builders idle · LANDING TARGET Nov 28 (league wall Dec 1 11:00 PT; M4 target Nov 9 stands). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d1` | D1 StudySprint (Workshop to Ship) | unknown | NOT_ESTABLISHED | SUBMITTED 2026-11-03 (confirmation_ref in submission) · open line to the wall: v1.0.0 cut on the richest green tree · article currency edit · frozen-state verification at the freeze · $5,000 AT_RISK (OC-003) resolves at event close |
-| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | in-flight | NOT_ESTABLISHED | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target DECIDED 2026-11-04 00:51 PT: B — Quarantine Browser Clerk (C1·B) · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · kickoff mechanics FIRE on the decision (pick stage done → spec active) · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn · LANDING TARGET Nov 7 (wall: submission ≤ Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
+| challenges | `challenge-entries-d2` | D2 Vultr Agent Rush | unknown | NOT_ESTABLISHED | Queue leg CLOSED (WAF spec struck, owner direct 2026-11-01) · D2 production target DECIDED 2026-11-04 00:51 PT: B — Quarantine Browser Clerk (C1·B) · kickoff mechanics stand OUTSIDE batch @2026-11-03T15:00Z: {new repo ∧ new AppID via 7075f9c0 ∧ Vultr account + $200 gift code (gate D2-NOCARD) ∧ team} · kickoff mechanics FIRE on the decision (pick stage done → spec active) · ROUTE Δ (D2 seat, 2026-11-01): kickoff routing = DeepSeek + command-dispatch until recovery probe PASS; Jules-primary suspended ¬ deleted; ∅ silent reroute beyond this named pair · ARMS Δ (2026-11-01, manager/Swarm): DeepSeek tunnel DOWN (tunnel-unresolved skip ×2, agent ∅ invoked — runs 41301295882/41321691938) ⇒ live arms @kickoff 2026-11-03 = command-dispatch ALONE {Jules DOWN · Gemini OUT · DeepSeek DOWN}; restoration ⇒ desk flags D2 seat same-turn · LANDING TARGET Nov 7 (wall: submission ≤ Nov 8 15:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d3` | D3 ListingLens (Builder.io) | landed | #5251 `860582e0d0b5` 2026-11-12T15:23:47Z | Nov 1 checkpoint met build-side (landed 2026-10-30); submission deadline 2026-11-09 · ROUTE Δ (D3 seat, 2026-11-01): batch B1–B5 trigger route = DeepSeek + command-dispatch until recovery probe PASS (Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) ∧ Gemini-CLI build leg OUT); producer-naming req unchanged · LANDING TARGET Nov 8 (wall: submission Nov 9 23:59 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d4` | D4 Kiroween (skeleton-crew) | unknown | NOT_ESTABLISHED | BATCH QUEUED (owner batch order 2026-11-01, priority ↑) · dispatch AT build window >2026-11-08, ∅ fire before window · AppID owed at build start via AppID lane 7075f9c0 (owner rule 2026-11-01) — flagged for dispatch · gate D4-ACCOUNTS still open (Kiro ID, ≤2026-12-01T12:00PT) · submit 2026-12-04 14:00 PT · PROVIDER Δ (2026-11-01): Jules DOWN (created 3/completed 0/errored 3, Swarm 2026-11-01; opportunistic OFF) + Gemini build leg OUT (Swarm via manager) — at build window, route re-selects per manager rule {DeepSeek + command-dispatch} unless recovery probe PASS first · LANDING TARGET Dec 2 (wall: submit Dec 4 14:00 PT). OWNER BUFFER RULE (2026-11-02): wall ≠ landing — desk dispatch planning consumes the LANDING TARGET; final stretch = buffer + submission mechanics only, ∅ build dispatch into it. |
 | challenges | `challenge-entries-d5` | D5 Aha! AI Builder Day | in-flight | #5582 `c4159225e3da` 2026-11-17T16:29:57Z | kickoff 2026-11-17 09:00 PT · on Registry issuance ⇒ repo+AppID dispatch (AppID lane 7075f9c0) ⇒ spec ⇒ Desk QUE filing ⇒ Swarm build (claim-free construction; submission claim OFF — ruling issued; reinstatement pre-wall re-opens it; appeal in flight) · landing Nov 18 EOD · wall 2026-11-19 12:00 PT SUBMIT-ONCE (claim gated) · awards 2026-11-20 11:30 PT |
-| classifiers | `tier-1` | Tier-1 classifier engine | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
+| classifiers | `tier-1` | Tier-1 classifier engine | in-flight | NOT_ESTABLISHED | land/close PR #5681 — feat(capabilities): nested skill/plugin/tool discovery and progressive activation |
 | desk | `contribution-desk` | Contribution Desk + desk-feed | active | #5215 `25215ce21f8c` 2026-11-12T10:36:15Z | NOT_ESTABLISHED |
 | desk | `ops` | Lane-events Neon ledger | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5665 — feat(pcdoe): add compounding production prioritization companion |
+| doe | `doe` | DoE campaigns (lab-1 / pilot-1 / live waves) | in-flight | #5648 `c9648146400d` 2026-11-19T09:11:31Z | land/close PR #5680 — docs: contextual skill, plugin and tool activation with DoE coverage |
 | doe | `doe-nc1` | DoE nc-1 notation-compliance | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | marketing | `marketing` | FB Pages MVT + challenge promo | in-flight | #5456 `dacd20c4c57c` 2026-11-15T13:42:20Z | land/close PR #5630 — fix(que): harden BRR regression evidence and promotion boundary |
 | marketing | `marketing-social` | Social connectors (Meta Pages / WhatsApp) | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | opportunities | `challenge-entries` | Challenge OSINT + opportunity ledger | in-flight | #5558 `bca4313025b0` 2026-11-17T14:18:40Z | land/close PR #2235 — chore(osint): refresh coverage + page snapshots |
 | providers | `providers` | Provider registry / catalog / availability | in-flight | NOT_ESTABLISHED | land/close PR #3916 — chore(reviewer-metrics): regenerate provider x context map |
 | providers | `providers-phrases` | Provider-phrases SSOT + JIT phrase layer | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
-| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | NOT_ESTABLISHED | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
+| providers | `telemetry` | HindSight + Provenance telemetry ingest | in-flight | #5684 `79943221cc5f` 2026-11-20T06:23:04Z | land/close PR #3890 — chore(telemetry): refresh HindSight+Provenance ingest |
 | quota | `quota` | Quota registry / allocations / dispatch-tree | in-flight | #5617 `4138579e33f9` 2026-11-18T11:18:08Z | land/close PR #5034 — chore(dashboards): refresh dispatch-tree feed |
 | replay | `repo-replay` | Repo Replay | unknown | NOT_ESTABLISHED | NOT_ESTABLISHED |
 | swarm | `swarm` | Swarm App + F1 token migration wave | in-flight | #5359 `5e57dcd3d1e8` 2026-11-13T17:17:46Z | land/close PR #1470 — feat(swarms): publish Kye parity adapters, research lanes, and remote validation |
-| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #4069 — chore(dashboards): refresh surface feeds |
+| webdev-viz | `web-design-viz` | Fleet landing + dashboard/viz surfaces | in-flight | NOT_ESTABLISHED | land/close PR #5673 — C13 Covenant — draft package landing (QUE #5671) |
 
 ## Provider × DoE settings (join: DESIGN.json × treatment.instance)
 
-Campaigns: 18 · joined: 2 · distinct instances: 17 · providers: Muse, cohere, google, mistral, openrouter, sealion
+Campaigns: 18 · joined: 2 · distinct instances: 18 · providers: Muse, baseten, cohere, google, mistral, openrouter, sealion
 
 | campaign | provider | model@version | role | prompt (ref#sha12) | moniker | context | instance_key | plan | recorded | dispatched |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -58,9 +58,10 @@ Campaigns: 18 · joined: 2 · distinct instances: 17 · providers: Muse, cohere,
 | phone-1-mcp-background-control | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | pilot-1-context-routing-x-compression | NOT_ESTABLISHED (design_only) | | | | | | | | | |
 | routed-dispatch | Muse | Muse Spark 1.3 | builder | docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md#7d7481cc3c52 | optimizations-assurance | fan-out wiring completion set (build-class) | `1a60e8329fb6…` | 0 | 3 | 0 |
+| routed-dispatch | baseten | openai/gpt-oss-120b | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `4c9b24b77fe3…` | 0 | 1 | 0 |
 | routed-dispatch | cohere | c4ai-aya-expanse-32b | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | certifications-unit l1-relational-databases-v9/061 | `7434577f5900…` | 0 | 1 | 0 |
 | routed-dispatch | cohere | command-a-03-2025 | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `598950850240…` | 0 | 1 | 0 |
-| routed-dispatch | google | gemini-3.5-flash-lite | builder | scripts/ops/build_arm_harness.py#system-prompt#NOT_ESTABLIS | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `ed64aec90f3b…` | 0 | 2 | 0 |
+| routed-dispatch | google | gemini-3.5-flash-lite | builder | scripts/ops/build_arm_harness.py#system-prompt#NOT_ESTABLIS | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `ed64aec90f3b…` | 0 | 3 | 0 |
 | routed-dispatch | mistral | codestral-2508 | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `b39313a3a380…` | 0 | 1 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/certifications/run_unit.py#c34eb7290dfe | optimizations-assurance | FCC L1 M5 theory batch (cert-unit workflow dispatch) | `7e20822af41d…` | 0 | 3 | 0 |
 | routed-dispatch | sealion | aisingapore/Llama-SEA-LION-v3-70B-IT | builder | scripts/ops/build_arm_harness.py#system-prompt#04de4332afa3 | providers-dispatch-fix | build-dispatch multi-arm (#5151) | `a1d2b5ece4e2…` | 0 | 2 | 0 |
@@ -73,4 +74,4 @@ Campaigns: 18 · joined: 2 · distinct instances: 17 · providers: Muse, cohere,
 
 ## Gaps (named, never synthesized)
 
-- merged PRs unclassified by seed match rules: 116/150 (extend ops/tracking/projects.json match rules)
+- merged PRs unclassified by seed match rules: 112/150 (extend ops/tracking/projects.json match rules)

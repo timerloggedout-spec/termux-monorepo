@@ -1,6 +1,6 @@
 {
  "schema": "nested-family/v1",
- "generated_at": "2026-11-20T02:54:05Z",
+ "generated_at": "2026-11-20T06:48:40Z",
  "generated_by": "scripts/tracking/nested_family.py via repo-tracking-collect.yml (single-writer)",
  "spec": {
   "doc": "docs/ops/NESTED-FAMILY.md",
@@ -11,8 +11,8 @@
   {
    "id": "records",
    "path": "experiments/doe/routed-dispatch/records/*.json",
-   "records_read": 39,
-   "records_used": 39
+   "records_read": 41,
+   "records_used": 41
   },
   {
    "id": "campaign-records",
@@ -23,19 +23,19 @@
   {
    "id": "stamps",
    "path": "experiments/doe/routed-dispatch/stamps/*.json",
-   "records_read": 38,
+   "records_read": 40,
    "records_used": 0
   },
   {
    "id": "intake",
    "path": "ops/3l0/intake.jsonl",
-   "records_read": 39,
+   "records_read": 41,
    "records_used": 0
   },
   {
    "id": "desk-usage",
    "path": "ops/challenge/desk-feed.json#traversals[].provider_usage",
-   "records_read": 64,
+   "records_read": 66,
    "records_used": 17
   }
  ],
@@ -147,21 +147,21 @@
  },
  "summary": {
   "providers": 19,
-  "models": 26,
+  "models": 27,
   "roles": 6,
-  "tasks": 60,
-  "dispatches": 43,
+  "tasks": 62,
+  "dispatches": 45,
   "registry_providers": 96,
   "zero_dispatch_providers": 87,
   "by_outcome": {
    "(prose state \u2014 verbatim in tasks)": 4,
    "passed": 26,
-   "failed": 9,
-   "observed": 4
+   "failed": 10,
+   "observed": 5
   },
   "by_source": {
    "desk-usage": 17,
-   "records": 39,
+   "records": 41,
    "campaign-records": 4
   }
  },
@@ -471,10 +471,51 @@
        "source_ref": "experiments/doe/routed-dispatch/records/cert-unit-41374860979.json"
       }
      ]
+    },
+    {
+     "model": "openai/gpt-oss-120b",
+     "roles": [
+      "builder"
+     ],
+     "monikers": [
+      "providers-dispatch-fix"
+     ],
+     "contexts": [
+      "build-dispatch multi-arm (#5151)"
+     ],
+     "task_count": 1,
+     "tasks": [
+      {
+       "task_class": "entry-build",
+       "role": "builder",
+       "moniker": "providers-dispatch-fix",
+       "context": "build-dispatch multi-arm (#5151)",
+       "dispatch_id": "build-dispatch-44665351524-baseten-gpt-oss",
+       "run_id": "44665351524",
+       "workflow": "build-dispatch.yml",
+       "session_id": null,
+       "ts": "2026-11-20T03:09:30Z",
+       "outcome": {
+        "status": "observed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "4c9b24b77fe3a22224d4d58f52c75133041b1c0b936fc08d7e6ed171d5690db1",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "run_id": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-44665351524-baseten-gpt-oss.json"
+      }
+     ]
     }
    ],
-   "model_count": 1,
-   "task_count": 1,
+   "model_count": 2,
+   "task_count": 2,
    "zero_dispatch": false
   },
   {
@@ -1609,7 +1650,7 @@
      "contexts": [
       "build-dispatch multi-arm (#5151)"
      ],
-     "task_count": 2,
+     "task_count": 3,
      "tasks": [
       {
        "task_class": "entry-build",
@@ -1662,12 +1703,38 @@
        },
        "source": "records",
        "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-44424808598-gemini-cli.json"
+      },
+      {
+       "task_class": "entry-build",
+       "role": "builder",
+       "moniker": "providers-dispatch-fix",
+       "context": "build-dispatch multi-arm (#5151)",
+       "dispatch_id": "build-dispatch-44666207835-gemini-cli",
+       "run_id": "44666207835",
+       "workflow": "build-dispatch.yml",
+       "session_id": null,
+       "ts": "2026-11-20T03:15:05Z",
+       "outcome": {
+        "status": "failed",
+        "gate_call": null,
+        "confirmed": null
+       },
+       "instance_key": "ed64aec90f3b08b16a653864909bb94f4c20fd3dd9d5e611dd6cdb77cee43b65",
+       "first_pass": null,
+       "origin": "live",
+       "pr": null,
+       "field_sources": {
+        "run_id": "stamps",
+        "workflow": "stamps"
+       },
+       "source": "records",
+       "source_ref": "experiments/doe/routed-dispatch/records/build-dispatch-44666207835-gemini-cli.json"
       }
      ]
     }
    ],
    "model_count": 1,
-   "task_count": 2,
+   "task_count": 3,
    "zero_dispatch": false
   },
   {

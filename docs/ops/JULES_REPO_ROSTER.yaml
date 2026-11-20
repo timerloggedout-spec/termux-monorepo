@@ -1,6 +1,6 @@
-version: 1
-updated_at: "2026-08-03T20:00:00Z"
-updated_by: grok-archw1z
+version: 2
+updated_at: "2026-11-19"
+updated_by: "ChatGPT with operator direction"
 
 home:
   owner: timerloggedout-spec
@@ -13,7 +13,17 @@ home:
   gates: [repo-gate, termux-smoke]
 
 policy:
+  selection: adaptive_dynamic_awareness
+  scope_authority: [CLAUDE.md, docs/proposals/registry.yaml, active_ITEMS]
   scavenge: depth-1-sparse-metadata
+  agent_owns: [branch, implement, pull_request, review, merge_to_master_staging, gates]
   human_only: [credential_rotation, history_rewrite, app_permissions]
-  human_temporary: [termux-smoke_cherry_pick_until_automated]
-  agent_owns: [branch, implement, pr, merge_to_master_staging, gates]
+  retired_integrations:
+    - id: google-jules
+      effective_date: "2026-11-01"
+      status: retired_locally
+      note: "Google's vendor timeline is recorded separately in docs/ops/INTEGRATION-DRIFT-2026-11-19.md."
+  external_tracker:
+    id: linear
+    status: optional_degraded
+    fallback: "Continue from accepted repository proposal items and GitHub evidence."

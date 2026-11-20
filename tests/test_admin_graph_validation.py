@@ -80,6 +80,12 @@ def test_validation_failures_are_visible_in_verify_panel():
 
 def test_graph_search_is_keyboard_accessible_and_view_only():
     html = _html()
+    assert 'id="mobileInspector"' in html and 'id="closeInspector"' in html
+    assert '.mobile-inspector.open{display:block;position:fixed' in html
+    assert 'function setMobileInspectorOpen(open)' in html
+    assert 'if(rerender&&window.matchMedia&&window.matchMedia("(max-width:1080px)").matches)setMobileInspectorOpen(true)' in html
+    assert 'document.getElementById("mbInspect").addEventListener("click"' in html
+    assert 'document.getElementById("closeInspector").addEventListener("click"' in html
     assert 'id="graphSearch"' in html
     assert 'aria-label="Search graph nodes"' in html
     assert 'aria-keyshortcuts="/"' in html
@@ -104,7 +110,7 @@ def test_admin_graph_mobile_first_contract():
     assert 'padding-bottom:118px' in html
     assert 'env(safe-area-inset-bottom)' in html
     assert 'main.canvas-wrap{order:1;min-height:54vh;height:54vh}' in html
-    for control in ("mbFocus", "mbFit", "mbNode", "mbFs", "mbDiff", "mbDispatch", "mbProposal"):
+    for control in ("mbInspect", "mbFit", "mbNode", "mbFs", "mbDiff", "mbDispatch", "mbProposal"):
         assert f'id="{control}"' in html, control
     assert 'id="graphSearch"' in html
     assert 'id="searchPrev"' in html and 'id="searchNext"' in html and 'id="searchClear"' in html

@@ -313,11 +313,13 @@ def connect(db: Path) -> sqlite3.Connection:
       locator TEXT NOT NULL, name TEXT NOT NULL, description TEXT NOT NULL,
       content_sha256 TEXT, domain TEXT NOT NULL, function TEXT NOT NULL,
       facets TEXT NOT NULL, trust TEXT NOT NULL, lifecycle TEXT NOT NULL,
-      version_ref TEXT, taxonomy_sha256 TEXT, tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      version_ref TEXT, taxonomy_sha256 TEXT, aliases TEXT NOT NULL DEFAULT '[]',
+      permissions TEXT NOT NULL DEFAULT '[]', tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
     capability_columns = {row[1] for row in con.execute("PRAGMA table_info(capability)")}
-    if "taxonomy_sha256" not in capability_columns:
-        con.execute("ALTER TABLE capability ADD COLUMN taxonomy_sha256 TEXT")
+    for column, declaration in (("taxonomy_sha256","TEXT"),("aliases","TEXT NOT NULL DEFAULT '[]'"),("permissions","TEXT NOT NULL DEFAULT '[]'")):
+        if column not in capability_columns:
+            con.execute(f"ALTER TABLE capability ADD COLUMN {column} {declaration}")
     try:
         con.execute("CREATE VIRTUAL TABLE IF NOT EXISTS capability_fts USING fts5(id UNINDEXED,name,description,tags,tokenize='unicode61')")
     except sqlite3.OperationalError:
@@ -349,17 +351,19 @@ def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
             ("reclassified" if old[1] != row.get("taxonomy_sha256") else "seen")
         )
         con.execute("""INSERT INTO capability
-          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,taxonomy_sha256,tags)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,taxonomy_sha256,aliases,permissions,tags)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,source_id=excluded.source_id,
           locator=excluded.locator,name=excluded.name,description=excluded.description,
           content_sha256=excluded.content_sha256,domain=excluded.domain,function=excluded.function,
           facets=excluded.facets,trust=excluded.trust,lifecycle=excluded.lifecycle,
           version_ref=excluded.version_ref,taxonomy_sha256=excluded.taxonomy_sha256,
+          aliases=excluded.aliases,permissions=excluded.permissions,
           tags=excluded.tags,updated_at=CURRENT_TIMESTAMP""",
           (row["id"],row["kind"],row["source_id"],row["locator"],row["name"],row["description"],
            row["content_sha256"],row["domain"],row["function"],json.dumps(row["facets"]),
-           row["trust"],row["lifecycle"],row["version_ref"],row.get("taxonomy_sha256")," ".join(row["tags"])))
+           row["trust"],row["lifecycle"],row["version_ref"],row.get("taxonomy_sha256"),
+           json.dumps(row.get("aliases",[])),json.dumps(row.get("permissions",[]))," ".join(row["tags"])))
         con.execute("DELETE FROM capability_fts WHERE id=?", (row["id"],))
         con.execute("INSERT INTO capability_fts(id,name,description,tags) VALUES (?,?,?,?)",
                     (row["id"],row["name"],row["description"]," ".join(row["tags"])))

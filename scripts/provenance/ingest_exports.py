@@ -36,7 +36,19 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts" / "classifiers"))
 
 SCHEMA = "provenance-export-record/v1"
-INGEST_VERSION = "provenance-ingest v1"\nMUSE_DISCOVERY_VERSION = "muse-side-chat-discovery v1"\nMUSE_DISCOVERY_PATTERNS = (\n    ("moniker", re.compile(r"\\bmonikers?\\b", re.I)),\n    ("collision", re.compile(r"\\bcollisions?\\b", re.I)),\n    ("marketing", re.compile(r"\\bmarketing\\b", re.I)),\n    ("naming", re.compile(r"\\bnaming\\b", re.I)),\n    ("anon", re.compile(r"\\banon(?:ymous|ymity)?\\b", re.I)),\n    ("4n0nSEC", re.compile(r"(?<![A-Za-z0-9_])4n0nsec(?![A-Za-z0-9_])", re.I)),\n    ("4n∅N", re.compile(r"(?<![A-Za-z0-9_])4n∅n(?![A-Za-z0-9_])", re.I)),\n    ("4n∅nSEC", re.compile(r"(?<![A-Za-z0-9_])4n∅nsec(?![A-Za-z0-9_])", re.I)),\n    ("profiles", re.compile(r"\\bprofiles?\\b", re.I)),\n)
+INGEST_VERSION = "provenance-ingest v1"
+MUSE_DISCOVERY_VERSION = "muse-side-chat-discovery v1"
+MUSE_DISCOVERY_PATTERNS = (
+    ("moniker", re.compile(r"\\bmonikers?\\b", re.I)),
+    ("collision", re.compile(r"\\bcollisions?\\b", re.I)),
+    ("marketing", re.compile(r"\\bmarketing\\b", re.I)),
+    ("naming", re.compile(r"\\bnaming\\b", re.I)),
+    ("anon", re.compile(r"\\banon(?:ymous|ymity)?\\b", re.I)),
+    ("4n0nSEC", re.compile(r"(?<![A-Za-z0-9_])4n0nsec(?![A-Za-z0-9_])", re.I)),
+    ("4n∅N", re.compile(r"(?<![A-Za-z0-9_])4n∅n(?![A-Za-z0-9_])", re.I)),
+    ("4n∅nSEC", re.compile(r"(?<![A-Za-z0-9_])4n∅nsec(?![A-Za-z0-9_])", re.I)),
+    ("profiles", re.compile(r"\\bprofiles?\\b", re.I)),
+)
 SECRET_SHAPES = re.compile(
     r"(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_\-]{20,}|AIza[0-9A-Za-z_\-]{30,}|"
     r"xox[abpr]-[A-Za-z0-9\-]{10,}|hf_[A-Za-z0-9]{20,})")
@@ -87,7 +99,14 @@ CHAT_INTENT, CHAT_INTENT_VERSION = _chat_intent()
 CLASSIFY_PR, CLASSIFY_PR_VERSION = _pr_lane()
 
 
-def muse_discovery_terms(text: str, source_ns: str) -> list[str]:\n    """Return privacy-safe topic labels only for Muse side-chat exports."""\n    if not source_ns.startswith("muse-side-chat/"):\n        return []\n    return [label for label, pattern in MUSE_DISCOVERY_PATTERNS if pattern.search(text or "")]\n\n\ndef classify_record(text: str, pull_request: dict[str, Any] | None, source_ns: str | None = None) -> list[dict[str, Any]]:
+def muse_discovery_terms(text: str, source_ns: str) -> list[str]:
+    """Return privacy-safe topic labels only for Muse side-chat exports."""
+    if not source_ns.startswith("muse-side-chat/"):
+        return []
+    return [label for label, pattern in MUSE_DISCOVERY_PATTERNS if pattern.search(text or "")]
+
+
+def classify_record(text: str, pull_request: dict[str, Any] | None, source_ns: str | None = None) -> list[dict[str, Any]]:
     out = []
     if CHAT_INTENT is not None and text:
         res = CHAT_INTENT.classify(text[:4000])
@@ -102,6 +121,13 @@ def muse_discovery_terms(text: str, source_ns: str) -> list[str]:\n    """Return
         lane = CLASSIFY_PR(pull_request)
         out.append({"classifier_id": "ml.pipelines.lanes.classify", "classifier_version": CLASSIFY_PR_VERSION,
                     "label": getattr(lane, "value", str(lane)), "confidence": 1.0, "rule": "deterministic-rules"})
+    if source_ns and source_ns.startswith("muse-side-chat/"):
+        terms = muse_discovery_terms(text, source_ns)
+        if terms:
+            out.append({"classifier_id": "muse_side_chat_discovery",
+                        "classifier_version": MUSE_DISCOVERY_VERSION,
+                        "label": "topic_match", "confidence": 1.0,
+                        "rule": "versioned-topic-lexicon", "terms": terms})
     return out
 
 

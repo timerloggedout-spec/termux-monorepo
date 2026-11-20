@@ -361,11 +361,11 @@
     {
       "id": "claude-export-import-pr-5667",
       "kind": "repository-import-adapter",
-      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17@42eb1b061740",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/b9c6d2e6320372433bd20941e243f007d7b66bef",
       "trust": "repository-canonical",
       "refresh": "pull-request-head",
       "import_mode": "review-required; source-data-integrity-unverified",
-      "note": "PR #5667 contains scripts/skills/import_claude_export.py, scripts/skills/validate_claude_export.py, vendor/skills-mirror, .skills/index.json and source-manifest records for 1,299 skills and 1,218 plugin inventory rows. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any available SHA256SUMS entries and records source coverage. Current source status remains UNVERIFIED because five listed split parts are absent and the sums do not cover the combined archive or CSVs. 43 skill rows have blank plugin_dir; examples/public appear in plugin inventory without matching skill rows. Imported definitions remain unverified vendor content until the source checksum chain is resolved."
+      "note": "PR #5667 contains scripts/skills/import_claude_export.py, scripts/skills/validate_claude_export.py, vendor/skills-mirror, .skills/index.json and source-manifest records for 1,299 skills and 1,218 plugin inventory rows. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any available SHA256SUMS entries and records source coverage. Current source status remains UNVERIFIED because five listed split parts are absent and the sums do not cover the combined archive or CSVs. 43 skill rows have blank plugin_dir; examples/public appear in plugin inventory without matching skill rows. Imported definitions remain unverified vendor content until the source checksum chain is resolved. The branch is currently 26,515 commits behind master and its PR is non-mergeable; retain it as a pinned forensic reference and split/rebase before promotion."
     },
     {
       "id": "repo-tool-docs",

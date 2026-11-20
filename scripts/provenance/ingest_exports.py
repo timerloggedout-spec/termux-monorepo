@@ -39,15 +39,15 @@ SCHEMA = "provenance-export-record/v1"
 INGEST_VERSION = "provenance-ingest v1"
 MUSE_DISCOVERY_VERSION = "muse-side-chat-discovery v1"
 MUSE_DISCOVERY_PATTERNS = (
-    ("moniker", re.compile(r"\\bmonikers?\\b", re.I)),
-    ("collision", re.compile(r"\\bcollisions?\\b", re.I)),
-    ("marketing", re.compile(r"\\bmarketing\\b", re.I)),
-    ("naming", re.compile(r"\\bnaming\\b", re.I)),
-    ("anon", re.compile(r"\\banon(?:ymous|ymity)?\\b", re.I)),
+    ("moniker", re.compile(r"\bmonikers?\\b", re.I)),
+    ("collision", re.compile(r"\bcollisions?\\b", re.I)),
+    ("marketing", re.compile(r"\bmarketing\\b", re.I)),
+    ("naming", re.compile(r"\bnaming\\b", re.I)),
+    ("anon", re.compile(r"\banon(?:ymous|ymity)?\\b", re.I)),
     ("4n0nSEC", re.compile(r"(?<![A-Za-z0-9_])4n0nsec(?![A-Za-z0-9_])", re.I)),
     ("4n∅N", re.compile(r"(?<![A-Za-z0-9_])4n∅n(?![A-Za-z0-9_])", re.I)),
     ("4n∅nSEC", re.compile(r"(?<![A-Za-z0-9_])4n∅nsec(?![A-Za-z0-9_])", re.I)),
-    ("profiles", re.compile(r"\\bprofiles?\\b", re.I)),
+    ("profiles", re.compile(r"\bprofiles?\\b", re.I)),
 )
 SECRET_SHAPES = re.compile(
     r"(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_\-]{20,}|AIza[0-9A-Za-z_\-]{30,}|"

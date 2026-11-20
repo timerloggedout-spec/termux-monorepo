@@ -107,7 +107,11 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(first["changed"], 1)
             self.assertEqual(second["changed"], 0)
             self.assertEqual(con.execute("SELECT count(*) FROM discovery_event").fetchone()[0], 1)
-            self.assertEqual(len(search(con, "testing workflow")), 1)
+            hits = search(con, "testing workflow")
+            self.assertEqual(len(hits), 1)
+            self.assertEqual(hits[0]["source_id"], "repo-agent-skills")
+            self.assertIn("skill", hits[0]["facets"])
+            self.assertIsInstance(hits[0]["tags"], list)
             changed_taxonomy = {**rows[0], "taxonomy_sha256": "a" * 64}
             reclassified = upsert(con, [changed_taxonomy])
             self.assertEqual(reclassified["changed"], 1)

@@ -1,7 +1,7 @@
 schema_version: cns-organ-registry/v1
-updated_at: "2026-11-20"
+updated_at: "2026-11-19"
 repository: timerloggedout-spec/termux-monorepo
-source_ref: "master@939ecc225675541d1ad5b829b427c7ac77ac2642"
+source_ref: "master@82d4adb804d1b5f990954b29b101bd1ad10eee8b"
 authority_model: "Existing organs retain canonical state and mutation authority; CNS records metadata and relationships."
 organs:
   - id: governance
@@ -102,7 +102,8 @@ organs:
     plane: routing
     status: proposed_open_draft
     owner: provider_arbitration
-    canonical_sources: [scripts/orbit_arbitration.py, scripts/shield_context.py, docs/ops/ORBIT-SHIELD-ARCHITECTURE.md]
+    canonical_sources: [docs/ops/AGENT-TEAM-ORCHESTRATION.md]
+    proposal_refs: ["https://github.com/timerloggedout-spec/termux-monorepo/pull/5544"]
     related_prs: [5544]
     responsibilities: [context_admission,provider_arbitration,select_defer_veto_observations]
     authority_boundary: "Observe-only integration precedes any routing-policy authority."
@@ -113,9 +114,8 @@ organs:
     status: proposed_open_draft
     owner: event_contract
     canonical_sources:
-      - docs/ops/brain-architecture/contracts/SYNAPTIC-BUS-CONTRACT.md
-      - docs/ops/brain-architecture/contracts/SYNAPTIC-BUS-ENVELOPE.schema.json
-      - tools/ade_synapse/orchestration_receipt_adapter.py
+      - docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md
+    proposal_refs: ["https://github.com/timerloggedout-spec/termux-monorepo/pull/5637"]
     related_prs: [5637]
     responsibilities: [typed_event_envelopes,correlation,canonical_record_references]
     authority_boundary: "Interoperability contract and projection adapter; existing event stores retain authority."

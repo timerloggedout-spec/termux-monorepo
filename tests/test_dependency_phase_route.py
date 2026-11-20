@@ -14,55 +14,69 @@ from dependency_phase_route import resolve_route  # noqa: E402
 
 ROSTER = """
 routing:
-  build:
-    primary: jules
-    fallback: [tembo, mistral_vibe]
-  fix:
-    primary: jules
-    fallback: [tembo, grok]
+  invariant: "Selection is evidence-driven."
+  policy:
+    objective: "maximize integrated outcome"
+  roles:
+    build:
+      candidate_pool: [tembo, mistral_vibe, gemini, openrouter]
+    fix:
+      candidate_pool: [tembo, grok, gemini, openrouter]
 """
 
 
-def plan():
+def plan(preferred_agent=None):
+    execution = {"mode": "agent", "capability": "build"}
+    if preferred_agent:
+        execution["preferred_agent"] = preferred_agent
     return {
-        "policy": {"dispatch_agents": ["jules", "tembo", "mistral_vibe"]},
+        "policy": {"dispatch_agents": ["tembo", "mistral_vibe", "gemini", "openrouter", "grok"]},
         "phases": [{
             "phase_id": "DPH-100",
-            "execution": {
-                "mode": "agent",
-                "capability": "build",
-                "preferred_agent": "jules",
-            },
+            "execution": execution,
         }],
     }
 
 
 class DependencyPhaseRouteTests(unittest.TestCase):
-    def test_preferred_specialist_is_selected_only_when_available(self):
-        with patch.dict("os.environ", {"ROUTE_JULES_ADAPTER_READY": "true"}, clear=False):
+    def test_candidate_pool_schema_is_read_from_agent_roster(self):
+        with patch.dict("os.environ", {"ROUTE_TEMBO_ADAPTER_READY": "true"}, clear=True):
             result = resolve_route(plan(), "DPH-100", ROSTER)
-        self.assertEqual("routed", result["state"])
-        self.assertEqual("jules", result["selected_specialist"])
-        self.assertEqual(["jules", "tembo", "mistral_vibe"], result["candidates"])
-
-    def test_manager_router_uses_roster_fallback_without_invoking_it(self):
-        with patch.dict(
-            "os.environ",
-            {"ROUTE_JULES_ADAPTER_READY": "false", "ROUTE_TEMBO_ADAPTER_READY": "true"},
-            clear=False,
-        ):
-            result = resolve_route(plan(), "DPH-100", ROSTER)
+        self.assertEqual(["tembo", "mistral_vibe", "gemini", "openrouter"], result["candidates"])
         self.assertEqual("tembo", result["selected_specialist"])
-        self.assertEqual("agent-roster-routing-v1", result["manager_policy"])
 
-    def test_missing_adapter_does_not_fall_through_to_direct_jules(self):
+    def test_explicit_preference_wins_only_when_available(self):
         with patch.dict(
             "os.environ",
-            {"ROUTE_JULES_ADAPTER_READY": "false", "ROUTE_TEMBO_ADAPTER_READY": "false"},
-            clear=False,
+            {"ROUTE_MISTRAL_VIBE_ADAPTER_READY": "true", "ROUTE_TEMBO_ADAPTER_READY": "true"},
+            clear=True,
         ):
+            result = resolve_route(plan("mistral_vibe"), "DPH-100", ROSTER)
+        self.assertEqual("mistral_vibe", result["selected_specialist"])
+        self.assertEqual("routed", result["state"])
+
+    def test_multiple_available_specialists_require_manager_selection(self):
+        with patch.dict(
+            "os.environ",
+            {"ROUTE_TEMBO_ADAPTER_READY": "true", "ROUTE_GEMINI_ADAPTER_READY": "true"},
+            clear=True,
+        ):
+            result = resolve_route(plan(), "DPH-100", ROSTER)
+        self.assertEqual("manager_selection_required", result["state"])
+        self.assertIsNone(result["selected_specialist"])
+        self.assertEqual(["tembo", "gemini"], result["available_candidates"])
+
+    def test_no_available_adapter_stops_without_claiming_a_specialist(self):
+        with patch.dict("os.environ", {}, clear=True):
             result = resolve_route(plan(), "DPH-100", ROSTER)
         self.assertEqual("no_available_specialist", result["state"])
+        self.assertIsNone(result["selected_specialist"])
+
+    def test_retired_jules_is_not_a_candidate_or_implicit_fallback(self):
+        with patch.dict("os.environ", {"ROUTE_JULES_ADAPTER_READY": "true"}, clear=True):
+            result = resolve_route(plan(), "DPH-100", ROSTER)
+        self.assertNotIn("jules", result["candidates"])
+        self.assertNotIn("jules", result["available_candidates"])
         self.assertIsNone(result["selected_specialist"])
 
 

@@ -36,6 +36,15 @@ class AdminGraphPageContractTests(unittest.TestCase):
             with self.subTest(page=name):
                 self.assertIn(NAV_LINK, (APP / name).read_text(encoding="utf-8"))
 
+    def test_preview_publication_is_branch_scoped_and_versioned(self):
+        workflow = (ROOT / ".github" / "workflows" / "tribute-dashboard-preview.yml").read_text(encoding="utf-8")
+        for marker in ("fix/admin-graph-history-eta-20261119",
+                       "inputs.source_ref || github.ref_name",
+                       "inputs.preview_key || 'admin-graph-history'",
+                       "build_dashboard_manifest.py"):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, workflow)
+
     def test_matrix_uses_shared_navigation(self):
         matrix = (APP / "matrix.html").read_text(encoding="utf-8")
         self.assertIn('id="site-primary-nav"', matrix)

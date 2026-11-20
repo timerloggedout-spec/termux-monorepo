@@ -1228,7 +1228,7 @@ function runtimePayload(ev){
 }
 function eventLabel(ev){
  var p=runtimePayload(ev);
- if(ev.kind==="route"||ev.event==="task_routed")return (p.task_ref||"Task")+" → "+(p.route_role||ev.job||"unassigned")+" · "+(p.provider||p.arm_id||p.model||"provider pending")+" · ROUTED";
+ if(ev.kind==="route"||ev.event==="task_routed")return (p.task_ref||"Task")+" → "+(p.route_role||ev.job||"unassigned")+" · "+(p.provider||p.arm_id||p.model||ev.step||"provider pending")+" · ROUTED";
  return (ev.workflow||"GitHub Actions")+" · "+(ev.job?ev.job+" · ":"")+(ev.step?ev.step+" · ":"")+ev.status;
 }
 function eventColor(ev){

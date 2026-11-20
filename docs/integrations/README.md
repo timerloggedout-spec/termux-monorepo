@@ -15,7 +15,7 @@ Integration Intelligence is the governed catalog and evidence boundary for exter
 
 ## Authority model
 
-Repository files, Git history, CI results, and approved proposal records remain authoritative for repository state. External services are providers of bounded observations or operations. A connector visible in one ChatGPT session is not evidence of availability to Termux, GitHub Actions, another collaborator, or production. The session catalogs are compact, dated discovery snapshots; full live schemas, permissions and output contracts must be read from the active tool host at invocation.
+Repository files, Git history, CI results, and approved proposal records remain authoritative for repository state. External services are providers of bounded observations or operations. Verify connector availability separately in Termux, GitHub Actions, each collaborator runtime and production. The session catalogs are compact, dated discovery snapshots; full live schemas, permissions and output contracts must be read from the active tool host at invocation.
 
 The registry intentionally separates:\n- local canonical definitions;\n- external vendor/community candidates;\n- session-observed plugin skills and tool actions;\n- repository adapter implementation and authorization;
 - discovery evidence;

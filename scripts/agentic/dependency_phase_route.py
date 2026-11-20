@@ -132,7 +132,7 @@ def resolve_route(
     else:
         selected = None
         state = "no_available_specialist"
-        reason = "no manager-approved specialist has an observed available execution adapter"
+        reason = "the manager-approved pool has zero observed available execution adapters"
 
     return {
         "schema_version": 1,

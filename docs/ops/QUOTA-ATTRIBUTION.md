@@ -50,7 +50,7 @@ Fill rules (match or silence):
 - `note` — the caveat line when `match = activity-proxy`, or the darkness reason when `value = null`.
 - No match ⇒ `value = null` + `note` carries the reason. Estimates are never rendered as usage.
 
-Worked state at landing: every current desk entry is honestly `value = null` EXCEPT keyed activity (e.g. a Jules-backed entry: `unit = sessions, match = activity-proxy, value = <session count>`), because no provider yet exposes per-entry consumption units to our surfaces.
+Worked state at landing: every current desk entry is honestly `value = null` EXCEPT keyed activity (e.g. a historical Jules-backed entry: `unit = sessions, match = activity-proxy, value = <session count>`), because no provider yet exposes per-entry consumption units to our surfaces.
 
 ## Instrumentation (how numbers start existing)
 

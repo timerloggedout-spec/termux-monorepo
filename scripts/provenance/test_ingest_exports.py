@@ -94,7 +94,7 @@ def test_muse_side_chat_discovery_terms_are_versioned_and_namespaced(tmp_path):
         "4n0nSEC", "4n∅N", "4n∅nSEC", "profiles",
     ]
     generic = ing.ingest(source, "chat-export/2026-11-18", now="t")
-    assert all(c["classifier_id"] != "muse_side_chat_discovery"
+    assert all(c["classifier_id"] != "muse_side_chat_seo"
                for c in generic[0]["classifications"])
     summary = dg.digest(muse)
     assert summary["groups"][0]["discovery_terms"]["4n∅N"] == 1

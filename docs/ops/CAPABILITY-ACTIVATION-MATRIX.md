@@ -172,6 +172,8 @@ The design-only campaign `experiments/doe/skill-plugin-tool-contextual-activatio
 
 The initial 2³ design varies (1) activation index: fragmented navigation vs unified matrix, (2) tool resolution: namespace vs exact action, and (3) context loading: minimal relevant sources vs full role bundle. Governance and permission controls remain invariant. Delegation, concurrency and reviewer composition remain follow-on factors.
 
+The DoE feed follows the same boundary: design-file presence establishes discovery, declared status establishes admission, and run records establish execution. The dashboard preserves proposal-only states, routes comparison registers separately, and flags any run records observed before admission.
+
 The campaign remains proposal-only until its automation, exact configured-instance stamps, and DoE-expert admission are recorded. Design publication does not authorize dispatch. Every run must use the canonical `docs/ops/corpus/EXPERIMENT.schema.json` record; the campaign must preserve failures and uncertainty.
 
 ## Maintenance

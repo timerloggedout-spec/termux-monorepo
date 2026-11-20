@@ -32,13 +32,15 @@ Validation evidence:
 
 ## Task 3 — Identify canonical QUE/QDesk host and bridge owner
 
-Status: blocked on source-owner evidence.
+Status: existing QDesk and QUE host surfaces identified; Brain-specific route and bridge owner confirmation remain open.
 
-- Trace the actual QUE/QDesk host module and its invocation lifecycle from the owning source.
-- Verify input envelope, identity propagation, policy owner, authority freshness/revocation, dispatch idempotency, and receipt consumer.
+- Verify the QDesk self-repair host at .github/workflows/qdesk-self-repair.yml and scripts/que/self_repair.py.
+- Verify generic QUE issue-form admission at .github/workflows/swarm-admission.yml and scripts/ops/swarm_admission.py.
+- Review the QUE Superagent inferred-candidate model-assessment design.
+- Confirm the QUE owner-approved Brain invocation point and define the versioned JSONL request/response contract, identity propagation, policy owner, authority freshness/revocation, dispatch idempotency, and receipt consumer.
 - Treat project_task.py as issue intake and dispatch_executor.py as admitted dispatch delegation.
 - Treat src/orchestrator.py and the Harmony sandbox as legacy harnesses until the canonical owner confirms otherwise.
-- Record the verified owner and bridge source in HOST-RECON.md.
+- Record verified QDesk/QUE host owners and the unimplemented Brain-specific bridge in HOST-RECON.md.
 
 ## Task 4 — Secure fresh production admission
 

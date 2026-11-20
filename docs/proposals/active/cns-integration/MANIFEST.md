@@ -41,6 +41,7 @@ Operator direction received 2026-11-20: continue Brain integration without devic
 - MOSAIC owns methodology-intelligence evaluation through its pure specialist crate.
 - QUE admission, capability authorization, dispatch, device I/O, provider calls, memory persistence, proposal mutation, and promotion remain with their existing owners.
 - The merged shadow composition proves the kernel-to-specialist seam and policy-hold behavior.
+- The QDesk self-repair execution host and generic QUE admission workflow are identified; the Brain-specific route and bridge remain to be confirmed by their owners.
 - Production host activation requires fresh Delphi admission and a verified canonical QUE/QDesk host and bridge contract, as recorded in issue #5693 and RFP #5501.
 - The qdesk.brain-rs RFP remains parked at 6.69/25, with recheck after 2026-12-16T09:39Z and filing_grants_execution=false.
 
@@ -59,7 +60,8 @@ Operator direction received 2026-11-20: continue Brain integration without devic
 - [x] Root Brain kernel and typed extension contract merged
 - [x] MOSAIC specialist adapter and cross-crate tests present
 - [x] Policy-gated shadow composition merged with attributable receipts
-- [ ] Canonical QUE/QDesk host owner and bridge contract verified
+- [x] Existing QDesk self-repair host and generic QUE admission surfaces identified
+- [ ] Brain-specific QUE/QDesk invocation owner and bridge contract verified
 - [ ] Fresh Delphi admission recorded for production activation
 - [ ] Production adapter and runtime receipt validated under authoritative policy
 - [ ] Close after all items reach terminal disposition

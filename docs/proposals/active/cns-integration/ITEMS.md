@@ -13,8 +13,12 @@
 - [x] NeedsApproval policy decision blocks specialist handoff.
 - [x] Orchestration, cycle, and attempt identity preserved through the shadow response.
 - [x] Rust 1.85.0 and 1.100.0 CI matrices pass; each retains an attributable receipt artifact.
-- [ ] Canonical QUE/QDesk Brain host owner and bridge contract verified from the owning source.
+- [x] Identify the QDesk self-repair workflow/script and generic QUE admission workflow/evaluator.
+- [x] Identify the QUE Superagent planned model-assessment stage and its inferred-candidate boundary.
+- [x] Identify the existing Python-to-Rust JSONL accelerator pattern in the Context Relationship subsystem.
+- [ ] Verify the QUE owner-approved Brain invocation point and versioned bridge contract.
 - [ ] Versioned production bridge maps host input, policy decision, specialist result, and ORCHESTRATION-RECEIPT fields.
+- [ ] Add an explicit methodology_intelligence issue/template route only after host-owner approval and fresh admission.
 - [ ] Fresh Delphi admission recorded for the production integration surface.
 - [ ] Production adapter runs through the verified host policy and revocation path.
 - [ ] Host integration tests and runtime receipt validate one bounded production vertical slice.

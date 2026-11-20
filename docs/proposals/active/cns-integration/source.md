@@ -44,3 +44,16 @@
 - Advisory CodeQL run 44719961534 encountered GitHub installation API rate limiting during SARIF publication/configuration.
 - Production QUE/QDesk host and bridge ownership remain unverified in repository source.
 - RFP #5501 retains parked status and filing_grants_execution=false.
+
+## QUE/QDesk host and bridge sources
+
+- QDesk scheduled self-repair host: .github/workflows/qdesk-self-repair.yml
+- QDesk SIE/QUE self-repair implementation: scripts/que/self_repair.py
+- QDesk ownership and promotion boundaries: docs/proposals/active/qdesk-self-repair/MANIFEST.md and PROPOSAL.md
+- Generic QUE issue-form admission: .github/workflows/swarm-admission.yml
+- Deterministic QUE admission evaluator: scripts/ops/swarm_admission.py
+- QUE Mandate/Report schema owner: scripts/que/que_item_fields.py
+- QUE model-assessment design: docs/proposals/active/que-superagent/LESSONS.md
+- Optional Python-to-Rust JSONL bridge precedent: docs/ops/CONTEXT-RELATIONSHIP-POLYGLOT-ACCELERATION.md and archwiz/context_relationships/rust_accel/src/main.rs
+
+The QDesk self-repair host is verified for its domain. The general Brain invocation point, MOSAIC issue-template route, and Brain JSONL request/response schema remain unimplemented and require QUE owner confirmation.

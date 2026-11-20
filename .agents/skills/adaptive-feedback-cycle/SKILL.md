@@ -144,3 +144,14 @@ Represent task outcome as `PASS / FAIL + notes` when verification is possible, w
 12. **LOOP — repeat until the desired outcome is confirmed**, running multiple validation cycles and continuing to improve rather than stopping at the first green-looking signal.
 
 The skill is a living operational contract, not a frozen tutorial.
+
+
+## Session 2026-11-20 — Commit-style and evidence calibration
+
+- The repository DO Statement Style linter evaluates every non-merge commit subject in the PR range against its explicit imperative-verb registry.
+- The accepted commit verb in this cycle was add. The verbs emit and retain failed the registry check. Select a registered imperative verb before the first commit.
+- A later compliant commit leaves earlier commit subjects in the PR range; re-cut from the live master base and reapply the intended diff when a historical subject fails. Preserve the superseded branch as evidence; history rewrite remains an Operator-only action.
+- Attribute every gate result to the immutable candidate SHA. The Brain shadow integration passed repository gate, CI Termux smoke, and both Rust toolchains before merge.
+- Classify repository-wide static findings by changed-path impact. The 81-item dangle census contained zero findings in the two Brain integration paths.
+- Classify CodeQL SARIF publication rate limiting as an advisory infrastructure failure when the workflow declares advisory posture; retain the actual scan result and publication failure separately.
+- Preserve the shadow receipt artifacts and identity fields as the evidence of the requested reasoning-to-specialist handoff.

@@ -43,6 +43,10 @@ def _knowable(raw, label, wall_at, wall_date):
     if "11:30 PT" in raw:
         return {"kind": "dated", "at": "2026-11-20T11:30:00-08:00",
                 "text": raw}
+    if len(raw) > 10 and raw[10] == "T":
+        instant = _parse(raw)
+        return {"kind": "dated", "at": instant.isoformat(),
+                "text": raw, "basis": "explicit instant"}
     date = raw[:10]
     out = {"kind": "dated", "text": raw}
     if "by wall" in label and wall_date and date == wall_date:
@@ -113,6 +117,10 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
             soft, cushions, wall_date = False, [], None
             note = s.get("anchors_note")
             register_item = None
+        window_wall = (s.get("window") or {}).get("wall")
+        knowable_wall_at = wall_at or window_wall
+        knowable_wall_date = wall_date or (
+            window_wall[:10] if window_wall else None)
         exp = s["expectation_record"]
         stl = s["settle"]
         if stl.get("value") is not None:
@@ -128,8 +136,8 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
             "open": "2026-11-02T00:00:00-08:00",
             "landing_at": landing, "wall_at": wall_at, "wall_soft": soft,
             "final_at": final, "cushions": cushions,
-            "knowable": _knowable(s["knowable"], s["subject"], wall_at,
-                                  wall_date),
+            "knowable": _knowable(s["knowable"], s["subject"],
+                                  knowable_wall_at, knowable_wall_date),
             "anchors_note": note,
             "expectation": {
                 "quantity": exp["quantity"],
@@ -155,12 +163,20 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
                            "feed's stamped pct is proof-of-shape only"}
     positions = bookfeed["positions"]
     feed_settlements = bookfeed["settlements"]
+    walls = [_parse(s["window"]["wall"]) for s in bookfeed["subjects"]
+             if s.get("window") and s["window"].get("wall")]
+    pt = timezone(timedelta(hours=-8))
+    latest_wall = max(walls) if walls else _parse("2026-12-12T23:59:00-08:00")
+    if latest_wall.tzinfo is None:
+        latest_wall = latest_wall.replace(tzinfo=pt)
+    horizon_end_day = latest_wall.astimezone(pt).date() + timedelta(days=1)
+    horizon_end = horizon_end_day.isoformat() + "T23:59:00-08:00"
     return {
         "schema": "moneyball.wagering-book/v2",
         "generated_at": generated_at,
         "book": {"opened": "2026-11-02", "subjects": len(subjects)},
         "horizon": {"start": "2026-11-02T00:00:00-08:00",
-                    "end": "2026-12-12T23:59:00-08:00"},
+                    "end": horizon_end},
         "family_label": family_label,
         "forecast_layer": book["calendar_binding"]["forecast_rule"],
         "publishability_flags": bookfeed["publishability_flags"],
@@ -181,13 +197,16 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
                       "(append-only ledger of record, MoneyBall plane)",
             "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; "
                         "primary calendar, America/Los_Angeles) - anchors "
-                        "as bound in the book; derivation confirmed by "
-                        "Tracking 2026-11-02"},
+                        "as bound in the book; C18/C19 desk-feed timeboxes "
+                        "are operational projections only until Tracking "
+                        "register items are bound"},
         "honesty": [
             "Subjects with a rule knowable (NOT_ESTABLISHED / on receipt / "
             "at exam pass) render open-ended: no date is invented.",
-            "AMD-17 / AMD-18 carry no register anchors (NOT_ESTABLISHED in "
-            "the book) - no landing/wall markers render.",
+            "AMD-17 / AMD-18 and the new C18/C19 Devpost submission subjects "
+            "carry no calendar-register anchors (NOT_ESTABLISHED in the "
+            "book) - no landing/final markers render; desk-feed escalation "
+            "projections remain separate from calendar reminders.",
             "Forecast is an OUTPUT class (naming-collapse amendment "
             "#3830): forecasts score at each subject's settlement, at the "
             "issuer's record. There are no forecast rows.",

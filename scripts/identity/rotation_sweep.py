@@ -162,7 +162,7 @@ def check_identity_registry(path: Path) -> dict:
 
 def scan_repository(root: Path, rotation_map: dict) -> dict:
     rotation_entries = entries(rotation_map)
-    findings, path_hits = [], []
+    findings, path_hits = [], []\n    historical_paths = set(rotation_map.get("historical_reference_paths", []))
     for file_path in list_files(root):
         try:
             rel = file_path.relative_to(root).as_posix()
@@ -195,7 +195,7 @@ def scan_repository(root: Path, rotation_map: dict) -> dict:
                 "path": rel, "line": number, "tokens": votes["tokens"],
                 "classifiers": {key: votes[key] for key in FACTORS},
                 "context": votes["context"], "disposition": disposition,
-                "active": ensemble(votes, FACTORS), "excerpt": line.strip()[:220],
+                "active": active, "excerpt": line.strip()[:220],
             })
     return {"path_hits": sorted(path_hits), "findings": findings,
             "active_refs": [item for item in findings if item["active"]],

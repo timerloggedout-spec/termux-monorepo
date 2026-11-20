@@ -124,7 +124,17 @@ def import_tool_schema_json(path: Path, root: Path, external: bool = False) -> l
     if path.stat().st_size > MAX_TOOL_CATALOG_BYTES:
         return []
     raw_file = path.read_bytes()
-    snapshot_sha = digest(raw_file)
+    scope_path = path.with_name("TOOLS.md")
+    scope_text = scope_path.read_text(encoding="utf-8") if scope_path.is_file() else ""
+    scope_sha = digest(scope_path.read_bytes()) if scope_path.is_file() else ""
+    snapshot_sha = digest(raw_file + b"\\0" + scope_sha.encode())
+    scope_classes = {}
+    for line in scope_text.splitlines():
+        if not line.startswith("|"):
+            continue
+        columns = [column.strip() for column in line.strip().strip("|").split("|")]
+        if len(columns) >= 2 and columns[0].startswith("sofa_"):
+            scope_classes[columns[0]] = columns[1]
     try:
         payload = json.loads(raw_file.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
@@ -164,16 +174,21 @@ def import_tool_schema_json(path: Path, root: Path, external: bool = False) -> l
             if external else f"{relative}#{safe_name}"
         )
         safe_locator = redact_sensitive(locator)
+        scope_class = redact_sensitive(scope_classes.get(safe_name, "unspecified"))
         summary = (
             f"{safe_description}; parameters={len(properties)}; "
-            f"required_parameters={len(required)}"
+            f"required_parameters={len(required)}; scope_class={scope_class}"
         )
         domain, function, facets = infer_tags(
             safe_name, summary, safe_locator, "MCP tool action"
         )
         domain, function = validate_classification(domain, function, taxonomy)
         facets = [facet for facet in facets if facet != "skill"]
-        facets.extend(["tool", "mcp", "reference-only"])
+        facets.extend(["tool", "mcp", "reference-only", "credentialed"])
+        if scope_class.startswith("READ"):
+            facets.append("read-only")
+        elif scope_class.startswith("WRITE"):
+            facets.append("write-capable")
         if external:
             facets.append("external")
         parameter_tags = [
@@ -187,7 +202,7 @@ def import_tool_schema_json(path: Path, root: Path, external: bool = False) -> l
             "locator": safe_locator,
             "name": safe_name[:240],
             "description": redact_sensitive(summary)[:1200],
-            "content_sha256": digest(raw_metadata.encode()),
+            "content_sha256": digest((raw_metadata + "\\0" + scope_class).encode()),
             "taxonomy_sha256": taxonomy_sha,
             "domain": domain,
             "function": function,

@@ -111,6 +111,7 @@ main svg{width:100%;height:100%;display:block;touch-action:none}
 .integ code{font-size:11px;color:var(--cyan);word-break:break-all}.integ p{margin:4px 0 0;font-size:12.5px;color:var(--muted)}
 ol.biudl{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted);columns:2;column-gap:14px}
 .event-log{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;background:#0a0d13;border:1px solid var(--line);border-radius:8px;padding:8px;max-height:130px;overflow-y:auto;color:#a5f3fc}
+.history-inspector{display:grid;grid-template-columns:repeat(2,minmax(150px,220px)) minmax(180px,1fr);gap:8px;align-items:end;padding:10px 14px;border-bottom:1px solid var(--line);background:#0e1420}.history-inspector .history-field{display:grid;gap:4px}.history-inspector label{font-size:11px;color:var(--muted)}.history-inspector input{width:100%;min-width:0;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px;font:12px system-ui}.history-actions{display:flex;gap:6px;flex-wrap:wrap}.history-results{grid-column:1/-1;display:grid;gap:5px;max-height:180px;overflow:auto}.history-result{display:flex;align-items:center;gap:8px;text-align:left;width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--ink);font:11px ui-monospace,Menlo,monospace}.history-result:hover{border-color:var(--cyan)}.history-state{font-size:11px;color:var(--muted);align-self:center}@media(max-width:700px){.history-inspector{grid-template-columns:1fr 1fr}.history-actions{grid-column:1/-1}.history-results{max-height:150px}}
 .checklist{list-style:none;margin:6px 0;padding:0;font-size:12.5px}.checklist li{padding:4px 0 4px 22px;position:relative;border-top:1px solid #1a2130}
 .checklist li::before{content:"✓";position:absolute;left:2px;color:#34d399;font-weight:700}.checklist li.fail::before{content:"✗";color:#f472b6}
 .checklist li.warn::before{content:"!";color:var(--amber)}
@@ -170,6 +171,16 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <div class="que-tile"><div class="q-label">Governor</div><div id="queGovernorState" class="q-value">—</div><div id="queGovernorNote" class="q-note">Admission + flow state</div></div>
   <div class="que-tile"><div class="q-label">Priority windows</div><div id="quePriorityState" class="q-value">—</div><div id="quePriorityNote" class="q-note">Current window state</div></div>
   <div class="que-tile que-claims-tile"><div id="queClaimsLabel" class="q-label">Recent active claims · source freshness pending</div><div id="queClaims" class="que-claims">No feed loaded</div></div>
+</section>
+<section class="history-inspector" aria-label="Historical task-routing inspection">
+  <div class="history-field"><label for="historyFrom">From · local time</label><input id="historyFrom" type="datetime-local"/></div>
+  <div class="history-field"><label for="historyTo">Through · local time</label><input id="historyTo" type="datetime-local"/></div>
+  <div class="history-actions">
+    <button class="btn primary" id="inspectHistoryBtn" type="button">Inspect historical routes</button>
+    <button class="btn" id="liveHistoryBtn" type="button">Return to live</button>
+    <span id="historyState" class="history-state" aria-live="polite">Live stream active · choose a time range to inspect stored routes</span>
+  </div>
+  <div id="historyResults" class="history-results" aria-live="polite"></div>
 </section>
 <div class="layout">
   <aside class="left" data-scrollable="1" aria-label="Edge legend, filters and templates">
@@ -1272,9 +1283,9 @@ function edgeForRuntimeEvent(ev){
  }
  return null;
 }
-function animateRuntimeEvent(ev){
+function animateRuntimeEvent(ev,onDone){
  var rec=edgeForRuntimeEvent(ev);
- if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));liveAnimating=false;drainRuntimeQueue();return;}
+ if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));if(onDone){onDone();return;}liveAnimating=false;drainRuntimeQueue();return;}
  var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
  var reverse=false;
  path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
@@ -1283,7 +1294,7 @@ function animateRuntimeEvent(ev){
   var k=Math.min(1,(ts-t0)/dur),pt=path.getPointAtLength(L*(reverse?1-k:k));
   pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);
   if(k<1)requestAnimationFrame(frame);
-  else{path.classList.remove("hl");pulseDot.style.display="none";log("PULSE "+ev.kind+" · "+eventLabel(ev));liveAnimating=false;drainRuntimeQueue();}
+  else{path.classList.remove("hl");pulseDot.style.display="none";log((onDone?"HISTORY ":"PULSE ")+ev.kind+" · "+eventLabel(ev));if(onDone){onDone();return;}liveAnimating=false;drainRuntimeQueue();}
  }
  requestAnimationFrame(frame);
 }
@@ -1303,7 +1314,7 @@ function queueRuntimeEvents(events,initial){
  fresh.forEach(function(ev){liveQueue.push(ev);});drainRuntimeQueue();
 }
 async function pollRuntimeEvents(){
- if(livePollBusy)return;
+ if(historicalMode||livePollBusy)return;
  livePollBusy=true;
  var more=false,rounds=0;
  try{
@@ -1325,9 +1336,58 @@ async function pollRuntimeEvents(){
   log("Runtime pulse feed unavailable: "+String(err.message||err));
  }finally{livePollBusy=false;if(more)window.setTimeout(pollRuntimeEvents,0);}
 }
-function refreshAdminGraph(){refreshQueFeed();pollRuntimeEvents();}
+var historicalMode=false,historyEvents=[];
+function localDateTimeValue(date){var pad=function(n){return String(n).padStart(2,"0");};return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());}
+function setHistoryState(message){var el=document.getElementById("historyState");if(el)el.textContent=message;}
+function renderHistoryResults(events){
+ var root=document.getElementById("historyResults");root.replaceChildren();
+ var routes=events.filter(function(ev){return ev.kind==="route"||ev.event==="task_routed";});
+ if(!routes.length){setHistoryState("0 task-routing events in selected interval · "+events.length+" total events");return;}
+ routes.forEach(function(ev){
+  var button=document.createElement("button");button.type="button";button.className="history-result";
+  var at=new Date(ev.occurred_at).toLocaleString();button.textContent=at+" · "+eventLabel(ev);
+  button.addEventListener("click",function(){
+   if(liveAnimating||liveQueue.length){setHistoryState("Live pulse queue is draining · select the route again shortly");return;}
+   setHistoryState("Inspecting "+at+" · "+eventLabel(ev));
+   animateRuntimeEvent(ev,function(){setHistoryState("Selected route inspected · "+at);});
+  });
+  root.appendChild(button);
+ });
+ setHistoryState(routes.length+" task-routing events · "+events.length+" total events · click a route to inspect its graph path");
+}
+async function inspectRouteHistory(){
+ var fromValue=document.getElementById("historyFrom").value,toValue=document.getElementById("historyTo").value;
+ var fromDate=new Date(fromValue),toDate=new Date(toValue);
+ if(!fromValue||!toValue||!Number.isFinite(fromDate.getTime())||!Number.isFinite(toDate.getTime())||fromDate>toDate){setHistoryState("Choose a valid start and end time");return;}
+ historicalMode=true;historyEvents=[];document.getElementById("historyResults").replaceChildren();
+ setHistoryState("Loading historical event pages…");
+ var after=0,more=true,pages=0;
+ try{
+  while(more&&pages<25){
+   var url=LIVE_FEED_URL+"&from="+encodeURIComponent(fromDate.toISOString())+"&to="+encodeURIComponent(toDate.toISOString())+"&after_seq="+encodeURIComponent(after);
+   var response=await fetch(url,{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});
+   if(!response.ok)throw new Error("history HTTP "+response.status);
+   var feed=await response.json();
+   if(feed.schema!=="admin-graph-live-events/v1"||feed.mode!=="historical"||!Array.isArray(feed.events))throw new Error("unexpected historical feed contract");
+   historyEvents=historyEvents.concat(feed.events);after=Number(feed.next_after_seq||after);more=feed.has_more===true&&feed.events.length>0;pages++;
+  }
+  renderHistoryResults(historyEvents);
+  if(more)setHistoryState("Showing first "+historyEvents.length+" events · narrow the time range to inspect the remaining history");
+ }catch(error){setHistoryState("Historical inspection unavailable · "+String(error.message||error));}
+}
+function returnToLiveHistory(){historicalMode=false;document.getElementById("historyResults").replaceChildren();setHistoryState("Live stream active · "+historyEvents.length+" historical events inspected");pollRuntimeEvents();}
+document.getElementById("inspectHistoryBtn").addEventListener("click",inspectRouteHistory);
+document.getElementById("liveHistoryBtn").addEventListener("click",returnToLiveHistory);
+var historyNow=new Date();document.getElementById("historyTo").value=localDateTimeValue(historyNow);document.getElementById("historyFrom").value=localDateTimeValue(new Date(historyNow.getTime()-24*60*60*1000));
+var historyParams=new URLSearchParams(window.location.search);
+if(historyParams.has("from")&&historyParams.has("to")){
+ document.getElementById("historyFrom").value=localDateTimeValue(new Date(historyParams.get("from")));
+ document.getElementById("historyTo").value=localDateTimeValue(new Date(historyParams.get("to")));
+ if(historyParams.get("view")==="history")window.setTimeout(inspectRouteHistory,900);
+}
+function refreshAdminGraph(){refreshQueFeed();if(!historicalMode)pollRuntimeEvents();}
 window.setTimeout(pollRuntimeEvents,750);
-window.setInterval(pollRuntimeEvents,5000);
+window.setInterval(function(){if(!historicalMode)pollRuntimeEvents();},5000);
 
 var resizeFitTimer=null;
 window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});

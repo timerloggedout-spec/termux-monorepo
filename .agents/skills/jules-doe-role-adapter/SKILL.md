@@ -13,9 +13,9 @@ Pinned source revision: `7a76d3bfcf4258ee437d65b5d12e54b51c395de5`
 
 License: Apache-2.0
 
-Source skills:
-- `automate-github-issues`
-- `local-action-verification`
+Source skills, adapted locally:
+- `.agents/skills/automate-github-issues/SKILL.md`
+- `.agents/skills/local-action-verification/SKILL.md`
 
 This adapter preserves useful workflow patterns as local role guidance. Provider execution and Jules session clients remain separate runtime capabilities.
 

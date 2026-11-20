@@ -24,13 +24,14 @@ The Skills CLI (`npx @agentic/skills@latest`) is the package manager for the ope
 
 **Key commands:**
 
-- `npx @agentic/skills@latest find [query] [--owner <owner>]` - Search for skills interactively or by keyword, optionally scoped to a GitHub owner
-- `npx @agentic/skills@latest add <package>` - Install a skill from GitHub or other sources (pinned to specific commit/tag when available)
-- `npx @agentic/skills@latest update` - Update all installed skills
+- `npx skills find [query] [--owner <owner>]` - Search when supported by the installed CLI version; verify with `npx skills --help`
+- `npx skills add <owner/repo> --skill <name>` - Install a selected skill from a specific repository
+- `npx skills update` - Update installed skills
+- `python3 scripts/capabilities/discover.py find "<query>" --skills-sh` - Optional authenticated catalog search through the repository index
 
 **Installation guidance:** When installing skills globally, avoid defaulting to `-g -y`; instead require explicit user confirmation for global installs and verify scope and target before proceeding.
 
-**Browse skills at:** https://skills.sh/
+**Browse skills at:** https://skills.sh/\n\nThe skills.sh API provides paginated, curated, detail and audit endpoints. Search uses `GET /api/v1/skills/search?q=<query>&limit=<1-200>`; multi-word queries use semantic search. API access uses a Vercel OIDC bearer token. Detail responses include a content hash and file tree; hydrate files only for selected candidates. The CLI collects anonymous telemetry containing skill name, skill files and timestamp by default; set `DISABLE_TELEMETRY=1` to opt out.
 
 ## How to Help Users Find Skills
 
@@ -75,9 +76,11 @@ For example:
 
 **Do not recommend a skill based solely on search results.** Always verify:
 
-1. **Install count** — Prefer skills with 1K+ installs. Be cautious with anything under 100.
-2. **Source reputation** — Official sources (`vercel-labs`, `anthropics`, `microsoft`) are more trustworthy than unknown authors.
-3. **GitHub stars** — Check the source repository. A skill from a repo with <100 stars should be treated with skepticism.
+1. **Stable identity and provenance** — record the skills.sh ID, source repository, skill slug, immutable commit/tag where available, and content hash.
+2. **Security audit** — inspect the skills.sh partner audit when available. Interpret `pass`, `warn`, and `fail` with their audit timestamp; a 404 means no partner audit is available, not a pass.
+3. **Source and permissions** — inspect SKILL.md, scripts, assets, network calls, requested tools and license. Vendor publication establishes provenance, not correctness or safety.
+4. **Popularity** — install counts and GitHub stars are discovery signals only; they do not establish quality or security.
+5. **Duplicates** — inspect the catalog's duplicate flag and compare forks before recommending a copy.
 
 ### Step 5: Present Options to the User
 

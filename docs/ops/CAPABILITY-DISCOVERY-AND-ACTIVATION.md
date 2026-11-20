@@ -125,6 +125,12 @@ The 2026-11-19 session snapshot contains 545 plugin skill references across 74 p
 
 Session plugin/tool exports are session-observed snapshots. Verify account entitlement, connected status in each runtime and repository adapter availability independently. The tool host's live schema remains authoritative.
 
+## External vendor adapter coverage
+
+`ops/capability_discovery/sources.json` is the curated vendor/source registry. Registration is a discovery lead, not evidence that a remote repository has been crawled or that its contents are available locally. The current executable external search adapter is the read-only skills.sh API. GitHub vendor repositories such as Anthropic, Microsoft, Google, Vercel, Cloudflare, Hugging Face, Trail of Bits and OpenAI remain pinned-reference candidates until a read-only Git tree/metadata adapter records their immutable commit SHA and selected file hashes.
+
+The local scanner indexes committed `vendor/**` mirrors as unverified metadata. It does not clone repositories, install skills, execute plugin hooks, provision credentials or invoke MCP servers. This separation keeps vendor search metadata-only and makes provenance review a prerequisite for full-definition hydration or adoption.
+
 ## Evaluation routing
 
 | Candidate type | Quality / evidence lane | Result |

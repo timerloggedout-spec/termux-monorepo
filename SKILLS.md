@@ -35,7 +35,9 @@ Root `AGENTS.md` is **deprecated** (Linguist / Jules redirect only). Load `CLAUD
 .github/skills/<name>/SKILL.md      # CI / production reconciliation skills
 .claude/skills/<name>/SKILL.md      # harness companion skills
 docs/ops/skills/<name>/SKILL.md     # documentation mirrors; canonical path linked
-vendor/**/SKILL.md, *.skill        # unverified candidate inputs; metadata-only until reviewed
+vendor/**/SKILL.md, *.skill         # unverified candidate inputs; metadata-only until reviewed
+**/plugin.json, **/marketplace.json # plugin manifests; metadata-only until reviewed
+**/.mcp.json, **/tools.json          # MCP/tool manifests; schemas hydrate on selection
 ops/capability_discovery/           # taxonomy, source registry and record contract
 docs/integrations/session-*.json    # dated, session-scoped plugin/tool discovery snapshots
 docs/ops/SKILLS-INVENTORY.md         # curated SSOT navigator + role matrix

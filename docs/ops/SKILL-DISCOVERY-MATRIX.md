@@ -1,6 +1,6 @@
-# Skill Discovery Matrix — adaptive wait + evidence-led repo ops
+# Skill Discovery Matrix — repository, vendor, plugin and tool discovery
 
-**Discovery basis:** recursive Git tree of `master` at SHA `2327859f0b2432631177346e93492e67cdc7b3d2`, plus the session-scoped `.skill` attachments and supplied skill/loop references.
+**Discovery basis:** recursive Git tree of `master` at SHA `57559c9100f9df2868398603410e6ba28783a942`, plus supplied session skill packages and loop/Jules references. The current discovery/activation contract is [CAPABILITY-DISCOVERY-AND-ACTIVATION.md](CAPABILITY-DISCOVERY-AND-ACTIVATION.md).
 
 ## Repository-native related skills
 
@@ -24,7 +24,7 @@
 
 ## Other repository-native skill files
 
-The recursive tree contains 27 paths matching `**/SKILL.md` or `*.skill`: 25 `SKILL.md` files and 2 documentation mirrors. The repository tree currently contains **no tracked `.skill` archive**.
+The baseline recursive tree contains 45 `SKILL.md` paths (32 agent skills, 1 Claude companion, 10 GitHub automation skills and 2 documentation mirrors), one root `SKILLS.md`, and zero tracked `.skill` archives. The new capability-discovery skill adds one agent-loadable path. The current scanner also discovers nested `SKILLS.md`, `*.SKILLS`, `*.skill` and vendor roots.
 
 Agent-loadable paths also include: approxination-lane, blind-agent-evaluation, gemini-performance-psychology, github-pages-operator, tribute-lane, multivariate-doe, termux-monorepo, termux-monorepo-agentic-governance, and the Claude companion skill.
 
@@ -45,7 +45,7 @@ These uploaded packages are **session evidence, not repository SSOT**. They shou
 - **Loopy API / Loop Library Skill** — describes bounded Observe -> Choose -> Act -> Verify -> Record -> Repeat workflows, explicit terminal states, and run receipts. Candidate adaptation only; no repository adoption is implied.
 - **Google Jules skill/workflow references** — supplied material describes `skills/<skill-name>/SKILL.md`, issue automation, PR review, test-driven development, and subagent-driven development. Candidate ecosystem evidence only; no external policy is imported automatically.
 
-## Adoption rule
+## Nested discovery and progressive activation\n\nThe capability-discovery skill and metadata index add recursive tagged search across nested workspace paths, vendor folders, repository skill roots, session plugin-skill exports and tool-action exports. The SQLite index stores metadata and content hashes; full skill bodies and tool schemas are hydrated only after selection. Vendor/community/session records retain distinct trust states. See [CAPABILITY-DISCOVERY-AND-ACTIVATION.md](CAPABILITY-DISCOVERY-AND-ACTIVATION.md), [source registry](../../ops/capability_discovery/sources.json), and [taxonomy](../../ops/capability_discovery/taxonomy.json).\n\n## Adoption rule
 
 Use the smallest repository-native skill that fills the evidence gap. If an external skill is considered, record source, version/commit, scope, permissions, overlap, maintenance evidence, and the smallest safe adaptation before adoption.
 

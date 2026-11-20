@@ -115,7 +115,7 @@ exercise.
 ## Funnel arithmetic
 
 Proven dispatch today reaches 2/89 registry model providers directly
-(plus the Jules/DeepSeek build arms, which live outside the model
+(plus the historical Jules and current DeepSeek build-arm records, which live outside the model
 lane). The batch surface nominally covers 24 more, of which 9 carry a
 no-credential or route-dead/blocked flag — the cheapest widening is
 therefore: provision the 8 no-credential batch members (cerebras,

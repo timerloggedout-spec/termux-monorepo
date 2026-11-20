@@ -10,7 +10,7 @@
 
 Discover the broad capability universe while keeping model context small. Search nested repository workspaces, all supported skill file forms, vendor directories, external skill catalogs, plugin skill catalogs and tool-action exports. Classify and deduplicate candidates before loading full instructions or tool schemas.
 
-The index is a metadata projection, not a new source of truth. Plugin manifests are indexed without copying server commands, endpoint credentials or complete tool schemas. Canonical files and providers retain ownership of their definitions, permissions, versions and runtime state.
+The index serves as a metadata projection; canonical files and providers retain definition ownership, permissions, versions and runtime state. Plugin manifests are indexed without copying server commands, endpoint credentials or complete tool schemas. Canonical files and providers retain ownership of their definitions, permissions, versions and runtime state.
 
 ## Nested discovery coverage
 
@@ -24,7 +24,7 @@ The repository scan recognizes:
 - `vendor/**` skill definitions, classified as unverified vendor inputs;
 - optional JSON exports of session plugin skills and tool actions.
 
-The recursive scan excludes common generated/cache directories and skips symlinks. External roots are opt-in; the scanner does not walk the home directory or sibling workspaces implicitly. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it stores no complete instruction body, tool schema, prompt, credential or completion.
+The recursive scan scopes itself to selected roots, skips symlinks and generated/cache directories, and keeps home and sibling workspaces outside the default scope. External roots enter through an explicit allowlist. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it stores no complete instruction body, tool schema, prompt, credential or completion.
 
 At the current master baseline `57559c9100f9df2868398603410e6ba28783a942`, the recursive tree contained 45 `SKILL.md` paths, one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The scanner broadens future discovery to all nested forms; its result is generated from the checked-out tree, not a manually maintained count.
 
@@ -39,7 +39,7 @@ Each capability receives:
 5. **Lifecycle state** — discovered → classified → deduplicated → evaluated → eligible → approved → adopted, with deprecated/rejected terminal branches.
 6. **Provenance** — exact source locator, retrieval/capture time, immutable source revision where available, content hash and discovery method.
 
-The initial classifier applies deterministic keyword rules constrained by the versioned taxonomy; specialized domains cover finance, health, legal, regulatory, scientific, media, property, automotive and outdoors. Treat classifications as routing hints, not quality or safety verdicts. Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
+The initial classifier applies deterministic keyword rules constrained by the versioned taxonomy; specialized domains cover finance, health, legal, regulatory, scientific, media, property, automotive and outdoors. Use classifications as routing hints; evaluate quality and safety independently. Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
 
 ### Identity and deduplication
 
@@ -78,13 +78,13 @@ The source registry declares local, vendor, external-catalog and session-snapsho
 - **Trail of Bits** — `trailofbits/skills` distributes security analysis, testing and development skills through plugin marketplaces. ([Repository](https://github.com/trailofbits/skills))
 - **Hugging Face** — `huggingface/skills` provides Hub, dataset, training and evaluation workflows; its `hf-cli` skill is generated from the installed CLI and is the recommended bootstrap path. ([Repository](https://github.com/huggingface/skills))
 - **OpenAI** — use `openai/plugins` for current Codex plugin examples; a plugin can bundle a manifest, skills, MCP config, agents, commands, hooks and assets. The separate `openai/skills` repository is deprecated and points to the plugin repository. ([Plugins](https://github.com/openai/plugins), [deprecated skills](https://github.com/openai/skills))
-- **GitHub** — `github/awesome-copilot` is an organization-hosted community collection, not a vendor-supported product contract. ([Repository](https://github.com/github/awesome-copilot))
+- **GitHub** — `github/awesome-copilot` is an organization-hosted community collection; verify vendor support status separately. ([Repository](https://github.com/github/awesome-copilot))
 - **Anthropic plugins** — `anthropics/claude-plugins-official` is now the home of Anthropic's own plugins; third-party submissions are moving to the Claude directory. Anthropic explicitly warns that plugins may include MCP servers, files and software it does not control. `anthropics/knowledge-work-plugins` bundles skills, connectors, slash commands and subagents by job function. ([Official plugins](https://github.com/anthropics/claude-plugins-official), [knowledge-work plugins](https://github.com/anthropics/knowledge-work-plugins))
 - **Microsoft plugins** — `microsoft/azure-skills` combines Azure guidance with MCP-backed execution; `microsoft/power-platform-skills` includes build/update/publish workflows. Inspect tool scopes and environment mutation boundaries before authorizing. ([Azure](https://github.com/microsoft/azure-skills), [Power Platform](https://github.com/microsoft/power-platform-skills))
 - **AWS** — `aws/agent-toolkit-for-aws` supplies agent tools, knowledge and guardrails for AWS build/deploy/manage tasks. Review IAM and account scopes before enabling write actions. ([Repository](https://github.com/aws/agent-toolkit-for-aws))
 - **Google agent tooling** — `google/agents-cli` supplies CLI/skills for Gemini agent development; `google-gemini/gemini-skills` covers Gemini API/SDK practices. ([Agents CLI](https://github.com/google/agents-cli), [Gemini skills](https://github.com/google-gemini/gemini-skills))
 - **Google skills/plugins** — `google/skills` publishes Google-product skills and bundles plugins/MCP servers for supported agent harnesses. Search by product and install only the specific skill/plugin after source, permission and revision review. ([Repository](https://github.com/google/skills))
-- **Jules** — the supplied PDF is a candidate discovery lead. Current upstream `jules-skills` documents `npx skills add google-labs-code/jules-skills --list` and explicitly says the repository is not an officially supported Google product. The current Jules GitHub action README uses `google-labs-code/jules-invoke@v1` with `JULES_API_KEY`; issue-triggered workflows need user allowlists and PR review. The supplied PDF's `google-labs-code/jules-action@v1` / `GEMINI_API_KEY` example is stale relative to the current README. Treat the PDF as historical source material and verify current action contracts before adapting. ([Jules skills](https://github.com/google-labs-code/jules-skills), [Jules action](https://github.com/google-labs-code/jules-action), [security examples](https://github.com/google-labs-code/jules-action/blob/main/examples/README.md))
+- **Jules** — the supplied PDF is a candidate discovery lead. Current upstream `jules-skills` documents `npx skills add google-labs-code/jules-skills --list` and classifies the repository as a community project outside Google's officially supported product set. The current Jules GitHub action README uses `google-labs-code/jules-invoke@v1` with `JULES_API_KEY`; issue-triggered workflows need user allowlists and PR review. The supplied PDF's `google-labs-code/jules-action@v1` / `GEMINI_API_KEY` example is stale relative to the current README. Treat the PDF as historical source material and verify current action contracts before adapting. ([Jules skills](https://github.com/google-labs-code/jules-skills), [Jules action](https://github.com/google-labs-code/jules-action), [security examples](https://github.com/google-labs-code/jules-action/blob/main/examples/README.md))
 - **Loopy** is a bounded-loop skill candidate. The supplied JSON describes Discover, Find, Audit, Adapt, Craft, Run, Debrief, Save and Publish routes, with Observe → Choose → Act → Verify → Record → Repeat and explicit terminal states. Its catalog host is a placeholder in the supplied file; resolve the actual upstream catalog before any live Find/Publish integration.
 - **Vendor folders and imported archives** remain untrusted data. Inspect provenance, license, scripts, network access, requested permissions, secret patterns and maintenance before install or execution.
 
@@ -100,7 +100,7 @@ The 2026-11-19 session snapshot contains 545 plugin skill references across 74 p
 | Runtime invocation | ATES / WTCV / TCV | execution status and effectiveness |
 | Integrated task | deterministic acceptance + independent evidence | outcome, integration, regression and promotion evidence |
 
-Skill quality, TDQS, runtime effectiveness and integrated outcome remain separate. A high-quality definition does not prove successful execution.
+Skill quality, TDQS, runtime effectiveness and integrated outcome remain separate. Skill-definition quality and runtime execution effectiveness measure separate outcomes.
 
 ## DoE linkage
 
@@ -108,7 +108,7 @@ The new nested discovery factors are registered as dimensions 41–48 in `DOE-QU
 
 The experiment reuses `docs/ops/corpus/EXPERIMENT.schema.json`. One executed task × treatment × configured instance = one observation. It preserves task-family/difficulty blocks, assignment integrity, interaction analysis, uncertainty, resource cost and permission guardrails.
 
-The campaign is proposal-only until DoE-expert admission, an automation path and configured-instance stamps are verified. Documentation and indexing implementation do not dispatch experiments.
+The campaign remains proposal-only pending DoE-expert admission, an automation path and verified configured-instance stamps. Documentation and indexing implementation do not dispatch experiments.
 
 ## Commands
 

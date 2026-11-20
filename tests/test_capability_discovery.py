@@ -49,6 +49,26 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(rows[0]["trust"], "unverified")
             self.assertTrue(rows[0]["locator"].startswith("external:workspace/"))
 
+    def test_plugin_and_mcp_manifests_index_metadata_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            plugin = root / "plugins" / "demo" / ".codex-plugin" / "plugin.json"
+            plugin.parent.mkdir(parents=True)
+            plugin.write_text(json.dumps({
+                "name": "demo-plugin",
+                "description": "Database helper plugin",
+                "version": "1.2.0",
+                "skills": ["skills/db/SKILL.md"],
+                "mcpServers": {"db": {"command": "db-server"}},
+            }), encoding="utf-8")
+            rows = scan_repository(root)
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["kind"], "manifest")
+            self.assertEqual(rows[0]["source_id"], "repo-plugin-manifests")
+            self.assertIn("MCP servers=1", rows[0]["description"])
+            self.assertNotIn("db-server", rows[0]["description"])
+            self.assertEqual(rows[0]["version_ref"], "1.2.0")
+
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

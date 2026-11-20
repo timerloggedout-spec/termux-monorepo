@@ -44,6 +44,24 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(con.execute("SELECT count(*) FROM discovery_event").fetchone()[0], 1)
             self.assertEqual(len(search(con, "testing workflow")), 1)
 
+    def test_identical_content_creates_relationship_without_merging_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            body = "---\nname: shared\ndescription: Shared workflow\n---\n# Workflow\nVerify evidence.\n"
+            paths = [
+                root / ".agents" / "skills" / "shared" / "SKILL.md",
+                root / "vendor" / "sample" / "SKILL.md",
+            ]
+            for path in paths:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(body, encoding="utf-8")
+            con = connect(root / "index.sqlite")
+            result = upsert(con, scan_repository(root))
+            self.assertEqual(result["total"], 2)
+            self.assertEqual(result["relationships"], 1)
+            edge = con.execute("SELECT relation FROM capability_edge").fetchone()
+            self.assertEqual(edge[0], "content_identical")
+
     def test_skills_sh_search_requires_token_and_returns_metadata_only(self):
         with patch.dict("os.environ", {}, clear=True):
             rows, status = search_skills_sh("database skills")

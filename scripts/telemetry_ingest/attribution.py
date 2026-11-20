@@ -11,7 +11,7 @@ Evidence chain, strongest first:
   1. stamp      — [MUSEai]@{role:{X}} coordination stamp in the PR
                   title/body (the fleet's signed attribution mark).
   2. trailer    — `Agent: X` / `Signed-off-by: X <..>` / `Co-authored-by:`
-                  trailers in the PR body (AGENT-IDENTITY.md layer).
+                  trailers in the PR body (COLLABORATOR-IDENTITY.md layer).
   3. git_author — the PR commits' git author name/email, when it maps
                   to a known collaborator identity (alias/email-domain)
                   and is not the owner or a bot.
@@ -272,7 +272,7 @@ def extract_actor(pr: dict, commits=None, files=None,
 # (ac8e5e6b) publishes it; until then the raw evidence id stands and is
 # marked registry_keyed=False in the stats output.
 REGISTRY_CANONICAL: dict[str, str] = {
-    # Registry verdict LANDED PR #3355 (2026-11-01, AGENT-MONIKERS.md):
+    # Registry verdict LANDED PR #3355 (2026-11-01, COLLABORATOR-MONIKERS.md):
     # Grok = distinct attributed actor, registered display `Grok`;
     # established identity git `Grok <grok@x.ai>`, pipeline identity
     # `Grok (Administrator)` (ml/pipelines/peers/grok.py).

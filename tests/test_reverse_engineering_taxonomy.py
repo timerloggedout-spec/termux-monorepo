@@ -87,3 +87,33 @@ def test_waf_upstreams_are_tool_nodes_with_roles():
             "schemathesis", "awesome-reverse-engineered"} <= chain_tools
     proto = next(c for c in tax()["toolchains"] if c["category"] == "target-protocols-formats")
     assert {"mitmproxy2swagger", "curlconverter"} <= {t for s in proto["stages"] for t in s["tools"]}
+
+
+def test_rea_argonaut_is_registered_as_cross_domain_tool():
+    t = tax()
+    n = rt.node(t, "rea-argonaut")
+    assert n["kind"] == "tool"
+    assert n["source_repository"] == "timerloggedout-spec/REA-Argonaut_fork"
+    assert n["upstream"] == "PNWcoastie/REA-Argonaut"
+    assert {"target-native", "target-bytecode", "target-firmware",
+            "target-protocols-formats", "target-mobile", "target-web-client"} <= set(n["parents"])
+    assert {"decompiler", "extractor", "cross-validator"} <= set(n["tags"]["tool_role"])
+    assert rt.validate(t) == []
+
+
+def test_rea_argonaut_is_in_relevant_stage_handoffs():
+    t = tax()
+    expected = {
+        "native-linux": {"analyze-static"},
+        "native-windows": {"analyze-static"},
+        "firmware-bare-metal": {"identify"},
+        "mobile-android": {"extract", "analyze-static"},
+        "target-protocols-formats": {"analyze-static", "validate"},
+        "target-web-client": {"analyze-static"},
+    }
+    for category, stages in expected.items():
+        chain = rt.toolchain(t, category)
+        assert chain is not None
+        for stage_name in stages:
+            stage = next(s for s in chain["stages"] if s["stage"] == stage_name)
+            assert "rea-argonaut" in stage["tools"]

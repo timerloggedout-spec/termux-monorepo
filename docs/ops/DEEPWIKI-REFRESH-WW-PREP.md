@@ -28,7 +28,7 @@ Continuous = (a) every campaign dispatch, and (b) an episodic staleness check: a
 
 - Dispatch target: the campaign issue **[webWrapper] DeepWiki.com continuous refresh — ww-deepwiki** (session brief embedded in the issue body).
 - Builder arms: distributed through the live provider roster (owner dispatch principle, 2026-11-01; swarm record §20). Refresh probes run across Gemini build_dispatch, command-dispatch, and DeepSeek when restored, with per-instance stamps for comparative 3L0/DoE signal. The local DoE role skill pack guides task planning. Builder and evaluator remain separate roles; evaluators verify stamps against live page state.
-- Execution is **arm-gated**: the wave is held at the builder layer until arms recover (tally at prep time: Jules created 3 / completed 0 / errored 3; Gemini CLI out; DeepSeek tunnel down; command-dispatch live). This prep wires everything repo-side so the first recovered arms fire immediately.
+- Execution remains arm-gated until a non-Jules adapter is verified. Historical census: Jules created 3 / completed 0 / errored 3; Gemini CLI out; DeepSeek tunnel down; command-dispatch live. This prep wires the local role guidance and provider admission evidence for the next verified adapter.
 
 ## Boundaries
 

@@ -104,12 +104,12 @@ def test_admin_graph_mobile_first_contract():
     assert 'padding-bottom:118px' in html
     assert 'env(safe-area-inset-bottom)' in html
     assert 'main.canvas-wrap{order:1;min-height:54vh;height:54vh}' in html
-    for control in ("mbSearch", "mbFocus", "mbFit", "mbNode", "mbFs", "mbDiff", "mbDispatch", "mbProposal"):
+    for control in ("mbFocus", "mbFit", "mbNode", "mbFs", "mbDiff", "mbDispatch", "mbProposal"):
         assert f'id="{control}"' in html, control
+    assert 'id="graphSearch"' in html
     assert 'id="searchPrev"' in html and 'id="searchNext"' in html and 'id="searchClear"' in html
     assert 'function stepGraphSearch(direction)' in html
     assert 'function clearGraphSearch(blur)' in html
-    assert 'document.getElementById("mbSearch").addEventListener("click"' in html
     assert 'document.getElementById("searchPrev").addEventListener("click"' in html
     assert 'document.getElementById("searchNext").addEventListener("click"' in html
     assert 'document.getElementById("searchClear").addEventListener("click"' in html

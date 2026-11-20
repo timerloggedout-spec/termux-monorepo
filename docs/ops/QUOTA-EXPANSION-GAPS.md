@@ -194,7 +194,7 @@ Distinct provider strings: 13. Providers in the registry with **no** correspondi
 - **Suggested ids (unpopulated):** `tailscale.personal_users`, `tailscale.personal_devices`, `tailscale.api_rate` — all null / not verified.
 - **Confidence:** None claimed — explicit gap, 2026-10-20.
 
-### 3.8 Jules API (custom connector `custom.jules`) — ABSENT
+### 3.8 Jules API (custom connector `custom.jules`) — RETIRED (historical quota snapshot)
 - **API rate limit: no API-specific quota is published** on the Jules API documentation (the only numeric limit there is max 3 API keys at a time) — https://developers.google.com/jules/api
 - **Plan task limits ARE published (product limits, not an API rate limit — do not re-label):** Free 15 tasks/rolling 24 h, 3 concurrent; Google AI Pro 100/day, 15 concurrent; Google AI Ultra 300/day, 60 concurrent. At the limit, new tasks block until the rolling window frees; limits are not pooled across family plans.
 - **Source:** https://jules.google/docs/usage-limits

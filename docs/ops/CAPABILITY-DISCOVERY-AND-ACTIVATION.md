@@ -43,7 +43,7 @@ Use one primary domain/function and multiple facets. This avoids multiplying dup
 
 ### Identity and deduplication
 
-Canonical identity uses source locator plus package/skill/action identifier. Names alone are insufficient. Content hashes detect changed definitions. Keep forks, versions and aliases distinct; link them through relationships rather than silently merging them. Record duplicate candidates and their resolution in the ledger.
+Canonical identity uses source locator plus package/skill/action identifier. Names alone are insufficient. Content hashes detect changed definitions. Exact content matches create `content_identical` relationship edges while keeping the source records distinct. Keep forks, versions and aliases distinct; link them through relationships rather than silently merging them. Record duplicate candidates and their resolution in the ledger.
 
 ## Progressive loading and context budget
 
@@ -63,7 +63,7 @@ authorized execution / experiment / adoption
 
 Default behavior returns a small metadata-only shortlist (top 8). Load full skill instructions or tool schemas only for selected candidates. Fetch a tool's schema just before invocation. Use the exact action rather than injecting an entire namespace.
 
-The SQLite database uses FTS5 when available and a LIKE fallback otherwise. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
+The SQLite database uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
 
 ## Sources and vendor caution
 

@@ -1,9 +1,11 @@
 # lane-consolidation-ssot — Master Coordination & Production Improvements Map
 
 **Date:** 2026-10-16
-**Status:** ACTIVE
-**Orchestration Profile:** Grok / Jules Automated Operations
+**Status:** ACTIVE — Jules sections are historical after 2026-11-11
+**Orchestration Profile:** Grok / current evidence-driven agent router
 **Authority Level:** Production Consolidated SSOT
+
+> **Jules retirement amendment (2026-11-20):** Google Jules became read-only after 2026-11-11. All `@jules` summons, quota assumptions, and API execution references in this document are historical. The local Jules-derived DoE role skill pack supplies workflow guidance only; live execution routes through the current agent roster and verified adapters.
 
 ---
 

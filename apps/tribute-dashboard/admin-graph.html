@@ -1392,7 +1392,7 @@ var historyParams=new URLSearchParams(window.location.search);
 if(historyParams.has("from")&&historyParams.has("to")){
  document.getElementById("historyFrom").value=localDateTimeValue(new Date(historyParams.get("from")));
  document.getElementById("historyTo").value=localDateTimeValue(new Date(historyParams.get("to")));
- if(historyParams.get("view")==="history")window.setTimeout(inspectRouteHistory,900);
+ if(historyParams.get("view")==="history")window.setTimeout(inspectRouteHistory,100);
 }
 function refreshAdminGraph(){refreshQueFeed();if(!historicalMode)pollRuntimeEvents();}
 window.setTimeout(pollRuntimeEvents,750);

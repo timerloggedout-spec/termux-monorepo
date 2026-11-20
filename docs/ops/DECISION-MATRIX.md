@@ -12,7 +12,7 @@
 | **Importance** | 1–5 | Urgency + dependency fan-out + policy alignment. 5 = blocks multiple open PRs or required by OPERATOR policy. |
 | **Score** | Impact × Importance | Product 1–25. |
 | **Band** | derived | P0 = 20–25 · High = 15–19 · Medium = 9–14 · Backlog ≤ 8. |
-| **Tie-break** | — | Prefer Jules quota / disposition mis-pipe reduction, then `context_key` enablement. |
+| **Tie-break** | — | Prefer external-route retirement, DoE role alignment, and verified adapter readiness, then `context_key` enablement. |
 
 ## Current matrix
 

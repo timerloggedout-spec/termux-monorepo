@@ -20,13 +20,45 @@ The repository scan recognizes:
 - `.github/**/SKILL.md` — automation and production skills;
 - `.claude/**/SKILL.md` — harness-specific skills;
 - `docs/**/SKILL.md` — documentation mirrors and operational companions;
-- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;\n- plugin/tool manifests: `plugin.json`, `marketplace.json`, `.mcp.json`, `mcp.json`, `tools.json` and `tool-manifest.json`; only manifest identity, description, version and entry counts are indexed;\n- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
+- nested `workspace/**/SKILL.md`, `SKILLS.md`, `*.SKILLS`, and `*.skill`;
+- plugin/tool manifests: `plugin.json`, `marketplace.json`, `.mcp.json`, `mcp.json`, `tools.json` and `tool-manifest.json`; only manifest identity, description, version and entry counts are indexed;
+- explicitly allowlisted sibling workspace roots supplied with repeatable `--extra-root` flags; these are tagged `workspace-external` / `unverified` and receive separate external locators;
 - `vendor/**` skill definitions, classified as unverified vendor inputs;
 - optional JSON exports of session plugin skills and tool actions.
 
 The recursive scan scopes itself to selected roots, skips symlinks and generated/cache directories, and keeps home and sibling workspaces outside the default scope. External roots enter through an explicit allowlist. It reads skill bodies only to derive a SHA-256 and extract frontmatter metadata; it persists metadata only while full instructions, tool schemas, prompts, credentials and completions stay in their source systems.
 
 At the current master baseline `57559c9100f9df2868398603410e6ba28783a942`, the recursive tree contained 45 `SKILL.md` paths, one root `SKILLS.md`, zero tracked `.skill` archives and zero workspace-nested skill paths. The scanner broadens future discovery to all nested forms; it derives the census from the checked-out tree for reproducible counts.
+
+## Existing Termux tool-taxonomy baseline
+
+The repository already contains a substantial, generated Termux/ArchWiz tool catalogue at `workspace/llm_map/_TOOL_TAXONOMY/`. Treat it as a historical local-tool snapshot and a DoE comparator, not a live inventory of currently installed or authorized tools.
+
+| Artifact | Observed structure | Treatment |
+|---|---:|---|
+| `all_tools.jsonl` | 3,388 valid JSONL records; 243 package/source groups; 104 tags | Canonical per-tool metadata input; indexed as individual `tool` records |
+| `TOOL_TAXONOMY.json` | Reports 3,388 tools, 25 roles and 104 tags | Taxonomy summary and metadata |
+| `TAG_INDEX.json` | Generated tag lookup | Derived index; do not duplicate tool records |
+| `categories/` | 103 JSON category views | Derived projections |
+| `roles/` | 25 role JSON profiles plus directory metadata | Derived contextual profiles |
+| `modules/` | 20 scanner, merge, refactor and delta modules | Generator/source code |
+| `python3/` | 28 category mirrors | Derived projections |
+| `delta/` | 18 historical snapshots | Historical change evidence |
+| `state/` | 531 package/device-state entries | Metadata-only provenance; exclude content from default context |
+
+The README currently claims 3,387 tools and contains unrendered shell substitutions for its rebuild timestamp, role table and tags. The machine-readable taxonomy and JSONL both report 3,388. The `REPO_INFO` file declares `NO_REMOTE`; source provenance is therefore the tracked repository snapshot, not a verified live remote or current Termux device scan.
+
+The discovery scanner indexes `all_tools.jsonl` as metadata-only tool records. It retains source/category/package tags, uses the whole-file SHA-256 as the snapshot version, and marks the tool records `unverified` because the snapshot does not establish current availability. Category and role files remain generated views rather than duplicate tool records.
+
+`build_tool_taxonomy.sh` is Termux-specific and invokes apt, npm, cargo, custom, Termux API, reference-template and alias scanners. Treat it as a generator definition; CI and remote agents consume the committed snapshot and do not execute this local-environment builder.
+
+## Claude export provenance: Issue #5657 and PR #5667
+
+[Issue #5657](https://github.com/timerloggedout-spec/termux-monorepo/issues/5657) lists four attachments: `SHA256SUMS.txt`, `plugins-inventory.csv`, `skills-inventory.csv`, and `skills-SKILL-md-all.tar.gz`. The supplied checksum file instead names five `skills-part-00.tgzpart` through `skills-part-04.tgzpart` files. Those part files are absent from the issue's attachment list, and the checksum file does not name the combined tarball or CSV files. The issue body also omits `skills-inventory.jsonl`.
+
+[PR #5667](https://github.com/timerloggedout-spec/termux-monorepo/pull/5667) contains an importer that requires `skills-inventory.jsonl`, copies `SHA256SUMS.txt` without parsing it, and calculates the combined archive SHA-256 after import rather than verifying it against a supplied checksum. Its source manifest reports 1,299 skills and 1,218 plugin inventory rows; these counts describe the imported branch and do not establish the missing source checksum chain.
+
+Keep the mirror and importer in the unverified vendor-candidate state until the exact attachment bytes, split-part assembly, archive membership, CSV/JSONL reconciliation and checksum provenance are independently verified. The scanner quarantines secret-like metadata and treats `vendor/**` content as unverified; discovery does not authorize installation or execution.
 
 ## Classification model
 
@@ -88,7 +120,9 @@ The source registry declares local, vendor, external-catalog and session-snapsho
 - **Loopy** is a bounded-loop skill candidate. The supplied JSON describes Discover, Find, Audit, Adapt, Craft, Run, Debrief, Save and Publish routes, with Observe → Choose → Act → Verify → Record → Repeat and explicit terminal states. Its catalog host is a placeholder in the supplied file; resolve the actual upstream catalog before any live Find/Publish integration.
 - **Vendor folders and imported archives** remain untrusted data. Inspect provenance, license, scripts, network access, requested permissions, secret patterns and maintenance before install or execution.
 
-The 2026-11-19 session snapshot contains 545 plugin skill references across 74 packages and 4,716 callable actions (4,706 MCP actions across 123 MCP namespaces, plus core tools). Compact indexes live at `docs/integrations/session-plugin-skill-catalog.json` and `docs/integrations/session-tool-action-catalog.json`. These snapshots intentionally omit full tool schemas and truncate descriptions to compact activation summaries.\n\nSession plugin/tool exports are session-observed snapshots. Verify account entitlement, connected status in each runtime and repository adapter availability independently. The tool host's live schema remains authoritative.
+The 2026-11-19 session snapshot contains 545 plugin skill references across 74 packages and 4,716 callable actions (4,706 MCP actions across 123 MCP namespaces, plus core tools). Compact indexes live at `docs/integrations/session-plugin-skill-catalog.json` and `docs/integrations/session-tool-action-catalog.json`. These snapshots intentionally omit full tool schemas and truncate descriptions to compact activation summaries.
+
+Session plugin/tool exports are session-observed snapshots. Verify account entitlement, connected status in each runtime and repository adapter availability independently. The tool host's live schema remains authoritative.
 
 ## Evaluation routing
 
@@ -114,7 +148,10 @@ The campaign remains proposal-only pending DoE-expert admission, an automation p
 
 ```bash
 # Build/update local SQLite index and deterministic event-ledger projection
-python3 scripts/capabilities/discover.py scan --root .\n\n# Explicitly add selected sibling workspaces; each remains unverified\npython3 scripts/capabilities/discover.py scan --root . --extra-root "$HOME/workspace/project-a" --extra-root "$HOME/workspace/project-b"
+python3 scripts/capabilities/discover.py scan --root .
+
+# Explicitly add selected sibling workspaces; each remains unverified
+python3 scripts/capabilities/discover.py scan --root . --extra-root "$HOME/workspace/project-a" --extra-root "$HOME/workspace/project-b"
 
 # Import session-scoped, metadata-only JSON exports when explicitly supplied
 python3 scripts/capabilities/discover.py scan --root . \

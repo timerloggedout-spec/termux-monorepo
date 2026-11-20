@@ -39,7 +39,7 @@ Each capability receives:
 5. **Lifecycle state** — discovered → classified → deduplicated → evaluated → eligible → approved → adopted, with deprecated/rejected terminal branches.
 6. **Provenance** — exact source locator, retrieval/capture time, immutable source revision where available, content hash and discovery method.
 
-Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. Store aliases and cross-domain relationships as edges.
+Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
 
 ### Identity and deduplication
 
@@ -63,7 +63,7 @@ authorized execution / experiment / adoption
 
 Default behavior returns a small metadata-only shortlist (top 8). Load full skill instructions or tool schemas only for selected candidates. Fetch a tool's schema just before invocation. Use the exact action rather than injecting an entire namespace.
 
-The SQLite database uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
+The SQLite database stores aliases, permission metadata, taxonomy hashes and relationship edges; the JSONL event ledger records added, changed and reclassified definitions. It uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
 
 ## Sources and vendor caution
 

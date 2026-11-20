@@ -1,0 +1,120 @@
+{
+  "campaign_id": "capability-discovery-routing",
+  "family": "doe",
+  "member_kind": "campaign",
+  "surface": "doe",
+  "suite_type": "control",
+  "status": "proposal_only_not_admitted",
+  "moniker": "doe-expert",
+  "base_sha": "57559c9100f9df2868398603410e6ba28783a942",
+  "hypothesis": {
+    "statement": "Nested tagged classification plus metadata-first progressive loading improves top-k capability retrieval quality and verified task success while reducing context ingestion and unnecessary tool/schema loads, compared with flat tags and broad definition loading.",
+    "predeclared_threshold": "Progressive treatment reduces definition bytes loaded by at least 40% while maintaining top-5 relevant-and-safe retrieval precision within 0.05 of the broad-load baseline; final success and permission guardrails remain non-inferior.",
+    "null": "The nested metadata-first approach yields no meaningful improvement in retrieval quality or context cost under the fixed task cohort."
+  },
+  "design": {
+    "type": "blocked full factorial (2x2x2), 8 treatment arms",
+    "unit_of_observation": "one fixed capability-search task executed under one treatment and one pinned configured instance; each completed run emits one EXPERIMENT record",
+    "factors": {
+      "source_scope": {
+        "levels": [
+          "repository_only",
+          "repository_plus_approved_catalog_snapshots"
+        ],
+        "dimension": 41
+      },
+      "taxonomy_depth": {
+        "levels": [
+          "flat_tags",
+          "nested_domain_function_facets"
+        ],
+        "dimension": 42
+      },
+      "context_hydration": {
+        "levels": [
+          "broad_definition_loading",
+          "metadata_first_progressive_loading"
+        ],
+        "dimension": 45
+      }
+    },
+    "fixed_controls": {
+      "retrieval_engine": "SQLite FTS5 BM25; LIKE fallback is a separately recorded environment condition",
+      "result_budget": "top_k=8",
+      "deduplication": "canonical source locator + package/skill/action identity + content SHA-256",
+      "trust_policy": "vendor/community/session inputs remain distinct trust strata; permission gates identical across all arms"
+    },
+    "blocks": [
+      "task_family",
+      "difficulty_stratum"
+    ],
+    "replication": "8 fixed tasks × 8 treatment arms = 64 planned observations; task-family balance and budget confirmed at admission.",
+    "randomization": "balanced randomized assignment within task-family and difficulty blocks; preserve planned and observed allocation and report deviations.",
+    "outcomes": {
+      "primary": "top-5 relevant-and-safe capability retrieval precision, with selected-source correctness independently adjudicated",
+      "secondary": [
+        "verified task success",
+        "context bytes and actual input tokens where telemetry exists",
+        "definition bodies/schemas hydrated",
+        "tool actions invoked",
+        "elapsed time",
+        "duplicate candidates",
+        "source coverage",
+        "rework and retries"
+      ],
+      "guardrails": [
+        "unauthorized write actions = 0",
+        "secret/private-data exposure = 0",
+        "unreviewed external skill installation = 0",
+        "all outcomes retain explicit unknown/blocked/failed states"
+      ]
+    },
+    "analysis": "Estimate main effects and interactions with uncertainty; preserve per-run observations; stratify by task family/difficulty; do not use latency or token reduction as correctness proxies. Confirm any promising effect on a held-out task cohort.",
+    "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tools ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key."
+  },
+  "matrix_dimensions": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "source_scope": [
+    ".agents/skills/**/SKILL.md",
+    ".github/skills/**/SKILL.md",
+    ".claude/**/SKILL.md",
+    "docs/**/SKILL.md",
+    "**/SKILLS.md",
+    "**/*.SKILLS",
+    "**/*.skill",
+    "vendor/**",
+    "ops/capability_discovery/taxonomy.json",
+    "ops/capability_discovery/sources.json",
+    "ops/capability_discovery/record.schema.json",
+    "scripts/capabilities/discover.py",
+    "tests/test_capability_discovery.py",
+    "docs/ops/SKILL-EVALUATION.md",
+    "docs/ops/TDQS-ADMISSION-MATRIX.md",
+    "docs/ops/DOE-QUESTIONS-MATRIX.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md",
+    ".agents/skills/approxination-lane/SKILL.md",
+    ".agents/skills/find-skills/SKILL.md",
+    ".agents/skills/skill-evaluation/SKILL.md",
+    "experiments/doe/capability-discovery-routing/DESIGN.json"
+  ],
+  "automation": {
+    "status": "local-indexer-implemented; experiment-runner-not-implemented",
+    "required": "Add reviewed workflow dispatch/admission path that pins catalogs, toolset snapshots and configured-instance identity; emits one EXPERIMENT-schema record per run; preserves failed and blocked outcomes."
+  },
+  "constraints": [
+    "Design-only until DoE-expert admission.",
+    "Use offline frozen catalog fixtures for first validation; external live catalog calls require authorized source access and budget.",
+    "No external skill installation or execution in the discovery indexer.",
+    "No credentials, private prompts, full tool schemas or completion content in the index.",
+    "All treatment arms retain identical safety and authorization gates."
+  ]
+}

@@ -9,9 +9,11 @@ Admin Graph is a published surface inside the installable Tribute PWA. The canon
 - Public route: https://timerloggedout-spec.github.io/tribute/admin-graph.html
 - Publisher: .github/workflows/tribute-dashboard-deploy.yml
 - Application subtree: apps/tribute-dashboard/
-- Existing publication lanes: Tribute GitHub Pages mirror and timerloggedout-spec.github.io user-site mirror.
+- Canonical release route: GitHub Pages user-site at /tribute/; /help-wanted/ remains the compatibility alias.
+- Secondary release lane: the existing tribute-oversight Vercel deployment, with production deployment governed by the established opt-in workflow path.
+- Separate project-Pages lane: the repository gh-pages job publishes the thin project hub and matrix; it remains a distinct surface.
 - Install contract: apps/tribute-dashboard/manifest.webmanifest, sw.js, and install.js.
-- Lane authority: docs/DEPLOYMENT-LANES.md for Vercel lanes and .github/workflows/tribute-dashboard-deploy.yml for the existing Tribute Pages/user-site publication path.
+- Lane authority: docs/ops/TRIBUTE-DASHBOARD.md and docs/ops/SITE-MAP.md for canonical public URLs; docs/DEPLOYMENT-LANES.md for Vercel project topology; .github/workflows/tribute-dashboard-deploy.yml for the existing publication workflow.
 
 Admin Graph ships through its established Tribute publication path. Preserve the existing PWA identity, manifest scope, service worker, install flow, publisher concurrency, and route ownership. A new hosting project or parallel publisher requires an explicit lane proposal and an update to the owning deployment SSOT.
 

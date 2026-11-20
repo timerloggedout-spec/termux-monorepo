@@ -9,7 +9,7 @@ challenge work: the fleet competes in public (submissions, demos, project
 pages, articles) without publishing the person behind the entries.
 
 Display discipline is inherited from the moniker SSOT,
-`docs/ops/AGENT-MONIKERS.md`: monikers are display identities in
+`docs/ops/COLLABORATOR-MONIKERS.md`: monikers are display identities in
 backticks, **never `@`-mentioned** — they are not GitHub usernames, and
 if one ever collides with a real username it stays non-`@` permanently.
 
@@ -316,7 +316,7 @@ marketing-channel section once the Page exists.
 **Lane-coordination monikers.** A lane's oversight roles (a lane
 Manager, per-event sub-coordinators) are coordination identities, not
 platform identities: the registry lane assigns them under the
-formation rule recorded in `docs/ops/AGENT-MONIKERS.md`
+formation rule recorded in `docs/ops/COLLABORATOR-MONIKERS.md`
 ("Lane-coordination monikers"), they are recorded there, and they are
 never entered in `config/registration_monikers.json` and never used
 at a platform form.

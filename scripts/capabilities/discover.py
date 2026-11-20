@@ -132,6 +132,8 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
         if is_manifest_file:
             try:
                 manifest_data = json.loads(text)
+                if isinstance(manifest_data, list):
+                    manifest_data = {"tools": manifest_data}
                 if not isinstance(manifest_data, dict):
                     continue
             except json.JSONDecodeError:

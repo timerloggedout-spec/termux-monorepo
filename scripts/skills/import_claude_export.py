@@ -53,6 +53,55 @@ def normalized_member(name: str) -> PurePosixPath:
     return PurePosixPath(*parts)
 
 
+def parse_sha256sums(path: Path) -> dict[str, str]:
+    entries: dict[str, str] = {}
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = line.strip()
+        if not line:
+            continue
+        parts = line.split(maxsplit=1)
+        if len(parts) != 2 or not re.fullmatch(r"[0-9a-fA-F]{64}", parts[0]):
+            raise ValueError(f"Invalid SHA256SUMS entry at line {line_number}")
+        filename = parts[1].lstrip("*").strip()
+        if not filename or PurePosixPath(filename).name != filename or "\\" in filename:
+            raise ValueError(f"Unsafe checksum filename at line {line_number}: {filename}")
+        if filename in entries:
+            raise ValueError(f"Duplicate checksum filename: {filename}")
+        entries[filename] = parts[0].lower()
+    return entries
+
+
+def verify_checksum_coverage(
+    downloads: Path, checksums: Path, inputs: tuple[Path, ...]
+) -> dict:
+    """Verify every listed local part and report source inputs absent from the sum file."""
+    entries = parse_sha256sums(checksums)
+    verified_files = []
+    missing_listed_files = []
+    for filename, expected in entries.items():
+        candidate = downloads / filename
+        if not candidate.is_file():
+            missing_listed_files.append(filename)
+            continue
+        actual = digest(candidate, "sha256")
+        if actual != expected:
+            raise ValueError(
+                f"SHA-256 mismatch for {filename}: expected={expected}; actual={actual}"
+            )
+        verified_files.append(filename)
+    unchecksummed_inputs = [
+        path.name for path in inputs if path.name not in entries
+    ]
+    status = "VERIFIED" if not unchecksummed_inputs and not missing_listed_files else "UNVERIFIED"
+    return {
+        "status": status,
+        "verified_files": sorted(verified_files),
+        "missing_listed_files": sorted(missing_listed_files),
+        "unchecksummed_inputs": sorted(unchecksummed_inputs),
+        "checksum_entry_count": len(entries),
+    }
+
+
 def extract_safely(archive: Path, destination: Path) -> None:
     with tarfile.open(archive, "r:gz") as tar:
         for member in tar.getmembers():
@@ -95,6 +144,9 @@ def main() -> None:
         if not path.is_file():
             raise SystemExit(f"Required export file missing: {path}")
 
+    checksum_verification = verify_checksum_coverage(
+        downloads, checksums, (archive, skills_csv, skills_jsonl, plugins_csv)
+    )
     _, rows = read_csv(skills_csv)
     plugin_fields, plugin_rows = read_csv(plugins_csv)
     required = {"namespace", "plugin_dir", "skill_path", "name", "description", "bytes", "sha1"}
@@ -105,6 +157,12 @@ def main() -> None:
         jsonl_rows = [json.loads(line) for line in stream if line.strip()]
     if len(rows) != 1299 or len(jsonl_rows) != len(rows):
         raise SystemExit(f"Inventory counts mismatch: CSV={len(rows)}, JSONL={len(jsonl_rows)}")
+    for index, (csv_row, jsonl_row) in enumerate(zip(rows, jsonl_rows), 1):
+        if not isinstance(jsonl_row, dict) or any(
+            str(jsonl_row.get(key, "")) != str(csv_row.get(key, ""))
+            for key in ("namespace", "plugin_dir", "skill_path", "name", "description", "bytes", "sha1")
+        ):
+            raise SystemExit(f"CSV/JSONL record mismatch at row {index}")
 
     MIRROR.mkdir(parents=True, exist_ok=True)
     SOURCE.mkdir(parents=True, exist_ok=True)
@@ -247,6 +305,8 @@ def main() -> None:
         "skill_dirs_missing_from_plugin_inventory": sorted(skill_dirs - plugin_dirs),
         "plugin_inventory_dirs_without_skill_rows": sorted(plugin_dirs - skill_dirs),
         "plugin_inventory_columns": plugin_fields,
+        "jsonl_matches_csv": True,
+        "blank_plugin_dir_rows": sum(not row["plugin_dir"].strip() for row in rows),
     }, indent=2) + "\n", encoding="utf-8")
 
     manifest = {
@@ -262,6 +322,8 @@ def main() -> None:
         "registry": ".skills/index.json",
         "tags": ".skills/tags.json",
         "generated_at": stamp,
+        "checksum_verification": checksum_verification,
+        "inventory_consistency": "CSV and JSONL rows compared field-for-field",
     }
     (SOURCE / "source-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
@@ -273,6 +335,9 @@ def main() -> None:
         "unique_plugin_inventory_dirs": len(plugin_dirs),
         "search_tags": len(tags),
         "archive_sha256": archive_sha,
+        "source_checksum_status": checksum_verification["status"],
+        "unchecksummed_inputs": checksum_verification["unchecksummed_inputs"],
+        "missing_listed_files": checksum_verification["missing_listed_files"],
         "mirror": str(MIRROR),
         "registry": str(REGISTRY / "index.json"),
         "discovery_links": len(entries),

@@ -201,13 +201,15 @@ def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
         source = item.get("source") or ""
         installs = item.get("installs")
         duplicate = bool(item.get("isDuplicate", False))
-        description = f"skills.sh candidate; source={source}; installs={installs}; duplicate={duplicate}"
+        detail_url = item.get("url") or ""
+        install_url = item.get("installUrl") or ""
+        description = f"skills.sh candidate; source={source}; installs={installs}; duplicate={duplicate}; url={detail_url}; install={install_url}"
         metadata = json.dumps(item, sort_keys=True, separators=(",", ":")).encode()
         rows.append({
             "id": "skills-sh:" + identity,
             "kind": "skill",
             "source_id": "skills-sh",
-            "locator": identity,
+            "locator": detail_url or identity,
             "name": str(name)[:240],
             "description": description[:1200],
             "content_sha256": digest(metadata),
@@ -275,13 +277,19 @@ def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
             con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,source_id) VALUES (?,?,?,?,?)",
                         (event_id,row["id"],event,row["content_sha256"],row["source_id"]))
             changed += 1
-    con.execute("DELETE FROM capability_edge WHERE relation='content_identical'")
     duplicates = con.execute("""SELECT a.id,b.id,a.content_sha256
         FROM capability a JOIN capability b
         ON a.content_sha256=b.content_sha256 AND a.id < b.id
         WHERE a.content_sha256 IS NOT NULL""").fetchall()
+    expected_edges = {}
     for left,right,fingerprint in duplicates:
         edge_id = digest(f"{left}|{right}|content_identical|{fingerprint}".encode())
+        expected_edges[edge_id] = (left,right,fingerprint)
+    existing_edges = {row[0] for row in con.execute(
+        "SELECT edge_id FROM capability_edge WHERE relation='content_identical'").fetchall()}
+    for stale_edge in existing_edges - set(expected_edges):
+        con.execute("DELETE FROM capability_edge WHERE edge_id=?", (stale_edge,))
+    for edge_id,(left,right,fingerprint) in expected_edges.items():
         con.execute("""INSERT OR IGNORE INTO capability_edge
             (edge_id,from_id,to_id,relation,evidence_sha256) VALUES (?,?,?,?,?)""",
             (edge_id,left,right,"content_identical",fingerprint))

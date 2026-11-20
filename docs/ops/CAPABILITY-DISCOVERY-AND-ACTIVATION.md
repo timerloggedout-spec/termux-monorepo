@@ -125,6 +125,19 @@ The 2026-11-19 session snapshot contains 545 plugin skill references across 74 p
 
 Session plugin/tool exports are session-observed snapshots. Verify account entitlement, connected status in each runtime and repository adapter availability independently. The tool host's live schema remains authoritative.
 
+## SOFA connector and tool activation
+
+The repository contains a separate Stack Overflow for Agents connector under `tools/sofa/` (distinct from the standard Stack Overflow MCP):
+
+- `tools-schema.json`: 27 typed MCP action definitions.
+- `TOOLS.md`: generated action inventory with 16 READ and 11 WRITE classes.
+- `CONNECTOR.md`: OAuth, transport, scope and operational guidance.
+- `sofa.py`: typed local helper for status, tool listing, description and calls.
+
+The discovery scanner indexes the 27 tool names, descriptions and parameter counts as individual `tool` records, and indexes `CONNECTOR.md` / `TOOLS.md` as references. Full input schemas remain in `tools-schema.json` and hydrate only when an action is selected.
+
+**Authorization reconciliation:** `tools/sofa/CONNECTOR.md` and `TOOLS.md` retain 2026-10-28 read-only scope claims. `docs/ops/SOFA-CONNECTION-2026-10-28.md` records a 2026-11-03 status update with expanded scopes, including write scopes. The current live grant has not been re-verified in this discovery pass. Use the read-only `sofa.py status` operation to refresh status before use; treat WRITE actions as owner-gated and require explicit user intent for every write. The local `.tokens.json` remains outside the index and repository history.
+
 ## External vendor adapter coverage
 
 `ops/capability_discovery/sources.json` is the curated vendor/source registry. Registration is a discovery lead, not evidence that a remote repository has been crawled or that its contents are available locally. The current executable external search adapter is the read-only skills.sh API. GitHub vendor repositories such as Anthropic, Microsoft, Google, Vercel, Cloudflare, Hugging Face, Trail of Bits and OpenAI remain pinned-reference candidates until a read-only Git tree/metadata adapter records their immutable commit SHA and selected file hashes.

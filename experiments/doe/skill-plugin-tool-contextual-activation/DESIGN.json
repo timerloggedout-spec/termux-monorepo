@@ -1,0 +1,189 @@
+{
+  "campaign_id": "skill-plugin-tool-contextual-activation",
+  "family": "doe",
+  "member_kind": "campaign",
+  "surface": "doe",
+  "suite_type": "live",
+  "status": "proposal_only_not_admitted",
+  "owner_order": "Design record prepared under CEEL. DoE-expert admission and automation review remain required before any dispatch.",
+  "dispatch_gate": "DISPATCH HOLD — documentation landing does not authorize experiment execution. Require DoE-expert approval naming this campaign, an implemented automation path, and a current session capability snapshot.",
+  "subject": "Measure whether contextual activation of repository skills, plugin skills and exact tool actions improves verified task outcomes and reduces context/tool waste versus fragmented discovery.",
+  "hypothesis": "A unified, evidence-bound activation matrix with exact action-level tool selection and minimal context loading improves correct integrated outcomes per unit of context, time and tool activity without reducing task coverage or weakening permission controls.",
+  "design": {
+    "type": "2x2x2 full factorial",
+    "unit_of_observation": "one fixed task instance executed under one activation arm and one pinned configured agent instance; each result is one canonical EXPERIMENT record",
+    "factors": {
+      "activation_index": {
+        "levels": [
+          "fragmented_existing_navigation",
+          "unified_contextual_activation_matrix"
+        ],
+        "definition": "Use the current role/inventory navigation versus the unified activation matrix plus the session skill/tool catalogs."
+      },
+      "tool_resolution": {
+        "levels": [
+          "namespace_level_discovery",
+          "exact_action_level_selection"
+        ],
+        "definition": "Select tools at namespace granularity versus exact action names from the captured catalog and live schemas."
+      },
+      "context_loading": {
+        "levels": [
+          "minimal_relevant_context",
+          "broad_role_bundle"
+        ],
+        "definition": "Load one primary skill and only necessary companion sources versus the broader role bundle. Governance and safety sources remain mandatory in every arm."
+      }
+    },
+    "assignment": {
+      "mechanism": "balanced randomized assignment within task-family and difficulty blocks",
+      "integrity": "Record planned and observed arm allocation before execution; deviations remain as-assigned and are never retrofitted."
+    },
+    "replication": "Eight fixed task instances across four task families × eight arms = 64 planned observations; confirm sample sufficiency and budget at admission. Repeated runs and independently sampled tasks remain distinct.",
+    "blocks": [
+      "task_family",
+      "difficulty_stratum",
+      "sensitivity_class"
+    ],
+    "outcomes": {
+      "primary": "verified integrated task outcome: deterministic acceptance plus independent evidence that the intended effect occurred",
+      "secondary": [
+        "context tokens or equivalent context-load measure",
+        "elapsed time",
+        "number of loaded skill instructions",
+        "number of tool actions",
+        "duplicate/unnecessary tool actions",
+        "tool failures",
+        "rework and retries",
+        "handoff count",
+        "human intervention",
+        "source coverage and task completeness"
+      ],
+      "guardrails": [
+        "permission violations = 0",
+        "unauthorized external writes = 0",
+        "secret/private-data exposure = 0",
+        "task coverage and correctness remain above pre-registered floors"
+      ]
+    },
+    "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tool manifest/catalog snapshot ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key. Session catalog date alone is insufficient as tool identity.",
+    "analysis": "Estimate main effects and interactions with uncertainty. Preserve raw per-run outcomes. Treat task family and difficulty as blocks. Do not rank by latency or action count alone. Follow a promising cell with held-out confirmation.",
+    "stopping_rule": "Stop at the planned cohort or pre-registered budget cap. Missing telemetry, unverified effects, failed validation and permission incidents remain explicit outcomes; no automatic retry solely to improve completion statistics."
+  },
+  "source_scope": [
+    "CLAUDE.md",
+    "docs/icm/CLAUDE.md",
+    ".agents/skills/**/SKILL.md",
+    ".claude/skills/**/SKILL.md",
+    ".github/skills/**/SKILL.md",
+    "docs/ops/skills/**/SKILL.md",
+    "docs/ops/SKILLS-INVENTORY.md",
+    "docs/ops/SKILL-DISCOVERY-MATRIX.md",
+    "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md",
+    "docs/ops/SKILL-EVALUATION.md",
+    "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json",
+    "docs/ops/TDQS-ADMISSION-MATRIX.md",
+    "docs/ops/TDQS-EVIDENCE.schema.json",
+    "docs/integrations/README.md",
+    "docs/integrations/INTEGRATION-REGISTRY.md",
+    "docs/integrations/registry.json",
+    "docs/integrations/ADAPTER-CONTRACT.md",
+    "docs/integrations/schemas/integration-event.schema.json",
+    "docs/integrations/session-plugin-skill-catalog.json",
+    "docs/integrations/session-tool-catalog.json",
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/DOE-QUESTIONS-MATRIX.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/ops/AGENT-THROUGHPUT-EVENT.schema.json",
+    "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+    "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md",
+    "docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md",
+    "docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md",
+    "experiments/doe/skill-plugin-tool-contextual-activation/DESIGN.json",
+    "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+    "docs/ops/AGENT-TEAM-DEVELOPMENT-LANES.md",
+    "docs/ops/AGENT-TEAM-ROSTER.md",
+    "docs/ops/AGENT-IDENTITY.md",
+    "docs/ops/ROUTING-ORCHESTRATION-MAP.md",
+    "docs/ops/AGENT-OBSERVABILITY-PRIORITY-DECISION.md",
+    "docs/ops/AGENT-OBSERVABILITY-RESEARCH-MATRIX.md",
+    "docs/ops/SECRET-NAMING-CONVENTION.md",
+    "docs/ops/secrets-and-variables-registry.md",
+    "docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md",
+    "docs/ops/ORCHESTRATION-CONTRACTS.md",
+    "docs/ops/ORCHESTRATION-TREATMENT.schema.json",
+    "docs/ops/ORCHESTRATION-RECEIPT.schema.json",
+    "docs/ops/ADAPTIVE-DISPATCH.md",
+    "docs/ops/TOOL-ACQUISITION-ROUTES.md",
+    "docs/ops/AGENT-SUBSTRATE-ACTIVATION.md",
+    "docs/ops/MVT-DOE-ATES-SEPARATION.md",
+    "docs/ops/AGENT-THROUGHPUT-PHASE-B.md"
+  ],
+  "automation": {
+    "status": "not_implemented",
+    "required": "A reviewed workflow/runner that selects pre-registered arms, stamps configured-instance identity, emits one EXPERIMENT-schema record per run, validates allocation and produces a reproducible SUMMARY."
+  },
+  "ssot": [
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/DOE-QUESTIONS-MATRIX.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/ops/SKILL-EVALUATION.md",
+    "docs/integrations/README.md",
+    "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md",
+    "docs/ops/AGENT-TEAM-ORCHESTRATION.md",
+    "docs/ops/ORCHESTRATION-CONTRACTS.md",
+    "docs/ops/MVT-DOE-ATES-SEPARATION.md",
+    "docs/ops/REPO-WIDE-LINGUIST-SYGLARY-MANDATE.md",
+    "docs/ops/SECRET-NAMING-CONVENTION.md"
+  ],
+  "provenance": "Session tool/skill snapshots captured 2026-11-19. Re-capture before any experiment dispatch and bind the exact catalog hashes in the run records.",
+  "constraints": [
+    "Keep governance and permission checks identical across arms.",
+    "Treat tool-host availability and account entitlement as environment covariates, not inferred treatment effects.",
+    "Do not persist secrets, raw prompts/completions, private traces or restricted user data.",
+    "Design publication does not authorize execution.",
+    "Failures and null/missing evidence remain explicit."
+  ],
+  "base_sha": "f1840cf0488bb48bbbf7df1b62d15808d58b5dfe",
+  "session_snapshots": {
+    "plugin_skill_catalog": {
+      "path": "docs/integrations/session-plugin-skill-catalog.json",
+      "git_blob_sha": "711842f1e559f38fc4ba278483939de83b7adf1d",
+      "captured_at": "2026-11-19",
+      "entries": 545,
+      "packages": 74
+    },
+    "tool_catalog": {
+      "path": "docs/integrations/session-tool-catalog.json",
+      "git_blob_sha": "570612bcae2da5940f0f33a2a3e6eb09f2488642",
+      "captured_at": "2026-11-19",
+      "actions": 4705,
+      "mcp_namespaces": 123
+    }
+  },
+  "task_cohort": {
+    "source": "Real incoming repository work, sampled before assignment; freeze task contract hash and acceptance oracle before dispatch.",
+    "blocks": [
+      "task_family",
+      "difficulty_stratum",
+      "sensitivity_class"
+    ],
+    "planned_families": [
+      "repository_governance",
+      "skill_routing",
+      "plugin_tool_selection",
+      "evaluation_and_DoE"
+    ],
+    "planned_units": 8,
+    "replication": "Each selected live task is independently executed in each of the eight arms under isolated sessions; task identity and contract hash remain fixed across arms."
+  },
+  "future_factor_candidates": [
+    "delegation_policy",
+    "concurrency_policy",
+    "reviewer_composition",
+    "agent_specialization"
+  ],
+  "efficiency_policy_ref": "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md#offload-and-efficiency-policy"
+}

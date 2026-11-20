@@ -99,6 +99,7 @@ Inventory: [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md)
 | Permissions / human edges | `docs/proposals/AGENTIC-PERMISSIONS.md` |
 | ICM task routing | `docs/icm/CLAUDE.md` |
 | Skills + adaptive wait | `docs/ops/SKILLS-INVENTORY.md` |
+| Contextual capability activation | `docs/ops/CAPABILITY-ACTIVATION-MATRIX.md` | Repository skills, plugin skill triggers, tool namespaces and exact action selection |
 | Session / lane SSOT | `docs/ops/LANE-MATRIX.md` |
 | Dependency-phase system | `docs/agentic/README.md` |
 | Credential names inventory | issue #184 (no values) |
@@ -149,7 +150,7 @@ Integration catalog and event contract: `docs/integrations/README.md`. Design an
 
 ## Continuous Capability Evolution Laboratory (CEEL)
 
-Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
+Start at docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md and follow its proposal work ledger. Use docs/ops/CAPABILITY-ACTIVATION-MATRIX.md for exact skill/plugin/tool activation; session catalogs are discovery snapshots, not authorization. CEEL is the event-driven discovery and comparison lane across FOSS, external platforms and internal capabilities. It reuses the Integration Intelligence registry/event contract, DoE family/experiment schema, ATES, Delphi Oracle/EGM and proposal/dual-gate lifecycle. It creates no parallel scheduler, telemetry ledger, registry or merge authority. The initial platform cohort is Langfuse, PromptLayer, PostHog and Braintrust plus the native repository baseline; external capability claims remain unverified until pinned evidence exists. GitHub-native events are primary; bounded reconciliation is fallback. Weekly reporting is not the sensing mechanism.
 
 
 ## Linguist / Siglary communication contract

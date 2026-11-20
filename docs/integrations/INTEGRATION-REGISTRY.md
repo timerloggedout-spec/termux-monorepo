@@ -5,6 +5,14 @@
 **Adapter contract:** [ADAPTER-CONTRACT.md](ADAPTER-CONTRACT.md)  
 **Event schema:** [integration-event.schema.json](schemas/integration-event.schema.json)
 
+## Contextual activation catalogs
+
+- [Contextual capability activation matrix](../ops/CAPABILITY-ACTIVATION-MATRIX.md) — complete repository skill paths, activation triggers, role routing, and exact tool-selection procedure.
+- [Session plugin skill catalog](session-plugin-skill-catalog.json) — **545** skill references across **74** plugin skill packages, captured 2026-11-19.
+- [Session tool action catalog](session-tool-catalog.json) — **4,705** callable actions across **123** MCP namespaces plus core file/skill/settings tools, captured 2026-11-19.
+
+The JSON catalogs are session-scoped snapshots for contextual discovery. Their entries do not imply account authorization, paid-plan entitlement, cross-harness availability, repository adapter implementation, or production validation. The live tool host owns complete action schemas and permission contracts.
+
 ## Prioritized portfolio
 
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |

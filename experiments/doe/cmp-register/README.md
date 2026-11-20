@@ -13,5 +13,6 @@ Open entries:
   Opportunity manager channel vs folding into Challenge
   Management oversight. First instance: `.approxination`,
   routed via the dedicated channel created 2026-11-01.
+- CMP-3: contextual skill/plugin/tool activation — fragmented role/integration navigation vs the unified activation matrix and exact action catalogs. The separate designed campaign remains proposal-only until automation and DoE-expert admission.
 
 New examples append as CMP-n entries by amendment PR.

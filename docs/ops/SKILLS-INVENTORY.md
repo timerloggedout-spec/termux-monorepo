@@ -1,18 +1,18 @@
 # Skills Inventory (termux-monorepo)
 
-**Version:** 2026-09-30 22:00 UTC · **Master tip:** `fc22deb8`
+**Version:** 2026-11-19 · live recursive-tree census at `f1840cf`
 **Primary agent entry:** [`CLAUDE.md`](../../CLAUDE.md)
 **Collaborator short entry:** [`SKILLS.md`](../../SKILLS.md)
 
 ## Collaborator access (parity)
 
-All skills below are **in-repo** under `.agents/skills/` or `.github/skills/`.
-Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a second policy source.
+Canonical agent and automation skills live under `.agents/skills/` and `.github/skills/`. The `.claude/skills/` entry is a harness companion; `docs/ops/skills/` entries are documentation mirrors. Neither creates a competing policy source. Local agent mirrors (e.g. `.grok/skills/`) are convenience only.
 
 | Entry | Purpose |
 |-------|---------|
 | [`SKILLS.md`](../../SKILLS.md) | Short collaborator pointer |
 | This file | Full inventory + role matrix |
+| [`CAPABILITY-ACTIVATION-MATRIX.md`](CAPABILITY-ACTIVATION-MATRIX.md) | Contextual skill/plugin/tool activation, full repository skill triggers, and session catalog links |
 | Each `**/SKILL.md` | Executable skill body |
 
 ## Role load matrix
@@ -25,10 +25,11 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | **Collaborator** | `superpowers` · `adaptive-feedback-cycle` | dual-gate · `find-skills` |
 | **Oversight / external contrib** | `tribute-lane` | evidence-led + adaptive-wait · living status board |
 | **Dashboard / Pages** | `github-pages-operator` | tribute-lane · deploy workflow |
-| **Evaluation / DOE** | `multivariate-doe` + `blind-agent-evaluation` | `approxination-lane` · `mvt-experiment` |
+| **Evaluation / DOE** | `design-of-experiments` + `multivariate-doe` + `blind-agent-evaluation` | `skill-evaluation` · `orchestration-treatment-registry` · `approxination-lane` · `mvt-experiment` |
+| **Plugin / tool activation** | `CAPABILITY-ACTIVATION-MATRIX.md` | exact plugin skill URI · exact tool action · live schema · permission check |
 | **CI / production recon** | `production-reconciliation` | `action-effectiveness-ledger` · `workflow-orchestration` |
 
-## `.agents/skills/` (agent loadable)
+## `.agents/skills/` (agent loadable; 32 skills)
 
 | Skill | Path |
 |-------|------|
@@ -37,24 +38,41 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | approxination-lane | `.agents/skills/approxination-lane/SKILL.md` |
 | blind-agent-evaluation | `.agents/skills/blind-agent-evaluation/SKILL.md` |
 | context-relationship-graph | `.agents/skills/context-relationship-graph/SKILL.md` |
+| data-agent-kit | `.agents/skills/data-agent-kit/SKILL.md` |
+| design-of-experiments | `.agents/skills/design-of-experiments/SKILL.md` |
 | evidence-led-monorepo-ops | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
+| evolutionary-replay | `.agents/skills/evolutionary-replay/SKILL.md` |
 | find-skills | `.agents/skills/find-skills/SKILL.md` |
 | gemini-performance-psychology | `.agents/skills/gemini-performance-psychology/SKILL.md` |
 | github-pages-operator | `.agents/skills/github-pages-operator/SKILL.md` |
-| tribute-lane | `.agents/skills/tribute-lane/SKILL.md` |
-| **icm-cctv-ops** | `.agents/skills/icm-cctv-ops/SKILL.md` |
-| **ml-pipeline-ops** | `.agents/skills/ml-pipeline-ops/SKILL.md` |
-| plan-canvas | `.agents/skills/plan-canvas/SKILL.md` |
+| icm-cctv-ops | `.agents/skills/icm-cctv-ops/SKILL.md` |
+| minesweeper-ops | `.agents/skills/minesweeper-ops/SKILL.md` |
+| ml-command-center | `.agents/skills/ml-command-center/SKILL.md` |
+| ml-pipeline-ops | `.agents/skills/ml-pipeline-ops/SKILL.md` |
+| ml-recon-08 | `.agents/skills/ml-recon-08/SKILL.md` |
 | multivariate-doe | `.agents/skills/multivariate-doe/SKILL.md` |
+| operator-hub-175 (legacy snapshot) | `.agents/skills/operator-hub-175/SKILL.md` |
+| orchestration-treatment-registry | `.agents/skills/orchestration-treatment-registry/SKILL.md` |
+| plan-canvas | `.agents/skills/plan-canvas/SKILL.md` |
 | review-loop | `.agents/skills/review-loop/SKILL.md` |
-| **stepie-stepwise-ops** | `.agents/skills/stepie-stepwise-ops/SKILL.md` |
-| termux-monorepo | `.agents/skills/termux-monorepo/SKILL.md` |
-| web-adapter-foundry | `.agents/skills/web-adapter-foundry/SKILL.md` |
-| termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
+| siglary-a2a | `.agents/skills/siglary-a2a/SKILL.md` |
+| skill-evaluation | `.agents/skills/skill-evaluation/SKILL.md` |
+| stepie-stepwise-ops | `.agents/skills/stepie-stepwise-ops/SKILL.md` |
+| superpowers | `.agents/skills/superpowers/SKILL.md` |
 | termux-mcp-project-steward | `.agents/skills/termux-mcp-project-steward/SKILL.md` |
-| wingman-project-integration | `.agents/skills/wingman-project-integration/SKILL.md` |
+| termux-monorepo-agentic-governance | `.agents/skills/termux-monorepo-agentic-governance/SKILL.md` |
+| termux-monorepo-conventions | `.agents/skills/termux-monorepo/SKILL.md` |
+| tribute-lane | `.agents/skills/tribute-lane/SKILL.md` |
+| web-adapter-foundry | `.agents/skills/web-adapter-foundry/SKILL.md` |
+| wingman-project-integration | `.agents/skills/wingman-project-integration/SKILL.md`
 
-## `.github/skills/` (CI / production)
+## `.claude/skills/` (harness companion; 1 skill)
+
+| Skill | Path |
+|-------|------|
+| termux-monorepo-conventions | `.claude/skills/termux-monorepo/SKILL.md` |
+
+## `.github/skills/` (CI / production; 10 skills)
 
 | Skill | Path |
 |-------|------|
@@ -63,10 +81,20 @@ Local agent mirrors (e.g. `.grok/skills/`) are convenience only — **not** a se
 | evidence-provenance | `.github/skills/evidence-provenance/SKILL.md` |
 | forensic-recovery | `.github/skills/forensic-recovery/SKILL.md` |
 | github-pages-operator | `.github/skills/github-pages-operator/SKILL.md` |
+| ml-command-center | `.github/skills/ml-command-center/SKILL.md` |
 | mvt-experiment | `.github/skills/mvt-experiment/SKILL.md` |
 | pr-evidence-evaluation | `.github/skills/pr-evidence-evaluation/SKILL.md` |
 | production-reconciliation | `.github/skills/production-reconciliation/SKILL.md` |
 | workflow-orchestration | `.github/skills/workflow-orchestration/SKILL.md` |
+
+## `docs/ops/skills/` (documentation mirrors; 2 paths)
+
+| Mirror | Canonical source |
+|-------|------|
+| `docs/ops/skills/adaptive-wait/SKILL.md` | `.agents/skills/adaptive-wait/SKILL.md` |
+| `docs/ops/skills/evidence-led-monorepo-ops/SKILL.md` | `.agents/skills/evidence-led-monorepo-ops/SKILL.md` |
+
+**Census:** 45 `SKILL.md` paths across four surfaces; zero tracked `.skill` archives at baseline `f1840cf`. Use the activation matrix for triggers and load order.
 
 ## Help-wanted companion docs
 

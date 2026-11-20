@@ -22,6 +22,7 @@ propagations recorded as design events in the campaign record.
 |---|---|---|---|
 | MVT campaigns | member (existing) | active practice | MVT surface (`mvt.html` / `mvt-feed.json`) — the DoE surface carries a pointer only, never the payload |
 | Pilot 1 — context routing × CedrLang compression (#1849) | campaign | admitted (design record committed); executed — see campaign dir | `experiments/doe/pilot-1-context-routing-x-compression/` |
+| Skill / plugin / tool contextual activation | campaign candidate | proposal-only, not admitted — design record committed; automation + DoE-expert approval pending | `experiments/doe/skill-plugin-tool-contextual-activation/` |
 | Pilot 2 — dispatch topology × quota policy (#1850) | campaign candidate | proposal only — **not admitted** (no design record, no run evidence) | issue #1850 |
 | FB Pages MVT-1 — copy angle × code-pool split (marketing-channel) | campaign | admitted 2026-10-31 — `executing_partial`: fb-a/fb-b live since 2026-10-27, fb-c `arm_not_started` (deviation recorded in-design); in-repo record post-launch, marked as such | `experiments/marketing/fb-pages-mvt-1/` |
 | bf-1-backfill-methods — competing backfill method versions (rule 8) over the provenance attribution set + routed-dispatch records | live, implementing | weekly comparison; cull/promote only at the standing significance gate | `experiments/doe/bf-1-backfill-methods/` |

@@ -66,8 +66,11 @@ Participant families are grouped by capability contract, not vendor brand. A par
 | Context/memory | Context relationship graph and memory lanes | Which representation improves task success per token/cost? |
 | Security/assurance | Existing security checks, policy lanes and FOSS scanners | Which checks reduce risk without false assurance? |
 | Documentation/DX | FOSS templates, docs tooling, API impact tools | Which patterns reduce integration time and defects? |
+| Capability discovery and activation | Repository skills, plugin skill catalogs, MCP tool namespaces and exact actions | Does contextual activation improve verified task outcomes per unit of context/tool cost while preserving permissions? |
 
 DSPy, SWE and existing ML pipeline lanes are participants, not implementations to duplicate. CEEL adds comparison links and common outcome definitions.
+
+The complete repository skill and session tool activation route is maintained in `docs/ops/CAPABILITY-ACTIVATION-MATRIX.md`. Session snapshots live in `docs/integrations/session-plugin-skill-catalog.json` and `docs/integrations/session-tool-catalog.json`; they are discovery evidence only and do not imply access, authorization, or production readiness.
 
 ## 6. Four platforms plus native baseline
 

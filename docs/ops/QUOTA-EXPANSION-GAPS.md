@@ -1,5 +1,7 @@
 # Quota Expansion — Gap Analysis
 
+> **Jules retirement amendment (2026-11-20):** This 2026-10-20 quota study remains a historical snapshot. Google Jules became read-only after 2026-11-11; the custom.jules connector is now an archive-only GET surface through 2026-12-31. The local DoE skill bundle is the new-work guidance. Remove Jules task quotas from active routing and quota panels.
+
 **Date checked:** 2026-10-20 (America/Los_Angeles) · **Status:** STAGED ONLY — not committed, no GitHub writes made.
 **Rule applied throughout:** documented vendor entitlements only, URL cited per limit. Never invent a balance or a limit. Where a vendor does not publish a limit, this file says exactly that.
 

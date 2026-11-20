@@ -13,7 +13,7 @@ on:
         required: true
         default: "auto"
         type: choice
-        options: [auto, gemini, groq, openrouter]
+        options: [auto, gemini, groq, cohere, mistral, openrouter]
 
 # HindSight extraction route (#5553): multi-arm fleet inference route.
 # OpenRouter is demoted to one arm among many (last in probe order); the
@@ -48,6 +48,8 @@ jobs:
           GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          COHERE_KEY: ${{ secrets.COHERE_API_KEY }}
+          MISTRAL_KEY: ${{ secrets.MISTRAL_API_KEY }}
           ACTION: ${{ github.event.inputs.action }}
           ARM: ${{ github.event.inputs.arm }}
           HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
@@ -60,21 +62,26 @@ jobs:
               -H "Authorization: Bearer $2" -H 'Content-Type: application/json' \
               -d "{\"model\":\"$3\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}" || echo 000
           }
-          arm_probe() { # $1=arm -> 0 if live
+          arm_probe() { # $1=arm -> 0 if live; always annotates the HTTP code
+            local code=000
             case "$1" in
-              gemini)     [ -n "$GEMINI_KEY" ] && [ "$(probe https://generativelanguage.googleapis.com/v1beta/openai/chat/completions "$GEMINI_KEY" gemini-2.0-flash)" = "200" ] ;;
-              groq)       [ -n "$GROQ_KEY" ] && [ "$(probe https://api.groq.com/openai/v1/chat/completions "$GROQ_KEY" llama-3.3-70b-versatile)" = "200" ] ;;
-              openrouter) [ -n "$OPENROUTER_KEY" ] && [ "$(probe https://openrouter.ai/api/v1/chat/completions "$OPENROUTER_KEY" meta-llama/llama-3.3-70b-instruct:free)" = "200" ] ;;
+              gemini)     [ -n "$GEMINI_KEY" ] && code=$(probe https://generativelanguage.googleapis.com/v1beta/openai/chat/completions "$GEMINI_KEY" gemini-2.0-flash) ;;
+              groq)       [ -n "$GROQ_KEY" ] && code=$(probe https://api.groq.com/openai/v1/chat/completions "$GROQ_KEY" llama-3.3-70b-versatile) ;;
+              cohere)     [ -n "$COHERE_KEY" ] && code=$(probe https://api.cohere.com/v2/chat "$COHERE_KEY" command-a-03-2025) ;;
+              mistral)    [ -n "$MISTRAL_KEY" ] && code=$(probe https://api.mistral.ai/v1/chat/completions "$MISTRAL_KEY" mistral-small-latest) ;;
+              openrouter) [ -n "$OPENROUTER_KEY" ] && code=$(probe https://openrouter.ai/api/v1/chat/completions "$OPENROUTER_KEY" meta-llama/llama-3.3-70b-instruct:free) ;;
             esac
+            echo "::warning title=arm-probe::arm=$1 http=$code"
+            [ "$code" = "200" ]
           }
           if [ "$ACTION" = "probe-all" ]; then
-            for a in gemini groq openrouter; do
+            for a in gemini groq cohere mistral openrouter; do
               if arm_probe "$a"; then echo "arm $a: LIVE"; else echo "arm $a: DOWN"; fi
             done
             exit 0
           fi
           # apply: build the candidate order
-          if [ "$ARM" = "auto" ]; then ORDER="gemini groq openrouter"; else ORDER="$ARM"; fi
+          if [ "$ARM" = "auto" ]; then ORDER="gemini groq cohere mistral openrouter"; else ORDER="$ARM"; fi
           WIN=""
           for a in $ORDER; do
             if arm_probe "$a"; then echo "arm $a: LIVE"; WIN="$a"; break; else echo "arm $a: DOWN (rotating)"; fi
@@ -83,6 +90,8 @@ jobs:
           case "$WIN" in
             gemini)     PROVIDER=gemini;     MODEL=gemini-2.0-flash;                    KEY="$GEMINI_KEY" ;;
             groq)       PROVIDER=groq;       MODEL=llama-3.3-70b-versatile;             KEY="$GROQ_KEY" ;;
+            cohere)     PROVIDER=cohere;     MODEL=command-a-03-2025;                   KEY="$COHERE_KEY" ;;
+            mistral)    PROVIDER=mistral;    MODEL=mistral-small-latest;                KEY="$MISTRAL_KEY" ;;
             openrouter) PROVIDER=openrouter; MODEL=meta-llama/llama-3.3-70b-instruct:free; KEY="$OPENROUTER_KEY" ;;
           esac
           echo "winning arm: $WIN (provider=$PROVIDER model=$MODEL)"

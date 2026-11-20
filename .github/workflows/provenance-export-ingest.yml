@@ -3,7 +3,7 @@ name: Provenance export ingest
 # #5555: ingest message ∧ thinking exports from the private store (source of record:
 # VM batch export ⇒ timerloggedout-spec/muse-vm-workspace-backup), classify on ingest,
 # join to Actions run evidence, publish records back to the store (append-only path)
-# ∧ an aggregate digest (registered consumer provenance.export-digest/v1).
+# ∧ an aggregate digest (registered consumer provenance.export-digest/v2).
 # Absent source ⇒ ::notice source-absent ∧ exit 0 (degraded, receipted).
 
 on:

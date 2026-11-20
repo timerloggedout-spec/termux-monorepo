@@ -26,7 +26,7 @@ forward from a previous feed.
 - `entries[]` — one per recorded event in the log, ordered by numeric suffix.
   - Event identity is independent of presentation: `D*`, `C*`, and future event families share the same clock contract. A countdown is a time projection of an event, not a separate event registry.
   - The Wagering Book remains the canonical place for expectation records, positions, and settlements; this feed does not invent any of those.
-  - `id` — the log's event id (any uppercase letter + digits, e.g. `D0`, `C17`).
+  - `id` — the log's event id (any uppercase letter + digits, e.g. `D0`, `C12`, `C17`, `C18`, `C19`).
   - `title` — display title derived from the event packet header
     (status segments stripped by the collector).
   - `status` — `COMPLETED` / `CLOSED` when the header records it,
@@ -67,3 +67,8 @@ forward from a previous feed.
    the manager brief and the HITL web pages. An unpublished prize
    set renders as `NOT_ESTABLISHED`; the field is never omitted,
    never empty.
+
+
+## Current registration projection — 2026-11-20
+
+The current feed includes D0–D5 plus C12, C17, C18, and C19. C12 carries the verified Receipts Vault submission marker; C18 and C19 carry official submission-window instants and coordinator prize data. Registration and project state remain authoritative in the challenge coordinator and registration snapshot; this countdown feed carries instants and event metadata only.

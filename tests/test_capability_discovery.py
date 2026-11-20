@@ -49,6 +49,31 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(rows[0]["trust"], "unverified")
             self.assertTrue(rows[0]["locator"].startswith("external:workspace/"))
 
+    def test_sensitive_frontmatter_tags_are_redacted_before_indexing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / ".agents" / "skills" / "secret-tags" / "SKILL.md"
+            path.parent.mkdir(parents=True)
+            fixture = "fixture-" + ("z" * 24)
+            path.write_text(
+                "---\\nname: demo\\ndescription: metadata\\n"
+                f'tags: api_key: "{fixture}"\\n---\\n# Skill\\n',
+                encoding="utf-8",
+            )
+            rows = scan_repository(root)
+        self.assertEqual(rows[0]["trust"], "quarantined")
+        self.assertNotIn(fixture, json.dumps(rows[0]))
+        self.assertNotIn(fixture, " ".join(rows[0]["tags"]))
+
+    def test_skills_sh_rejects_secret_like_queries_before_network_access(self):
+        fixture = "fixture-" + ("q" * 24)
+        with patch.dict("os.environ", {"VERCEL_OIDC_TOKEN": "test-token"}):
+            with patch("urllib.request.urlopen") as urlopen:
+                rows, status = search_skills_sh(f'api_key: "{fixture}"')
+        self.assertEqual(rows, [])
+        self.assertEqual(status, "query_quarantined")
+        urlopen.assert_not_called()
+
     def test_plugin_and_mcp_manifests_index_metadata_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -66,13 +91,13 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             vendor_manifest = root / "vendor" / "external-plugin" / "plugin.json"
             vendor_manifest.parent.mkdir(parents=True)
             vendor_manifest.write_text(json.dumps({"name": "external-plugin"}), encoding="utf-8")
-            secret_value = "supersecretvalue123"
+            fixture = "fixture-" + ("x" * 24)
             secret_manifest = root / "plugins" / "private" / "plugin.json"
             secret_manifest.parent.mkdir(parents=True)
             secret_manifest.write_text(json.dumps({
                 "name": "private-plugin",
                 "description": "Private integration",
-                "api_key": secret_value,
+                "api_key": fixture,
             }), encoding="utf-8")
             rows = scan_repository(root)
             self.assertEqual(len(rows), 4)
@@ -89,7 +114,7 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertIn("tool entries=1", tools_row["description"])
             self.assertEqual(vendor_row["trust"], "unverified")
             self.assertEqual(secret_row["trust"], "quarantined")
-            self.assertNotIn(secret_value, json.dumps(secret_row))
+            self.assertNotIn(fixture, json.dumps(secret_row))
 
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -235,17 +260,17 @@ class CapabilityDiscoveryTests(unittest.TestCase):
     def test_session_import_quarantines_and_redacts_secret_like_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "tools.json"
-            secret_value = "topsecretvalue123"
+            fixture = "fixture-" + ("y" * 24)
             path.write_text(json.dumps({
                 "snapshot": {"captured_at": "2026-11-19"},
                 "tools": [{
                     "name": "demo-tool",
-                    "summary": f'Uses api_key: "{secret_value}"',
+                    "summary": f'Uses api_key: "{fixture}"',
                 }],
             }), encoding="utf-8")
             rows = import_session_json(path, "tool")
         self.assertEqual(rows[0]["trust"], "quarantined")
-        self.assertNotIn(secret_value, json.dumps(rows[0]))
+        self.assertNotIn(fixture, json.dumps(rows[0]))
 
     def test_skills_sh_search_uses_sqlite_cache(self):
         class Response:

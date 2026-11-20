@@ -10,7 +10,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_prs: [5051, 5063]
+related_prs: [5727, 5051, 5063]
 related_branches:
   - feat/challenge-game-off-2026-intake
   - feat/unified-wager-event-projections
@@ -49,6 +49,8 @@ Reconcile authenticated Devpost registrations, submission evidence, official eli
 - [ ] Closed + moved to `closed/` when terminal
 
 ## Links
+
+- Master-based PR: https://github.com/timerloggedout-spec/termux-monorepo/pull/5727
 
 - ITEMS: ./ITEMS.md
 - Source: ./source.md

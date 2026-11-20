@@ -1,7 +1,7 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-20T02:55:20Z",
+ "generated_at": "2026-11-20T03:13:22Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-19T12:14:13Z",
   "ops/tracking/nested-family.json": "2026-11-20T02:54:05Z"
@@ -114,6 +114,21 @@
     "last_point_at": "2026-10-31T06:17:14Z"
    },
    {
+    "key": "baseten::consumption",
+    "title": "baseten - consumption (cumulative, per-call usage of record)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-20T03:09:30Z",
+      "v": 2773
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-20T03:09:30Z"
+   },
+   {
     "key": "cohere::consumption",
     "title": "cohere - consumption (cumulative, per-call usage of record)",
     "unit": "tokens",
@@ -160,16 +175,6 @@
    {
     "key": "aion",
     "title": "aion - no stamped usage yet (gap)",
-    "unit": null,
-    "kind": "gap",
-    "metric": null,
-    "points": [],
-    "provenance": "ops/quota/registry.json model lane (denominator - present, unpopulated)",
-    "last_point_at": null
-   },
-   {
-    "key": "baseten",
-    "title": "baseten - no stamped usage yet (gap)",
     "unit": null,
     "kind": "gap",
     "metric": null,
@@ -1550,6 +1555,21 @@
     "last_point_at": "2026-11-02T01:54:34Z"
    },
    {
+    "key": "openai/gpt-oss-120b",
+    "title": "baseten - openai/gpt-oss-120b - dispatches (cumulative)",
+    "unit": "dispatches",
+    "kind": "activity-proxy",
+    "metric": "dispatches",
+    "points": [
+     {
+      "t": "2026-11-20T03:09:30Z",
+      "v": 1
+     }
+    ],
+    "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
+    "last_point_at": "2026-11-20T03:09:30Z"
+   },
+   {
     "key": "NOT_ESTABLISHED",
     "title": "cerebras - NOT_ESTABLISHED - dispatches (cumulative)",
     "unit": "dispatches",
@@ -1890,6 +1910,21 @@
     ],
     "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
     "last_point_at": "2026-11-18T16:31:28Z"
+   },
+   {
+    "key": "openai/gpt-oss-120b::consumption",
+    "title": "baseten - openai/gpt-oss-120b - consumption (cumulative)",
+    "unit": "tokens",
+    "kind": "consumption",
+    "metric": "usage_value",
+    "points": [
+     {
+      "t": "2026-11-20T03:09:30Z",
+      "v": 2773
+     }
+    ],
+    "provenance": "per-call usage records: ops/3l0/intake.jsonl usage{} + routed-dispatch record usage{} (method: fleet-self-count/response-usage; see docs/ops/QUOTA-USAGE-RECORDS.md)",
+    "last_point_at": "2026-11-20T03:09:30Z"
    }
   ],
   "events": [
@@ -1964,17 +1999,17 @@
  },
  "coverage": {
   "providers_total": 96,
-  "providers_populated": 5,
-  "providers_gap": 93,
-  "model_series": 19,
-  "model_populated": 19
+  "providers_populated": 6,
+  "providers_gap": 92,
+  "model_series": 21,
+  "model_populated": 21
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 34,
-  "usage_stamped": 3,
+  "routed_calls": 35,
+  "usage_stamped": 4,
   "unstamped": 31,
-  "unstamped_share": 0.9118,
+  "unstamped_share": 0.8857,
   "causes": {
    "no-usage-record": 31,
    "no-usage-surface": 0
@@ -2004,6 +2039,12 @@
     "stamped": 0,
     "unstamped": 2
    },
+   "baseten": {
+    "provider": "baseten",
+    "calls": 2,
+    "stamped": 1,
+    "unstamped": 1
+   },
    "gemini-cli": {
     "provider": "gemini-cli",
     "calls": 1,
@@ -2021,12 +2062,6 @@
     "calls": 6,
     "stamped": 0,
     "unstamped": 6
-   },
-   "baseten": {
-    "provider": "baseten",
-    "calls": 1,
-    "stamped": 0,
-    "unstamped": 1
    },
    "cerebras": {
     "provider": "cerebras",

@@ -393,6 +393,15 @@
       "refresh": "git-tree",
       "import_mode": "metadata-only",
       "note": "SOFA = Stack Overflow for Agents, distinct from standard Stack Overflow MCP. Schema snapshot lists 27 actions: 16 READ and 11 WRITE. docs/ops/SOFA-CONNECTION-2026-10-28.md records a 2026-11-03 update with expanded scopes; tools/sofa/CONNECTOR.md and TOOLS.md still contain 2026-10-28 read-only claims. Current live authorization is unverified; run the read-only status check before use. Require explicit user intent and owner-gated workflow for every write. Never index or expose .tokens.json."
+    },
+    {
+      "id": "contextual-activation-pr-5680",
+      "kind": "repository-proposal-branch",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/c1532c062182e8bebca07b6f1992ebd23f650b3e",
+      "trust": "repository-canonical; overlapping proposal branch",
+      "refresh": "pull-request-head",
+      "import_mode": "review-required; preserve independent dashboard artifacts only",
+      "note": "PR #5680 contains an initial contextual activation matrix/session catalogs and CMP-7 dashboard/admission-feed work. It overlaps PR #5681 on discovery/activation docs, is 30 commits behind current master and changes 19 files (+23,430/-195). Reconcile and retain the independent dashboard artifacts after PR #5681 is promoted."
     }
   ]
 }

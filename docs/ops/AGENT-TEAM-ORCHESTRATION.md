@@ -31,7 +31,7 @@ Provider ecosystems are contributors to the ADE, but **contributor identity is n
 
 Required contributor coverage has two separate populations:
 
-**Agent / collaborator identities** — Gemini CLI, Jules, DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, the manager/scout/orchestrator workflows, and the operator lane. These identities can review, implement, route, or coordinate only where their real invocation workflow exists. A provider API key is not an agent identity, and an agent's GitHub handle is not its model identity.
+**Agent / collaborator identities** — Gemini CLI, DeepSeek CI, Devin, CodeRabbit, Copilot, Tembo, Mistral Vibe, the manager/scout/orchestrator workflows, and the operator lane. The Jules-derived DoE skill pack is a local role capability. Review, implementation, routing, and coordination require their own real invocation workflow and adapter evidence. Provider keys, agent handles, and model identities remain separate.
 
 **Provider API and research-service lanes** — OpenRouter, FELO, Hugging Face, OmniRoute, Groq, Mistral API, Cerebras, NVIDIA NIM, Aion, LLM7, ModelScope, SiliconFlow, Kilo, OVHcloud, SambaNova, Cloudflare Workers AI, Cohere, and Ollama Cloud. The machine-readable contributor roster tracks these independently from agent roles. Z.ai remains a candidate with an unverified catalog contract, not a completed adapter. Firecrawl's fixed-URL keyless scrape is a public-research service, not an inference provider.
 
@@ -59,11 +59,11 @@ The control path is therefore:
 
 `dependency DAG → wave/readiness → manager policy → specialist route → execution adapter → evidence`
 
-A direct `ready → Jules` path is prohibited because Jules is one bounded specialist in the roster, not the manager or universal execution sink. If the selected specialist has no configured execution adapter, an applied dispatch must stop before claiming work rather than silently falling through to Jules.
+Applied dispatch requires a manager-approved specialist and a verified live execution adapter. Google Jules is retired; the local Jules-derived DoE skill pack supplies role guidance. An unavailable adapter leaves the phase pending for explicit re-admission.
 
 ### Specialists
 
-Gemini CLI, OpenRouter peers, OmniRoute, Jules, Felo models, and other agents are specialists. Jules is an escalation/specialist worker, not the default sink for every task.
+Gemini CLI, OpenRouter peers, OmniRoute, Felo models, and other active agents are specialists. The Jules-derived DoE skill pack contributes planning and verification guidance while provider execution follows the live roster.
 
 ### Evidence collector
 
@@ -245,7 +245,7 @@ Settings/context values are SHA-256 fingerprints only; never persist raw prompts
 completions, credentials, or session context.
 
 The existing read-only ATES observer now includes the known manager, scout, and
-orchestrator workflow cohort plus selected Gemini, DeepSeek, and Jules execution/review
+orchestrator workflow cohort plus selected Gemini and DeepSeek execution/review
 lanes. Bridge/tunnel health (including Pinggy) remains a separate infrastructure receipt
 and is deliberately excluded from agent-throughput task counts. The observer retains
 run/attempt/SHA linkage, records attribution confidence and evidence references, and

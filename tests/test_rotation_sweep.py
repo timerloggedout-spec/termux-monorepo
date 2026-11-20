@@ -109,7 +109,7 @@ class RotationSweepTests(unittest.TestCase):
             self.assertIn("GEMINI-MESH.md", (root / rel).read_text(encoding="utf-8"), rel)
         ecc = (root / ".github/workflows/agent-ecc-tools-ops.yml").read_text(encoding="utf-8")
         self.assertIn("**/GEMINI-MESH.md", ecc)
-        self.assertIn("GEMINI-MESH\\\\.md$", ecc)
+        self.assertIn("GEMINI-MESH\\.md$", ecc)
         maintenance = root / "docs/icm/maintenance/ICM-MAP-MAINTENANCE.md"
         self.assertTrue(maintenance.is_file())
         self.assertFalse((root / "docs/icm/maintenance/AGENTS.md").exists())

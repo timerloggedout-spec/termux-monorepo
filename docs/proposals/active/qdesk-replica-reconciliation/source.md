@@ -55,6 +55,32 @@ Replica's shared workflow includes local preview preflight, component mapping, r
 
 License/provenance: the Replica README states MIT. Preserve upstream attribution and license notices; verify bundled asset/font notices before copying individual assets. The fork's README identifies GitHub Design and Microsoft CoreAI Design as creators.
 
+
+## 2.1. Issue filing and model-provider boundaries
+
+Replica supplies an interactive local prototyping loop through the Copilot canvas: users describe a change, inspect the running prototype, and refine it in conversation. Its documented native workflow covers prototype creation, local preview, design guidance, build checks and optional Hub publication/review. The README and local-prototyping guide describe GitHub sign-in and model access through a Copilot plan or a user's own BYOK provider. They do not define a native GitHub issue-submission service or a project-task intake API.
+
+The existing Contribution Desk remains the issue-dispatch surface. Its New dispatch action opens GitHub issue intake, and .github/ISSUE_TEMPLATE/project-task.yml defines the canonical issue-dispatch/v1 payload: Entry, Task/spec, Scope, Done-evidence, Target repo and post-hoc Instance stamps. Filing is the trigger; the existing dispatch system selects providers across its wired endpoints and records the resolved provider/model and run identity after execution.
+
+The proposed QDesk filing portal should provide a guided, template-backed flow over that canonical contract:
+1. Collect the existing required fields and validate them against the current issue form contract.
+2. Show a rendered issue preview, target repository, dispatch effect and data-sharing notice.
+3. Let the user revise the draft and explicitly confirm submission.
+4. Submit through GitHub's native issue form or a separately authorized GitHub App/API adapter with repository-scoped issue-write permission.
+5. Return the created issue URL and stable intake receipt; preserve idempotency across retries.
+
+For public use, authenticate the submitting GitHub principal and bind the submission to that principal's authorized repository installation. Keep credentials server-side, use least-privilege installation permissions, and record the actor, repository, template version, submitted payload digest and issue URL. The static Replica/QDesk client remains credential-free. The native issue form remains the fallback and canonical filing route until an authenticated portal adapter passes its own review.
+
+Keep model access as a separate choice from issue filing. Replica's documented model path is the Copilot app using either the user's Copilot plan or a user-connected BYOK provider; the selected provider's costs and terms apply. The monorepo also has its own workflow/provider routing, including scripts/model_router.py, .github/actions/model-router, .github/connectors/llm-peers.yaml and quota gates. Those workflow routes and Replica's interactive Copilot session are separate execution planes.
+
+The eventual user-facing model selector should expose only catalogued, capability-eligible choices and record a preference rather than fabricate availability:
+- **Automatic (system routing):** use the existing task/role router and its eligible provider/model selection.
+- **Organization provider pool:** use organization-managed credentials and organization quota under the repository's existing authorization policy.
+- **My provider (BYOK):** use the authenticated user's own provider connection and quota, with provider costs and terms shown before use.
+- **Specific provider/model:** show only live, eligible choices for the selected task capability; retain an explicit fallback policy and record the actual resolved provider/model after execution.
+
+Quota ownership follows the credential owner. User-owned BYOK usage is attributed to that user's provider account; organization-owned credentials consume the organization's quota. Keep per-principal credential boundaries, usage attribution, rate-limit state and billing records isolated so an individual user's quota exhaustion leaves the shared organization pool's health unchanged. Keep all API keys outside browser storage, public feeds, issue bodies and prototype source. The user selection contract, credential custody and billing attribution require a dedicated provider-routing review before runtime wiring.
+
 ## 3. refTemplates/smods reconciliation
 
 The monorepo's root `CLAUDE.md`, `docs/ops/REFTEMPLATES-CONSOLIDATION.md` and `docs/icm/objects/knowledge/reference-inputs.md` define `refTemplates/smods/` as a narrow, shallow, metadata-first reference lane. References inform the monorepo; they do not operate it or override its governance. Full recursive materialization is explicit and selective.
@@ -249,24 +275,27 @@ Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite,
 
 ## 9. Implementation sequence and gates
 
-1. Reconcile this extension against the active QDesk RFP/portfolio/deadline/claim PRs and record their dispositions; resolve overlap before implementation.
-2. Review and accept this proposal; itemize dependencies.
-3. Define the smallest QDesk read-only IA and page-level contract.
-4. Reuse existing feeds; implement Clerk as a sanitized read-only proposal/access-risk view.
-5. Extend current version-manifest comparison and per-surface release evidence.
-6. Pre-register the DoE campaign and automation cohort.
-7. Implement focused tests and preview.
-8. Validate exact candidate SHA with repo-gate and termux-smoke; inspect preview, source hashes, artifacts and runtime receipts.
-9. Promote only when required gates and task outcome are verified.
+1. **Reconcile active ownership.** Inspect #5145, #5197, #5199, #5330, #5376, #5622 and the current issue/dispatch/provider contracts. Record file ownership, dependency edges, accepted overlap, supersession candidates and the exact integration point for each feature.
+2. **Accept and version the proposal.** Complete operator and independent review, register dependencies, assign item owners, and freeze the accepted scope and baseline commit.
+3. **Verify source and provider contracts.** Record exact refTemplates/smods gitlink SHAs and licenses; inspect Replica's pinned source revision; map the current project-task issue form, dispatch route, model router, provider catalog, credential ownership and quota attribution.
+4. **Define the QDesk shell and Gantt integration.** Specify the read-only information architecture, stable surface IDs, responsive/accessibility states, deep links, Gantt milestones, dependencies, version-selection controls and source/freshness receipts.
+5. **Build the guided issue-filing portal.** Mirror the canonical issue-dispatch/v1 project-task form, provide validation and a reviewable issue preview, then route confirmed submissions through the native GitHub issue form or a separately approved GitHub App/API adapter. Return the created issue and idempotent intake receipt.
+6. **Define model choice and quota isolation.** Separate Replica Copilot sessions from repository workflow dispatch. Specify Automatic, Organization provider pool, My provider (BYOK) and eligible specific provider/model choices; bind each choice to its credential owner, authorization, quota, billing attribution, fallback policy and post-run instance stamp.
+7. **Implement Clerk and release comparison.** Reuse canonical proposal/access records for sanitized Clerk cards. Extend the existing version-manifest/versioning path with source/build/artifact hashes, visual captures, route/interaction, accessibility, schema/API, security and runtime evidence. Record candidate selection, completion criteria, migration and retirement as explicit version transitions.
+8. **Pre-register the DoE and automation comparison.** Submit the bounded 2^4 campaign through the existing DoE owner, freeze baseline/candidate versions and cohort, define blocking/randomization/replication/outcomes, and classify candidates within existing capability families.
+9. **Implement the smallest accepted vertical slice.** Compose existing feeds and authorities into the read-only QDesk shell; deliver portal and provider adapters only after their separate security and permission reviews; use synthetic fixtures for Clerk risk scenarios.
+10. **Validate the exact candidate.** Run focused contract/security/accessibility tests, build the Replica/local preview, compare preview against the selected baseline, inspect issue receipts, source hashes, artifacts and runtime evidence, and pass repo-gate plus termux-smoke on the exact candidate SHA.
+11. **Select, promote and phase out.** Compare completed candidates against the predeclared acceptance criteria; record the selected version and rationale; migrate consumers in bounded batches; retain rollback and lineage receipts; retire superseded versions after consumer migration and post-promotion monitoring.
 
-Do not:
-- initialize every submodule or advance any pin as a side effect;
-- install Replica Hub or require it for local prototyping;
-- add a new scheduler, proposal registry, event ledger or permission authority;
-- publish collaborator-private data or raw browser/session material;
-- allow dashboard cards or generated graphs to become canonical state;
-- infer an agent identity from a GitHub actor;
-- treat a preview, queued run, successful build or ATES value as release acceptance.
+## 9.1. Execution guardrails
+
+- Keep Replica local prototyping independent from optional Hub hosting and publication.
+- Reuse the existing proposal, scheduler, admission, claim, dispatch, provider, quota, DoE and release authorities.
+- Keep static visual surfaces credential-free and source-linked.
+- Keep collaborator-private data, credentials and browser/session material within their authorized stores.
+- Preserve identity attribution confidence and distinguish a GitHub actor from a verified agent principal.
+- Treat preview, queued workflow, successful build and ATES observations as evidence inputs; require the declared release gates and task outcome for selection.
+- Record every candidate, selection, migration, retirement and rollback with immutable version and evidence references.
 
 ## 10. Open evidence items
 

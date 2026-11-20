@@ -1,0 +1,83 @@
+name: collaborator rotation sweep
+
+on:
+  pull_request:
+    paths:
+      - 'GEMINI-MESH.md'
+      - 'docs/ops/COLLABORATOR-*.md'
+      - 'docs/ops/COLLABORATOR-ROTATION-MAP.json'
+      - 'scripts/identity/rotation_sweep.py'
+      - 'tests/test_rotation_sweep.py'
+      - '.github/workflows/**'
+      - 'docs/icm/**'
+      - 'CLAUDE.md'
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collaborator-rotation-sweep-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rotation:
+    name: mapping + classifier + DoE + repository gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Resolve immutable comparison SHAs
+        id: refs
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="$(git merge-base "$GITHUB_SHA" "origin/${BASE_REF}")"
+          else
+            BASE_SHA="$GITHUB_SHA"
+          fi
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "candidate_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          echo "base_ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Classifier and factorial DoE regression tests
+        run: python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
+
+      - name: Run rotation map sweep and emit EXPERIMENT record
+        run: |
+          python3 scripts/identity/rotation_sweep.py \
+            --base-sha "${{ steps.refs.outputs.base_sha }}" \
+            --candidate-sha "${{ steps.refs.outputs.candidate_sha }}" \
+            --report rotation-sweep-report.json \
+            --record rotation-sweep-experiment.json
+
+      - name: Proposal registry contract
+        run: python3 scripts/proposals/validate_registry.py
+
+      - name: Repository hygiene gate
+        run: python3 scripts/ci/repo_gate.py --base "${{ steps.refs.outputs.base_ref }}"
+
+      - name: Termux portability gate
+        run: python3 scripts/ci/termux_smoke.py
+
+      - name: Upload sweep and DoE evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collaborator-rotation-doe-${{ github.run_id }}
+          path: |
+            rotation-sweep-report.json
+            rotation-sweep-experiment.json
+          if-no-files-found: ignore
+          retention-days: 60

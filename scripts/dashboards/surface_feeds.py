@@ -497,33 +497,39 @@ def collect_ates() -> dict:
 # --------------------------------------------------------------------- DoE
 
 def _doe_campaigns() -> list:
-    """Family campaign members, read from their committed records.
+    """Read DoE family design records while preserving their declared admission state.
 
-    A campaign appears here only when its design record is committed
-    (intake rule, docs/ops/DOE-FAMILY.md). Its state is computed from
-    the records on disk: no records = admitted, design-only; records =
-    executed, with aggregates read from SUMMARY.json (the runner's
-    output over those same records).
+    Committed design files are discovery inputs. The explicit design status
+    governs admission; run records establish execution only after admission.
     """
     base = ROOT / "experiments" / "doe"
     out = []
     if not base.exists():
         return out
+    proposal_states = {"proposal_only_not_admitted", "proposed_not_admitted"}
     for design_path in sorted(base.glob("*/DESIGN.json")):
         design = json.loads(design_path.read_text())
         camp_dir = design_path.parent
         records = sorted((camp_dir / "records").glob("*.json")) \
             if (camp_dir / "records").exists() else []
+        declared_status = design.get("status")
+        if records:
+            state = "unapproved_execution_detected" if declared_status in proposal_states else "executed"
+        else:
+            state = declared_status or "admitted_design_only"
+            if state == "admitted":
+                state = "admitted_design_only"
         entry = {
             "campaign_id": design.get("campaign_id"),
             "issue": design.get("issue"),
-            "kind": "campaign",
+            "kind": design.get("member_kind", "campaign"),
+            "declared_status": declared_status,
             "design_record": str(design_path.relative_to(ROOT)),
             "factors": design.get("factors"),
             "design_type": (design.get("design") or {}).get("type"),
             "primary_outcome": (design.get("outcomes") or {}).get("primary"),
             "runs": len(records),
-            "state": "executed" if records else "admitted_design_only",
+            "state": state,
             "results": None,
         }
         summary_path = camp_dir / "SUMMARY.json"
@@ -555,6 +561,12 @@ def _doe_campaigns() -> list:
         out.append(entry)
     return out
 
+
+def _split_doe_members(members: list) -> tuple[list, list]:
+    """Keep comparison registers in family navigation, separate from campaigns."""
+    campaigns = [member for member in members if member.get("kind") != "register"]
+    registers = [member for member in members if member.get("kind") == "register"]
+    return campaigns, registers
 
 def collect_doe() -> dict:
     doe_mod = ast.parse((ROOT / "deepcli/deepcli/observatory/doe.py").read_text())
@@ -623,7 +635,8 @@ def collect_doe() -> dict:
             },
         ],
     }
-    campaigns = _doe_campaigns()
+    campaign_members = _doe_campaigns()
+    campaigns, registers = _split_doe_members(campaign_members)
     executed = [c for c in campaigns if c["state"] == "executed"]
     payload["family"] = {
         "spec": "docs/ops/DOE-FAMILY.md",
@@ -643,6 +656,7 @@ def collect_doe() -> dict:
                 "note": "Existing member. Its payload lives on the MVT surface (mvt-feed.json); this surface carries the pointer only, per the separation spec.",
             },
             *campaigns,
+            *registers,
             {
                 "member_id": "pilot-2-dispatch-topology-x-quota-policy",
                 "kind": "campaign_candidate",
@@ -661,9 +675,15 @@ def collect_doe() -> dict:
     payload["campaigns"] = campaigns
     gaps = []
     for c in campaigns:
-        if c["state"] == "admitted_design_only":
+        if c["state"] in {"admitted_design_only", "admitted_implementing"}:
             gaps.append(
-                f"Campaign {c['campaign_id']} is admitted (design record committed) but has no run records yet — defined, not run.")
+                f"Campaign {c['campaign_id']} has declared state {c['state']} and {c['runs']} run records.")
+        elif c["state"] in {"proposal_only_not_admitted", "proposed_not_admitted"}:
+            gaps.append(
+                f"Campaign {c['campaign_id']} remains proposal-only with {c['runs']} run records; DoE admission is pending.")
+        elif c["state"] == "unapproved_execution_detected":
+            gaps.append(
+                f"INTEGRITY ALERT: Campaign {c['campaign_id']} has run records while its declared status is proposal-only.")
     if not executed:
         gaps.append(
             "No executed DoE family campaign yet: the first executed campaign (pilot 1 or 2) is the family's proof deliverable (#1865). The Delphi executed_comparisons above are a required presentation of a Delphi record, not DoE results.")

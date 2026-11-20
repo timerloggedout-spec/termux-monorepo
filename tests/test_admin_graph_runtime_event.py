@@ -74,6 +74,27 @@ class RuntimeEventTests(unittest.TestCase):
         second = MODULE.build_event(payload, "issue_comment", context)
         self.assertEqual(first["id"], second["id"])
 
+    def test_runtime_snapshot_recovers_github_token_claims(self):
+        payload = {
+            "workflow_runs": [],
+            "issue_comments": [{
+                "id": 9010,
+                "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/6001",
+                "created_at": "2026-11-19T12:05:00Z",
+                "user": {"login": "github-actions[bot]"},
+                "body": ("[MUSEai]@{role:{dispatch-executor}} PRODUCER CLAIM — dispatch executor claim on #6001\n"
+                         "- arm: gemini-cli (gemini-2.5-pro)\n"
+                         "- dispatch_id: dispatch-6001\n")
+            }]
+        }
+        events = MODULE.build_events(payload, "runtime_snapshot", {
+            "run_id": "12347", "run_attempt": "1", "head_sha": "c" * 40
+        })
+        route_events = [event for event in events if event["kind"] == "route"]
+        self.assertEqual(len(route_events), 1)
+        self.assertEqual(route_events[0]["id"], "route:6001:9010")
+        self.assertEqual(route_events[0]["payload"]["dispatch_id"], "dispatch-6001")
+
     def test_workflow_job_event_is_normalized(self):
         payload = {
             "repository": {"full_name": MODULE.REPO},

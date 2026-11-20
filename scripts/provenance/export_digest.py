@@ -35,7 +35,7 @@ def digest(records: list[dict[str, Any]]) -> dict[str, Any]:
         for c in r.get("classifications") or []:
             lab = g["labels"].setdefault(str(c.get("classifier_id")), {})
             lab[str(c.get("label"))] = lab.get(str(c.get("label")), 0) + 1
-            if c.get("classifier_id") == "muse_side_chat_discovery":
+            if c.get("classifier_id") == "muse_side_chat_seo":
                 for term in c.get("terms") or []:
                     g["discovery_terms"][term] = g["discovery_terms"].get(term, 0) + 1
         v = (r.get("actions") or {}).get("verdict", "unjoined")

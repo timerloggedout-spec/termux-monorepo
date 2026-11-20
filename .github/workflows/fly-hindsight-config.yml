@@ -19,8 +19,8 @@ on:
 # OpenRouter is demoted to one arm among many (last in probe order); the
 # extraction lane is no longer single-homed on one credit pool.
 # Arms (independent providers, per-arm keys already provisioned as Actions secrets):
-#   gemini     provider=gemini     model=gemini-2.0-flash                    key=GEMINI_API_KEY
-#   groq       provider=groq       model=llama-3.3-70b-versatile             key=GROQ_API_KEY
+#   gemini     provider=gemini     model=gemini-2.5-flash                    key=GEMINI_API_KEY
+#   groq       provider=groq       model=openai/gpt-oss-120b             key=GROQ_API_KEY
 #   openrouter provider=openrouter model=meta-llama/llama-3.3-70b-instruct:free key=OPENROUTER_API_KEY
 # apply(auto): probe each arm's provider endpoint in order; the first arm
 # answering a live chat completion is written to the Fly app secrets and the
@@ -65,8 +65,8 @@ jobs:
           arm_probe() { # $1=arm -> 0 if live; always annotates the HTTP code
             local code=000
             case "$1" in
-              gemini)     [ -n "$GEMINI_KEY" ] && code=$(probe https://generativelanguage.googleapis.com/v1beta/openai/chat/completions "$GEMINI_KEY" gemini-2.0-flash) ;;
-              groq)       [ -n "$GROQ_KEY" ] && code=$(probe https://api.groq.com/openai/v1/chat/completions "$GROQ_KEY" llama-3.3-70b-versatile) ;;
+              gemini)     [ -n "$GEMINI_KEY" ] && code=$(probe https://generativelanguage.googleapis.com/v1beta/openai/chat/completions "$GEMINI_KEY" gemini-2.5-flash) ;;
+              groq)       [ -n "$GROQ_KEY" ] && code=$(probe https://api.groq.com/openai/v1/chat/completions "$GROQ_KEY" openai/gpt-oss-120b) ;;
               cohere)     [ -n "$COHERE_KEY" ] && code=$(probe https://api.cohere.com/v2/chat "$COHERE_KEY" command-a-03-2025) ;;
               mistral)    [ -n "$MISTRAL_KEY" ] && code=$(probe https://api.mistral.ai/v1/chat/completions "$MISTRAL_KEY" mistral-small-latest) ;;
               openrouter) [ -n "$OPENROUTER_KEY" ] && code=$(probe https://openrouter.ai/api/v1/chat/completions "$OPENROUTER_KEY" meta-llama/llama-3.3-70b-instruct:free) ;;
@@ -75,21 +75,21 @@ jobs:
             [ "$code" = "200" ]
           }
           if [ "$ACTION" = "probe-all" ]; then
-            for a in gemini groq cohere mistral openrouter; do
+            for a in cohere groq gemini mistral openrouter; do
               if arm_probe "$a"; then echo "arm $a: LIVE"; else echo "arm $a: DOWN"; fi
             done
             exit 0
           fi
           # apply: build the candidate order
-          if [ "$ARM" = "auto" ]; then ORDER="gemini groq cohere mistral openrouter"; else ORDER="$ARM"; fi
+          if [ "$ARM" = "auto" ]; then ORDER="cohere groq gemini mistral openrouter"; else ORDER="$ARM"; fi
           WIN=""
           for a in $ORDER; do
             if arm_probe "$a"; then echo "arm $a: LIVE"; WIN="$a"; break; else echo "arm $a: DOWN (rotating)"; fi
           done
           [ -n "$WIN" ] || { echo "::error::no live extraction arm in [$ORDER]"; exit 1; }
           case "$WIN" in
-            gemini)     PROVIDER=gemini;     MODEL=gemini-2.0-flash;                    KEY="$GEMINI_KEY" ;;
-            groq)       PROVIDER=groq;       MODEL=llama-3.3-70b-versatile;             KEY="$GROQ_KEY" ;;
+            gemini)     PROVIDER=gemini;     MODEL=gemini-2.5-flash;                    KEY="$GEMINI_KEY" ;;
+            groq)       PROVIDER=groq;       MODEL=openai/gpt-oss-120b;             KEY="$GROQ_KEY" ;;
             cohere)     PROVIDER=cohere;     MODEL=command-a-03-2025;                   KEY="$COHERE_KEY" ;;
             mistral)    PROVIDER=mistral;    MODEL=mistral-small-latest;                KEY="$MISTRAL_KEY" ;;
             openrouter) PROVIDER=openrouter; MODEL=meta-llama/llama-3.3-70b-instruct:free; KEY="$OPENROUTER_KEY" ;;

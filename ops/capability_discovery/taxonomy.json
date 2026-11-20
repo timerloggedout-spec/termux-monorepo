@@ -2,18 +2,114 @@
   "schema": "capability-taxonomy/v1",
   "rule": "One primary domain and function; multiple cross-cutting facets. Keep source trust and lifecycle orthogonal.",
   "domains": {
-    "engineering": ["code-generation","refactoring","debugging","architecture","dependency-management"],
-    "testing": ["unit-testing","integration-testing","e2e-testing","security-testing","benchmarking"],
-    "delivery": ["ci-cd","deployment","release-management","repository-governance"],
-    "research": ["web-research","academic-research","vendor-discovery","source-verification"],
-    "data": ["data-ingestion","analytics","database","observability","data-quality"],
-    "agentic": ["agent-orchestration","tool-discovery","skill-discovery","context-management","evaluation"],
-    "design": ["product-design","ux-research","visualization","documentation"],
-    "operations": ["device-operations","workflow-automation","scheduling","incident-response"],
-    "specialized": ["finance","health","legal","regulatory","scientific","media","property","automotive","outdoors"]
+    "engineering": [
+      "code-generation",
+      "refactoring",
+      "debugging",
+      "architecture",
+      "dependency-management"
+    ],
+    "testing": [
+      "unit-testing",
+      "integration-testing",
+      "e2e-testing",
+      "security-testing",
+      "benchmarking"
+    ],
+    "delivery": [
+      "ci-cd",
+      "deployment",
+      "release-management",
+      "repository-governance"
+    ],
+    "research": [
+      "web-research",
+      "academic-research",
+      "vendor-discovery",
+      "source-verification"
+    ],
+    "data": [
+      "data-ingestion",
+      "analytics",
+      "database",
+      "observability",
+      "data-quality"
+    ],
+    "agentic": [
+      "agent-orchestration",
+      "tool-discovery",
+      "skill-discovery",
+      "context-management",
+      "evaluation"
+    ],
+    "design": [
+      "product-design",
+      "ux-research",
+      "visualization",
+      "documentation"
+    ],
+    "operations": [
+      "device-operations",
+      "workflow-automation",
+      "scheduling",
+      "incident-response"
+    ],
+    "specialized": [
+      "finance",
+      "health",
+      "legal",
+      "regulatory",
+      "scientific",
+      "media",
+      "property",
+      "automotive",
+      "outdoors"
+    ]
   },
-  "facets": ["local","nested","vendor","upstream","plugin","mcp","api","cli","workflow","skill","tool","reference-only","credentialed","read-only","write-capable","sensitive","experimental","deprecated","duplicate-candidate"],
-  "trust_states": ["repository-canonical","official-vendor","verified-upstream","community-reference","session-observed","unverified","quarantined"],
-  "lifecycle_states": ["discovered","classified","deduplicated","evaluated","eligible","approved","adopted","deprecated","rejected"],
+  "facets": [
+    "local",
+    "nested",
+    "vendor",
+    "upstream",
+    "plugin",
+    "mcp",
+    "api",
+    "cli",
+    "workflow",
+    "skill",
+    "tool",
+    "reference-only",
+    "credentialed",
+    "read-only",
+    "write-capable",
+    "sensitive",
+    "experimental",
+    "deprecated",
+    "duplicate-candidate",
+    "external",
+    "community",
+    "session",
+    "index"
+  ],
+  "trust_states": [
+    "repository-canonical",
+    "official-vendor",
+    "verified-upstream",
+    "community-reference",
+    "session-observed",
+    "unverified",
+    "quarantined"
+  ],
+  "lifecycle_states": [
+    "discovered",
+    "classified",
+    "deduplicated",
+    "evaluated",
+    "eligible",
+    "approved",
+    "adopted",
+    "deprecated",
+    "rejected"
+  ],
   "identity_policy": "Canonical identity = normalized source locator + package/skill/action identifier. Names alone never establish identity. Hash content for version/change detection; keep aliases as relationship edges."
 }

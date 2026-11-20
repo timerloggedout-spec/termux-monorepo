@@ -183,3 +183,17 @@ This is the first implementation slice for restoring the Linguist/CedrLang diasp
 ## TDQS-CI-001 — Read-only TDQS quality-lane coverage
 
 **Status:** executing. Extend the existing Agent Quality Lane to cover TDQS preparation/aggregation: implementation, focused tests, evidence schema, specification, and admission-matrix path filters; compile the focused test, validate schema JSON, and run the deterministic TDQS tests alongside the existing telemetry tests. Acceptance requires the focused commands, repository gate, and Termux smoke to pass. This item does not authorize external rubric evaluation, prompt/tool execution, or acceptance of the broader notation proposal.
+
+## NSE-021 — Sidecar comment overlays and Siglary context tournament
+
+Establish a reversible, content-addressed sidecar overlay system for ICM/LLM Markdown prose and syntax-aware code comments. Compare English, operator-first, dense registered notation, and hybrid renderings under staged DoE/MVT treatments while holding canonical source snapshots fixed.
+
+Preserve the `CLAUDE.md` → `CLAUDE.hum.md` projection mapping and historical `AGENTS.hum.md` aliases through a versioned mapping ledger, migration-commit provenance, and exact round-trip fixtures. Keep generated/historical/sealed material classified and protected.
+
+Deliverables: bounded corpus inventory; overlay schema; stable Markdown/Tree-sitter anchors; validator and disposable materializer; executable-token/source-hash invariants; staged DoE design and replicated held-out evaluation; quality-gated notation release.
+
+Design: `docs/superpowers/specs/2026-11-20-siglary-sidecar-overlays-design.md`  
+Plan: `docs/superpowers/plans/2026-11-20-siglary-sidecar-overlays.md`  
+Related: NSE-020, ICM-08, `docs/ops/DOE-FAMILY.md`, `docs/ops/MVT-DOE-ATES-SEPARATION.md`.
+
+Execution begins after Operator acceptance. All promotion requires the existing repository gates on the exact PR head.

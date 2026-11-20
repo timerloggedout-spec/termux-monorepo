@@ -43,6 +43,9 @@ admin-graph-live-events/v1 carries bounded operational metadata:
 - POST /ingest — authenticated publisher only; GitHub App token required.
 - GET /events?limit=400 — recent read-only event projection.
 - GET /events?after_seq=N&limit=400 — ordered incremental projection.
+- GET /events?from=ISO&to=ISO&after_seq=N&limit=400 — bounded historical projection, paginated by the D1 row cursor and filtered by event occurrence time.
+
+The Admin Graph historical inspector accepts a local-time interval, loads route events across cursor pages, and lets an operator replay an individual route on its graph edge. Historical mode pauses live polling in that tab; Return to live resumes from the independent live cursor. Copy inspection link creates a version-preserving URL with `view=history`, `from`, and `to` parameters. The API caps each page at 400 events; the UI loads at most 25 pages per inspection, so narrow the interval for larger histories.
 
 The Worker is admin-graph-live.timerloggedout.workers.dev. D1 is admin-graph-runtime-events; schema and binding remain in ops/admin-graph-live/.
 

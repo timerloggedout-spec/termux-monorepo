@@ -31,7 +31,7 @@ on:
       - '**/mcp/**'
       - '**/skills/**'
       - '**/SKILL.md'
-      - '**/AGENTS.md'
+      - '**/GEMINI-CLI.md'
       - '**/CLAUDE.md'
 
 concurrency:
@@ -41,7 +41,7 @@ concurrency:
 permissions: {}
 
 env:
-  HARNESS_PATH_RE: '(^|/)(\.claude|\.codex|\.agents|\.hermes|\.pi)(/|$)|(^|/)(hooks|mcp|skills)(/|$)|SKILL\.md$|AGENTS\.md$|CLAUDE\.md$|ecc-tools\.ya?ml$'
+  HARNESS_PATH_RE: '(^|/)(\.claude|\.codex|\.agents|\.hermes|\.pi)(/|$)|(^|/)(hooks|mcp|skills)(/|$)|SKILL\.md$|GEMINI-CLI\.md$|CLAUDE\.md$|ecc-tools\.ya?ml$'
   ECC_OPS_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN || secrets.GITHUB_TOKEN }}
 
 jobs:

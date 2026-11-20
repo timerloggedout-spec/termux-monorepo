@@ -49,8 +49,8 @@ Use the role names from `docs/ops/DOE-ROLES-EPOCH-2026-11-03.md`.
 ## Execution gates
 
 - Provider readiness comes from a live adapter probe owned by the execution workflow.
-- A configured credential alone establishes credential presence, not service availability.
-- A role skill bundle alone establishes capability guidance, not execution readiness.
+- Evaluate credential presence and service availability as separate evidence dimensions.
+- Evaluate role skill guidance and execution readiness as separate states.
 - Multi-provider availability requires an explicit manager selection under the repository routing policy.
 - Every implementation produces a reviewable branch or PR and exact-head verification evidence.
 - Merge authority remains separate from builder and reviewer roles.

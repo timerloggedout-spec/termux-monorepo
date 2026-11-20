@@ -29,6 +29,10 @@ def test_review_receipt_admission_filters_authors_before_runner_allocation():
 def test_throughput_observer_tracks_retirement_receipts_as_doe_reviewer_work():
     source = THROUGHPUT.read_text(encoding="utf-8")
     assert '"Legacy Google Jules Review Feedback — Retirement Receipt"' in source
+    assert '"Legacy Google Jules Requests — Retirement Receipt"' in source
+    assert '"Legacy Google Jules PR Requests — Retirement Receipt"' in source
     assert "agentId: 'doe-reviewer'" in source
     assert "provider: 'local-doe'" in source
     assert "role: 'reviewer'" in source
+    assert "agentId: 'doe-issue-triage'" in source
+    assert "agentId: 'doe-pr-handoff'" in source

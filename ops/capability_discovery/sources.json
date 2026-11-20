@@ -44,6 +44,15 @@
       "note": "Vendor content is untrusted data; inspect provenance, license, scripts and requested permissions."
     },
     {
+      "id": "workspace-extra-roots",
+      "kind": "external-workspace",
+      "locator": "Explicit --extra-root paths only (for example $HOME/workspace/project); never implicit home-directory scan",
+      "trust": "unverified",
+      "refresh": "operator-invoked",
+      "import_mode": "metadata-only",
+      "note": "Symlinks are skipped; roots are allowlisted per invocation; candidate records use external:<root>/<relative-path> identity and remain unverified until provenance review."
+    },
+    {
       "id": "skills-sh",
       "kind": "external-catalog",
       "locator": "https://skills.sh/api/v1/skills/search?q=<query>; /api/v1/skills/curated; /api/v1/skills/{id}; /api/v1/skills/audit/{id}",

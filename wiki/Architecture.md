@@ -9,7 +9,7 @@ Prefer **TOOL_INDEX** + **CONCEPT_INDEX** under `archwiz/` for tool-level truth,
 
 ## Governance & system map
 
-- Root `CLAUDE.md` — primary collaborator entry (governance, branch rules, dual-gate validation). Root `AGENTS.md` is deleted/deprecated; the retained Linguist-surface copy is `CLAUDE.hum.md`.
+- Root `CLAUDE.md` — canonical repository governance, branch rules, and dual-gate validation. `CLAUDE.hum.md` remains the Linguist collaborator context.
 - `docs/icm/` — Interpretable Context Methodology system map: shelves `objects/{governance, knowledge, operations, platform}`, processes, effects (first-order impact). Reading protocol: one card, source wins over card.
 - Root `README.md` — navigation ladder and subsystem inventory.
 

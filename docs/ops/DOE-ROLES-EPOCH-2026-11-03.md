@@ -188,6 +188,6 @@ Role bindings preserve the canonical DoE classes:
 - **participant** — represents each admitted task or worker execution as a bounded unit with its own claim and result.
 - **gambler** — retains the existing forecast duty: record a cited prediction about an experiment outcome and score it against the observed result; the skill bundle leaves that duty with the gambler role.
 
-The upstream issue automation scripts call `@google/jules-sdk` and `JULES_API_KEY`; those provider calls remain reference material. Google's Jules service became read-only after 2026-11-11. The upstream sequential merge stage is excluded from this role binding; repository merge authority and independent review remain unchanged.
+The upstream issue automation scripts call `@google/jules-sdk` and `JULES_API_KEY`; those provider calls remain reference material. The attached Jules ecosystem brief also describes `google-labs-code/jules-action@v1` and the PR Reviewer action as hosted-service entry points. This local bundle adopts the skill patterns only. Google's Jules service became read-only after 2026-11-11. The upstream sequential merge stage is excluded from this role binding; repository merge authority and independent review remain unchanged.
 
 The reusable `act` verification skill is available to builders and reviewers. The skill bundle provides role guidance only. Session creation, provider availability signals, and dispatch actions belong to live adapters with implemented and tested readiness probes and receipt contracts.

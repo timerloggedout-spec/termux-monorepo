@@ -98,3 +98,20 @@ def test_c17_game_off_is_a_first_class_event_clock():
     assert event["prizes"]["status"] == "ESTABLISHED"
     assert "no cash" in event["prizes"]["pool"].lower()
     assert event["event_url"] == "https://itch.io/jam/game-off-2026"
+
+
+def test_current_devpost_registrations_are_first_class_clocks():
+    entries = {e["id"]: e for e in _feed()["entries"]}
+    ugreen = entries["C12"]
+    assert ugreen["opens"] == "2026-10-22T09:15:00-07:00"
+    assert ugreen["closes"] == "2026-11-21T23:59:00-08:00"
+    assert ugreen["submission"]["state"] == "SUBMITTED"
+    assert ugreen["submission"]["ref"] == "https://devpost.com/software/receipts-vault"
+    cloud9 = entries["C18"]
+    assert cloud9["opens"] == "2026-11-17T11:00:00-08:00"
+    assert cloud9["closes"] == "2027-01-12T11:00:00-08:00"
+    assert cloud9["prizes"]["pool"].startswith("$25,000")
+    learn = entries["C19"]
+    assert learn["opens"] == "2026-11-10T09:00:00-08:00"
+    assert learn["closes"] == "2026-12-07T14:00:00-08:00"
+    assert learn["prizes"]["pool"] == "$2,500 cash"

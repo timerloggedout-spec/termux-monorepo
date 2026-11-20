@@ -67,7 +67,7 @@ organs:
     canonical_sources:
       - docs/architecture/AGENT-TEAM-CONTROL-PLANE.md
       - docs/ops/AGENT-TEAM-ORCHESTRATION.md
-    responsibilities: [sequencing,_parallelism,waiting,escalation,culling]
+    responsibilities: [sequencing,parallelism,waiting,escalation,culling]
     authority_boundary: "Owns work coordination policy within repository permissions."
     evidence_class: verified
   - id: admission

@@ -135,6 +135,8 @@ python3 scripts/agentic/dependency_phases.py \
 
 The dispatcher records claims only when an approved specialist has a verified live adapter. Google Jules is read-only after 2026-11-11; the local Jules-derived DoE skill bundle supplies role guidance; live execution uses verified adapters. Merge authority remains separate.
 
+The route resolver reads `routing.roles.<capability>.candidate_pool` from `docs/schemas/agent-roster.yaml`. A sole available adapter can be selected automatically; multiple available adapters require the optional `specialist` input (or `client_payload.selected_specialist`) for explicit manager selection. The resolver validates that selection against the approved and currently available candidate set. Each `ROUTE_<AGENT>_ADAPTER_READY` signal belongs to a concrete, tested execution adapter; the current dependency dispatcher keeps applied execution gated until a non-Jules adapter is implemented and wired.
+
 ## Workflow setup
 
 | Secret (name only — #184) | Required by | Purpose |

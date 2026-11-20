@@ -36,6 +36,8 @@ class JulesPrRetirementReceiptTests(unittest.TestCase):
         self.assertNotIn("google-labs-code/jules-invoke", self.workflow)
         self.assertNotIn("target_agent: **jules**", self.workflow)
         self.assertNotIn("@jules Please", self.workflow)
+        receipt_body = self.workflow.split("body: [", 1)[1]
+        self.assertNotIn("@jules", receipt_body)
         self.assertNotIn("pull_request:", self.workflow)
         self.assertNotIn("mutation:", self.workflow)
 

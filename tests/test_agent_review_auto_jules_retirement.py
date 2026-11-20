@@ -53,9 +53,10 @@ class JulesReviewRetirementReceiptTests(unittest.TestCase):
         self.assertIn("LEGACY_REVIEW_FEEDBACK_RECORDED", self.workflow)
 
     def test_receipt_links_to_local_doe_role_guidance(self) -> None:
-        self.assertIn(".agents/skills/jules-doe-role-adapter/SKILL.md", self.workflow)
+        self.assertIn("docs/ops/DOE-ROLES-EPOCH-2026-11-03.md", self.workflow)
         self.assertIn("docs/ops/DOE-ROLES-EPOCH-2026-11-03.md", self.workflow)
         self.assertIn("docs/schemas/agent-roster.yaml", self.workflow)
+        self.assertIn("contains(fromJSON", self.workflow)
 
     def test_github_script_action_uses_immutable_commit_pin(self) -> None:
         uses = re.findall(

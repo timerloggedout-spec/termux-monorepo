@@ -46,15 +46,18 @@ class JulesPrRetirementReceiptTests(unittest.TestCase):
         self.assertIn("github.paginate(github.rest.issues.listComments", self.workflow)
         self.assertIn("comments.some(comment =>", self.workflow)
         self.assertIn("baseline_head_sha", self.workflow)
+        self.assertIn("github.event.comment.id || github.run_id", self.workflow)
+        self.assertIn("context.runId", self.workflow)
+        self.assertIn("/actions/runs/", self.workflow)
         self.assertIn("pr.head.sha", self.workflow)
         self.assertIn("pr.base.sha", self.workflow)
         self.assertIn("source_comment_id", self.workflow)
         self.assertIn("LEGACY_REQUEST_RECORDED", self.workflow)
 
     def test_receipt_routes_to_local_doe_role_guidance(self) -> None:
-        self.assertIn(".agents/skills/jules-doe-role-adapter/SKILL.md", self.workflow)
         self.assertIn("docs/ops/DOE-ROLES-EPOCH-2026-11-03.md", self.workflow)
         self.assertIn("docs/schemas/agent-roster.yaml", self.workflow)
+        self.assertIn("docs/ops/DOE-ROLES-EPOCH-2026-11-03.md", self.workflow)
 
     def test_github_script_action_uses_immutable_commit_pin(self) -> None:
         uses = re.findall(

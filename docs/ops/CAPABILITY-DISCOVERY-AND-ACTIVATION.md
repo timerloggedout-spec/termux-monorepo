@@ -38,6 +38,7 @@ The repository already contains a substantial, generated Termux/ArchWiz tool cat
 |---|---:|---|
 | `all_tools.jsonl` | 3,388 valid JSONL records; 243 package/source groups; 104 tags | Canonical per-tool metadata input; indexed as individual `tool` records |
 | `TOOL_TAXONOMY.json` | Reports 3,388 tools, 25 roles and 104 tags | Taxonomy summary and metadata |
+| `roles_custom.json` | Custom role extensions | Role-routing metadata |
 | `TAG_INDEX.json` | Generated tag lookup | Derived index; do not duplicate tool records |
 | `categories/` | 103 JSON category views | Derived projections |
 | `roles/` | 25 role JSON profiles plus directory metadata | Derived contextual profiles |
@@ -50,7 +51,7 @@ At the inspected master baseline, the README claimed 3,387 tools and contained u
 
 The discovery scanner indexes `all_tools.jsonl` as metadata-only tool records. It retains source/category/package tags, uses the whole-file SHA-256 as the snapshot version, and marks the tool records `unverified` because the snapshot does not establish current availability. Category and role files remain generated views rather than duplicate tool records.
 
-`build_tool_taxonomy.sh` is Termux-specific and invokes apt, npm, cargo, custom, Termux API, reference-template and alias scanners. Treat it as a generator definition; CI and remote agents consume the committed snapshot and do not execute this local-environment builder.
+`workspace/llm_map/build_tool_taxonomy.sh` is a symlink into this taxonomy directory. The target builder is Termux-specific and invokes apt, npm, cargo, custom, Termux API, reference-template and alias scanners. Treat it as a generator definition; CI and remote agents consume the committed snapshot and do not execute this local-environment builder.
 
 ## Claude export provenance: Issue #5657 and PR #5667
 

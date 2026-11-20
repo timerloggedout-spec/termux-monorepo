@@ -349,8 +349,9 @@ def connect(db: Path) -> sqlite3.Connection:
       locator TEXT NOT NULL, name TEXT NOT NULL, description TEXT NOT NULL,
       content_sha256 TEXT, domain TEXT NOT NULL, function TEXT NOT NULL,
       facets TEXT NOT NULL, trust TEXT NOT NULL, lifecycle TEXT NOT NULL,
-      version_ref TEXT, taxonomy_sha256 TEXT, aliases TEXT NOT NULL DEFAULT '[]',
-      permissions TEXT NOT NULL DEFAULT '[]', tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      version_ref TEXT, taxonomy_sha256 TEXT, record_sha256 TEXT,
+      aliases TEXT NOT NULL DEFAULT '[]', permissions TEXT NOT NULL DEFAULT '[]',
+      tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
     capability_columns = {row[1] for row in con.execute("PRAGMA table_info(capability)")}
     for column, declaration in (("taxonomy_sha256","TEXT"),("aliases","TEXT NOT NULL DEFAULT '[]'"),("permissions","TEXT NOT NULL DEFAULT '[]'")):
@@ -362,12 +363,13 @@ def connect(db: Path) -> sqlite3.Connection:
         con.execute("CREATE TABLE IF NOT EXISTS capability_fts (id TEXT PRIMARY KEY,name TEXT,description TEXT,tags TEXT)")
     con.execute("""CREATE TABLE IF NOT EXISTS discovery_event (
       event_id TEXT PRIMARY KEY, capability_id TEXT NOT NULL, event TEXT NOT NULL,
-      content_sha256 TEXT, taxonomy_sha256 TEXT, source_id TEXT NOT NULL,
+      content_sha256 TEXT, taxonomy_sha256 TEXT, record_sha256 TEXT, source_id TEXT NOT NULL,
       recorded_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
     event_columns = {row[1] for row in con.execute("PRAGMA table_info(discovery_event)")}
-    if "taxonomy_sha256" not in event_columns:
-        con.execute("ALTER TABLE discovery_event ADD COLUMN taxonomy_sha256 TEXT")
+    for column in ("taxonomy_sha256","record_sha256"):
+        if column not in event_columns:
+            con.execute(f"ALTER TABLE discovery_event ADD COLUMN {column} TEXT")
     con.execute("""CREATE TABLE IF NOT EXISTS capability_edge (
       edge_id TEXT PRIMARY KEY, from_id TEXT NOT NULL, to_id TEXT NOT NULL,
       relation TEXT NOT NULL, evidence_sha256 TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -410,32 +412,37 @@ def cached_skills_sh_search(con: sqlite3.Connection, query: str, limit: int = 8,
 def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
     changed = 0
     for row in rows:
-        old = con.execute("SELECT content_sha256,taxonomy_sha256 FROM capability WHERE id=?", (row["id"],)).fetchone()
+        record_state = {key:row.get(key) for key in (
+            "kind","source_id","locator","name","description","taxonomy_sha256",
+            "domain","function","facets","trust","lifecycle","version_ref","aliases","permissions","tags"
+        )}
+        record_sha = digest(json.dumps(record_state,sort_keys=True,separators=(",",":")).encode())
+        old = con.execute("SELECT content_sha256,record_sha256 FROM capability WHERE id=?", (row["id"],)).fetchone()
         event = "added" if old is None else (
             "changed" if old[0] != row["content_sha256"] else
-            ("reclassified" if old[1] != row.get("taxonomy_sha256") else "seen")
+            ("reclassified" if old[1] != record_sha else "seen")
         )
         con.execute("""INSERT INTO capability
-          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,taxonomy_sha256,aliases,permissions,tags)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,taxonomy_sha256,record_sha256,aliases,permissions,tags)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,source_id=excluded.source_id,
           locator=excluded.locator,name=excluded.name,description=excluded.description,
           content_sha256=excluded.content_sha256,domain=excluded.domain,function=excluded.function,
           facets=excluded.facets,trust=excluded.trust,lifecycle=excluded.lifecycle,
           version_ref=excluded.version_ref,taxonomy_sha256=excluded.taxonomy_sha256,
-          aliases=excluded.aliases,permissions=excluded.permissions,
+          record_sha256=excluded.record_sha256,aliases=excluded.aliases,permissions=excluded.permissions,
           tags=excluded.tags,updated_at=CURRENT_TIMESTAMP""",
           (row["id"],row["kind"],row["source_id"],row["locator"],row["name"],row["description"],
            row["content_sha256"],row["domain"],row["function"],json.dumps(row["facets"]),
-           row["trust"],row["lifecycle"],row["version_ref"],row.get("taxonomy_sha256"),
+           row["trust"],row["lifecycle"],row["version_ref"],row.get("taxonomy_sha256"),record_sha,
            json.dumps(row.get("aliases",[])),json.dumps(row.get("permissions",[]))," ".join(row["tags"])))
         con.execute("DELETE FROM capability_fts WHERE id=?", (row["id"],))
         con.execute("INSERT INTO capability_fts(id,name,description,tags) VALUES (?,?,?,?)",
                     (row["id"],row["name"],row["description"]," ".join(row["tags"])))
         if event != "seen":
-            event_id = digest(f"{row['id']}|{event}|{row['content_sha256']}|{row.get('taxonomy_sha256')}".encode())
-            con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,taxonomy_sha256,source_id) VALUES (?,?,?,?,?,?)",
-                        (event_id,row["id"],event,row["content_sha256"],row.get("taxonomy_sha256"),row["source_id"]))
+            event_id = digest(f"{row['id']}|{event}|{row['content_sha256']}|{record_sha}".encode())
+            con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,taxonomy_sha256,record_sha256,source_id) VALUES (?,?,?,?,?,?,?)",
+                        (event_id,row["id"],event,row["content_sha256"],row.get("taxonomy_sha256"),record_sha,row["source_id"]))
             changed += 1
     duplicates = con.execute("""SELECT a.id,b.id,a.content_sha256
         FROM capability a JOIN capability b
@@ -480,11 +487,11 @@ def search(con: sqlite3.Connection, query: str, limit: int = 8,
 
 def export_ledger(con: sqlite3.Connection, path: Path) -> int:
     path.parent.mkdir(parents=True,exist_ok=True)
-    rows = con.execute("""SELECT event_id,capability_id,event,content_sha256,taxonomy_sha256,source_id,recorded_at
+    rows = con.execute("""SELECT event_id,capability_id,event,content_sha256,taxonomy_sha256,record_sha256,source_id,recorded_at
                           FROM discovery_event ORDER BY recorded_at,event_id""").fetchall()
     with path.open("w",encoding="utf-8") as stream:
         for row in rows:
-            stream.write(json.dumps(dict(zip(("event_id","capability_id","event","content_sha256","taxonomy_sha256","source_id","recorded_at"),row)),sort_keys=True)+"\n")
+            stream.write(json.dumps(dict(zip(("event_id","capability_id","event","content_sha256","taxonomy_sha256","record_sha256","source_id","recorded_at"),row)),sort_keys=True)+"\n")
     return len(rows)
 
 def local_first_search(con: sqlite3.Connection, query: str, limit: int = 8,

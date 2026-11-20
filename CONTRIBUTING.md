@@ -6,7 +6,7 @@ This monorepo is developed with **humans and agents** on Termux and CI.
 
 | Audience | Entry |
 |----------|--------|
-| Agents | [`AGENTS.md`](AGENTS.md) |
+| Collaborators | [`CLAUDE.md`](CLAUDE.md) + the named collaborator entrypoint |
 | Claude-family | [`CLAUDE.md`](CLAUDE.md) |
 | Everyone | [`docs/proposals/PROCESS.md`](docs/proposals/PROCESS.md) |
 | Permissions | [`docs/proposals/AGENTIC-PERMISSIONS.md`](docs/proposals/AGENTIC-PERMISSIONS.md) |

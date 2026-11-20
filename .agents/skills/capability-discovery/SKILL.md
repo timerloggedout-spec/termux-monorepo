@@ -12,7 +12,7 @@ Load `CLAUDE.md`, `SKILLS.md`, this skill, `docs/ops/CAPABILITY-DISCOVERY-AND-AC
 ## Procedure
 
 1. Classify the task into a domain, function, scope, risk and required outcome.
-2. Search local first across `SKILL.md`, `SKILLS.md`, `*.SKILLS`, `*.skill`, plugin/MCP/tool manifests, nested workspace paths, CI skill paths, documentation mirrors and declared vendor roots. Include `workspace/llm_map/_TOOL_TAXONOMY/all_tools.jsonl` as the legacy Termux tool-catalog baseline; its records are historical and unverified for current availability.
+2. Search local first across `SKILL.md`, `SKILLS.md`, `*.SKILLS`, `*.skill`, plugin/MCP/tool manifests (`tools-schema.json`, `CONNECTOR.md`, `TOOLS.md`), nested workspace paths, CI skill paths, documentation mirrors and declared vendor roots. Include `workspace/llm_map/_TOOL_TAXONOMY/all_tools.jsonl` as the legacy Termux tool-catalog baseline; its records are historical and unverified for current availability.
 3. Search external catalogs only when local coverage is insufficient. Use source adapters declared in `ops/capability_discovery/sources.json`; preserve source, immutable revision, timestamp and retrieval method.
 4. Tag hierarchically: one primary domain/function; add cross-cutting facets, trust state and lifecycle state separately.
 5. Deduplicate using source locator + package/skill/action identity + content hash. Keep aliases and candidate relationships as edges; preserve distinct versions and forks.

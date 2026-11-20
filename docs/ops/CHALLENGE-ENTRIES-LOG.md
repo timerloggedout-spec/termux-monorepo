@@ -727,7 +727,7 @@ PR #1970 merged 2e99fadd).
   Nov. 19 at 12 p.m. PT**." Countdown now carries Nov 19 12:00 PT.
 
 
-### C12 — UGREEN Hackathon 2026 on AI NAS — R1 SUBMITTED / PUBLISHED; ROUND 2 CONDITIONAL
+### C12 — UGREEN Hackathon 2026 on AI NAS — IN PROGRESS
 
 <!-- countdown-data:C12 opens=2026-10-22T09:15:00-07:00 closes=2026-11-21T23:59:00-08:00 -->
 <!-- submission-data:C12 state=SUBMITTED at=2026-11-15T22:16:33.300-08:00 ref=https://devpost.com/software/receipts-vault -->
@@ -741,7 +741,7 @@ PR #1970 merged 2e99fadd).
 - **Next checkpoint:** finalist selection Nov 21. Round 2 exists only if invited: one assigned remote-NAS testing day Nov 22–28 and final ZIP + public YouTube demo ≤3 min by Nov 30 23:45 PST.
 - **Identity:** Devpost platform identity `entrant{n0nDevpost}[platform:devpost]`; project AppID/repo provisioning remains deferred under the 2026-11-03 owner ruling. The public submission points to the monorepo's `entries/c12-receipts-vault` artifacts.
 
-### C18 — Cloud9 × JetBrains: Sky's The Limit Hackathon 2026 — REGISTERED / SUBMISSIONS OPEN
+### C18 — Cloud9 × JetBrains: Sky's The Limit Hackathon 2026 — IN PROGRESS
 
 <!-- countdown-data:C18 opens=2026-11-17T11:00:00-08:00 closes=2027-01-12T11:00:00-08:00 -->
 <!-- countdown:C18 -->⏳ closes in 53d 2h (computed 2026-11-20 08:52 PT)<!-- /countdown:C18 -->
@@ -756,7 +756,7 @@ PR #1970 merged 2e99fadd).
 - **Prizes:** $25,000 total cash awards across three category winners ($6,000 each), three runners-up ($2,000 each), and the $1,000 AI-powered workflow-story bonus; additional Cloud9/JetBrains/GDC benefits on specified awards.
 - **Escalation timebox:** cushion Jan 9 11:00 PST (−72h); internal landing Jan 10 11:00 PST (−48h); wall-day Jan 12 00:00 PST; ESCALATION Jan 12 07:00 PST (−4h); FINAL Jan 12 10:30 PST (−30m). Desk-feed is the current projection; Tracking reminder-register binding and calendar events remain pending.
 
-### C19 — Learn AR with SPECS — REGISTERED / SUBMISSIONS OPEN
+### C19 — Learn AR with SPECS — IN PROGRESS
 
 <!-- countdown-data:C19 opens=2026-11-10T09:00:00-08:00 closes=2026-12-07T14:00:00-08:00 -->
 <!-- countdown:C19 -->⏳ closes in 17d 5h (computed 2026-11-20 08:52 PT)<!-- /countdown:C19 -->

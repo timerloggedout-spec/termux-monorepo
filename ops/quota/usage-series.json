@@ -1,10 +1,10 @@
 {
  "schema": "quota.usage-series/v1",
  "generated_by": "scripts/quota_usage_series.py",
- "generated_at": "2026-11-20T03:13:22Z",
+ "generated_at": "2026-11-20T06:49:05Z",
  "inputs_generated_at": {
   "ops/quota/quota-usage.json": "2026-11-19T12:14:13Z",
-  "ops/tracking/nested-family.json": "2026-11-20T02:54:05Z"
+  "ops/tracking/nested-family.json": "2026-11-20T06:48:40Z"
  },
  "sources": [
   "ops/quota/quota-usage.json",
@@ -1712,10 +1712,14 @@
      {
       "t": "2026-11-19T00:15:13Z",
       "v": 2
+     },
+     {
+      "t": "2026-11-20T03:15:05Z",
+      "v": 3
      }
     ],
     "provenance": "stamped dispatch records: experiments/doe/routed-dispatch/{records,stamps} + ops/tracking/nested-family.json tasks (activity-proxy class)",
-    "last_point_at": "2026-11-19T00:15:13Z"
+    "last_point_at": "2026-11-20T03:15:05Z"
    },
    {
     "key": "NOT_ESTABLISHED",
@@ -2006,12 +2010,12 @@
  },
  "consumption_gap": {
   "method": "fleet-self-count: routed calls of record (3L0 intake + routed-dispatch records/stamps + nested-family carriers, dispatch_id-deduped, github-actions excluded) vs calls carrying a numeric usage value (provider-response tokens or a measured provider-native usage{} value)",
-  "routed_calls": 35,
+  "routed_calls": 36,
   "usage_stamped": 4,
-  "unstamped": 31,
-  "unstamped_share": 0.8857,
+  "unstamped": 32,
+  "unstamped_share": 0.8889,
   "causes": {
-   "no-usage-record": 31,
+   "no-usage-record": 32,
    "no-usage-surface": 0
   },
   "by_provider": {
@@ -2035,9 +2039,9 @@
    },
    "google": {
     "provider": "google",
-    "calls": 2,
+    "calls": 3,
     "stamped": 0,
-    "unstamped": 2
+    "unstamped": 3
    },
    "baseten": {
     "provider": "baseten",

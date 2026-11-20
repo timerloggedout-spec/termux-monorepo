@@ -16,6 +16,7 @@ flowchart TD
   ROUTER[Provider Router]
   ORBIT[ORBIT / SHIELD proposal]
   BUS[Synaptic Bus proposal]
+  OWNERS[Existing canonical event owners]
   EXEC[Specialists and execution adapters]
   ATES[ATES / Action-Effect evidence]
   WATCH[Runtime watchers]
@@ -56,7 +57,7 @@ flowchart TD
   SHE -. operator visibility .-> MGR
   LEARN -. governed policy updates .-> MGR
   EXEC -. typed event references .-> BUS
-  BUS -. canonical record projection .-> ATES
+  BUS -. canonical record references .-> OWNERS
 
   classDef verified fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
   classDef proposed fill:#fff8e1,stroke:#f9a825,color:#6d4c00

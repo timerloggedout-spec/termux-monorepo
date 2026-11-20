@@ -122,7 +122,7 @@
  "name": "reverse-engineering",
  "nodes": [
   {
-   "description": "The discipline root of this registry: understand how an artifact works, from the artifact. Polyhierarchy \u2014 a node has as many parents as are true; primary placement is recorded once, overlaps live in parents/tags, never in duplicated nodes.",
+   "description": "The discipline root of this registry: understand how an artifact works, from the artifact. Polyhierarchy — a node has as many parents as are true; primary placement is recorded once, overlaps live in parents/tags, never in duplicated nodes.",
    "id": "reverse-engineering",
    "kind": "category",
    "name": "Reverse engineering",
@@ -691,7 +691,7 @@
    }
   },
   {
-   "description": "Windows RE VM installer scripts \u2014 an environment, not a containment boundary; VM + snapshots + host-only networking required.",
+   "description": "Windows RE VM installer scripts — an environment, not a containment boundary; VM + snapshots + host-only networking required.",
    "id": "flare-vm",
    "kind": "tool",
    "name": "FLARE-VM",
@@ -708,7 +708,7 @@
    }
   },
   {
-   "description": "Fleet-registered agentic RE environment (campaign doc, 2026-10-26): offload/container only, never on the B160V. A platform/workspace \u2014 not a discipline, methodology or credential.",
+   "description": "Fleet-registered agentic RE environment (campaign doc, 2026-10-26): offload/container only, never on the B160V. A platform/workspace — not a discipline, methodology or credential.",
    "id": "kali-linux",
    "kind": "tool",
    "name": "Kali Linux",
@@ -824,7 +824,7 @@
    }
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Broad inspection substrate for web surfaces. Boundary (Foundry catalog): broader than the web-wrapper problem.",
    "id": "rea",
    "kind": "tool",
@@ -848,7 +848,7 @@
    "upstream": "morluto/rea"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Capture-investigate-export core: captured requests investigated and exported as candidate clients. Boundary: exported clients are candidates until independently verified per operation.",
    "id": "rever-browser",
    "kind": "tool",
@@ -871,7 +871,7 @@
    "upstream": "greekr4/rever-browser"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Browser-backed reusable CLI / website-to-CLI execution core. Boundary: browser-backed automation is not proof of browser-independent API extraction. Browser-backed = offload under the B160V law.",
    "id": "opencli",
    "kind": "tool",
@@ -893,7 +893,7 @@
    "upstream": "jackwener/opencli"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "OpenCLI fork. Boundary: do not assume upstream OpenCLI compatibility.",
    "id": "opencli-linxule",
    "kind": "tool",
@@ -915,7 +915,7 @@
    "upstream": "linxule/opencli"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Captured request -> code seed. Boundary: a starting point, not the final client.",
    "id": "curlconverter",
    "kind": "tool",
@@ -935,7 +935,7 @@
    "upstream": "curlconverter/curlconverter"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Agent-accessible browser interaction (MCP facade). Boundary: not an adapter synthesiser. Chromium-class = offload-only under the B160V law.",
    "id": "playwright-mcp",
    "kind": "tool",
@@ -957,7 +957,7 @@
    "upstream": "microsoft/playwright-mcp"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Contract-driven verification. Boundary: a generated schema can be wrong; passing its tests alone is not semantic correctness.",
    "id": "schemathesis",
    "kind": "tool",
@@ -981,7 +981,7 @@
    "upstream": "schemathesis/schemathesis"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Existing-client discovery index (curated list, not an executable tool). Boundary: listings are leads; inspect upstream before trusting.",
    "id": "awesome-reverse-engineered",
    "kind": "tool",
@@ -1000,7 +1000,7 @@
    "upstream": "alexgaoth/awesome-reverse-engineered"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Desktop/Electron CLI recovery. Boundary: desktop/Electron targets, not ordinary web apps.",
    "id": "reverse-cli-anything",
    "kind": "tool",
@@ -1021,7 +1021,7 @@
    "upstream": "leileqiTHU/reverse-cli-anything"
   },
   {
-   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) \u2014 composed, not vendored",
+   "composed_from": "ops/web_adapter_foundry/catalog.json (PR #1550) — composed, not vendored",
    "description": "Capture -> draft OpenAPI: derives contract from captured traffic only; workflow inventory drives coverage. Sibling of the mitmproxy capture node, not a duplicate.",
    "id": "mitmproxy2swagger",
    "kind": "tool",
@@ -1040,6 +1040,53 @@
     ]
    },
    "upstream": "alufers/mitmproxy2swagger"
+  },
+  {
+   "composed_from": "timerloggedout-spec/REA-Argonaut_fork — fleet fork of PNWcoastie/REA-Argonaut; composed, not vendored",
+   "description": "Cross-platform agentic reverse-engineering suite (MCP + CLI + Antigravity plugin). Upstream README describes a superset of morluto/rea with ArgonZeroG whole-subgraph extraction, a four-mount recon-kit exporter, native/decompiler and zero-install binary analysis, Rust/C++/frozen-Python/AI-model/game-archive forensic inspectors, and sandboxed differential C-to-Rust parity verification. Treat upstream capability counts as project-declared; verify the pinned fork revision and host/provider prerequisites before execution. This registry entry records the fleet fork; package.json currently identifies PNWcoastie/REA-Argonaut as package repository.",
+   "id": "rea-argonaut",
+   "kind": "tool",
+   "name": "REA-Argonaut (ArgonZeroG; fleet fork)",
+   "parents": [
+    "target-native",
+    "target-bytecode",
+    "target-scripts",
+    "target-firmware",
+    "target-protocols-formats",
+    "target-hardware",
+    "target-mobile",
+    "target-web-client",
+    "mobile-android",
+    "mobile-ios"
+   ],
+   "tags": {
+    "environment": [
+     "linux",
+     "windows",
+     "macos"
+    ],
+    "method": [
+     "static",
+     "dynamic",
+     "hybrid",
+     "comparative",
+     "automated"
+    ],
+    "objective": [
+     "understanding",
+     "interoperability",
+     "vulnerability-research",
+     "cross-validation"
+    ],
+    "tool_role": [
+     "decompiler",
+     "extractor",
+     "instrumentation",
+     "cross-validator"
+    ]
+   },
+   "upstream": "PNWcoastie/REA-Argonaut",
+   "source_repository": "timerloggedout-spec/REA-Argonaut_fork"
   }
  ],
  "overlap_matrix": {
@@ -1124,7 +1171,8 @@
      "stage": "extract",
      "tools": [
       "apktool",
-      "apk-xref"
+      "apk-xref",
+      "rea-argonaut"
      ]
     },
     {
@@ -1132,7 +1180,8 @@
      "stage": "analyze-static",
      "tools": [
       "jadx",
-      "ghidra"
+      "ghidra",
+      "rea-argonaut"
      ]
     },
     {
@@ -1169,7 +1218,8 @@
      "stage": "analyze-static",
      "tools": [
       "ghidra",
-      "rizin-cutter"
+      "rizin-cutter",
+      "rea-argonaut"
      ]
     },
     {
@@ -1194,7 +1244,8 @@
      "output": "reconstructed PE/DLL logic",
      "stage": "analyze-static",
      "tools": [
-      "ghidra"
+      "ghidra",
+      "rea-argonaut"
      ]
     },
     {
@@ -1251,7 +1302,8 @@
      "output": "processor + memory layout established before code claims",
      "stage": "identify",
      "tools": [
-      "ghidra"
+      "ghidra",
+      "rea-argonaut"
      ]
     },
     {
@@ -1315,7 +1367,8 @@
       "web-adapter-foundry",
       "webcrack",
       "rea",
-      "rever-browser"
+      "rever-browser",
+      "rea-argonaut"
      ]
     },
     {
@@ -1358,13 +1411,16 @@
      "tools": [
       "web-adapter-foundry",
       "mitmproxy2swagger",
-      "curlconverter"
+      "curlconverter",
+      "rea-argonaut"
      ]
     },
     {
      "output": "differential probes against live/recorded traffic",
      "stage": "validate",
-     "tools": []
+     "tools": [
+      "rea-argonaut"
+     ]
     },
     {
      "output": "interoperability notes / draft contract",
@@ -1379,7 +1435,7 @@
    "hats": [
     "white (authorized)",
     "black (unauthorized/malicious)",
-    "gray (authorization unclear) \u2014 record actual permission, not the label"
+    "gray (authorization unclear) — record actual permission, not the label"
    ],
    "teams": [
     "red (offense)",
@@ -1393,7 +1449,7 @@
    ]
   },
   "name": "cybersecurity / information security (polyhierarchy)",
-  "note": "This registry is the RE family of the wider field taxonomy. Entity types stay distinct up there too: Kali is a platform, OWASP a foundation/ecosystem, pentest an activity, CISSP a credential, CompTIA a provider, OverTheWire a lab, CTF a format. Conduct axes (hats), function axes (red/blue/purple teams) and visibility axes (black/gray/white-box) belong to that umbrella, not to this registry \u2014 here they appear only as method/objective tags when they describe RE work.",
+  "note": "This registry is the RE family of the wider field taxonomy. Entity types stay distinct up there too: Kali is a platform, OWASP a foundation/ecosystem, pentest an activity, CISSP a credential, CompTIA a provider, OverTheWire a lab, CTF a format. Conduct axes (hats), function axes (red/blue/purple teams) and visibility axes (black/gray/white-box) belong to that umbrella, not to this registry — here they appear only as method/objective tags when they describe RE work.",
   "sibling_registries": [
    "ops/web_adapter_foundry/taxonomy.json (web-reverse-engineering sub-registry)",
    "docs/ops/WEB-REVERSE-ENGINEERING-CAMPAIGN.md (Kali registered environment)"

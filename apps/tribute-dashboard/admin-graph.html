@@ -1276,7 +1276,7 @@ function animateRuntimeEvent(ev){
  var rec=edgeForRuntimeEvent(ev);
  if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));return;}
  var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
- var reverse=(ev.kind==="route"||ev.event==="task_routed")&&rec.def&&rec.def.to==="routing";
+ var reverse=false;
  path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
  function frame(ts){
   if(!t0)t0=ts;

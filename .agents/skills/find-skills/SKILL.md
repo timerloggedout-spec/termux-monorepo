@@ -77,9 +77,9 @@ For example:
 **Do not recommend a skill based solely on search results.** Always verify:
 
 1. **Stable identity and provenance** — record the skills.sh ID, source repository, skill slug, immutable commit/tag where available, and content hash.
-2. **Security audit** — inspect the skills.sh partner audit when available. Interpret `pass`, `warn`, and `fail` with their audit timestamp; a 404 means no partner audit is available, not a pass.
-3. **Source and permissions** — inspect SKILL.md, scripts, assets, network calls, requested tools and license. Vendor publication establishes provenance, not correctness or safety.
-4. **Popularity** — install counts and GitHub stars are discovery signals only; they do not establish quality or security.
+2. **Security audit** — inspect the skills.sh partner audit when available. Interpret `pass`, `warn`, and `fail` with their audit timestamp; an HTTP 404 marks audit status as unavailable; retain an unknown state.
+3. **Source and permissions** — inspect SKILL.md, scripts, assets, network calls, requested tools and license. Vendor publication establishes provenance; evaluate correctness and safety independently.
+4. **Popularity** — use install counts and GitHub stars as discovery signals; assess quality and security separately.
 5. **Duplicates** — inspect the catalog's duplicate flag and compare forks before recommending a copy.
 
 ### Step 5: Present Options to the User

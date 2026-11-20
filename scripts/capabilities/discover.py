@@ -112,6 +112,80 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
             return domain, function, sorted(set(facets))
     return "agentic", "capability-discovery", ["skill"]
 
+def import_tool_taxonomy_jsonl(path: Path, root: Path, external: bool = False) -> list[dict]:
+    """Import the legacy Termux tool catalogue as unverified metadata records."""
+    raw_file = path.read_bytes()
+    snapshot_sha = digest(raw_file)
+    taxonomy = load_taxonomy()
+    taxonomy_sha = taxonomy_hash(taxonomy)
+    source_id = "workspace-external" if external else "termux-tool-taxonomy-snapshot"
+    rows = []
+    for line_number, raw_line in enumerate(raw_file.splitlines(), 1):
+        if not raw_line.strip():
+            continue
+        try:
+            item = json.loads(raw_line.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        if not isinstance(item, dict) or not item.get("name"):
+            continue
+        raw_metadata = json.dumps(item, sort_keys=True, separators=(",", ":"))
+        trust = "quarantined" if SECRET_RE.search(raw_metadata) else "unverified"
+        safe_name = redact_sensitive(str(item.get("name") or ""))
+        safe_description = redact_sensitive(str(item.get("description") or ""))
+        safe_package = redact_sensitive(str(item.get("package") or ""))
+        safe_source = redact_sensitive(str(item.get("source") or ""))
+        safe_category = redact_sensitive(str(item.get("category") or ""))
+        raw_tags = item.get("tags", [])
+        if not isinstance(raw_tags, list):
+            raw_tags = []
+        safe_tags = [redact_sensitive(str(tag)) for tag in raw_tags]
+        relative = path.relative_to(root).as_posix()
+        locator = (
+            f"external:{root.name}/{relative}#L{line_number}"
+            if external else f"{relative}#L{line_number}"
+        )
+        safe_locator = redact_sensitive(locator)
+        explicit = " ".join([safe_category, safe_package, safe_source, *safe_tags])
+        domain, function, facets = infer_tags(
+            safe_name, safe_description, safe_locator, explicit
+        )
+        domain, function = validate_classification(domain, function, taxonomy)
+        facets = [facet for facet in facets if facet != "skill"]
+        facets.extend(["tool", "cli"])
+        if external:
+            facets.append("external")
+        identity = digest(
+            f"{source_id}\0{safe_package}\0{safe_name}\0{safe_locator}".encode()
+        )[:24]
+        searchable = " ".join([
+            safe_name, safe_description, safe_package, safe_source,
+            safe_category, *safe_tags,
+        ])
+        rows.append({
+            "id": f"{source_id}:{identity}",
+            "kind": "tool",
+            "source_id": source_id,
+            "locator": safe_locator,
+            "name": safe_name[:240],
+            "description": safe_description[:1200],
+            "content_sha256": digest(raw_line),
+            "taxonomy_sha256": taxonomy_sha,
+            "domain": domain,
+            "function": function,
+            "facets": sorted(set(facets)),
+            "trust": trust,
+            "lifecycle": "classified",
+            "version_ref": snapshot_sha,
+            "aliases": [],
+            "permissions": [],
+            "tags": sorted(set(TOKEN_RE.findall(
+                (searchable + " " + safe_locator).lower()
+            )))[:80],
+        })
+    return rows
+
+
 def scan_repository(root: Path, external: bool = False) -> list[dict]:
     rows = []
     taxonomy = load_taxonomy()
@@ -121,6 +195,10 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             continue
         is_skill_file = path.name in SKILL_NAMES or path.suffix.lower() in SKILL_SUFFIXES
         is_manifest_file = path.name.lower() in MANIFEST_NAMES
+        is_tool_catalog = path.name == "all_tools.jsonl" and path.parent.name == "_TOOL_TAXONOMY"
+        if is_tool_catalog:
+            rows.extend(import_tool_taxonomy_jsonl(path, root, external=external))
+            continue
         if not is_skill_file and not is_manifest_file:
             continue
         relative = path.relative_to(root).as_posix()

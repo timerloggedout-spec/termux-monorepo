@@ -67,7 +67,7 @@ Use disjoint files where possible. Treat other agents and newly discovered provi
 - Existing free-tier agentic stack:
   - **Jules** — asynchronous coding agent (already wired; auto-summoned on CodeRabbit/Devin reviews).
   - **CodeRabbit** — AI PR review with autofix (`.coderabbit.yaml`).
-  - **Gemini CLI** — the specific CLI implementation and invocation surface governed by this file. Provider/model identity and collaborator attribution come from execution receipts; this filename does not define a collaborator identity or moniker.
+  - **Gemini CLI** — the specific command-line implementation invoked by the workflows. The collaborator identity is the registered `geminiMesh` lane; provider/model/adapter attribution comes from execution receipts. The CLI product name remains implementation vocabulary, not a collaborator identity.
 
 ## Capabilities you should use
 

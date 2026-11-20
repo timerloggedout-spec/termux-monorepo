@@ -10,9 +10,11 @@ invariants are unchanged (326/326 held during the outage).
 
 | # | arm | provider | model | key (Actions secret) |
 |---|-----|----------|-------|----------------------|
-| 1 | gemini | gemini | gemini-2.0-flash | GEMINI_API_KEY |
-| 2 | groq | groq | llama-3.3-70b-versatile | GROQ_API_KEY |
-| 3 | openrouter | openrouter | meta-llama/llama-3.3-70b-instruct:free | OPENROUTER_API_KEY |
+| 1 | cohere | cohere | command-a-03-2025 | COHERE_API_KEY |
+| 2 | groq | groq | openai/gpt-oss-120b | GROQ_API_KEY |
+| 3 | gemini | gemini | gemini-2.5-flash | GEMINI_API_KEY |
+| 4 | mistral | mistral | mistral-small-latest | MISTRAL_API_KEY |
+| 5 | openrouter | openrouter | meta-llama/llama-3.3-70b-instruct:free | OPENROUTER_API_KEY |
 
 Extraction is small-model fact extraction; every arm fits free-tier capacity.
 OpenRouter is one arm among many — last in probe order, never the sole route.

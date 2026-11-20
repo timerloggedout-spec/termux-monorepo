@@ -171,3 +171,23 @@ in termux-monorepo, plane references read **steward**
 (except when naming the MoneyBall plane's Custodian
 explicitly). References to the role read **steward**
 everywhere.
+
+
+## Jules-derived local skill bundle (2026-11-20)
+
+The local clone of the Google Labs Jules skill repository is `timerloggedout-spec/jules-skills_fork` at `7a76d3bfcf4258ee437d65b5d12e54b51c395de5` (Apache-2.0). Its two skills are `automate-github-issues` and `local-action-verification`. The bundle is registered as a **role capability template**, not as a provider, agent identity, or execution adapter.
+
+Role bindings preserve the canonical DoE classes:
+
+- **observer** — use issue analysis to produce a current, sourced issue census and baseline; the output describes state without changing it.
+- **scout** — use the triage and planning patterns to propose candidate tasks, dependencies, and file ownership; the scout submits selections through the existing health and admission gates.
+- **builder** — use the planning, bounded-task, and local verification patterns to prepare implementation work under the active repository agent runtime.
+- **operator** — owns admission, ordering, and dispatch; provider selection uses a concrete, observed adapter-readiness signal.
+- **steward** — preserves append-only task, claim, and evidence receipts, including task-to-file ownership and execution provenance.
+- **reviewer** — independently verifies the exact candidate head with repository gates and local Actions verification where supported.
+- **participant** — represents each admitted task or worker execution as a bounded unit with its own claim and result.
+- **gambler** — retains the existing forecast duty: record a cited prediction about an experiment outcome and score it against the observed result; the skill bundle supplies no substitute for that duty.
+
+The upstream issue automation scripts call `@google/jules-sdk` and `JULES_API_KEY`; those provider calls remain reference material. Google's Jules service became read-only after 2026-11-11. The upstream sequential merge stage is excluded from this role binding; repository merge authority and independent review remain unchanged.
+
+The reusable `act` verification skill is available to builders and reviewers. The skill bundle itself creates no sessions, claims no provider availability, and performs no dispatch. A live executor enters the route only after its own adapter, readiness probe, and receipt contract are implemented and tested.

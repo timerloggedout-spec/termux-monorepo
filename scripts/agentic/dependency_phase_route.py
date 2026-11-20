@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """Resolve a dependency phase through the repository's manager/router roster.
 
-This layer selects a specialist from the approved agent roster. It never executes
-an agent. Execution adapters remain downstream concerns and must be explicitly
-marked ready by the workflow that owns the concrete adapter.
+This layer selects a specialist from the approved agent roster. Provider execution belongs to a downstream adapter that the owning workflow marks ready.
 """
 
 from __future__ import annotations
@@ -60,7 +58,12 @@ def _available(agent: str) -> bool:
     return os.environ.get(f"ROUTE_{agent.upper()}_ADAPTER_READY", "false").lower() == "true"
 
 
-def resolve_route(plan: dict[str, Any], phase_id: str, roster_text: str) -> dict[str, Any]:
+def resolve_route(
+    plan: dict[str, Any],
+    phase_id: str,
+    roster_text: str,
+    selected_specialist: str | None = None,
+) -> dict[str, Any]:
     phase = next((p for p in plan.get("phases", []) if p.get("phase_id") == phase_id), None)
     if phase is None:
         raise RouteError(f"unknown phase_id: {phase_id}")
@@ -104,7 +107,17 @@ def resolve_route(plan: dict[str, Any], phase_id: str, roster_text: str) -> dict
             candidates.append(agent)
 
     available = [agent for agent in candidates if _available(agent)]
-    if preferred and preferred in available:
+    if selected_specialist:
+        if selected_specialist not in available:
+            raise RouteError(
+                f"selected specialist {selected_specialist!r} is outside the live manager-approved candidate set"
+            )
+        if preferred and selected_specialist != preferred:
+            raise RouteError("selected specialist conflicts with the phase's explicit preference")
+        selected = selected_specialist
+        state = "routed"
+        reason = f"manager explicitly selected available specialist {selected}"
+    elif preferred and preferred in available:
         selected = preferred
         state = "routed"
         reason = f"selected explicitly preferred specialist {selected}"
@@ -142,10 +155,16 @@ def main() -> int:
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--phase-id", required=True)
     parser.add_argument("--roster", type=Path, default=ROSTER)
+    parser.add_argument("--selected-specialist", default="")
     args = parser.parse_args()
 
     plan = json.loads(args.plan.read_text(encoding="utf-8"))
-    result = resolve_route(plan, args.phase_id, args.roster.read_text(encoding="utf-8"))
+    result = resolve_route(
+        plan,
+        args.phase_id,
+        args.roster.read_text(encoding="utf-8"),
+        selected_specialist=args.selected_specialist or None,
+    )
     print(json.dumps(result, sort_keys=True))
     return 0
 

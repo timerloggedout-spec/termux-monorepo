@@ -101,7 +101,35 @@ def validate_integration_map(content: str) -> list[str]:
         for classification in ("verified", "derived", "proposed", "unresolved"):
             if classification not in line:
                 errors.append(f"integration map legend must include {classification}")
+    in_mermaid = False
+    for line_number, line in enumerate(content.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("```mermaid"):
+            in_mermaid = True
+            continue
+        if in_mermaid and stripped.startswith("```"):
+            in_mermaid = False
+            continue
+        if in_mermaid and re.search(r"(?:-->|-\\.->)", line):
+            if not re.search(r"(?:-->|-\\.->)\\|(?:verified|derived|proposed|unresolved)(?:\\s*:[^|]+)?\\|", line, re.IGNORECASE):
+                errors.append(f"unclassified edge on line {line_number}")
     return errors
+
+
+def validate_identity_contract(content: str) -> list[str]:
+    """Require every shared identity dimension and explicit unknown handling."""
+    required = (
+        "repository", "source_sha", "task_id", "scope_id", "orchestration_id",
+        "cycle_id", "attempt_id", "agent_id", "provider_id", "model_id",
+        "adapter_id", "run_id", "artifact_id", "outcome_id", "NOT_ESTABLISHED",
+    )
+    if not isinstance(content, str) or not content.strip():
+        return ["identity contract must be non-empty text"]
+    return [
+        f"identity contract missing required dimension: {name}"
+        for name in required
+        if not re.search(rf"\\b{re.escape(name)}\\b", content)
+    ]
 
 
 def validate_authority_matrix(content: str) -> list[str]:
@@ -146,6 +174,7 @@ def main() -> int:
     parser.add_argument("--registry", default="docs/architecture/CNS-ORGAN-REGISTRY.yaml")
     parser.add_argument("--map", dest="map_path", default="docs/architecture/CNS-INTEGRATION-MAP.mmd")
     parser.add_argument("--authority", default="docs/architecture/CNS-AUTHORITY-MATRIX.md")
+    parser.add_argument("--identity", default="docs/architecture/CNS-EVENT-IDENTITY-CONTRACT.md")
     args = parser.parse_args()
     try:
         import yaml
@@ -163,6 +192,7 @@ def main() -> int:
     for path, validator in (
         (args.map_path, validate_integration_map),
         (args.authority, validate_authority_matrix),
+        (args.identity, validate_identity_contract),
     ):
         try:
             value = (args.root / path).read_text(encoding="utf-8")

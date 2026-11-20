@@ -38,6 +38,11 @@ Reconcile authenticated Devpost registrations, submission evidence, official eli
 - Disposition: posted
 - Notes: Authenticated Devpost account list confirmed C12, C18, and C19 registrations. C12 Receipts Vault submission is published; C18/C19 have no linked project in the current project listing. Exact join instants were unavailable.
 
+### 2026-11-20 — master-based integration
+
+- Disposition: draft PR opened (#5727)
+- Notes: Branch created from current master to replace stale stacked branches. Static consistency checks pass; GitHub Actions checks are queued/pending. Vercel preview is rate-limited for 24 hours. PR remains draft pending dual gates and non-author review.
+
 ## Checklist
 
 - [x] Registered in `docs/proposals/registry.yaml`

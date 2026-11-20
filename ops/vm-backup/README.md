@@ -25,7 +25,11 @@ the surrogate in this sandbox, so publishing is a Git Data API batch
 commit (blobs → trees → commit → ref), with unchanged blobs skipped by
 git-blob-SHA comparison against the previous export's tree.
 
-## Named VM profile migration\n\nThe VM export contract uses `~/MUSE-VM.md` as its named VM collaborator profile. Install `ops/vm-backup/templates/MUSE-VM.md` in the VM home before the next export. `export_vm_workspace.py` requires both `CLAUDE.md` and `MUSE-VM.md`; it emits a clear failure while either required profile is absent. The generic guidance source is retired from the export allowlist.\n\n## Tiers
+## Named VM profile migration
+
+The VM export contract uses `~/MUSE-VM.md` as its named VM collaborator profile. Install `ops/vm-backup/templates/MUSE-VM.md` in the VM home before the next export. `export_vm_workspace.py` requires both `CLAUDE.md` and `MUSE-VM.md`; it emits a clear failure while either required profile is absent. The generic guidance source is retired from the export allowlist.
+
+## Tiers
 
 - **T0 — full content.** `~/CLAUDE.md`, `~/MEMORY.md`, `~/USER.md`,
   `~/IDENTITY.md`, `~/SOUL.md`, `~/PROACTIVE_PREFERENCES.md`,

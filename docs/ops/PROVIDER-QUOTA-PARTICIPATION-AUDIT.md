@@ -32,7 +32,7 @@ These are GitHub PR state/content observations, not a claim that every behavior 
 
 ### Roles, identities and context/connectors
 
-The role architecture is present but spread across multiple SSOTs: [control-plane](../architecture/AGENT-TEAM-CONTROL-PLANE.md), [orchestration contract](AGENT-TEAM-ORCHESTRATION.md), [agent roster](AGENT-TEAM-ROSTER.md), [moniker SSOT](AGENT-MONIKERS.md), and [machine roster schema](../schemas/agent-roster.yaml). Relevant role responsibilities are:
+The role architecture is present but spread across multiple SSOTs: [control-plane](../architecture/AGENT-TEAM-CONTROL-PLANE.md), [orchestration contract](AGENT-TEAM-ORCHESTRATION.md), [agent roster](AGENT-TEAM-ROSTER.md), [moniker SSOT](COLLABORATOR-MONIKERS.md), and [machine roster schema](../schemas/agent-roster.yaml). Relevant role responsibilities are:
 
 | Role | Established scope | Evidence boundary / gap |
 |---|---|---|
@@ -43,7 +43,7 @@ The role architecture is present but spread across multiple SSOTs: [control-plan
 | **SWE / Builder** | Smallest useful implementation with commit/SHA and tests; development-lane docs use “Builder.” | SWE is not a provider/model identity; contribution is evidenced by code changes and tests. |
 | **Reviewer / Review** | Correctness/security/regression critique and a recorded review disposition. | Bot comment, acknowledgement, or requested review is not approval; formal review state and commit must be recorded. |
 
-Display monikers are intentionally distinct from callable handles and GitHub identities. `AGENT-MONIKERS.md` lists e.g. CodeRabbit display `codeHound` with callable `@coderabbitai`; provider lanes such as `routeMesh` and `feloForge` are explicitly non-callable display identities, not authors. Do not @-mention a display name as though it were a handle.
+Display monikers are intentionally distinct from callable handles and GitHub identities. `COLLABORATOR-MONIKERS.md` lists e.g. CodeRabbit display `codeHound` with callable `@coderabbitai`; provider lanes such as `routeMesh` and `feloForge` are explicitly non-callable display identities, not authors. Do not @-mention a display name as though it were a handle.
 
 ICM's [routing map](../icm/CLAUDE.md) requires selective context loading: map → one relevant object/process card → cited sources. The provider-routing card ([`routing/CONTEXT.md`](../icm/routing/CONTEXT.md)) is documentation for observations and governance, **not runtime router configuration**; it states its poller is not configured and cadence not approved. Treat the system's connectors and workflows as separate executables: `.github/connectors/llm_providers.yaml` and provider workflows describe configured surfaces, while provider capabilities and credentials must still be explicitly admitted. [MCP risk split](../proposals/active/mcp-hub-risk-split/DEBATE.md) draws the boundary at stateless/read-only `mcp-hub` vs device-touching `hub_mcp`; presence of MCP documentation or a connector is not authorization to poll providers, operate a device, or route inference. The [provider capability registry](../schemas/provider-capabilities.md) describes contracts, not proof that each connector is configured or has run.
 

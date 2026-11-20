@@ -6,7 +6,7 @@
 
 Every recognized task-routing claim produces one durable task_routed event. The Admin Interaction Graph consumes that event and animates the Routing / Who? → Orchestrator edge. The event is correlated to subsequent workflow/job activity through the task issue reference and, where present, the dispatch ID.
 
-The pulse represents an observed routing transition. It does not represent successful execution, provider completion, review acceptance, or merge.
+The pulse certifies the observed routing transition. Execution, provider completion, review acceptance, and merge remain separate lifecycle states.
 
 ## Producers
 

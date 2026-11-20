@@ -1,5 +1,7 @@
 # DeepWiki.com refresh — webWrapper campaign prep
 
+> **Jules retirement amendment (2026-11-20):** The Google Jules builder arm is retired after the 2026-11-11 read-only cutoff. The local DoE skill bundle supplies task-planning guidance; execution requires a live provider-roster candidate and verified adapter.
+
 `[MUSEai]@{role:{optimizations-assurance}}` · Owner requirement (2026-11-01, "FIX → AUTOMATE" for the DeepWiki workstream; promotion recorded in `docs/ops/SWARM-OPTIMIZATION-ASSURANCE.md` §18).
 
 ## Requirement

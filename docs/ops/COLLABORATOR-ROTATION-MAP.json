@@ -80,5 +80,13 @@
     "docs/ops/REVIEWER-JIT-RECON-2026-10-23.md",
     "docs/proposals/active/notation-sets/RECOVERY-DC8C08D.md",
     "docs/recon/team-formation/MONEYBALL_RECON.md"
-  ]
+  ],
+  "collision_policy": {
+    "internal_checks": [
+      "duplicate display monikers",
+      "display moniker equal to a declared live trigger"
+    ],
+    "external_github_username_inventory": "not_established",
+    "rule": "External GitHub username collisions require an authoritative account inventory; this sweep reports that check as not_established."
+  }
 }

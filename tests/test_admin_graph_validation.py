@@ -84,6 +84,8 @@ def test_graph_search_is_keyboard_accessible_and_view_only():
     assert 'aria-label="Search graph nodes"' in html
     assert 'aria-keyshortcuts="/"' in html
     assert 'function graphNodeSearchText(n)' in html
+    assert 'searchMatchIds=Object.create(null)' in html
+    assert 'searchIndex=searchIndex<0?0:' in html
     assert 'function updateGraphSearchMatches()' in html
     assert 'classList.add("search-match")' in html
     assert 'classList.add("search-dim")' in html

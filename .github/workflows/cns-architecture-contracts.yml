@@ -4,10 +4,12 @@ on:
   pull_request:
     paths:
       - "docs/architecture/CNS-**"
+      - "docs/schemas/cns-writer-lease-receipt.schema.json"
       - "docs/proposals/active/cns-integration/**"
       - "scripts/ci/validate_cns_architecture.py"
       - "tests/test_cns_architecture_contracts.py"
       - "tests/test_adaptive_feedback_cycle_loopy_contract.py"
+      - "tests/test_cns_writer_lease_schema.py"
       - ".agents/skills/adaptive-wait/**"
       - ".agents/skills/adaptive-feedback-cycle/**"
       - "docs/ops/skills/adaptive-wait/**"
@@ -49,5 +51,7 @@ jobs:
         run: python3 -B -m unittest discover -s tests -p 'test_cns_architecture_contracts.py' -v
       - name: Run Loopy compatibility contracts
         run: python3 -B -m unittest discover -s tests -p 'test_adaptive_feedback_cycle_loopy_contract.py' -v
+      - name: Run writer lease schema contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_cns_writer_lease_schema.py' -v
       - name: Validate CNS architecture artifacts
         run: python3 scripts/ci/validate_cns_architecture.py

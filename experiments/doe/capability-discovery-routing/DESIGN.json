@@ -158,7 +158,26 @@
     "**/mcp.json",
     "**/tools.json",
     "**/tool-manifest.json",
-    "ops/capability_discovery/ledger.schema.json"
+    "ops/capability_discovery/ledger.schema.json",
+    "workspace/README.md",
+    "workspace/llm_map/README.md",
+    "workspace/llm_map/TOOL_INDEX.md",
+    "workspace/llm_map/_TOOL_TAXONOMY/README.md",
+    "workspace/llm_map/_TOOL_TAXONOMY/REPO_INFO",
+    "workspace/llm_map/_TOOL_TAXONOMY/TAGS.txt",
+    "workspace/llm_map/_TOOL_TAXONOMY/TAG_INDEX.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/TOOL_TAXONOMY.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/all_tools.jsonl",
+    "workspace/llm_map/_TOOL_TAXONOMY/auto_tag_rules.json",
+    "workspace/llm_map/_TOOL_TAXONOMY/build_tool_taxonomy.sh",
+    "workspace/llm_map/_TOOL_TAXONOMY/modules/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/categories/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/roles/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/python3/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/delta/**",
+    "workspace/llm_map/_TOOL_TAXONOMY/state/**",
+    "docs/icm/objects/knowledge/workspace-artifact-estate.md",
+    "docs/icm/processes/workspace-artifact-triage.md"
   ],
   "automation": {
     "status": "local-indexer-implemented; CI integration added; experiment-runner-pending",
@@ -169,7 +188,9 @@
     "Use offline frozen catalog fixtures for first validation; external live catalog calls require authorized source access and budget.",
     "External skill installation and execution stay outside the discovery indexer.",
     "Keep credentials, private prompts, full tool schemas and completion content outside the index.",
-    "All treatment arms retain identical safety and authorization gates."
+    "All treatment arms retain identical safety and authorization gates.",
+    "Treat workspace/llm_map/_TOOL_TAXONOMY as a historical generated Termux tool-catalog baseline: its JSONL has 3,388 valid records while README claims 3,387; never equate its catalog rows with current installed tools.",
+    "Treat taxonomy categories/roles/python3/delta as generated projections and state/ as local package-state evidence; keep state content out of default model context and do not run the Termux-specific taxonomy builder in CI."
   ],
   "external_reference_inputs": [
     {
@@ -219,6 +240,20 @@
       "role": "WAIT/WATCH/RE-FETCH runtime evidence and reconciliation methodology",
       "trust": "user-supplied operational report; filename and contents differ; contents document WAIT/WATCH reconciliation",
       "use": "runtime state separation, observer-only watchers, immutable SHA binding, failure preservation and evidence-led loops"
+    },
+    {
+      "file": "GitHub Issue #5657 — Claude Exports",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5657",
+      "role": "source export and checksum-provenance reference for imported Claude skills/plugins",
+      "trust": "unverified: SHA256SUMS lists five split-part filenames that are absent from the issue attachment list and does not name the combined tarball or CSVs; skills-inventory.jsonl is absent from the issue body",
+      "use": "reconcile exact attachment bytes, split-part assembly, archive membership, CSV/JSONL inventories and checksum chain before promoting imported definitions"
+    },
+    {
+      "file": "PR #5667 — Claude export importer and mirror",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17@42eb1b061740",
+      "role": "repository import adapter and mirrored vendor-skill corpus",
+      "trust": "code is repository-canonical; imported vendor definitions and source checksums remain unverified pending reconciliation",
+      "use": "review scripts/skills/import_claude_export.py and validate_claude_export.py, .skills/index.json, .skills/tags.json, docs/ops/skills/source/** and vendor/skills-mirror/**; retain 1,299 skill and 1,218 plugin-row counts as reported, not as proof of source authenticity"
     }
   ]
 }

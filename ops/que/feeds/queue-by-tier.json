@@ -1,21 +1,26 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T02:13:07Z",
+ "generated_at": "2026-11-20T02:45:55Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 0,
+   "queued": 1,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-20T02:44:55Z",
+   "by_workflow_queued": {
+    "Orchestration Regression Guard": 1
+   }
   },
   "2": {
    "tier": 2,
-   "queued": 0,
+   "queued": 2,
    "in_progress": 1,
-   "oldest_queued_at": null,
-   "by_workflow_queued": {}
+   "oldest_queued_at": "2026-11-20T02:44:55Z",
+   "by_workflow_queued": {
+    "pages build and deployment": 1,
+    "tribute-dashboard-deploy": 1
+   }
   },
   "3": {
    "tier": 3,
@@ -26,17 +31,29 @@
   },
   "4": {
    "tier": 4,
-   "queued": 1,
-   "in_progress": 6,
-   "oldest_queued_at": "2026-11-20T02:12:09Z",
+   "queued": 27,
+   "in_progress": 16,
+   "oldest_queued_at": "2026-11-20T02:42:45Z",
    "by_workflow_queued": {
-    "Quota Dispatch Tree": 1
+    "n8n SHE bridge": 1,
+    "lane events recorder": 8,
+    "Agent Throughput Evidence": 7,
+    "Context Relationship + Lead/Lag Audit": 1,
+    "Agent review \u2192 auto Jules": 2,
+    "Agent feedback \u2192 Linear subtasks": 1,
+    "Quota Dispatch Tree": 1,
+    "graph-matrix-probe": 1,
+    "DO Statement Style": 1,
+    "termux smoke": 1,
+    "Foresight Evidence Spine": 1,
+    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "PR evidence evaluation": 1
    }
   }
  },
  "totals": {
-  "queued": 1,
-  "in_progress": 8
+  "queued": 30,
+  "in_progress": 18
  },
  "wedged_ancient": [
   {
@@ -194,13 +211,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 1,
-   "2": 1,
+   "1": 2,
+   "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 2,
-  "default_t4": 7,
+  "explicit_total": 5,
+  "default_t4": 43,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

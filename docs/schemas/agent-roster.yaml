@@ -476,6 +476,7 @@ skill_bundles:
       steward: "Append-only task, claim, and evidence receipts"
       reviewer: "Independent local verification with repository gates and act where supported"
       participant: "A bounded task or worker execution instance"
+      gambler: "Cited experiment forecasts and scored outcomes; separate from implementation execution"
     controls:
       - "The upstream automate-github-issues scripts call @google/jules-sdk and JULES_API_KEY; they remain reference material."
       - "The upstream sequential merge stage is excluded; merge authority remains with repository governance."

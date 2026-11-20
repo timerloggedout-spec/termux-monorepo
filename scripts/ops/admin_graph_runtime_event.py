@@ -51,7 +51,11 @@ def _route_event(payload: dict[str, Any], context: dict[str, Any]) -> dict[str, 
     comment = payload.get("comment") or {}
     body = str(comment.get("body") or "")
     producer_claim = "PRODUCER CLAIM" in body
-    executor_claim = "DISPATCH EXECUTOR CLAIM" in body
+    executor_marker = "DISPATCH EXECUTOR CLAIM" in body
+    role_match = re.search(r"\[MUSEai\]@\{role:\{([^}]+)\}\}", body)
+    route_role = role_match.group(1).strip() if role_match else ""
+    arm_match = re.search(r"^\s*-\s*arm:\s*([^\s(]+)(?:\s*\(([^)]+)\))?", body, re.M | re.I)
+    executor_claim = executor_marker or route_role == "dispatch-executor" or arm_match is not None
     if not producer_claim and not executor_claim:
         return None
     issue = payload.get("issue") or {}
@@ -59,23 +63,21 @@ def _route_event(payload: dict[str, Any], context: dict[str, Any]) -> dict[str, 
     comment_id = int(comment["id"])
     run_id = int(context["run_id"])
     run_attempt = int(context.get("run_attempt") or 1)
-    role_match = re.search(r"\[MUSEai\]@\{role:\{([^}]+)\}\}", body)
-    if not role_match:
+    if not route_role:
         raise ValueError("task claim comment is missing its route role")
-    route_role = role_match.group(1).strip()
+
     provider = arm_id = model = dispatch_id = None
     source = "producer_claim"
-    if producer_claim:
-        match = re.search(r"^\s*-\s*resolved provider:\s*([^\r\n]+)", body, re.M | re.I)
-        provider = match.group(1).strip()[:120] if match else None
-    else:
+    if executor_claim:
         source = "dispatch_executor_claim"
-        arm_match = re.search(r"^\s*-\s*arm:\s*([^\s(]+)(?:\s*\(([^)]+)\))?", body, re.M | re.I)
         if arm_match:
             arm_id = arm_match.group(1).strip()[:120]
             model = (arm_match.group(2) or "").strip()[:160] or None
         dispatch_match = re.search(r"^\s*-\s*dispatch_id:\s*([^\r\n]+)", body, re.M | re.I)
         dispatch_id = dispatch_match.group(1).strip()[:160] if dispatch_match else None
+    else:
+        match = re.search(r"^\s*-\s*resolved provider:\s*([^\r\n]+)", body, re.M | re.I)
+        provider = match.group(1).strip()[:120] if match else None
     occurred = comment.get("created_at") or datetime.now(timezone.utc).isoformat()
     route_payload = {"task_ref": "#" + str(issue_number), "issue_number": issue_number,
                      "source_comment_id": comment_id, "source": source,

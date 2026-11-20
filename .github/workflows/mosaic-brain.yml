@@ -42,6 +42,16 @@ jobs:
       - name: Check
         run: cargo check --manifest-path archwiz/mosaic_brain/Cargo.toml --all-targets
       - name: Test
-        run: cargo test --manifest-path archwiz/mosaic_brain/Cargo.toml
+        run: |
+          set -o pipefail
+          cargo test --manifest-path archwiz/mosaic_brain/Cargo.toml -- --nocapture | tee "$RUNNER_TEMP/mosaic-brain-test.log"
+      - name: Upload shadow composition receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: mosaic-brain-shadow-receipt-${{ matrix.rust }}
+          path: ${{ runner.temp }}/mosaic-brain-test.log
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Clippy
         run: cargo clippy --manifest-path archwiz/mosaic_brain/Cargo.toml --all-targets -- -D warnings

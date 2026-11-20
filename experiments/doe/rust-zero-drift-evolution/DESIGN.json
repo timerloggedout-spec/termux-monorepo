@@ -87,8 +87,8 @@
   },
   "decision_rule": {
     "selection_fraction": "NOT_ESTABLISHED — DoE oversight sets before execution.",
-    "minimum_sample": "NOT_ESTABLISHED — DoE oversight sets from the eligible task population and power/precision analysis before execution.",
-    "significance_and_confidence": "Use the standing DoE significance gate; register the effect threshold, uncertainty method and multiplicity handling before dispatch.",
+    "minimum_sample": "Standing DoE family dispatch protocol: n=3 is the floor per trigger, dynamically adjusted; after a 2-1 split or spread-in-noise, add exactly one further set. Cap at n=12 per trigger (four pre-registered looks) or the campaign window/budget bound, whichever comes first. A campaign-specific power/precision requirement may be higher, never lower. Hitting the cap without a conclusive result yields INCONCLUSIVE.",
+    "significance_and_confidence": "Use the standing DoE significance gate; register the practical-effect threshold, uncertainty method and multiplicity handling before dispatch. Apply the family n=3 floor / n=12 cap protocol and record every look.",
     "promotion": "Promote an independently implemented pattern only after the primary outcome meets the pre-registered practical threshold, all critical invariants pass, independent review is complete, and regression/security/maintenance constraints pass.",
     "no_selection": "Insufficient, contradictory, underpowered or non-reproducible evidence yields no_selection; retain the baseline and record the gap."
   },

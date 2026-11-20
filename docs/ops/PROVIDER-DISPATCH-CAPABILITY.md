@@ -17,7 +17,7 @@ wiring · **(d)** inference-only, with the wiring that would promote it.
 
 | Surface | Trigger | Roster | Run evidence @2026-11-01 |
 |---|---|---|---|
-| `agent-jules-on-issues.yml` | issue label | Jules (build arm; registry `jules.build_sessions`, lane ci) | 405 successful runs, last 2026-11-01 |
+| `agent-jules-on-issues.yml` | legacy issue signal | retirement receipt; historical registry `jules.build_sessions` | 405 historical successful runs, last 2026-11-01; hosted dispatch retired |
 | `gemini-dispatch.yml` (+ `gemini-after-peers.yml`) | issues / issue_comment | google (Gemini) | dispatch successes 2026-11-01; after-peers 1,158 successes. Standalone `gemini-invoke/triage/review` = 0 successful runs — the router is the proven entry, the legs are not independently proven |
 | `deepseek-ci.yml` + `deepseek-termux-agent.yml` | events + dispatch | DeepSeek (registry `deepseek.build_dispatch`, lane ci) | successes 2026-11-01; termux-agent 22 successes |
 | `provider-batch.yml` | dispatch | 24-provider inference roster (below) | 249 runs, 138 successful at first census. **Gate state: GREEN — #2672 RESOLVED + CLOSED 2026-11-01 (fix chain PRs #3126/#3128/#3130/#3138); proof run 41308987754 (workflow_dispatch, head 87453e9c) SUCCESS: contracts ✓, operational_providers ✓ — the first operational evidence leg executed; the earlier blocked-by-#2672 state (observation jobs gated on the red `contracts` job) is historical** |

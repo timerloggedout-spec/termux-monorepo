@@ -12,15 +12,15 @@ Each collaborator’s commits and PR actions show **that agent’s** identity in
 
 | Layer | Who appears | How |
 |-------|-------------|-----|
-| **Author** | Agent | `git -c user.name=Grok -c user.email=grok@x.ai commit` |
+| **Author** | Collaborator | `git -c user.name=Grok -c user.email=grok@x.ai commit` |
 | **Committer** | Often Operator PAT or App | Push credential |
-| **GitHub actor** | App or machine user | GitHub App installation token per agent |
+| **GitHub actor** | App or machine user | GitHub App installation token per collaborator |
 | **Trailers** | Always | `Signed-off-by:`, `Agent:`, Summary-Editor |
 
 ## Preferred rollout
 
-1. **Now:** enforce agent **author** name/email on all agent commits; keep trailers.
-2. **Next:** one GitHub App (or machine user) per long-lived agent (Grok, Jules, Gemini) with least-privilege tokens in Actions secrets.
+1. **Now:** enforce agent **author** name/email on all collaborator commits; keep trailers.
+2. **Next:** one GitHub App (or machine user) per long-lived collaborator (Grok, Jules, Gemini) with least-privilege tokens in Actions secrets.
 3. **Document** Operator paste of prior research here when available.
 
 ## Security

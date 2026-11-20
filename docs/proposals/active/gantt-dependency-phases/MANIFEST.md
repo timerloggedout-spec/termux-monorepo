@@ -28,7 +28,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 **Live entry:** [`docs/agentic/README.md`](../../../agentic/README.md)  
 **Canonical plan:** [`docs/agentic/dependency-phases.json`](../../../agentic/dependency-phases.json)  
 **Generated status:** [`docs/agentic/DEPENDENCY_PHASES.md`](../../../agentic/DEPENDENCY_PHASES.md)  
-**Primary Collaborator entry:** [`CLAUDE.md`](../../../../CLAUDE.md) (root `AGENTS.md` is deprecated)
+**Primary Collaborator entry:** [`CLAUDE.md`](../../../../CLAUDE.md) (canonical repository entrypoint)
 
 ## Reviewers
 
@@ -64,7 +64,7 @@ Implement a repository-native dependency-phase system that derives lifecycle sta
 ### 2026-09-25 — Grok (Administrator)
 
 - Disposition: docs upgrade (PR #828)
-- Notes: Evidence-led consolidation of stale design/ITEMS/backlog. Collaborator naming (Role / Name / Moniker); `AGENTS.md` deprecated redirect affirmed. #184: Projects access long present on Operator classic PATs (names-only inventory); not a capability gap — wire intended secret for apply.
+- Notes: Evidence-led consolidation of stale design/ITEMS/backlog. Collaborator naming (Role / Name / Moniker); generic guidance entrypoint retired; named collaborator profiles are canonical. #184: Projects access long present on Operator classic PATs (names-only inventory); not a capability gap — wire intended secret for apply.
 - Explicit: no runtime mutation; no auto-close; no secret values in tree or issues.
 
 ## Checklist (process)

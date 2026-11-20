@@ -42,7 +42,8 @@
       "retrieval_engine": "SQLite FTS5 BM25; LIKE fallback is a separately recorded environment condition",
       "result_budget": "top_k=8",
       "deduplication": "canonical source locator + package/skill/action identity + content SHA-256",
-      "trust_policy": "vendor/community/session inputs remain distinct trust strata; permission gates identical across all arms"
+      "trust_policy": "vendor/community/session inputs remain distinct trust strata; permission gates identical across all arms",
+      "catalog_freshness": "Freeze the approved session/catalog snapshot hashes for all arms; record capture time and source revision."
     },
     "blocks": [
       "task_family",
@@ -70,7 +71,17 @@
       ]
     },
     "analysis": "Estimate main effects and interactions with uncertainty; preserve per-run observations; stratify by task family/difficulty; do not use latency or token reduction as correctness proxies. Confirm any promising effect on a held-out task cohort.",
-    "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tools ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key."
+    "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tools ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key.",
+    "dimension_roles": {
+      "41": "treatment factor: discovery source scope",
+      "42": "treatment factor: taxonomy depth",
+      "43": "fixed control: retrieval/ranking engine",
+      "44": "fixed control: canonical identity and content-hash relationship policy",
+      "45": "treatment factor: context hydration",
+      "46": "invariant guardrail: source trust/admission policy",
+      "47": "fixed control: pinned catalog freshness/version",
+      "48": "fixed control: top-k result budget"
+    }
   },
   "matrix_dimensions": [
     41,

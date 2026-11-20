@@ -1220,8 +1220,8 @@ refreshQueFeed();window.setInterval(refreshQueFeed,60000);
 /* Durable task-route and execution pulses — emitted from routing claims and GitHub Actions. */
 var liveStatusEl=document.getElementById("liveStatus");
 var LIVE_FEED_URL="https://admin-graph-live.timerloggedout.workers.dev/events?limit=400";
-var LIVE_CURSOR_KEY="admin-graph-live:last-seq:v1",liveCursor=null,liveQueue=[],liveAnimating=false,livePollBusy=false,liveSeen=Object.create(null),liveSeenOrder=[];
-try{var savedCursor=window.localStorage.getItem(LIVE_CURSOR_KEY);if(savedCursor&&/^\d+$/.test(savedCursor))liveCursor=Number(savedCursor);}catch(_){liveCursor=null;}
+var LIVE_CURSOR_KEY="admin-graph-live:last-seq:v1",liveCursor=null,livePendingCursor=null,liveQueue=[],liveAnimating=false,livePollBusy=false,liveSeen=Object.create(null),liveSeenOrder=[];
+try{var savedCursor=window.localStorage.getItem(LIVE_CURSOR_KEY);if(savedCursor&&/^\d+$/.test(savedCursor)){liveCursor=Number(savedCursor);livePendingCursor=liveCursor;}}catch(_){liveCursor=null;livePendingCursor=null;}
 function runtimePayload(ev){
  try{return typeof ev.payload==="string"?JSON.parse(ev.payload||"{}"):(ev.payload||{});}
  catch(_){return {};}
@@ -1274,7 +1274,7 @@ function edgeForRuntimeEvent(ev){
 }
 function animateRuntimeEvent(ev){
  var rec=edgeForRuntimeEvent(ev);
- if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));return;}
+ if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));liveAnimating=false;drainRuntimeQueue();return;}
  var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
  var reverse=false;
  path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
@@ -1287,7 +1287,8 @@ function animateRuntimeEvent(ev){
  }
  requestAnimationFrame(frame);
 }
-function drainRuntimeQueue(){if(liveAnimating||!liveQueue.length)return;liveAnimating=true;animateRuntimeEvent(liveQueue.shift());}
+function commitRuntimeCursor(){if(liveAnimating||liveQueue.length||livePendingCursor==null)return;try{window.localStorage.setItem(LIVE_CURSOR_KEY,String(livePendingCursor));}catch(_){}}
+function drainRuntimeQueue(){if(liveAnimating)return;if(!liveQueue.length){commitRuntimeCursor();return;}liveAnimating=true;animateRuntimeEvent(liveQueue.shift());}
 function queueRuntimeEvents(events,initial){
  var fresh=[];
  (events||[]).forEach(function(ev){
@@ -1314,7 +1315,7 @@ async function pollRuntimeEvents(){
    var feed=await response.json();
    if(feed.schema!=="admin-graph-live-events/v1"||!Array.isArray(feed.events))throw new Error("unexpected runtime feed contract");
    queueRuntimeEvents(feed.events,initial);
-   if(feed.next_after_seq!=null){liveCursor=feed.next_after_seq;try{window.localStorage.setItem(LIVE_CURSOR_KEY,String(liveCursor));}catch(_){}}
+   if(feed.next_after_seq!=null){liveCursor=feed.next_after_seq;livePendingCursor=liveCursor;drainRuntimeQueue();}
    more=!initial&&feed.has_more===true&&feed.events.length>0;
    rounds++;
   }while(more&&rounds<5);

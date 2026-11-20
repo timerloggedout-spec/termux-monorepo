@@ -28,7 +28,7 @@ Every row carries one of these. Do not merge them; they are different GitHub obj
 | **#184** | Issue #184 — the owner's paste of GitHub's own Settings → Credentials pages (Authorized OAuth Apps, Authorized GitHub Apps, PATs, SSH keys) with GitHub's last-used labels | 2026-08-13 snapshot |
 | **OWNER-UI** | Owner-firsthand screenshot of Settings → Applications → **Installed GitHub Apps** (github.com/settings/installations), visible **A–H portion only** — 24 apps; the list continues past Hex and the remainder was not captured. Transcribed + reconciled on Issue #184 (comment 6335646953) | 2026-10-22 |
 | **REPO** | Files/config on master (`.github/connectors/`, `.coderabbit.yaml`, `dependabot.yml`, agent roster) | current master |
-| **MAP** | `TOOLING-REACH-MAP.md` cross-surface facts (Muse connectors, Jules-side MCPs) | 2026-10-20/21 |
+| **MAP** | `TOOLING-REACH-MAP.md` historical cross-surface facts (Muse connectors, retired Jules-side MCPs) | 2026-10-20/21 |
 
 Two different GitHub lists exist and this matrix keeps them separate:
 **Authorized** apps (user granted the app account access — the #184 lists) vs
@@ -202,7 +202,7 @@ the repo's heavy automation mostly switched on after the snapshot.
 | Manus Connector | manus-ai-team | ≤1 wk | `MANUS_SSH_*` secrets + 1 contribution by `manus` | Manus lane runs over SSH; connector is its GitHub grant |
 | Miro | miroapp | Never | none | Dormant whiteboard |
 | MistralAI | mistralai | ≤2 wk | **Active** — suites on 30/30 heads | Review lane; `mistral-vibe` contributor (1) |
-| Render | renderinc | Never | **Active** — suites on 30/30 heads; also Jules-side integration (MAP §B1) | Preview/deploy lane |
+| Render | renderinc | Never | **Active** — suites on 30/30 heads; Jules-side integration was recorded in the 2026-10 snapshot (MAP §B1) | Preview/deploy lane |
 | Sentry | getsentry | Never | **Active** — suites on 30/30 heads | Error-monitoring lane |
 | SonarQube Agent | SonarSource | Never | none | Dormant (GHAS/CodeQL cover this lane) |
 | SonarQubeCloud | SonarSource | Never | none | Dormant |
@@ -280,7 +280,7 @@ absence from the screenshot portion is expected, not contradictory.
 | GitHub Advanced Security | `github-advanced-security` / github | **NEW 2026-10-23** — 5 check suites in the 30-head window (4 success / 1 neutral, CodeQL; first seen 2026-10-23 ~04:05 PDT on `547f54e7`); submitted reviews in sample. **Window-intermittent since 2026-10-24:** flaps in/out of the 30-head window (removed/re-added 5× across polls to 2026-11-01) — window presence is head-composition-dependent, not an outage signal | Code scanning lane |
 | Blacksmith.sh | `blacksmith-sh` / useblacksmith | suites on 30/30 heads | Hosted Actions runners (speed/cost lane) |
 | Buildkite | `buildkite` / buildkite | **NEW 2026-10-23** — 2 check suites in the 30-head window (1 success, 1 failure; first seen 2026-10-23 ~02:59 PDT) + new repo webhook (id 702058218, all events; last code flaps 200⇄429, 429 at 2026-11-02 read) | External CI lane — arrived with no repo-side workflow; who set it up NOT ESTABLISHED from API evidence |
-| Supabase | `supabase` | **NEW 2026-10-25 (poll)** — check suites in the 30-head window + cross-repo (reach 17 repos by 2026-11-02); `SUPABASE_KEY` secret + `SUPABASE_URL`/`SUPABASE_ANON_KEY`/`SUPABASE_PUBLISHABLE_KEY` variables landed the same window | DB lane — the GitHub-App face of the Jules ↔ Supabase pair (§9 C1) |
+| Supabase | `supabase` | **NEW 2026-10-25 (poll)** — check suites in the 30-head window + cross-repo (reach 17 repos by 2026-11-02); `SUPABASE_KEY` secret + `SUPABASE_URL`/`SUPABASE_ANON_KEY`/`SUPABASE_PUBLISHABLE_KEY` variables landed the same window | DB lane — historical GitHub-App face of the Jules ↔ Supabase pair (§9 C1); current Supabase work remains independent |
 | Termux Fleet Gate | `termux-fleet-gate` | **NEW 2026-10-30 (poll)** — the fleet's own AppID app (App ID 5539499, checks-write) emitting suites on hub heads + cross-repo; declared in the poll's `github_app_registry` census (`ops/github-apps/registry.json`) | Fleet gate annotations/status — first fleet-owned app in the check mesh |
 | Termux Fleet Swarm | `termux-fleet-swarm` | **NEW 2026-11-01 (poll)** — App ID 5560920; suites on hub heads + cross-repo (first seen 2026-11-01T04:27Z); own 5,000/hr bucket; `TERMUX_FLEET_SWARM_*` secret+variables | Swarm/provider workflow actor — app-authored events trigger downstream runs (the B1 fix) |
 | Termux Fleet app family (rest) | `termux-fleet-collector`, `termux-fleet-publisher`, `termux-fleet-crossreference`, `termux-fleet-lifecycle`, `termux-fleet-reviewer` | Declared-registry census (collector + publisher registered, 3 planned roles, 2026-10-30) + actor evidence: `termux-fleet-publisher[bot]` entered top comment actors 2026-10-31, `termux-fleet-crossreference[bot]` + `termux-fleet-swarm[bot]` 2026-11-02 (poll actor-set diffs); per-app record = `docs/ops/APPID-FLEET-REGISTRY.md` | Specialist fleet identities, one 5,000/hr bucket each — the mesh growing its own organs |
@@ -412,7 +412,7 @@ triggered the apps.
 
 | Surface | Its integration set | Reach |
 |---|---|---|
-| Muse (this agent) | 63 system connectors on disk, **20 confirmed connected** (Google Workspace, Dropbox, Notion, Todoist, Vercel, Figma, Linear, Canva, Zoom, Meta, Lovable, Klaviyo, Replit, Tailscale…) + **2 custom** (`custom.github-pat`, `custom.jules`) + 54 skills | Directly promptable; system connectors card-gated on writes, custom connectors are not |
+| Muse (this agent) | Historical inventory: 63 system connectors on disk, **20 confirmed connected** + **2 custom** (`custom.github-pat`, `custom.jules`) + 54 skills | `custom.jules` is now a GET-only archive excluded from prompt loading; local DoE role skills provide new-work guidance |
 | Google Jules (retired) | Historical MCP inventory: **Linear, v0, Render, Neon**; prior Supabase work remained open in the 2026-10 snapshot | Hosted service is read-only; the local DoE role-skill bundle carries reusable workflow guidance |
 | Model providers (repo) | **27 quota families** on master (aion, cerebras, cloudflare, cohere, felo, gemini, groq, huggingface, kilo, llm7, mistral, modelscope, nvidia, ollama, omni, openrouter, ovhcloud, sambanova, siliconflow, zai, requesty, routeway, sealion, typhoon, unorouter, xfyun, xkiro); passive adapters implemented for groq, huggingface, ollama, openrouter, sambanova, siliconflow | Inference only — never platform tooling (MAP §C master rule) |
 | Hark / Manus / Grok / Claude / ChatGPT | Own surfaces, own connections (Hark's set not enumerated Muse-side) | Work lands via owner PAT; Provenance/HindSight is the attribution layer |
@@ -425,7 +425,7 @@ triggered the apps.
 | PR review | CodeRabbit (required) | Devin (top volume), Qodo, Gitar, ECC (comments), Codex, Copilot Reviewer, Mistral, Aikido, Codacy | **Yes — 9+ reviewers/PR** → cadence problem, §9 I7 |
 | CI / checks | GitHub Actions (201 workflows) | Blacksmith runners, Travis (duplicate signal), Buildkite (new 2026-10-23, external CI — webhook/check-app only), github-advanced-security CodeQL suites (new 2026-10-23, code scanning) | Travis duplication, §9 I4 |
 | Deploy / preview | Vercel (apps) | Render (previews), Mintlify (docs), Pages, Fly.io (token only), Koyeb (dormant) | Vercel daily cap is the binding constraint, §9 I5 |
-| PM / planning | Linear (webhook + API + Jules MCP + Muse connector — 4 faces, one spine) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
+| PM / planning | Linear (webhook + API + Muse connector; historical Jules MCP face retired) | ZenHub (broken), GitHub Projects (enabled, unused visibly) | ZenHub decision, §9 I3 |
 | Memory / telemetry | HindSight (secrets ×5, env `hindsight-prod`) | Hex (via CellCog secret), Supermemory (dormant) | OK |
 | Comms / A2A | GitHub comments as trigger surface (16 issue_comment workflows) | LikeClaw A2A secret, Tembo orchestration, BlocksOrg via Slack | Watch trigger-burn |
 | Research | Tavily, Browserless, FELO, provider families | Composio (bridge candidate) | OK |

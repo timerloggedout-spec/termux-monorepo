@@ -14,12 +14,12 @@ The receipt captures:
 
 ## Local DoE role handoff
 
-Use the repository-native skill at:
+Use the canonical DoE role register and active provider roster:
 
-- `.agents/skills/jules-doe-role-adapter/SKILL.md`
 - `docs/ops/DOE-ROLES-EPOCH-2026-11-03.md`
+- `docs/schemas/agent-roster.yaml`
 
-The local skill bundle maps the upstream issue-analysis and local-verification patterns to observer, scout, builder, operator, steward, reviewer, participant, and gambler duties. Provider execution remains under the live agent roster and verified adapter contract.
+The locally adapted issue-analysis and action-verification skills are tracked in PR #5722. They map the upstream patterns to observer, scout, builder, operator, steward, reviewer, participant, and gambler duties. Provider execution remains under the live agent roster and verified adapter contract.
 
 ## Provenance boundary
 

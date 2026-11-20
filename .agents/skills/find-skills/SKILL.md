@@ -24,10 +24,10 @@ The Skills CLI (`npx @agentic/skills@latest`) is the package manager for the ope
 
 **Key commands:**
 
-- `npx skills find [query] [--owner <owner>]` - Search when supported by the installed CLI version; verify with `npx skills --help`
-- `npx skills add <owner/repo> --skill <name>` - Install a selected skill from a specific repository
-- `npx skills update` - Update installed skills
-- `python3 scripts/capabilities/discover.py find "<query>" --skills-sh` - Optional authenticated catalog search through the repository index
+- `python3 scripts/capabilities/discover.py find "<query>" --skills-sh` - Optional authenticated fuzzy/semantic catalog search through the repository index
+- `python3 scripts/capabilities/discover.py find "<query>" --skills-sh-curated` - Search the official curated first-party catalog
+- `npx skills --help` - Inspect subcommands supported by the installed CLI version
+- `npx skills add <owner/repo>` - Officially documented install command; select only reviewed skills
 
 **Installation guidance:** When installing skills globally, avoid defaulting to `-g -y`; instead require explicit user confirmation for global installs and verify scope and target before proceeding.
 

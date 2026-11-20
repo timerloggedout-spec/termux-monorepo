@@ -45,7 +45,7 @@ GitHub only runs `issues` / `issue_comment` workflows from the **default branch*
 
 See issues **#272** and **#175**.
 
-- Gemini, OmniRoute, OpenRouter, Jules, CodeRabbit, and other enabled contributors participate in a **shared candidate pool**; no provider/model is designated primary or secondary.
+- Gemini, OmniRoute, OpenRouter, CodeRabbit, and other enabled contributors participate in a **shared candidate pool**; Google Jules is retired. The local Jules-derived DoE skill pack contributes role guidance.
 - Admission uses capability, credential, live catalog, health, quota, task independence, freshness, and policy gates before scoring.
 - Selection is evidence-driven using role suitability, local 3L0/Moneyball observations, integrated outcome, context/time cost, retries, conflicts, and human intervention.
 - Topology is a first-class experiment variable: `single | series | dynamic | parallel | nested | co-working | volley`.

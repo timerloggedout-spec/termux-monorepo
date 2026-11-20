@@ -34,6 +34,21 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(rows[0]["source_id"], "repo-vendor-skills")
             self.assertNotIn("Procedure", rows[0]["description"])
 
+    def test_explicit_workspace_root_is_unverified_and_symlink_free(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "workspace"
+            path = root / "project" / "SKILL.md"
+            path.parent.mkdir(parents=True)
+            path.write_text(
+                "---\nname: external-skill\ndescription: External workspace capability\n---\n# Workflow\n",
+                encoding="utf-8",
+            )
+            rows = scan_repository(root, external=True)
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["source_id"], "workspace-external")
+            self.assertEqual(rows[0]["trust"], "unverified")
+            self.assertTrue(rows[0]["locator"].startswith("external:workspace/"))
+
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

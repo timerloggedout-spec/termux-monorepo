@@ -69,6 +69,44 @@ no upstream code enters the repo; the catalog remains the composition
 boundary. Browser-backed nodes (`opencli`, `playwright-mcp`,
 `rever-browser`) are tagged `ci-remote` under the B160V offload law.
 
+
+## REA-Argonaut (fleet fork; integrated 2026-11-20)
+
+The fleet fork `timerloggedout-spec/REA-Argonaut_fork` is registered as
+`rea-argonaut` in the machine SSOT. Its package metadata currently points
+to `PNWcoastie/REA-Argonaut`; the registry preserves both identities:
+`source_repository` names the fleet fork and `upstream` names the package's
+declared upstream. This is a composed external tool entry, not vendored code.
+
+The upstream README describes a cross-platform MCP server / CLI / Antigravity
+plugin that spans native binaries, managed bytecode, scripts and packaged
+applications, firmware, protocols/formats, hardware-assisted targets, mobile,
+and web clients. Its distinctive workflow contributions are:
+
+- **Whole-subgraph extraction:** `decompile_subgraph` batches call-graph
+  traversal, pseudocode, disassembly, XREFs, strings, inferred layouts and
+  hazard observations into a deterministic result.
+- **Recon handoff:** `export_recon_kit` emits a four-mount workspace for
+  native binaries, packaged UI archives, hardware/firmware/protocols, and
+  AI-model data, with a reconstruction blueprint.
+- **Specialized forensic inspectors:** stripped Rust/C++, frozen Python,
+  AI-model artifacts (GGUF, SafeTensors, ONNX, TFLite), and engine/archive
+  formats including Unity IL2CPP, Godot PCK and Electron ASAR.
+- **Differential reconstruction:** `verify_rust_parity` compares a C oracle
+  with a safe Rust candidate, runs randomized/boundary vectors, and shrinks
+  counterexamples; execution is described as OS-sandboxed.
+- **Legacy REA coverage:** the upstream README describes retained web/mobile/
+  native REA capabilities alongside the ArgonZeroG additions. Capability
+  counts are upstream claims, not independently benchmarked fleet results.
+
+The taxonomy places the single tool node under each relevant target parent
+(polyhierarchy, no duplicate node) and adds it to the corresponding native,
+Android, firmware, protocol/format and web-client stage handoffs. Its role tags
+reuse the current vocabulary; the registry does not infer a new discipline
+from a product feature. Provider availability, host prerequisites, sandbox
+behavior and parity claims require validation against the exact pinned fork
+revision before a workflow relies on them.
+
 ## Registered sibling registries
 
 - Web RE: `ops/web_adapter_foundry/taxonomy.json` — the nested

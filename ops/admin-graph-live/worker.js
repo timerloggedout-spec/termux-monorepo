@@ -57,8 +57,24 @@ async function verifyRouteComment(event, token) {
   const expectedIssue = "/issues/" + route.issue_number;
   const body = String(comment.body || "");
   const hasClaimMarker = body.includes("PRODUCER CLAIM") || body.includes("DISPATCH EXECUTOR CLAIM");
-  if (!String(comment.issue_url || "").endsWith(expectedIssue) || !hasClaimMarker) {
+  const roleMatch = body.match(/\[MUSEai\]@\{role:\{([^}]+)\}\}/);
+  if (!String(comment.issue_url || "").endsWith(expectedIssue) || !hasClaimMarker ||
+      !roleMatch || roleMatch[1].trim() !== route.route_role) {
     throw new Error("route comment provenance mismatch");
+  }
+  if (route.source === "dispatch_executor_claim") {
+    const armMatch = body.match(/^\s*-\s*arm:\s*([^\s(]+)(?:\s*\(([^)]+)\))?/m);
+    const dispatchMatch = body.match(/^\s*-\s*dispatch_id:\s*([^\r\n]+)/m);
+    if (!armMatch || armMatch[1].trim() !== route.arm_id ||
+        (route.model && (armMatch[2] || "").trim() !== route.model) ||
+        (route.dispatch_id && (!dispatchMatch || dispatchMatch[1].trim() !== route.dispatch_id))) {
+      throw new Error("executor route metadata mismatch");
+    }
+  } else if (route.provider) {
+    const providerMatch = body.match(/^\s*-\s*resolved provider:\s*([^\r\n]+)/m);
+    if (!providerMatch || providerMatch[1].trim() !== route.provider) {
+      throw new Error("producer route metadata mismatch");
+    }
   }
   if (event.actor && comment.user && comment.user.login !== event.actor) throw new Error("route actor mismatch");
   return route;

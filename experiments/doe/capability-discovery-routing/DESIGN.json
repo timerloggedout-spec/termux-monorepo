@@ -83,31 +83,55 @@
     48
   ],
   "source_scope": [
+    "CLAUDE.md",
+    "SKILLS.md",
+    ".agents/skills/capability-discovery/SKILL.md",
+    ".agents/skills/find-skills/SKILL.md",
+    ".agents/skills/approxination-lane/SKILL.md",
+    ".agents/skills/skill-evaluation/SKILL.md",
+    ".agents/skills/context-relationship-graph/SKILL.md",
+    ".agents/skills/multivariate-doe/SKILL.md",
+    ".agents/skills/blind-agent-evaluation/SKILL.md",
+    ".agents/skills/design-of-experiments/SKILL.md",
     ".agents/skills/**/SKILL.md",
     ".github/skills/**/SKILL.md",
     ".claude/**/SKILL.md",
-    "docs/**/SKILL.md",
+    "docs/ops/skills/**/SKILL.md",
     "**/SKILLS.md",
     "**/*.SKILLS",
     "**/*.skill",
     "vendor/**",
+    "docs/ops/SKILLS-INVENTORY.md",
+    "docs/ops/SKILL-DISCOVERY-MATRIX.md",
+    "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md",
+    "docs/ops/SKILL-EVALUATION.md",
+    "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json",
+    "docs/ops/TDQS-ADMISSION-MATRIX.md",
+    "docs/architecture/TOOL-DEFINITION-QUALITY-SCORE.md",
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/DOE-QUESTIONS-MATRIX.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/integrations/README.md",
+    "docs/integrations/INTEGRATION-REGISTRY.md",
+    "docs/integrations/registry.json",
+    "docs/integrations/ADAPTER-CONTRACT.md",
+    "docs/integrations/schemas/integration-event.schema.json",
+    "docs/integrations/session-plugin-skill-catalog.json",
+    "docs/integrations/session-tool-action-catalog.json",
     "ops/capability_discovery/taxonomy.json",
     "ops/capability_discovery/sources.json",
     "ops/capability_discovery/record.schema.json",
     "scripts/capabilities/discover.py",
+    "scripts/ci/evaluate_skills.py",
     "tests/test_capability_discovery.py",
-    "docs/ops/SKILL-EVALUATION.md",
-    "docs/ops/TDQS-ADMISSION-MATRIX.md",
-    "docs/ops/DOE-QUESTIONS-MATRIX.md",
-    "docs/ops/corpus/EXPERIMENT.schema.json",
-    "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md",
-    ".agents/skills/approxination-lane/SKILL.md",
-    ".agents/skills/find-skills/SKILL.md",
-    ".agents/skills/skill-evaluation/SKILL.md",
+    ".github/workflows/skill-quality-lane.yml",
+    "docs/proposals/active/continuous-capability-evolution-lab/MANIFEST.md",
+    "docs/proposals/active/continuous-capability-evolution-lab/ITEMS.md",
     "experiments/doe/capability-discovery-routing/DESIGN.json"
   ],
   "automation": {
-    "status": "local-indexer-implemented; experiment-runner-not-implemented",
+    "status": "local-indexer-implemented; CI integration added; experiment-runner-not-implemented",
     "required": "Add reviewed workflow dispatch/admission path that pins catalogs, toolset snapshots and configured-instance identity; emits one EXPERIMENT-schema record per run; preserves failed and blocked outcomes."
   },
   "constraints": [
@@ -116,5 +140,31 @@
     "No external skill installation or execution in the discovery indexer.",
     "No credentials, private prompts, full tool schemas or completion content in the index.",
     "All treatment arms retain identical safety and authorization gates."
+  ],
+  "external_reference_inputs": [
+    {
+      "file": "Awesome Jules Skills Actions and Workflows for GitHub Development. (supplied PDF)",
+      "role": "vendor skill/action/workflow discovery reference",
+      "trust": "unverified until current upstream source and immutable refs are checked",
+      "use": "candidate source taxonomy; issue/PR automation, TDD and subagent workflow patterns"
+    },
+    {
+      "file": "skill-loopy-api-loop-library-skill.json (supplied JSON)",
+      "role": "bounded agent-loop skill reference",
+      "trust": "community-reference; catalog host in supplied material is unresolved",
+      "use": "bounded loop lifecycle, terminal states, run receipts and discover/find/audit/adapt/craft/run/debrief/publish routes"
+    },
+    {
+      "file": "context-relationship-graph_2.skill (supplied archive)",
+      "role": "relationship and provenance skill reference",
+      "trust": "session-supplied; compare with repository canonical skill",
+      "use": "nested graph links and evidence relationships"
+    },
+    {
+      "file": "termux-mcp-project-steward.skill (supplied archive)",
+      "role": "Termux/GitHub stewardship skill reference",
+      "trust": "session-supplied; repository canonical skill takes precedence",
+      "use": "source-specific scope and operational permission context"
+    }
   ]
 }

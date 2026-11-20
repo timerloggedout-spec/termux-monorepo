@@ -74,3 +74,22 @@ def test_digest_consumer_reads_and_receipts(tmp_path):
     assert d["records"] == 6 and "excerpt" not in out.read_text(encoding="utf-8")
     receipt = json.loads(reads.read_text(encoding="utf-8").splitlines()[-1])
     assert receipt["consumer"] == dg.CONSUMER_ID and receipt["records"] == 6
+
+
+
+def test_muse_side_chat_discovery_terms_are_versioned_and_scoped(tmp_path):
+    payload = {"id": "side-chat-1", "messages": [{
+        "id": "m1", "role": "user",
+        "content": "Moniker collision marketing naming anon anonymous 4n0nSEC 4n∅N 4n∅nSEC profiles",
+    }]}
+    source = tmp_path / "muse.json"
+    source.write_text(json.dumps(payload), encoding="utf-8")
+    rec = ing.ingest(source, "muse-side-chat/2026-11-18", now="t")[0]
+    assert rec["discovery_schema"] == "muse-side-chat-discovery/v1"
+    assert rec["discovery_terms"] == [
+        "moniker", "collision", "marketing", "naming", "anon",
+        "4n0nSEC", "4n∅N", "4n∅nSEC", "profiles",
+    ]
+    generic = ing.ingest(source, "chatgpt-export/2026-11-18", now="t")[0]
+    assert generic["discovery_schema"] is None
+    assert generic["discovery_terms"] == []

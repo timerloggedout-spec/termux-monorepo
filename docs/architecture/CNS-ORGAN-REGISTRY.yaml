@@ -156,6 +156,15 @@ organs:
     responsibilities: [cohort_design,treatment_comparison,manager_policy_evaluation]
     authority_boundary: "Produces experiment evidence; promotion follows governance and outcome gates."
     evidence_class: verified
+  - id: writer_lease
+    name: Cross-provider writer lease
+    plane: governance
+    status: proposed_contract
+    owner: Unassigned enforcement authority
+    canonical_sources: [docs/architecture/CNS-WRITER-LEASE-CONTRACT.md, docs/ops/AGENT-EVIDENCE-SUBSTRATE.md]
+    responsibilities: [revision_bound_lease,monotonic_fencing,provider_write_admission,append_only_lease_receipts]
+    authority_boundary: "Proposed contract only; global single-writer enforcement remains unverified until every write-capable provider uses the lease authority."
+    evidence_class: proposed
   - id: she
     name: SHE projections
     plane: presentation

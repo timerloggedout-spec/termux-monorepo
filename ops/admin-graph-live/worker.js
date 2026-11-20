@@ -127,7 +127,7 @@ export default {
               run.name || event.workflow || "GitHub Actions", null, null, REPO,
               Number(run.id), Number(run.run_attempt || 1), null, run.head_sha || null,
               run.html_url || null, String(runAt), new Date().toISOString(),
-              JSON.stringify({actor: event.actor || null})).run();
+              JSON.stringify({workflow_path: run.path || null, actor: bounded(event.actor, 120)})).run();
           }
           const storedPayload = event.kind === "route" ? routePayload : {actor: bounded(event.actor, 120)};
           await env.EVENTS_DB.prepare(

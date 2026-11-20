@@ -1,9 +1,27 @@
 {
  "schema": "tracking-lane-events-snapshot/v1",
- "read_at": "2026-11-20T14:56:58Z",
+ "read_at": "2026-11-20T14:58:33Z",
  "status": "ok",
- "count": 100283,
+ "count": 100285,
  "events": [
+  {
+   "lane": "she",
+   "workflow": "n8n SHE bridge",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "a48734ca43ef554359fa9731609f8fa065d6224d",
+   "occurred_at": "2026-11-20 14:55:46+00"
+  },
+  {
+   "lane": "she",
+   "workflow": "Agent Throughput Evidence",
+   "event_type": "run_completed",
+   "conclusion": "success",
+   "subject_url": null,
+   "head_sha": "11ed4e2aeda04c3e342f99282106a9c436f5cb56",
+   "occurred_at": "2026-11-20 14:54:18+00"
+  },
   {
    "lane": "she",
    "workflow": "Agent Throughput Evidence",
@@ -1666,7 +1684,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "9fc911c669be0dee36ca5fa2e8c515cb68f03d5a",
+   "head_sha": "b18b34cbc812ebf5790c5397532ae95c4f628565",
    "occurred_at": "2026-11-20 14:08:04+00"
   },
   {
@@ -1675,7 +1693,7 @@
    "event_type": "run_completed",
    "conclusion": "success",
    "subject_url": null,
-   "head_sha": "b18b34cbc812ebf5790c5397532ae95c4f628565",
+   "head_sha": "9fc911c669be0dee36ca5fa2e8c515cb68f03d5a",
    "occurred_at": "2026-11-20 14:08:04+00"
   },
   {
@@ -1785,24 +1803,6 @@
    "subject_url": null,
    "head_sha": "2436561b0147e056615aa8d4ed9306b104c72025",
    "occurred_at": "2026-11-20 14:03:01+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "2436561b0147e056615aa8d4ed9306b104c72025",
-   "occurred_at": "2026-11-20 14:02:51+00"
-  },
-  {
-   "lane": "she",
-   "workflow": "Agent Throughput Evidence",
-   "event_type": "run_completed",
-   "conclusion": "success",
-   "subject_url": null,
-   "head_sha": "2436561b0147e056615aa8d4ed9306b104c72025",
-   "occurred_at": "2026-11-20 14:02:33+00"
   }
  ]
 }

@@ -92,16 +92,39 @@ Connect the provider-neutral Brain kernel to the existing QUE model-assessment s
     "outcome": "promotion_candidate",
     "evidence_refs": ["experiment:..."]
   },
-  "receipt": {
-    "schema": "orchestration-receipt/v1",
-    "host_run_id": "...",
-    "source_commit": "...",
-    "evidence_refs": ["source-...", "experiment:..."]
-  }
+  "receipt_ref": "artifact://<run-id>/orchestration-receipt.json"
 }
 ```
 
-The field names and enum spellings above are a candidate mapping. The QUE owner must reconcile them with the current Brain Rust types, MOSAIC response types, and canonical receipt schema before implementation.
+### Canonical receipt candidate
+
+The host emits the receipt as a separate object matching docs/ops/ORCHESTRATION-RECEIPT.schema.json. Its schema requires version, orchestration_id, cycle_id, attempt_id, action_id, event_id, actor, event, state, outcome, promotion, observed_at, repo, ref, sha, and evidence_ids. The schema sets additionalProperties=false.
+
+```json
+{
+  "version": 1,
+  "orchestration_id": "orch-...",
+  "cycle_id": "cycle-...",
+  "attempt_id": "attempt-...",
+  "action_id": "brain-shadow-assessment",
+  "event_id": "event-...",
+  "actor": "que-brain-shadow",
+  "event": "brain_shadow_assessment",
+  "state": "COMPLETED",
+  "outcome": "UNKNOWN",
+  "promotion": "UNKNOWN",
+  "observed_at": "2026-11-20T10:00:00Z",
+  "repo": "timerloggedout-spec/termux-monorepo",
+  "ref": "refs/heads/master",
+  "sha": "0123456789abcdef0123456789abcdef01234567",
+  "evidence_ids": ["source-...", "experiment:..."],
+  "decision": "READY",
+  "reason": "Advisory reasoning completed",
+  "remaining_unproven_work": ["QUE owner approval", "fresh Delphi admission"]
+}
+```
+
+The request/response field names and enum spellings above remain candidate mappings. The QUE owner must reconcile them with the current Brain Rust types, MOSAIC response types, and canonical receipt schema before implementation. The receipt keeps outcome and promotion at UNKNOWN for advisory shadow work.
 
 ## Shadow semantics
 

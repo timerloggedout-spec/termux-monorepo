@@ -87,11 +87,12 @@ def validate_organ_registry(registry: Any, root: Path) -> list[str]:
 
 
 def validate_integration_map(content: str) -> list[str]:
-    """Validate Mermaid structure and the four edge-evidence classifications."""
+    """Validate Mermaid structure and explicit edge-evidence classifications."""
     errors: list[str] = []
     if not isinstance(content, str) or not content.strip():
         return ["integration map must be non-empty text"]
-    if not re.search(r"```mermaid\s+flowchart\s+(?:TD|TB|LR|RL|BT)\b", content, re.IGNORECASE):
+    fence = chr(96) * 3
+    if not re.search(re.escape(fence) + r"mermaid\s+flowchart\s+(?:TD|TB|LR|RL|BT)\b", content, re.IGNORECASE):
         errors.append("integration map requires a Mermaid flowchart block")
     legend = re.search(r"(?:legend|classification)[^\n]*", content, re.IGNORECASE)
     if not legend:
@@ -104,14 +105,14 @@ def validate_integration_map(content: str) -> list[str]:
     in_mermaid = False
     for line_number, line in enumerate(content.splitlines(), 1):
         stripped = line.strip()
-        if stripped.startswith("```mermaid"):
+        if stripped.startswith(fence + "mermaid"):
             in_mermaid = True
             continue
-        if in_mermaid and stripped.startswith("```"):
+        if in_mermaid and stripped.startswith(fence):
             in_mermaid = False
             continue
-        if in_mermaid and re.search(r"(?:-->|-\\.->)", line):
-            if not re.search(r"(?:-->|-\\.->)\\|(?:verified|derived|proposed|unresolved)(?:\\s*:[^|]+)?\\|", line, re.IGNORECASE):
+        if in_mermaid and re.search(r"(?:-->|-\.->)", line):
+            if not re.search(r"(?:-->|-\.->)\|(?:verified|derived|proposed|unresolved)(?:\s*:[^|]+)?\|", line, re.IGNORECASE):
                 errors.append(f"unclassified edge on line {line_number}")
     return errors
 
@@ -128,7 +129,7 @@ def validate_identity_contract(content: str) -> list[str]:
     return [
         f"identity contract missing required dimension: {name}"
         for name in required
-        if not re.search(rf"\\b{re.escape(name)}\\b", content)
+        if not re.search(rf"\b{re.escape(name)}\b", content)
     ]
 
 

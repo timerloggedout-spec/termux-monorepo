@@ -93,7 +93,7 @@ Most-applied on open issues today: `enhancement` 78, `priority` 56,
    `gemini-dispatch.yml` is its sole caller, code-search verified).
 2. `gemini-triage.yml` routes Gemini PRIMARY → peer Omni ↔ OpenRouter
    secondary and posts **one triage comment**: a classification, suggested
-   labels, a priority, and a Jules recommendation.
+   labels, a priority, and a role-guided provider recommendation.
 3. Specialized intakes run in parallel where their label applies:
    `target-intake.yml` posts the Foundry dispatch plan (36 runs all-time:
    20 success / 16 skipped); `delphi-intake.yml` / the Delphi gate handle

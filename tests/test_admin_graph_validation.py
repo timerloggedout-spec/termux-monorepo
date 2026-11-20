@@ -77,3 +77,18 @@ def test_validation_failures_are_visible_in_verify_panel():
     html = _html()
     assert 'v.issues.length?("FAIL: "+v.issues.length+" model validation issue(s)' in html
     assert 'v.issues.slice(5,12).forEach(function(problem){li("Validation detail: "+problem,"fail");});' in html
+
+def test_graph_search_is_keyboard_accessible_and_view_only():
+    html = _html()
+    assert 'id="graphSearch"' in html
+    assert 'aria-label="Search graph nodes"' in html
+    assert 'aria-keyshortcuts="/"' in html
+    assert 'function graphNodeSearchText(n)' in html
+    assert 'function updateGraphSearchMatches()' in html
+    assert 'classList.add("search-match")' in html
+    assert 'classList.add("search-dim")' in html
+    assert 'function focusGraphSearchResult()' in html
+    assert 'ev.key==="Enter"' in html
+    assert 'ev.key==="Escape"' in html
+    assert 'ev.key==="/"' in html
+    assert 'Graph search selected:' in html

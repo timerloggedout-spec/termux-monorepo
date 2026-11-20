@@ -56,8 +56,8 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             path.parent.mkdir(parents=True)
             fixture = "fixture-" + ("z" * 24)
             path.write_text(
-                "---\\nname: demo\\ndescription: metadata\\n"
-                f'tags: api_key: "{fixture}"\\n---\\n# Skill\\n',
+                "---\nname: demo\ndescription: metadata\n"
+                f'tags: api_key: "{fixture}"\n---\n# Skill\n',
                 encoding="utf-8",
             )
             rows = scan_repository(root)

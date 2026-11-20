@@ -116,6 +116,47 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(secret_row["trust"], "quarantined")
             self.assertNotIn(fixture, json.dumps(secret_row))
 
+    def test_termux_tool_taxonomy_jsonl_is_indexed_as_unverified_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "workspace" / "llm_map" / "_TOOL_TAXONOMY" / "all_tools.jsonl"
+            path.parent.mkdir(parents=True)
+            fixture = "fixture-" + ("s" * 24)
+            records = [
+                {
+                    "name": "db-query",
+                    "package": "sqlite",
+                    "source": "apt",
+                    "description": "Read-only database query helper",
+                    "tags": ["database", "read-only"],
+                    "category": "database",
+                },
+                {
+                    "name": "credential-helper",
+                    "package": "custom",
+                    "source": "alias",
+                    "description": "Private tool",
+                    "tags": [f'api_key: "{fixture}"'],
+                    "category": "custom_tools",
+                },
+            ]
+            path.write_text(
+                "\\n".join(json.dumps(item) for item in records) + "\\n",
+                encoding="utf-8",
+            )
+            rows = scan_repository(root)
+        self.assertEqual(len(rows), 2)
+        safe = next(row for row in rows if row["name"] == "db-query")
+        quarantined = next(row for row in rows if row["name"] == "credential-helper")
+        self.assertEqual(safe["kind"], "tool")
+        self.assertEqual(safe["source_id"], "termux-tool-taxonomy-snapshot")
+        self.assertEqual(safe["trust"], "unverified")
+        self.assertIn("database", safe["tags"])
+        self.assertIn("tool", safe["facets"])
+        self.assertEqual(quarantined["trust"], "quarantined")
+        self.assertNotIn(fixture, json.dumps(quarantined))
+        self.assertNotIn(fixture, " ".join(quarantined["tags"]))
+
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

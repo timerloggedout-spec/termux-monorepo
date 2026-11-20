@@ -69,5 +69,38 @@
     "recorded": "2026-11-19",
     "note": "Design precedes repository sweep execution. One workflow run emits one EXPERIMENT record bound to base and candidate SHA."
   },
-  "records_home": "experiments/doe/collaborator-rotation-sweep/records/"
+  "records_home": "experiments/doe/collaborator-rotation-sweep/records/",
+  "factors": {
+    "path_classifier": [
+      false,
+      true
+    ],
+    "lexical_classifier": [
+      false,
+      true
+    ],
+    "markdown_link_classifier": [
+      false,
+      true
+    ],
+    "workflow_classifier": [
+      false,
+      true
+    ],
+    "semantic_context_classifier": [
+      false,
+      true
+    ]
+  },
+  "outcomes": {
+    "primary": "fixture classification accuracy, precision, recall, false-positive count and false-negative count by classifier arm",
+    "secondary": [
+      "active legacy references",
+      "historical references retained for provenance",
+      "ambiguous references requiring adjudication",
+      "mapping coverage",
+      "moniker/trigger collision count",
+      "repository and Termux gate outcomes"
+    ]
+  }
 }

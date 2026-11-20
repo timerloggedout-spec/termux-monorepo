@@ -51,7 +51,8 @@ class AdminGraphPageContractTests(unittest.TestCase):
         self.assertIn("after_seq", worker)
         self.assertIn("INSERT OR IGNORE", worker)
         self.assertIn("workflow_path: run.path || null", worker)
-        self.assertIn('if (event.kind !== "route") event.payload = null;', worker)
+        self.assertIn("safeRoutePayload(JSON.parse(event.payload || \"{}\"))", worker)
+        self.assertIn("event.payload = null;", worker)
 
 
 if __name__ == "__main__":

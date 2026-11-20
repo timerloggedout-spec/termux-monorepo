@@ -87,7 +87,7 @@ Every requisition record carries the full key tuple. The identity atom is the CO
 ```json
 "keys": {
   "provider": "<registry provider id>",
-  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. Jules)",
+  "model": "<model id>@<version> — version provider-verbatim; no version exposed => version NOT ESTABLISHED, never inferred (e.g. historical Jules entry)",
   "system_prompt_ref": "<ref per the DoE scheme; encoding NOT ESTABLISHED until the DoE seat names it — adopted verbatim when named>",
   "tools_ref": "<ref per the DoE scheme; same status as system_prompt_ref>",
   "moniker": "<fleet moniker from the signed identity>",

@@ -137,6 +137,7 @@ def build_events(payload: dict[str, Any], event_name: str,
             route_event = _route_event(wrapper, context or {})
             if route_event:
                 events.append(route_event)
+        events.sort(key=lambda event: str(event.get("occurred_at") or ""))
         return events
     if event_name == "issue_comment":
         try:

@@ -1,0 +1,79 @@
+{
+  "arm": "gemini-cli",
+  "arm_id": "gemini-cli",
+  "arm_state": "unknown",
+  "context": "build-dispatch multi-arm (#5151)",
+  "cumulative_n": 1,
+  "dispatch_id": "build-dispatch-44666207835-gemini-cli",
+  "endpoint": "google::gemini-3.5-flash-lite",
+  "entry": "issue-5553",
+  "harness": "run-gemini-cli",
+  "instance": {
+    "context": "build-dispatch multi-arm (#5151)",
+    "model": "gemini-3.5-flash-lite",
+    "moniker": "providers-dispatch-fix",
+    "provider": "google",
+    "role": "builder",
+    "system_prompt": {
+      "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+      "sha256": "NOT_ESTABLISHED"
+    },
+    "tools": {
+      "ref": "scripts/ops/build_arm_harness.py#tools",
+      "sha256": "NOT_ESTABLISHED"
+    }
+  },
+  "instance_key": "NOT_ESTABLISHED",
+  "model": "gemini-3.5-flash-lite",
+  "model_version": "gemini-3.5-flash-lite@gemini-3.5-flash-lite",
+  "moniker": "providers-dispatch-fix",
+  "origin": "live",
+  "outcome": {
+    "artifact": "actions run 44666207835",
+    "confirmed": null,
+    "corroboration_state": "single-leg",
+    "evidence_ref": "actions run 44666207835",
+    "gate_call": null,
+    "origin": "live",
+    "status": "failed",
+    "summary": "completion verification: failed"
+  },
+  "provider": "google",
+  "quota": {
+    "cost_class": "free-tier",
+    "pool": "google",
+    "slice": "primary"
+  },
+  "quota_class": "primary",
+  "role": "builder",
+  "route_endpoint_id": "google::gemini-3.5-flash-lite",
+  "run": {
+    "run_id": "44666207835",
+    "session_id": null,
+    "workflow": "build-dispatch.yml"
+  },
+  "run_id": "44666207835",
+  "schema": "build-dispatch-stamp/v1",
+  "selection": {
+    "arm": "gemini-cli",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5553"
+  },
+  "selection_reason": "explicit-request",
+  "set_index": 1,
+  "task_class": "entry-build",
+  "task_ref": "timerloggedout-spec/termux-monorepo#5553",
+  "trigger": "workflow_dispatch",
+  "ts": "2026-11-20T03:15:05Z",
+  "usage": {
+    "bucket_slice_id": "gemini-cli:primary",
+    "cost": null,
+    "latency_ms": null,
+    "retries": 0,
+    "status": "not_established",
+    "tokens": null,
+    "tokens_in": null,
+    "tokens_out": null
+  }
+}

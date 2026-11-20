@@ -1,0 +1,67 @@
+{
+  "baseline_sha": "5a6863027f10d1c1cb0597ab9181a0c4c48c5ebf",
+  "candidate_sha": "5a6863027f10d1c1cb0597ab9181a0c4c48c5ebf",
+  "cohort": "routed-dispatch-2026-11",
+  "confidence": "high",
+  "evidence_refs": [
+    "https://github.com/timerloggedout-spec/termux-monorepo/actions/runs/44666207835"
+  ],
+  "experiment_id": "routed-dispatch",
+  "exploration": false,
+  "metrics": {
+    "ates_outcome": null,
+    "cumulative_n": 1,
+    "dispatch_status": "failed",
+    "quota_cost_class": "free-tier",
+    "selection_reason": "explicit-request",
+    "set_index": 1,
+    "task_class": "entry-build"
+  },
+  "observed_at": "2026-11-20T03:15:05Z",
+  "origin": "live",
+  "outcome": "completion verification: failed",
+  "provenance": "github",
+  "request_id": null,
+  "requesting_manager": null,
+  "schema_version": "1.0",
+  "selection": {
+    "arm": "gemini-cli",
+    "basis": "explicit-request",
+    "manager": "build-dispatch",
+    "request": "5553"
+  },
+  "session_id": null,
+  "status": "failed",
+  "suite": "routed-dispatch/v1",
+  "talent_class": null,
+  "team": null,
+  "treatment": {
+    "arm": "google",
+    "instance": {
+      "context": "build-dispatch multi-arm (#5151)",
+      "instance_key": "ed64aec90f3b08b16a653864909bb94f4c20fd3dd9d5e611dd6cdb77cee43b65",
+      "model": "gemini-3.5-flash-lite",
+      "moniker": "providers-dispatch-fix",
+      "provider": "google",
+      "role": "builder",
+      "system_prompt": {
+        "ref": "scripts/ops/build_arm_harness.py#system-prompt",
+        "sha256": "NOT_ESTABLISHED"
+      },
+      "tools": {
+        "ref": "scripts/ops/build_arm_harness.py#tools",
+        "sha256": "NOT_ESTABLISHED"
+      }
+    },
+    "manager_policy_id": "swarm-routing/v2 (owner routing update 2026-11-01)",
+    "model": "gemini-3.5-flash-lite",
+    "provider": "google"
+  },
+  "usage": {
+    "source": null,
+    "status": "not_established",
+    "unit": null,
+    "value": null
+  },
+  "window": null
+}

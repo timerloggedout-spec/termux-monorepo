@@ -124,7 +124,7 @@ def classify_record(text: str, pull_request: dict[str, Any] | None, source_ns: s
     if source_ns and source_ns.startswith("muse-side-chat/"):
         terms = muse_discovery_terms(text, source_ns)
         if terms:
-            out.append({"classifier_id": "muse_side_chat_discovery",
+            out.append({"classifier_id": "muse_side_chat_seo",
                         "classifier_version": MUSE_DISCOVERY_VERSION,
                         "label": "topic_match", "confidence": 1.0,
                         "rule": "versioned-topic-lexicon", "terms": terms})

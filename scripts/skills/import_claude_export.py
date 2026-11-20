@@ -53,6 +53,37 @@ def normalized_member(name: str) -> PurePosixPath:
     return PurePosixPath(*parts)
 
 
+def load_skill_inventory(
+    skills_csv: Path, skills_jsonl: Path
+) -> tuple[list[str], list[dict[str, str]], list[dict], str]:
+    fields, rows = read_csv(skills_csv)
+    if skills_jsonl.is_file():
+        with skills_jsonl.open(encoding="utf-8-sig") as stream:
+            jsonl_rows = [json.loads(line) for line in stream if line.strip()]
+        origin = "downloaded"
+    else:
+        jsonl_rows = [
+            {key: row.get(key, "") for key in fields}
+            for row in rows
+        ]
+        origin = "derived-from-skills-inventory.csv"
+    if len(jsonl_rows) != len(rows):
+        raise ValueError(
+            f"Inventory counts mismatch: CSV={len(rows)}, JSONL={len(jsonl_rows)}"
+        )
+    fields_to_compare = (
+        "namespace", "plugin_dir", "skill_path", "name",
+        "description", "bytes", "sha1",
+    )
+    for index, (csv_row, jsonl_row) in enumerate(zip(rows, jsonl_rows), 1):
+        if not isinstance(jsonl_row, dict) or any(
+            str(jsonl_row.get(key, "")) != str(csv_row.get(key, ""))
+            for key in fields_to_compare
+        ):
+            raise ValueError(f"CSV/JSONL record mismatch at row {index}")
+    return fields, rows, jsonl_rows, origin
+
+
 def parse_sha256sums(path: Path) -> dict[str, str]:
     entries: dict[str, str] = {}
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
@@ -140,29 +171,26 @@ def main() -> None:
     skills_jsonl = downloads / "skills-inventory.jsonl"
     plugins_csv = downloads / "plugins-inventory.csv"
     checksums = downloads / "SHA256SUMS.txt"
-    for path in (archive, skills_csv, skills_jsonl, plugins_csv, checksums):
+    for path in (archive, skills_csv, plugins_csv, checksums):
         if not path.is_file():
             raise SystemExit(f"Required export file missing: {path}")
 
+    checksum_inputs = (archive, skills_csv, plugins_csv)
+    if skills_jsonl.is_file():
+        checksum_inputs += (skills_jsonl,)
     checksum_verification = verify_checksum_coverage(
-        downloads, checksums, (archive, skills_csv, skills_jsonl, plugins_csv)
+        downloads, checksums, checksum_inputs
     )
-    _, rows = read_csv(skills_csv)
+    try:
+        _, rows, jsonl_rows, jsonl_origin = load_skill_inventory(skills_csv, skills_jsonl)
+    except (ValueError, json.JSONDecodeError) as exc:
+        raise SystemExit(str(exc)) from exc
     plugin_fields, plugin_rows = read_csv(plugins_csv)
     required = {"namespace", "plugin_dir", "skill_path", "name", "description", "bytes", "sha1"}
     if not rows or not required.issubset(rows[0]):
         raise SystemExit("Skills inventory schema mismatch")
-
-    with skills_jsonl.open(encoding="utf-8-sig") as stream:
-        jsonl_rows = [json.loads(line) for line in stream if line.strip()]
-    if len(rows) != 1299 or len(jsonl_rows) != len(rows):
-        raise SystemExit(f"Inventory counts mismatch: CSV={len(rows)}, JSONL={len(jsonl_rows)}")
-    for index, (csv_row, jsonl_row) in enumerate(zip(rows, jsonl_rows), 1):
-        if not isinstance(jsonl_row, dict) or any(
-            str(jsonl_row.get(key, "")) != str(csv_row.get(key, ""))
-            for key in ("namespace", "plugin_dir", "skill_path", "name", "description", "bytes", "sha1")
-        ):
-            raise SystemExit(f"CSV/JSONL record mismatch at row {index}")
+    if len(rows) != 1299:
+        raise SystemExit(f"Expected 1,299 skill rows; found {len(rows)}")
 
     MIRROR.mkdir(parents=True, exist_ok=True)
     SOURCE.mkdir(parents=True, exist_ok=True)
@@ -216,12 +244,23 @@ def main() -> None:
                 shutil.copy2(source, target)
 
     # Preserve original exports byte-for-byte; publish a corrected derived CSV.
-    for src in (skills_csv, skills_jsonl, plugins_csv, checksums):
+    for src in (skills_csv, plugins_csv, checksums):
         dst = SOURCE / src.name
         if dst.exists() and digest(dst, "sha256") != digest(src, "sha256"):
             raise SystemExit(f"Existing source inventory differs; review before overwrite: {dst}")
         if not dst.exists():
             shutil.copy2(src, dst)
+    jsonl_source = SOURCE / "skills-inventory.jsonl"
+    if skills_jsonl.is_file():
+        if jsonl_source.exists() and digest(jsonl_source, "sha256") != digest(skills_jsonl, "sha256"):
+            raise SystemExit(f"Existing source inventory differs; review before overwrite: {jsonl_source}")
+        if not jsonl_source.exists():
+            shutil.copy2(skills_jsonl, jsonl_source)
+    elif not jsonl_source.exists():
+        jsonl_source.write_text(
+            "".join(json.dumps(row, ensure_ascii=False) + "\\n" for row in jsonl_rows),
+            encoding="utf-8",
+        )
 
     verified_csv = SOURCE / "skills-inventory-verified.csv"
     with verified_csv.open("w", encoding="utf-8", newline="") as stream:
@@ -306,6 +345,7 @@ def main() -> None:
         "plugin_inventory_dirs_without_skill_rows": sorted(plugin_dirs - skill_dirs),
         "plugin_inventory_columns": plugin_fields,
         "jsonl_matches_csv": True,
+        "jsonl_origin": jsonl_origin,
         "blank_plugin_dir_rows": sum(not row["plugin_dir"].strip() for row in rows),
     }, indent=2) + "\n", encoding="utf-8")
 
@@ -323,6 +363,7 @@ def main() -> None:
         "tags": ".skills/tags.json",
         "generated_at": stamp,
         "checksum_verification": checksum_verification,
+        "jsonl_origin": jsonl_origin,
         "inventory_consistency": "CSV and JSONL rows compared field-for-field",
     }
     (SOURCE / "source-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -336,6 +377,7 @@ def main() -> None:
         "search_tags": len(tags),
         "archive_sha256": archive_sha,
         "source_checksum_status": checksum_verification["status"],
+        "jsonl_origin": jsonl_origin,
         "unchecksummed_inputs": checksum_verification["unchecksummed_inputs"],
         "missing_listed_files": checksum_verification["missing_listed_files"],
         "mirror": str(MIRROR),

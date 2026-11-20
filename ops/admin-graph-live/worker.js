@@ -163,7 +163,10 @@ export default {
         ).bind(limit).all();
         rows.results = (rows.results || []).reverse();
       }
-      const events = rows.results || [];
+      const events = (rows.results || []).reverse().map(function (event) {
+        if (event.kind !== "route") event.payload = null;
+        return event;
+      });
       const nextAfter = events.length ? Number(events[events.length - 1].seq) : Number(afterRaw || 0);
       return Response.json({
         schema: "admin-graph-live-events/v1",

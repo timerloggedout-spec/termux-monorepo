@@ -114,6 +114,22 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             event = con.execute("SELECT event FROM discovery_event ORDER BY recorded_at DESC LIMIT 1").fetchone()
             self.assertEqual(event[0], "reclassified")
 
+    def test_quarantined_records_are_hidden_from_default_search(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            con = connect(Path(tmp) / "index.sqlite")
+            row = {
+                "id": "repo:quarantined", "kind": "manifest", "source_id": "repo-vendor-skills",
+                "locator": "vendor/quarantined/plugin.json", "name": "quarantined-plugin",
+                "description": "Sensitive tool integration", "content_sha256": "c" * 64,
+                "taxonomy_sha256": "d" * 64, "domain": "agentic",
+                "function": "skill-discovery", "facets": ["vendor", "plugin"],
+                "trust": "quarantined", "lifecycle": "classified", "version_ref": None,
+                "aliases": [], "permissions": [], "tags": ["quarantined", "plugin"],
+            }
+            upsert(con, [row])
+            self.assertEqual(search(con, "quarantined plugin"), [])
+            self.assertEqual(len(search(con, "quarantined plugin", include_quarantined=True)), 1)
+
     def test_identical_content_creates_relationship_without_merging_sources(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

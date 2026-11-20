@@ -39,7 +39,7 @@ no PR/issue templates, and — until PR #499 lands — no Codespaces support.
 + `api/` + `vercel.json`, deployed via Vercel) and are missing most of the org-standard
 governance/hygiene pieces that the monorepo has: no SECURITY.md, no Dependabot, no CODEOWNERS,
 no devcontainer, no governance-doc pointer. Given their size, the right-sized fix for most of
-these is lightweight (a short `AGENTS.md` pointing back at the monorepo's governance docs rather
+these is lightweight (a short named collaborator profile pointing back at the monorepo's governance docs rather
 than a full copy; a small Dependabot config; a short SECURITY.md) — not a full port of the
 monorepo's apparatus. Proposed as follow-up work, not invented as urgent.
 

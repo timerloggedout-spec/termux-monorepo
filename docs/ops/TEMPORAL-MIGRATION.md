@@ -1,4 +1,16 @@
-# Temporal — migration off the VM (owner correction 2026-10-28)
+# Temporal — migration off the VM (historical record, 2026-10-28)
+
+> **CURRENT OWNER CORRECTION — 2026-11-19:** Muse VM is the live
+> Temporal host. The owner-provided runtime receipt reports ports
+> 7233 and 7234 listening and the UI on 8233 returning HTTP 200.
+> The recorded baseline remains 0 workflow executions / 0 schedules
+> / 1 namespace (2026-11-18 05:39 PT); service presence is distinct
+> from workflow use. This current ruling supersedes the 2026-10-28
+> VM-retirement ruling for the present fleet runtime. Issue #5632
+> owns producer registration, workers, schedule migration, and
+> throughput receipts. The Actions-based N5 acceptance below remains
+> historical evidence for that per-engagement workflow path.
+
 
 **Ruling.** There is NO Temporal exception to the VM = sandbox-only
 rule. The exception relayed 2026-10-27 was main's inference; the

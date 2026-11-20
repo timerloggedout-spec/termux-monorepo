@@ -188,7 +188,11 @@ class CapabilityDiscoveryTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (sofa / "TOOLS.md").write_text(
-                "# SOFA Tools\n\nTyped tool inventory reference.\n",
+                "# SOFA Tools\n\nTyped tool inventory reference.\n"
+                "| Tool | Class | Params | Purpose |\n"
+                "|---|---|---|---|\n"
+                "| sofa_search | READ | query | Search posts |\n"
+                "| sofa_ask | WRITE · owner-gated scope | title/body | Post question |\n",
                 encoding="utf-8",
             )
             rows = scan_repository(root)
@@ -200,6 +204,10 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         search = next(row for row in tools if row["name"] == "sofa_search")
         self.assertIn("query", search["tags"])
         self.assertIn("parameters=1", search["description"])
+        self.assertIn("read-only", search["facets"])
+        ask = next(row for row in tools if row["name"] == "sofa_ask")
+        self.assertIn("write-capable", ask["facets"])
+        self.assertIn("credentialed", ask["facets"])
         self.assertEqual(len(references), 2)
         self.assertTrue(all(row["source_id"] == "repo-tool-docs" for row in references))
 

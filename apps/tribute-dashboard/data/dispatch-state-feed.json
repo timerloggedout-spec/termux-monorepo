@@ -6,7 +6,7 @@
  },
  "dispatches": [
   {
-   "age_min": 25020.0,
+   "age_min": 25020.1,
    "claim": null,
    "components": {
     "age": 28.958,
@@ -569,7 +569,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 14295.0,
+   "age_min": 14295.1,
    "claim": null,
    "components": {
     "age": 16.545,
@@ -663,7 +663,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 14185.2,
+   "age_min": 14185.3,
    "claim": {
     "at": "2026-11-10T17:29:06Z",
     "by": "optimizations-assurance",
@@ -694,7 +694,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 14175.1,
+   "age_min": 14175.2,
    "claim": {
     "at": "2026-11-10T17:38:53Z",
     "by": "optimizations-assurance",
@@ -790,7 +790,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 13341.9,
+   "age_min": 13342.0,
    "claim": null,
    "components": {
     "age": 15.442,
@@ -9034,7 +9034,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11388.3,
+   "age_min": 11388.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
@@ -10158,7 +10158,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11388.3,
+   "age_min": 11388.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
@@ -11282,14 +11282,14 @@
    "wall_in_min": null
   },
   {
-   "age_min": 11387.9,
+   "age_min": 11388.0,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
     "ref": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5265#issuecomment-6974558011"
    },
    "components": {
-    "age": 13.18,
+    "age": 13.181,
     "state": 0.0,
     "tier": 0.0,
     "wall": 0.0
@@ -11298,7 +11298,7 @@
    "issue": 5265,
    "nearest_wall": null,
    "rank": 71,
-   "score": 13.18,
+   "score": 13.181,
    "stall_events": [
     {
      "at": "2026-11-12T20:27:31Z",
@@ -14780,7 +14780,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 10626.5,
+   "age_min": 10626.6,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
@@ -18134,7 +18134,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 10595.3,
+   "age_min": 10595.4,
    "claim": {
     "at": "2026-11-18T09:31:11Z",
     "by": "dispatch-watchdog",
@@ -20501,7 +20501,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 9882.6,
+   "age_min": 9882.7,
    "claim": null,
    "components": {
     "age": 11.438,
@@ -23117,7 +23117,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 4152.9,
+   "age_min": 4153.0,
    "claim": null,
    "components": {
     "age": 4.807,
@@ -23277,7 +23277,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 4109.9,
+   "age_min": 4110.0,
    "claim": null,
    "components": {
     "age": 4.757,
@@ -23313,7 +23313,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 4104.7,
+   "age_min": 4104.8,
    "claim": null,
    "components": {
     "age": 4.751,
@@ -23349,7 +23349,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 4090.8,
+   "age_min": 4090.9,
    "claim": null,
    "components": {
     "age": 4.735,
@@ -23421,7 +23421,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 3115.5,
+   "age_min": 3115.6,
    "claim": null,
    "components": {
     "age": 3.606,
@@ -23525,7 +23525,7 @@
    "wall_in_min": null
   },
   {
-   "age_min": 2986.7,
+   "age_min": 2986.8,
    "claim": null,
    "components": {
     "age": 3.457,
@@ -23779,7 +23779,7 @@
    "wall_in_min": null
   }
  ],
- "generated_at": "2026-11-20T14:21:12Z",
+ "generated_at": "2026-11-20T14:21:13Z",
  "ranking": {
   "advisory": true,
   "age_order": [
@@ -23808,8 +23808,8 @@
    5589,
    5590,
    5591,
-   5612,
    5613,
+   5612,
    5614,
    5628,
    5615,
@@ -23882,10 +23882,22 @@
     "delta": -1,
     "issue": 4975,
     "rank": 4
+   },
+   {
+    "age_rank": 27,
+    "delta": 1,
+    "issue": 5612,
+    "rank": 26
+   },
+   {
+    "age_rank": 26,
+    "delta": -1,
+    "issue": 5613,
+    "rank": 27
    }
   ],
   "method": "que-task-rank/v1",
-  "moved": 4
+  "moved": 6
  },
  "schema": "dispatch-state-feed/v1",
  "source": "dispatch-watchdog"

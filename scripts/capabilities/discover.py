@@ -43,7 +43,7 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
     parts = path.relative_to(root).as_posix().split("/")
     if external:
         return "workspace-external", "unverified"
-    if "plugins" in parts or ".claude-plugin" in parts or ".codex-plugin" in parts:
+    if path.name.lower() in MANIFEST_NAMES or "plugins" in parts or ".claude-plugin" in parts or ".codex-plugin" in parts:
         return "repo-plugin-manifests", "repository-canonical"
     if parts[0] == ".agents":
         return "repo-agent-skills", "repository-canonical"

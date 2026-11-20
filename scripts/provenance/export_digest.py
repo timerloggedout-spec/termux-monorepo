@@ -26,7 +26,7 @@ def digest(records: list[dict[str, Any]]) -> dict[str, Any]:
         key = f"{r.get('source_ns')}|{r.get('export_class')}"
         g = groups.setdefault(key, {"source_ns": r.get("source_ns"), "export_class": r.get("export_class"),
                                     "records": 0, "classified": 0, "labels": {}, "actions_verdicts": {},
-                                    "credential_shapes": 0, "sessions": set()})
+                                    "credential_shapes": 0, "sessions": set(), "discovery_terms": {}})
         g["records"] += 1
         g["sessions"].add(r.get("session"))
         g["credential_shapes"] += len(r.get("credentials") or [])

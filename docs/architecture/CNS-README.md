@@ -9,6 +9,8 @@ The CNS is the repository-wide integration architecture for the existing enginee
 - [Authority matrix](./CNS-AUTHORITY-MATRIX.md)
 - [Event and identity contract](./CNS-EVENT-IDENTITY-CONTRACT.md)
 - [Health model](./CNS-HEALTH-MODEL.md)
+- [Writer lease contract](./CNS-WRITER-LEASE-CONTRACT.md)
+- [Jules integration reconciliation](../ops/JULES-INTEGRATION-RECONCILIATION.md)
 - [Accepted integration proposal](../proposals/active/cns-integration/MANIFEST.md)
 - [Sixteen-item work ledger](../proposals/active/cns-integration/ITEMS.md)
 - [Implementation plan](../superpowers/plans/2026-11-19-cns-integration-program.md)

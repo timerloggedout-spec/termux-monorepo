@@ -72,7 +72,7 @@ def test_preserves_baseline_action_verbs(monkeypatch):
     } <= module["IMPERATIVE"]
 
 
-def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT):
+def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\n", script=SCRIPT, merge=False):
     """Exercise the public CLI with a real, credential-free Git commit range."""
     def git(*args):
         return subprocess.run(
@@ -85,11 +85,19 @@ def run_push_check(tmp_path, subject, *, body="", instruction="Preserve checks.\
     git("config", "commit.gpgSign", "false")
     git("commit", "--allow-empty", "-m", "test: add baseline")
     before = git("rev-parse", "HEAD")
+    if merge:
+        git("switch", "-c", "side")
     path = tmp_path / "docs" / "ops" / "instructions.md"
     path.parent.mkdir(parents=True)
     path.write_text(instruction, encoding="utf-8")
     git("add", "docs")
     git("commit", "-m", subject, "-m", body)
+    if merge:
+        git("switch", "main")
+        git("commit", "--allow-empty", "-m", "test(ci): add mainline coverage")
+        git("merge", "--no-ff", "side", "-m", "Merge side", "-m", "Do not bypass validation.")
+        # Prove this is a real two-parent merge, rather than a fast-forward.
+        assert len(git("rev-list", "--parents", "-n", "1", "HEAD").split()) == 3
     after = git("rev-parse", "HEAD")
     event = tmp_path / "push.json"
     event.write_text(json.dumps({"before": before, "after": after}), encoding="utf-8")
@@ -152,3 +160,28 @@ def test_real_push_ignores_ambient_commit_signing(tmp_path, monkeypatch):
     result = run_push_check(repo, "test(ci): add unsigned fixture coverage")
     assert result.returncode == 0, result.stdout + result.stderr
     assert config.read_text(encoding="utf-8").startswith("[commit]\n gpgSign = true")
+
+
+def test_real_push_ignores_only_synthetic_merge_text(tmp_path):
+    result = run_push_check(tmp_path, "test(ci): add side coverage", merge=True)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "DO-statement style: PASS" in result.stdout
+
+
+@pytest.mark.parametrize("location", ["subject", "body", "instruction"])
+def test_real_push_checks_side_branch_inside_merge_range(tmp_path, location):
+    kwargs = {"subject": "test(ci): add side coverage", "merge": True}
+    kwargs[location] = (
+        "fix(ci): miscellaneous side cleanup" if location == "subject"
+        else "Do not bypass validation.\n"
+    )
+    result = run_push_check(tmp_path, **kwargs)
+    assert result.returncode == 1, result.stdout + result.stderr
+    if location == "subject":
+        assert "miscellaneous side cleanup" in result.stdout
+        assert "commit subject requires an imperative action verb" in result.stdout
+    else:
+        label = "commit.body" if location == "body" else "docs/ops/instructions.md"
+        assert label in result.stdout
+        assert "lead with the intended DO action" in result.stdout
+    assert "action verb after its scope: Merge side" not in result.stdout

@@ -83,4 +83,27 @@ scope-prefix parsing (including colon-containing descriptions) in `subject_verb`
 Dispatch test matches master exactly; its concurrency assertion is already upstream.
 Add three real-CLI cases for nested colons and scope-without-space parsing.
 Upstream files carried by the merge are not newly authored lane changes; validate
-the resulting five-file diff against the merged master before push.
+the resulting four-file diff against the merged master before push.
+
+## Real merge-range coverage — 2026-11-20
+
+Initial live head `5f249e687e5cb20238c8ee0be846a23ce7251ac4` has both required
+GitHub gates SUCCESS and no new original-head review findings. AR-33 continues
+with tests/docs only; production checker and dispatch logic remain untouched.
+
+The previous merge-exclusion tests asserted subprocess arguments. Extend the
+existing temporary-Git fixture to create divergent main/side commits and a real
+two-parent merge. Its synthetic subject and body deliberately violate style.
+Verify synthetic text is excluded, while invalid side-branch subjects, bodies,
+and added instructions are still rejected. Assert two parents explicitly.
+
+Maintainer critique: preserve the simple linear fixture by default; avoid changing
+production behavior or developer Git config. Adversarial critique: excluding merge
+commits must not hide non-merge ancestors or net instruction changes.
+
+Observed working-tree command over head `5f249e687` plus these tests:
+`PYTHONPATH=/home/user/style-test-deps python3 -m pytest -q tests/test_check_do_statement_style.py`
+returns `23 passed`. A temporary checker mutation removing both `--no-merges`
+flags makes the valid merged range fail with synthetic subject and body errors
+(RED). Existing checker passes (GREEN). Temporary mutation is outside git.
+Required local gates and committed-head checks are recorded separately in the PR.

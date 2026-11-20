@@ -336,6 +336,7 @@ def main() -> int:
     find = sub.add_parser("find",help="Search metadata only; hydrate full source after selection")
     find.add_argument("query")
     find.add_argument("--db",default=".cache/capability-index.sqlite")
+    find.add_argument("--ledger",default=".cache/capability-discovery-ledger.jsonl")
     find.add_argument("--limit",type=int,default=8)
     find.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
     args = parser.parse_args()
@@ -357,6 +358,7 @@ def main() -> int:
         remote_rows, external_status = search_skills_sh(args.query,args.limit)
         if remote_rows:
             upsert(con,remote_rows)
+            export_ledger(con,Path(args.ledger))
     hits = search(con,args.query,args.limit)
     print(json.dumps({"query":args.query,"count":len(hits),"external_skills_sh":external_status,"results":hits},ensure_ascii=False,sort_keys=True))
     return 0

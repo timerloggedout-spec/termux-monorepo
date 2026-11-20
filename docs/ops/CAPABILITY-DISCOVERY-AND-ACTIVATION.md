@@ -39,7 +39,7 @@ Each capability receives:
 5. **Lifecycle state** — discovered → classified → deduplicated → evaluated → eligible → approved → adopted, with deprecated/rejected terminal branches.
 6. **Provenance** — exact source locator, retrieval/capture time, immutable source revision where available, content hash and discovery method.
 
-Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
+The initial classifier applies deterministic keyword rules constrained by the versioned taxonomy; specialized domains cover finance, health, legal, regulatory, scientific, media, property, automotive and outdoors. Treat classifications as routing hints, not quality or safety verdicts. Use one primary domain/function and multiple facets. This avoids multiplying duplicate records for a skill that spans several areas. SQLite stores aliases and permission metadata, while the relationship table records exact-content matches and supports future alias/cross-domain edges; the current automatic edge is `content_identical`.
 
 ### Identity and deduplication
 

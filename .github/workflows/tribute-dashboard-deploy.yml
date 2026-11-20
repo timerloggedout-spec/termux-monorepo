@@ -158,8 +158,11 @@ jobs:
           set -euo pipefail
           python3 scripts/build_icm_cctv_board.py --source-sha "$GITHUB_SHA"
           python3 tests/test_icm_cctv_board.py
-      - name: Validate Publishing dashboard JavaScript syntax
-        run: node --check apps/tribute-dashboard/publishing.js
+      - name: Validate dashboard and PWA JavaScript syntax
+        run: |
+          node --check apps/tribute-dashboard/publishing.js
+          node --check apps/tribute-dashboard/install.js
+          node --check apps/tribute-dashboard/sw.js
       - name: Verify Publishing dashboard evidence panels
         run: |
           grep -q 'id="publishing-pages-source"' apps/tribute-dashboard/publishing.html

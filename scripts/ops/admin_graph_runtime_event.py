@@ -160,7 +160,7 @@ def main() -> int:
     payload = json.loads(Path(args.event_file).read_text(encoding="utf-8"))
     context = {"run_id": args.run_id, "run_attempt": args.run_attempt, "head_sha": args.head_sha}
     if args.event_name in {"issue_comment", "runtime_snapshot"} and not args.run_id:
-        raise SystemExit("issue_comment normalization requires the observer workflow run id")
+        raise SystemExit("route normalization requires the observer workflow run id")
     events = build_events(payload, args.event_name, context)
     if any(event["repo"] != REPO for event in events):
         raise SystemExit("event repository mismatch")

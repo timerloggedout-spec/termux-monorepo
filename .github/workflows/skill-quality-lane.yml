@@ -70,6 +70,7 @@ jobs:
           python -m json.tool ops/capability_discovery/taxonomy.json >/dev/null
           python -m json.tool ops/capability_discovery/sources.json >/dev/null
           python -m json.tool ops/capability_discovery/record.schema.json >/dev/null
+          python -m json.tool ops/capability_discovery/ledger.schema.json >/dev/null
           python -m json.tool docs/integrations/session-plugin-skill-catalog.json >/dev/null
           python -m json.tool docs/integrations/session-tool-action-catalog.json >/dev/null
           python -m json.tool experiments/doe/capability-discovery-routing/DESIGN.json >/dev/null

@@ -37,6 +37,18 @@ sys.path.insert(0, str(ROOT / "scripts" / "classifiers"))
 
 SCHEMA = "provenance-export-record/v1"
 INGEST_VERSION = "provenance-ingest v1"
+DISCOVERY_SCHEMA = "muse-side-chat-discovery/v1"
+DISCOVERY_PATTERNS = (
+    ("moniker", re.compile(r"\\bmonikers?\\b", re.I)),
+    ("collision", re.compile(r"\\bcollisions?\\b", re.I)),
+    ("marketing", re.compile(r"\\bmarketing\\b", re.I)),
+    ("naming", re.compile(r"\\bnaming\\b", re.I)),
+    ("anon", re.compile(r"\\banon(?:ymous|ymity)?\\b", re.I)),
+    ("4n0nSEC", re.compile(r"(?<![A-Za-z0-9_])4n0nsec(?![A-Za-z0-9_])", re.I)),
+    ("4n∅N", re.compile(r"(?<![A-Za-z0-9_])4n∅n(?![A-Za-z0-9_])", re.I)),
+    ("4n∅nSEC", re.compile(r"(?<![A-Za-z0-9_])4n∅nsec(?![A-Za-z0-9_])", re.I)),
+    ("profiles", re.compile(r"\\bprofiles?\\b", re.I)),
+)
 SECRET_SHAPES = re.compile(
     r"(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_\-]{20,}|AIza[0-9A-Za-z_\-]{30,}|"
     r"xox[abpr]-[A-Za-z0-9\-]{10,}|hf_[A-Za-z0-9]{20,})")
@@ -224,6 +236,13 @@ def join_actions(text: str, pr: dict[str, Any] | None, idx: dict[str, Any]) -> d
     return {"refs": {"prs": prs, "shas": shas, "branches": branches},
             "runs": sorted(runs.values(), key=lambda r: str(r.get("created_at") or ""))[:20],
             "run_count": len(runs), "verdict": verdict}
+
+
+def muse_discovery_terms(text: str, source_ns: str) -> list[str]:
+    """Return versioned, privacy-safe topic labels for Muse side-chat message exports."""
+    if not source_ns.startswith("muse-side-chat/"):
+        return []
+    return [label for label, pattern in DISCOVERY_PATTERNS if pattern.search(text or "")]
 
 
 def ingest(path: Path, source_ns: str, runs: list[dict[str, Any]] | None = None,

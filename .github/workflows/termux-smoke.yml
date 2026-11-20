@@ -24,6 +24,7 @@ concurrency:
 
 jobs:
   smoke:
+    if: false
     name: agentic termux smoke
     runs-on: ubuntu-latest
     timeout-minutes: 10

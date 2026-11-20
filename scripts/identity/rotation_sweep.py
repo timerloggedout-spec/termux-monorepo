@@ -187,10 +187,15 @@ def scan_repository(root: Path, rotation_map: dict) -> dict:
             if rel == "docs/ops/COLLABORATOR-ROTATION-MAP.json":
                 continue
             disposition = votes["context"]
-            if votes["path"] or votes["link"] or votes["workflow"]:
-                disposition = "active"
-            elif votes["lexical"] and votes["semantic"]:
-                disposition = "active"
+            if rel in historical_paths:
+                disposition = "historical"
+                active = False
+            else:
+                if votes["path"] or votes["link"] or votes["workflow"]:
+                    disposition = "active"
+                elif votes["lexical"] and votes["semantic"]:
+                    disposition = "active"
+                active = ensemble(votes, FACTORS)
             findings.append({
                 "path": rel, "line": number, "tokens": votes["tokens"],
                 "classifiers": {key: votes[key] for key in FACTORS},

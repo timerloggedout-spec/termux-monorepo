@@ -145,6 +145,41 @@
       ],
       "review_point": "2026-12-31 or when either store passes 10k units",
       "status": "open_ongoing_test"
+    },
+    {
+      "id": "CMP-7",
+      "opened": "2026-11-19",
+      "question": "Contextual skill/plugin/tool activation: fragmented role and integration navigation vs a unified activation matrix with exact skill and action catalogs — which supports better verified outcomes at lower context/tool overhead over live work?",
+      "arms": {
+        "fragmented_navigation": "Existing Skills Inventory, Skill Discovery Matrix and Integration Intelligence navigation without a unified task-to-skill-to-plugin-to-action route.",
+        "contextual_activation": "CAPABILITY-ACTIVATION-MATRIX plus the dated plugin-skill and exact tool-action catalogs; exact live tool schema and permission checks remain mandatory."
+      },
+      "responses": [
+        "verified integrated task outcome and acceptance evidence",
+        "skill discovery/load success and mismatch rate",
+        "exact tool-action selection precision and unnecessary action rate",
+        "context tokens or equivalent context-load cost",
+        "elapsed time, retries, rework and handoffs",
+        "task coverage and source-grounding",
+        "permission/safety incidents (required zero)"
+      ],
+      "evidence_sources": [
+        "docs/ops/CAPABILITY-ACTIVATION-MATRIX.md",
+        "docs/ops/SKILLS-INVENTORY.md",
+        "docs/ops/SKILL-DISCOVERY-MATRIX.md",
+        "docs/integrations/session-plugin-skill-catalog.json",
+        "docs/integrations/session-tool-catalog.json",
+        "docs/ops/SKILL-EVALUATION.md",
+        "docs/ops/TDQS-ADMISSION-MATRIX.md",
+        "docs/ops/AGENT-THROUGHPUT-METRICS.md",
+        "experiments/doe/skill-plugin-tool-contextual-activation/DESIGN.json",
+        "scripts/dashboards/surface_feeds.py",
+        "apps/tribute-dashboard/doe.html",
+        "tests/test_surface_feeds.py"
+      ],
+      "review_point": "After 3 comparable live task observations spanning at least 2 task families, or the first approved designed-study cohort, whichever occurs first.",
+      "status": "open_observational",
+      "owner_note": "This register entry tracks live observations and does not claim causal effect. Designed comparisons use the separate skill-plugin-tool-contextual-activation campaign after automation and DoE-expert admission. Session catalog snapshots must be refreshed and hash-pinned for each cohort."
     }
   ],
   "registration": {

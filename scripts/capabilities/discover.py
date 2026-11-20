@@ -229,7 +229,7 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         description = item.get("activation_description") or item.get("summary") or item.get("description") or ""
         locator = item.get("uri") or item.get("name") or str(name)
         raw_metadata = str(name) + " " + str(description) + " " + str(locator)
-        quarantined = bool(SECRET_RE.search(raw_metadata) or SECRET_RE.search(query))
+        quarantined = bool(SECRET_RE.search(raw_metadata))
         safe_name = redact_sensitive(str(name))
         safe_description = redact_sensitive(str(description))
         safe_locator = redact_sensitive(str(locator))

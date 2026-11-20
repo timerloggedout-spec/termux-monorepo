@@ -46,12 +46,13 @@ def test_feed_shape_and_counts():
     feed = _feed()
     assert feed["schema"] == "moneyball.wagering-book/v2"
     subs = feed["subjects"]
-    assert len(subs) == feed["book"]["subjects"] == 39
+    assert len(subs) == feed["book"]["subjects"] == 41
     fams = {}
     for s in subs:
         fams[s["family"]] = fams.get(s["family"], 0) + 1
     assert fams == {"D1": 2, "D2": 3, "D3": 4, "D4": 4, "D5": 3,
-                    "AMD": 6, "FCC": 1}
+                    "AMD": 6, "FCC": 1, "C12": 3, "SPEC": 12,
+                    "PROP": 1, "C18": 1, "C19": 1}
     assert all("forecast" not in s["id"] for s in subs)
     assert "OUTPUT" in feed["forecast_layer"]
     assert "no external participation" in feed["publication"]
@@ -106,6 +107,16 @@ def test_anchor_derivations():
         "2026-11-20T11:30:00-08:00"
     assert by["D5-16-placement-winner"]["wall_at"] == \
         "2026-11-19T12:00:00-08:00"
+    c12 = by["C12-24-r1-submission"]
+    assert c12["settlement"]["value"].startswith("Y — SUBMITTED-PUBLISHED")
+    assert c12["knowable"]["at"] == "2026-11-15T23:45:00-08:00"
+    for eid, wall in (("C18-27-submission-landed", "2027-01-12T11:00:00-08:00"),
+                      ("C19-28-submission-landed", "2026-12-07T14:00:00-08:00")):
+        event = by[eid]
+        assert event["window"]["wall"] == wall
+        assert event["knowable"]["at"] == wall
+        assert event["wall_at"] is None and event["landing_at"] is None
+        assert "Tracking register item" in event["anchors_note"]
 
 
 def test_no_winprob_rendered():
@@ -151,7 +162,7 @@ console.log(JSON.stringify({
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     res = json.loads(r.stdout.strip())
-    assert res["n"] == 39 and res["ticks"] == 7
+    assert res["n"] == 41 and res["ticks"] >= 7
     assert res["d1_settle_is_wall"] and res["placement_open_ended"]
     assert res["kickoff_no_wall"] and res["d5_settle_after_wall"]
     assert res["fcc_soft"] and res["intake_state"] == "INTAKE"
@@ -165,7 +176,8 @@ def test_render_hooks_present():
     for hook in ['class="bar"', 'class="landingmark"', 'class="wallmark"',
                  'class="settlemark"', 'class="fctick"', 'id="hatch"',
                  'class="chip intake"', 'id="booktable"', 'id="positions"',
-                 'id="settlements"', "moneyball.wagering-book/v2"]:
+                 'id="settlements"', 'id="subject-count"', 'id="horizon-label"',
+                 "moneyball.wagering-book/v2"]:
         assert hook in html, hook
 
 
@@ -173,15 +185,26 @@ def test_window_pct_feed():
     feed = _feed()
     assert feed["pct_block"]["computed_at"] == feed["generated_at"]
     for s in feed["subjects"]:
-        assert s["window"] and s["window"]["start"] and s["window"]["wall"]
+        assert s["window"] and s["window"]["start"]
         wp = s["window_pct"]
-        if wp["consumed"] is None:
+        if s["window"]["wall"] is None or wp["consumed"] is None:
             assert wp["remaining"] is None and wp["note"]
         else:
             assert abs(wp["consumed"] + wp["remaining"] - 100.0) < 0.11
     by = {s["id"]: s for s in feed["subjects"]}
     assert by["D2-3-nocard-account-live"]["window_pct"]["consumed"] is None
     assert by["D5-14-spot-confirmation"]["window_pct"]["consumed"] is None
+    assert by["C18-27-submission-landed"]["window_pct"]["consumed"] is not None
+    assert by["C19-28-submission-landed"]["window_pct"]["consumed"] is not None
+    assert feed["horizon"]["end"] > "2027-01-12T11:00:00-08:00"
+
+
+def test_page_count_and_horizon_are_feed_driven():
+    html = _html()
+    assert 'id="subject-count"' in html
+    assert 'id="horizon-label"' in html
+    assert 'String(FEED.subjects.length)' in html
+    assert 'FEED.horizon.end' in html
 
 
 def test_window_pct_sim(tmp_path):

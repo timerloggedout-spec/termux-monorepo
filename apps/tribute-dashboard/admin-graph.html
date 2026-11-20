@@ -1291,7 +1291,8 @@ function queueRuntimeEvents(events,initial){
  var fresh=[];
  (events||[]).forEach(function(ev){
   if(!ev||!ev.id||liveSeen[ev.id])return;
-  liveSeen[ev.id]=true;
+  liveSeen[ev.id]=true;liveSeenOrder.push(ev.id);
+  if(liveSeenOrder.length>1200){var expired=liveSeenOrder.shift();delete liveSeen[expired];}
   if(initial){
    var age=Date.now()-Date.parse(ev.occurred_at||"");
    if(((ev.kind==="route"||ev.event==="task_routed")&&Number.isFinite(age)&&age<=60000)||ev.status==="queued"||ev.status==="in_progress")fresh.push(ev);

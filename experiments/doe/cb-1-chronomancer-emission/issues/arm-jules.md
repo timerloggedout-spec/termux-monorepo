@@ -11,7 +11,7 @@
   - Record fields: `schema_version` "1.0"; `suite` "doe-family:cb-1-chronomancer-emission"; `cohort` = account; `experiment_id` = `cb1-chrono-<fork rowid>-fork` / `-cont`; `observed_at` = the source row's timestamp normalized to ISO-8601 UTC (source-derived, never wall-clock); `baseline_sha` = `candidate_sha` = the `--baseline-sha` argument; `treatment.manager_policy_id` = "chronomancer/time-loop-fork"; `treatment.arm` = "fork" | "continuation"; `treatment.instance` = null; `status` = "observed"; `provenance` = "other"; `confidence` = "medium".
   - `metrics`: `pair_id` = `cb1-pair-<fork rowid>` (shared by the pair), `session_id`, `account`, `verdict`, `source_rowid`, `fork_policy` = "NOT ESTABLISHED", `injected_summary_sha256` = "NOT ESTABLISHED".
   - Output: one JSON file per record in `<out_dir>`, canonical JSON (sorted keys, fixed separators), filename = `<experiment_id>.json`.
-  - Stdlib only (sqlite3/json). Do NOT import `chronomancer.py` or deepcli. No network.
+  - Use stdlib only (sqlite3/json); keep the import graph independent of `chronomancer.py` and deepcli; keep execution offline.
 - **Tests:** build a fixture DB in a tmp dir with at least: 2 fork rows each followed by a continuation row for the forked session, 1 fork row with no continuation, and >=2 non-fork rows that are not continuations. Assert: exactly 5 records; every record validates against `docs/ops/corpus/EXPERIMENT.schema.json`; each continuation maps to its fork row; a second run produces byte-identical files; the fixture DB hash is unchanged by the run.
 - **Scope:** only the two files named above.
 - **Acceptance evidence:** report the test command and its exact output, the changed paths, remaining risks, anything not verified.

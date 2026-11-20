@@ -5,8 +5,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import sqlite3
+import urllib.error
+import urllib.parse
+import urllib.request
 import zipfile
 from pathlib import Path
 
@@ -145,6 +149,54 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         })
     return rows
 
+def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
+    """Read-only skills.sh search. Requires a request-scoped Vercel OIDC token."""
+    token = os.environ.get("VERCEL_OIDC_TOKEN")
+    if not token:
+        return [], "auth_required"
+    params = urllib.parse.urlencode({"q": query, "limit": max(1, min(limit, 200))})
+    request = urllib.request.Request(
+        "https://skills.sh/api/v1/skills/search?" + params,
+        headers={"Authorization": "Bearer " + token, "Accept": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        return [], f"http_{exc.code}"
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return [], "unavailable"
+    rows = []
+    for item in payload.get("data", []):
+        identity = item.get("id")
+        if not identity:
+            continue
+        name = item.get("name") or item.get("slug") or identity
+        source = item.get("source") or ""
+        installs = item.get("installs")
+        duplicate = bool(item.get("isDuplicate", False))
+        description = f"skills.sh candidate; source={source}; installs={installs}; duplicate={duplicate}"
+        metadata = json.dumps(item, sort_keys=True, separators=(",", ":")).encode()
+        rows.append({
+            "id": "skills-sh:" + identity,
+            "kind": "skill",
+            "source_id": "skills-sh",
+            "locator": identity,
+            "name": str(name)[:240],
+            "description": description[:1200],
+            "content_sha256": digest(metadata),
+            "domain": "agentic",
+            "function": "skill-discovery",
+            "facets": ["external", "skill", "vendor" if source else "community"],
+            "trust": "community-reference",
+            "lifecycle": "discovered",
+            "version_ref": item.get("hash"),
+            "aliases": [],
+            "permissions": [],
+            "tags": sorted(set(TOKEN_RE.findall((query + " " + str(name) + " " + source).lower())))[:80],
+        })
+    return rows, "ok"
+
 def connect(db: Path) -> sqlite3.Connection:
     db.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(db)
@@ -234,6 +286,7 @@ def main() -> int:
     find.add_argument("query")
     find.add_argument("--db",default=".cache/capability-index.sqlite")
     find.add_argument("--limit",type=int,default=8)
+    find.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
     args = parser.parse_args()
     if args.command == "scan":
         root = Path(args.root).resolve()
@@ -248,8 +301,13 @@ def main() -> int:
         print(json.dumps({"version":VERSION,**result},sort_keys=True))
         return 0
     con = connect(Path(args.db))
+    external_status = "not_requested"
+    if args.skills_sh:
+        remote_rows, external_status = search_skills_sh(args.query,args.limit)
+        if remote_rows:
+            upsert(con,remote_rows)
     hits = search(con,args.query,args.limit)
-    print(json.dumps({"query":args.query,"count":len(hits),"results":hits},ensure_ascii=False,sort_keys=True))
+    print(json.dumps({"query":args.query,"count":len(hits),"external_skills_sh":external_status,"results":hits},ensure_ascii=False,sort_keys=True))
     return 0
 
 if __name__ == "__main__":

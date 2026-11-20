@@ -23,7 +23,7 @@ Admin Graph ships through its established Tribute publication path. Preserve the
 | Navigation | Thumb-reachable primary actions; fixed bottom action bar; safe-area padding |
 | Touch | 44 CSS px minimum targets; visible pressed/focus states; zero hover-only workflows |
 | Canvas | Touch pan, pinch/zoom, fit-to-view, node tap/selection, scroll containment |
-| Search | Visible input, previous/next/clear buttons, mobile Find action, on-screen keyboard support |
+| Search | Visible input, previous/next/clear buttons in the touch-visible canvas toolbar, on-screen keyboard support |
 | Inspector | Single-column flow; readable fields; touch-sized editing and actions |
 | Keyboard | Hardware shortcuts as optional accelerators; core workflows remain touch-operable |
 | Accessibility | Accessible names, live search status, focus-visible treatment, reduced-motion support |

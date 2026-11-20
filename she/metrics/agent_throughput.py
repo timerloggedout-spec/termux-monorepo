@@ -43,6 +43,7 @@ class ThroughputMetrics:
     retry_penalty_ratio: float
     action_density_per_active_sec: float
     parallel_yield: float | None
+    estimated_remaining_seconds: float | None
     ates: float | None
     token_processing_velocity: float | None
     context_ingestion_efficiency: float | None
@@ -123,10 +124,33 @@ def _duration(events: list[Mapping[str, Any]]) -> float:
     return max(0.0, (max(stamps) - min(stamps)).total_seconds())
 
 
+def estimate_remaining_seconds(
+    remaining_work_units: Any,
+    completed_work_units: Any,
+    elapsed_seconds: Any,
+) -> float | None:
+    """Estimate remaining seconds from a measured, same-unit work rate.
+
+    The estimate is remaining work divided by observed completed work per
+    second. Missing, invalid, or zero-rate evidence stays unavailable.
+    """
+    remaining = _complexity_value(remaining_work_units)
+    completed = _complexity_value(completed_work_units)
+    elapsed = _complexity_value(elapsed_seconds)
+    if remaining is None or completed is None or elapsed is None:
+        return None
+    if remaining == 0:
+        return 0.0
+    if completed <= 0 or elapsed <= 0:
+        return None
+    return remaining * elapsed / completed
+
+
 def reduce_events(
     events: Iterable[Mapping[str, Any]],
     *,
     sequential_baseline_sec: float | None = None,
+    remaining_work_units: float | None = None,
 ) -> ThroughputMetrics:
     """Reduce sanitized agent events into throughput and quality-adjacent metrics.
 
@@ -172,13 +196,19 @@ def reduce_events(
     rpi = (len(failed) + len(retries)) / action_count if action_count else 0.0
     density = action_count / active_sec if active_sec else 0.0
 
-    eta = None
+    parallel_yield = None
     if sequential_baseline_sec is not None and len(agents) > 0 and workflow_sec > 0:
         # Sequential baseline is only valid when explicitly supplied; never infer
         # one from the observed parallel run because that would bias the metric.
-        eta = _positive(sequential_baseline_sec) / (len(agents) * workflow_sec)
+        parallel_yield = _positive(sequential_baseline_sec) / (len(agents) * workflow_sec)
+    # ETA uses the measured weighted-work rate; parallel yield remains dimensionless.
+    remaining_seconds = (
+        estimate_remaining_seconds(remaining_work_units, weighted, workflow_sec)
+        if remaining_work_units is not None and wtcv is not None
+        else None
+    )
     # ATES is a diagnostic composite. It is never used as a merge-quality gate.
-    ates = wtcv * max(0.0, 1.0 - rpi) * eta if wtcv is not None and eta is not None else None
+    ates = wtcv * max(0.0, 1.0 - rpi) * parallel_yield if wtcv is not None and parallel_yield is not None else None
 
     input_tokens = sum(_positive(e.get("tokens_in")) for e in rows)
     output_tokens = sum(_positive(e.get("tokens_out")) for e in rows)
@@ -208,7 +238,8 @@ def reduce_events(
         wtcv_per_min=round(wtcv, 6) if wtcv is not None else None,
         retry_penalty_ratio=round(rpi, 6),
         action_density_per_active_sec=round(density, 6),
-        parallel_yield=round(eta, 6) if eta is not None else None,
+        parallel_yield=round(parallel_yield, 6) if parallel_yield is not None else None,
+        estimated_remaining_seconds=round(remaining_seconds, 6) if remaining_seconds is not None else None,
         ates=round(ates, 6) if ates is not None else None,
         token_processing_velocity=round(tpv, 6) if tpv is not None else None,
         context_ingestion_efficiency=round(cie, 6) if cie is not None else None,

@@ -46,5 +46,6 @@ Admin Graph ships through its established Tribute publication path. Preserve the
 - Repository policy: CLAUDE.md
 - Visible project declaration: README.md
 - Source-level regression: tests/test_admin_graph_validation.py
+- Portable CI runner: tests/test_admin_graph_contracts.py via .github/workflows/repo-gate.yml
 - PWA install wiring: tests/test_pwa_install.py
 - Publisher: .github/workflows/tribute-dashboard-deploy.yml

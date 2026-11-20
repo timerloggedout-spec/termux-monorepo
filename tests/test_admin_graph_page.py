@@ -53,6 +53,10 @@ class AdminGraphPageContractTests(unittest.TestCase):
         self.assertIn("workflow_path: run.path || null", worker)
         self.assertIn("safeRoutePayload(JSON.parse(event.payload || \"{}\"))", worker)
         self.assertIn("event.payload = null;", worker)
+        self.assertIn("route_events: true", worker)
+        publisher = (ROOT / ".github" / "workflows" / "admin-graph-runtime-publisher.yml").read_text(encoding="utf-8")
+        self.assertIn("Admin Graph Worker deployment gate", publisher)
+        self.assertIn("source_comment_verification", publisher)
 
 
 if __name__ == "__main__":

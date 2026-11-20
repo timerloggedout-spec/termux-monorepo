@@ -57,7 +57,7 @@ Benchmarking companion:
 
 - bifrost_fork default SHA (RECON): `246ff5698b4606d06fa0506584cb38db5f1b4923`
 - bifrost-benchmarking_fork default SHA: `2c416fb234bf4abac25cf61f4470fc2528362afd`
-- AGENTS.md present and high-signal on upstream fork
+- upstream generic instruction entrypoint present and high-signal
 - Zero prior code hits for “bifrost” in termux-monorepo before this proposal
 - Current chat routing: Gemini primary → OpenRouter free / Omni / Felo peers; wrappers via multi-ai-cli (incl. colab)
 

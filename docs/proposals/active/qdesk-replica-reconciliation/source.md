@@ -349,8 +349,13 @@ Treat the #5199 Gantt as an existing in-flight implementation and dependency. Q^
 | Model router action | `.github/actions/model-router/action.yml` | `c80d15099b117caddb5d97ec5646b5c3b0f37e7f` |
 | Provider peer catalog | `.github/connectors/llm-peers.yaml` | `28e4a6104dadaecce3c6075af89ff32cc89143bc` |
 | Gemini workflow quota gate | `.github/actions/gemini-quota-gate/action.yml` | `4d280d7f3b27514af256cec5d764b4acb7ada1ea` |
+| Project profile schema | `ops/projects/profile.schema.json` | `a709a82d6fb8cf43859ba49f5ee1026760bf3872` |
+| Project profile design record | `docs/ops/ARCHWIZ-CONCEPT-MAP.md` | `02ba0c8a69aa5981fa3c39b216ab05dce9bcc5c9` |
+| Existing scan profile (ArchWiz) | `.config/llm_map/profiles/archwiz.json` | `bf98546c484846f71fae6b190572404a8bd04f24` |
+| Existing scan profile (Mapper) | `.config/llm_map/profiles/mapper.json` | `a881ee5ad4ac39e36511aba35f0763e42946b202` |
+| Issue dispatch contract | `docs/ops/ISSUE-TEMPLATE-DISPATCH.md` | `5cce6f9d43b5f2beede2dea3eaa74d3977154ca8` |
 
-Blob SHAs identify the exact file contents fetched; they are distinct from the containing commit SHA and the submodule gitlink object SHA.
+Blob SHAs identify the exact file contents fetched; they are distinct from the containing commit SHA and the submodule gitlink object SHA. The project-profile schema and design record are present on master. The S2 project-profile instance directory and `scripts/projects/profile_resolve.py` were not found; existing ArchWiz/Mapper files remain scan-scope profiles and are not substitutes.
 
 ## 10.2. Remaining evidence and authorization gates
 

@@ -52,15 +52,14 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
         return "repo-vendor-skills", "unverified"
     return "repo-nested-skills", "repository-canonical"
 
-def load_taxonomy(root: Path | None = None) -> dict:
-    candidates = []
-    if root is not None:
-        candidates.append(root / "ops" / "capability_discovery" / "taxonomy.json")
-    candidates.append(Path(__file__).resolve().parents[2] / "ops" / "capability_discovery" / "taxonomy.json")
-    for candidate in candidates:
-        if candidate.is_file():
-            return json.loads(candidate.read_text(encoding="utf-8"))
+def load_taxonomy() -> dict:
+    candidate = Path(__file__).resolve().parents[2] / "ops" / "capability_discovery" / "taxonomy.json"
+    if candidate.is_file():
+        return json.loads(candidate.read_text(encoding="utf-8"))
     raise FileNotFoundError("ops/capability_discovery/taxonomy.json is required")
+
+def taxonomy_hash(taxonomy: dict) -> str:
+    return digest(json.dumps(taxonomy,sort_keys=True,separators=(",",":")).encode())
 
 def validate_classification(domain: str, function: str, taxonomy: dict) -> tuple[str, str]:
     domains = taxonomy.get("domains", {})
@@ -95,6 +94,7 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
 def scan_repository(root: Path, external: bool = False) -> list[dict]:
     rows = []
     taxonomy = load_taxonomy()
+    taxonomy_sha = taxonomy_hash(taxonomy)
     for path in sorted(root.rglob("*")):
         if path.is_symlink() or not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue
@@ -141,6 +141,7 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             "kind": "skill" if path.name == "SKILL.md" or path.suffix.lower() == ".skill" else "reference",
             "source_id": source_id, "locator": locator, "name": name[:240],
             "description": description[:1200], "content_sha256": digest(raw),
+            "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
             "trust": trust, "lifecycle": "classified", "version_ref": None,
             "aliases": [], "permissions": [],
@@ -151,6 +152,7 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
 def import_session_json(path: Path, kind: str) -> list[dict]:
     data = json.loads(path.read_text(encoding="utf-8"))
     taxonomy = load_taxonomy()
+    taxonomy_sha = taxonomy_hash(taxonomy)
     if kind == "plugin-skill":
         items = data.get("skills", data.get("plugin_skills", []))
         source_id = "session-plugin-skills"
@@ -172,6 +174,7 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
             "id": f"session:{kind}:{name}", "kind": kind if kind == "plugin-skill" else "tool",
             "source_id": source_id, "locator": str(locator), "name": str(name)[:240],
             "description": str(description)[:1200], "content_sha256": item.get("sha256") or fingerprint,
+            "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
             "trust": "session-observed", "lifecycle": "discovered",
             "version_ref": data.get("snapshot", {}).get("captured_at"),
@@ -218,6 +221,7 @@ def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
             "name": str(name)[:240],
             "description": description[:1200],
             "content_sha256": digest(metadata),
+            "taxonomy_sha256": taxonomy_hash(load_taxonomy()),
             "domain": "agentic",
             "function": "skill-discovery",
             "facets": ["external", "skill", "vendor" if source else "community"],
@@ -238,16 +242,23 @@ def connect(db: Path) -> sqlite3.Connection:
       locator TEXT NOT NULL, name TEXT NOT NULL, description TEXT NOT NULL,
       content_sha256 TEXT, domain TEXT NOT NULL, function TEXT NOT NULL,
       facets TEXT NOT NULL, trust TEXT NOT NULL, lifecycle TEXT NOT NULL,
-      version_ref TEXT, tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+      version_ref TEXT, taxonomy_sha256 TEXT, tags TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
+    capability_columns = {row[1] for row in con.execute("PRAGMA table_info(capability)")}
+    if "taxonomy_sha256" not in capability_columns:
+        con.execute("ALTER TABLE capability ADD COLUMN taxonomy_sha256 TEXT")
     try:
         con.execute("CREATE VIRTUAL TABLE IF NOT EXISTS capability_fts USING fts5(id UNINDEXED,name,description,tags,tokenize='unicode61')")
     except sqlite3.OperationalError:
         con.execute("CREATE TABLE IF NOT EXISTS capability_fts (id TEXT PRIMARY KEY,name TEXT,description TEXT,tags TEXT)")
     con.execute("""CREATE TABLE IF NOT EXISTS discovery_event (
       event_id TEXT PRIMARY KEY, capability_id TEXT NOT NULL, event TEXT NOT NULL,
-      content_sha256 TEXT, source_id TEXT NOT NULL, recorded_at TEXT DEFAULT CURRENT_TIMESTAMP
+      content_sha256 TEXT, taxonomy_sha256 TEXT, source_id TEXT NOT NULL,
+      recorded_at TEXT DEFAULT CURRENT_TIMESTAMP
     )""")
+    event_columns = {row[1] for row in con.execute("PRAGMA table_info(discovery_event)")}
+    if "taxonomy_sha256" not in event_columns:
+        con.execute("ALTER TABLE discovery_event ADD COLUMN taxonomy_sha256 TEXT")
     con.execute("""CREATE TABLE IF NOT EXISTS capability_edge (
       edge_id TEXT PRIMARY KEY, from_id TEXT NOT NULL, to_id TEXT NOT NULL,
       relation TEXT NOT NULL, evidence_sha256 TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -261,26 +272,30 @@ def connect(db: Path) -> sqlite3.Connection:
 def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
     changed = 0
     for row in rows:
-        old = con.execute("SELECT content_sha256 FROM capability WHERE id=?", (row["id"],)).fetchone()
-        event = "added" if old is None else ("changed" if old[0] != row["content_sha256"] else "seen")
+        old = con.execute("SELECT content_sha256,taxonomy_sha256 FROM capability WHERE id=?", (row["id"],)).fetchone()
+        event = "added" if old is None else (
+            "changed" if old[0] != row["content_sha256"] else
+            ("reclassified" if old[1] != row.get("taxonomy_sha256") else "seen")
+        )
         con.execute("""INSERT INTO capability
-          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,tags)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          (id,kind,source_id,locator,name,description,content_sha256,domain,function,facets,trust,lifecycle,version_ref,taxonomy_sha256,tags)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,source_id=excluded.source_id,
           locator=excluded.locator,name=excluded.name,description=excluded.description,
           content_sha256=excluded.content_sha256,domain=excluded.domain,function=excluded.function,
           facets=excluded.facets,trust=excluded.trust,lifecycle=excluded.lifecycle,
-          version_ref=excluded.version_ref,tags=excluded.tags,updated_at=CURRENT_TIMESTAMP""",
+          version_ref=excluded.version_ref,taxonomy_sha256=excluded.taxonomy_sha256,
+          tags=excluded.tags,updated_at=CURRENT_TIMESTAMP""",
           (row["id"],row["kind"],row["source_id"],row["locator"],row["name"],row["description"],
            row["content_sha256"],row["domain"],row["function"],json.dumps(row["facets"]),
-           row["trust"],row["lifecycle"],row["version_ref"]," ".join(row["tags"])))
+           row["trust"],row["lifecycle"],row["version_ref"],row.get("taxonomy_sha256")," ".join(row["tags"])))
         con.execute("DELETE FROM capability_fts WHERE id=?", (row["id"],))
         con.execute("INSERT INTO capability_fts(id,name,description,tags) VALUES (?,?,?,?)",
                     (row["id"],row["name"],row["description"]," ".join(row["tags"])))
         if event != "seen":
-            event_id = digest(f"{row['id']}|{event}|{row['content_sha256']}".encode())
-            con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,source_id) VALUES (?,?,?,?,?)",
-                        (event_id,row["id"],event,row["content_sha256"],row["source_id"]))
+            event_id = digest(f"{row['id']}|{event}|{row['content_sha256']}|{row.get('taxonomy_sha256')}".encode())
+            con.execute("INSERT OR IGNORE INTO discovery_event(event_id,capability_id,event,content_sha256,taxonomy_sha256,source_id) VALUES (?,?,?,?,?,?)",
+                        (event_id,row["id"],event,row["content_sha256"],row.get("taxonomy_sha256"),row["source_id"]))
             changed += 1
     duplicates = con.execute("""SELECT a.id,b.id,a.content_sha256
         FROM capability a JOIN capability b
@@ -322,11 +337,11 @@ def search(con: sqlite3.Connection, query: str, limit: int = 8) -> list[dict]:
 
 def export_ledger(con: sqlite3.Connection, path: Path) -> int:
     path.parent.mkdir(parents=True,exist_ok=True)
-    rows = con.execute("""SELECT event_id,capability_id,event,content_sha256,source_id,recorded_at
+    rows = con.execute("""SELECT event_id,capability_id,event,content_sha256,taxonomy_sha256,source_id,recorded_at
                           FROM discovery_event ORDER BY recorded_at,event_id""").fetchall()
     with path.open("w",encoding="utf-8") as stream:
         for row in rows:
-            stream.write(json.dumps(dict(zip(("event_id","capability_id","event","content_sha256","source_id","recorded_at"),row)),sort_keys=True)+"\n")
+            stream.write(json.dumps(dict(zip(("event_id","capability_id","event","content_sha256","taxonomy_sha256","source_id","recorded_at"),row)),sort_keys=True)+"\n")
     return len(rows)
 
 def main() -> int:

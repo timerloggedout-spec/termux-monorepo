@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "4d3d979b439704090f5a42d1def578c0ecbd2759abc164c821f5b23f744e3a82",
+  "source_fingerprint": "5ded4dbe654caed5a939a80226abb85499690153bc996eed0d27f4d77e3e59c9",
   "workflow_count": 325,
   "workflows": [
     {
@@ -3389,6 +3389,7 @@
     {
       "action_pins": [
         "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
         "dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de"
       ],
       "authority": "read-only-or-advisory",

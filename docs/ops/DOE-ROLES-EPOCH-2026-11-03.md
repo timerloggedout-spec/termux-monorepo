@@ -175,7 +175,7 @@ everywhere.
 
 ## Jules-derived local skill bundle (2026-11-20)
 
-The local clone of the Google Labs Jules skill repository is `timerloggedout-spec/jules-skills_fork` at `7a76d3bfcf4258ee437d65b5d12e54b51c395de5` (Apache-2.0). Its two skills are `automate-github-issues` and `local-action-verification`. The bundle is registered as a **role capability template**, not as a provider, agent identity, or execution adapter.
+The local clone of the Google Labs Jules skill repository is `timerloggedout-spec/jules-skills_fork` at `7a76d3bfcf4258ee437d65b5d12e54b51c395de5` (Apache-2.0). Its two skills are `automate-github-issues` and `local-action-verification`. The bundle is registered as a **role capability template**; provider identity, agent identity, and execution adapter remain separate registry dimensions.
 
 Role bindings preserve the canonical DoE classes:
 

@@ -1,23 +1,11 @@
-"""Admin Graph page contract (2026-10-30).
-
-The Admin Interaction Graph is a self-contained canonical-model admin UI:
-the model is rendered deterministically, every node/edge carries a
-repoSource, and statuses follow docs/DEPLOYMENT-LANES.md (SSOT) with
-repo-delta markers where the repo's own docs disagree. These tests pin
-the page's wiring into the published dashboard set:
-
-* the page is present and carries its honesty markers (simulated pulses,
-  prepared-not-sent dispatch, pull-to-refresh suppression);
-* the unified nav of every published dashboard page links to it;
-* it is in the sitemap.
-"""
-import re
+"""Admin Graph page contract and live routing-pulse integration."""
 from pathlib import Path
+import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "apps" / "tribute-dashboard"
 PAGE = APP / "admin-graph.html"
-NAV_LINK = ('<a href="https://timerloggedout-spec.github.io/help-wanted/'
+NAV_LINK = ('<a href="https://timerloggedout-spec.github.io/tribute/'
             'admin-graph.html">Admin Graph</a>')
 NAV_PAGES = ["index.html", "quota.html", "matrix.html", "admin.html",
              "oracle.html", "moneyball.html", "3l0.html", "mvt.html",
@@ -27,36 +15,66 @@ NAV_PAGES = ["index.html", "quota.html", "matrix.html", "admin.html",
              "proposals.html", "quota-usage.html", "telemetry.html"]
 
 
-def _html():
-    return PAGE.read_text(encoding="utf-8")
+class AdminGraphPageContractTests(unittest.TestCase):
+    def test_page_present_and_self_contained(self):
+        html = PAGE.read_text(encoding="utf-8")
+        self.assertIn("Admin Interaction Graph", html)
+        self.assertNotIn("api.github.com", html)
+        self.assertNotIn("raw.githubusercontent", html)
+
+    def test_live_route_pulse_contract(self):
+        html = PAGE.read_text(encoding="utf-8")
+        markers = ("LIVE ROUTE PULSES", "LIVE_FEED_URL", "task_routed",
+                   "routing-orch", "after_seq", "LIVE_CURSOR_KEY", "localStorage", "commitRuntimeCursor", "WORKER UPGRADE PENDING", "var reverse=false", "PREPARED",
+                   "pull-to-refresh", "DEPLOYMENT-LANES")
+        for marker in markers:
+            with self.subTest(marker=marker):
+                self.assertIn(marker, html)
+
+    def test_nav_link_on_every_published_page(self):
+        for name in NAV_PAGES:
+            with self.subTest(page=name):
+                self.assertIn(NAV_LINK, (APP / name).read_text(encoding="utf-8"))
+
+    def test_in_sitemap(self):
+        self.assertIn("tribute/admin-graph.html",
+                      (APP / "sitemap.xml").read_text(encoding="utf-8"))
+
+    def test_admin_systems_inventory_row(self):
+        self.assertIn("<td>Admin Interaction Graph</td>",
+                      (APP / "admin.html").read_text(encoding="utf-8"))
+
+    def test_historical_route_inspection_controls_and_shareable_ranges(self):
+        html = PAGE.read_text(encoding="utf-8")
+        for marker in ('historyFrom', 'historyTo', 'inspectHistoryBtn',
+                       'liveHistoryBtn', 'historyShareBtn', 'inspectRouteHistory',
+                       'feed.mode!=="historical"', 'fromDate.toISOString()',
+                       'historyParams.get("view")==="history"'):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, html)
+
+    def test_worker_historical_range_and_cursor_contract(self):
+        worker = (ROOT / "ops" / "admin-graph-live" / "worker.js").read_text(encoding="utf-8")
+        for marker in ('fromRaw', 'toRaw',
+                       'occurred_at >= ? AND occurred_at <= ? AND rowid > ?',
+                       'mode: historical ? "historical" : "live"'):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, worker)
+
+    def test_worker_verifies_claim_provenance_and_cursor_reads(self):
+        worker = (ROOT / "ops" / "admin-graph-live" / "worker.js").read_text(encoding="utf-8")
+        self.assertIn("verifyRouteComment", worker)
+        self.assertIn("issues/comments/", worker)
+        self.assertIn("after_seq", worker)
+        self.assertIn("INSERT OR IGNORE", worker)
+        self.assertIn("workflow_path: run.path || null", worker)
+        self.assertIn("safeRoutePayload(JSON.parse(event.payload || \"{}\"))", worker)
+        self.assertIn("event.payload = null;", worker)
+        self.assertIn("route_events: true", worker)
+        publisher = (ROOT / ".github" / "workflows" / "admin-graph-runtime-publisher.yml").read_text(encoding="utf-8")
+        self.assertIn("Admin Graph Worker deployment gate", publisher)
+        self.assertIn("source_comment_verification", publisher)
 
 
-def test_page_present_and_self_contained():
-    html = _html()
-    assert "Admin Interaction Graph" in html
-    # no credential-bearing or live API calls from the page
-    assert "api.github.com" not in html
-    assert "raw.githubusercontent" not in html
-
-
-def test_honesty_markers_present():
-    html = _html()
-    for marker in ("SIMULATED PULSES", "PREPARED", "pull-to-refresh",
-                   "DEPLOYMENT-LANES"):
-        assert marker in html, marker
-
-
-def test_nav_link_on_every_published_page():
-    for name in NAV_PAGES:
-        text = (APP / name).read_text(encoding="utf-8")
-        assert NAV_LINK in text, name
-
-
-def test_in_sitemap():
-    sitemap = (APP / "sitemap.xml").read_text(encoding="utf-8")
-    assert "help-wanted/admin-graph.html" in sitemap
-
-
-def test_admin_systems_inventory_row():
-    admin = (APP / "admin.html").read_text(encoding="utf-8")
-    assert "<td>Admin Interaction Graph</td>" in admin
+if __name__ == "__main__":
+    unittest.main()

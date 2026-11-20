@@ -1,0 +1,130 @@
+{
+  "campaign_id": "rust-zero-drift-evolution",
+  "family": "doe",
+  "member_kind": "campaign",
+  "status": "proposed_not_admitted",
+  "moniker": "doe-expert-rust-zero-drift",
+  "oversight": "doe-expert",
+  "records_home": "experiments/doe/rust-zero-drift-evolution/records/",
+  "registration": {
+    "preregistered_in_repo": true,
+    "recorded": "2026-11-20",
+    "note": "Candidate design only. DoE oversight must review and admit the design, freeze the task cohort and decision thresholds, and verify the runner before designed dispatch. No run records exist."
+  },
+  "source_subject": {
+    "repository": "https://github.com/timerloggedout-spec/rust-zero-drift_fork",
+    "revision": "2f1cac93142b4ce392d57371e5d590a56d13f5ad",
+    "observed_at": "2026-11-20T16:12:00Z",
+    "classification": "restricted-use external reference; not an admitted FOSS dependency",
+    "license": "All Rights Reserved; public viewing and portfolio inspection only; derivative republication requires explicit written permission",
+    "provenance_note": "Cargo.toml repository field points to https://github.com/PNWcoastie/rust-zero-drift rather than the fork URL; resolve provenance before any further admission."
+  },
+  "hypothesis": {
+    "statement": "Across authorized, project-owned Rust tasks, independently implemented compile-time guardrails, explicit domain-state modeling, deeper verification and Sans-IO boundaries improve verified invariant satisfaction and reduce escaped regressions versus the repository-native baseline, with acceptable build, review and maintenance cost.",
+    "null": "The candidate engineering treatments do not improve verified correctness or regression outcomes after task family, difficulty, toolchain and base revision are controlled.",
+    "limits": "The source repository documents these patterns but has not been independently built or tested in this intake. This campaign evaluates independently authored implementations of the patterns; it does not authorize copying source, skill text or other protected expression."
+  },
+  "design": {
+    "type": "2^4 full-factorial candidate (16 treatment combinations; design proposal only)",
+    "suite_type": "live",
+    "blocks": [
+      "task_family",
+      "difficulty_stratum",
+      "target_repository",
+      "base_revision"
+    ],
+    "factors": {
+      "compiler_guardrails": [
+        "repository_native_baseline",
+        "unsafe_forbid_and_strict_clippy"
+      ],
+      "domain_modeling": [
+        "repository_native_types",
+        "validated_newtypes_and_typestate"
+      ],
+      "verification_depth": [
+        "unit_and_integration_tests",
+        "property_tests_plus_mutation_and_compile_fail_checks"
+      ],
+      "core_boundary": [
+        "repository_native_architecture",
+        "sans_io_core_with_explicit_adapters"
+      ]
+    },
+    "assignment": "Randomize treatment assignment within predeclared task-family and difficulty blocks. Keep the task contract and base revision common across arms. Record exclusions, deviations, failed builds and unexecuted assignments. Use a common cohort and independent evaluation; assess interactions rather than assuming additive gains.",
+    "unit_of_observation": "One authorized Rust task executed under one frozen treatment and configured instance = one EXPERIMENT record.",
+    "eligibility": [
+      "Project-owned or explicitly authorized Rust tasks with stable base SHA, acceptance contract and independent reviewer.",
+      "Tasks with reproducible Cargo toolchain, target and CI environment.",
+      "Tasks that can be evaluated without copying protected source or skill content from the external reference.",
+      "Exclude urgent production incidents, unsafe hardware actions, tasks lacking license/authorization clarity, and tasks without an independently testable outcome."
+    ],
+    "held_fixed": [
+      "Same task specification, acceptance criteria, base SHA, target triple and Rust toolchain across compared arms.",
+      "Same runner image, hardware class, build profile, dependency cache policy and test timeout policy.",
+      "Same independent reviewer and evaluator version across arms.",
+      "Same task-family block and difficulty assignment; capture all deviations.",
+      "No external repository code, prompts or protected prose copied into the implementation."
+    ],
+    "execution_gate": "DoE oversight approves the design, task cohort, toolchain, assignment plan, independent evaluator, sample size, practical-effect threshold, uncertainty method, stopping rule, resource cap, license boundary and automated runner before the first designed dispatch.",
+    "status": "design_only"
+  },
+  "outcomes": {
+    "primary": "Verified invariant and requirement satisfaction: independently accepted critical invariants / applicable critical invariants, with all critical requirements passing.",
+    "secondary": [
+      "compile, unit, integration and compile-fail test pass rates",
+      "property-test counterexample yield and reproducibility",
+      "mutation score and surviving-mutant classes",
+      "independently reproduced defect count and severity",
+      "regression rate after integration",
+      "build/test wall time and resource cost",
+      "binary size and dependency-count delta",
+      "unsafe-code/lint violation count",
+      "review rework, steering interventions and integration conflicts",
+      "maintenance burden and portability across supported targets"
+    ],
+    "failure_attribution": "Separate implementation defect, task/specification ambiguity, compiler/toolchain mismatch, test-oracle defect, runner/environment failure, dependency failure and reviewer disagreement. Environment failure is recorded as such, not scored as code failure."
+  },
+  "decision_rule": {
+    "selection_fraction": "NOT_ESTABLISHED — DoE oversight sets before execution.",
+    "minimum_sample": "NOT_ESTABLISHED — DoE oversight sets from the eligible task population and power/precision analysis before execution.",
+    "significance_and_confidence": "Use the standing DoE significance gate; register the effect threshold, uncertainty method and multiplicity handling before dispatch.",
+    "promotion": "Promote an independently implemented pattern only after the primary outcome meets the pre-registered practical threshold, all critical invariants pass, independent review is complete, and regression/security/maintenance constraints pass.",
+    "no_selection": "Insufficient, contradictory, underpowered or non-reproducible evidence yields no_selection; retain the baseline and record the gap."
+  },
+  "generations": {
+    "generation_zero": "Repository-native Rust baseline with exact base SHA, toolchain, target, build settings, test suite and configured-instance stamps.",
+    "next_generation": "Create new candidate IDs for independently implemented treatment combinations; record parent_candidate_refs and exact source/prompt/tool/config hashes.",
+    "culling": "Cull only reversible treatment candidates after the pre-registered evidence gate. Preserve all records and lineage. Security, correctness and governance protections remain ineligible for autonomous culling.",
+    "monitoring": "Compare generations on common task strata; monitor correctness, regression, mutation sensitivity, build cost, portability and maintenance drift.",
+    "promotion_authority": "DoE oversight, independent reviewer and Operator policy where permissions or protected surfaces are implicated."
+  },
+  "instance_stamps": {
+    "required": "EXPERIMENT.schema.json treatment.instance when an agent/provider instance performs the task: provider, model@version, exact system_prompt ref+sha256, tools ref+sha256, role, moniker, context and instance_key.",
+    "missing_fields": "Record unknown fields as NOT_ESTABLISHED or null where the schema permits; never fabricate an instance_key.",
+    "record_rule": "One append-only EXPERIMENT record per executed observation. Keep raw source/build/test evidence in the approved evidence store and link by URI."
+  },
+  "automation": {
+    "status": "not_implemented",
+    "runner": "TBD — evaluate reuse of the existing ATES/MVT execution vehicle after verifying Rust/Cargo support; build a bounded repository-native workflow only if the existing runner cannot satisfy the contract.",
+    "records": "Emit one docs/ops/corpus/EXPERIMENT.schema.json-conforming record per dispatched observation and an evidence-linked SUMMARY after the cohort closes.",
+    "requirement": "Automated execution is required for designed results. Manual exploratory runs remain OBSERVATIONAL."
+  },
+  "constraints": [
+    "No designed dispatch, provider invocation, pool mutation or candidate promotion follows from committing this proposal.",
+    "The external repository is All Rights Reserved and public-view-only; use it as a reference for capability hypotheses and test independently authored patterns. Obtain written permission before copying or adapting protected code, skill text or other expression.",
+    "Campaign remains proposed_not_admitted until DoE oversight approves the design and the automated runner, and the family admission rule is satisfied.",
+    "No result, score, build status or test outcome is claimed until an actual run produces evidence.",
+    "Keep records append-only; never replace missing measurements with zero.",
+    "Keep secrets, private prompts, customer data and restricted source content out of records and artifacts."
+  ],
+  "references": [
+    "docs/ops/DOE-FAMILY.md",
+    "docs/ops/DOE-TAXONOMY.md",
+    "docs/ops/corpus/EXPERIMENT.schema.json",
+    "docs/ops/MVT-DOE-ATES-SEPARATION.md",
+    "docs/superpowers/specs/2026-11-11-continuous-capability-evolution-lab.md",
+    "https://github.com/timerloggedout-spec/rust-zero-drift_fork",
+    "https://github.com/timerloggedout-spec/rust-zero-drift_fork/commit/2f1cac93142b4ce392d57371e5d590a56d13f5ad"
+  ]
+}

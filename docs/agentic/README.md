@@ -133,7 +133,7 @@ python3 scripts/agentic/dependency_phases.py \
   dispatch --phase-id DPH-100 --issue 123
 ```
 
-The GitHub Actions dispatcher may invoke Jules only after a successful applied claim and only when `JULES_API_KEY` is configured. It does not merge PRs, close proposals, update submodules, or grant approvals.
+The dispatcher records claims only when an approved specialist has a verified live adapter. Google Jules is read-only after 2026-11-11; the local Jules-derived DoE skill bundle is role guidance, not an execution adapter. Merge authority remains separate.
 
 ## Workflow setup
 

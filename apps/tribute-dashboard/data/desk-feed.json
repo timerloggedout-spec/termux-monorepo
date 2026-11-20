@@ -3492,7 +3492,7 @@
     "AppID lane closing state (2026-11-03): countermand received 04:33, both provisioning legs stood down same minute · repo disposition KEEP-PARKED (created under crossed signal; temp branch stays as record) · moniker `Mimir · UgreenSkills` record-only · App never created (slug 404; creation never reached) · ∅ C12 provisioning in flight",
     "Devpost project record: Receipts Vault published 2026-11-16T01:16:33.251-05:00; event membership submitted_at 2026-11-16T01:16:33.300-05:00; https://devpost.com/software/receipts-vault"
    ],
-   "next": "Monitor finalist selection Nov 21; if invited, complete one assigned remote-NAS testing day Nov 22–28 and submit final ZIP + public YouTube demo by Nov 30 23:45 PT. Otherwise close after Round 1.",
+   "next": "Await finalist selection Nov 21. If invited, activate the conditional Round 2 timebox: assigned remote-NAS test day Nov 22–28; internal landing Nov 28 23:45 PT; final ZIP + public YouTube demo by Nov 30 23:45 PT. If not invited, close after Round 1.",
    "provider_usage": [
     {
      "provider": "command-dispatch",
@@ -3509,36 +3509,59 @@
     }
    ],
    "priority_timebox": {
-    "wall": "2026-11-15T23:45:00-08:00",
-    "landing": "2026-11-14",
+    "owner_order": "Conditional Round 2 timebox; activate only after Devpost finalist invitation on 2026-11-21. Hard wall from official UGREEN event rules: 2026-11-30 23:45 PST.",
+    "conditional": true,
+    "condition": "Activate only if Devpost confirms finalist status on 2026-11-21.",
+    "wall": "2026-11-30T23:45:00-08:00",
+    "landing": "2026-11-28T23:45:00-08:00",
     "tiers": [
      {
       "tier": 0,
       "name": "BASE",
-      "from": "now"
+      "from": "now",
+      "reminder": null,
+      "effect": "Await finalist decision; preserve Round 1 evidence."
      },
      {
       "tier": 1,
       "name": "CUSHION",
-      "from": "2026-11-14T09:00:00-08:00"
+      "at": "2026-11-27T23:45:00-08:00",
+      "reminder": null,
+      "effect": "HIGH — if invited, confirm the assigned remote-NAS testing day and freeze scope."
      },
      {
       "tier": 2,
       "name": "WALL-DAY",
-      "from": "2026-11-15T00:00:00-08:00"
+      "at": "2026-11-30T00:00:00-08:00",
+      "reminder": null,
+      "effect": "CRITICAL — complete final package and public demo validation."
      },
      {
       "tier": 3,
       "name": "ESCALATION",
-      "from": "2026-11-15T19:45:00-08:00"
+      "at": "2026-11-30T19:45:00-08:00",
+      "reminder": null,
+      "effect": "MAX — final submission mechanics only."
      },
      {
       "tier": 4,
       "name": "FINAL",
-      "from": "2026-11-15T23:15:00-08:00"
+      "at": "2026-11-30T23:15:00-08:00",
+      "reminder": null,
+      "effect": "Last-call submission mechanics only."
      }
     ],
-    "step_down": "wall+24h ⇒ tier 1 · wall+48h ⇒ tier 0"
+    "step_down_cushion": [
+     {
+      "at": "wall+24h",
+      "tier": 1
+     },
+     {
+      "at": "wall+48h",
+      "tier": 0
+     }
+    ],
+    "note": "Conditional Round 2 projection only; activate after finalist invitation. No Round 2 Google Calendar checkpoints were created; deadline-reminders/v1 Tracking register binding remains pending."
    },
    "resubmit_policy": "UNCLEAR — SUBMIT-ONCE discipline until verified (main ruling 2026-11-03)",
    "stages_detail": {
@@ -3547,7 +3570,43 @@
     "build": "in-window build — ∅ reuse of prior Skills/materials (hard constraint)",
     "identity": "DEFERRED — repo/AppID at first repo-building round (main ruling of record); R1 identity anchor = desk package records + entries record",
     "submission": "R1 published and submission timestamp verified from the Devpost project membership; Round 2 remains conditional on Nov 21 finalist invitation."
-   }
+   },
+   "completed_priority_timeboxes": [
+    {
+     "wall": "2026-11-15T23:45:00-08:00",
+     "landing": "2026-11-14",
+     "tiers": [
+      {
+       "tier": 0,
+       "name": "BASE",
+       "from": "now"
+      },
+      {
+       "tier": 1,
+       "name": "CUSHION",
+       "from": "2026-11-14T09:00:00-08:00"
+      },
+      {
+       "tier": 2,
+       "name": "WALL-DAY",
+       "from": "2026-11-15T00:00:00-08:00"
+      },
+      {
+       "tier": 3,
+       "name": "ESCALATION",
+       "from": "2026-11-15T19:45:00-08:00"
+      },
+      {
+       "tier": 4,
+       "name": "FINAL",
+       "from": "2026-11-15T23:15:00-08:00"
+      }
+     ],
+     "step_down": "wall+24h ⇒ tier 1 · wall+48h ⇒ tier 0",
+     "round": "R1",
+     "status": "completed"
+    }
+   ]
   },
   {
    "entry": "Repo-Story",

@@ -8,6 +8,11 @@ on:
       - 'docs/ops/COLLABORATOR-ROTATION-MAP.json'
       - 'scripts/identity/rotation_sweep.py'
       - 'tests/test_rotation_sweep.py'
+      - 'scripts/provenance/**'
+      - 'tests/test_ingest_exports.py'
+      - 'docs/ops/PROVENANCE-EXPORT-INGEST.md'
+      - 'ops/provenance/consumers.json'
+      - '.github/workflows/provenance-export-ingest.yml'
       - '.github/workflows/**'
       - 'docs/icm/**'
       - 'CLAUDE.md'
@@ -55,9 +60,6 @@ jobs:
         run: |
           python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
           python3 -B -m unittest discover -s tests -p 'test_ingest_exports.py' -v
-      - name: Classifier and factorial DoE regression tests
-        run: python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
-
       - name: Run rotation map sweep and emit EXPERIMENT record
         run: |
           python3 scripts/identity/rotation_sweep.py \

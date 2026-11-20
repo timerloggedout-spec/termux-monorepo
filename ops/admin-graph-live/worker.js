@@ -161,8 +161,22 @@ export default {
     if (url.pathname === "/events" && request.method === "GET") {
       const limit = Math.min(400, Math.max(1, Number(url.searchParams.get("limit") || 200)));
       const afterRaw = url.searchParams.get("after_seq");
+      const fromRaw = url.searchParams.get("from");
+      const toRaw = url.searchParams.get("to");
+      const historical = fromRaw !== null || toRaw !== null;
       let rows;
-      if (afterRaw !== null) {
+      if (historical) {
+        const fromMs = fromRaw ? Date.parse(fromRaw) : NaN;
+        const toMs = toRaw ? Date.parse(toRaw) : NaN;
+        const after = afterRaw === null ? 0 : Number(afterRaw);
+        if (!Number.isFinite(fromMs) || !Number.isFinite(toMs) || fromMs > toMs ||
+            !Number.isSafeInteger(after) || after < 0) {
+          return new Response("invalid historical range or cursor", {status: 400, headers: cors});
+        }
+        rows = await env.EVENTS_DB.prepare(
+          "SELECT rowid AS seq,id,kind,event,status,workflow,job,step,repo,run_id,run_attempt,job_id,head_sha,url,occurred_at,received_at,payload FROM runtime_events WHERE occurred_at >= ? AND occurred_at <= ? AND rowid > ? ORDER BY rowid ASC LIMIT ?"
+        ).bind(new Date(fromMs).toISOString(), new Date(toMs).toISOString(), after, limit).all();
+      } else if (afterRaw !== null) {
         const after = Number(afterRaw);
         if (!Number.isSafeInteger(after) || after < 0) return new Response("invalid cursor", {status: 400, headers: cors});
         rows = await env.EVENTS_DB.prepare(
@@ -190,6 +204,7 @@ export default {
       const nextAfter = events.length ? Number(events[events.length - 1].seq) : Number(afterRaw || 0);
       return Response.json({
         schema: "admin-graph-live-events/v1",
+        mode: historical ? "historical" : "live",
         source: "QUE task-claim observer + GitHub Actions lifecycle observer + API-backed run reconciler",
         repo: REPO, generated_at: new Date().toISOString(), poll_hint_ms: 5000,
         next_after_seq: nextAfter,

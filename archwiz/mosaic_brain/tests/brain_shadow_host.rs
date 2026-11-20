@@ -190,7 +190,9 @@ fn run_shadow_composition(policy: DecisionStatus) -> ShadowReceipt {
             max_plan_steps: 4,
         },
     );
-    let result = brain.run(brain_input()).expect("fixture reasoning run succeeds");
+    let result = brain
+        .run(brain_input())
+        .expect("fixture reasoning run succeeds");
 
     // The host only routes to a specialist after the injected policy gate
     // returns Ready. The kernel's decision remains authoritative.

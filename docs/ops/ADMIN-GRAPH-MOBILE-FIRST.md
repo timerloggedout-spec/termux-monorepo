@@ -26,7 +26,7 @@ Admin Graph ships through its established Tribute publication path. Preserve the
 | Touch | 44 CSS px minimum targets; visible pressed/focus states; zero hover-only workflows |
 | Canvas | Touch pan, pinch/zoom, fit-to-view, node tap/selection, scroll containment |
 | Search | Visible input, previous/next/clear buttons in the touch-visible canvas toolbar, on-screen keyboard support |
-| Inspector | Single-column flow; readable fields; touch-sized editing and actions |
+| Inspector | Tapping a node opens a thumb-reachable bottom sheet; close returns to canvas; fields and actions stay touch-sized |
 | Keyboard | Hardware shortcuts as optional accelerators; core workflows remain touch-operable |
 | Accessibility | Accessible names, live search status, focus-visible treatment, reduced-motion support |
 | Performance | Fast initial render and responsive interactions on real mobile hardware |

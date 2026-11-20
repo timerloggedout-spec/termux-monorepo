@@ -18,7 +18,7 @@ separated ∧ acceptance checklist. (¬ in-session recon — live-4's `ba`
 operationalization, superseded by this campaign.)
 
 **Units:** Nov-wave dispatch issues — D2 (2026-11-03) · D4 (>2026-11-08)
-· M2/M3 @gate. Arm ∀ = Jules label route. Zero extra quota.
+· M2/M3 @gate. Arm ∀ = local DoE role guidance plus active provider-roster admission; legacy jules labels create retirement receipts.
 
 **Assignment:** balanced-alternating per entry, within entry-class
 strata (start = sha256 parity, ledger-recorded); **rnd** permutation

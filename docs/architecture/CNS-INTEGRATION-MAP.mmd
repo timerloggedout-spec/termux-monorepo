@@ -1,0 +1,75 @@
+# CNS Integration Map
+
+**Source ref:** `master@939ecc225675541d1ad5b829b427c7ac77ac2642`
+**Legend:** solid = verified/derived relationship; dashed = proposed; dotted = feedback/projection; unresolved = evidence or owner pending.
+
+```mermaid
+flowchart TD
+  GOV[Governance and permissions]
+  ICM[ICM context navigation]
+  CRG[Context Relationship Graph]
+  PTR[Pointer Fabric proposal]
+  BRAIN[Brain reasoning kernel]
+  MGR[Manager / Conductor]
+  QUE[QUE / QDesk admission]
+  BALLET[Ballet dependency choreography]
+  ROUTER[Provider Router]
+  ORBIT[ORBIT / SHIELD proposal]
+  BUS[Synaptic Bus proposal]
+  OWNERS[Existing canonical event owners]
+  EXEC[Specialists and execution adapters]
+  ATES[ATES / Action-Effect evidence]
+  WATCH[Runtime watchers]
+  THREE[3L0 actor scoring]
+  MONEY[MoneyBall PR scoring]
+  DOE[DoE / MVT]
+  SHE[SHE read-only projections]
+  EXPLORER[Historical Corpus Explorer]
+  LEARN[Skill and Manager evolution]
+
+  GOV --> ICM
+  GOV --> MGR
+  ICM --> CRG
+  CRG --> BRAIN
+  CRG -. context pointers .-> PTR
+  CRG --> MGR
+  BRAIN -. typed reasoning handoff .-> MGR
+  MGR --> QUE
+  QUE --> BALLET
+  BALLET --> ROUTER
+  ROUTER -. observe-only arbitration .-> ORBIT
+  ORBIT -. eligible decision evidence .-> EXEC
+  ROUTER --> EXEC
+  EXEC --> ATES
+  EXEC --> WATCH
+  WATCH --> ATES
+  ATES --> THREE
+  ATES --> MONEY
+  CRG --> DOE
+  THREE --> DOE
+  MONEY --> DOE
+  DOE -. measured policy candidates .-> LEARN
+  ATES --> SHE
+  CRG --> SHE
+  THREE --> SHE
+  MONEY --> SHE
+  SHE --> EXPLORER
+  SHE -. operator visibility .-> MGR
+  LEARN -. governed policy updates .-> MGR
+  EXEC -. typed event references .-> BUS
+  BUS -. canonical record references .-> OWNERS
+
+  classDef verified fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef proposed fill:#fff8e1,stroke:#f9a825,color:#6d4c00
+  class GOV,ICM,CRG,MGR,QUE,BALLET,ROUTER,EXEC,ATES,WATCH,THREE,MONEY,DOE,SHE class verified
+  class PTR,ORBIT,BUS,EXPLORER,LEARN class proposed
+```
+
+## Edge evidence classification
+
+- **Verified:** documented source-to-source relationship or merged implementation.
+- **Derived:** deterministic projection from canonical source records.
+- **Proposed:** open PR, proposal, or integration contract awaiting promotion and runtime proof.
+- **Unresolved:** relationship whose owner or evidence is currently unestablished.
+
+This map is an architecture projection. Each edge requires a source reference in the organ registry or a linked implementation record. The dashed edges remain proposals until exact-head checks and runtime evidence establish them.

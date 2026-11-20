@@ -1,6 +1,48 @@
 {
- "watermark": "2026-11-20T00:05:47Z",
+ "watermark": "2026-11-20T00:21:48Z",
  "active": {
+  "44645245865": {
+   "status": "queued",
+   "workflow": "hitl-control-plane-verify",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245850": {
+   "status": "queued",
+   "workflow": "que-cadence-kick",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245518": {
+   "status": "queued",
+   "workflow": "Agent Readability Source Contract",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245699": {
+   "status": "queued",
+   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245772": {
+   "status": "queued",
+   "workflow": "Orchestration Regression Guard",
+   "tier": 1,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645243479": {
+   "status": "queued",
+   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
   "43098247266": {
    "status": "queued",
    "workflow": "repo gate",
@@ -176,40 +218,222 @@
    "created_at": "2026-10-01T02:01:19Z",
    "run_started_at": "2026-10-01T02:01:19Z"
   },
-  "44642976054": {
+  "44645246003": {
    "status": "in_progress",
-   "workflow": "repo-tracking-collect",
+   "workflow": "Jules on Issues (label / @jules)",
    "tier": 4,
-   "created_at": "2026-11-20T00:05:21Z",
-   "run_started_at": "2026-11-20T00:05:21Z"
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
   },
-  "44642875040": {
+  "44645247114": {
    "status": "in_progress",
-   "workflow": "quota-allocation-planner",
+   "workflow": "ECC Tools demand-driven ops",
    "tier": 4,
-   "created_at": "2026-11-20T00:04:39Z",
-   "run_started_at": "2026-11-20T00:04:39Z"
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
   },
-  "44642853280": {
+  "44645245583": {
    "status": "in_progress",
-   "workflow": "tribute-dashboard-deploy",
-   "tier": 2,
-   "created_at": "2026-11-20T00:04:29Z",
-   "run_started_at": "2026-11-20T00:04:29Z"
+   "workflow": "Agent review \u2192 auto Jules",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
   },
-  "44642817302": {
+  "44645247242": {
+   "status": "in_progress",
+   "workflow": "Audit Cycle \u2014 Single PR Feed-Forward",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645247438": {
+   "status": "in_progress",
+   "workflow": "Jules on Issues (label / @jules)",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645246047": {
+   "status": "in_progress",
+   "workflow": "research intake",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645247300": {
+   "status": "in_progress",
+   "workflow": "Action Effectiveness Ledger",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645247107": {
+   "status": "in_progress",
+   "workflow": "Agent PR Jules Handoff",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245621": {
+   "status": "in_progress",
+   "workflow": "CellCog review",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645245530": {
+   "status": "in_progress",
+   "workflow": "Phantom secrets audit",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:45Z",
+   "run_started_at": "2026-11-20T00:21:45Z"
+  },
+  "44645243207": {
+   "status": "in_progress",
+   "workflow": "PR evidence evaluation",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243222": {
+   "status": "in_progress",
+   "workflow": "Peer review orchestrator",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243248": {
+   "status": "in_progress",
+   "workflow": "ECC Tools demand-driven ops",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243161": {
+   "status": "in_progress",
+   "workflow": "Agent PR Jules Handoff",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645242958": {
+   "status": "in_progress",
+   "workflow": "Audit Cycle \u2014 Single PR Feed-Forward",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243137": {
+   "status": "in_progress",
+   "workflow": "DeepSeek CI \u2013 Agentic Automation",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243501": {
+   "status": "in_progress",
+   "workflow": "CellCog review",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243271": {
+   "status": "in_progress",
+   "workflow": "Jules on Issues (label / @jules)",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645242950": {
+   "status": "in_progress",
+   "workflow": "DeepSeek CI \u2013 Agentic Automation",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243587": {
+   "status": "in_progress",
+   "workflow": "delphi-gate",
+   "tier": 1,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645243396": {
+   "status": "in_progress",
+   "workflow": "Action Effectiveness Ledger",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:44Z",
+   "run_started_at": "2026-11-20T00:21:44Z"
+  },
+  "44645210164": {
    "status": "in_progress",
    "workflow": "que-feed-collect",
    "tier": 4,
-   "created_at": "2026-11-20T00:04:13Z",
-   "run_started_at": "2026-11-20T00:04:13Z"
+   "created_at": "2026-11-20T00:21:29Z",
+   "run_started_at": "2026-11-20T00:21:29Z"
   },
-  "44642067968": {
+  "44645193159": {
+   "status": "in_progress",
+   "workflow": "DO Statement Style",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193108": {
+   "status": "in_progress",
+   "workflow": "telemetry-ingest",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193111": {
+   "status": "in_progress",
+   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193115": {
+   "status": "in_progress",
+   "workflow": "quota-served-probe",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193106": {
+   "status": "in_progress",
+   "workflow": "repo gate",
+   "tier": 1,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193105": {
+   "status": "in_progress",
+   "workflow": "Sweep Accountability",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645193100": {
+   "status": "in_progress",
+   "workflow": "Context Relationship + Lead/Lag Audit",
+   "tier": 4,
+   "created_at": "2026-11-20T00:21:21Z",
+   "run_started_at": "2026-11-20T00:21:21Z"
+  },
+  "44645081390": {
+   "status": "in_progress",
+   "workflow": "dispatch-watchdog",
+   "tier": 1,
+   "created_at": "2026-11-20T00:20:30Z",
+   "run_started_at": "2026-11-20T00:20:30Z"
+  },
+  "44644663627": {
    "status": "in_progress",
    "workflow": "Reviewer metrics collect",
    "tier": 4,
-   "created_at": "2026-11-19T23:58:49Z",
-   "run_started_at": "2026-11-19T23:58:49Z"
+   "created_at": "2026-11-20T00:17:28Z",
+   "run_started_at": "2026-11-20T00:17:28Z"
   },
   "39698523858": {
    "status": "in_progress",

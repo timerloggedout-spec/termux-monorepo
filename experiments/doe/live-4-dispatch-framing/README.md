@@ -14,7 +14,7 @@ demand, stop/escalation = identical ∀ levels.
 
 **Ride = Nov wave, zero extra quota** (recon PR #2784 concl. 2; arm
 correction PR #2787): campaign creates ∅ dispatch. Blocks = projects,
-arm ∀ = Jules label route:
+arm ∀ = local DoE role guidance plus active provider-roster admission; legacy jules labels create retirement receipts:
 
 | Block | Opens | Sequence (slots 1–8) |
 |---|---|---|

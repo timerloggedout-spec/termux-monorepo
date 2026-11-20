@@ -1735,7 +1735,7 @@ Issuance notes (screens of record, 2026-11-17): S1 in-fleet — the coined forms
 
 ## Rules
 
-1. Automated comments: **display** moniker in backticks; **ping** only live triggers (`@gemini-cli`, `@deepseek` / `@deepseek-ci`). Jules is historical and has no live trigger.
+1. Automated comments: **display** moniker in backticks; **ping** only live triggers (`@gemini-cli`, `@deepseek` / `@deepseek-ci`). Jules is historical; the live trigger set excludes Jules.
 2. Workflows matching a live trigger **must** also accept the display moniker case-insensitively where registered above; historical monikers remain display-only.
 3. Never put secrets or Class 3/4 material in moniker docs.
 4. If a moniker string is later registered as a GH username we do not control, keep it non-@ only.

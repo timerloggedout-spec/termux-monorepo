@@ -25,7 +25,7 @@ sets) or `null` — never inferred, never reconstructed from plausibility.
 
 ## events[]
 
-One object per packet (D0–D5), mirroring log §4. Plus slate-history events (e.g. `STRANDS-DECIDER`, added 2026-10-28: closed, not D-numbered, no moneyball intake — carried for history + opportunity_cost).
+One object per packet (D0–D5), plus current and historical slate events (e.g. `STRANDS-DECIDER`, C11–C12, C18–C19). Candidate opportunities remain in `candidate_events[]` until they enter the active slate; event records carry current registration/submission evidence.
 
 | field | meaning |
 |---|---|

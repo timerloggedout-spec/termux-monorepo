@@ -4,6 +4,16 @@
 `docs/rfps/temporal-durable-execution/N5-BUILD-BRIEF.md` (PR #2163).
 **Acceptance record:**
 `docs/proposals/passes/temporal-durable-execution/implementation/ADDENDUM-2026-10-28-N5.json`.
+
+**Scope note (2026-11-19):** This document records the N5 Delphi-cycle
+implementation and its 2026-10-28 acceptance path. The GitHub Actions
+engagement-server runs cited below remain valid historical N5 evidence.
+The current persistent fleet Temporal host is Muse VM per the owner
+correction recorded in [issue #5632](https://github.com/timerloggedout-spec/termux-monorepo/issues/5632)
+and TEMPORAL-SELF-HOST.md. The fleet-wide baseline at the last census
+was 0 workflow executions / 0 schedules; #5632 tracks the live producer,
+worker, and schedule wiring. This N5 record does not claim those fleet
+lanes have migrated to the Muse VM.
 The cycle v2 semantics belong to the Delphi lane; this build moved
 the *substrate* only — `method_cycle.py` remains the implementation
 of record for semantics, and the workflow's finalize stage calls it.

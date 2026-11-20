@@ -43,7 +43,8 @@ Execution telemetry is metadata-first. Do not emit prompts, completions, credent
 | TPV | (input + output tokens) / inference seconds | Model inference throughput; not total system latency. |
 | Handoff latency | agent-B start − agent-A emit | Queue/context/state-transfer overhead. |
 | Action density | actions / active seconds | External interaction intensity. |
-| Parallel yield | sequential baseline / (agents × wall time) | Efficiency of parallel execution relative to a declared baseline. |
+| Parallel yield | sequential baseline / (agents × wall time) | Dimensionless efficiency of parallel execution relative to a declared baseline. |
+| Remaining ETA | remaining work units / (completed work units / elapsed seconds) | Evidence-based point estimate in seconds; requires comparable weighted-work units and an observed positive completion rate. |
 | RPI | (failed actions + retries) / total actions | Retry/error overhead. |
 | Tool delay | mean non-LLM tool duration | Infrastructure/I/O latency. |
 | CIE | output tokens / input tokens | Context/completion efficiency; only meaningful with token telemetry. |

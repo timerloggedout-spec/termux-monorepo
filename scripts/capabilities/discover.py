@@ -50,6 +50,22 @@ def path_surface(path: Path, root: Path) -> tuple[str, str]:
         return "repo-vendor-skills", "unverified"
     return "repo-nested-skills", "repository-canonical"
 
+def load_taxonomy(root: Path | None = None) -> dict:
+    candidates = []
+    if root is not None:
+        candidates.append(root / "ops" / "capability_discovery" / "taxonomy.json")
+    candidates.append(Path(__file__).resolve().parents[2] / "ops" / "capability_discovery" / "taxonomy.json")
+    for candidate in candidates:
+        if candidate.is_file():
+            return json.loads(candidate.read_text(encoding="utf-8"))
+    raise FileNotFoundError("ops/capability_discovery/taxonomy.json is required")
+
+def validate_classification(domain: str, function: str, taxonomy: dict) -> tuple[str, str]:
+    domains = taxonomy.get("domains", {})
+    if domain not in domains or function not in domains[domain]:
+        return "agentic", "capability-discovery"
+    return domain, function
+
 def infer_tags(name: str, description: str, locator: str, explicit: str = "") -> tuple[str, str, list[str]]:
     text = " ".join((name, description, locator, explicit)).lower()
     rules = [
@@ -76,6 +92,7 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
 
 def scan_repository(root: Path) -> list[dict]:
     rows = []
+    taxonomy = load_taxonomy(root)
     for path in sorted(root.rglob("*")):
         if not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue
@@ -109,6 +126,7 @@ def scan_repository(root: Path) -> list[dict]:
         if SECRET_RE.search(text):
             trust = "quarantined"
         domain, function, facets = infer_tags(name, description, locator, frontmatter.get("tags", ""))
+        domain, function = validate_classification(domain, function, taxonomy)
         if source_id == "repo-vendor-skills":
             facets.append("vendor")
         if path.name == "SKILLS.md" or path.suffix.lower() == ".skills":
@@ -121,12 +139,13 @@ def scan_repository(root: Path) -> list[dict]:
             "domain": domain, "function": function, "facets": sorted(set(facets)),
             "trust": trust, "lifecycle": "classified", "version_ref": None,
             "aliases": [], "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((name + " " + description + " " + locator).lower())))[:80]
+            "tags": sorted(set(TOKEN_RE.findall((name + " " + description + " " + locator + " " + frontmatter.get("tags", "")).lower())))[:80]
         })
     return rows
 
 def import_session_json(path: Path, kind: str) -> list[dict]:
     data = json.loads(path.read_text(encoding="utf-8"))
+    taxonomy = load_taxonomy()
     if kind == "plugin-skill":
         items = data.get("skills", data.get("plugin_skills", []))
         source_id = "session-plugin-skills"
@@ -141,6 +160,7 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         description = item.get("activation_description") or item.get("summary") or item.get("description") or ""
         locator = item.get("uri") or item.get("name") or str(name)
         domain, function, facets = infer_tags(str(name), str(description), str(locator))
+        domain, function = validate_classification(domain, function, taxonomy)
         facets.extend(["session", "plugin" if kind == "plugin-skill" else "tool"])
         fingerprint = digest((str(name) + "\0" + str(description)).encode())
         rows.append({

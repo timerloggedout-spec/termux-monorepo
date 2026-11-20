@@ -203,7 +203,7 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
         "honesty": [
             "Subjects with a rule knowable (NOT_ESTABLISHED / on receipt / "
             "at exam pass) render open-ended: no date is invented.",
-            "AMD-17 / AMD-18 and the new C18/C19 Devpost submission subjects "
+            "AMD-17 / AMD-18, C12-24/C12-25/C12-26, and C18/C19 Devpost submission subjects "
             "carry no calendar-register anchors (NOT_ESTABLISHED in the "
             "book) - no landing/final markers render; desk-feed escalation "
             "projections remain separate from calendar reminders.",

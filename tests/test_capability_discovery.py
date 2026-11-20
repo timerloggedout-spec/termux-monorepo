@@ -66,6 +66,11 @@ class CapabilityDiscoveryTests(unittest.TestCase):
             self.assertEqual(second["changed"], 0)
             self.assertEqual(con.execute("SELECT count(*) FROM discovery_event").fetchone()[0], 1)
             self.assertEqual(len(search(con, "testing workflow")), 1)
+            changed_taxonomy = {**rows[0], "taxonomy_sha256": "a" * 64}
+            reclassified = upsert(con, [changed_taxonomy])
+            self.assertEqual(reclassified["changed"], 1)
+            event = con.execute("SELECT event FROM discovery_event ORDER BY recorded_at DESC LIMIT 1").fetchone()
+            self.assertEqual(event[0], "reclassified")
 
     def test_identical_content_creates_relationship_without_merging_sources(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -45,7 +45,7 @@ def _routing_table(text: str) -> dict[str, list[str]]:
     ):
         pool = re.search(r"(?m)^      candidate_pool:\s*\[([^\]]*)\]", block.group("body"))
         if not pool:
-            raise RouteError(f"routing role {block.group(1)!r} has no candidate_pool")
+            raise RouteError(f"routing role {block.group(1)!r} is missing candidate_pool")
         routes[block.group(1)] = [
             item.strip().strip("'\"")
             for item in pool.group(1).split(",")

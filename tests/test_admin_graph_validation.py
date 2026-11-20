@@ -122,6 +122,7 @@ def test_admin_graph_mobile_first_contract():
     assert 'id="graphSearch"' in html
     assert 'id="searchPrev"' in html and 'id="searchNext"' in html and 'id="searchClear"' in html
     assert 'function stepGraphSearch(direction)' in html
+    assert 'document.getElementById("graphSearch").blur();render();' in html
     assert 'function clearGraphSearch(blur)' in html
     assert 'document.getElementById("searchPrev").addEventListener("click"' in html
     assert 'document.getElementById("searchNext").addEventListener("click"' in html

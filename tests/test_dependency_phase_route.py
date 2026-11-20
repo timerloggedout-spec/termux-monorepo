@@ -56,6 +56,26 @@ class DependencyPhaseRouteTests(unittest.TestCase):
         self.assertIsNone(result["selected_specialist"])
         self.assertEqual(["tembo", "gemini"], result["available_candidates"])
 
+    def test_manager_can_select_one_of_multiple_live_specialists(self):
+        with patch.dict(
+            "os.environ",
+            {"ROUTE_TEMBO_ADAPTER_READY": "true", "ROUTE_GEMINI_ADAPTER_READY": "true"},
+            clear=True,
+        ):
+            result = resolve_route(
+                plan(),
+                "DPH-100",
+                ROSTER,
+                selected_specialist="gemini",
+            )
+        self.assertEqual("routed", result["state"])
+        self.assertEqual("gemini", result["selected_specialist"])
+
+    def test_manager_selection_must_be_live_and_approved(self):
+        with patch.dict("os.environ", {}, clear=True):
+            with self.assertRaisesRegex(ValueError, "outside the live manager-approved candidate set"):
+                resolve_route(plan(), "DPH-100", ROSTER, selected_specialist="jules")
+
     def test_no_available_adapter_stops_without_claiming_a_specialist(self):
         with patch.dict("os.environ", {}, clear=True):
             result = resolve_route(plan(), "DPH-100", ROSTER)

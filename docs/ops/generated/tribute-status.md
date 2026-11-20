@@ -1,6 +1,6 @@
 # Help-Wanted Living Status · with Tribute
 
-_Generated 2026-11-20T19:44:02Z UTC · receipts=3962 · foreign_open=7 · tributes=132_
+_Generated 2026-11-20T21:00:34Z UTC · receipts=3962 · foreign_open=7 · tributes=132_
 
 ## Tributes (contributor ledger)
 

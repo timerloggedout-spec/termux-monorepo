@@ -39,7 +39,7 @@ GitHub only runs `issues` / `issue_comment` workflows from the **default branch*
 - Gemini workflows restrict `@gemini-cli` comment triggers to OWNER/MEMBER/COLLABORATOR.
 - Jules mention triggers similarly restricted.
 - Fork PRs are excluded from automatic review triggers.
-- GEMINI-CLI.md encodes Gemini-specific collaboration rules; CLAUDE.md owns repository governance (no secrets in git, master-staging, gates) plus coordination rules.
+- GEMINI-MESH.md encodes Gemini-specific collaboration rules; CLAUDE.md owns repository governance (no secrets in git, master-staging, gates) plus coordination rules.
 
 ## Routing policy (optimized routing)
 

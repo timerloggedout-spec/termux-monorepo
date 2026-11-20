@@ -9,88 +9,58 @@ ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "agent-pr-jules-handoff.yml"
 
 
-class JulesPrHandoffWorkflowTests(unittest.TestCase):
+class JulesPrRetirementReceiptTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.workflow = WORKFLOW.read_text(encoding="utf-8")
 
-    @classmethod
-    def job_block(cls, name: str) -> str:
-        match = re.search(
-            rf"^  {re.escape(name)}:\n.*?(?=^  [A-Za-z0-9_-]+:\n|\Z)",
-            cls.workflow,
-            flags=re.MULTILINE | re.DOTALL,
-        )
-        if match is None:
-            raise AssertionError(f"job {name!r} not found")
-        return match.group(0)
+    def test_workflow_is_issue_comment_scoped(self) -> None:
+        self.assertIn("  issue_comment:\n    types: [created]", self.workflow)
+        self.assertNotIn("  pull_request:", self.workflow)
+        self.assertIn("github.event.issue.pull_request", self.workflow)
+        self.assertIn("startsWith(github.event.comment.body, '@jules')", self.workflow)
 
-    def test_github_script_actions_use_immutable_commit_pins(self) -> None:
+    def test_trusted_human_source_is_revalidated(self) -> None:
+        self.assertIn("github.event.comment.user.type == 'User'", self.workflow)
+        self.assertIn("OWNER", self.workflow)
+        self.assertIn("MEMBER", self.workflow)
+        self.assertIn("COLLABORATOR", self.workflow)
+        self.assertIn("github.rest.issues.getComment", self.workflow)
+        self.assertIn("source.user?.type === 'User'", self.workflow)
+        self.assertIn("source.author_association", self.workflow)
+
+    def test_hosted_jules_execution_route_is_retired(self) -> None:
+        self.assertNotIn("JULES_API_KEY", self.workflow)
+        self.assertNotIn("jules.googleapis.com", self.workflow)
+        self.assertNotIn("google-labs-code/jules-invoke", self.workflow)
+        self.assertNotIn("target_agent: **jules**", self.workflow)
+        self.assertNotIn("@jules Please", self.workflow)
+        self.assertNotIn("pull_request:", self.workflow)
+        self.assertNotIn("mutation:", self.workflow)
+
+    def test_receipt_is_idempotent_and_captures_exact_pr_context(self) -> None:
+        self.assertIn("jules-retired-pr-request:", self.workflow)
+        self.assertIn("github.paginate(github.rest.issues.listComments", self.workflow)
+        self.assertIn("comments.some(comment =>", self.workflow)
+        self.assertIn("baseline_head_sha", self.workflow)
+        self.assertIn("pr.head.sha", self.workflow)
+        self.assertIn("pr.base.sha", self.workflow)
+        self.assertIn("source_comment_id", self.workflow)
+        self.assertIn("LEGACY_REQUEST_RECORDED", self.workflow)
+
+    def test_receipt_routes_to_local_doe_role_guidance(self) -> None:
+        self.assertIn(".agents/skills/jules-doe-role-adapter/SKILL.md", self.workflow)
+        self.assertIn("docs/ops/DOE-ROLES-EPOCH-2026-11-03.md", self.workflow)
+        self.assertIn("docs/schemas/agent-roster.yaml", self.workflow)
+
+    def test_github_script_action_uses_immutable_commit_pin(self) -> None:
         uses = re.findall(
-            r"^\s*-\s+uses:\s+([^\s#]+)",
+            r"^\s+uses:\s+([^\s#]+)",
             self.workflow,
             flags=re.MULTILINE,
         )
-        self.assertGreaterEqual(len(uses), 2)
-        for reference in uses:
-            self.assertRegex(reference, r"^[^@\s]+@[0-9a-f]{40}$", reference)
-
-    def test_mutation_scan_runs_only_for_pending_handoffs(self) -> None:
-        mutation = self.job_block("mutation")
-        self.assertIn("github.event_name == 'pull_request'", mutation)
-        self.assertIn("github.event.action == 'synchronize'", mutation)
-        self.assertIn(
-            "contains(github.event.pull_request.labels.*.name, 'jules-handoff-pending')",
-            mutation,
-        )
-        self.assertLess(
-            mutation.index("jules-handoff-pending"),
-            mutation.index("github.paginate(github.rest.issues.listComments"),
-        )
-
-    def test_trusted_handoff_arms_label_before_comment_inventory(self) -> None:
-        handoff = self.job_block("handoff")
-        trusted = handoff.index("if (!trustedSource) return;")
-        inventory = handoff.index("github.paginate(github.rest.issues.listComments")
-        arm = handoff.index("issues.createLabel")
-        attach = handoff.index("issues.addLabels")
-        receipt = handoff.index("issues.createComment")
-        self.assertLess(trusted, inventory)
-        self.assertLess(inventory, arm)
-        self.assertLess(arm, attach)
-        self.assertLess(attach, receipt)
-        self.assertIn("jules-handoff-pending", handoff)
-
-    def test_mutation_receipt_clears_pending_label_after_observation(self) -> None:
-        mutation = self.job_block("mutation")
-        comment = mutation.index("issues.createComment")
-        clear = mutation.rindex("issues.removeLabel")
-        self.assertLess(comment, clear)
-        self.assertIn("MUTATION_OBSERVED", mutation)
-        self.assertIn("observed_head_sha", mutation)
-        self.assertEqual(mutation.count("issues.removeLabel"), 2)
-        self.assertIn("error.status !== 404", mutation)
-        duplicate = mutation.index("if(cs.some(c=>")
-        first_clear = mutation.index("issues.removeLabel", duplicate)
-        duplicate_return = mutation.index("return;", first_clear)
-        self.assertLess(duplicate, first_clear)
-        self.assertLess(first_clear, duplicate_return)
-
-    def test_receipts_remain_idempotent_and_source_gated(self) -> None:
-        handoff = self.job_block("handoff")
-        mutation = self.job_block("mutation")
-        self.assertIn("trustedSource", handoff)
-        self.assertIn("trustedSource", mutation)
-        self.assertIn("cs.some(c => c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker))", handoff)
-        self.assertIn("cs.some(c=>c.user?.login === 'github-actions[bot]' && (c.body||'').includes(marker))", mutation)
-        self.assertIn("source_comment_id", handoff)
-        self.assertIn("baseline_head_sha", mutation)
-
-    def test_dispatch_receipt_preserves_completion_and_review_gates(self) -> None:
-        handoff = self.job_block("handoff")
-        self.assertIn("Treat the dispatch receipt as the start of work.", handoff)
-        self.assertIn("fresh exact-SHA gates", handoff)
-        self.assertIn("independent verification", handoff)
+        self.assertEqual(1, len(uses))
+        self.assertRegex(uses[0], r"^[^@\s]+@[0-9a-f]{40}$", uses[0])
 
 
 if __name__ == "__main__":

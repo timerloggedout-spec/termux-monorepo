@@ -143,7 +143,7 @@ def build_events(payload: dict[str, Any], event_name: str,
         try:
             return [build_event(payload, event_name, context)]
         except ValueError as exc:
-            if str(exc) == "issue comment does not contain a recognized task claim":
+            if str(exc) == "issue comment is outside the task-claim event set":
                 return []
             raise
     return [build_event(payload, event_name, context)]

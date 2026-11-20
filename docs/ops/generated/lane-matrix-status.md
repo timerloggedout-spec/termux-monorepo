@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-20T04:31:47Z)
+# Lane matrix status (2026-11-20T04:34:50Z)
 
-- Master: `f1840cf0488bb48bbbf7df1b62d15808d58b5dfe`
+- Master: `f78ceb3701ea9ab7070cd9823997fcd19a652f30`
 - Open PRs: **481**
 - Oldest: #47 (106.53d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -22,7 +22,7 @@
 
 | PR | Days | Lane | Reasons | Title |
 |---:|-----:|------|---------|-------|
-| #1436 | 29.91 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
+| #1436 | 29.92 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): salvage operational Hindsight das |
 | #2702 | 19.51 | EXTRACT | state:unknown, minesweeper-title | docs(dashboard): standing preview QA checklist |
 | #4069 | 17.01 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 16.32 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
@@ -36,19 +36,19 @@
 | #684 | 60.42 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 57.87 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
 | #969 | 49.78 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
-| #990 | 48.91 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
+| #990 | 48.92 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 47.65 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 31.8 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
-| #1441 | 29.86 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
-| #1469 | 29.64 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
+| #1441 | 29.87 | CANDIDATE | state:unknown | feat(triage): reconcile official quota before disp |
+| #1469 | 29.65 | CANDIDATE | state:unknown | test(observatory): restore upstream provenance PR  |
 | #1470 | 29.64 | CANDIDATE | state:unknown | feat(swarms): publish Kye parity adapters, researc |
 | #1495 | 29.09 | CANDIDATE | state:unknown | feat(quota): full mappings, GitHub safeguards and  |
-| #1513 | 28.84 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
+| #1513 | 28.85 | CANDIDATE | state:unknown | test(observatory): verify Gravitee fork upstream i |
 | #1515 | 28.84 | CANDIDATE | state:unknown | feat(ates): correlate Phase C run and event eviden |
 | #1516 | 28.84 | CANDIDATE | state:unknown | feat(orchestration): add deterministic DAG referen |
 | #1531 | 28.83 | CANDIDATE | state:unknown | docs: propose Research integration and paper-walle |
-| #1537 | 28.81 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
-| #1557 | 28.14 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
+| #1537 | 28.82 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
+| #1557 | 28.15 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 27.06 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
 | #1616 | 27.06 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 27.05 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |

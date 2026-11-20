@@ -38,4 +38,4 @@ Non-OPERATOR bots (Jules, CodeRabbit, Devin, Tembo, …) use normal bot attribut
 
 - [`DECISION-MATRIX.md`](DECISION-MATRIX.md) — clean scored data only
 - [`DELPHI-WEIGHTING.md`](DELPHI-WEIGHTING.md) — future agent-weight interpolation
-- AGENTS.md hard rules
+- CLAUDE.md governance

@@ -1,4 +1,4 @@
-//! End-to-end shadow composition contract for the existing Brain kernel and MOSAIC.
+//! Implements: CNS-06 — end-to-end shadow composition contract for the Brain kernel and MOSAIC.
 //!
 //! This test is a deterministic host-composition fixture. It exercises the
 //! reasoning -> injected policy -> typed specialist path without creating a

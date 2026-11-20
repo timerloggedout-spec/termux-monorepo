@@ -6,7 +6,17 @@ Target repository: `timerloggedout-spec/termux-monorepo`.
 
 Reference project: `timerloggedout-spec/replica_fork`, a fork of `github/replica`.
 
-The intended product is a unified QDesk control-plane view branded `Q^∆3sk`. It combines existing Contribution Desk and Admin Graph material with a new Browser Quarantine Clerk proposal/access-risk surface and stronger release/preview evidence. The initial deliverable is a design and read-only shell. Domain state remains owned by existing repository contracts.
+The intended deliverable is an optional visual extension to the existing QDesk/QUE operating architecture, branded `Q^∆3sk`. It combines selected Contribution Desk and Admin Graph projections with a Browser Quarantine Clerk proposal/access-risk view and stronger release/preview evidence. The initial deliverable is a design and read-only shell. Existing QDesk admission, ranking, claim, deadline, portfolio and DoE machinery remains authoritative.
+
+Existing QDesk lineage already in flight:
+
+- PR #5145: QDesk Observatory + Delphi + DoE self-implementation pipeline; its RFP packet and acceptance matrix own that pipeline design.
+- PR #5197: QDesk portfolio decision and delivery report contract/schema.
+- PR #5199: deadline closure, alarms, page freshness and QDesk Gantt.
+- PR #5330 and #5376: safe admission drain and explicit project-task/provider-dispatch boundary.
+- PR #5622: QUE ranking and claim pipeline, including DoE authority for its comparison method.
+
+These are related active work, not assumed merged or runtime-complete. The present proposal is a visual/integration extension only. QDesk UI must link to these existing authorities and preserve their status distinctions.
 
 Authority map:
 
@@ -17,7 +27,7 @@ Authority map:
 | Contribution/build traversal | `ops/challenge/desk-feed.json`, desk feed contract | Reuse existing desk projection |
 | Admin relationships | `apps/tribute-dashboard/admin-graph.html` plus its source feeds | Reuse selected graph excerpts |
 | Page/build identity | `apps/tribute-dashboard/version-manifest.json`, `versioning.js` | Extend current comparison |
-| DoE campaigns | `docs/ops/DOE-FAMILY.md`, `DOE-TAXONOMY.md`, `EXPERIMENT.schema.json` | Display campaign references and results |
+| DoE campaigns | `docs/ops/DOE-FAMILY.md`, `DOE-TAXONOMY.md`, `EXPERIMENT.schema.json`, QDesk RFP #5145 and existing campaign records | Display campaign references and results; do not create another DoE pipeline |
 | Integrations/capabilities | `docs/integrations/registry.json`, adapter/event contracts, capability opportunity graph | Show source-linked integration status |
 | Collaborator identity/provenance | `docs/ops/AGENT-MONIKERS.md`, `BIUDL-EXECUTION-AND-PROVENANCE.md`, session SSOT and capability contracts | Display attributed, confidence-labelled evidence |
 | Visual review | Native ICM `docs/icm/_tv/` artifacts and optional-visual-review card | Optional visual projection; source files remain canonical |
@@ -92,11 +102,11 @@ The current tracked `version-manifest.json` is `dev+unbuilt`, channel `developme
 
 The current comparison is hash/source comparison, not a full screenshot/visual regression, route/interaction, accessibility, API/schema or security comparison. The surface map also records pages such as `admin-graph.html` as feed-timestamp/stale-chip only, with no dedicated per-surface release line. Extend the existing manifest/versioning path and release map; do not create a competing release registry.
 
-## 5. QDesk target architecture
+## 5. QDesk visual-extension architecture
 
 Brand: `Q^∆3sk`. Proposed page: `apps/tribute-dashboard/Q^∆3sk.html` (subject to URL/path compatibility checks). Stable machine ID: `qdesk`.
 
-QDesk is a read-only shell with deep links or embedded read-only regions:
+QDesk remains the existing operating architecture. The proposed `Q^∆3sk` page is a read-only shell/overview with deep links or embedded read-only regions:
 1. Overview and attention queue.
 2. Existing Contribution Desk / traversal state.
 3. Proposal catalog and public available proposals.
@@ -105,6 +115,8 @@ QDesk is a read-only shell with deep links or embedded read-only regions:
 6. Release Observatory / preview comparison.
 7. DoE and automation competition index.
 8. Source, freshness and validation evidence.
+
+The new page is a navigation/projection surface alongside the existing `desk.html`, `qdesk-gantt.html` (PR #5199), `doe.html`, `proposals.html`, `versioning.html` and QDesk portfolio/Observatory work. It does not replace the existing Contribution Desk or the proposed QDesk Gantt.
 
 Start with existing feeds and links. Add a new QDesk index/read-model schema only if the existing feed contracts cannot support the required navigation. Any new read model references canonical object IDs, source paths, source SHAs and generated timestamps; it does not duplicate domain payloads or own lifecycle transitions.
 
@@ -177,6 +189,8 @@ Use the existing DoE family and taxonomy:
 - Full factorial and Taguchi L9 generators are implemented; other design classes retain their documented status.
 - Quality/correctness precedes time and throughput; ATES is observational and never a merge gate.
 
+The existing QDesk DoE/RFP work (#5145, #5197) and the DoE family own campaign design, decision quality and portfolio comparison. This proposal contributes a candidate visual-integration experiment only after those owners reconcile it. Do not start a competing QDesk campaign ledger.
+
 Do not compare unlike automation categories as if they were direct competitors. Classify candidates by capability contract and existing monorepo taxonomy:
 - intake/proposal lifecycle;
 - orchestration/dispatch;
@@ -192,9 +206,9 @@ Do not compare unlike automation categories as if they were direct competitors. 
 - integration/adapters;
 - DoE/evaluation.
 
-Use the existing DEVOPS-REGISTER categories, DOE-FAMILY, DOE-TAXONOMY, Integration Intelligence registry and SURFACES-MAP as source taxonomies. Keep one primary placement with cross-membership facets; do not create a new parallel taxonomy. QDesk itself is a visualization/control surface, not a replacement automation engine.
+Use the existing DEVOPS-REGISTER categories, DOE-FAMILY, DOE-TAXONOMY, Integration Intelligence registry and SURFACES-MAP as source taxonomies. Keep one primary placement with cross-membership facets; do not create a new parallel taxonomy. The proposed `Q^∆3sk` page is a visualization/control surface, not a replacement automation engine. In the existing surface taxonomy it belongs primarily to Web & Presentation, with cross-links to Coordination & QUE, Challenges & Entries, and Scoring & Method; keep one primary placement plus explicit facets.
 
-Proposed bounded factorial design (design-only; no runs claimed):
+Proposed bounded factorial design (design-only; no runs claimed; submit as a child/sibling campaign through the existing QDesk DoE owner path):
 - Factor A — context routing: existing routing vs ICM selective routing.
 - Factor B — visual review: existing page-only review vs file-backed CCTV card projection.
 - Factor C — release comparison: current manifest/hash comparison vs manifest + visual + route/interaction evidence.
@@ -208,7 +222,7 @@ Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite,
 
 ## 9. Implementation sequence and gates
 
-1. Finish source/authority inventory and resolve open questions.
+1. Reconcile this extension against the active QDesk RFP/portfolio/deadline/claim PRs and record their dispositions; resolve overlap before implementation.
 2. Review and accept this proposal; itemize dependencies.
 3. Define the smallest QDesk read-only IA and page-level contract.
 4. Reuse existing feeds; implement Clerk as a sanitized read-only proposal/access-risk view.
@@ -230,6 +244,7 @@ Do not:
 ## 10. Open evidence items
 
 - Verify exact gitlink commit SHAs for the relevant `refTemplates/smods/` entries from the Git tree before any pin or source update.
+- Reconcile with PR #5145, #5197, #5199, #5330, #5376 and #5622 current head/base/check state before adding overlapping files or changing QDesk feed/claim semantics.
 - Inspect current `versioning.js` deploy/build workflow and production manifest to establish which production fields are actually populated.
 - Inspect the complete desk/admin graph feeds and their owning collectors before composing QDesk.
 - Verify the active release automation and existing visual-architecture versioning PR #4085 disposition before changing that contract.

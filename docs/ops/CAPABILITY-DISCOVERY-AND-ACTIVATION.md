@@ -63,7 +63,7 @@ authorized execution / experiment / adoption
 
 Default behavior returns a small metadata-only shortlist (top 8). Load full skill instructions or tool schemas only for selected candidates. Fetch a tool's schema just before invocation. Use the exact action rather than injecting an entire namespace.
 
-The SQLite database stores aliases, permission metadata, taxonomy hashes and relationship edges; the JSONL event ledger records added, changed and reclassified definitions. It uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
+The SQLite database stores aliases, permission metadata, taxonomy hashes and relationship edges; the JSONL event ledger records added, changed and reclassified definitions. Secret-like records are quarantined and excluded from ordinary search; `--include-quarantined` is reserved for explicit forensic review. It uses FTS5 when available and a LIKE fallback otherwise. Skill/archive reads are capped at 2 MB per definition to bound resource use. The database and JSONL discovery-event ledger are local generated artifacts under `.cache/`; commit source code, schemas and taxonomy, not the mutable database or per-session exports. CI may upload a dated, sanitized snapshot artifact when required.
 
 ## Sources and vendor caution
 

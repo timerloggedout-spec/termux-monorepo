@@ -1,24 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T09:13:40Z",
+ "generated_at": "2026-11-20T09:46:17Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
    "queued": 2,
-   "in_progress": 2,
+   "in_progress": 0,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "PR scope guard": 2
+    "Orchestration Regression Guard": 1,
+    "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
    "queued": 1,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-20T09:11:25Z",
+   "oldest_queued_at": "2026-11-20T09:45:46Z",
    "by_workflow_queued": {
-    "tribute-dashboard-deploy": 1
+    "pages build and deployment": 1
    }
   },
   "3": {
@@ -30,35 +31,23 @@
   },
   "4": {
    "tier": 4,
-   "queued": 44,
-   "in_progress": 12,
+   "queued": 7,
+   "in_progress": 19,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Gemini review after peers": 1,
-    "lane events recorder": 10,
-    "n8n SHE bridge": 4,
-    "repo-tracking-collect": 1,
-    "Agent Throughput Evidence": 9,
-    "Audit Cycle \u2014 Single PR Feed-Forward": 1,
+    "Agent Throughput Evidence": 1,
+    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
+    "que-cadence-kick": 1,
     "termux smoke": 1,
     "hitl-control-plane-verify": 1,
-    "DO Statement Style": 3,
-    "que-cadence-kick": 1,
-    "Context Relationship + Lead/Lag Audit": 2,
-    "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "Sweep Accountability": 2,
-    "Repository development evaluation": 1,
-    "PR production ledger": 1,
-    "RECON INTEL discovery": 2,
-    "DeepSeek CI \u2013 Agentic Automation": 1,
-    "PR evidence evaluation": 1,
-    "Workflow Surface Policy": 1
+    "quota-analysis": 1,
+    "DO Statement Style": 1
    }
   }
  },
  "totals": {
-  "queued": 47,
-  "in_progress": 16
+  "queued": 10,
+  "in_progress": 21
  },
  "wedged_ancient": [
   {
@@ -216,13 +205,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 4,
+   "1": 2,
    "2": 3,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 7,
-  "default_t4": 56,
+  "explicit_total": 5,
+  "default_t4": 26,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

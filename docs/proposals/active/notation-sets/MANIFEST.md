@@ -15,6 +15,7 @@ related_prs: [322, 324]
 related_branches:
   - docs/notation-sets-evolution
   - docs/mintlify-notation-sets-page
+  - docs/nse-021-sidecar-comment-overlays-r2
 gates_required: [repo-gate, termux-smoke]
 ---
 

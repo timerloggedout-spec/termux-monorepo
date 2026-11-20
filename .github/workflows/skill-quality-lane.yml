@@ -7,7 +7,7 @@ on:
       - "ops/skill-quality-lane"
   pull_request:
     paths:
-      - ".agents/skills/**/SKILL.md"
+      - "**/SKILL.md"
       - ".claude/**/SKILL.md"
       - "SKILLS.md"
       - "CLAUDE.md"

@@ -208,6 +208,24 @@ Do not compare unlike automation categories as if they were direct competitors. 
 
 Use the existing DEVOPS-REGISTER categories, DOE-FAMILY, DOE-TAXONOMY, Integration Intelligence registry and SURFACES-MAP as source taxonomies. Keep one primary placement with cross-membership facets; do not create a new parallel taxonomy. The proposed `Q^∆3sk` page is a visualization/control surface, not a replacement automation engine. In the existing surface taxonomy it belongs primarily to Web & Presentation, with cross-links to Coordination & QUE, Challenges & Entries, and Scoring & Method; keep one primary placement plus explicit facets.
 
+Candidate capability strata for competition (these are proposed comparison groups, not a new official taxonomy):
+
+| Existing capability family | Existing monorepo candidates/surfaces | Valid competition unit |
+|---|---|---|
+| Intake / portfolio / deadlines | Proposal registry, QDesk portfolio report (#5197), deadline desk (#5199) | Same proposal cohort and requirement-closure task |
+| Admission / ranking / claim | QUE admission drain (#5330), project-task boundary (#5376), ranking/claim pipeline (#5622) | Same issue cohort, admission policy and claim contract |
+| Dispatch / orchestration | Provider dispatch, dispatch executor, manager policies | Same task class, configured-instance stamps and execution permissions |
+| Build / review / quality | Jules, Gemini, DeepSeek, CodeRabbit/Qodo/Devin review lanes | Same PR/task fixture; separate build and review outcomes |
+| CI / workflow reliability | Repo gate, Termux smoke, workflow health and Action Effectiveness Ledger | Same change set and gate contract |
+| Runtime observation / evidence | Actions watchers, PR evidence, telemetry and feed collectors | Same event cohort; coverage, freshness, false alarms and provenance |
+| Context / memory / routing | ICM, selective context routing, cost-of-remembering reference | Same retrieval/task cohort; correctness first, then tokens and latency |
+| Visual projection / navigation | Contribution Desk, Admin Graph, ICM CCTV cards | Same operator tasks; findability, error rate and evidence traceability |
+| Release / publication | version-manifest, versioning.js, preview/production deploy surfaces | Same candidate SHA and production baseline |
+| Access / quarantine | Existing permission/provenance contracts; proposed Clerk | Synthetic adversarial access scenarios until a separately approved enforcement adapter exists |
+| DoE / evaluation | doe.py, MVT, ATES and existing DoE family campaigns | Design and measurement methodology; these are the experiment plane, not contestants |
+
+Official category placement remains with the current registers: the DevOps register's L family is DoE evaluation and M is Tribute operations; the visual page's primary surface group is Web & Presentation. QDesk can expose these categories together without flattening their authority or comparing unlike systems.
+
 Proposed bounded factorial design (design-only; no runs claimed; submit as a child/sibling campaign through the existing QDesk DoE owner path):
 - Factor A — context routing: existing routing vs ICM selective routing.
 - Factor B — visual review: existing page-only review vs file-backed CCTV card projection.

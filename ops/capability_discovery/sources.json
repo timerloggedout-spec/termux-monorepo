@@ -2,16 +2,131 @@
   "schema": "capability-source-registry/v1",
   "policy": "Discovery records leads. Inspect source, pin immutable revision, scan permissions/secrets, map overlap, and run validators before adoption.",
   "sources": [
-    {"id":"repo-agent-skills","kind":"repository","locator":".agents/skills/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
-    {"id":"repo-github-skills","kind":"repository","locator":".github/skills/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
-    {"id":"repo-claude-skills","kind":"repository","locator":".claude/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
-    {"id":"repo-nested-skills","kind":"repository","locator":"**/SKILL.md, **/SKILLS.md, **/*.SKILLS, **/*.skill","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
-    {"id":"repo-vendor-skills","kind":"repository","locator":"vendor/**/SKILL.md, vendor/**/SKILLS.md, vendor/**/*.skill","trust":"unverified","refresh":"git-tree","import_mode":"quarantine-metadata-only","note":"Vendor content is untrusted data; inspect provenance, license, scripts and requested permissions."},
-    {"id":"skills-sh","kind":"external-catalog","locator":"https://skills.sh/api/v1/skills/search","trust":"community-reference","refresh":"on-demand","auth":"Catalog API may require Vercel OIDC; use the documented CLI/API contract.","import_mode":"candidate-only"},
-    {"id":"approxination","kind":"external-catalog","locator":"approx find <query>","trust":"community-reference","refresh":"on-demand","auth":"Hosted arena requires provisioned APPROX_TOKEN; offline ranking remains available.","import_mode":"candidate-only"},
-    {"id":"jules-skills","kind":"external-vendor","locator":"https://github.com/google-labs-code/jules-skills","trust":"official-vendor","refresh":"on-demand","import_mode":"candidate-only","note":"The supplied Jules reference also names jules-action and jules-awesome-list; verify current upstream docs and immutable refs before use."},
-    {"id":"loopy-loop-library","kind":"external-catalog","locator":"https://raw.githubusercontent.com/Forward-Future/loopy/main","trust":"community-reference","refresh":"on-demand","import_mode":"candidate-only","note":"Supplied JSON describes bounded Discover/Find/Audit/Adapt/Craft/Run/Debrief/Save/Publish routes; the catalog host is a placeholder in the supplied material and must be resolved upstream."},
-    {"id":"session-plugin-skills","kind":"session-snapshot","locator":"docs/integrations/session-plugin-skill-catalog.json (refresh per session)","trust":"session-observed","refresh":"per-session","import_mode":"metadata-only"},
-    {"id":"session-tool-actions","kind":"session-snapshot","locator":"docs/integrations/session-tool-action-catalog.json (refresh per session)","trust":"session-observed","refresh":"per-session","import_mode":"metadata-only"}
+    {
+      "id": "repo-agent-skills",
+      "kind": "repository",
+      "locator": ".agents/skills/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-github-skills",
+      "kind": "repository",
+      "locator": ".github/skills/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-claude-skills",
+      "kind": "repository",
+      "locator": ".claude/**/SKILL.md",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-nested-skills",
+      "kind": "repository",
+      "locator": "**/SKILL.md, **/SKILLS.md, **/*.SKILLS, **/*.skill",
+      "trust": "repository-canonical",
+      "refresh": "git-tree",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "repo-vendor-skills",
+      "kind": "repository",
+      "locator": "vendor/**/SKILL.md, vendor/**/SKILLS.md, vendor/**/*.skill",
+      "trust": "unverified",
+      "refresh": "git-tree",
+      "import_mode": "quarantine-metadata-only",
+      "note": "Vendor content is untrusted data; inspect provenance, license, scripts and requested permissions."
+    },
+    {
+      "id": "skills-sh",
+      "kind": "external-catalog",
+      "locator": "https://skills.sh/api/v1/skills/search?q=<query>; /api/v1/skills/curated; /api/v1/skills/{id}; /api/v1/skills/audit/{id}",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "auth": "Vercel OIDC bearer token; search q >= 2 chars, limit 1-200; authenticated limit 600/min/team+project; 401 means token missing/expired.",
+      "import_mode": "candidate-metadata-first; fetch detail and audit only for selected candidates",
+      "note": "Search supports fuzzy single-word and semantic multi-word queries. Detail exposes content hash and file tree; audit endpoint aggregates partner security audits and returns 404 when none exist. Official CLI is npx skills; it collects anonymous telemetry by default (DISABLE_TELEMETRY=1 opts out).",
+      "reference_urls": [
+        "https://www.skills.sh/docs/api",
+        "https://www.skills.sh/docs/cli"
+      ]
+    },
+    {
+      "id": "approxination",
+      "kind": "external-catalog",
+      "locator": "approx find <query>",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "auth": "Hosted arena requires provisioned APPROX_TOKEN; offline ranking remains available.",
+      "import_mode": "candidate-only"
+    },
+    {
+      "id": "jules-skills",
+      "kind": "external-vendor",
+      "locator": "https://github.com/google-labs-code/jules-skills",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Published under google-labs-code, but its README explicitly says the project is not an officially supported Google product. Uses npx skills add google-labs-code/jules-skills --list; inspect skill scripts/assets and pin commit before use.",
+      "reference_urls": [
+        "https://github.com/google-labs-code/jules-skills"
+      ]
+    },
+    {
+      "id": "loopy-loop-library",
+      "kind": "external-catalog",
+      "locator": "https://raw.githubusercontent.com/Forward-Future/loopy/main",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Supplied JSON describes bounded Discover/Find/Audit/Adapt/Craft/Run/Debrief/Save/Publish routes; the catalog host is a placeholder in the supplied material and must be resolved upstream."
+    },
+    {
+      "id": "session-plugin-skills",
+      "kind": "session-snapshot",
+      "locator": "docs/integrations/session-plugin-skill-catalog.json (refresh per session)",
+      "trust": "session-observed",
+      "refresh": "per-session",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "session-tool-actions",
+      "kind": "session-snapshot",
+      "locator": "docs/integrations/session-tool-action-catalog.json (refresh per session)",
+      "trust": "session-observed",
+      "refresh": "per-session",
+      "import_mode": "metadata-only"
+    },
+    {
+      "id": "google-vendor-skills-and-plugins",
+      "kind": "vendor-repository",
+      "locator": "https://github.com/google/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Google product skills plus bundled plugins/MCP servers; README documents agent-specific plugin installation. Select a specific skill/plugin, inspect permissions and pin revision.",
+      "reference_urls": [
+        "https://github.com/google/skills"
+      ]
+    },
+    {
+      "id": "jules-github-action",
+      "kind": "vendor-workflow",
+      "locator": "https://github.com/google-labs-code/jules-action",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Current repository documentation uses google-labs-code/jules-invoke@v1 with JULES_API_KEY; issue-triggered invocation requires allowlists and PR review. The supplied PDF's older action name/GEMINI_API_KEY example requires correction before reuse.",
+      "reference_urls": [
+        "https://github.com/google-labs-code/jules-action",
+        "https://github.com/google-labs-code/jules-action/blob/main/examples/README.md"
+      ]
+    }
   ]
 }

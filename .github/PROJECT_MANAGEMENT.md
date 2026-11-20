@@ -199,7 +199,6 @@ export KUCOIN_API_KEY="your_kucoin_api_key"
 export KUCOIN_API_SECRET="your_kucoin_api_secret"
 
 # Agents
-export JULES_API_KEY="your_jules_api_key"
 export CODERABBIT_API_KEY="your_coderabbit_api_key"
 ```
 

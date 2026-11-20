@@ -115,5 +115,5 @@
     "deprecated",
     "rejected"
   ],
-  "identity_policy": "Canonical identity = normalized source locator + package/skill/action identifier. Names alone never establish identity. Hash content for version/change detection; keep aliases as relationship edges."
+  "identity_policy": "Canonical identity = normalized source locator + package/skill/action identifier. Identity requires a source locator plus package/skill/action identifier; names provide lookup labels only. Hash content for version/change detection; keep aliases as relationship edges."
 }

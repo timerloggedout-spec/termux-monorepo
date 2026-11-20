@@ -1220,18 +1220,18 @@ refreshQueFeed();window.setInterval(refreshQueFeed,60000);
 /* Durable task-route and execution pulses — emitted from routing claims and GitHub Actions. */
 var liveStatusEl=document.getElementById("liveStatus");
 var LIVE_FEED_URL="https://admin-graph-live.timerloggedout.workers.dev/events?limit=400";
-var liveCursor=null,liveQueue=[],liveAnimating=false,livePollBusy=false,liveSeen=Object.create(null);
+var liveCursor=null,liveQueue=[],liveAnimating=false,livePollBusy=false,liveSeen=Object.create(null),liveSeenOrder=[];
 function runtimePayload(ev){
  try{return typeof ev.payload==="string"?JSON.parse(ev.payload||"{}"):(ev.payload||{});}
  catch(_){return {};}
 }
 function eventLabel(ev){
  var p=runtimePayload(ev);
- if(ev.kind==="route")return (p.task_ref||"Task")+" → "+(p.route_role||ev.job||"unassigned")+" · "+(p.provider||p.arm_id||p.model||"provider pending")+" · ROUTED";
+ if(ev.kind==="route"||ev.event==="task_routed")return (p.task_ref||"Task")+" → "+(p.route_role||ev.job||"unassigned")+" · "+(p.provider||p.arm_id||p.model||"provider pending")+" · ROUTED";
  return (ev.workflow||"GitHub Actions")+" · "+(ev.job?ev.job+" · ":"")+(ev.step?ev.step+" · ":"")+ev.status;
 }
 function eventColor(ev){
- if(ev.kind==="route")return "#a78bfa";
+ if(ev.kind==="route"||ev.event==="task_routed")return "#a78bfa";
  var s=String(ev.status||"").toLowerCase();
  if(s==="success"||s==="completed")return "#34d399";
  if(s==="failure"||s==="failed"||s==="timed_out"||s==="error")return "#f472b6";
@@ -1275,7 +1275,7 @@ function animateRuntimeEvent(ev){
  var rec=edgeForRuntimeEvent(ev);
  if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));return;}
  var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
- var reverse=ev.kind==="route"&&rec.def&&rec.def.to==="routing";
+ var reverse=(ev.kind==="route"||ev.event==="task_routed")&&rec.def&&rec.def.to==="routing";
  path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
  function frame(ts){
   if(!t0)t0=ts;
@@ -1294,7 +1294,7 @@ function queueRuntimeEvents(events,initial){
   liveSeen[ev.id]=true;
   if(initial){
    var age=Date.now()-Date.parse(ev.occurred_at||"");
-   if((ev.kind==="route"&&Number.isFinite(age)&&age<=60000)||ev.status==="queued"||ev.status==="in_progress")fresh.push(ev);
+   if(((ev.kind==="route"||ev.event==="task_routed")&&Number.isFinite(age)&&age<=60000)||ev.status==="queued"||ev.status==="in_progress")fresh.push(ev);
   }else fresh.push(ev);
  });
  fresh.forEach(function(ev){liveQueue.push(ev);});drainRuntimeQueue();

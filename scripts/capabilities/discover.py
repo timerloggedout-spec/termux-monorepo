@@ -458,7 +458,8 @@ def upsert(con: sqlite3.Connection, rows: list[dict]) -> dict:
             "relationships":con.execute("SELECT count(*) FROM capability_edge").fetchone()[0],
             "total":con.execute("SELECT count(*) FROM capability").fetchone()[0]}
 
-def search(con: sqlite3.Connection, query: str, limit: int = 8) -> list[dict]:
+def search(con: sqlite3.Connection, query: str, limit: int = 8,
+           include_quarantined: bool = False) -> list[dict]:
     terms = [term for term in TOKEN_RE.findall(query.lower()) if len(term) > 1]
     if not terms:
         return []
@@ -466,12 +467,14 @@ def search(con: sqlite3.Connection, query: str, limit: int = 8) -> list[dict]:
     try:
         hits = con.execute("""SELECT c.id,c.kind,c.name,c.description,c.locator,c.domain,c.function,c.trust,c.lifecycle,bm25(capability_fts) AS rank
           FROM capability_fts f JOIN capability c ON c.id=f.id WHERE capability_fts MATCH ?
-          ORDER BY rank LIMIT ?""", (match,limit)).fetchall()
+          AND (? OR c.trust != 'quarantined') ORDER BY rank LIMIT ?""",
+          (match,1 if include_quarantined else 0,limit)).fetchall()
     except sqlite3.OperationalError:
         pattern = "%" + terms[0] + "%"
         hits = con.execute("""SELECT id,kind,name,description,locator,domain,function,trust,lifecycle,0
-          FROM capability WHERE name LIKE ? OR description LIKE ? OR tags LIKE ? LIMIT ?""",
-          (pattern,pattern,pattern,limit)).fetchall()
+          FROM capability WHERE (name LIKE ? OR description LIKE ? OR tags LIKE ?)
+          AND (? OR trust != 'quarantined') LIMIT ?""",
+          (pattern,pattern,pattern,1 if include_quarantined else 0,limit)).fetchall()
     fields = ["id","kind","name","description","locator","domain","function","trust","lifecycle","rank"]
     return [dict(zip(fields,row)) for row in hits]
 
@@ -486,16 +489,17 @@ def export_ledger(con: sqlite3.Connection, path: Path) -> int:
 
 def local_first_search(con: sqlite3.Connection, query: str, limit: int = 8,
                       min_local_results: int = 5, owner: str | None = None,
-                      ledger: Path = Path(".cache/capability-discovery-ledger.jsonl")) -> tuple[list[dict], str]:
+                      ledger: Path = Path(".cache/capability-discovery-ledger.jsonl"),
+                      include_quarantined: bool = False) -> tuple[list[dict], str]:
     """Search local metadata first; call read-only skills.sh only when coverage is thin."""
-    hits = search(con,query,limit)
+    hits = search(con,query,limit,include_quarantined)
     if len(hits) >= min_local_results:
         return hits,"local_sufficient"
     remote_rows,status = cached_skills_sh_search(con,query,limit,owner=owner)
     if remote_rows:
         upsert(con,remote_rows)
         export_ledger(con,ledger)
-    return search(con,query,limit),status
+    return search(con,query,limit,include_quarantined),status
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -517,6 +521,7 @@ def main() -> int:
     catalog_group.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
     catalog_group.add_argument("--skills-sh-curated",action="store_true",help="Search the official curated skills.sh catalog; requires VERCEL_OIDC_TOKEN")
     find.add_argument("--min-local-results",type=int,default=5)
+    find.add_argument("--include-quarantined",action="store_true",help="Include secret-like quarantined candidates for forensic review")
     find.add_argument("--owner",help="Limit skills.sh search to a GitHub owner")
     args = parser.parse_args()
     if args.command == "scan":
@@ -541,7 +546,8 @@ def main() -> int:
     external_status = "not_requested"
     if args.auto:
         hits,external_status = local_first_search(
-            con,args.query,args.limit,args.min_local_results,args.owner,Path(args.ledger)
+            con,args.query,args.limit,args.min_local_results,args.owner,Path(args.ledger),
+            args.include_quarantined
         )
     else:
         if args.skills_sh or args.skills_sh_curated:
@@ -551,7 +557,7 @@ def main() -> int:
             if remote_rows:
                 upsert(con,remote_rows)
                 export_ledger(con,Path(args.ledger))
-        hits = search(con,args.query,args.limit)
+        hits = search(con,args.query,args.limit,args.include_quarantined)
     print(json.dumps({"query":args.query,"count":len(hits),"external_skills_sh":external_status,"results":hits},ensure_ascii=False,sort_keys=True))
     return 0
 

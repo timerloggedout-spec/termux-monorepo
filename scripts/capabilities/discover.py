@@ -484,6 +484,21 @@ def export_ledger(con: sqlite3.Connection, path: Path) -> int:
             stream.write(json.dumps(dict(zip(("event_id","capability_id","event","content_sha256","taxonomy_sha256","source_id","recorded_at"),row)),sort_keys=True)+"\n")
     return len(rows)
 
+def local_first_search(con: sqlite3.Connection, query: str, limit: int = 8,
+                      min_local_results: int = 5, owner: str | None = None,
+                      ledger: Path = Path(".cache/capability-discovery-ledger.jsonl")) -> tuple[list[dict], str]:
+    """Search local metadata first; call read-only skills.sh only when coverage is thin."""
+    hits = search(con,query,limit)
+    if len(hits) >= min_local_results:
+        return hits,"local_sufficient"
+    if not os.environ.get("VERCEL_OIDC_TOKEN"):
+        return hits,"auth_required"
+    remote_rows,status = cached_skills_sh_search(con,query,limit,owner=owner)
+    if remote_rows:
+        upsert(con,remote_rows)
+        export_ledger(con,ledger)
+    return search(con,query,limit),status
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command",required=True)
@@ -500,8 +515,10 @@ def main() -> int:
     find.add_argument("--ledger",default=".cache/capability-discovery-ledger.jsonl")
     find.add_argument("--limit",type=int,default=8)
     catalog_group = find.add_mutually_exclusive_group()
+    catalog_group.add_argument("--auto",action="store_true",help="Local-first; use read-only skills.sh search only when local coverage is thin and a token is available")
     catalog_group.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
     catalog_group.add_argument("--skills-sh-curated",action="store_true",help="Search the official curated skills.sh catalog; requires VERCEL_OIDC_TOKEN")
+    find.add_argument("--min-local-results",type=int,default=5)
     find.add_argument("--owner",help="Limit skills.sh search to a GitHub owner")
     args = parser.parse_args()
     if args.command == "scan":
@@ -524,12 +541,19 @@ def main() -> int:
         return 0
     con = connect(Path(args.db))
     external_status = "not_requested"
-    if args.skills_sh or args.skills_sh_curated:
-        remote_rows, external_status = cached_skills_sh_search(con,args.query,args.limit,owner=args.owner,curated=args.skills_sh_curated)
-        if remote_rows:
-            upsert(con,remote_rows)
-            export_ledger(con,Path(args.ledger))
-    hits = search(con,args.query,args.limit)
+    if args.auto:
+        hits,external_status = local_first_search(
+            con,args.query,args.limit,args.min_local_results,args.owner,Path(args.ledger)
+        )
+    else:
+        if args.skills_sh or args.skills_sh_curated:
+            remote_rows,external_status = cached_skills_sh_search(
+                con,args.query,args.limit,owner=args.owner,curated=args.skills_sh_curated
+            )
+            if remote_rows:
+                upsert(con,remote_rows)
+                export_ledger(con,Path(args.ledger))
+        hits = search(con,args.query,args.limit)
     print(json.dumps({"query":args.query,"count":len(hits),"external_skills_sh":external_status,"results":hits},ensure_ascii=False,sort_keys=True))
     return 0
 

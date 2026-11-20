@@ -37,7 +37,7 @@ The registry and map classify each connection as verified, derived, proposed, or
 
 The supplied `skill-loopy-api-loop-library-skill.json` defines nine routes: Discover, Find, Audit/Loop Doctor, Adapt, Craft, Run, Debrief, Save/Reuse, and Publish. Its six-step feedback cycle is Observe → Choose → Act → Verify → Record → Repeat or stop. It defines terminal states `success`, `clean no-op`, `blocked`, `approval-required`, `exhausted`, and `stagnated`, plus bounded-run receipts and explicit approval boundaries for consequential actions.
 
-The repository already has a broader twelve-step adaptive-feedback-cycle contract with historical correlation, provider/catalog observation, adaptive waiting, and outcome verification. CNS-14 integrates the bounded-loop terminal-state and receipt semantics into that canonical skill while preserving the existing twelve-step operating model. The supplied project has no root `LOOPS.md`; CNS-14 therefore focuses on the existing skill and inventory.
+The repository already separates the loop layers: `.agents/skills/adaptive-wait/SKILL.md` owns asynchronous cadence, evidence receipts, and terminal states; `.agents/skills/adaptive-feedback-cycle/SKILL.md` owns the twelve-step historical-evaluation and learning macro-cycle. CNS-14 maps Loopy's six-step Observe → Choose → Act → Verify → Record → Repeat/stop micro-loop and nine route labels into those existing owners, preserving the current state machine and macro-cycle. The supplied project has no root `LOOPS.md`; CNS-14 therefore focuses on the existing skill and inventory.
 
 Upstream references:
 - [Forward Future Loopy repository](https://github.com/Forward-Future/loopy)

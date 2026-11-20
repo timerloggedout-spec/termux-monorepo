@@ -5,6 +5,7 @@
 | Need | Path |
 |------|------|
 | **Full inventory + role load matrix** | [`docs/ops/SKILLS-INVENTORY.md`](docs/ops/SKILLS-INVENTORY.md) |
+| **Nested capability discovery / MOAR** | [`.agents/skills/capability-discovery/SKILL.md`](.agents/skills/capability-discovery/SKILL.md) · [`docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md`](docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md) |
 | **Superpowers engineering methodology** | [`.agents/skills/superpowers/SKILL.md`](.agents/skills/superpowers/SKILL.md) |
 | **Primary agent entry (BIUDL)** | [`CLAUDE.md`](CLAUDE.md) |
 | **DO phrasing / framing guide** | [`docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md`](docs/ops/DO-PHRASING-FRAMING-FRAMEWORK.md) |
@@ -43,6 +44,7 @@ Every skill directory must contain a `SKILL.md`. Inventory lists **all** of them
 | Role | Load first |
 |------|------------|
 | Collaborator | `superpowers` → `adaptive-feedback-cycle` → dual-gate |
+| Capability discovery | `capability-discovery` → `context-relationship-graph` → `find-skills` / `approxination-lane` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` + `ml-pipeline-ops` + `ml-command-center` |
 | Admin / Grok | `evidence-led-monorepo-ops` + `adaptive-wait` |
 | Admin / Termux | `termux-mcp-project-steward` + `adaptive-wait` |

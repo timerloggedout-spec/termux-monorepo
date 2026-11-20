@@ -36,7 +36,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts" / "classifiers"))
 
 SCHEMA = "provenance-export-record/v1"
-INGEST_VERSION = "provenance-ingest v1"
+INGEST_VERSION = "provenance-ingest v2"
 MUSE_DISCOVERY_VERSION = "muse-side-chat-seo v1"
 MUSE_DISCOVERY_PATTERNS = (
     ("moniker", re.compile(r"\bmonikers?\b", re.I)),

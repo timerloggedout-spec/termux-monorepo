@@ -1,5 +1,7 @@
 # Quota Attribution — the requisition × actor join
 
+> **Jules attribution amendment (2026-11-20):** Jules session-to-PR mappings below are historical provenance. Google Jules became read-only after 2026-11-11; custom.jules remains a GET-only archive through 2026-12-31. Historical session counts remain useful for attribution and audit, while live routing uses local DoE role skills and verified provider adapters.
+
 `[MUSEai]@{role:{quota-specialist}}` · Owner demand 2026-10-30 (via `viz-dispatch-tree`): provider/model attribution for code + requisitions, per-entry usage rendered in `desk.html`. Evidence class refs per #1734; notation per #320.
 
 ## The join problem

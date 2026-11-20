@@ -1,4 +1,4 @@
-# GEMINI-CLI.md — Context for Gemini CLI (agentic CI/CD)
+# GEMINI-CLI.md — Gemini CLI implementation instructions (agentic CI/CD)
 
 You are an autonomous Software Engineering AI teammate for the **termux-monorepo** repository (owner: timerloggedout-spec).
 
@@ -67,7 +67,7 @@ Use disjoint files where possible. Treat other agents and newly discovered provi
 - Existing free-tier agentic stack:
   - **Jules** — asynchronous coding agent (already wired; auto-summoned on CodeRabbit/Devin reviews).
   - **CodeRabbit** — AI PR review with autofix (`.coderabbit.yaml`).
-  - **Gemini CLI** (this agent) — issue triage, PR review, on-demand `@gemini-cli` collaboration.
+  - **Gemini CLI** — the specific CLI implementation and invocation surface governed by this file. Provider/model identity and collaborator attribution come from execution receipts; this filename does not define a collaborator identity or moniker.
 
 ## Capabilities you should use
 

@@ -14,7 +14,7 @@ reviewers:
     role: author-executor
     status: executing
 related_issues: [5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703]
-related_prs: [5525, 5544, 5635, 5637, 5665]
+related_prs: [5503, 5525, 5531, 5544, 5635, 5637, 5708, 5709]
 related_branches: [feat/cns-integration-final-20261120]
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
@@ -53,7 +53,7 @@ Coordinate the repository's existing knowledge, reasoning, orchestration, routin
 - [x] ITEMS.md itemized
 - [x] Operator authorization recorded
 - [x] CNS-01 through CNS-16 have dedicated GitHub issues
-- [ ] Implementation PRs cite `Implements: CNS-<id>`
+- [x] Initial implementation PR #5709 cites `Implements: CNS-01, CNS-02, CNS-04, CNS-05, CNS-14`; subsequent item PRs retain the same rule
 - [ ] Repo gate and Termux smoke pass on integration PRs
 - [ ] Runtime acceptance evidence recorded
 - [ ] All items terminal before proposal closure
@@ -67,4 +67,4 @@ Coordinate the repository's existing knowledge, reasoning, orchestration, routin
 - Authority matrix: [../../../architecture/CNS-AUTHORITY-MATRIX.md](../../../architecture/CNS-AUTHORITY-MATRIX.md)
 - Identity and event contract: [../../../architecture/CNS-EVENT-IDENTITY-CONTRACT.md](../../../architecture/CNS-EVENT-IDENTITY-CONTRACT.md)
 - Health model: [../../../architecture/CNS-HEALTH-MODEL.md](../../../architecture/CNS-HEALTH-MODEL.md)
-- Implementation plan: [../../../superpowers/plans/2026-11-19-cns-integration-program.md](../../superpowers/plans/2026-11-19-cns-integration-program.md)
+- Implementation plan: [../../../../superpowers/plans/2026-11-19-cns-integration-program.md](../../superpowers/plans/2026-11-19-cns-integration-program.md)

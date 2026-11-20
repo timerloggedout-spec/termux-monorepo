@@ -241,7 +241,7 @@ The remaining 43 system-connector catalog entries (63 total − 20 connected) �
 
 ## 7. Recommended registry additions, in priority order
 
-1. `jules.tasks_free` — the steering lane actually consumes this daily; currently invisible to the panel.
+1. `jules.tasks_free` — historical only; exclude from the active quota panel and live provider routing.
 2. `vercel.fast_data_transfer` + `vercel.function_invocations` — the deploy cap already bit once; bandwidth/invocations are the next caps to trip silently.
 3. `google_gmail.api_quota_units`, `google_drive.api_quota_units`, `google_sheets.api_write_requests` — the Workspace APIs the connectors exercise most.
 4. `notion.api_rate_per_connection`, `linear.api_requests`, `todoist.sync_partial_rate`, `figma.api_rate_tier1` — dev-lane APIs with hard 429 behaviour.

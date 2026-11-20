@@ -58,7 +58,7 @@ class RotationSweepTests(unittest.TestCase):
         self.assertFalse(tool["lexical"])
         self.assertFalse(tool["workflow"])
 
-    def test_full_factorial_has_all_nonempty_classifier_combinations(self):
+    def test_full_factorial_has_all_classifier_combinations(self):
         result = score_fixtures(self.rotation_map)
         self.assertEqual(result["design"], "full_factorial_2^5")
         self.assertEqual(result["fixture_count"], 8)
@@ -96,6 +96,23 @@ class RotationSweepTests(unittest.TestCase):
             self.assertEqual(result["duplicate_monikers"], ["samename"])
             self.assertEqual(result["trigger_collisions"], ["sameName"])
             self.assertFalse(result["passed"])
+
+
+    def test_named_profile_is_loaded_and_audited_by_every_gemini_route(self):
+        root = Path(__file__).resolve().parents[1]
+        for rel in (
+            ".github/workflows/gemini-review.yml",
+            ".github/workflows/gemini-after-peers.yml",
+            ".github/workflows/gemini-invoke.yml",
+            ".github/workflows/gemini-triage.yml",
+        ):
+            self.assertIn("GEMINI-MESH.md", (root / rel).read_text(encoding="utf-8"), rel)
+        ecc = (root / ".github/workflows/agent-ecc-tools-ops.yml").read_text(encoding="utf-8")
+        self.assertIn("**/GEMINI-MESH.md", ecc)
+        self.assertIn("GEMINI-MESH\\\\.md$", ecc)
+        maintenance = root / "docs/icm/maintenance/ICM-MAP-MAINTENANCE.md"
+        self.assertTrue(maintenance.is_file())
+        self.assertFalse((root / "docs/icm/maintenance/AGENTS.md").exists())
 
 
 if __name__ == "__main__":

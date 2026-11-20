@@ -1,6 +1,6 @@
-# Lane matrix status (2026-11-20T04:28:23Z)
+# Lane matrix status (2026-11-20T04:31:47Z)
 
-- Master: `69ddaa104d794e4c9e33251e09e8872c8e4c2437`
+- Master: `f1840cf0488bb48bbbf7df1b62d15808d58b5dfe`
 - Open PRs: **481**
 - Oldest: #47 (106.53d) — feat(refTemplates): restore metadata-only skeleton (Option B recovery)
 
@@ -27,15 +27,15 @@
 | #4069 | 17.01 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh surface feeds |
 | #4621 | 16.32 | EXTRACT | state:unknown, minesweeper-title | feat(dashboards): queue-state board — live Actions |
 | #4898 | 15.66 | EXTRACT | state:unknown, minesweeper-title | feat(dashboard): surfaces-map serve step — canon 3 |
-| #5034 | 13.56 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
+| #5034 | 13.57 | EXTRACT | bot-no-auto-promote, minesweeper-title | chore(dashboards): refresh dispatch-tree feed |
 | #47 | 106.53 | CANDIDATE | state:unknown | feat(refTemplates): restore metadata-only skeleton |
 | #81 | 104.28 | CANDIDATE | state:unknown | ci: promote Gemini quota-gate + agent workflows to |
-| #103 | 103.14 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
+| #103 | 103.15 | CANDIDATE | state:unknown | feat(comms): CAVEMAN-micro seed + success matrix + |
 | #527 | 65.86 | CANDIDATE | state:unknown | ops: close admission and pagination stall evidence |
 | #605 | 62.44 | CANDIDATE | state:unknown | feat(ar-18): extend dynamic capability spine with  |
 | #684 | 60.42 | CANDIDATE | state:unknown | ops: unify GitHub Actions operations cadence |
 | #769 | 57.87 | CANDIDATE | state:unknown | feat(tagging): cron multi-category GitHub tagging  |
-| #969 | 49.77 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
+| #969 | 49.78 | CANDIDATE | state:unknown | feat(experiment): Delphic Bayesian Oracle × Observ |
 | #990 | 48.91 | CANDIDATE | state:unknown | feat(foresight): wire agent safety, orchestration, |
 | #1020 | 47.65 | CANDIDATE | state:unknown | feat: close provider continuity and executable rou |
 | #1274 | 31.8 | CANDIDATE | state:unknown | [draft reference] planning-queue: Platform201 queu |
@@ -50,16 +50,16 @@
 | #1537 | 28.81 | CANDIDATE | state:unknown | docs(ops): direct CLI Termux SSH via self-healing  |
 | #1557 | 28.14 | CANDIDATE | state:unknown | ops(actions): hybrid lag-as-notice Tailscale + con |
 | #1614 | 27.06 | CANDIDATE | state:unknown | ops(actions): matrix continuation + plan scheduled |
-| #1616 | 27.05 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
+| #1616 | 27.06 | CANDIDATE | state:unknown | docs(flywheel): add capability overlap audit |
 | #1617 | 27.05 | CANDIDATE | state:unknown | docs: improve Mintlify agent discoverability and r |
 | #1626 | 26.93 | CANDIDATE | state:unknown | docs(rfp): add first source-backed mesh provider e |
 | #1645 | 26.17 | CANDIDATE | state:unknown | fix: harden Help-Wanted telemetry and evidence aud |
-| #1650 | 26.09 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
-| #1694 | 24.12 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
+| #1650 | 26.1 | CANDIDATE | state:unknown | phantom-secrets-audit: comment-wake trigger + #184 |
+| #1694 | 24.13 | CANDIDATE | state:unknown | fix(help-wanted): preserve historical audit covera |
 | #1734 | 23.72 | CANDIDATE | state:unknown | feat(notation): add claim-level evidence provenanc |
-| #1735 | 23.71 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
+| #1735 | 23.72 | CANDIDATE | state:unknown | docs(ops): refresh maintenance status and evidence |
 | #1966 | 22.98 | CANDIDATE | state:unknown | ops(matrix): delphi 403 resilience + live Actions  |
-| #2456 | 20.81 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
+| #2456 | 20.82 | CANDIDATE | state:unknown | docs(ops): refresh AppID quota and telemetry maint |
 | #2577 | 20.18 | CANDIDATE | state:unknown | [AMD AI League] Add evidence-backed Delphi pass fo |
 | #2856 | 19.11 | CANDIDATE | state:unknown | doe(live-3): ci_mode — stamped dispatch comment as |
 

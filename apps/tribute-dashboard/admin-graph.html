@@ -128,10 +128,12 @@ pre.diffbox{background:#0a0d13;border:1px solid var(--line);border-radius:8px;pa
 .fitchip[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan);background:#0c2b38}
 .prep-badge{font-size:11px;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:2px 8px;white-space:nowrap}
 footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;background:var(--panel)}
+.mobile-inspector-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.mobile-inspector-head h2{margin:0}.mobile-inspector-head .btn{min-height:44px}
 .mobile-bar{display:none}
 @media (max-width:1080px){body{height:auto;overflow:visible;display:block;padding-bottom:118px}.layout{grid-template-columns:minmax(0,1fr);grid-template-rows:none;height:auto;flex:none;overflow:visible}aside{height:auto;overflow-y:visible}aside.left{order:2;border-right:none;border-top:1px solid var(--line)}aside.right{order:3;border-left:none;border-top:1px solid var(--line)}main.canvas-wrap{order:1;min-height:54vh;height:54vh}.hint{display:none}
 .btn{min-height:44px;padding:10px 14px}.btn.small{min-height:44px;padding:9px 12px}.canvas-toolbar select{min-height:44px}.tpl{min-height:44px}input[type=text]{min-height:44px}select{min-height:44px}.frow-edit input{min-height:40px}
-.mobile-bar{display:flex;flex-wrap:wrap;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(17,21,31,.98);border-top:1px solid var(--line)}.mobile-bar .btn{flex:1 1 21%;min-height:48px;font-size:13px;padding:8px 4px}}
+.mobile-bar{display:flex;flex-wrap:wrap;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(17,21,31,.98);border-top:1px solid var(--line)}.mobile-bar .btn{flex:1 1 21%;min-height:48px;font-size:13px;padding:8px 4px}
+.mobile-inspector{display:none}.mobile-inspector.open{display:block;position:fixed;left:8px;right:8px;bottom:calc(128px + env(safe-area-inset-bottom));z-index:85;max-height:calc(100dvh - 148px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;background:var(--panel);border:1px solid #39445e;border-radius:14px;padding:12px;box-shadow:0 16px 44px rgba(0,0,0,.6)}.mobile-inspector .detail-card{margin-top:8px}.mobile-inspector .detail-card:first-of-type{margin-top:10px}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
 /* QUE live feed strip — read-only projection of the producer-of-record feed */
@@ -280,7 +282,8 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   </main>
 
   <aside class="right" data-scrollable="1" aria-label="Inspector, verification, diff and integrations">
-    <h2>Inspector — edit selected node</h2>
+    <div class="mobile-inspector" id="mobileInspector" role="region" aria-label="Selected node inspector">
+      <div class="mobile-inspector-head"><h2>Inspector — edit selected node</h2><button class="btn small" id="closeInspector" type="button">Close</button></div>
     <div class="detail-card">
       <label class="flabel" for="inspTitle">Title</label><input type="text" id="inspTitle">
       <label class="flabel" for="inspSub">Subtitle / role line</label><input type="text" id="inspSub">
@@ -296,6 +299,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
       <h3 style="margin:0 0 4px;font-size:14px">Selected edge</h3>
       <div class="small" id="edgeInfo">Click an edge on the canvas to select it here.</div>
       <div class="btnrow"><button class="btn small danger" id="deleteEdgeBtn" type="button" disabled>Delete selected edge</button></div>
+    </div>
     </div>
 
     <h2>Proposal dispatch console — new proposal</h2>
@@ -445,7 +449,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 </div>
 <div class="mobile-bar" role="group" aria-label="Primary actions">
   <button class="btn primary" id="mbPulse" type="button">↻ QUE</button>
-  <button class="btn" id="mbFocus" type="button" aria-pressed="false">◎ Focus</button>
+  <button class="btn" id="mbInspect" type="button" aria-pressed="false">Inspect</button>
   <button class="btn" id="mbFit" type="button">Fit</button>
   <button class="btn" id="mbNode" type="button">+ Node</button>
   <button class="btn" id="mbFs" type="button" aria-pressed="false">⛶ Canvas</button>
@@ -668,7 +672,7 @@ if(window.innerWidth<760){collapsedGroups={"deploy-satellites":true,"dev-redunda
    state; exiting restores that snapshot verbatim.focusMode: "hide" (default)
    = non-focused groups stay as collapsed summaries at full strength;
    "dim" = those summaries + non-boundary edges render at low opacity. */
-var focusGroup=null,focusMode="hide",focusSnapshot=null;
+var focusGroup=null,focusMode="hide",focusSnapshot=null,mobileInspectorOpen=false;
 var fitOnFocus=true,focusCam=null;
 function applyFocusCollapse(){if(!focusGroup)return;GROUPS.forEach(function(g){if(!groupMembers(g.id).length)return;if(g.id===focusGroup)delete collapsedGroups[g.id];else collapsedGroups[g.id]=true;});}
 function enterFocus(gid){if(!groupMembers(gid).length)return;if(!focusGroup){focusSnapshot=JSON.parse(JSON.stringify(collapsedGroups));focusCam={s:view.s,tx:view.tx,ty:view.ty};}
@@ -683,7 +687,6 @@ function syncFocusUI(){var st=focusLabel();
  [["focusDimBtn","dim"],["focusHideBtn","hide"],["fpDimBtn","dim"],["fpHideBtn","hide"]].forEach(function(pair){var b=document.getElementById(pair[0]);if(b)b.setAttribute("aria-pressed",focusMode===pair[1]?"true":"false");});
  ["fitOnFocusBtn","fpFitOnFocusBtn"].forEach(function(id){var b=document.getElementById(id);if(b){b.setAttribute("aria-pressed",fitOnFocus?"true":"false");b.textContent="Fit on focus: "+(fitOnFocus?"ON":"OFF");}});
  var ex=document.getElementById("exitFocusBtn");if(ex)ex.disabled=!focusGroup;
- var mb=document.getElementById("mbFocus");if(mb)mb.setAttribute("aria-pressed",focusGroup?"true":"false");
  var tb=document.getElementById("toolbarFocusBtn");if(tb)tb.setAttribute("aria-pressed",focusGroup?"true":"false");}
 function groupMeta(gid){for(var i=0;i<GROUPS.length;i++)if(GROUPS[i].id===gid)return GROUPS[i];return GROUPS[0];}
 function groupOf(n){return (n&&n.group)||"core-loop";}
@@ -965,6 +968,7 @@ function onNodeTap(id){
   selectNode(id,true);
 }
 /* ===== inspector ===== */
+function setMobileInspectorOpen(open){mobileInspectorOpen=!!open;var panel=document.getElementById("mobileInspector");if(panel)panel.classList.toggle("open",mobileInspectorOpen);var button=document.getElementById("mbInspect");if(button)button.setAttribute("aria-pressed",mobileInspectorOpen?"true":"false");}
 function ioText(n){var i=[],o=[];MODEL.edges.forEach(function(e){if(e.to===n.id)i.push(e.from);if(e.from===n.id)o.push(e.to);});return (i.join(", ")||"—")+" → "+(o.join(", ")||"—");}
 function selectNode(id,rerender){var _n0=byId(id);if(_n0&&collapsedGroups[groupOf(_n0)]){delete collapsedGroups[groupOf(_n0)];log("Group auto-expanded to reveal selected node: "+groupMeta(groupOf(_n0)).label+".");}selectedNode=id;selectedEdge=null;document.getElementById("deleteEdgeBtn").disabled=true;document.getElementById("edgeInfo").textContent="Click an edge on the canvas to select it here.";var n=byId(id);if(!n)return;
   document.getElementById("inspTitle").value=n.title;document.getElementById("inspSub").value=n.sub;document.getElementById("inspType").value=n.type;document.getElementById("inspStatus").value=n.status;
@@ -972,7 +976,8 @@ function selectNode(id,rerender){var _n0=byId(id);if(_n0&&collapsedGroups[groupO
   document.getElementById("inspId").textContent=n.id;document.getElementById("inspPlane").textContent=n.plane+" · "+n.layer;document.getElementById("inspIO").textContent=ioText(n);document.getElementById("inspNotes").textContent=n.notes;
   document.getElementById("inspRepo").textContent=n.repoSource||"○ no repo source — not backed by a repo file";
   document.getElementById("inspDelta").textContent=n.repoDelta||"—";
-  buildFieldEditor(n);if(typeof setStageForNode==="function")setStageForNode(id);if(rerender)render();}
+  buildFieldEditor(n);if(typeof setStageForNode==="function")setStageForNode(id);if(rerender&&window.matchMedia&&window.matchMedia("(max-width:1080px)").matches)setMobileInspectorOpen(true);if(rerender)render();}
+document.getElementById("closeInspector").addEventListener("click",function(){setMobileInspectorOpen(false);document.getElementById("mbInspect").focus();});
 function focusGraphSearchResult(){if(!searchMatches.length)return;var n=searchMatches[searchIndex];if(!n)return;if(focusGroup&&groupOf(n)!==focusGroup)exitFocus();if(n.layer==="satellite"&&!showSat){showSat=true;document.getElementById("satToggle").checked=true;}if(collapsedGroups[groupOf(n)])delete collapsedGroups[groupOf(n)];selectNode(n.id,true);applyFit({minX:n.x-n.w/2-70,minY:n.y-55,maxX:n.x+n.w/2+70,maxY:n.y+nodeH(n)+55});log("Graph search selected: "+n.title+" ("+n.id+").");}
 function stepGraphSearch(direction){if(!searchMatches.length)return;searchIndex=searchIndex<0?(direction>0?0:searchMatches.length-1):(searchIndex+direction+searchMatches.length)%searchMatches.length;focusGraphSearchResult();render();}
 function clearGraphSearch(blur){var field=document.getElementById("graphSearch");field.value="";graphSearchQuery="";searchIndex=-1;render();if(blur)field.blur();}
@@ -989,7 +994,7 @@ function renderCanvasOnly(){render();}
 [["inspTitle","title"],["inspSub","sub"],["inspType","type"],["inspStatus","status"]].forEach(function(pair){document.getElementById(pair[0]).addEventListener("input",function(ev){var n=byId(selectedNode);if(n){n[pair[1]]=ev.target.value;render();}});});
 document.getElementById("addFieldBtn").addEventListener("click",function(){var n=byId(selectedNode);if(!n)return;n.fields.push(F("field","type",""));buildFieldEditor(n);render();});
 document.getElementById("deleteNodeBtn").addEventListener("click",function(){var n=byId(selectedNode);if(!n)return;MODEL.nodes=MODEL.nodes.filter(function(x){return x.id!==n.id;});MODEL.edges=MODEL.edges.filter(function(e){return e.from!==n.id&&e.to!==n.id;});log("Node deleted: "+n.title+" (and its edges).");selectedNode=MODEL.nodes.length?MODEL.nodes[0].id:null;if(selectedNode)selectNode(selectedNode,false);render();});
-function selectEdge(id){selectedEdge=id;var rec=edgeEls[id];var e=rec?rec.def:null;if(!e){MODEL.edges.forEach(function(x){if(x.id===id)e=x;});}if(!e)return;var aggNote=(e.members&&e.members.length>1)?"<br><b>Aggregated edge</b> — represents "+e.members.length+" member edges across a collapsed group:<br>"+e.members.map(function(m){return "· "+esc(m.from)+" → "+esc(m.to)+" ("+esc(m.label)+", "+m.weight+"px, conf "+m.conf+")";}).join("<br>"):"";document.getElementById("edgeInfo").innerHTML="<b>"+esc(e.label)+"</b><br>"+esc(e.from)+" → "+esc(e.to)+"<br>plane "+e.plane+" · type "+TYPE_NAME[e.type]+" · weight "+e.weight+"px · confidence "+e.conf+((e.memberIds&&e.memberIds.indexOf("agg-vercel")>=0)||e.id==="agg-vercel"?"<br>classification LIVE · ADMIN-GATED · gate "+(vercelArmed?"ON — flows":"OFF — held (strong base)"):"")+"<br>repo source: "+esc(e.repoSource||"○ no repo source — not backed by a repo file")+"<br>id "+esc(e.id)+aggNote;document.getElementById("deleteEdgeBtn").disabled=!!(e.members&&e.members.length>1);render();}
+function selectEdge(id){if(window.matchMedia&&window.matchMedia("(max-width:1080px)").matches)setMobileInspectorOpen(true);selectedEdge=id;var rec=edgeEls[id];var e=rec?rec.def:null;if(!e){MODEL.edges.forEach(function(x){if(x.id===id)e=x;});}if(!e)return;var aggNote=(e.members&&e.members.length>1)?"<br><b>Aggregated edge</b> — represents "+e.members.length+" member edges across a collapsed group:<br>"+e.members.map(function(m){return "· "+esc(m.from)+" → "+esc(m.to)+" ("+esc(m.label)+", "+m.weight+"px, conf "+m.conf+")";}).join("<br>"):"";document.getElementById("edgeInfo").innerHTML="<b>"+esc(e.label)+"</b><br>"+esc(e.from)+" → "+esc(e.to)+"<br>plane "+e.plane+" · type "+TYPE_NAME[e.type]+" · weight "+e.weight+"px · confidence "+e.conf+((e.memberIds&&e.memberIds.indexOf("agg-vercel")>=0)||e.id==="agg-vercel"?"<br>classification LIVE · ADMIN-GATED · gate "+(vercelArmed?"ON — flows":"OFF — held (strong base)"):"")+"<br>repo source: "+esc(e.repoSource||"○ no repo source — not backed by a repo file")+"<br>id "+esc(e.id)+aggNote;document.getElementById("deleteEdgeBtn").disabled=!!(e.members&&e.members.length>1);render();}
 document.getElementById("deleteEdgeBtn").addEventListener("click",function(){if(!selectedEdge)return;var _rec=edgeEls[selectedEdge];if(_rec&&_rec.def.members&&_rec.def.members.length>1){log("That edge is an aggregate of a collapsed group — expand the group to edit member edges.");return;}MODEL.edges=MODEL.edges.filter(function(e){return e.id!==selectedEdge;});log("Edge deleted: "+selectedEdge);selectedEdge=null;document.getElementById("deleteEdgeBtn").disabled=true;render();});
 /* ===== templates — panel list AND the "+ Node" sheet share one add path ===== */
 function addTemplateNode(t){var d=t.make();var id=t.key+"-draft-"+(nodeSeq++);var spot={x:340+(nodeSeq*37)%420,y:120+(nodeSeq*53)%620};var nn=N(id,d.type,d.title,d.sub,d.plane,"core",spot.x,spot.y,190,""+d.status,d.notes,d.fields);nn.group="core-loop";MODEL.nodes.push(nn);log("Draft node added from template: "+d.title+" ("+id+").");selectNode(id,false);render();}
@@ -1188,7 +1193,7 @@ function buildFocusPicker(){var box=document.getElementById("focusPickerList");i
 function showFocusPicker(){buildFocusPicker();syncFocusUI();document.getElementById("focusPicker").hidden=false;}
 function hideFocusPicker(){var p=document.getElementById("focusPicker");if(p)p.hidden=true;}
 function toggleFocusPicker(){var p=document.getElementById("focusPicker");if(p.hidden)showFocusPicker();else hideFocusPicker();}
-document.getElementById("mbFocus").addEventListener("click",function(){toggleFocusPicker();});
+document.getElementById("mbInspect").addEventListener("click",function(){setMobileInspectorOpen(!mobileInspectorOpen);});
 document.getElementById("toolbarFocusBtn").addEventListener("click",function(){toggleFocusPicker();});
 var HOME={};MODEL.nodes.forEach(function(n){HOME[n.id]={x:n.x,y:n.y};});
 document.getElementById("resetBtn").addEventListener("click",function(){MODEL.nodes.forEach(function(n){if(HOME[n.id]){n.x=HOME[n.id].x;n.y=HOME[n.id].y;}});render();fitView(false);log("Layout reset to model baseline positions (positions are part of the model, so a moved node shows in the diff until reset).");});

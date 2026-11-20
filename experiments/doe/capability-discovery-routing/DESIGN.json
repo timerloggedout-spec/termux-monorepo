@@ -10,7 +10,7 @@
   "hypothesis": {
     "statement": "Nested tagged classification plus metadata-first progressive loading improves top-k capability retrieval quality and verified task success while reducing context ingestion and unnecessary tool/schema loads, compared with flat tags and broad definition loading.",
     "predeclared_threshold": "Progressive treatment reduces definition bytes loaded by at least 40% while maintaining top-5 relevant-and-safe retrieval precision within 0.05 of the broad-load baseline; final success and permission guardrails remain non-inferior.",
-    "null": "The nested metadata-first approach yields no meaningful improvement in retrieval quality or context cost under the fixed task cohort."
+    "null": "The nested metadata-first approach yields zero material improvement in retrieval quality or context cost under the fixed task cohort."
   },
   "design": {
     "type": "blocked full factorial (2x2x2), 8 treatment arms",
@@ -70,7 +70,7 @@
         "all outcomes retain explicit unknown/blocked/failed states"
       ]
     },
-    "analysis": "Estimate main effects and interactions with uncertainty; preserve per-run observations; stratify by task family/difficulty; do not use latency or token reduction as correctness proxies. Confirm any promising effect on a held-out task cohort.",
+    "analysis": "Estimate main effects and interactions with uncertainty; preserve per-run observations; stratify by task family/difficulty; treat latency and token reduction as resource measures and correctness as an independent outcome. Confirm promising effects on a held-out task cohort.",
     "configured_instance": "Pin provider and model@version; system prompt ref+sha256; tools ref+sha256; role; moniker; context; environment fingerprint; base SHA; evaluator; dataset/cohort; and instance_key.",
     "dimension_roles": {
       "41": "treatment factor: discovery source scope",
@@ -156,14 +156,14 @@
     "**/tool-manifest.json"
   ],
   "automation": {
-    "status": "local-indexer-implemented; CI integration added; experiment-runner-not-implemented",
+    "status": "local-indexer-implemented; CI integration added; experiment-runner-pending",
     "required": "Add reviewed workflow dispatch/admission path that pins catalogs, toolset snapshots and configured-instance identity; emits one EXPERIMENT-schema record per run; preserves failed and blocked outcomes."
   },
   "constraints": [
     "Design-only until DoE-expert admission.",
     "Use offline frozen catalog fixtures for first validation; external live catalog calls require authorized source access and budget.",
-    "No external skill installation or execution in the discovery indexer.",
-    "No credentials, private prompts, full tool schemas or completion content in the index.",
+    "External skill installation and execution stay outside the discovery indexer.",
+    "Keep credentials, private prompts, full tool schemas and completion content outside the index.",
     "All treatment arms retain identical safety and authorization gates."
   ],
   "external_reference_inputs": [
@@ -212,7 +212,7 @@
     {
       "file": "Notation Registry Proposal.txt (supplied text; filename/content mismatch)",
       "role": "WAIT/WATCH/RE-FETCH runtime evidence and reconciliation methodology",
-      "trust": "user-supplied operational report; not a notation registry proposal",
+      "trust": "user-supplied operational report; contents document WAIT/WATCH reconciliation, not a notation registry proposal",
       "use": "runtime state separation, observer-only watchers, immutable SHA binding, failure preservation and evidence-led loops"
     }
   ]

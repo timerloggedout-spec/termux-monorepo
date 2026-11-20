@@ -56,3 +56,11 @@ Related active work: PR #5145 (Observatory + Delphi + DoE pipeline), #5197 (port
 
 - ITEMS: ./ITEMS.md
 - Source: ./source.md
+
+
+## Reconciliation log
+
+### 2026-11-20 — ChatGPT
+
+- Disposition: source evidence reconciled; proposal remains draft pending operator review.
+- Notes: synchronized the branch with `master` at `82d4adb804d1b5f990954b29b101bd1ad10eee8b`; recorded seven mapped `refTemplates/smods` gitlink SHAs from the repository tree; documented the absent `lego_fork` gitlink; specified the proposed S2 project-profile registry/resolver contract and its acceptance tests. The S2 resolver and project-profile instance directory remain unimplemented. Related QDesk lineage PRs #5145, #5197, #5199, #5330, #5376 and #5622 were all open and unmerged at the time of inspection. Runtime implementation remains behind proposal acceptance and separate review gates.

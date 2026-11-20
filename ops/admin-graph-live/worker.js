@@ -88,7 +88,18 @@ export default {
       const row = await env.EVENTS_DB.prepare(
         "SELECT COUNT(*) AS n, MAX(received_at) AS latest FROM runtime_events"
       ).first();
-      return Response.json({ok: true, repo: REPO, ...row}, {
+      return Response.json({
+        ok: true,
+        repo: REPO,
+        schema: "admin-graph-live-events/v1",
+        capabilities: {
+          route_events: true,
+          cursor_reads: true,
+          source_comment_verification: true,
+          public_payload_allowlist: true
+        },
+        ...row
+      }, {
         headers: {...cors, "Cache-Control": "no-store"}
       });
     }

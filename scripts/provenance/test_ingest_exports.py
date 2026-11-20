@@ -87,7 +87,7 @@ def test_muse_side_chat_discovery_terms_are_versioned_and_namespaced(tmp_path):
     }), encoding="utf-8")
     muse = ing.ingest(source, "muse-side-chat/2026-11-18", now="t")
     classifier = next(c for c in muse[0]["classifications"]
-                      if c["classifier_id"] == "muse_side_chat_discovery")
+                      if c["classifier_id"] == "muse_side_chat_seo")
     assert classifier["classifier_version"] == ing.MUSE_DISCOVERY_VERSION
     assert classifier["terms"] == [
         "moniker", "collision", "marketing", "naming", "anon",

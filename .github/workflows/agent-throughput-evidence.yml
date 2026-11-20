@@ -21,6 +21,7 @@ on:
       - "Peer review orchestrator"
       - "Jules on Issues (label / @jules)"
       - "Agent review → auto Jules"
+      - "Legacy Google Jules Review Feedback — Retirement Receipt"
       - "Gemini review after peers"
     types: [completed]
 
@@ -171,6 +172,7 @@ jobs:
               { needle: 'Peer review orchestrator', agentId: 'peer-review-orchestrator', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
               { needle: 'Jules on Issues', agentId: 'jules', provider: 'google-labs', role: 'builder', kind: 'agent', confidence: 0.80 },
               { needle: 'Agent review', agentId: 'agent-review-auto-jules', provider: null, role: 'orchestrator', kind: 'orchestrator', confidence: 0.65 },
+              { needle: 'Legacy Google Jules Review Feedback', agentId: 'doe-reviewer', provider: 'local-doe', role: 'reviewer', kind: 'agent', confidence: 0.80 },
               { needle: 'Gemini review after peers', agentId: 'gemini-peer-review', provider: 'google', role: 'reviewer', kind: 'agent', confidence: 0.80 }
             ].find(entry => workflowName.includes(entry.needle));
 

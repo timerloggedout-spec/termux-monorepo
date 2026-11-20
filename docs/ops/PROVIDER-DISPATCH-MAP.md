@@ -4,6 +4,8 @@
 Machine-readable source of record: `ops/challenge/desk-feed.json` → `dispatch.provider_catalog`
 (schema `desk-feed/v1.3`). This doc is the human mirror; the feed wins on any drift.
 
+> **Jules retirement amendment (2026-11-20):** Google Jules became read-only after 2026-11-11. The Jules lane and session IDs below are historical evidence and are excluded from live dispatch. The local Jules-derived DoE skill pack is role guidance, not a provider or execution adapter. Current routing authority: `docs/schemas/agent-roster.yaml`.
+
 ## Why
 
 Desk dispatch was a 4-lane funnel {Jules, Gemini, DeepSeek, command-dispatch} against a bench of

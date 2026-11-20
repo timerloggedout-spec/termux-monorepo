@@ -1361,6 +1361,7 @@ async function inspectRouteHistory(){
  var fromDate=new Date(fromValue),toDate=new Date(toValue);
  if(!fromValue||!toValue||!Number.isFinite(fromDate.getTime())||!Number.isFinite(toDate.getTime())||fromDate>toDate){setHistoryState("Choose a valid start and end time");return;}
  historicalMode=true;historyEvents=[];document.getElementById("historyResults").replaceChildren();
+ if(liveStatusEl){liveStatusEl.textContent="HISTORICAL INSPECTION · LIVE POLLING PAUSED";liveStatusEl.className="dirty-badge";}
  setHistoryState("Loading historical event pages…");
  var after=0,more=true,pages=0;
  try{

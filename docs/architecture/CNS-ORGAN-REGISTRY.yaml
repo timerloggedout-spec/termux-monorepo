@@ -161,7 +161,7 @@ organs:
     plane: governance
     status: proposed_contract
     owner: Unassigned enforcement authority
-    canonical_sources: [docs/architecture/CNS-WRITER-LEASE-CONTRACT.md, docs/ops/AGENT-EVIDENCE-SUBSTRATE.md]
+    canonical_sources: [docs/architecture/CNS-WRITER-LEASE-CONTRACT.md, docs/schemas/cns-writer-lease-receipt.schema.json, docs/ops/AGENT-EVIDENCE-SUBSTRATE.md]
     responsibilities: [revision_bound_lease,monotonic_fencing,provider_write_admission,append_only_lease_receipts]
     authority_boundary: "Proposed contract only; global single-writer enforcement remains unverified until every write-capable provider uses the lease authority."
     evidence_class: proposed

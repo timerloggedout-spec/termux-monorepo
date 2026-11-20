@@ -1,334 +1,19 @@
 {
- "watermark": "2026-11-20T12:07:22Z",
+ "watermark": "2026-11-20T12:48:10Z",
  "active": {
-  "44733130008": {
+  "44738813719": {
    "status": "queued",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "n8n SHE bridge",
    "tier": 4,
-   "created_at": "2026-11-20T12:07:16Z",
-   "run_started_at": "2026-11-20T12:07:16Z"
+   "created_at": "2026-11-20T12:48:06Z",
+   "run_started_at": "2026-11-20T12:48:06Z"
   },
-  "44733129187": {
+  "44738682693": {
    "status": "queued",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "Quota Dispatch Tree",
    "tier": 4,
-   "created_at": "2026-11-20T12:07:15Z",
-   "run_started_at": "2026-11-20T12:07:15Z"
-  },
-  "44733119364": {
-   "status": "queued",
-   "workflow": "quota-analysis",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119621": {
-   "status": "queued",
-   "workflow": "quota-allocation-planner",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119404": {
-   "status": "queued",
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119614": {
-   "status": "queued",
-   "workflow": "quota-served-probe",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119472": {
-   "status": "queued",
-   "workflow": "Agent Readability Source Contract",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119297": {
-   "status": "queued",
-   "workflow": "que-cadence-kick",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119512": {
-   "status": "queued",
-   "workflow": "Orchestration Regression Guard",
-   "tier": 1,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119686": {
-   "status": "queued",
-   "workflow": "hitl-control-plane-verify",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119306": {
-   "status": "queued",
-   "workflow": "DO Statement Style",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119294": {
-   "status": "queued",
-   "workflow": "graph-matrix-probe",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733119520": {
-   "status": "queued",
-   "workflow": "repo gate",
-   "tier": 1,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
-  },
-  "44733105594": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:06Z",
-   "run_started_at": "2026-11-20T12:07:06Z"
-  },
-  "44733103404": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:05Z",
-   "run_started_at": "2026-11-20T12:07:05Z"
-  },
-  "44733102851": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:05Z",
-   "run_started_at": "2026-11-20T12:07:05Z"
-  },
-  "44733103112": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:05Z",
-   "run_started_at": "2026-11-20T12:07:05Z"
-  },
-  "44733099782": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:04Z",
-   "run_started_at": "2026-11-20T12:07:04Z"
-  },
-  "44733100791": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:04Z",
-   "run_started_at": "2026-11-20T12:07:04Z"
-  },
-  "44733100352": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:04Z",
-   "run_started_at": "2026-11-20T12:07:04Z"
-  },
-  "44733097510": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:03Z",
-   "run_started_at": "2026-11-20T12:07:03Z"
-  },
-  "44733096142": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:02Z",
-   "run_started_at": "2026-11-20T12:07:02Z"
-  },
-  "44733093903": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:02Z",
-   "run_started_at": "2026-11-20T12:07:02Z"
-  },
-  "44733096080": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:02Z",
-   "run_started_at": "2026-11-20T12:07:02Z"
-  },
-  "44733093313": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:01Z",
-   "run_started_at": "2026-11-20T12:07:01Z"
-  },
-  "44733091962": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:01Z",
-   "run_started_at": "2026-11-20T12:07:01Z"
-  },
-  "44733091939": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:01Z",
-   "run_started_at": "2026-11-20T12:07:01Z"
-  },
-  "44733092899": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:01Z",
-   "run_started_at": "2026-11-20T12:07:01Z"
-  },
-  "44733092738": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:01Z",
-   "run_started_at": "2026-11-20T12:07:01Z"
-  },
-  "44733068582": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733068042": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733070171": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733070076": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733069853": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733069205": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733067924": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733069670": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733069961": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:51Z",
-   "run_started_at": "2026-11-20T12:06:51Z"
-  },
-  "44733066561": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:50Z",
-   "run_started_at": "2026-11-20T12:06:50Z"
-  },
-  "44733064689": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
-  },
-  "44733064441": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
-  },
-  "44733063955": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
-  },
-  "44733062977": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:48Z",
-   "run_started_at": "2026-11-20T12:06:48Z"
-  },
-  "44733062966": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:48Z",
-   "run_started_at": "2026-11-20T12:06:48Z"
-  },
-  "44733059642": {
-   "status": "queued",
-   "workflow": "Issue Comment Router \u2014 modular fan-out reduction",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:47Z",
-   "run_started_at": "2026-11-20T12:06:47Z"
-  },
-  "44733060061": {
-   "status": "queued",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:47Z",
-   "run_started_at": "2026-11-20T12:06:47Z"
-  },
-  "44733046997": {
-   "status": "queued",
-   "workflow": "tribute-dashboard-deploy",
-   "tier": 2,
-   "created_at": "2026-11-20T12:06:41Z",
-   "run_started_at": "2026-11-20T12:06:41Z"
+   "created_at": "2026-11-20T12:47:09Z",
+   "run_started_at": "2026-11-20T12:47:09Z"
   },
   "44697056321": {
    "status": "queued",
@@ -519,124 +204,103 @@
    "created_at": "2026-10-01T02:01:19Z",
    "run_started_at": "2026-10-01T02:01:19Z"
   },
-  "44733119360": {
+  "44738804250": {
    "status": "in_progress",
-   "workflow": "termux smoke",
-   "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
+   "workflow": "pages build and deployment",
+   "tier": 2,
+   "created_at": "2026-11-20T12:48:02Z",
+   "run_started_at": "2026-11-20T12:48:02Z"
   },
-  "44733119647": {
+  "44738803614": {
    "status": "in_progress",
-   "workflow": "Foresight Evidence Spine",
+   "workflow": "Agent Readability Source Contract",
    "tier": 4,
-   "created_at": "2026-11-20T12:07:11Z",
-   "run_started_at": "2026-11-20T12:07:11Z"
+   "created_at": "2026-11-20T12:48:02Z",
+   "run_started_at": "2026-11-20T12:48:02Z"
   },
-  "44733099971": {
+  "44738803048": {
    "status": "in_progress",
-   "workflow": "que-feed-collect",
+   "workflow": "hitl-control-plane-verify",
    "tier": 4,
-   "created_at": "2026-11-20T12:07:04Z",
-   "run_started_at": "2026-11-20T12:07:04Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44733063836": {
+  "44738803367": {
    "status": "in_progress",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "quota-served-probe",
    "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44733063346": {
-   "status": "in_progress",
-   "workflow": "delphi-ledger-feed-collect",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
-  },
-  "44733063295": {
-   "status": "in_progress",
-   "workflow": "delphi-rfp-feed-collect",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:49Z",
-   "run_started_at": "2026-11-20T12:06:49Z"
-  },
-  "44733059578": {
-   "status": "in_progress",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:47Z",
-   "run_started_at": "2026-11-20T12:06:47Z"
-  },
-  "44733055536": {
-   "status": "in_progress",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:45Z",
-   "run_started_at": "2026-11-20T12:06:45Z"
-  },
-  "44733047277": {
+  "44738803087": {
    "status": "in_progress",
    "workflow": "Foresight Evidence Spine",
    "tier": 4,
-   "created_at": "2026-11-20T12:06:41Z",
-   "run_started_at": "2026-11-20T12:06:41Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44733046977": {
+  "44738802823": {
    "status": "in_progress",
-   "workflow": "telemetry-ingest",
+   "workflow": "quota-analysis",
    "tier": 4,
-   "created_at": "2026-11-20T12:06:41Z",
-   "run_started_at": "2026-11-20T12:06:41Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44733047207": {
-   "status": "in_progress",
-   "workflow": "Context Relationship + Lead/Lag Audit",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:41Z",
-   "run_started_at": "2026-11-20T12:06:41Z"
-  },
-  "44733047314": {
+  "44738802993": {
    "status": "in_progress",
    "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
    "tier": 4,
-   "created_at": "2026-11-20T12:06:41Z",
-   "run_started_at": "2026-11-20T12:06:41Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44732991958": {
+  "44738802843": {
    "status": "in_progress",
-   "workflow": "lane events recorder",
+   "workflow": "termux smoke",
    "tier": 4,
-   "created_at": "2026-11-20T12:06:17Z",
-   "run_started_at": "2026-11-20T12:06:17Z"
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44732993467": {
+  "44738802921": {
    "status": "in_progress",
-   "workflow": "Audit Cycle \u2014 Single PR Feed-Forward",
-   "tier": 4,
-   "created_at": "2026-11-20T12:06:17Z",
-   "run_started_at": "2026-11-20T12:06:17Z"
+   "workflow": "Orchestration Regression Guard",
+   "tier": 1,
+   "created_at": "2026-11-20T12:48:01Z",
+   "run_started_at": "2026-11-20T12:48:01Z"
   },
-  "44732727938": {
+  "44738779910": {
    "status": "in_progress",
-   "workflow": "Lane matrix event-driven inventory",
+   "workflow": "que-feed-collect",
    "tier": 4,
-   "created_at": "2026-11-20T12:04:24Z",
-   "run_started_at": "2026-11-20T12:04:24Z"
+   "created_at": "2026-11-20T12:47:52Z",
+   "run_started_at": "2026-11-20T12:47:52Z"
   },
-  "44732723870": {
+  "44738753215": {
    "status": "in_progress",
-   "workflow": "PR evidence evaluation",
+   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
    "tier": 4,
-   "created_at": "2026-11-20T12:04:22Z",
-   "run_started_at": "2026-11-20T12:04:22Z"
+   "created_at": "2026-11-20T12:47:40Z",
+   "run_started_at": "2026-11-20T12:47:40Z"
   },
-  "44732516103": {
+  "44738753241": {
+   "status": "in_progress",
+   "workflow": "Sweep Accountability",
+   "tier": 4,
+   "created_at": "2026-11-20T12:47:40Z",
+   "run_started_at": "2026-11-20T12:47:40Z"
+  },
+  "44738753223": {
+   "status": "in_progress",
+   "workflow": "tribute-dashboard-deploy",
+   "tier": 2,
+   "created_at": "2026-11-20T12:47:40Z",
+   "run_started_at": "2026-11-20T12:47:40Z"
+  },
+  "44737870584": {
    "status": "in_progress",
    "workflow": "Reviewer metrics collect",
    "tier": 4,
-   "created_at": "2026-11-20T12:02:52Z",
-   "run_started_at": "2026-11-20T12:02:52Z"
+   "created_at": "2026-11-20T12:41:20Z",
+   "run_started_at": "2026-11-20T12:41:20Z"
   },
   "39698523858": {
    "status": "in_progress",

@@ -243,3 +243,16 @@
 ## Completion rule
 
 A CNS item is complete only when its implementation is merged through the governed branch process, its acceptance tests pass, and its required runtime or artifact evidence is linked from the item. Documentation and issue creation establish tracking, not implementation completion.
+
+
+## Current evidence gates
+
+- CNS-03 uses the existing operator-dispatched CRG backfill workflow. The current connector supports run inspection and reruns; workflow dispatch remains an operator action through the repository's approved workflow interface.
+- CNS-06 runtime wiring remains gated by QDesk Brain RFP #5501, its Delphi recheck, and verified QUE/QDesk host ownership. Source reconciliation and read-only bridge design proceed within the existing scope.
+- CNS-09 reuses `ops/3l0/intake.jsonl` and its existing fan-out/attribution pipeline. The current intake has 41 records and zero confirmed outcomes; the committed 3L0 feed is stale. CNS-09 prioritizes attribution and feed reconciliation before any score movement.
+- CNS-10 consumes the existing DoE/MVT experiment plane and PCDOE-008 prioritization work. The first treatment compares one bounded manager policy against the incumbent on a pinned cohort.
+- CNS-11 separates GitHub Actions concurrency from external provider write enforcement. A local concurrency group establishes only the internal workflow coverage that its evidence proves.
+- CNS-12 reuses SHE reducers, snapshot metadata, and Tribute dashboard surfaces. CNS-13 remains the CRG-15 Explorer publication/deployment follow-through.
+- CNS-15 uses `docs/ops/JULES-INTEGRATION-RECONCILIATION.md` and the existing workflow tests as its source and compatibility guard.
+- CNS-16 consumes PR #5635 and the canonical notation registry.
+

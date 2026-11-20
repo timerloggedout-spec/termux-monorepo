@@ -1319,7 +1319,7 @@ async function pollRuntimeEvents(){
    more=!initial&&feed.has_more===true&&feed.events.length>0;
    rounds++;
   }while(more&&rounds<5);
-  if(liveStatusEl){liveStatusEl.textContent="LIVE ROUTE PULSES · "+(liveCursor==null?"READY":"SEQ "+liveCursor);liveStatusEl.className="clean-badge";liveStatusEl.title="Last checked "+new Date().toISOString();}
+  if(liveStatusEl){var cursorReady=Number.isSafeInteger(feed.next_after_seq);liveStatusEl.textContent="LIVE ROUTE PULSES · "+(cursorReady?"SEQ "+liveCursor:"WORKER UPGRADE PENDING");liveStatusEl.className=cursorReady?"clean-badge":"dirty-badge";liveStatusEl.title="Last checked "+new Date().toISOString();}
  }catch(err){
   if(liveStatusEl){liveStatusEl.textContent="ROUTE PULSES · DISCONNECTED";liveStatusEl.className="dirty-badge";}
   log("Runtime pulse feed unavailable: "+String(err.message||err));

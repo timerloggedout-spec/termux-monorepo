@@ -71,7 +71,7 @@ The proposed QDesk filing portal should provide a guided, template-backed flow o
 
 For public use, authenticate the submitting GitHub principal and bind the submission to that principal's authorized repository installation. Keep credentials server-side, use least-privilege installation permissions, and record the actor, repository, template version, submitted payload digest and issue URL. The static Replica/QDesk client remains credential-free. The native issue form remains the fallback and canonical filing route until an authenticated portal adapter passes its own review.
 
-Keep model access as a separate choice from issue filing. Replica's documented model path is the Copilot app using either the user's Copilot plan or a user-connected BYOK provider; the selected provider's costs and terms apply. The monorepo also has its own workflow/provider routing, including scripts/model_router.py, .github/actions/model-router, .github/connectors/llm-peers.yaml and quota gates. Those workflow routes and Replica's interactive Copilot session are separate execution planes.
+Keep model access as a separate choice from issue filing. Replica's documented model path is the Copilot app using either the user's Copilot plan or a user-connected BYOK provider; the selected provider's costs and terms apply. The monorepo also has its own workflow/provider routing, including scripts/model_router.py, .github/actions/model-router, .github/connectors/llm-peers.yaml and quota gates. Those workflow routes and Replica's interactive Copilot session are separate execution planes. The checked-in model-router action declares triage, review and invoke roles; the project-task filing route uses its own provider-dispatch boundary. A project-task model preference therefore needs an explicit contract and adapter between intake and the owning dispatch mechanism. The current model-router capacity cache is advisory catalog/capacity state; the action documents live observations as authoritative for provider quota/rate-limit state. The Gemini quota gate currently tracks repository workflow credentials and primary/backup keys, which establishes an organization workflow quota path rather than per-user BYOK accounting. Per-principal BYOK credential custody, quota metering and billing attribution remain new requirements to design and validate.
 
 The eventual user-facing model selector should expose only catalogued, capability-eligible choices and record a preference rather than fabricate availability:
 - **Automatic (system routing):** use the existing task/role router and its eligible provider/model selection.
@@ -297,12 +297,44 @@ Each run uses the existing EXPERIMENT record with baseline/candidate SHA, suite,
 - Treat preview, queued workflow, successful build and ATES observations as evidence inputs; require the declared release gates and task outcome for selection.
 - Record every candidate, selection, migration, retirement and rollback with immutable version and evidence references.
 
-## 10. Open evidence items
+## 10. Live reconciliation snapshot — 2026-11-19
 
-- Verify exact gitlink commit SHAs for the relevant `refTemplates/smods/` entries from the Git tree before any pin or source update.
-- Reconcile with PR #5145, #5197, #5199, #5330, #5376 and #5622 current head/base/check state before adding overlapping files or changing QDesk feed/claim semantics.
-- Inspect current `versioning.js` deploy/build workflow and production manifest to establish which production fields are actually populated.
-- Inspect the complete desk/admin graph feeds and their owning collectors before composing QDesk.
-- Verify the active release automation and existing visual-architecture versioning PR #4085 disposition before changing that contract.
-- Confirm the preferred public brand/filename: `Q^∆3sk.html` vs a stable `qdesk.html` URL with `Q^∆3sk` visible branding.
-- Identify any existing access-grant/quarantine contract before defining a new schema; the Clerk's initial read-only projection can proceed without one.
+The related PRs were fetched directly from GitHub during this proposal update. All six remain open and unmerged. GitHub reported `mergeable=false` for each at retrieval; the proposal treats that as a reconciliation signal and preserves each PR as its own owner until the maintainers resolve its branch state.
+
+| PR | Current state | Draft | Mergeable at retrieval | QDesk ownership |
+|---|---|---:|---:|---|
+| #5145 | open | false | false | Observatory, Delphi, DoE pipeline RFP and acceptance matrix |
+| #5197 | open | true | false | Portfolio decision and delivery report contract/schema |
+| #5199 | open | true | false | Deadline desk, alarms, freshness and Gantt |
+| #5330 | open | false | false | Deferred-admission drain and admission receipts |
+| #5376 | open | true | false | Project-task / provider-execution boundary |
+| #5622 | open | false | false | QUE ranking and claim pipeline |
+
+Treat the #5199 Gantt as an existing in-flight implementation and dependency. Q^∆3sk should link to and compose its requirement-closure schedule, alarm and freshness evidence after that owner establishes its accepted interface. The current proposal owns the overview/navigation and release/version-selection projection.
+
+## 10.1. Verified source file identities
+
+| Source | Ref | Blob SHA |
+|---|---|---|
+| Replica fork README | `timerloggedout-spec/replica_fork:main/README.md` | `2404a95ceec73f9698b879c53270c2badd7975c4` |
+| Replica local prototyping guide | `timerloggedout-spec/replica_fork:main/docs/local-prototyping.md` | `dc3395204ea36bfd763914db4e03fb86d9328d17` |
+| Canonical project-task issue form | `.github/ISSUE_TEMPLATE/project-task.yml` | `bb13a8dcd5153368338cdce737feefd18be0e934` |
+| Model router | `scripts/model_router.py` | `1651c692e4473cc31039c25aa7fb9f9fdc9319ef` |
+| Model router action | `.github/actions/model-router/action.yml` | `c80d15099b117caddb5d97ec5646b5c3b0f37e7f` |
+| Provider peer catalog | `.github/connectors/llm-peers.yaml` | `28e4a6104dadaecce3c6075af89ff32cc89143bc` |
+| Gemini workflow quota gate | `.github/actions/gemini-quota-gate/action.yml` | `4d280d7f3b27514af256cec5d764b4acb7ada1ea` |
+
+Blob SHAs identify the exact file contents fetched; they are distinct from the containing commit SHA and the submodule gitlink object SHA.
+
+## 10.2. Remaining evidence and authorization gates
+
+- Verify exact gitlink commit SHAs for relevant `refTemplates/smods/` entries from the Git tree before any pin or source update.
+- Reconcile current head/base/check state and overlapping file ownership for all six related PRs before changing QDesk feed, claim or provider semantics.
+- Inspect `versioning.js`, its build/deploy workflow and the production manifest to establish populated production fields and artifact provenance.
+- Inspect complete desk/Admin Graph feeds and owning collectors before composing the shell.
+- Verify active release automation and the disposition of visual-architecture versioning PR #4085 before changing that contract.
+- Confirm the public brand/filename: `Q^∆3sk.html` or stable `qdesk.html` URL with visible `Q^∆3sk` branding.
+- Identify existing access-grant/quarantine contracts before proposing a new schema.
+- Design a user-authenticated GitHub App/API filing adapter, installation scope, payload validation, idempotency and audit receipt.
+- Define per-user BYOK credential custody, quota accounting, rate-limit isolation, cost disclosure and billing attribution; current workflow quota controls establish repository workflow credentials, not a per-user quota service.
+- Confirm the explicit mapping from a user-selected model preference to the project-task provider-dispatch owner.

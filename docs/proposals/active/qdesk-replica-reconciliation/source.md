@@ -146,6 +146,15 @@ Public proposal cards expose only approved/sanitized fields: title, purpose, req
 
 The Clerk initially observes and recommends. Permission grant/revocation, account changes, browser isolation and quarantine enforcement require their existing authoritative mechanisms and explicit policy/approval. The UI itself does not grant permissions. Use least privilege, short-lived grants, expiry, periodic review, revocation evidence and append-only transition records. Never infer trust from GitHub actor identity alone.
 
+Proposed review bands (assessment states, not direct permission mutations):
+- Q0 — routine observation.
+- Q1 — additional identity/evidence verification.
+- Q2 — capability/scope reduction recommended.
+- Q3 — isolated execution recommended.
+- Q4 — suspend access through the owning authority and open incident review.
+
+Every band records trigger, confidence, scope, reviewer, next review time and disposition. A risk band is not a trust score, and no single scalar automatically grants or revokes access.
+
 ## 7. Release and preview comparison refinement
 
 Reuse `version-manifest.json`, `versioning.js`, `versioning.html`, current deploy workflows and the existing visual-architecture versioning work (PR #4085).

@@ -236,6 +236,14 @@ fn reasoning_policy_and_mosaic_form_one_identity_preserving_shadow_handoff() {
     assert!(receipt
         .evidence_refs
         .contains(&"test://brain-shadow-host/mosaic-response".into()));
+    println!(
+        "BRAIN_SHADOW_RECEIPT fixture=ready orchestration_id={} cycle_id={} attempt_id={} policy={:?} specialist={:?} evidence=test://brain-shadow-host/mosaic-response",
+        receipt.identity.orchestration_id,
+        receipt.identity.cycle_id,
+        receipt.identity.attempt_id,
+        receipt.kernel_decision,
+        receipt.specialist_outcome
+    );
 }
 
 #[test]
@@ -248,4 +256,11 @@ fn host_policy_hold_prevents_specialist_handoff() {
     assert!(receipt
         .evidence_refs
         .contains(&"test://brain-shadow-host/policy".into()));
+    println!(
+        "BRAIN_SHADOW_RECEIPT fixture=policy_hold orchestration_id={} cycle_id={} attempt_id={} policy={:?} specialist=not_invoked evidence=test://brain-shadow-host/policy",
+        receipt.identity.orchestration_id,
+        receipt.identity.cycle_id,
+        receipt.identity.attempt_id,
+        receipt.kernel_decision
+    );
 }

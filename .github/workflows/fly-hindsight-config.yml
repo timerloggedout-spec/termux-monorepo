@@ -3,16 +3,35 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: "apply | restart | status"
+        description: "apply | probe-all | restart | status"
         required: true
         default: "apply"
         type: choice
-        options: [apply, restart, status]
+        options: [apply, probe-all, restart, status]
+      arm:
+        description: "apply arm: auto = probe-ordered failover (gemini -> groq -> openrouter)"
+        required: true
+        default: "auto"
+        type: choice
+        options: [auto, gemini, groq, openrouter]
+
+# HindSight extraction route (#5553): multi-arm fleet inference route.
+# OpenRouter is demoted to one arm among many (last in probe order); the
+# extraction lane is no longer single-homed on one credit pool.
+# Arms (independent providers, per-arm keys already provisioned as Actions secrets):
+#   gemini     provider=gemini     model=gemini-2.0-flash                    key=GEMINI_API_KEY
+#   groq       provider=groq       model=llama-3.3-70b-versatile             key=GROQ_API_KEY
+#   openrouter provider=openrouter model=meta-llama/llama-3.3-70b-instruct:free key=OPENROUTER_API_KEY
+# apply(auto): probe each arm's provider endpoint in order; the first arm
+# answering a live chat completion is written to the Fly app secrets and the
+# app is restarted + health-gated. A dead arm is skipped automatically --
+# that rotation IS the failover. probe-all: evidence run, probes every arm
+# and reports the table without changing config.
 
 jobs:
   config:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -22,46 +41,89 @@ jobs:
       - name: Add flyctl to PATH
         run: echo "$HOME/.fly/bin" >> $GITHUB_PATH
 
-      - name: Apply secrets + restart
-        if: ${{ github.event.inputs.action == 'apply' }}
+      - name: Probe arms / apply winning arm
+        if: ${{ github.event.inputs.action == 'apply' || github.event.inputs.action == 'probe-all' }}
         env:
-          FLY_API_TOKEN:   ${{ secrets.FLY_IO_ORG_TOKEN }}
-          OPENROUTER_KEY:  ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          ACTION: ${{ github.event.inputs.action }}
+          ARM: ${{ github.event.inputs.arm }}
+          HINDSIGHT_BASE_URL: ${{ secrets.HINDSIGHT_BASE_URL }}
+          HINDSIGHT_API_KEY: ${{ secrets.HINDSIGHT_API_KEY }}
+          HINDSIGHT_BANK_ID: ${{ secrets.HINDSIGHT_BANK_ID }}
         run: |
-          set -euo pipefail
-          [ -n "$OPENROUTER_KEY" ] || { echo "::error::OPENROUTER_API_KEY missing"; exit 1; }
-          [ -n "$GEMINI_KEY" ]     || { echo "::error::GEMINI_API_KEY missing"; exit 1; }
-
+          set -uo pipefail
+          probe() { # $1=probe_url $2=key $3=model -> echoes http code
+            curl -sS -o /dev/null -w '%{http_code}' -m 30 -X POST "$1" \
+              -H "Authorization: Bearer $2" -H 'Content-Type: application/json' \
+              -d "{\"model\":\"$3\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}" || echo 000
+          }
+          arm_probe() { # $1=arm -> 0 if live
+            case "$1" in
+              gemini)     [ -n "$GEMINI_KEY" ] && [ "$(probe https://generativelanguage.googleapis.com/v1beta/openai/chat/completions "$GEMINI_KEY" gemini-2.0-flash)" = "200" ] ;;
+              groq)       [ -n "$GROQ_KEY" ] && [ "$(probe https://api.groq.com/openai/v1/chat/completions "$GROQ_KEY" llama-3.3-70b-versatile)" = "200" ] ;;
+              openrouter) [ -n "$OPENROUTER_KEY" ] && [ "$(probe https://openrouter.ai/api/v1/chat/completions "$OPENROUTER_KEY" meta-llama/llama-3.3-70b-instruct:free)" = "200" ] ;;
+            esac
+          }
+          if [ "$ACTION" = "probe-all" ]; then
+            for a in gemini groq openrouter; do
+              if arm_probe "$a"; then echo "arm $a: LIVE"; else echo "arm $a: DOWN"; fi
+            done
+            exit 0
+          fi
+          # apply: build the candidate order
+          if [ "$ARM" = "auto" ]; then ORDER="gemini groq openrouter"; else ORDER="$ARM"; fi
+          WIN=""
+          for a in $ORDER; do
+            if arm_probe "$a"; then echo "arm $a: LIVE"; WIN="$a"; break; else echo "arm $a: DOWN (rotating)"; fi
+          done
+          [ -n "$WIN" ] || { echo "::error::no live extraction arm in [$ORDER]"; exit 1; }
+          case "$WIN" in
+            gemini)     PROVIDER=gemini;     MODEL=gemini-2.0-flash;                    KEY="$GEMINI_KEY" ;;
+            groq)       PROVIDER=groq;       MODEL=llama-3.3-70b-versatile;             KEY="$GROQ_KEY" ;;
+            openrouter) PROVIDER=openrouter; MODEL=meta-llama/llama-3.3-70b-instruct:free; KEY="$OPENROUTER_KEY" ;;
+          esac
+          echo "winning arm: $WIN (provider=$PROVIDER model=$MODEL)"
           fly secrets set -a hindsight-termux \
-            HINDSIGHT_API_LLM_PROVIDER="openrouter" \
-            HINDSIGHT_API_LLM_API_KEY="$OPENROUTER_KEY" \
-            HINDSIGHT_API_LLM_MODEL="meta-llama/llama-3.3-70b-instruct:free" \
+            HINDSIGHT_API_LLM_PROVIDER="$PROVIDER" \
+            HINDSIGHT_API_LLM_API_KEY="$KEY" \
+            HINDSIGHT_API_LLM_MODEL="$MODEL" \
             HINDSIGHT_API_EMBEDDINGS_PROVIDER="google" \
             HINDSIGHT_API_EMBEDDINGS_API_KEY="$GEMINI_KEY" \
             HINDSIGHT_API_EMBEDDINGS_MODEL="text-embedding-004" \
             HINDSIGHT_API_RERANKER_PROVIDER="rrf" \
             HINDSIGHT_BIND_HOST="0.0.0.0" \
             HINDSIGHT_BIND_PORT="8888"
-
           fly machine restart -a hindsight-termux || true
           sleep 30
-
           URL="https://hindsight-termux.fly.dev/health"
+          LIVE=0
           for i in $(seq 1 40); do
             code=$(curl -sS -o /dev/null -w '%{http_code}' -m 15 "$URL" || echo 000)
             echo "attempt $i: $code"
-            [ "$code" = "200" ] && { echo "LIVE"; break; }
+            [ "$code" = "200" ] && { echo "LIVE on arm $WIN"; LIVE=1; break; }
             sleep 20
           done
-
+          [ "$LIVE" = "1" ] || { echo "::error::app did not return to health on arm $WIN"; exit 1; }
+          # Retain probe (evidence, not a gate): one payload through the new route.
+          if [ -n "${HINDSIGHT_BASE_URL:-}" ] && [ -n "${HINDSIGHT_API_KEY:-}" ] && [ -n "${HINDSIGHT_BANK_ID:-}" ]; then
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 60 -X POST \
+              "$HINDSIGHT_BASE_URL/v1/default/banks/$HINDSIGHT_BANK_ID/memories" \
+              -H "Authorization: Bearer $HINDSIGHT_API_KEY" -H 'Content-Type: application/json' \
+              -d '{"content":"HindSight extraction route probe: multi-arm failover verification payload (#5553).","context":"fly-hindsight-config apply probe"}' || echo 000)
+            echo "retain probe on arm $WIN: HTTP $code"
+          else
+            echo "retain probe skipped: HINDSIGHT_* secrets incomplete in this workflow context"
+          fi
           echo "=== last 40 log lines ==="
           fly logs -a hindsight-termux --no-tail 2>&1 | tail -40 || true
 
       - name: Restart only
         if: ${{ github.event.inputs.action == 'restart' }}
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
           fly machine restart -a hindsight-termux
           sleep 30
@@ -70,7 +132,7 @@ jobs:
       - name: Status
         if: ${{ github.event.inputs.action == 'status' }}
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_IO_ORG_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
           fly status -a hindsight-termux
           curl -sS -m 30 -o /dev/null -w 'health: %{http_code} in %{time_total}s\n' \

@@ -50,4 +50,4 @@ The Worker is admin-graph-live.timerloggedout.workers.dev. D1 is admin-graph-run
 
 The normalizer tests cover producer claims, executor claims, unrelated comments, workflow jobs, snapshot reconciliation, stable IDs, and privacy filtering. The page contract pins the live route feed, cursor reader, and graph edge mapping.
 
-Runtime health and route-event ingestion remain separate states: a healthy empty feed proves transport readiness, while a stored route event proves producer activation and end-to-end pulse delivery.
+Runtime health and route-event ingestion remain separate states: a healthy empty feed proves transport readiness, while a stored route event proves producer activation and end-to-end pulse delivery. The publisher checks the Worker capability manifest before ingestion, so route events wait for the upgraded Worker deployment and scheduled reconciliation recovers the overlapping claim window.

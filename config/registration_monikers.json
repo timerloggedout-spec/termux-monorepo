@@ -212,17 +212,18 @@
     {
       "handling": {
         "escalation": [
-          "Profile is complete; no Devpost gate stands. Payment or a forced personal field beyond what the Profile Registry records stays owner-gated (rule 6)."
+          "Devpost account + profile are complete. Live registrations C12 (UGREEN), C18 (Cloud9 × JetBrains), and C19 (Learn AR with SPECS) were rechecked 2026-11-20; event-specific eligibility and submission gates live in ops/challenge/coordinator.json. Payment or a forced personal field beyond the Profile Registry remains owner-gated (rule 6)."
         ],
         "owner_lane": "challenge-entries",
-        "receipts_route": "Account + profile completed by the accounts lane 2026-10-29 (Profile Registry, Devpost block). Kiroween registration confirmations cite into docs/ops/CHALLENGE-ENTRIES-LOG.md (packet D4) by the owning lane.",
+        "receipts_route": "Account + profile completed by the accounts lane 2026-10-29 (Profile Registry, Devpost block). Current registration snapshot: ops/challenge/devpost-registration-snapshot.json (observed 2026-11-20); C12/C18/C19 registration and submission states are recorded in docs/ops/CHALLENGE-ENTRIES-LOG.md and ops/challenge/coordinator.json.",
         "submission_authority": "The owning lane may register and submit under the moniker within the standing boundary (challenge already owner-approved)."
       },
       "kind": "platform",
       "moniker": "n0nDevpost",
       "notes": [
         "Future candidate C5 (PayPal AI Hackathon) is also Devpost-hosted and attaches to this entry if it becomes a registration.",
-        "Owner gate cleared 2026-10-29: account created + profile completed by the accounts lane (browser-verified). Status synced by the registry lane 2026-10-29."
+        "Owner gate cleared 2026-10-29: account created + profile completed by the accounts lane (browser-verified). Status synced by the registry lane 2026-10-29.",
+        "Live Devpost registration list rechecked 2026-11-20: C12 UGREEN, C18 Cloud9 × JetBrains, C19 Learn AR with SPECS. Receipts Vault is published under C12; C18/C19 have no linked project in the current project listing."
       ],
       "platform": "Devpost",
       "platform_id": "devpost",
@@ -232,7 +233,25 @@
           "aspect": "event-host",
           "event": "Kiroween 2026 entry (packet D4 for C4)",
           "ref": "D4",
-          "status": "account + profile complete 2026-10-29; D4 submission window opens Oct 30 13:00 PT"
+          "status": "account + profile complete 2026-10-29; registration remains in progress pending Kiro user ID or AWS account ID"
+        },
+        {
+          "aspect": "event-host",
+          "event": "UGREEN Hackathon 2026 on AI NAS",
+          "ref": "C12",
+          "status": "joined; Round 1 Receipts Vault submission published 2026-11-16"
+        },
+        {
+          "aspect": "event-host",
+          "event": "Cloud9 × JetBrains: Sky's The Limit Hackathon 2026",
+          "ref": "C18",
+          "status": "joined; observed 2026-11-20; no linked project in current project listing"
+        },
+        {
+          "aspect": "event-host",
+          "event": "Learn AR with SPECS",
+          "ref": "C19",
+          "status": "joined; observed 2026-11-20; no linked project in current project listing"
         }
       ],
       "role": "entrant",

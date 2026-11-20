@@ -27,7 +27,7 @@ All pieces above have a free tier. Paid upgrades (Google AI Pro/Ultra for higher
 ## Required secrets / variables (user action)
 
 - `GEMINI_API_KEY` — Google AI Studio free key (required for Gemini workflows)
-- `JULES_API_KEY` — optional; enables structured `jules-invoke` (App + `@jules` comment still work without it)
+- Google Jules session dispatch is retired; the local Jules-derived skill bundle provides role guidance only.
 - Workflow permissions: Read and write for GITHUB_TOKEN (Settings → Actions → General)
 
 ## Activation note

@@ -63,6 +63,10 @@ github:
       enabled: false
       status: "retired_read_only_after_2026-11-11"
       api_key_env: null
+      replacement:
+        repository: "timerloggedout-spec/termux-monorepo"
+        skill: ".agents/skills/jules-doe-role-adapter/SKILL.md"
+        role_register: "docs/ops/DOE-ROLES-EPOCH-2026-11-03.md"
     coderabbit:
       enabled: true
       api_key_env: "CODERABBIT_API_KEY"

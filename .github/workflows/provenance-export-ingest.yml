@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       source_ns:
-        description: "Store path / namespace (e.g. jules-harvest/2026-11-17)"
+        description: "Store path / namespace (e.g. jules-harvest/2026-11-17 or muse-side-chat/2026-11-18)"
         required: true
         default: "jules-harvest/2026-11-17"
   workflow_call:

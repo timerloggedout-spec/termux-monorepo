@@ -152,10 +152,10 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
 <header class="topbar">
   <div>
     <h1>Admin Interaction Graph</h1>
-    <div class="sub">Canonical model → deterministic render · live QUE queue + dispatch claims · inspect, verify &amp; trace <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
+    <div class="sub">Canonical model → deterministic render · live task-routing + execution pulses · inspect, verify &amp; trace <span id="liveStatus" class="clean-badge">LIVE ROUTE PULSES · CONNECTING</span> <span id="dirtyBadge" class="clean-badge">MODEL CLEAN vs baseline</span></div>
   </div>
   <div class="controls" role="group" aria-label="Graph controls">
-    <button class="btn primary" id="pulseBtn" type="button">↻ Refresh QUE feed</button>
+    <button class="btn primary" id="pulseBtn" type="button">↻ Refresh QUE + route pulses</button>
     <button class="btn" id="playPauseBtn" type="button" aria-pressed="false">⏸ Pause motion</button>
     <button class="btn" id="resetBtn" type="button">Reset layout</button>
   </div>
@@ -438,7 +438,7 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
   <div class="btnrow"><button class="btn small" id="tplSheetClose" type="button" style="min-height:44px">Close</button></div>
 </div>
 <div class="mobile-bar" role="group" aria-label="Primary actions">
-  <button class="btn primary" id="mbPulse" type="button">↻ QUE</button>
+  <button class="btn primary" id="mbPulse" type="button">↻ QUE + pulses</button>
   <button class="btn" id="mbFocus" type="button" aria-pressed="false">◎ Focus</button>
   <button class="btn" id="mbFit" type="button">Fit</button>
   <button class="btn" id="mbNode" type="button">+ Node</button>
@@ -1189,7 +1189,7 @@ gate.addEventListener("click",function(){vercelArmed=!vercelArmed;syncGate();log
 syncGate();
 /* log + pulse */
 var logEl=document.getElementById("eventLog");
-function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
+function log(msg){var d=document.createElement("div");d.textContent="› "+msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;while(logEl.children.length>120)logEl.removeChild(logEl.firstChild);}
 function setQueText(id,value){var el=document.getElementById(id);if(el)el.textContent=value;}
 function renderQueFeed(feed,governor,priority){
  if(!feed||feed.schema!=="que-queue-feed/v1")throw new Error("Unexpected QUE feed schema");
@@ -1213,9 +1213,119 @@ function renderQueFeed(feed,governor,priority){
 var queRefreshBusy=false;
 async function fetchQueJson(path){var response=await fetch(path+"?ts="+Date.now(),{cache:"no-store",headers:{Accept:"application/json"}});if(!response.ok)throw new Error(path+" HTTP "+response.status);return response.json();}
 async function refreshQueFeed(){if(queRefreshBusy)return;queRefreshBusy=true;setQueText("queFeedState","FETCH");try{var results=await Promise.allSettled([fetchQueJson("./data/que-queue-feed.json"),fetchQueJson("./data/que-governor.json"),fetchQueJson("./data/que-priority-windows.json")]);if(results[0].status!=="fulfilled")throw results[0].reason;renderQueFeed(results[0].value,results[1].status==="fulfilled"?results[1].value:null,results[2].status==="fulfilled"?results[2].value:null);}catch(err){setQueText("queFeedState","OFFLINE");var dot=document.getElementById("queFeedDot");if(dot)dot.className="que-feed-state stale";setQueText("queFeedUpdated","Queue feed unavailable: "+String(err.message||err));log("QUE feed refresh failed: "+String(err.message||err));}finally{queRefreshBusy=false;}}
-document.getElementById("pulseBtn").addEventListener("click",refreshQueFeed);
-document.getElementById("mbPulse").addEventListener("click",refreshQueFeed);
+document.getElementById("pulseBtn").addEventListener("click",refreshAdminGraph);
+document.getElementById("mbPulse").addEventListener("click",refreshAdminGraph);
 refreshQueFeed();window.setInterval(refreshQueFeed,60000);
+
+/* Durable task-route and execution pulses — emitted from routing claims and GitHub Actions. */
+var liveStatusEl=document.getElementById("liveStatus");
+var LIVE_FEED_URL="https://admin-graph-live.timerloggedout.workers.dev/events?limit=400";
+var liveCursor=null,liveQueue=[],liveAnimating=false,livePollBusy=false,liveSeen=Object.create(null);
+function runtimePayload(ev){
+ try{return typeof ev.payload==="string"?JSON.parse(ev.payload||"{}"):(ev.payload||{});}
+ catch(_){return {};}
+}
+function eventLabel(ev){
+ var p=runtimePayload(ev);
+ if(ev.kind==="route")return (p.task_ref||"Task")+" → "+(p.route_role||ev.job||"unassigned")+" · "+(p.provider||p.arm_id||p.model||"provider pending")+" · ROUTED";
+ return (ev.workflow||"GitHub Actions")+" · "+(ev.job?ev.job+" · ":"")+(ev.step?ev.step+" · ":"")+ev.status;
+}
+function eventColor(ev){
+ if(ev.kind==="route")return "#a78bfa";
+ var s=String(ev.status||"").toLowerCase();
+ if(s==="success"||s==="completed")return "#34d399";
+ if(s==="failure"||s==="failed"||s==="timed_out"||s==="error")return "#f472b6";
+ if(s==="cancelled"||s==="skipped")return "#fbbf24";
+ return "#22d3ee";
+}
+function edgeForRuntimeEvent(ev){
+ if(ev.kind==="route"){
+  var p=runtimePayload(ev),terms=[p.route_role,p.provider,p.arm_id,p.model].filter(Boolean).map(function(x){return String(x).toLowerCase();});
+  var target=null;
+  if(terms.length)target=MODEL.nodes.find(function(n){
+   var label=[n.id,n.title,n.subtitle,n.description].filter(Boolean).join(" ").toLowerCase();
+   return terms.some(function(term){return label.indexOf(term)>=0||term.indexOf(String(n.id||"").toLowerCase())>=0;});
+  });
+  if(target){
+   var direct=Object.keys(edgeEls).map(function(k){return edgeEls[k];}).find(function(rec){return rec&&rec.def&&rec.def.from==="routing"&&rec.def.to===target.id;});
+   if(direct)return direct;
+  }
+  return edgeEls["routing-orch"]||edgeEls["user-routing"]||null;
+ }
+ var candidates=[];
+ [ev.job,ev.workflow].filter(Boolean).forEach(function(term){
+  var q=String(term).toLowerCase();
+  var found=MODEL.nodes.find(function(n){
+   var label=[n.id,n.title,n.subtitle,n.description].filter(Boolean).join(" ").toLowerCase();
+   var title=String(n.title||"").toLowerCase();
+   return label.indexOf(q)>=0||(title&&q.indexOf(title)>=0);
+  });
+  if(found)candidates.push(found);
+ });
+ var targetNode=candidates[0]||byId("ghactions");
+ if(!targetNode)return null;
+ var keys=Object.keys(edgeEls);
+ for(var i=0;i<keys.length;i++){
+  var rec=edgeEls[keys[i]];
+  if(rec&&rec.def&&(rec.def.from===targetNode.id||rec.def.to===targetNode.id))return rec;
+ }
+ return null;
+}
+function animateRuntimeEvent(ev){
+ var rec=edgeForRuntimeEvent(ev);
+ if(!rec){log("Observed without a mapped edge: "+eventLabel(ev));return;}
+ var path=rec.path,L=path.getTotalLength(),t0=null,dur=Math.max(500,Math.min(1600,L*1.2)),color=eventColor(ev);
+ var reverse=ev.kind==="route"&&rec.def&&rec.def.to==="routing";
+ path.classList.add("hl");pulseDot.setAttribute("fill",color);pulseDot.setAttribute("stroke",color);pulseDot.style.display="";
+ function frame(ts){
+  if(!t0)t0=ts;
+  var k=Math.min(1,(ts-t0)/dur),pt=path.getPointAtLength(L*(reverse?1-k:k));
+  pulseDot.setAttribute("cx",pt.x);pulseDot.setAttribute("cy",pt.y);
+  if(k<1)requestAnimationFrame(frame);
+  else{path.classList.remove("hl");pulseDot.style.display="none";log("PULSE "+ev.kind+" · "+eventLabel(ev));liveAnimating=false;drainRuntimeQueue();}
+ }
+ requestAnimationFrame(frame);
+}
+function drainRuntimeQueue(){if(liveAnimating||!liveQueue.length)return;liveAnimating=true;animateRuntimeEvent(liveQueue.shift());}
+function queueRuntimeEvents(events,initial){
+ var fresh=[];
+ (events||[]).forEach(function(ev){
+  if(!ev||!ev.id||liveSeen[ev.id])return;
+  liveSeen[ev.id]=true;
+  if(initial){
+   var age=Date.now()-Date.parse(ev.occurred_at||"");
+   if((ev.kind==="route"&&Number.isFinite(age)&&age<=60000)||ev.status==="queued"||ev.status==="in_progress")fresh.push(ev);
+  }else fresh.push(ev);
+ });
+ fresh.forEach(function(ev){liveQueue.push(ev);});drainRuntimeQueue();
+}
+async function pollRuntimeEvents(){
+ if(livePollBusy)return;
+ livePollBusy=true;
+ var more=false,rounds=0;
+ try{
+  do{
+   var initial=liveCursor===null;
+   var url=LIVE_FEED_URL+(initial?"":"&after_seq="+encodeURIComponent(liveCursor));
+   var response=await fetch(url,{method:"GET",cache:"no-store",headers:{"Accept":"application/json"}});
+   if(!response.ok)throw new Error("feed HTTP "+response.status);
+   var feed=await response.json();
+   if(feed.schema!=="admin-graph-live-events/v1"||!Array.isArray(feed.events))throw new Error("unexpected runtime feed contract");
+   queueRuntimeEvents(feed.events,initial);
+   if(feed.next_after_seq!=null)liveCursor=feed.next_after_seq;
+   more=!initial&&feed.has_more===true&&feed.events.length>0;
+   rounds++;
+  }while(more&&rounds<5);
+  if(liveStatusEl){liveStatusEl.textContent="LIVE ROUTE PULSES · "+(liveCursor==null?"READY":"SEQ "+liveCursor);liveStatusEl.className="clean-badge";liveStatusEl.title="Last checked "+new Date().toISOString();}
+ }catch(err){
+  if(liveStatusEl){liveStatusEl.textContent="ROUTE PULSES · DISCONNECTED";liveStatusEl.className="dirty-badge";}
+  log("Runtime pulse feed unavailable: "+String(err.message||err));
+ }finally{livePollBusy=false;if(more)window.setTimeout(pollRuntimeEvents,0);}
+}
+function refreshAdminGraph(){refreshQueFeed();pollRuntimeEvents();}
+window.setTimeout(pollRuntimeEvents,750);
+window.setInterval(pollRuntimeEvents,5000);
+
 var resizeFitTimer=null;
 window.addEventListener("resize",function(){if(resizeFitTimer)clearTimeout(resizeFitTimer);resizeFitTimer=setTimeout(function(){fitView(false);},140);});
 /* mobile bottom action bar (B160V primary actions, thumb reach) */

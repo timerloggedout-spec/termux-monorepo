@@ -1,0 +1,45 @@
+{
+  "uploadRequest": {
+    "url": "https://chat.deepseek.com/api/v0/file/upload_file",
+    "method": "POST",
+    "headers": {
+      "sec-ch-ua-platform": "\"Linux\"",
+      "authorization": "Bearer orsWBhq2D+RSzWGtuVbC5G17LcpB2RAtRZizhIGD3l8Fc4MuecZcvmfMGKAElgXU",
+      "x-file-size": "25",
+      "sec-ch-ua": "\"Not-A.Brand\";v=\"24\", \"Chromium\";v=\"146\"",
+      "sec-ch-ua-mobile": "?0",
+      "x-ds-pow-response": "eyJhbGdvcml0aG0iOiJEZWVwU2Vla0hhc2hWMSIsImNoYWxsZW5nZSI6IjBhOTdmMDJkM2IwYTBmOGI3OTM1YzA2OWQ0YjIwYTllN2NkMzMyYTAwY2I4M2M4MjVjNjI5ZTJkOWU2M2NlNzkiLCJzYWx0IjoiZDYzMDNmMjQ3MDc4M2YxOTdiNTQiLCJhbnN3ZXIiOjEwOTY0Nywic2lnbmF0dXJlIjoiN2VmY2Q1ZGQ5OWU4OGFlNzU0YTI1MTA1OGM5ZjY0ODg5MzBkMjI3MjA0M2IyNWJiMGFiMmE5YTE4ZTE2Zjg4NiIsInRhcmdldF9wYXRoIjoiL2FwaS92MC9maWxlL3VwbG9hZF9maWxlIn0=",
+      "accept": "*/*",
+      "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryLYQaOkhkGWRHJk2H",
+      "x-thinking-enabled": "0",
+      "x-client-locale": "en_US",
+      "referer": "https://chat.deepseek.com/",
+      "accept-language": "en-US,en;q=0.9",
+      "x-model-type": "default",
+      "x-client-timezone-offset": "-25200",
+      "x-app-version": "2.0.0",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/146.0.0.0 Safari/537.36",
+      "x-client-version": "2.0.0",
+      "x-client-platform": "web",
+      "cookie": "aws-waf-token=abac8c58-ca13-4f4b-aeb4-f22155b30ddd:EQoAutOlFfQHAAAA:/xP60L8B+HWhJ1LpXRBJud3MK+0GsDbzyqMaCF2ArHhVSjWUGsb6Q62YVKVLjwyLokw5JNOPRXubvbBWmlKucpISd1pulMTbX8V372AZTLamYB6CSyXdnzGDWOtyjOFqxYspWC1RXAdUbPvvGiN0mcxl5faqYzCnmDNSp+Lruuwsv+6ku7oWRk8LiaU33eI=; smidV2=2026051716344836af07981ec2d879867c40ca859e5d76001fc630c1d8b8aa0; ds_cookie_preference=%257B%2522level%2522%253A%2522all%2522%257D; .thumbcache_6b2e5483f9d858d7c661c5e276b6a6ae=pfkSYCDfFfumiJp+woaMP9KbsD5F4umnM2OEUAYHshgbKrKPKM61mCRQBA9rwH4jltrlJ8uQUr3N87timi+JVA%3D%3D; ds_session_id=3f7d4cf4870b4d518a038401827e3980",
+      "origin": "https://chat.deepseek.com"
+    }
+  },
+  "uploadResponse": {
+    "status": 200,
+    "headers": {
+      "content-length": "352",
+      "content-type": "application/json",
+      "date": "Thu, 21 May 2026 02:30:44 GMT",
+      "server": "elb",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+      "via": "1.1 546f1a6cf093f647d0add0b2e5d6ccf4.cloudfront.net (CloudFront)",
+      "x-amz-cf-id": "eFoeE7IJ0ub3b1Jd4yIh1rY-n2I_zBL7OJ069zpztHXJFwMDxvmgnA==",
+      "x-amz-cf-pop": "SFO53-P4",
+      "x-cache": "Miss from cloudfront",
+      "x-content-type-options": "nosniff",
+      "x-ds-trace-id": "aa4b6d9db31ec1f42c8f99ac37fecb79"
+    },
+    "body": "{\"code\":0,\"msg\":\"\",\"data\":{\"biz_code\":0,\"biz_msg\":\"\",\"biz_data\":{\"id\":\"file-faeb2bae-6949-46fe-9a12-ee98515fb131\",\"status\":\"PENDING\",\"file_name\":\"upload-test.txt\",\"from_share\":false,\"file_size\":25,\"model_kind\":\"NORMAL\",\"token_usage\":null,\"error_code\":null,\"inserted_at\":1779330644.817,\"updated_at\":1779330644.817,\"is_image\":false,\"audit_result\":null}}}"
+  }
+}

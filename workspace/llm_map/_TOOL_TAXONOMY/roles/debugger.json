@@ -1,0 +1,196 @@
+{
+  "description": "Debugging, reverse engineering, and binary analysis",
+  "tools": [
+    {
+      "name": "addr2line",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/addr2line",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ar",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ar",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "as",
+      "package": "binutils",
+      "path": "/data/data/com.termux/files/usr/bin/as",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "A GNU collection of binary utilities"
+    },
+    {
+      "name": "c++filt",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/c++filt",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ld",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ld",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "nm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/nm",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "objdump",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/objdump",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ranlib",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ranlib",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "readelf",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/readelf",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "rhash",
+      "package": "rhash",
+      "path": "/data/data/com.termux/files/usr/bin/rhash",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^rhash$|^rhash-",
+      "category": "hashing",
+      "description": "Console utility for calculation and verification of magnet links and a wide range of hash sums"
+    },
+    {
+      "name": "sha256sum",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sha256sum",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "size",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/size",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strace",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strace",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strings",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strings",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strip",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strip",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "xxhsum",
+      "package": "xxhash",
+      "path": "/data/data/com.termux/files/usr/bin/xxhsum",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^xxhash$|^xxhash-",
+      "category": "hashing",
+      "description": "Extremely fast non-cryptographic hash algorithm"
+    }
+  ]
+}

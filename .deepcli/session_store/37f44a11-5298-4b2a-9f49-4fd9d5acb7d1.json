@@ -1,0 +1,69 @@
+[
+  {
+    "message_id": 1,
+    "parent_id": null,
+    "model": "",
+    "role": "USER",
+    "thinking_enabled": false,
+    "ban_edit": false,
+    "ban_regenerate": false,
+    "status": "FINISHED",
+    "incomplete_message": null,
+    "accumulated_token_usage": 80,
+    "files": [
+      {
+        "id": "file-2c9dc472-c31c-402a-a1c8-83e9c5f0fa1e",
+        "status": "SUCCESS",
+        "file_name": "test.txt",
+        "previewable": true,
+        "file_size": 16,
+        "token_usage": 3,
+        "error_code": null,
+        "inserted_at": 1779591219.301,
+        "updated_at": 1779591219.301
+      },
+      {
+        "id": "file-65882a53-1c40-48aa-ad5b-99e3551bac88",
+        "status": "SUCCESS",
+        "file_name": "test.txt",
+        "previewable": true,
+        "file_size": 34,
+        "token_usage": 5,
+        "error_code": null,
+        "inserted_at": 1779591219.301,
+        "updated_at": 1779591219.301
+      }
+    ],
+    "feedback": null,
+    "inserted_at": 1779591219.523,
+    "search_enabled": false,
+    "content": "Compare these two files",
+    "thinking_content": null,
+    "thinking_elapsed_secs": null,
+    "search_status": null,
+    "search_results": null,
+    "tips": []
+  },
+  {
+    "message_id": 2,
+    "parent_id": 1,
+    "model": "",
+    "role": "ASSISTANT",
+    "thinking_enabled": false,
+    "ban_edit": false,
+    "ban_regenerate": false,
+    "status": "FINISHED",
+    "incomplete_message": null,
+    "accumulated_token_usage": 224,
+    "files": [],
+    "feedback": null,
+    "inserted_at": 1779591219.52,
+    "search_enabled": false,
+    "content": "Here is the comparison between the two versions of `test.txt`:\n\n## Differences\n\n| Aspect | First File | Second File |\n|--------|-----------|--------------|\n| **Line 1** | `Hello from file` | `Testing Upload Attachment` |\n| **Line 2** | *(empty / no second line)* | `Confirm` |\n\n## Detailed Diff\n\n```diff\n- Hello from file\n+ Testing Upload Attachment\n+ Confirm\n```\n\n## Summary\n\n- **First file**: Contains a single line \u2014 `Hello from file`\n- **Second file**: Contains two lines \u2014 `Testing Upload Attachment` and `Confirm`\n- The two files are **completely different**; no common lines between them",
+    "thinking_content": null,
+    "thinking_elapsed_secs": null,
+    "search_status": null,
+    "search_results": null,
+    "tips": []
+  }
+]

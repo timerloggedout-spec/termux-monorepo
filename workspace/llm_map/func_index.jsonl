@@ -1,0 +1,765 @@
+{"file": "deepcli/deepcli/core.py", "name": "_cache_path", "kind": "de", "line": 28, "sig": "def _cache_path(session_id: str, account: str = \"primary\") -> str:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "_cache_load", "kind": "de", "line": 33, "sig": "def _cache_load(session_id: str, account: str = \"primary\") -> Optional[List[Dict[str, Any]]]:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "_cache_save", "kind": "de", "line": 40, "sig": "def _cache_save(session_id: str, messages: List[Dict[str, Any]], account: str = \"primary\"):", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "_set_last_session", "kind": "de", "line": 62, "sig": "def _set_last_session(sid: str):", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "load_config", "kind": "de", "line": 72, "sig": "def load_config() -> Dict[str, Any]:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "save_config", "kind": "de", "line": 77, "sig": "def save_config(cfg: Dict[str, Any]):", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "get_token", "kind": "de", "line": 80, "sig": "def get_token() -> str:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "get_session", "kind": "de", "line": 91, "sig": "def get_session(token: str, cookie: str = None) -> curl_requests.Session:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "solve_pow", "kind": "de", "line": 125, "sig": "def solve_pow(challenge: dict) -> str:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "create_session", "kind": "de", "line": 153, "sig": "def create_session(token: str, model_type: str = \"expert\", cookie: str = None) -> str:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "fetch_sessions", "kind": "de", "line": 162, "sig": "def fetch_sessions(token: str) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "get_history", "kind": "de", "line": 169, "sig": "def get_history(token: str, session_id: str, force_refresh: bool = False, account: str = \"primary\") -> List[Dict[str, An", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "get_pow_challenge", "kind": "de", "line": 184, "sig": "def get_pow_challenge(token: str, target_path=\"/api/v0/chat/completion\") -> dict:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "upload_file", "kind": "de", "line": 191, "sig": "def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "wait_for_file", "kind": "de", "line": 214, "sig": "def wait_for_file(token: str, file_id: str, timeout=30):", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "branch_conversation", "kind": "de", "line": 227, "sig": "def branch_conversation(token: str, session_id: str, message_id: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "_log_retry", "kind": "de", "line": 259, "sig": "def _log_retry(operation: str, status_code: int, attempt: int, delay: float):", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "stream_completion", "kind": "de", "line": 271, "sig": "def stream_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "continue_response", "kind": "de", "line": 385, "sig": "def continue_response(token: str, session_id: str, parent_message_id: str,", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "send_message_working", "kind": "de", "line": 400, "sig": "def send_message_working(token: str, session_id: str, prompt: str,", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "send_message", "kind": "de", "line": 446, "sig": "def send_message(token: str, session_id: str, prompt: str,", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "chat_completion", "kind": "de", "line": 469, "sig": "def chat_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "export_markdown", "kind": "de", "line": 508, "sig": "def export_markdown(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/deepcli/core.py", "name": "export_json", "kind": "de", "line": 520, "sig": "def export_json(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "Pointer", "kind": "clas", "line": 8, "sig": "class Pointer:", "doc": "C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 47, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 83, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 142, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 178, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index.py", "name": "MessageIndex", "kind": "clas", "line": 424, "sig": "class MessageIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/success_metrics.py", "name": "RefactorELO", "kind": "clas", "line": 12, "sig": "class RefactorELO:", "doc": "ELO rating for refactor attempts – tracks prompt patterns and success."}
+{"file": "cli-synthegration/workspace/reference/success_metrics.py", "name": "ComplexityEstimator", "kind": "clas", "line": 77, "sig": "class ComplexityEstimator:", "doc": "Estimate code complexity to dynamically set refactor retry limits."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_versioner.py", "name": "MessageRef", "kind": "clas", "line": 8, "sig": "class MessageRef:", "doc": "Pointer to a message – like C++ reference with integrity hash."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_versioner.py", "name": "ConversationDAG", "kind": "clas", "line": 24, "sig": "class ConversationDAG:", "doc": "Directed acyclic graph of messages, indexed by hash for O(1) dedup."}
+{"file": "cli-synthegration/branch_manager.py", "name": "list_branches", "kind": "de", "line": 16, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/branch_manager.py", "name": "fork_branch", "kind": "de", "line": 29, "sig": "def fork_branch(source_name: str, new_name: str):", "doc": "Create an independent copy of a conversation branch."}
+{"file": "cli-synthegration/branch_manager.py", "name": "merge_branches", "kind": "de", "line": 50, "sig": "def merge_branches(source_name: str, target_name: str):", "doc": "Merge source branch into target (union of nodes)."}
+{"file": "cli-synthegration/branch_manager.py", "name": "link_knowledge", "kind": "de", "line": 72, "sig": "def link_knowledge(from_branch: str, to_branch: str, link_type: str = 'reference-back'):", "doc": "Create a semantic link between two branches."}
+{"file": "cli-synthegration/branch_manager.py", "name": "resolve_branch_dir", "kind": "de", "line": 85, "sig": "def resolve_branch_dir(name: str):", "doc": ""}
+{"file": "cli-synthegration/branch_manager.py", "name": "list_dangling", "kind": "de", "line": 94, "sig": "def list_dangling(session_filter=None, max_gap=None):", "doc": "Find asymmetric forks where branches ended at different depths."}
+{"file": "cli-synthegration/branch_manager.py", "name": "message_map", "kind": "de", "line": 216, "sig": "def message_map(session_id=None):", "doc": "Print position → message_id mapping for a session."}
+{"file": "deepseek_harvest_work/harvest.py", "name": "CodeBlock", "kind": "clas", "line": 11, "sig": "class CodeBlock:", "doc": ""}
+{"file": "deepseek_harvest_work/harvest.py", "name": "recursive_texts", "kind": "de", "line": 44, "sig": "def recursive_texts(obj, parent_key=\"\", conv_meta: Optional[Dict]=None) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepseek_harvest_work/harvest.py", "name": "parse_export", "kind": "de", "line": 91, "sig": "def parse_export(json_path: str) -> List[CodeBlock]:", "doc": ""}
+{"file": "deepseek_harvest_work/harvest.py", "name": "deduplicate", "kind": "de", "line": 138, "sig": "def deduplicate(blocks):", "doc": ""}
+{"file": "deepseek_harvest_work/harvest.py", "name": "write_output", "kind": "de", "line": 145, "sig": "def write_output(blocks, output_root, dedup=True):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "cache_manifest", "kind": "de", "line": 11, "sig": "def cache_manifest(export_root: Path, manifest: list):", "doc": "Write a quick-lookup index to ~/.cache/synthegration/"}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "load_cached_index", "kind": "de", "line": 36, "sig": "def load_cached_index(export_root: Path):", "doc": "Try to load cached index, return None if missing or stale."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "load_offline_manifest", "kind": "de", "line": 47, "sig": "def load_offline_manifest(export_root: Path):", "doc": "Load manifest.json from export directory, using cache if available."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "search_offline", "kind": "de", "line": 69, "sig": "def search_offline(manifest, term: str):", "doc": "Return blocks matching term in title, language, or code snippet."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "export_blocks", "kind": "de", "line": 82, "sig": "def export_blocks(blocks, output_dir):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "list_offline_sessions", "kind": "de", "line": 102, "sig": "def list_offline_sessions(manifest):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "main", "kind": "de", "line": 111, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_explorer.py", "name": "export_session_live", "kind": "de", "line": 208, "sig": "def export_session_live(session_id: str, output_dir: str = None, account: str = \"default\"):", "doc": "Fetch a session via live API and export its code blocks to Downloads."}
+{"file": "harmony_hub/src/token_provider_v2.py", "name": "_load_json", "kind": "de", "line": 9, "sig": "def _load_json(path):", "doc": ""}
+{"file": "harmony_hub/src/token_provider_v2.py", "name": "_extract_from_cookies", "kind": "de", "line": 15, "sig": "def _extract_from_cookies(cookies_path):", "doc": "Extract bearer token from a Puppeteer cookies JSON array."}
+{"file": "harmony_hub/src/token_provider_v2.py", "name": "get_token", "kind": "de", "line": 26, "sig": "def get_token(account='primary'):", "doc": ""}
+{"file": "cli-synthegration/http_sniffer.js", "name": "log", "kind": "function", "line": 6, "sig": "function log(msg) {", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_api.py", "name": "_load", "kind": "de", "line": 12, "sig": "def _load():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_api.py", "name": "get_origin", "kind": "de", "line": 22, "sig": "def get_origin(relative_path: str):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_api.py", "name": "summary", "kind": "de", "line": 26, "sig": "def summary():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_api.py", "name": "search", "kind": "de", "line": 42, "sig": "def search(session_id: str):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_api.py", "name": "all_files", "kind": "de", "line": 51, "sig": "def all_files():", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_import", "kind": "de", "line": 15, "sig": "def cmd_import(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_config", "kind": "de", "line": 42, "sig": "def cmd_config(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_new", "kind": "de", "line": 53, "sig": "def cmd_new(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_list", "kind": "de", "line": 65, "sig": "def cmd_list(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_send", "kind": "de", "line": 85, "sig": "def cmd_send(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_history", "kind": "de", "line": 130, "sig": "def cmd_history(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_export", "kind": "de", "line": 183, "sig": "def cmd_export(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_fork", "kind": "de", "line": 197, "sig": "def cmd_fork(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "cmd_upload", "kind": "de", "line": 205, "sig": "def cmd_upload(args):", "doc": ""}
+{"file": "deepcli/deepcli/cli.py", "name": "main", "kind": "de", "line": 216, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/token_provider.py", "name": "get_token", "kind": "de", "line": 8, "sig": "def get_token():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/message_adapter.py", "name": "detect_field_mapping", "kind": "de", "line": 5, "sig": "def detect_field_mapping(sample_message):", "doc": "Given a single message dict, return a mapping from canonical -> actual field nam"}
+{"file": "harmony_hub/workspace/tui_repair/message_adapter.py", "name": "normalize_messages", "kind": "de", "line": 30, "sig": "def normalize_messages(messages):", "doc": "Given a list of message dicts, return a new list with canonical field names."}
+{"file": "workspace/cedar_forge/cedar_forge/llm/client.py", "name": "LLMClient", "kind": "clas", "line": 7, "sig": "class LLMClient:", "doc": ""}
+{"file": "cli-synthegration/Chronos/accelerator.py", "name": "_default_session", "kind": "de", "line": 20, "sig": "def _default_session():", "doc": ""}
+{"file": "cli-synthegration/Chronos/accelerator.py", "name": "get_live_stats", "kind": "de", "line": 34, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/Chronos/accelerator.py", "name": "list_branches", "kind": "de", "line": 58, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/Chronos/accelerator.py", "name": "merge_success", "kind": "de", "line": 66, "sig": "def merge_success(branch_name):", "doc": ""}
+{"file": "cli-synthegration/Chronos/accelerator.py", "name": "main", "kind": "de", "line": 77, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/Chronos/versioner.py", "name": "ChronosSession", "kind": "clas", "line": 18, "sig": "class ChronosSession:", "doc": ""}
+{"file": "cli-synthegration/Chronos/versioner.py", "name": "main", "kind": "de", "line": 148, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/account_manager.py", "name": "import_account", "kind": "de", "line": 8, "sig": "def import_account(cookies_file: str, account_name: str):", "doc": "Extract Bearer token from cookies JSON and save as config_<account>.json."}
+{"file": "cli-synthegration/account_manager.py", "name": "get_token", "kind": "de", "line": 24, "sig": "def get_token(account_name: str = \"default\") -> str:", "doc": "Return token for account. 'default' reads config.json, others read config_<name>"}
+{"file": "cli-synthegration/backfill_elo.py", "name": "extract_refactor_pairs", "kind": "de", "line": 16, "sig": "def extract_refactor_pairs(conversation):", "doc": "Walk mapping tree, find user→assistant pairs where code was generated."}
+{"file": "cli-synthegration/backfill_elo.py", "name": "main", "kind": "de", "line": 98, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/cedar_bridge.py", "name": "cedar_validate", "kind": "de", "line": 5, "sig": "def cedar_validate(code: str, schema: str = \"{}\") -> str:", "doc": ""}
+{"file": "cli-synthegration/cedar_bridge.py", "name": "cedar_eval", "kind": "de", "line": 12, "sig": "def cedar_eval(code: str, schema: str, input_json: str) -> str:", "doc": ""}
+{"file": "cli-synthegration/conv_branching.py", "name": "BranchRef", "kind": "clas", "line": 11, "sig": "class BranchRef:", "doc": "Named pointer to a DAG version, like a Git branch."}
+{"file": "cli-synthegration/conv_branching.py", "name": "ConversationRepo", "kind": "clas", "line": 22, "sig": "class ConversationRepo:", "doc": "Git‑style repo for conversation DAGs with branching."}
+{"file": "cli-synthegration/conv_explorer.py", "name": "cache_manifest", "kind": "de", "line": 11, "sig": "def cache_manifest(export_root: Path, manifest: list):", "doc": "Write a quick-lookup index to ~/.cache/synthegration/"}
+{"file": "cli-synthegration/conv_explorer.py", "name": "load_cached_index", "kind": "de", "line": 36, "sig": "def load_cached_index(export_root: Path):", "doc": "Try to load cached index, return None if missing or stale."}
+{"file": "cli-synthegration/conv_explorer.py", "name": "load_offline_manifest", "kind": "de", "line": 47, "sig": "def load_offline_manifest(export_root: Path):", "doc": "Load manifest.json from export directory, using cache if available."}
+{"file": "cli-synthegration/conv_explorer.py", "name": "search_offline", "kind": "de", "line": 69, "sig": "def search_offline(manifest, term: str):", "doc": "Return blocks matching term in title, language, or code snippet."}
+{"file": "cli-synthegration/conv_explorer.py", "name": "export_blocks", "kind": "de", "line": 82, "sig": "def export_blocks(blocks, output_dir):", "doc": ""}
+{"file": "cli-synthegration/conv_explorer.py", "name": "list_offline_sessions", "kind": "de", "line": 102, "sig": "def list_offline_sessions(manifest):", "doc": ""}
+{"file": "cli-synthegration/conv_explorer.py", "name": "main", "kind": "de", "line": 111, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/conv_explorer.py", "name": "export_session_live", "kind": "de", "line": 208, "sig": "def export_session_live(session_id: str, output_dir: str = None, account: str = \"default\"):", "doc": "Fetch a session via live API and export its code blocks to Downloads."}
+{"file": "cli-synthegration/conv_export_cli.py", "name": "main", "kind": "de", "line": 7, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/conv_versioner.py", "name": "MessageRef", "kind": "clas", "line": 8, "sig": "class MessageRef:", "doc": "Pointer to a message – like C++ reference with integrity hash."}
+{"file": "cli-synthegration/conv_versioner.py", "name": "ConversationDAG", "kind": "clas", "line": 24, "sig": "class ConversationDAG:", "doc": "Directed acyclic graph of messages, indexed by hash for O(1) dedup."}
+{"file": "cli-synthegration/detect_paste.py", "name": "detect", "kind": "de", "line": 10, "sig": "def detect(pasted_text: str):", "doc": "Find pasted content in the codex. Returns list of (session_id, message_id, simil"}
+{"file": "cli-synthegration/export_all.py", "name": "export_session", "kind": "de", "line": 14, "sig": "def export_session(token, session):", "doc": ""}
+{"file": "cli-synthegration/export_all.py", "name": "main", "kind": "de", "line": 47, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/generate_handoff.py", "name": "pos_to_message_ids", "kind": "de", "line": 9, "sig": "def pos_to_message_ids(session_id, positions):", "doc": "Convert position numbers to actual message_ids."}
+{"file": "cli-synthegration/generate_loop.py", "name": "get_live_stats", "kind": "de", "line": 11, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/generate_loop.py", "name": "main", "kind": "de", "line": 31, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/loop_optimizer.py", "name": "find_loop_candidates", "kind": "de", "line": 14, "sig": "def find_loop_candidates(session_filter=None, top_n=5):", "doc": "Find the best messages to branch from, ranked by ELO + asymmetry gap."}
+{"file": "cli-synthegration/pointer_sync.py", "name": "compute_diff", "kind": "de", "line": 8, "sig": "def compute_diff(local_dir: Path, remote_manifest: Path):", "doc": ""}
+{"file": "cli-synthegration/session_categories.py", "name": "SessionCategorizer", "kind": "clas", "line": 20, "sig": "class SessionCategorizer:", "doc": ""}
+{"file": "cli-synthegration/sprints.py", "name": "save", "kind": "de", "line": 59, "sig": "def save():", "doc": ""}
+{"file": "cli-synthegration/sprints.py", "name": "show", "kind": "de", "line": 69, "sig": "def show(filter_status=None):", "doc": ""}
+{"file": "cli-synthegration/success_metrics.py", "name": "RefactorELO", "kind": "clas", "line": 12, "sig": "class RefactorELO:", "doc": "ELO rating for refactor attempts – tracks prompt patterns and success."}
+{"file": "cli-synthegration/success_metrics.py", "name": "ComplexityEstimator", "kind": "clas", "line": 77, "sig": "class ComplexityEstimator:", "doc": "Estimate code complexity to dynamically set refactor retry limits."}
+{"file": "cli-synthegration/synthegration_index.py", "name": "Pointer", "kind": "clas", "line": 10, "sig": "class Pointer:", "doc": "C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."}
+{"file": "cli-synthegration/synthegration_index.py", "name": "_TaxonomyNode_v1", "kind": "clas", "line": 49, "sig": "class _TaxonomyNode_v1:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/synthegration_index.py", "name": "_CodexIndex_v1", "kind": "clas", "line": 85, "sig": "class _CodexIndex_v1:", "doc": ""}
+{"file": "cli-synthegration/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 144, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 180, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/synthegration_index.py", "name": "MessageIndex", "kind": "clas", "line": 471, "sig": "class MessageIndex:", "doc": ""}
+{"file": "cli-synthegration/token_provider.py", "name": "get_token", "kind": "de", "line": 5, "sig": "def get_token():", "doc": ""}
+{"file": "cli-synthegration/workspace/account2_expert/auto_refactor.py", "name": "is_excluded", "kind": "de", "line": 26, "sig": "def is_excluded(fname):", "doc": ""}
+{"file": "cli-synthegration/workspace/account2_expert/token_extractor.py", "name": "get_token", "kind": "de", "line": 8, "sig": "def get_token():", "doc": "Return ds_session_id cookie value or None."}
+{"file": "cli-synthegration/workspace/compression_sandbox/Chronos_accelerator.py", "name": "_default_session", "kind": "de", "line": 20, "sig": "def _default_session():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/Chronos_accelerator.py", "name": "get_live_stats", "kind": "de", "line": 34, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/Chronos_accelerator.py", "name": "list_branches", "kind": "de", "line": 58, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/Chronos_accelerator.py", "name": "merge_success", "kind": "de", "line": 66, "sig": "def merge_success(branch_name):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/Chronos_accelerator.py", "name": "main", "kind": "de", "line": 77, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/build_all_versions.py", "name": "sha256", "kind": "de", "line": 21, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/build_all_versions.py", "name": "normalize", "kind": "de", "line": 24, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/generate_handoff.py", "name": "pos_to_message_ids", "kind": "de", "line": 9, "sig": "def pos_to_message_ids(session_id, positions):", "doc": "Convert position numbers to actual message_ids."}
+{"file": "cli-synthegration/workspace/compression_sandbox/generate_handoff_root.py", "name": "pos_to_message_ids", "kind": "de", "line": 9, "sig": "def pos_to_message_ids(session_id, positions):", "doc": "Convert position numbers to actual message_ids."}
+{"file": "cli-synthegration/workspace/compression_sandbox/generate_loop.py", "name": "get_live_stats", "kind": "de", "line": 11, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/generate_loop.py", "name": "main", "kind": "de", "line": 31, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/json_gz_utils.py", "name": "load_json_gz", "kind": "de", "line": 2, "sig": "def load_json_gz(p):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/json_gz_utils.py", "name": "save_json_gz", "kind": "de", "line": 4, "sig": "def save_json_gz(p, data, **kw):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "Pointer", "kind": "clas", "line": 8, "sig": "class Pointer:", "doc": "C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "TaxonomyNode", "kind": "clas", "line": 47, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "CodexIndex", "kind": "clas", "line": 83, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "TaxonomyNode", "kind": "clas", "line": 142, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "CodexIndex", "kind": "clas", "line": 178, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/synthegration_index_ref.py", "name": "MessageIndex", "kind": "clas", "line": 424, "sig": "class MessageIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/time_loop_accelerator_staging.py", "name": "_default_session", "kind": "de", "line": 20, "sig": "def _default_session():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/time_loop_accelerator_staging.py", "name": "get_live_stats", "kind": "de", "line": 34, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/time_loop_accelerator_staging.py", "name": "list_branches", "kind": "de", "line": 58, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/time_loop_accelerator_staging.py", "name": "merge_success", "kind": "de", "line": 66, "sig": "def merge_success(branch_name):", "doc": ""}
+{"file": "cli-synthegration/workspace/compression_sandbox/time_loop_accelerator_staging.py", "name": "main", "kind": "de", "line": 77, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/mitm_capture.py", "name": "request", "kind": "de", "line": 6, "sig": "def request(flow):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_all_versions.py", "name": "sha256", "kind": "de", "line": 21, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_all_versions.py", "name": "normalize", "kind": "de", "line": 24, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_provenance.py", "name": "safe_write", "kind": "de", "line": 34, "sig": "def safe_write(path, content):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_provenance.py", "name": "sha256", "kind": "de", "line": 47, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_provenance.py", "name": "extract_blocks", "kind": "de", "line": 50, "sig": "def extract_blocks(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_provenance.py", "name": "is_bloat", "kind": "de", "line": 55, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/build_provenance.py", "name": "get_conversations", "kind": "de", "line": 59, "sig": "def get_conversations():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_fast.py", "name": "is_bloat", "kind": "de", "line": 32, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_fast.py", "name": "sha256", "kind": "de", "line": 34, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_fast.py", "name": "norm_hash", "kind": "de", "line": 36, "sig": "def norm_hash(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_fast.py", "name": "strip_heredoc", "kind": "de", "line": 44, "sig": "def strip_heredoc(text):", "doc": "If the code block is a heredoc, return the inner content. Otherwise original."}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_provenance.py", "name": "is_bloat", "kind": "de", "line": 27, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_provenance.py", "name": "sha256", "kind": "de", "line": 30, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_provenance.py", "name": "norm_hash", "kind": "de", "line": 32, "sig": "def norm_hash(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/comprehensive_provenance.py", "name": "extract_definitions", "kind": "de", "line": 89, "sig": "def extract_definitions(content):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "safe_write", "kind": "de", "line": 40, "sig": "def safe_write(path, content):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "sha256", "kind": "de", "line": 52, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "extract_blocks", "kind": "de", "line": 55, "sig": "def extract_blocks(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "is_bloat", "kind": "de", "line": 59, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "extract_from_data", "kind": "de", "line": 106, "sig": "def extract_from_data(data):", "doc": "Extract code blocks from a conversation dict."}
+{"file": "cli-synthegration/workspace/provenance/diagnose_and_match.py", "name": "normalize", "kind": "de", "line": 214, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "safe_write", "kind": "de", "line": 35, "sig": "def safe_write(path, content):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "sha256_file", "kind": "de", "line": 46, "sig": "def sha256_file(path):", "doc": "Chunked SHA-256 of a file, returns hex digest or None on error."}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "sha256", "kind": "de", "line": 60, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "extract_blocks", "kind": "de", "line": 63, "sig": "def extract_blocks(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "normalize", "kind": "de", "line": 67, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "is_bloat", "kind": "de", "line": 70, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/final_provenance.py", "name": "build_hash_index", "kind": "de", "line": 79, "sig": "def build_hash_index():", "doc": "Walk source dirs, hash files chunked, store mapping."}
+{"file": "cli-synthegration/workspace/provenance/fix_timestamps.py", "name": "sha256", "kind": "de", "line": 65, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/fix_timestamps.py", "name": "normalize", "kind": "de", "line": 67, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/fragment_matcher.py", "name": "is_bloat", "kind": "de", "line": 26, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/fragment_matcher.py", "name": "sha256", "kind": "de", "line": 29, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/fragment_matcher.py", "name": "extract_definitions", "kind": "de", "line": 33, "sig": "def extract_definitions(content):", "doc": "Return list of (name, body) for top-level defs and classes."}
+{"file": "cli-synthegration/workspace/provenance/fragment_provenance.py", "name": "is_bloat", "kind": "de", "line": 26, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/fragment_provenance.py", "name": "sha256", "kind": "de", "line": 30, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/progress_tracker.py", "name": "ProgressTracker", "kind": "clas", "line": 10, "sig": "class ProgressTracker:", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_curses.py", "name": "format_line", "kind": "de", "line": 16, "sig": "def format_line(fname, entry, width=80):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_curses.py", "name": "detail_screen", "kind": "de", "line": 22, "sig": "def detail_screen(stdscr, fname, entry):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_curses.py", "name": "main", "kind": "de", "line": 39, "sig": "def main(stdscr):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich.py", "name": "make_table", "kind": "de", "line": 32, "sig": "def make_table():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich.py", "name": "show_detail", "kind": "de", "line": 45, "sig": "def show_detail():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich.py", "name": "main", "kind": "de", "line": 58, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich_v2.py", "name": "sort_items", "kind": "de", "line": 32, "sig": "def sort_items():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich_v2.py", "name": "make_table", "kind": "de", "line": 48, "sig": "def make_table():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich_v2.py", "name": "show_detail", "kind": "de", "line": 72, "sig": "def show_detail():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/prov_rich_v2.py", "name": "main", "kind": "de", "line": 88, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper.py", "name": "fallback_load_conv", "kind": "de", "line": 13, "sig": "def fallback_load_conv(path):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper.py", "name": "fallback_extract_blocks", "kind": "de", "line": 17, "sig": "def fallback_extract_blocks(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper.py", "name": "fallback_hash", "kind": "de", "line": 20, "sig": "def fallback_hash(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper.py", "name": "is_bloat", "kind": "de", "line": 56, "sig": "def is_bloat(path_parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "run", "kind": "de", "line": 23, "sig": "def run(cmd):", "doc": "Run shell command, return stdout or None."}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "sha256", "kind": "de", "line": 30, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "extract_blocks_from_text", "kind": "de", "line": 33, "sig": "def extract_blocks_from_text(text):", "doc": "Pull fenced code blocks from arbitrary text."}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "get_online_sessions", "kind": "de", "line": 37, "sig": "def get_online_sessions():", "doc": "Return list of session IDs from the online database."}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "get_offline_sessions", "kind": "de", "line": 54, "sig": "def get_offline_sessions():", "doc": "List sessions from offline export directory."}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "export_session", "kind": "de", "line": 67, "sig": "def export_session(session_id, offline=False):", "doc": "Return raw code blocks (as text) from a session."}
+{"file": "cli-synthegration/workspace/provenance/provenance_mapper_cli.py", "name": "is_bloat", "kind": "de", "line": 89, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/provenance_tui.py", "name": "ProvenanceExplorer", "kind": "clas", "line": 22, "sig": "class ProvenanceExplorer(App):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/scan_databases.py", "name": "is_bloat", "kind": "de", "line": 17, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/true_versions.py", "name": "sha256", "kind": "de", "line": 22, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/true_versions_fast.py", "name": "sha256", "kind": "de", "line": 25, "sig": "def sha256(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/true_versions_fast.py", "name": "normalize", "kind": "de", "line": 28, "sig": "def normalize(text):", "doc": ""}
+{"file": "cli-synthegration/workspace/provenance/true_versions_fast.py", "name": "is_bloat", "kind": "de", "line": 31, "sig": "def is_bloat(parts):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/account_manager.py", "name": "import_account", "kind": "de", "line": 8, "sig": "def import_account(cookies_file: str, account_name: str):", "doc": "Extract Bearer token from cookies JSON and save as config_<account>.json."}
+{"file": "cli-synthegration/workspace/reference/account_manager.py", "name": "get_token", "kind": "de", "line": 24, "sig": "def get_token(account_name: str = \"default\") -> str:", "doc": "Return token for account. 'default' reads config.json, others read config_<name>"}
+{"file": "cli-synthegration/workspace/reference/backfill_elo.py", "name": "extract_refactor_pairs", "kind": "de", "line": 16, "sig": "def extract_refactor_pairs(conversation):", "doc": "Walk mapping tree, find user→assistant pairs where code was generated."}
+{"file": "cli-synthegration/workspace/reference/backfill_elo.py", "name": "main", "kind": "de", "line": 98, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "list_branches", "kind": "de", "line": 16, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "fork_branch", "kind": "de", "line": 29, "sig": "def fork_branch(source_name: str, new_name: str):", "doc": "Create an independent copy of a conversation branch."}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "merge_branches", "kind": "de", "line": 50, "sig": "def merge_branches(source_name: str, target_name: str):", "doc": "Merge source branch into target (union of nodes)."}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "link_knowledge", "kind": "de", "line": 72, "sig": "def link_knowledge(from_branch: str, to_branch: str, link_type: str = 'reference-back'):", "doc": "Create a semantic link between two branches."}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "resolve_branch_dir", "kind": "de", "line": 85, "sig": "def resolve_branch_dir(name: str):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "list_dangling", "kind": "de", "line": 94, "sig": "def list_dangling(session_filter=None, max_gap=None):", "doc": "Find asymmetric forks where branches ended at different depths."}
+{"file": "cli-synthegration/workspace/reference/branch_manager.py", "name": "message_map", "kind": "de", "line": 216, "sig": "def message_map(session_id=None):", "doc": "Print position → message_id mapping for a session."}
+{"file": "cli-synthegration/workspace/reference/cedar_bridge.py", "name": "cedar_validate", "kind": "de", "line": 5, "sig": "def cedar_validate(code: str, schema: str = \"{}\") -> str:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/cedar_bridge.py", "name": "cedar_eval", "kind": "de", "line": 12, "sig": "def cedar_eval(code: str, schema: str, input_json: str) -> str:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/conv_branching.py", "name": "BranchRef", "kind": "clas", "line": 11, "sig": "class BranchRef:", "doc": "Named pointer to a DAG version, like a Git branch."}
+{"file": "cli-synthegration/workspace/reference/conv_branching.py", "name": "ConversationRepo", "kind": "clas", "line": 22, "sig": "class ConversationRepo:", "doc": "Git‑style repo for conversation DAGs with branching."}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "cache_manifest", "kind": "de", "line": 11, "sig": "def cache_manifest(export_root: Path, manifest: list):", "doc": "Write a quick-lookup index to ~/.cache/synthegration/"}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "load_cached_index", "kind": "de", "line": 36, "sig": "def load_cached_index(export_root: Path):", "doc": "Try to load cached index, return None if missing or stale."}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "load_offline_manifest", "kind": "de", "line": 47, "sig": "def load_offline_manifest(export_root: Path):", "doc": "Load manifest.json from export directory, using cache if available."}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "search_offline", "kind": "de", "line": 69, "sig": "def search_offline(manifest, term: str):", "doc": "Return blocks matching term in title, language, or code snippet."}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "export_blocks", "kind": "de", "line": 82, "sig": "def export_blocks(blocks, output_dir):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "list_offline_sessions", "kind": "de", "line": 102, "sig": "def list_offline_sessions(manifest):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "main", "kind": "de", "line": 111, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/conv_explorer.py", "name": "export_session_live", "kind": "de", "line": 208, "sig": "def export_session_live(session_id: str, output_dir: str = None, account: str = \"default\"):", "doc": "Fetch a session via live API and export its code blocks to Downloads."}
+{"file": "cli-synthegration/workspace/reference/conv_export_cli.py", "name": "main", "kind": "de", "line": 7, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/conv_versioner.py", "name": "MessageRef", "kind": "clas", "line": 8, "sig": "class MessageRef:", "doc": "Pointer to a message – like C++ reference with integrity hash."}
+{"file": "cli-synthegration/workspace/reference/conv_versioner.py", "name": "ConversationDAG", "kind": "clas", "line": 24, "sig": "class ConversationDAG:", "doc": "Directed acyclic graph of messages, indexed by hash for O(1) dedup."}
+{"file": "cli-synthegration/workspace/reference/detect_paste.py", "name": "detect", "kind": "de", "line": 10, "sig": "def detect(pasted_text: str):", "doc": "Find pasted content in the codex. Returns list of (session_id, message_id, simil"}
+{"file": "cli-synthegration/workspace/reference/export_all.py", "name": "export_session", "kind": "de", "line": 14, "sig": "def export_session(token, session):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/export_all.py", "name": "main", "kind": "de", "line": 47, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/generate_handoff.py", "name": "pos_to_message_ids", "kind": "de", "line": 9, "sig": "def pos_to_message_ids(session_id, positions):", "doc": "Convert position numbers to actual message_ids."}
+{"file": "cli-synthegration/workspace/reference/generate_loop.py", "name": "main", "kind": "de", "line": 9, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/loop_optimizer.py", "name": "find_loop_candidates", "kind": "de", "line": 14, "sig": "def find_loop_candidates(session_filter=None, top_n=5):", "doc": "Find the best messages to branch from, ranked by ELO + asymmetry gap."}
+{"file": "cli-synthegration/workspace/reference/pointer_sync.py", "name": "compute_diff", "kind": "de", "line": 8, "sig": "def compute_diff(local_dir: Path, remote_manifest: Path):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/session_categories.py", "name": "SessionCategorizer", "kind": "clas", "line": 20, "sig": "class SessionCategorizer:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/sprints.py", "name": "save", "kind": "de", "line": 59, "sig": "def save():", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/sprints.py", "name": "show", "kind": "de", "line": 69, "sig": "def show(filter_status=None):", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "Pointer", "kind": "clas", "line": 8, "sig": "class Pointer:", "doc": "C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 47, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 83, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 142, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 178, "sig": "class CodexIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/synthegration_index.py", "name": "MessageIndex", "kind": "clas", "line": 424, "sig": "class MessageIndex:", "doc": ""}
+{"file": "cli-synthegration/workspace/reference/token_provider.py", "name": "get_token", "kind": "de", "line": 8, "sig": "def get_token():", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/chronos/versioner.py", "name": "ChronosSession", "kind": "clas", "line": 18, "sig": "class ChronosSession:", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/chronos/versioner.py", "name": "main", "kind": "de", "line": 133, "sig": "def main():", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/time_loop_accelerator.py", "name": "_default_session", "kind": "de", "line": 20, "sig": "def _default_session():", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/time_loop_accelerator.py", "name": "get_live_stats", "kind": "de", "line": 34, "sig": "def get_live_stats():", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/time_loop_accelerator.py", "name": "list_branches", "kind": "de", "line": 58, "sig": "def list_branches():", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/time_loop_accelerator.py", "name": "merge_success", "kind": "de", "line": 66, "sig": "def merge_success(branch_name):", "doc": ""}
+{"file": "cli-synthegration/workspace/staging/time_loop_accelerator.py", "name": "main", "kind": "de", "line": 77, "sig": "def main():", "doc": ""}
+{"file": "deepcli-tui/tui.py", "name": "_complete_file_path", "kind": "de", "line": 25, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "deepcli-tui/tui.py", "name": "_smart_completer", "kind": "de", "line": 38, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "deepcli-tui/tui.py", "name": "build_tree_str", "kind": "de", "line": 72, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50, max_lines=200):", "doc": ""}
+{"file": "deepcli-tui/tui.py", "name": "choose_message", "kind": "de", "line": 114, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "deepcli-tui/tui.py", "name": "browse_sessions", "kind": "de", "line": 140, "sig": "def browse_sessions(_=''):", "doc": "Interactive session browser with real‑time category toggles."}
+{"file": "deepcli-tui/tui.py", "name": "prompt_session_id", "kind": "de", "line": 223, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "deepcli-tui/tui.py", "name": "show_commands", "kind": "de", "line": 271, "sig": "def show_commands():", "doc": "Display available commands with descriptions."}
+{"file": "deepcli-tui/tui.py", "name": "main", "kind": "de", "line": 307, "sig": "def main():", "doc": ""}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "_complete_file_path", "kind": "de", "line": 24, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "_smart_completer", "kind": "de", "line": 37, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "build_tree_str", "kind": "de", "line": 71, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "choose_message", "kind": "de", "line": 113, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "prompt_session_id", "kind": "de", "line": 138, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "show_help", "kind": "de", "line": 183, "sig": "def show_help():", "doc": ""}
+{"file": "deepcli-tui/workspace/reference/tui.py", "name": "main", "kind": "de", "line": 198, "sig": "def main():", "doc": ""}
+{"file": "deepcli/deepapi.py", "name": "DeepAPI", "kind": "clas", "line": 81, "sig": "class DeepAPI:", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "Project", "kind": "clas", "line": 18, "sig": "class Project:", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "load_projects", "kind": "de", "line": 41, "sig": "def load_projects() -> Dict[str, Project]:", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "save_projects", "kind": "de", "line": 47, "sig": "def save_projects(projects: Dict[str, Project]):", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "extract_code_blocks", "kind": "de", "line": 54, "sig": "def extract_code_blocks(content: str) -> List[Dict[str, str]]:", "doc": "Extract fenced code blocks from markdown content."}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_list_projects", "kind": "de", "line": 66, "sig": "def cmd_list_projects():", "doc": "List all projects."}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_create_project", "kind": "de", "line": 80, "sig": "def cmd_create_project(name: str, description: str = \"\"):", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_delete_project", "kind": "de", "line": 89, "sig": "def cmd_delete_project(name: str):", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_add_snippet", "kind": "de", "line": 99, "sig": "def cmd_add_snippet(project_name: str, message_content: str,", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_view_project", "kind": "de", "line": 126, "sig": "def cmd_view_project(name: str):", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "cmd_export_project", "kind": "de", "line": 138, "sig": "def cmd_export_project(name: str, output_dir: str = None):", "doc": ""}
+{"file": "deepcli/deepcli/organizer.py", "name": "tui_add_snippet_interactive", "kind": "de", "line": 164, "sig": "def tui_add_snippet_interactive(messages: list, current_sid: str):", "doc": "Interactive snippet adder for use inside TUI."}
+{"file": "deepcli/deepcli/organizer.py", "name": "main", "kind": "de", "line": 227, "sig": "def main():", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "_cache_path", "kind": "de", "line": 36, "sig": "def _cache_path(session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "_cache_load", "kind": "de", "line": 39, "sig": "def _cache_load(session_id: str) -> Optional[List[Dict[str, Any]]]:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "_cache_save", "kind": "de", "line": 46, "sig": "def _cache_save(session_id: str, messages: List[Dict[str, Any]]):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "_set_last_session", "kind": "de", "line": 51, "sig": "def _set_last_session(sid: str):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "load_config", "kind": "de", "line": 65, "sig": "def load_config() -> Dict[str, Any]:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "save_config", "kind": "de", "line": 70, "sig": "def save_config(cfg: Dict[str, Any]):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "get_token", "kind": "de", "line": 73, "sig": "def get_token() -> str:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "get_session", "kind": "de", "line": 86, "sig": "def get_session(token: str) -> curl_requests.Session:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "solve_pow", "kind": "de", "line": 110, "sig": "def solve_pow(challenge: dict) -> str:", "doc": "Runs pow_solver.js, returns base64-encoded x-ds-pow-response value."}
+{"file": "deepcli/deepcli_old.py", "name": "create_session", "kind": "de", "line": 141, "sig": "def create_session(token: str) -> str:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "fetch_sessions", "kind": "de", "line": 148, "sig": "def fetch_sessions(token: str) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "get_history", "kind": "de", "line": 155, "sig": "def get_history(token: str, session_id: str, force_refresh: bool = False) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "get_pow_challenge", "kind": "de", "line": 171, "sig": "def get_pow_challenge(token: str, target_path=\"/api/v0/chat/completion\") -> dict:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "upload_file", "kind": "de", "line": 178, "sig": "def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "wait_for_file", "kind": "de", "line": 202, "sig": "def wait_for_file(token: str, file_id: str, timeout=30):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "branch_conversation", "kind": "de", "line": 215, "sig": "def branch_conversation(token: str, session_id: str, message_id: str) -> Optional[str]:", "doc": "Branch from an assistant message. Requires user+assistant pair for share/create."}
+{"file": "deepcli/deepcli_old.py", "name": "stream_completion", "kind": "de", "line": 256, "sig": "def stream_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "export_markdown", "kind": "de", "line": 319, "sig": "def export_markdown(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "export_json", "kind": "de", "line": 331, "sig": "def export_json(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_import", "kind": "de", "line": 338, "sig": "def cmd_import(args):", "doc": "Extract userToken from Puppeteer userDataDir and save to config."}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_config", "kind": "de", "line": 369, "sig": "def cmd_config(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_new", "kind": "de", "line": 380, "sig": "def cmd_new(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_list", "kind": "de", "line": 393, "sig": "def cmd_list(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_send", "kind": "de", "line": 413, "sig": "def cmd_send(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_history", "kind": "de", "line": 465, "sig": "def cmd_history(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_export", "kind": "de", "line": 523, "sig": "def cmd_export(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_fork", "kind": "de", "line": 540, "sig": "def cmd_fork(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "cmd_upload", "kind": "de", "line": 548, "sig": "def cmd_upload(args):", "doc": ""}
+{"file": "deepcli/deepcli_old.py", "name": "main", "kind": "de", "line": 562, "sig": "def main():", "doc": ""}
+{"file": "deepcli/extract-token.js", "name": "getToken", "kind": "function", "line": 10, "sig": "async function getToken() {", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "is_text_file", "kind": "de", "line": 13, "sig": "def is_text_file(path, sample=1024):", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "guess_language", "kind": "de", "line": 20, "sig": "def guess_language(path):", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "file_preview", "kind": "de", "line": 47, "sig": "def file_preview(path, max_lines=5):", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "scan_directory", "kind": "de", "line": 57, "sig": "def scan_directory(root_dir, max_depth=None, pattern=None, extensions=None,", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "investigate_path", "kind": "de", "line": 107, "sig": "def investigate_path(path, **kwargs):", "doc": "Handle a single file or directory, returning list of entries."}
+{"file": "deepcli/investigate.py", "name": "output_table", "kind": "de", "line": 133, "sig": "def output_table(data):", "doc": ""}
+{"file": "deepcli/investigate.py", "name": "main", "kind": "de", "line": 149, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/api_map.py", "name": "find_functions", "kind": "de", "line": 20, "sig": "def find_functions(file_path):", "doc": "Return list of (line_number, function_name, start_line, end_line) for a file."}
+{"file": "deepcli/investigator/api_map.py", "name": "scan_file", "kind": "de", "line": 53, "sig": "def scan_file(file_path):", "doc": "Extract API calls from a file."}
+{"file": "deepcli/investigator/api_map.py", "name": "print_api_map", "kind": "de", "line": 102, "sig": "def print_api_map(data):", "doc": ""}
+{"file": "deepcli/investigator/api_map.py", "name": "main", "kind": "de", "line": 122, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/capability_focus.py", "name": "should_skip", "kind": "de", "line": 41, "sig": "def should_skip(filepath):", "doc": ""}
+{"file": "deepcli/investigator/capability_focus.py", "name": "analyze_file", "kind": "de", "line": 51, "sig": "def analyze_file(filepath):", "doc": ""}
+{"file": "deepcli/investigator/capability_focus.py", "name": "main", "kind": "de", "line": 65, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/capability_scout.py", "name": "analyze_file", "kind": "de", "line": 147, "sig": "def analyze_file(file_path):", "doc": "Return set of capability keys matched in this file."}
+{"file": "deepcli/investigator/capability_scout.py", "name": "main", "kind": "de", "line": 176, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/code_intel.py", "name": "scan_file", "kind": "de", "line": 31, "sig": "def scan_file(path: str) -> dict:", "doc": "Return structured intelligence about a single file."}
+{"file": "deepcli/investigator/code_intel.py", "name": "print_report", "kind": "de", "line": 161, "sig": "def print_report(results, show_details=True):", "doc": "Pretty-print the intelligence report."}
+{"file": "deepcli/investigator/code_intel.py", "name": "main", "kind": "de", "line": 219, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/investigate.py", "name": "is_text_file", "kind": "de", "line": 14, "sig": "def is_text_file(path, sample=1024):", "doc": ""}
+{"file": "deepcli/investigator/investigate.py", "name": "guess_language", "kind": "de", "line": 21, "sig": "def guess_language(path):", "doc": ""}
+{"file": "deepcli/investigator/investigate.py", "name": "file_preview", "kind": "de", "line": 48, "sig": "def file_preview(path, max_lines=5):", "doc": ""}
+{"file": "deepcli/investigator/investigate.py", "name": "scan_directory", "kind": "de", "line": 58, "sig": "def scan_directory(root_dir, max_depth=None, pattern=None, extensions=None,", "doc": ""}
+{"file": "deepcli/investigator/investigate.py", "name": "investigate_path", "kind": "de", "line": 110, "sig": "def investigate_path(path, **kwargs):", "doc": "Handle a single file or directory, returning list of entries."}
+{"file": "deepcli/investigator/investigate.py", "name": "analyze_and_print", "kind": "de", "line": 139, "sig": "def analyze_and_print(entries, recent_days=7):", "doc": "Produce a structured summary grouped by purpose, with recent files highlighted."}
+{"file": "deepcli/investigator/investigate.py", "name": "main", "kind": "de", "line": 204, "sig": "def main():", "doc": ""}
+{"file": "deepcli/investigator/test_failure_dump.py", "name": "load_json", "kind": "de", "line": 10, "sig": "def load_json(path):", "doc": ""}
+{"file": "deepcli/pow_solver.js", "name": "init", "kind": "function", "line": 12, "sig": "async function init() {", "doc": ""}
+{"file": "deepcli/pow_solver.js", "name": "allocUtf8", "kind": "function", "line": 21, "sig": "function allocUtf8(str) {", "doc": ""}
+{"file": "deepcli/pow_solver.js", "name": "solvePow", "kind": "function", "line": 30, "sig": "async function solvePow(challenge, salt, expireAt, difficulty) {", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "log", "kind": "de", "line": 15, "sig": "def log(ok: bool, name: str, detail=\"\"):", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_auth", "kind": "de", "line": 24, "sig": "def test_auth():", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_create_session", "kind": "de", "line": 31, "sig": "def test_create_session():", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_upload", "kind": "de", "line": 36, "sig": "def test_upload():", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_branch", "kind": "de", "line": 51, "sig": "def test_branch():", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_list_sessions", "kind": "de", "line": 70, "sig": "def test_list_sessions():", "doc": ""}
+{"file": "deepcli/tests/test_api.py", "name": "test_stream", "kind": "de", "line": 75, "sig": "def test_stream():", "doc": ""}
+{"file": "deepcli/workspace/reference/deepapi.py", "name": "DeepAPI", "kind": "clas", "line": 81, "sig": "class DeepAPI:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_import", "kind": "de", "line": 15, "sig": "def cmd_import(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_config", "kind": "de", "line": 42, "sig": "def cmd_config(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_new", "kind": "de", "line": 53, "sig": "def cmd_new(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_list", "kind": "de", "line": 65, "sig": "def cmd_list(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_send", "kind": "de", "line": 85, "sig": "def cmd_send(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_history", "kind": "de", "line": 130, "sig": "def cmd_history(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_export", "kind": "de", "line": 183, "sig": "def cmd_export(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_fork", "kind": "de", "line": 197, "sig": "def cmd_fork(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "cmd_upload", "kind": "de", "line": 205, "sig": "def cmd_upload(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/cli.py", "name": "main", "kind": "de", "line": 216, "sig": "def main():", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "_cache_path", "kind": "de", "line": 23, "sig": "def _cache_path(session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "_cache_load", "kind": "de", "line": 26, "sig": "def _cache_load(session_id: str) -> Optional[List[Dict[str, Any]]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "_cache_save", "kind": "de", "line": 33, "sig": "def _cache_save(session_id: str, messages: List[Dict[str, Any]]):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "_set_last_session", "kind": "de", "line": 39, "sig": "def _set_last_session(sid: str):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "load_config", "kind": "de", "line": 49, "sig": "def load_config() -> Dict[str, Any]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "save_config", "kind": "de", "line": 54, "sig": "def save_config(cfg: Dict[str, Any]):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "get_token", "kind": "de", "line": 57, "sig": "def get_token() -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "get_session", "kind": "de", "line": 68, "sig": "def get_session(token: str) -> curl_requests.Session:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "solve_pow", "kind": "de", "line": 89, "sig": "def solve_pow(challenge: dict) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "create_session", "kind": "de", "line": 117, "sig": "def create_session(token: str, model_type: str = \"expert\") -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "fetch_sessions", "kind": "de", "line": 124, "sig": "def fetch_sessions(token: str) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "get_history", "kind": "de", "line": 131, "sig": "def get_history(token: str, session_id: str, force_refresh: bool = False) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "get_pow_challenge", "kind": "de", "line": 146, "sig": "def get_pow_challenge(token: str, target_path=\"/api/v0/chat/completion\") -> dict:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "upload_file", "kind": "de", "line": 153, "sig": "def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "wait_for_file", "kind": "de", "line": 176, "sig": "def wait_for_file(token: str, file_id: str, timeout=30):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "branch_conversation", "kind": "de", "line": 189, "sig": "def branch_conversation(token: str, session_id: str, message_id: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "_log_retry", "kind": "de", "line": 221, "sig": "def _log_retry(operation: str, status_code: int, attempt: int, delay: float):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "stream_completion", "kind": "de", "line": 232, "sig": "def stream_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "continue_response", "kind": "de", "line": 330, "sig": "def continue_response(token: str, session_id: str, parent_message_id: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "send_message", "kind": "de", "line": 344, "sig": "def send_message(token: str, session_id: str, prompt: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "chat_completion", "kind": "de", "line": 365, "sig": "def chat_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "export_markdown", "kind": "de", "line": 404, "sig": "def export_markdown(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/core.py", "name": "export_json", "kind": "de", "line": 416, "sig": "def export_json(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "Project", "kind": "clas", "line": 18, "sig": "class Project:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "load_projects", "kind": "de", "line": 41, "sig": "def load_projects() -> Dict[str, Project]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "save_projects", "kind": "de", "line": 47, "sig": "def save_projects(projects: Dict[str, Project]):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "extract_code_blocks", "kind": "de", "line": 54, "sig": "def extract_code_blocks(content: str) -> List[Dict[str, str]]:", "doc": "Extract fenced code blocks from markdown content."}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_list_projects", "kind": "de", "line": 66, "sig": "def cmd_list_projects():", "doc": "List all projects."}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_create_project", "kind": "de", "line": 80, "sig": "def cmd_create_project(name: str, description: str = \"\"):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_delete_project", "kind": "de", "line": 89, "sig": "def cmd_delete_project(name: str):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_add_snippet", "kind": "de", "line": 99, "sig": "def cmd_add_snippet(project_name: str, message_content: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_view_project", "kind": "de", "line": 126, "sig": "def cmd_view_project(name: str):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "cmd_export_project", "kind": "de", "line": 138, "sig": "def cmd_export_project(name: str, output_dir: str = None):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "tui_add_snippet_interactive", "kind": "de", "line": 164, "sig": "def tui_add_snippet_interactive(messages: list, current_sid: str):", "doc": "Interactive snippet adder for use inside TUI."}
+{"file": "deepcli/workspace/reference/deepcli/organizer.py", "name": "main", "kind": "de", "line": 227, "sig": "def main():", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "_cache_path", "kind": "de", "line": 36, "sig": "def _cache_path(session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "_cache_load", "kind": "de", "line": 39, "sig": "def _cache_load(session_id: str) -> Optional[List[Dict[str, Any]]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "_cache_save", "kind": "de", "line": 46, "sig": "def _cache_save(session_id: str, messages: List[Dict[str, Any]]):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "_set_last_session", "kind": "de", "line": 51, "sig": "def _set_last_session(sid: str):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "load_config", "kind": "de", "line": 65, "sig": "def load_config() -> Dict[str, Any]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "save_config", "kind": "de", "line": 70, "sig": "def save_config(cfg: Dict[str, Any]):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "get_token", "kind": "de", "line": 73, "sig": "def get_token() -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "get_session", "kind": "de", "line": 86, "sig": "def get_session(token: str) -> curl_requests.Session:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "solve_pow", "kind": "de", "line": 110, "sig": "def solve_pow(challenge: dict) -> str:", "doc": "Runs pow_solver.js, returns base64-encoded x-ds-pow-response value."}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "create_session", "kind": "de", "line": 141, "sig": "def create_session(token: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "fetch_sessions", "kind": "de", "line": 148, "sig": "def fetch_sessions(token: str) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "get_history", "kind": "de", "line": 155, "sig": "def get_history(token: str, session_id: str, force_refresh: bool = False) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "get_pow_challenge", "kind": "de", "line": 171, "sig": "def get_pow_challenge(token: str, target_path=\"/api/v0/chat/completion\") -> dict:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "upload_file", "kind": "de", "line": 178, "sig": "def upload_file(token: str, session_id: str, file_path: str) -> Optional[str]:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "wait_for_file", "kind": "de", "line": 202, "sig": "def wait_for_file(token: str, file_id: str, timeout=30):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "branch_conversation", "kind": "de", "line": 215, "sig": "def branch_conversation(token: str, session_id: str, message_id: str) -> Optional[str]:", "doc": "Branch from an assistant message. Requires user+assistant pair for share/create."}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "stream_completion", "kind": "de", "line": 256, "sig": "def stream_completion(token: str, prompt: str, session_id: str,", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "export_markdown", "kind": "de", "line": 319, "sig": "def export_markdown(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "export_json", "kind": "de", "line": 331, "sig": "def export_json(token: str, session_id: str) -> str:", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_import", "kind": "de", "line": 338, "sig": "def cmd_import(args):", "doc": "Extract userToken from Puppeteer userDataDir and save to config."}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_config", "kind": "de", "line": 369, "sig": "def cmd_config(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_new", "kind": "de", "line": 380, "sig": "def cmd_new(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_list", "kind": "de", "line": 393, "sig": "def cmd_list(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_send", "kind": "de", "line": 413, "sig": "def cmd_send(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_history", "kind": "de", "line": 465, "sig": "def cmd_history(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_export", "kind": "de", "line": 523, "sig": "def cmd_export(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_fork", "kind": "de", "line": 540, "sig": "def cmd_fork(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "cmd_upload", "kind": "de", "line": 548, "sig": "def cmd_upload(args):", "doc": ""}
+{"file": "deepcli/workspace/reference/deepcli_old.py", "name": "main", "kind": "de", "line": 562, "sig": "def main():", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "is_text_file", "kind": "de", "line": 13, "sig": "def is_text_file(path, sample=1024):", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "guess_language", "kind": "de", "line": 20, "sig": "def guess_language(path):", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "file_preview", "kind": "de", "line": 47, "sig": "def file_preview(path, max_lines=5):", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "scan_directory", "kind": "de", "line": 57, "sig": "def scan_directory(root_dir, max_depth=None, pattern=None, extensions=None,", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "investigate_path", "kind": "de", "line": 107, "sig": "def investigate_path(path, **kwargs):", "doc": "Handle a single file or directory, returning list of entries."}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "output_table", "kind": "de", "line": 133, "sig": "def output_table(data):", "doc": ""}
+{"file": "deepcli/workspace/reference/investigate.py", "name": "main", "kind": "de", "line": 149, "sig": "def main():", "doc": ""}
+{"file": "deepseek_harvest_work/batch_merge.py", "name": "similarity", "kind": "de", "line": 62, "sig": "def similarity(a, b):", "doc": ""}
+{"file": "deepseek_harvest_work/batch_merge.py", "name": "cluster_blocks", "kind": "de", "line": 65, "sig": "def cluster_blocks(blk_list):", "doc": ""}
+{"file": "deepseek_harvest_work/batch_merge.py", "name": "pick_three", "kind": "de", "line": 80, "sig": "def pick_three(cluster):", "doc": ""}
+{"file": "deepseek_harvest_work/batch_merge.py", "name": "DeepSeekSession", "kind": "clas", "line": 91, "sig": "class DeepSeekSession:", "doc": ""}
+{"file": "deepseek_harvest_work/batch_merge.py", "name": "append_trace", "kind": "de", "line": 165, "sig": "def append_trace(project, lang, base_blk, ours_blk, theirs_blk, merged_code, out_path):", "doc": "Append a detailed trace entry for a merge."}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importPeptides", "kind": "function", "line": 10, "sig": "function importPeptides() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importFDA", "kind": "function", "line": 24, "sig": "function importFDA() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importEMA", "kind": "function", "line": 47, "sig": "function importEMA() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importGeneTherapies", "kind": "function", "line": 54, "sig": "function importGeneTherapies() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importWADA", "kind": "function", "line": 78, "sig": "function importWADA() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "importROROrganizations", "kind": "function", "line": 100, "sig": "function importROROrganizations() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "appendOrUpdateRow", "kind": "function", "line": 117, "sig": "function appendOrUpdateRow(newRow) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "doGet", "kind": "function", "line": 137, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "doPost", "kind": "function", "line": 150, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_356c365d2fe8a6cc.js", "name": "setupTriggers", "kind": "function", "line": 165, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_a4a546cc3c4826ba.js", "name": "doGet", "kind": "function", "line": 7, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_a4a546cc3c4826ba.js", "name": "doPost", "kind": "function", "line": 21, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_a4a546cc3c4826ba.js", "name": "importFromExternalCSV", "kind": "function", "line": 42, "sig": "function importFromExternalCSV() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Building2_className=_w-5_h-5_text-indigo-500_div_className=_fl/javascript_a4a546cc3c4826ba.js", "name": "setupTriggers", "kind": "function", "line": 55, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Client_Side_LiveStream_Watch_Party_App/js_ec40c9f467b745c1.js", "name": "createPipPlayer", "kind": "function", "line": 1, "sig": "function createPipPlayer() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_93ccff18dabb3f6c.js", "name": "parseWithGemini", "kind": "function", "line": 6, "sig": "function parseWithGemini(pdfUrl) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "doGet", "kind": "function", "line": 19, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "doPost", "kind": "function", "line": 38, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "handleIngestUrl", "kind": "function", "line": 62, "sig": "function handleIngestUrl(url) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "parseCatalogueText", "kind": "function", "line": 114, "sig": "function parseCatalogueText(text) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "guessType", "kind": "function", "line": 150, "sig": "function guessType(name) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "handleAddSource", "kind": "function", "line": 159, "sig": "function handleAddSource(data) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "handleAddFacility", "kind": "function", "line": 168, "sig": "function handleAddFacility(data) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "handleEnrich", "kind": "function", "line": 178, "sig": "function handleEnrich(query) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "handleApproval", "kind": "function", "line": 182, "sig": "function handleApproval(id, status) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "setupTriggers", "kind": "function", "line": 186, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_9d920c306d40f2a3.js", "name": "importFromExternalSources", "kind": "function", "line": 190, "sig": "function importFromExternalSources() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "doGet", "kind": "function", "line": 19, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "doPost", "kind": "function", "line": 38, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "handleEnrich", "kind": "function", "line": 59, "sig": "function handleEnrich(query) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "handleApproval", "kind": "function", "line": 185, "sig": "function handleApproval(id, status) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "setupTriggers", "kind": "function", "line": 202, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Comprehensive_evaluation_and_final_code_output_for_regulatory_intelligence_app/javascript_eea5398694ef98cd.js", "name": "importFromExternalSources", "kind": "function", "line": 208, "sig": "function importFromExternalSources() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_3a19854ec2d9eb02.py", "name": "PumpPortalClient", "kind": "clas", "line": 8, "sig": "class PumpPortalClient:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_3b73639faecaa5d6.py", "name": "ExecutionRouter", "kind": "clas", "line": 8, "sig": "class ExecutionRouter:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_73e9b20e7c1c8420.py", "name": "MultiChainSigner", "kind": "clas", "line": 9, "sig": "class MultiChainSigner:", "doc": "Unified signing interface for multiple chains."}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_9612d5df0a4dd1e5.py", "name": "ExecutionRouter", "kind": "clas", "line": 5, "sig": "class ExecutionRouter:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_b428ad2de9952135.py", "name": "BitqueryAnalytics", "kind": "clas", "line": 5, "sig": "class BitqueryAnalytics:", "doc": "Bitquery analytics integration for on-chain data."}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_c21707273c140695.py", "name": "SecurityManager", "kind": "clas", "line": 9, "sig": "class SecurityManager:", "doc": "Handles encryption/decryption of sensitive data."}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_cb13da7fc0e6ec97.py", "name": "OmniClient", "kind": "clas", "line": 5, "sig": "class OmniClient:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_cfda799c07c119bc.py", "name": "PumpfunClient", "kind": "clas", "line": 6, "sig": "class PumpfunClient:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Cryptocurrency_Trading_Handler_Development_Review/python_d1ac659ee37a08f9.py", "name": "WebSocketManager", "kind": "clas", "line": 11, "sig": "class WebSocketManager:", "doc": "Advanced WebSocket manager with reconnection, backoff, and multiplexing."}
+{"file": "deepseek_harvest_work/code_harvest/Data_Ingestion_Model_Schema/javascript_fab14c0629afa4f2.js", "name": "ingestAddgenePlasmid", "kind": "function", "line": 20, "sig": "async function ingestAddgenePlasmid(plasmidId) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Enhanced_WebSocket_Arbitrage_Engine_Refactoring/javascript_7b0c5752841206f7.js", "name": "buildTradingGraph", "kind": "function", "line": 1, "sig": "function buildTradingGraph() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Enhanced_WebSocket_Arbitrage_Engine_Refactoring/javascript_837b367cda6ad78d.js", "name": "calculateCycleOpportunity", "kind": "function", "line": 1, "sig": "function calculateCycleOpportunity(cycle) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Enhanced_WebSocket_Arbitrage_Engine_Refactoring/javascript_8e0c76246b8cc5be.js", "name": "displayOpportunities", "kind": "function", "line": 1, "sig": "function displayOpportunities() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Enhanced_WebSocket_Arbitrage_Engine_Refactoring/javascript_8e0c76246b8cc5be.js", "name": "displayOpportunity", "kind": "function", "line": 36, "sig": "function displayOpportunity(opp, container) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Enhanced_WebSocket_Arbitrage_Engine_Refactoring/javascript_e6db611e2f0bf4a7.js", "name": "scanTriangular", "kind": "function", "line": 1, "sig": "function scanTriangular(minProfit) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_33dc8a0be32c3e5f.py", "name": "get_duration", "kind": "de", "line": 12, "sig": "def get_duration(file):", "doc": "Get the duration of a video file using ffprobe."}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_33dc8a0be32c3e5f.py", "name": "find_offset", "kind": "de", "line": 21, "sig": "def find_offset(file1, file2):", "doc": "Use audio-offset-finder to find the offset between two files."}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_5a90b4f11a894c4d.py", "name": "find_offset", "kind": "de", "line": 1, "sig": "def find_offset(file1, file2):", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_a2158f460fb32cdd.py", "name": "get_duration", "kind": "de", "line": 10, "sig": "def get_duration(file):", "doc": "Get the duration of a video file using ffprobe."}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_a5b771e923d51a51.py", "name": "find_offset", "kind": "de", "line": 1, "sig": "def find_offset(file1, file2, max_overlap_sec=5):", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/FFmpeg_Termux_join_overlapping_MP4_files/python_be749f37526010f4.py", "name": "find_offset", "kind": "de", "line": 1, "sig": "def find_offset(file1, file2, max_overlap_sec=5):", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/HTML_distributed_time_series_database_libraries_protocols/javascript_d7ef855366809221.js", "name": "setPlayerHandle", "kind": "function", "line": 1, "sig": "function setPlayerHandle() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Investment_App_Casino_Style_Improvements/js_3decdde786698b8c.js", "name": "toggleSlot", "kind": "function", "line": 4, "sig": "function toggleSlot() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Investment_App_Casino_Style_Improvements/js_3decdde786698b8c.js", "name": "pullLever", "kind": "function", "line": 10, "sig": "function pullLever() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Investment_App_Casino_Style_Improvements/js_3decdde786698b8c.js", "name": "animateSlots", "kind": "function", "line": 30, "sig": "function animateSlots(symbols, opp) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Investment_App_Casino_Style_Improvements/js_7e880c289b62c8a5.js", "name": "onLeverPull", "kind": "function", "line": 2, "sig": "async function onLeverPull() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_0e21d053d7673fb4.js", "name": "ProductionDataManager", "kind": "class", "line": 1, "sig": "class ProductionDataManager {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_0f09cfff90c62707.js", "name": "DiagnosticLogger", "kind": "class", "line": 1, "sig": "class DiagnosticLogger {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_23e65c2323cf20b2.js", "name": "ProductionDataManager", "kind": "class", "line": 1, "sig": "class ProductionDataManager {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_3a49b446eb6f2754.js", "name": "DiagnosticsLogger", "kind": "class", "line": 1, "sig": "class DiagnosticsLogger {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_6f3ce99b72a51e4b.js", "name": "identifyPlanckTierCoins", "kind": "function", "line": 4, "sig": "async function identifyPlanckTierCoins(exchangeData) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_c5049554b11069ec.js", "name": "ProductionDataManager", "kind": "class", "line": 4, "sig": "class ProductionDataManager {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/JavaScript_Migration_for_Arbitrage_System/javascript_f54fb05cbe050d73.js", "name": "DiagnosticLogger", "kind": "class", "line": 1, "sig": "class DiagnosticLogger {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Live_Stream_Accountability_Web_App_Design/javascript_a969145ed6d3fb06.js", "name": "fetchAllUserComments", "kind": "function", "line": 1, "sig": "async function fetchAllUserComments(videoId, channelId, token) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Peptide_Therapy_Regulatory_Database_Implementation_Deliverables/javascript_6f2222dcdd301b3c.js", "name": "onOpen", "kind": "function", "line": 1, "sig": "function onOpen() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Peptide_Therapy_Regulatory_Database_Implementation_Deliverables/javascript_6f2222dcdd301b3c.js", "name": "fetchCTData", "kind": "function", "line": 9, "sig": "function fetchCTData() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Peptide_Therapy_Regulatory_Database_Implementation_Deliverables/javascript_92d57af70a1dba53.js", "name": "resolveROR", "kind": "function", "line": 1, "sig": "function resolveROR() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Post_Exploitation_Framework_Search/javascript_e1f34f20510438c8.js", "name": "isSuspicious", "kind": "function", "line": 2, "sig": "function isSuspicious() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Post_Exploitation_Framework_Search/javascript_e1f34f20510438c8.js", "name": "isSuspicious", "kind": "function", "line": 11, "sig": "function isSuspicious() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Post_Exploitation_Framework_Search/python_287e7be2fd4f333a.py", "name": "resample", "kind": "de", "line": 3, "sig": "def resample(x, old_rate, new_rate):", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_0f596afc973e86cd.js", "name": "UIComponents", "kind": "class", "line": 1, "sig": "class UIComponents {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_48d721980520fc14.js", "name": "ProductionController", "kind": "class", "line": 1, "sig": "class ProductionController {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_791058d2a572b67d.js", "name": "ProductionDataManager", "kind": "class", "line": 1, "sig": "class ProductionDataManager {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_d1ba7013784ca1d8.js", "name": "ProductionArbitrageEngine", "kind": "class", "line": 1, "sig": "class ProductionArbitrageEngine {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_d1ba7013784ca1d8.js", "name": "TriangularArbitrage", "kind": "class", "line": 170, "sig": "class TriangularArbitrage {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_d1ba7013784ca1d8.js", "name": "BellmanFordArbitrage", "kind": "class", "line": 267, "sig": "class BellmanFordArbitrage {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Project_File_Structure_and_JavaScript_Code_Review/javascript_d1ba7013784ca1d8.js", "name": "LowValueArbitrage", "kind": "class", "line": 440, "sig": "class LowValueArbitrage {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Quantum_Investment_App_with_Casino_Aesthetic/javascript_3bc458b997c22a65.js", "name": "activateInvestmentModule", "kind": "function", "line": 1, "sig": "function activateInvestmentModule(moduleKey, amount) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Quantum_Investment_App_with_Casino_Aesthetic/javascript_456bb013f2b37295.js", "name": "init", "kind": "function", "line": 1, "sig": "function init() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Quantum_Investment_App_with_Casino_Aesthetic/javascript_979443ba418ce896.js", "name": "generateInvestmentCards", "kind": "function", "line": 1, "sig": "function generateInvestmentCards() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Quantum_Investment_App_with_Casino_Aesthetic/javascript_c39f0c7b479b27dd.js", "name": "showMessage", "kind": "function", "line": 1, "sig": "function showMessage(title, text) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Reconcile_QuanTM_FOAM_v23.3_Artifact/js_41b15c634e2e7c1e.js", "name": "hexToRgba", "kind": "function", "line": 1, "sig": "function hexToRgba(hex, alpha) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Regulatory_intelligence_dashboard_upgrade_with_Google_Sheets_backend/javascript_3bdbb9fbc3bdd1b8.js", "name": "transformRawCompound", "kind": "function", "line": 33, "sig": "function transformRawCompound(raw) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Regulatory_intelligence_dashboard_upgrade_with_Google_Sheets_backend/javascript_8bfb689f76b3c046.js", "name": "fetchCompounds", "kind": "function", "line": 13, "sig": "async function fetchCompounds() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Regulatory_intelligence_dashboard_upgrade_with_Google_Sheets_backend/javascript_8bfb689f76b3c046.js", "name": "batchUpdateCompounds", "kind": "function", "line": 30, "sig": "async function batchUpdateCompounds(compounds) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Regulatory_intelligence_dashboard_upgrade_with_Google_Sheets_backend/javascript_8bfb689f76b3c046.js", "name": "updateCompound", "kind": "function", "line": 50, "sig": "async function updateCompound(entityId, updates) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_0db4a1f7c5f2c903.js", "name": "TokenManager", "kind": "class", "line": 4, "sig": "class TokenManager {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_1f049b8ac620936a.js", "name": "YouTubeClient", "kind": "class", "line": 4, "sig": "class YouTubeClient {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_81b42e548a8a146c.js", "name": "pollLiveChat", "kind": "function", "line": 9, "sig": "async function pollLiveChat(user, liveChatId) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_9758051f63fbb295.js", "name": "FilterEngine", "kind": "class", "line": 2, "sig": "class FilterEngine {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_aa2080b736078d83.js", "name": "register", "kind": "function", "line": 6, "sig": "function register(name, handler, options = {}) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_aa2080b736078d83.js", "name": "initCommandRegistry", "kind": "function", "line": 10, "sig": "function initCommandRegistry() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_aa2080b736078d83.js", "name": "execute", "kind": "function", "line": 18, "sig": "async function execute(message) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_ab2ba76cb8c55b19.js", "name": "CommandParser", "kind": "class", "line": 2, "sig": "class CommandParser {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_ab52ce5410a048f5.js", "name": "InstagramClient", "kind": "class", "line": 2, "sig": "class InstagramClient {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Social_Media_Integration_Module_Set/javascript_b2ad599ac501c8ab.js", "name": "ResponseDispatcher", "kind": "class", "line": 5, "sig": "class ResponseDispatcher {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Tallah_Goldie_Case_Documentation_Refactor/javascript_e7a7a62f6cbeab29.js", "name": "generateTimeline", "kind": "function", "line": 21, "sig": "function generateTimeline() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_0668d979a1813102.js", "name": "doGet", "kind": "function", "line": 8, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_0668d979a1813102.js", "name": "doPost", "kind": "function", "line": 25, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_0668d979a1813102.js", "name": "handleEnrich", "kind": "function", "line": 46, "sig": "function handleEnrich(query) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_1b6df0de816db3ab.js", "name": "doPost", "kind": "function", "line": 1, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_1b6df0de816db3ab.js", "name": "handleApproval", "kind": "function", "line": 10, "sig": "function handleApproval(id, status) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_9fb64746ff4c2c61.js", "name": "getCountryStatus", "kind": "function", "line": 41, "sig": "const getCountryStatus = (geo, compound) => {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_acf764aade2cd410.js", "name": "doGet", "kind": "function", "line": 7, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_d9efaf3b9bb5966f.js", "name": "toggleSelect", "kind": "function", "line": 17, "sig": "const toggleSelect = (id) => {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_dd4addf62b1ce418.js", "name": "doGet", "kind": "function", "line": 16, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_dd4addf62b1ce418.js", "name": "doPost", "kind": "function", "line": 31, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_dd4addf62b1ce418.js", "name": "handleEnrich", "kind": "function", "line": 46, "sig": "function handleEnrich(query) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_dd4addf62b1ce418.js", "name": "setupTriggers", "kind": "function", "line": 108, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_dd4addf62b1ce418.js", "name": "importFromExternalSources", "kind": "function", "line": 112, "sig": "function importFromExternalSources() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_faed36da99be9634.js", "name": "doGet", "kind": "function", "line": 6, "sig": "function doGet(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_faed36da99be9634.js", "name": "doPost", "kind": "function", "line": 19, "sig": "function doPost(e) {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_faed36da99be9634.js", "name": "importFromExternalSources", "kind": "function", "line": 34, "sig": "function importFromExternalSources() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/The_user_wants_a_single,_unified_output._Ill_provide_the_complete_implementat/javascript_faed36da99be9634.js", "name": "setupTriggers", "kind": "function", "line": 50, "sig": "function setupTriggers() {", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "PricePoint", "kind": "clas", "line": 43, "sig": "class PricePoint:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "play_sound", "kind": "de", "line": 57, "sig": "def play_sound(filename: str):", "doc": "Play a WAV file (non‑blocking)."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "random_price", "kind": "de", "line": 68, "sig": "def random_price(base: float, spread: float = 0.01):", "doc": "Generate a realistic random price around a base."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "fetch_simulated_prices", "kind": "de", "line": 72, "sig": "def fetch_simulated_prices(symbol: str) -> Dict[str, Tuple[float, float]]:", "doc": ""}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "find_arbitrage_opportunities", "kind": "de", "line": 96, "sig": "def find_arbitrage_opportunities() -> List[Dict]:", "doc": "Identify arbitrage opportunities across exchanges."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "generate_odds_style", "kind": "de", "line": 125, "sig": "def generate_odds_style(spread: float) -> str:", "doc": "Convert spread percentage to a casino‑odds style string."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "generate_stars", "kind": "de", "line": 136, "sig": "def generate_stars(spread: float) -> str:", "doc": "Give a star rating based on spread."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "play_alert_sound", "kind": "de", "line": 147, "sig": "def play_alert_sound(spread: float):", "doc": "Play appropriate sound based on spread magnitude."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "handle_keypress", "kind": "de", "line": 156, "sig": "def handle_keypress():", "doc": "Background thread that listens for keypresses."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "build_table", "kind": "de", "line": 182, "sig": "def build_table(opportunities: List[Dict]) -> Table:", "doc": "Construct a Rich table for live display."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "display_log", "kind": "de", "line": 218, "sig": "def display_log(opportunities: List[Dict], iteration: int):", "doc": "Print coloured log messages (re‑included colour logging)."}
+{"file": "deepseek_harvest_work/code_harvest/Unable_to_Access_Shared_Chat_Link/python_e81e88f9d9ac0080.py", "name": "scanner_loop", "kind": "de", "line": 236, "sig": "def scanner_loop():", "doc": "Main scanning loop."}
+{"file": "deepseek_harvest_work/workspace/reference/batch_merge.py", "name": "similarity", "kind": "de", "line": 62, "sig": "def similarity(a, b):", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/batch_merge.py", "name": "cluster_blocks", "kind": "de", "line": 65, "sig": "def cluster_blocks(blk_list):", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/batch_merge.py", "name": "pick_three", "kind": "de", "line": 80, "sig": "def pick_three(cluster):", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/batch_merge.py", "name": "DeepSeekSession", "kind": "clas", "line": 91, "sig": "class DeepSeekSession:", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/batch_merge.py", "name": "append_trace", "kind": "de", "line": 165, "sig": "def append_trace(project, lang, base_blk, ours_blk, theirs_blk, merged_code, out_path):", "doc": "Append a detailed trace entry for a merge."}
+{"file": "deepseek_harvest_work/workspace/reference/harvest.py", "name": "CodeBlock", "kind": "clas", "line": 11, "sig": "class CodeBlock:", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/harvest.py", "name": "recursive_texts", "kind": "de", "line": 44, "sig": "def recursive_texts(obj, parent_key=\"\", conv_meta: Optional[Dict]=None) -> List[Dict[str, Any]]:", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/harvest.py", "name": "parse_export", "kind": "de", "line": 91, "sig": "def parse_export(json_path: str) -> List[CodeBlock]:", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/harvest.py", "name": "deduplicate", "kind": "de", "line": 138, "sig": "def deduplicate(blocks):", "doc": ""}
+{"file": "deepseek_harvest_work/workspace/reference/harvest.py", "name": "write_output", "kind": "de", "line": 145, "sig": "def write_output(blocks, output_root, dedup=True):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/account_manager.py", "name": "import_account", "kind": "de", "line": 8, "sig": "def import_account(cookies_file: str, account_name: str):", "doc": "Extract Bearer token from cookies JSON and save as config_<account>.json."}
+{"file": "harmonizer-prod_cli/workspace/reference/account_manager.py", "name": "get_token", "kind": "de", "line": 24, "sig": "def get_token(account_name: str = \"default\") -> str:", "doc": "Return token for account. 'default' reads config.json, others read config_<name>"}
+{"file": "harmonizer-prod_cli/workspace/reference/backfill_elo.py", "name": "extract_refactor_pairs", "kind": "de", "line": 16, "sig": "def extract_refactor_pairs(conversation):", "doc": "Walk mapping tree, find user→assistant pairs where code was generated."}
+{"file": "harmonizer-prod_cli/workspace/reference/backfill_elo.py", "name": "main", "kind": "de", "line": 98, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "list_branches", "kind": "de", "line": 16, "sig": "def list_branches():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "fork_branch", "kind": "de", "line": 29, "sig": "def fork_branch(source_name: str, new_name: str):", "doc": "Create an independent copy of a conversation branch."}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "merge_branches", "kind": "de", "line": 50, "sig": "def merge_branches(source_name: str, target_name: str):", "doc": "Merge source branch into target (union of nodes)."}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "link_knowledge", "kind": "de", "line": 72, "sig": "def link_knowledge(from_branch: str, to_branch: str, link_type: str = 'reference-back'):", "doc": "Create a semantic link between two branches."}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "resolve_branch_dir", "kind": "de", "line": 85, "sig": "def resolve_branch_dir(name: str):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "list_dangling", "kind": "de", "line": 94, "sig": "def list_dangling(session_filter=None, max_gap=None):", "doc": "Find asymmetric forks where branches ended at different depths."}
+{"file": "harmonizer-prod_cli/workspace/reference/branch_manager.py", "name": "message_map", "kind": "de", "line": 216, "sig": "def message_map(session_id=None):", "doc": "Print position → message_id mapping for a session."}
+{"file": "harmonizer-prod_cli/workspace/reference/cedar_bridge.py", "name": "cedar_validate", "kind": "de", "line": 5, "sig": "def cedar_validate(code: str, schema: str = \"{}\") -> str:", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/cedar_bridge.py", "name": "cedar_eval", "kind": "de", "line": 12, "sig": "def cedar_eval(code: str, schema: str, input_json: str) -> str:", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_branching.py", "name": "BranchRef", "kind": "clas", "line": 11, "sig": "class BranchRef:", "doc": "Named pointer to a DAG version, like a Git branch."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_branching.py", "name": "ConversationRepo", "kind": "clas", "line": 22, "sig": "class ConversationRepo:", "doc": "Git‑style repo for conversation DAGs with branching."}
+{"file": "harmonizer-prod_cli/workspace/reference/conv_export_cli.py", "name": "main", "kind": "de", "line": 7, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/detect_paste.py", "name": "detect", "kind": "de", "line": 10, "sig": "def detect(pasted_text: str):", "doc": "Find pasted content in the codex. Returns list of (session_id, message_id, simil"}
+{"file": "harmonizer-prod_cli/workspace/reference/export_all.py", "name": "export_session", "kind": "de", "line": 14, "sig": "def export_session(token, session):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/export_all.py", "name": "main", "kind": "de", "line": 47, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/generate_handoff.py", "name": "pos_to_message_ids", "kind": "de", "line": 9, "sig": "def pos_to_message_ids(session_id, positions):", "doc": "Convert position numbers to actual message_ids."}
+{"file": "harmonizer-prod_cli/workspace/reference/generate_loop.py", "name": "main", "kind": "de", "line": 9, "sig": "def main():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/loop_optimizer.py", "name": "find_loop_candidates", "kind": "de", "line": 14, "sig": "def find_loop_candidates(session_filter=None, top_n=5):", "doc": "Find the best messages to branch from, ranked by ELO + asymmetry gap."}
+{"file": "harmonizer-prod_cli/workspace/reference/pointer_sync.py", "name": "compute_diff", "kind": "de", "line": 8, "sig": "def compute_diff(local_dir: Path, remote_manifest: Path):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/session_categories.py", "name": "SessionCategorizer", "kind": "clas", "line": 20, "sig": "class SessionCategorizer:", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/sprints.py", "name": "save", "kind": "de", "line": 59, "sig": "def save():", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/sprints.py", "name": "show", "kind": "de", "line": 69, "sig": "def show(filter_status=None):", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/success_metrics.py", "name": "RefactorELO", "kind": "clas", "line": 12, "sig": "class RefactorELO:", "doc": "ELO rating for refactor attempts – tracks prompt patterns and success."}
+{"file": "harmonizer-prod_cli/workspace/reference/success_metrics.py", "name": "ComplexityEstimator", "kind": "clas", "line": 77, "sig": "class ComplexityEstimator:", "doc": "Estimate code complexity to dynamically set refactor retry limits."}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "Pointer", "kind": "clas", "line": 8, "sig": "class Pointer:", "doc": "C++‑style lightweight reference: (session_id, msg_idx, blk_idx) -> content_hash."}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 47, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 83, "sig": "class CodexIndex:", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "TaxonomyNode", "kind": "clas", "line": 142, "sig": "class TaxonomyNode:", "doc": "Hierarchical taxonomy: language → project → session → timestamp."}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "CodexIndex", "kind": "clas", "line": 178, "sig": "class CodexIndex:", "doc": ""}
+{"file": "harmonizer-prod_cli/workspace/reference/synthegration_index.py", "name": "MessageIndex", "kind": "clas", "line": 424, "sig": "class MessageIndex:", "doc": ""}
+{"file": "harmony_hub/src/extract_token_bookmarklet.py", "name": "extract_token", "kind": "de", "line": 12, "sig": "def extract_token(cookies_file: str, account_name: str):", "doc": ""}
+{"file": "harmony_hub/src/patch_router.py", "name": "apply_patch", "kind": "de", "line": 4, "sig": "def apply_patch(target: str, patch_content: str, method: str = \"auto\") -> bool:", "doc": "Apply a patch to a file. method: 'auto', 'cedar', 'sed', 'python'."}
+{"file": "harmony_hub/src/scaffold_account.py", "name": "scaffold", "kind": "de", "line": 6, "sig": "def scaffold(cookies_path: str, account_name: str):", "doc": ""}
+{"file": "harmony_hub/workspace/elo/backfill_elo_orig.py", "name": "extract_refactor_pairs", "kind": "de", "line": 16, "sig": "def extract_refactor_pairs(conversation):", "doc": "Walk mapping tree, find user→assistant pairs where code was generated."}
+{"file": "harmony_hub/workspace/elo/backfill_elo_orig.py", "name": "main", "kind": "de", "line": 98, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/elo/elo_updater.py", "name": "load_ratings", "kind": "de", "line": 18, "sig": "def load_ratings():", "doc": ""}
+{"file": "harmony_hub/workspace/elo/elo_updater.py", "name": "save_ratings", "kind": "de", "line": 24, "sig": "def save_ratings(ratings):", "doc": ""}
+{"file": "harmony_hub/workspace/elo/elo_updater.py", "name": "update", "kind": "de", "line": 28, "sig": "def update():", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer.py", "name": "load_cursor", "kind": "de", "line": 14, "sig": "def load_cursor():", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer.py", "name": "save_cursor", "kind": "de", "line": 20, "sig": "def save_cursor(cursor):", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer.py", "name": "get_max_timestamp", "kind": "de", "line": 25, "sig": "def get_max_timestamp(export_file):", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer.py", "name": "index_export", "kind": "de", "line": 41, "sig": "def index_export(export_file, cursor):", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer_v2.py", "name": "load_indexed", "kind": "de", "line": 13, "sig": "def load_indexed():", "doc": ""}
+{"file": "harmony_hub/workspace/incremental_indexer_v2.py", "name": "save_indexed", "kind": "de", "line": 19, "sig": "def save_indexed(indexed):", "doc": ""}
+{"file": "harmony_hub/workspace/prompts/prompt_engine.py", "name": "get_prompt", "kind": "de", "line": 26, "sig": "def get_prompt(role, **kwargs):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "_complete_file_path", "kind": "de", "line": 24, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "_smart_completer", "kind": "de", "line": 37, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "build_tree_str", "kind": "de", "line": 71, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "choose_message", "kind": "de", "line": 113, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "prompt_session_id", "kind": "de", "line": 138, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "show_help", "kind": "de", "line": 183, "sig": "def show_help():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_backup.py", "name": "main", "kind": "de", "line": 198, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "_complete_file_path", "kind": "de", "line": 24, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "_smart_completer", "kind": "de", "line": 37, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "build_tree_str", "kind": "de", "line": 71, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "choose_message", "kind": "de", "line": 113, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "prompt_session_id", "kind": "de", "line": 138, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "show_help", "kind": "de", "line": 183, "sig": "def show_help():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_current_broken.py", "name": "main", "kind": "de", "line": 198, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "_complete_file_path", "kind": "de", "line": 24, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "_smart_completer", "kind": "de", "line": 37, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "build_tree_str", "kind": "de", "line": 71, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "choose_message", "kind": "de", "line": 113, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "prompt_session_id", "kind": "de", "line": 138, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "show_help", "kind": "de", "line": 183, "sig": "def show_help():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_reference.py", "name": "main", "kind": "de", "line": 198, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "_complete_file_path", "kind": "de", "line": 25, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "_smart_completer", "kind": "de", "line": 38, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "build_tree_str", "kind": "de", "line": 72, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "choose_message", "kind": "de", "line": 115, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "prompt_session_id", "kind": "de", "line": 140, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "show_help", "kind": "de", "line": 185, "sig": "def show_help():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox.py", "name": "main", "kind": "de", "line": 200, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "_complete_file_path", "kind": "de", "line": 24, "sig": "def _complete_file_path(text, state):", "doc": "Tab-complete file paths for /attach."}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "_smart_completer", "kind": "de", "line": 37, "sig": "def _smart_completer(text, state):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "normalize_messages", "kind": "de", "line": 72, "sig": "def normalize_messages(messages):", "doc": "Detect field names in first message and add canonical keys."}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "build_tree_str", "kind": "de", "line": 98, "sig": "def build_tree_str(messages, selected_parent_id=None, max_depth=8, content_width=50):", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "choose_message", "kind": "de", "line": 141, "sig": "def choose_message(messages, role_filter=None, label=\"\"):", "doc": "Pick a message, optionally filtered by role."}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "prompt_session_id", "kind": "de", "line": 166, "sig": "def prompt_session_id():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "show_help", "kind": "de", "line": 211, "sig": "def show_help():", "doc": ""}
+{"file": "harmony_hub/workspace/tui_repair/tui_sandbox_inline.py", "name": "main", "kind": "de", "line": 226, "sig": "def main():", "doc": ""}
+{"file": "harmony_hub/workspace/validate_refactor.py", "name": "validate", "kind": "de", "line": 13, "sig": "def validate(project, file_path=None):", "doc": ""}
+{"file": "termux-multi-agent/cedar-mcp-server.js", "name": "handle", "kind": "function", "line": 17, "sig": "function handle(req) {", "doc": ""}
+{"file": "termux-multi-agent/dashboard.py", "name": "clear_screen", "kind": "de", "line": 7, "sig": "def clear_screen():", "doc": ""}
+{"file": "termux-multi-agent/dashboard.py", "name": "read_latest_telemetry", "kind": "de", "line": 10, "sig": "def read_latest_telemetry():", "doc": ""}
+{"file": "termux-multi-agent/dashboard.py", "name": "render_dashboard", "kind": "de", "line": 26, "sig": "def render_dashboard():", "doc": ""}
+{"file": "termux-multi-agent/dashboard.py", "name": "main", "kind": "de", "line": 60, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "init_db", "kind": "de", "line": 33, "sig": "def init_db():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "log_attempt_telemetry", "kind": "de", "line": 64, "sig": "def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "index_project_file", "kind": "de", "line": 73, "sig": "def index_project_file(workspace_root, relative_path):", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "execute_concurrent_tmux_job", "kind": "de", "line": 112, "sig": "def execute_concurrent_tmux_job(target_file, command_string, workspace_path):", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "check_job_status", "kind": "de", "line": 121, "sig": "def check_job_status(session_name):", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "parse_compiler_logs", "kind": "de", "line": 126, "sig": "def parse_compiler_logs(raw_stderr, language):", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "TermuxTelemetryLogger", "kind": "clas", "line": 146, "sig": "class TermuxTelemetryLogger:", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "AgentGitManager", "kind": "clas", "line": 163, "sig": "class AgentGitManager:", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "AutomatedContextCollector", "kind": "clas", "line": 201, "sig": "class AutomatedContextCollector:", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "TermuxAgentOrchestrator", "kind": "clas", "line": 274, "sig": "class TermuxAgentOrchestrator:", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "main", "kind": "de", "line": 380, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "clear_screen", "kind": "de", "line": 420, "sig": "def clear_screen():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "read_latest_telemetry", "kind": "de", "line": 423, "sig": "def read_latest_telemetry():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "render_dashboard", "kind": "de", "line": 439, "sig": "def render_dashboard():", "doc": ""}
+{"file": "termux-multi-agent/provision_agent.py", "name": "main", "kind": "de", "line": 473, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/run.py", "name": "load_task_from_master", "kind": "de", "line": 13, "sig": "def load_task_from_master(task_id):", "doc": "L04d t4sk fr0m m4st3r t4sks j50n f1l3"}
+{"file": "termux-multi-agent/run.py", "name": "get_refactor_goal", "kind": "de", "line": 36, "sig": "def get_refactor_goal(workspace_path):", "doc": "D3t3rm1n3 r3f4ct0r g04l fr0m 3nv1r0nm3nt v4r14bl3s 0r f1l3s"}
+{"file": "termux-multi-agent/run.py", "name": "main", "kind": "de", "line": 69, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/src/context_collector.py", "name": "AutomatedContextCollector", "kind": "clas", "line": 8, "sig": "class AutomatedContextCollector:", "doc": ""}
+{"file": "termux-multi-agent/src/db.py", "name": "init_db", "kind": "de", "line": 9, "sig": "def init_db():", "doc": ""}
+{"file": "termux-multi-agent/src/db.py", "name": "log_attempt_telemetry", "kind": "de", "line": 40, "sig": "def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):", "doc": ""}
+{"file": "termux-multi-agent/src/db.py", "name": "index_project_file", "kind": "de", "line": 49, "sig": "def index_project_file(workspace_root, relative_path):", "doc": ""}
+{"file": "termux-multi-agent/src/git_manager.py", "name": "AgentGitManager", "kind": "clas", "line": 5, "sig": "class AgentGitManager:", "doc": ""}
+{"file": "termux-multi-agent/src/parser.py", "name": "parse_compiler_logs", "kind": "de", "line": 3, "sig": "def parse_compiler_logs(raw_stderr, language):", "doc": ""}
+{"file": "termux-multi-agent/src/sandbox.py", "name": "execute_concurrent_tmux_job", "kind": "de", "line": 4, "sig": "def execute_concurrent_tmux_job(target_file, command_string, workspace_path):", "doc": ""}
+{"file": "termux-multi-agent/src/sandbox.py", "name": "check_job_status", "kind": "de", "line": 13, "sig": "def check_job_status(session_name):", "doc": ""}
+{"file": "termux-multi-agent/src/telemetry.py", "name": "TermuxTelemetryLogger", "kind": "clas", "line": 6, "sig": "class TermuxTelemetryLogger:", "doc": ""}
+{"file": "termux-multi-agent/src/tool_registry.py", "name": "scan_available_tools", "kind": "de", "line": 10, "sig": "def scan_available_tools():", "doc": "Scan the project for all available commands and tools."}
+{"file": "termux-multi-agent/src/tool_registry.py", "name": "build_system_prompt", "kind": "de", "line": 64, "sig": "def build_system_prompt(tools: dict) -> str:", "doc": "Build a concise system prompt from the tool registry."}
+{"file": "termux-multi-agent/src/tool_registry.py", "name": "update_registry", "kind": "de", "line": 91, "sig": "def update_registry():", "doc": "Scan tools and save updated registry + system prompt."}
+{"file": "termux-multi-agent/workspace/abc_test.py", "name": "process", "kind": "de", "line": 1, "sig": "def process(data):", "doc": ""}
+{"file": "termux-multi-agent/workspace/abc_test_minimal.py", "name": "process", "kind": "de", "line": 1, "sig": "def process\u001b[1m(\u001b[0mdata\u001b[1m)\u001b[0m:", "doc": ""}
+{"file": "termux-multi-agent/workspace/abc_test_minimal.py", "name": "process", "kind": "de", "line": 3, "sig": "def process\u001b[1m(\u001b[0mdata\u001b[1m)\u001b[0m:", "doc": ""}
+{"file": "termux-multi-agent/workspace/demo.py", "name": "compute", "kind": "de", "line": 1, "sig": "def compute(a,b): return a/b", "doc": ""}
+{"file": "termux-multi-agent/workspace/expert_probe_task_header-brute.py", "name": "Br", "kind": "clas", "line": 38, "sig": "class Br\u001b[1m]\u001b[0m:", "doc": ""}
+{"file": "termux-multi-agent/workspace/expert_probe_task_header-brute.py", "name": "fetch_", "kind": "de", "line": 83, "sig": "def fetch_\u001b[1m}\u001b[0m.js\u001b[1m{\u001b[0m_b\u001b[1m}\u001b[0m.\u001b[1m{\u001b[0m\u001b[1m}\u001b[0mundle\u001b[1m(\u001b[0murl: str\u001b[1m)\u001b[0m ->\",", "doc": ""}
+{"file": "termux-multi-agent/workspace/expert_probe_task_header-brute.py", "name": "scan", "kind": "de", "line": 104, "sig": "def scan\",", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/dashboard.py", "name": "clear_screen", "kind": "de", "line": 7, "sig": "def clear_screen():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/dashboard.py", "name": "read_latest_telemetry", "kind": "de", "line": 10, "sig": "def read_latest_telemetry():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/dashboard.py", "name": "render_dashboard", "kind": "de", "line": 26, "sig": "def render_dashboard():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/dashboard.py", "name": "main", "kind": "de", "line": 60, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "init_db", "kind": "de", "line": 33, "sig": "def init_db():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "log_attempt_telemetry", "kind": "de", "line": 64, "sig": "def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "index_project_file", "kind": "de", "line": 73, "sig": "def index_project_file(workspace_root, relative_path):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "execute_concurrent_tmux_job", "kind": "de", "line": 112, "sig": "def execute_concurrent_tmux_job(target_file, command_string, workspace_path):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "check_job_status", "kind": "de", "line": 121, "sig": "def check_job_status(session_name):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "parse_compiler_logs", "kind": "de", "line": 126, "sig": "def parse_compiler_logs(raw_stderr, language):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "TermuxTelemetryLogger", "kind": "clas", "line": 146, "sig": "class TermuxTelemetryLogger:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "AgentGitManager", "kind": "clas", "line": 163, "sig": "class AgentGitManager:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "AutomatedContextCollector", "kind": "clas", "line": 201, "sig": "class AutomatedContextCollector:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "TermuxAgentOrchestrator", "kind": "clas", "line": 274, "sig": "class TermuxAgentOrchestrator:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "main", "kind": "de", "line": 380, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "clear_screen", "kind": "de", "line": 420, "sig": "def clear_screen():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "read_latest_telemetry", "kind": "de", "line": 423, "sig": "def read_latest_telemetry():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "render_dashboard", "kind": "de", "line": 439, "sig": "def render_dashboard():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/provision_agent.py", "name": "main", "kind": "de", "line": 473, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/run.py", "name": "main", "kind": "de", "line": 14, "sig": "def main():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/context_collector.py", "name": "AutomatedContextCollector", "kind": "clas", "line": 8, "sig": "class AutomatedContextCollector:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/db.py", "name": "init_db", "kind": "de", "line": 9, "sig": "def init_db():", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/db.py", "name": "log_attempt_telemetry", "kind": "de", "line": 40, "sig": "def log_attempt_telemetry(target_file, attempt, patch, errors, verdict):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/db.py", "name": "index_project_file", "kind": "de", "line": 49, "sig": "def index_project_file(workspace_root, relative_path):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/git_manager.py", "name": "AgentGitManager", "kind": "clas", "line": 5, "sig": "class AgentGitManager:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/orchestrator.py", "name": "TermuxAgentOrchestrator", "kind": "clas", "line": 12, "sig": "class TermuxAgentOrchestrator:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/parallel_agents.py", "name": "AgentTask", "kind": "clas", "line": 19, "sig": "class AgentTask:", "doc": "One refactor attempt with a specific strategy."}
+{"file": "termux-multi-agent/workspace/reference/src/parallel_agents.py", "name": "L33TTeam", "kind": "clas", "line": 57, "sig": "class L33TTeam:", "doc": "Parallel agent orchestrator for A/B/C testing."}
+{"file": "termux-multi-agent/workspace/reference/src/parser.py", "name": "parse_compiler_logs", "kind": "de", "line": 3, "sig": "def parse_compiler_logs(raw_stderr, language):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/sandbox.py", "name": "execute_concurrent_tmux_job", "kind": "de", "line": 4, "sig": "def execute_concurrent_tmux_job(target_file, command_string, workspace_path):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/sandbox.py", "name": "check_job_status", "kind": "de", "line": 13, "sig": "def check_job_status(session_name):", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/telemetry.py", "name": "TermuxTelemetryLogger", "kind": "clas", "line": 6, "sig": "class TermuxTelemetryLogger:", "doc": ""}
+{"file": "termux-multi-agent/workspace/reference/src/tool_registry.py", "name": "scan_available_tools", "kind": "de", "line": 10, "sig": "def scan_available_tools():", "doc": "Scan the project for all available commands and tools."}
+{"file": "termux-multi-agent/workspace/reference/src/tool_registry.py", "name": "build_system_prompt", "kind": "de", "line": 64, "sig": "def build_system_prompt(tools: dict) -> str:", "doc": "Build a concise system prompt from the tool registry."}
+{"file": "termux-multi-agent/workspace/reference/src/tool_registry.py", "name": "update_registry", "kind": "de", "line": 91, "sig": "def update_registry():", "doc": "Scan tools and save updated registry + system prompt."}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "CommandAttempt", "kind": "clas", "line": 27, "sig": "class CommandAttempt:", "doc": "Record of a command execution attempt"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "UtilityBelt", "kind": "clas", "line": 39, "sig": "class UtilityBelt:", "doc": "Manages promotion of useful commands to utility belt status"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "AccessPolicy", "kind": "clas", "line": 106, "sig": "class AccessPolicy:", "doc": "Loads and validates access policies from JSON configuration"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "SecureCommandExecutor", "kind": "clas", "line": 227, "sig": "class SecureCommandExecutor:", "doc": "Executes commands with sandboxing and resource limits"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "AgentCLILogger", "kind": "clas", "line": 278, "sig": "class AgentCLILogger:", "doc": "Handles structured logging of all command executions"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "AgentCLIWrapper", "kind": "clas", "line": 361, "sig": "class AgentCLIWrapper:", "doc": "Main CLI wrapper with role-based access control"}
+{"file": "termux-multi-agent/workspace/test_script.py", "name": "main", "kind": "de", "line": 569, "sig": "def main():", "doc": "Main entry point"}
+{"file": "workspace/cedar_forge/cedar_forge/capture/recorder.py", "name": "SessionRecorder", "kind": "clas", "line": 7, "sig": "class SessionRecorder:", "doc": ""}
+{"file": "workspace/cedar_forge/cedar_forge/core/compression.py", "name": "Compressor", "kind": "clas", "line": 17, "sig": "class Compressor:", "doc": ""}
+{"file": "workspace/cedar_forge/cedar_forge/core/compression.py", "name": "get_compressor", "kind": "de", "line": 64, "sig": "def get_compressor():", "doc": ""}
+{"file": "workspace/cedar_forge/cedar_forge/core/executor.py", "name": "Executor", "kind": "clas", "line": 12, "sig": "class Executor:", "doc": ""}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "compress", "kind": "de", "line": 74, "sig": "def compress(text: str, aggressive: bool = True) -> str:", "doc": ""}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "expand", "kind": "de", "line": 109, "sig": "def expand(cedr: str) -> str:", "doc": "Rudimentary expansion – reverses most symbols to English."}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "count_tokens", "kind": "de", "line": 123, "sig": "def count_tokens(text: str) -> int:", "doc": "Rough token count using whitespace + punctuation heuristic."}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "stats_report", "kind": "de", "line": 130, "sig": "def stats_report(original: str, compressed: str) -> Dict[str, Any]:", "doc": ""}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "deepcli_filter", "kind": "de", "line": 146, "sig": "def deepcli_filter(prompt: str) -> str:", "doc": "Hook for deepcli – compress user prompt before sending to API."}
+{"file": "workspace/compression_sandbox/cedrlang/cedrlang.py", "name": "main", "kind": "de", "line": 154, "sig": "def main():", "doc": ""}
+{"file": "workspace/compression_sandbox/cedrlang/cid.py", "name": "CedarIndex", "kind": "clas", "line": 12, "sig": "class CedarIndex:", "doc": ""}

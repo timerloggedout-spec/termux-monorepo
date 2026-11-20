@@ -1,0 +1,35 @@
+flowchart LR
+  pr126["PR #126\nLinguist agentic communication compiler"]
+  pr154["PR #154\nCedrLang v2 / Grimoire / AGENTS.hum"]
+  pr177["PR #177\nDocument token compression protocol"]
+  issue117["Issue #117\nAgent2Agent Comms Proposal"]
+  cedr["cedrlang.py\npublic regex translator"]
+  agents["AGENTS.md / AGENTS.hum.md\nagent instruction surfaces"]
+  cid["cid.py / .cedar index\nCEDARscript command pointers"]
+  pr196["PR #196\nCedrLang v2 compilation"]
+  pr208["PR #208\ncompile optimization"]
+  pr218["PR #218\nsingle-pass regex"]
+  pr228["PR #228\nfast-path regex"]
+  foundation["Clean CEDRlang foundation\nCIR + mapper contract + local A2A validation"]
+
+  pr126 -->|"verified MENTIONS\nissue #117"| issue117
+  pr154 -->|"verified file/review evidence"| cedr
+  pr154 -->|"verified file/review evidence"| agents
+  pr177 -->|"verified file/review evidence"| cedr
+  pr177 -->|"verified file/review evidence"| agents
+  pr177 -->|"exact owner comment references\n#126 and #154"| pr126
+  pr177 -->|"exact owner comment references\n#126 and #154"| pr154
+  cid -. "candidate scope-mix;\nseparate execution/pointer system" .-> foundation
+  cedr -->|"reconstructed unique value"| foundation
+  issue117 -->|"local-only protocol boundary"| foundation
+  pr196 -. "candidate: same file/history" .-> cedr
+  pr208 -. "candidate: same file/history" .-> cedr
+  pr218 -. "candidate: same file/history" .-> cedr
+  pr228 -. "candidate: same file/history" .-> cedr
+
+  classDef verified fill:#eff6ff,stroke:#2563eb,color:#111827;
+  classDef candidate fill:#fff7ed,stroke:#c2410c,stroke-dasharray: 5 5,color:#111827;
+  classDef target fill:#ecfdf5,stroke:#059669,color:#111827;
+  class pr126,pr154,pr177,issue117,cedr,agents verified;
+  class pr196,pr208,pr218,pr228,cid candidate;
+  class foundation target;

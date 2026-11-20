@@ -1,0 +1,100 @@
+# Historic performance index (ELO ≈ 3L0) for routing decisions.
+# Phasing out weightings reliance on public leaderboards.
+# Perfect Trunk Builder & agentic performance matrix.
+
+version: 1
+updated_at: "2026-08-09T22:00:00Z"
+updated_by: jules
+
+models:
+  # OpenRouter models
+  "qwen/qwen3-coder:free":
+    elo: 1250
+    role_suitability:
+      review: 1.3
+      triage: 0.8
+      invoke: 0.9
+  "meta-llama/llama-3.3-70b-instruct:free":
+    elo: 1200
+    role_suitability:
+      review: 1.0
+      triage: 1.1
+      invoke: 1.1
+  "google/gemma-3-12b-it:free":
+    elo: 1150
+    role_suitability:
+      review: 0.8
+      triage: 1.2
+      invoke: 1.2
+  "deepseek/deepseek-r1:free":
+    elo: 1220
+    role_suitability:
+      review: 1.3
+      triage: 0.7
+      invoke: 0.8
+
+  # New currently available OpenRouter free models
+  "google/gemma-4-31b-it:free":
+    elo: 1230
+    role_suitability:
+      review: 1.1
+      triage: 1.3
+      invoke: 1.3
+  "google/gemma-4-26b-a4b-it:free":
+    elo: 1210
+    role_suitability:
+      review: 1.1
+      triage: 1.3
+      invoke: 1.3
+  "cohere/north-mini-code:free":
+    elo: 1190
+    role_suitability:
+      review: 1.3
+      triage: 0.8
+      invoke: 1.0
+
+  # Gemini models
+  "gemini-3.5-flash":
+    elo: 1300
+    role_suitability:
+      review: 1.3
+      triage: 1.0
+      invoke: 1.1
+  "gemini-3.1-flash-lite":
+    elo: 1100
+    role_suitability:
+      review: 0.8
+      triage: 1.3
+      invoke: 1.3
+  "gemini-3.5-flash-lite":
+    elo: 1120
+    role_suitability:
+      review: 0.8
+      triage: 1.3
+      invoke: 1.3
+  "gemini-2.5-flash-lite":
+    elo: 1050
+    role_suitability:
+      review: 0.7
+      triage: 1.2
+      invoke: 1.2
+  "gemini-2.5-flash":
+    elo: 1200
+    role_suitability:
+      review: 1.2
+      triage: 0.9
+      invoke: 1.0
+  "gemini-3-flash":
+    elo: 1250
+    role_suitability:
+      review: 1.2
+      triage: 0.9
+      invoke: 1.0
+
+  # Omni default models
+  "auto/best-free":
+    elo: 1180
+    role_suitability:
+      review: 1.1
+      triage: 1.1
+      invoke: 1.1

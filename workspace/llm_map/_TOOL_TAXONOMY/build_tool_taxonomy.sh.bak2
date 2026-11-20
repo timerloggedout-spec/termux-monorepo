@@ -1,0 +1,40 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+TAXO_DIR="$HOME/workspace/llm_map/_TOOL_TAXONOMY"
+MOD_DIR="$TAXO_DIR/modules"
+STATE_DIR="$TAXO_DIR/state"
+MODE="incremental"
+WITH_HELP=false
+TAG_FILTER=""
+ROLE_FILTER=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --full) MODE="full"; shift ;;
+        --with-help) WITH_HELP=true; shift ;;
+        --tag) TAG_FILTER="$2"; shift 2 ;;
+        --role) ROLE_FILTER="$2"; shift 2 ;;
+        *) echo "Unknown flag: $1"; exit 1 ;;
+    esac
+done
+
+source "$MOD_DIR/common.sh"
+
+echo "[taxtool] Mode: $MODE"
+for scanner in apt npm cargo custom termux_api ref_templates alias; do
+    echo "   -> $scanner"
+    bash "$MOD_DIR/${scanner}_scan.sh" "$MODE" "$STATE_DIR" "$TAXO_DIR/tmp_${scanner}.jsonl"
+done
+
+cat "$TAXO_DIR"/tmp_*.jsonl > "$TAXO_DIR/all_tools.jsonl"
+python3 "$MOD_DIR/categorize.py" "$TAXO_DIR/all_tools.jsonl" "$TAXO_DIR/TOOL_TAXONOMY.json" \
+        "$TAXO_DIR/categories" "$TAXO_DIR/roles" "$ROLE_FILTER" "$TAG_FILTER"
+# Post-refactor: apply auto-tags and merge custom roles
+python3 "$MOD_DIR/post_refactor.py"
+if $WITH_HELP; then
+    python3 "$MOD_DIR/help_snapper.py" "$TAXO_DIR/all_tools.jsonl" "$TAXO_DIR/help"
+fi
+python3 "$MOD_DIR/delta_maker.py" "$TAXO_DIR/TOOL_TAXONOMY.json" "$TAXO_DIR/delta"
+rm "$TAXO_DIR"/tmp_*.jsonl
+echo "[taxtool] Done."

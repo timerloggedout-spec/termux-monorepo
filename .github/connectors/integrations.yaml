@@ -1,0 +1,19 @@
+integrations:
+  coderabbit:
+    autofix_trigger: "@coderabbitai autofix"
+    requires_operator_token: true
+  jules:
+    primary_builder: true
+    async_cloud_vm: true
+  devin:
+    review_marker: true
+  linear:
+    workflow: agent-feedback-linear-sync.yml
+  vercel:
+    status_context: Vercel
+  peer_reviewers:
+    - coderabbit
+    - devin-ai
+    - aikido
+    - sentry
+    - copilot-pull-request

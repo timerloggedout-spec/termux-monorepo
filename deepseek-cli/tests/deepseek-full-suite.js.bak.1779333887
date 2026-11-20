@@ -1,0 +1,751 @@
+#!/usr/bin/env node
+
+/**
+ * ============================================================
+ * DeepSeek CLI – Full Runtime / Endpoint / Selector Test Suite
+ * ============================================================
+ *
+ * Goals:
+ *  - Detect UI selector drift automatically
+ *  - Correlate selectors ↔ API endpoints
+ *  - Verify upload mechanisms
+ *  - Verify Expert mode
+ *  - Verify SSE streaming capture
+ *  - Verify send/retry logic
+ *  - Verify hidden file inputs
+ *  - Cache endpoint intelligence
+ *  - Generate reproducible diagnostics
+ *
+ * Designed for:
+ *  - Android + Termux
+ *  - Headless Chromium
+ *  - Puppeteer
+ *
+ * ============================================================
+ */
+
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const path = require('path');
+
+const CHROMIUM_PATH =
+  '/data/data/com.termux/files/usr/bin/chromium-browser';
+
+const BASE_URL = 'https://chat.deepseek.com/';
+
+const ROOT = process.cwd();
+
+const CACHE_DIR = path.join(ROOT, '.cache');
+const REPORT_DIR = path.join(ROOT, 'test-reports');
+
+const REPORT_FILE = path.join(
+  REPORT_DIR,
+  `report-${Date.now()}.json`
+);
+
+
+const wait = ms =>
+  new Promise(resolve =>
+    setTimeout(resolve, ms)
+  );
+
+
+const SELECTOR_CACHE = path.join(
+  CACHE_DIR,
+  'selector-intelligence.json'
+);
+
+const ENDPOINT_CACHE = path.join(
+  CACHE_DIR,
+  'endpoint-intelligence.json'
+);
+
+if (!fs.existsSync(CACHE_DIR)) {
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+}
+
+if (!fs.existsSync(REPORT_DIR)) {
+  fs.mkdirSync(REPORT_DIR, { recursive: true });
+}
+
+const TEST_FILE = path.join(ROOT, 'fixtures', 'upload-test.txt');
+
+if (!fs.existsSync(TEST_FILE)) {
+  fs.writeFileSync(
+    TEST_FILE,
+    'DeepSeek CLI upload test payload.'
+  );
+}
+
+const report = {
+  started: new Date().toISOString(),
+  tests: [],
+  selectors: {},
+  endpoints: {},
+  dom: {},
+  screenshots: [],
+  success: true
+};
+
+function log(msg) {
+  console.log(msg);
+}
+
+function saveJson(file, obj) {
+  fs.writeFileSync(
+    file,
+    JSON.stringify(obj, null, 2)
+  );
+}
+
+function loadJson(file, fallback = {}) {
+  if (!fs.existsSync(file)) return fallback;
+
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+function pushTest(name, ok, details = {}) {
+
+  report.tests.push({
+    name,
+    ok,
+    details,
+    ts: Date.now()
+  });
+
+  if (!ok) report.success = false;
+
+  console.log(
+    `${ok ? '✅' : '❌'} ${name}`
+  );
+
+  if (Object.keys(details).length) {
+    console.log(
+      JSON.stringify(details, null, 2)
+    );
+  }
+}
+
+async function screenshot(page, name) {
+
+  const file = path.join(
+    REPORT_DIR,
+    `${Date.now()}-${name}.png`
+  );
+
+  await page.screenshot({
+    path: file,
+    fullPage: true
+  });
+
+  report.screenshots.push(file);
+
+  return file;
+}
+
+(async () => {
+
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    executablePath: CHROMIUM_PATH,
+    userDataDir: './browser-data',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu'
+    ]
+  });
+
+  const page = await browser.newPage();
+
+  const discoveredEndpoints = {};
+  const requestMap = [];
+  const responseMap = [];
+
+  page.on('request', req => {
+
+    const url = req.url();
+
+    if (
+      url.includes('/api/') ||
+      url.includes('/chat/')
+    ) {
+
+      requestMap.push({
+        method: req.method(),
+        url,
+        headers: req.headers(),
+        ts: Date.now()
+      });
+
+      discoveredEndpoints[url] = {
+        method: req.method(),
+        lastSeen: Date.now()
+      };
+    }
+  });
+
+  page.on('response', async res => {
+
+    const url = res.url();
+
+    if (
+      url.includes('/api/') ||
+      url.includes('/chat/')
+    ) {
+
+      let text = '';
+
+      try {
+        text = await res.text();
+      } catch {}
+
+      responseMap.push({
+        status: res.status(),
+        url,
+        ts: Date.now(),
+        preview: text.slice(0, 1000)
+      });
+    }
+  });
+
+  log('\n🚀 Launching DeepSeek runtime tests...\n');
+
+  await page.goto(BASE_URL, {
+    waitUntil: 'networkidle2',
+    timeout: 30000
+  });
+
+  await wait(3000);
+
+  await screenshot(page, 'initial');
+
+  if (page.url().includes('/sign_in')) {
+
+    pushTest(
+      'Authentication',
+      false,
+      {
+        error: 'User not logged in.'
+      }
+    );
+
+    await browser.close();
+
+    saveJson(REPORT_FILE, report);
+
+    process.exit(1);
+  }
+
+  pushTest('Authentication', true);
+
+  /**
+   * ============================================================
+   * DOM DISCOVERY
+   * ============================================================
+   */
+
+  const domIntel = await page.evaluate(() => {
+
+    function visible(el) {
+
+      if (!el) return false;
+
+      const s = getComputedStyle(el);
+
+      return (
+        s.display !== 'none' &&
+        s.visibility !== 'hidden'
+      );
+    }
+
+    const textareas =
+      [...document.querySelectorAll('textarea')];
+
+    const buttons =
+      [...document.querySelectorAll('button')];
+
+    const fileInputs =
+      [...document.querySelectorAll('input[type="file"]')];
+
+    const radios =
+      [...document.querySelectorAll('[role="radio"]')];
+
+    const allClasses = {};
+
+    [...document.querySelectorAll('*')].forEach(el => {
+
+      if (typeof el.className === 'string') {
+
+        const parts = el.className
+          .split(/\s+/)
+          .filter(Boolean);
+
+        for (const p of parts) {
+
+          if (!allClasses[p]) {
+            allClasses[p] = 0;
+          }
+
+          allClasses[p]++;
+        }
+      }
+    });
+
+    return {
+      textareas: textareas.map(el => ({
+        placeholder: el.placeholder,
+        visible: visible(el),
+        className: el.className
+      })),
+
+      buttons: buttons.map(el => ({
+        text: el.innerText,
+        className: el.className,
+        visible: visible(el),
+        ariaLabel: el.getAttribute('aria-label')
+      })),
+
+      fileInputs: fileInputs.map(el => ({
+        accept: el.accept,
+        visible: visible(el),
+        hidden: el.hidden,
+        disabled: el.disabled,
+        className: el.className
+      })),
+
+      radios: radios.map(el => ({
+        text: el.innerText,
+        checked: el.getAttribute('aria-checked'),
+        className: el.className,
+        model: el.dataset?.modelType || null
+      })),
+
+      topClasses:
+        Object.entries(allClasses)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 100)
+    };
+  });
+
+  report.dom = domIntel;
+
+  pushTest(
+    'DOM discovery',
+    true,
+    {
+      textareas: domIntel.textareas.length,
+      buttons: domIntel.buttons.length,
+      fileInputs: domIntel.fileInputs.length,
+      radios: domIntel.radios.length
+    }
+  );
+
+  /**
+   * ============================================================
+   * EXPERT MODE
+   * ============================================================
+   */
+
+  const expertRadio = await page.$(
+    'div[data-model-type="expert"][role="radio"]'
+  );
+
+  if (expertRadio) {
+
+    await expertRadio.click();
+
+    await wait(1500);
+
+    const enabled = await page.evaluate(el => {
+      return el.getAttribute('aria-checked');
+    }, expertRadio);
+
+    pushTest(
+      'Expert mode enable',
+      enabled === 'true',
+      {
+        checked: enabled
+      }
+    );
+
+  } else {
+
+    pushTest(
+      'Expert mode enable',
+      false,
+      {
+        error: 'Expert radio not found'
+      }
+    );
+  }
+
+  /**
+   * ============================================================
+   * FILE INPUT DISCOVERY
+   * ============================================================
+   */
+
+  const uploadInputs = await page.$$(
+    'input[type="file"]'
+  );
+
+  pushTest(
+    'Hidden upload inputs',
+    uploadInputs.length > 0,
+    {
+      count: uploadInputs.length
+    }
+  );
+
+  /**
+   * ============================================================
+   * FILE UPLOAD TEST
+   * ============================================================
+   */
+
+  let uploadSuccess = false;
+
+  if (uploadInputs.length > 0) {
+
+    try {
+
+      const uploadPromise = new Promise(resolve => {
+
+        const handler = async res => {
+
+          const url = res.url();
+
+          if (
+            url.includes('/upload') ||
+            url.includes('/file')
+          ) {
+
+            page.off('response', handler);
+
+            resolve({
+              status: res.status(),
+              url
+            });
+          }
+        };
+
+        page.on('response', handler);
+
+        setTimeout(() => {
+          resolve(null);
+        }, 20000);
+      });
+
+      await uploadInputs[0].uploadFile(TEST_FILE);
+
+      const result = await uploadPromise;
+
+      uploadSuccess =
+        result &&
+        result.status >= 200 &&
+        result.status < 300;
+
+      pushTest(
+        'Upload API response',
+        uploadSuccess,
+        result || {}
+      );
+
+    } catch (e) {
+
+      pushTest(
+        'Upload API response',
+        false,
+        {
+          error: e.message
+        }
+      );
+    }
+
+  } else {
+
+    pushTest(
+      'Upload API response',
+      false,
+      {
+        error: 'No upload inputs'
+      }
+    );
+  }
+
+  /**
+   * ============================================================
+   * MESSAGE SEND TEST
+   * ============================================================
+   */
+
+  const textarea =
+    await page.$('textarea');
+
+  if (!textarea) {
+
+    pushTest(
+      'Textarea discovery',
+      false
+    );
+
+  } else {
+
+    pushTest(
+      'Textarea discovery',
+      true
+    );
+
+    await textarea.click();
+
+    await textarea.evaluate((node, value) => {
+
+      const setter =
+        Object.getOwnPropertyDescriptor(
+          window.HTMLTextAreaElement.prototype,
+          'value'
+        ).set;
+
+      setter.call(node, value);
+
+      node.dispatchEvent(
+        new Event('input', { bubbles: true })
+      );
+
+    }, 'Runtime endpoint correlation test.');
+
+    await wait(1000);
+
+    const sendButtons = await page.$$(
+      'button'
+    );
+
+    let clicked = false;
+
+    for (const btn of sendButtons) {
+
+      try {
+
+        const enabled = await btn.evaluate(el =>
+          !el.disabled &&
+          el.getAttribute('aria-disabled') !== 'true'
+        );
+
+        if (!enabled) continue;
+
+        const box = await btn.boundingBox();
+
+        if (
+          box &&
+          box.width > 20 &&
+          box.height > 20
+        ) {
+
+          await btn.click();
+
+          clicked = true;
+
+          break;
+        }
+
+      } catch {}
+    }
+
+    pushTest(
+      'Send button click',
+      clicked
+    );
+
+    await wait(10000);
+
+    const completionEndpoints =
+      Object.keys(discoveredEndpoints)
+        .filter(x =>
+          x.includes('/completion')
+        );
+
+    pushTest(
+      'Completion endpoint discovery',
+      completionEndpoints.length > 0,
+      {
+        endpoints: completionEndpoints
+      }
+    );
+  }
+
+  /**
+   * ============================================================
+   * STREAM / SSE TEST
+   * ============================================================
+   */
+
+  const sseDetected = responseMap.some(
+    r =>
+      r.url.includes('/completion') &&
+      r.preview.includes('data:')
+  );
+
+  pushTest(
+    'SSE stream detection',
+    sseDetected
+  );
+
+  /**
+   * ============================================================
+   * UI OBFUSCATION DRIFT DETECTION
+   * ============================================================
+   */
+
+  const oldSelectors =
+    loadJson(SELECTOR_CACHE, {});
+
+  const currentSelectors = {
+    textareaCount:
+      domIntel.textareas.length,
+
+    buttonCount:
+      domIntel.buttons.length,
+
+    fileInputCount:
+      domIntel.fileInputs.length,
+
+    radioCount:
+      domIntel.radios.length,
+
+    topClasses:
+      domIntel.topClasses
+    .map(x => x[0])
+    .slice(0, 50)
+  };
+
+  const drift = [];
+
+  if (
+    oldSelectors.topClasses
+  ) {
+
+    for (const cls of oldSelectors.topClasses) {
+
+      if (
+        !currentSelectors.topClasses.includes(cls)
+      ) {
+        drift.push(cls);
+      }
+    }
+  }
+
+  pushTest(
+    'Selector drift analysis',
+    true,
+    {
+      changedClasses: drift.slice(0, 25),
+      driftCount: drift.length
+    }
+  );
+
+  saveJson(
+    SELECTOR_CACHE,
+    currentSelectors
+  );
+
+  /**
+   * ============================================================
+   * ENDPOINT INTELLIGENCE
+   * ============================================================
+   */
+
+  const endpointIntel =
+    loadJson(ENDPOINT_CACHE, {});
+
+  for (const k of Object.keys(discoveredEndpoints)) {
+    endpointIntel[k] = discoveredEndpoints[k];
+  }
+
+  saveJson(
+    ENDPOINT_CACHE,
+    endpointIntel
+  );
+
+  report.endpoints = endpointIntel;
+
+  /**
+   * ============================================================
+   * NETWORK CORRELATION MAP
+   * ============================================================
+   */
+
+  const correlations = [];
+
+  for (const req of requestMap) {
+
+    const relatedResponses =
+      responseMap.filter(
+        r => r.url === req.url
+      );
+
+    correlations.push({
+      endpoint: req.url,
+      method: req.method,
+      responseCount:
+        relatedResponses.length,
+      statuses:
+        relatedResponses.map(
+          r => r.status
+        )
+    });
+  }
+
+  report.correlations = correlations;
+
+  pushTest(
+    'Endpoint correlation map',
+    correlations.length > 0,
+    {
+      total: correlations.length
+    }
+  );
+
+  /**
+   * ============================================================
+   * FINALIZE
+   * ============================================================
+   */
+
+  await screenshot(page, 'final');
+
+  report.finished =
+    new Date().toISOString();
+
+  saveJson(REPORT_FILE, report);
+
+  console.log('\n================================================');
+  console.log('🏁 TEST SUITE COMPLETE');
+  console.log('================================================\n');
+
+  console.log(
+    `Success: ${report.success}`
+  );
+
+  console.log(
+    `Report: ${REPORT_FILE}`
+  );
+
+  console.log(
+    `Selector cache: ${SELECTOR_CACHE}`
+  );
+
+  console.log(
+    `Endpoint cache: ${ENDPOINT_CACHE}`
+  );
+
+  console.log('');
+
+  await browser.close();
+
+})();

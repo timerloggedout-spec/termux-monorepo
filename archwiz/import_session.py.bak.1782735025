@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+"""Quick session import from DeepSeek API → TUI cache."""
+import subprocess, sys, json, shutil
+from pathlib import Path
+
+HOME = Path.home()
+CACHE_DIR = HOME / '.deepcli/session_store'
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+def import_session(session_id):
+    print(f"📥 Importing session {session_id}...")
+    # Use synthegration export if available
+    result = subprocess.run(
+        ['synthegration', 'export', session_id],
+        capture_output=True, text=True, cwd=str(HOME / 'cli-synthegration')
+    )
+    if result.returncode != 0:
+        # Fallback: try the Python script directly
+        result = subprocess.run(
+            ['python3', str(HOME / 'cli-synthegration/synthegration_index.py'), 'export', session_id],
+            capture_output=True, text=True
+        )
+    if result.returncode == 0:
+        # Check if the export file was created
+        export_dir = HOME / 'synthegration_exports'
+        for f in sorted(export_dir.glob(f'*{session_id[:8]}*'), key=lambda p: p.stat().st_mtime, reverse=True):
+            if f.is_dir():
+                # Find the conversation JSON inside
+                for jf in f.glob('*.json'):
+                    dest = CACHE_DIR / f'{session_id}.json'
+                    shutil.copy2(jf, dest)
+                    print(f"✅ Imported to {dest}")
+                    return
+        print("Export completed but cache file not found. Check synthegration_exports/")
+    else:
+        print(f"Export failed: {result.stderr[:200]}")
+        # Manual fallback: ask user to paste the session JSON file path
+        manual = input("Paste path to exported session JSON: ").strip()
+        if manual and Path(manual).exists():
+            dest = CACHE_DIR / f'{session_id}.json'
+            shutil.copy2(manual, dest)
+            print(f"✅ Manually imported to {dest}")
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sid = input("Session ID (or 8+ char prefix): ").strip()
+    else:
+        sid = sys.argv[1]
+    if sid:
+        import_session(sid)

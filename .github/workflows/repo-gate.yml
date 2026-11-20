@@ -1,0 +1,50 @@
+name: repo gate
+
+# Deliberately minimal. This repo is developed on an Android/Termux device, so the
+# gate must be runnable there too:
+#
+#     python3 scripts/ci/repo_gate.py
+#
+# No cargo, no node, no pip, no network, no device dependencies. One runner, one
+# job, well under a minute. Rust builds stay out of this workflow on purpose —
+# see docs/TRIAGE.md (PR #2) for why they belong behind workflow_dispatch.
+
+on:
+  pull_request:
+  push:
+    branches: [master, master-staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repo-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: hygiene + portability gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Need the base commit for the changed-file scope. Submodules stay
+          # uninitialised: the gate reads the git index, never the worktree.
+          fetch-depth: 0
+          submodules: false
+
+      - name: Resolve base ref
+        id: base
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          # $BASE_REF is read from the environment, never interpolated into the
+          # script body, so a branch name can't inject shell.
+          git fetch --no-tags origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+          echo "ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Run gate
+        run: python3 scripts/ci/repo_gate.py --base "${{ steps.base.outputs.ref }}"

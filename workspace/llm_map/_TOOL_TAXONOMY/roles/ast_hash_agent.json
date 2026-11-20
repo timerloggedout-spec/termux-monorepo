@@ -1,0 +1,580 @@
+{
+  "description": "AST analysis, linting, hashing, and structural code intelligence",
+  "tools": [
+    {
+      "name": "addr2line",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/addr2line",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "ar",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ar",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "as",
+      "package": "binutils",
+      "path": "/data/data/com.termux/files/usr/bin/as",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "A GNU collection of binary utilities"
+    },
+    {
+      "name": "black",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/black",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "c++filt",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/c++filt",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "cargo",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-clippy",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-clippy",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-fmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-fmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "clang-format",
+      "package": "clang",
+      "path": "/data/data/com.termux/files/usr/bin/clang-format",
+      "source": "apt",
+      "tags": [
+        "c_cpp"
+      ],
+      "auto_tag_source": "auto:^clang$|^clang-",
+      "category": "c_cpp",
+      "description": "C language frontend for LLVM"
+    },
+    {
+      "name": "clang-tidy",
+      "package": "clang",
+      "path": "/data/data/com.termux/files/usr/bin/clang-tidy",
+      "source": "apt",
+      "tags": [
+        "c_cpp"
+      ],
+      "auto_tag_source": "auto:^clang$|^clang-",
+      "category": "c_cpp",
+      "description": "C language frontend for LLVM"
+    },
+    {
+      "name": "clippy-driver",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/clippy-driver",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "idle3.13",
+      "package": "python-tkinter",
+      "path": "/data/data/com.termux/files/usr/bin/idle3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tkinter support for Python 3"
+    },
+    {
+      "name": "ld",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ld",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "mypy",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/mypy",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "nm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/nm",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "node",
+      "package": "nodejs",
+      "path": "/data/data/com.termux/files/usr/bin/node",
+      "source": "apt",
+      "tags": [
+        "development",
+        "javascript"
+      ],
+      "category": "development",
+      "description": "Open Source, cross-platform JavaScript runtime environment"
+    },
+    {
+      "name": "npm",
+      "package": "npm:npm",
+      "path": "/data/data/com.termux/files/usr/bin/npm",
+      "source": "npm",
+      "tags": [
+        "development",
+        "javascript",
+        "package_management"
+      ],
+      "category": "development",
+      "description": ""
+    },
+    {
+      "name": "objdump",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/objdump",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "pip",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "python",
+        "python_toolchain"
+      ],
+      "category": "development",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3.13",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "py3clean",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3clean",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "py3compile",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3compile",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pydoc3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/pydoc3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pytest",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/pytest",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "Package unknown"
+    },
+    {
+      "name": "python3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "python3.13-config",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13-config",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "ranlib",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/ranlib",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "readelf",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/readelf",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "rhash",
+      "package": "rhash",
+      "path": "/data/data/com.termux/files/usr/bin/rhash",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^rhash$|^rhash-",
+      "category": "hashing",
+      "description": "Console utility for calculation and verification of magnet links and a wide range of hash sums"
+    },
+    {
+      "name": "ruff",
+      "package": "ruff",
+      "path": "/data/data/com.termux/files/usr/bin/ruff",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "An extremely fast Python linter, written in Rust"
+    },
+    {
+      "name": "rust-analyzer",
+      "package": "rust-analyzer",
+      "path": "/data/data/com.termux/files/usr/bin/rust-analyzer",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "A Rust compiler front-end for IDEs"
+    },
+    {
+      "name": "rust-gdb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-gdbgui",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdbgui",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-lldb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-lldb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustc",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustdoc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustdoc",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustfmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustfmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "sha256sum",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sha256sum",
+      "source": "apt",
+      "tags": [
+        "unknown_tools"
+      ],
+      "auto_tag_source": "auto:^unknown$|^unknown-",
+      "category": "unknown_tools",
+      "description": "Package unknown"
+    },
+    {
+      "name": "shellcheck",
+      "package": "shellcheck",
+      "path": "/data/data/com.termux/files/usr/bin/shellcheck",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Shell script analysis tool"
+    },
+    {
+      "name": "size",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/size",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strace",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strace",
+      "source": "apt",
+      "tags": [
+        "system_monitor"
+      ],
+      "category": "system_monitor",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strings",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strings",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "strip",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/strip",
+      "source": "apt",
+      "tags": [
+        "binary_analysis"
+      ],
+      "auto_tag_source": "tool_override",
+      "category": "binary_analysis",
+      "description": "Package unknown"
+    },
+    {
+      "name": "tokei",
+      "package": "tokei",
+      "path": "/data/data/com.termux/files/usr/bin/tokei",
+      "source": "apt",
+      "tags": [
+        "ast_tools"
+      ],
+      "auto_tag_source": "auto:^tokei$|^tokei-",
+      "category": "ast_tools",
+      "description": "A blazingly fast CLOC (Count Lines Of Code) program"
+    },
+    {
+      "name": "torchfrtrace",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchfrtrace",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "torchrun",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchrun",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "xxhsum",
+      "package": "xxhash",
+      "path": "/data/data/com.termux/files/usr/bin/xxhsum",
+      "source": "apt",
+      "tags": [
+        "hashing"
+      ],
+      "auto_tag_source": "auto:^xxhash$|^xxhash-",
+      "category": "hashing",
+      "description": "Extremely fast non-cryptographic hash algorithm"
+    }
+  ]
+}

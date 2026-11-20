@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Chronos – conversation version control + iterative loops + branch resolution.
+Usage:
+  chronos list <session_id> [--every N] [--role USER|ASSISTANT]
+  chronos checkout <session_id> <message_id> [--output-dir <dir>]
+  chronos diff <session_id> <msg_a> <msg_b>
+  chronos blob <hash_prefix>
+  chronos branch-tree <session_id>
+  chronos branches
+  chronos loop <session_id> [--parent <id>] [--send] [--new-session]
+  chronos merge <branch_name>
+  chronos resolve <session_id>         – find last error and suggest rollback
+"""
+import sys, os, json
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+def cmd_branches():
+    """List existing loop branches (not the full prompt)."""
+    loops_dir = Path.home() / 'cli-synthegration' / 'metrics' / 'loops'
+    loops_dir.mkdir(parents=True, exist_ok=True)
+    branches = list(loops_dir.glob('*.json'))
+    if not branches:
+        print("No loop branches yet.")
+        return
+    print(f"{'BRANCH':30} {'SESSION':12} {'PARENT':8} {'STATUS':10} CREATED")
+    for f in sorted(branches):
+        d = json.loads(f.read_text())
+        print(f"{f.stem:30} {d.get('forked_session','?')[:12]:12} {d.get('parent_message','?'):8} {d.get('status','active'):10} {d.get('created','?')[:16]}")
+
+def cmd_resolve(session_id: str):
+    """Find the last error/issue in a session and suggest a rollback point."""
+    sys.path.insert(0, str(Path.home() / 'deepcli'))
+    from deepcli.core import get_token, get_history
+    token = get_token()
+    msgs = get_history(token, session_id)
+
+    error_keywords = ['error', 'fail', 'traceback', 'broken', 'not found', 'cannot', 'invalid']
+    issues = []
+    for i, m in enumerate(msgs):
+        content = (m.get('content') or '').lower()
+        thinking = (m.get('thinking_content') or '').lower()
+        combined = content + ' ' + thinking
+        for kw in error_keywords:
+            if kw in combined:
+                issues.append((i, m.get('message_id'), m.get('role'), kw, m.get('parent_id')))
+                break
+
+    if not issues:
+        print("No errors/issues detected in this session.")
+        return
+
+    # Show the last few issues with context
+    print(f"Session {session_id}: {len(msgs)} messages, {len(issues)} potential issues found.\n")
+    for idx, mid, role, kw, parent in issues[-5:]:
+        snippet = (msgs[idx].get('content','') or '')[:100].replace('\n',' ')
+        print(f"  v{idx:03d} msg_id={mid} [{role}] keyword='{kw}'")
+        print(f"         parent={parent}  \"{snippet}...\"\n")
+
+    # Suggest rollback to the message before the first issue
+    first_issue_idx, first_mid, _, _, first_parent = issues[0]
+    if first_parent and first_parent != 'None':
+        print(f"Suggested rollback: parent message {first_parent} (before first issue)")
+        print(f"  chronos loop {session_id} --parent {first_parent} --send")
+    else:
+        print("Suggested: start fresh with chronos loop --send --new-session")
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(0)
+
+    cmd = sys.argv[1]
+    args = sys.argv[2:]
+
+    if cmd in ('list', 'checkout', 'diff', 'blob', 'branch-tree'):
+        from versioner import main as versioner_main
+        sys.argv = [sys.argv[0], cmd] + args
+        versioner_main()
+    elif cmd == 'branches':
+        cmd_branches()
+    elif cmd == 'resolve':
+        sid = args[0] if args else 'e102d768-8a47-4001-95cb-14fb6245c6fa'
+        cmd_resolve(sid)
+    elif cmd in ('loop', 'merge'):
+        from accelerator import main as accelerator_main
+        sys.argv = [sys.argv[0]] + args
+        accelerator_main()
+    else:
+        print(f"Unknown command: {cmd}")
+        print(__doc__)

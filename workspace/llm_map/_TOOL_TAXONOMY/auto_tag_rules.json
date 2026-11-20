@@ -1,0 +1,862 @@
+[
+  {
+    "pattern": "^ref_templates$|^ref_templates-",
+    "tag": "ref_templates_tools",
+    "count": 1805
+  },
+  {
+    "pattern": "^custom$|^custom-",
+    "tag": "custom_tools",
+    "count": 244
+  },
+  {
+    "pattern": "^unknown$|^unknown-",
+    "tag": "unknown_tools",
+    "count": 204
+  },
+  {
+    "pattern": "^util$|^util-",
+    "tag": "system_utility",
+    "count": 71
+  },
+  {
+    "pattern": "^clang$|^clang-",
+    "tag": "c_cpp",
+    "count": 42
+  },
+  {
+    "pattern": "^perl$|^perl-",
+    "tag": "perl",
+    "count": 28
+  },
+  {
+    "pattern": "^krb5$|^krb5-",
+    "tag": "security",
+    "count": 27
+  },
+  {
+    "pattern": "^cups$|^cups-",
+    "tag": "printing",
+    "count": 24
+  },
+  {
+    "pattern": "^xfce4$|^xfce4-",
+    "tag": "xfce_tools",
+    "count": 24
+  },
+  {
+    "pattern": "^pipewire$|^pipewire-",
+    "tag": "multimedia",
+    "count": 22
+  },
+  {
+    "pattern": "^termux$|^termux-",
+    "tag": "termux_api",
+    "count": 18
+  },
+  {
+    "pattern": "^gnupg$|^gnupg-",
+    "tag": "security",
+    "count": 18
+  },
+  {
+    "pattern": "^mlir$|^mlir-",
+    "tag": "c_cpp",
+    "count": 17
+  },
+  {
+    "pattern": "^glib$|^glib-",
+    "tag": "glib_tools",
+    "count": 16
+  },
+  {
+    "pattern": "^binutils$|^binutils-",
+    "tag": "c_cpp",
+    "count": 15
+  },
+  {
+    "pattern": "^gzip$|^gzip-",
+    "tag": "compression",
+    "count": 12
+  },
+  {
+    "pattern": "^hunspell$|^hunspell-",
+    "tag": "text_processing",
+    "count": 12
+  },
+  {
+    "pattern": "^wireshark$|^wireshark-",
+    "tag": "network_tools",
+    "count": 12
+  },
+  {
+    "pattern": "^dpkg$|^dpkg-",
+    "tag": "package_management",
+    "count": 11
+  },
+  {
+    "pattern": "^runit$|^runit-",
+    "tag": "system_utility",
+    "count": 11
+  },
+  {
+    "pattern": "^net$|^net-",
+    "tag": "network_tools",
+    "count": 11
+  },
+  {
+    "pattern": "^llvm$|^llvm-",
+    "tag": "c_cpp",
+    "count": 10
+  },
+  {
+    "pattern": "^gtk3$|^gtk3-",
+    "tag": "gtk3_tools",
+    "count": 10
+  },
+  {
+    "pattern": "^python$|^python-",
+    "tag": "python",
+    "count": 10
+  },
+  {
+    "pattern": "^imlib2$|^imlib2-",
+    "tag": "image_tools",
+    "count": 9
+  },
+  {
+    "pattern": "^aspell$|^aspell-",
+    "tag": "text_processing",
+    "count": 9
+  },
+  {
+    "pattern": "^procps$|^procps-",
+    "tag": "system_monitor",
+    "count": 9
+  },
+  {
+    "pattern": "^dbus$|^dbus-",
+    "tag": "system_utility",
+    "count": 9
+  },
+  {
+    "pattern": "^libcaca$|^libcaca-",
+    "tag": "libcaca_tools",
+    "count": 8
+  },
+  {
+    "pattern": "^gtk4$|^gtk4-",
+    "tag": "gtk4_tools",
+    "count": 8
+  },
+  {
+    "pattern": "^xorg$|^xorg-",
+    "tag": "x11_utils",
+    "count": 7
+  },
+  {
+    "pattern": "^flang$|^flang-",
+    "tag": "fortran",
+    "count": 7
+  },
+  {
+    "pattern": "^libcap$|^libcap-",
+    "tag": "libcap_tools",
+    "count": 7
+  },
+  {
+    "pattern": "^ncurses$|^ncurses-",
+    "tag": "shell_environment",
+    "count": 7
+  },
+  {
+    "pattern": "^xdg$|^xdg-",
+    "tag": "x11_utils",
+    "count": 7
+  },
+  {
+    "pattern": "^rust$|^rust-",
+    "tag": "rust",
+    "count": 7
+  },
+  {
+    "pattern": "^xz$|^xz-",
+    "tag": "compression",
+    "count": 7
+  },
+  {
+    "pattern": "^libwebp$|^libwebp-",
+    "tag": "libwebp_tools",
+    "count": 6
+  },
+  {
+    "pattern": "^pulseaudio$|^pulseaudio-",
+    "tag": "multimedia",
+    "count": 6
+  },
+  {
+    "pattern": "^inetutils$|^inetutils-",
+    "tag": "network_tools",
+    "count": 6
+  },
+  {
+    "pattern": "^apt$|^apt-",
+    "tag": "package_management",
+    "count": 5
+  },
+  {
+    "pattern": "^tigervnc$|^tigervnc-",
+    "tag": "virtualization",
+    "count": 5
+  },
+  {
+    "pattern": "^openssh$|^openssh-",
+    "tag": "network_tools",
+    "count": 5
+  },
+  {
+    "pattern": "^openal$|^openal-",
+    "tag": "multimedia",
+    "count": 5
+  },
+  {
+    "pattern": "^psmisc$|^psmisc-",
+    "tag": "system_monitor",
+    "count": 5
+  },
+  {
+    "pattern": "^gst$|^gst-",
+    "tag": "multimedia",
+    "count": 4
+  },
+  {
+    "pattern": "^php$|^php-",
+    "tag": "php",
+    "count": 4
+  },
+  {
+    "pattern": "^debianutils$|^debianutils-",
+    "tag": "system_utility",
+    "count": 4
+  },
+  {
+    "pattern": "^libgpg$|^libgpg-",
+    "tag": "libgpg_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^fftw$|^fftw-",
+    "tag": "science",
+    "count": 4
+  },
+  {
+    "pattern": "^lilv$|^lilv-",
+    "tag": "lilv_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^libgcrypt$|^libgcrypt-",
+    "tag": "libgcrypt_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^gobject$|^gobject-",
+    "tag": "glib_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^bzip2$|^bzip2-",
+    "tag": "compression",
+    "count": 4
+  },
+  {
+    "pattern": "^gstreamer$|^gstreamer-",
+    "tag": "gstreamer_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^xfwm4$|^xfwm4-",
+    "tag": "xfce_tools",
+    "count": 4
+  },
+  {
+    "pattern": "^libtasn1$|^libtasn1-",
+    "tag": "libtasn1_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^libnspr$|^libnspr-",
+    "tag": "libnspr_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^zip$|^zip-",
+    "tag": "compression",
+    "count": 3
+  },
+  {
+    "pattern": "^diffutils$|^diffutils-",
+    "tag": "text_processing",
+    "count": 3
+  },
+  {
+    "pattern": "^gdbm$|^gdbm-",
+    "tag": "database",
+    "count": 3
+  },
+  {
+    "pattern": "^attr$|^attr-",
+    "tag": "system_utility",
+    "count": 3
+  },
+  {
+    "pattern": "^libzip$|^libzip-",
+    "tag": "libzip_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^bsdtar$|^bsdtar-",
+    "tag": "compression",
+    "count": 3
+  },
+  {
+    "pattern": "^woff2$|^woff2-",
+    "tag": "font_rendering",
+    "count": 3
+  },
+  {
+    "pattern": "^git$|^git-",
+    "tag": "development",
+    "count": 3
+  },
+  {
+    "pattern": "^unzip$|^unzip-",
+    "tag": "compression",
+    "count": 3
+  },
+  {
+    "pattern": "^libnss$|^libnss-",
+    "tag": "libnss_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^libavif$|^libavif-",
+    "tag": "libavif_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^desktop$|^desktop-",
+    "tag": "x11_utils",
+    "count": 3
+  },
+  {
+    "pattern": "^arj$|^arj-",
+    "tag": "compression",
+    "count": 3
+  },
+  {
+    "pattern": "^openbox$|^openbox-",
+    "tag": "x11_utils",
+    "count": 3
+  },
+  {
+    "pattern": "^libacl$|^libacl-",
+    "tag": "libacl_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^gdk$|^gdk-",
+    "tag": "gtk_tools",
+    "count": 3
+  },
+  {
+    "pattern": "^pango$|^pango-",
+    "tag": "font_rendering",
+    "count": 3
+  },
+  {
+    "pattern": "^p7zip$|^p7zip-",
+    "tag": "compression",
+    "count": 2
+  },
+  {
+    "pattern": "^enchant$|^enchant-",
+    "tag": "text_processing",
+    "count": 2
+  },
+  {
+    "pattern": "^rubberband$|^rubberband-",
+    "tag": "multimedia",
+    "count": 2
+  },
+  {
+    "pattern": "^libwnck$|^libwnck-",
+    "tag": "libwnck_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^libpsl$|^libpsl-",
+    "tag": "libpsl_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^fzf$|^fzf-",
+    "tag": "file_search",
+    "count": 2
+  },
+  {
+    "pattern": "^sord$|^sord-",
+    "tag": "data_formats",
+    "count": 2
+  },
+  {
+    "pattern": "^json$|^json-",
+    "tag": "data_formats",
+    "count": 2
+  },
+  {
+    "pattern": "^bc$|^bc-",
+    "tag": "bc_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^ldns$|^ldns-",
+    "tag": "network_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^grep$|^grep-",
+    "tag": "text_processing",
+    "count": 2
+  },
+  {
+    "pattern": "^libvte$|^libvte-",
+    "tag": "libvte_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^file$|^file-",
+    "tag": "system_utility",
+    "count": 2
+  },
+  {
+    "pattern": "^xfdesktop$|^xfdesktop-",
+    "tag": "xfce_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^pinentry$|^pinentry-",
+    "tag": "security",
+    "count": 2
+  },
+  {
+    "pattern": "^lua54$|^lua54-",
+    "tag": "lua54_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^lua55$|^lua55-",
+    "tag": "lua55_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^libbs2b$|^libbs2b-",
+    "tag": "libbs2b_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^gnome$|^gnome-",
+    "tag": "gnome_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^p11$|^p11-",
+    "tag": "security",
+    "count": 2
+  },
+  {
+    "pattern": "^exo$|^exo-",
+    "tag": "xfce_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^dos2unix$|^dos2unix-",
+    "tag": "text_processing",
+    "count": 2
+  },
+  {
+    "pattern": "^lua52$|^lua52-",
+    "tag": "lua52_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^libcurl$|^libcurl-",
+    "tag": "libcurl_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^less$|^less-",
+    "tag": "text_processing",
+    "count": 2
+  },
+  {
+    "pattern": "^thunar$|^thunar-",
+    "tag": "xfce_tools",
+    "count": 2
+  },
+  {
+    "pattern": "^zstd$|^zstd-",
+    "tag": "compression",
+    "count": 2
+  },
+  {
+    "pattern": "^cmake$|^cmake-",
+    "tag": "development",
+    "count": 2
+  },
+  {
+    "pattern": "^dialog$|^dialog-",
+    "tag": "shell_environment",
+    "count": 1
+  },
+  {
+    "pattern": "^pkg$|^pkg-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^libidn2$|^libidn2-",
+    "tag": "libidn2_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^entr$|^entr-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^libxmlb$|^libxmlb-",
+    "tag": "libxmlb_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^shared$|^shared-",
+    "tag": "x11_utils",
+    "count": 1
+  },
+  {
+    "pattern": "^gcr$|^gcr-",
+    "tag": "gnome_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^tk$|^tk-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^tcl$|^tcl-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^libcairo$|^libcairo-",
+    "tag": "libcairo_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libsecret$|^libsecret-",
+    "tag": "libsecret_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libnotify$|^libnotify-",
+    "tag": "libnotify_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^m4$|^m4-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^fribidi$|^fribidi-",
+    "tag": "text_processing",
+    "count": 1
+  },
+  {
+    "pattern": "^libksba$|^libksba-",
+    "tag": "libksba_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libzmq$|^libzmq-",
+    "tag": "libzmq_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libxml2$|^libxml2-",
+    "tag": "libxml2_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^lv2$|^lv2-",
+    "tag": "multimedia",
+    "count": 1
+  },
+  {
+    "pattern": "^proot$|^proot-",
+    "tag": "virtualization",
+    "count": 1
+  },
+  {
+    "pattern": "^flex$|^flex-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^xxhash$|^xxhash-",
+    "tag": "hashing",
+    "count": 1
+  },
+  {
+    "pattern": "^nano$|^nano-",
+    "tag": "text_processing",
+    "count": 1
+  },
+  {
+    "pattern": "^libnpth$|^libnpth-",
+    "tag": "libnpth_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^zenity$|^zenity-",
+    "tag": "x11_utils",
+    "count": 1
+  },
+  {
+    "pattern": "^patchelf$|^patchelf-",
+    "tag": "development",
+    "count": 1
+  },
+  {
+    "pattern": "^oniguruma$|^oniguruma-",
+    "tag": "text_processing",
+    "count": 1
+  },
+  {
+    "pattern": "^sdl2$|^sdl2-",
+    "tag": "multimedia",
+    "count": 1
+  },
+  {
+    "pattern": "^xfconf$|^xfconf-",
+    "tag": "xfce_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libcanberra$|^libcanberra-",
+    "tag": "libcanberra_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^glibc$|^glibc-",
+    "tag": "system_utility",
+    "count": 1
+  },
+  {
+    "pattern": "^gpgv$|^gpgv-",
+    "tag": "security",
+    "count": 1
+  },
+  {
+    "pattern": "^serd$|^serd-",
+    "tag": "data_formats",
+    "count": 1
+  },
+  {
+    "pattern": "^svt$|^svt-",
+    "tag": "multimedia",
+    "count": 1
+  },
+  {
+    "pattern": "^freetype$|^freetype-",
+    "tag": "font_rendering",
+    "count": 1
+  },
+  {
+    "pattern": "^ocl$|^ocl-",
+    "tag": "graphics",
+    "count": 1
+  },
+  {
+    "pattern": "^libxfce4ui$|^libxfce4ui-",
+    "tag": "libxfce4ui_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libdisplay$|^libdisplay-",
+    "tag": "libdisplay_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libpng$|^libpng-",
+    "tag": "libpng_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libgit2$|^libgit2-",
+    "tag": "libgit2_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libde265$|^libde265-",
+    "tag": "libde265_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^gflags$|^gflags-",
+    "tag": "gflags_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libhyphen$|^libhyphen-",
+    "tag": "libhyphen_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^luarocks$|^luarocks-",
+    "tag": "lua",
+    "count": 1
+  },
+  {
+    "pattern": "^libwayland$|^libwayland-",
+    "tag": "libwayland_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libxslt$|^libxslt-",
+    "tag": "libxslt_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^tokei$|^tokei-",
+    "tag": "ast_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libassuan$|^libassuan-",
+    "tag": "libassuan_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^unrar$|^unrar-",
+    "tag": "compression",
+    "count": 1
+  },
+  {
+    "pattern": "^libxfce4util$|^libxfce4util-",
+    "tag": "libxfce4util_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libfyaml$|^libfyaml-",
+    "tag": "libfyaml_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^brotli$|^brotli-",
+    "tag": "compression",
+    "count": 1
+  },
+  {
+    "pattern": "^pcre2$|^pcre2-",
+    "tag": "text_processing",
+    "count": 1
+  },
+  {
+    "pattern": "^dconf$|^dconf-",
+    "tag": "gnome_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^screen$|^screen-",
+    "tag": "terminal_multiplexer",
+    "count": 1
+  },
+  {
+    "pattern": "^rhash$|^rhash-",
+    "tag": "hashing",
+    "count": 1
+  },
+  {
+    "pattern": "^lz4$|^lz4-",
+    "tag": "compression",
+    "count": 1
+  },
+  {
+    "pattern": "^librsvg$|^librsvg-",
+    "tag": "librsvg_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^gtk$|^gtk-",
+    "tag": "gtk_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^obconf$|^obconf-",
+    "tag": "obconf_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^ed$|^ed-",
+    "tag": "text_processing",
+    "count": 1
+  },
+  {
+    "pattern": "^capstone$|^capstone-",
+    "tag": "reverse_engineering",
+    "count": 1
+  },
+  {
+    "pattern": "^coreutils$|^coreutils-",
+    "tag": "system_utility",
+    "count": 1
+  },
+  {
+    "pattern": "^appstream$|^appstream-",
+    "tag": "package_management",
+    "count": 1
+  },
+  {
+    "pattern": "^libdav1d$|^libdav1d-",
+    "tag": "libdav1d_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^libxkbcommon$|^libxkbcommon-",
+    "tag": "libxkbcommon_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^glslang$|^glslang-",
+    "tag": "graphics",
+    "count": 1
+  },
+  {
+    "pattern": "^upower$|^upower-",
+    "tag": "hardware_info",
+    "count": 1
+  },
+  {
+    "pattern": "^libvmaf$|^libvmaf-",
+    "tag": "libvmaf_tools",
+    "count": 1
+  },
+  {
+    "pattern": "^alias$|^alias-",
+    "tag": "alias_tools",
+    "count": 1
+  }
+]

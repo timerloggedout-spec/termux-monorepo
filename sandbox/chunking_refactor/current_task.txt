@@ -1,0 +1,9 @@
+Build a Python script (chunk_large_json.py) that:
+1. Reads a large JSON file (correlation_index.json, 557 MB) by streaming it via ijson or by reading one top-level key at a time.
+2. Splits it into chunks by category key, writing each chunk to chunks/<key>.json.gz (gzip -9).
+3. Writes a chunks.idx manifest mapping category → chunk file.
+4. Patches live_message_search.py to read from chunked gzip files instead of loading the entire JSON.
+5. Also patches any other file that loads correlation_index.json or message_index.json as a single object.
+
+Use the existing chunked_reader.py and batch_resumer.py as libraries.
+Output the complete script and the SEARCH/REPLACE patches for live_message_search.py.

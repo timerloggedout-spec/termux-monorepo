@@ -1,0 +1,311 @@
+{
+  "description": "Full-Stack Developer",
+  "tools": [
+    {
+      "name": "bat",
+      "package": "bat",
+      "path": "/data/data/com.termux/files/usr/bin/bat",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "A cat(1) clone with wings"
+    },
+    {
+      "name": "cargo",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "curl",
+      "package": "curl",
+      "path": "/data/data/com.termux/files/usr/bin/curl",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Command line tool for transferring data with URL syntax"
+    },
+    {
+      "name": "eza",
+      "package": "eza",
+      "path": "/data/data/com.termux/files/usr/bin/eza",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "A modern replacement for ls"
+    },
+    {
+      "name": "fd",
+      "package": "fd",
+      "path": "/data/data/com.termux/files/usr/bin/fd",
+      "source": "apt",
+      "tags": [
+        "file_search"
+      ],
+      "category": "file_search",
+      "description": "Simple, fast and user-friendly alternative to find"
+    },
+    {
+      "name": "gh",
+      "package": "gh",
+      "path": "/data/data/com.termux/files/usr/bin/gh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "GitHub\u2019s official command line tool"
+    },
+    {
+      "name": "hyperfine",
+      "package": "hyperfine",
+      "path": "/data/data/com.termux/files/usr/bin/hyperfine",
+      "source": "apt",
+      "tags": [
+        "benchmarking"
+      ],
+      "category": "benchmarking",
+      "description": "A command-line benchmarking tool"
+    },
+    {
+      "name": "idle3.13",
+      "package": "python-tkinter",
+      "path": "/data/data/com.termux/files/usr/bin/idle3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tkinter support for Python 3"
+    },
+    {
+      "name": "jq",
+      "package": "jq",
+      "path": "/data/data/com.termux/files/usr/bin/jq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "name": "node",
+      "package": "nodejs",
+      "path": "/data/data/com.termux/files/usr/bin/node",
+      "source": "apt",
+      "tags": [
+        "development",
+        "javascript"
+      ],
+      "category": "development",
+      "description": "Open Source, cross-platform JavaScript runtime environment"
+    },
+    {
+      "name": "npm",
+      "package": "npm:npm",
+      "path": "/data/data/com.termux/files/usr/bin/npm",
+      "source": "npm",
+      "tags": [
+        "development",
+        "javascript",
+        "package_management"
+      ],
+      "category": "development",
+      "description": ""
+    },
+    {
+      "name": "pip",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "python",
+        "python_toolchain"
+      ],
+      "category": "development",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pip3.13",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "py3clean",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3clean",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "py3compile",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/py3compile",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pydoc3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/pydoc3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "pytest",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/pytest",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "Package unknown"
+    },
+    {
+      "name": "python3.13",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "python3.13-config",
+      "package": "python",
+      "path": "/data/data/com.termux/files/usr/bin/python3.13-config",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Python 3 programming language intended to enable clear programs"
+    },
+    {
+      "name": "ruff",
+      "package": "ruff",
+      "path": "/data/data/com.termux/files/usr/bin/ruff",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "category": "python",
+      "description": "An extremely fast Python linter, written in Rust"
+    },
+    {
+      "name": "rustc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustc",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "shellcheck",
+      "package": "shellcheck",
+      "path": "/data/data/com.termux/files/usr/bin/shellcheck",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Shell script analysis tool"
+    },
+    {
+      "name": "tmux",
+      "package": "tmux",
+      "path": "/data/data/com.termux/files/usr/bin/tmux",
+      "source": "apt",
+      "tags": [
+        "shell_environment",
+        "terminal_multiplexer"
+      ],
+      "category": "shell_environment",
+      "description": "Terminal multiplexer"
+    },
+    {
+      "name": "torchfrtrace",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchfrtrace",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    },
+    {
+      "name": "torchrun",
+      "package": "python-torch",
+      "path": "/data/data/com.termux/files/usr/bin/torchrun",
+      "source": "apt",
+      "tags": [
+        "python"
+      ],
+      "auto_tag_source": "auto:^python$|^python-",
+      "category": "python",
+      "description": "Tensors and Dynamic neural networks in Python"
+    }
+  ]
+}

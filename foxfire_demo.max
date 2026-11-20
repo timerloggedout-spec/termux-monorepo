@@ -1,0 +1,11 @@
+; .hero-section
+  # Welcome to MaxUp
+  p The future of web authoring is here.
+  ; .card {featured}
+    p {{ title }}
+    + on:click="handleSave" "Save"
+  ( 
+    - HTML5 .mu
+    - Leptos/WASM .rs
+    - Python SPRAG .py
+  )

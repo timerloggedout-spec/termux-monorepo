@@ -1,0 +1,241 @@
+# Agent Roster — collaborating agents, nested integrations, triggerable commands
+# SSOT for load-balancer routing, comment orchestration, and quota gates.
+# Cross-ref: docs/schemas/agent-capabilities.yaml (quota numbers)
+#
+# Cooldown strategy:
+#   CodeRabbit DIRECT:  @coderabbitai rate limit   (or: reviews remaining?)
+#   CodeRabbit FALLBACK: parse PR comments for "Next review available in: N minutes"
+#   Gemini:             .github/actions/gemini-quota-gate (RPD counter + RPM via 429)
+#   Tembo:              platform credits; comment when exhausted
+#
+version: 1
+updated_at: "2026-08-07T03:45:00Z"
+updated_by: grok
+
+agents:
+  - id: coderabbit
+    handle: "@coderabbitai"
+    name: CodeRabbit
+    role: [review, autofix, docstrings, summary]
+    platform: GitHub App
+    quota:
+      model: rolling_hourly_per_developer
+      free_oss: "1–10 PR reviews/hour (plan-dependent)"
+      pro: "5/hour"
+      pro_plus: "10/hour"
+      check_direct: "@coderabbitai rate limit"
+      check_alt: "@coderabbitai reviews remaining?"
+      cooldown_signal: "PR comment: Next review available in: N minutes"
+      docs: "https://docs.coderabbit.ai/management/plans#rate-limits"
+    commands:
+      - flag: "@coderabbitai review"
+        effect: incremental review of new changes
+      - flag: "@coderabbitai full review"
+        effect: complete review from scratch
+      - flag: "@coderabbitai pause"
+        effect: stop automatic reviews on this PR
+      - flag: "@coderabbitai resume"
+        effect: restart automatic reviews
+      - flag: "@coderabbitai summary"
+        effect: regenerate PR summary
+      - flag: "@coderabbitai generate docstrings"
+        effect: docstring PR or commit
+      - flag: "@coderabbitai resolve"
+        effect: mark prior CR comments resolved
+      - flag: "@coderabbitai rate limit"
+        effect: report remaining reviews + next availability (no review consumed)
+      - flag: "@coderabbitai help"
+        effect: list commands
+      - flag: "@coderabbitai ignore"
+        effect: disable auto-review (PR description only)
+    integrations: []
+    workflow_usage: |
+      Before @coderabbitai review / full review, post @coderabbitai rate limit.
+      If reply shows 0 remaining, wait for stated minutes or parse cooldown comment.
+
+  - id: tembo
+    handle: "@tembo"
+    name: Tembo
+    role: [build, implement, fix, orchestration]
+    platform: Tembo sandbox agent
+    quota:
+      model: platform_credits
+      exhausted_signal: "organization has no available credits"
+      billing: "https://app.tembo.io/settings/billing"
+    commands:
+      - flag: "@tembo"
+        effect: invoke on issue/PR comment (platform-defined)
+    integrations:
+      - id: linear
+        name: Linear
+        type: issue_tracker
+        commands:
+          - "sync feedback → Linear issue"
+          - "agent-feedback-linear-sync workflow"
+        note: Connected via Tembo + GHA agent-feedback-linear-sync
+      - id: mcp
+        name: Model Context Protocol tools
+        type: tool_runtime
+        commands:
+          - "platform MCP tool calls inside Tembo sandbox"
+        note: Sub-tool surface is platform-managed; list expands as Tembo connects services
+      - id: sub_agents
+        name: Tembo sub-agents
+        type: nested_agents
+        commands:
+          - "delegate multi-file implementation"
+          - "CI/CD workflow engineering"
+        note: Internal to Tembo; not directly @mentionable from GitHub
+      - id: github
+        name: GitHub
+        type: vcs
+        commands:
+          - "open PR"
+          - "push commits"
+          - "comment on PR/issue"
+    fallback_when_exhausted: human
+
+  - id: jules
+    handle: "@jules"
+    alt_handles: ["@google-labs-jules"]
+    name: Jules (Google Labs)
+    role: [build, implement, fix, auto_resolve]
+    platform: google-labs-code/jules-invoke
+    quota:
+      model: daily_session
+      daily_limit: 15
+      concurrent: 3
+    commands:
+      - flag: "@jules"
+        effect: invoke builder / auto-resolve bot feedback
+      - flag: "@google-labs-jules"
+        effect: same (alt handle)
+    integrations:
+      - id: cloud_vm_session
+        name: Jules Cloud VM session
+        type: session
+        commands:
+          - "span multiple PR revisions in one session"
+      - id: gha_auto_jules
+        name: agent-review-auto-jules workflow
+        type: workflow
+        commands:
+          - "auto-ping on bot review comments"
+    fallback_when_exhausted: tembo
+
+  - id: gemini
+    handle: "@gemini-cli"
+    name: Gemini CLI
+    role: [review, triage, invoke]
+    platform: google-github-actions/run-gemini-cli
+    quota:
+      model: rpm_tpm_rpd
+      free_flash_approx: "~15 RPM, ~1000–1500 RPD (model-dependent)"
+      gate: ".github/actions/gemini-quota-gate (default daily-limit 900)"
+      reset: midnight Pacific
+      pair_with: "continue-on-error on CLI step for transient RPM 429 (#71)"
+    commands:
+      - flag: "/gemini review"
+        effect: PR review (workflow-dispatched)
+      - flag: "/gemini triage"
+        effect: issue triage
+      - flag: "/gemini invoke"
+        effect: on-demand analysis
+    integrations:
+      - id: quota_gate
+        name: gemini-quota-gate composite action
+        type: ci_gate
+        commands:
+          - "skip=true when RPD safety margin exhausted"
+          - "use_backup_key when GEMINI_API_KEY_BACKUP configured"
+      - id: load_balancer
+        name: agent load balancer
+        type: router
+        commands:
+          - "route to coderabbit when Gemini skipped"
+    fallback_when_exhausted: coderabbit
+
+  - id: devin
+    handle: "@devin-ai-integration"
+    name: Devin (Cognition)
+    role: [review, build]
+    platform: GitHub App
+    quota:
+      model: platform_managed
+    commands:
+      - flag: "(automatic on PR)"
+        effect: review threads with deep context
+    integrations: []
+    fallback_when_exhausted: coderabbit
+
+  - id: copilot
+    handle: "@copilot"
+    name: GitHub Copilot
+    role: [review, suggest]
+    platform: GitHub Copilot
+    quota:
+      model: platform_managed
+    commands:
+      - flag: "(PR review request)"
+        effect: code / security review
+    integrations: []
+    fallback_when_exhausted: coderabbit
+
+  - id: mistral_vibe
+    handle: "@mistral-vibe"
+    name: Mistral Vibe
+    role: [build, implement]
+    platform: Mistral agent
+    quota:
+      model: platform_managed
+    commands:
+      - flag: "@mistral-vibe"
+        effect: invoke on issue/PR
+    integrations: []
+    fallback_when_exhausted: jules
+
+  - id: grok
+    handle: "@timerloggedout-spec"  # posts as operator; agent identity in commit trailer
+    name: Grok (xAI)
+    role: [orchestration, review_disposition, fix]
+    platform: xAI / operator-mediated
+    quota:
+      model: operator_mediated
+    commands:
+      - flag: "(conversation / PR comment as operator)"
+        effect: disposition, commits, multi-agent coordination
+    integrations:
+      - id: github_mcp
+        name: GitHub connected tools
+        type: mcp
+        commands:
+          - "push_files, PR review resolve, comments, branches"
+      - id: linear_mcp
+        name: Linear
+        type: mcp
+        commands:
+          - "save_comment on issues/projects"
+    fallback_when_exhausted: human
+
+# Cross-agent command etiquette (use in PR/issue comments)
+etiquette:
+  - "Before burning a review slot: @coderabbitai rate limit"
+  - "On cooldown: do not @coderabbitai full review; wait or use always-on agents"
+  - "Gemini skip comments are green CI; route review to CodeRabbit/Jules"
+  - "Tembo credit exhaustion → human or Jules; do not re-ping Tembo"
+  - "Auto-jules workflow already pings @jules on bot feedback — avoid duplicate pings"
+
+routing:
+  review:
+    primary: gemini
+    always_on: [coderabbit]
+    fallback: [coderabbit, devin]
+  build:
+    primary: jules
+    fallback: [tembo, mistral_vibe]
+  fix:
+    primary: jules
+    fallback: [tembo, grok]
+  orchestration:
+    primary: grok
+    fallback: [tembo]

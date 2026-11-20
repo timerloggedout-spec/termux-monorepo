@@ -1,0 +1,412 @@
+{
+  "description": "Rust Developer",
+  "tools": [
+    {
+      "name": "appstreamcli",
+      "package": "appstream",
+      "path": "/data/data/com.termux/files/usr/bin/appstreamcli",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^appstream$|^appstream-",
+      "category": "package_management",
+      "description": "Provides a standard for creating app stores across distributions"
+    },
+    {
+      "name": "apt",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "apt-cache",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt-cache",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^apt$|^apt-",
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "apt-config",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt-config",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^apt$|^apt-",
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "apt-get",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt-get",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^apt$|^apt-",
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "apt-key",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt-key",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^apt$|^apt-",
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "apt-mark",
+      "package": "apt",
+      "path": "/data/data/com.termux/files/usr/bin/apt-mark",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^apt$|^apt-",
+      "category": "package_management",
+      "description": "Front-end for the dpkg package manager"
+    },
+    {
+      "name": "cargo",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-clippy",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-clippy",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "cargo-fmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/cargo-fmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "clippy-driver",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/clippy-driver",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "dpkg",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-buildapi",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-buildapi",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-buildtree",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-buildtree",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-deb",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-deb",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-divert",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-divert",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-fsys-usrunmess",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-fsys-usrunmess",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-query",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-query",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-realpath",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-realpath",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-split",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-split",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "dpkg-trigger",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/dpkg-trigger",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "hyperfine",
+      "package": "hyperfine",
+      "path": "/data/data/com.termux/files/usr/bin/hyperfine",
+      "source": "apt",
+      "tags": [
+        "benchmarking"
+      ],
+      "category": "benchmarking",
+      "description": "A command-line benchmarking tool"
+    },
+    {
+      "name": "npm",
+      "package": "npm:npm",
+      "path": "/data/data/com.termux/files/usr/bin/npm",
+      "source": "npm",
+      "tags": [
+        "development",
+        "javascript",
+        "package_management"
+      ],
+      "category": "development",
+      "description": ""
+    },
+    {
+      "name": "pip",
+      "package": "python-pip",
+      "path": "/data/data/com.termux/files/usr/bin/pip",
+      "source": "apt",
+      "tags": [
+        "development",
+        "package_management",
+        "python",
+        "python_toolchain"
+      ],
+      "category": "development",
+      "description": "The PyPA recommended tool for installing Python packages"
+    },
+    {
+      "name": "pkg",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/pkg",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "category": "package_management",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "rust-analyzer",
+      "package": "rust-analyzer",
+      "path": "/data/data/com.termux/files/usr/bin/rust-analyzer",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "A Rust compiler front-end for IDEs"
+    },
+    {
+      "name": "rust-gdb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-gdbgui",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-gdbgui",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rust-lldb",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rust-lldb",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustc",
+      "source": "apt",
+      "tags": [
+        "development",
+        "rust"
+      ],
+      "category": "development",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustdoc",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustdoc",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "auto_tag_source": "auto:^rust$|^rust-",
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "rustfmt",
+      "package": "rust",
+      "path": "/data/data/com.termux/files/usr/bin/rustfmt",
+      "source": "apt",
+      "tags": [
+        "rust"
+      ],
+      "category": "rust",
+      "description": "Systems programming language focused on safety, speed and concurrency"
+    },
+    {
+      "name": "start-stop-daemon",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/start-stop-daemon",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    },
+    {
+      "name": "update-alternatives",
+      "package": "dpkg",
+      "path": "/data/data/com.termux/files/usr/bin/update-alternatives",
+      "source": "apt",
+      "tags": [
+        "package_management"
+      ],
+      "auto_tag_source": "auto:^dpkg$|^dpkg-",
+      "category": "package_management",
+      "description": "Debian package management system"
+    }
+  ]
+}

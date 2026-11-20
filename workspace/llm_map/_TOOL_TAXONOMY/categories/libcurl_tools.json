@@ -1,0 +1,29 @@
+{
+  "category": "libcurl_tools",
+  "tools": [
+    {
+      "name": "wcurl",
+      "package": "libcurl",
+      "path": "/data/data/com.termux/files/usr/bin/wcurl",
+      "source": "apt",
+      "tags": [
+        "libcurl_tools"
+      ],
+      "auto_tag_source": "auto:^libcurl$|^libcurl-",
+      "category": "libcurl_tools",
+      "description": "Easy-to-use client-side URL transfer library"
+    },
+    {
+      "name": "curl-config",
+      "package": "libcurl",
+      "path": "/data/data/com.termux/files/usr/bin/curl-config",
+      "source": "apt",
+      "tags": [
+        "libcurl_tools"
+      ],
+      "auto_tag_source": "auto:^libcurl$|^libcurl-",
+      "category": "libcurl_tools",
+      "description": "Easy-to-use client-side URL transfer library"
+    }
+  ]
+}

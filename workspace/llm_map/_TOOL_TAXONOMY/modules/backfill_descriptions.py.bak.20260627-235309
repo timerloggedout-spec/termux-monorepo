@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import json, subprocess, sys, os
+from collections import defaultdict
+
+ALL_TOOLS = "all_tools.jsonl"
+DRY_RUN = "--dry-run" in sys.argv
+
+# 1. Load tools
+with open(ALL_TOOLS) as f:
+    tools = [json.loads(line) for line in f]
+
+# 2. Group by source and package
+apt_packages = defaultdict(list)
+for t in tools:
+    if t.get("source") == "apt" and not t.get("description"):
+        apt_packages[t["package"]].append(t)
+
+print(f"Found {len(apt_packages)} apt packages with {sum(len(v) for v in apt_packages.values())} tools needing descriptions")
+
+# 3. Fetch package descriptions
+package_desc = {}
+for pkg in apt_packages:
+    try:
+        out = subprocess.check_output(["apt-cache", "show", pkg], stderr=subprocess.DEVNULL, text=True)
+        for line in out.splitlines():
+            if line.startswith("Description:"):
+                desc = line.split(":",1)[1].strip()
+                # Some packages have multi-line descriptions; take first line
+                if "\n" in desc:
+                    desc = desc.split("\n")[0].strip()
+                package_desc[pkg] = desc
+                break
+        if pkg not in package_desc:
+            package_desc[pkg] = f"Package {pkg}"
+    except Exception as e:
+        print(f"  ⚠️ apt-cache failed for {pkg}: {e}", file=sys.stderr)
+        package_desc[pkg] = f"Package {pkg}"
+
+# 4. Assign descriptions to tools
+assigned = 0
+for pkg, tool_list in apt_packages.items():
+    desc = package_desc.get(pkg)
+    if desc:
+        for t in tool_list:
+            if not t.get("description"):
+                t["description"] = desc
+                assigned += 1
+
+# 5. Write back
+if not DRY_RUN:
+    with open(ALL_TOOLS, "w") as f:
+        for t in tools:
+            f.write(json.dumps(t) + "\n")
+    print(f"✅ Assigned {assigned} descriptions. Total tools: {len(tools)}")
+else:
+    print(f"🔍 Dry run: would assign {assigned} descriptions")

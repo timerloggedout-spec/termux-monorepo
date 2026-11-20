@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "=== Account Activity (last 20 actions) ==="
+python3 -c "
+import json
+from pathlib import Path
+from datetime import datetime, timezone
+
+rh = Path.home() / 'termux-multi-agent/run_history.jsonl'
+if rh.exists():
+    with open(rh) as f:
+        entries = [json.loads(l) for l in f if l.strip()]
+    # Sort by timestamp descending
+    entries.sort(key=lambda e: e.get('timestamp',''), reverse=True)
+    for e in entries[:20]:
+        ts = e.get('timestamp','')[:19]
+        agent = e.get('agent','?')
+        target = e.get('target_file','?')
+        verdict = e.get('verdict','?')
+        # Determine account from agent mapping
+        secondary_agents = ['context_builder','chronos','tui_dev','scout','linguist']
+        acct = '2' if agent in secondary_agents else '1'
+        print(f'  [Acct {acct}] {ts}  {verdict:5}  {agent:15}  {target}')
+else:
+    print('No run_history.jsonl yet.')
+"

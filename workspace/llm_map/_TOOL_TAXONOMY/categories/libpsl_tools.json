@@ -1,0 +1,29 @@
+{
+  "category": "libpsl_tools",
+  "tools": [
+    {
+      "name": "psl-make-dafsa",
+      "package": "libpsl",
+      "path": "/data/data/com.termux/files/usr/bin/psl-make-dafsa",
+      "source": "apt",
+      "tags": [
+        "libpsl_tools"
+      ],
+      "auto_tag_source": "auto:^libpsl$|^libpsl-",
+      "category": "libpsl_tools",
+      "description": "Public Suffix List library"
+    },
+    {
+      "name": "psl",
+      "package": "libpsl",
+      "path": "/data/data/com.termux/files/usr/bin/psl",
+      "source": "apt",
+      "tags": [
+        "libpsl_tools"
+      ],
+      "auto_tag_source": "auto:^libpsl$|^libpsl-",
+      "category": "libpsl_tools",
+      "description": "Public Suffix List library"
+    }
+  ]
+}

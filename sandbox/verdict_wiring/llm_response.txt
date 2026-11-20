@@ -1,0 +1,17 @@
+Here's the CEDARscript patch to add JSONL logging to `~[35m/[0mtermux-multi-agent[35m/[0mrun_history.jsonl`:
+
+```cedarscript
+SEARCH:
+def log_attempt_telemetry[1m([0m
+    session_id: str,
+    target_file: str,
+    prompt: str,
+    verdict: str,
+    justification: str,
+    exit_code: int,
+    stdout: str,
+    stderr: str,
+    duration_ms: int,
+[1m)[0m -> [3;35mNone[0m:
+    [32m""[0m"Log an agent attempt to SQLite.[32m""[0m"
+    conn = sqlite[1;36m3[0m.connect[1m([0mstr[1m([0mTE

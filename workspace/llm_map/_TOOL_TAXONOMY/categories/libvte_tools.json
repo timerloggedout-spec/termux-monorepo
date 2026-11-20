@@ -1,0 +1,29 @@
+{
+  "category": "libvte_tools",
+  "tools": [
+    {
+      "name": "vte-2.91-gtk4",
+      "package": "libvte",
+      "path": "/data/data/com.termux/files/usr/bin/vte-2.91-gtk4",
+      "source": "apt",
+      "tags": [
+        "libvte_tools"
+      ],
+      "auto_tag_source": "auto:^libvte$|^libvte-",
+      "category": "libvte_tools",
+      "description": "Virtual Terminal library"
+    },
+    {
+      "name": "vte-2.91",
+      "package": "libvte",
+      "path": "/data/data/com.termux/files/usr/bin/vte-2.91",
+      "source": "apt",
+      "tags": [
+        "libvte_tools"
+      ],
+      "auto_tag_source": "auto:^libvte$|^libvte-",
+      "category": "libvte_tools",
+      "description": "Virtual Terminal library"
+    }
+  ]
+}

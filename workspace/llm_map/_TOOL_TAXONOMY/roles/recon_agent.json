@@ -1,0 +1,3100 @@
+{
+  "description": "Reconnaissance Specialist",
+  "tools": [
+    {
+      "name": "addgnupghome",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/addgnupghome",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "affixcompress",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/affixcompress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "agent-browser",
+      "package": "npm:agent-browser",
+      "path": "/data/data/com.termux/files/usr/bin/agent-browser",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "am",
+      "package": "termux-am",
+      "path": "/data/data/com.termux/files/usr/bin/am",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Android Oreo-compatible am command reimplementation"
+    },
+    {
+      "name": "analyze",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/analyze",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "applygnupgdefaults",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/applygnupgdefaults",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "arp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/arp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "aspell-import",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/aspell-import",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "capinfos",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/capinfos",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "captype",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/captype",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "chmorph",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/chmorph",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "chsh",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/chsh",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "cmd",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/cmd",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "cmp",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/cmp",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "comm",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/comm",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "compile_et",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/compile_et",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "curl",
+      "package": "curl",
+      "path": "/data/data/com.termux/files/usr/bin/curl",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Command line tool for transferring data with URL syntax"
+    },
+    {
+      "name": "cut",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/cut",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "dalvikvm",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/dalvikvm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "deep_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/deep_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel"
+    },
+    {
+      "name": "df",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/df",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "diff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "diff3",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/diff3",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "dirmngr",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/dirmngr",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "dirmngr-client",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/dirmngr-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "dnsdomainname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/dnsdomainname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "dos2unix",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/dos2unix",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "drill",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/drill",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "dumpcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/dumpcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "ed",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/ed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "editcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/editcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "egrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/egrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "enchant-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "enchant-lsmod-2",
+      "package": "enchant",
+      "path": "/data/data/com.termux/files/usr/bin/enchant-lsmod-2",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^enchant$|^enchant-",
+      "category": "text_processing",
+      "description": "Wraps a number of different spelling libraries and programs with a consistent interface"
+    },
+    {
+      "name": "fast_scan.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/fast_scan.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel"
+    },
+    {
+      "name": "fgrep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/fgrep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^grep$|^grep-",
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "forensic-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: $HOME/harmony_hub/utility_belt/forensic-query",
+      "tags": [
+        "forensics",
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "forensics"
+    },
+    {
+      "name": "fribidi",
+      "package": "fribidi",
+      "path": "/data/data/com.termux/files/usr/bin/fribidi",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^fribidi$|^fribidi-",
+      "category": "text_processing",
+      "description": "Implementation of the Unicode Bidirectional Algorithm"
+    },
+    {
+      "name": "ftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/ftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "fts-query",
+      "package": "alias",
+      "path": "",
+      "source": "alias",
+      "description": "Alias: bash ~/harmony_hub/utility_belt/fts-query",
+      "tags": [
+        "harmony_hub",
+        "llm_orchestration"
+      ],
+      "category": "harmony_hub"
+    },
+    {
+      "name": "gawk",
+      "package": "gawk",
+      "path": "/data/data/com.termux/files/usr/bin/gawk",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Programming language designed for text processing"
+    },
+    {
+      "name": "getprop",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/getprop",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "gh",
+      "package": "gh",
+      "path": "/data/data/com.termux/files/usr/bin/gh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "GitHub\u2019s official command line tool"
+    },
+    {
+      "name": "gpg",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-agent",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-agent",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-authcode-sign.sh",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-authcode-sign.sh",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-card",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-card",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-connect-agent",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-connect-agent",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-mail-tube",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-mail-tube",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpg-wks-client",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpg-wks-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgconf",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgconf",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgparsemail",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgparsemail",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgscm",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgscm",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgsm",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgsm",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgsplit",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgsplit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgtar",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/gpgtar",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "gpgv",
+      "package": "gpgv",
+      "path": "/data/data/com.termux/files/usr/bin/gpgv",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gpgv$|^gpgv-",
+      "category": "security",
+      "description": "GNU privacy guard - signature verification tool"
+    },
+    {
+      "name": "grep",
+      "package": "grep",
+      "path": "/data/data/com.termux/files/usr/bin/grep",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command which searches one or more input files for lines containing a match to a specified pattern"
+    },
+    {
+      "name": "gss-client",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/gss-client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "gss-server",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/gss-server",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "head",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/head",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "hostname",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/hostname",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "http-mitm-proxy",
+      "package": "npm:http-mitm-proxy",
+      "path": "/data/data/com.termux/files/usr/bin/http-mitm-proxy",
+      "source": "npm",
+      "tags": [
+        "reverse_engineering"
+      ],
+      "category": "reverse_engineering",
+      "description": ""
+    },
+    {
+      "name": "hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hunzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "hzip",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/hzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "ifconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ifconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ipmaddr",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ipmaddr",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "iptunnel",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/iptunnel",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "ispellaff2myspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/ispellaff2myspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "jq",
+      "package": "jq",
+      "path": "/data/data/com.termux/files/usr/bin/jq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "name": "k5srvutil",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/k5srvutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kadmin",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmin",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kadmin.local",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmin.local",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kadmind",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kadmind",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kbxutil",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/kbxutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "kdb5_util",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kdb5_util",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kdestroy",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kdestroy",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kinit",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kinit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "klist",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/klist",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kpasswd",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kpasswd",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kprop",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kprop",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kpropd",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kpropd",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kproplog",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kproplog",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "krb5-config",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5-config",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "krb5-send-pr",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5-send-pr",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "krb5kdc",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/krb5kdc",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kswitch",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kswitch",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "ktutil",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/ktutil",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "kvno",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/kvno",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "ldns-config",
+      "package": "ldns",
+      "path": "/data/data/com.termux/files/usr/bin/ldns-config",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^ldns$|^ldns-",
+      "category": "network_tools",
+      "description": "Library for simplifying DNS programming and supporting recent and experimental RFCs"
+    },
+    {
+      "name": "less",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/less",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "lesskey",
+      "package": "less",
+      "path": "/data/data/com.termux/files/usr/bin/lesskey",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^less$|^less-",
+      "category": "text_processing",
+      "description": "Terminal pager program used to view the contents of a text file one screen at a time"
+    },
+    {
+      "name": "logcat",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/logcat",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "logger",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/logger",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "login",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/login",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "makealias",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/makealias",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "mergecap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mergecap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "mii-tool",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/mii-tool",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "mmdbresolve",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/mmdbresolve",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "munch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/munch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "nameif",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/nameif",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "nano",
+      "package": "nano",
+      "path": "/data/data/com.termux/files/usr/bin/nano",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^nano$|^nano-",
+      "category": "text_processing",
+      "description": "Small, free and friendly text editor"
+    },
+    {
+      "name": "netstat",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/netstat",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "onig-config",
+      "package": "oniguruma",
+      "path": "/data/data/com.termux/files/usr/bin/onig-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^oniguruma$|^oniguruma-",
+      "category": "text_processing",
+      "description": "Regular expressions library"
+    },
+    {
+      "name": "openssl",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/openssl",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Package unknown"
+    },
+    {
+      "name": "p11-kit",
+      "package": "p11-kit",
+      "path": "/data/data/com.termux/files/usr/bin/p11-kit",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^p11$|^p11-",
+      "category": "security",
+      "description": "Provides a way to load and enumerate PKCS#11 modules"
+    },
+    {
+      "name": "passwd",
+      "package": "termux-auth",
+      "path": "/data/data/com.termux/files/usr/bin/passwd",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Password authentication library and utility for Termux"
+    },
+    {
+      "name": "patch",
+      "package": "patch",
+      "path": "/data/data/com.termux/files/usr/bin/patch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU patch which applies diff files to create patched files"
+    },
+    {
+      "name": "pcre2-config",
+      "package": "pcre2",
+      "path": "/data/data/com.termux/files/usr/bin/pcre2-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^pcre2$|^pcre2-",
+      "category": "text_processing",
+      "description": "Perl 5 compatible regular expression library"
+    },
+    {
+      "name": "pinentry-curses",
+      "package": "pinentry",
+      "path": "/data/data/com.termux/files/usr/bin/pinentry-curses",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^pinentry$|^pinentry-",
+      "category": "security",
+      "description": "Dialog allowing secure password entry"
+    },
+    {
+      "name": "pinentry-tty",
+      "package": "pinentry",
+      "path": "/data/data/com.termux/files/usr/bin/pinentry-tty",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^pinentry$|^pinentry-",
+      "category": "security",
+      "description": "Dialog allowing secure password entry"
+    },
+    {
+      "name": "ping",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ping",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "ping6",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/ping6",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "plipconfig",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/plipconfig",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "pm",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/pm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "precat",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/precat",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "preunzip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/preunzip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "prezip-bin",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/prezip-bin",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "pspell-config",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/pspell-config",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "pwlogin",
+      "package": "termux-auth",
+      "path": "/data/data/com.termux/files/usr/bin/pwlogin",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Password authentication library and utility for Termux"
+    },
+    {
+      "name": "quick_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/quick_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel"
+    },
+    {
+      "name": "randpkt",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/randpkt",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rarp",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/rarp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "rawshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/rawshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rclone",
+      "package": "rclone",
+      "path": "/data/data/com.termux/files/usr/bin/rclone",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "rsync for cloud storage"
+    },
+    {
+      "name": "recon_v2.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/recon_v2.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel"
+    },
+    {
+      "name": "red",
+      "package": "ed",
+      "path": "/data/data/com.termux/files/usr/bin/red",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^ed$|^ed-",
+      "category": "text_processing",
+      "description": "Classic UNIX line editor"
+    },
+    {
+      "name": "reordercap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/reordercap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "rg",
+      "package": "ripgrep",
+      "path": "/data/data/com.termux/files/usr/bin/rg",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Search tool like grep and The Silver Searcher"
+    },
+    {
+      "name": "route",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/route",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "run-with-aspell",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/run-with-aspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "sclient",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sclient",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "scp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/scp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sdiff",
+      "package": "diffutils",
+      "path": "/data/data/com.termux/files/usr/bin/sdiff",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^diffutils$|^diffutils-",
+      "category": "text_processing",
+      "description": "Programs (cmp, diff, diff3 and sdiff) related to finding differences between files"
+    },
+    {
+      "name": "sed",
+      "package": "sed",
+      "path": "/data/data/com.termux/files/usr/bin/sed",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "GNU stream editor for filtering/transforming text"
+    },
+    {
+      "name": "service-daemon",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/service-daemon",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "settings",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/settings",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "sftp",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sharkd",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/sharkd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "shellcheck",
+      "package": "shellcheck",
+      "path": "/data/data/com.termux/files/usr/bin/shellcheck",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Shell script analysis tool"
+    },
+    {
+      "name": "sim_client",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sim_client",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "sim_server",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sim_server",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "slattach",
+      "package": "net-tools",
+      "path": "/data/data/com.termux/files/usr/bin/slattach",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^net$|^net-",
+      "category": "network_tools",
+      "description": "Configuration tools for Linux networking"
+    },
+    {
+      "name": "sort",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/sort",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "sserver",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/sserver",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "ssh",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-add",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-add",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-agent",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-agent",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-copy-id",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-copy-id",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-keygen",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keygen",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "category": "security",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "ssh-keyscan",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/ssh-keyscan",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "sshd",
+      "package": "openssh",
+      "path": "/data/data/com.termux/files/usr/bin/sshd",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^openssh$|^openssh-",
+      "category": "network_tools",
+      "description": "Secure shell for logging into a remote machine"
+    },
+    {
+      "name": "su",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/su",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "surgical_recon.sh",
+      "package": "ref_templates",
+      "path": "/data/data/com.termux/files/home/refTemplates/surgical_recon.sh",
+      "source": "ref_templates",
+      "tags": [
+        "recon_intel"
+      ],
+      "category": "recon_intel"
+    },
+    {
+      "name": "sv-disable",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/sv-disable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "sv-enable",
+      "package": "termux-services",
+      "path": "/data/data/com.termux/files/usr/bin/sv-enable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "auto_tag_source": "auto:^termux$|^termux-",
+      "category": "termux_api",
+      "description": "Service daemon for Termux"
+    },
+    {
+      "name": "tail",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tail",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "telnet",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/telnet",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "termux-am",
+      "package": "termux-am-socket",
+      "path": "/data/data/com.termux/files/usr/bin/termux-am",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "A faster version of am with less features that only works while Termux is running"
+    },
+    {
+      "name": "termux-am-socket",
+      "package": "termux-am-socket",
+      "path": "/data/data/com.termux/files/usr/bin/termux-am-socket",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "A faster version of am with less features that only works while Termux is running"
+    },
+    {
+      "name": "termux-api-start",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-api-start",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-api-stop",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-api-stop",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-apps-info-app-version-name",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-app-version-name.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-app-version-name.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.bash",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-apps-info-env-variable.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-apps-info-env-variable.sh",
+      "source": "apt",
+      "tags": [
+        "reverse_engineering",
+        "termux_api"
+      ],
+      "category": "reverse_engineering",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-audio-info",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-audio-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-backup",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-backup",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-battery-status",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-battery-status",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-brightness",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-brightness",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-call-log",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-call-log",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-camera-info",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-camera-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-camera-photo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-camera-photo",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-change-repo",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-change-repo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-chroot",
+      "package": "proot",
+      "path": "/data/data/com.termux/files/usr/bin/termux-chroot",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Emulate chroot, bind mount and binfmt_misc for non-root users"
+    },
+    {
+      "name": "termux-clipboard-get",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-clipboard-get",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-clipboard-set",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-clipboard-set",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-contact-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-contact-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-dialog",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-dialog",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-download",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-download",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-elf-cleaner",
+      "package": "termux-elf-cleaner",
+      "path": "/data/data/com.termux/files/usr/bin/termux-elf-cleaner",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Cleaner of ELF files for Android"
+    },
+    {
+      "name": "termux-exec-ld-preload-lib",
+      "package": "termux-exec",
+      "path": "/data/data/com.termux/files/usr/bin/termux-exec-ld-preload-lib",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux exec including a LD_PRELOAD shared library for proper functioning of the Termux execution environment"
+    },
+    {
+      "name": "termux-exec-system-linker-exec",
+      "package": "termux-exec",
+      "path": "/data/data/com.termux/files/usr/bin/termux-exec-system-linker-exec",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux exec including a LD_PRELOAD shared library for proper functioning of the Termux execution environment"
+    },
+    {
+      "name": "termux-fingerprint",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-fingerprint",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-fix-shebang",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-fix-shebang",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-info",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-info",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-infrared-frequencies",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-infrared-frequencies",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-infrared-transmit",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-infrared-transmit",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-job-scheduler",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-job-scheduler",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-keystore",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-keystore",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-location",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-location",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-media-player",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-media-player",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-media-scan",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-media-scan",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-microphone-record",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-microphone-record",
+      "source": "apt",
+      "tags": [
+        "multimedia",
+        "termux_api"
+      ],
+      "category": "multimedia",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-nfc",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-nfc",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-channel",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-channel",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-notification-remove",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-notification-remove",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-open",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-open",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-open-url",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-open-url",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-reload-settings",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-reload-settings",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-reset",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-reset",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-restore",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-restore",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-saf-create",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-create",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-dirs",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-dirs",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-ls",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-ls",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-managedir",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-managedir",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-mkdir",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-mkdir",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-read",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-read",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-rm",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-rm",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-stat",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-stat",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-saf-write",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-saf-write",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-scoped-env-variable",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-scoped-env-variable.bash",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable.bash",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-scoped-env-variable.sh",
+      "package": "termux-core",
+      "path": "/data/data/com.termux/files/usr/bin/termux-scoped-env-variable.sh",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Utils and libraries for Termux core"
+    },
+    {
+      "name": "termux-sensor",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sensor",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-setup-package-manager",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-setup-package-manager",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-setup-storage",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-setup-storage",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-share",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-share",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-inbox",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-inbox",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-list",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-list",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sms-send",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sms-send",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-speech-to-text",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-speech-to-text",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-storage-get",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-storage-get",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-sync",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/bin/termux-sync",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Package unknown"
+    },
+    {
+      "name": "termux-telephony-call",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-call",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-telephony-cellinfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-cellinfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-telephony-deviceinfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-telephony-deviceinfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-toast",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-toast",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-torch",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-torch",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-tts-engines",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-tts-engines",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-tts-speak",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-tts-speak",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-usb",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-usb",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-vibrate",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-vibrate",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-volume",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-volume",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wake-lock",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wake-lock",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-wake-unlock",
+      "package": "termux-tools",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wake-unlock",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Basic system tools for Termux"
+    },
+    {
+      "name": "termux-wallpaper",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wallpaper",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-connectioninfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-connectioninfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-enable",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-enable",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-wifi-scaninfo",
+      "package": "termux-api",
+      "path": "/data/data/com.termux/files/usr/bin/termux-wifi-scaninfo",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux API commands (install also the Termux:API app)"
+    },
+    {
+      "name": "termux-x11",
+      "package": "termux-x11-nightly",
+      "path": "/data/data/com.termux/files/usr/bin/termux-x11",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux X11 add-on."
+    },
+    {
+      "name": "termux-x11-preference",
+      "package": "termux-x11-nightly",
+      "path": "/data/data/com.termux/files/usr/bin/termux-x11-preference",
+      "source": "apt",
+      "tags": [
+        "termux_api"
+      ],
+      "category": "termux_api",
+      "description": "Termux X11 add-on."
+    },
+    {
+      "name": "text2pcap",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/text2pcap",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "tftp",
+      "package": "inetutils",
+      "path": "/data/data/com.termux/files/usr/bin/tftp",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^inetutils$|^inetutils-",
+      "category": "network_tools",
+      "description": "Collection of common network programs"
+    },
+    {
+      "name": "tidy",
+      "package": "tidy",
+      "path": "/data/data/com.termux/files/usr/bin/tidy",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A tool to tidy down your HTML code to a clean style"
+    },
+    {
+      "name": "tr",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/tr",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "trust",
+      "package": "p11-kit",
+      "path": "/data/data/com.termux/files/usr/bin/trust",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^p11$|^p11-",
+      "category": "security",
+      "description": "Provides a way to load and enumerate PKCS#11 modules"
+    },
+    {
+      "name": "tshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/tshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "auto_tag_source": "auto:^wireshark$|^wireshark-",
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "uniq",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/uniq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "unix2dos",
+      "package": "dos2unix",
+      "path": "/data/data/com.termux/files/usr/bin/unix2dos",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^dos2unix$|^dos2unix-",
+      "category": "text_processing",
+      "description": "Converts between DOS and Unix text files"
+    },
+    {
+      "name": "unmunch",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/unmunch",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "uuclient",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/uuclient",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "uuserver",
+      "package": "krb5",
+      "path": "/data/data/com.termux/files/usr/bin/uuserver",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^krb5$|^krb5-",
+      "category": "security",
+      "description": "The Kerberos network authentication system"
+    },
+    {
+      "name": "watchgnupg",
+      "package": "gnupg",
+      "path": "/data/data/com.termux/files/usr/bin/watchgnupg",
+      "source": "apt",
+      "tags": [
+        "security"
+      ],
+      "auto_tag_source": "auto:^gnupg$|^gnupg-",
+      "category": "security",
+      "description": "Implementation of the OpenPGP standard for encrypting and signing data and communication"
+    },
+    {
+      "name": "wc",
+      "package": "unknown",
+      "path": "/data/data/com.termux/files/usr/glibc/bin/wc",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "Package unknown"
+    },
+    {
+      "name": "wget",
+      "package": "wget",
+      "path": "/data/data/com.termux/files/usr/bin/wget",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Commandline tool for retrieving files using HTTP, HTTPS and FTP"
+    },
+    {
+      "name": "wireshark",
+      "package": "wireshark-qt",
+      "path": "/data/data/com.termux/files/usr/bin/wireshark",
+      "source": "apt",
+      "tags": [
+        "network_tools"
+      ],
+      "category": "network_tools",
+      "description": "Network protocol analyzer"
+    },
+    {
+      "name": "word-list-compress",
+      "package": "aspell",
+      "path": "/data/data/com.termux/files/usr/bin/word-list-compress",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^aspell$|^aspell-",
+      "category": "text_processing",
+      "description": "A free and open source spell checker designed to replace Ispell"
+    },
+    {
+      "name": "wordforms",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordforms",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "wordlist2hunspell",
+      "package": "hunspell",
+      "path": "/data/data/com.termux/files/usr/bin/wordlist2hunspell",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "auto_tag_source": "auto:^hunspell$|^hunspell-",
+      "category": "text_processing",
+      "description": "Spell checker"
+    },
+    {
+      "name": "yq",
+      "package": "yq",
+      "path": "/data/data/com.termux/files/usr/bin/yq",
+      "source": "apt",
+      "tags": [
+        "text_processing"
+      ],
+      "category": "text_processing",
+      "description": "A lightweight and portable command-line YAML, JSON and XML processor"
+    }
+  ]
+}

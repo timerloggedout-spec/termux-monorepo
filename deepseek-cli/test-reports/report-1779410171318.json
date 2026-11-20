@@ -1,0 +1,1252 @@
+{
+  "started": "2026-05-22T00:35:48.919Z",
+  "tests": [
+    {
+      "name": "Authentication",
+      "ok": true,
+      "details": {},
+      "ts": 1779410161638
+    },
+    {
+      "name": "DOM discovery",
+      "ok": true,
+      "details": {
+        "textareas": 1,
+        "buttons": 11,
+        "fileInputs": 1,
+        "radios": 2
+      },
+      "ts": 1779410161682
+    },
+    {
+      "name": "Expert mode enable",
+      "ok": true,
+      "details": {
+        "checked": "true"
+      },
+      "ts": 1779410163573
+    },
+    {
+      "name": "Upload input discovery",
+      "ok": true,
+      "details": {
+        "count": 1
+      },
+      "ts": 1779410163576
+    },
+    {
+      "name": "Textarea discovery",
+      "ok": true,
+      "details": {},
+      "ts": 1779410163644
+    },
+    {
+      "name": "Send button intelligence",
+      "ok": true,
+      "details": {
+        "candidates": [
+          {
+            "idx": 0,
+            "text": "",
+            "aria": null,
+            "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+            "disabled": "false",
+            "w": 34,
+            "h": 34,
+            "svg": true
+          },
+          {
+            "idx": 1,
+            "text": "",
+            "aria": null,
+            "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+            "disabled": "false",
+            "w": 34,
+            "h": 34,
+            "svg": true
+          },
+          {
+            "idx": 2,
+            "text": "",
+            "aria": null,
+            "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+            "disabled": "false",
+            "w": 34,
+            "h": 34,
+            "svg": true
+          },
+          {
+            "idx": 3,
+            "text": "",
+            "aria": null,
+            "cls": "d05a0287 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+            "disabled": "false",
+            "w": 0,
+            "h": 0,
+            "svg": true
+          },
+          {
+            "idx": 4,
+            "text": "",
+            "aria": null,
+            "cls": "_7d1f5e2 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+            "disabled": "false",
+            "w": 0,
+            "h": 0,
+            "svg": true
+          },
+          {
+            "idx": 5,
+            "text": "",
+            "aria": null,
+            "cls": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+            "disabled": "false",
+            "w": 0,
+            "h": 0,
+            "svg": true
+          },
+          {
+            "idx": 6,
+            "text": "",
+            "aria": null,
+            "cls": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+            "disabled": "false",
+            "w": 0,
+            "h": 0,
+            "svg": true
+          },
+          {
+            "idx": 7,
+            "text": "DeepThink",
+            "aria": null,
+            "cls": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--md",
+            "disabled": "false",
+            "w": 106.359375,
+            "h": 34,
+            "svg": true
+          },
+          {
+            "idx": 8,
+            "text": "Search",
+            "aria": null,
+            "cls": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--selected ds-toggle-button--md",
+            "disabled": "false",
+            "w": 83.65625,
+            "h": 34,
+            "svg": true
+          },
+          {
+            "idx": 9,
+            "text": "",
+            "aria": null,
+            "cls": "_52c986b bd74640a ds-icon-button ds-icon-button--l ds-icon-button--sizing-container ds-icon-button--disabled",
+            "disabled": "true",
+            "w": 34,
+            "h": 34,
+            "svg": true
+          }
+        ]
+      },
+      "ts": 1779410163661
+    },
+    {
+      "name": "Textarea injection",
+      "ok": true,
+      "details": {
+        "valueLength": 33
+      },
+      "ts": 1779410165813
+    },
+    {
+      "name": "Completion endpoint discovery",
+      "ok": true,
+      "details": {
+        "endpoints": [
+          "https://fe-static.deepseek.com/chat/static/default-vendors.b3428ecdc9.js",
+          "https://fe-static.deepseek.com/chat/static/main.3f4386779c.js",
+          "https://fe-static.deepseek.com/chat/static/main.23c4471232.css",
+          "https://fe-static.deepseek.com/chat/static/katex.e3bf7abdb0.css",
+          "https://fe-static.deepseek.com/chat/static/katex.f65302e438.js",
+          "https://fe-static.deepseek.com/chat/static/Inter-Regular-subset.25cc0f0e93.woff2",
+          "https://fe-static.deepseek.com/chat/static/Inter-Medium-subset.43ff37cb99.woff2",
+          "https://fe-static.deepseek.com/chat/static/Inter-SemiBold-subset.325ed64dc1.woff2",
+          "https://chat.deepseek.com/api/v0/chat/create_pow_challenge",
+          "https://fe-static.deepseek.com/chat/static/66419.e8b2a11c4d.js",
+          "https://fe-static.deepseek.com/chat/static/33614.570c5fac7d.js",
+          "https://fe-static.deepseek.com/chat/static/60816.206e80cf1d.js",
+          "https://fe-static.deepseek.com/chat/static/sha3_wasm_bg.7b9ca65ddd.wasm"
+        ]
+      },
+      "ts": 1779410170821
+    },
+    {
+      "name": "SSE stream detection",
+      "ok": false,
+      "details": {
+        "completions": [],
+        "uploads": [],
+        "fetches": [],
+        "sseChunks": 0
+      },
+      "ts": 1779410170843
+    },
+    {
+      "name": "Selector drift analysis",
+      "ok": true,
+      "details": {
+        "changedClasses": [],
+        "driftCount": 0
+      },
+      "ts": 1779410170866
+    },
+    {
+      "name": "Endpoint correlation map",
+      "ok": true,
+      "details": {
+        "total": 34
+      },
+      "ts": 1779410170887
+    }
+  ],
+  "selectors": {
+    "sendCandidates": [
+      {
+        "idx": 0,
+        "text": "",
+        "aria": null,
+        "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "disabled": "false",
+        "w": 34,
+        "h": 34,
+        "svg": true
+      },
+      {
+        "idx": 1,
+        "text": "",
+        "aria": null,
+        "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "disabled": "false",
+        "w": 34,
+        "h": 34,
+        "svg": true
+      },
+      {
+        "idx": 2,
+        "text": "",
+        "aria": null,
+        "cls": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "disabled": "false",
+        "w": 34,
+        "h": 34,
+        "svg": true
+      },
+      {
+        "idx": 3,
+        "text": "",
+        "aria": null,
+        "cls": "d05a0287 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+        "disabled": "false",
+        "w": 0,
+        "h": 0,
+        "svg": true
+      },
+      {
+        "idx": 4,
+        "text": "",
+        "aria": null,
+        "cls": "_7d1f5e2 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+        "disabled": "false",
+        "w": 0,
+        "h": 0,
+        "svg": true
+      },
+      {
+        "idx": 5,
+        "text": "",
+        "aria": null,
+        "cls": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+        "disabled": "false",
+        "w": 0,
+        "h": 0,
+        "svg": true
+      },
+      {
+        "idx": 6,
+        "text": "",
+        "aria": null,
+        "cls": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+        "disabled": "false",
+        "w": 0,
+        "h": 0,
+        "svg": true
+      },
+      {
+        "idx": 7,
+        "text": "DeepThink",
+        "aria": null,
+        "cls": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--md",
+        "disabled": "false",
+        "w": 106.359375,
+        "h": 34,
+        "svg": true
+      },
+      {
+        "idx": 8,
+        "text": "Search",
+        "aria": null,
+        "cls": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--selected ds-toggle-button--md",
+        "disabled": "false",
+        "w": 83.65625,
+        "h": 34,
+        "svg": true
+      },
+      {
+        "idx": 9,
+        "text": "",
+        "aria": null,
+        "cls": "_52c986b bd74640a ds-icon-button ds-icon-button--l ds-icon-button--sizing-container ds-icon-button--disabled",
+        "disabled": "true",
+        "w": 34,
+        "h": 34,
+        "svg": true
+      }
+    ]
+  },
+  "endpoints": {
+    "https://chat.deepseek.com/": {
+      "method": "GET",
+      "lastSeen": 1779410153127
+    },
+    "https://fe-static.deepseek.com/chat/static/default-vendors.b3428ecdc9.js": {
+      "method": "GET",
+      "lastSeen": 1779410153831
+    },
+    "https://fe-static.deepseek.com/chat/static/main.3f4386779c.js": {
+      "method": "GET",
+      "lastSeen": 1779410153834
+    },
+    "https://fe-static.deepseek.com/chat/static/main.23c4471232.css": {
+      "method": "GET",
+      "lastSeen": 1779410153841
+    },
+    "https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/5.0/collect-rangers-v5.2.11.js": {
+      "method": "GET",
+      "lastSeen": 1779410153925
+    },
+    "https://apm.volccdn.com/mars-web/apmplus/web/browser.cn.js?aid=0&globalName=apmPlus": {
+      "method": "GET",
+      "lastSeen": 1779410153928
+    },
+    "https://gator.volces.com/list": {
+      "method": "POST",
+      "lastSeen": 1779410164032
+    },
+    "https://gator.volces.com/profile/list": {
+      "method": "POST",
+      "lastSeen": 1779410155246
+    },
+    "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=main": {
+      "method": "GET",
+      "lastSeen": 1779410155231
+    },
+    "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=model": {
+      "method": "GET",
+      "lastSeen": 1779410155234
+    },
+    "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=web_upgrade": {
+      "method": "GET",
+      "lastSeen": 1779410155237
+    },
+    "https://fe-static.deepseek.com/chat/static/katex.e3bf7abdb0.css": {
+      "method": "GET",
+      "lastSeen": 1779410155239
+    },
+    "https://fe-static.deepseek.com/chat/static/katex.f65302e438.js": {
+      "method": "GET",
+      "lastSeen": 1779410155241
+    },
+    "https://chat.deepseek.com/api/v0/users/current": {
+      "method": "GET",
+      "lastSeen": 1779410155249
+    },
+    "https://apmplus.volces.com/settings/get/webpro?aid=675113": {
+      "method": "OPTIONS",
+      "lastSeen": 1779410155295
+    },
+    "https://fe-static.deepseek.com/chat/static/Inter-Regular-subset.25cc0f0e93.woff2": {
+      "method": "GET",
+      "lastSeen": 1779410156052
+    },
+    "https://fe-static.deepseek.com/chat/static/Inter-Medium-subset.43ff37cb99.woff2": {
+      "method": "GET",
+      "lastSeen": 1779410156054
+    },
+    "https://fe-static.deepseek.com/chat/static/Inter-SemiBold-subset.325ed64dc1.woff2": {
+      "method": "GET",
+      "lastSeen": 1779410156056
+    },
+    "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=": {
+      "method": "GET",
+      "lastSeen": 1779410156058
+    },
+    "data:image/webp;base64,UklGRgACAABXRUJQVlA4WAoAAAAgAAAAAAAAAAAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDhMEQAAAC8AAAAAB9D//ve//4GI6H8AAA==": {
+      "method": "GET",
+      "lastSeen": 1779410156068
+    },
+    "https://chat.deepseek.com/api/v0/client/settings?did=&scope=banner": {
+      "method": "GET",
+      "lastSeen": 1779410156076
+    },
+    "https://hif-leim.deepseek.com/query": {
+      "method": "GET",
+      "lastSeen": 1779410156403
+    },
+    "https://hif-dliq.deepseek.com/query": {
+      "method": "OPTIONS",
+      "lastSeen": 1779410163974
+    },
+    "https://chat.deepseek.com/api/v0/chat/create_pow_challenge": {
+      "method": "POST",
+      "lastSeen": 1779410156624
+    },
+    "https://chat.deepseek.com/api/v0/chat_session/create": {
+      "method": "POST",
+      "lastSeen": 1779410156420
+    },
+    "https://fe-static.deepseek.com/chat/static/66419.e8b2a11c4d.js": {
+      "method": "GET",
+      "lastSeen": 1779410156616
+    },
+    "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback": {
+      "method": "GET",
+      "lastSeen": 1779410156619
+    },
+    "https://static.deepseek.com/user-avatar/azs3q7jzVb0fSpqBGrQEvc3E": {
+      "method": "GET",
+      "lastSeen": 1779410156621
+    },
+    "blob:https://chat.deepseek.com/2b8e3c99-d9ae-4a5f-86c5-687732a7fa92": {
+      "method": "GET",
+      "lastSeen": 1779410156948
+    },
+    "https://challenges.cloudflare.com/turnstile/v0/b/1eec422858ff/api.js": {
+      "method": "GET",
+      "lastSeen": 1779410157006
+    },
+    "blob:https://chat.deepseek.com/93abac7a-e867-4ad5-aead-6b5d0bad540a": {
+      "method": "GET",
+      "lastSeen": 1779410157112
+    },
+    "https://fe-static.deepseek.com/chat/static/33614.570c5fac7d.js": {
+      "method": "GET",
+      "lastSeen": 1779410157218
+    },
+    "https://fe-static.deepseek.com/chat/static/60816.206e80cf1d.js": {
+      "method": "GET",
+      "lastSeen": 1779410157357
+    },
+    "https://fe-static.deepseek.com/chat/static/sha3_wasm_bg.7b9ca65ddd.wasm": {
+      "method": "GET",
+      "lastSeen": 1779410157649
+    }
+  },
+  "dom": {
+    "textareas": [
+      {
+        "placeholder": "Message DeepSeek",
+        "visible": true,
+        "className": "_27c9245 ds-scroll-area ds-scroll-area--show-on-focus-within d96f2d2a"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "",
+        "visible": true,
+        "className": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": true,
+        "className": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": true,
+        "className": "_4f3769f ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": false,
+        "className": "d05a0287 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": false,
+        "className": "_7d1f5e2 ds-icon-button ds-icon-button--l ds-icon-button--sizing-icon",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": false,
+        "className": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": false,
+        "className": "ds-icon-button ds-icon-button--xl ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "DeepThink",
+        "visible": true,
+        "className": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--md",
+        "aria": null
+      },
+      {
+        "text": "Search",
+        "visible": true,
+        "className": "ds-atom-button f79352dc ds-toggle-button ds-toggle-button--selected ds-toggle-button--md",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": true,
+        "className": "f02f0e25 ds-icon-button ds-icon-button--l ds-icon-button--sizing-container",
+        "aria": null
+      },
+      {
+        "text": "",
+        "visible": true,
+        "className": "_52c986b bd74640a ds-icon-button ds-icon-button--l ds-icon-button--sizing-container ds-icon-button--disabled",
+        "aria": null
+      }
+    ],
+    "fileInputs": [
+      {
+        "accept": ".pdf,.png,.jpg,.jpeg,.svg,.svgz,.bmp,.gif,.webp,.ico,.xbm,.dib,.pjp,.tif,.pjpeg,.avif,.apng,.tiff,.jfif,.txt,.md,.csv,.tsv,.html,.json,.log,.dot,.go,.h,.c,.cpp,.cxx,.cc,.cs,.java,.js,.css,.jsp,.php,.py,.py3,.asp,.yaml,.yml,.ini,.conf,.ts,.tsx,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.abap,.asc,.ash,.ampl,.mod,.g4,.apib,.apl,.dyalog,.asax,.ascx,.ashx,.asmx,.aspx,.axd,.dats,.hats,.sats,.as,.adb,.ada,.ads,.agda,.als,.apacheconf,.vhost,.cls,.applescript,.scpt,.arc,.ino,.asciidoc,.adoc,.aj,.asm,.a51,.inc,.nasm,.aug,.ahk,.ahkl,.au3,.awk,.auk,.gawk,.mawk,.nawk,.bat,.cmd,.befunge,.bison,.bb,.decls,.bmx,.bsv,.boo,.b,.bf,.brs,.bro,.cats,.idc,.w,.cake,.cshtml,.csx,.c++,.cp,.h++,.hh,.hpp,.hxx,.inl,.ipp,.tcc,.tpp,.c-objdump,.chs,.clp,.cmake,.in,.cob,.cbl,.ccp,.cobol,.cpy,.capnp,.mss,.ceylon,.chpl,.ch,.ck,.cirru,.clw,.icl,.dcl,.click,.clj,.boot,.cl2,.cljc,.cljs,.hl,.cljscm,.cljx,.hic,.coffee,._coffee,.cjsx,.cson,.iced,.cfm,.cfml,.cfc,.lisp,.asd,.cl,.l,.lsp,.ny,.podsl,.sexp,.cps,.coq,.v,.cppobjdump,.c++-objdump,.c++objdump,.cpp-objdump,.cxx-objdump,.creole,.cr,.feature,.cu,.cuh,.cy,.pyx,.pxd,.pxi,.d,.di,.d-objdump,.com,.dm,.zone,.arpa,.darcspatch,.dpatch,.dart,.diff,.patch,.dockerfile,.djs,.dylan,.dyl,.intr,.lid,.E,.ecl,.eclxml,.sch,.brd,.epj,.e,.ex,.exs,.elm,.el,.emacs,.desktop,.em,.emberscript,.erl,.es,.escript,.hrl,.xrl,.yrl,.fs,.fsi,.fsx,.fx,.flux,.f90,.f,.f03,.f08,.f77,.f95,.for,.fpp,.factor,.fy,.fancypack,.fan,.fth,.4th,.forth,.fr,.frt,.ftl,.g,.gco,.gcode,.gms,.gap,.gd,.gi,.tst,.s,.ms,.glsl,.fp,.frag,.frg,.fsh,.fshader,.geo,.geom,.glslv,.gshader,.shader,.vert,.vrx,.vsh,.vshader,.gml,.kid,.ebuild,.eclass,.po,.pot,.glf,.gp,.gnu,.gnuplot,.plot,.plt,.golo,.gs,.gst,.gsx,.vark,.grace,.gradle,.gf,.graphql,.gv,.man,.1in,.1m,.1x,.3in,.3m,.3qt,.3x,.me,.n,.rno,.roff,.groovy,.grt,.gtpl,.gvy,.gsp,.hcl,.tf,.hlsl,.fxh,.hlsli,.htm,.st,.xht,.xhtml,.mustache,.jinja,.eex,.erb,.deface,.phtml,.http,.haml,.handlebars,.hbs,.hb,.hs,.hsc,.hx,.hxsl,.hy,.pro,.dlm,.ipf,.cfg,.prefs,.properties,.irclog,.weechatlog,.idr,.lidr,.ni,.i7x,.iss,.io,.ik,.thy,.ijs,.flex,.jflex,.geojson,.lock,.topojson,.json5,.jsonld,.jq,.jsx,.jade,.j,._js,.bones,.es6,.jake,.jsb,.jscad,.jsfl,.jsm,.jss,.njs,.pac,.sjs,.ssjs,.sublime-build,.sublime-commands,.sublime-completions,.sublime-keymap,.sublime-macro,.sublime-menu,.sublime-mousemap,.sublime-project,.sublime-settings,.sublime-theme,.sublime-workspace,.sublime_metrics,.sublime_session,.xsjs,.xsjslib,.jl,.ipynb,.krl,.kicad_pcb,.kit,.kt,.ktm,.kts,.lfe,.ll,.lol,.lsl,.lslp,.lvproj,.lasso,.las,.lasso8,.lasso9,.ldml,.latte,.lean,.hlean,.less,.lex,.ly,.ily,.m,.ld,.lds,.liquid,.lagda,.litcoffee,.lhs,.ls,._ls,.xm,.x,.xi,.lgt,.logtalk,.lookml,.lua,.fcgi,.nse,.pd_lua,.rbxs,.wlua,.mumps,.m4,.mcr,.mtml,.muf,.mak,.mk,.mkfile,.mako,.mao,.markdown,.mkd,.mkdn,.mkdown,.ron,.mask,.mathematica,.cdf,.ma,.map,.mt,.nb,.nbp,.wl,.wlt,.matlab,.maxpat,.maxhelp,.maxproj,.mxt,.pat,.mediawiki,.wiki,.moo,.metal,.minid,.druby,.duby,.mir,.mirah,.mo,.mms,.mmk,.monkey,.moon,.myt,.ncl,.nl,.nsi,.nsh,.axs,.axi,.nlogo,.nginxconf,.nim,.nimrod,.ninja,.nit,.nix,.nu,.numpy,.numpyw,.numsc,.ml,.eliom,.eliomi,.ml4,.mli,.mll,.mly,.objdump,.mm,.sj,.omgrofl,.opa,.opal,.opencl,.p,.scad,.org,.ox,.oxh,.oxo,.oxygene,.oz,.pwn,.aw,.ctp,.php3,.php4,.php5,.php6,.php7,.php8,.phps,.phpt,.pls,.pck,.pkb,.pks,.plb,.plsql,.sql,.pov,.pan,.psc,.parrot,.pasm,.pir,.pas,.dfm,.dpr,.lpr,.pp,.pl,.al,.cgi,.perl,.ph,.plx,.pm,.pod,.psgi,.t,.6pl,.6pm,.nqp,.p6,.p6l,.p6m,.pl6,.pm6,.pkl,.pig,.pike,.pmod,.pogo,.pony,.ps,.eps,.ps1,.psd1,.psm1,.pde,.prolog,.yap,.spin,.proto,.pub,.pd,.pb,.pbi,.purs,.bzl,.gyp,.lmi,.pyde,.pyi,.pyp,.pyt,.pyw,.rpy,.tac,.wsgi,.xpy,.pytb,.qml,.qbs,.pri,.r,.rd,.rsx,.raml,.rdoc,.rbbas,.rbfrm,.rbmnu,.rbres,.rbtbar,.rbuistate,.rhtml,.rmd,.rkt,.rktd,.rktl,.scrbl,.rl,.raw,.reb,.r2,.r3,.rebol,.red,.reds,.cw,.rs,.rsh,.robot,.rg,.rb,.builder,.gemspec,.god,.irbrc,.jbuilder,.mspec,.pluginspec,.podspec,.rabl,.rake,.rbuild,.rbw,.rbx,.ru,.ruby,.thor,.watchr,.sas,.scss,.smt2,.smt,.sparql,.rq,.sqf,.hqf,.cql,.ddl,.prc,.tab,.udf,.viw,.db2,.ston,.sage,.sagews,.sls,.sass,.scala,.sbt,.sc,.scaml,.scm,.sld,.sps,.ss,.sci,.sce,.self,.sh,.bash,.bats,.command,.ksh,.tmux,.tool,.zsh,.sh-session,.shen,.sl,.slim,.smali,.tpl,.sp,.sma,.nut,.stan,.ML,.fun,.sig,.sml,.do,.ado,.doh,.ihlp,.mata,.matah,.sthlp,.styl,.scd,.swift,.sv,.svh,.vh,.toml,.txl,.tcl,.adp,.tm,.tcsh,.csh,.tex,.aux,.bbx,.bib,.cbx,.dtx,.ins,.lbx,.ltx,.mkii,.mkiv,.mkvi,.sty,.toc,.tea,.no,.textile,.thrift,.tu,.ttl,.twig,.upc,.anim,.asset,.meta,.prefab,.unity,.uno,.uc,.ur,.urs,.vcl,.vhdl,.vhd,.vhf,.vhi,.vho,.vhs,.vht,.vhw,.vala,.vapi,.veo,.vim,.vb,.bas,.frm,.frx,.vba,.vbhtml,.vbs,.volt,.vue,.owl,.webidl,.x10,.xc,.xml,.ant,.axml,.ccxml,.clixml,.cproject,.csl,.csproj,.ct,.dita,.ditamap,.ditaval,.config,.dotsettings,.filters,.fsproj,.fxml,.glade,.grxml,.iml,.ivy,.jelly,.jsproj,.kml,.launch,.mdpolicy,.mxml,.nproj,.nuspec,.odd,.osm,.plist,.props,.ps1xml,.psc1,.pt,.rdf,.rss,.scxml,.srdf,.storyboard,.stTheme,.sublime-snippet,.targets,.tmCommand,.tml,.tmLanguage,.tmPreferences,.tmSnippet,.tmTheme,.ui,.urdf,.ux,.vbproj,.vcxproj,.vssettings,.vxml,.wsdl,.wsf,.wxi,.wxl,.wxs,.x3d,.xacro,.xaml,.xib,.xlf,.xliff,.xmi,.dist,.xproj,.xsd,.xul,.zcml,.xsp-config,.metadata,.xpl,.xproc,.xquery,.xq,.xql,.xqm,.xqy,.xs,.xslt,.xsl,.xojo_code,.xojo_menu,.xojo_report,.xojo_script,.xojo_toolbar,.xojo_window,.xtend,.reek,.rviz,.sublime-syntax,.syntax,.yang,.y,.yacc,.yy,.zep,.zimpl,.zmpl,.zpl,.ec,.eh,.edn,.fish,.mu,.nc,.ooc,.rst,.rest,.wisp,.prg,.prw,.gitignore,.gitkeep,.gitmodules,.example,.avifs,.blp,.bufr,.bw,.cur,.dcx,.dds,.emf,.fit,.fits,.flc,.fli,.ftc,.ftu,.gbr,.grib,.h5,.hdf,.hif,.icb,.icns,.iim,.im,.j2c,.j2k,.jp2,.jpc,.jpe,.jpf,.jpx,.mpeg,.mpg,.msp,.pbm,.pcd,.pcx,.pfm,.pgm,.pnm,.ppm,.psd,.pxr,.qoi,.ras,.rgb,.rgba,.sgi,.tga,.vda,.vst,.wmf,.xpm,.epub,.mobi",
+        "visible": false,
+        "hidden": false,
+        "disabled": false,
+        "className": ""
+      }
+    ],
+    "radios": [
+      {
+        "text": "Instant",
+        "checked": "true",
+        "className": "_9f2341b _7ac2123 _31a22b0",
+        "model": "default"
+      },
+      {
+        "text": "Expert",
+        "checked": "false",
+        "className": "_9f2341b _7ac2123",
+        "model": "expert"
+      }
+    ],
+    "topClasses": [
+      [
+        "ds-icon",
+        19
+      ],
+      [
+        "ds-focus-ring",
+        14
+      ],
+      [
+        "ds-icon-button",
+        9
+      ],
+      [
+        "ds-icon-button__hover-bg",
+        9
+      ],
+      [
+        "ds-icon-button--l",
+        7
+      ],
+      [
+        "ds-icon-button--sizing-container",
+        7
+      ],
+      [
+        "ds-scroll-area",
+        4
+      ],
+      [
+        "_68953bc",
+        4
+      ],
+      [
+        "ds-skeleton",
+        4
+      ],
+      [
+        "ds-skeleton--m",
+        4
+      ],
+      [
+        "ds-skeleton--text",
+        4
+      ],
+      [
+        "_5c2e5a9",
+        4
+      ],
+      [
+        "_2273214",
+        4
+      ],
+      [
+        "_321831d",
+        4
+      ],
+      [
+        "ds-theme",
+        3
+      ],
+      [
+        "_4f3769f",
+        3
+      ],
+      [
+        "ds-scroll-area--show-on-focus-within",
+        3
+      ],
+      [
+        "ds-icon-button--sizing-icon",
+        2
+      ],
+      [
+        "ds-scroll-area__gutters",
+        2
+      ],
+      [
+        "ds-scroll-area__horizontal-gutter",
+        2
+      ],
+      [
+        "ds-scroll-area__horizontal-bar",
+        2
+      ],
+      [
+        "ds-scroll-area__vertical-gutter",
+        2
+      ],
+      [
+        "ds-scroll-area__vertical-bar",
+        2
+      ],
+      [
+        "the-header",
+        2
+      ],
+      [
+        "ds-icon-button--xl",
+        2
+      ],
+      [
+        "_9f2341b",
+        2
+      ],
+      [
+        "_7ac2123",
+        2
+      ],
+      [
+        "dfb78875",
+        2
+      ],
+      [
+        "aa40b5de",
+        2
+      ],
+      [
+        "_37fb93d",
+        2
+      ],
+      [
+        "ds-atom-button",
+        2
+      ],
+      [
+        "f79352dc",
+        2
+      ],
+      [
+        "ds-toggle-button",
+        2
+      ],
+      [
+        "ds-toggle-button--md",
+        2
+      ],
+      [
+        "ds-atom-button__icon",
+        2
+      ],
+      [
+        "_6dbc175",
+        2
+      ],
+      [
+        "ds-notification-container",
+        2
+      ],
+      [
+        "notranslate",
+        1
+      ],
+      [
+        "en_US",
+        1
+      ],
+      [
+        "light",
+        1
+      ],
+      [
+        "cb86951c",
+        1
+      ],
+      [
+        "cddfb2ed",
+        1
+      ],
+      [
+        "c3ecdb44",
+        1
+      ],
+      [
+        "dc04ec1d",
+        1
+      ],
+      [
+        "a02af2e6",
+        1
+      ],
+      [
+        "ca6d4be1",
+        1
+      ],
+      [
+        "_5a20a69",
+        1
+      ],
+      [
+        "_6acebc2",
+        1
+      ],
+      [
+        "e5bf614e",
+        1
+      ],
+      [
+        "b8812f16",
+        1
+      ],
+      [
+        "a2f3d50e",
+        1
+      ],
+      [
+        "_70b689f",
+        1
+      ],
+      [
+        "_262baab",
+        1
+      ],
+      [
+        "e066abb8",
+        1
+      ],
+      [
+        "_23e1c55",
+        1
+      ],
+      [
+        "d05a0287",
+        1
+      ],
+      [
+        "_7d1f5e2",
+        1
+      ],
+      [
+        "_5a8ac7a",
+        1
+      ],
+      [
+        "_1c42ad7",
+        1
+      ],
+      [
+        "_3586175",
+        1
+      ],
+      [
+        "_6d215eb",
+        1
+      ],
+      [
+        "_196bcac",
+        1
+      ],
+      [
+        "_8a693f3",
+        1
+      ],
+      [
+        "_77cdc67",
+        1
+      ],
+      [
+        "de3d058c",
+        1
+      ],
+      [
+        "_1d72f01",
+        1
+      ],
+      [
+        "_2afd28d",
+        1
+      ],
+      [
+        "ede5bc47",
+        1
+      ],
+      [
+        "fdf01f38",
+        1
+      ],
+      [
+        "_9d8da05",
+        1
+      ],
+      [
+        "_39cc453",
+        1
+      ],
+      [
+        "_4cbcd96",
+        1
+      ],
+      [
+        "_7d10bb1",
+        1
+      ],
+      [
+        "_7780f2e",
+        1
+      ],
+      [
+        "_765a5cd",
+        1
+      ],
+      [
+        "_660ca72",
+        1
+      ],
+      [
+        "_2be88ba",
+        1
+      ],
+      [
+        "_1551317",
+        1
+      ],
+      [
+        "f8d1e4c0",
+        1
+      ],
+      [
+        "_1aa2651",
+        1
+      ],
+      [
+        "_9986c0c",
+        1
+      ],
+      [
+        "_19943ce",
+        1
+      ],
+      [
+        "_348bebe",
+        1
+      ],
+      [
+        "_9a2f8e4",
+        1
+      ],
+      [
+        "_5758a85",
+        1
+      ],
+      [
+        "_6c7e7df",
+        1
+      ],
+      [
+        "e362e944",
+        1
+      ],
+      [
+        "b0db7355",
+        1
+      ],
+      [
+        "c15ec89f",
+        1
+      ],
+      [
+        "_31a22b0",
+        1
+      ],
+      [
+        "aaff8b8f",
+        1
+      ],
+      [
+        "_77cefa5",
+        1
+      ],
+      [
+        "_9996a53",
+        1
+      ],
+      [
+        "focused",
+        1
+      ],
+      [
+        "_020ab5b",
+        1
+      ],
+      [
+        "_24fad49",
+        1
+      ],
+      [
+        "_27c9245",
+        1
+      ],
+      [
+        "d96f2d2a",
+        1
+      ],
+      [
+        "b13855df",
+        1
+      ],
+      [
+        "ec4f5d61",
+        1
+      ]
+    ]
+  },
+  "screenshots": [
+    "/data/data/com.termux/files/home/deepseek-cli/test-reports/1779410161158-initial.png",
+    "/data/data/com.termux/files/home/deepseek-cli/test-reports/1779410170888-final.png"
+  ],
+  "success": false,
+  "correlations": [
+    {
+      "endpoint": "https://chat.deepseek.com/",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/default-vendors.b3428ecdc9.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/main.3f4386779c.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/main.23c4471232.css",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/5.0/collect-rangers-v5.2.11.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://apm.volccdn.com/mars-web/apmplus/web/browser.cn.js?aid=0&globalName=apmPlus",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://gator.volces.com/list",
+      "method": "POST",
+      "responseCount": 13,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "endpoint": "https://gator.volces.com/profile/list",
+      "method": "POST",
+      "responseCount": 2,
+      "statuses": [
+        200,
+        200
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=main",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=model",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/client/settings?did=524db07a-b7e2-4fa2-9331-67185468fa25&scope=web_upgrade",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/katex.e3bf7abdb0.css",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/katex.f65302e438.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/users/current",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://apmplus.volces.com/settings/get/webpro?aid=675113",
+      "method": "OPTIONS",
+      "responseCount": 2,
+      "statuses": [
+        204,
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/Inter-Regular-subset.25cc0f0e93.woff2",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/Inter-Medium-subset.43ff37cb99.woff2",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/Inter-SemiBold-subset.325ed64dc1.woff2",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "data:image/webp;base64,UklGRgACAABXRUJQVlA4WAoAAAAgAAAAAAAAAAAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDhMEQAAAC8AAAAAB9D//ve//4GI6H8AAA==",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/client/settings?did=&scope=banner",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://hif-leim.deepseek.com/query",
+      "method": "GET",
+      "responseCount": 2,
+      "statuses": [
+        200,
+        200
+      ]
+    },
+    {
+      "endpoint": "https://hif-dliq.deepseek.com/query",
+      "method": "OPTIONS",
+      "responseCount": 0,
+      "statuses": []
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/chat/create_pow_challenge",
+      "method": "POST",
+      "responseCount": 2,
+      "statuses": [
+        200,
+        200
+      ]
+    },
+    {
+      "endpoint": "https://chat.deepseek.com/api/v0/chat_session/create",
+      "method": "POST",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/66419.e8b2a11c4d.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        302
+      ]
+    },
+    {
+      "endpoint": "https://static.deepseek.com/user-avatar/azs3q7jzVb0fSpqBGrQEvc3E",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        304
+      ]
+    },
+    {
+      "endpoint": "blob:https://chat.deepseek.com/2b8e3c99-d9ae-4a5f-86c5-687732a7fa92",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://challenges.cloudflare.com/turnstile/v0/b/1eec422858ff/api.js",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "blob:https://chat.deepseek.com/93abac7a-e867-4ad5-aead-6b5d0bad540a",
+      "method": "GET",
+      "responseCount": 1,
+      "statuses": [
+        200
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/33614.570c5fac7d.js",
+      "method": "GET",
+      "responseCount": 2,
+      "statuses": [
+        304,
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/60816.206e80cf1d.js",
+      "method": "GET",
+      "responseCount": 2,
+      "statuses": [
+        304,
+        304
+      ]
+    },
+    {
+      "endpoint": "https://fe-static.deepseek.com/chat/static/sha3_wasm_bg.7b9ca65ddd.wasm",
+      "method": "GET",
+      "responseCount": 2,
+      "statuses": [
+        304,
+        304
+      ]
+    }
+  ],
+  "finished": "2026-05-22T00:36:11.318Z"
+}

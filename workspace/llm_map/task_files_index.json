@@ -1,0 +1,133 @@
+{
+  "task": [
+    {
+      "file": "termux-multi-agent/run.py",
+      "id": "smoke-001",
+      "title": "Smoke test \u2014 verify orchestrator targets correct file"
+    },
+    {
+      "file": "archwiz/activity_listener.py",
+      "id": "arch-016",
+      "title": "DeepSeek Bridge \u2013 self\u2011building pipeline"
+    }
+  ],
+  "sprint": [],
+  "queue": [],
+  "todo": [
+    {
+      "file": "termux-multi-agent/run.py",
+      "id": "wire-001",
+      "title": "Patch run.py to read task from master_tasks.json"
+    },
+    {
+      "file": "termux-multi-agent/provision_agent.py",
+      "id": "wire-002",
+      "title": "Patch provision_agent.py to extract code blocks after LLM response"
+    },
+    {
+      "file": "workspace/llm_map/agent_shell.py",
+      "id": "wire-003",
+      "title": "Patch agent_shell.py to use run.py instead of simple_agent.py"
+    },
+    {
+      "file": "workspace/llm_map/ECOSYSTEM_MAPPER_DOCS.md",
+      "id": "doc-001",
+      "title": "Update all ecosystem documentation with current tools, aliases, and the Time Loo"
+    },
+    {
+      "file": "workspace/llm_map/task_watcher.sh",
+      "id": "sync-001",
+      "title": "Wire selective_sync.py into task_watcher.sh to run after every dispatch cycle"
+    },
+    {
+      "file": "workspace/llm_map/prompt_versioning.sh",
+      "id": "prompt-001",
+      "title": "Research & build custom versioning prompt segment for powerlevel10k/zsh"
+    },
+    {
+      "file": "deepcli-tui/tui.py",
+      "id": "arch-013",
+      "title": "Forensic Anthropological Reconstruction \u2014 TUI Branch \ud83c\udf3f Feature History"
+    },
+    {
+      "file": "deepcli-tui/tui.py",
+      "id": "repair-001",
+      "title": "Repair TUI /branches Display Corruption \u2014 Restore Branch Listing"
+    },
+    {
+      "file": "deepcli-tui/tui.py",
+      "id": "repair-002",
+      "title": "Restore \ud83c\udf3f Branch\u2011Point Indicators in TUI Tree Display"
+    },
+    {
+      "file": "workspace/llm_map/ECOSYSTEM_MAPPER_DOCS.md",
+      "id": "loop-001",
+      "title": "Time Loop this conversation \u2014 reconstruct session, extract code blocks, update d"
+    },
+    {
+      "file": "workspace/llm_map/promote.py",
+      "id": "sync-002",
+      "title": "Wire promote.py to append session\u2011tracked entries to true_versions.json"
+    },
+    {
+      "file": ".deepcli/cache",
+      "id": "arch-014",
+      "title": "Compress session_store (.deepcli/cache) with gzip, add incremental append suppor"
+    },
+    {
+      "file": "workspace/llm_map/generate_diff_report.py",
+      "id": "report-001",
+      "title": "Add --session flag to truth-report to filter files/tasks by session ID"
+    },
+    {
+      "file": "deepcli-tui/tui.py",
+      "id": "tui-005",
+      "title": "Add automatic emoji markers to TUI /branches showing code-block outcome status"
+    },
+    {
+      "file": "harmony_hub/workspace/prompts/role_prompts.json",
+      "id": "role-researcher",
+      "title": "Define Researcher Agentic LLM role (Instant, DeepThink ON, WebSearch ON, same se"
+    },
+    {
+      "file": "termux-multi-agent/run.py",
+      "id": "volley-001",
+      "title": "Wire Collaborative Volley: on FAIL after 3 retries, escalate to Research Agent +"
+    },
+    {
+      "file": "workspace/llm_map/agent_mailbox.jsonl",
+      "id": "comm-001",
+      "title": "Build Agent Mailbox: shared inter-agent JSONL for reads, writes, and CLI request"
+    },
+    {
+      "file": "workspace/llm_map/access_policy.json",
+      "id": "cli-001",
+      "title": "Build Agent CLI execution wrapper with per-role access control and command loggi"
+    },
+    {
+      "file": "workspace/llm_map/ast_snippets.json",
+      "id": "opt-001",
+      "title": "Replace SHA\u2011256 with xxHash64 for AST/content fingerprints"
+    },
+    {
+      "file": "workspace/llm_map/dispatch_task.py",
+      "id": "arch-017",
+      "title": "Refactor dispatch_task.py \u2014 distinguish create vs modify, sandbox isolation, ver"
+    },
+    {
+      "file": "ast_snippets.json",
+      "id": "arch-023",
+      "title": "Fix AST hash 0 \u2013 re-index Python/JS files missing from ast_snippets.json"
+    },
+    {
+      "file": "archaeologist.py",
+      "id": "arch-025",
+      "title": "Fix archaeologist empty 'Last modified (ts)' field in reports"
+    },
+    {
+      "file": "workspace/llm_map/dispatch_task.py",
+      "id": "arch-017",
+      "title": "Refactor dispatch_task.py \u2014 respect target_type, sandbox output, call Sentinel"
+    }
+  ]
+}

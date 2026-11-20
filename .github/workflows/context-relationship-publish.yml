@@ -1,0 +1,101 @@
+name: context relationship index publisher
+
+on:
+  push:
+    branches: [master-staging]
+    paths-ignore:
+      - 'workspace/llm_map/context_relationships/**'
+  workflow_dispatch:
+    inputs:
+      full_refresh:
+        description: 'Ignore the prior collection checkpoint for this bounded reconciliation build.'
+        type: boolean
+        default: false
+      max_items:
+        description: 'Maximum issues and pull requests per collection family.'
+        type: string
+        default: '20'
+      max_commits:
+        description: 'Maximum commits for the collection window.'
+        type: string
+        default: '25'
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: context-relationship-writer-master-staging
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: build and publish metadata-only index
+    if: github.event_name == 'workflow_dispatch' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: master-staging
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Build canonical relationship index
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          FULL_REFRESH: ${{ inputs.full_refresh || 'false' }}
+          MAX_ITEMS: ${{ inputs.max_items || '20' }}
+          MAX_COMMITS: ${{ inputs.max_commits || '25' }}
+        run: |
+          set -euo pipefail
+          refresh_flag=""
+          if [ "$FULL_REFRESH" = "true" ]; then
+            refresh_flag="--full-refresh"
+          fi
+          python -m archwiz.context_relationships.build_index \
+            --root . \
+            --owner "$GITHUB_REPOSITORY_OWNER" \
+            --repo "${GITHUB_REPOSITORY#*/}" \
+            --ref "master-staging" \
+            --max-items "$MAX_ITEMS" \
+            --max-commits "$MAX_COMMITS" \
+            --max-comments-per-item 20 \
+            --max-cochange-pairs-per-commit 100 \
+            $refresh_flag
+
+      - name: Publish summary
+        run: |
+          set -euo pipefail
+          summary=workspace/llm_map/context_relationships/build-summary.json
+          manifest=workspace/llm_map/context_relationships/manifest.json
+          {
+            echo '## Context relationship index'
+            echo
+            echo '```json'
+            cat "$summary"
+            echo '```'
+            echo
+            echo "Manifest: \`$manifest\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit canonical index delta
+        run: |
+          set -euo pipefail
+          git add workspace/llm_map/context_relationships
+          if git diff --cached --quiet; then
+            echo 'No relationship-index delta to publish.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -s -m 'chore(context): refresh relationship index' \
+            -m 'Implements: CRG-05' \
+            -m 'Agent-Identity: GitHub Actions Context Indexer' \
+            -m 'Task-Ref: CRG-05'
+          git push origin HEAD:master-staging

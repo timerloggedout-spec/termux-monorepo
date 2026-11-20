@@ -197,7 +197,7 @@ def build_feed(bookfeed, book, ledger_count, generated_at, book_ref):
                       "(append-only ledger of record, MoneyBall plane)",
             "register": "deadline-reminders/v1 (Tracking lane d6c12f3a; "
                         "primary calendar, America/Los_Angeles) - anchors "
-                        "as bound in the book; C18/C19 desk-feed timeboxes "
+                        "as bound in the book; C12/C18/C19 desk-feed timeboxes "
                         "are operational projections only until Tracking "
                         "register items are bound"},
         "honesty": [

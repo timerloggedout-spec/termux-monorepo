@@ -19,7 +19,7 @@
 | Item | Impact | Importance | Score | Band | Action |
 |------|--------|------------|-------|------|--------|
 | **#120** durable work-context store | 5 | 5 | 25 | P0 root | Clear blockers → merge (enables #145) |
-| **#145** Jules session binding (context_key + continue-only) | 5 | 5 | 25 | P0 | Load/save in auto-jules + continuous-ops |
+| **#145** DoE role binding and provider-neutral context continuity | 5 | 5 | 25 | P0 | Bind local role skills to active provider receipts; retain historical Jules session references for provenance |
 | **#146** disposition vs analysis-chain alignment | 4 | 5 | 20 | High | Excerpt builders + ops templates cite disposition only |
 | **#118** Session & Context (parent of #120) | 5 | 4 | 20 | High | Track via #120 |
 | **#126** Linguist / CedrLang | 4 | 4 | 16 | High-ROI | Continue existing Jules session; disposition-driven |

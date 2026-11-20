@@ -10,7 +10,8 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: accepted
-related_prs: []
+related_prs:
+  - 5725
 related_branches:
   - feat/agent-stack-48-intake-20261120
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]

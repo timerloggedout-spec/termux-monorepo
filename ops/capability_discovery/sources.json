@@ -136,6 +136,115 @@
         "https://github.com/google-labs-code/jules-action",
         "https://github.com/google-labs-code/jules-action/blob/main/examples/README.md"
       ]
+    },
+    {
+      "id": "anthropic-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/anthropics/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Anthropic reference implementation for Claude skills; inspect each skill's license individually because the repository contains mixed licensing, including proprietary document skills.",
+      "reference_urls": [
+        "https://github.com/anthropics/skills"
+      ]
+    },
+    {
+      "id": "microsoft-skills",
+      "kind": "vendor-skill-plugin-repository",
+      "locator": "https://github.com/microsoft/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Microsoft Azure SDK/AI Foundry skills, agents, AGENTS.md and MCP configurations. README labels the repository work in progress; select individual skills rather than loading the entire deep tree.",
+      "reference_urls": [
+        "https://github.com/microsoft/skills"
+      ]
+    },
+    {
+      "id": "vercel-agent-skills",
+      "kind": "vendor-skill-repository",
+      "locator": "https://github.com/vercel-labs/agent-skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Vercel React/Next.js best practices, web design guidelines and Vercel project optimization skills.",
+      "reference_urls": [
+        "https://github.com/vercel-labs/agent-skills"
+      ]
+    },
+    {
+      "id": "cloudflare-skills-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/cloudflare/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Cloudflare repository ships skills and a native plugin that installs Cloudflare guidance plus the Cloudflare MCP server. Review plugin manifest and requested MCP scopes before installation.",
+      "reference_urls": [
+        "https://github.com/cloudflare/skills"
+      ]
+    },
+    {
+      "id": "trailofbits-skills-plugins",
+      "kind": "vendor-plugin-marketplace",
+      "locator": "https://github.com/trailofbits/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Security analysis, testing and development skills distributed through Claude Code/Codex plugin marketplace; inspect each plugin and license before import.",
+      "reference_urls": [
+        "https://github.com/trailofbits/skills"
+      ]
+    },
+    {
+      "id": "huggingface-skills",
+      "kind": "vendor-skill-plugin-repository",
+      "locator": "https://github.com/huggingface/skills",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "HF CLI, datasets, training and evaluation workflows. The hf-cli skill is generated from the installed CLI and is the recommended bootstrap path; prefer it for current command behavior.",
+      "reference_urls": [
+        "https://github.com/huggingface/skills"
+      ]
+    },
+    {
+      "id": "openai-codex-plugins",
+      "kind": "vendor-plugin-repository",
+      "locator": "https://github.com/openai/plugins",
+      "trust": "official-vendor",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "Current OpenAI Codex plugin examples. Each plugin may bundle .codex-plugin/plugin.json, skills, .mcp.json, agents, commands, hooks and assets; inspect manifest and scopes as one package.",
+      "reference_urls": [
+        "https://github.com/openai/plugins"
+      ]
+    },
+    {
+      "id": "openai-legacy-skills",
+      "kind": "deprecated-vendor-repository",
+      "locator": "https://github.com/openai/skills",
+      "trust": "deprecated",
+      "refresh": "on-demand",
+      "import_mode": "reference-only",
+      "note": "README explicitly marks this repository deprecated and directs users to openai/plugins and current Codex plugin/skill documentation.",
+      "reference_urls": [
+        "https://github.com/openai/skills",
+        "https://github.com/openai/plugins"
+      ]
+    },
+    {
+      "id": "github-awesome-copilot",
+      "kind": "community-skill-repository",
+      "locator": "https://github.com/github/awesome-copilot",
+      "trust": "community-reference",
+      "refresh": "on-demand",
+      "import_mode": "candidate-only",
+      "note": "GitHub organization-hosted community agents, instructions and skills. Treat as community content, not vendor-supported product guidance.",
+      "reference_urls": [
+        "https://github.com/github/awesome-copilot"
+      ]
     }
   ]
 }

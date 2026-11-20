@@ -33,4 +33,4 @@ The **GitHub App Fleet** is the repository's set of specialist GitHub App identi
 
 - Process record: [`docs/ops/GITHUB-APP-PROCESS.md`](../../../../docs/ops/GITHUB-APP-PROCESS.md)
 - Telemetry: [`docs/ops/GITHUB-APP-FLEET-TELEMETRY.md`](../../../../docs/ops/GITHUB-APP-FLEET-TELEMETRY.md)
-- Monikers: [`docs/ops/AGENT-MONIKERS.md`](../../../../docs/ops/AGENT-MONIKERS.md)
+- Monikers: [`docs/ops/COLLABORATOR-MONIKERS.md`](../../../../docs/ops/COLLABORATOR-MONIKERS.md)

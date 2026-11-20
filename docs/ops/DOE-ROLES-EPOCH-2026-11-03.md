@@ -190,4 +190,4 @@ Role bindings preserve the canonical DoE classes:
 
 The upstream issue automation scripts call `@google/jules-sdk` and `JULES_API_KEY`; those provider calls remain reference material. Google's Jules service became read-only after 2026-11-11. The upstream sequential merge stage is excluded from this role binding; repository merge authority and independent review remain unchanged.
 
-The reusable `act` verification skill is available to builders and reviewers. The skill bundle itself creates no sessions, claims no provider availability, and performs no dispatch. A live executor enters the route only after its own adapter, readiness probe, and receipt contract are implemented and tested.
+The reusable `act` verification skill is available to builders and reviewers. The skill bundle provides role guidance only. Session creation, provider availability signals, and dispatch actions belong to live adapters with implemented and tested readiness probes and receipt contracts.

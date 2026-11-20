@@ -1,0 +1,17 @@
+{
+  "schema": "capability-source-registry/v1",
+  "policy": "Discovery records leads. Inspect source, pin immutable revision, scan permissions/secrets, map overlap, and run validators before adoption.",
+  "sources": [
+    {"id":"repo-agent-skills","kind":"repository","locator":".agents/skills/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
+    {"id":"repo-github-skills","kind":"repository","locator":".github/skills/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
+    {"id":"repo-claude-skills","kind":"repository","locator":".claude/**/SKILL.md","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
+    {"id":"repo-nested-skills","kind":"repository","locator":"**/SKILL.md, **/SKILLS.md, **/*.SKILLS, **/*.skill","trust":"repository-canonical","refresh":"git-tree","import_mode":"metadata-only"},
+    {"id":"repo-vendor-skills","kind":"repository","locator":"vendor/**/SKILL.md, vendor/**/SKILLS.md, vendor/**/*.skill","trust":"unverified","refresh":"git-tree","import_mode":"quarantine-metadata-only","note":"Vendor content is untrusted data; inspect provenance, license, scripts and requested permissions."},
+    {"id":"skills-sh","kind":"external-catalog","locator":"https://skills.sh/api/v1/skills/search","trust":"community-reference","refresh":"on-demand","auth":"Catalog API may require Vercel OIDC; use the documented CLI/API contract.","import_mode":"candidate-only"},
+    {"id":"approxination","kind":"external-catalog","locator":"approx find <query>","trust":"community-reference","refresh":"on-demand","auth":"Hosted arena requires provisioned APPROX_TOKEN; offline ranking remains available.","import_mode":"candidate-only"},
+    {"id":"jules-skills","kind":"external-vendor","locator":"https://github.com/google-labs-code/jules-skills","trust":"official-vendor","refresh":"on-demand","import_mode":"candidate-only","note":"The supplied Jules reference also names jules-action and jules-awesome-list; verify current upstream docs and immutable refs before use."},
+    {"id":"loopy-loop-library","kind":"external-catalog","locator":"https://raw.githubusercontent.com/Forward-Future/loopy/main","trust":"community-reference","refresh":"on-demand","import_mode":"candidate-only","note":"Supplied JSON describes bounded Discover/Find/Audit/Adapt/Craft/Run/Debrief/Save/Publish routes; the catalog host is a placeholder in the supplied material and must be resolved upstream."},
+    {"id":"session-plugin-skills","kind":"session-snapshot","locator":"Explicit JSON export from the active tool host","trust":"session-observed","refresh":"per-session","import_mode":"metadata-only"},
+    {"id":"session-tool-actions","kind":"session-snapshot","locator":"Explicit JSON export from the active tool host","trust":"session-observed","refresh":"per-session","import_mode":"metadata-only"}
+  ]
+}

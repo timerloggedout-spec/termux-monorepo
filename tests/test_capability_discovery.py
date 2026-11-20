@@ -163,6 +163,21 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["lifecycle"], "discovered")
         self.assertNotIn("SKILL.md contents", rows[0]["description"])
 
+    def test_session_import_quarantines_and_redacts_secret_like_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "tools.json"
+            secret_value = "topsecretvalue123"
+            path.write_text(json.dumps({
+                "snapshot": {"captured_at": "2026-11-19"},
+                "tools": [{
+                    "name": "demo-tool",
+                    "summary": f'Uses api_key: "{secret_value}"',
+                }],
+            }), encoding="utf-8")
+            rows = import_session_json(path, "tool")
+        self.assertEqual(rows[0]["trust"], "quarantined")
+        self.assertNotIn(secret_value, json.dumps(rows[0]))
+
     def test_skills_sh_search_uses_sqlite_cache(self):
         class Response:
             def __enter__(self):

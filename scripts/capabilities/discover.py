@@ -133,7 +133,10 @@ def import_tool_taxonomy_jsonl(path: Path, root: Path, external: bool = False) -
         if not isinstance(item, dict) or not item.get("name"):
             continue
         raw_metadata = json.dumps(item, sort_keys=True, separators=(",", ":"))
-        trust = "quarantined" if SECRET_RE.search(raw_metadata) else "unverified"
+        sensitive_scan_text = " ".join(
+            f"{key} {value}" for key, value in item.items()
+        )
+        trust = "quarantined" if SECRET_RE.search(sensitive_scan_text) else "unverified"
         safe_name = redact_sensitive(str(item.get("name") or ""))
         safe_description = redact_sensitive(str(item.get("description") or ""))
         safe_package = redact_sensitive(str(item.get("package") or ""))
@@ -392,7 +395,10 @@ def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
         raw_detail_url = item.get("url") or ""
         raw_install_url = item.get("installUrl") or ""
         raw_metadata = json.dumps(item, sort_keys=True, separators=(",", ":"))
-        quarantined = bool(SECRET_RE.search(raw_metadata))
+        sensitive_scan_text = " ".join(
+            f"{key} {value}" for key, value in item.items()
+        )
+        quarantined = bool(SECRET_RE.search(sensitive_scan_text))
         safe_identity = redact_sensitive(str(identity))
         name = redact_sensitive(str(raw_name))
         source = redact_sensitive(str(raw_source))

@@ -27,6 +27,7 @@ Load `CLAUDE.md`, `SKILLS.md`, this skill, `docs/ops/CAPABILITY-DISCOVERY-AND-AC
 ```bash
 python3 scripts/capabilities/discover.py scan --root .
 python3 scripts/capabilities/discover.py find "task intent and required capability" --limit 8
+python3 scripts/capabilities/discover.py find "task intent and required capability" --auto --min-local-results 5
 python3 -m unittest tests.test_capability_discovery -v
 ```
 

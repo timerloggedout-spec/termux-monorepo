@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      needs_jules: ${{ steps.classify.outputs.needs_jules }}
+      legacy_jules_request: ${{ steps.classify.outputs.legacy_jules_request }}
       needs_ledger: ${{ steps.classify.outputs.needs_ledger }}
       needs_gemini: ${{ steps.classify.outputs.needs_gemini }}
     steps:
@@ -33,21 +33,37 @@ jobs:
             const labels = (context.payload.issue.labels || []).map(l => l.name);
 
             // Early filters to avoid unnecessary downstream starts
-            const needs_jules = !isBot && (body.includes('@jules') || labels.includes('jules'));
+            const legacy_jules_request = !isBot && (body.includes('@jules') || labels.includes('jules'));
             const needs_ledger = isPR && body.includes('Implements:');
             const needs_gemini = !isBot && (body.includes('@gemini') || labels.includes('gemini'));
 
-            core.setOutput('needs_jules', needs_jules);
+            core.setOutput('legacy_jules_request', legacy_jules_request);
             core.setOutput('needs_ledger', needs_ledger);
             core.setOutput('needs_gemini', needs_gemini);
 
-            console.log(`Classification: jules=${needs_jules}, ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
+            console.log(`Classification: legacy_jules_request=${legacy_jules_request}, ledger=${needs_ledger}, gemini=${needs_gemini}, bot=${isBot}`);
 
-      - name: Route to Jules (if matched)
-        if: steps.classify.outputs.needs_jules == 'true'
-        run: |
-          echo "Dispatching Jules handoff (placeholder for workflow_call or existing job extract)"
-          # In full implementation: uses: ./.github/workflows/agent-jules-on-issues.yml or extract job
+      - name: Record retired Jules request
+        if: steps.classify.outputs.legacy_jules_request == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue.number;
+            const marker = '<!-- jules-retired-router -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue, per_page: 100,
+            });
+            if (comments.some(comment => comment.body?.includes(marker))) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issue,
+              body: [
+                marker,
+                '**Google Jules routing is retired.** The hosted service became read-only after 2026-11-11.',
+                'Use the local Jules-derived DoE role guidance at `.agents/skills/jules-doe-role-adapter/SKILL.md`.',
+                'Execution requires a currently available provider adapter selected through `docs/schemas/agent-roster.yaml`.',
+              ].join('\\n'),
+            });
 
       - name: Route to Ledger (if matched)
         if: steps.classify.outputs.needs_ledger == 'true'

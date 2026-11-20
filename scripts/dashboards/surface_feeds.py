@@ -533,7 +533,7 @@ def _doe_campaigns() -> list:
             "results": None,
         }
         summary_path = camp_dir / "SUMMARY.json"
-        if records and summary_path.exists():
+        if state == "executed" and records and summary_path.exists():
             s = json.loads(summary_path.read_text())
             arms = s.get("arms") or {}
             # Spread is computed here from the committed records so the

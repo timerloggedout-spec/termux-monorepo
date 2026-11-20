@@ -7,7 +7,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: legacy-jules-pr-request-${{ github.event.issue.number || github.run_id }}
+  group: legacy-jules-pr-request-${{ github.event.comment.id || github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -72,9 +72,10 @@ jobs:
                 '- baseline_head_sha: ' + pr.head.sha,
                 '- base_sha: ' + pr.base.sha,
                 '- source_comment_id: ' + id,
-                '- local_role_guidance: .agents/skills/jules-doe-role-adapter/SKILL.md',
+                '- local_role_guidance: docs/ops/DOE-ROLES-EPOCH-2026-11-03.md',
                 '- role_register: docs/ops/DOE-ROLES-EPOCH-2026-11-03.md',
                 '- active_provider_roster: docs/schemas/agent-roster.yaml',
+                '- recording_run: ' + context.serverUrl + '/' + context.repo.owner + '/' + context.repo.repo + '/actions/runs/' + context.runId,
                 '',
                 'This receipt records the legacy request. Route implementation through the active provider roster and a verified adapter; preserve independent exact-head review before completion.',
               ].join('\n'),

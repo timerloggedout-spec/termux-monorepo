@@ -26,6 +26,6 @@ Negation-heavy rules (“Don’t X”, “Do not Y”) still **name the forbidde
 
 ## Scope
 
-Applies to `AGENTS.md`, `GEMINI.md`, workflow prompt strings, and ops docs agents read first.
+Applies to `CLAUDE.md`, `GEMINI-CLI.md`, workflow prompt strings, and ops docs agents read first.
 
 Signed-off-by: Grok <grok@x.ai>

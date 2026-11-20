@@ -1,26 +1,25 @@
 {
  "schema": "que.queue-by-tier/v1",
- "generated_at": "2026-11-20T09:46:17Z",
+ "generated_at": "2026-11-20T10:00:12Z",
  "repo": "timerloggedout-spec/termux-monorepo",
  "tiers": {
   "1": {
    "tier": 1,
-   "queued": 2,
-   "in_progress": 0,
+   "queued": 3,
+   "in_progress": 1,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
     "Orchestration Regression Guard": 1,
+    "repo gate": 1,
     "PR scope guard": 1
    }
   },
   "2": {
    "tier": 2,
-   "queued": 1,
+   "queued": 0,
    "in_progress": 2,
-   "oldest_queued_at": "2026-11-20T09:45:46Z",
-   "by_workflow_queued": {
-    "pages build and deployment": 1
-   }
+   "oldest_queued_at": null,
+   "by_workflow_queued": {}
   },
   "3": {
    "tier": 3,
@@ -31,23 +30,20 @@
   },
   "4": {
    "tier": 4,
-   "queued": 7,
-   "in_progress": 19,
+   "queued": 5,
+   "in_progress": 12,
    "oldest_queued_at": "2026-11-20T07:43:25Z",
    "by_workflow_queued": {
-    "Agent Throughput Evidence": 1,
+    "quota-usage-series-refresh": 1,
+    "DO Statement Style": 2,
     "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher": 1,
-    "que-cadence-kick": 1,
-    "termux smoke": 1,
-    "hitl-control-plane-verify": 1,
-    "quota-analysis": 1,
-    "DO Statement Style": 1
+    "graph-matrix-probe": 1
    }
   }
  },
  "totals": {
-  "queued": 10,
-  "in_progress": 21
+  "queued": 8,
+  "in_progress": 15
  },
  "wedged_ancient": [
   {
@@ -205,13 +201,13 @@
  "tier_basis": {
   "population": "actions-runs (queued \u2227 in_progress)",
   "explicit": {
-   "1": 2,
-   "2": 3,
+   "1": 4,
+   "2": 2,
    "3": 0,
    "4": 0
   },
-  "explicit_total": 5,
-  "default_t4": 26,
+  "explicit_total": 6,
+  "default_t4": 17,
   "unmatched": 0,
   "ancient_excluded": 25,
   "operator_excluded": 1

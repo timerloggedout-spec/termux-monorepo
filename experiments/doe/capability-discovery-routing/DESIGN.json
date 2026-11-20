@@ -289,6 +289,13 @@
       "role": "repository import adapter and mirrored vendor-skill corpus",
       "trust": "importer code is repository-canonical; current imported source data remains UNVERIFIED; branch is 26,515 commits behind current master and PR is non-mergeable",
       "use": "review scripts/skills/import_claude_export.py and validate_claude_export.py, .skills/index.json, .skills/tags.json, docs/ops/skills/source/** and vendor/skills-mirror/**. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any present listed parts and records checksum coverage. Current sums still omit the combined archive and CSVs, and the five listed split parts are absent. Preserve the 1,299 skill / 1,218 plugin-row counts as inventory observations, not source authenticity claims. Include tests/test_import_claude_export.py as the importer integrity regression suite. Keep this branch as a pinned forensic reference until it is rebased/split; do not merge the 2,807-file, 466,622-addition branch as-is."
+    },
+    {
+      "file": "PR #5680 — contextual activation matrix and CMP-7 dashboard",
+      "locator": "https://github.com/timerloggedout-spec/termux-monorepo/commit/c1532c062182e8bebca07b6f1992ebd23f650b3e",
+      "role": "prior activation-matrix and DoE dashboard implementation",
+      "trust": "repository-canonical; overlapping proposal branch",
+      "use": "compare docs/ops/CAPABILITY-ACTIVATION-MATRIX.md and session catalogs against this PR's canonical discovery matrix; preserve independent CMP-7 dashboard/admission-feed work, then rebase/split it after PR #5681. Current PR is 30 commits behind master, 19 files changed (+23,430/-195), and overlaps on capability activation docs."
     }
   ]
 }

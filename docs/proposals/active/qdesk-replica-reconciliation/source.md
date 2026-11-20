@@ -154,23 +154,34 @@ The current comparison is hash/source comparison, not a full screenshot/visual r
 
 ## 5. QDesk visual-extension architecture
 
-Brand: `Q^∆3sk`. Proposed page: `apps/tribute-dashboard/Q^∆3sk.html` (subject to URL/path compatibility checks). Stable machine ID: `qdesk`.
+Brand: `Q^∆3sk`. Proposed overview page: `apps/tribute-dashboard/Q^∆3sk.html` (subject to URL/path compatibility checks). Stable machine ID: `qdesk`.
 
-QDesk remains the existing operating architecture. The proposed `Q^∆3sk` page is a read-only shell/overview with deep links or embedded read-only regions:
+Add the separate prototype surface `apps/tribute-dashboard/drafting-desk.html`, stable machine ID `drafting-desk`. The two desks have different jobs:
+
+| Surface | Owns | Primary actions |
+|---|---|---|
+| Drafting Desk | Profile-bound draft workspaces, Replica iterations, template integrations, candidate versions and comparison evidence | Select profile; open local prototype; iterate alternates; compare; select candidate; prepare filing draft |
+| Contribution Desk (`desk.html`) | Canonical operational issue intake and dispatch | Review filed task; submit through GitHub issue form; trigger the existing QUE admission route; show dispatch receipts |
+| Q^∆3sk overview | Cross-system navigation and read-only status projection | View attention queue, Gantt, proposals, Clerk, graph excerpts, release comparison and evidence |
+
+The Drafting Desk does not submit issues or dispatch work when a user iterates or selects a candidate. Its selected candidate produces a prefilled filing draft; the user reviews and explicitly submits it through the Contribution Desk. GitHub issue creation then triggers the existing `issue-dispatch/v1` workflow and QUE admission path.
+
+QDesk remains the existing operating architecture. The `Q^∆3sk` overview is a read-only shell with deep links or embedded read-only regions:
 1. Overview and attention queue.
-2. Existing Contribution Desk / traversal state.
-3. Proposal catalog and public available proposals.
-4. Browser Quarantine Clerk.
-5. Admin Graph excerpts and provenance drawer.
-6. Release Observatory / preview comparison.
-7. DoE and automation competition index.
-8. Source, freshness and validation evidence.
+2. Drafting Desk candidate status and links.
+3. Existing Contribution Desk / traversal state.
+4. Proposal catalog and public available proposals.
+5. Browser Quarantine Clerk.
+6. Admin Graph excerpts and provenance drawer.
+7. Release Observatory / preview comparison.
+8. DoE and automation competition index.
+9. Source, freshness and validation evidence.
 
-The new page is a navigation/projection surface alongside the existing `desk.html`, `qdesk-gantt.html` (PR #5199), `doe.html`, `proposals.html`, `versioning.html` and QDesk portfolio/Observatory work. It does not replace the existing Contribution Desk or the proposed QDesk Gantt.
+The overview is a navigation/projection surface alongside `drafting-desk.html`, existing `desk.html`, `qdesk-gantt.html` (PR #5199), `doe.html`, `proposals.html`, `versioning.html` and QDesk portfolio/Observatory work. It does not replace either desk or the proposed QDesk Gantt.
 
-Start with existing feeds and links. Add a new QDesk index/read-model schema only if the existing feed contracts cannot support the required navigation. Any new read model references canonical object IDs, source paths, source SHAs and generated timestamps; it does not duplicate domain payloads or own lifecycle transitions.
+Start with existing feeds and links. Add a new QDesk index/read-model schema only if existing feed contracts cannot support navigation. Any new read model references canonical object IDs, source paths, source SHAs and generated timestamps; it does not duplicate domain payloads or own lifecycle transitions.
 
-The UI must distinguish observed, derived, inferred and unavailable data. Partial/stale/unverified states remain explicit. It must work as a credential-free static projection and degrade gracefully when optional Replica Hub/canvas is absent.
+The UI must distinguish observed, derived, inferred and unavailable data. Partial/stale/unverified states remain explicit. All three surfaces remain credential-free static projections and degrade gracefully when optional Replica Hub/canvas is absent.
 
 ## 6. Browser Quarantine Clerk threat model
 

@@ -191,7 +191,7 @@
 
 - [ ] Compare source skill and repository skill line by line.
 - [ ] Add failing fixtures for terminal-state classification and verification-before-repeat.
-- [ ] Integrate compatible improvements into the canonical skill.
+- [ ] Integrate the six-step micro-loop and nine route labels into adaptive-wait; keep terminal states and receipts owned by adaptive-wait, with the twelve-step macro-cycle owned by adaptive-feedback-cycle.
 - [ ] Update inventory and usage references.
 - [ ] Validate lint and skill contract tests.
 - [ ] Commit with `Implements: CNS-14`.

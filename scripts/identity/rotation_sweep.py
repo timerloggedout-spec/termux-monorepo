@@ -157,8 +157,9 @@ def check_identity_registry(path: Path) -> dict:
                          if row["moniker"].casefold() in trigger_names})
     return {"rows": len(rows), "duplicate_monikers": duplicates,
             "trigger_collisions": collisions,
+            "external_github_username_inventory": "not_established",
+            "scope": "internal moniker uniqueness and declared live-trigger aliases only",
             "passed": not duplicates and not collisions}
-
 
 def scan_repository(root: Path, rotation_map: dict) -> dict:
     rotation_entries = entries(rotation_map)
@@ -255,6 +256,7 @@ def run(root: Path, base_sha: str, candidate_sha: str) -> dict:
             "historical_refs": len(sweep["historical_refs"]),
             "ambiguous_refs": len(unresolved), "mapping_errors": len(mapping_errors),
             "moniker_collisions": len(identity["trigger_collisions"]) + len(identity["duplicate_monikers"]),\n            "external_username_inventory_established": 0,
+            "external_username_inventory_established": 0,
         },
         "evidence_refs": [
             "https://github.com/timerloggedout-spec/termux-monorepo/blob/" + candidate_sha + "/docs/ops/COLLABORATOR-ROTATION-MAP.json",

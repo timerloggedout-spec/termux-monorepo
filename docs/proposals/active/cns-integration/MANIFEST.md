@@ -2,7 +2,7 @@
 id: cns-integration
 title: "Central Nervous System — repository-wide integration programme"
 author: ChatGPT
-posted_at: 2026-11-20
+posted_at: 2026-11-19
 source: source.md
 status: accepted
 priority: P0
@@ -67,4 +67,4 @@ Coordinate the repository's existing knowledge, reasoning, orchestration, routin
 - Authority matrix: [../../../architecture/CNS-AUTHORITY-MATRIX.md](../../../architecture/CNS-AUTHORITY-MATRIX.md)
 - Identity and event contract: [../../../architecture/CNS-EVENT-IDENTITY-CONTRACT.md](../../../architecture/CNS-EVENT-IDENTITY-CONTRACT.md)
 - Health model: [../../../architecture/CNS-HEALTH-MODEL.md](../../../architecture/CNS-HEALTH-MODEL.md)
-- Implementation plan: [../../superpowers/plans/2026-11-19-cns-integration-program.md](../../superpowers/plans/2026-11-19-cns-integration-program.md)
+- Implementation plan: [../../../superpowers/plans/2026-11-19-cns-integration-program.md](../../superpowers/plans/2026-11-19-cns-integration-program.md)

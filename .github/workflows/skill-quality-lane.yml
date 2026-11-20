@@ -8,6 +8,8 @@ on:
   pull_request:
     paths:
       - ".agents/skills/**/SKILL.md"
+      - ".claude/**/SKILL.md"
+      - "SKILLS.md"
       - ".github/skills/**/SKILL.md"
       - "docs/ops/skills/**/SKILL.md"
       - "**/*.skill"
@@ -16,6 +18,15 @@ on:
       - "docs/ops/SKILL-EVALUATION.md"
       - "docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json"
       - "docs/ops/SKILLS-INVENTORY.md"
+      - "docs/ops/SKILL-DISCOVERY-MATRIX.md"
+      - "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md"
+      - "docs/ops/DOE-QUESTIONS-MATRIX.md"
+      - "docs/integrations/session-plugin-skill-catalog.json"
+      - "docs/integrations/session-tool-action-catalog.json"
+      - "ops/capability_discovery/**"
+      - "scripts/capabilities/**"
+      - "tests/test_capability_discovery.py"
+      - "experiments/doe/capability-discovery-routing/**"
       - ".github/workflows/skill-quality-lane.yml"
   workflow_dispatch:
 
@@ -40,8 +51,17 @@ jobs:
       - name: Validate evidence schema JSON
         run: python -m json.tool docs/ops/SKILL-EVALUATION-EVIDENCE.schema.json >/dev/null
 
-      - name: Compile evaluator and tests
-        run: python -m py_compile scripts/ci/evaluate_skills.py tests/test_skill_evaluation.py
+      - name: Validate capability catalogs and schemas
+        run: |
+          python -m json.tool ops/capability_discovery/taxonomy.json >/dev/null
+          python -m json.tool ops/capability_discovery/sources.json >/dev/null
+          python -m json.tool ops/capability_discovery/record.schema.json >/dev/null
+          python -m json.tool docs/integrations/session-plugin-skill-catalog.json >/dev/null
+          python -m json.tool docs/integrations/session-tool-action-catalog.json >/dev/null
+          python -m json.tool experiments/doe/capability-discovery-routing/DESIGN.json >/dev/null
+
+      - name: Compile evaluators, indexer and tests
+        run: python -m py_compile scripts/ci/evaluate_skills.py scripts/capabilities/discover.py tests/test_skill_evaluation.py tests/test_capability_discovery.py
 
       - name: Run deterministic skill evaluator
         env:
@@ -57,6 +77,21 @@ jobs:
       - name: Run focused evaluator tests
         run: python -m unittest tests.test_skill_evaluation -v
 
+      - name: Run capability discovery tests
+        run: python -m unittest tests.test_capability_discovery -v
+
+      - name: Build compact capability database and ledger
+        run: |
+          python scripts/capabilities/discover.py scan --root . \
+            --db .cache/capability-index.sqlite \
+            --ledger .cache/capability-discovery-ledger.jsonl \
+            --plugin-skills-json docs/integrations/session-plugin-skill-catalog.json \
+            --tool-actions-json docs/integrations/session-tool-action-catalog.json
+          python scripts/capabilities/discover.py find \
+            "repository skill plugin tool discovery" \
+            --db .cache/capability-index.sqlite --limit 8 > capability-search-smoke.json
+          python -m json.tool capability-search-smoke.json >/dev/null
+
       - name: Check source diff whitespace hygiene
         if: github.event_name == 'pull_request'
         env:
@@ -68,5 +103,9 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: skill-quality-evidence
-          path: skill-evaluation.json
+          path: |
+            skill-evaluation.json
+            capability-search-smoke.json
+            .cache/capability-index.sqlite
+            .cache/capability-discovery-ledger.jsonl
           if-no-files-found: error

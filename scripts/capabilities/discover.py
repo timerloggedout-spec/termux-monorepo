@@ -183,14 +183,24 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         })
     return rows
 
-def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
-    """Read-only skills.sh search. Requires a request-scoped Vercel OIDC token."""
+def search_skills_sh(query: str, limit: int = 8, owner: str | None = None,
+                     curated: bool = False) -> tuple[list[dict], str]:
+    """Read-only skills.sh search. Requires a fresh Vercel OIDC token."""
+    if len(query.strip()) < 2:
+        return [], "query_too_short"
     token = os.environ.get("VERCEL_OIDC_TOKEN")
     if not token:
         return [], "auth_required"
-    params = urllib.parse.urlencode({"q": query, "limit": max(1, min(limit, 200))})
+    if curated:
+        endpoint = "https://skills.sh/api/v1/skills/curated"
+        params = {}
+    else:
+        endpoint = "https://skills.sh/api/v1/skills/search"
+        params = {"q": query, "limit": max(1, min(limit, 200))}
+        if owner:
+            params["owner"] = owner
     request = urllib.request.Request(
-        "https://skills.sh/api/v1/skills/search?" + params,
+        endpoint + (("?" + urllib.parse.urlencode(params)) if params else ""),
         headers={"Authorization": "Bearer " + token, "Accept": "application/json"},
     )
     try:
@@ -200,18 +210,40 @@ def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
         return [], f"http_{exc.code}"
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
         return [], "unavailable"
+
+    if curated:
+        items = []
+        for publisher in payload.get("data", []):
+            for skill in publisher.get("skills", []):
+                items.append({**skill, "_curated_owner": publisher.get("owner", "")})
+        terms = set(TOKEN_RE.findall(query.lower()))
+        items = [item for item in items
+                 if terms.intersection(TOKEN_RE.findall(
+                     " ".join(str(item.get(key, "")) for key in ("id", "name", "source", "_curated_owner")).lower()
+                 ))]
+        items.sort(key=lambda item: item.get("installs", 0), reverse=True)
+        search_type = "curated"
+    else:
+        items = payload.get("data", [])
+        search_type = payload.get("searchType", "unknown")
+
+    taxonomy_sha = taxonomy_hash(load_taxonomy())
     rows = []
-    for item in payload.get("data", []):
+    for item in items[:limit]:
         identity = item.get("id")
         if not identity:
             continue
         name = item.get("name") or item.get("slug") or identity
-        source = item.get("source") or ""
+        source = item.get("source") or item.get("_curated_owner") or ""
         installs = item.get("installs")
         duplicate = bool(item.get("isDuplicate", False))
         detail_url = item.get("url") or ""
         install_url = item.get("installUrl") or ""
-        description = f"skills.sh candidate; source={source}; installs={installs}; duplicate={duplicate}; url={detail_url}; install={install_url}"
+        description = (
+            f"skills.sh candidate; source={source}; installs={installs}; "
+            f"duplicate={duplicate}; searchType={search_type}; "
+            f"url={detail_url}; install={install_url}"
+        )
         metadata = json.dumps(item, sort_keys=True, separators=(",", ":")).encode()
         rows.append({
             "id": "skills-sh:" + identity,
@@ -221,7 +253,7 @@ def search_skills_sh(query: str, limit: int = 8) -> tuple[list[dict], str]:
             "name": str(name)[:240],
             "description": description[:1200],
             "content_sha256": digest(metadata),
-            "taxonomy_sha256": taxonomy_hash(load_taxonomy()),
+            "taxonomy_sha256": taxonomy_sha,
             "domain": "agentic",
             "function": "skill-discovery",
             "facets": ["external", "skill", "vendor" if source else "community"],
@@ -359,7 +391,10 @@ def main() -> int:
     find.add_argument("--db",default=".cache/capability-index.sqlite")
     find.add_argument("--ledger",default=".cache/capability-discovery-ledger.jsonl")
     find.add_argument("--limit",type=int,default=8)
-    find.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
+    catalog_group = find.add_mutually_exclusive_group()
+    catalog_group.add_argument("--skills-sh",action="store_true",help="Add read-only skills.sh search; requires VERCEL_OIDC_TOKEN")
+    catalog_group.add_argument("--skills-sh-curated",action="store_true",help="Search the official curated skills.sh catalog; requires VERCEL_OIDC_TOKEN")
+    find.add_argument("--owner",help="Limit skills.sh search to a GitHub owner")
     args = parser.parse_args()
     if args.command == "scan":
         root = Path(args.root).resolve()
@@ -381,8 +416,8 @@ def main() -> int:
         return 0
     con = connect(Path(args.db))
     external_status = "not_requested"
-    if args.skills_sh:
-        remote_rows, external_status = search_skills_sh(args.query,args.limit)
+    if args.skills_sh or args.skills_sh_curated:
+        remote_rows, external_status = search_skills_sh(args.query,args.limit,owner=args.owner,curated=args.skills_sh_curated)
         if remote_rows:
             upsert(con,remote_rows)
             export_ledger(con,Path(args.ledger))

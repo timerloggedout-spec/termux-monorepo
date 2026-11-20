@@ -82,13 +82,31 @@ async function load(){
     <h3>Campaigns by state</h3>${CK.bars(p2state)}
     ${p2runs.length ? `<h3>Runs per campaign</h3>${CK.bars(p2runs)}` : '<p class="muted">No campaign run records yet.</p>'}</section>`);
   }
+  const stateLabel = state => ({
+    proposal_only_not_admitted: "Proposal only · admission pending",
+    proposed_not_admitted: "Proposed · admission pending",
+    unapproved_execution_detected: "Integrity alert · execution before admission",
+    admitted_design_only: "Admitted · design only",
+    admitted_implementing: "Admitted · implementing",
+    open_register: "Open comparison register",
+    superseded: "Superseded",
+    executed: "Executed"
+  }[state] || state || "State unavailable");
+  const stateDetail = state => ({
+    proposal_only_not_admitted: "Awaiting DoE-expert admission and campaign automation.",
+    proposed_not_admitted: "Awaiting the campaign admission decision.",
+    unapproved_execution_detected: "Run records exist while the declared design status is proposal-only. Hold result publication and reconcile execution provenance.",
+    admitted_design_only: "Design record admitted; execution evidence pending.",
+    admitted_implementing: "Implementation and automation are in progress.",
+    superseded: "Historical design retained for provenance."
+  }[state] || "");
   const fam = d.family;
   if(fam){
     const mrows = fam.members.map(m => {
       const id = m.member_id || m.campaign_id;
       const runs = (m.runs !== undefined) ? `${esc(m.runs)} runs` : "";
       const note = m.note || m.design_type || "";
-      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(m.state)}</span></td><td>${runs}</td><td>${esc(note)}</td></tr>`;
+      return `<tr><td><code>${esc(id)}</code></td><td>${esc(m.kind)}</td><td><span class="pill">${esc(stateLabel(m.state))}</span></td><td>${runs}</td><td>${esc(note)}</td></tr>`;
     }).join("");
     out.push(`<section class="card"><h2>The DoE family</h2>
     <p>${esc(fam.statement)} Spec: <a href="${GH}${esc(fam.spec)}">${esc(fam.spec)}</a> · issue #${esc(fam.issue)}</p>
@@ -108,9 +126,10 @@ async function load(){
       <p>Factorial effects on accuracy — routing main effect: ${esc(eff.routing_main_effect)} · representation main effect: ${esc(eff.representation_main_effect)} · interaction: ${esc(eff.interaction)}</p>
       <p>Verdict vs predeclared threshold: <strong>${esc(c.results.verdict)}</strong></p></section>`);
     } else {
+      const stateClass = c.state === "unapproved_execution_detected" ? "gap" : "notrun";
       out.push(`<section class="card"><h2>Campaign — ${esc(c.campaign_id)}</h2>
-      <div class="notrun"><strong>Admitted — design record committed, not run yet.</strong> ${esc(c.design_type || "")}</div>
-      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a></p></section>`);
+      <div class="${stateClass}"><strong>${esc(stateLabel(c.state))}.</strong> ${esc(stateDetail(c.state))} ${esc(c.design_type || "")}</div>
+      <p class="meta">Design record: <a href="${GH}${esc(c.design_record)}">${esc(c.design_record)}</a> · ${esc(c.runs)} run records · declared status: ${esc(c.declared_status || "legacy / unspecified")}</p></section>`);
     }
   }
   const fns = d.methods_library.functions.map(fn =>

@@ -47,13 +47,13 @@
 <div class="hero">
 <p class="eyebrow">MoneyBall · Agentic Gambling — Event Propositions</p>
 <h1>The wagering book, published</h1>
-<p class="lede">The public, read-only view of the event wagering book: 39 recorded propositions, their expectation records, positions, and settlements, where established from the named records of record. Every tracked event belongs to the wagering-event model; expectation, position, and settlement are separate recorded facts. The <a href="./countdowns.html">Countdowns</a> page projects the registered deadline windows; a clock does not imply a cash stake, external bet, or wallet movement. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v2</code>) and nothing else. Entries stay internal — observational stakes only, no external participation, no wallet movement.</p>
+<p class="lede">The public, read-only view of the event wagering book: <span id="subject-count">41</span> recorded propositions, their expectation records, positions, and settlements, where established from the named records of record. Every tracked event belongs to the wagering-event model; expectation, position, and settlement are separate recorded facts. The <a href="./countdowns.html">Countdowns</a> page projects the registered deadline windows; a clock does not imply a cash stake, external bet, or wallet movement. This page consumes <code>data/wagering-book.json</code> (schema <code>moneyball.wagering-book/v2</code>) and nothing else. Entries stay internal — observational stakes only, no external participation, no wallet movement.</p>
 </div>
 </header>
 <main>
 <p class="muted" id="meta">Loading book…</p>
 <section>
-<div class="head"><h2>Event propositions — Gantt (Nov 2 → Dec 12)</h2></div>
+<div class="head"><h2>Event propositions — Gantt (<span id="horizon-label">Nov 2 → Jan 13</span>)</h2></div>
 <div class="card"><div id="gantt"></div>
 <p class="legend dim" id="legend"></p>
 <p class="dim" id="fcnote"></p>
@@ -116,6 +116,13 @@ if(typeof module!=="undefined"){ module.exports={parseT,staleOf,ganttGeom,expect
 let FEED=null;
 function trunc(s,n){ s=String(s==null?"":s); return s.length>n? s.slice(0,n-1)+"…" : s; }
 function renderBook(nowMs){
+  const subjectCount=$("subject-count");
+  if(subjectCount) subjectCount.textContent=String(FEED.subjects.length);
+  const horizonLabel=$("horizon-label");
+  if(horizonLabel){
+    const shortDate=s=>new Date(s).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/Los_Angeles"});
+    horizonLabel.textContent=shortDate(FEED.horizon.start)+" → "+shortDate(FEED.horizon.end);
+  }
   const W=1120, g=ganttGeom(FEED,W), rowH=36, headH=24, top=30;
   const totalH=top+FEED.subjects.length*rowH+Object.keys(FEED.family_label).length*headH+18;
   let y=top, out='';

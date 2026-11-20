@@ -7,7 +7,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: legacy-jules-pr-request-${ github.event.issue.number || github.run_id }
+  group: legacy-jules-pr-request-${{ github.event.issue.number || github.run_id }}
   cancel-in-progress: false
 
 jobs:

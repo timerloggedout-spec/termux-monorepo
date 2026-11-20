@@ -338,7 +338,7 @@ jobs:
               if (emptyDiff) instructions.push('- **Empty diff:** commit and push real changes.');
               instructions.push('- Push to existing head branch. No Class 3/4 artifacts.');
 
-              // Preserve a plain DoE review receipt; Google Jules has no live trigger.
+              // Preserve a plain DoE review receipt; Google Jules trigger is retired.
               const body = [
                 marker,
                 `sha: ${pr.head.sha}`,

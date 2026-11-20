@@ -258,7 +258,7 @@ def main() -> None:
             shutil.copy2(skills_jsonl, jsonl_source)
     elif not jsonl_source.exists():
         jsonl_source.write_text(
-            "".join(json.dumps(row, ensure_ascii=False) + "\\n" for row in jsonl_rows),
+            "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in jsonl_rows),
             encoding="utf-8",
         )
 

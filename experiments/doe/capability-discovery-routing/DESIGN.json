@@ -287,8 +287,8 @@
       "file": "PR #5667 — Claude export importer and mirror",
       "locator": "https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17@42eb1b061740",
       "role": "repository import adapter and mirrored vendor-skill corpus",
-      "trust": "code is repository-canonical; imported vendor definitions and source checksums remain unverified pending reconciliation",
-      "use": "review scripts/skills/import_claude_export.py and validate_claude_export.py, .skills/index.json, .skills/tags.json, docs/ops/skills/source/** and vendor/skills-mirror/**; retain 1,299 skill and 1,218 plugin-row counts as reported, not as proof of source authenticity"
+      "trust": "importer code is repository-canonical; current imported source data remains UNVERIFIED",
+      "use": "review scripts/skills/import_claude_export.py and validate_claude_export.py, .skills/index.json, .skills/tags.json, docs/ops/skills/source/** and vendor/skills-mirror/**. The importer now derives JSONL from CSV when absent, compares downloaded JSONL field-for-field, verifies any present listed parts and records checksum coverage. Current sums still omit the combined archive and CSVs, and the five listed split parts are absent. Preserve the 1,299 skill / 1,218 plugin-row counts as inventory observations, not source authenticity claims."
     }
   ]
 }

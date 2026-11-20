@@ -16,6 +16,7 @@
 - [x] Identify the QDesk self-repair workflow/script and generic QUE admission workflow/evaluator.
 - [x] Identify the QUE Superagent planned model-assessment stage and its inferred-candidate boundary.
 - [x] Identify the existing Python-to-Rust JSONL accelerator pattern in the Context Relationship subsystem.
+- [x] Document the candidate QUE model-assessment seam and JSONL bridge contract for owner review.
 - [ ] Verify the QUE owner-approved Brain invocation point and versioned bridge contract.
 - [ ] Versioned production bridge maps host input, policy decision, specialist result, and ORCHESTRATION-RECEIPT fields.
 - [ ] Add an explicit methodology_intelligence issue/template route only after host-owner approval and fresh admission.

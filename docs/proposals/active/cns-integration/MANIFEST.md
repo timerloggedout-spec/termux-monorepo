@@ -70,6 +70,7 @@ Operator direction received 2026-11-20: continue Brain integration without devic
 
 - ITEMS: ./ITEMS.md
 - Host reconnaissance: ./HOST-RECON.md
+- Candidate bridge contract: ./BRIDGE-CANDIDATE.md
 - Source record: ./source.md
 - Implementation plan: ../../../../superpowers/plans/2026-11-20-cns-integration.md
 - CNS-06 issue: https://github.com/timerloggedout-spec/termux-monorepo/issues/5693

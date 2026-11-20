@@ -94,7 +94,7 @@ def infer_tags(name: str, description: str, locator: str, explicit: str = "") ->
 
 def scan_repository(root: Path, external: bool = False) -> list[dict]:
     rows = []
-    taxonomy = load_taxonomy(root)
+    taxonomy = load_taxonomy()
     for path in sorted(root.rglob("*")):
         if path.is_symlink() or not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue

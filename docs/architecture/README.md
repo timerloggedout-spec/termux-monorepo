@@ -49,7 +49,7 @@
 | Reviewer JIT (measured reviewer policy) | [docs/ops/REVIEWER-JIT-DESIGN.md](../ops/REVIEWER-JIT-DESIGN.md) |
 | Secrets audit (phantom-secret reconciliation) | [docs/ops/PHANTOM-SECRETS-AUDIT.md](../ops/PHANTOM-SECRETS-AUDIT.md) · Credential inventory of record: Issue #184 (names / last-used only) · Naming: [docs/ops/SECRET-NAMING-CONVENTION.md](../ops/SECRET-NAMING-CONVENTION.md) · Registry: [docs/ops/secrets-and-variables-registry.md](../ops/secrets-and-variables-registry.md) |
 | Backend & free-tier architecture | [docs/ops/FREE-TIER-BACKEND-RECON-2026-10-21.md](../ops/FREE-TIER-BACKEND-RECON-2026-10-21.md) · [docs/ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md](../ops/RESILIENCY-MAP-AND-STACK-PROPOSAL-2026-10-21.md) |
-| Agent coordination & monikers | [docs/ops/COLLABORATOR-MONIKERS.md](../ops/AGENT-MONIKERS.md) |
+| Agent coordination & monikers | [docs/ops/COLLABORATOR-MONIKERS.md](../ops/COLLABORATOR-MONIKERS.md) |
 | Temporal workflow runtime (self-host + MCP) | [docs/ops/TEMPORAL-SELF-HOST.md](../ops/TEMPORAL-SELF-HOST.md) · [docs/ops/TEMPORAL-MCP.md](../ops/TEMPORAL-MCP.md) |
 | Cadence provider onboarding | [docs/ops/CADENCE-PROVIDER-ONBOARDING.md](../ops/CADENCE-PROVIDER-ONBOARDING.md) |
 | DoE component registry | [docs/ops/DOE-COMPONENT-REGISTRY.md](../ops/DOE-COMPONENT-REGISTRY.md) |

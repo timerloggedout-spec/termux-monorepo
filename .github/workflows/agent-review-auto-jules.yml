@@ -16,7 +16,10 @@ concurrency:
 
 jobs:
   legacy-review-receipt:
-    if: github.event_name == 'pull_request_review' || github.event_name == 'pull_request_review_comment' || github.event_name == 'issue_comment'
+    if: |
+      github.event_name == 'pull_request_review' ||
+      github.event_name == 'pull_request_review_comment' ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -46,6 +49,17 @@ jobs:
             if (event === 'pull_request_review' && source.state === 'approved') return;
             const feedback = (source.body || '').trim();
             if (!feedback) return;
+
+            const checkboxTrigger =
+              /<!--\s*\{[^}]*"checkboxId"[^}]*\}\s*-->/i.test(feedback) &&
+              /\btrigger review\b/i.test(feedback);
+            const automaticReviewNotice = /\bdoes not receive automatic reviews\b/i.test(feedback);
+            const codeRabbitCooldown = /review limit reached|review rate limited|action not completed|couldn[’']t start this review|next (?:included )?review (?:will be )?available in/i.test(feedback);
+            const providerCapacityNotice = /qodo:billing-blocked|trial has ended|usage limits? for code reviews|quota(?:\s|-)limit|rate[- ]limit|temporarily unavailable|capacity(?:\s|-)limit|api-deployments-free-per-day|build-rate-limit/i.test(feedback);
+            if (checkboxTrigger || automaticReviewNotice || codeRabbitCooldown || providerCapacityNotice) {
+              core.info('Provider control or capacity notice captured by its authorized operator path.');
+              return;
+            }
 
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,

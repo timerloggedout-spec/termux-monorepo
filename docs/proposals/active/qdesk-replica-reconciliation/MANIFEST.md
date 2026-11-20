@@ -45,7 +45,7 @@ Related active work: PR #5145 (Observatory + Delphi + DoE pipeline), #5197 (port
 - [x] Registered in `docs/proposals/registry.yaml`
 - [x] ITEMS.md itemized
 - [ ] At least one non-author review recorded
-- [ ] Exact relevant smods gitlink SHAs recorded before acceptance
+- [x] Exact relevant smods gitlink SHAs recorded before acceptance (7 mapped pins verified against master tree `35f40296d1bd3881b18a212c668e0f5951e09542`; `lego_fork` remains unpinned/unverified)
 - [ ] Project-profile S2 registry/resolver dependency confirmed before Drafting Desk implementation
 - [ ] Status → accepted before implementation merges
 - [ ] PRs cite `Implements: QDESK-001` through `QDESK-013` as applicable

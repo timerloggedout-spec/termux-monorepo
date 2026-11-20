@@ -491,8 +491,6 @@ def local_first_search(con: sqlite3.Connection, query: str, limit: int = 8,
     hits = search(con,query,limit)
     if len(hits) >= min_local_results:
         return hits,"local_sufficient"
-    if not os.environ.get("VERCEL_OIDC_TOKEN"):
-        return hits,"auth_required"
     remote_rows,status = cached_skills_sh_search(con,query,limit,owner=owner)
     if remote_rows:
         upsert(con,remote_rows)

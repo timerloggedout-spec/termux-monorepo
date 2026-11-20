@@ -20,7 +20,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-Extend the existing QDesk/QUE architecture with a Replica-informed visual workspace, Browser Quarantine Clerk proposal/access-risk view, and stronger release-preview evidence. Reuse the current Contribution Desk, Admin Graph, versioning, QDesk portfolio/DoE RFP and admission/claim authorities. This proposal adds a read-only visual extension; it does not create a second QDesk engine, scheduler, portfolio scorer, claim pipeline or DoE ledger. It does not authorize production permission changes, external publishing or recursive submodule initialization.
+Extend the existing QDesk/QUE architecture with a Replica-informed visual workspace, guided issue-filing portal, user-selectable model-provider path, Browser Quarantine Clerk proposal/access-risk view, and stronger release-preview evidence. Reuse the current Contribution Desk, Admin Graph, versioning, QDesk portfolio/DoE RFP, admission/claim authorities and model routers. The 11-step sequence covers overlap reconciliation, accepted scope, source/provider contracts, Gantt integration, issue filing, quota isolation, Clerk/release comparison, DoE, vertical-slice implementation, exact-SHA validation and version selection/retirement. The initial visual shell remains read-only; issue submission and model-provider wiring require separate authenticated and security-reviewed adapters.
 
 ## Reviewers
 
@@ -46,7 +46,7 @@ Related active work: PR #5145 (Observatory + Delphi + DoE pipeline), #5197 (port
 - [x] ITEMS.md itemized
 - [ ] At least one non-author review recorded
 - [ ] Status → accepted before implementation merges
-- [ ] PRs cite `Implements: QDESK-001` through applicable item IDs
+- [ ] PRs cite `Implements: QDESK-001` through `QDESK-011` as applicable
 - [ ] Gates green on merge
 - [ ] Closed + moved to `closed/` when terminal
 

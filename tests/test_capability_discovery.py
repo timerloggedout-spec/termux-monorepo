@@ -141,7 +141,7 @@ class CapabilityDiscoveryTests(unittest.TestCase):
                 },
             ]
             path.write_text(
-                "\\n".join(json.dumps(item) for item in records) + "\\n",
+                "\n".join(json.dumps(item) for item in records) + "\n",
                 encoding="utf-8",
             )
             rows = scan_repository(root)

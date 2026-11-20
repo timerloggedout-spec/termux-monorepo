@@ -49,3 +49,6 @@ success | clean-no-op | blocked | approval-required | exhausted | stagnated
 Never report stalled, exhausted, or blocked as success.
 
 **Related:** adaptive-feedback-cycle, review-loop, production-reconciliation, evidence-envelope.
+## Loop Library compatibility
+
+The bounded cycle is Observe → Choose → Act → Verify → Record → Repeat/stop. Its nine routes are Discover, Find, Audit/Loop Doctor, Adapt, Craft, Run, Debrief, Save/Reuse, and Publish. The canonical `.agents/skills/adaptive-wait/SKILL.md` owns the state machine, receipts, and terminal states; repository permissions govern Save/Reuse/Publish actions.

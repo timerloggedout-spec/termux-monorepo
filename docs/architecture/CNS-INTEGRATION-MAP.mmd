@@ -1,0 +1,78 @@
+# CNS Integration Map
+
+**Source ref:** `master@b36c8257544d27b740fcd7d5f56e4c79be81fcd4`
+**Legend:** solid = verified/derived relationship; dashed = proposed; dotted = feedback/projection; unresolved = evidence or owner pending.
+
+```mermaid
+flowchart TD
+  GOV[Governance and permissions]
+  ICM[ICM context navigation]
+  CRG[Context Relationship Graph]
+  PTR[Pointer Fabric proposal]
+  BRAIN[Brain reasoning kernel]
+  MGR[Manager / Conductor]
+  QUE[QUE / QDesk admission]
+  BALLET[Ballet dependency choreography]
+  ROUTER[Provider Router]
+  ORBIT[ORBIT / SHIELD proposal]
+  BUS[Synaptic Bus proposal]
+  OWNERS[Existing canonical event owners]
+  EXEC[Specialists and execution adapters]
+  ATES[ATES / Action-Effect evidence]
+  WATCH[Runtime watchers]
+  THREE[3L0 actor scoring]
+  MONEY[MoneyBall PR scoring]
+  DOE[DoE / MVT]
+  SHE[SHE read-only projections]
+  EXPLORER[Historical Corpus Explorer]
+  LEARN[Skill and Manager evolution]
+
+  GOV -->|verified| ICM
+  GOV -->|verified| MGR
+  ICM -->|verified| CRG
+  CRG -->|verified| BRAIN
+  CRG -.->|proposed| PTR
+  CRG -->|verified| MGR
+  BRAIN -.->|proposed| MGR
+  MGR -->|verified| QUE
+  QUE -->|verified| BALLET
+  BALLET -->|verified| ROUTER
+  ROUTER -.->|proposed| ORBIT
+  ORBIT -.->|proposed| EXEC
+  ROUTER -->|verified| EXEC
+  EXEC -->|verified| ATES
+  EXEC -->|verified| WATCH
+  WATCH -->|derived| ATES
+  ATES -->|verified| THREE
+  ATES -->|verified| MONEY
+  CRG -->|derived| DOE
+  THREE -->|verified| DOE
+  MONEY -->|verified| DOE
+  DOE -.->|proposed| LEARN
+  ATES -->|derived| SHE
+  CRG -->|derived| SHE
+  THREE -->|derived| SHE
+  MONEY -->|derived| SHE
+  SHE -->|derived| EXPLORER
+  SHE -.->|proposed| MGR
+  LEARN -.->|proposed| MGR
+  EXEC -.->|proposed| BUS
+  BUS -.->|proposed| OWNERS
+
+  classDef verified fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef derived fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef proposed fill:#fff8e1,stroke:#f9a825,color:#6d4c00
+  classDef unresolved fill:#ffebee,stroke:#c62828,color:#b71c1c
+  class GOV,ICM,CRG,MGR,QUE,BALLET,ROUTER,EXEC,ATES,WATCH,THREE,MONEY,DOE,SHE class verified
+  class EXPLORER class derived
+  class PTR,ORBIT,BUS,LEARN class proposed
+```
+
+## Edge evidence classification
+
+- **Verified:** documented source-to-source relationship or merged implementation.
+- **Derived:** deterministic projection from canonical source records.
+- **Proposed:** open PR, proposal, or integration contract awaiting promotion and runtime proof.
+- **Unresolved:** relationship whose owner or evidence is currently unestablished.
+
+Every Mermaid edge carries its evidence classification in the edge label. Proposed edges remain visibly dashed and remain advisory until exact-head checks and runtime evidence establish their integration.

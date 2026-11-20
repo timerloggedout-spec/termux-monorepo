@@ -1,0 +1,53 @@
+name: CNS architecture contracts
+
+on:
+  pull_request:
+    paths:
+      - "docs/architecture/CNS-**"
+      - "docs/proposals/active/cns-integration/**"
+      - "scripts/ci/validate_cns_architecture.py"
+      - "tests/test_cns_architecture_contracts.py"
+      - "tests/test_adaptive_feedback_cycle_loopy_contract.py"
+      - ".agents/skills/adaptive-wait/**"
+      - ".agents/skills/adaptive-feedback-cycle/**"
+      - "docs/ops/skills/adaptive-wait/**"
+      - "docs/ops/SKILLS-INVENTORY.md"
+      - ".github/workflows/cns-architecture-contracts.yml"
+  push:
+    branches: [master]
+    paths:
+      - "docs/architecture/CNS-**"
+      - "docs/proposals/active/cns-integration/**"
+      - "scripts/ci/validate_cns_architecture.py"
+      - "tests/test_cns_architecture_contracts.py"
+      - "tests/test_adaptive_feedback_cycle_loopy_contract.py"
+      - ".agents/skills/adaptive-wait/**"
+      - ".agents/skills/adaptive-feedback-cycle/**"
+      - "docs/ops/skills/adaptive-wait/**"
+      - "docs/ops/SKILLS-INVENTORY.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cns-architecture-contracts-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install YAML parser
+        run: python -m pip install pyyaml
+      - name: Run CNS contract tests
+        run: python3 -B -m unittest discover -s tests -p 'test_cns_architecture_contracts.py' -v
+      - name: Run Loopy compatibility contracts
+        run: python3 -B -m unittest discover -s tests -p 'test_adaptive_feedback_cycle_loopy_contract.py' -v
+      - name: Validate CNS architecture artifacts
+        run: python3 scripts/ci/validate_cns_architecture.py

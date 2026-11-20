@@ -91,6 +91,11 @@ Wait while useful evidence/progress changes. Re-check run/job state and timestam
 
 After each run inspect **jobs -> steps -> logs -> artifacts -> receipts -> resulting SHA/status** before deciding to wait, steer, retry, refine, or promote.
 
+
+## Bounded micro-loop (Loopy compatibility)
+
+Use Observe → Choose → Act → Verify → Record → Repeat/stop as the bounded execution micro-loop inside the twelve-step production cycle. `adaptive-wait` owns micro-loop cadence, receipt fields, and terminal states; this skill owns historical evaluation, cohort comparison, learning, and feed-forward. The nine Loop Library route labels — Discover, Find, Audit/Loop Doctor, Adapt, Craft, Run, Debrief, Save/Reuse, Publish — provide a reusable workflow vocabulary under existing repository permissions.
+
 ## Reconnaissance before implementation
 
 Before changing production orchestration, inspect all relevant `.agents/skills/`, context-relationship graph variants, SSOTs, decision matrices, Mermaid/process diagrams, command libraries, agent-manager documents, provider adapters, cooldown/quota code, benchmark registries, evaluation contracts, fork lineage, and recent agent-authored commits. Treat workflow definitions and documentation that references them as coupled artifacts.

@@ -5,6 +5,16 @@
 **Adapter contract:** [ADAPTER-CONTRACT.md](ADAPTER-CONTRACT.md)  
 **Event schema:** [integration-event.schema.json](schemas/integration-event.schema.json)
 
+## Contextual skill and tool discovery
+
+- [Capability discovery contract](../ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md)
+- [Machine-readable source registry](../../ops/capability_discovery/sources.json)
+- [Hierarchical taxonomy](../../ops/capability_discovery/taxonomy.json)
+- [Session plugin skill catalog](session-plugin-skill-catalog.json): 545 references / 74 packages.
+- [Session tool action catalog](session-tool-action-catalog.json): 4,716 actions / 123 MCP namespaces.
+
+Catalogs are compact session-scoped metadata snapshots captured 2026-11-19. They are not account entitlement, connection, or production access claims. Live tool descriptors remain authoritative for complete schemas and permissions.
+
 ## Prioritized portfolio
 
 | Integration | Priority | Session evidence | Repository adapter / integration state | Intended role |

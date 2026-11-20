@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from scripts.capabilities.discover import cached_skills_sh_search, connect, import_session_json, load_taxonomy, scan_repository, search, search_skills_sh, upsert, validate_classification
+from scripts.capabilities.discover import cached_skills_sh_search, connect, import_session_json, load_taxonomy, local_first_search, scan_repository, search, search_skills_sh, upsert, validate_classification
 
 
 class CapabilityDiscoveryTests(unittest.TestCase):
@@ -162,6 +162,35 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["trust"], "community-reference")
         self.assertEqual(rows[0]["lifecycle"], "discovered")
         self.assertNotIn("SKILL.md contents", rows[0]["description"])
+
+    def test_auto_discovery_prefers_local_and_gates_external_search(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            con = connect(Path(tmp) / "index.sqlite")
+            row = {
+                "id": "repo:demo", "kind": "skill", "source_id": "repo-agent-skills",
+                "locator": ".agents/skills/demo/SKILL.md", "name": "demo-skill",
+                "description": "Demo capability", "content_sha256": "a" * 64,
+                "taxonomy_sha256": "b" * 64, "domain": "agentic",
+                "function": "skill-discovery", "facets": ["skill"],
+                "trust": "repository-canonical", "lifecycle": "classified",
+                "version_ref": None, "aliases": [], "permissions": [], "tags": ["demo"],
+            }
+            upsert(con, [row])
+            with patch.dict("os.environ", {}, clear=True):
+                with patch("urllib.request.urlopen") as request:
+                    hits, status = local_first_search(con, "demo", min_local_results=1)
+            self.assertEqual(status, "local_sufficient")
+            self.assertEqual(len(hits), 1)
+            request.assert_not_called()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            con = connect(Path(tmp) / "empty.sqlite")
+            with patch.dict("os.environ", {}, clear=True):
+                with patch("urllib.request.urlopen") as request:
+                    hits, status = local_first_search(con, "missing capability")
+            self.assertEqual(status, "auth_required")
+            self.assertEqual(hits, [])
+            request.assert_not_called()
 
     def test_tool_actions_receive_domain_and_tool_facets(self):
         with tempfile.TemporaryDirectory() as tmp:

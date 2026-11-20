@@ -95,6 +95,36 @@ class RuntimeEventTests(unittest.TestCase):
         self.assertEqual(route_events[0]["id"], "route:6001:9010")
         self.assertEqual(route_events[0]["payload"]["dispatch_id"], "dispatch-6001")
 
+    def test_dispatch_watchdog_auto_claim_emits_route_pulse(self):
+        payload = {
+            "workflow_runs": [],
+            "issue_comments": [{
+                "id": 9011,
+                "issue_url": "https://api.github.com/repos/timerloggedout-spec/termux-monorepo/issues/6002",
+                "created_at": "2026-11-19T12:06:00Z",
+                "user": {"login": "termux-fleet-swarm[bot]"},
+                "body": ("[MUSEai]@{role:{dispatch-watchdog}} PRODUCER CLAIM — auto-claim by rank.\n\n"
+                         "- resolved provider: repo-machinery\n"
+                         "- producer: dispatch-watchdog auto-claim\n"
+                         "- auto-claim: class=executor claimant=dispatch-executor lease_expires=2026-11-19T14:06:00Z\n")
+            }]
+        }
+        events = MODULE.build_events(payload, "runtime_snapshot", {
+            "run_id": "12348", "run_attempt": "1", "head_sha": "d" * 40
+        })
+        route_events = [event for event in events if event["kind"] == "route"]
+        self.assertEqual(len(route_events), 1)
+        self.assertEqual(route_events[0]["payload"]["route_role"], "dispatch-watchdog")
+        self.assertEqual(route_events[0]["payload"]["provider"], "repo-machinery")
+
+    def test_claim_marker_without_route_stamp_is_filtered(self):
+        payload = {"repository": {"full_name": MODULE.REPO},
+                   "issue": {"number": 77},
+                   "comment": {"id": 78, "body": "PRODUCER CLAIM mentioned in discussion"}}
+        self.assertEqual(MODULE.build_events(payload, "issue_comment", {
+            "run_id": "123", "run_attempt": "1"
+        }), [])
+
     def test_workflow_job_event_is_normalized(self):
         payload = {
             "repository": {"full_name": MODULE.REPO},

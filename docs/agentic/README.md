@@ -14,7 +14,7 @@ This directory contains a **repository-native lifecycle system** for dependency-
 | Proposal + ITEMS | [`../proposals/active/gantt-dependency-phases/`](../proposals/active/gantt-dependency-phases/) |
 | Historical design | [`../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md`](../GANTT_DEPENDENCY_PHASES_ACTIONS_DESIGN.md) |
 | Template / PM catalog (inspiration) | [`PROJECT-MANAGEMENT-TEMPLATE-CATALOG.md`](PROJECT-MANAGEMENT-TEMPLATE-CATALOG.md) |
-| Primary repo entry | [`../../CLAUDE.md`](../../CLAUDE.md) — **not** root `AGENTS.md` (deprecated) |
+| Primary repo entry | [`../../CLAUDE.md`](../../CLAUDE.md) — canonical repository entrypoint |
 
 ## Components
 
@@ -155,7 +155,7 @@ python3 -m unittest tests/test_dependency_phase_engine.py
 
 ## Naming
 
-Collaborators are addressed by **Role**, **Name**, and **Moniker**. Root `AGENTS.md` is a deprecated redirect (Linguist / CedrLang / Jules compression only). Primary entry is always [`CLAUDE.md`](../../CLAUDE.md).
+Collaborators are addressed by **Role**, **Name**, and **Moniker**. Primary repository entry is always [`CLAUDE.md`](../../CLAUDE.md).
 
 ## Upgrade note (2026-09-25)
 

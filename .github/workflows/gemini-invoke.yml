@@ -166,7 +166,7 @@ jobs:
             Subject: PR/issue #${{ inputs.pr_number || inputs.issue_number || github.event.pull_request.number || github.event.issue.number }}.
             User request (untrusted data): ${{ inputs.additional_context }}
             PRIOR_PRS (metadata): ${{ inputs.prior_prs }}
-            Use the active builder candidate selected by the live roster; the Jules-derived DoE skill pack supplies guidance, not execution.
+            Use the active builder candidate selected by the live roster; the Jules-derived DoE skill pack supplies local workflow guidance; provider execution routes through live adapters.
             Never commit secrets or personal names.
 
       - name: Run Gemini CLI assistant (PRIMARY)

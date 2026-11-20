@@ -1,0 +1,71 @@
+{
+  "schema_version": "collaborator-rotation-map/v1",
+  "canonical_governance": "CLAUDE.md",
+  "collaborator_registry": "docs/ops/COLLABORATOR-MONIKERS.md",
+  "entries": [
+    {
+      "source": "AGENTS.md",
+      "target": "CLAUDE.md",
+      "action": "route",
+      "kind": "repository_governance",
+      "owner": "repository"
+    },
+    {
+      "source": "GEMINI.md",
+      "target": "GEMINI-MESH.md",
+      "action": "rename",
+      "kind": "collaborator_profile",
+      "owner": "geminiMesh"
+    },
+    {
+      "source": "GEMINI-CLI.md",
+      "target": "GEMINI-MESH.md",
+      "action": "retire_transition",
+      "kind": "transitional_filename",
+      "owner": "geminiMesh"
+    },
+    {
+      "source": "docs/ops/AGENT-MONIKERS.md",
+      "target": "docs/ops/COLLABORATOR-MONIKERS.md",
+      "action": "rename",
+      "kind": "collaborator_registry",
+      "owner": "repository"
+    },
+    {
+      "source": "docs/ops/AGENT-IDENTITY.md",
+      "target": "docs/ops/COLLABORATOR-IDENTITY.md",
+      "action": "rename",
+      "kind": "collaborator_identity_contract",
+      "owner": "repository"
+    },
+    {
+      "source": ".codex/AGENTS.md",
+      "target": ".codex/CODEX-CLI.md",
+      "action": "rename",
+      "kind": "specific_cli_implementation",
+      "owner": "codex"
+    },
+    {
+      "source": ".codex/AGENTS.hum.md",
+      "target": ".codex/CODEX-CONTEXT.md",
+      "action": "rename",
+      "kind": "collaborator_context",
+      "owner": "codex"
+    },
+    {
+      "source": "docs/icm/AGENTS.md",
+      "target": null,
+      "canonical": "docs/icm/CLAUDE.md",
+      "action": "retire_duplicate_alias",
+      "kind": "duplicate_navigation_alias",
+      "owner": "icm"
+    }
+  ],
+  "tool_vocabulary": {
+    "allowed_specific_implementations": [
+      "Gemini CLI",
+      "Codex CLI"
+    ],
+    "rule": "CLI names identify concrete implementations or implementation templates; collaborator identity uses the registered name or moniker."
+  }
+}

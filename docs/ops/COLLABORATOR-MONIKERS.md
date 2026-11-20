@@ -1,6 +1,6 @@
 # Collaborator Monikers (SSOT)
 
-Creative **display** call-signs for high-performance agent orchestration.
+Creative **display** call-signs for high-performance collaborator orchestration.
 
 **Critical:** Do **not** `@`-mention monikers that collide with real GitHub usernames.
 Use backticks or plain text for display. Live triggers remain the original handles

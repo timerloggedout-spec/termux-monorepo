@@ -22,6 +22,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-system,s
 .layout,.svg-holder,main.canvas-wrap{overscroll-behavior:none;overscroll-behavior-y:none}
 main.canvas-wrap,.svg-holder{touch-action:none}
 .node.focus-dim,.edge-g.focus-dim{opacity:.13}
+.node.search-dim{opacity:.14}.node.search-match .body{stroke:#fff!important;stroke-width:2.8}.node.search-current .body{stroke:var(--cyan)!important;stroke-width:4;filter:drop-shadow(0 0 8px rgba(34,211,238,.65))}
 .group-row.focused{border-color:var(--cyan);background:#0c2b38}
 .focus-picker{position:fixed;left:10px;right:10px;bottom:78px;z-index:80;background:var(--panel);border:1px solid #39445e;border-radius:12px;padding:12px;box-shadow:0 14px 40px rgba(0,0,0,.55);max-height:62vh;overflow-y:auto;overscroll-behavior:contain}
 .focus-picker h3{margin:0 0 4px;font-size:14px}.focus-picker .fp-list{display:grid;gap:6px;margin-top:8px}
@@ -241,6 +242,8 @@ footer.note{flex:0 0 auto;padding:10px 14px;border-top:1px solid var(--line);col
       <button class="btn small" id="modeConnect" type="button" aria-pressed="false">Connect</button>
       <button class="btn small" id="modePan" type="button" aria-pressed="false">Pan</button>
       <span class="sep"></span>
+      <input id="graphSearch" type="text" autocomplete="off" spellcheck="false" aria-label="Search graph nodes" aria-keyshortcuts="/" placeholder="Search nodes · /" style="width:190px;min-height:44px;padding:7px 9px"/>
+      <span class="lbl" id="searchStatus" role="status" aria-live="polite">All nodes</span>
       <button class="btn small" id="zoomOut" type="button" aria-label="Zoom out">−</button>
       <span class="lbl" id="zoomLabel">100%</span>
       <button class="btn small" id="zoomIn" type="button" aria-label="Zoom in">+</button>
@@ -756,6 +759,9 @@ function modelHash(){var s=JSON.stringify(MODEL),h=5381;for(var i=0;i<s.length;i
 function isDirty(){return JSON.stringify(MODEL)!==BASELINE;}
 function anchors(a,b){var ah=nodeH(a),bh=nodeH(b);var ax=a.x,ay=a.y+ah/2,bx=b.x,by=b.y+bh/2;var dx=bx-ax,dy=by-ay;var sx,sy,tx2,ty2;if(Math.abs(dx)>=Math.abs(dy)){if(dx>=0){sx=ax+a.w/2;sy=ay;tx2=bx-b.w/2;ty2=by;}else{sx=ax-a.w/2;sy=ay;tx2=bx+b.w/2;ty2=by;}}else{if(dy>=0){sx=ax;sy=a.y+ah;tx2=bx;ty2=b.y;}else{sx=ax;sy=a.y;tx2=bx;ty2=b.y+bh;}}var mx=Math.max(30,Math.abs(tx2-sx)*0.4),my=Math.max(30,Math.abs(ty2-sy)*0.4);var c1x=sx,c1y=sy,c2x=tx2,c2y=ty2;if(Math.abs(dx)>=Math.abs(dy)){c1x=sx+(dx>=0?mx:-mx);c2x=tx2+(dx>=0?-mx:mx);}else{c1y=sy+(dy>=0?my:-my);c2y=ty2+(dy>=0?-my:my);}return{d:"M "+sx+" "+sy+" C "+c1x+" "+c1y+", "+c2x+" "+c2y+", "+tx2+" "+ty2,mid:{x:(sx+tx2)/2,y:(sy+ty2)/2}};}
 var edgeEls={},nodeEls={};
+var graphSearchQuery="",searchMatches=[],searchIndex=-1;
+function graphNodeSearchText(n){return [n.id,n.title,n.sub,n.type,n.status,n.plane,n.layer,n.group,n.notes,(n.fields||[]).map(function(f){return [f.name,f.type,f.note].join(" ");}).join(" ")].join(" ").toLowerCase();}
+function updateGraphSearchMatches(){var q=graphSearchQuery.trim().toLowerCase();searchMatches=q?MODEL.nodes.filter(function(n){return graphNodeSearchText(n).indexOf(q)>=0;}):[];if(searchIndex>=searchMatches.length)searchIndex=searchMatches.length-1;var status=document.getElementById("searchStatus");if(status)status.textContent=q?(searchMatches.length?((searchIndex>=0?searchIndex+1:1)+" / "+searchMatches.length+" matches"):"0 matches"):"All "+MODEL.nodes.length+" nodes";}
 function visibleNode(n){return n.layer!=="satellite"||showSat;}
 var renderedBounds=null,focusBounds=null;
 function render(){
@@ -763,6 +769,7 @@ function render(){
   var groupLayer=document.getElementById("groupLayer"), headLayer=document.getElementById("groupHeadLayer");
   if(groupLayer)groupLayer.innerHTML=""; if(headLayer)headLayer.innerHTML="";
   var pf=document.getElementById("planeFilter").value,tf=document.getElementById("typeFilter").value;
+  updateGraphSearchMatches();
   /* --- rendered node set: individual members + one summary per collapsed group --- */
   var rendNodes=[],rendById={};
   MODEL.nodes.forEach(function(n){if(!visibleNode(n))return;if(collapsedGroups[groupOf(n)])return;rendNodes.push(n);rendById[n.id]=n;});
@@ -836,6 +843,7 @@ function render(){
     if(selectedNode===n.id)g.classList.add("selected");if(pendingFrom===n.id)g.classList.add("pending");
     if(["user","routing","dostuff","validate"].indexOf(n.id)>=0)g.classList.add("active");
     if(pf!=="all"&&n.plane!==pf)g.classList.add("dimmed");
+    if(graphSearchQuery.trim()){var isMatch=searchMatches.some(function(m){return m.id===n.id;});if(isMatch)g.classList.add("search-match");else g.classList.add("search-dim");if(isMatch&&searchMatches[searchIndex]&&searchMatches[searchIndex].id===n.id)g.classList.add("search-current");}
     if(focusGroup&&focusMode==="dim"){var ngid=n.groupSummary?n.summaryGroup:groupOf(n);if(ngid!==focusGroup)g.classList.add("focus-dim");}
     el("rect",{"class":"halo",x:-n.w/2-6,y:-6,width:n.w+12,height:h+12,rx:14},g);
     var r=el("rect",{"class":"body",x:-n.w/2,y:0,width:n.w,height:h,rx:10},g);r.style.stroke=n.groupSummary?"#e8ecf4":(PLANE_COLOR[n.plane]||"#3a445e");
@@ -962,6 +970,10 @@ function selectNode(id,rerender){var _n0=byId(id);if(_n0&&collapsedGroups[groupO
   document.getElementById("inspRepo").textContent=n.repoSource||"○ no repo source — not backed by a repo file";
   document.getElementById("inspDelta").textContent=n.repoDelta||"—";
   buildFieldEditor(n);if(typeof setStageForNode==="function")setStageForNode(id);if(rerender)render();}
+function focusGraphSearchResult(){if(!searchMatches.length)return;var n=searchMatches[searchIndex];if(!n)return;if(focusGroup&&groupOf(n)!==focusGroup)exitFocus();if(n.layer==="satellite"&&!showSat){showSat=true;document.getElementById("satToggle").checked=true;}if(collapsedGroups[groupOf(n)])delete collapsedGroups[groupOf(n)];selectNode(n.id,true);applyFit({minX:n.x-n.w/2-70,minY:n.y-55,maxX:n.x+n.w/2+70,maxY:n.y+nodeH(n)+55});log("Graph search selected: "+n.title+" ("+n.id+").");}
+document.getElementById("graphSearch").addEventListener("input",function(ev){graphSearchQuery=ev.target.value;searchIndex=0;render();});
+document.getElementById("graphSearch").addEventListener("keydown",function(ev){if(ev.key==="Enter"){ev.preventDefault();if(searchMatches.length){searchIndex=(searchIndex+ (ev.shiftKey?-1:1)+searchMatches.length)%searchMatches.length;focusGraphSearchResult();render();}}else if(ev.key==="Escape"){ev.preventDefault();ev.target.value="";graphSearchQuery="";searchIndex=-1;render();ev.target.blur();}});
+window.addEventListener("keydown",function(ev){var target=ev.target;if(ev.key==="/"&&!(target&&(/INPUT|TEXTAREA|SELECT/.test(target.tagName)||target.isContentEditable))){ev.preventDefault();var field=document.getElementById("graphSearch");field.focus();field.select();}});
 function buildFieldEditor(n){var box=document.getElementById("fieldEditor");box.innerHTML="";n.fields.forEach(function(f,i){var row=document.createElement("div");row.className="frow-edit";
   [["name",f.name],["type",f.type],["note",f.note]].forEach(function(pair){var inp=document.createElement("input");inp.type="text";inp.value=pair[1];inp.setAttribute("aria-label","Field "+pair[0]);inp.addEventListener("input",function(){f[pair[0]]=inp.value;renderCanvasOnly();});row.appendChild(inp);});
   var del=document.createElement("button");del.className="btn small danger";del.type="button";del.textContent="×";del.setAttribute("aria-label","Remove field row");del.addEventListener("click",function(){n.fields.splice(i,1);buildFieldEditor(n);render();});row.appendChild(del);box.appendChild(row);});}

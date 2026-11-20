@@ -1,0 +1,32 @@
+{
+ "schema_version": "1.0",
+ "experiment_id": "live1-audit-5690",
+ "suite": "doe-family:live-1-wave-framing",
+ "observed_at": "2026-11-20T07:50:05Z",
+ "baseline_sha": "b36c8257544d27b740fcd7d5f56e4c79be81fcd4",
+ "candidate_sha": "b36c8257544d27b740fcd7d5f56e4c79be81fcd4",
+ "treatment": {
+  "manager_policy_id": "doe-mgr-live-builds/live-1-auditor/v1",
+  "arm": "unassigned",
+  "instance": null
+ },
+ "provenance": "github",
+ "confidence": "high",
+ "status": "observed",
+ "outcome": "observational",
+ "metrics": {
+  "issue": 5690,
+  "entry": null,
+  "entry_class": null,
+  "framing_ledger": null,
+  "framing_stamp": null,
+  "checks_passed": 0,
+  "checks_total": 6,
+  "checks_failed": "ledger_line_exists,stamp_present,framing_matches,entry_matches,entry_class_matches,slot_matches",
+  "observational_reason": "ledger/stamp audit failed: ledger_line_exists, stamp_present, framing_matches, entry_matches, entry_class_matches, slot_matches"
+ },
+ "evidence_refs": [
+  "experiments/doe/live-1-wave-framing/records/assignments.jsonl",
+  "github issue #5690 (live-1 stamp comment)"
+ ]
+}

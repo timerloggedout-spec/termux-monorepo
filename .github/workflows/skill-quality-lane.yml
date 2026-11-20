@@ -8,6 +8,14 @@ on:
   pull_request:
     paths:
       - "**/SKILL.md"
+      - ".agents/skills/**/SKILL.md"
+      - "tools/**/tools-schema.json"
+      - "tools/**/CONNECTOR.md"
+      - "tools/**/TOOLS.md"
+      - "tools/**/sofa.py"
+      - "workspace/llm_map/_TOOL_TAXONOMY/**"
+      - "docs/ops/SOFA-CONNECTION-2026-10-28.md"
+      - "docs/ops/archive/SOFA-SEARCH-FINDINGS-2026-10-28.md"
       - ".claude/**/SKILL.md"
       - "SKILLS.md"
       - "CLAUDE.md"

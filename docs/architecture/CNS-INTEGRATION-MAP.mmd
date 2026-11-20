@@ -6,6 +6,7 @@
 ```mermaid
 flowchart TD
   GOV[Governance and permissions]
+  LEASE[Writer lease authority proposal]
   ICM[ICM context navigation]
   CRG[Context Relationship Graph]
   PTR[Pointer Fabric proposal]
@@ -29,6 +30,8 @@ flowchart TD
 
   GOV -->|verified| ICM
   GOV -->|verified| MGR
+  GOV -.->|proposed| LEASE
+  LEASE -.->|proposed| EXEC
   ICM -->|verified| CRG
   CRG -->|verified| BRAIN
   CRG -.->|proposed| PTR
@@ -65,7 +68,7 @@ flowchart TD
   classDef unresolved fill:#ffebee,stroke:#c62828,color:#b71c1c
   class GOV,ICM,CRG,MGR,QUE,BALLET,ROUTER,EXEC,ATES,WATCH,THREE,MONEY,DOE,SHE class verified
   class EXPLORER class derived
-  class PTR,ORBIT,BUS,LEARN class proposed
+  class PTR,ORBIT,BUS,LEARN,LEASE class proposed
 ```
 
 ## Edge evidence classification

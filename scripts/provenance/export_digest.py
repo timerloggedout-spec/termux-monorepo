@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-CONSUMER_ID = "provenance.export-digest/v1"
+CONSUMER_ID = "provenance.export-digest/v2"
 REPRESENTATION = "provenance-export-record/v1"
 
 

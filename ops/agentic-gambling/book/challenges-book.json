@@ -4,7 +4,7 @@
   "forecast_rule": "a forecast is an OUTPUT scored at its issuer's record (naming-collapse registry convention) — calendar anchors are DATA ON THE SUBJECT, not a new participant class",
   "register": "deadline-reminders/v1 (~/workspace/tracking/deadline-reminders-register.json, Tracking lane d6c12f3a; primary calendar, America/Los_Angeles)",
   "scheme": "A CUSHION-3d · B CUSHION/landing · C WALL-day · D ESCALATION (wall-4h) · E FINAL (wall-30m); anchors carry {cushion[], landing, wall, final} mapped from the register stages per subject",
-  "provisional_timebox_note": "C18/C19 desk-feed priority_timebox values are operational escalation projections derived from official Devpost walls; they remain separate from deadline-reminders/v1 calendar anchors. Subject anchors stay null until Tracking register items are bound."
+  "provisional_timebox_note": "C12 conditional Round 2 and C18/C19 desk-feed priority_timebox values are operational escalation projections derived from official Devpost checkpoints/walls; they remain separate from deadline-reminders/v1 calendar anchors. Subject anchors stay null until Tracking register items are bound."
  },
  "conformity": {
   "B1_one_record_per_subject": "each subject carries exactly ONE expectation record (Bayesian shape); positions cite the subject record; no per-position re-estimates, no parallel numbers on views/ledger lines",
@@ -39,7 +39,7 @@
  "priority_timebox_linkage": {
   "checkpoint_rule": "at each tier boundary for a subject: (1) review/revise its ONE expectation record — evidence legs appended, posterior updated per B1 (no parallel numbers); (2) first entries open at a checkpoint only with basis cited per B2 + the subject record cited; (3) settlement still ONLY from record_of_record at knowable (B3), tiers never settle",
   "relation": "the book subjects are the same slate viewed as stakes; the desk-feed tier boundaries are this book expectation checkpoints",
-  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 9 traversals carry it; C18/C19 desk-feed timeboxes are official-wall projections pending Tracking register binding, walls match this book subjects)",
+  "source": "ops/challenge/desk-feed.json priority_timebox per live opportunity (PR #4126 D1 pattern, PR #4130 slate-wide; verified firsthand 2026-11-03: 10 traversals carry it; C12 Round 2 is conditional on finalist invitation; C18/C19 desk-feed timeboxes are official-wall projections pending Tracking register binding, walls match this book subjects)",
   "tier_anchor_map": {
    "BASE": "window open — before the first cushion anchor",
    "CUSHION": "subject anchors.cushion (register stages A/B)",

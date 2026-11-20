@@ -52,6 +52,10 @@ jobs:
           echo "base_ref=origin/${BASE_REF}" >> "$GITHUB_OUTPUT"
 
       - name: Classifier and factorial DoE regression tests
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_ingest_exports.py' -v
+      - name: Classifier and factorial DoE regression tests
         run: python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
 
       - name: Run rotation map sweep and emit EXPERIMENT record

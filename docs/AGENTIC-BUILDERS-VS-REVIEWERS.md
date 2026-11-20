@@ -72,6 +72,6 @@ That is GitHub branch protection + merge queue / rulesets — **not** something 
 After workflows are on the **default branch** *and* `GEMINI_API_KEY` is set:
 
 - `@gemini-cli ...` comments get a **👀** reaction + short "received" comment with Actions run link
-- Same pattern as Jules / CodeRabbit
+- Same receipt pattern as the local DoE role adapter / CodeRabbit
 
 If you saw no 👀 on a prior comment: either the Gemini workflows were not yet on the branch that receives events, or `GEMINI_API_KEY` was missing (job fails before ack in some paths).

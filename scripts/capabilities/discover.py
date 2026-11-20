@@ -15,7 +15,7 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-VERSION = "1.1"
+VERSION = "1.2"
 MAX_SKILL_BYTES = 2_000_000
 SKILL_NAMES = {"SKILL.md", "SKILLS.md"}
 SKILL_SUFFIXES = {".skills", ".skill"}

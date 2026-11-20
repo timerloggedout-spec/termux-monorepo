@@ -15,7 +15,7 @@ reviewers:
     status: executing
 related_issues: [5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703]
 related_prs: [5525, 5544, 5635, 5637, 5665]
-related_branches: [feat/cns-integration-program-20261120]
+related_branches: [feat/cns-integration-foundation-20261120]
 gates_required: [proposal-lifecycle, repo-gate, termux-smoke]
 ---
 

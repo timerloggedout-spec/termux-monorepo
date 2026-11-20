@@ -20,6 +20,12 @@ Blocked (2^3) factorial:
 
 Eight fixed tasks × eight arms = 64 planned observations, blocked by task family and difficulty. Exact task cohort and budget require DoE-expert admission.
 
+## Repository baseline sources
+
+The source cohort includes the existing `workspace/llm_map/_TOOL_TAXONOMY/` catalog: 3,388 valid `all_tools.jsonl` records, 104 tags, 25 role profiles, 103 category views and the generator modules. The README count is stale by one (3,387 vs 3,388). The discovery index now imports the JSONL as individual unverified tool records; category/role files remain derived views. The 531-entry `state/` directory is retained as metadata-only provenance and excluded from full context hydration.
+
+Claude export inputs are separately represented by Issue #5657 and importer PR #5667. Their source checksum chain remains unverified because the issue's SHA256SUMS names split parts that are absent from its attachment list, and the issue omits the JSONL inventory required by the importer. The DoE must preserve this source-trust distinction.
+
 ## Evidence boundary
 
 Each executed run emits one record under `docs/ops/corpus/EXPERIMENT.schema.json`. Pin the configured instance, base/candidate SHAs, catalog hashes, task cohort, evaluator and assignment. Preserve failed, blocked, missing and partial observations.

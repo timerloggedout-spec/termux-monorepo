@@ -80,7 +80,7 @@ jobs:
           echo "idempotency_key=$(jq -r '.idempotency_key' claim.json)" >> "$GITHUB_OUTPUT"
 
       # Google Jules became read-only after 2026-11-11. The local Jules-derived
-      # DoE role skill pack is a capability template, not a provider adapter.
+      # DoE role skill pack supplies capability guidance; provider execution requires a separate live adapter.
       # Applied dispatch remains gated until a concrete non-Jules adapter is
       # implemented and its ROUTE_<AGENT>_ADAPTER_READY probe is wired.
 

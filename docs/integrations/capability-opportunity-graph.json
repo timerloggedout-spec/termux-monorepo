@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "graph_id": "termux-monorepo.ceel.opportunity-graph",
   "repository": "timerloggedout-spec/termux-monorepo",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-20",
   "authority": "repository-maintained-capability-index",
   "nodes": [
     {
@@ -500,6 +500,67 @@
         "template",
         "discovery"
       ]
+    },
+    {
+      "id": "rust-zero-drift-guardrails",
+      "kind": "capability",
+      "name": "Rust compile-time zero-drift guardrail patterns (restricted-use reference)",
+      "lifecycle_state": "classified",
+      "source": {
+        "source_type": "source_repository",
+        "locator": "https://github.com/timerloggedout-spec/rust-zero-drift_fork",
+        "revision": "2f1cac93142b4ce392d57371e5d590a56d13f5ad",
+        "observed_at": "2026-11-20T16:12:00Z"
+      },
+      "capabilities": [
+        {
+          "capability_id": "rust.compile_time.guardrails",
+          "status": "documented"
+        },
+        {
+          "capability_id": "rust.typestate.invariants",
+          "status": "documented"
+        },
+        {
+          "capability_id": "rust.property.mutation.verification",
+          "status": "documented"
+        },
+        {
+          "capability_id": "rust.sans_io.determinism",
+          "status": "documented"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "rust-zero-drift-fork-source-review-2026-11-20",
+          "status": "partial",
+          "reference": "https://github.com/timerloggedout-spec/rust-zero-drift_fork/commit/2f1cac93142b4ce392d57371e5d590a56d13f5ad",
+          "notes": "README.md, Cargo.toml, SKILL.md, src/lib.rs and LICENSE inspected. Capability claims are documented by the source; no independent build/test execution was performed. LICENSE states All Rights Reserved and permits public viewing/portfolio inspection only; derivative republication requires written permission. Cargo.toml repository metadata points to PNWcoastie/rust-zero-drift rather than this fork and requires provenance clarification."
+        }
+      ],
+      "owner": "ceel",
+      "internal_consumers": [
+        "doe-family",
+        "ates",
+        "rust-engineering",
+        "agent-evaluation-lane-registry"
+      ],
+      "license": "All Rights Reserved; public viewing and portfolio inspection only; no license for commercial redistribution or derivative republication without explicit written permission.",
+      "risk_notes": [
+        "Treat as a restricted-use reference and benchmark subject, not an admitted FOSS dependency or source for copied code.",
+        "Cargo.toml repository metadata points to PNWcoastie/rust-zero-drift; confirm fork/upstream provenance before any further admission.",
+        "Rust 1.100.0 toolchain requirement and standard-library API availability require environment verification.",
+        "Dependency, security-advisory, maintainer and supply-chain review remains incomplete."
+      ],
+      "tags": [
+        "rust",
+        "compiler-guardrails",
+        "typestate",
+        "property-testing",
+        "mutation-testing",
+        "doe-candidate",
+        "restricted-license"
+      ]
     }
   ],
   "edges": [
@@ -603,6 +664,12 @@
       "from": "braintrust",
       "to": "doe-family",
       "relationship": "measures",
+      "status": "hypothesis"
+    },
+    {
+      "from": "rust-zero-drift-guardrails",
+      "to": "doe-family",
+      "relationship": "informs",
       "status": "hypothesis"
     }
   ]

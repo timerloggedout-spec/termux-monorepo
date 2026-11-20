@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from scripts.capabilities.discover import connect, import_session_json, load_taxonomy, scan_repository, search, search_skills_sh, upsert, validate_classification
+from scripts.capabilities.discover import cached_skills_sh_search, connect, import_session_json, load_taxonomy, scan_repository, search, search_skills_sh, upsert, validate_classification
 
 
 class CapabilityDiscoveryTests(unittest.TestCase):
@@ -151,6 +151,32 @@ class CapabilityDiscoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["trust"], "community-reference")
         self.assertEqual(rows[0]["lifecycle"], "discovered")
         self.assertNotIn("SKILL.md contents", rows[0]["description"])
+
+    def test_skills_sh_search_uses_sqlite_cache(self):
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def read(self):
+                return json.dumps({"data": [{
+                    "id": "vendor/repo/search",
+                    "name": "Search Skill",
+                    "source": "vendor/repo",
+                    "installs": 12,
+                    "url": "https://skills.sh/vendor/repo/search",
+                }], "searchType": "fuzzy"}).encode()
+
+        with tempfile.TemporaryDirectory() as tmp:
+            con = connect(Path(tmp) / "index.sqlite")
+            with patch.dict("os.environ", {"VERCEL_OIDC_TOKEN": "test-token"}):
+                with patch("urllib.request.urlopen", return_value=Response()) as request:
+                    first, first_status = cached_skills_sh_search(con, "search skill")
+                    second, second_status = cached_skills_sh_search(con, "search skill")
+        self.assertEqual(first_status, "ok")
+        self.assertEqual(second_status, "cached")
+        self.assertEqual(first, second)
+        request.assert_called_once()
 
     def test_skills_sh_curated_catalog_flattens_publishers_and_filters_query(self):
         with patch.dict("os.environ", {"VERCEL_OIDC_TOKEN": "test-token"}):

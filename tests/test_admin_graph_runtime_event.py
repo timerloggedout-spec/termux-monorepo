@@ -37,7 +37,7 @@ def test_dispatch_executor_claim_preserves_arm_and_dispatch_identity():
         "sender": {"login": "dispatch-bot"},
         "issue": {"number": 5176, "html_url": "https://github.com/timerloggedout-spec/termux-monorepo/issues/5176"},
         "comment": {"id": 9002, "created_at": "2026-11-19T12:01:00Z",
-                    "body": ("[MUSEai]@{role:{dispatch-executor}} DISPATCH EXECUTOR CLAIM\n\n"
+                    "body": ("[MUSEai]@{role:{dispatch-executor}} PRODUCER CLAIM — dispatch executor claim on #5176\n\n"
                              "- arm: gemini-cli (gemini-2.5-pro) — selected by policy\n"
                              "- dispatch_id: dispatch-abc-123\n")}
     }
@@ -48,7 +48,7 @@ def test_dispatch_executor_claim_preserves_arm_and_dispatch_identity():
     assert event["payload"]["route_role"] == "dispatch-executor"
     assert event["payload"]["arm_id"] == "gemini-cli"
     assert event["payload"]["model"] == "gemini-2.5-pro"
-    assert event["payload"]["dispatch_id"] == "dispatch-abc-123"
+    assert event["payload"]["dispatch_id"] == "dispatch-abc-123"\n    assert event["payload"]["source"] == "dispatch_executor_claim"
 
 
 def test_unrelated_issue_comment_emits_no_route_event():

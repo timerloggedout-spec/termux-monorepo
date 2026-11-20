@@ -97,5 +97,16 @@
     ],
     "external_github_username_inventory": "not_established",
     "rule": "External GitHub username collisions require an authoritative account inventory; this sweep reports that check as not_established."
-  }
+  },
+  "external_migrations": [
+    {
+      "system": "Muse VM home volume",
+      "source": "~/AGENTS.md",
+      "target": "~/MUSE-VM.md",
+      "action": "install_named_profile_and_retire_generic_guidance",
+      "status": "pending_vm_side_install",
+      "required_before_next_export": true,
+      "template": "ops/vm-backup/templates/MUSE-VM.md"
+    }
+  ]
 }

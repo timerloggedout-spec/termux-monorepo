@@ -61,13 +61,19 @@ class CapabilityDiscoveryTests(unittest.TestCase):
                 "skills": ["skills/db/SKILL.md"],
                 "mcpServers": {"db": {"command": "db-server"}},
             }), encoding="utf-8")
+            tools_file = root / "plugins" / "demo" / "tools.json"
+            tools_file.write_text(json.dumps([{"name": "query-db", "description": "Query database"}]), encoding="utf-8")
             rows = scan_repository(root)
-            self.assertEqual(len(rows), 1)
-            self.assertEqual(rows[0]["kind"], "manifest")
-            self.assertEqual(rows[0]["source_id"], "repo-plugin-manifests")
-            self.assertIn("MCP servers=1", rows[0]["description"])
-            self.assertNotIn("db-server", rows[0]["description"])
-            self.assertEqual(rows[0]["version_ref"], "1.2.0")
+            self.assertEqual(len(rows), 2)
+            plugin_row = next(row for row in rows if row["locator"].endswith("plugin.json"))
+            tools_row = next(row for row in rows if row["locator"].endswith("tools.json"))
+            self.assertEqual(plugin_row["kind"], "manifest")
+            self.assertEqual(plugin_row["source_id"], "repo-plugin-manifests")
+            self.assertIn("MCP servers=1", plugin_row["description"])
+            self.assertNotIn("db-server", plugin_row["description"])
+            self.assertEqual(plugin_row["version_ref"], "1.2.0")
+            self.assertEqual(tools_row["kind"], "manifest")
+            self.assertIn("tool entries=1", tools_row["description"])
 
     def test_index_upsert_is_idempotent_and_searchable(self):
         with tempfile.TemporaryDirectory() as tmp:

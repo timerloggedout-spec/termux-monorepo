@@ -6,6 +6,7 @@ from pathlib import Path
 
 from scripts.ci.validate_cns_architecture import (
     validate_authority_matrix,
+    validate_identity_contract,
     validate_integration_map,
     validate_organ_registry,
 )
@@ -75,7 +76,7 @@ flowchart TD
         result = validate_integration_map(content)
         self.assertTrue(any("unresolved" in item for item in result))
 
-    def test_valid_map_passes(self) -> None:
+    def test_map_rejects_unclassified_edges(self) -> None:
         content = """# CNS Integration Map
 **Legend:** verified, derived, proposed, unresolved
 ```mermaid
@@ -83,7 +84,30 @@ flowchart TD
  A[Brain] --> B[Manager]
 ```
 """
+        result = validate_integration_map(content)
+        self.assertTrue(any("unclassified edge" in item for item in result))
+
+    def test_valid_map_passes(self) -> None:
+        content = """# CNS Integration Map
+**Legend:** verified, derived, proposed, unresolved
+```mermaid
+flowchart TD
+ A[Brain] -->|verified| B[Manager]
+```
+"""
         self.assertEqual(validate_integration_map(content), [])
+
+    def test_identity_contract_requires_all_correlation_dimensions(self) -> None:
+        content = (
+            "repository source_sha task_id scope_id orchestration_id cycle_id "
+            "attempt_id agent_id provider_id model_id adapter_id run_id "
+            "artifact_id outcome_id NOT_ESTABLISHED"
+        )
+        self.assertEqual(validate_identity_contract(content), [])
+
+    def test_identity_contract_reports_missing_dimensions(self) -> None:
+        result = validate_identity_contract("repository source_sha provider_id")
+        self.assertTrue(any("task_id" in item for item in result))
 
     def test_authority_matrix_rejects_duplicate_domains(self) -> None:
         content = """# CNS Authority Matrix

@@ -82,6 +82,15 @@ def validate_classification(domain: str, function: str, taxonomy: dict) -> tuple
 def infer_tags(name: str, description: str, locator: str, explicit: str = "") -> tuple[str, str, list[str]]:
     text = " ".join((name, description, locator, explicit)).lower()
     rules = [
+        ("specialized", "finance", ("finance", "credit score", "banking", "investment", "portfolio", "brokerage", "stock market")),
+        ("specialized", "health", ("health", "medical", "medication", "sleep", "fitness", "nutrition")),
+        ("specialized", "legal", ("legal", "court", "litigation", "case law")),
+        ("specialized", "regulatory", ("regulatory", "medtech", "fda", "compliance")),
+        ("specialized", "scientific", ("genomic", "peptide", "molecular", "chemistry", "protein", "scientific")),
+        ("specialized", "media", ("video", "audio", "speech", "media", "descript", "elevenlabs")),
+        ("specialized", "property", ("property", "real estate", "idealista", "housing")),
+        ("specialized", "automotive", ("automotive", "vehicle", "tesla", "car repair")),
+        ("specialized", "outdoors", ("hiking", "trail", "offroad", "outdoors")),
         ("engineering", "code-generation", ("code", "coding", "refactor", "debug", "software", "developer")),
         ("testing", "testing", ("test", "qa", "benchmark", "evaluation", "validation")),
         ("delivery", "ci-cd", ("github action", "workflow", "deploy", "release", "ci/cd")),
@@ -224,7 +233,10 @@ def import_session_json(path: Path, kind: str) -> list[dict]:
         safe_locator = redact_sensitive(str(locator))
         domain, function, facets = infer_tags(safe_name, safe_description, safe_locator)
         domain, function = validate_classification(domain, function, taxonomy)
-        facets.extend(["session", "plugin" if kind == "plugin-skill" else "tool"])
+        facets = [facet for facet in facets if facet != "skill"]
+        facets.extend(["session", "plugin", "skill"] if kind == "plugin-skill" else ["tool"])
+        if kind == "tool" and "mcp" in safe_name.lower():
+            facets.append("mcp")
         fingerprint = digest((safe_name + "\0" + safe_description).encode())
         rows.append({
             "id": f"session:{kind}:{safe_name}", "kind": kind if kind == "plugin-skill" else "tool",

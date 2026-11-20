@@ -1,0 +1,180 @@
+---
+name: carta-lp-dashboard
+description: Opens an LP's own Carta dashboard (NAV, TVPI/DPI) and finds or zips their documents (K-1s, notices, statements, PCAPs, subscription docs, side letters). Only when an LP explicitly asks. Not for GP/firm users or vague queries; use carta-explore-data.
+version: '1.0.1'
+model: inherit
+allowed-tools:
+- list_connectors
+- mcp__carta__call_tool
+- mcp__carta__read_tool
+- mcp__carta__welcome
+- mcp__carta__skill_checkpoint
+- mcp__claude_ai_Carta__call_tool
+- mcp__claude_ai_Carta__read_tool
+- mcp__claude_ai_Carta__welcome
+- mcp__claude_ai_Carta__skill_checkpoint
+- mcp__claude_ai_carta__call_tool
+- mcp__claude_ai_carta__read_tool
+- mcp__claude_ai_carta__skill_checkpoint
+- mcp__2827383e-1775-4df3-b6ff-04d5392f6d18__call_tool
+- mcp__2827383e-1775-4df3-b6ff-04d5392f6d18__read_tool
+- mcp__2827383e-1775-4df3-b6ff-04d5392f6d18__welcome
+- mcp__2827383e-1775-4df3-b6ff-04d5392f6d18__skill_checkpoint
+- Artifact
+- ToolSearch
+- Bash(uv run "${CLAUDE_PLUGIN_ROOT}/skills/carta-lp-dashboard/scripts/render_artifact.py" *)
+- Bash(pwd)
+- Read
+- Write(./lp-dashboard.html)
+- Bash(unzip -l *)
+- AskUserQuestion
+trigger-phrases:
+- "get my lp docs tutorial"
+- "show me the get my lp docs tutorial"
+- "walk me through get my lp docs"
+- "getting started with get my lp docs"
+- "documents tutorial"
+---
+
+<!-- carta:plugin-version -->
+<carta-plugin>carta-investors:7.43.7</carta-plugin>
+
+> **If this plugin's files can't be found:** a path that still shows an unreplaced `${…}` variable, or a "not found" when you read or run one of this skill's files, means the skill loaded before this session's computer link was ready. Invoke this skill once more with the Skill tool and use the paths that copy gives. If they're still unreplaced, tell the user Carta's plugin files aren't available in this session yet (link your computer, then ask again) and stop. Don't search the disk for them.
+
+# LP Dashboard Skill
+
+## Documents requests
+
+If you were dispatched with `lp-dashboard`, skip this section. If you were dispatched with `lp-documents`, or were invoked with no argument and the user asks for their own documents — a K-1, a capital call or distribution notice, a statement, a PCAP, a subscription agreement, a side letter, "my documents", a zip of them, or the documents tutorial — read `${CLAUDE_PLUGIN_ROOT}/skills/carta-lp-dashboard/references/lp-documents.md` (this skill's own `references/`; read it by that exact path, don't search for it) and follow it instead of the steps below. Everything else on this page is the dashboard.
+
+This skill publishes or redeploys a persistent live artifact that fetches the LP's portfolio from Carta via `claude.use("mcp")` each time it is opened — no data is embedded. The page loads three sections through the `call_tool` gateway tool: summary, timeseries and quarterly.
+
+## Metrics
+
+Show TVPI, DPI and RVPI to LPs — whatever the GP's fund-performance sharing setting — and keep the amount KPIs, capital activity and fund table. **Never show IRR**, even when asked, and no ratio besides those three. The summary carries DPI and RVPI only per currency, in `totals_by_currency`; never add amounts or ratios up across currencies.
+
+## Instrumentation
+
+Every Carta call this skill makes — `welcome`, `read_tool`, `call_tool` — carries
+`"_instrumentation_v2": {"skills": ["carta-investors:carta-lp-dashboard"]}` as a top-level argument,
+beside `name` and `arguments`. If a call is rejected because it did not include `_instrumentation_v2`,
+send the same call again with it, without telling the user, and never count that rejection as one of
+the failures below.
+
+## Steps
+
+> **Checkpoint**: Call `mcp__<CHECKPOINT_SERVER>__skill_checkpoint(skill_name="carta-investors:carta-lp-dashboard", checkpoint_label="skill_started")` before proceeding. `<CHECKPOINT_SERVER>` is the one Carta MCP server, of those `allowed-tools` grants `skill_checkpoint` on, that this session is connected to; record every checkpoint of this run on that same server, even if a later step picks another server for reads. If the tool is deferred, load it first with `ToolSearch(query: "select:mcp__<CHECKPOINT_SERVER>__skill_checkpoint")`. If it is still unavailable, or any checkpoint call fails, carry on: checkpoints never stop a run. A run that has not recorded `skill_started` records no other checkpoint.
+
+Each run records each checkpoint at most once, and exactly one of `skill_finished` or `skill_failed`. A step reached again later in the same run (a re-render, a re-publish, a follow-up question about the dashboard, the second invocation the note at the top of this file asks for) does not checkpoint again.
+
+### 1. Checks before building
+
+Run both checks, and stay quiet about them when they pass:
+
+1. `${CLAUDE_PLUGIN_ROOT}/references/gate-has-artifact-tool.md` — can this session publish at all?
+2. `${CLAUDE_PLUGIN_ROOT}/references/gate-carta-connector-name.md` — the connector name the page will call. Its confirmation call is `welcome`, which also verifies the Carta session is active.
+
+Both sit in the **plugin's** `references/` directory — `${CLAUDE_PLUGIN_ROOT}/references/`. They are *not* under this skill's own `references/`. Read them by that exact path; don't search for them.
+
+Store the `name` the connector gate resolves as `<CARTA_MCP_SERVER>`. Step 3 passes it to the render script and Step 4 puts it in the `capabilities.mcp` grant.
+
+### 1b. Confirm this is an investor's login
+
+This dashboard is for limited partners (LPs). Before the portfolio lookup, ask Carta who the user is — **once per request, never retried**:
+
+```
+mcp__<SERVER>__read_tool({"name": "lp__get__persona", "arguments": {}})
+```
+
+It returns `{"persona": …, "lp_portfolio_ids": [...]}`. Act on `persona`:
+
+| `persona` | Do |
+|---|---|
+| `LP` | Continue to Step 2. Say nothing about the check. |
+| `HYBRID` | Continue to Step 2. Say once that the dashboard shows the portfolio they hold as an investor. |
+| `GP` | Stop. Tell them this dashboard shows an investor's own portfolio, and their login belongs to a fund manager — for their fund's data, try `carta-investors:carta-explore-data`. Return the `NEEDS_HUMAN` lines below. |
+| `NONE` | Stop. Tell them: "No LP portfolios found on this account." If they expected some, they can check the Carta LP portal or ask their fund manager. Return the `NEEDS_HUMAN` lines below. |
+
+```
+NEEDS_HUMAN: this Carta login is not an LP
+needs_human: true
+```
+
+If the call fails, read the error's `code`:
+- `invalid_argument` with `field: "user_id"`, or a plain-text error whose body names `user_id` (for example `400 … {"user_id": "Staff users must specify a user_id."}`) — a Carta staff login, which looks up an LP by name. Skip this check and continue to Step 2.
+- `unauthenticated` — their Carta session has ended: ask them to reconnect Carta, then stop with `NEEDS_HUMAN: the Carta session has ended` and `needs_human: true`.
+- Anything else, including a plain-text reply that the command is not enabled — LP tools aren't turned on for this login yet. Say so and stop with `NEEDS_HUMAN: LP tools are not enabled for this Carta login` and `needs_human: true`.
+
+After a `GP` or `NONE` answer, never go on to find a portfolio yourself — don't call the lookup, and don't query portfolio data with another tool or skill.
+
+### 2. Resolve the LP portfolio
+
+**An LP or HYBRID login** (Step 1b passed) never types its own name. List the portfolios this login holds:
+
+```
+mcp__<SERVER>__read_tool({"name": "lp_portfolio__lookup__portfolio", "arguments": {}})
+```
+
+**A staff login** (Step 1b skipped) searches by the partner name the user gave, or ask for it:
+
+```
+mcp__<SERVER>__read_tool({"name": "lp_portfolio__lookup__portfolio", "arguments": {"name": "<partner_name>"}})
+```
+
+Handle the result:
+- **`result: "match"`** — take `candidates[0].portfolio_id` and `candidates[0].partner_name`, and go to Step 3.
+- **`result: "ambiguous"` from the no-name lookup** — these are all the login's own portfolios. Don't ask which one: go to Step 3 and render **without** `--portfolio-id`. The page opens the portfolio with the most funds and lists the rest in its switcher. Note the `partner_name` of the first candidate with the highest `fund_count` (the page breaks ties by list order) for Step 5.
+- **`result: "ambiguous"` from a name search** — if exactly one candidate's `partner_name` is the name the user gave, take it. Otherwise show them all and ask the user to pick. Never take the first one: candidates that share a name differ only by `fund_count`, so never choose between them yourself:
+  ```
+  Which portfolio?
+    1. <partner_name> (<fund_count> funds)
+    2. ...
+  ```
+  A candidate is a cross-firm portfolio, so one may hold funds at several firms. Take the chosen `portfolio_id` and `partner_name` and go to Step 3.
+- **`result: "no_match"`** with no `name` sent — this login lists no portfolio of its own yet. Ask the user for the name on their LP portfolio and search by it.
+- **`result: "no_match"`** after a name search — tell the user no portfolio matched and ask for a different name.
+
+**Lookup budget — bounded, do not loop.** You get **at most 3 lookups in total** for one request, the no-name lookup included. After the third `no_match`, stop and return:
+
+```
+NEEDS_HUMAN: no LP portfolio found (tried: <each name searched, plus "own portfolios" if the no-name lookup ran>)
+needs_human: true
+```
+
+These all count as attempts and never reset the budget:
+- spelling variants, substrings, initials, or adding or dropping a suffix such as "LLC" or "Trust";
+- adding a firm or fund name to the query;
+- repeating a name already tried, or repeating the no-name lookup;
+- switching to `carta-explore-data`, a warehouse query, or any other tool to find the portfolio.
+
+A **401 or 403 is terminal**: stop at once and return `NEEDS_HUMAN: this Carta login cannot open an LP portfolio` with `needs_human: true`. Do not retry, and do not try another name.
+
+### 3. Build the artifact HTML
+
+**Never `Read` the template.** The render script fills it in and inlines Chart.js from the plugin's `vendor/chart.umd.min.js`, so neither the template nor the chart bundle enters context.
+
+**3a.** Render. Run this on one line, with the script path exactly as written: `allowed-tools` pre-approves that exact command, so a shell variable or a `cd` in front of it makes the user approve it by hand.
+
+```bash
+uv run "${CLAUDE_PLUGIN_ROOT}/skills/carta-lp-dashboard/scripts/render_artifact.py" --mcp-server "<CARTA_MCP_SERVER>" --portfolio-id "<portfolio_id>" --out lp-dashboard.html
+```
+
+For an LP's own portfolios that came back `ambiguous`, run the same command without `--portfolio-id "<portfolio_id>"`.
+
+The script prints the absolute output path. It exits non-zero on an unusable connector name, a portfolio id that is not a UUID, an output path outside the working directory, or a missing Chart.js bundle. Surface the error and stop; do not edit the HTML by hand.
+
+Chart.js is inlined rather than linked because the runtime CSP blocks external scripts. A CDN link does not error — it blocks, and every chart stays blank.
+
+### 4. Publish the artifact
+
+Read `${CLAUDE_PLUGIN_ROOT}/references/publish-lp-dashboard.md` — the **plugin's** `references/`, not this skill's; read it by that exact path, don't search for it — and publish the path the script printed exactly as it says.
+
+### 5. Respond to the user
+
+Give the user the URL and say the dashboard loads fresh data from Carta each time it's opened, with their documents on its Documents tab. When the login holds several portfolios, say which one it opened on (the one you noted in Step 2) and that they can switch between them on the page; when the portfolio spans several firms or funds, say they can narrow it to any mix of firms and funds there too. Keep it brief.
+
+> **Checkpoint**: Call `mcp__<CHECKPOINT_SERVER>__skill_checkpoint(skill_name="carta-investors:carta-lp-dashboard", checkpoint_label="skill_finished")` once the URL has reached the user.
+
+## If something goes wrong
+
+> **Checkpoint on every stop before this run has recorded `skill_finished`**, once this run has recorded `skill_started`: call `mcp__<CHECKPOINT_SERVER>__skill_checkpoint(skill_name="carta-investors:carta-lp-dashboard", checkpoint_label="skill_failed", notes="<one-line reason>")` instead of `skill_finished`. That includes a failed check in Step 1, every `NEEDS_HUMAN` stop in Steps 1b and 2, a render script that exits non-zero, a publish that fails, and plugin files still unavailable after the second invocation. `skill_finished` means the dashboard URL reached the user; a stop before that, including a `GP` or `NONE` redirect in Step 1b, is a failure, and counting it as finished makes failed runs look like fast successful ones. Steps that recover and continue (a call sent again with `_instrumentation_v2`, a staff login that skips Step 1b, a `no_match` that asks the user for another name within the lookup budget) do not checkpoint. A documents request comes before `## Steps` and records no checkpoint.

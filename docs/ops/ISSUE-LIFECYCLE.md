@@ -98,7 +98,7 @@ Most-applied on open issues today: `enhancement` 78, `priority` 56,
    `target-intake.yml` posts the Foundry dispatch plan (36 runs all-time:
    20 success / 16 skipped); `delphi-intake.yml` / the Delphi gate handle
    `delphi:rfp`; `issue-comment-router.yml` (8,401 runs) classifies comments
-   for `@jules` / `@gemini` / ledger routes — its route steps are
+   for the legacy `@jules` retirement receipt / `@gemini` / ledger routes — its route steps are
    placeholder echoes, no consumer workflow depends on its outputs.
 
 **What triage does NOT do (the central gap, G1/G2):**

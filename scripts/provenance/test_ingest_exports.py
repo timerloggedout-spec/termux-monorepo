@@ -74,3 +74,27 @@ def test_digest_consumer_reads_and_receipts(tmp_path):
     assert d["records"] == 6 and "excerpt" not in out.read_text(encoding="utf-8")
     receipt = json.loads(reads.read_text(encoding="utf-8").splitlines()[-1])
     assert receipt["consumer"] == dg.CONSUMER_ID and receipt["records"] == 6
+
+
+def test_muse_side_chat_discovery_terms_are_versioned_and_namespaced(tmp_path):
+    source = tmp_path / "muse-side-chat.json"
+    source.write_text(json.dumps({
+        "id": "muse-1",
+        "messages": [{
+            "role": "user",
+            "content": "Moniker collision marketing naming anon anonymous 4n0nSEC 4n∅N 4n∅nSEC profiles",
+        }],
+    }), encoding="utf-8")
+    muse = ing.ingest(source, "muse-side-chat/2026-11-18", now="t")
+    classifier = next(c for c in muse[0]["classifications"]
+                      if c["classifier_id"] == "muse_side_chat_discovery")
+    assert classifier["classifier_version"] == ing.MUSE_DISCOVERY_VERSION
+    assert classifier["terms"] == [
+        "moniker", "collision", "marketing", "naming", "anon",
+        "4n0nSEC", "4n∅N", "4n∅nSEC", "profiles",
+    ]
+    generic = ing.ingest(source, "chat-export/2026-11-18", now="t")
+    assert all(c["classifier_id"] != "muse_side_chat_discovery"
+               for c in generic[0]["classifications"])
+    summary = dg.digest(muse)
+    assert summary["groups"][0]["discovery_terms"]["4n∅N"] == 1

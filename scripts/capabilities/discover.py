@@ -18,6 +18,7 @@ VERSION = "1.1"
 MAX_SKILL_BYTES = 2_000_000
 SKILL_NAMES = {"SKILL.md", "SKILLS.md"}
 SKILL_SUFFIXES = {".skills", ".skill"}
+MANIFEST_NAMES = {"plugin.json", "marketplace.json", ".mcp.json", "mcp.json", "tools.json", "tool-manifest.json"}
 SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".mypy_cache", ".pytest_cache", "dist", "build"}
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9+._-]{1,}", re.I)
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
@@ -42,6 +43,8 @@ def path_surface(path: Path, root: Path, external: bool = False) -> tuple[str, s
     parts = path.relative_to(root).as_posix().split("/")
     if external:
         return "workspace-external", "unverified"
+    if "plugins" in parts or ".claude-plugin" in parts or ".codex-plugin" in parts:
+        return "repo-plugin-manifests", "repository-canonical"
     if parts[0] == ".agents":
         return "repo-agent-skills", "repository-canonical"
     if parts[0] == ".github":
@@ -98,7 +101,9 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
     for path in sorted(root.rglob("*")):
         if path.is_symlink() or not path.is_file() or any(part in SKIP_DIRS for part in path.parts):
             continue
-        if path.name not in SKILL_NAMES and path.suffix.lower() not in SKILL_SUFFIXES:
+        is_skill_file = path.name in SKILL_NAMES or path.suffix.lower() in SKILL_SUFFIXES
+        is_manifest_file = path.name.lower() in MANIFEST_NAMES
+        if not is_skill_file and not is_manifest_file:
             continue
         relative = path.relative_to(root).as_posix()
         locator = f"external:{root.name}/{relative}" if external else relative
@@ -122,30 +127,62 @@ def scan_repository(root: Path, external: bool = False) -> list[dict]:
             text = raw.decode("utf-8")
         except (OSError, UnicodeDecodeError, zipfile.BadZipFile):
             continue
-        frontmatter = parse_frontmatter(text)
-        heading = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
-        name = frontmatter.get("name") or heading or path.stem
-        description = frontmatter.get("description") or ""
+        manifest_data = {}
+        frontmatter = {}
+        if is_manifest_file:
+            try:
+                manifest_data = json.loads(text)
+                if not isinstance(manifest_data, dict):
+                    continue
+            except json.JSONDecodeError:
+                continue
+            name = manifest_data.get("name") or manifest_data.get("id") or path.parent.name or path.stem
+            description = manifest_data.get("description") or manifest_data.get("displayName") or ""
+            mcp_servers = manifest_data.get("mcpServers", {})
+            plugins = manifest_data.get("plugins", [])
+            tools = manifest_data.get("tools", [])
+            skills = manifest_data.get("skills", [])
+            if isinstance(mcp_servers, dict):
+                description += f"; MCP servers={len(mcp_servers)}"
+            if isinstance(plugins, (list, dict)):
+                description += f"; plugin entries={len(plugins)}"
+            if isinstance(tools, (list, dict)):
+                description += f"; tool entries={len(tools)}"
+            if isinstance(skills, (list, dict)):
+                description += f"; skill entries={len(skills)}"
+            manifest_tags = " ".join(str(key) for key in manifest_data.keys())
+        else:
+            frontmatter = parse_frontmatter(text)
+            heading = next((line[2:].strip() for line in text.splitlines() if line.startswith("# ")), "")
+            name = frontmatter.get("name") or heading or path.stem
+            description = frontmatter.get("description") or ""
+            manifest_tags = frontmatter.get("tags", "")
         if SECRET_RE.search(text):
             trust = "quarantined"
-        domain, function, facets = infer_tags(name, description, locator, frontmatter.get("tags", ""))
+        domain, function, facets = infer_tags(name, description, locator, manifest_tags)
         domain, function = validate_classification(domain, function, taxonomy)
         if source_id == "repo-vendor-skills":
             facets.append("vendor")
         if source_id == "workspace-external":
             facets.append("external")
+        if is_manifest_file:
+            facets.append("plugin" if "plugin" in path.name.lower() or "marketplace" in path.name.lower() else "tool")
+            facets.append("tool-manifest" if "mcp" in path.name.lower() or "tool" in path.name.lower() else "plugin-manifest")
         if path.name == "SKILLS.md" or path.suffix.lower() == ".skills":
             facets.append("index")
+        kind = "manifest" if is_manifest_file else (
+            "skill" if path.name == "SKILL.md" or path.suffix.lower() == ".skill" else "reference"
+        )
         rows.append({
             "id": f"repo:{locator}",
-            "kind": "skill" if path.name == "SKILL.md" or path.suffix.lower() == ".skill" else "reference",
-            "source_id": source_id, "locator": locator, "name": name[:240],
-            "description": description[:1200], "content_sha256": digest(raw),
+            "kind": kind,
+            "source_id": source_id, "locator": locator, "name": str(name)[:240],
+            "description": str(description)[:1200], "content_sha256": digest(raw),
             "taxonomy_sha256": taxonomy_sha,
             "domain": domain, "function": function, "facets": sorted(set(facets)),
-            "trust": trust, "lifecycle": "classified", "version_ref": None,
+            "trust": trust, "lifecycle": "classified", "version_ref": manifest_data.get("version"),
             "aliases": [], "permissions": [],
-            "tags": sorted(set(TOKEN_RE.findall((name + " " + description + " " + locator + " " + frontmatter.get("tags", "")).lower())))[:80]
+            "tags": sorted(set(TOKEN_RE.findall((str(name) + " " + str(description) + " " + locator + " " + manifest_tags).lower())))[:80]
         })
     return rows
 

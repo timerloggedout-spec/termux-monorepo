@@ -1,6 +1,6 @@
 ---
 id: qdesk-replica-reconciliation
-title: "QDesk — Replica, refTemplates/smods, governance, release and DoE reconciliation"
+title: "QDesk visual extension — Replica, Clerk, release and DoE integration"
 author: ChatGPT
 posted_at: 2026-11-19
 source: source.md
@@ -10,7 +10,7 @@ reviewers:
   - id: timerloggedout-spec
     role: operator-authorizer
     status: requested
-related_prs: []
+related_prs: [5145, 5197, 5199, 5330, 5376, 5622]
 related_branches:
   - docs/qdesk-replica-reconciliation
 gates_required: [repo-gate, termux-smoke]
@@ -20,7 +20,7 @@ gates_required: [repo-gate, termux-smoke]
 
 ## Summary
 
-Reconcile the native GitHub Replica prototyping workflow and the monorepo's pinned `refTemplates/smods/` references into a QDesk control-plane design. Preserve the existing Contribution Desk, Admin Graph, versioning, proposal, integration, ICM, DoE, ATES and dependency-phase authorities. Define a read-only QDesk projection, a Browser Quarantine Clerk proposal/access-risk model, preview-to-production release evidence, and a pre-registered automation comparison plan. This proposal is design-first; it does not authorize production permission changes, external publishing, recursive submodule initialization, or a new scheduler/registry.
+Extend the existing QDesk/QUE architecture with a Replica-informed visual workspace, Browser Quarantine Clerk proposal/access-risk view, and stronger release-preview evidence. Reuse the current Contribution Desk, Admin Graph, versioning, QDesk portfolio/DoE RFP and admission/claim authorities. This proposal adds a read-only visual extension; it does not create a second QDesk engine, scheduler, portfolio scorer, claim pipeline or DoE ledger. It does not authorize production permission changes, external publishing or recursive submodule initialization.
 
 ## Reviewers
 
@@ -28,6 +28,10 @@ Reconcile the native GitHub Replica prototyping workflow and the monorepo's pinn
 |---|---|---|---|---|
 | ChatGPT | author+executor | executing | 2026-11-19 | Live repository and source recon; design-only branch |
 | timerloggedout-spec | operator-authorizer | requested | 2026-11-19 | Confirm naming and scope through proposal review |
+
+## Existing QDesk lineage
+
+Related active work: PR #5145 (Observatory + Delphi + DoE pipeline), #5197 (portfolio decision/report contract), #5199 (deadline desk and freshness), #5330/#5376 (admission and provider-execution boundaries), and #5622 (QUE ranking/claim pipeline). This proposal owns only the Replica-informed visual extension, Clerk presentation and release-preview comparison integration.
 
 ## Review log
 

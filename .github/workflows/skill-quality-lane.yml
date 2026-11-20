@@ -10,6 +10,9 @@ on:
       - ".agents/skills/**/SKILL.md"
       - ".claude/**/SKILL.md"
       - "SKILLS.md"
+      - "CLAUDE.md"
+      - "**/SKILLS.md"
+      - "**/*.SKILLS"
       - ".github/skills/**/SKILL.md"
       - "docs/ops/skills/**/SKILL.md"
       - "**/*.skill"
@@ -21,8 +24,13 @@ on:
       - "docs/ops/SKILL-DISCOVERY-MATRIX.md"
       - "docs/ops/CAPABILITY-DISCOVERY-AND-ACTIVATION.md"
       - "docs/ops/DOE-QUESTIONS-MATRIX.md"
+      - "docs/ops/DOE-FAMILY.md"
+      - "docs/ops/DOE-TAXONOMY.md"
+      - "docs/ops/ATES-ORCHESTRATOR-DOE-MVT.md"
+      - "docs/proposals/active/continuous-capability-evolution-lab/**"
+      - "experiments/doe/**"
       - "docs/integrations/session-plugin-skill-catalog.json"
-      - "docs/integrations/session-tool-action-catalog.json"
+      - "docs/integrations/**"
       - "ops/capability_discovery/**"
       - "**/plugin.json"
       - "**/marketplace.json"
@@ -103,7 +111,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: git diff --check "$BASE_SHA" "$HEAD_SHA" -- .agents .github docs scripts tests
+        run: git diff --check "$BASE_SHA" "$HEAD_SHA" -- .agents .claude .github docs experiments ops scripts tests SKILLS.md CLAUDE.md
 
       - name: Publish deterministic evidence artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

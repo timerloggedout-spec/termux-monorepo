@@ -8,3 +8,6 @@
 | DRE-004 | P1 | executing | Reconcile implementation against current master, run repo-gate and termux-smoke, inspect CI and resolve all critical failures. | Master-based PR is reviewable; both gates green; checks and artifacts inspected; no merge before review and verified outcome. |
 | DRE-005 | P1 | blocked | Bind C12 conditional Round 2, C18, and C19 escalation tiers to deadline-reminders/v1 Tracking register and external calendar records. | Each register item has stable ID, calendar event ID, exact local wall, reminder offsets, and verified event state. Tracking register source is currently unavailable in this workspace. |
 | DRE-006 | P2 | todo | Reconcile C12 after the Nov 21 finalist announcement. | Activate Round 2 timebox only if Devpost confirms finalist status; otherwise close the conditional lane with evidence. |
+
+
+Implementation PR: https://github.com/timerloggedout-spec/termux-monorepo/pull/5727 (draft; master-based).

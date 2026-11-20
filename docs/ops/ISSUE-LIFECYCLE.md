@@ -133,7 +133,7 @@ GitHub primitives are nearly unused for ownership: 8/225 issues assigned,
   `[MUSEai]@{role:{moniker}}` comment on the issue (the coordination
   protocol of record);
 - the **label family** (`delphi:*` → Delphi lane, `hark:*` → Hark,
-  `target-brief` → inventory/foundry lane, `jules` → Jules implementation);
+  `target-brief` → inventory/foundry lane, `jules` → retirement receipt and local DoE role guidance);
 - special-family **ledgers** (Delphi #1487/#1489, the GAP-LEDGER) for
   families that keep one.
 

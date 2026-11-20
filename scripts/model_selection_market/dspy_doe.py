@@ -12,6 +12,19 @@ from datetime import datetime, timezone
 from typing import Any, Mapping
 
 @dataclass
+class CollaboratorTreatment:
+    """Immutable collaborator configuration attribution for one experiment arm."""
+    collaborator_id: str | None = None
+    moniker: str | None = None
+    role_revision: str | None = None
+    profile_revision: str | None = None
+    persona_fingerprint: str | None = None
+    execution_fingerprint: str | None = None
+    configuration_fingerprint: str | None = None
+    source_record_refs: list[str] = field(default_factory=list)
+
+
+@dataclass
 class DoeArm:
     arm_id: str
     signature: str
@@ -24,18 +37,18 @@ class DspyDoeStub:
     def __init__(self) -> None:
         self.runs: list[dict[str, Any]] = []
 
-    def run_arm(self, arm: DoeArm, *, model_id: str="stealth/ox-alpha", role: str="triage", observed_metrics: Mapping[str, Any] | None=None) -> dict[str, Any]:
+    def run_arm(self, arm: DoeArm, *, model_id: str="stealth/ox-alpha", role: str="triage", observed_metrics: Mapping[str, Any] | None=None, collaborator: CollaboratorTreatment | None=None, provider: str | None=None, adapter: str | None=None) -> dict[str, Any]:
         if not arm.free_only: raise ValueError("MSM-004 free_only required")
         metrics = dict(observed_metrics) if observed_metrics is not None else {name:(1.0 if name=="exact_match" else 12.0) for name in arm.metric_names}
-        rec={"lane":"dspy_doe_consideration","not_default_router":True,"arm_id":arm.arm_id,"signature":arm.signature,"model_id":model_id,"role":role,"factors":dict(arm.factors),"metrics":metrics,"observed_at":datetime.now(timezone.utc).isoformat(),"affinity":["approxination_ABCD","performance_ledger","ates_orchestrator_benchmark"]}
+        rec={"lane":"dspy_doe_consideration","not_default_router":True,"arm_id":arm.arm_id,"signature":arm.signature,"model_id":model_id,"provider":provider,"adapter":adapter,"role":role,"collaborator":asdict(collaborator) if collaborator else asdict(CollaboratorTreatment()),"factors":dict(arm.factors),"metrics":metrics,"observed_at":datetime.now(timezone.utc).isoformat(),"affinity":["approxination_ABCD","performance_ledger","ates_orchestrator_benchmark"]}
         self.runs.append(rec); return rec
 
-    def record_benchmark_result(self, arm: DoeArm, result: Mapping[str, Any], *, model_id: str="stealth/ox-alpha", role: str="triage") -> dict[str, Any]:
+    def record_benchmark_result(self, arm: DoeArm, result: Mapping[str, Any], *, model_id: str="stealth/ox-alpha", role: str="triage", collaborator: CollaboratorTreatment | None=None, provider: str | None=None, adapter: str | None=None) -> dict[str, Any]:
         outcome=result.get("outcome")
         if outcome not in {"PASS","FAIL_DETERMINISTIC","INCONCLUSIVE","BLOCKED"}: raise ValueError("invalid benchmark outcome")
         metrics={k:result.get(k) for k in ("deterministic_score","judge_score","judge_weight","net_score","wrong_commit_penalty")}
         metrics["outcome"]=outcome
-        return self.run_arm(arm,model_id=model_id,role=role,observed_metrics=metrics)
+        return self.run_arm(arm,model_id=model_id,role=role,observed_metrics=metrics,collaborator=collaborator,provider=provider,adapter=adapter)
 
     def cohort_summary(self) -> dict[str, Any]:
         return {"policy":"consideration_only","run_count":len(self.runs),"arms":[r["arm_id"] for r in self.runs],"note":"Promote optimizer artifacts only via dual-gate PR; never auto weight mutate"}

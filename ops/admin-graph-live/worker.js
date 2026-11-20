@@ -163,7 +163,7 @@ export default {
         ).bind(limit).all();
         rows.results = (rows.results || []).reverse();
       }
-      const events = (rows.results || []).reverse().map(function (event) {
+      const events = (rows.results || []).map(function (event) {
         if (event.kind !== "route") event.payload = null;
         return event;
       });

@@ -44,6 +44,23 @@ class AdminGraphPageContractTests(unittest.TestCase):
         self.assertIn("<td>Admin Interaction Graph</td>",
                       (APP / "admin.html").read_text(encoding="utf-8"))
 
+    def test_historical_route_inspection_controls_and_shareable_ranges(self):
+        html = PAGE.read_text(encoding="utf-8")
+        for marker in ("historyFrom", "historyTo", "inspectHistoryBtn",
+                       "liveHistoryBtn", "inspectRouteHistory",
+                       "mode!==\\"historical\\"", "fromDate.toISOString()",
+                       "historyParams.get(\\"view\")===\\"history\\""):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, html)
+
+    def test_worker_historical_range_and_cursor_contract(self):
+        worker = (ROOT / "ops" / "admin-graph-live" / "worker.js").read_text(encoding="utf-8")
+        for marker in ("fromRaw", "toRaw", "historical ? \\"historical\\" : \\"live\\"",
+                       "occurred_at >= ? AND occurred_at <= ? AND rowid > ?",
+                       "mode: historical ? \\"historical\\" : \\"live\\""):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, worker)
+
     def test_worker_verifies_claim_provenance_and_cursor_reads(self):
         worker = (ROOT / "ops" / "admin-graph-live" / "worker.js").read_text(encoding="utf-8")
         self.assertIn("verifyRouteComment", worker)

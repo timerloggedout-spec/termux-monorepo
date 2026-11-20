@@ -51,4 +51,4 @@ See issues **#272** and **#175**.
 - Topology is a first-class experiment variable: `single | series | dynamic | parallel | nested | co-working | volley`.
 - A capacity failure causes re-admission against the current candidate set; it does not trigger a fixed provider chain.
 - Quota skips remain explicit evidence; CI behavior is controlled separately from routing semantics.
-- Jules is an eligible async builder among the candidate pool, not a universal sink; Gemini is an eligible review/triage/invoke contributor, not a permanently privileged route.
+- Builder execution follows the active candidate pool and verified adapter readiness; the Jules-derived role pack supports planning and verification guidance. Gemini remains an eligible review/triage/invoke contributor under the active route policy.

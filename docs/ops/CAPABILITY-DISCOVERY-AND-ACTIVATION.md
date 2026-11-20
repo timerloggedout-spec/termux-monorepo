@@ -134,7 +134,7 @@ The repository contains a separate Stack Overflow for Agents connector under `to
 - `CONNECTOR.md`: OAuth, transport, scope and operational guidance.
 - `sofa.py`: typed local helper for status, tool listing, description and calls.
 
-The discovery scanner indexes the 27 tool names, descriptions and parameter counts as individual `tool` records, and indexes `CONNECTOR.md` / `TOOLS.md` as references. Full input schemas remain in `tools-schema.json` and hydrate only when an action is selected.
+The discovery scanner indexes the 27 tool names, descriptions and parameter counts as individual `tool` records, derives `read-only`, `write-capable` and `credentialed` facets from the typed `TOOLS.md` inventory, and indexes `CONNECTOR.md` / `TOOLS.md` as references. Full input schemas remain in `tools-schema.json` and hydrate only when an action is selected. These facets describe documented action classes; they do not assert current OAuth grants.
 
 **Authorization reconciliation:** `tools/sofa/CONNECTOR.md` and `TOOLS.md` retain 2026-10-28 read-only scope claims. `docs/ops/SOFA-CONNECTION-2026-10-28.md` records a 2026-11-03 status update with expanded scopes, including write scopes. The current live grant has not been re-verified in this discovery pass. Use the read-only `sofa.py status` operation to refresh status before use; treat WRITE actions as owner-gated and require explicit user intent for every write. The local `.tokens.json` remains outside the index and repository history.
 

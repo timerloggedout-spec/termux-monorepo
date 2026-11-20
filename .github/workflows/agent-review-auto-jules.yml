@@ -4,7 +4,7 @@ name: Agent review → auto Jules
 # summon Jules via @jules (display moniker: heyVern — do not @-mention strangers).
 # Provider-owned review controls (for example CodeRabbit's Trigger review checkbox)
 # are not review feedback and must remain in the authorized operator action path.
-# Monikers: docs/ops/AGENT-MONIKERS.md
+# Monikers: docs/ops/COLLABORATOR-MONIKERS.md
 #
 # context_key (durable work-context): pr-<number>-<short-ref>
 # Persisted via Actions cache (viewable text OK on public demo repo until
@@ -252,7 +252,7 @@ jobs:
               `6. Skip pure nits by default. Always address issues affecting security or required gates with minimal, independently validated fixes.`,
               `7. **Non-empty diff required** — empty commits are rejected.`,
               ``,
-              `Monikers: docs/ops/AGENT-MONIKERS.md`,
+              `Monikers: docs/ops/COLLABORATOR-MONIKERS.md`,
               `Agent: Grok (archW1z) orchestration · Profile: https://x.com/grok`,
               `Signed-off-by: Grok (OPERATOR) session-auto-jules / context_key=${contextKey}`,
             ].filter(Boolean).join('\n');

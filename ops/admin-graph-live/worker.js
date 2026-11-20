@@ -164,7 +164,16 @@ export default {
         rows.results = (rows.results || []).reverse();
       }
       const events = (rows.results || []).map(function (event) {
-        if (event.kind !== "route") event.payload = null;
+        if (event.kind === "route") {
+          try {
+            const route = safeRoutePayload(JSON.parse(event.payload || "{}"));
+            event.payload = route.issue_number ? JSON.stringify(route) : null;
+          } catch (_) {
+            event.payload = null;
+          }
+        } else {
+          event.payload = null;
+        }
         return event;
       });
       const nextAfter = events.length ? Number(events[events.length - 1].seq) : Number(afterRaw || 0);

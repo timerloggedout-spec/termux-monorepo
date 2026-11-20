@@ -47,7 +47,8 @@
     "arms": 32,
     "why_replay": "Frozen, labeled fixtures isolate classifier behavior from changing repository content. The full sweep runs against the current repository snapshot and records baseline/candidate SHAs. Identity collision checks remain a hard invariant, not an optimized treatment.",
     "fixture_set": "Embedded in scripts/identity/rotation_sweep.py; each fixture has a reviewed active/historical/tool-only truth label.",
-    "stopping_rule": "Stop on unresolved ambiguous references, active legacy dependencies, missing mappings, or moniker collisions. Re-run after a bounded mapping batch; promote only after all hard gates pass on the same candidate SHA."
+    "stopping_rule": "Stop on unresolved ambiguous references, active legacy dependencies, missing mappings, or moniker collisions. Re-run after a bounded mapping batch; promote only after all hard gates pass on the same candidate SHA.",
+    "historical_reference_policy": "Explicitly allowlisted archival/recon paths retain legacy tokens as historical evidence; all other ambiguous references block the gate for adjudication."
   },
   "responses": {
     "primary": "fixture classification accuracy, precision, recall, false-positive count and false-negative count by classifier arm",
@@ -62,7 +63,8 @@
   },
   "decision_rule": {
     "text": "Select the lowest-complexity classifier ensemble that preserves zero false negatives for active path/link/workflow dependencies and records historical/tool-only references distinctly. The repository gate independently requires zero active legacy dependencies, zero unresolved ambiguous references, complete mapping targets, and zero moniker collisions.",
-    "promotion": "No automatic identity or routing mutation. Mapping edits require a reviewed branch/PR; DoE only records evidence and proposes the best classifier configuration."
+    "promotion": "No automatic identity or routing mutation. Mapping edits require a reviewed branch/PR; DoE only records evidence and proposes the best classifier configuration.",
+    "external_username_collision": "not_established; the sweep checks internal moniker uniqueness and declared live-trigger aliases only, pending an authoritative GitHub username inventory"
   },
   "registration": {
     "preregistered_in_repo": true,

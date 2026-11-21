@@ -37,13 +37,15 @@ Join external observations using stable GitHub run/job/artifact IDs and reposito
 
 ## Treatment model
 
-A treatment is a reusable orchestration pattern described by ORCHESTRATION-TREATMENT.schema.json.
+A treatment is a reusable orchestration pattern described by ORCHESTRATION-TREATMENT.schema.json. The optional `workspace` object records declared isolation mode, writer policy, integration policy, treatment-specific parallel-session bound, and base ref. It is a plan descriptor, not proof that an executor created an isolated workspace.
 
-External source patterns may include native managers, Wingman, Devin plugin/hooks, Loopy-style bounded loops, or future systems. Their source material supplies hypotheses; it does not authorize repository behavior.
+External source patterns may include native managers, Wingman, Devin plugin/hooks, Kilo Agent Manager, Loopy-style bounded loops, or future systems. Their source material supplies hypotheses; it does not authorize repository behavior. See AGENT-WORKTREE-ORCHESTRATION.md for the worktree and shared-workspace contract.
 
 ## Adapter model
 
 Each adapter emits the same normalized receipt vocabulary. Provider-specific adapters may add provider fields, but preserve canonical IDs, repository/ref/SHA, lifecycle state, outcome, promotion, evidence IDs, and timestamp.
+
+Workspace/session runtime facts belong in a sanitized adapter evidence artifact referenced through the canonical receipt's evidence_ids. Do not widen the canonical receipt with provider-specific session payloads.
 
 ### Devin
 

@@ -18,7 +18,13 @@ flowchart TD
     GM --> E
     F --> E
     E --> MX[provider × model × prompt\n× manager × cohort × sequencing]
-    MX --> T[TELEMETRY]
+    MX --> W[WORKSPACE / EXECUTION]
+    W --> W1[Shared read-only / coordinated]
+    W --> W2[Isolated Git worktrees]
+    W --> W3[Container / remote workspace]
+    W1 --> T[TELEMETRY]
+    W2 --> T
+    W3 --> T
     T --> R[SHA → run → job → step\n→ logs → artifacts]
     R --> CR[BILATERAL REVIEW]
     CR --> K[RETAIN / PROMOTE]
@@ -48,11 +54,15 @@ Correctness has priority over latency. Resource/quota state is a capacity signal
 
 ## Control-plane roles
 
-Scout discovers candidates and proposes missions; it does not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from attributable evidence. Experiment lanes apply DOE/MVT designs. Telemetry establishes SHA-to-runtime lineage. Bilateral review challenges both implementation and conclusions. Synthesis feeds verified learning into skills and SSOTs.
+Scout discovers candidates and proposes missions; it does not grant routing authority. Managers/MoneyBall/3L0 make promotion decisions from attributable evidence. Experiment lanes apply DOE/MVT designs. Workspace execution declares shared versus isolated filesystem state and write ownership. Telemetry establishes SHA-to-runtime lineage. Bilateral review challenges both implementation and conclusions. Synthesis feeds verified learning into skills and SSOTs.
 
 ## Dynamic population
 
 OX-Alpha, DeepSeek, Gemini, and future providers/models are selectable population members rather than permanent hardcoded winners. Discovery, availability, pricing, quota, capability, and runtime evidence should be observed dynamically.
+
+## Workspace isolation
+
+Use shared read-only sessions for reconnaissance; use separate Git worktrees for independent mutable tasks; serialize or explicitly partition writes when sessions share a checkout. Containers and remote workspaces are separate isolation dimensions. See `docs/ops/AGENT-WORKTREE-ORCHESTRATION.md`.
 
 ## Culling
 

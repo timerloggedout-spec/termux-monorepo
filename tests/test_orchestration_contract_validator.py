@@ -96,14 +96,31 @@ class OrchestrationContractValidatorTests(unittest.TestCase):
             (fixture_root / "docs" / "ops").mkdir(parents=True)
             skill_dir = fixture_root / ".agents" / "skills" / "orchestration-treatment-registry"
             skill_dir.mkdir(parents=True)
-            for name in ("ORCHESTRATION-TREATMENT.schema.json",):
-                source = ROOT / "docs" / "ops" / name
-                (fixture_root / "docs" / "ops" / name).write_text(source.read_text())
+            source = ROOT / "docs" / "ops" / "ORCHESTRATION-TREATMENT.schema.json"
+            (fixture_root / "docs" / "ops" / "ORCHESTRATION-TREATMENT.schema.json").write_text(source.read_text())
             (fixture_root / "docs" / "ops" / "ORCHESTRATION-RECEIPT.schema.json").write_text(json.dumps(schema))
             skill_source = ROOT / ".agents" / "skills" / "orchestration-treatment-registry" / "SKILL.md"
             (skill_dir / "SKILL.md").write_text(skill_source.read_text())
             errors = validate_contracts(fixture_root)
             self.assertTrue(any("outcome enum drifted" in error for error in errors))
+
+    def test_invalid_workspace_isolation_mode_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            schema_dir = root / "docs" / "ops"
+            schema_dir.mkdir(parents=True)
+            treatment = json.loads((ROOT / "docs/ops/ORCHESTRATION-TREATMENT.schema.json").read_text())
+            treatment["properties"]["workspace"]["properties"]["isolation_mode"]["enum"] = [
+                "shared_read_only", "unsafe_global_write"
+            ]
+            (schema_dir / "ORCHESTRATION-TREATMENT.schema.json").write_text(json.dumps(treatment))
+            receipt = ROOT / "docs/ops/ORCHESTRATION-RECEIPT.schema.json"
+            (schema_dir / "ORCHESTRATION-RECEIPT.schema.json").write_text(receipt.read_text())
+            skill_dir = root / ".agents/skills/orchestration-treatment-registry"
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text((ROOT / ".agents/skills/orchestration-treatment-registry/SKILL.md").read_text())
+            errors = validate_contracts(root)
+            self.assertTrue(any("workspace.isolation_mode enum drifted" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

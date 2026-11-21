@@ -78,10 +78,13 @@ point the same fields emit as plane events.
 Filed as exhibits, not parallel-built:
 
 - **project-task** (#3577, PR #4076): the form + intake workflow
-  validate and receipt filings; selection/execution happens in the
-  dispatch machinery. **The proof conversion** (below) adds the
-  block + admission in front of this existing route — the RFP/task
-  batches that routed by hand now route by contract.
+  validate and receipt filings. These filings are QDesk seat-queue
+  work: the dispatch watchdog may claim them as `qdesk-seat-queue`,
+  while `dispatch_executor.eligible_filings()` explicitly excludes
+  `project-task` so they cannot enter a provider/build arm.
+  **The proof conversion** adds the block + admission in front of
+  this existing route — the RFP/task batches that routed by hand
+  now route by contract.
 - **delphi-rfp**: filings wake the Delphi gate by event
   (`delphi-intake.yml`). Converts by adding the block; its gate
   becomes the route.

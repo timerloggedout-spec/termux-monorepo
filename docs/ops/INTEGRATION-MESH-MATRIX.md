@@ -530,3 +530,17 @@ persists in cache).
 
 *End of matrix. Update rule: refresh from a poll diff or a fresh #184-style
 owner paste; never edit a row from memory alone.*
+
+---
+
+## 2026-11-20 delta — CockroachDB backend mesh
+
+CockroachDB joins the database continuity lane as an optional projection of canonical lane events. The existing Neon route remains unchanged. Implementation and evidence are tracked in PR #5735 and `docs/ops/COCKROACHDB-BACKEND-MESH.md`.
+
+- Runtime writer: `scripts/ops/cockroach_lane_event.py`.
+- Composite action: `.github/actions/lane-event` supports the optional `COCKROACH_DATABASE_URL` secret.
+- Recorder: `.github/workflows/lane-events-recorder.yml` sends the same canonical event file to each configured sink.
+- CI: `.github/workflows/cockroachdb-backend-ci.yml` runs a disposable, digest-pinned CockroachDB cluster and validates schema, idempotent insert/readback and offline tests.
+- Credential state: `COCKROACH_DATABASE_URL` is a reserved name; hosted cluster provisioning and secret presence remain unverified.
+- Reference state: CockroachDB is indexed in `refTemplates/00_Index/SOURCE-MAP.md`; the shallow gitlink under `refTemplates/smods` remains pending source-tree admission.
+- Continuity state: dual-write implementation is committed on the PR branch; hosted failover, restore and multi-region continuity remain untested. RPO/RTO remain `null` until a drill emits evidence.

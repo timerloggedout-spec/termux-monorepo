@@ -110,10 +110,26 @@ function bucketRuns(runs, idToFile) {
 // input.force: emergency "all" override.
 // input.staleness: {outputName: {stale_min, threshold_min}} for outputs
 //   with a staleness signal; stale-critical at stale_min >= 2x threshold.
+function classifyPressureError(error) {
+  const status = Number(error && (error.status || (error.response && error.response.status)) || 0);
+  const headers = (error && error.response && error.response.headers)
+    || (error && error.headers) || {};
+  const remaining = headers['x-ratelimit-remaining'] || headers['X-RateLimit-Remaining'];
+  const message = String(error && error.message || '').toLowerCase();
+  if (status === 429 || remaining === '0'
+      || /rate limit|secondary rate limit|abuse detection/.test(message)) {
+    return 'rate_limited';
+  }
+  if (status === 401 || status === 403) return 'permission_denied';
+  return 'api_error';
+}
+
 function evaluateAdmission(input) {
   const force = !!(input && input.force);
   const staleness = (input && input.staleness) || {};
   const pressure = input ? input.pressure : null;
+  const pressureFailureReason = input && ['rate_limited', 'permission_denied', 'api_error'].includes(input.pressureFailureReason)
+    ? input.pressureFailureReason : 'rate_limited';
   const byWorkflow = (pressure && pressure.byWorkflow) || {};
   const globalInflight = MANAGED_WORKFLOWS.reduce(
     (sum, w) => sum + (byWorkflow[w] || 0), 0);
@@ -133,7 +149,7 @@ function evaluateAdmission(input) {
       record.reason = 'forced';
     } else if (!pressure) {
       record.admitted = false;
-      record.reason = 'rate_limited';
+      record.reason = pressureFailureReason;
     } else {
       const saturated = workflows.find((w) => (byWorkflow[w] || 0) >= laneCap(w));
       const s = staleness[output];
@@ -164,5 +180,5 @@ function evaluateAdmission(input) {
 
 module.exports = {
   CLASS_CAPS, GLOBAL_CAP, STALE_FACTOR, LANE_CLASSES, OUTPUT_LANES,
-  GATED_OUTPUTS, MANAGED_WORKFLOWS, laneCap, bucketRuns, evaluateAdmission,
+  GATED_OUTPUTS, MANAGED_WORKFLOWS, laneCap, bucketRuns, classifyPressureError, evaluateAdmission,
 };

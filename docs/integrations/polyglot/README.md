@@ -21,7 +21,7 @@ The contracts are metadata-only. They carry references, digests, metrics and pro
 
 ## Versioning
 
-Each record declares `schema_version`. Producers pin immutable source revisions and artifact digests. Consumers validate records before aggregation. Breaking schema semantics require a major schema version; additive optional fields may be introduced compatibly.
+Each record declares `schema_version`. Producers pin immutable source revisions and artifact digests. Consumers validate records before aggregation. Schemas are closed by default; new optional fields require coordinated schema and consumer updates. Breaking schema semantics require a major schema version.
 
 ## Validation
 

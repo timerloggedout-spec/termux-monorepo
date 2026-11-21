@@ -9,6 +9,7 @@
 #   provision-secrets.sh pause-forks            # gh workflow disable every active *.lock.yml in the forks (records list)
 #   provision-secrets.sh resume-forks           # re-enable exactly what pause-forks disabled
 #   provision-secrets.sh rerun                  # re-run latest failed run of each affected workflow
+   provision-secrets.sh provision-controller-export # dispatch and watch the personal-account export repo provisioner
 #
 # Map (names only): docs/ops/secrets-provisioning-map.md
 set -uo pipefail
@@ -113,6 +114,39 @@ cmd_resume() {
   done
 }
 
+cmd_provision_controller_export() {
+  local source_repo="$OWNER/termux-monorepo"
+  local workflow="repository-provisioner.yml"
+  local slug="controller-2-export"
+  local description="Controller 🎮 2 Export Repository — provenance-aware, redacted AntiGravity Device 2 exports."
+
+  if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -qx REPOSITORY_PROVISIONER_TOKEN; then
+    echo "missing Actions secret: REPOSITORY_PROVISIONER_TOKEN on $source_repo" >&2
+    exit 2
+  fi
+  if gh repo view "$OWNER/$slug" >/dev/null 2>&1; then
+    echo "repository already exists: $OWNER/$slug" >&2
+    exit 3
+  fi
+
+  gh workflow run "$workflow" -R "$source_repo" --ref master \
+    -f "repo_name=$slug" \
+    -f "description=$description" \
+    -f "visibility=public"
+
+  local run_id=""
+  for _ in {1..10}; do
+    run_id="$(gh run list -R "$source_repo" --workflow "$workflow" --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+    [ -n "$run_id" ] && break
+    sleep 2
+  done
+  [ -n "$run_id" ] || { echo "workflow dispatched; run ID lookup pending at $source_repo/actions" >&2; exit 4; }
+
+  gh run watch "$run_id" -R "$source_repo" --exit-status
+  gh run view "$run_id" -R "$source_repo" --json conclusion,url,displayTitle \
+    --jq '"conclusion=\(.conclusion) run=\(.url) title=\(.displayTitle)"'
+}
+
 cmd_rerun() {
   for pair in "gh-aw-mcpg_fork:gateway-issue-dispatcher.lock.yml" "gh-aw_fork:contribution-check.lock.yml" "gh-aw_fork:aw-failure-investigator.lock.yml" \
               "termux-monorepo:tribute-dashboard-deploy.yml"; do
@@ -128,6 +162,6 @@ while [ $# -gt 0 ]; do case "$1" in
   --clipboard) CLIP=1 ;; --only) ONLY="$2"; shift ;; --repo) REPO="$2"; shift ;; --required-only) REQ_ONLY=1 ;;
   *) echo "unknown arg $1" >&2; exit 2 ;; esac; shift; done
 case "$sub" in
-  status) cmd_status ;; set) cmd_set ;; pause-forks) cmd_pause ;; resume-forks) cmd_resume ;; rerun) cmd_rerun ;;
+  status) cmd_status ;; set) cmd_set ;; pause-forks) cmd_pause ;; resume-forks) cmd_resume ;; rerun) cmd_rerun ;; provision-controller-export) cmd_provision_controller_export ;;
   *) sed -n '2,14p' "$0"; exit 2 ;;
 esac

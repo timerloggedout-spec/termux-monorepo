@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import re
 import shutil
 import tempfile
 import subprocess
@@ -123,11 +124,21 @@ class PolyglotFederationTests(unittest.TestCase):
         measurement = schema["properties"]["measurements"]["items"]
         self.assertIn("variance", measurement["required"])
         self.assertEqual(measurement["properties"]["variance"]["minimum"], 0)
-        self.assertTrue(any(rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above" for rule in schema["allOf"]))
+        above_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("parity_status", {}).get("const") == "above")
+        self.assertEqual(above_gate["then"]["properties"]["correctness"]["const"], "pass")
+        self.assertEqual(above_gate["then"]["properties"]["advantage_claim"]["type"], "string")
+        nonpass_gate = next(rule for rule in schema["allOf"] if rule.get("if", {}).get("properties", {}).get("correctness", {}).get("const") == "pass")
+        self.assertEqual(nonpass_gate["else"]["properties"]["parity_status"]["enum"], ["unknown"])
+        self.assertEqual(nonpass_gate["else"]["properties"]["advantage_claim"]["type"], "null")
 
     def test_feed_schema_requires_full_commit_sha(self):
         schema = json.loads((BASE / "schemas" / "feed-envelope.schema.json").read_text(encoding="utf-8"))
-        self.assertEqual(schema["properties"]["revision"]["pattern"], "^[a-f0-9]{40}$")
+        revision = schema["properties"]["revision"]
+        self.assertEqual(revision["pattern"], "^[a-f0-9]{40}$")
+        self.assertEqual(revision["minLength"], 40)
+        self.assertEqual(revision["maxLength"], 40)
+        self.assertTrue(re.fullmatch(revision["pattern"], "a" * 40))
+        self.assertFalse(re.fullmatch(revision["pattern"], "a" * 40 + "\\n"))
 
     def test_validator_rejects_unknown_mapping_capability(self):
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -173,3 +173,13 @@ def test_real_cli_map_failure_has_nonzero_status(tmp_path):
     )
     assert result.returncode == 14
     assert "Map + func index ready" not in result.stdout
+
+
+def test_manifest_command_propagates_generator_failure(capsys):
+    module = load()
+    with patch.object(module, "run", return_value=("", "manifest failed", 7)) as run:
+        assert module.cmd_manifest([]) == 7
+    run.assert_called_once()
+    output = capsys.readouterr().out
+    assert "manifest" in output.lower()
+    assert "failed" in output.lower()

@@ -109,6 +109,8 @@
 - Key companion treatment records by run ID and include overlay/source/context hashes.
 - Stratify task difficulty and surface; randomize treatment order.
 - Run representation screening, MVT placement/surface comparison, factorial interaction testing, then held-out replication.
+- Keep the campaign design-only until committed run evidence satisfies the DoE family admission contract.
+- Keep code-reference MVT/ATES comparisons separate from model/provider task dispatch; record each execution lane with its own configured-instance provenance.
 - Preserve failed, skipped, censored, and manually intervened runs.
 
 **Verification**

@@ -1,0 +1,96 @@
+name: vercel-root-directory-sync
+
+# Bundle D (PR #3768) moved apps/help-wanted-dashboard -> apps/tribute-dashboard
+# and vercel-project-rename.yml renamed the Vercel projects, but nothing updated
+# the projects' Root Directory SETTING. Evidence (2026-11-02): every master push
+# makes the Vercel Git integration create a Preview deployment on tribute-oversight
+# and tribute-dash that fails with
+#   The specified Root Directory "apps/help-wanted-dashboard" does not exist.
+# (60+ failure emails by 09:20 PST). Vercel cannot read apps/tribute-dashboard/vercel.json
+# (git.deploymentEnabled=false + ignoreCommand) while the root path is missing, so the
+# opt-out never applies and each failed deployment still spends the Hobby
+# api-deployments-free-per-day quota (100/day) the production batch deploy needs.
+#
+# Fix: PATCH rootDirectory on both projects to apps/tribute-dashboard.
+# Idempotent (GET first, PATCH only if different). vercel-batch-deploy.yml reads the
+# project's rootDirectory from the API at deploy time, so it keeps working either way.
+# Additive: new workflow only. Runs on dispatch (mode=plan|apply) and automatically
+# when this file lands on master (mode=auto, fail-soft).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "plan (read only), apply, or auto (apply only if different)"
+        required: false
+        default: "plan"
+  push:
+    branches: [master]
+    paths:
+      - .github/workflows/vercel-root-directory-sync.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-root-directory-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SCOPE: timerloggedout-5184s-projects
+      TARGET_ROOT: apps/tribute-dashboard
+      PROJECTS: "tribute-oversight tribute-dash"
+      EVENT_NAME: ${{ github.event_name }}
+      MODE_IN: ${{ inputs.mode }}
+    steps:
+      - name: Read or patch Root Directory
+        shell: bash
+        run: |
+          set -uo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then MODE="${MODE_IN:-plan}"; SOFT=0; else MODE=auto; SOFT=1; fi
+          case "$MODE" in plan|apply|auto) ;; *) echo "::error::unknown mode $MODE"; exit 1;; esac
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            [ "$SOFT" = 1 ] && { echo "::warning::VERCEL_TOKEN missing; skipped"; exit 0; }
+            echo "::error::VERCEL_TOKEN missing"; exit 1
+          fi
+          fail=0
+          {
+            echo "## vercel-root-directory-sync"
+            echo "- event: \`$EVENT_NAME\` mode: \`$MODE\` target: \`$TARGET_ROOT\`"
+            echo ""
+            echo "| project | before | after | result |"
+            echo "| --- | --- | --- | --- |"
+          } > report.md
+          for P in $PROJECTS; do
+            api="https://api.vercel.com/v9/projects/${P}?slug=${SCOPE}"
+            if ! cur=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$api"); then
+              echo "::warning::$P GET failed"; echo "| $P | - | - | GET failed |" >> report.md; fail=1; continue
+            fi
+            before=$(jq -r '.rootDirectory // ""' <<<"$cur")
+            echo "::notice title=vercel-root::$P rootDirectory=${before:-<none>}"
+            if [ "$before" = "$TARGET_ROOT" ]; then
+              echo "| $P | $before | $before | no-op |" >> report.md; continue
+            fi
+            if [ "$MODE" = plan ]; then
+              echo "| $P | ${before:-none} | - | plan only |" >> report.md; continue
+            fi
+            body=$(jq -n --arg r "$TARGET_ROOT" '{rootDirectory: $r}')
+            if ! out=$(curl -fsS -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d "$body" "$api"); then
+              echo "::warning::$P PATCH failed"; echo "| $P | ${before:-none} | - | PATCH failed |" >> report.md; fail=1; continue
+            fi
+            after=$(jq -r '.rootDirectory // ""' <<<"$out")
+            echo "::notice title=vercel-root::$P rootDirectory now $after"
+            if [ "$after" = "$TARGET_ROOT" ]; then
+              echo "| $P | ${before:-none} | $after | applied |" >> report.md
+            else
+              echo "| $P | ${before:-none} | ${after:-none} | read-back mismatch |" >> report.md; fail=1
+            fi
+          done
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$fail" = 1 ] && [ "$SOFT" = 0 ]; then exit 1; fi
+          exit 0

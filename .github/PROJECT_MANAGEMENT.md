@@ -31,7 +31,7 @@ The termux-monorepo uses a structured project management approach with:
 
 ### For New Contributors
 
-1. **Read the Navigation Guide** in [README.md](../README.md#-navigation-ssot)
+1. **Read the Navigation Guide** in [README.md](../README.md)
 2. **Check Active Projects** in [PROJECTS.md](PROJECTS.md)
 3. **Find Your Milestone** in [MILESTONES.yaml](MILESTONES.yaml)
 4. **Understand Connectors** in [CONNECTORS.md](CONNECTORS.md)

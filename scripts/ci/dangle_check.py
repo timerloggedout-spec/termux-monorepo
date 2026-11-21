@@ -190,6 +190,30 @@ HTML_REF = re.compile(r"(?:href|src)\s*=\s*\"([^\"]+)\"")
 HTML_ID = re.compile(r"id\s*=\s*\"([^\"]+)\"")
 
 
+def is_dynamic_reference(value):
+    """Return true when the path value itself is assembled at runtime."""
+    return bool(re.search(
+        r"\$\{|\$\(|(?:^|[\s\"])\+\s*|\s\+\s|"
+        r"\b(?:esc|safeHref)\s*\(",
+        value,
+    ))
+
+
+def split_reference(value):
+    """Separate path, query and anchor without discarding static path checks."""
+    path_and_query, hash_mark, anchor = value.partition("#")
+    path, query_mark, query = path_and_query.partition("?")
+    return path, query if query_mark else "", anchor if hash_mark else ""
+
+
+def is_compound_feed_description(value):
+    """Identify prose joining multiple path-like values, not paths with spaces."""
+    return bool(re.search(
+        r"\s+(?:\+|and|or)\s+(?:[A-Za-z0-9_.-]+/)+",
+        value,
+        re.IGNORECASE,
+    ))
+
 def slugify(heading):
     s = heading.strip().lower()
     s = re.sub(r"[^\w\s-]", "", s)
@@ -232,16 +256,18 @@ def check_links(root):
             refs = [(m.group(1), text[:m.start()].count("\n") + 1)
                     for m in HTML_REF.finditer(text)]
         for refv, line in refs:
+            ref_path, ref_query, ref_anchor = split_reference(refv)
+            if is_dynamic_reference(ref_path):
+                continue
             if re.match(r"^(https?:|mailto:|tel:|data:|#)", refv):
                 if refv.startswith("#") and len(refv) > 1:
                     anchors = (html_ids(p) if p.suffix == ".html"
                                else md_slugs(p))
-                    if refv[1:] not in anchors:
+                    if ref_anchor not in anchors and not is_dynamic_reference(ref_anchor):
                         findings.append(finding("dangling-anchor", rp, line,
                                                 refv, "link"))
                 continue
-            target, _, anchor = refv.partition("#")
-            target = target.split("?")[0]
+            target, anchor = ref_path, ref_anchor
             if not target:
                 continue
             tp = (p.parent / target).resolve()
@@ -252,7 +278,7 @@ def check_links(root):
             if not tp.exists():
                 findings.append(finding("dangling-link", rp, line, refv,
                                         "link"))
-            elif anchor:
+            elif anchor and not is_dynamic_reference(anchor):
                 anchors = None
                 if tp.suffix == ".html":
                     anchors = html_ids(tp)
@@ -296,7 +322,13 @@ def check_feeds(root):
         feed_refs(data, strings)
         seen = set()
         for s in strings:
-            cand = s.split("#")[0].split("?")[0]
+            # Feed descriptions often combine several paths into prose
+            # (for example "a.md + b.py"). Only a single literal path is
+            # eligible for filesystem resolution.
+            cand, query, anchor = split_reference(s)
+            if (is_dynamic_reference(cand) or is_dynamic_reference(anchor)
+                    or is_compound_feed_description(s)):
+                continue
             if cand in seen:
                 continue
             seen.add(cand)

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "mapping_id": "linguist.transport.stream-multiplexing.quic",
+  "capability_id": "transport.stream.multiplexing",
+  "target_id": "quic",
+  "mapping_kind": "transport_protocol",
+  "status": "research",
+  "coverage": {
+    "supported": [
+      "concurrent bidirectional streams",
+      "stream-scoped ordering"
+    ],
+    "unsupported": [
+      "Linguist-specific semantic prioritization pending design"
+    ],
+    "partial": []
+  },
+  "loss_profile": "uncharacterized",
+  "round_trip_tests": [
+    "transport.streams.concurrent",
+    "transport.streams.ordering"
+  ],
+  "implementation_refs": [],
+  "version_constraints": [
+    "QUIC transport RFC 9000"
+  ]
+}

@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""Deterministic, stdlib-only validator for PolyGlot federation examples."""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+BASE = ROOT / "docs" / "integrations" / "polyglot"
+CAPABILITY_ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
+TARGET_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]+$")
+REQUIRED = {
+    "capability": {"schema_version", "capability_id", "name", "domain", "description", "status", "provenance"},
+    "technology_target": {"schema_version", "target_id", "name", "domain", "target_kind", "lifecycle_state", "sources", "specialist"},
+    "mapping": {"schema_version", "mapping_id", "capability_id", "target_id", "mapping_kind", "status", "coverage", "loss_profile"},
+    "benchmark_result": {"schema_version", "result_id", "domain", "target_id", "capability_ids", "benchmark", "baseline", "environment", "measurements", "correctness", "provenance"},
+}
+
+def load(path: Path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{path.relative_to(ROOT)}: {exc}") from exc
+
+def validate() -> list[str]:
+    errors: list[str] = []
+    examples = BASE / "examples"
+    capability = load(examples / "capability.json")
+    targets_doc = load(examples / "technology-targets.json")
+    mapping = load(examples / "mapping-quic-streams.json")
+    if not REQUIRED["capability"] <= set(capability):
+        errors.append("capability example: required fields missing")
+    if capability.get("schema_version") != "1.0.0":
+        errors.append("capability example: unsupported schema_version")
+    if not CAPABILITY_ID_RE.fullmatch(str(capability.get("capability_id", ""))):
+        errors.append("capability example: invalid capability_id")
+    if not isinstance(capability.get("provenance"), dict) or not capability["provenance"].get("source_uri"):
+        errors.append("capability example: provenance.source_uri required")
+    capability_ids = {str(capability.get("capability_id", ""))}
+    targets = targets_doc.get("targets")
+    if not isinstance(targets, list) or not targets:
+        errors.append("technology targets: targets must be a non-empty array")
+        targets = []
+    seen: set[str] = set()
+    for index, target in enumerate(targets):
+        missing = REQUIRED["technology_target"] - set(target)
+        if missing:
+            errors.append(f"technology target {index}: missing {', '.join(sorted(missing))}")
+        target_id = target.get("target_id", "")
+        if not isinstance(target_id, str) or not TARGET_ID_RE.fullmatch(target_id):
+            errors.append(f"technology target {index}: invalid target_id {target_id!r}")
+        if target_id in seen:
+            errors.append(f"technology targets: duplicate target_id {target_id}")
+        seen.add(target_id)
+        if target.get("schema_version", "1.0.0") != "1.0.0":
+            errors.append(f"technology target {target_id}: unsupported schema_version")
+        if not isinstance(target.get("sources"), list) or not target["sources"]:
+            errors.append(f"technology target {target_id}: at least one source required")
+        target_capabilities = target.get("capability_ids", [])
+        if not isinstance(target_capabilities, list):
+            errors.append(f"technology target {target_id}: capability_ids must be an array")
+        else:
+            for capability_id in target_capabilities:
+                if capability_id not in capability_ids:
+                    errors.append(f"technology target {target_id}: unknown capability_id {capability_id}")
+        for source in target.get("sources", []):
+            if not str(source.get("uri", "")).startswith(("https://", "http://")):
+                errors.append(f"technology target {target_id}: source URI must be HTTP(S)")
+    missing_mapping = REQUIRED["mapping"] - set(mapping)
+    if missing_mapping:
+        errors.append(f"mapping example: missing {', '.join(sorted(missing_mapping))}")
+    if mapping.get("schema_version") != "1.0.0":
+        errors.append("mapping example: unsupported schema_version")
+    if mapping.get("capability_id") not in capability_ids:
+        errors.append("mapping example: capability_id does not resolve")
+    if mapping.get("target_id") not in seen:
+        errors.append("mapping example: target_id does not resolve")
+    if mapping.get("loss_profile") not in {"lossless", "conditionally_lossless", "lossy", "uncharacterized"}:
+        errors.append("mapping example: invalid loss_profile")
+    coverage = mapping.get("coverage")
+    if not isinstance(coverage, dict) or not isinstance(coverage.get("supported"), list) or not isinstance(coverage.get("unsupported"), list):
+        errors.append("mapping example: coverage requires supported and unsupported arrays")
+    return errors
+
+def main() -> int:
+    global ROOT, BASE
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT, help="repository root")
+    args = parser.parse_args()
+    ROOT = args.root.resolve()
+    BASE = ROOT / "docs" / "integrations" / "polyglot"
+    try:
+        errors = validate()
+    except ValueError as exc:
+        print(f"FAIL: {exc}", file=sys.stderr)
+        return 2
+    if errors:
+        for error in errors:
+            print(f"FAIL: {error}", file=sys.stderr)
+        return 1
+    print("OK: PolyGlot federation examples and cross-record identifiers are structurally valid")
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

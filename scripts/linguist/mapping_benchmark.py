@@ -215,6 +215,7 @@ def build_dataset(
     queries: dict[str, dict[str, Any]] = {}
     qrels: dict[str, dict[str, int]] = {}
     candidates: dict[str, list[str]] = {}
+    hard_negatives: dict[str, list[str]] = {}
     rng = random.Random(seed)
 
     for key in sorted(grouped):
@@ -228,6 +229,13 @@ def build_dataset(
         )
         rng.shuffle(negatives)
         candidate_ids = sorted(relevant) + negatives
+        relevant_surfaces = {item["source_form"] for item in grouped[key]}
+        hard_negatives[query_id] = sorted(
+            item["mapping_id"] for item in pool
+            if item["mapping_id"] not in relevant
+            and item["source_form"] in relevant_surfaces
+            and (item["domain"], item["semantic_id"]) != (domain, semantic_id)
+        )
         queries[query_id] = {
             "text": (
                 f"Map {semantic_id} from {source_custom} to {target_custom} "
@@ -264,12 +272,14 @@ def build_dataset(
         "queries": queries,
         "qrels": qrels,
         "candidates": candidates,
+        "hard_negatives": hard_negatives,
         "conflicts": conflicts,
         "stats": {
             "mappings": len(records),
             "queries": len(queries),
             "relevance_judgments": sum(len(value) for value in qrels.values()),
             "conflict_groups": len(conflicts),
+            "hard_negatives": sum(len(value) for value in hard_negatives.values()),
             "grades": {
                 grade: sum(item["grade"] == grade for item in records)
                 for grade in sorted(GRADES)
@@ -311,6 +321,12 @@ def evaluate_rankings(
         unknown_mappings = set(ranked) - corpus_ids
         if unknown_mappings:
             raise ValueError(f"{query_id}: unknown mapping ids {sorted(unknown_mappings)}")
+        candidate_pool = set(dataset.get("candidates", {}).get(query_id, corpus_ids))
+        out_of_scope = set(ranked) - candidate_pool
+        if out_of_scope:
+            raise ValueError(
+                f"{query_id}: mapping ids outside candidate pool {sorted(out_of_scope)}"
+            )
         relevant = set(qrels[query_id])
         reciprocal_rank = next(
             (1.0 / rank for rank, mapping_id in enumerate(ranked, 1)

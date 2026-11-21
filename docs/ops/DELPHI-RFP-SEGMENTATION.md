@@ -21,13 +21,15 @@ segmentation does not fork or re-derive them). History: PR #1950
 PR #1954's separate segments feed + collector were retired by the
 seam PR, which folded the layer into the flood collector.
 
-## The three classes
+## Segmentation classes
 
-| Class | Count (feed of record) | Segmentation | Comparison home |
-|---|---|---|---|
+| Class | Configured members | Segmentation | Comparison home |
+|---|---:|---|---|
 | Research silos | 48 = 12 silos × (baseline + rnd/selected/control) | **One segment per silo** | Within segment only |
 | Quota surfaces | 19 (18 in `surfaces.json` + fly.free_tier) | One class segment | Delphi gate + flywheel (existing) |
 | Meta / process | 3 (#1572 intake, #1571 visualization, #1567 MVT-DoE/TLM) | Individual segments | Each on its own stated criteria |
+| DoE components | 4 (markov-trellis-lab, bayesian-routing, kahn-dag, gantt-dependency-phases) | Individual component segments | Each component's own registered role and evidence feeds |
+| Brain architecture | 1 ([qdesk.brain-rs #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501)) | One segment per architecture RFP | RFP-specific ownership, evidence, authority and vertical-slice criteria |
 
 ## Research silos — the improve-cycle segmentation
 
@@ -58,12 +60,14 @@ leakage**. The segmentation makes that mechanical:
   design whose units are RFPs, and its records are the outcome
   ledger's, per segment.
 
-Current status (feed of record, generated 2026-10-28): all 70
+Historical status snapshot (feed generated 2026-10-28): 70 issues were
 gate-scored — 68 parked, 2 shadow (both quota surfaces: turso.free
-#1423, github.native_ledger #1424). All 12 research segments fully
-filed (4/4 members) and gate-scored; the three comparison axes read
-pending for every research segment — the axes are the improve
-cycle's next stages, recorded post-hoc, never gate-scored.
+#1423, github.native_ledger #1424). All 12 research segments were fully
+filed (4/4 members) and gate-scored; the three comparison axes were
+pending for every research segment. This is a dated historical snapshot,
+not a current feed census. The Brain architecture segment was added
+2026-11-16; its live membership and status must be read from the next
+feed generation.
 
 ## Quota surfaces
 
@@ -93,3 +97,14 @@ filed outside `surfaces.json`.
 4. A new context (new silo, new surface, new class) enters by
    amending `ops/delphi/rfp-segments.json` / the source registries —
    the segmentation follows the registries, not the other way round.
+
+
+## Brain architecture
+
+The [qdesk.brain-rs RFP #5501](https://github.com/timerloggedout-spec/termux-monorepo/issues/5501) is registered as the sole initial member of the `brain-architecture` segment. It is a distinct software-architecture proposal, not a quota surface, research silo, meta-process RFP or DoE algorithm component.
+
+Its segment-specific criteria are ownership separation, evidence/provenance quality, authority preservation and measured vertical-slice validation. Its cycle is filing → source/ownership reconciliation → kernel/adapter validation → shadow-only QUE/QDesk handoff → separately authorized vertical slice → measured outcome and learning record.
+
+**Gate result (2026-11-16):** the existing Delphi admission gate parked #5501 at 6.69/25 after three rubric rounds, with recheck after 2026-12-16T09:39Z. The issue is not present in `ops/delphi/surfaces.json`, so the gate treated it as an unsourced synthetic surface. That score is an admission result, not an independent technical architecture verdict. The technical evaluation criteria are the RFP's own contract; do not infer architecture quality or runtime readiness from the synthetic surface score.
+
+This segment does not modify gate scoring, create a new panel or authorize runtime activation. It makes the proposal's comparison context explicit in the existing single RFP feed.

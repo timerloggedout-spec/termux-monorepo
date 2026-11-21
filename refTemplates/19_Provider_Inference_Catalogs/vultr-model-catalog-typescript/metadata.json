@@ -1,0 +1,37 @@
+{
+  "schema_version": "ref-template-source/v1",
+  "name": "vultr-model-catalog-typescript",
+  "category": "provider-inference-catalog",
+  "observed_at": "2026-11-21T17:25:10Z",
+  "authority": "reference-metadata-only",
+  "sources": [
+    {
+      "id": "vultr-model-catalog-typescript",
+      "role": "typescript-provider-catalog-sdk",
+      "url": "https://github.com/vultr/model-catalog-typescript",
+      "revision": "6e55057cb718213937c4c118271f5a2ca1779d0d",
+      "license": "MIT",
+      "license_evidence_url": "https://github.com/vultr/model-catalog-typescript/blob/6e55057cb718213937c4c118271f5a2ca1779d0d/LICENSE",
+      "runtime": "Node.js 20+ or Bun",
+      "runtime_dependencies": []
+    }
+  ],
+  "repository_consumer": {
+    "comparison_target": "scripts/provider_model_catalog.py",
+    "adapters": [
+      "scripts/provider_catalog_protocols.py",
+      "scripts/provider_extension_catalogs.py"
+    ],
+    "tests": [
+      "tests/test_provider_model_catalog.py"
+    ],
+    "status": "research_only"
+  },
+  "smod": {
+    "target": null,
+    "upstream": "https://github.com/vultr/model-catalog-typescript.git",
+    "upstream_revision": "6e55057cb718213937c4c118271f5a2ca1779d0d",
+    "state": "metadata_only_reference",
+    "gitlink_present": false
+  }
+}

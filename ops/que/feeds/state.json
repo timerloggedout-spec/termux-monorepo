@@ -1,47 +1,47 @@
 {
- "watermark": "2026-11-21T05:01:27Z",
+ "watermark": "2026-11-21T05:16:16Z",
  "active": {
-  "44868866023": {
+  "44870083062": {
    "status": "queued",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "Quota Dispatch Tree",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:18Z",
-   "run_started_at": "2026-11-21T05:01:18Z"
+   "created_at": "2026-11-21T05:16:08Z",
+   "run_started_at": "2026-11-21T05:16:08Z"
   },
-  "44868859195": {
+  "44870069258": {
    "status": "queued",
-   "workflow": "pages build and deployment",
-   "tier": 2,
-   "created_at": "2026-11-21T05:01:13Z",
-   "run_started_at": "2026-11-21T05:01:13Z"
-  },
-  "44868856925": {
-   "status": "queued",
-   "workflow": "Agent Throughput Evidence",
-   "tier": 4,
-   "created_at": "2026-11-21T05:01:11Z",
-   "run_started_at": "2026-11-21T05:01:11Z"
-  },
-  "44868847383": {
-   "status": "queued",
-   "workflow": "repo gate",
+   "workflow": "Orchestration Regression Guard",
    "tier": 1,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868847384": {
+  "44870069186": {
    "status": "queued",
-   "workflow": "DO Statement Style",
+   "workflow": "quota-allocation-planner",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868816147": {
+  "44870065578": {
    "status": "queued",
-   "workflow": "Agent feedback \u2192 Linear subtasks",
+   "workflow": "lane events recorder",
    "tier": 4,
-   "created_at": "2026-11-21T05:00:45Z",
-   "run_started_at": "2026-11-21T05:00:45Z"
+   "created_at": "2026-11-21T05:15:54Z",
+   "run_started_at": "2026-11-21T05:15:54Z"
+  },
+  "44870058510": {
+   "status": "queued",
+   "workflow": "lane events recorder",
+   "tier": 4,
+   "created_at": "2026-11-21T05:15:49Z",
+   "run_started_at": "2026-11-21T05:15:49Z"
+  },
+  "44870040303": {
+   "status": "queued",
+   "workflow": "tribute-dashboard-deploy",
+   "tier": 2,
+   "created_at": "2026-11-21T05:15:35Z",
+   "run_started_at": "2026-11-21T05:15:35Z"
   },
   "44697056321": {
    "status": "queued",
@@ -232,75 +232,96 @@
    "created_at": "2026-10-01T02:01:19Z",
    "run_started_at": "2026-10-01T02:01:19Z"
   },
-  "44868852999": {
+  "44870072146": {
    "status": "in_progress",
-   "workflow": "Agent Throughput Evidence",
+   "workflow": "pages build and deployment",
+   "tier": 2,
+   "created_at": "2026-11-21T05:16:00Z",
+   "run_started_at": "2026-11-21T05:16:00Z"
+  },
+  "44870069170": {
+   "status": "in_progress",
+   "workflow": "quota-analysis",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:09Z",
-   "run_started_at": "2026-11-21T05:01:09Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868847372": {
+  "44870069336": {
    "status": "in_progress",
-   "workflow": "hitl-control-plane-verify",
+   "workflow": "Foresight Evidence Spine",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868847406": {
+  "44870069335": {
    "status": "in_progress",
-   "workflow": "Orchestration Regression Guard",
-   "tier": 1,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
-  },
-  "44868847379": {
-   "status": "in_progress",
-   "workflow": "\ud83d\udee1\ufe0f Direct Master Empty-Commit Watcher",
+   "workflow": "DO Statement Style",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868847355": {
+  "44870069159": {
+   "status": "in_progress",
+   "workflow": "termux smoke",
+   "tier": 4,
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
+  },
+  "44870069434": {
    "status": "in_progress",
    "workflow": "graph-matrix-probe",
    "tier": 4,
-   "created_at": "2026-11-21T05:01:05Z",
-   "run_started_at": "2026-11-21T05:01:05Z"
+   "created_at": "2026-11-21T05:15:57Z",
+   "run_started_at": "2026-11-21T05:15:57Z"
   },
-  "44868828381": {
+  "44870058069": {
+   "status": "in_progress",
+   "workflow": "Agent Throughput Evidence",
+   "tier": 4,
+   "created_at": "2026-11-21T05:15:48Z",
+   "run_started_at": "2026-11-21T05:15:48Z"
+  },
+  "44870049052": {
    "status": "in_progress",
    "workflow": "que-feed-collect",
    "tier": 4,
-   "created_at": "2026-11-21T05:00:53Z",
-   "run_started_at": "2026-11-21T05:00:53Z"
+   "created_at": "2026-11-21T05:15:42Z",
+   "run_started_at": "2026-11-21T05:15:42Z"
   },
-  "44868815742": {
+  "44870040441": {
    "status": "in_progress",
    "workflow": "Context Relationship + Lead/Lag Audit",
    "tier": 4,
-   "created_at": "2026-11-21T05:00:45Z",
-   "run_started_at": "2026-11-21T05:00:45Z"
+   "created_at": "2026-11-21T05:15:35Z",
+   "run_started_at": "2026-11-21T05:15:35Z"
   },
-  "44868814041": {
+  "44870040422": {
    "status": "in_progress",
    "workflow": "telemetry-ingest",
    "tier": 4,
-   "created_at": "2026-11-21T05:00:44Z",
-   "run_started_at": "2026-11-21T05:00:44Z"
+   "created_at": "2026-11-21T05:15:35Z",
+   "run_started_at": "2026-11-21T05:15:35Z"
   },
-  "44868814118": {
+  "44870007559": {
    "status": "in_progress",
-   "workflow": "Sweep Accountability",
+   "workflow": "Peer review orchestrator",
    "tier": 4,
-   "created_at": "2026-11-21T05:00:44Z",
-   "run_started_at": "2026-11-21T05:00:44Z"
+   "created_at": "2026-11-21T05:15:15Z",
+   "run_started_at": "2026-11-21T05:15:15Z"
   },
-  "44868674164": {
+  "44870008327": {
+   "status": "in_progress",
+   "workflow": "Context Relationship + Lead/Lag Audit",
+   "tier": 4,
+   "created_at": "2026-11-21T05:15:15Z",
+   "run_started_at": "2026-11-21T05:15:15Z"
+  },
+  "44869642450": {
    "status": "in_progress",
    "workflow": "Reviewer metrics collect",
    "tier": 4,
-   "created_at": "2026-11-21T04:59:01Z",
-   "run_started_at": "2026-11-21T04:59:01Z"
+   "created_at": "2026-11-21T05:10:49Z",
+   "run_started_at": "2026-11-21T05:10:49Z"
   },
   "39698523858": {
    "status": "in_progress",

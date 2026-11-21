@@ -51,7 +51,7 @@ def test_legacy_research_children_field_remains_available(tmp_path, monkeypatch)
     child = slot / "jogyo"
     child.mkdir(parents=True)
     (child / "README.md").write_text("reference\n", encoding="utf-8")
-    (child / "SOURCE.txt").write_text("https://example.test\\n", encoding="utf-8")
+    (child / "SOURCE.txt").write_text("https://example.test\n", encoding="utf-8")
     monkeypatch.setattr(inventory, "ROOT", root)
     monkeypatch.setattr(inventory, "REF", ref)
 

@@ -39,7 +39,7 @@ def test_same_surface_across_domains_is_reported_as_conflict_group():
     assert conflict["source_form"] == "∘"
     assert set(conflict["mapping_ids"]) == {
         "fleet-lean-matrix-composition",
-        "fleet-lean-category-composition",
+        "fixture-only-lean-function-composition",
     }
 
 
@@ -51,13 +51,13 @@ def test_domain_scoping_keeps_overloaded_symbol_qrels_separate():
     )
     category_query = next(
         query_id for query_id, query in dataset["queries"].items()
-        if query["domain"] == "category_theory"
+        if query["domain"] == "functions"
     )
     assert dataset["qrels"][matrix_query] == {"fleet-lean-matrix-composition": 1}
-    assert dataset["qrels"][category_query] == {"fleet-lean-category-composition": 1}
+    assert dataset["qrels"][category_query] == {"fixture-only-lean-function-composition": 1}
     assert set(dataset["candidates"][matrix_query]) >= {
         "fleet-lean-matrix-composition",
-        "fleet-lean-category-composition",
+        "fixture-only-lean-function-composition",
     }
 
 

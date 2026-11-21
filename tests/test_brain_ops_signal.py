@@ -14,17 +14,17 @@ SIM = r"""
 const signal = require(process.argv[2]);
 const runs = [
   {
-    name: "Brain Kernel CI", run_number: 17, created_at: "2026-11-21T01:00:00Z",
+    id: 170017, name: "Brain Kernel CI", run_number: 17, created_at: "2026-11-21T01:00:00Z",
     status: "completed", conclusion: "success", run_started_at: "2026-11-21T01:00:02Z",
     updated_at: "2026-11-21T01:02:02Z", head_sha: "a".repeat(40)
   },
   {
-    name: "MOSAIC Adapter", run_number: 8, created_at: "2026-11-21T02:00:00Z",
+    id: 80008, name: "MOSAIC Adapter", run_number: 8, created_at: "2026-11-21T02:00:00Z",
     status: "completed", conclusion: "failure", run_started_at: "2026-11-21T02:00:02Z",
     updated_at: "2026-11-21T02:01:02Z", head_sha: "b".repeat(40)
   },
   {
-    name: "<script>alert(1)</script>", run_number: 9, created_at: "2026-11-21T03:00:00Z",
+    id: 90009, name: "<script>alert(1)</script>", run_number: 9, created_at: "2026-11-21T03:00:00Z",
     status: "in_progress", conclusion: null, head_sha: "c".repeat(40)
   }
 ];
@@ -59,6 +59,7 @@ def test_brain_signal_raster_uses_observed_events(tmp_path):
     assert "signal-pending" in svg
     assert "2026-11-21T01:00:00.000Z" in svg
     assert "2026-11-21 01:00" in svg
+    assert "run id 170017" in svg
     assert "SHA aaaaaaaaaaaa" in svg
     assert "&lt;script&gt;" in svg
     assert "<script>" not in svg

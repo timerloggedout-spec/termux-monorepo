@@ -21,7 +21,7 @@ The upstream repository is reference material. Repository-owned code remains the
 
 ## Connection contract
 
-Configure the Actions secret `COCKROACH_DATABASE_URL` with a PostgreSQL-wire connection URI using `sslmode=verify-full` (preferred) or `sslmode=verify-ca`. The writer emits only credential names and status. Local insecure mode is available exclusively to the CI integration test with `CI=true` and `COCKROACH_ALLOW_INSECURE_TEST=1`.
+Configure the Actions secret `COCKROACH_DATABASE_URL` with a PostgreSQL-wire connection URI using `sslmode=verify-full` (preferred) or `sslmode=verify-ca`. The writer emits only credential names and status. The adapter retains a CI-only insecure test switch (`CI=true` and `COCKROACH_ALLOW_INSECURE_TEST=1`); all active CockroachDB contract workflows use TLS.
 
 Run `ops/cockroachdb/lane-events-writer-grants.sql` as a cluster administrator. It creates the isolated `lane_events` database, the `lane_events_writer` runtime login and the `lane_events_migrator` schema login. It removes default PUBLIC access, grants the writer `CONNECT`, schema `USAGE`, and table `SELECT, INSERT`, and grants the migrator schema `USAGE, CREATE`. Set generated login passwords through the cluster's secret manager. Store the writer's TLS connection URI as the Actions secret `COCKROACH_DATABASE_URL`; use the migration identity through `COCKROACH_SCHEMA_DATABASE_URL` for schema changes. The writer role receives SELECT/INSERT only, with UPDATE/DELETE and DDL reserved to the migration identity.
 

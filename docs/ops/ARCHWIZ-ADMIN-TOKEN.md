@@ -110,6 +110,6 @@ env:
 | DeepSeek CI safe PR | #162 |
 | Continuous-ops | #161 |
 | Connector catalog | `.github/connectors/README.md` |
-| Monikers | `docs/ops/AGENT-MONIKERS.md` (`archW1z`) |
+| Monikers | `docs/ops/COLLABORATOR-MONIKERS.md` (`archW1z`) |
 
 Signed-off-by: Grok (OPERATOR) / archW1z

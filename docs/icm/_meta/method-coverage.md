@@ -4,7 +4,7 @@ This record explains how the monorepo applies the ICM method **without refactori
 
 | ICM requirement | Implemented surface | Status |
 |---|---|---|
-| Small Layer-0 catalog | [`../CLAUDE.md`](../CLAUDE.md) with byte-identical [`../AGENTS.md`](../AGENTS.md) | Implemented as stable static aliases |
+| Small Layer-0 catalog | [`../CLAUDE.md`](../CLAUDE.md) as the canonical ICM entrypoint | Implemented as a single canonical entrypoint |
 | Nested, separately owned routing resource | [`../routing.md`](../routing.md) and [`../routing/CONTEXT.md`](../routing/CONTEXT.md) | Initiated; provider observations remain documentation-only and runtime changes are deferred |
 | Layer-1 routing contract | [`../CONTEXT.md`](../CONTEXT.md) | Implemented |
 | Layer-2 folder contracts | `objects/*/CONTEXT.md`, [`processes/CONTEXT.md`](../processes/CONTEXT.md), and [`maintenance/*/CONTEXT.md`](../maintenance/CONTEXT.md) | Implemented |

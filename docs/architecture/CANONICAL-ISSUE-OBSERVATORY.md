@@ -91,7 +91,7 @@ Starred/added repositories are **research candidates**, not dependencies. The re
 
 ## Documentation compression
 
-`AGENTS.md` is the compressed routing map: domain-specific notation expands to canonical paths and contracts. It should not duplicate subsystem prose.
+`CLAUDE.md` is the canonical repository governance entrypoint; named collaborator profiles carry collaborator-specific instructions. Domain-specific notation expands to canonical paths and contracts without duplicating subsystem prose.
 
 `README.md` is the 1337-style public orientation surface: compact, high-signal, source-linked, and readable. Display dialect must never replace canonical paths or provenance.
 

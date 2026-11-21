@@ -67,7 +67,7 @@ cited ¬ adopted**. Naming flow ran: Linguist (commission +
 draft set) · Marketing (brand input + critique battery) ·
 Naming-Collision seat (formal screen S1–S5) · Registry
 (issuance, PR #5100 merged bd9450389a89; issuance block in
-docs/ops/AGENT-MONIKERS.md).
+docs/ops/COLLABORATOR-MONIKERS.md).
 
 **Issued: `Siglary`** — formed on *sigla*, the scholarly
 collective for abbreviation signs; a *siglary* is the list of

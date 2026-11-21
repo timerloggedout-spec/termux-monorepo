@@ -1,10 +1,10 @@
 # ECC for Codex CLI
 
-This supplements the root `AGENTS.md` with a repo-local ECC baseline.
+This supplements the root `CLAUDE.md` with a repo-local ECC baseline.
 
 ## Repo Skill
 
-- Repo-generated Codex skill: `.agents/skills/termux-monorepo/SKILL.md`
+- Repo-generated Codex skill: `.collaborators/skills/termux-monorepo/SKILL.md`
 - Claude-facing companion skill: `.claude/skills/termux-monorepo/SKILL.md`
 - Keep user-specific credentials and private MCPs in `~/.codex/config.toml`, not in this repo.
 
@@ -13,7 +13,7 @@ This supplements the root `AGENTS.md` with a repo-local ECC baseline.
 Treat `.codex/config.toml` as the default ECC-safe baseline for work in this repository.
 The generated baseline enables GitHub, Context7, Exa, Memory, Playwright, and Sequential Thinking.
 
-## Multi-Agent Support
+## Multi-Collaborator Support
 
 - Explorer: read-only evidence gathering
 - Reviewer: correctness, security, and regression review

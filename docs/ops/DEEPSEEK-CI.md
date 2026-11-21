@@ -14,7 +14,7 @@
 | `deepcli/pow_solver.js` + `deepseek.wasm` + `package.json` (`type: module`) | PoW for web-wrapper |
 | `tests/test_multi_ai_ci.py` | Offline unit tests |
 | `docs/ops/ARCHWIZ-ADMIN-TOKEN.md` | Second admin PAT runbook |
-| `docs/ops/AGENT-MONIKERS.md` | Display moniker `deepCore` |
+| `docs/ops/COLLABORATOR-MONIKERS.md` | Display moniker `deepCore` |
 
 ## Agentic triggers (no CLI)
 

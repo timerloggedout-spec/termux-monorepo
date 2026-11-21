@@ -21,7 +21,7 @@ sets) or `null` — never inferred, never reconstructed from plausibility.
 | `role_moniker` | the Manager's coordination moniker (`challenge-entries-manager`) |
 | `chat_id` | the Manager seat's side-chat id |
 | `scope` | what the Manager owns (the lane + countdown-critical path) |
-| `subs[]` | per-event sub-coordinators: `{suffix, event_id, chat_id}` — suffixes `-d1`..`-d5` on the Manager moniker (coordination identities, `docs/ops/AGENT-MONIKERS.md`); `chat_id` is null while a sub has no chat of its own |
+| `subs[]` | per-event sub-coordinators: `{suffix, event_id, chat_id}` — suffixes `-d1`..`-d5` on the Manager moniker (coordination identities, `docs/ops/COLLABORATOR-MONIKERS.md`); `chat_id` is null while a sub has no chat of its own |
 
 ## events[]
 

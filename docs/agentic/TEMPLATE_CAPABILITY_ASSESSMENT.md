@@ -82,7 +82,7 @@ These concepts align directly with a repository-native dependency phase plan. Th
 
 ### CONTENT-AGENT-ROUTING — select as the agent-envelope seed
 
-The promptbase supplies a complementary discipline: a stable `CLAUDE.md` or `AGENTS.md` routes work, a `CONTEXT.md` selects the workspace, and task-local contracts load only the files and sections needed for the job.[4] Its explicit canonical-source and one-way-dependency rules translate well to phase dispatch prompts: a phase payload should identify the authoritative plan, item IDs, required evidence, and relevant files without copying the entire state graph into every agent prompt.
+The promptbase supplies a complementary discipline: `CLAUDE.md` routes repository governance and a named collaborator profile routes collaborator-specific work, a `CONTEXT.md` selects the workspace, and task-local contracts load only the files and sections needed for the job.[4] Its explicit canonical-source and one-way-dependency rules translate well to phase dispatch prompts: a phase payload should identify the authoritative plan, item IDs, required evidence, and relevant files without copying the entire state graph into every agent prompt.
 
 | Adopt now | Do not adopt | Required implementation guardrail |
 |---|---|---|

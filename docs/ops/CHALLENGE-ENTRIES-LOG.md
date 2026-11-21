@@ -282,7 +282,7 @@ Manager (own side chat — Challenge Management) owns the lane and the
 countdown-critical path; this log's lane is the execution lane under it.
 Sub-coordinators per event sit under the Manager (D1–D5). Manager:
 `challenge-entries-manager`; sub-coordinators: `challenge-entries-manager-d1`
-through `-d5` (coordination identities — `docs/ops/AGENT-MONIKERS.md`,
+through `-d5` (coordination identities — `docs/ops/COLLABORATOR-MONIKERS.md`,
 PR #1996/#1997).
 FUTURE (logged, not now): DoE-style comparison of manager implementations.
 **Schema SSOT:** the machine-readable source for this roster + the packets

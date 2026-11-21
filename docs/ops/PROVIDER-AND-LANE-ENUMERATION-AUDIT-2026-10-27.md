@@ -107,7 +107,7 @@ quartet:
 | Gamut AI / ATF / ACRS / MAESTRO; GAMUT benchmark | `docs/ops/AGENT-EVALUATION-LANE-REGISTRY.md` ("Gamut is not one thing") | no adapter in repo | observational only, by design |
 | ATES / WTCV / TCV / TPV / RPI | evaluation lane registry | derived-metrics definitions | canonical derived metrics, not classifier lanes |
 | TDQS / Glama; Langfuse; Phoenix; SWE-style suites; local cohort harnesses | evaluation lane registry | external/observational adapters | observational; none hold merge authority |
-| Team MVT provider lanes (`geminiMesh`, `routeMesh`, `feloForge`, `hfFoundry`, + 14 roster-only provider lanes) | `docs/ops/AGENT-MONIKERS.md`, PROVIDER-COLLABORATOR-CAPABILITY-MAP.md, `team-mvt.yml` (528 observed runs per the MVT page feed) | workflows exist | display identities, explicitly **non-callable**; "Do not promote these into callable collaborators… just because an adapter, public catalog, secret-name reference, or moniker exists" |
+| Team MVT provider lanes (`geminiMesh`, `routeMesh`, `feloForge`, `hfFoundry`, + 14 roster-only provider lanes) | `docs/ops/COLLABORATOR-MONIKERS.md`, PROVIDER-COLLABORATOR-CAPABILITY-MAP.md, `team-mvt.yml` (528 observed runs per the MVT page feed) | workflows exist | display identities, explicitly **non-callable**; "Do not promote these into callable collaborators… just because an adapter, public catalog, secret-name reference, or moniker exists" |
 | External Laya project (ConvAI Innovations) | catalogued reference (`refTemplates/16_Org_Phased/laya`) | external project's code/HF surfaces | not a fleet lane; source of the "multilingual encoder" description |
 
 ## Appendix — classifier census extension (steward map, verified + extended 2026-10-27)

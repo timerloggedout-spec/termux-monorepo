@@ -70,6 +70,11 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_dag_execution.py' -v
           python3 -m unittest discover -s tests -p 'test_dag_properties.py' -v
 
+      - name: Collaborator rotation and provenance classifiers
+        run: |
+          python3 -B -m unittest discover -s tests -p 'test_rotation_sweep.py' -v
+          python3 -B -m unittest discover -s tests -p 'test_ingest_exports.py' -v
+
       - name: Briefing and source provenance contracts
         run: |
           python3 -m unittest discover -s tests -p 'test_briefing_contract_validator.py' -v

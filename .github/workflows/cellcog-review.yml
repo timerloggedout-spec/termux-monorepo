@@ -125,7 +125,7 @@ jobs:
               lines = [
                   'You are the CellCog reviewer for ' + repo + ' PR #' + str(n) + '.',
                   'Peers (CodeRabbit/Devin) may have reviewed already. Be concise - ONE response.',
-                  'Focus on gaps peers miss and merge-blocking risk, per this repo AGENTS.md:',
+                  'Focus on gaps peers miss and merge-blocking risk, per this repository's CLAUDE.md governance:',
                   '  1. Secret/permission hygiene: chmod 0o600/0o700 on session/cred files;',
                   '     no Class 3/4 artifacts (session stores, cookies, tokens) entering git.',
                   '  2. Whether repo_gate.py + termux_smoke.py assumptions still hold.',

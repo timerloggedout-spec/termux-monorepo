@@ -1,0 +1,66 @@
+name: termux-hub-tailnet-probe
+
+on:
+  push:
+    branches:
+      - feat/termux-hub-direct-tailscale-connection
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: termux-hub-tailnet-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Connect GitHub runner to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: termux-hub.tail4e1138.ts.net
+
+      - name: Inspect tailnet route
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== tailscale ==='
+          tailscale status
+          echo '=== target ==='
+          tailscale ping --c 3 termux-hub.tail4e1138.ts.net || true
+          echo '=== tcp 8022 ==='
+          timeout 10 bash -c '</dev/tcp/termux-hub.tail4e1138.ts.net/8022'             && echo 'tcp_8022=open'             || { echo 'tcp_8022=closed_or_unreachable'; exit 1; }
+          echo '=== ssh host key ==='
+          timeout 10 ssh-keyscan -T 5 -p 8022 termux-hub.tail4e1138.ts.net 2>/dev/null             | tee /tmp/termux-hub-known-hosts             | head -n 3
+          test -s /tmp/termux-hub-known-hosts
+
+      - name: Attempt key-based SSH only when project credentials exist
+        if: ${{ secrets.TERMUX_HUB_SSH_PRIVATE_KEY != '' && secrets.TERMUX_HUB_USER != '' }}
+        shell: bash
+        env:
+          TERMUX_HUB_USER: ${{ secrets.TERMUX_HUB_USER }}
+          TERMUX_HUB_SSH_PRIVATE_KEY: ${{ secrets.TERMUX_HUB_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 "$HOME/.ssh"
+          umask 077
+          printf '%s\n' "$TERMUX_HUB_SSH_PRIVATE_KEY" > "$HOME/.ssh/termux-hub"
+          trap 'rm -f "$HOME/.ssh/termux-hub"' EXIT
+          ssh-keygen -y -f "$HOME/.ssh/termux-hub" >/dev/null
+          cat /tmp/termux-hub-known-hosts >> "$HOME/.ssh/known_hosts"
+          ssh -o BatchMode=yes -o IdentitiesOnly=yes             -i "$HOME/.ssh/termux-hub"             -p 8022             "$TERMUX_HUB_USER@termux-hub.tail4e1138.ts.net"             'printf "termux_hub=reachable\\n"; id; uname -a; printf "tailscale_ip="; tailscale ip -4 2>/dev/null || true'
+
+      - name: Report missing SSH credentials without exposing secrets
+        if: ${{ !(secrets.TERMUX_HUB_SSH_PRIVATE_KEY != '' && secrets.TERMUX_HUB_USER != '') }}
+        shell: bash
+        run: |
+          echo 'tailnet_route=verified_if_previous_step_succeeded'
+          echo 'ssh_credentials=not_configured_for_github_runner'
+          echo 'no_private_credential_was_generated_or_exposed'

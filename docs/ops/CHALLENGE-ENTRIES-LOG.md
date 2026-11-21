@@ -154,6 +154,7 @@ free-tier / mesh-resiliency engineering (device pull queue, quota systems);
 | C8 | Codegeist 2026 — Atlassian on Devpost. **Repo+Story primary fit (see I1).** | Submissions close **Dec 22, 2026, 3:00 PM ET** (Devpost event window, official page read 2026-10-30) | Forge app + ≥1 Atlassian product (Bitbucket/Jira/Confluence/Rovo/Teamwork Graph); category = Apps for Software Teams ("smarter code reviews" ∈ official brief); demo video <5 min; install link for judges | Free; Devpost + Atlassian Cloud developer account | **I1** — story context = the brief's context thesis verbatim-fit |
 | C9 | Gemma 4 Developer Agent Competition — Google DeepMind × Kaggle | Entry by **Nov 25, 2026, 23:59 UTC**; main submit Dec 2, 23:59 UTC; Paper Track Nov 12, 23:59 UTC (official-derived guide, checked 2026-10-30) | Post-train Gemma 4 → offline coding agent (main) ∨ paper/resource on parsing/embedding/reasoning over complex code repos (Paper Track) | Free; Kaggle account | I1 △ — context-engine = Paper Track resource angle only; main leaderboard = bug-fixing agent ≠ story |
 | C10 | Agentware — Hackathon Raptors | Build **Nov 27–30, 2026**; submissions close Dec 7, 18:00 UTC (organizer page, checked 2026-10-30) | Autonomous agent; **new code only** in the 72h window (pre-window code disqualifies) | Free; Discord | I1 △ — repo-maintenance agent framing; 72h new-code constraint = rebuild, not reuse |
+| C13 | Agent Stack 48 — AI Agents & Tools Hackathon (LabLab) | Build starts **Dec 11, 2026, 17:00 CET**; submissions close **Dec 13, 2026, 17:00 CET** (official page, captured 2026-11-20) | Two tracks: specialized AI agents or tools/toolkits (APIs, MCP servers, SDKs, integrations); public GitHub repo, working demo, recorded video, architecture and presentation materials; build must occur in the official 48-hour window | Registration shown open; prize pool TBA; detailed eligibility NOT_ESTABLISHED | Candidate, unassigned; fit and entry decision pending Manager |
 | C11 | AMD AI League — AMD × lablab.ai. **REGISTERED 2026-10-30 (see R6) — state Approved.** | League Sep 1 – **Dec 1, 2026**; submission deadline **Dec 1, 2026, 11:00 AM PST**; final Match ends Nov 14 (official event page, read 2026-10-30) | **Individual participation only** (no teams). Points league: Onboarding (300 pts: AMD sign-up, claim $100 GPU credits, first Academy course, complete AMD profile, join lablab Discord — **required for Match participation**, join AMD Discord) ∘ Academy course milestones (5 courses = League-podium eligibility gate) ∘ 6 Matches (Match 4 LIVE: Intelligent Web Information Retrieval, 1,800 pts; Match 5: AI-Powered Code Repository Repair, 2,100 pts; Match 6 Nov 10–14, 2,400 pts; closed Matches stay open for points only) ∘ per-Match project submitted via event page (solo-team create ⇒ Submit Project) | Free; lablab account + AMD SSO (live); no card at any step (verified at join) | Prizes: League podium $2,500/$1,500/$1,000 (gate: ≥5 Academy courses) · per Match $500 cash / $250 GPU credits / $100 GPU credits top-50 · Referral Leaders $1,000/$600/$400 · ROCm Certified Associate credential. Fit: Match 4 = web-retrieval agent (fleet web-RE surface); Match 5 = repo-repair multi-agent. **Candidate, unassigned — packet decision = Manager** |
 
 ### Idea bank (unassigned concepts)
@@ -303,14 +304,14 @@ this log is the human view of the same verified state.
 | D4 | REGISTERING — Devpost profile COMPLETE 2026-10-29 (timerloggedout); Kiro account exists (no editable fields); Kiroween registration + exact Kiro ID still blocked | eligibility opens Oct 30 09:00 PDT (rules s.1); closes Dec 4 14:00 | no project creation before the window opens |
 | D5 | REGISTERED — spot pending review | opens Nov 17 9:00 AM; closes Nov 19 12:00 PT (official Contest Rules) | spot confirmation email |
 
-<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: closes in 7d 12h · D2: opens in 7d 12h (closes Nov 8 15:00 PT) · D3: closes in 12d 12h · D4: opens in 2d 0h (closes Dec 4 14:00 PT) · D5: opens in 19d 21h (closes Nov 19 12:00 PT) (computed 2026-10-28 12:55 PT)<!-- /countdown:BLOCK -->
+<!-- countdown:BLOCK -->⏳ countdowns — D0: CLOSED · D1: OVERDUE (closes Nov 4 23:59 PT) · D2: OVERDUE (closes Nov 8 15:00 PT) · D3: OVERDUE (closes Nov 9 23:59 PT) · D4: closes in 14d 4h · D5: OVERDUE (closes Nov 19 12:00 PT) (computed 2026-11-20 09:34 PT)<!-- /countdown:BLOCK -->
 
 ### D0 — for R2, Weekend Challenge: Give your Agent a Tool — COMPLETED 2026-10-27
 
 - **ROLE (owner framing, 2026-10-30): prerequisite-practice.** D0 is the mandate practice — the prerequisite pattern for the whole slate: agent + one new tool + article + demo; its completion package is the template every entry follows. D1 executes the D0 pattern formally (workshop agent + tool; StudySprint article + demo per the D0 shape). The opportunity ledger is UNCHANGED (OC-002 LOST $200 stands) — this framing is not a reclassification. (owner ruling 2026-10-27; date set: Oct 29)
 
 <!-- countdown-data:D0 opens=- closes=2026-10-26T13:00:00-07:00 -->
-<!-- countdown:D0 -->⏳ CLOSED (computed 2026-10-28 12:55 PT)<!-- /countdown:D0 -->
+<!-- countdown:D0 -->⏳ CLOSED (computed 2026-11-20 09:34 PT)<!-- /countdown:D0 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -373,7 +374,7 @@ this log is the human view of the same verified state.
 
 <!-- countdown-data:D1 opens=2026-10-28T00:00:00-07:00 closes=2026-11-04T23:59:00-08:00 -->
 <!-- submission-data:D1 state=SUBMITTED at=2026-11-03T10:01:00-08:00 ref=https://builder.aws.com/project/3LRJu2KZOWsFqd5oGHyt52lcR5P/studysprint -->
-<!-- countdown:D1 -->⏳ closes in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D1 -->
+<!-- countdown:D1 -->⏳ OVERDUE (computed 2026-11-20 09:34 PT)<!-- /countdown:D1 -->
 
 `entrant{entrantAwsBuilderCenter}[platform:aws-builder-center]`
 
@@ -441,7 +442,7 @@ this log is the human view of the same verified state.
 ### D2 — for C2, Vultr Agent Rush (Foundry entry) — IN PROGRESS
 
 <!-- countdown-data:D2 opens=2026-11-03T15:00:00Z closes=2026-11-08T15:00:00-08:00 -->
-<!-- countdown:D2 -->⏳ opens in 7d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D2 -->
+<!-- countdown:D2 -->⏳ OVERDUE (computed 2026-11-20 09:34 PT)<!-- /countdown:D2 -->
 
 `entrant{entrantLablabAi}[platform:lablab-ai]` + `entrant{entrantVultr}[platform:vultr]`
 
@@ -491,7 +492,7 @@ this log is the human view of the same verified state.
 ### D3 — for C3, Builder.io Agent-Native Hackathon — concept #42 QUESTIONED 2026-10-28 (under review; not the active build)
 
 <!-- countdown-data:D3 opens=- closes=2026-11-09T23:59:00-08:00 -->
-<!-- countdown:D3 -->⏳ closes in 12d 12h (computed 2026-10-28 12:55 PT)<!-- /countdown:D3 -->
+<!-- countdown:D3 -->⏳ OVERDUE (computed 2026-11-20 09:34 PT)<!-- /countdown:D3 -->
 
 `entrant{entrantBuilderIo}[platform:builder-io]`
 
@@ -595,7 +596,7 @@ this log is the human view of the same verified state.
 - **DEBATE LANDED 2026-10-30** (PR #2563, calibration-only under the enacted freeze): skeleton-crew 23.288 > frankenstein 22.865 > resurrection 22.481 (10 LOCAL_BASELINE ballots; revision-only 23.308 / 22.462 / 21.692) — rank agreement 3/3 with the brief-author priors; calibration supports the freeze. Pass status = debate_recorded; receipts in the pass cycle/ (FEEDBACK.json, debate-ballots.json, DEBATE.md). Owner ballot still open.
 
 <!-- countdown-data:D4 opens=2026-10-30T09:00:00-07:00 closes=2026-12-04T14:00:00-08:00 -->
-<!-- countdown:D4 -->⏳ opens in 2d 0h (computed 2026-10-28 12:55 PT)<!-- /countdown:D4 -->
+<!-- countdown:D4 -->⏳ closes in 14d 4h (computed 2026-11-20 09:34 PT)<!-- /countdown:D4 -->
 
 `entrant{entrantDevpost}[platform:devpost]` + `entrant{entrantKiro}[platform:kiro]` — account creation owned by the dedicated Devpost + Kiro ID creation chat (owner order 2026-10-27, fleet Google identity route); registration completes with this lane on its handoff.
 
@@ -655,7 +656,7 @@ this log is the human view of the same verified state.
 ### D5 — for Aha! AI Builder Day Hackathon (Aha.io) — REGISTERED 2026-10-27 (spot pending review)
 
 <!-- countdown-data:D5 opens=2026-11-17T09:00:00-08:00 closes=2026-11-19T12:00:00-08:00 -->
-<!-- countdown:D5 -->⏳ opens in 19d 21h (computed 2026-10-28 12:55 PT)<!-- /countdown:D5 -->
+<!-- countdown:D5 -->⏳ OVERDUE (computed 2026-11-20 09:34 PT)<!-- /countdown:D5 -->
 
 `entrant{n0nAha}[platform:aha-io]` (assigned via the registry process,
 PR #1970 merged 2e99fadd).

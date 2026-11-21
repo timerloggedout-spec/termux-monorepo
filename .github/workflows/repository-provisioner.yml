@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      GH_TOKEN: ${{ secrets.ARCHWIZ_GITHUB_TOKEN || secrets.OPERATOR_GITHUB_TOKEN || secrets.OPERATOR_TOKEN }}
+      GH_TOKEN: ${{ secrets.OPERATOR_GITHUB_TOKEN }}
       EXPECTED_OWNER: timerloggedout-spec
       REPO_NAME: ${{ inputs.repo_name }}
       REPO_DESCRIPTION: ${{ inputs.description }}
@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          : "${GH_TOKEN:?Configure one of the existing administrator secrets: ARCHWIZ_GITHUB_TOKEN, OPERATOR_GITHUB_TOKEN, OPERATOR_TOKEN}"
+          : "${GH_TOKEN:?Configure the existing OPERATOR_GITHUB_TOKEN Actions secret}"
 
           if [[ ! "${REPO_NAME}" =~ ^[a-z0-9]([a-z0-9-]{0,98}[a-z0-9])?$ ]]; then
             echo "::error::Use a 1-100 character lowercase repository slug with letters, numbers, and interior hyphens."

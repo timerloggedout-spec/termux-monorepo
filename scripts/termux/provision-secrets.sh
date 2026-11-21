@@ -122,8 +122,8 @@ cmd_provision_controller_export() {
   local previous_run_id=""
   local run_id=""
 
-  if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -qx REPOSITORY_PROVISIONER_TOKEN; then
-    echo "missing Actions secret: REPOSITORY_PROVISIONER_TOKEN on $source_repo" >&2
+  if ! gh secret list -R "$source_repo" --json name --jq '.[].name' | grep -qx OPERATOR; then
+    echo "missing Actions secret: OPERATOR on $source_repo" >&2
     exit 2
   fi
   if gh repo view "$OWNER/$slug" >/dev/null 2>&1; then

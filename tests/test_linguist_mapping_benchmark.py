@@ -3,7 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from scripts.linguist.mapping_benchmark import (\n    build_dataset, mappings_from_panel_feed, validate_mappings,\n)
+from scripts.linguist.mapping_benchmark import (
+    build_dataset, mappings_from_panel_feed, validate_mappings,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]

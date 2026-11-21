@@ -74,6 +74,7 @@ def test_domain_scoping_keeps_overloaded_symbol_qrels_separate():
         "fleet-lean-matrix-composition",
         "fleet-lean-function-composition",
     }
+    assert "fleet-lean-function-composition" in dataset["hard_negatives"][matrix_query]
 
 
 def test_invalid_grade_and_missing_provenance_fail_validation():
@@ -257,3 +258,20 @@ def test_round_trip_evidence_does_not_upgrade_mapping_grade():
     assert by_id["sample:candidate"]["round_trip_status"] == "verified"
     assert by_id["sample:candidate"]["evidence_status"] == "candidate"
     assert by_id["sample:candidate"]["relation"] == "related_match"
+
+
+
+def test_retrieval_metrics_reject_mappings_outside_candidate_pool():
+    from scripts.linguist.mapping_benchmark import evaluate_rankings
+
+    dataset = build_dataset(load_mappings())
+    query_id = next(
+        query_id for query_id, candidates in dataset["candidates"].items()
+        if len(candidates) < len(dataset["corpus"])
+    )
+    out_of_scope = next(
+        mapping_id for mapping_id in dataset["corpus"]
+        if mapping_id not in dataset["candidates"][query_id]
+    )
+    with pytest.raises(ValueError, match="outside candidate pool"):
+        evaluate_rankings(dataset, {query_id: [out_of_scope]})

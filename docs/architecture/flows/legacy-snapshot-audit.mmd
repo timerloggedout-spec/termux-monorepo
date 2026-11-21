@@ -1,0 +1,7 @@
+flowchart LR
+ CENTRAL["$HOME/central_index.jsonl"] --> BUILD["build_data_flow_manifest.py"]
+ TRACE["trace_data_flow.py"] --> TMP["$HOME/tmp/data_flow_map.txt"] --> BUILD
+ BUILD --> LOCAL["$HOME/archwiz/DATA_FLOW_MANIFEST.md"]
+ LOCAL -. "path mismatch" .-> TRACKED["archwiz/DATA_FLOW_MANIFEST.md · 0 bytes"]
+ BUILD -. "no source SHA / tree SHA / input digest" .-> PROV["Missing provenance"]
+ TRACKED -. "no verified consumer" .-> CRG["CRG / SHE / EPS"]

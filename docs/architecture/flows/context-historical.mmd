@@ -1,0 +1,31 @@
+flowchart TB
+ subgraph SOURCES["Source evidence"]
+  GIT["Git tree / files / pinned SHA"]
+  GH["GitHub issues / PRs / commits / reviews"]
+  PRIOR["Prior canonical nodes / edges / checkpoint"]
+ end
+ subgraph BUILD["CRG build pipeline"]
+  SRC["source_collector.py"]
+  API["github_collector.py"]
+  MERGE["seed_merger.py"]
+  COMP["compiler.py"]
+  INDEX["build_index.py"]
+  TEMP["temporal.py / temporal_query.py"]
+  GIT --> SRC --> MERGE
+  GH --> API --> MERGE
+  PRIOR --> MERGE
+  MERGE --> COMP --> INDEX --> TEMP
+ end
+ subgraph OUT["Durable artifacts / consumers"]
+  NODES["nodes.jsonl + edges.jsonl"]
+  MAN["manifest + checkpoint + coverage"]
+  ARCH["ArchWiz context delta"]
+  SHE["SHE snapshot reducers"]
+  MMD["Mermaid graph projection"]
+  INDEX --> NODES
+  INDEX --> MAN
+  TEMP --> ARCH
+  NODES --> SHE
+  MAN --> SHE
+  NODES --> MMD
+ end

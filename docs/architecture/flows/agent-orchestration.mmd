@@ -1,0 +1,16 @@
+flowchart TB
+ subgraph OPS["Review / ops"]
+  GHA["GitHub Actions"] --> ROLE["Task / role / policy"] --> ROUTER["model-router"] --> QUOTA["Quota gate"]
+ end
+ subgraph CHAT["Chat plane"]
+  HUB["llm_api_hub"] --> CLI["multi-ai-cli / wrappers"] --> PROVIDERS["Model providers"]
+ end
+ subgraph MCP["MCP plane"]
+  HOST["mcp-hub / termux-mcp"] --> TOOLS["Scoped tool servers"]
+ end
+ ADAPTER["Governed adapters"] --> VALID["Schema / privacy / provenance"] --> EVENTS["Normalized integration events"]
+ QUOTA --> HUB
+ QUOTA --> HOST
+ PROVIDERS --> ADAPTER
+ TOOLS --> ADAPTER
+ EVENTS -. "eligible projection" .-> EPS["EPS / analytics"]

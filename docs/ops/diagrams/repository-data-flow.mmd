@@ -1,117 +1,51 @@
-flowchart LR
-  %% Repository-wide data flow map.
-  %% Solid = current documented/implemented path.
-  %% Dashed = optional, contract-only, intended join, or partially verified.
-  subgraph SOURCES["1 · Sources"]
-    GIT["Git repository<br/>commits · files · SHAs"]
-    GH["GitHub records<br/>PRs · issues · reviews · comments · checks"]
-    ACT["GitHub Actions<br/>runs · jobs · steps · artifacts"]
-    AGENTS["Agent workflows<br/>Gemini · DeepSeek · Jules · team lanes"]
-    PROVIDERS["External providers"]
-    SESSIONS["Termux / ArchWiz session callers<br/>session_id + messages"]
-    OPSINPUT["Committed operational inputs<br/>quota · status · provenance · observations"]
-    WEBHOOK["Cloudflare webhook events"]
+flowchart TB
+  subgraph GOV["0 · Governance"]
+    C["CLAUDE.md"] --> I["ICM system map"] --> P["Proposal registry / gates"]
   end
-  subgraph COLLECT["2 · Producers and collectors"]
-    PRLED["PR production ledger<br/>read-only GitHub API observer"]
-    ATESOBS["ATES Phase B observer<br/>workflow_run + jobs + task boundary"]
-    CRGCOL["Context relationship collectors<br/>repo files / bounded AST + GitHub metadata"]
-    HISTCOL["Historical corpus builder<br/>bounded history pages + checkpoint"]
-    FEEDCOL["Dashboard surface-feed collector"]
-    LANEOBS["Lane-event recorder<br/>selected workflow / PR events"]
-    RECEIVER["Receiver Mesh Actions processor"]
-    DISPATCH["ArchWiz DispatchPipeline<br/>registered dispatcher fan-out"]
-    ADAPTER["Governed provider adapters<br/>scoped operations"]
+  subgraph RUN["1 · Execution and sessions"]
+    D["Android / Termux"] --> H["hub_mcp capability boundary"] --> A["ArchWiz dispatch"]
+    A --> S["Session SSOT"]
+    A --> X["Codex index"]
   end
-  subgraph TRANSFORM["3 · Transformations"]
-    EPS["EPS PR-event shaping<br/>stable event ID · SHA/run binding"]
-    ATESSAN["ATES sanitizer<br/>closed schema · fingerprints · null semantics"]
-    ATESRED["ATES reducer<br/>TCV · WTCV · TPV · RPI · ATES"]
-    CRG["CRG normalize + compile<br/>verified / derived / inferred / candidate"]
-    CORPUSBUILD["Historical corpus index build<br/>nodes · edges · manifest · coverage"]
-    FEEDSHAPE["Surface-feed shaping<br/>schema · sources · honesty_rules · gaps"]
-    INTVALID["Integration-event schema validation<br/>provenance · privacy · idempotency"]
-    SHERED["SHE pure reducers<br/>network-free projections"]
-    SNAPBUILD["Snapshot builder<br/>source SHA · manifest SHA · generated_at · coverage"]
+  subgraph ROUTE["2 · Orchestration and routing"]
+    G["GitHub Actions / agent lanes"] --> R["model-router + quota gates"]
+    R --> L["llm_api_hub / multi-ai-cli"]
+    R --> M["mcp-hub / Termux MCP"]
+    L --> AD["Governed adapters"]
+    M --> AD
   end
-  subgraph STORES["4 · Evidence stores and projections"]
-    EPSART["EPS NDJSON artifact<br/>PR ledger observations"]
-    ATESART["ATES JSONL + reducer + receipt artifacts"]
-    CRGSTORE["Canonical context index<br/>JSONL · manifest · reports · checkpoint"]
-    HISTSTORE["Historical evidence corpus<br/>nodes · edges · summary · manifest"]
-    NEONLANE["Neon lane_events<br/>append-only · idempotent"]
-    NEONRECV["Neon receiver_events<br/>dedupe / dead-letter contract"]
-    FEEDS["Committed dashboard feeds<br/>apps/tribute-dashboard/data/*.json"]
-    INTEVENTS["Normalized integration events"]
-    SHE["Versioned SHE snapshots<br/>read-only projection"]
-    SSOT["Session SSOT"]
-    CODEX["Codex index"]
-    LINEARHINT["Linear sync hint<br/>log-only; no sync performed"]
+  subgraph EVID["3 · Evidence and telemetry"]
+    GH["GitHub PR / issue / commit / review"] --> EPS["EPS producer"]
+    G --> EPS
+    G --> AT["ATES observer"]
+    G --> LE["Lane-event recorder"]
+    LE --> N["Neon lane_events"]
+    WH["Cloudflare webhook"] --> RM["Receiver Mesh"] --> NR["Neon receiver_events"]
   end
-  subgraph CONSUMERS["5 · Consumers"]
-    VERCEL["Vercel<br/>primary interactive SHE surface"]
-    PAGES["GitHub Pages<br/>optional static mirror"]
-    HEX["Hex<br/>optional analytical consumer"]
-    TRIBUTE["Tribute dashboard<br/>read-only feed consumer"]
-    ANALYTICS["ML / Grafana / analytics<br/>optional consumers"]
-    MONEYBALL["Moneyball / 3L0"]
-    DOE["DOE / MVT experiments"]
-    MANAGER["Manager / team evolution<br/>admission · policy · learning"]
-    ARCHWIZ["ArchWiz query / context builder"]
-    MERMAID["Mermaid graph / diagram source"]
-    AGENTCTX["Agent task context<br/>bounded context delta"]
+  subgraph GRAPH["4 · Context and historical corpus"]
+    GH --> GC["CRG collectors"] --> CC["Normalize / compile"] --> CRG["Canonical CRG index"]
+    GH --> HC["Historical corpus builder"] --> CORP["Nodes / edges / manifest / checkpoint"]
   end
-  GH --> PRLED
-  ACT --> PRLED
-  PRLED -->|"PR / SHA / commits / reviews / checks"| EPS
-  EPS --> EPSART
-  ACT --> ATESOBS
-  AGENTS --> ATESOBS
-  GH --> ATESOBS
-  ATESOBS -->|"run / attempt / job timing / task metadata"| ATESSAN
-  ATESSAN --> ATESART
-  ATESART --> ATESRED
-  GIT --> CRGCOL
-  GH --> CRGCOL
-  CRGCOL --> CRG
-  CRG --> CRGSTORE
-  GH --> HISTCOL
-  HISTCOL --> CORPUSBUILD
-  CORPUSBUILD --> HISTSTORE
-  OPSINPUT --> FEEDCOL
-  ACT --> FEEDCOL
-  GH --> FEEDCOL
-  FEEDCOL --> FEEDSHAPE
-  FEEDSHAPE --> FEEDS
-  FEEDS --> TRIBUTE
-  ACT --> LANEOBS
-  GH --> LANEOBS
-  LANEOBS --> NEONLANE
-  WEBHOOK --> RECEIVER
-  RECEIVER --> NEONRECV
-  PROVIDERS --> ADAPTER
-  ADAPTER --> INTVALID
-  INTVALID --> INTEVENTS
-  INTEVENTS -. "eligible validated observations" .-> ANALYTICS
-  SESSIONS --> DISPATCH
-  DISPATCH --> SSOT
-  DISPATCH --> CODEX
-  DISPATCH --> LINEARHINT
-  HISTSTORE --> SHERED
-  SHERED --> SNAPBUILD
-  SNAPBUILD --> SHE
-  SHE --> VERCEL
-  SHE -.-> PAGES
-  SHE -.-> HEX
-  HISTSTORE --> MONEYBALL
-  HISTSTORE --> DOE
-  ATESRED -. "longitudinal join / manager evaluation" .-> MONEYBALL
-  ATESRED -.-> DOE
-  EPSART -. "validated evidence projection" .-> ANALYTICS
-  ATESART -.-> ANALYTICS
-  MONEYBALL --> MANAGER
-  DOE --> MANAGER
-  CRGSTORE --> ARCHWIZ
-  ARCHWIZ --> AGENTCTX
-  CRGSTORE --> MERMAID
-  MANAGER -. "approved policy / next-cycle task selection" .-> AGENTS
+  subgraph SURFACE["5 · Snapshots and consumers"]
+    CORP --> SR["SHE pure reducers"] --> SB["Snapshot builder"] --> SNAP["Versioned SHE snapshot"]
+    SNAP --> V["Vercel SHE"]
+    SNAP -. optional .-> HEX["Hex"]
+    SNAP -. optional .-> PAGES["GitHub Pages"]
+    EPS -. validated projection .-> AN["Analytics"]
+    AT -. baseline / join required .-> MB["Moneyball / DOE / Manager"]
+    CORP --> MB
+    CRG --> A
+    FEED["Operational feed collector"] --> TR["Tribute JSON feeds"] --> TD["Tribute dashboard"]
+  end
+  subgraph LEGACY["6 · Disconnected legacy local inventory"]
+    CI["$HOME/central_index.jsonl"] --> BUILD["build_data_flow_manifest.py"]
+    TRACE["trace_data_flow.py"] --> TMP["$HOME/tmp/data_flow_map.txt"] --> BUILD
+    BUILD --> LOCAL["$HOME/archwiz/DATA_FLOW_MANIFEST.md"]
+    LOCAL -. path mismatch .-> EMPTY["tracked archwiz/DATA_FLOW_MANIFEST.md · 0 bytes"]
+    EMPTY -. no verified consumer .-> CRG
+  end
+  P -. approved work .-> G
+  classDef gap fill:#fff0f0,stroke:#c62828,color:#5d1111,stroke-width:2px
+  classDef optional fill:#fff7e0,stroke:#b06000,color:#4a2c00,stroke-dasharray:5 5
+  class EMPTY,LOCAL gap
+  class HEX,PAGES,MB optional

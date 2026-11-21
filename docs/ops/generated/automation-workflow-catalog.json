@@ -28,7 +28,7 @@
     ]
   },
   "schema_version": 1,
-  "source_fingerprint": "a64a408b72d29bb81c872511e870d5807f93c7a51ea8cfe493925e18cd36c62c",
+  "source_fingerprint": "b4027bc44f63aa0c5f96c601bb65aab7b0044918e341dbb36d4d5f1ddfcaf62f",
   "workflow_count": 326,
   "workflows": [
     {
@@ -4780,7 +4780,7 @@
     {
       "action_pins": [],
       "authority": "read-only-or-advisory",
-      "concurrency": "group: repository-provisioner-controller-2-export cancel-in-progress: false",
+      "concurrency": "group: repository-provisioner-${{ inputs.repo_name }} cancel-in-progress: false",
       "domain": "agentic-development",
       "jobs": [
         "provision"
@@ -4789,7 +4789,6 @@
       "path": ".github/workflows/repository-provisioner.yml",
       "schedules": [],
       "triggers": [
-        "push",
         "workflow_dispatch"
       ]
     },

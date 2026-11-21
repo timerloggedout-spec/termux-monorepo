@@ -6,32 +6,45 @@
 
 ## Purpose
 
-Register DerpWiki, PigLatin, and the existing Leet / 1337 and Siglary mappings as peer language lanes. Preserve DevinWiki as a provider-managed source. Each lane owns its own terms, aliases, fixtures, provenance, version, and review state. The shared publication composer combines lane outputs without becoming a second vocabulary authority.
+Register DevinWiki, Leet / 1337$934K, Siglary, DerpWiki / d3rpWiki, and PigLatin as peer language lanes. Each transformation lane owns vocabulary, aliases, fixtures, provenance, versions, and review state. The shared composer combines lane outputs while allowing public mappings to evolve and mix across versions and domains.
 
 ## Publication profiles
 
-| Profile | Unicode tag layer | Agent Ready badge role | Presentation |
+| Profile | Invisible Unicode | Agent Ready badge role | Mapping behavior |
 |---|---:|---|---|
-| `validation` | OFF | Required validation surface | Canonical readable content |
-| `public` | ON | Separate from validation badge evidence | Playful encoded presentation |
+| `validation` | OFF | Required validation surface | Canonical readable baseline |
+| `public` | ON | Separate from validation badge evidence | Mutable playful remapping and version mixing |
 
-The public profile adds an optional Unicode tag-character rendering layer (U+E0000–U+E007F) to bounded, inert puzzle payloads. It preserves the existing owner mapping and canonical text. The layer supplements existing Leet/Siglary/DerpWiki/PigLatin mappings; it does not replace them.
+The public profile intentionally changes the visitor-facing mapping experience. DerpWiki may paraphrase, reframe, or cross-map concepts between domains; Leet / 1337$934K, Siglary, and PigLatin can participate in declared mixes. The result is a distinct playful presentation, rather than a character-only encoding of an otherwise identical mapping.
 
-The public puzzle presentation carries no automatically injected challenge-revealing copy. The owner mapping remains the inspection surface and records the canonical text, rendered text, decoded text, exact code points, codec/version, lane and term identifiers, provenance, publication profile, and reviewed revision.
+## Versioning and mixing
+
+Mapping versions are first-class records. Every public variant carries mapping ID/version, lane ID/version, codec ID/version, source mapping IDs, source and target domains, mix policy, and published revision. Version history is append-only with parent lineage; the public current pointer may advance as mappings evolve.
+
+Version mixing is enabled for same-lane multi-version, cross-lane, cross-domain, and codec-version combinations. A declared compatibility matrix controls valid combinations. Selection is deterministic for a publication revision and mapping set, so a published build can be reproduced and inspected through the owner mapping.
+
+## Cross-domain public use
+
+Initial selection probability: **25% of eligible public mapping selections** use a cross-domain mapping. This is a configurable rollout parameter, not an observed usage statistic or a per-visitor probability. Record the actual selected share and report it separately from the configured probability. Use publication-level deterministic selection; visitor-level tracking is outside this contract.
 
 ## Owner mapping contract
 
-The mapping view presents rendered text beside canonical and decoded text, plus the exact Unicode code points. It supports deterministic inspection and export of both encoded and decoded forms. Mapping assertions continue to use the existing candidate-first nomenclature model: evidence, relation type, confidence, review status, and version remain attached to each term.
+The owner view preserves canonical terms and exposes each public transformation: rendered text, canonical text, decoded text, exact Unicode code points, mapping and lane versions, codec version, source mapping lineage, source/target domains, mix policy, provenance, publication profile, and reviewed revision. It supports deterministic reconstruction and export of both public and canonical forms.
 
-## Integrity boundaries
+## Unicode layer
 
-- Keep canonical content and all existing mappings as the source of truth.
-- Keep the Unicode layer limited to inert, explicitly delimited puzzle data.
-- Preserve ordinary words as contiguous text.
-- Keep crawler instructions, metadata, prompts, credentials, authorization data, executable content, filtering inputs, and moderation inputs in canonical readable form.
-- Preserve deterministic decode and test normalization, truncation, copy/paste, malformed payloads, and code-point inspection.
-- Keep Agent Ready validation receipts tied to the validation URL, profile, commit, timestamp, and digest.
+The public profile may add Unicode tag characters (U+E0000–U+E007F) to bounded, inert puzzle payloads. The layer works alongside semantic mapping changes. It does not replace versioned mapping records or the owner reconstruction path.
+
+## Integrity and validation
+
+- Keep canonical owner records and mapping history reconstructable.
+- Keep public mapping pointers mutable through append-only version updates.
+- Preserve crawler instructions, metadata, prompts, credentials, authorization data, executable content, filtering inputs, and moderation inputs in canonical readable form.
+- Keep encoded payloads inert and preserve ordinary words as contiguous text.
+- Test normalization, truncation, copy/paste, malformed payloads, version compatibility, mixed-version reproducibility, and code-point inspection.
+- Keep invisible Unicode OFF for Agent Ready badge validation.
+- Bind validation receipts to exact URL, profile, commit, timestamp, and digest.
 
 ## Registry
 
-The machine-readable peer-lane and profile contract is [`lanes.json`](lanes.json). The Nomenclature Equivalency Matrix remains the terminology/evidence authority; this file registers lane ownership and publication behavior only.
+The machine-readable peer-lane, mapping-runtime, version-mixing, and publication-profile contract is [`lanes.json`](lanes.json). The Nomenclature Equivalency Matrix remains the terminology/evidence authority; this registry defines lane ownership and runtime publication behavior.

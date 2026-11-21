@@ -30,6 +30,7 @@ name: Operator wake
 #   wake vantage-cost-report strict=true
 #   provision-supabase-url provision-ref=<branch>
 #   audit-phantom-secrets
+#   provision-controller-export — dispatch and watch the manifest-defined export repository
 # Results post back to the triggering issue. workflow_dispatch mirrors all
 # commands for the Actions UI. No schedule: cadence stays with callers.
 
@@ -39,11 +40,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url | audit-phantom-secrets'
+        description: 'inventory | variables | wake-vantage-strict | provision-supabase-url | audit-phantom-secrets | provision-controller-export'
         required: true
         default: 'inventory'
         type: choice
-        options: [inventory, variables, wake-vantage-strict, provision-supabase-url, audit-phantom-secrets]
+        options: [inventory, variables, wake-vantage-strict, provision-supabase-url, audit-phantom-secrets, provision-controller-export]
 
 concurrency:
   group: operator-wake-${{ github.event.issue.number || github.event.inputs.command || github.run_id }}
@@ -86,6 +87,7 @@ jobs:
           want_wake=false
           want_provision=false
           want_audit=false
+          want_provision_export=false
           wake_strict=false
           PROVISION_REF="master"
           if [ "${GITHUB_EVENT_NAME:-}" = "workflow_dispatch" ]; then
@@ -95,6 +97,7 @@ jobs:
               wake-vantage-strict) want_wake=true; wake_strict=true ;;
               provision-supabase-url) want_provision=true ;;
               audit-phantom-secrets) want_audit=true ;;
+              provision-controller-export) want_provision_export=true ;;
             esac
           else
             if printf '%s' "$COMMENT_BODY" | grep -Eq '(^|[^A-Za-z0-9_-])inventory([^A-Za-z0-9_-]|$)'; then
@@ -116,6 +119,9 @@ jobs:
             fi
             if printf '%s' "$COMMENT_BODY" | grep -Eq 'audit-phantom-secrets'; then
               want_audit=true
+            fi
+            if printf '%s' "$COMMENT_BODY" | grep -Eq 'provision-controller-export'; then
+              want_provision_export=true
             fi
           fi
 
@@ -217,6 +223,220 @@ jobs:
                   report="${report}"$'\n'"- provision run ${prov_run}: ${prov_conclusion}"
                 fi
               fi
+            fi
+          fi
+
+          if [ "$want_provision_export" = true ]; then
+            manifest=ops/provisioning/controller-2-export.json
+            repo_name=$(jq -r '.name' "$manifest")
+            description=$(jq -r '.description' "$manifest")
+            visibility=$(jq -r '.visibility' "$manifest")
+            previous_export=$(gh run list -R "$GITHUB_REPOSITORY" --workflow repository-provisioner.yml --limit 1 --json databaseId --jq '.[0].databaseId // empty' 2>/dev/null || true)
+            report="${report}"
+            report="${report}"$'\n'"- phantom-secrets-audit dispatch (mode=full)"
+            since_audit=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run phantom-secrets-audit.yml -R "$GITHUB_REPOSITORY" --ref master -f mode=full; then
+              report="${report}"$'\n'"- audit dispatch: FAILED (see run log)"
+            else
+              audit_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                audit_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow phantom-secrets-audit.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_audit}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$audit_run" ] && break
+              done
+              if [ -z "$audit_run" ]; then
+                report="${report}"$'\n'"- audit dispatch: accepted but run not located within polling window"
+              else
+                audit_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  audit_pair=$(gh run view "$audit_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$audit_pair" in completed/*) audit_conclusion="${audit_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$audit_conclusion" ]; then
+                  report="${report}"$'\n'"- audit run ${audit_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- audit run ${audit_run}: ${audit_conclusion} (ledger comment posts to #184)"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ] && [ "$want_provision_export" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets; provision-controller-export)"
+          fi
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post report back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.exec.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha operator-wake run=${GITHUB_RUN_ID} -->"
+\n'"- provision request: ${repo_name} (${visibility})"
+            if gh workflow run repository-provisioner.yml -R "$GITHUB_REPOSITORY" --ref master -f "repo_name=$repo_name" -f "description=$description" -f "visibility=$visibility"; then
+              export_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                export_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow repository-provisioner.yml --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // empty' 2>/dev/null || true)
+                [ -n "$export_run" ] && [ "$export_run" != "$previous_export" ] && break
+                export_run=""
+              done
+              if [ -n "$export_run" ] && gh run watch "$export_run" -R "$GITHUB_REPOSITORY" --exit-status; then
+                export_url=$(gh run view "$export_run" -R "$GITHUB_REPOSITORY" --json url --jq '.url' 2>/dev/null || true)
+                report="${report}"
+            report="${report}"$'\n'"- phantom-secrets-audit dispatch (mode=full)"
+            since_audit=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run phantom-secrets-audit.yml -R "$GITHUB_REPOSITORY" --ref master -f mode=full; then
+              report="${report}"$'\n'"- audit dispatch: FAILED (see run log)"
+            else
+              audit_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                audit_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow phantom-secrets-audit.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_audit}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$audit_run" ] && break
+              done
+              if [ -z "$audit_run" ]; then
+                report="${report}"$'\n'"- audit dispatch: accepted but run not located within polling window"
+              else
+                audit_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  audit_pair=$(gh run view "$audit_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$audit_pair" in completed/*) audit_conclusion="${audit_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$audit_conclusion" ]; then
+                  report="${report}"$'\n'"- audit run ${audit_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- audit run ${audit_run}: ${audit_conclusion} (ledger comment posts to #184)"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
+          fi
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post report back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.exec.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha operator-wake run=${GITHUB_RUN_ID} -->"
+\n'"- provision run: SUCCESS (${export_url})"
+              else
+                report="${report}"
+            report="${report}"$'\n'"- phantom-secrets-audit dispatch (mode=full)"
+            since_audit=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run phantom-secrets-audit.yml -R "$GITHUB_REPOSITORY" --ref master -f mode=full; then
+              report="${report}"$'\n'"- audit dispatch: FAILED (see run log)"
+            else
+              audit_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                audit_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow phantom-secrets-audit.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_audit}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$audit_run" ] && break
+              done
+              if [ -z "$audit_run" ]; then
+                report="${report}"$'\n'"- audit dispatch: accepted but run not located within polling window"
+              else
+                audit_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  audit_pair=$(gh run view "$audit_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$audit_pair" in completed/*) audit_conclusion="${audit_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$audit_conclusion" ]; then
+                  report="${report}"$'\n'"- audit run ${audit_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- audit run ${audit_run}: ${audit_conclusion} (ledger comment posts to #184)"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
+          fi
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post report back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.exec.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha operator-wake run=${GITHUB_RUN_ID} -->"
+\n'"- provision run: FAILED or run ID unavailable"
+              fi
+            else
+              report="${report}"
+            report="${report}"$'\n'"- phantom-secrets-audit dispatch (mode=full)"
+            since_audit=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if ! gh workflow run phantom-secrets-audit.yml -R "$GITHUB_REPOSITORY" --ref master -f mode=full; then
+              report="${report}"$'\n'"- audit dispatch: FAILED (see run log)"
+            else
+              audit_run=""
+              for _ in $(seq 1 12); do
+                sleep 5
+                audit_run=$(gh run list -R "$GITHUB_REPOSITORY" --workflow phantom-secrets-audit.yml --event workflow_dispatch --limit 5 --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"${since_audit}\")][0].databaseId // empty" 2>/dev/null || true)
+                [ -n "$audit_run" ] && break
+              done
+              if [ -z "$audit_run" ]; then
+                report="${report}"$'\n'"- audit dispatch: accepted but run not located within polling window"
+              else
+                audit_conclusion=""
+                for _ in $(seq 1 30); do
+                  sleep 10
+                  audit_pair=$(gh run view "$audit_run" -R "$GITHUB_REPOSITORY" --json status,conclusion --jq '.status + "/" + (.conclusion // "pending")' 2>/dev/null || true)
+                  case "$audit_pair" in completed/*) audit_conclusion="${audit_pair#completed/}"; break ;; esac
+                done
+                if [ -z "$audit_conclusion" ]; then
+                  report="${report}"$'\n'"- audit run ${audit_run}: still running at poll deadline (conclusion pending)"
+                else
+                  report="${report}"$'\n'"- audit run ${audit_run}: ${audit_conclusion} (ledger comment posts to #184)"
+                fi
+              fi
+            fi
+          fi
+
+          if [ "$want_inventory" = false ] && [ "$want_variables" = false ] && [ "$want_wake" = false ] && [ "$want_provision" = false ] && [ "$want_audit" = false ]; then
+            report="${report}"$'\n'"- no allowlisted command found (supported: inventory; variables; wake vantage-cost-report [strict=true]; provision-supabase-url [provision-ref=<branch>]; audit-phantom-secrets)"
+          fi
+          {
+            echo "report<<REPORT_EOF"
+            printf '%s\n' "$report"
+            echo "REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post report back to the triggering issue
+        if: env.ISSUE_NUMBER != ''
+        env:
+          REPORT: ${{ steps.exec.outputs.report }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "${REPORT}"$'\n'"<!-- meta:gha operator-wake run=${GITHUB_RUN_ID} -->"
+\n'"- provision dispatch: FAILED"
             fi
           fi
 

@@ -2,10 +2,10 @@
 
 Automated inventory of remote `docs/*` (and `docs-lane-*`) branches for navigation and amendment tracking. Policy: debate lanes stay until promoted; master holds pointers — see `docs/CONSENSUS.md` §10 and #175.
 
-**Generated:** `2026-11-19T15:49:46Z` UTC  
+**Generated:** `2026-11-21T14:18:09Z` UTC  
 **Generator:** `scripts/ops/generate_docs_branch_index.py`  
 **Repo:** `timerloggedout-spec/termux-monorepo`  
-**Count:** 291 docs-lane branch(es)
+**Count:** 298 docs-lane branch(es)
 
 Do **not** hand-edit the generated table below. Amend via PR or registry.
 
@@ -89,11 +89,12 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/classifier-first-completed-trial`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/classifier-first-completed-trial) | `3bc4c0e89506` | — | — | orphan lane |
 | [`docs/claude-md-primary-entry`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-md-primary-entry) | `ad716d0c806e` | — | — | orphan lane |
 | [`docs/claude-recon-before-relay`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/claude-recon-before-relay) | `dbd492809a4b` | — | — | orphan lane |
+| [`docs/cns-06-host-integration-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/cns-06-host-integration-record) | `dcfca0c548ce` | [#5713](https://github.com/timerloggedout-spec/termux-monorepo/pull/5713)→`master` | — | PR without registry link |
 | [`docs/codespace-bifrost-006-run`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/codespace-bifrost-006-run) | `3edb2bd66392` | — | — | orphan lane |
 | [`docs/competition-import-d0-d1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/competition-import-d0-d1) | `dcb96489663f` | — | — | orphan lane |
 | [`docs/condensa-correction-2026-11-10`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/condensa-correction-2026-11-10) | `70b6589f0db8` | — | — | orphan lane |
 | [`docs/connected-platform-recon-20261021`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connected-platform-recon-20261021) | `b94d64c04931` | — | — | orphan lane |
-| [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `1a8f61b35e42` | — | — | orphan lane |
+| [`docs/connector-audit-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/connector-audit-2026-11-17) | `baf927ae71ad` | [#5667](https://github.com/timerloggedout-spec/termux-monorepo/pull/5667)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-agent-discoverability`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-agent-discoverability) | `35c1f2bd5bbe` | [#1617](https://github.com/timerloggedout-spec/termux-monorepo/pull/1617)→`master` | — | PR without registry link |
 | [`docs/context7-mintlify-mcp-workflow`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/context7-mintlify-mcp-workflow) | `4b9a610cf9de` | — | — | orphan lane |
 | [`docs/continuity-spof-census-2026-11-01`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/continuity-spof-census-2026-11-01) | `dc92a46f6878` | — | — | orphan lane |
@@ -181,6 +182,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/naming-collision-map-recon-rows-2026-11-04`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/naming-collision-map-recon-rows-2026-11-04) | `92c77c28086f` | — | — | orphan lane |
 | [`docs/naming-collision-mapping-2026-11-04`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/naming-collision-mapping-2026-11-04) | `60a07b4380b4` | — | — | orphan lane |
 | [`docs/notation-sets-evolution`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/notation-sets-evolution) | `25dbe5778683` | — | `timerloggedout-spec` | registered; no open PR |
+| [`docs/nse-021-sidecar-comment-overlays`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-021-sidecar-comment-overlays) | `04fc2a9dc5e1` | — | — | orphan lane |
+| [`docs/nse-021-sidecar-comment-overlays-r2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-021-sidecar-comment-overlays-r2) | `2463795a654d` | [#5737](https://github.com/timerloggedout-spec/termux-monorepo/pull/5737)→`master` (draft) | — | PR without registry link |
 | [`docs/nse-022-023-lambda-lean-extract`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/nse-022-023-lambda-lean-extract) | `e588a84c04bf` | — | — | orphan lane |
 | [`docs/opencode-fork-integration`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/opencode-fork-integration) | `dfbabaddfb4a` | — | — | orphan lane |
 | [`docs/opportunity-monikers-2026-11-17`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/opportunity-monikers-2026-11-17) | `4c09a4255321` | — | — | orphan lane |
@@ -226,6 +229,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/public-surface-publishing-reconciliation-2026-11-15`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/public-surface-publishing-reconciliation-2026-11-15) | `3512867a1f2e` | — | — | orphan lane |
 | [`docs/q-provider-production-evidence`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q-provider-production-evidence) | `2a4442976745` | — | — | orphan lane |
 | [`docs/q2-app-token-v3`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/q2-app-token-v3) | `d1dfbeb58b10` | — | — | orphan lane |
+| [`docs/qdesk-replica-reconciliation`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/qdesk-replica-reconciliation) | `fcb33429d6fc` | [#5677](https://github.com/timerloggedout-spec/termux-monorepo/pull/5677)→`master` (draft) | — | PR without registry link |
 | [`docs/que-multiprotocol-build-arm-projection`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/que-multiprotocol-build-arm-projection) | `507fc9ac19d9` | [#5479](https://github.com/timerloggedout-spec/termux-monorepo/pull/5479)→`master` (draft) | — | PR without registry link |
 | [`docs/quota-selector-activation-2026-10-20`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/quota-selector-activation-2026-10-20) | `d4110b928f4d` | — | — | orphan lane |
 | [`docs/ratatui-dashboard-collaborator`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/ratatui-dashboard-collaborator) | `543dd4f99c9b` | — | `ChatGPT` | registered; no open PR |
@@ -242,6 +246,8 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/refocus-do-framing-rfp-1643`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/refocus-do-framing-rfp-1643) | `30433bacf793` | — | — | orphan lane |
 | [`docs/registry-lane-compounding-1447`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/registry-lane-compounding-1447) | `7d40a7a8cb5a` | — | — | orphan lane |
 | [`docs/repo-replay-import-2026-10-29`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/repo-replay-import-2026-10-29) | `797c26349e67` | — | — | orphan lane |
+| [`docs/repository-architecture-entry-20261121`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/repository-architecture-entry-20261121) | `f38e115b6421` | — | — | orphan lane |
+| [`docs/repository-architecture-entry-20261121-v2`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/repository-architecture-entry-20261121-v2) | `58f114444f81` | — | `ChatGPT` | registered; no open PR |
 | [`docs/research-cycle-d0-d1`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/research-cycle-d0-d1) | `4b456618acd7` | [#4549](https://github.com/timerloggedout-spec/termux-monorepo/pull/4549)→`master` | — | PR without registry link |
 | [`docs/research-paper-wallet-proposals-20261022`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/research-paper-wallet-proposals-20261022) | `7f18ff5b20e9` | [#1531](https://github.com/timerloggedout-spec/termux-monorepo/pull/1531)→`master` | — | PR without registry link |
 | [`docs/restore-stubbed-files-3259`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/restore-stubbed-files-3259) | `eb11d5a9322b` | — | — | orphan lane |
@@ -271,6 +277,7 @@ Do **not** hand-edit the generated table below. Amend via PR or registry.
 | [`docs/sync-agents-hum-md`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/sync-agents-hum-md) | `056fc8ac7d0f` | — | — | orphan lane |
 | [`docs/taktikal-awareness-ooda-architecture`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/taktikal-awareness-ooda-architecture) | `24012fb99b3f` | [#5030](https://github.com/timerloggedout-spec/termux-monorepo/pull/5030)→`master` (draft) | — | PR without registry link |
 | [`docs/team-formation-roster-rebased`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/team-formation-roster-rebased) | `06d7b7f46a76` | — | — | orphan lane |
+| [`docs/temporal-muse-vm-reactivation-20261119`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/temporal-muse-vm-reactivation-20261119) | `77aa28b39533` | [#5687](https://github.com/timerloggedout-spec/termux-monorepo/pull/5687)→`master` | — | PR without registry link |
 | [`docs/temporal-oracle-pass-record`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/temporal-oracle-pass-record) | `ea5956964b9f` | — | — | orphan lane |
 | [`docs/termux-mcp-lean-template`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-mcp-lean-template) | `b6487c77d8e0` | — | — | orphan lane |
 | [`docs/termux-ssh-tunnel`](https://github.com/timerloggedout-spec/termux-monorepo/tree/docs/termux-ssh-tunnel) | `41f5d318cd60` | [#1537](https://github.com/timerloggedout-spec/termux-monorepo/pull/1537)→`master` | — | PR without registry link |

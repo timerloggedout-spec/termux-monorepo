@@ -1,0 +1,113 @@
+{
+  "schema_version": "name_competition.v1",
+  "experiment_id": "NAME-DOE-001",
+  "status": "design-ready-not-preregistered",
+  "shared_capability": "Software Recipe Intelligence",
+  "model_abbreviation": "SRM",
+  "project_identity": null,
+  "winner": null,
+  "arms": [
+    {
+      "arm_id": "NAME-A01",
+      "candidate": "RIE",
+      "expansion": "Recipe Intelligence & Evolution",
+      "role": "active-candidate",
+      "collision_risk": "moderate-unverified",
+      "evidence": [
+        "https://www.crunchbase.com/organization/rie-technology-corp"
+      ],
+      "notes": "Existing software/content-cloud integration company; verify primary source and category proximity."
+    },
+    {
+      "arm_id": "NAME-A02",
+      "candidate": "RISE",
+      "expansion": "Recipe Intelligence & Systems Evolution",
+      "role": "active-candidate",
+      "collision_risk": "high-unverified",
+      "evidence": [
+        "https://github-wiki-see.page/m/SyberLabs/RISE/wiki/RISE-SDK"
+      ],
+      "notes": "Existing MCP/product/SDK identity in software and agent ecosystem."
+    },
+    {
+      "arm_id": "NAME-A03",
+      "candidate": "RIME",
+      "expansion": "Recipe Intelligence, Methods & Evolution",
+      "role": "active-candidate-high-risk-comparator",
+      "collision_risk": "high-unverified",
+      "evidence": [
+        "https://rime.ai/",
+        "https://www.trademarkelite.com/trademark/trademark-detail/97058795/RIME",
+        "https://www.trademarkia.com/rime-98851316"
+      ],
+      "notes": "Existing AI voice company; historical Robust Intelligence software-security filing reported abandoned; other category marks."
+    },
+    {
+      "arm_id": "NAME-C00",
+      "candidate": "SRI",
+      "expansion": "Software Recipe Intelligence",
+      "role": "negative-control",
+      "collision_risk": "severe",
+      "evidence": [
+        "https://www.sri.com/hoi/siri/"
+      ]
+    },
+    {
+      "arm_id": "NAME-C01",
+      "candidate": "RACE",
+      "expansion": "Recipe Analysis, Composition & Evolution",
+      "role": "genericity-control",
+      "collision_risk": "high-genericity"
+    },
+    {
+      "arm_id": "NAME-C02",
+      "candidate": "RAXI",
+      "expansion": "Recipe Architecture eXchange & Intelligence",
+      "role": "excluded-collision-control",
+      "collision_risk": "severe",
+      "evidence": [
+        "https://trademarks.justia.com/792/39/raxi-79239511.html"
+      ]
+    },
+    {
+      "arm_id": "NAME-C03",
+      "candidate": "BRACE",
+      "expansion": "Blueprint, Recipe Architecture, Composition & Evolution",
+      "role": "excluded-collision-control",
+      "collision_risk": "high",
+      "evidence": [
+        "https://braceframework.org/"
+      ]
+    },
+    {
+      "arm_id": "NAME-C04",
+      "candidate": "TARSIER",
+      "expansion": "Technique And Recipe Synthesis, Intelligence, Evaluation & Reuse",
+      "role": "excluded-collision-control",
+      "collision_risk": "high",
+      "evidence": [
+        "https://github.com/reworkd/tarsier"
+      ]
+    }
+  ],
+  "scoring_dimensions": [
+    "semantic_fidelity",
+    "distinctiveness",
+    "pronunciation",
+    "spelling",
+    "delayed_recall",
+    "search_precision",
+    "extensibility",
+    "repository_fit",
+    "cross_locale_safety",
+    "reviewer_preference"
+  ],
+  "hard_gates": [
+    "no-severe-relevant-collision",
+    "repository-namespace-review",
+    "semantic-fit",
+    "naming-governance-review"
+  ],
+  "no_automatic_renames": true,
+  "no_legal_clearance_claim": true
+}

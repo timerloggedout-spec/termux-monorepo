@@ -60,7 +60,8 @@ jobs:
           python3 scripts/ops/cockroach_lane_event.py count --strict | tee /tmp/cockroach-count.txt
           grep -q "COCKROACHDB_COUNT rows=1" /tmp/cockroach-count.txt
       - name: Run offline adapter tests
-        run: python3 -m unittest tests.test_cockroach_lane_event tests.test_lane_event -v
+        run: python3 -m unittest discover -s tests -p 'test_cockroach_lane_event.py' -v
+          python3 -m unittest discover -s tests -p 'test_lane_event.py' -v
       - name: Record runtime evidence
         if: always()
         run: |

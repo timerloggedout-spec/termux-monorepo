@@ -85,6 +85,23 @@ class PolyglotFederationTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("target_id does not resolve", result.stderr)
 
+
+    def test_validator_rejects_non_string_target_ids(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            fixture = root / "docs" / "integrations" / "polyglot"
+            shutil.copytree(BASE, fixture)
+            targets_path = fixture / "examples" / "technology-targets.json"
+            targets = json.loads(targets_path.read_text(encoding="utf-8"))
+            targets["targets"][0]["target_id"] = 144
+            targets_path.write_text(json.dumps(targets), encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "polyglot" / "validate_federation.py"), "--root", str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("invalid target_id", result.stderr)
+
     def test_validator_accepts_numeric_transport_target_ids(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

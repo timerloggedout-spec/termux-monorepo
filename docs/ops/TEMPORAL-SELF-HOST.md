@@ -8,6 +8,12 @@ This page is the operator record; the pass evidence lives in
 
 **Live status (living record): issue #2028** — unit states, port checks, DB/backups, workflow list; refreshed by the keepalive on every repair + daily. Collaborators review there.
 
+## Current runtime status — owner correction 2026-11-19
+
+The owner confirms **Muse VM is the live Temporal host**. The owner-provided runtime receipt reports ports 7233 and 7234 listening and the Web UI on 8233 returning HTTP 200. This PR records that receipt as owner-provided evidence; it does not claim a fresh VM-side probe.
+
+The latest recorded execution census remains **0 workflow executions · 0 schedules · 1 namespace** (2026-11-18 05:39 PT). Runtime availability and workflow adoption are separate measures. Producer registration, workers, schedule migration, and throughput receipts are tracked by [issue #5632](https://github.com/timerloggedout-spec/termux-monorepo/issues/5632). The 2026-10-28 retirement block below is a historical snapshot, superseded for current host state by this correction.
+
 > **RETIRED (2026-10-28) — historical record.** No Temporal
 > exception to the VM = sandbox-only rule exists — the exception
 > main relayed on 2026-10-27 was main's inference, rejected by the

@@ -4,7 +4,7 @@
 
 | Surface | How refTemplates participates |
 |---------|------------------------------|
-| Dual-gate | All metadata + gitlink changes on this PR ride dual-gate; no special path |
+| Dual-gate | All metadata + gitlink changes on this PR follow the standard dual-gate |
 | evidence-led-monorepo-ops | Inventory `refTemplates/00_Index/SOURCE-MAP.md` + `smods/` vs `.gitmodules` |
 | adaptive-wait | Submodule sparse-checkout / integrity jobs stay behind dual gates |
 | help-wanted / tribute | Research-template work claimable like other lanes |

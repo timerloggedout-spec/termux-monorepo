@@ -69,7 +69,7 @@ The [collaborator capability map](../../../ops/PROVIDER-COLLABORATOR-CAPABILITY-
 
 **Operator direction (2026-11-21):** register both supplied Vultr model-catalog repositories in `refTemplates` and assess their architecture for improvements to the existing provider Inference catalogue. This task-scoped direction authorizes the metadata-only reference registration, source pinning, comparison report and inventory-integrity update under MSM-025.
 
-The reference work uses inspected immutable upstream revisions and verified MIT license files. The Python and TypeScript projects describe matching clients for Vultr's public Model Document 2.4 catalog. Their schema is treated as a reference input for the multi-provider v5 contract, not as a replacement provider wire contract.
+The reference work uses inspected immutable upstream revisions and verified MIT license files. The Python and TypeScript projects describe matching clients for Vultr's public Model Document 2.4 catalog. Their schema informs the multi-provider v5 contract while each provider retains its own wire contract.
 
 Scope remains documentation, metadata and deterministic inventory validation. Provider polling, inference, credential changes, quota observation, account activation, schedules, routing/admission changes, package installation, upstream code execution, forks and gitlinks remain separately gated. Proposal-wide acceptance and closure remain unchanged.
 
